@@ -9,7 +9,7 @@ try:
 	try:
 		version = sys.version_info
 		if (version[0] == 2 and version[1] == 7):
-			print "Checking `python` version:", sys.version, "OK"
+			print "Checking `python` version:", sys.version, "ok"
 		else:
 			print "Checking `python` version: "+sys.version+" ERROR"
 			sys.exit(3)
@@ -33,7 +33,7 @@ try:
 	baud = 115200
 	print "Trying to access serial port `"+port+"`...",
 	port = serial.Serial(port, baud, timeout=1)
-	print "OK"
+	print "ok"
 
 	#TEST: Try to write something on the main serial port
 	# Init raspberry
@@ -43,7 +43,7 @@ try:
 	if (port.readline().rstrip() != "ok"):
 		print "ERROR"
 		sys.exit(2)
-	print "OK"
+	print "ok"
 
 	print "Trying to send some g-codes to the machine using serial port...",
 	# Cycle through led colors
@@ -63,7 +63,7 @@ try:
 			done = False
 			break
 	if (done):
-		print "OK"
+		print "ok"
 	else:
 		print "ERROR"
 		sys.exit(2)
@@ -77,13 +77,13 @@ try:
 	if (temp[0] != "ok"):
 		print "ERROR"
 		sys.exit(2)
-	print "OK"
+	print "ok"
 
 	#TEST: numpy (numpy)
 	try:
 		print "Checking numpy module...",
 		import numpy
-		print "OK"
+		print "ok"
 	except ImportError:
 		print "ERROR"
 		sys.exit(2)
@@ -92,7 +92,7 @@ try:
 	try:
 		print "Checking OpenCV...",
 		import cv, cv2
-		print "OK"
+		print "ok"
 	except ImportError:
 		print "ERROR"
 		sys.exit(2)
