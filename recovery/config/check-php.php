@@ -4,7 +4,7 @@ try
 {
 	$code = 0;  // 0=OK, 1=WARNINGS, 2=ERRORS, 3=FAILURE
 
-	include dirname(dirname(__FILE__)).'/recovery/config/config.php';
+	include dirname(__FILE__).'/config.php';
 
 	//TEST: db driver
 	echo "Looking for a MySQL DB driver... "; flush();
