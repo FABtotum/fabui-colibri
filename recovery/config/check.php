@@ -74,16 +74,16 @@ ob_end_flush();
 					switch ($code)
 					{
 						case 0:
-							echo "All tests passed with no errors\n";
+							echo "\nAll tests passed with no errors\n";
 							break;
 						case 1:
-							echo "Test passed with some warnings\n";
+							echo "\nTest passed with some warnings\n";
 							break;
 						case 2:
-							echo "Test failed because of some errors\n";
+							echo "\nTest failed because of some errors\n";
 							break;
 						case 3: default:
-							echo "Test halted due to an unrecovable failure\n";
+							echo "\nTest halted due to an unrecoverable failure\n";
 					}
 				?>
 				</kbd>

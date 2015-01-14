@@ -23,7 +23,7 @@ try:
 	print "Checking pyserial module...",
 	try:
 		import serial
-		print "OK"
+		print "ok"
 	except ImportError:
 		print "ERROR"
 		sys.exit(2)
