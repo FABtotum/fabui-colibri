@@ -18,6 +18,13 @@ try:
 		sys.exit(3)
 
 	#TEST: RPi.GPIO
+	# just test the module for inclusion
+	print "Checking RPi.GPIO module...",
+	try:
+		import RPi.GPIO as GPIO
+		print "ok"
+	except ImportError:
+		print "missing"
 
 	#TEST: pyserial (https://pypi.python.org/pypi/pyserial)
 	print "Checking pyserial module...",

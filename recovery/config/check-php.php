@@ -97,18 +97,18 @@ try
 		echo "ok\n";
 	} else {
 		echo "ERROR\n";
-		exit 2;
+		exit(2);
 	}
 
 	//TEST file download
-	echo "Trying a download with cURL... ";
+	/*echo "Trying a download with cURL... ";
 	$url = MYFAB_REMOTE_VERSION_URL
 	$test = curl_init($url);
 	curl_setopt_array($test, array(
 		CURLOPT_FILE => $_SERVER['DOCUMENT_ROOT']
 	));
 	curl_exec($test);
-	curl_close($test);
+	curl_close($test);*/
 
 	//TEST: Slic3r stable (v 1.1.7) at (/var/www/fabui/slic3r/slic3r)
 	echo "Looking for Slic3r executable... "; flush();
