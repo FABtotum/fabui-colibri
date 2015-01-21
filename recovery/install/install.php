@@ -1,13 +1,14 @@
 <?php
 session_start();
-if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' && count($_POST) > 0){
-
+if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' && count($_POST) > 0)
+{
+	if (!defined('ROOT')) define('ROOT', $_SERVER['DOCUMENT_ROOT']);
 
     //=========== CONFIG FILES
-    include_once ('/var/www/fabui/ajax/config.php');
-    include_once ('/var/www/fabui/ajax/lib/database.php');
-	include_once ('/var/www/fabui/ajax/lib/serial.php');
-    include_once ('/var/www/fabui/ajax/lib/utilities.php');
+    include_once (ROOT.'/fabui/ajax/config.php');
+    include_once (ROOT.'/fabui/ajax/lib/database.php');
+	include_once (ROOT.'/fabui/ajax/lib/serial.php');
+    include_once (ROOT.'/fabui/ajax/lib/utilities.php');
 	
 	
 	

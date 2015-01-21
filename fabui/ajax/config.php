@@ -1,6 +1,6 @@
 <?php
 //===================================================================================================================================================
-$www_path   = $_SERVER['DOCUMENT_ROOT'];
+$www_path   = '/var/www';
 $fabui_path = $www_path.'fabui/';
 
 defined('WWW_PATH')      ? null : define("WWW_PATH",      $www_path);

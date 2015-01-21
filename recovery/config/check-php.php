@@ -4,7 +4,7 @@ try
 {
 	$code = 0;  // 0=OK, 1=WARNINGS, 2=ERRORS, 3=FAILURE
 
-	include dirname(dirname(__FILE__)).'/fabui/ajax/config.php';
+	include '/var/www/fabui/ajax/config.php';
 
 	//TEST: db driver
 	echo "Looking for a MySQL DB driver to access database `".DB_DATABASE."`... "; flush();
