@@ -4,7 +4,7 @@ try
 {
 	$code = 0;  // 0=OK, 1=WARNINGS, 2=ERRORS, 3=FAILURE
 
-	include dirname(dirname(__FILE__)).'/fabui/ajax/config.php';
+	include '/var/www/fabui/ajax/config.php';
 
 	//TEST: db driver
 	echo "Looking for a MySQL DB driver to access database `".DB_DATABASE."`... "; flush();
@@ -97,18 +97,28 @@ try
 		echo "ok\n";
 	} else {
 		echo "ERROR\n";
-		exit 2;
+		exit(2);
 	}
 
 	//TEST file download
-	echo "Trying a download with cURL... ";
-	$url = MYFAB_REMOTE_VERSION_URL
+	echo "Trying to download a file with cURL... ";
+	$url = MARLIN_DOWNLOAD_URL.MARLIN_DOWNLOAD_FILE;
+	$path = TEMP_PATH.MARLIN_DOWNLOAD_FILE;
 	$test = curl_init($url);
 	curl_setopt_array($test, array(
-		CURLOPT_FILE => $_SERVER['DOCUMENT_ROOT']
+		CURLOPT_FOLLOWLOCATION => true,
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_FILE => fopen($path, 'w')
 	));
 	curl_exec($test);
 	curl_close($test);
+	if (file_exists($path)) {
+		unlink($path);
+		echo "ok\n";
+	} else {
+		echo "ERROR\n";
+		exit(2);
+	}
 
 	//TEST: Slic3r stable (v 1.1.7) at (/var/www/fabui/slic3r/slic3r)
 	echo "Looking for Slic3r executable... "; flush();
