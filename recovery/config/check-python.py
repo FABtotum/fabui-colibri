@@ -9,12 +9,12 @@ try:
 	try:
 		version = sys.version_info
 		if (version[0] == 2 and version[1] == 7):
-			print "Checking `python` version:", sys.version, "ok"
+			print "Checking `python` version: ok ", sys.version
 		else:
-			print "Checking `python` version: "+sys.version+" ERROR"
+			print "Checking `python` version: ERROR "+sys.version
 			sys.exit(3)
 	except Exception:
-		print "Checking `python` version: < 2.0 ERROR"
+		print "Checking `python` version: ERROR (< 2.0)"
 		sys.exit(3)
 
 	#TEST: RPi.GPIO

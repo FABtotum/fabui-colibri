@@ -101,14 +101,24 @@ try
 	}
 
 	//TEST file download
-	/*echo "Trying a download with cURL... ";
-	$url = MYFAB_REMOTE_VERSION_URL
+	echo "Trying to download a file with cURL... ";
+	$url = MARLIN_DOWNLOAD_URL.MARLIN_DOWNLOAD_FILE;
+	$path = TEMP_PATH.MARLIN_DOWNLOAD_FILE;
 	$test = curl_init($url);
 	curl_setopt_array($test, array(
-		CURLOPT_FILE => $_SERVER['DOCUMENT_ROOT']
+		CURLOPT_FOLLOWLOCATION => true,
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_FILE => fopen($path, 'w')
 	));
 	curl_exec($test);
-	curl_close($test);*/
+	curl_close($test);
+	if (file_exists($path)) {
+		unlink($path);
+		echo "ok\n";
+	} else {
+		echo "ERROR\n";
+		exit(2);
+	}
 
 	//TEST: Slic3r stable (v 1.1.7) at (/var/www/fabui/slic3r/slic3r)
 	echo "Looking for Slic3r executable... "; flush();
