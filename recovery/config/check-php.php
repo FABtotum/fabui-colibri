@@ -92,11 +92,11 @@ try
 	}
 
 	//TEST curl
-	echo "Looking for cURL extension... ";
+	echo "Checking cURL extension... ";
 	if (function_exists('curl_init')) {
 		echo "ok\n";
 	} else {
-		echo "ERROR\n";
+		echo "MISSING\n";
 		exit(2);
 	}
 
@@ -119,6 +119,16 @@ try
 		echo "ERROR\n";
 		exit(2);
 	}
+
+	//TEST: ZipArchive
+	echo "Checking Zip extension... ";
+	if (class_exists('ZipArchive')) {
+		echo "ok\n";
+	} else {
+		echo "MISSING";
+		exit(2);
+	}
+	
 
 	//TEST: Slic3r stable (v 1.1.7) at (/var/www/fabui/slic3r/slic3r)
 	echo "Looking for Slic3r executable... "; flush();
