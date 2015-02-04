@@ -106,12 +106,5 @@ $_lan       = lan();
 			</tbody>
 		</table>
 	</div>
-    
-    
-   	
 
-    
-    
-    
-    
 </div>

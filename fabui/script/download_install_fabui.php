@@ -1,6 +1,6 @@
 <?php
 /** FIRST DOWNLOAD FILE */
-require_once '/var/www/fabui/ajax/config.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/fabui/ajax/config.php';
 require_once FABUI_PATH.'ajax/lib/database.php';
 require_once FABUI_PATH.'ajax/lib/utilities.php';
 

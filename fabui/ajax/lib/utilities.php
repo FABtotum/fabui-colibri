@@ -1,13 +1,13 @@
 <?php
 /** FIRST DOWNLOAD FILE */
-require_once '/var/www/fabui/ajax/config.php';
-require_once '/var/www/fabui/ajax/lib/database.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/fabui/ajax/config.php';
+require_once FABUI_PATH.'ajax/lib/database.php';
 
 function site_url($url){
     return SITE_URL.$url;
 }
 function base_url(){
-    
+
 }
 
 function host_name(){
