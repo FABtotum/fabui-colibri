@@ -1,7 +1,7 @@
 FILES=assets fabui index.php install.php lib LICENSE README.md recovery
 
 sysconfdir=/etc
-htconfdir=/etc/lightppd
+htconfdir=$(sysconfdir)/lightppd
 htdocsdir=/var/www
 
 .PHONY: all clean distclean
@@ -11,11 +11,8 @@ all: clean
 install: installdirs all
 #	Install files in destination dir
 	cp -a --no-preserve=ownership $(FILES) $(DESTDIR)$(htdocsdir)
-#	Install system configuration files
-	install -D recovery/install/system/etc/firstboot.d/fabui $(DESTDIR)$(sysconfdir)/firstboot.d/fabui
-	install -D recovery/install/system/etc/init.d/fabui $(DESTDIR)$(sysconfdir)/init.d/fabui
-	install -D recovery/install/system/etc/lighttpd/conf-available/99-fabui.conf $(DESTDIR)$(htconfdir)/conf-available/99-fabui.conf
-#TODO: activate fab-ui init scripts
+#	Install system configuration files (for colibri system)
+	cp -a --no-preserve=ownership recovery/install/system/etc/* $(DESTDIR)$(sysconfdir)/
 
 installdirs:
 	mkdir -p $(DESTDIR)$(htdocsdir)
