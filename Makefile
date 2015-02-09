@@ -1,21 +1,21 @@
-FILES=assets fabui .htaccess index.php install.php lib LICENSE logs README.md recovery sql temp
+FILES=assets fabui index.php install.php lib LICENSE README.md recovery
 
 sysconfdir=/etc
 htconfdir=/etc/lightppd
 htdocsdir=/var/www
 
-.PHONY: all
+.PHONY: all clean distclean
 
 all: clean
 
 install: installdirs all
 #	Install files in destination dir
-	install -m ug+rwX -o root $(FILES) $(DESTDIR)$(htdocsdir)
+	cp -a --no-preserve=ownership $(FILES) $(DESTDIR)$(htdocsdir)
 #	Install system configuration files
-	install -D -o root recovery/install/system/etc/firstboot.d/fabui $(DESTDIR)$(sysconfdir)/firstboot.d/
-	install -D -o root recovery/install/system/etc/init.d/fabui $(DESTDIR)$(sysconfdir)/init.d/
-	install -D recovery/install/system/etc/lighttpd/conf-available/99-fabui.conf $(DESTDIR)$(htconfdir)/conf-available/
-#TODO: activate fab-ui init script
+	install -D recovery/install/system/etc/firstboot.d/fabui $(DESTDIR)$(sysconfdir)/firstboot.d/fabui
+	install -D recovery/install/system/etc/init.d/fabui $(DESTDIR)$(sysconfdir)/init.d/fabui
+	install -D recovery/install/system/etc/lighttpd/conf-available/99-fabui.conf $(DESTDIR)$(htconfdir)/conf-available/99-fabui.conf
+#TODO: activate fab-ui init scripts
 
 installdirs:
 	mkdir -p $(DESTDIR)$(htdocsdir)
