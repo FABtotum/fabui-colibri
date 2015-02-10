@@ -2,6 +2,34 @@
 
 import sys, time
 
+def cpuinfo ():
+	cpus = dict()
+	i = 0
+	with open("/proc/cpuinfo", "r") as cpuinfo:
+		for line in cpuinfo:
+			if (len(line) <= 0): continue
+			row = line.split(':', 2)
+			key = row[0].strip().lower()
+			if (len(key) <= 0): continue
+			if (len(row) == 2):
+				val = row[1].strip()
+			else:
+				val = ''
+			if (key == "processor"):
+				i = int(val)
+				cpus[i] = dict()
+			else:
+				cpus[i][key] = val
+	return cpus
+
+def is_rpi ():
+	cpu_info = cpuinfo()
+	if (len(cpu_info) and "hardware" in cpu_info[0]):
+		hw = cpu_info[0]["hardware"]
+		if hw in ("BCM2708", "BCM2709", "BCM2835", "BCM2836"):
+			return True
+	return False
+
 try:
 	code = 0  # 0=OK, 1=WARNINGS, 2=ERRORS, 3=FAILURE
 
@@ -17,12 +45,27 @@ try:
 		print "Checking `python` version: ERROR (< 2.0)"
 		sys.exit(3)
 
+	#TEST: detect hardware
+	print "Detecting hardware platform...",
+	cpu_info = cpuinfo()
+	for i in cpu_info:
+		if ("model name" in cpu_info[i]):
+			print ("["+str(i)+"]:"), cpu_info[i]["model name"],
+		else:
+			print ("["+str(i)+"]: undefined"),
+	print ""
+
 	#TEST: RPi.GPIO
-	# just test the module for inclusion
+	# just test the module for inclusion, but only if we know we are on a
+	# areal RPi otherwise the modulo will throw an unuseful exception
 	print "Checking RPi.GPIO module...",
 	try:
-		import RPi.GPIO as GPIO
-		print "ok"
+		if (is_rpi()):
+			import RPi.GPIO as GPIO
+			print "ok"
+		else:
+			print "skipped"
+			if (code < 1): code = 1
 	except ImportError:
 		print "missing"
 
@@ -109,6 +152,3 @@ try:
 except Exception:
 	print "FAILURE"
 	sys.exit(2)
-
-
-
