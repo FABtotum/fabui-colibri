@@ -17,7 +17,7 @@ ser.flushOutput()
 
 ser.write('M728\r\n') #machine alive
 
-time.sleep(0.5) 
+time.sleep(0.5)
 
 #LOAD USER CONFIG
 
@@ -61,13 +61,13 @@ ser.write("M714 S"+str(switch)+"\r\n")
 
 print "Homing direction setted"
 
-#ENABLE SAFETY 
+#ENABLE SAFETY
 print "Safety script"
 call (["sudo python /var/www/recovery/python/safety.py > /var/log/safety.log"], shell=True) #the script will run forever.
 
 #clean the buffer and leave
-serial.flush()
-serial.close()
+ser.flush()
+ser.close()
 
 print "Boot completed"
 #quit
