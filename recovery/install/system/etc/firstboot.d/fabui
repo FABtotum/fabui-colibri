@@ -2,10 +2,10 @@
 ################################################################
 # Begin $rc_base/init.d/
 #
-# Description : 
-# 
+# Description :
+#
 # Authors     :
-# 
+#
 # Version     : 00.00
 #
 # Notes       :
@@ -24,6 +24,10 @@ case "$1" in
 	# TODO: configure mysql
 	;;
   post)
+   boot_msg "Configuring MySQL root password."
+   wait_for_file_create /run/mysqld.sock 30
+   /usr/bin/mysqladmin -u root password 'fabtotum'
+   evaluate_retval
 	;;
   *)
 	echo "Usage: $0 {pre|post}"

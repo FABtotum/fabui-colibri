@@ -63,6 +63,7 @@ dist: temp/$(RELEASE).cb
 #	Copy public htdocs files
 	mkdir -p temp/bdata$(HTDOCSDIR)
 	cp -a $(HTDOCS_FILES) temp/bdata$(HTDOCSDIR)/
+	touch temp/bdata$(HTDOCSDIR)/AUTOINSTALL
 #	Relocate system configuration files into their final place
 	mkdir -p temp/bdata$(SYSCONFDIR)
 	for file in $(SYSCONF_FILES); do mv temp/bdata/var/www/recovery/install/system/etc/$$file temp/bdata$(SYSCONFDIR)/; done
