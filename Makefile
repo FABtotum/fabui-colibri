@@ -1,27 +1,71 @@
-FILES=assets fabui index.php install.php lib LICENSE README.md recovery
+# Base name of distribution and release files
+NAME=fabui
 
-sysconfdir=/etc
-htconfdir=$(sysconfdir)/lightppd
-htdocsdir=/var/www
+# Version is read from first paragraph of REAMDE file
+VERSION=$(shell grep '^FABUI [0-9]\+\.[0-9]\+' README.md README.md | head -n1 | cut -d' ' -f2)
 
-.PHONY: all clean distclean
+# Application files
+legacy_HTDOCS_FILES  := assets fabui .htaccess index.php install.php lib LICENSE README.md recovery
+colibri_HTDOCS_FILES := assets fabui index.php install.php lib LICENSE README.md recovery
 
-all: clean
+# System files
+colibri_SYSCONF_FILES := firstboot.d init.d lighttpd rc.d
 
-install: installdirs all
-#	Install files in destination dir
-	cp -a --no-preserve=ownership $(FILES) $(DESTDIR)$(htdocsdir)
-#	Install system configuration files (for colibri system)
-	cp -a --no-preserve=ownership recovery/install/system/etc/* $(DESTDIR)$(sysconfdir)/
+# Priority for colibri bundle
+colibri_PRIORITY := 90
 
-installdirs:
-	mkdir -p $(DESTDIR)$(htdocsdir)
+# These should be `configure`able
+SYSCONFDIR=/etc
+HTCONFDIR=$(SYSCONFDIR)/lightppd
+# This last one may also end up in some sort of `configure.php.in` file
+HTDOCSDIR=/var/www
+
+.PHONY: all dist-legacy dist-colibri clean distclean
+
+all: dist-legacy dist-colibri
+
+#
+# make dist-legacy
+#
+# Make a versioned distribution archive for the legacy system.
+#
+legacy_NAME := $(NAME)
+dist-legacy: DESTDIR ?= ./dist
+dist-legacy: README.md temp/$(NAME).zip
+	mkdir -p $(DESTDIR)/update/FAB-UI/download/$(version)
+	mv temp/$(NAME).zip $(DESTDIR)/update/FAB-UI/download/$(version)/
+	echo $(version) > $(DESTDIR)/update/FAB-UI/version.txt
+#	TODO: compute and write md5 checksum somewhere
+#	TODO: extract changelog from README
+
+%.zip:
+	zip -r9 $@ $(legacy_HTDOCS_FILES) -x Makefile
+
+#
+# make dist-colibri
+#
+# Make a versioned bundle for colibri system.
+#
+colibri_NAME=$(colibri_PRIORITY)-$(NAME)-$(VERSION)-v$(shell date +%Y%m%d)
+dist-colibri: DESTDIR ?= ./dist
+dist-colibri: temp/$(colibri_NAME).cb
+	mkdir -p $(DESTDIR)/bundles
+	mv temp/$(colibri_NAME).cb $(DESTDIR)/bundles/
+
+%.cb: README.md
+#	Copy public htdocs files
+	mkdir -p temp/bdata$(HTDOCSDIR)
+	cp -a $(colibri_HTDOCS_FILES) temp/bdata$(HTDOCSDIR)/
+#	Relocate system configuration files into their final place
+	mkdir -p temp/bdata$(SYSCONFDIR)
+	for file in $(colibri_SYSCONF_FILES); do mv temp/bdata/var/www/recovery/install/system/etc/$$file temp/bdata$(SYSCONFDIR)/$$file; done
+#	Squash the file system thus created
+	mksquashfs temp/bdata $@ -noappend
 
 clean:
-#	Remove runtime or installation files
+#	Remove any runtime or installation files from temp directory
 	rm -rf temp/*
 
 distclean: clean
-#	Clean package of any development file so it is in a 'redistributable' state
-	rm -rf recovery/install/system/*
-	rm -rf .git .gitignore
+#	Remove distribution files
+	rm -rf dist
