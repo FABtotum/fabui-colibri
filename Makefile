@@ -58,6 +58,7 @@ dist: DESTDIR ?= ./dist
 dist: temp/$(RELEASE).cb
 	mkdir -p $(DESTDIR)/bundles
 	mv temp/$(RELEASE).cb $(DESTDIR)/bundles/
+	touch $(DESTDIR)
 
 %.cb: README.md
 #	Copy public htdocs files
@@ -76,6 +77,7 @@ dist: temp/$(RELEASE).cb
 install: temp/$(RELEASE).cb
 	mkdir -p $(DESTDIR)/bundles
 	cp temp/$(RELEASE).cb $(DESTDIR)/bundles/
+	touch $(DESTDIR)
 
 run: $(DESTDIR)/sdcard/bundles/$(RELEASE).cb
 	$(MAKE) DESTDIR=$(DESTDIR)/sdcard install
