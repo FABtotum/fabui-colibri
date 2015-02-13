@@ -104,14 +104,14 @@ try:
 		r = c % 256
 		g = (c >> 8)  % 256
 		b = (c >> 16) % 256
-		port.flushInput()
-		port.write("M701 S"+str(r)+"\r\n")
-		port.write("M702 S"+str(g)+"\r\n")
-		port.write("M703 S"+str(b)+"\r\n")
-		port.flush()
-		if (port.readline().rstrip() != 'ok'):
-			done = False
-			break
+		cmds = { 'M701':r, 'M702':g, 'M703':b }
+		for gcode, svalue in cmds.iteritems():
+			port.flushInput()
+			port.write(gcode+" S"+str(svalue)+"\r\n")
+			port.flush()
+			if (port.readline().rstrip() != 'ok'):
+				done = False
+				break
 	if (done):
 		print "ok"
 	else:
@@ -128,6 +128,8 @@ try:
 		print "ERROR"
 		sys.exit(2)
 	print "ok"
+
+	port.close()
 
 	#TEST: numpy (numpy)
 	try:
@@ -149,6 +151,6 @@ try:
 
 	sys.exit(code)
 
-except Exception:
-	print "FAILURE"
+except Exception as exp:
+	print "FAILURE:", exp
 	sys.exit(2)
