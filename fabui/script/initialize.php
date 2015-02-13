@@ -5,7 +5,7 @@ require_once '/var/www/fabui/ajax/lib/utilities.php';
 
 /** INITIALIZE  */
 /** WAIT UNTIL MYSQL SERVER START */
-while(strpos(shell_exec('sudo  /etc/init.d/mysql status'), 'Server version') === false ){
+while(strpos(shell_exec('mysqladmin -u'.DB_USERNAME.' -p'.DB_PASSWORD.' ping'), 'mysqld is alive') === 0 ){
 	sleep(1);
 }
 
@@ -13,33 +13,29 @@ while(strpos(shell_exec('sudo  /etc/init.d/mysql status'), 'Server version') ===
 /** LOAD DB */
 $db = new Database();
 
-/** GET RUNNING TASKS FROM DB  */ 
+/** GET RUNNING TASKS FROM DB  */
 $_tasks = $db->query('select * from sys_tasks where status = "running" or status is null');
 
 if($_tasks){
-	
-	
+
+
 	if($db->get_num_rows() == 1){
-		
+
 		$_temp = $_tasks;
 		$_tasks = array();
 		$_tasks[] = $_temp;
-		
+
 	}
-		
+
 	foreach($_tasks as $_task){
-		
+
 		$_data_update['status'] = 'removed';
 	    $db->update('sys_tasks', array('column' => 'id', 'value' => $_task['id'], 'sign' => '='), $_data_update);
 	}
-	
+
 	$db->close();
 
 }
 
 
 ?>
-
-
-
-
