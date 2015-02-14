@@ -72,7 +72,7 @@ dist: temp/$(RELEASE).cb
 	chown -R --from=$(maintainer_UID) root temp/bdata$(HTDOCSDIR)/*
 	chown -R --from=$(maintainer_UID) root:root temp/bdata$(SYSCONFDIR)/*
 #	Squash the file system thus created
-	mksquashfs temp/bdata $@ -noappend
+	mksquashfs temp/bdata $@ -noappend -comp xz -b 512K -no-xattrs
 
 install: temp/$(RELEASE).cb
 	mkdir -p $(DESTDIR)/bundles

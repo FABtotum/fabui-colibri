@@ -49,7 +49,7 @@ class Serial
 		{
 			$this->_os = "linux";
 
-			if($this->_exec("stty --version") === 0)
+			if($this->_exec("which stty") === 0)
 			{
 				register_shutdown_function(array($this, "deviceClose"));
 			}
