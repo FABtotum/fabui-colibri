@@ -40,13 +40,11 @@ dist-legacy: temp/$(NAME).zip
 	mv temp/$(NAME).zip $(DESTDIR)/update/FAB-UI/download/$(VERSION)/
 	echo $(VERSION) > $(DESTDIR)/update/FAB-UI/version.txt
 #	TODO: extract changelog from README
+#	TODO: compute and write md5 checksum into MD5
+	touch $(DESTDIR)
 
 %.zip:
 	zip -r9 $@ $(legacy_HTDOCS_FILES) -x Makefile
-
-publish-legacy: dist-legacy
-#	TODO: compute and write md5 checksum into MD5
-	scp -rC dist/update/FAB-UI/* root@update.fabtotum.com/FAB-UI/
 
 #
 # make dist-colibri
@@ -60,10 +58,11 @@ dist: temp/$(RELEASE).cb
 	mv temp/$(RELEASE).cb $(DESTDIR)/bundles/
 	touch $(DESTDIR)
 
-%.cb: README.md
+%.cb: clean
 #	Copy public htdocs files
 	mkdir -p temp/bdata$(HTDOCSDIR)
 	cp -a $(HTDOCS_FILES) temp/bdata$(HTDOCSDIR)/
+#	The autoinstall flag file is created at compile time
 	touch temp/bdata$(HTDOCSDIR)/AUTOINSTALL
 #	Relocate system configuration files into their final place
 	mkdir -p temp/bdata$(SYSCONFDIR)
@@ -73,18 +72,6 @@ dist: temp/$(RELEASE).cb
 	chown -R --from=$(maintainer_UID) root:root temp/bdata$(SYSCONFDIR)/*
 #	Squash the file system thus created
 	mksquashfs temp/bdata $@ -noappend -comp xz -b 512K -no-xattrs
-
-install: temp/$(RELEASE).cb
-	mkdir -p $(DESTDIR)/bundles
-	cp temp/$(RELEASE).cb $(DESTDIR)/bundles/
-	touch $(DESTDIR)
-
-run: $(DESTDIR)/sdcard/bundles/$(RELEASE).cb
-	$(MAKE) DESTDIR=$(DESTDIR)/sdcard install
-	cd $(DESTDIR) && ./copy2sdcard.sh && ./fabemu.py
-
-uninstall:
-	rm $(DESTDIR)/bundles/$(PRIORITY)-$(NAME)-$(VERSION)-*.cb
 
 clean:
 #	Remove any runtime or installation files from temp directory
