@@ -6,11 +6,25 @@ try
 
 	include '/var/www/fabui/ajax/config.php';
 
-	//TEST: db driver
-	echo "Looking for a MySQL DB driver to access database `".DB_DATABASE."`... "; flush();
+	//TODO: test db drivers and report available ones
+	echo "Looking for a DB driver to access database `".DB_DATABASE."`: "; flush();
 	$test_drivers = array(
-		'PDO' => function ($q) {
-			if (class_exists('PDO'))
+		'pdo_sqlite' => function ($q) {
+			if (class_exists('PDO') and in_array('sqlite', pdo_drivers()))
+			{
+				if (!file_exists(DB_DATABASE))
+					return FALSE;
+				$db = new PDO('sqlite:'.DB_DATABASE, DB_USERNAME, DB_PASSWORD);
+				if ($db) {
+					$r = $db->query($q);
+					$count = (int)($r->fetchColumn());
+					if ($count > 0) RETURN $db;
+				}
+			}
+			return FALSE;
+		},
+		'pdo_mysql' => function ($q) {
+			if (class_exists('PDO') and in_array('mysql', pdo_drivers()))
 			{
 				$db = new PDO('mysql:host='.DB_HOSTNAME.';dbname='.DB_DATABASE, DB_USERNAME, DB_PASSWORD);
 				if ($db) {
@@ -144,7 +158,7 @@ try
 		echo "MISSING";
 		exit(2);
 	}
-	
+
 
 	//TEST: Slic3r stable (v 1.1.7) at (/var/www/fabui/slic3r/slic3r)
 	echo "Looking for Slic3r executable... "; flush();
