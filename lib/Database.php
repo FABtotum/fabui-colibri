@@ -51,9 +51,12 @@ class Database
 			$this->_log = Logger::getLogger(__CLASS__);
 		}
 
-		if (!defined(DB_DRIVER))
+		if (!defined('DB_DRIVER'))
 			define('DB_DRIVER', 'mysqli');
-		switch (DB_DRIVER)
+
+		// Determine driver from first segment of DB_DRIVER parameter
+		$driver = array_shift(explode(':', DB_DRIVER));
+		switch ($driver)
 		{
 			case 'mysqli':
       		$this->_db = new mysqli($this->_hostname, $this->_username, $this->_password, $this->_database);
@@ -61,25 +64,29 @@ class Database
 					$this->_logError("DBMS connection error: ".mysqli_connect_error());
 		      }
 				return TRUE;
-			case 'pdo_mysql':
-				$dsn = "mysql:host={$this->_hostname};dbname={$this->_database}";
+			case 'pdo':
+				// Set pdo dsn according to backend (second segment of driver parameter)
+				$backend = array_pop(explode(':', DB_DRIVER));
+				if ($backend == $driver)
+					throw new Error("Undefined database backend for PDO driver");
+				switch($backend)
+				{
+					case 'mysql':
+						$dsn = "mysql:host={$this->_hostname};dbname={$this->_database}";
+						break;
+					case 'sqlite':
+						if (!file_exists($this->_database)) {
+							$this->_logError("SQLite database missing: {$this->_database}");
+							return FALSE;
+						} else {
+							$dsn = "sqlite:{$this->_database}";
+							break;
+						}
+					default:
+						$dsn = $backend;
+				}
 				try {
-					$this->_db = new PDO($dsn, $this->_username, $this->_password);
-					return TRUE;
-				}
-				catch (PDOException $ex) {
-					$this->_logError("MySQL connection error: ".$ex->getMessage());
-					return FALSE;
-				}
-			case 'pdo_sqlite':
-				if (!file_exists($this->_database)) {
-					$this->_logError("SQLite database missing: ".$this->_database);
-					return FALSE;
-				} else {
-					$dsn = "sqlite:{$this->_database}";
-				}
-				try {
-					$this->_db = new PDO($dsn, $this->_username, $this->_password);
+					$this->_db = new PDO($dsn, empty($this->_username)? NULL : $this->_username, empty($this->_password)? NULL : $this->_password);
 					return TRUE;
 				}
 				catch (PDOException $ex) {
@@ -87,10 +94,9 @@ class Database
 					return FALSE;
 				}
 			default:
-				throw new Exception("Undefined database driver: ".DB_DRIVER);
+				throw new Exception("Undefined database driver: {$driver}");
 				return FALSE;
 		}
-
    }
 
    /**

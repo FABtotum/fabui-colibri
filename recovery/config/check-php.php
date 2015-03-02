@@ -39,25 +39,41 @@ try
 	$test_query = 'SELECT count(*) FROM sys_configuration';
 	foreach ($test_drivers as $driver => $test)
 	{
-		if (($db = $test($test_query)) !== FALSE) {
+		echo "\n{$driver}... ";
+		if (($dbh = $test($test_query)) !== FALSE) {
 			$dbd = $driver;
+			$db = $dbh;
 			break;
+		} else {
+			echo " no";
 		}
 	}
 	if ($dbd) {
-		echo "ok ($dbd)\n";
+		echo "ok\n";
+	} else {
+		echo "ERROR\n";
+		exit(2);
+	}
+
+	//TEST: db configuration
+	echo "Trying to connect to configured DB... "; flush();
+	require_once('../../lib/Database.php');
+	$db = new Database();
+	// Call _init explicitely to test for return value
+	if ($db->_init()) {
+		echo "ok\n";
 	} else {
 		echo "ERROR\n";
 		exit(2);
 	}
 
 	//TEST: db commands
-	echo "Performing some read/write operations on the DB... "; flush();
+	/*echo "Performing some read/write operations on the DB... "; flush();
 	$test_data = array(
 		'sys_configuration' => array( 'key'=>"'test key'", 'value'=>"'test value'"),
 	);
 	$test_connection = array(
-		'PDO' => function ($data) use ($db) {
+		'pdo_mysql' => function ($data) use ($db) {
 			foreach ($data as $table => $values) {
 				$insert_query = 'INSERT INTO `'.$table.'` (`'.implode('`,`', array_keys($values)).'`) VALUES ('.implode(', ', array_values($values)).')';
 				$r = $db->exec($insert_query);
@@ -89,7 +105,7 @@ try
 		print_r($err);
 		echo "\n";
 		exit(2);
-	}
+	}*/
 
 	//TEST curl
 	echo "Checking cURL extension... ";
