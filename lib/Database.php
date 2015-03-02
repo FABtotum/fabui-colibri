@@ -1,114 +1,134 @@
 <?php
-if(file_exists('log4php/Logger.php')){
-	
+
+if (file_exists('log4php/Logger.php'))
+{
 	require_once 'log4php/Logger.php';
 	Logger::configure('/var/www/fabui/config/log_database_config.xml');
-	
 }
-//require_once '/var/www/lib/log4php/Logger.php';
-/** INIT LOG */
-//Logger::configure('/var/www/fabui/config/log_database_config.xml');
 
-
-
-class Database {
-    
-    protected $_hostname;
-    protected $_username;
-    protected $_password;
-    protected $_database;
-    protected $_db;
-    protected $_result;
+class Database
+{
+   protected $_hostname;
+   protected $_username;
+   protected $_password;
+   protected $_database;
+   protected $_db;
+   protected $_result;
 	protected $_num_rows;
-    protected $_log;
-	
-	
-    /**
-     * 
-     * 
-     */
-    public function __construct()
+   protected $_log;
+
+	private function _logError()
+	{
+		if (class_exists('Logger')) {
+			return call_user_func_array(array($this->_log, 'error'), func_get_args());
+		} else {
+			return error_log(implode(' ', func_get_args()));
+		}
+	}
+
+   /**
+    *
+    *
+    */
+   public function __construct()
 	{
         $this->_init();
 	}
-    
-    
-    /**
-     * 
-     * 
-    */ 
-    public function _init(){
-        
-        $this->_hostname = DB_HOSTNAME;
-        $this->_username = DB_USERNAME;
-        $this->_password = DB_PASSWORD;
-        $this->_database = DB_DATABASE;
+
+   /**
+    *
+    *
+    */
+   public function _init ()
+	{
+   	$this->_hostname = DB_HOSTNAME;
+      $this->_username = DB_USERNAME;
+      $this->_password = DB_PASSWORD;
+      $this->_database = DB_DATABASE;
 		$this->_num_rows = 0;
-		
-		if(class_exists('Logger')){
+
+		if (class_exists('Logger')) {
 			$this->_log = Logger::getLogger(__CLASS__);
 		}
-		//
-        
-        $this->_db = new mysqli($this->_hostname, $this->_username, $this->_password, $this->_database);
-        
-        if (mysqli_connect_errno()) {
-        	
-			if(class_exists('Logger')){
-				$this->_log->error("Errore in connessione al DBMS: ".mysqli_connect_error());
-			}
-            
-        }
-        
-    }
-    
-    
-    /**
-     * 
-     * 
-    */
-    public function query($query){
-    	
-		
-		
-        $this->_result = $this->_db->query($query);
-        
-		
-		if(!$this->_result){
-			
-			if(class_exists('Logger')){
-				
-				$this->_log->error("Query failed: ".$query); 
-				$this->_log->error("Error message: ".$this->_db->error); 
-				return false;
-				
-			}
-			
+
+		if (!defined(DB_DRIVER))
+			define('DB_DRIVER', 'mysqli');
+		switch (DB_DRIVER)
+		{
+			case 'mysqli':
+      		$this->_db = new mysqli($this->_hostname, $this->_username, $this->_password, $this->_database);
+		      if (mysqli_connect_errno()) {
+					$this->_logError("DBMS connection error: ".mysqli_connect_error());
+		      }
+				return TRUE;
+			case 'pdo_mysql':
+				$dsn = "mysql:host={$this->_hostname};dbname={$this->_database}";
+				try {
+					$this->_db = new PDO($dsn, $this->_username, $this->_password);
+					return TRUE;
+				}
+				catch (PDOException $ex) {
+					$this->_logError("MySQL connection error: ".$ex->getMessage());
+					return FALSE;
+				}
+			case 'pdo_sqlite':
+				if (!file_exists($this->_database)) {
+					$this->_logError("SQLite database missing: ".$this->_database);
+					return FALSE;
+				} else {
+					$dsn = "sqlite:{$this->_database}";
+				}
+				try {
+					$this->_db = new PDO($dsn, $this->_username, $this->_password);
+					return TRUE;
+				}
+				catch (PDOException $ex) {
+					$this->_logError("SQLite connection error: ".$ex->getMessage());
+					return FALSE;
+				}
+			default:
+				throw new Exception("Undefined database driver: ".DB_DRIVER);
+				return FALSE;
 		}
-		
-		
-        if(is_object($this->_result)){
-        	
-			
-        	$this->_num_rows = $this->_result->num_rows;
-			
+
+   }
+
+   /**
+    *
+    *
+    */
+   public function query ($query)
+	{
+      $this->_result = $this->_db->query($query);
+
+		if(!$this->_result)
+		{
+			$this->_logError("Query failed: ".$query);
+			$this->_logError("Error message: ".$this->_db->error);
+			return false;
+		}
+
+      if (is_object($this->_result))
+		{
+      	$this->_num_rows = $this->_result->num_rows;
+
 			if($this->_result->num_rows){
-				
+
 				$rows = array();
-            
+
 	            while($row = $this->_result->fetch_assoc()){
 	                $rows[] = $row;
 	            }
-				
-				
+
+
 				if($this->_result->num_rows == 1){
 					return $rows[0];
 				}
-				
+
 				return $rows;
-				
-            	
-				
+
+
+
 			}else{
 				return false;
 			}
@@ -116,117 +136,117 @@ class Database {
         }
     }
 
-    
+
     public function close(){
         $this->_db->close();
     }
-    
-    
+
+
     public function insert($table_name, $data){
-        
-        
+
+
         $_query = 'insert into '.$table_name.' ';
-        
+
         $_columns = '(';
-        
+
         foreach($data as $key => $value){
             $_columns.= $table_name.'.'.$key.',';
         }
-        
+
         $_columns.= ')';
-        
+
         $_columns = str_replace(',)', ')', $_columns);
-        
+
         $_query .= ' '.$_columns.' values ';
-        
-        $_values = '(';    
-        
-        
+
+        $_values = '(';
+
+
         foreach($data as $key => $value){
-            
-              
+
+
             $_val = mysqli_real_escape_string($this->_db, $value);
-            
-            $_values .= $this->quote_value($_val).',';     
-           
-            
+
+            $_values .= $this->quote_value($_val).',';
+
+
         }
-        
+
         $_values .= ')';
-        
+
         $_values = str_replace(',)', ')', $_values);
-        
+
         $_query .= $_values;
-        
+
         $_query .= ';';
 
         $this->query($_query);
-        
-        
+
+
         return $this->_db->insert_id;
-        
+
     }
-    
-    
+
+
     public function update($table_name, $condition, $data){
-        
+
         $_query = 'update '.$table_name.' set ';
-        
-        
+
+
         foreach($data as $key => $value){
-            
+
             $_val = mysqli_real_escape_string($this->_db, $value);
-            
+
             $_query .= ' '.$table_name.'.'.$key.' = ';
-                            
+
             $_query .= $this->quote_value($value).',';
-            
+
         }
-        
+
         $_query = rtrim($_query, ",");
-        
+
         $_query .= ' where '.$condition['column'].' '.$condition['sign'];
-        
+
         $_query .= is_numeric($condition['value']) ? $condition['value'] :'\''.$condition['value'].'\' ' ;
-        
-		
-		
+
+
+
         $this->query($_query);
-        
-         
-        
+
+
+
     }
-	
-	
+
+
 	public function get_num_rows(){
 		return $this->_num_rows;
 	}
-    
-    
-    
+
+
+
     private function quote_value($value){
-        
-        
+
+
         if(is_numeric($value)){
             return $value;
         }
-        
-        
+
+
         if(strtolower($value) == 'now()'){
             return $value;
         }
-        
-        
-        if(strcmp(trim(strtolower($value)), 'now()') == 0){    
+
+
+        if(strcmp(trim(strtolower($value)), 'now()') == 0){
             return $value;
         }
-        
+
         return '\''.$value.'\'';
-        
-        
+
+
     }
-    
-       
+
+
 }
 
 ?>
