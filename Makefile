@@ -17,6 +17,7 @@ SYSCONF_FILES := firstboot.d init.d lighttpd rc.d
 
 # These should be `configure`able
 SYSCONFDIR=/etc
+LOCALSTATEDIR=/var
 HTCONFDIR=$(SYSCONFDIR)/lightppd
 # This last one may also end up in some sort of `configure.php.in` file
 HTDOCSDIR=/var/www
@@ -59,9 +60,12 @@ dist: temp/$(RELEASE).cb
 	touch $(DESTDIR)
 
 %.cb: clean
+#	TODO: maybe separate 'installation' step from 'squashing' step
 #	Copy public htdocs files
 	mkdir -p temp/bdata$(HTDOCSDIR)
 	cp -a $(HTDOCS_FILES) temp/bdata$(HTDOCSDIR)/
+#	Create runtime data directory
+	mkdir -p temp/bdata$(LOCALSTATEDIR)/lib/fabui
 #	The autoinstall flag file is created at compile time
 	touch temp/bdata$(HTDOCSDIR)/AUTOINSTALL
 #	Relocate system configuration files into their final place

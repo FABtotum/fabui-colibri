@@ -8,6 +8,9 @@ if (file_exists('log4php/Logger.php'))
 
 class Database
 {
+	private $_driver;
+	private $_backend;
+
    protected $_hostname;
    protected $_username;
    protected $_password;
@@ -55,8 +58,8 @@ class Database
 			define('DB_DRIVER', 'mysqli');
 
 		// Determine driver from first segment of DB_DRIVER parameter
-		$driver = array_shift(explode(':', DB_DRIVER));
-		switch ($driver)
+		$this->_driver = array_shift(explode(':', DB_DRIVER));
+		switch ($this->_driver)
 		{
 			case 'mysqli':
       		$this->_db = new mysqli($this->_hostname, $this->_username, $this->_password, $this->_database);
@@ -66,10 +69,10 @@ class Database
 				return TRUE;
 			case 'pdo':
 				// Set pdo dsn according to backend (second segment of driver parameter)
-				$backend = array_pop(explode(':', DB_DRIVER));
-				if ($backend == $driver)
+				$this->_backend = array_pop(explode(':', DB_DRIVER));
+				if ($this->_backend == $this->_driver)
 					throw new Error("Undefined database backend for PDO driver");
-				switch($backend)
+				switch($this->_backend)
 				{
 					case 'mysql':
 						$dsn = "mysql:host={$this->_hostname};dbname={$this->_database}";
@@ -83,10 +86,11 @@ class Database
 							break;
 						}
 					default:
-						$dsn = $backend;
+						$dsn = $this->_backend;
 				}
 				try {
 					$this->_db = new PDO($dsn, empty($this->_username)? NULL : $this->_username, empty($this->_password)? NULL : $this->_password);
+					$this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 					return TRUE;
 				}
 				catch (PDOException $ex) {
@@ -100,46 +104,75 @@ class Database
    }
 
    /**
-    *
-    *
+    * Executes an arbitary query, possibily with parameters values, and returns
+	 * the rows retrieved from a 'SELECT' statement if any, null if none, or false
+	 * if any error occurred.
     */
-   public function query ($query)
+   public function query ($query, $values=NULL)
 	{
-      $this->_result = $this->_db->query($query);
+		// Prepare and interpolate parameters, if given
+		if (isset($values)) {
+			$st = $this->_db->prepare($query);
+			$ret = $st->execute($values);
+			$this->_result = $ret===FALSE? ret : $st->fetchAll();
+		} else {
+      	$this->_result = $this->_db->query($query);
+		}
 
-		if(!$this->_result)
+		if ($this->_result === FALSE)
 		{
 			$this->_logError("Query failed: ".$query);
-			$this->_logError("Error message: ".$this->_db->error);
+			$this->_logError("Error message: ".$this->_db->error);  //TODO: make this driver independent
 			return false;
 		}
 
       if (is_object($this->_result))
 		{
-      	$this->_num_rows = $this->_result->num_rows;
+			$rc = get_class($this->_result);
+			switch ($rc)
+			{
+				case 'PDOStatement':
+					$this->_num_rows = $this->_result->rowCount();
+					$this->_rows = $this->_result->fetchAll(PDO::FETCH_ASSOC);
+					if (is_array($this->_rows) and count($this->_rows) > $this->_num_rows)
+						$this->_num_rows = count($this->_rows);
+					break;
+				case 'mysqli_result':
+      			$this->_num_rows = $this->_result->num_rows;
+					$this->_rows = $this->_result->fetch_all(MYSQLI_ASSOC);
+					break;
+				default:
+					throw new Exception("Unmanaged result type return from query: {$rc}");
+			}
 
-			if($this->_result->num_rows){
+			if ($this->_rows === FALSE)
+				return FALSE;
 
+			if (is_array($this->_rows) and count($this->_rows) == $this->_num_rows)
+			{
+				return $this->_num_rows==1? $this->_rows[0] : $this->_rows;
+			}
+			else
+			{
+				return $this->_num_rows;  // false?
+			}
+
+			/*{
 				$rows = array();
+	         while ($row = $this->_result->fetch_assoc()) {
+	         	$rows[] = $row;
+	         }
 
-	            while($row = $this->_result->fetch_assoc()){
-	                $rows[] = $row;
-	            }
-
-
-				if($this->_result->num_rows == 1){
+				if ($this->_result->num_rows == 1) {
 					return $rows[0];
 				}
 
 				return $rows;
 
-
-
-			}else{
+			} else {
 				return false;
-			}
-
-        }
+			}*/
+       }
     }
 
 
@@ -148,49 +181,44 @@ class Database
     }
 
 
-    public function insert($table_name, $data){
+   public function insert ($table_name, $data)
+	{
+      $_columns = '(`'.implode('`,`', array_keys($data)).'`)';
 
+		switch ($this->_driver)
+		{
+			case 'pdo':
+				// Use prepared statement to inject values
+				$_values = '('.implode(',', array_map(function () { return '?'; }, array_keys($data))).')';
+				break;
+			case 'mysqli':
+        		$_values = '(';
+        		foreach ($data as $key => $value)
+				{
+            	$_val = mysqli_real_escape_string($this->_db, $value);
+            	$_values .= $this->quote_value($_val).',';
+        		}
+        		$_values .= ')';
+        		$_values = str_replace(',)', ')', $_values);
+				break;
+			default:
+				throw new Exception ("Undefined DB driver in insert");
+		}
 
-        $_query = 'insert into '.$table_name.' ';
+      $_query = "INSERT INTO `{$table_name}`{$_columns} VALUES {$_values};";
 
-        $_columns = '(';
+      $r = $this->query($_query, $this->_driver=='pdo'? array_values($data) : NULL);
 
-        foreach($data as $key => $value){
-            $_columns.= $table_name.'.'.$key.',';
-        }
-
-        $_columns.= ')';
-
-        $_columns = str_replace(',)', ')', $_columns);
-
-        $_query .= ' '.$_columns.' values ';
-
-        $_values = '(';
-
-
-        foreach($data as $key => $value){
-
-
-            $_val = mysqli_real_escape_string($this->_db, $value);
-
-            $_values .= $this->quote_value($_val).',';
-
-
-        }
-
-        $_values .= ')';
-
-        $_values = str_replace(',)', ')', $_values);
-
-        $_query .= $_values;
-
-        $_query .= ';';
-
-        $this->query($_query);
-
-
-        return $this->_db->insert_id;
-
+		if ($r !== FALSE) switch ($this->_driver)
+		{
+			case 'pdo': return $this->_db->lastInsertId();
+			case 'mysqli': return $this->_db->insert_id;
+			default: throw new Exception ("Undefined DB driver in insert");
+		}
+		else
+		{
+			return $r;
+		}
     }
 
 

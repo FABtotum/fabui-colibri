@@ -82,11 +82,33 @@ try
 	}
 
 	//TEST: db commands
-	/*echo "Performing some read/write operations on the DB... "; flush();
+	echo "Performing some read/write operations on the DB... "; flush();
 	$test_data = array(
 		'sys_configuration' => array( 'key'=>"'test key'", 'value'=>"'test value'"),
 	);
-	$test_connection = array(
+	$err = NULL;
+	foreach ($test_data as $table => $data)
+	{
+		$insert_query = 'INSERT INTO `'.$table.'` (`'.implode('`,`', array_keys($data)).'`) VALUES ('.implode(', ', array_values($data)).')';
+		$id = $db->insert($table, $data);
+		if ($id === FALSE) {
+			$err = TRUE;
+			break;
+		}
+
+		$rows = $db->query('SELECT `'.implode('`,`',array_keys($data)).'` FROM `'.$table.'` WHERE id='.$id);
+		if (!is_array($rows) or count($rows) < 1) {
+			$err = TRUE;
+			break;
+		}
+
+		$r = $db->query('DELETE FROM `'.$table.'` WHERE id='.$id);
+		if ($r===FALSE or $r < 1) {
+			$err = TRUE;
+			break;
+		}
+	}
+	/*$test_connection = array(
 		'pdo_mysql' => function ($data) use ($db) {
 			foreach ($data as $table => $values) {
 				$insert_query = 'INSERT INTO `'.$table.'` (`'.implode('`,`', array_keys($values)).'`) VALUES ('.implode(', ', array_values($values)).')';
@@ -111,15 +133,15 @@ try
 		'mysqli' => function ($data) use ($db) {
 			return 'unimplemented';
 		}
-	);
-	if (($err = $test_connection[$dbd]($test_data)) === TRUE) {
+	);*/
+	if (!$err) {
 		echo "ok\n";
 	} else {
 		echo "ERROR: ";
 		print_r($err);
 		echo "\n";
 		exit(2);
-	}*/
+	}
 
 	//TEST curl
 	echo "Checking cURL extension... ";
