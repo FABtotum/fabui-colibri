@@ -92,48 +92,22 @@ try
 		$insert_query = 'INSERT INTO `'.$table.'` (`'.implode('`,`', array_keys($data)).'`) VALUES ('.implode(', ', array_values($data)).')';
 		$id = $db->insert($table, $data);
 		if ($id === FALSE) {
-			$err = TRUE;
+			$err = $db->error;
 			break;
 		}
 
 		$rows = $db->query('SELECT `'.implode('`,`',array_keys($data)).'` FROM `'.$table.'` WHERE id='.$id);
 		if (!is_array($rows) or count($rows) < 1) {
-			$err = TRUE;
+			$err = $db->error;
 			break;
 		}
 
 		$r = $db->query('DELETE FROM `'.$table.'` WHERE id='.$id);
 		if ($r===FALSE or $r < 1) {
-			$err = TRUE;
+			$err = $db->error;
 			break;
 		}
 	}
-	/*$test_connection = array(
-		'pdo_mysql' => function ($data) use ($db) {
-			foreach ($data as $table => $values) {
-				$insert_query = 'INSERT INTO `'.$table.'` (`'.implode('`,`', array_keys($values)).'`) VALUES ('.implode(', ', array_values($values)).')';
-				$r = $db->exec($insert_query);
-				if ($r < 1) return $r->errorinfo();
-
-				$id = $db->lastInsertId();
-				$r = $db->query('SELECT `'.implode('`,`',array_keys($values)).'` FROM `'.$table.'` WHERE id='.$id);
-				if ($r->rowCount() < 1) return $r->errorinfo();
-
-				$fields = $r->fetch();
-				foreach($values as $col => $val) {
-					if (!array_key_exists($col, $fields) or $fields[$col] != trim($val, "'\""))
-						return 'written values do not match read values';
-				}
-
-				$r = $db->exec('DELETE FROM `'.$table.'` WHERE id='.$id);
-				if ($r < 1) return $r->errorinfo();
-			}
-			return TRUE;
-		},
-		'mysqli' => function ($data) use ($db) {
-			return 'unimplemented';
-		}
-	);*/
 	if (!$err) {
 		echo "ok\n";
 	} else {
@@ -144,7 +118,7 @@ try
 	}
 
 	//TEST curl
-	echo "Checking cURL extension... ";
+	echo "Checking cURL extension... "; flush();
 	if (function_exists('curl_init')) {
 		echo "ok\n";
 	} else {
@@ -153,7 +127,7 @@ try
 	}
 
 	//TEST file download
-	echo "Trying to download a file with cURL... ";
+	echo "Trying to download a file with cURL... "; flush();
 	$url = MARLIN_DOWNLOAD_URL.MARLIN_DOWNLOAD_FILE;
 	$path = TEMP_PATH.MARLIN_DOWNLOAD_FILE;
 	$test = curl_init($url);

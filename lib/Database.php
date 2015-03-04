@@ -145,8 +145,9 @@ class Database
 					throw new Exception("Unmanaged result type return from query: {$rc}");
 			}
 
-			if ($this->_rows === FALSE)
+			if ($this->_rows === FALSE) {
 				return FALSE;
+			}
 
 			if (is_array($this->_rows) and count($this->_rows) == $this->_num_rows)
 			{
@@ -279,7 +280,6 @@ class Database
 
 
     }
-
 
 }
 
