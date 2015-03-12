@@ -5,8 +5,8 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 	if (!defined('ROOT')) define('ROOT', $_SERVER['DOCUMENT_ROOT']);
 
     //=========== CONFIG FILES
-    include_once (ROOT.'/fabui/ajax/config.php');
-    include_once (ROOT.'/fabui/ajax/lib/database.php');
+    include_once (ROOT.'/recovery/config/config.php');
+    include_once (ROOT.'/lib/Database.php');
 	include_once (ROOT.'/fabui/ajax/lib/serial.php');
     include_once (ROOT.'/fabui/ajax/lib/utilities.php');
 	
