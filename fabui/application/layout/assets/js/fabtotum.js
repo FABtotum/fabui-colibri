@@ -478,7 +478,7 @@ function shutdown()
 		type: "POST",
 		url: "/fabui/application/modules/controller/ajax/shutdown.php",
 		dataType: 'json'
-	}).done(function(response) {
+	}).always(function(response, status) {
 		setTimeout(function() {
 			$(".wait-spinner").remove();
 			waitTitle('Now you can switch off the power');
