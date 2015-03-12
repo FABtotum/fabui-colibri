@@ -64,12 +64,14 @@ dist: temp/$(RELEASE).cb
 	cp -a $(HTDOCS_FILES) temp/bdata$(HTDOCSDIR)/
 #	The autoinstall flag file is created at compile time
 	touch temp/bdata$(HTDOCSDIR)/AUTOINSTALL
+#	We still need a temp directory for fab_ui_security
+	mkdir temp/bdata$(HTDOCSDIR)/temp
 #	Relocate system configuration files into their final place
 	mkdir -p temp/bdata$(SYSCONFDIR)
 	for file in $(SYSCONF_FILES); do mv temp/bdata/var/www/recovery/install/system/etc/$$file temp/bdata$(SYSCONFDIR)/; done
 #	Fix some ownership
-	chown -R --from=$(maintainer_UID) root temp/bdata$(HTDOCSDIR)/*
-	chown -R --from=$(maintainer_UID) root:root temp/bdata$(SYSCONFDIR)/*
+	chown -R --from=$(maintainer_UID) root:www-data temp/bdata$(HTDOCSDIR)/*
+	chown -R --from=$(maintainer_UID)  root:root temp/bdata$(SYSCONFDIR)/*
 #	Squash the file system thus created
 	mksquashfs temp/bdata $@ -noappend -comp xz -b 512K -no-xattrs
 
