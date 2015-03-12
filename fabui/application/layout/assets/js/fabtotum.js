@@ -483,7 +483,7 @@ function shutdown()
 			$(".wait-spinner").remove();
 			waitTitle('Now you can switch off the power');
 			waitContent($("#power-off-img").html());
-		}, 15000);
+		}, 5000);
 	});
 }
 

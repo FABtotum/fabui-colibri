@@ -5,9 +5,8 @@ import json
 from subprocess import call
 
 #startup script (see crontab)
-print "Boot script"
-time.sleep(60) #wait 60 seconds so connections can be made.
-print "Start"
+#print "Boot script"
+#print "Start"
 
 #tell the board that the raspi has been connected.
 
@@ -32,13 +31,6 @@ config = json.load(json_f)
 #ser.write("M92 Z"+str(config[z])+"\r\n")
 #ser.write("M92 E"+str(config[e])+"\r\n")
 
-##COLORS
-ser.write("M701 S"+str(config['color']['r'])+"\r\n")
-ser.write("M702 S"+str(config['color']['g'])+"\r\n")
-ser.write("M703 S"+str(config['color']['b'])+"\r\n")
-
-print "Ambient color setted"
-
 #SAFETY
 
 try:
@@ -48,9 +40,7 @@ except KeyError:
 
 ser.write("M732 S"+str(safety_door)+"\r\n")
 
-print "Safety door setted"
-
-
+#print "Safety door set"
 
 try:
     switch = config['switch']
@@ -59,16 +49,23 @@ except KeyError:
 
 ser.write("M714 S"+str(switch)+"\r\n")
 
-print "Homing direction setted"
+#print "Homing direction set"
 
 #ENABLE SAFETY
-print "Safety script"
+#print "Safety script"
 call (["sudo python /var/www/recovery/python/safety.py > /var/log/safety.log"], shell=True) #the script will run forever.
 
 #clean the buffer and leave
 ser.flush()
 ser.close()
 
-print "Boot completed"
+##COLORS
+ser.write("M701 S"+str(config['color']['r'])+"\r\n")
+ser.write("M702 S"+str(config['color']['g'])+"\r\n")
+ser.write("M703 S"+str(config['color']['b'])+"\r\n")
+
+#print "Ambient color set"
+
+#print "Boot completed"
 #quit
 sys.exit()
