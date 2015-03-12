@@ -11,14 +11,14 @@ class Database
 	private $_driver;
 	private $_backend;
 
-   protected $_hostname;
-   protected $_username;
-   protected $_password;
-   protected $_database;
-   protected $_db;
-   protected $_result;
+	protected $_hostname;
+	protected $_username;
+	protected $_password;
+	protected $_database;
+	protected $_db;
+	protected $_result;
 	protected $_num_rows;
-   protected $_log;
+	protected $_log;
 
 	private function _logError()
 	{
@@ -42,12 +42,12 @@ class Database
     *
     *
     */
-   public function _init ()
+	public function _init ()
 	{
-   	$this->_hostname = DB_HOSTNAME;
-      $this->_username = DB_USERNAME;
-      $this->_password = DB_PASSWORD;
-      $this->_database = DB_DATABASE;
+		$this->_hostname = DB_HOSTNAME;
+		$this->_username = DB_USERNAME;
+		$this->_password = DB_PASSWORD;
+		$this->_database = DB_DATABASE;
 		$this->_num_rows = 0;
 
 		if (class_exists('Logger')) {
@@ -62,10 +62,10 @@ class Database
 		switch ($this->_driver)
 		{
 			case 'mysqli':
-      		$this->_db = new mysqli($this->_hostname, $this->_username, $this->_password, $this->_database);
-		      if (mysqli_connect_errno()) {
+				$this->_db = new mysqli($this->_hostname, $this->_username, $this->_password, $this->_database);
+				if (mysqli_connect_errno()) {
 					$this->_logError("DBMS connection error: ".mysqli_connect_error());
-		      }
+				}
 				return TRUE;
 			case 'pdo':
 				// Set pdo dsn according to backend (second segment of driver parameter)
@@ -94,7 +94,7 @@ class Database
 					return TRUE;
 				}
 				catch (PDOException $ex) {
-					$this->_logError("SQLite connection error: ".$ex->getMessage());
+					$this->_logError("DB connection error: ".$ex->getMessage());
 					return FALSE;
 				}
 			default:
@@ -114,7 +114,7 @@ class Database
 		if (isset($values)) {
 			$st = $this->_db->prepare($query);
 			$ret = $st->execute($values);
-			$this->_result = $ret===FALSE? ret : $st->fetchAll();
+			$this->_result = $ret===FALSE? $ret : $st->fetchAll();
 		} else {
       	$this->_result = $this->_db->query($query);
 		}
@@ -177,12 +177,21 @@ class Database
     }
 
 
-    public function close(){
-        $this->_db->close();
-    }
+	public function close()
+	{
+		switch ($this->_driver)
+		{
+			case 'mysqli':
+				$this->_db->close();
+				return;
+			case 'pdo':
+			default:
+				$this->_db = null;
+				return;
+		}
+	}
 
-
-   public function insert ($table_name, $data)
+	public function insert ($table_name, $data)
 	{
       $_columns = '(`'.implode('`,`', array_keys($data)).'`)';
 
@@ -194,10 +203,9 @@ class Database
 				break;
 			case 'mysqli':
         		$_values = '(';
-        		foreach ($data as $key => $value)
-				{
-            	$_val = mysqli_real_escape_string($this->_db, $value);
-            	$_values .= $this->quote_value($_val).',';
+        		foreach ($data as $key => $value) {
+					$_val = mysqli_real_escape_string($this->_db, $value);
+					$_values .= $this->quote_value($_val).',';
         		}
         		$_values .= ')';
         		$_values = str_replace(',)', ')', $_values);
@@ -222,35 +230,15 @@ class Database
 		}
     }
 
+	public function update($table_name, $condition, $data)
+	{
+		$_updates = implode(', ', array_map(function ($key) { return "`{$key}`=?";}, array_keys($data)));
+		$_values = array_values($data);
+		$_query = "UPDATE {$table_name} SET {$_updates} where {$condition['column']} {$condition['sign']} ?";
+		$_values[] = $condition['value'];
 
-    public function update($table_name, $condition, $data){
-
-        $_query = 'update '.$table_name.' set ';
-
-
-        foreach($data as $key => $value){
-
-            $_val = mysqli_real_escape_string($this->_db, $value);
-
-            $_query .= ' '.$table_name.'.'.$key.' = ';
-
-            $_query .= $this->quote_value($value).',';
-
-        }
-
-        $_query = rtrim($_query, ",");
-
-        $_query .= ' where '.$condition['column'].' '.$condition['sign'];
-
-        $_query .= is_numeric($condition['value']) ? $condition['value'] :'\''.$condition['value'].'\' ' ;
-
-
-
-        $this->query($_query);
-
-
-
-    }
+		return $this->query($_query, $_values);
+	}
 
 
 	public function get_num_rows(){

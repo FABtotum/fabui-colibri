@@ -1,15 +1,10 @@
 <?php
-if(file_exists('/var/www/lib/log4php/Logger.php')){
-	
+
+if(file_exists('/var/www/lib/log4php/Logger.php'))
+{
 	require_once '/var/www/lib/log4php/Logger.php';
 	Logger::configure('/var/www/fabui/config/log_database_config.xml');
-	
 }
-//require_once '/var/www/lib/log4php/Logger.php';
-/** INIT LOG */
-//Logger::configure('/var/www/fabui/config/log_database_config.xml');
-
-
 
 class Database {
     

@@ -1,4 +1,7 @@
 <?php
+
+include_once ('/var/www/recovery/config/config.php');
+
 //===================================================================================================================================================
 $www_path   = '/var/www/';
 $fabui_path = $www_path.'fabui/';
@@ -21,7 +24,7 @@ defined("BOUD_RATE")  ? null : define("BOUD_RATE", '115200');
 /** DATABASE CONNECTION */
 defined("DB_HOSTNAME")  ? null : define("DB_HOSTNAME", 'localhost');
 defined("DB_USERNAME")  ? null : define("DB_USERNAME", 'root');
-defined("DB_PASSWORD")  ? null : define("DB_PASSWORD", '');
+defined("DB_PASSWORD")  ? null : define("DB_PASSWORD", 'fabtotum');
 defined("DB_DATABASE")  ? null : define("DB_DATABASE", 'fabtotum');
 
 defined("SQL_INSTALL_DB")  ? null : define("SQL_INSTALL_DB", RECOVERY_PATH.'install/sql/fabtotum.sql');
