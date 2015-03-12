@@ -2,11 +2,11 @@
 ################################################################
 # Begin $rc_base/init.d/
 #
-# Description : 
+# Description : Low-level initialization and disposition
 # 
-# Authors     :
+# Authors     : Simone Cociancich
 # 
-# Version     : 00.00
+# Version     : 0.0.1
 #
 # Notes       :
 #
@@ -15,20 +15,21 @@
 . /etc/default/rc
 . ${rc_functions}
 
-SERVICE_NAME=FABUI
+SERVICE_NAME=FABtotum
 
 case "$1" in
   start)
  	boot_msg "Starting ${SERVICE_NAME}."
-	php /var/www/fabui/script/initialize.php > /var/log/initialize.log &
+	python /var/www/recovery/python/boot.py &
 	true
 	evaluate_retval
 	;;
   stop)
 	boot_msg "Stopping ${SERVICE_NAME}."
-	# Turn off the machine
-	echo M729 > /dev/ttyAMA0
+	# Turn off the lights
+	(sleep 5s && echo -e "M701 S0\nM702 S0\nM703 S0" > /dev/ttyAMA0 && cat /dev/ttyAMA0 &)
 	evaluate_retval
+	( sleep 5s && echo M727 > /dev/ttyAMA0 &)
 	;;
   restart|reload)
 	${0} stop
