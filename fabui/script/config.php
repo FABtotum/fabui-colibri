@@ -1,4 +1,7 @@
 <?php
+
+include_once '/var/www/recovery/config/config.php';
+
 //================================== DATABASE ============
 defined("DB_HOSTNAME")  ? null : define("DB_HOSTNAME", 'localhost');
 defined("DB_USERNAME")  ? null : define("DB_USERNAME", 'root');

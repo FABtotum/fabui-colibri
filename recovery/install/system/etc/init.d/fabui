@@ -20,15 +20,13 @@ SERVICE_NAME=FABUI
 case "$1" in
   start)
  	boot_msg "Starting ${SERVICE_NAME}."
-	php /var/www/fabui/script/initialize.php > /var/log/initialize.log &
-	true
+	php /var/www/fabui/script/initialize.php >> /var/log/initialize.log
 	evaluate_retval
 	;;
   stop)
-	boot_msg "Stopping ${SERVICE_NAME}."
-	# Turn off the machine
-	echo M729 > /dev/ttyAMA0
-	evaluate_retval
+	#boot_msg "Stopping ${SERVICE_NAME}."
+	#true
+	#evaluate_retval
 	;;
   restart|reload)
 	${0} stop
