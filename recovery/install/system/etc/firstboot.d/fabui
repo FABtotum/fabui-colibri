@@ -17,21 +17,19 @@
 
 case "$1" in
   pre)
-	boot_msg "Configuring lighttpd for FABUI."
-	/usr/sbin/lighttpd-enable-mod fastcgi fastcgi-php fabui
-	evaluate_retval
-
-	# TODO: configure mysql
-	;;
+    boot_msg "Configuring lighttpd for FABUI."
+    /usr/sbin/lighttpd-enable-mod fastcgi fastcgi-php fabui
+    evaluate_retval
+    ;;
   post)
-   boot_msg "Configuring MySQL root password."
-   wait_for_file_create /run/mysqld.sock 30
-   /usr/bin/mysqladmin -u root password 'fabtotum'
-   evaluate_retval
-	;;
+    boot_msg "Configuring MySQL root password."
+    wait_for_file_create /run/mysqld.sock 30
+    /usr/bin/mysqladmin -u root password 'fabtotum'
+    evaluate_retval
+    ;;
   *)
-	echo "Usage: $0 {pre|post}"
-	exit 1
+    echo "Usage: $0 {pre|post}"
+    exit 1
 esac
 
 exit $?

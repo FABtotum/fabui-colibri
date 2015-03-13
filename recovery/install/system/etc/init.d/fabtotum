@@ -27,7 +27,7 @@ case "$1" in
   stop)
 	boot_msg "Stopping ${SERVICE_NAME}."
 	# RasPi going to sleep
-	echo M729 > /dev/ttyAMA0 && cat/dev/ttyaAMA0 > /dev/null
+	echo M729 > /dev/ttyAMA0 && cat /dev/ttyaAMA0 > /dev/null
 	evaluate_retval
 	# Maybe turn off the lights in the future
 	( sleep 5s; echo -e "M701 S0\nM702 S0\nM703 S0" > /dev/ttyAMA0 && cat /dev/ttyAMA0 > /dev/null )&
