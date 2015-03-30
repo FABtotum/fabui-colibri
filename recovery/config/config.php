@@ -6,12 +6,12 @@ if (!defined('OS_FLAVOUR'))
 
 //================================== DATABASE ============
 if (!defined("DB_DRIVER"))
-	define('DB_DRIVER',  OS_FLAVOUR=='Colibri'? 'pdo:mysql' : 'mysqli');
+	define('DB_DRIVER',  OS_FLAVOUR=='Colibri'? 'pdo:sqlite' : 'mysqli');
 defined("DB_HOSTNAME")  ? null : define("DB_HOSTNAME", 'localhost');
 defined("DB_USERNAME")  ? null : define("DB_USERNAME", 'root');
 defined("DB_PASSWORD")  ? null : define("DB_PASSWORD", 'fabtotum');
 if (!defined("DB_DATABASE"))
-	define('DB_DATABASE', DB_DRIVER=='pdo:sqlite'? '/var/lib/fabtotum/db.sqlite' : 'fabtotum');
+	define('DB_DATABASE', DB_DRIVER=='pdo:sqlite'? '/var/www/fabtotum.db' : 'fabtotum');
 
 //================================= DB INSTALL =============
 if (!defined("SQL_INSTALL_DB"))

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import sys, time
+import sys, time, os
 
 def cpuinfo ():
 	cpus = dict()
@@ -79,8 +79,8 @@ try:
 		sys.exit(2)
 
 	#TEST: Try to access main serial port
-	port = '/dev/ttyAMA0'
-	baud = 115200
+	port = os.getenv('FABTOTUM_SERIAL_DEVICE', '/dev/ttyAMA0')
+	baud = os.getenv('FABTOTUM_SERIAL_BAUDRATE', 115200)
 	print "Trying to access serial port `"+port+"`...",
 	port = serial.Serial(port, baud, timeout=1)
 	print "ok"
