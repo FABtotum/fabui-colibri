@@ -1,5 +1,8 @@
 <?php
 
+include_once '/var/www/lib/Database.php';
+return;
+/*
 if(file_exists('/var/www/lib/log4php/Logger.php'))
 {
 	require_once '/var/www/lib/log4php/Logger.php';
@@ -16,22 +19,12 @@ class Database {
     protected $_result;
 	protected $_num_rows;
     protected $_log;
-	
-	
-    /**
-     * 
-     * 
-     */
+
     public function __construct()
 	{
         $this->_init();
 	}
-    
-    
-    /**
-     * 
-     * 
-    */ 
+
     public function _init(){
         
         $this->_hostname = DB_HOSTNAME;
@@ -58,12 +51,7 @@ class Database {
 		$this->_db->set_charset("utf8");
         
     }
-    
-    
-    /**
-     * 
-     * 
-    */
+
     public function query($query){
     	
 		
@@ -225,5 +213,5 @@ class Database {
     
        
 }
-
+*/
 ?>

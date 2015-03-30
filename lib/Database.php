@@ -105,10 +105,10 @@ class Database
 
    /**
     * Executes an arbitary query, possibily with parameters values, and returns
-	 * the rows retrieved from a 'SELECT' statement if any, null if none, or false
-	 * if any error occurred.
+	* the rows retrieved from a 'SELECT' statement if any, null if none, or false
+	* if any error occurred.
     */
-   public function query ($query, $values=NULL)
+	public function query ($query, $values=NULL)
 	{
 		// Prepare and interpolate parameters, if given
 		if (isset($values)) {
@@ -116,7 +116,7 @@ class Database
 			$ret = $st->execute($values);
 			$this->_result = $ret===FALSE? $ret : $st->fetchAll();
 		} else {
-      	$this->_result = $this->_db->query($query);
+			$this->_result = $this->_db->query($query);
 		}
 
 		if ($this->_result === FALSE)
@@ -126,7 +126,7 @@ class Database
 			return false;
 		}
 
-      if (is_object($this->_result))
+		if (is_object($this->_result))
 		{
 			$rc = get_class($this->_result);
 			switch ($rc)
