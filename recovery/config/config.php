@@ -15,7 +15,7 @@ if (!defined("DB_DATABASE"))
 
 //================================= DB INSTALL =============
 if (!defined("SQL_INSTALL_DB"))
-	define('SQL_INSTALL_DB', DB_DRIVER=='pdo:sqlite'? '/var/www/recovery/install/sql/fabtotum.sql3' : '/var/www/recovery/install/sql/fabtotum.sql');
+	define('SQL_INSTALL_DB', DB_DRIVER=='pdo:sqlite'? '/var/www/recovery/install/sql/fabtotum.sqlite3' : '/var/www/recovery/install/sql/fabtotum.sql');
 
 //=========== INSTALL ==============================//
 defined("MYFAB_REMOTE_VERSION_URL")  ? null : define("MYFAB_REMOTE_VERSION_URL", 'http://update.fabtotum.com/FAB-UI/version.txt');

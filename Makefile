@@ -14,6 +14,9 @@ HTDOCS_FILES := assets fabui index.php install.php lib LICENSE README.md recover
 # System files
 SYSCONF_FILES := firstboot.d init.d lighttpd rc.d
 
+# Databases (SQLite)
+DB=sqlite3
+DB_FILES=fabtotum.db
 
 # These should be `configure`able
 SYSCONFDIR=/etc
@@ -59,7 +62,7 @@ dist: temp/$(RELEASE).cb
 	mv temp/$(RELEASE).cb $(DESTDIR)/bundles/
 	touch $(DESTDIR)
 
-%.cb: clean
+%.cb: clean $(DB_FILES)
 #	TODO: maybe separate 'installation' step from 'squashing' step
 #	Copy public htdocs files
 	mkdir -p temp/bdata$(HTDOCSDIR)
@@ -78,6 +81,9 @@ dist: temp/$(RELEASE).cb
 	chown -R --from=$(maintainer_UID)  root:root temp/bdata$(SYSCONFDIR)/*
 #	Squash the file system thus created
 	mksquashfs temp/bdata $@ -noappend -comp xz -b 512K -no-xattrs
+
+%.db: recovery/install/sql/%.$(DB)
+	$(DB) $@ < $< 
 
 clean:
 #	Remove any runtime or installation files from temp directory

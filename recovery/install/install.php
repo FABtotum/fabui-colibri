@@ -34,21 +34,24 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 		shell_exec("sudo ifup wlan0");
 		
 	}
-    
 	
 
-    //inizialitizzo database
-    $_command = 'sudo mysql -u '.DB_USERNAME.' -p'.DB_PASSWORD.' -h '.DB_HOSTNAME.'  < '.SQL_INSTALL_DB;
-	
-	
-	
-    shell_exec($_command);
-	
-	
     /** LOAD DB */
+    switch (DB_DRIVER)
+    {
+		case 'pdo:sqlite':
+			//$_command = 'sudo sqlite3 '.DB_DATABASE.'  < '.SQL_INSTALL_DB;
+			break;
+		default:
+		case 'pdo:mysql':
+		case 'mysqli':
+			$_command = 'sudo mysql -u '.DB_USERNAME.' -p'.DB_PASSWORD.' -h '.DB_HOSTNAME.'  < '.SQL_INSTALL_DB;
+	}
+    shell_exec($_command);
+
 	$db = new Database();
+
 	/** ADD USER */
-	
 	$_settings['theme-skin'] = 'smart-style-0';
 	$_settings['avatar']     = '';
 	$_settings['token']      = '';
