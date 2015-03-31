@@ -1,11 +1,11 @@
 <?php
 
-require_once '/var/www/fabui/script/config.php';
+require_once '/var/www/lib/config.php';
 require_once '/var/www/lib/Database.php';
-require_once '/var/www/fabui/ajax/lib/utilities.php';
+require_once '/var/www/lib/utilities.php';
 
 /* Set configured ambient color */
-//TODO: put ui config in standard place like i.e. `/etc/fab/ui.conf`
+//TODO: put ui config in standard place like i.e. `~/.fabtotum/ui.conf;/etc/fabtotum/ui.conf`
 $_conf = json_decode(file_get_contents('/var/www/fabui/config/config.json'), TRUE);
 
 // Temporary snippet, use phpSerial one of these days
@@ -14,8 +14,8 @@ foreach (array(
 	'M702' => 'g',
 	'M703' => 'b'
 ) as $gcode => $svalue) {
-	//TODO: serial device should be env configurable (e.g.: export FABTOTUM_SERIAL_DEV=ttyAMA0)
-	$ok = shell_exec("echo '{$gcode} S{$_conf['color'][$svalue]}' > /dev/ttyAMA0 && cat /dev/ttyAMA0");
+	// Serial device should be env-configurable (e.g.: export FABTOTUM_SERIAL_PORT_NAME=/dev/ttyAMA0)
+	$ok = shell_exec("echo '{$gcode} S{$_conf['color'][$svalue]}' > ".PORT_NAME." && cat ".PORT_NAME);
 }
 
 /** INITIALIZE  */

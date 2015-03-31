@@ -33,7 +33,7 @@ class Database
     *
     *
     */
-   public function __construct()
+	public function __construct()
 	{
         $this->_init();
 	}
@@ -157,22 +157,6 @@ class Database
 			{
 				return $this->_num_rows;  // false?
 			}
-
-			/*{
-				$rows = array();
-	         while ($row = $this->_result->fetch_assoc()) {
-	         	$rows[] = $row;
-	         }
-
-				if ($this->_result->num_rows == 1) {
-					return $rows[0];
-				}
-
-				return $rows;
-
-			} else {
-				return false;
-			}*/
        }
     }
 

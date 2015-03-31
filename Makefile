@@ -27,6 +27,7 @@ HTDOCSDIR=/var/www
 
 maintainer_UID := $(shell id -u $$SUDO_USER)
 maintainer_GID := $(shell id -g $$SUDO_USER)
+htdocs_GID := www-data
 
 .PHONY: all dist-legacy dist-colibri clean distclean
 
@@ -66,10 +67,10 @@ dist: temp/$(RELEASE).cb
 #	TODO: maybe separate 'installation' step from 'squashing' step
 #	Copy public htdocs files
 	mkdir -p temp/bdata$(HTDOCSDIR)
-	cp -a $(HTDOCS_FILES) temp/bdata$(HTDOCSDIR)/
+	cp -a $(HTDOCS_FILES) $(DB_FILES) temp/bdata$(HTDOCSDIR)/
 #	Create runtime data directory
-	mkdir -p temp/bdata$(LOCALSTATEDIR)/lib/fabui
-#	The autoinstall flag file is created at compile time
+#	mkdir -p temp/bdata$(LOCALSTATEDIR)/lib/fabui
+#	The autoinstall flag file is created now
 	touch temp/bdata$(HTDOCSDIR)/AUTOINSTALL
 #	We still need a temp directory for fab_ui_security
 	mkdir temp/bdata$(HTDOCSDIR)/temp
@@ -77,7 +78,8 @@ dist: temp/$(RELEASE).cb
 	mkdir -p temp/bdata$(SYSCONFDIR)
 	for file in $(SYSCONF_FILES); do mv temp/bdata/var/www/recovery/install/system/etc/$$file temp/bdata$(SYSCONFDIR)/; done
 #	Fix some ownership
-	chown -R --from=$(maintainer_UID) root:www-data temp/bdata$(HTDOCSDIR)/*
+	chown -R root:$(htdocs_GID) temp/bdata$(HTDOCSDIR)
+	chmod -R ug+rwX temp/bdata$(HTDOCSDIR)
 	chown -R --from=$(maintainer_UID)  root:root temp/bdata$(SYSCONFDIR)/*
 #	Squash the file system thus created
 	mksquashfs temp/bdata $@ -noappend -comp xz -b 512K -no-xattrs

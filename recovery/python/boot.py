@@ -2,11 +2,26 @@ import os, sys
 import time
 import serial
 import json
+import ConfigParser
 from subprocess import call
 
-print "FABtotum boot script"
+config = ConfigParser.ConfigParser()
+config.read('/var/www/fabui/python/config.ini') 
 
-ser = serial.Serial("/dev/ttyAMA0",115200,timeout=1)
+
+#startup script (see crontab)
+print "Boot script"
+#time.sleep(60) #wait 60 seconds so connections can be made.
+print "Start"
+
+#tell the board that the raspi has been connected.
+
+#settting serial communication
+serail_port = config.get('serial', 'port')
+serail_baud = config.get('serial', 'baud')
+
+ser = serial.Serial(serail_port,serail_baud,timeout=1)
+ser.flushInput()
 ser.flushOutput()
 ser.flushInput()
 
@@ -15,8 +30,8 @@ ser.write('M728\r\n') #machine alive
 
 time.sleep(0.5)
 
-# LOAD USER CONFIG
-json_f = open("/var/www/fabui/config/config.json")
+#read configs
+json_f = open(config.get('printer', 'settings_file'))
 config = json.load(json_f)
 
 # UNITS

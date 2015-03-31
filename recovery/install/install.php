@@ -7,8 +7,8 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
     //=========== CONFIG FILES
     include_once (ROOT.'/recovery/config/config.php');
     include_once (ROOT.'/lib/Database.php');
-	include_once (ROOT.'/fabui/ajax/lib/serial.php');
-    include_once (ROOT.'/fabui/ajax/lib/utilities.php');
+	include_once (ROOT.'/lib/serial.php');
+    include_once (ROOT.'/lib/utilities.php');
 	
 	
 	
@@ -46,8 +46,8 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 		case 'pdo:mysql':
 		case 'mysqli':
 			$_command = 'sudo mysql -u '.DB_USERNAME.' -p'.DB_PASSWORD.' -h '.DB_HOSTNAME.'  < '.SQL_INSTALL_DB;
+			shell_exec($_command);
 	}
-    shell_exec($_command);
 
 	$db = new Database();
 
@@ -63,6 +63,7 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 	$_user_data['email']      = $_email;
 	$_user_data['password']   = md5($_password);
 	$_user_data['settings']   = json_encode($_settings);
+	$_user_data['session_id'] = session_id();
 	
 	/** ADD TASK RECORD TO DB */ 
 	$id_user = $db->insert('sys_user', $_user_data);
@@ -78,7 +79,7 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 	
 	
 	//=========== SERIAL CLASS - GET FW VERSION
-	$serial = new phpSerial;
+	$serial = new Serial;
 	$serial->deviceSet(PORT_NAME);
 	$serial->confBaudRate(BOUD_RATE);
 	$serial->confParity("none");
@@ -131,6 +132,8 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 	shell_exec('sudo cp /var/www/recovery/install/file/Marvin_KeyChain_FABtotum.gcode '.UPLOAD_PATH.'gcode/Marvin_KeyChain_FABtotum.gcode');
 	shell_exec('sudo cp /var/www/recovery/install/file/bracelet.gcode '.UPLOAD_PATH.'gcode/bracelet.gcode');
 	
+	shell_exec('sudo chmod 777 '.UPLOAD_PATH.'gcode/Marvin_KeyChain_FABtotum.gcode');
+	shell_exec('sudo chmod 777 '.UPLOAD_PATH.'gcode/bracelet.gcode');
 	
 	
 	/** CLEAN SESSION */

@@ -12,7 +12,6 @@
 			timeout : 10000
 
 		});
-
 	<?php endif ?>
 
 	});
