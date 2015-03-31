@@ -58,14 +58,13 @@ class User extends CI_Model {
     
     
     
-    public function update_login($id){
-        
-        $this->db->set('last_login', 'now()', FALSE);
+    public function update_login($id)
+    {
+        $this->db->set('last_login', date('Y-m-d H:i:s'));
 		$this->db->set('session_id', session_id());
         
         $this->db->where('id', $id);
-        $this->db->update($this->_table_name); 
-        
+        $this->db->update($this->_table_name);
     }
 	
 	
