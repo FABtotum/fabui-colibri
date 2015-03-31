@@ -45,7 +45,7 @@
 | the active record class
 */
 
-$active_group = 'default';
+$active_group = file_exists('/mnt/live/lib/colibrikitlib')? 'colibri' : 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
@@ -64,6 +64,14 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
+$db['colibri'] = $db['default'];
+$db['colibri']['hostname'] = 'sqlite:/var/www/fabtotum.db';
+$db['colibri']['username'] = '';
+$db['colibri']['password'] = '';
+$db['colibri']['database'] = '';
+$db['colibri']['dbdriver'] = 'pdo';
+$db['colibri']['dbprefix'] = '';
+$db['colibri']['pconnect'] = TRUE;
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

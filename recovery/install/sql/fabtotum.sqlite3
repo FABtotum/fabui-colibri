@@ -10,12 +10,11 @@
 
 DROP TABLE IF EXISTS `sys_codes`;
 CREATE TABLE IF NOT EXISTS `sys_codes` (
-  `id` int(11) NOT NULL,
+  `id` INTEGER PRIMARY KEY,
   `type` varchar(5) NOT NULL,
   `code` int(10) NOT NULL,
   `label` varchar(255) NOT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY (`id`)
+  `description` text NOT NULL
 );
 
 --
@@ -226,7 +225,7 @@ INSERT INTO `sys_configuration` (`id`, `key`, `value`) VALUES
 
 DROP TABLE IF EXISTS `sys_files`;
 CREATE TABLE IF NOT EXISTS `sys_files` (
-  `id` int(11) NOT NULL,
+  `id` INTEGER PRIMARY KEY,
   `file_name` varchar(255) DEFAULT NULL,
   `file_type` varchar(255) DEFAULT NULL,
   `file_path` varchar(255) DEFAULT NULL,
@@ -245,8 +244,7 @@ CREATE TABLE IF NOT EXISTS `sys_files` (
   `insert_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
   `note` text NOT NULL,
-  `attributes` text NOT NULL,
-  PRIMARY KEY (`id`)
+  `attributes` text NOT NULL
 );
 
 --
@@ -265,12 +263,11 @@ INSERT INTO `sys_files` (`id`, `file_name`, `file_type`, `file_path`, `full_path
 
 DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE IF NOT EXISTS `sys_menu` (
-  `id` int(11) NOT NULL,
+  `id` INTEGER PRIMARY KEY,
   `title` varchar(255) DEFAULT NULL,
   `page` varchar(255) DEFAULT NULL,
   `parent_id` int(11) DEFAULT NULL,
-  `item_order` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `item_order` int(11) DEFAULT NULL
 );
 
 --
@@ -291,9 +288,8 @@ INSERT INTO `sys_menu` (`id`, `title`, `page`, `parent_id`, `item_order`) VALUES
 
 DROP TABLE IF EXISTS `sys_modules`;
 CREATE TABLE IF NOT EXISTS `sys_modules` (
-  `id` int(11) NOT NULL,
-  `location` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id` INTEGER PRIMARY KEY,
+  `location` varchar(255) DEFAULT NULL
 );
 
 --
@@ -315,14 +311,13 @@ INSERT INTO `sys_modules` (`id`, `location`) VALUES
 
 DROP TABLE IF EXISTS `sys_objects`;
 CREATE TABLE IF NOT EXISTS `sys_objects` (
-  `id` int(11) NOT NULL,
+  `id` INTEGER PRIMARY KEY,
   `user` int(11) NOT NULL,
   `obj_name` varchar(255) DEFAULT NULL,
   `obj_description` text,
   `date_insert` datetime DEFAULT NULL,
   `date_updated` datetime DEFAULT NULL,
-  `private` int(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
+  `private` int(1) NOT NULL DEFAULT '1'
 );
 
 --
@@ -340,10 +335,9 @@ INSERT INTO `sys_objects` (`id`, `user`, `obj_name`, `obj_description`, `date_in
 
 DROP TABLE IF EXISTS `sys_obj_files`;
 CREATE TABLE IF NOT EXISTS `sys_obj_files` (
-  `id` int(11) NOT NULL,
+  `id` INTEGER PRIMARY KEY,
   `id_obj` int(11) DEFAULT NULL,
-  `id_file` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `id_file` int(11) DEFAULT NULL
 );
 
 --
@@ -362,10 +356,9 @@ INSERT INTO `sys_obj_files` (`id`, `id_obj`, `id_file`) VALUES
 
 DROP TABLE IF EXISTS `sys_options`;
 CREATE TABLE IF NOT EXISTS `sys_options` (
-  `option_id` int(11) NOT NULL,
+  `option_id` INTEGER PRIMARY KEY,
   `option_name` varchar(64) NOT NULL DEFAULT '',
   `option_value` longtext NOT NULL,
-  PRIMARY KEY (`option_id`),
   CONSTRAINT `option_name` UNIQUE (`option_name`)
 );
 
@@ -378,10 +371,9 @@ CREATE TABLE IF NOT EXISTS `sys_options` (
 
 DROP TABLE IF EXISTS `sys_plugins`;
 CREATE TABLE IF NOT EXISTS `sys_plugins` (
-  `id` int(11) NOT NULL,
+  `id` INTEGER PRIMARY KEY,
   `name` text NOT NULL,
-  `attributes` text NOT NULL,
-  PRIMARY KEY (`id`)
+  `attributes` text NOT NULL
 );
 
 -- --------------------------------------------------------
@@ -392,11 +384,10 @@ CREATE TABLE IF NOT EXISTS `sys_plugins` (
 
 DROP TABLE IF EXISTS `sys_scan_configuration`;
 CREATE TABLE IF NOT EXISTS `sys_scan_configuration` (
-  `id` int(11) NOT NULL,
+  `id` INTEGER PRIMARY KEY,
   `type` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `values` text,
-  PRIMARY KEY (`id`)
+  `values` text
 );
 
 --
@@ -427,15 +418,14 @@ INSERT INTO `sys_scan_configuration` (`id`, `type`, `name`, `values`) VALUES
 
 DROP TABLE IF EXISTS `sys_tasks`;
 CREATE TABLE IF NOT EXISTS `sys_tasks` (
-  `id` int(11) NOT NULL,
+  `id` INTEGER PRIMARY KEY,
   `user` int(11) NOT NULL,
   `controller` varchar(255) NOT NULL,
   `type` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `attributes` text,
   `start_date` datetime NOT NULL,
-  `finish_date` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  `finish_date` datetime NOT NULL
 );
 
 -- --------------------------------------------------------
@@ -446,9 +436,8 @@ CREATE TABLE IF NOT EXISTS `sys_tasks` (
 
 DROP TABLE IF EXISTS `sys_themes`;
 CREATE TABLE IF NOT EXISTS `sys_themes` (
-  `id` int(11) NOT NULL,
-  `location` text NOT NULL,
-  PRIMARY KEY (`id`)
+  `id` INTEGER PRIMARY KEY,
+  `location` text NOT NULL
 );
 
 --
@@ -466,13 +455,12 @@ INSERT INTO `sys_themes` (`id`, `location`) VALUES
 
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE IF NOT EXISTS `sys_user` (
-  `id` int(11) NOT NULL,
+  `id` INTEGER PRIMARY KEY,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
-  `last_login` datetime NOT NULL,
+  `last_login` datetime NOT NULL DEFAULT '1970-01-01 OO:OO:OO',
   `session_id` varchar(255) NOT NULL,
-  `settings` text NOT NULL,
-  PRIMARY KEY (`id`)
+  `settings` text NOT NULL
 );
