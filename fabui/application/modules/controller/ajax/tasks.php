@@ -12,15 +12,12 @@ $_tasks_number = $db->get_num_rows();
 $db->close();
 
 
-if($_tasks_number == 0){
-?>    
-<!-- NOTHING TO SHOW -->
-<div class="alert alert-transparent">
-	<h4 class="text-center">No tasks available</h4>
-</div>
-<?    
-}else{
-?>
+if ($_tasks_number == 0): ?>    
+	<!-- NOTHING TO SHOW -->
+	<div class="alert alert-transparent">
+		<h4 class="text-center">No tasks available</h4>
+	</div>
+<?php else: ?>
 <ul class="notification-body">
 	
 	<?php  
@@ -78,6 +75,4 @@ if($_tasks_number == 0){
 	</li>
     <?php endforeach; ?>
 </ul>
-<?
-}
-?>
+<?php endif ?>

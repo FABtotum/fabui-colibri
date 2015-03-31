@@ -23,15 +23,15 @@
 	var array_estimated_time =  <?php echo $_estimated_time; ?>;
 	var array_progress_steps =  <?php echo $_progress_steps; ?>;
 	
-	/*var ajax_endpoint         = '<? echo site_url('create') ?>';*/
-    var ajax_endpoint         = '<? echo module_url('create') ?>';
+	/*var ajax_endpoint         = '<?php echo site_url('create') ?>';*/
+    var ajax_endpoint         = '<?php echo module_url('create') ?>';
 	/*var ajax_object_endopoint = '<?php echo site_url('objectmanager')?>';*/
     var ajax_object_endopoint = '<?php echo module_url('objectmanager')?>';
     var ajax_intertitial_endpoint = '<?php echo module_url('interstitial')  ?>';
     var ajax_jog_endpoint = '<?php echo module_url('jog'); ?>';
 
 	var is_running = <?php echo  $_running ? 'true' : 'false' ?>;
-	var server_host = 'http://<? echo $_SERVER['HTTP_HOST'] ?>/';
+	var server_host = 'http://<?php echo $_SERVER['HTTP_HOST'] ?>/';
     
     /** IF I COME FROM OBJECT MANAGER */
     var request_file = <?php echo $_request_file != FALSE ? $_request_file : 0 ?>;
