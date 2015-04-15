@@ -1,0 +1,2 @@
+# Let http server execute just really any command (?)
+www-data ALL=(ALL) NOPASSWD: ALL

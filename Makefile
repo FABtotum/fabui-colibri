@@ -12,7 +12,7 @@ legacy_HTDOCS_FILES  := assets fabui .htaccess index.php install.php lib LICENSE
 HTDOCS_FILES := assets fabui index.php install.php lib LICENSE README.md recovery
 
 # System files
-SYSCONF_FILES := firstboot.d init.d lighttpd rc.d
+SYSCONF_FILES := firstboot.d init.d lighttpd rc.d sudoers.d
 
 # Databases (SQLite)
 DB=sqlite3
