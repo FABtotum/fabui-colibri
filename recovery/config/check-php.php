@@ -4,7 +4,7 @@ try
 {
 	$code = 0;  // 0=OK, 1=WARNINGS, 2=ERRORS, 3=FAILURE
 
-	include '/var/www/fabui/ajax/config.php';
+	include '/var/www/lib/config.php';
 
 	//TODO: test db drivers and report available ones
 	echo "Looking for a DB driver to access database `".DB_DATABASE."`: "; flush();
