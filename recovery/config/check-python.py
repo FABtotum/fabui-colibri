@@ -2,6 +2,24 @@
 
 import sys, time, os
 
+code = 0  # 0=OK, 1=WARNINGS, 2=ERRORS, 3=FAILURE
+
+def testModule (name, severity=1):
+	global code
+	try:
+		mod = __import__(name)
+		print "ok"
+		return mod
+	except ImportError:
+		if (severity < 1): severity = 1
+		if (code < severity): code = severity
+		if (severity == 1):
+			print "missing"
+		elif (severity >= 2):
+			print "ERROR"
+			sys.exit(severity)
+		return None
+
 def cpuinfo ():
 	cpus = dict()
 	i = 0
@@ -31,8 +49,6 @@ def is_rpi ():
 	return False
 
 try:
-	code = 0  # 0=OK, 1=WARNINGS, 2=ERRORS, 3=FAILURE
-
 	#TEST: Check python version == 2.7.x
 	try:
 		version = sys.version_info
@@ -58,25 +74,37 @@ try:
 	#TEST: RPi.GPIO
 	# just test the module for inclusion, but only if we know we are on a
 	# areal RPi otherwise the modulo will throw an unuseful exception
-	print "Checking RPi.GPIO module...",
-	try:
-		if (is_rpi()):
-			import RPi.GPIO as GPIO
-			print "ok"
-		else:
-			print "skipped"
-			if (code < 1): code = 1
-	except ImportError:
-		print "missing"
+	if (is_rpi()):
+		print "Looking for RPi.GPIO module...",
+		testModule("RPi.GPIO")
+	#try:
+		#if (is_rpi()):
+			#import RPi.GPIO as GPIO
+			#print "ok"
+		#else:
+			#print "skipped"
+			#if (code < 1): code = 1
+	#except ImportError:
+		#print "missing"
 
 	#TEST: pyserial (https://pypi.python.org/pypi/pyserial)
-	print "Checking pyserial module...",
-	try:
-		import serial
-		print "ok"
-	except ImportError:
-		print "ERROR"
-		sys.exit(2)
+	print "Looking for pyserial module...",
+	if (testModule("serial", 2)):
+			import serial
+	#try:
+		#import serial
+		#print "ok"
+	#except ImportError:
+		#print "ERROR"
+		#sys.exit(2)
+
+	#TEST: watchdog module
+	print "Looking for watchdog module...",
+	testModule("watchdog")
+
+	#TEST: ws4py module
+	print "Looking for ws4py module...",
+	testModule("ws4py")
 
 	#TEST: Try to access main serial port
 	port = os.getenv('FABTOTUM_SERIAL_DEVICE', '/dev/ttyAMA0')
@@ -95,7 +123,7 @@ try:
 		sys.exit(2)
 	print "ok"
 
-	print "Trying to send some g-codes to the machine using serial port...",
+	print "Trying to send some g-codes through the serial port...",
 	# Cycle through led colors
 	# Machine should respond with 'ok' after every command
 	done = True
@@ -119,7 +147,7 @@ try:
 		sys.exit(2)
 
 	#TEST: Read gcodes
-	print "Trying to read some values from the machine using serial port...",
+	print "Trying to read some values through the serial port...",
 	port.flushInput()
 	port.write("M105\r\n")
 	port.flush()
