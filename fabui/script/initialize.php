@@ -20,9 +20,16 @@ foreach (array(
 
 /** INITIALIZE  */
 /** WAIT UNTIL MYSQL SERVER START */
-while (strpos(shell_exec('mysqladmin -u'.DB_USERNAME.' -p'.DB_PASSWORD.' ping'), 'mysqld is alive') != 0)
+if (defined('DB_DRIVER'))
+switch (DB_DRIVER)
 {
-	sleep(1);
+	// Only if mysql is being used
+	case 'pdo:mysql':
+	case 'mysqli':
+		while (strpos(shell_exec('mysqladmin -u'.DB_USERNAME.' -p'.DB_PASSWORD.' ping'), 'mysqld is alive') != 0) {
+			sleep(1);
+		}
+		break;
 }
 
 /** LOAD DB */
