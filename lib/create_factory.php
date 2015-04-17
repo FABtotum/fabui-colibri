@@ -2,7 +2,7 @@
 require_once '/var/www/lib/config.php';
 require_once '/var/www/lib/serial.php';
 require_once '/var/www/lib/utilities.php';
-require_once '/var/www/lib/database.php';
+require_once '/var/www/lib/Database.php';
 
 class CreateFactory {
 
