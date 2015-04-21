@@ -425,7 +425,7 @@ CREATE TABLE IF NOT EXISTS `sys_tasks` (
   `status` varchar(255) DEFAULT NULL,
   `attributes` text,
   `start_date` datetime NOT NULL,
-  `finish_date` datetime NOT NULL
+  `finish_date` datetime
 );
 
 -- --------------------------------------------------------
