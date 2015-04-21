@@ -27,7 +27,7 @@
 	var array_estimated_time =  <?php echo $_estimated_time; ?>;
 	var array_progress_steps =  <?php echo $_progress_steps; ?>;
 
-    var ajax_endpoint         = '<? echo module_url('create') ?>';
+    var ajax_endpoint         = '<?php echo module_url('create') ?>';
     var ajax_object_endpoint = '<?php echo module_url('objectmanager')?>';
     var ajax_intertitial_endpoint = '<?php echo module_url('interstitial')  ?>';
     var ajax_jog_endpoint = '<?php echo module_url('jog'); ?>';

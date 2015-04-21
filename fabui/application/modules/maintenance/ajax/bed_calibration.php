@@ -1,4 +1,5 @@
 <?php
+
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/utilities.php';
 
@@ -37,44 +38,6 @@ $screws[0] = array('t' => $_response['bed_calibration']['t1'], 's' => $_response
 $screws[1] = array('t' => $_response['bed_calibration']['t2'], 's' => $_response['bed_calibration']['s2']);
 $screws[2] = array('t' => $_response['bed_calibration']['t3'], 's' => $_response['bed_calibration']['s3']);
 $screws[3] = array('t' => $_response['bed_calibration']['t4'], 's' => $_response['bed_calibration']['s4']);
-?>
-
-
-<table class="table table-hover screws-rows">
-	
-	<thead>
-		<tr>
-			<th class="text-center">Screw</th>
-			<th class="text-center">Instructions</th>
-		</tr>
-	</thead>
-		
-	<tbody>
-	<?php for($i=0; $i<4; $i++): ?>
-		
-		<tr class="<?php echo  get_row_color($screws[$i]['s'])?>">
-			<td class="text-center"><span class="badge  badge <?php echo get_color($screws[$i]['s']); ?>"><?php echo($i + 1); ?></span></td>
-			<td><strong><?php echo get_rotation_number($screws[$i]['t']); ?> <?php echo get_direction($screws[$i]['s']) ?></strong></td>
-		</tr>
-	<?php endfor; ?>	
-	</tbody> 
-</table>
-
-
-<?php if($greens == 4): ?>
-	
-	
-	<div class="alert alert-success alert-block">
-		
-		<h4 class="alert-heading"><i class="fa fa-check"></i> Success!</h4>
-		The bed is well calibrated to print
-	</div>
-
-	
-	
-<?php endif; ?>
-
-<?
 
 function get_row_color($value) {
 
@@ -132,7 +95,6 @@ function get_direction($value) {
 
 }
 
-
 function get_rotation_number($value){
 			
 	$value = abs(floatval($value));
@@ -173,4 +135,38 @@ function get_rotation_number($value){
 	return $message;
 	
 }
-?>
+
+?><table class="table table-hover screws-rows">
+	
+	<thead>
+		<tr>
+			<th class="text-center">Screw</th>
+			<th class="text-center">Instructions</th>
+		</tr>
+	</thead>
+		
+	<tbody>
+	<?php for($i=0; $i<4; $i++): ?>
+		
+		<tr class="<?php echo  get_row_color($screws[$i]['s'])?>">
+			<td class="text-center"><span class="badge  badge <?php echo get_color($screws[$i]['s']); ?>"><?php echo($i + 1); ?></span></td>
+			<td><strong><?php echo get_rotation_number($screws[$i]['t']); ?> <?php echo get_direction($screws[$i]['s']) ?></strong></td>
+		</tr>
+	<?php endfor; ?>	
+	</tbody> 
+</table>
+
+
+<?php if($greens == 4): ?>
+	
+	
+	<div class="alert alert-success alert-block">
+		
+		<h4 class="alert-heading"><i class="fa fa-check"></i> Success!</h4>
+		The bed is well calibrated to print
+	</div>
+
+	
+	
+<?php endif; ?>
+
