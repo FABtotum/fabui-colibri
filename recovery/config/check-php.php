@@ -71,7 +71,7 @@ try
 
 	//TEST: db configuration
 	echo "Trying to connect to configured DB... "; flush();
-	require_once('../../lib/Database.php');
+	require_once('../../lib/database.php');
 	$db = new Database();
 	// Call _init explicitely to test for return value
 	if ($db->_init()) {

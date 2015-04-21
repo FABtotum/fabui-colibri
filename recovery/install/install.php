@@ -6,7 +6,7 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 
     //=========== CONFIG FILES
     include_once (ROOT.'/recovery/config/config.php');
-    include_once (ROOT.'/lib/Database.php');
+    include_once (ROOT.'/lib/database.php');
 	include_once (ROOT.'/lib/serial.php');
     include_once (ROOT.'/lib/utilities.php');
 	

@@ -1,8 +1,8 @@
-<?php
+a<?php
 require_once '/var/www/lib/config.php';
 require_once '/var/www/lib/serial.php';
 require_once '/var/www/lib/utilities.php';
-require_once '/var/www/lib/Database.php';
+require_once '/var/www/lib/database.php';
 
 class CreateFactory {
 

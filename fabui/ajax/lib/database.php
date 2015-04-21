@@ -1,6 +1,6 @@
 <?php
 
-include_once '/var/www/lib/Database.php';
+include_once '/var/www/lib/database.php';
 return;
 /*
 if(file_exists('/var/www/lib/log4php/Logger.php'))
