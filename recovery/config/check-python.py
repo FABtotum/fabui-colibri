@@ -98,7 +98,10 @@ try:
 		#print "ERROR"
 		#sys.exit(2)
 
-	#TEST: watchdog module
+	#TEST: pathtools and watchdog module
+	print "Looking for pathtools module...",
+	testModule("pathtools")
+
 	print "Looking for watchdog module...",
 	testModule("watchdog")
 
