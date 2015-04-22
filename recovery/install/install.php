@@ -10,8 +10,10 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 	include_once (ROOT.'/lib/serial.php');
     include_once (ROOT.'/lib/utilities.php');
 	
-	
-	
+	/** Set correct file ownership and permission for fabui */
+	shell_exec('sudo chgrp -R www-data /var/www');
+	shell_exec('sudo chmod -R ug+rwX   /var/www');
+
     $_first_name   = $_POST['first_name'];
     $_last_name    = $_POST['last_name'];
     $_email        = $_POST['email'];
@@ -34,7 +36,7 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 		shell_exec("sudo ifup wlan0");
 		
 	}
-	
+
 
     /** LOAD DB */
     switch (DB_DRIVER)
