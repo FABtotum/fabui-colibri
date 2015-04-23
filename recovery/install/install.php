@@ -5,14 +5,14 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 	if (!defined('ROOT')) define('ROOT', $_SERVER['DOCUMENT_ROOT']);
 
     //=========== CONFIG FILES
-    include_once (ROOT.'/recovery/config/config.php');
+    include_once (ROOT.'/lib/config.php');
     include_once (ROOT.'/lib/database.php');
 	include_once (ROOT.'/lib/serial.php');
     include_once (ROOT.'/lib/utilities.php');
 	
 	/** Set correct file ownership and permission for fabui */
 	shell_exec('sudo chgrp -R www-data /var/www');
-	shell_exec('sudo chmod -R ug+rwX   /var/www');
+	shell_exec('sudo chmod -R ug+rwX   /var/www');  // Do this on specific dirs and files
 
     $_first_name   = $_POST['first_name'];
     $_last_name    = $_POST['last_name'];
@@ -127,15 +127,15 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 	
 	
 	/** */
-	shell_exec('sudo ln -s '.UPLOAD_PATH.' '.FABUI_PATH.'upload/');
+	shell_exec('sudo ln -s '.UPLOAD_PATH.' '.FABUI_PATH.'upload');
 	
 	
 	/** MOVE DEFAULT FILES TO FOLDERS */
 	shell_exec('sudo cp /var/www/recovery/install/file/Marvin_KeyChain_FABtotum.gcode '.UPLOAD_PATH.'gcode/Marvin_KeyChain_FABtotum.gcode');
 	shell_exec('sudo cp /var/www/recovery/install/file/bracelet.gcode '.UPLOAD_PATH.'gcode/bracelet.gcode');
 	
-	shell_exec('sudo chmod 777 '.UPLOAD_PATH.'gcode/Marvin_KeyChain_FABtotum.gcode');
-	shell_exec('sudo chmod 777 '.UPLOAD_PATH.'gcode/bracelet.gcode');
+	shell_exec('sudo chmod 0664 '.UPLOAD_PATH.'gcode/Marvin_KeyChain_FABtotum.gcode');
+	shell_exec('sudo chmod 0664 '.UPLOAD_PATH.'gcode/bracelet.gcode');
 	
 	
 	/** CLEAN SESSION */
