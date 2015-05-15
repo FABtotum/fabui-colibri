@@ -19,7 +19,7 @@ $_task_data['user']       = $_SESSION['user']['id'];
 $_task_data['controller'] = 'maintenance';
 $_task_data['type']       = 'self_test';
 $_task_data['status']     = 'running';
-$_task_data['attributes'] = array();
+$_task_data['attributes'] = json_encode(array());
 $_task_data['start_date'] = 'now()';
 
 /** ADD TASK RECORD TO DB */ 
