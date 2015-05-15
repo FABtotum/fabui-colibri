@@ -95,45 +95,33 @@ function get_direction($value) {
 
 }
 
-function get_rotation_number($value){
-			
+function get_rotation_number($value)
+{
 	$value = abs(floatval($value));
-	
-	$temp = explode('.', $value);
-	
-	$turns_number = $temp[0];
-	
-	$degrees = round((floatval(floatval('0.'.$temp[1]) * 360)));
-	
-	
-	if($turns_number >= 1){
-		
+	//$temp = explode('.', $value);
+	$turns_number = intval($value);
+	$degrees = round(($value - $turns_number) * 360);
+
+	if ($turns_number >= 1)
+	{
 		$label_time = $turns_number > 1 ? 'times' : 'time';
-		
 		$message = "Turn ".$turns_number." ".$label_time;
-		
-		if($degrees > 0){
-			
+		if($degrees > 0)
+		{
 			$message .= ' and '.$degrees.' degrees';
-			
 		}
-		
-				
-	}else{
-		
-		
-		$message = 'Turn for ' . $degrees . ' degrees';
-		
-		if($degrees == 0){
-		
-			$message = '';
-				
-		}
-		
 	}
-	
+	else
+	{
+		$message = 'Turn for ' . $degrees . ' degrees';
+
+		if ($degrees == 0)
+		{
+			$message = '';
+		}
+	}
+
 	return $message;
-	
 }
 
 ?><table class="table table-hover screws-rows">
