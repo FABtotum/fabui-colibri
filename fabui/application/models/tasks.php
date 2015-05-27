@@ -25,7 +25,7 @@ class Tasks extends CI_Model {
 			$this->db->set($key, $value);
 		}
 
-		$this->db->set('start_date', 'NOW()', false);
+		$this->db->set('start_date', date('Y-m-d H:i:s')/*'NOW()', false*/);
 
 		$this->db->insert($this->_table_name);
 
@@ -38,7 +38,7 @@ class Tasks extends CI_Model {
 	function update($id, $data = array()){
 
 		if(isset($data['finish_date']) && $data['finish_date'] == strtolower('now()')){
-			$this->db->set('finish_date',  'NOW()', false);
+			$this->db->set('finish_date', date('Y-m-d H:i:s')/*'NOW()', false*/);
 			unset( $data['finish_date']);
 		}
 
