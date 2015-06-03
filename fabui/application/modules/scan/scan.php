@@ -840,7 +840,7 @@ class Scan extends Module {
         
         
         /** CREAE FILES AND FOLDERS */
-		mkdir($list['destination_folder'], 0777);
+		mkdir($list['destination_folder'], 0775, TRUE);
         /** create scan monitor file */
 		write_file($list['destination_folder'].$list['scan_monitor_file'], '', 'w');
         
