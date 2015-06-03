@@ -107,7 +107,7 @@ class Objects extends CI_Model {
 	 */
 	function insert_obj($data){
 			
-		$this->db->set('date_insert', 'now()', FALSE);
+		$this->db->set('date_insert', date('Y-m-d H:i:s')/*'now()', FALSE*/);
 		
 		$this->db->insert($this->_table_name, $data);
 

@@ -260,7 +260,7 @@ class Objectmanager extends Module {
 
 		if (!file_exists($upload_dir . $_extension))// se la cartella non esiste la creo
 		{
-			mkdir($upload_dir . $_extension, 0777);
+			mkdir($upload_dir . $_extension, 0775);
 		}
 
 		$config['upload_path'] = $upload_dir . $_extension;

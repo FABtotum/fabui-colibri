@@ -226,25 +226,25 @@ INSERT INTO `sys_configuration` (`id`, `key`, `value`) VALUES
 DROP TABLE IF EXISTS `sys_files`;
 CREATE TABLE IF NOT EXISTS `sys_files` (
   `id` INTEGER PRIMARY KEY,
-  `file_name` varchar(255) DEFAULT NULL,
+  `file_name` varchar(255) NOT NULL,
   `file_type` varchar(255) DEFAULT NULL,
-  `file_path` varchar(255) DEFAULT NULL,
-  `full_path` varchar(255) DEFAULT NULL,
+  `file_path` varchar(255) NOT NULL,
+  `full_path` varchar(255) NOT NULL,
   `raw_name` varchar(255) DEFAULT NULL,
   `orig_name` varchar(255) DEFAULT NULL,
   `client_name` varchar(255) DEFAULT NULL,
   `file_ext` varchar(255) DEFAULT NULL,
   `file_size` int(11) DEFAULT NULL,
-  `print_type` varchar(255) NOT NULL,
+  `print_type` varchar(255) DEFAUL NULL,
   `is_image` int(1) DEFAULT NULL,
   `image_width` int(11) DEFAULT NULL,
   `image_height` int(11) DEFAULT NULL,
   `image_type` int(255) DEFAULT NULL,
   `image_size_str` varchar(255) DEFAULT NULL,
   `insert_date` datetime NOT NULL,
-  `update_date` datetime NOT NULL,
-  `note` text NOT NULL,
-  `attributes` text NOT NULL
+  `update_date` datetime DEFAULT NULL,
+  `note` text DEFAULT '',
+  `attributes` text NOT NULL DEFAULT '{}'
 );
 
 --
