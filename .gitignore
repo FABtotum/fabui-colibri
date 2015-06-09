@@ -1,4 +1,29 @@
+# CI logs can be disabled altogether in production env
 /fabui/application/logs/
-/fabui/config/config.json
+
+# Data and runtime directories, these should be relocated in
+# more HFS-like directories, as pointed out subsequently.
+
+# -> /var/lib/fabui/*/
+/build/
+/upload/
+
+# -> /var/log/fabui/
 /logs/
+
+# -> /var/lib/fabui/fabtotum.db
+/fabtotum.db
+
+# -> /var/run/fabui/tasks/ (if persistency across sessions is not required,
+# otherwise use lib instead of run)
+/tasks/
+
+# -> /etc/fabui/config.json
+/fabui/config/config.json
+
+# -> /tmp/fabui/
 /temp/
+
+
+# Ideally, `/var/www` should very seldom end up into the `changes` partition
+# apart for source code updates.

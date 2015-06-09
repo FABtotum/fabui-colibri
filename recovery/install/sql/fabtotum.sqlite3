@@ -235,7 +235,7 @@ CREATE TABLE IF NOT EXISTS `sys_files` (
   `client_name` varchar(255) DEFAULT NULL,
   `file_ext` varchar(255) DEFAULT NULL,
   `file_size` int(11) DEFAULT NULL,
-  `print_type` varchar(255) DEFAUL NULL,
+  `print_type` varchar(255) DEFAULT NULL,
   `is_image` int(1) DEFAULT NULL,
   `image_width` int(11) DEFAULT NULL,
   `image_height` int(11) DEFAULT NULL,
