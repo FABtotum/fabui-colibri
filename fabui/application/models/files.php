@@ -36,7 +36,7 @@ class Files extends CI_Model {
 	 */
 	function insert_file($data){
 			
-		$this->db->set('insert_date', 'now()', FALSE);
+		$this->db->set('insert_date', date('Y-m-d H:i:s')/*'now()', FALSE*/);
 		
 		$data['file_size'] = str_replace('.', '', $data['file_size']);
 

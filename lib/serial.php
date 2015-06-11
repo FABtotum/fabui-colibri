@@ -49,7 +49,7 @@ class Serial
 		{
 			$this->_os = "linux";
 
-			if($this->_exec("stty --version") === 0)
+			if($this->_exec("which stty") === 0)
 			{
 				register_shutdown_function(array($this, "deviceClose"));
 			}
@@ -61,7 +61,7 @@ class Serial
 		elseif (substr($sysname, 0, 6) === "Darwin")
 		{
 			$this->_os = "osx";
-            // We know stty is available in Darwin. 
+            // We know stty is available in Darwin.
             // stty returns 1 when run from php, because "stty: stdin isn't a
             // terminal"
             // skip this check

@@ -1,4 +1,4 @@
-<?php
+a<?php
 require_once '/var/www/lib/config.php';
 require_once '/var/www/lib/serial.php';
 require_once '/var/www/lib/utilities.php';

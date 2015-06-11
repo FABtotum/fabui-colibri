@@ -1,8 +1,8 @@
 <?php
 /** FIRST DOWNLOAD FILE */
-require_once '/var/www/lib/config.php';
-require_once '/var/www/lib/database.php';
-require_once '/var/www/lib/utilities.php';
+require_once $_SERVER['DOCUMENT_ROOT'].'/fabui/ajax/config.php';
+require_once FABUI_PATH.'ajax/lib/database.php';
+require_once FABUI_PATH.'ajax/lib/utilities.php';
 
 /** GET ARGS FROM COMMAND LINE */
 $_task_id = $argv[1];

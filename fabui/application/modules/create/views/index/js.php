@@ -512,7 +512,6 @@ function manage_change(e){
 }
 
 
-
 /**
  *  OVVERRIDE GENERAL MONITOR FUNCTION
  */

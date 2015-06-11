@@ -589,19 +589,16 @@ function shutdown() {
 	clearInterval(idleInterval);
 
 	$.ajax({
-		type : "POST",
-		url : "/fabui/application/modules/controller/ajax/shutdown.php",
-		dataType : 'json'
-	}).done(function(response) {
-
+		type: "POST",
+		url: "/fabui/application/modules/controller/ajax/shutdown.php",
+		dataType: 'json'
+	}).always(function(response, status) {
 		setTimeout(function() {
 
 			$(".wait-spinner").remove();
 			waitTitle('Now you can switch off the power');
 			waitContent($("#power-off-img").html());
-
 		}, 5000);
-
 	});
 }
 

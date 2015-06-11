@@ -19,7 +19,7 @@ $_task_data['user']       = $_SESSION['user']['id'];
 $_task_data['controller'] = 'maintenance';
 $_task_data['type']       = 'self_test';
 $_task_data['status']     = 'running';
-$_task_data['attributes'] = array();
+$_task_data['attributes'] = json_encode(array());
 $_task_data['start_date'] = 'now()';
 
 /** ADD TASK RECORD TO DB */ 
@@ -42,14 +42,14 @@ $_uri_trace          = '/temp/task_trace';
 //$_uri_trace          = '/tasks/settings_'.$_type.'_'.$id_task.'_'.$_time.'/'.'settings_'.$_type.'_'.$id_task.'_'.$_time.'.trace';
 $_debug_file         = $_destination_folder.'settings_'.$_type.'_'.$id_task.'_'.$_time.'.debug';
 
-mkdir($_destination_folder, 0777);            
+mkdir($_destination_folder, 0775, TRUE);
 /** create print monitor file */
 write_file($_monitor_file, '', 'w');
-chmod($_monitor_file, 0777);
+chmod($_monitor_file, 0664);
 
 /** create print trace file */
 write_file($_trace_file, '', 'w');
-chmod($_trace_file, 0777);
+chmod($_trace_file, 0664);
 
 $fabui_version = '';
 /** GET TASK FROM DB */

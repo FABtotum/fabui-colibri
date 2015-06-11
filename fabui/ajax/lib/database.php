@@ -1,15 +1,13 @@
 <?php
-if(file_exists('/var/www/lib/log4php/Logger.php')){
-	
+
+include_once '/var/www/lib/database.php';
+return;
+/*
+if(file_exists('/var/www/lib/log4php/Logger.php'))
+{
 	require_once '/var/www/lib/log4php/Logger.php';
 	Logger::configure('/var/www/fabui/config/log_database_config.xml');
-	
 }
-//require_once '/var/www/lib/log4php/Logger.php';
-/** INIT LOG */
-//Logger::configure('/var/www/fabui/config/log_database_config.xml');
-
-
 
 class Database {
     
@@ -21,22 +19,12 @@ class Database {
     protected $_result;
 	protected $_num_rows;
     protected $_log;
-	
-	
-    /**
-     * 
-     * 
-     */
+
     public function __construct()
 	{
         $this->_init();
 	}
-    
-    
-    /**
-     * 
-     * 
-    */ 
+
     public function _init(){
         
         $this->_hostname = DB_HOSTNAME;
@@ -63,12 +51,7 @@ class Database {
 		$this->_db->set_charset("utf8");
         
     }
-    
-    
-    /**
-     * 
-     * 
-    */
+
     public function query($query){
     	
 		
@@ -230,5 +213,5 @@ class Database {
     
        
 }
-
+*/
 ?>

@@ -1,49 +1,65 @@
 <?php
+
 session_start();
-if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' && count($_POST) > 0){
+
+if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' && count($_POST) > 0)
+{
 	
-    //=========== CONFIG FILES
-    include_once ('/var/www/lib/config.php');
-    include_once ('/var/www/lib/database.php');
+	//=========== CONFIG FILES
+	include_once ('/var/www/lib/config.php');
+	include_once ('/var/www/lib/database.php');
 	include_once ('/var/www/lib/serial.php');
-    include_once ('/var/www/lib/utilities.php');
+	include_once ('/var/www/lib/utilities.php');
 	
-	
-    $_first_name   = $_POST['first_name'];
-    $_last_name    = $_POST['last_name'];
-    $_email        = $_POST['email'];
-    $_password     = $_POST['password'];
+	/** Set correct file ownership and permission for fabui */
+	foreach (array('upload', 'temp') as $dir)
+	{
+		shell_exec('sudo chgrp -R www-data /var/www/'.$dir);
+		shell_exec('sudo chmod -R ug+rwX   /var/www/'.$dir);  // Do this on specific dirs and files
+	}
+	unset ($dir);
+
+	$_first_name   = $_POST['first_name'];
+	$_last_name    = $_POST['last_name'];
+	$_email        = $_POST['email'];
+	$_password     = $_POST['password'];
 	$_net          = $_POST['net'];
 	$_net_password = $_POST['net_password'];
 	$_ip_address   = $_POST['ip_address'];
     
-    /** CHECK IF IS WIFI CONNCECTION */
-    $_temp    = explode('-', $_net);
+	/** CHECK IF IS WIFI CONNCECTION */
+	$_temp    = explode('-', $_net);
 	$_is_wifi = $_temp[0] == 'wifi' ? true : false;
 	
-	if($_is_wifi){
-		
+	if($_is_wifi)
+	{
 		$_net = str_replace('wifi-', '', $_net);
 		shell_exec("sudo python ".PYTHON_PATH."connection_setup.py -n".$_net." -p".$_net_password);
 		
 		shell_exec("sudo ifdown wlan0");
 		sleep(3);
-		shell_exec("sudo ifup wlan0");
-		
+		shell_exec("sudo ifup wlan0");	
 	}
-    
-	
 
-    //inizialitizzo database
-    $_command = 'sudo mysql -u '.DB_USERNAME.' -p'.DB_PASSWORD.' -h '.DB_HOSTNAME.'  < '.SQL_INSTALL_DB;
-	
-    shell_exec($_command);
-	
-	
-    /** LOAD DB */
+	/** LOAD DB */
+	switch (DB_DRIVER)
+	{
+		// SQLite3 DB (new!!!)
+		case 'pdo:sqlite':
+			// Already done in file bundle creation, but might be enabled here:
+			//$_command = 'sudo sqlite3 '.DB_DATABASE.'  < '.SQL_INSTALL_DB;
+			break;
+		// MySQL (legacy, kept as default)
+		default:
+		case 'pdo:mysql':
+		case 'mysqli':
+			$_command = 'sudo mysql -u '.DB_USERNAME.' -p'.DB_PASSWORD.' -h '.DB_HOSTNAME.'  < '.SQL_INSTALL_DB;
+			shell_exec($_command);
+	}
+
 	$db = new Database();
+
 	/** ADD USER */
-	
 	$_settings['theme-skin'] = 'smart-style-0';
 	$_settings['avatar']     = '';
 	$_settings['token']      = '';
@@ -55,6 +71,7 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' && 
 	$_user_data['email']      = $_email;
 	$_user_data['password']   = md5($_password);
 	$_user_data['settings']   = json_encode($_settings);
+	$_user_data['session_id'] = session_id();
 	
 	/** ADD TASK RECORD TO DB */ 
 	$id_user = $db->insert('sys_user', $_user_data);
@@ -116,15 +133,15 @@ if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' && 
 	
 	
 	/** */
-	shell_exec('sudo ln -s '.UPLOAD_PATH.' '.FABUI_PATH.'upload/');
+	shell_exec('sudo ln -s '.UPLOAD_PATH.' '.FABUI_PATH.'upload');
 	
 	
 	/** MOVE DEFAULT FILES TO FOLDERS */
 	shell_exec('sudo cp /var/www/recovery/install/file/Marvin_KeyChain_FABtotum.gcode '.UPLOAD_PATH.'gcode/Marvin_KeyChain_FABtotum.gcode');
 	shell_exec('sudo cp /var/www/recovery/install/file/bracelet.gcode '.UPLOAD_PATH.'gcode/bracelet.gcode');
 	
-	shell_exec('sudo chmod 777 '.UPLOAD_PATH.'gcode/Marvin_KeyChain_FABtotum.gcode');
-	shell_exec('sudo chmod 777 '.UPLOAD_PATH.'gcode/bracelet.gcode');
+	shell_exec('sudo chmod 0664 '.UPLOAD_PATH.'gcode/Marvin_KeyChain_FABtotum.gcode');
+	shell_exec('sudo chmod 0664 '.UPLOAD_PATH.'gcode/bracelet.gcode');
 	
 	
 	/** CLEAN SESSION */

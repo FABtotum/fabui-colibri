@@ -1,4 +1,7 @@
 <?php
+
+include_once ('/var/www/recovery/config/config.php');
+
 //===================================================================================================================================================
 $www_path   = '/var/www/';
 $fabui_path = $www_path.'fabui/';
@@ -15,8 +18,8 @@ defined('LIB_PATH')      ? null : define("LIB_PATH",      WWW_PATH.'lib/');
 
 //===================================================================================================================================================
 /** SERIAL PORT CONSTANTS */
-defined("PORT_NAME")  ? null : define("PORT_NAME", '/dev/ttyAMA0');
-defined("BOUD_RATE")  ? null : define("BOUD_RATE", '115200'); 
+defined("PORT_NAME")  ? null : define("PORT_NAME", '/dev/ttyAMA0');  //TODO: possibly get from env
+defined("BOUD_RATE")  ? null : define("BOUD_RATE", '115200');  //TODO: possibly get from env
 
 //===================================================================================================================================================
 /** DATABASE CONNECTION */

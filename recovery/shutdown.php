@@ -21,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['shutdown'])) {
 	
 	
 	shell_exec('sudo python /var/www/fabui/python/gmacro.py shutdown');
-	
-	shell_exec('sudo shutdown now');
+
+	shell_exec('sudo poweroff');
 	$shutdown = true;
 	
 }

@@ -95,12 +95,12 @@ FABUI 0.8 (26/01/2015)
 SCAN
 - Fixed reconstruction order and size
 - Increased postprocessing speed by changing the laser detection method<
-- Dynamic Brightness Treshold introduced
+- Dynamic Brightness Threshold introduced
 - Minor works toward introduction of perspective correction and camera undistort algorithm
 
 CREATE
 - Improved user experience
-- Fixed ojects list on second page
+- Fixed objects list on second page
 
 JOG
 - Improved user experience

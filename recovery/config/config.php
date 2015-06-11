@@ -1,18 +1,21 @@
 <?php
 defined("INSTALL_FILE")  ? null : define("INSTALL_FILE", '/var/www/install.txt');
 
+if (!defined('OS_FLAVOUR'))
+	define('OS_FLAVOUR', file_exists('/mnt/live/lib/colibrikitlib')? 'Colibri' : 'Raspbian');
 
 //================================== DATABASE ============
+if (!defined("DB_DRIVER"))
+	define('DB_DRIVER',  OS_FLAVOUR=='Colibri'? 'pdo:sqlite' : 'mysqli');
 defined("DB_HOSTNAME")  ? null : define("DB_HOSTNAME", 'localhost');
 defined("DB_USERNAME")  ? null : define("DB_USERNAME", 'root');
 defined("DB_PASSWORD")  ? null : define("DB_PASSWORD", 'fabtotum');
-defined("DB_DATABASE")  ? null : define("DB_DATABASE", 'fabtotum');
+if (!defined("DB_DATABASE"))
+	define('DB_DATABASE', DB_DRIVER=='pdo:sqlite'? '/var/www/fabtotum.db' : 'fabtotum');
 
-
-//================================= INSTALL =============
-defined("SQL_INSTALL_DB")  ? null : define("SQL_INSTALL_DB", '/var/www/recovery/install/sql/fabtotum.sql');
-
-
+//================================= DB INSTALL =============
+if (!defined("SQL_INSTALL_DB"))
+	define('SQL_INSTALL_DB', DB_DRIVER=='pdo:sqlite'? '/var/www/recovery/install/sql/fabtotum.sqlite3' : '/var/www/recovery/install/sql/fabtotum.sql');
 
 //=========== INSTALL ==============================//
 defined("MYFAB_REMOTE_VERSION_URL")  ? null : define("MYFAB_REMOTE_VERSION_URL", 'http://update.fabtotum.com/FAB-UI/version.txt');
