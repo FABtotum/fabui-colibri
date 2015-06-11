@@ -1,8 +1,53 @@
 FAB-UI
-=====
-the FABtotum User Interface Repo
+======
 
-FABUI 0.9 (08/06/2014)
+New development branches of the FAB-UI intended for the new FABtotum 
+Colibri os flavor.
+
+FABtotum/Colibri
+----------------
+System features and development status:
+
+### What changes
+- Base system switch from Raspbian to homebrew
+  [Colibri](https://github.com/Colibri-Embedded)
+- Http server Apache 2 replaced by Lighttpd
+- Application database MySQL replaced by SQLite 3
+
+### Improvements
+- Easy installation / reinstallation: just copy the installation files
+  on a FAT32 formatted SD card
+- Fast boot (<20 secs) and shutdown (<10 secs)
+- Resilient to power failures / hard power-offs
+
+### What works
+- Maintenance tasks
+- Printing
+- Object manager (w/o usb support)
+
+### What doesn't work
+- Scanning
+- On-board slicing with embedded Slic3r instance
+- WiFi dongle
+- USB stick support
+
+### Untested
+- Milling
+
+This repository **only contains the FAB-UI source files**. For the 
+complete system also refer to:
+
+- https://github.com/Colibri-Embedded/colibri-buildroot
+- https://github.com/Colibri-Embedded/colibri-earlyboot
+- https://github.com/FABtotum/colibri-fabtotum
+
+**Official builds of the complete system will be prepared and published 
+soon**.
+
+Changelog
+---------
+
+FABUI 0.9 (08/06/2015)
 
 GENERAL
 - Improved Apache configuration to optimize server perfomance
