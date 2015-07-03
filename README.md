@@ -23,13 +23,13 @@ System features and development status:
 ### What works
 - Maintenance tasks
 - Printing
-- Object manager (w/o usb support)
+- Object manager
 
 ### What doesn't work
 - Scanning
 - On-board slicing with embedded Slic3r instance
 - WiFi dongle
-- USB stick support
+- Recovery mode
 
 ### Untested
 - Milling
@@ -46,6 +46,25 @@ soon**.
 
 Changelog
 ---------
+==================================================================
+
+FABUI 0.91 (16/06/2015)
+
+GENERAL
+- Added "Restart" button on top menu bar
+- Automated operations have been improved in speed and reliability.
+- Fixed wrong message and behavior on error code "110". This error code is now treated as an information alert 
+
+CREATE
+- Modified Fan slider to set a min value equal to 50%
+
+OBJECTMANAGER
+- Fixed bug on folders navigation on USB Drives
+
+MAINTENANCE
+- Spool: improved load and unload spool procedure
+
+==================================================================
 
 FABUI 0.9 (08/06/2015)
 
@@ -78,7 +97,6 @@ SETTINGS
 - Added new new Feature: custom functions on hitting both Y or Z endstops (need firmware version: 1.0.008) (by Imarin2)
 - Added support for custom activate and deactivate methods for plugins (by Tohara)
 - Added new feature: configurable extruder steps per unit (by Imarin2)
-
 
 ==================================================================
 
