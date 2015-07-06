@@ -1,7 +1,51 @@
 <?php
 
+if (!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
+
 class System
 {
+	public function __get($name)
+	{
+		// Reference system classes as items of the root System class
+		if (class_exists(get_class($this).'\\'.$name)) {
+			return $this->load($name);
+		} else {
+			trigger_error("$name is undefined");
+			return;
+		}
+	}
+
+	/**
+	 * Autoload of classes from files
+	 */
+	static public function _autoload ($class)
+	{
+		if (substr_compare($class, __CLASS__, 0, strlen(__CLASS__)) === 0)
+		{
+			$path = dirname(__FILE__).DS.str_replace('\\', DS, $class).'.php';
+			include_once ($path);
+		}
+	}
+
+	/**
+	 * Load a library class as singleton
+	 */
+	static private $_instances = array();
+	static public function load ($class='System')
+	{
+		switch ($class)
+		{
+			case 'System':
+				if (empty(self::$_instances['System']))
+					self::$_instances['System'] = new System;
+				return self::$_instances['System'];
+			default:
+				$class = "System\\{$class}";
+				if (empty(self::$_instances[$class]))
+					self::$_instances[$class] = new $class;
+				return self::$_instances[$class];
+		}
+	}
 
    /**
     * Shut down teh system
@@ -39,3 +83,5 @@ class System
    }
 
 }
+
+spl_autoload_register('\System::_autoload');
