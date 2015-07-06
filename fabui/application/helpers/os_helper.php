@@ -2,6 +2,8 @@
 if (!defined('BASEPATH'))
 	exit('No direct script access allowed');
 
+require_once ('/var/www/lib/System.php');
+
 if (!function_exists('installed_plugins')) {
 
 	function exist_process($pid) {
@@ -285,7 +287,8 @@ function networkConfiguration() {
 /**
  * Set Network Configuration
  */
-function setNetworkConfiguration($eth, $wifi){
+//MOVED INTO: /var/www/lib/System/Networking.php
+/*function setNetworkConfiguration($eth, $wifi){
 	
 	
 	
@@ -336,7 +339,7 @@ function setNetworkConfiguration($eth, $wifi){
 	//shell_exec('sudo /etc/init.d/networking restart');
 	
 	
-}
+}*/
 
 
 /**
@@ -346,7 +349,7 @@ function setEthIP($ip){
 	
 	$ip = '169.254.1.'.$ip;	 	
 	$networkConfiguration = networkConfiguration();
-	setNetworkConfiguration($ip, $networkConfiguration['wifi']);
+	System::load()->Networking->setNetworkConfiguration($ip, $networkConfiguration['wifi']);
 	
 	$response = shell_exec("sudo service networking reload");
 }
@@ -359,7 +362,7 @@ function setEthIP($ip){
 function setWifi($ssid, $password, $type="WPA"){
 	
 	$networkConfiguration = networkConfiguration();
-	setNetworkConfiguration($networkConfiguration['eth'], array('ssid' => $ssid, 'password'=>$password, 'type'=>$type));
+	System::load()->Networking->setNetworkConfiguration($networkConfiguration['eth'], array('ssid' => $ssid, 'password'=>$password, 'type'=>$type));
 		
 	$response = shell_exec("sudo service networking reload");
 

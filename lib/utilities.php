@@ -2,6 +2,7 @@
 /** FIRST DOWNLOAD FILE */
 require_once '/var/www/lib/config.php';
 require_once '/var/www/lib/database.php';
+require_once '/var/www/lib/System.php';
 
 function site_url($url){
     return SITE_URL.$url;
@@ -572,48 +573,55 @@ function networkConfiguration() {
 /**
  * Set Network Configuration
  */
-function setNetworkConfiguration($eth, $wifi){
-	
-	$interfaces_file = NETWORK_INTERFACES;
-	
-	$new_configuration =  'auto lo'.PHP_EOL;
-	$new_configuration .= 'iface lo inet loopback'.PHP_EOL.PHP_EOL;
-	$new_configuration .= 'allow-hotplug eth0'.PHP_EOL;
-	$new_configuration .= '    auto eth0'.PHP_EOL;
-	$new_configuration .= '    iface eth0 inet static'.PHP_EOL;
-	$new_configuration .= '    address '.$eth.PHP_EOL;
-	$new_configuration .= '    netmask 255.255.0.0'.PHP_EOL.PHP_EOL;
-	$new_configuration .= 'allow-hotplug wlan0'.PHP_EOL;
-	$new_configuration .= '    auto wlan0'.PHP_EOL;
-	$new_configuration .= '    iface wlan0 inet dhcp'.PHP_EOL;
-	
-	switch($wifi['type']){
-		
-		case 'OPEN':
-			$new_configuration .= '    wireless-essid '.$wifi['ssid'].''.PHP_EOL;
-			$new_configuration .= '    wireless-mode managed'.PHP_EOL;
-			break;
-		case 'WEP':
-			$new_configuration .= '    wireless-essid '.$wifi['ssid'].''.PHP_EOL;
-			$new_configuration .= '    wireless-key '.$wifi['password'].''.PHP_EOL;
-			break;
+//MOVED INTO: /var/www/lib/System/Networking.php
+/*function setNetworkConfiguration($eth_address, $wifi)
+{
+
+	$wifi_conf = array();
+	switch($wifi['type'])
+	{		
 		case 'WPA':
 		case 'WPA2':
-			$new_configuration .= '    wpa-ssid "'.$wifi['ssid'].'"'.PHP_EOL;
-			$new_configuration .= '    wpa-psk "'.$wifi['password'].'"'.PHP_EOL;
+			$wifi_conf[] = "    wpa-ssid \"{$wifi['ssid']}\"";
+			$wifi_conf[] = "    wpa-psk  \"{$wifi['password']}\"";
 			break;
+		case 'WEP':
+			$wifi_conf[] = "    wireless-essid \"{$wifi['ssid']}\"";
+			$wifi_conf[] = "    wireless-key   \"{$wifi['password']}\"";
+			break;
+		default:
+		case 'OPEN':
+			$wifi_conf[] = "    wireless-essid \"{$wifi['ssid']}\"";
+			$wifi_conf[] = "    wireless-mode  managed";
 	}
-	
+	$wifi_conf = implode(PHP_EOL, $wifi_conf);
+
+	$interfaces_file = NETWORK_INTERFACES;
+
+	$new_configuration = <<<CONF
+auto lo
+iface lo inet loopback
+
+allow-hotplug eth0
+auto eth0
+iface eth0 inet static
+    address {$eth_address}
+    netmask 255.255.0.0
+
+allow-hotplug wlan0
+auto wlan0
+iface wlan0 inet dhcp'.PHP_EOL;
+{$wifi_conf}
+CONF;
 		
 	$backup_command = 'sudo cp /etc/network/interfaces '.$interfaces_file.'.sav';
 	shell_exec($backup_command);
-	
-	shell_exec('sudo chmod 666 '.$interfaces_file);
-	
+
+	// can this be handled better?
+	shell_exec('sudo chmod 666'.$interfaces_file);
 	file_put_contents($interfaces_file, $new_configuration);
-	
-	shell_exec('sudo chmod 644 '.$interfaces_file);
-}
+	shell_exec('sudo chmod 640'.$interfaces_file);
+}*/
 
 
 
@@ -625,7 +633,7 @@ function setEthIP($ip){
 	$ip = '169.254.1.'.$ip;	 	
 	$networkConfiguration = networkConfiguration();
 	
-	setNetworkConfiguration($ip, $networkConfiguration['wifi']);
+	System::load()->Networking->setNetworkConfiguration($ip, $networkConfiguration['wifi']);
 	
 	$response = shell_exec("sudo service networking reload");
 }
