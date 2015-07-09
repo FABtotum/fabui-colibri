@@ -2,7 +2,7 @@
 /** FIRST DOWNLOAD FILE */
 require_once '/var/www/lib/config.php';
 require_once '/var/www/lib/database.php';
-require_once '/var/www/lib/System.php';
+require_once '/var/www/lib/Colibri.php';
 
 function site_url($url){
     return SITE_URL.$url;
@@ -628,12 +628,14 @@ CONF;
 /**
  * Set Ethernet static IP address
  */
-function setEthIP($ip){
-	
+function setEthIP($ip)
+{
+	$Networking = Colibri::load('Networking');
+
 	$ip = '169.254.1.'.$ip;	 	
-	$networkConfiguration = networkConfiguration();
+	$networkConfiguration = $Networking->networkConfiguration();
 	
-	System::load()->Networking->setNetworkConfiguration($ip, $networkConfiguration['wifi']);
+	$Networking->setNetworkConfiguration($ip, $networkConfiguration['wifi']);
 	
 	$response = shell_exec("sudo service networking reload");
 }

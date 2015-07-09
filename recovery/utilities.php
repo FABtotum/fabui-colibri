@@ -3,7 +3,7 @@
 include_once ('config/config.php');
 
 // Load system library (with its own autoload facility)
-require_once ('/var/www/lib/System.php');
+require_once ('/var/www/lib/Colibri.php');
 
 function check_install() {
 
@@ -68,8 +68,8 @@ function exec_sql_file() {
 /*******************************************************************************
  * REFACTORING:
  * 
- * Move the shared networking function into the System\Networking library class.
- * It's just one directory away: file:///var/www/lib/System/Networking.php
+ * Move the shared networking function into the Colibri\Networking library class.
+ * It's just one directory away: file:///var/www/lib/Colibri/Networking.php
  *
  ******************************************************************************/
 
@@ -154,7 +154,7 @@ function scan_wlan() {
 function setWifi($ssid, $password, $type = "WPA") {
 
 	$networkConfiguration = networkConfiguration();
-	System::load('Networking')->setNetworkConfiguration($networkConfiguration['eth'], array('ssid' => $ssid, 'password' => $password, 'type' => $type));
+	Colibri::load('Networking')->setNetworkConfiguration($networkConfiguration['eth'], array('ssid' => $ssid, 'password' => $password, 'type' => $type));
 
 	$response = shell_exec("sudo service networking reload");
 
@@ -231,7 +231,7 @@ function networkConfiguration() {
 /**
  * Set Network Configuration
  *
- * -> moved into lib/System/Networking
+ * -> moved into lib/Colibri/Networking
  */
 /*function setNetworkConfiguration($eth_address, $wifi)
 {
@@ -337,7 +337,7 @@ function setEthIP($ip) {
 	$ip = '169.254.1.' . $ip;
 	$networkConfiguration = networkConfiguration();
 
-	System::load('Networking')->setNetworkConfiguration($ip, $networkConfiguration['wifi']);
+	Colibri::load('Networking')->setNetworkConfiguration($ip, $networkConfiguration['wifi']);
 
 	$response = shell_exec("sudo service networking reload");
 }

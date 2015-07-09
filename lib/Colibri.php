@@ -2,12 +2,13 @@
 
 if (!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
 
-class System
+class Colibri
 {
 	public function __get($name)
 	{
 		// Reference system classes as items of the root System class
-		if (class_exists(get_class($this).'\\'.$name)) {
+		// (it blends well with CI syntax :-)
+		if (class_exists(__CLASS__.'\\'.$name)) {
 			return $this->load($name);
 		} else {
 			trigger_error("$name is undefined");
@@ -31,16 +32,16 @@ class System
 	 * Load a library class as singleton
 	 */
 	static private $_instances = array();
-	static public function load ($class='System')
+	static public function load ($class='Colibri')
 	{
 		switch ($class)
 		{
-			case 'System':
-				if (empty(self::$_instances['System']))
-					self::$_instances['System'] = new System;
-				return self::$_instances['System'];
+			case __CLASS__:
+				if (empty(self::$_instances[__CLASS__]))
+					self::$_instances[__CLASS__] = new Colibri;
+				return self::$_instances[__CLASS__];
 			default:
-				$class = "System\\{$class}";
+				$class = __CLASS__."\\{$class}";
 				if (empty(self::$_instances[$class]))
 					self::$_instances[$class] = new $class;
 				return self::$_instances[$class];
@@ -84,4 +85,4 @@ class System
 
 }
 
-spl_autoload_register('\System::_autoload');
+spl_autoload_register('\Colibri::_autoload');
