@@ -2,7 +2,13 @@
 if (!defined('BASEPATH'))
 	exit('No direct script access allowed');
 
-require_once ('/var/www/lib/System.php');
+require_once ('/var/www/lib/Colibri.php');
+// Network configuration
+//TODO: encapsulate all of this inside a proxy CI library
+$_Networking = Colibri::load('Networking');
+$_CI =& get_instance();
+$_CI->config->load('fabtotum', TRUE);
+$_Networking->NETWORK_INTERFACES = $_CI->config->item('fabtotum_network_interfaces', 'fabtotum');
 
 if (!function_exists('installed_plugins')) {
 
@@ -218,7 +224,9 @@ function wlan() {
 /**
  * Return network configuration - ETHERNET AND WLAN
  * 
+ * MOVED: /var/www/lib/Colibri/Networking.php
  */
+/*
 function networkConfiguration() {
 	
 	
@@ -281,7 +289,7 @@ function networkConfiguration() {
 	return array('eth' => trim($address), 'wifi'=>array('ssid'=>trim($wlan_ssid), 'password'=>trim($wlan_password), 'type' => $wifi_type));
 
 }
-
+*/
 
 
 /**
@@ -336,7 +344,7 @@ function networkConfiguration() {
 	
 	shell_exec('sudo chmod 644 '.$interfaces_file);
 	
-	//shell_exec('sudo /etc/init.d/networking restart');
+	//shell_exec('sudo /etc/init.d/network restart');
 	
 	
 }*/
@@ -344,35 +352,48 @@ function networkConfiguration() {
 
 /**
  * Set Ethernet static IP address
+ * 
+ * MOVED: /var/www/lib/Colibri/Networking.php
  */
-function setEthIP($ip){
+/*function setEthIP($ip){
 	
 	$ip = '169.254.1.'.$ip;	 	
 	$networkConfiguration = networkConfiguration();
-	System::load()->Networking->setNetworkConfiguration($ip, $networkConfiguration['wifi']);
+
+	$_Networking = System::load('Networking');
+	$_Networking->setNetworkConfiguration($ip, $networkConfiguration['wifi']);
 	
-	$response = shell_exec("sudo service networking reload");
-}
+	$response = shell_exec("sudo /etc/init.d/networking restart");
+}*/
 
 
 
 /**
  * Set Wlan 
+ * 
+ * MOVED: /var/www/lib/Colibri/Networking.php
  */
-function setWifi($ssid, $password, $type="WPA"){
-	
-	$networkConfiguration = networkConfiguration();
-	System::load()->Networking->setNetworkConfiguration($networkConfiguration['eth'], array('ssid' => $ssid, 'password'=>$password, 'type'=>$type));
-		
-	$response = shell_exec("sudo service networking reload");
+/*function setWifi($ssid, $password, $type="WPA")
+{
+	$_Networking = System::load('Networking');
 
-	if (strpos($response, 'PING') !== false || strpos($response, 'errors') !== false) {
+	$networkConfiguration = networkConfiguration();
+
+	$_Networking->setNetworkConfiguration($networkConfiguration['eth'], array('ssid' => $ssid, 'password'=>$password, 'type'=>$type));
+		
+	$response = exec("sudo /etc/init.d/network restart", $output, $return);
+
+	// Simplified return condition for new code
+	// (should we need to have anything else checked?)
+	return ($return == 0);
+
+	/*if (strpos($response, 'PING') !== false || strpos($response, 'errors') !== false) {
 			return false;
 	}else{
 		return true;
-	}
+	}*/
 	
-}
+/*}*/
 
 
 

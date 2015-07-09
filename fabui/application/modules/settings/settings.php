@@ -155,10 +155,23 @@ class Settings extends Module {
         
     }
     
+	protected function load_colibri_networking ()
+	{
+		$this->load->library('Colibri');
+		$this->load->helper('libraries');
+
+		/* Set Colibri\Networking library options */
+		map_library_options($this->colibri->Networking, array(
+			'fabtotum' => array(
+				'fabtotum_network_interfaces' => 'NETWORK_INTERFACES'
+			)
+		));
+	}
     
-    function network(){
-    	
-		
+    function network()
+    {
+		$this->load_colibri_networking();
+
 		$this->layout->add_js_file(array('src'=>'application/layout/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js', 'comment' => ''));
 		$this->layout->add_js_file(array('src'=>'application/layout/assets/js/plugin/masked-input/jquery.maskedinput.min.js', 'comment' => ''));
         
@@ -172,7 +185,7 @@ class Settings extends Module {
 		$saved_wifi = json_decode($saved_wifi, true);
 		
 		
-		$networkConfiguration = networkConfiguration();
+		$networkConfiguration = $this->colibri->Networking->networkConfiguration();
 		
 		$ethEndIp = explode('.', $networkConfiguration['eth']);
 		$ethEndIp = end($ethEndIp);
@@ -203,27 +216,30 @@ class Settings extends Module {
 
 
 
-	public function seteth(){
-		
+	public function seteth()
+	{
+		$this->load_colibri_networking();	
 		
 		$number = $this->input->post('number');
 		 /** LOAD HELPERS */
-        $this->load->helper("os_helper");
+		$this->load->helper("os_helper");
 		
-		setEthIP($number);
+		$this->colibri->Networking->setEthIP($number);
 		
 		echo true;
 	}
 	
 	
-	public function setwifi(){
-		
-		
+	public function setwifi()
+	{
+		$this->load_colibri_networking();
+
+		/** LOAD HELPERS */
+		$this->load->helper('os_helper');
 		$net      = $this->input->post('net');
 		$password = $this->input->post('password');
 		$address  = $this->input->post('address');
-		/** LOAD HELPERS */
-        $this->load->helper("os_helper"); 
+
 		
 		$wlans = scan_wlan();
 		
@@ -236,7 +252,7 @@ class Settings extends Module {
 		}
 		
 		
-		if(setWifi($net, $password, $type)){
+		if($this->colibri->Networking->setWifi($net, $password, $type)){
 		
 			$wlan = wlan();
 			$wlan_ip = isset($wlan['ip']) ? $wlan['ip'] : '';
