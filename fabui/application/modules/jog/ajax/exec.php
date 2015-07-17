@@ -6,13 +6,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/jog_factory.php';
 
 /** READ POST DATA */
 $function = isset($_POST['function']) ? $_POST['function']  : "";
-$value = isset($_POST['value']) ? $_POST['value']  : "";
-$time = isset($_POST['time']) ? $_POST['time']  : "";
-$step = isset($_POST['step']) ? $_POST['step']  : "";
-$zstep = isset($_POST['z_step']) ? $_POST['z_step']  : "";
+$value    = isset($_POST['value']) ? $_POST['value']  : "";
+$time     = isset($_POST['time']) ? $_POST['time']  : "";
+$step     = isset($_POST['step']) ? $_POST['step']  : "";
+$zstep    = isset($_POST['z_step']) ? $_POST['z_step']  : "";
 $feedrate = isset($_POST['feedrate']) ? $_POST['feedrate']  : ""; 
-$macro = isset($_POST['macro']) ? $_POST['macro']  : 'false'; 
-$macro = $macro == 'false' ? false : true;
+$macro    = isset($_POST['macro']) ? $_POST['macro']  : 'false'; 
+$macro    = $macro == 'false' ? false : true;
 
 
 

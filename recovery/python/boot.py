@@ -10,9 +10,9 @@ config.read('/var/www/fabui/python/config.ini')
 
 
 #startup script (see crontab)
-print "Boot script"
+#print "Boot script"
 #time.sleep(60) #wait 60 seconds so connections can be made.
-print "Start"
+#print "Start"
 
 #tell the board that the raspi has been connected.
 
