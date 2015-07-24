@@ -2,6 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/database.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/utilities.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/Colibri.php';
 
 $inserted = false;
 $tree = array();
@@ -16,10 +17,18 @@ EOT;
 
 /** LOAD FROM USB DISK */
 
-if (file_exists('/dev/sda1')) {
-	$inserted = true;
+if (file_exists('/dev/sda1'))
+{
+	$_mounts = Colibri::load()->getMounts('/dev/sda1');
+	if (count($_mounts)) {
+		$inserted=TRUE;
+		$_path = '--path='.basename($_mounts[0]['directory']).'/';
+	} else {
+		$inserted=FALSE;
+		$_path='';
+	}
 	$_destination = '/var/www/fabui/application/modules/objectmanager/temp/media.json';
-	$_command = 'sudo python ' . PYTHON_PATH . 'usb_browser.py  --dest=' . $_destination;
+	$_command = 'sudo python ' . PYTHON_PATH . 'usb_browser.py '.$_path.' --dest=' . $_destination;
 	shell_exec($_command);
 	$tree = json_decode(file_get_contents($_destination, FILE_USE_INCLUDE_PATH), TRUE);
 

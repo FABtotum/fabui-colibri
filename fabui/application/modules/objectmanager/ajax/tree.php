@@ -3,9 +3,12 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/database.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/utilities.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/Colibri.php';
 
 /** SAVE POST PARAMETERS */
-$_folder    = str_replace("//", "/", (str_replace('/media', '', $_POST["folder"])));
+$_mounts = Colibri::load()->getMounts('/dev/sda1');
+$_folder = basename($_mounts[0]['directory']).'/';
+$_folder.= str_replace("//", "/", (str_replace('/media', '', $_POST["folder"])));
 
 
 /** LOAD FROM USB DISK */

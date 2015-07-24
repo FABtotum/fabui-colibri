@@ -637,14 +637,16 @@ CONF;
  */
 function setEthIP($ip)
 {
-	$Networking = Colibri::load('Networking');
+	// relay function  to corresponding library...
+	return Colibri::load('Networking')->setEthIP($ip);
+	/*$Networking = Colibri::load('Networking');
 
 	$ip = '169.254.1.'.$ip;
 	$networkConfiguration = $Networking->networkConfiguration();
 	
 	$Networking->setNetworkConfiguration($ip, $networkConfiguration['wifi']);
 	
-	$response = shell_exec("sudo service networking reload");
+	$response = shell_exec("sudo service networking reload");*/
 }
 
 

@@ -48,6 +48,70 @@ class Colibri
 		}
 	}
 
+	/**
+	 * Retrieve mount info of selected device from /proc/mounts or
+	 * /etc/mtab through a simple query.
+	 * 
+	 * @param string|array $query  Field query to match lines from mtab/mounts file.
+	 *                             Lines are parsed into the following fields:
+	 *                             device,directory,type,options,dump,pass
+	 *
+	 * @return array List of mount points info assocaitive arrays
+	 * 
+	 * @author: Simone Cociancich <sc@fabtotum.com>
+	 */
+	protected $_mounts = array();
+	public function getMounts($query, $fields=array('directory'))
+	{
+		if (empty($this->_mounts))
+		{
+			$_sources = array('/proc/mounts', '/etc/mtab');
+			foreach ($_sources as $_src)
+			if (file_exists($_src))
+			{
+				$_mtab = file($_src);
+				foreach ($_mtab as $line)
+				{
+					$fields = explode(' ', $line);
+					$this->_mounts[] = array(
+						'device' => $fields[0],
+						'directory' => $fields[1],
+						'type' => $fields[2],
+						'options' => $this->parseMountOptions($fields[3]),
+						'dump' => $fields[4],
+						'pass' => $fields[5]
+					);
+				}
+				break;
+			}
+		}
+
+		if (is_string($query))
+			$query = array( 'device' => $query );
+
+		$mounts = array();
+		foreach ($this->_mounts as $mount)
+		{
+			$matching = TRUE;
+			foreach ($query as $field => $value)
+			{
+				if ($mount[$field] != $value) {
+					$matching = FALSE;
+					break;
+				}
+			}
+			if ($matching)
+				$mounts[] = $mount;
+		}
+		return $mounts;
+	}
+
+	private function parseMountOptions ($options)
+	{
+		parse_str(str_replace(',', '&', $options), $options);
+		return $options;
+	}
+
    /**
     * Shut down teh system
     *
