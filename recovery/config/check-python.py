@@ -176,6 +176,25 @@ try:
 		print "Checking OpenCV...",
 		import cv, cv2
 		print "ok"
+		
+		image = numpy.zeros((16,16,3),numpy.uint8)
+		
+		print "Checking OpenCV JPEG support...",
+		try:
+			cv2.imwrite('/tmp/cv2_test.jpg',image)
+			print "ok"
+		except Exception:
+			print "ERROR"
+			sys.exit(2)
+
+		print "Checking OpenCV PNG support...",
+		try:
+			cv2.imwrite('/tmp/cv2_test.png',image)
+			print "ok"
+		except Exception:
+			print "ERROR"
+			sys.exit(2)			
+
 	except ImportError:
 		print "ERROR"
 		sys.exit(2)
