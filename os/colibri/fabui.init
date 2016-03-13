@@ -1,0 +1,59 @@
+#!/bin/sh
+################################################################
+# Begin $rc_base/init.d/
+#
+# Description : 
+# 
+# Authors     :
+# 
+# Version     : 00.00
+#
+# Notes       :
+#
+###############################################################
+
+. /etc/default/rc
+. ${rc_functions}
+
+test -r /etc/default/fabui && source /etc/default/fabui
+
+SERVICE_NAME=FABUI
+
+case "$1" in
+  start)
+ 	boot_msg "Starting ${SERVICE_NAME}."
+	php    /var/www/fabui/script/initialize.php    &> /var/log/fabui/initialize.log
+	
+	php    /var/www/fabui/script/socket_server.php &> /var/log/fabui/socket_server.log &
+	echo $! > /run/fabui_socket_server.pid
+	
+	python /var/www/fabui/python/monitor.py        &> /var/log/fabui/monitor.log &
+	echo $! > /run/fabui_monitor.pid
+	
+	evaluate_retval
+	;;
+  stop)
+	boot_msg "Stopping ${SERVICE_NAME}."
+	if [ -e "/run/fabui_socket_server.pid" ]; then
+		PID=$(cat /run/fabui_socket_server.pid)
+		kill -9 $PID &> /dev/null
+	fi
+	
+	if [ -e "/run/fabui_monitor.pid" ]; then
+		PID=$(cat /run/fabui_monitor.pid)
+		kill -9 $PID &> /dev/null
+	fi
+	evaluate_retval
+	;;
+  restart|reload)
+	${0} stop
+	sleep 1
+	${0} start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+

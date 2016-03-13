@@ -1,0 +1,34 @@
+#!/bin/sh
+################################################################
+# Begin $rc_base/init.d/
+#
+# Description :
+#
+# Authors     :
+#
+# Version     : 00.00
+#
+# Notes       :
+#
+###############################################################
+
+. /etc/default/rc
+. ${rc_functions}
+
+case "$1" in
+  pre)
+    boot_msg "Configuring lighttpd for FABUI."
+    /usr/sbin/lighttpd-enable-mod fastcgi fastcgi-php fabui
+    evaluate_retval
+    boot_msg "Preparing FABUI for first setup."
+    sudo -uwww-data touch /var/www/AUTOINSTALL /var/www/WIZARD
+    evaluate_retval
+    ;;
+  post)
+    ;;
+  *)
+    echo "Usage: $0 {pre|post}"
+    exit 1
+esac
+
+exit $?
