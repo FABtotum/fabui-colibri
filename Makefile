@@ -36,6 +36,7 @@ SCRIPT_FILES	=	fabui/script/*
 WWW_FILES		= 	index.php \
 					install.php \
 					assets \
+					upload \
 					lib \
 					LICENSE \
 					README.md
