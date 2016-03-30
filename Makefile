@@ -77,7 +77,7 @@ INSTALL			?= install
 FAKEROOT 		?= fakeroot
 FAKEROOT_ENV 	= $(FAKEROOT) -s $(TEMP_DIR)/.fakeroot_env -i $(TEMP_DIR)/.fakeroot_env -- 
 MKSQUASHFS		?= mksquashfs
-
+BUNDLE_COMP		?= lz4
 ########################### Makefile rules #############################
 
 all:
@@ -202,7 +202,7 @@ $(OS_COMMON_STAMP):
 	$(DB) $@ < $< 
 		
 $(FABUI_BUNDLE): $(BDATA_STAMP) $(OS_COMMON_STAMP) $(OS_STAMP)
-	$(FAKEROOT_ENV) mksquashfs $(BDATA_DIR) $@ -noappend -comp xz -b 512K -no-xattrs
+	$(FAKEROOT_ENV) $(MKSQUASHFS) $(BDATA_DIR) $@ -noappend -comp $(BUNDLE_COMP) -b 512K -no-xattrs
 	md5sum $@ > $@.md5sum
 
 	
