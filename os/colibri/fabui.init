@@ -22,14 +22,13 @@ SERVICE_NAME=FABUI
 case "$1" in
   start)
  	boot_msg "Starting ${SERVICE_NAME}."
-	php    /var/www/fabui/script/initialize.php    &> /var/log/fabui/initialize.log
-	
-	php    /var/www/fabui/script/socket_server.php &> /var/log/fabui/socket_server.log &
+    python /var/www/fabui/python/baud.py
+	php /var/www/fabui/script/socket_server.php &> /var/log/fabui/socket_server.log &
 	echo $! > /run/fabui_socket_server.pid
-	
-	python /var/www/fabui/python/monitor.py        &> /var/log/fabui/monitor.log &
+	python /var/www/fabui/python/flush.py &> /var/log/flush.log
+	php /var/www/fabui/script/boot.php &> /var/log/boot.log
+	python /var/www/fabui/python/monitor.py &> /var/log/fabui/monitor.log &
 	echo $! > /run/fabui_monitor.pid
-	
 	evaluate_retval
 	;;
   stop)
@@ -56,4 +55,5 @@ case "$1" in
 esac
 
 exit $?
+
 
