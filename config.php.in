@@ -1,6 +1,5 @@
 <?php
-
-include_once ('/var/www/recovery/config/config.php');
+define('OS_FLAVOUR', file_exists('/mnt/live/lib/colibrikitlib')? 'Colibri' : 'Raspbian');
 
 //===================================================================================================================================================
 $www_path   = '@WWW_PATH@';
@@ -24,10 +23,13 @@ defined("BOUD_RATE")  ? null : define("BOUD_RATE", '115200');  //TODO: possibly 
 
 //===================================================================================================================================================
 /** DATABASE CONNECTION */
+if (!defined("DB_DRIVER"))
+	define('DB_DRIVER',  OS_FLAVOUR=='Colibri'? 'pdo:sqlite' : 'mysqli');
 defined("DB_HOSTNAME")  ? null : define("DB_HOSTNAME", 'localhost');
 defined("DB_USERNAME")  ? null : define("DB_USERNAME", 'root');
 defined("DB_PASSWORD")  ? null : define("DB_PASSWORD", 'fabtotum');
-defined("DB_DATABASE")  ? null : define("DB_DATABASE", 'fabtotum');
+if (!defined("DB_DATABASE"))
+	define('DB_DATABASE', DB_DRIVER=='pdo:sqlite'? '/var/www/fabtotum.db' : 'fabtotum');
 
 defined("SQL_INSTALL_DB")  ? null : define("SQL_INSTALL_DB", RECOVERY_PATH.'install/sql/fabtotum.sql');
 
