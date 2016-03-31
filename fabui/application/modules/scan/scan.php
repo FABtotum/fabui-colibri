@@ -44,7 +44,7 @@ class Scan extends Module {
 		/**
 		 * CHECK IF IS TASK RUNNING
 		*/
-		$_task             = $this->tasks->get_running('scan', 'scan');
+		$_task             = $this->tasks->get_running('make', 'scan');
 		$_scan_monitor     = '';
 		$_pprocess_monitor = '';
 
@@ -56,19 +56,20 @@ class Scan extends Module {
 
             $_task_attributes = json_decode($_task['attributes'], true);
 			
-
+			
 			/** Load scan monitor file */
             
-            if(isset($_task_attributes['scan_monitor'])){
+            if(isset($_task_attributes['monitor'])){
                 
                 
                 
-                if(file_exists($_task_attributes['scan_monitor'])){
+                if(file_exists($_task_attributes['monitor'])){
                 //if(file_exists (json_decode($_task['attributes'])->folder.json_decode($_task['attributes'])->scan_monitor)){
                    // $_scan_monitor     =  json_decode(file_get_contents(json_decode($_task['attributes'])->folder.json_decode($_task['attributes'])->scan_monitor));
                     
-                    
-                    $_scan_monitor = json_decode(file_get_contents($_task_attributes['scan_monitor']), true);
+                   
+                   	
+                    $_scan_monitor = json_decode(file_get_contents($_task_attributes['monitor']), true);
 					
 					
                     
@@ -142,14 +143,16 @@ class Scan extends Module {
 		/**
 		 * IMPOSTAZIONI LAYOUT
 		*/
-		$this->layout->add_js_file(array('src'=>'application/layout/assets/js/plugin/fuelux/wizard/wizard.min.js', 'comment' => 'javascript for the wizard'));
+		$this->layout->add_js_file(array('src'=>'/assets/js/plugin/fuelux/wizard/wizard.min.js', 'comment' => 'javascript for the wizard'));
         
-		$this->layout->add_js_file(array('src'=>'application/layout/assets/js/plugin/noUiSlider/jquery.nouislider.min.js', 'comment' => 'javascript for the noUISlider'));
-        $this->layout->add_css_file(array('src'=>'application/layout/assets/js/plugin/noUiSlider/jquery.nouislider.css', 'comment' => 'javascript for the noUISlider'));
+		$this->layout->add_js_file(array('src'=>'/assets/js/plugin/masked-input/jquery.maskedinput.min.js', 'comment' => 'masked input'));
+		
+		$this->layout->add_js_file(array('src'=>'/assets/js/plugin/noUiSlider.7.0.10/jquery.nouislider.all.min.js', 'comment' => 'javascript for the noUISlider'));
+        $this->layout->add_css_file(array('src'=>'/assets/js/plugin/noUiSlider.7.0.10/jquery.nouislider.min.css', 'comment' => 'javascript for the noUISlider'));
         
         /** JCROP */
-        $this->layout->add_js_file(array('src'=>'application/layout/assets/js/plugin/jcrop/jquery.Jcrop.min.js', 'comment' => 'javascript for JCROP'));
-        $this->layout->add_js_file(array('src'=>'application/layout/assets/js/plugin/jcrop/jquery.color.min.js', 'comment' => 'javascript for JCROP'));
+        $this->layout->add_js_file(array('src'=>'/assets/js/plugin/jcrop/jquery.Jcrop.min.js', 'comment' => 'javascript for JCROP'));
+        $this->layout->add_js_file(array('src'=>'/assets/js/plugin/jcrop/jquery.color.min.js', 'comment' => 'javascript for JCROP'));
         //$this->layout->add_css_file(array('src'=>'application/layout/assets/js/plugin/jcrop/jquery.Jcrop.css', 'comment' => 'css for JCROP'));
 
 
@@ -157,7 +160,7 @@ class Scan extends Module {
 		$data_for_steps['mode_list']           = $mode_list;
 		$data_for_steps['_task']               = $_task;
 		$data_for_steps['_task_attributes']    = $_task ? json_decode($_task['attributes'], true) : '';
-        $data_for_steps['_monitor_attributes'] = $_task ? json_decode(file_get_contents($data_for_steps['_task_attributes']['scan_monitor']) ): '';
+        $data_for_steps['_monitor_attributes'] = $_task ? json_decode(file_get_contents($data_for_steps['_task_attributes']['monitor']) ): '';
         $data_for_steps['_scan_monitor']       = $_task ? $_scan_monitor : '';
         $data_for_steps['_scan_stats']         = $_task && isset($data_for_steps['_task_attributes']['scan_stats_file']) ? json_decode(file_get_contents($data_for_steps['_task_attributes']['scan_stats_file']), true): '';
         $data_for_steps['_pprocess_stats']     = $_task && isset($data_for_steps['_task_attributes']['pprocess_stats_file']) ? json_decode(file_get_contents($data_for_steps['_task_attributes']['pprocess_stats_file']), true ): '';
@@ -186,13 +189,14 @@ class Scan extends Module {
 		$js_data['_task_attributes']    = $_task ? json_decode($_task['attributes'], true) : '';
 		$js_data['_scan_monitor']       = $_task ? $_scan_monitor : '';
 		$js_data['_pprocess_monitor']   = $_task ? $_pprocess_monitor : '';
-		$js_data['_scan_monitor_response'] = $_task ? file_get_contents($js_data['_task_attributes']['scan_monitor']) : '{}';
+		$js_data['_scan_monitor_response'] = $_task ? file_get_contents($js_data['_task_attributes']['monitor']) : '{}';
 		
 		
 		
-        $js_data['_monitor_attributes'] = $_task ? json_decode(file_get_contents($js_data['_task_attributes']['scan_monitor'])) : '';
+        $js_data['_monitor_attributes'] = $_task ? json_decode(file_get_contents($js_data['_task_attributes']['monitor'])) : '';
         $js_data['_scan_stats']         = $_task && isset($js_data['_task_attributes']['scan_stats_file'])? json_decode(file_get_contents($js_data['_task_attributes']['scan_stats_file']), true): '';
         $js_data['_pprocess_stats']     = $_task && isset($js_data['_task_attributes']['pprocess_stats_file'])? json_decode(file_get_contents($js_data['_task_attributes']['pprocess_stats_file']), true): '';
+		
 		
 		
 		
@@ -557,7 +561,7 @@ class Scan extends Module {
 		$_attributes_items['scan_pid']            = $_scan_pid;
 		$_attributes_items['folder']              = $task_files['destination_folder'];
 		$_attributes_items['time']                = $_time;
-		$_attributes_items['scan_monitor']        = $task_files['scan_monitor_file'];
+		$_attributes_items['monitor']             = $task_files['scan_monitor_file'];
 		$_attributes_items['scan_uri']            = $task_files['uri'];
 		$_attributes_items['mode']                = 6; 
 		$_attributes_items['mode_name']           = 'rotating';
@@ -606,6 +610,7 @@ class Scan extends Module {
      */
     function scan_sweep($param){
         
+		
         
         $mode = 7;
         
@@ -625,7 +630,7 @@ class Scan extends Module {
 		 * ADD TASK
 		 */
         $_task_data['user']       = $_SESSION['user']['id'];
-		$_task_data['controller'] = 'scan';
+		$_task_data['controller'] = 'make';
 		$_task_data['type']       = 'scan';
 		$_task_data['status']     = 'running';
         
@@ -640,12 +645,14 @@ class Scan extends Module {
         
         
         /** LAUNCH SCAN COMMAND */
-        $_command_scan = 'sudo python /var/www/fabui/python/s_scan.py -s'.$quality_values->slices.' -i'.$quality_values->iso.' -d'.$task_files['destination_folder'].' -l'.$task_files['scan_monitor_file'].' -b'.$param['x1'].' -e'.$param['x2'].' -w'.$quality_values->resolution->width.' -h'.$quality_values->resolution->height.' 2>'.$task_files['destination_folder'].$task_files['scan_debug_file'].'  > /dev/null & echo $!';
+        $_command_scan = 'sudo python /var/www/fabui/python/s_scan.py -s'.$quality_values->slices.' -i'.$quality_values->iso.' -d'.$task_files['destination_folder'].' -l'.$task_files['scan_monitor_file'].' -b'.$param['x1'].' -e'.$param['x2'].' -w'.$quality_values->resolution->width.' -h'.$quality_values->resolution->height.' -z'.$param['z_offset'].' 2>'.$task_files['destination_folder'].$task_files['scan_debug_file'].'  > /dev/null & echo $!';
+        
+        
         $_output_scan  = shell_exec ( $_command_scan );
 		$_scan_pid     = trim(str_replace('\n', '', $_output_scan));
         
         /** WAIT FOR FILE TO BE WRITTEN FOR THE FIRST TIME */
-        while(file_get_contents($task_files['destination_folder'].$task_files['scan_monitor_file']) == ''){   
+        while(file_get_contents($task_files['scan_monitor_file'], FILE_USE_INCLUDE_PATH) == ''){   
             //aspetto
             sleep(0.5);
         }
@@ -653,16 +660,22 @@ class Scan extends Module {
         
         /** LAUNC PPROCESS COMMAND */
         $_param_for_triangulation = '-ms';
-        $_command_pprocessing     = 'sudo python /var/www/fabui/python/triangulation.py -i'.$task_files['destination_folder'].'images/ -o'.$task_files['destination_folder'].$task_files['pprocess_file'].' -s'.$quality_values->slices.' -b0 -e360 -w'.$quality_values->resolution->width.' -h'.$quality_values->resolution->height.' -z0 -a'.$param['a_offset'].' -l'.$task_files['destination_folder'].$task_files['pprocess_monitor_file'].' '.$_param_for_triangulation.' -t'.$id_task.' 2>'.$task_files['destination_folder'].$task_files['pprocess_debug_file'].' > /dev/null & echo $!';
+        $_command_pprocessing     = 'sudo python /var/www/fabui/python/triangulation.py -i'.$task_files['destination_folder'].'images/ -o'.$task_files['destination_folder'].$task_files['pprocess_file'].' -s'.$quality_values->slices.'  -b'.$param['x1'].' -e'.$param['x2'].' -w'.$quality_values->resolution->width.' -h'.$quality_values->resolution->height.' -z0 -a'.$param['a_offset'].' -l'.$task_files['destination_folder'].$task_files['pprocess_monitor_file'].' '.$_param_for_triangulation.' -t'.$id_task.' 2>'.$task_files['destination_folder'].$task_files['pprocess_debug_file'].' > /dev/null & echo $!';
         $_output_pprocessing      = shell_exec ( $_command_pprocessing );
 		$_pprocess_pid            = trim(str_replace('\n', '', $_output_pprocessing));
         
+		
+		
+		
+		
+		//echo $task_files['destination_folder'].$task_files['pprocess_monitor_file']; exit();
         
-        /** WAIT FOR FILE TO BE WRITTEN FOR THE FIRST TIME */
+        /** WAIT FOR FILE TO BE WRITTEN FOR THE FIRST TIME
         while(file_get_contents($task_files['destination_folder'].$task_files['pprocess_monitor_file']) == ''){   
             //aspetto
             sleep(0.5); 
         }
+		 *  */
         
         
         /**
@@ -674,7 +687,7 @@ class Scan extends Module {
 		$_attributes_items['scan_pid']            = $_scan_pid;
 		$_attributes_items['folder']              = $task_files['destination_folder'];
 		$_attributes_items['time']                = $_time;
-		$_attributes_items['scan_monitor']        = $task_files['scan_monitor_file'];
+		$_attributes_items['monitor']             = $task_files['scan_monitor_file'];
 		$_attributes_items['scan_uri']            = $task_files['uri'];
 		$_attributes_items['mode']                = 7; 
 		$_attributes_items['mode_name']           = 'sweep';
@@ -727,8 +740,13 @@ class Scan extends Module {
      */
     function scan_probe($param){
         
-       
-     	   
+		
+		$param['axis_increment'] = isset($param['axis_increment']) ? $param['axis_increment'] : 0;
+		$param['start_degree']   = isset($param['start_degree']) ? $param['start_degree'] : 0;
+		$param['end_degree']     = isset($param['end_degree']) ? $param['end_degree'] : 0;
+		$param['z_hop']          = isset($param['z_hop']) ? $param['z_hop'] : 0;
+		$param['probe_skip']     = isset($param['probe_skip']) ? $param['probe_skip'] : 0;
+          
         $mode = 8;
         
         /** LOAD DATABASE */
@@ -744,7 +762,7 @@ class Scan extends Module {
 		 * ADD TASK
 		 */
         $_task_data['user']       = $_SESSION['user']['id'];
-		$_task_data['controller'] = 'scan';
+		$_task_data['controller'] = 'make';
 		$_task_data['type']       = 'scan';
 		$_task_data['status']     = 'running';
         
@@ -774,9 +792,10 @@ class Scan extends Module {
 		
         
         /** LAUNCH SCAN COMMAND */
-        $_command_scan = 'sudo python /var/www/fabui/python/p_scan.py -x'.$param['x1'].' -y'.$param['y2'].' -i'.$param['x2'].' -j'.$param['y1'].' -n'.$probe_quality['mm'].' -a'.$param['axis_increment'].' -b'.$param['start_degree'].' -e'.$param['end_degree'].' -l'.$task_files['scan_monitor_file'].' -d'.$task_files['destination_folder'].' -v1 -t'.$task_files['destination_folder'].$task_files['probing_trace_file'].' -k'.$id_task.' 2>'.$task_files['destination_folder'].$task_files['probing_debug_file'].'  > /dev/null & echo $!'; 
+        $_command_scan = 'sudo python /var/www/fabui/python/p_scan.py -x'.$param['x1'].' -y'.$param['y1'].' -i'.$param['x2'].' -j'.$param['y2'].' -n'.$probe_quality['mm'].' -a'.$param['axis_increment'].' -b'.$param['start_degree'].' -e'.$param['end_degree'].' -z'.$param['z_hop'].' -p'.$param['probe_skip'].'  -l'.$task_files['scan_monitor_file'].' -d'.$task_files['destination_folder'].' -v1 -t'.$task_files['destination_folder'].$task_files['probing_trace_file'].' -k'.$id_task.' 2>'.$task_files['destination_folder'].$task_files['probing_debug_file'].'  > /dev/null & echo $!'; 
         $_output_scan  = shell_exec ( $_command_scan );
 		$_scan_pid     = intval(trim(str_replace('\n', '', $_output_scan)))+1;
+		
         
         
          
@@ -789,7 +808,7 @@ class Scan extends Module {
 		$_attributes_items['scan_pid']           = $_scan_pid;
 		$_attributes_items['folder']             = $task_files['destination_folder'];
 		$_attributes_items['time']               = $_time;
-		$_attributes_items['scan_monitor']       = $task_files['scan_monitor_file'];
+		$_attributes_items['monitor']            = $task_files['scan_monitor_file'];
 		$_attributes_items['mode']               = 8; 
 		$_attributes_items['mode_name']          = 'probing';
 		$_attributes_items['step']               = 4; 
@@ -852,6 +871,9 @@ class Scan extends Module {
 		$split_size = explode('-', $param['pg_size']);
 		$width = $split_size[0];
 		$height = $split_size[1];
+		
+		$pc_host_address = $param['pc_host_address'];
+		$pc_host_port    = $param['pc_host_port'];
 		 
 		 
 		/** LOAD DATABASE */
@@ -866,7 +888,7 @@ class Scan extends Module {
 		 * ADD TASK
 		 */
         $_task_data['user']       = $_SESSION['user']['id'];
-		$_task_data['controller'] = 'scan';
+		$_task_data['controller'] = 'make';
 		$_task_data['type']       = 'scan';
 		$_task_data['status']     = 'running';
 		
@@ -885,11 +907,7 @@ class Scan extends Module {
 		
 		
 		/** LAUNCH SCAN COMMAND */
-        $_command_scan = 'sudo python /var/www/fabui/python/pg_scan.py -s'.$param['pg_slices'].' -i'.$param['pg_iso'].' -l'.$task_files['scan_monitor_file'].' -d'.$task_files['destination_folder'].' -b0 -e360 -w'.$width.' -h'.$height.'  > /dev/null & echo $!'; 
-        
-        
-      
-        
+        $_command_scan = 'sudo python /var/www/fabui/python/pg_scan.py -s'.$param['pg_slices'].' -i'.$param['pg_iso'].' -l'.$task_files['scan_monitor_file'].' -d'.$task_files['destination_folder'].' -b0 -e360 -w'.$width.' -h'.$height.' -t'.$id_task.' -a'.$pc_host_address.' -p'.$pc_host_port.' 2> /var/www/temp/krios.log > /var/www/temp/kk.log  & echo $!'; 
         
         $_output_scan  = shell_exec ( $_command_scan );
 		$_scan_pid     = intval(trim(str_replace('\n', '', $_output_scan)))+1;
@@ -907,7 +925,7 @@ class Scan extends Module {
 		$_attributes_items['scan_pid']           = $_scan_pid;
 		$_attributes_items['folder']             = $task_files['destination_folder'];
 		$_attributes_items['time']               = $_time;
-		$_attributes_items['scan_monitor']       = $task_files['scan_monitor_file'];
+		$_attributes_items['monitor']            = $task_files['scan_monitor_file'];
 		$_attributes_items['mode']               = 15; 
 		$_attributes_items['mode_name']          = 'photogrammetry';
 		$_attributes_items['slices']             = $param['pg_slices']; 
@@ -993,7 +1011,7 @@ class Scan extends Module {
         
         
         /** CREAE FILES AND FOLDERS */
-		mkdir($list['destination_folder'], 0775, TRUE);
+		mkdir($list['destination_folder'], 0777);
         /** create scan monitor file */
 		write_file($list['scan_monitor_file'], '', 'w');
         

@@ -1,11 +1,4 @@
-<div class="row">
-	<div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-		<h1 class="page-title txt-color-blueDark">
-			<i class="icon-fab-scan"></i> Scan
 
-		</h1>
-	</div>
-</div>
 <div class="row">
 	<div class="col-sm-12">
 
@@ -71,8 +64,4 @@
 
 	</div>
 </div>
-<div id="loading-modal" class="mfp-hide white-popup-block">
 
-	<p style="text-align:center;">Loading</p>
-
-</div>

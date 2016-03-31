@@ -73,15 +73,15 @@
 	
 		<?php $configuration = json_decode($mode->values) ?>
 		
-		<?php if($mode->name != 'sweep' && $mode->name != 'photogrammetry'): ?>
-		<div class="col-sm-6">
+		<?php //if($mode->name != 'sweep'): ?>
+		<div class="col-sm-3">
 		
 			<div class="scan-mode  well well-sm text-center " data-id="<?php echo $mode->id; ?>" data-type="<?php echo $mode->name ?>" data-title="<?php echo $configuration->info->name ?>">
 			
 				<h6><?php echo $configuration->info->name ?></h6>
 				<div class="row">
 					<div class="text-align-center mode-image">
-						<img class="img-responsive" style="display: inline; max-width: 50%;" src="<?php echo base_url() .'application/modules/scan/assets/img/'.strtolower($configuration->info->name).'.png' ?>">
+						<img class="img-responsive" style="display: inline; max-width: 50%;" src="<?php echo base_url() .'application/modules/scan/assets/img/'.strtolower($mode->name).'.png' ?>">
 					</div>
                     <div class="mode-description" style="display:none;">
 					   <p><?php echo $configuration->info->description ?></p>
@@ -90,7 +90,7 @@
 			
 			</div>
 		</div>
-		<?php endif; ?>
+		<?php //endif; ?>
 	
 	<?php endforeach; ?>
 

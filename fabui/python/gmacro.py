@@ -6,41 +6,83 @@ import serial
 import json
 import ConfigParser
 import logging
+import os
+import argparse
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("preset", help="macro to execute")
+parser.add_argument("log_trace", help="log travce file")
+parser.add_argument("log_response", help="log response file")
+parser.add_argument("force", help="avoid lock control",  default=0, nargs='?')
+
+parser.add_argument("--ext_temp", help="extruder target",  default=180, nargs='?', type=int)
+parser.add_argument("--bed_temp", help="bed target",  default=50,  nargs='?', type=int)
+
+args = parser.parse_args()
+
+preset=args.preset
+log_trace=args.log_trace
+log_response=args.log_response
+force=args.force
+ext_temp=args.ext_temp
+bed_temp=args.bed_temp
+
 
 
 config = ConfigParser.ConfigParser()
-config.read('/var/www/fabui/python/config.ini')
+config.read('/var/www/lib/config.ini')
 
-macro_status = config.get('macro', 'status_file')
+serialconfig = ConfigParser.ConfigParser()
+serialconfig.read('/var/www/lib/serial.ini')
+
+
+#check if LOCK FILE EXISTS
+if force == 0 and os.path.isfile(config.get('task', 'lock_file')):
+    print "printer busy"
+    sys.exit()
+
+
+#write LOCK FILE    
+open(config.get('task', 'lock_file'), 'w').close()
+#macro_status = config.get('macro', 'status_file')
 
 #read config steps/units
 json_f = open(config.get('printer', 'settings_file'))
 units = json.load(json_f)
 #process params
 
-try:
-    safety_door = int(units['safety']['door'])
-except KeyError:
-    safety_door = 0
+if 'settings_type' in units and units['settings_type'] == 'custom':
+    json_f = open(config.get('printer', 'custom_settings_file'))
+    units = json.load(json_f)
+
 
 try:
-    preset=str(sys.argv[1])  #param for the gcode to execute
-    log_trace=str(sys.argv[2]) #param for the log file
-    log_response=str(sys.argv[3]) #param for the log file
-except:
-    print("Missing params")
-    sys.exit()
-    
+    safety_door = int(units['safety']['door'])
+    zprobe_disabled = int(units['zprobe']['disable']) == 1
+    zmax_home_pos = float(units['zprobe']['zmax'])
+    feeder_disengage_offset=units['feeder']['disengage-offset'] #mm distance to disable extruder
+except KeyError:
+    safety_door = 0
+    zmax_home_pos = 206.0
+    zprobe_disabled = False
+    feeder_disengage_offset = 2 
+
 
 #generic errors
 probe_start_time=0 #start time
 s_error=0
 s_warning=0
 s_skipped=0
-feeder_disengage_offset=units['feeder']['disengage-offset'] #mm distance to disable extruder
+
+
 
 trace_file=config.get('macro', 'trace_file')
 response_file=config.get('macro', 'response_file')
+
+
+if os.path.exists(trace_file) == False:
+    open(trace_file, 'w+').close()
 
 logging.basicConfig(filename=log_trace,level=logging.INFO,format=' %(message)s',datefmt='%d/%m/%Y %H:%M:%S')
 
@@ -48,13 +90,14 @@ logging.basicConfig(filename=log_trace,level=logging.INFO,format=' %(message)s',
 open(trace_file, 'w').close() #reset trace file
 open(response_file, 'w').close() #reset trace file
 
+'''
 def write_status(status):
-    global macro_status
+    #global macro_status
     json='{"type": "status", "status": ' + str(status).lower() +'}'
     handle=open(macro_status,'w+')
     print>>handle, json
     handle.close()
-    return
+    return'''
 
 #track trace
 def trace(string,destination_file):
@@ -137,13 +180,19 @@ def macro(code,expected_reply,timeout,error_msg,delay_after,warning=False,verbos
     return serial_reply
 
 
-write_status(True)
+#write_status(True)
 '''#### SERIAL PORT COMMUNICATION ####'''
-serial_port = config.get('serial', 'port')
-serial_baud = config.get('serial', 'baud')
+serial_port = serialconfig.get('serial', 'port')
+serial_baud = serialconfig.get('serial', 'baud')
 
-serial = serial.Serial(serial_port, serial_baud, timeout=0.5)
-serial.flushInput()
+#print "Serial Port: ", serial_port
+#print "Serial Baud: ", serial_baud
+
+try:
+    serial = serial.Serial(serial_port, serial_baud, timeout=0.5)
+    serial.flushInput()
+except:
+    print "Unexpected error:", sys.exc_info()[0]
 
 #pre_print CHECK (SAFETY)
 if preset=="check_pre_print":
@@ -159,18 +208,18 @@ elif preset=="check_pre_scan":
     if(safety_door == 1):
         macro("M741","TRIGGERED",2,"Front panel door control",0.1)
     #macro("M744","open",1,"Building plane control",0.1)
-    macro("M744","TRIGGERED",1,"Spool panel control",1, warning=True)
-    macro("G90","ok",2,"Setting absolute positioning mode",1)
-    macro("G27","ok",100,"Zeroing Z axis",1)
-    macro("G28 X0 Y0","ok",15,"Zeroing Z axis",1)
+    macro("M744","TRIGGERED",1,"Spool panel control",1, warning=True,verbose=False)
+    macro("G90","ok",2,"Setting absolute positioning mode",1,verbose=False)
+    macro("G27 Z241","ok",100,"Zeroing Z axis",1)
+    macro("G28 X0 Y0","ok",15,"Zeroing Z axis",1,verbose=False)
     #disable feeder
     macro("G91","ok",2,"Setting relative position",1,verbose=False)
     macro("G0 X5 Y5 Z-"+str(feeder_disengage_offset)+" F400","ok",2,"Engaging 4th Axis Motion",1)
     macro("G90","ok",2,"Setting Absolute position",1,verbose=False)
     macro("M92 E"+str(units['a']),"ok",1,"Setting 4th axis mode",0,verbose=True)
     #move to collimation
-    macro("G0 Z135 F1000","ok",5,"Moving to pre-scan position",3)
-    macro("M18","ok",1,"Motor Off",1) #should be moved to firmware
+    macro("G0 Z135 F1000","ok",5,"Moving to pre-scan position",1)
+    #macro("M18","ok",1,"Motor Off",1) #should be moved to firmware
         
 #engage feeder (require manual intervention)
 elif preset=="engage_feeder":
@@ -205,11 +254,12 @@ elif preset=="4th_axis_mode":
     macro("M92 E"+str(units['a']),"ok",1,"Setting 4th axis mode",0,verbose=False)
     
 #jog_setup (operations before jogging)
-elif preset=="jog_setup":
+elif preset=="jog_setup": #deprecated - 
+    trace("Preparing jog...",log_trace)
     #macro("G91","ok",1,"Setting relative positioning",0.5,verbose=False)
     macro("M92 E"+str(units['e']),"ok",1,"Setting 4th axis mode",0.5, verbose=False) #default 4th axis. require M302 S0 to disable cold extrusion (safety)
     #trace(macro("M105","ok T",2,"Getting nozzle temperatures",0.5, warning=True),log_trace)
-    macro("M106", "ok", 5, "Fan on", 1, verbose=False) #Turn on the fan
+    macro("M106","ok", 1, "Fan on", 0.5, verbose=False) #Turn on the fan
     trace ("Ready to jog",log_trace)
     
 #start print (valid for 3dprinting or milling)
@@ -219,32 +269,48 @@ elif preset=="start_print":
     macro("G0 X5 Y5 Z60 F1500","ok",3,"Moving to oozing point",1)
     #macro("G0 Z60 F1500","ok",3,"Moving to oozing point",1)
     #pre heating M104 S0
-    macro("M104 S180","ok",3,"Pre Heating Nozzle (fast) ",20)
-    macro("M140 S50","ok",3,"Pre Heating Bed (fast) ",20)
+    macro("M104 S"+str(ext_temp),"ok",3,"Pre Heating Nozzle ("+str(ext_temp)+"&deg;) (fast) ",5)
+    macro("M140 S"+str(bed_temp),"ok",3,"Pre Heating Bed ("+str(bed_temp)+"&deg;) (fast) ",5)
     macro("M220 S100","ok",1,"Reset Speed factor override",0.1,verbose=False)
     macro("M221 S100","ok",1,"Reset Extruder factor override",0.1,verbose=False)
-    macro("M106 S255","ok",50,"Turning Fan On",1)
+    macro("M106 S255","ok",1,"Turning Fan On",1)
     macro("M92 E"+str(units['e']),"ok",1,"Setting extruder mode",0.1,verbose=False)
     
     
 elif preset=="start_subtractive_print":
     #macro("G92 X0 Y0 Z0 E0","ok",3,"Setting Origin Point",1)
     #macro("G90","ok",3,"Setting Origin Point",0.1, verbose=False)
+    
     macro("M92 E"+str(units['a']),"ok",1,"Setting 4th Axis mode",0.1,verbose=False)
     
     
 elif preset=="end_print_subtractive":
     serial.flush()
     trace("Terminating...",log_trace)
-    macro("G27","ok",100,"Lowering the building platform",1,verbose=False) #normally Z=240mm
+    #macro("G27","ok",100,"Lowering the building platform",1,verbose=False) #normally Z=240mm
     #note: movement here is done so it works with manual positioning (subtractive mode).
-    macro("M5","ok",100,"Shutting Down Milling Motor",1,verbose=False) #should be moved to firmware    
-    macro("M220 S100","ok",50,"Reset Speed factor override",0.1,verbose=False)
-    macro("M221 S100","ok",1,"Reset Extruder factor override",0.1,verbose=False)
-    macro("M107","ok",50,"Turning Fan off",1,verbose=False) #should be moved to firmware
-    macro("M18","ok",10,"Motor Off",1,verbose=False) #should be moved to firmware
-    trace("Completed",log_trace)
+    macro("M5","ok",100,"Shutting Down Milling Motor",1) #should be moved to firmware       
+    macro("M220 S100","ok",50,"Reset Speed factor override",0.1)
+    macro("M221 S100","ok",1,"Reset Extruder factor override",0.1)
+    macro("M107","ok",50,"Turning Fan off",1) #should be moved to firmware
+    macro("M18","ok",50,"Motor Off",1) #should be moved to firmware
+    macro("M728","ok",10,"Completed!",0.1) #should be moved to firmware
+    #trace("Completed",log_trace)
     
+elif preset=="safe_zone":
+    serial.write("G91\r\n") #Setting Absolute movement and moving to safe zone
+    serial.write("G0 E-5 F1000\r\n")
+    serial.write("G0 Z+1 F1000\r\n")
+    serial.write("G90\r\n")
+    serial.write("G27 Z0\r\n")
+    serial.write("G0 X210 Y210\r\n")
+    '''
+    macro("G91","ok",1,"g91",1,verbose=False) #end print signal
+    macro("G0 E-5 F1000","ok",1,"g0 e-5!",1,verbose=False) #end print signal
+    macro("G0 Z+1 F1000","ok",1,"g0 z+1",1,verbose=False) #end print signal
+    macro("G90","ok",1,"g90",1,verbose=False) #end print signal
+    macro("G27 Z0","ok",1,"g27",30,verbose=False) #end print signal
+    macro("G0 X210 Y210","ok",1,"Done!",1,verbose=False) #end print signal'''   
 elif preset=="end_print_additive":
     serial.flush()
     #note: movement here is done so it works with AUTO positioning (additive mode).
@@ -267,18 +333,37 @@ elif preset=="end_print_additive_safe_zone":
     
 elif preset=="raise_bed":
     #for homing procedure before probe calibration and print without homing.
-    macro("M402","ok",4,"Raising probe",0.1)
+    macro("M402","ok",4,"Raising probe",0.1, verbose=True)
     macro("G90","ok",2,"Setting absolute position",1)
-    macro("G27 Z206","ok",100,"Homing all axes",0.1)
-    macro("G0 Z10 F10000","ok",15,"raising",0.1)
-    macro("G28","ok",100,"homing all axes",0.1)
+    
+    #macro("G27 Z206","ok",100,"Homing all axes",0.1)
+    #macro("G0 Z10 F10000","ok",15,"raising",0.1)
+    #macro("G28","ok",100,"homing all axes",0.1)
+    if zprobe_disabled:
+        macro("G27 X0 Y0 Z" + str(zmax_home_pos),"ok",100,"Homing all axes",0.1)
+        macro("G0 Z50 F10000","ok",15,"raising",0.1)
+    else:
+        macro("G27 Z206","ok",100,"Homing all axes",0.1)
+        macro("G0 Z10 F10000","ok",15,"Raising",0.1)
+        macro("G28","ok",100,"homing all axes",0.1,verbose=False)
+    
     
 elif preset=="raise_bed_no_g27":
     #for homing procedure before probe calibration.
     macro("M402","ok",4,"Raising probe",0.1)
     macro("G90","ok",2,"Setting absolute position",1,verbose=False)
-    macro("G0 Z20 F10000","ok",15,"Raising bed",0.1,verbose=False)
-    macro("G28","ok",100,"Homing all axes",0.1)
+    
+    #macro("G0 Z20 F10000","ok",15,"Raising bed",0.1,verbose=False)
+    #macro("G28","ok",100,"Homing all axes",0.1)
+    
+    if zprobe_disabled:
+        macro("G27 X0 Y0 Z" + str(zmax_home_pos),"ok",100,"Homing all axes",0.1)
+        macro("G0 Z50 F10000","ok",15,"raising",0.1)
+    else:
+         macro("G0 Z20 F10000","ok",15,"Raising bed",0.1,verbose=False)
+         macro("G28","ok",100,"Homing all axes",0.1)
+        
+    
         
 #Auto bed leveling
 elif preset=="auto_bed_leveling":
@@ -298,11 +383,11 @@ elif preset=="r_scan":
     if(safety_door == 1):
         macro("M741","TRIGGERED",2,"Front panel door control",0.1,verbose=False)
     macro("M744","open",1,"Building plane (must be removed)",0.1)
-    macro("M744","TRIGGERED",1,"Spool panel closed",0.1, warning=True)
+    macro("M744","TRIGGERED",1,"Spool panel closed",0.1, warning=True,verbose=False)
     macro("M701 S255","ok",2,"Turning off lights",0.1,verbose=False)
     macro("M702 S255","ok",2,"Turning off lights",0.1,verbose=False)
     macro("M703 S255","ok",2,"Turning off lights",0.1,verbose=False)
-    macro("G90","ok",2,"Setting Absloute position",1,verbose=False)
+    macro("G90","ok",2,"Setting Absolute position",1,verbose=False)
     macro("G0 X96 Y175 Z135 E0 F10000","ok",90,"Moving to collimation position",1)
     macro("M302 S0","ok",2,"Enabling cold extrusion",0,verbose=False)
     #macro("M92 E"+str(units['a']),"ok",1,"Setting 4th axis mode",0)
@@ -328,15 +413,15 @@ elif preset=="s_scan":
     if(safety_door == 1):
         macro("M741","TRIGGERED",2,"Front panel door control",0.1)
     macro("M744","open",2,"Building plane removed!",0.1,warning=True)
-    macro("M744","TRIGGERED",1,"Spool panel is not closed!",0.1, warning=True)
+    macro("M744","TRIGGERED",1,"Spool panel is not closed!",0.1, warning=True,verbose=False)
     macro("M701 S0","ok",2,"Turning off lights",0.1)
-    macro("M702 S0","ok",2,"Turning off lights",0.1)
-    macro("M703 S0","ok",2,"Turning off lights",0.1)
-    macro("M744","open",2,"Working plane absent/tilted",0.1)
+    macro("M702 S0","ok",2,"Turning off lights",0.1,verbose=False)
+    macro("M703 S0","ok",2,"Turning off lights",0.1,verbose=False)
+    #macro("M744","open",2,"Working plane absent/tilted",0.1)
     macro("G28 X0 Y0","ok",90,"Homing all axis",1)
-    macro("G90","ok",2,"Setting Absolute position",0)
+    macro("G90","ok",2,"Setting Absolute position",0,verbose=False)
     #macro("M92 E"+str(units['a']),"ok",1,"Setting 4th axis mode",0)
-    macro("G0 Z145 F1000","ok",90,"Lowering the plane",1)
+    macro("G0 Z145 F1000","ok",90,"Lowering the plane",1,verbose=False)
 #p_scan preset
 elif preset=="p_scan":
     trace("Initializing Probing procedure",log_trace)
@@ -351,81 +436,88 @@ elif preset=="p_scan":
     
 elif preset=="end_scan":
     trace("Terminating digitalization procedure",log_trace)
-    macro("G90","ok",100,"Setting Absolute position",0) #long waiting time
-    macro("G0 Z140 E0 F5000","ok",35,"Rasing",0.1)
-    macro("M402","ok",100,"Disabling probe",0)
-    macro("M700","ok",3,"Shutting Down Laser",0)
-    macro("M18","ok",3,"Motor Off",1) #should be moved to firmware
+    macro("M402","ok",10,"Retracting Probe",0)
+    macro("M700 S0","ok",3,"Shutting Down Laser",0)
+    macro("G90","ok",10,"Setting Absolute position",0,verbose=False) #long waiting time
+    macro("G0 Z140 E0 F5000","ok",55,"Rasing Probe",0.1,verbose=False)
     #go back to user-defined colors
     macro("M701 S"+str(units['color']['r']),"ok",2,"Turning on lights",0.1,verbose=False)
     macro("M702 S"+str(units['color']['g']),"ok",2,"Turning on lights",0.1,verbose=False)
     macro("M703 S"+str(units['color']['b']),"ok",2,"Turning on lights",0.1,verbose=False)
+    macro("M402","ok",1,"Rise Probe",1,verbose=False)
     macro("M300","ok",1,"Scan completed",1,verbose=False)
     
 #zero_all
 elif preset=="home_all":
     trace("Now homing all axes",log_trace)
     macro("G90","ok",2,"set abs position",0,verbose=False)
-    macro("G28","ok",100,"homing all axes",1,verbose=False)
+    
+    #macro("G28","ok",100,"homing all axes",1,verbose=False)
+    if zprobe_disabled:
+        print "Z probe disabled"
+        macro("G27 X0 Y0 Z" + str(zmax_home_pos),"ok",100,"Homing all axes",0.1)
+        macro("G0 Z50 F10000","ok",15,"raising",0.1, verbose=False)
+    else:
+        macro("G28","ok",100,"homing all axes",1,verbose=False)
 
-#unload spool    
+#unload spool     
 elif preset=="unload_spool":
     
     trace("Unloading Spool : Procedure Started.",log_trace)
     macro("G90","ok",10,"set abs position",0,verbose=False)
+    macro("M302 S0","ok",10,"extrusion prevention disabled",0.1,verbose=False)
     macro("G27 Z206","ok",100,"zeroing Z axis",1,verbose=False)
     macro("G0 Z150 F10000","ok",10,"Moving to safe zone",0.1,verbose=False) #right top corner Z=150mm
-    macro("M83","ok",5,"setting relative estrusion",0.1,verbose=False)
+    macro("G91","ok",2,"set rel position",0,verbose=False)
     macro("G92 E0","ok",5,"set extruder to zero",0.1,verbose=False)
-    macro("M92 E"+str(units['e']),"ok",30,"setting extruder mode",0.1,verbose=False)
+    macro("M92 E"+str(units['e']),"ok",30,"setting extruder mode",0.1,verbose=True)
     #heating nozzle
-    #macro("M109 S220","ok",150,"Heating Nozzle... Get ready to pull the filament gently...",1)
-    macro("M300","ok",2,"Start Pulling!",3)
-    #macro("G0 E-50 F350","ok",10,"Leaving the hotend (slow!)",1, verbose=False)
+    macro("M300","ok",2,"<b>Start Pulling!</b>",3)
     macro("G0 E-800 F550","ok",10,"Expelling filament",1)
     macro("G0 E-200 F550","ok",10,"Expelling filament",1, verbose=False)
-    time.sleep(90)
-    macro("M82","ok",2,"Restoring absolute estrusion mode",0,verbose=False)
+    #time.sleep(90)
     macro("M104 S0","ok",1,"Disabling Extruder",1)
+    macro("M302 S170","ok",10,"extrusion prevention enabled",0.1,verbose=False)
     trace("Done!",log_trace)
     
 #load spool from reel
 elif preset=="load_spool":
+    print str(units['e'])
     trace("Loading Spool : Procedure Started.",log_trace)
-    macro("G90","ok",2,"set abs position",0)
-    macro("G27 Z206","ok",100,"zeroing Z axis",1)
-    macro("G0 Z150 F10000","ok",10,"Moving to Safe Zone",0.1)
+    macro("G90","ok",2,"set abs position",0,verbose=False)
+    macro("G27 Z206","ok",100,"zeroing Z axis",0.1,verbose=False)
+    macro("G0 Z150 F10000","ok",10,"Moving to Safe Zone",0.1,verbose=False)
     macro("M302 S0","ok",5,"Enabling Cold extrusion",0.1,verbose=False)
-    macro("M83","ok",5,"setting relative estrusion mode",0.1,verbose=False)
+    macro("G91","ok",2,"set relative position",0,verbose=False)
     macro("G92 E0","ok",5,"setting extruder position to 0",0.1,verbose=False)
-    macro("M92 E"+str(units['e']),"ok",5,"Setting extruder mode",0.1,verbose=False)
-    macro("M104 S190","ok",5,"Heating Nozzle. Get ready to push...",5) #heating and waiting.
-    macro("M300","ok",5,"Start pushing!",3)
+    macro("M92 E"+str(units['e']),"ok",5,"Setting extruder mode",0.1,verbose=True)
+    macro("M104 S190","ok",5,"Heating Nozzle. Get ready to push...",0.1) #heating and waiting.
+    macro("M300","ok",5,"<b>Start pushing!</b>",3)
     
-    macro("G0 E110 F500","ok",1,"Loading filament (slow)",15)
-    macro("G0 E660 F700","ok",1,"Loading filament (fast)",20)
-    macro("M109 S210","ok",100,"waiting to get to temperature...",1) #heating and waiting.
+    macro("G0 E110 F500","ok",1,"Loading filament",15)
+    macro("G0 E660 F700","ok",1,"Loading filament (fast)",20,verbose=False)
+    macro("M109 S210","ok",200,"waiting to get to temperature...",0.1) #heating and waiting.
+    macro("G0 E100 F200","ok",1,"Entering the hotend (slow)",0.1)
     
-    macro("G0 E100 F200","ok",1,"Entering the hotend (slow)",1)
-    
-    macro("M82","ok",1,"setting back absolute estrusion",0,verbose=False)
-    time.sleep(25)
-    macro("M104 S0","ok",1,"Disabling Extruder",0.1)
+    #time.sleep(25)
+    macro("M104 S0","ok",1,"Turning off heat",0.1)
     macro("M302 S170","ok",1,"Disabling Cold Extrusion Prevention",0.1,verbose=False)
     
 #jog setup procedure
-elif preset=="jog_setup":
-    trace("Engaging Jog Mode",log_trace)
-    macro("M92 E"+str(units['a']),"ok",1,"Set 4th axis mode",1)
-    macro("G91","ok",1,"set relative movements",1)
+#elif preset=="jog_setup":
+#    trace("Engaging Jog Mode",log_trace)
+#    macro("M92 E"+str(units['a']),"ok",1,"Set 4th axis mode",1)
+#    macro("G91","ok",1,"set relative movements",1)
     
 #flash finalization procedure
 elif preset=="start_up":
     trace("Starting up",log_trace)
     macro("M728","ok",2,"Alive!",1,verbose=False)
+    macro("M402","ok",1,"Probe Up",0)
     macro("M701 S"+str(units['color']['r']),"ok",2,"turning on lights",0.1,verbose=False)
     macro("M702 S"+str(units['color']['g']),"ok",2,"turning on lights",0.1,verbose=False)
     macro("M703 S"+str(units['color']['b']),"ok",2,"turning on lights",0.1,verbose=False)
+    
     try:
         safety_door = units['safety']['door']
     except KeyError:
@@ -438,26 +530,31 @@ elif preset=="start_up":
         switch = 0
     macro("M714 S"+str(switch),"ok",2,"Homing direction",0.1,verbose=False)
     
-    
+    try:
+        collision_warning = units['safety']['collision-warning']
+    except KeyError:
+        collision_warning = 0
+    macro("M734 S"+str(collision_warning),"ok",2,"Machine Limits Collision warning ",0.1,verbose=False)
+
     
 #shutdown
 elif preset=="shutdown":
     macro("M300","ok",5,"play alert sound!",1, verbose=False)
-    trace("shutting down",log_trace)
-    macro("M729","ok",2,"Asleep!",0,verbose=False)
-    macro("G4 S10","ok",10,"Shutting down!",1, verbose=False)
-    macro("M300","ok",5,"play alert sound!",1, verbose=False)
+    #trace("shutting down",log_trace) 
+    macro("M729","ok",2,"Asleep!",1,verbose=False)
+    #macro("G4 S10","ok",10,"Shutting down!",1, verbose=False)
+    #macro("M300","ok",5,"play alert sound!",1, verbose=False)
     
 #probe calibration
 elif preset=="probe_setup_prepare":
     trace("Preparing Calibration procedure",log_trace)
     trace("This may take a wile",log_trace)
-    macro("M104 S200","ok",90,"Heating extruder", 0.1, verbose=False)
-    macro("M140 S45", "ok",90,"Heating Bed - fast ", 0.1,verbose=False)
+    macro("M104 S200","ok",90,"Heating extruder", 0.1, verbose=True)
+    macro("M140 S45", "ok",90,"Heating Bed - fast ", 0.1,verbose=True)
     macro("G91","ok",2,"Relative mode",1, verbose=False)
     macro("G0 X17 Y61.5 F6000","ok",2,"Offset",1, verbose=False)
     macro("G90","ok",2,"Abs_mode",1, verbose=False)
-    macro("G0 Z2 F1000","ok",2,"Moving to calibration position",1)
+    macro("G0 Z5 F1000","ok",2,"Moving to calibration position",1)
     
 elif preset=="probe_setup_calibrate":
     trace("Calibrating probe",log_trace)
@@ -481,10 +578,10 @@ elif preset=="probe_setup_calibrate":
     serial.write("M710 S"+str(z_probe_new)+"\r\n")
     ####
     macro("G90","ok",2,"Abs_mode",1, verbose=False)
-    macro("G0 Z50 F1000","ok",3,"Moving the plane ",1,verbose=False )
-    macro("G28","ok",90,"homing all axis",verbose=False)
+    macro("G0 Z50 F1000","ok",3,"Moving the plane",1,verbose=False)
+    macro("G28","ok",90,"homing all axis",1,verbose=False)
     trace("Probe calibrated : "+str(z_probe_new)+" mm",log_trace)
-    macro("M300","ok",5,"Done!")
+    macro("M300","ok",5,"Done!",1)
     
 elif preset=="laser":
     trace("Checking Laser",log_trace)
@@ -618,11 +715,13 @@ if s_error>0:
     trace("<b>Try Again!</b>", log_trace )
 else:
     response("true")
-    trace("All clear!",log_trace)
+    trace("Done!",log_trace)
     
 #clean the buffer and leave
 serial.flush()
 serial.close()
-write_status(False)
+#write_status(False)
+if os.path.isfile(config.get('task', 'lock_file')):
+    os.remove(config.get('task', 'lock_file'))
 #open(trace_file, 'w').close() #reset trace file
 sys.exit()

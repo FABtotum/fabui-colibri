@@ -13,7 +13,7 @@
         
             <div class="row">
                 <div class="col-sm-6 text-center">
-                	 <img style="max-width: 50%; display: inline;" class="img-responsive" src="application/modules/scan/assets/img/probing/1.png" />
+                	 <img style="max-width: 50%; display: inline;" class="img-responsive" src="../application/modules/scan/assets/img/probing/1.png" />
                 </div>
                 <div class="col-sm-6 text-center">
                 	 <h1><span class="badge">1</span></h1>
@@ -84,10 +84,13 @@
 
     function check_pre_scan(){
     
-    
+    	IS_MACRO_ON = true;
+        
+        console.log(IS_MACRO_ON);
+        
         $(".SmallBox").remove();
         $(".result-check-pre-scan").html('');
-        openWait('Checking printer');
+        openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Preparing printer');
         var timestamp = new Date().getTime();
         /*ticker_url    = '/temp/check_pre_scan_' + timestamp + '.trace';*/
         ticker_url    = '/temp/macro_trace';
@@ -103,16 +106,17 @@
     
             if(response.response == true){
               
-                setTimeout(function(){ $("#row_1").slideUp('slow', function(){
-                      closeWait();
-                     $("#row_2").slideDown('slow', function(){});
-                     
-                 });}, 3000);
-                
-                
-                /** STEP SUCCESSIVO */
-                
-                          
+              
+              $("#row_1").slideUp('slow', function(){
+              	
+              	$("#row_2").slideDown('slow', function(){
+              		
+              		$("#check-p-scan").trigger('click');
+              		
+              	});
+              	
+              });
+                                   
             }else{
                 closeWait();
                 $.smallBox({
@@ -126,7 +130,13 @@
             
             
             ticker_url = '';
+            
+            IS_MACRO_ON = false;
+    	
+            
     	});
+    	
+    	
      
     }
     
@@ -135,10 +145,11 @@
     
     function check_p_scan(){
     
-    
+    	IS_MACRO_ON = true;
         $(".SmallBox").remove();
+         console.log(IS_MACRO_ON);
         
-        openWait('Checking printer');
+        openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Preparing printer');
         var timestamp = new Date().getTime();
         ticker_url    = '/temp/check_p_scan_' + timestamp + '.trace';
         
@@ -164,19 +175,6 @@
             		
             	});
                 
-               /** STEP SUCCESSIVO 
-                setTimeout(function(){ $("#row_2").slideUp('slow', function(){
-                    closeWait();
-                     $("#row_3").slideDown('slow', function(){
-                     	
-                     	/*
-                     	$("#start-p-scan").trigger('click');
-                     	
-                     	
-                     	
-                     });
-                 });}, 3000);
-                 */
                           
             }else{
                 closeWait();
@@ -189,8 +187,11 @@
                 });     
             }
             
-            ticker_url = '';        
+            ticker_url = ''; 
+            IS_MACRO_ON = false;       
     	});
+    	
+    	
          
        
     }

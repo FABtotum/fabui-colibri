@@ -82,6 +82,7 @@ if (defined('ENVIRONMENT'))
 	$temp_folder   = '../temp';
 	$plugin_folder = 'application/plugins';
 	$config_folder = 'config';
+	$cron_folder   = '../cron';
 
 /*
  * --------------------------------------------------------------------
@@ -224,6 +225,16 @@ if (defined('ENVIRONMENT'))
 	$config_folder = rtrim($config_folder, '/').'/';
 	
 	
+	/** Set cron folder */
+	if (realpath($cron_folder) !== FALSE)
+	{
+		$cron_folder = realpath($cron_folder).'/';
+	}
+	
+	// ensure there's a trailing slash
+	$cron_folder = rtrim($cron_folder, '/').'/';
+	
+	
 	
 /*
  * -------------------------------------------------------------------
@@ -251,6 +262,11 @@ if (defined('ENVIRONMENT'))
 	
 	// Path to temp folder
 	define('TEMPPATH', str_replace("\\", "/", $temp_folder));
+	
+	
+	// Path to cron folder
+	define('CRONPATH', str_replace("\\", "/", $cron_folder));
+	
 	
 	define('PLUGINSPATH', str_replace("\\", "/", $plugin_folder));
 	
@@ -280,12 +296,17 @@ if (defined('ENVIRONMENT'))
 		define('APPPATH', BASEPATH.$application_folder.'/');
 	}
 
+	if(file_exists(CONFIG_FOLDER.'config.json')){
+		
+		$fabtotum_config = json_decode(file_get_contents(CONFIG_FOLDER.'config.json'), true);
 	
-	$fabtotum_config = json_decode(file_get_contents(CONFIG_FOLDER.'config.json'), true);
+		if(isset($fabtotum_config['hardware']['id'])){
+			define('HARDWARE_ID', $fabtotum_config['hardware']['id']);
+		}
 	
-	if(isset($fabtotum_config['hardware']['id'])){
-		define('HARDWARE_ID', $fabtotum_config['hardware']['id']);
 	}
+	
+	
 	
 	
 

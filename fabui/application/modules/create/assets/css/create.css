@@ -75,36 +75,6 @@
 	background-color: #000000;
 }
 
-
-
-.rotondo {
-	border-radius: 50% !important;
-	-moz-border-radius: 50% !important;
-	-webkit-border-radius: 50% !important;
-}
-
-.fa-rotate-45 {
-	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1 );
-	-webkit-transform: rotate(45deg);
-	-moz-transform: rotate(45deg);
-	-ms-transform: rotate(45deg);
-	-o-transform: rotate(45deg);
-	transform: rotate(45deg);
-}
-
-.noUi-handle {
-	background: #858585 !important;
-	height: 30px;
-	width: 16px;
-	border: 1px solid #fff;
-	cursor: default;
-	box-shadow: none !important;
-}
-
-.noUi-handle:hover {
-	background: #6c6c6c !important;
-}
-
 .console pre {
 	line-height: 20px;
 }
@@ -114,15 +84,12 @@
 	color: #346597;
 }
 
+/*
 .pagination-sm {
 	width: 200px !important;
 }
 
-.noUi-connect {
-	
-	background-color: #a65858 !important;
-}
-
+*/
 #temp1, #temp2 {
 	background-color: #57889c !important;
 	margin-top: 3px;
@@ -155,19 +122,19 @@
 
 .label-warning {
 	font-size: 100% !important;
-	background-color: #568a89!important;
+	background-color: #568a89 !important;
 }
 
 .show-stat-microcharts > div {
 	height: 200px !important;
 }
 
-.model-info{
+.model-info {
 	background-color: #f7f7f9 !important;
 }
 
 .time {
-	
+
 }
 
 .noUi-horizontal {
@@ -182,11 +149,80 @@
 	margin-top: 30px !important;
 }
 
-#fan, #velocity, #flow-rate, #rpm{
-	
-	background-color: #568a89!important;
+#fan, #velocity, #flow-rate, #rpm {
+
+	background-color: #568a89 !important;
 }
 
-.progress-status{
-	
+.progress-status {
+
 }
+
+.nozzle-temperature, .bed-temperature {
+	color: #FF0000 !important;
+}
+
+.nozzle-target, .bed-target {
+	color: #57889c !important;
+}
+
+.chat-footer {
+	border-top: 0px !important;
+	background: none !important;
+	padding: 0 !important;
+}
+
+.typearea {
+	padding: 5px 0px 5px 5px;
+}
+
+.typearea textarea {
+	overflow: auto !important;
+}
+
+.smart-form .label {
+	
+	display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75% !important;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+
+.smart-form .label-warning {
+	background-color: #c79121 !important;
+	font-size: 75% !important;
+}
+
+/*
+#objects_table_paginate .pagination {
+	width: 300px !important;
+}
+
+#recent_table_paginate .pagination {
+	width: 300px !important;
+}
+*/
+
+.pagination li{
+	display:inline !important;
+}
+
+
+.smart-form .label-mill {
+	display: block;
+    margin-bottom: 6px;
+    line-height: 19px;
+    font-weight: 400;
+    font-size: 13px;
+    color: #333;
+    text-align: left;
+    white-space: normal;
+}
+
+

@@ -28,11 +28,6 @@ if($_tasks_rows){
 	    }   
 	}
 
-	if($_tasks_number == 1){
-		
-		$_tasks['items'][] = $_tasks_rows;
-		
-	}
 		
 }
 

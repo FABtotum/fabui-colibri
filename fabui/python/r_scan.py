@@ -8,7 +8,16 @@ import logging
 import json
 
 config = ConfigParser.ConfigParser()
-config.read('/var/www/fabui/python/config.ini')
+config.read('/var/www/lib/config.ini')
+
+serialconfig = ConfigParser.ConfigParser()
+serialconfig.read('/var/www/lib/serial.ini')
+
+#check if LOCK FILE EXISTS
+if os.path.isfile(config.get('task', 'lock_file')):
+    print "printer busy"
+    sys.exit()
+
 #PARAMS
 
 #get process pid so the GUI can kill it if needed
@@ -69,6 +78,8 @@ for opt, arg in opts:
    elif opt in ("-l", "--log"):
       logfile = arg
 
+#write LOCK FILE    
+open(config.get('task', 'lock_file'), 'w').close()
 
 '''#### LOG ####'''
 logfile=config.get('task', 'monitor_file')
@@ -120,8 +131,8 @@ print 'Estimated Scan time =', str(estimated) + " " + str(unit) + "  [Pessimisti
 print "\n ---------- Initializing ---------- \n"
 
 '''#### SERIAL PORT COMMUNICATION ####'''
-serial_port = config.get('serial', 'port')
-serial_baud = config.get('serial', 'baud')
+serial_port = serialconfig.get('serial', 'port')
+serial_baud = serialconfig.get('serial', 'baud')
 serial = serial.Serial(serial_port, serial_baud, timeout=0.5)
 
 if(begin!=0):
@@ -147,9 +158,9 @@ def raspistill(laser_string):
     #--exposure off
     print "saving to ",scanfile
 
-	#raspistill -rot 270 -awb tungsten -ISO 100 -ss 45000
-	
-    call (["raspistill -rot 270 -awb off -awbg 1.5,1.2 -q 100 -ss 45000 -ISO " + str(iso) + " -w "+ str(height) +" -h "+ str(width) +" -o " + scanfile + " -t 1"], shell=True)
+    #raspistill -rot 270 -awb tungsten -ISO 100 -ss 45000
+    
+    call (["raspistill -rot 270 -awb off -awbg 1.5,1.2 -q 100 -ss 35000 -ISO " + str(iso) + " -w "+ str(height) +" -h "+ str(width) +" -o " + scanfile + " -t 1"], shell=True)
 
     while (not(os.access(scanfile, os.F_OK)) or not(os.access(scanfile, os.W_OK))):
         #wait until the file has been written
@@ -166,7 +177,7 @@ while (i < slices) :
     print str(i) + "/" + str(slices) +" (" + str(deg*i) + "/360)"
     serial.write('G0 E' + str(pos) + 'F2500\r\n')
     time.sleep(deg*0.1)  #take its time to rotate
-    	
+        
     pwm_string='M700 S'+str(power)+'\r\n' 
 
     serial.write(pwm_string) #turn laser ON
@@ -190,5 +201,6 @@ completed=1
 completed_time=float(time.time())
 percent=100
 printlog(percent,i)
-
+#write_status(False)
+#os.remove(config.get('task', 'lock_file'))
 sys.exit()  

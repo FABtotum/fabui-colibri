@@ -1,25 +1,10 @@
-/*     
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- * =======================================================================
- * SmartAdmin is FULLY owned and LICENSED by MYORANGE INC.
- * This script may NOT be RESOLD or REDISTRUBUTED under any
- * circumstances, and is only to be used with this purchased
- * copy of SmartAdmin Template.
- * =======================================================================
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- * =======================================================================
+/*   
  * 
  * GLOBAL ROOT (DO NOT CHANGE)
  */
 	$.root_ = $('body');	
 /*
- * APP CONFIGURATION (HTML/AJAX/PHP Versions ONLY)
+ * APP CONFIGURATION
  * Description: Enable / disable certain theme features here
  * GLOBAL: Your left nav in your app will no longer fire ajax calls, set 
  * it to false for HTML version
@@ -120,7 +105,7 @@
  * VOICE COMMAND CONFIG
  * dependency: js/speech/voicecommand.js
  */
-	voice_command = false,
+	voice_command = true,
 /*
  * Turns on speech as soon as the page is loaded
  */	
@@ -205,43 +190,43 @@
  	if (voice_command) {
 	 		
 		var commands = {
-							
-			'show dashboard' : function() { $('nav a[href="ajax/dashboard.html"]').trigger("click"); },
-			'show inbox' : function() { $('nav a[href="ajax/inbox.html"]').trigger("click"); },
-			'show graphs' : function() { $('nav a[href="ajax/flot.html"]').trigger("click"); },
-			'show flotchart' : function() { $('nav a[href="ajax/flot.html"]').trigger("click"); },
-			'show morris chart' : function() { $('nav a[href="ajax/morris.html"]').trigger("click"); },
-			'show inline chart' : function() { $('nav a[href="ajax/inline-charts.html"]').trigger("click"); },
-			'show dygraphs' : function() { $('nav a[href="ajax/dygraphs.html"]').trigger("click"); },
-			'show tables' : function() { $('nav a[href="ajax/table.html"]').trigger("click"); },
-			'show data table' : function() { $('nav a[href="ajax/datatables.html"]').trigger("click"); },
-			'show jquery grid' : function() { $('nav a[href="ajax/jqgrid.html"]').trigger("click"); },
-			'show form' : function() { $('nav a[href="ajax/form-elements.html"]').trigger("click"); },
-			'show form layouts' : function() { $('nav a[href="ajax/form-templates.html"]').trigger("click"); },
-			'show form validation' : function() { $('nav a[href="ajax/validation.html"]').trigger("click"); },
-			'show form elements' : function() { $('nav a[href="ajax/bootstrap-forms.html"]').trigger("click"); },
-			'show form plugins' : function() { $('nav a[href="ajax/plugins.html"]').trigger("click"); },
-			'show form wizards' : function() { $('nav a[href="ajax/wizards.html"]').trigger("click"); },
-			'show bootstrap editor' : function() { $('nav a[href="ajax/other-editors.html"]').trigger("click"); },
-			'show dropzone' : function() { $('nav a[href="ajax/dropzone.html"]').trigger("click"); },
-			'show image cropping' : function() { $('nav a[href="ajax/image-editor.html"]').trigger("click"); },
-			'show general elements' : function() { $('nav a[href="ajax/general-elements.html"]').trigger("click"); },
-			'show buttons' : function() { $('nav a[href="ajax/buttons.html"]').trigger("click"); },
-			'show fontawesome' : function() { $('nav a[href="ajax/fa.html"]').trigger("click"); },
-			'show glyph icons' : function() { $('nav a[href="ajax/glyph.html"]').trigger("click"); },
-			'show flags' : function() { $('nav a[href="ajax/flags.html"]').trigger("click"); },
-			'show grid' : function() { $('nav a[href="ajax/grid.html"]').trigger("click"); },
-			'show tree view' : function() { $('nav a[href="ajax/treeview.html"]').trigger("click"); },
-			'show nestable lists' : function() { $('nav a[href="ajax/nestable-list.html"]').trigger("click"); },
-			'show jquery U I' : function() { $('nav a[href="ajax/jqui.html"]').trigger("click"); },
-			'show typography' : function() { $('nav a[href="ajax/typography.html"]').trigger("click"); },
-			'show calendar' : function() { $('nav a[href="ajax/calendar.html"]').trigger("click"); },
-			'show widgets' : function() { $('nav a[href="ajax/widgets.html"]').trigger("click"); },
-			'show gallery' : function() { $('nav a[href="ajax/gallery.html"]').trigger("click"); },
-			'show maps' : function() { $('nav a[href="ajax/gmap-xml.html"]').trigger("click"); },
-			'show pricing tables' : function() { $('nav a[href="ajax/pricing-table.html"]').trigger("click"); },
-			'show invoice' : function() { $('nav a[href="ajax/invoice.html"]').trigger("click"); },
-			'show search' : function() { $('nav a[href="ajax/search.html"]').trigger("click"); },
+			'print' : function() { document.location.href='/fabui/make/print' },		
+			'show dashboard' : function() { $('nav a[href="dashboard.php"]').trigger("click"); },
+			'show inbox' : function() { $('nav a[href="inbox.php"]').trigger("click"); },
+			'show graphs' : function() { $('nav a[href="flot.php"]').trigger("click"); },
+			'show flotchart' : function() { $('nav a[href="flot.php"]').trigger("click"); },
+			'show morris chart' : function() { $('nav a[href="morris.php"]').trigger("click"); },
+			'show inline chart' : function() { $('nav a[href="inline-charts.php"]').trigger("click"); },
+			'show dygraphs' : function() { $('nav a[href="dygraphs.php"]').trigger("click"); },
+			'show tables' : function() { $('nav a[href="table.php"]').trigger("click"); },
+			'show data table' : function() { $('nav a[href="datatables.php"]').trigger("click"); },
+			'show jquery grid' : function() { $('nav a[href="jqgrid.php"]').trigger("click"); },
+			'show form' : function() { $('nav a[href="form-elements.php"]').trigger("click"); },
+			'show form layouts' : function() { $('nav a[href="form-templates.php"]').trigger("click"); },
+			'show form validation' : function() { $('nav a[href="validation.php"]').trigger("click"); },
+			'show form elements' : function() { $('nav a[href="bootstrap-forms.php"]').trigger("click"); },
+			'show form plugins' : function() { $('nav a[href="plugins.php"]').trigger("click"); },
+			'show form wizards' : function() { $('nav a[href="wizards.php"]').trigger("click"); },
+			'show bootstrap editor' : function() { $('nav a[href="other-editors.php"]').trigger("click"); },
+			'show dropzone' : function() { $('nav a[href="dropzone.php"]').trigger("click"); },
+			'show image cropping' : function() { $('nav a[href="image-editor.php"]').trigger("click"); },
+			'show general elements' : function() { $('nav a[href="general-elements.php"]').trigger("click"); },
+			'show buttons' : function() { $('nav a[href="buttons.php"]').trigger("click"); },
+			'show fontawesome' : function() { $('nav a[href="fa.php"]').trigger("click"); },
+			'show glyph icons' : function() { $('nav a[href="glyph.php"]').trigger("click"); },
+			'show flags' : function() { $('nav a[href="flags.php"]').trigger("click"); },
+			'show grid' : function() { $('nav a[href="grid.php"]').trigger("click"); },
+			'show tree view' : function() { $('nav a[href="treeview.php"]').trigger("click"); },
+			'show nestable lists' : function() { $('nav a[href="nestable-list.php"]').trigger("click"); },
+			'show jquery U I' : function() { $('nav a[href="jqui.php"]').trigger("click"); },
+			'show typography' : function() { $('nav a[href="typography.php"]').trigger("click"); },
+			'show calendar' : function() { $('nav a[href="calendar.php"]').trigger("click"); },
+			'show widgets' : function() { $('nav a[href="widgets.php"]').trigger("click"); },
+			'show gallery' : function() { $('nav a[href="gallery.php"]').trigger("click"); },
+			'show maps' : function() { $('nav a[href="gmap-xml.php"]').trigger("click"); },
+			'show pricing tables' : function() { $('nav a[href="pricing-table.php"]').trigger("click"); },
+			'show invoice' : function() { $('nav a[href="invoice.php"]').trigger("click"); },
+			'show search' : function() { $('nav a[href="search.php"]').trigger("click"); },
 			'go back' :  function() { history.back(1); }, 
 			'scroll up' : function () { $('html, body').animate({ scrollTop: 0 }, 100); },
 			'scroll down' : function () { $('html, body').animate({ scrollTop: $(document).height() }, 100);},
@@ -312,9 +297,6 @@
 		}; 
 		
 	};
-	
-	var pressedEmergencyButton = false;
-
 /*
  * END APP.CONFIG
  */ 

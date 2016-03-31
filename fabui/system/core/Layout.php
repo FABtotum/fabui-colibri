@@ -9,6 +9,8 @@ class FT_Layout {
 	protected $_css_in_page = array();
 	protected $_js_in_page = array();
 	protected $_item_menu = array();
+	
+	protected $_plugin_subitem_menu = array();
 
 	protected $_layout_title;
 
@@ -24,10 +26,14 @@ class FT_Layout {
 	protected $_compress = true;
 
 	protected $_setup_wizard = false;
-	
+
 	protected $_show_feeder = true;
+	protected $_show_nozzle_temp = true;
+	protected $_max_temp = 230;
 
 	protected $_ci;
+
+	protected $_printer_busy = 'false';
 
 	/**
 	 *
@@ -44,8 +50,8 @@ class FT_Layout {
 		$this -> _ci = &get_instance();
 
 		$this -> _ft_ob_level = ob_get_level();
-		
-		$this->setFeeder();
+
+		$this -> set_layout_hardware();
 
 		$this -> _ft_layout_view_paths = array(APPPATH . 'layout/views/' => TRUE);
 		$this -> _ft_module_view_paths = array(APPPATH . $this -> _ci -> _type . 's/' . lcfirst(get_class($this -> _ci)) . '/views/' => TRUE);
@@ -110,19 +116,26 @@ class FT_Layout {
 		$this -> _ci -> load -> database();
 
 		if (!isset($_SESSION['plugins'])) {
-
 			$this -> _ci -> load -> model('plugins');
 			$_SESSION['plugins'] = $this -> _ci -> plugins -> get_activeted_plugins();
 		}
-
+		
+		$arePlugin = false;
+		
 		foreach ($_SESSION['plugins'] as $plugin) {
-
-			//print_r($plugin);
+			$arePlugin = true;
 			$attributes = json_decode($plugin -> attributes, TRUE);
-
-			$this -> add_item_menu(array('plugin' => true, 'name' => $plugin -> name, 'label' => $attributes['title'], 'icon' => '<i class="fa fa-lg fa-fw ' . $attributes['icon'] . '"></i>', 'id' => $plugin -> id));
+			
+			$icon = isset($attributes['icon']) && $attributes['icon'] != '' ? '<i class="fa fa-lg fa-fw ' . $attributes['icon'] . '"></i>' : '';
+			
+			$this -> add_plugin_subitem_menu(array('plugin' => true, 'name' => $plugin -> name, 'label' => $attributes['title'], 'icon' => $icon, 'id' => $plugin -> id));
 		}
-
+		
+		//if there are plugins is needed to add a subitem page to manage them
+		//if($arePlugin){
+		//	//$this -> add_plugin_subitem_menu(array('plugin' => true, 'name' => '', 'label' => 'Plugins Manager', 'icon' => '', 'id' => ""));
+		//}
+		
 		unset($modules);
 
 		if (isset($_SESSION['language']) && $_SESSION['language'] != '') {
@@ -143,23 +156,31 @@ class FT_Layout {
 
 	}
 
-	
-	/**
-	 * 
-	 */
-	public function setFeeder(){
+	public function set_layout_hardware() {
 		
-		$fabtotum_config = json_decode(file_get_contents(CONFIG_FOLDER.'config.json'), true);
-		
-		$this->_show_feeder = isset($fabtotum_config['feeder']['show']) ? $fabtotum_config['feeder']['show'] : true;
+		if(!file_exists(CONFIG_FOLDER . 'config.json')){
+			
+			$this -> _ci -> load -> helper('print_helper'); 
+			create_default_config();
+			
+		}
+
+		$fabtotum_config = json_decode(file_get_contents(CONFIG_FOLDER . 'config.json'), true);
+
+		if (isset($fabtotum_config['settings_type']) && $fabtotum_config['settings_type'] == 'custom' && file_exists(CONFIG_FOLDER . 'custom_config.json')) {
+			$fabtotum_config = json_decode(file_get_contents(CONFIG_FOLDER . 'custom_config.json'), true);
+		}
+
+		$this -> _show_feeder = isset($fabtotum_config['feeder']['show']) ? $fabtotum_config['feeder']['show'] : true;
+		$this -> _show_nozzle_temp = isset($fabtotum_config['hardware']['head']['max_temp']) && $fabtotum_config['hardware']['head']['max_temp'] > 0 ? true : false;
+		$this -> _max_temp = isset($fabtotum_config['hardware']['head']['max_temp']) ? $fabtotum_config['hardware']['head']['max_temp'] : 230;
 		
 		unset($fabtotum_config);
-		
+
 	}
-	
-	
-	public function getFeeder(){
-		return $this->_show_feeder;
+
+	public function getFeeder() {
+		return $this -> _show_feeder;
 	}
 
 	public function view($view, $vars = array(), $return = FALSE) {
@@ -168,7 +189,7 @@ class FT_Layout {
 		$data['_layout_title'] = $this -> _layout_title;
 
 		//load meta tag
-		$data['_layout_meta_tag'] = $this -> _load_meta_tag();
+		//$data['_layout_meta_tag'] = $this -> _load_meta_tag();
 
 		//load theme skin
 		$data['_skin'] = $this -> _load_skin();
@@ -195,7 +216,7 @@ class FT_Layout {
 		$data['_sidebar_menu_items'] = $this -> _load_menu_items();
 
 		//load breadcrumb
-		$data['_breadcrumbs'] = $this -> _load_bradcrumbs();
+		//$data['_breadcrumbs'] = $this -> _load_bradcrumbs();
 
 		//load page (module/plugin) content
 		$data['_controller_view'] = $this -> _ci -> load -> view($view, $vars, TRUE);
@@ -205,6 +226,12 @@ class FT_Layout {
 
 		//load wizard
 		$data['_setup_wizard'] = $this -> get_setup_wizard();
+
+		$data['_printer_busy'] = $this -> get_printer_busy();
+
+		$data['_show_nozzle_temp'] = $this -> _show_nozzle_temp;
+		
+		$data['_max_temp'] = $this -> _max_temp;
 
 		return $this -> _ft_load(array('_ci_view' => 'index', '_ci_vars' => $this -> _ci_object_to_array($data), '_ci_return' => $return));
 	}
@@ -400,7 +427,22 @@ class FT_Layout {
 	public function add_item_menu($item_menu) {
 		$this -> _item_menu[] = $item_menu;
 	}
-
+	
+	/**
+	 * add plugin subitem menu
+	 * @param $item
+	 */
+	public function add_plugin_subitem_menu($item){
+		//$this->_plugin_subitem_menu[] = $item;
+		
+		//if(!isset($this->_item_menu[7]['sons'])){
+		//	
+		//}
+		
+		$this->_item_menu[7]['sons'][] = $item;
+		
+	}
+	
 	/**
 	 * add meta tag
 	 * @param $meta
@@ -440,7 +482,9 @@ class FT_Layout {
 			if (isset($css['src']) && $css['src'] != '') {
 				if (isset($css['comment']) && $css['comment'] != '')
 					$html .= '<!-- ' . $css['comment'] . ' -->' . PHP_EOL;
-				$_src = isset($css['external']) && $css['external'] == TRUE ? $css['src'] : base_url() . $css['src'] . '?v=' . $_SESSION['fabui_version'];
+				//$_src = isset($css['external']) && $css['external'] == TRUE ? $css['src'] : base_url() . $css['src'] . '?v=' . $_SESSION['fabui_version'];
+				
+				$_src = $css['src'] . '?v=' . $_SESSION['fabui_version'];
 				$html .= '<link rel="stylesheet" type="text/css" media="screen" href="' . $_src . '">' . PHP_EOL;
 			}
 		}
@@ -458,7 +502,8 @@ class FT_Layout {
 			if (isset($js['src']) && $js['src'] != '') {
 				if (isset($js['comment']) && $js['comment'] != '')
 					$html .= '<!-- ' . $js['comment'] . ' -->' . PHP_EOL;
-				$_src = isset($js['external']) && $js['external'] == TRUE ? $js['src'] : base_url() . $js['src'] . '?v=' . $_SESSION['fabui_version'];
+				//$_src = isset($js['external']) && $js['external'] == TRUE ? $js['src'] : base_url() . $js['src'] . '?v=' . $_SESSION['fabui_version'];
+				$_src = $js['src'] . '?v=' . $_SESSION['fabui_version'];
 				$html .= '<script src="' . $_src . '"></script>' . PHP_EOL;
 			}
 
@@ -477,7 +522,8 @@ class FT_Layout {
 			if (isset($js['src']) && $js['src'] != '') {
 				if (isset($js['comment']) && $js['comment'] != '')
 					$html .= '<!-- ' . $js['comment'] . ' -->' . PHP_EOL;
-				$_src = isset($js['external']) && $js['external'] == TRUE ? $js['src'] : base_url() . $js['src'] . '?v=' . $_SESSION['fabui_version'];
+				//$_src = isset($js['external']) && $js['external'] == TRUE ? $js['src'] : base_url() . $js['src'] . '?v=' . $_SESSION['fabui_version'];
+				$_src = $js['src'] . '?v=' . $_SESSION['fabui_version'];
 				$html .= '<script src="' . $_src . '"></script>' . PHP_EOL;
 			}
 		}
@@ -511,16 +557,15 @@ class FT_Layout {
 	 * @return $html
 	 */
 	protected function _load_menu_items() {
-		
-		
-		$html = '';
 
+		$html = '';
+		
 		foreach ($this->_item_menu as $item) {
 
 			$active = strtolower(get_class($this -> _ci)) == $item['name'] ? 'active' : '';
 
 			$html .= '<li class="' . $active . '">';
-			$block = isset($_item['block']) ? $_item['block'] : 1;
+			//$block = isset($_item['block']) ? $_item['block'] : 1;
 
 			$href = $item['plugin'] ? site_url('plugin/' . $item['name']) : site_url($item['name']);
 
@@ -528,7 +573,7 @@ class FT_Layout {
 				$href = '#';
 			}
 
-			$link = '<a data-controller="' . $item["name"] . '" data-block="' . $block . '" data-href="' . $href . '" href="' . $href . '">';
+			$link = '<a data-controller="' . $item["name"] . '" data-href="' . $href . '" href="' . $href . '">';
 			$html .= $link;
 			$icon = '';
 
@@ -545,34 +590,46 @@ class FT_Layout {
 			if (isset($item['sons'])) {
 
 				$uri = $this -> _ci -> uri -> segments;
+				$uri_string = $this->_ci->uri->uri_string();
+				
+				
+				
 				$html .= '<ul>';
 
 				foreach ($item['sons'] as $son) {
 
 					if ($son['name'] == 'feeder' || $son['name'] == '4-axis') {
-						
-						if($this->_show_feeder){
-							
+
+						if ($this -> _show_feeder == true) {
+
 							$active = isset($uri[2]) && $uri[2] == $son['name'] ? 'active' : '';
 							$html .= '<li class="' . $active . '">';
 							$href = site_url($item['name'] . '/' . $son['name']);
 							$html .= '<a data-href="' . $href . '"  href="' . $href . '">';
-	
+
 							if (isset($son['icon'])) {
 								$html .= $son['icon'] . ' ';
 							}
-	
+
 							$html .= $son['label'];
 							$html .= '</a>';
 							$html .= '</li>';
 						}
 
 					} else {
-
-						$active = isset($uri[2]) && $uri[2] == $son['name'] ? 'active' : '';
+						
+						$active = $uri_string == $item['name'].'/'.$son['name'] ? 'active' : '';
+						
+						
 						$html .= '<li class="' . $active . '">';
-						$href = site_url($item['name'] . '/' . $son['name']);
-						$html .= '<a data-href="' . $href . '"  href="' . $href . '">';
+						
+						if (isset($son['sons'])) {
+							$href = '#';
+						}else{
+							$href = site_url($item['name'].'/'.$son['name']);
+						}
+
+						$html .= '<a data-controller="' . $item['name'] . '/' . $son['name'] . '" data-href="' . $href . '"  href="' . $href . '">';
 
 						if (isset($son['icon'])) {
 							$html .= $son['icon'] . ' ';
@@ -580,6 +637,34 @@ class FT_Layout {
 
 						$html .= $son['label'];
 						$html .= '</a>';
+
+						if (isset($son['sons'])) {
+
+							$html .= '<ul>';
+							
+							foreach ($son['sons'] as $subson) {
+
+								$active = isset($uri[3]) && $uri[3] == $subson['name'] ? 'active' : '';
+
+								$html .= '<li class="' . $active . '">';
+
+								$href = site_url($item["name"].'/'.$son['name'] . '/' . $subson['name']);
+
+								$html .= '<a data-controller="' . $son['name'] . '/' . $subson['name'] . '" data-href="' . $href . '"  href="' . $href . '">';
+
+								if (isset($subson['icon'])) {
+									$html .= $subson['icon'] . ' ';
+								}
+
+								$html .= $subson['label'];
+								$html .= '</a>';
+
+								$html .= '</li>';
+
+							}
+							$html .= '</ul>';
+						}
+
 						$html .= '</li>';
 
 					}
@@ -591,6 +676,11 @@ class FT_Layout {
 			$html .= '</li>';
 
 		}
+
+		$html .= '<li class="visible-xs">';
+		$html .= '<a href="' . site_url('login/out') . '" rel="tooltip" data-placement="right"  title="Power Off" data-user-name="' . $_SESSION['user']['first_name'] . '" data-logout-msg="What do you want to do?"  data-action="fabUserLogout"><i class="fa fa-lg fa-fw fa-power-off"></i> Power Off</a>';
+		$html .= '</li>';
+
 		return $html;
 
 	}
@@ -696,6 +786,44 @@ class FT_Layout {
 		return $this -> _setup_wizard;
 	}
 
+	/**
+	 * set javascritp costant to set if printer is busy or not
+	 */
+	function set_printer_busy($bool) {
+
+		$string = $bool ? 'true' : 'false';
+
+		$this -> _printer_busy = $string;
+
+	}
+
+	/**
+	 * get if printer is busy
+	 */
+	function get_printer_busy() {
+		return $this -> _printer_busy;
+	}
+	
+	
+	function get_max_temp(){
+		return $this->_max_temp;
+	}
+	
+	/*
+	 function set_show_nozzle_temp() {
+
+	 $fabtotum_config = json_decode(file_get_contents(CONFIG_FOLDER . 'config.json'), true);
+
+	 if (isset($fabtotum_config['settings_type']) && $fabtotum_config['settings_type'] == 'custom' && file_exists(CONFIG_FOLDER . 'custom_config.json')) {
+
+	 $fabtotum_config = json_decode(file_get_contents(CONFIG_FOLDER . 'custom_config.json'), true);
+	 }
+
+	 $this -> _show_feeder = isset($fabtotum_config['feeder']['show']) ? $fabtotum_config['feeder']['show'] : true;
+
+	 unset($fabtotum_config);
+	 }
+	 */
 	/**
 	 * compress html
 	 */

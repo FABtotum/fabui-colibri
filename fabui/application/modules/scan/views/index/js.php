@@ -1,4 +1,3 @@
-
 <script type="text/javascript">
 /* SCAN MODE */
 var scan_mode = <?php echo  $_task ? $_task_attributes['mode'] : 0 ?>;
@@ -22,7 +21,7 @@ scan_quality_info[<?php echo $quality->id ?>] = <?php echo json_encode($configur
 /* SCAN TASK INFO */
 var task_id                 =  <?php echo  $_task  ? $_task['id'] : 0 ?>;
 var scan_pid                =  <?php echo  $_task  ? $_task_attributes['scan_pid'] : 0 ?>;
-var scan_monitor_file       = '<?php echo  $_task  ? $_task_attributes['scan_monitor'] : '' ?>';
+var scan_monitor_file       = '<?php echo  $_task  ? $_task_attributes['monitor'] : '' ?>';
 var scan_monitor_folder     = '<?php echo  $_task  ? $_task_attributes['folder'] : '' ?>';
 var scan_uri                = '<?php echo  $_task && isset($_task_attributes['scan_uri']) ? $_task_attributes['scan_uri'] : '' ?>';
 var pprocess_pid            =  <?php echo  $_task && isset($_task_attributes['pprocess_pid'])? $_task_attributes['pprocess_pid'] : 0 ?>;
@@ -60,16 +59,13 @@ var pprocess_finished = <?php echo  $_task && isset($_pprocess_monitor['post_pro
 var pprocess_monitor_timeout = 5000;
 var pprocess_interval_monitor;
 var pprocess_elapsed_time = 0;
-var pprocess_monitor_response = <?php echo $_pprocess_monitor_response; ?>;
+var pprocess_monitor_response = <?php echo $_pprocess_monitor_response != '' ? $_pprocess_monitor_response : '{}' ; ?>;
 var pprocess_progress_step;
 var pprocess_second_for_step;
 var pprocess_array_progress_steps = new Array();
 var pprocess_array_estimated_time = new Array();
 var pprocess_stats_file = '<?php echo $_task && isset($_task_attributes['pprocess_stats_file']) ? $_task_attributes['pprocess_stats_file'] : '' ?>';
 <?php 
-
-
-
 if($_task && isset($_pprocess_stats['progress_steps'])){
 	foreach($_pprocess_stats['progress_steps'] as $step){
 		if(is_numeric($step)){
@@ -109,7 +105,7 @@ var elapsed_time = <?php echo  $_task  ? (time() - intval($_scan_monitor['scan']
 
 /** PROBING */
 var probing_trace_file;
-var ISPROBING = <?php echo $_task && $_task_attributes['mode'] == 8 ? 'true' : 'false' ?>;
+var POST_PROCESS = <?php echo $_task && ($_task_attributes['mode'] == 8 ||  $_task_attributes['mode'] == 15) ? 'false' : 'true' ?>;
 var x1;
 var x2;
 var y1;
@@ -124,12 +120,14 @@ var probe_quality = '';
 /** S SCAN */
 var a_offset;
 
-var check_pre_scan_url = '<?php echo module_url('scan').'ajax/check_pre_scan.php' ?>';
-var pre_scan_url       = '<?php echo module_url('scan').'ajax/pre_scan.php' ?>';
-var macro_r_scan_url   = '<?php echo module_url('scan').'ajax/macro_r_scan.php' ?>';
-var macro_s_scan_url   = '<?php echo module_url('scan').'ajax/macro_s_scan.php' ?>';
-var macro_p_scan_url   = '<?php echo module_url('scan').'ajax/macro_p_scan.php' ?>';
-var macro_pg_scan_url  = '<?php echo module_url('scan').'ajax/macro_pg_scan.php' ?>';
+var check_pre_scan_url  = '<?php echo module_url('scan').'ajax/check_pre_scan.php' ?>';
+var pre_scan_url        = '<?php echo module_url('scan').'ajax/pre_scan.php' ?>';
+var macro_r_scan_url    = '<?php echo module_url('scan').'ajax/macro_r_scan.php' ?>';
+var macro_s_scan_url    = '<?php echo module_url('scan').'ajax/macro_s_scan.php' ?>';
+var macro_p_scan_url    = '<?php echo module_url('scan').'ajax/macro_p_scan.php' ?>';
+var macro_pg_scan_url   = '<?php echo module_url('scan').'ajax/macro_pg_scan.php' ?>';
+var connection_test_url = '<?php echo module_url('scan').'ajax/connection_test.php' ?>';
+var check_area_url      = '<?php echo module_url('scan').'ajax/check_area.php' ?>';
 
 /** NEED FOR JCROP API */
 var jcrop_api;
@@ -148,6 +146,14 @@ var obj_id      = 0;
 var obj_name    = '';
 var new_object  = true;
 var id_asc_file = 0;
+
+
+var X_MIN = 32;
+var Y_MIN = 66;
+var X_MAX = 223;
+var Y_MAX = 168;
+
+var check_skip_homing = 0;
 
 $(document).ready(function() {
 	  
@@ -198,8 +204,8 @@ $(document).ready(function() {
 
     /** HOVER SCAN MODE SELECTION EFFECT */
     $('.scan-mode').hover(function() {
+        
         var obj = $(this);
-
         obj.find('img').addClass('sfumatura');
         obj.find('.mode-description').slideDown('fast');
 
@@ -215,6 +221,7 @@ $(document).ready(function() {
 	$('.scan-mode').on('click', function() {
 
 		$('.scan-mode').removeClass('my-selected');
+		
 		$(this).addClass('my-selected');
 		
 		scan_mode = parseInt($(this).attr('data-id'));
@@ -231,7 +238,7 @@ $(document).ready(function() {
                 $('#images-container').show();
                 $('#images-container').removeClass().addClass('col-sm-6');
                 $('#console-container').removeClass().addClass('col-sm-6');
-                
+                POST_PROCESS = true;
                 break;
             case 7 :/** SWEEP */
                 instruction_page = 's_scan.php';
@@ -240,6 +247,7 @@ $(document).ready(function() {
                 $('#images-container').show();
                 $('#images-container').removeClass().addClass('col-sm-6');
                 $('#console-container').removeClass().addClass('col-sm-6');
+                POST_PROCESS = true;
                 break;
             case 8 :/** PROBING */
                 instruction_page = 'p_scan.php';
@@ -247,12 +255,12 @@ $(document).ready(function() {
                 $('#pprocess-progress-container').hide();
                 $('#images-container').hide();
                 $('#console-container').removeClass().addClass('col-sm-12');
-                ISPROBING = true;
+                POST_PROCESS = false;
                 break;
             case 15: /** SFM*/
            		instruction_page = 'pg_scan.php';
            		settings_page = 'pg_scan_settings.php';
-           		ISPROBING = false;
+           		POST_PROCESS = false;
         }
         
         
@@ -264,20 +272,24 @@ $(document).ready(function() {
             
             $("#step2").html(html);
             
-        });
-        
-        
-        /** LOAD INSTRUCTIONS */
-        $.ajax({
-          url: "<?php echo module_url('scan') ?>ajax/" + instruction_page,
-          cache: false
-        }).done(function( html ) {
             
-             $("#step3").html(html);
+             /** LOAD INSTRUCTIONS */
+	        $.ajax({
+	          url: "<?php echo module_url('scan') ?>ajax/" + instruction_page,
+	          cache: false
+	        }).done(function( html ) {
+	            
+	             $("#step3").html(html);
+	             
+	             /** WHEN A SCAN MODE IS SELECTED IS POSSIBLE TO CONTINUE */
+				$("#btn-next").removeClass('disabled');
+				$("#btn-next").trigger('click');
+	        });
+            
+            
         });
-
-		/** WHEN A SCAN MODE IS SELECTED IS POSSIBLE TO CONTINUE */
-		$("#btn-next").removeClass('disabled');
+        
+		
 		
 	});
     
@@ -376,48 +388,69 @@ function ticker(){
 }
 
 
-function setCoords(c)
+function setCoords(c, reDraw)
 {
+		
+	
+	reDraw = reDraw || false;
+	
     x1 = c.x;
     y1 = c.y;
     x2 = c.x2;
     y2 = c.y2;
     
-    
-    
    
-    
-    var y_max = 235;
-    
-    y1 = y_max - y1;
-    y2 = y_max - y2;
-    
-    if(x1 < 32 ){
-    	x1 = 32;
-    	jcrop_api.setSelect([x1 ,y1, x2,y2]);
-    	return;
-    }
-    
-    
-    if(y2 < 66){
-    	y2 = 66;
-    	jcrop_api.setSelect([x1 ,y1, x2,y2]);
-    	return;
-    }
-    
- 
-    if(y1 >175){
+    /*** CHECK X1 */
+    if(x1 < X_MIN || x1 > X_MAX){
     	
-    	y1 = 175;
+    	if(x1 < X_MIN){
+    		x1 = X_MIN;
+    	}
+    	if(x1 > X_MAX){
+    		x1 = X_MAX;
+    	}
+    	
     	jcrop_api.setSelect([x1 ,y1, x2,y2]);
     	return;
     }
     
+    /*** CHECK X2 */
+    if(x2 < X_MIN || x2 > X_MAX){
+    	
+    	if(x2 < X_MIN){
+    		x2 = X_MIN;
+    	}
+    	if(x2 > X_MAX){
+    		x2 = X_MAX;
+    	}
+    	jcrop_api.setSelect([x1 ,y1, x2,y2]);
+    	return;
+    }
     
-    $('#x1').val(x1);
-    $('#y1').val(y2);
-    $('#x2').val(x2);
-    $('#y2').val(y1);
+    /*** CHECK Y2 */
+    if(y2 > Y_MAX){
+    	y2 = Y_MAX;
+    	jcrop_api.setSelect([x1 ,y1, x2,y2]);
+    	return;
+    }
+   
+   	var x1_label =  x1 - X_MIN;
+   	var x2_label =  x2 - X_MIN;
+   	var y1_label =  Y_MAX - y2;
+   	var y2_label =  Y_MAX - y1;
+   	
+   
+    $('#x1').val(x1_label);
+    $('#y1').val(y1_label);
+    $('#x2').val(x2_label);
+    $('#y2').val(y2_label);
+    
+    $("#z_offset").val((Y_MAX-y2));
+    
+    if(reDraw){
+    	jcrop_api.setSelect([x1 ,y1, x2,y2]);
+    	return;
+    }
    
 };
 
@@ -458,7 +491,7 @@ function manageSlide(e){
     
     
     
-	var src = '<?php echo base_url() ?>/application/modules/scan/assets/img/duck' + scan_quality + '.png';
+	var src = '<?php echo base_url() ?>application/modules/scan/assets/img/duck' + scan_quality + '.png';
 	
 	$('.img-quality-container').attr('src',src); 
 	
@@ -466,6 +499,11 @@ function manageSlide(e){
         
 	   $('#quality').html(scan_quality_info[scan_quality].info.name);
 	   $('#quality-description').html(scan_quality_info[scan_quality].info.description);
+	   
+	   $('.quality-slices').html(scan_quality_info[scan_quality].values.slices);
+	   $('.quality-resolution').html(scan_quality_info[scan_quality].values.resolution.width + " X " + scan_quality_info[scan_quality].values.resolution.height);
+	   $('.quality-iso').html(scan_quality_info[scan_quality].values.iso);
+	   
 	}
 };
 
@@ -476,11 +514,8 @@ function manageSlide(e){
  */
 function check_wizard(){
 	
-	
-	
-
 	var item = $('.wizard').wizard('selectedItem');
-
+	
 	$('#btn-next').show();
 	
 	if(item.step > 1){
@@ -491,6 +526,14 @@ function check_wizard(){
 		$('#btn-prev').addClass('disabled');
 	}
 
+	if(item.step == 2 && scan_mode == 15){
+		
+		
+		$("#connection_test_button").removeClass("btn-success btn-warning").addClass("btn-primary");
+		$("#connection_test_button").html("Check connection");
+		
+		$('#btn-next').addClass('disabled');
+	}
 
 	if(item.step == 3){
 		
@@ -513,14 +556,30 @@ function check_wizard(){
  */
 function start(){
     
+    disable_button('.jog');
+ 	if(document.getElementById("top-ext-target-temp") != null){
+		document.getElementById("top-ext-target-temp").setAttribute('disabled', true);
+	}
+	document.getElementById("top-bed-target-temp").setAttribute('disabled', true);
+    
+    IS_MACRO_ON = true;
     a_offset =  $("#a_offset").val();
     
     axis_increment = $("#axis-increment").val();
     start_degree = $("#start-degree").val();
     end_degree = $("#end-degree").val();
     
+    x1 = $("#x1").val();
+    x2 = $("#x2").val();
+    y1 = $("#y1").val();
+    y2 = $("#y2").val();
     
-    var data = { mode: scan_mode, new_object: new_object, obj_id : obj_id, obj_name : $("#name-object").val(),  quality: scan_quality, x1: x1, x2: x2, y1:y1, y2:y2, axis_increment: axis_increment, start_degree: start_degree, end_degree: end_degree, density:density, a_offset:a_offset, probe_quality : probe_quality, pg_iso:$( "#pg-iso" ).val(), pg_size:$("#pg-size").val(), pg_slices: $("#pg-slices").val() };
+    z_offset = $("#z_offset").val();
+    
+    z_hop = $("#z_hop").val();
+    probe_skip = $("#probe_skip").val();
+    
+    var data = { mode: scan_mode, new_object: new_object, obj_id : obj_id, obj_name : $("#name-object").val(),  quality: scan_quality, x1: x1, x2: x2, y1:y1, y2:y2, axis_increment: axis_increment, start_degree: start_degree, end_degree: end_degree, density:density, a_offset:a_offset, probe_quality : probe_quality,z_hop:z_hop, probe_skip:probe_skip, pg_iso:$( "#pg-iso" ).val(), pg_size:$("#pg-size").val(), pg_slices: $("#pg-slices").val(), pc_host_address : $("#pc-host-address").val(), pc_host_port: $("#pc-host-port").val(), z_offset:z_offset};
     
     
 	$.ajax({
@@ -530,9 +589,11 @@ function start(){
 		  dataType: 'json',
 		  asynch: true,
 		  beforeSend: function() {
-			    openWait('Starting scan..');
+			    openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Starting scan');
 	      }
 	}).done(function( response ) {
+		
+		IS_TASK_ON = true;
 
 		task_id            = response.task_id;
 		scan_monitor_file  = response.scan_monitor_file;
@@ -552,7 +613,7 @@ function start(){
         }else{
 	        
 	        /** PPROCESS ONLY FOR SCAN MODE 6 - 7 (rotating, sweep) */
-	        if(!ISPROBING){
+	        if(POST_PROCESS){
 	            
 	            pprocess_monitor_file = response.pprocess_monitor_file;
 	            pprocess_pid          = response.pprocess_pid;
@@ -594,10 +655,11 @@ function start(){
         $("#stop-button").removeClass('disabled');
         
         $(".stats-scan-mode-name").html(scan_mode_info[scan_mode].name);
-		
+		$('#btn-prev').addClass('disabled');
 		
         
 		closeWait();
+		IS_MACRO_ON = false;
 		    
 	});
 	
@@ -610,7 +672,7 @@ var print_monitor = function (){
 
 	if(!SOCKET_CONNECTED){
 		
-		if(!scan_finished || (!ISPROBING && !pprocess_finished)){
+		if(!scan_finished || (POST_PROCESS && !pprocess_finished)){
 			monitor_call();
 	                     	
 		}else{
@@ -627,7 +689,7 @@ var print_monitor = function (){
 /** GET ALL INFO FROM THE TASK WHEN IS COMPLETED */
 function get_info(){
     
-    
+    IS_MACRO_ON = true;
     $.ajax({
 		url : '<?php echo module_url('scan').'ajax/info.php' ?>',
 		data : {task_id: task_id},
@@ -638,9 +700,10 @@ function get_info(){
         obj_id      = response.id_obj;
         id_asc_file = response.id_file;
         
-        $(".download-scan").attr('href', '<?php echo site_url('objectmanager/download') ?>' + '/' + id_asc_file);
+        $(".download-scan").attr('href', '<?php echo site_url('objectmanager/download') ?>' + '/file/' + id_asc_file);
         
         $('#btn-next').trigger('click');
+        IS_MACRO_ON = false;
         closeWait();
 	});
     
@@ -655,15 +718,15 @@ function monitor_call(){
 
 
 	/*se la scansione non è finita*/
-	if(!scan_finished || (!ISPROBING && !pprocess_finished)){	
-	
+	if(!scan_finished || (POST_PROCESS && !pprocess_finished)){	
+		IS_MACRO_ON = true;
 		$.ajax({
               /*url : '<?php echo site_url('scan/monitor') ?>',*/
               url : '<?php echo module_url('scan').'ajax/monitor.php' ?>',
 			  dataType : 'json',
 			  type: 'post',
 			  async : true,
-			  data : {task_id: task_id, scan_monitor_file: scan_monitor_file, pprocess_monitor_file: pprocess_monitor_file, isprobing: ISPROBING }
+			  data : {task_id: task_id, scan_monitor_file: scan_monitor_file, pprocess_monitor_file: pprocess_monitor_file, POST_PROCESS: POST_PROCESS }
 		}).done(function(response) {
 			
 			if(response.scan != null){
@@ -673,6 +736,8 @@ function monitor_call(){
 			if(response.pprocess != null){
 				monitor_pprocessing(response.pprocess);
 			}
+			
+			IS_MACRO_ON = false;
 
 		});
 
@@ -732,6 +797,8 @@ function _stop_timer(){
 function _update_task(){
 
 	var _async = true;
+	
+	
     
 	$.ajax({
 		url : '<?php echo module_url('scan').'ajax/update.php' ?>',
@@ -766,7 +833,12 @@ function _update_task(){
 
 function _resume(){
 	 	
-	 	
+	 	disable_button('.jog');
+	 	if(document.getElementById("top-ext-target-temp") != null){
+			document.getElementById("top-ext-target-temp").setAttribute('disabled', true);
+		}
+		document.getElementById("top-bed-target-temp").setAttribute('disabled', true);
+		
 	 	
 	 	if(scan_mode == 8){
 	 		$('#pprocess-progress-container').hide();
@@ -775,6 +847,8 @@ function _resume(){
 	 		$(".pprocess").hide();
 	 		
 	 	}
+	 	
+	 	$(".steps >li").removeClass("complete");
 	 	
 		monitor_count = 1;
 		if(current_step <= 4){
@@ -785,8 +859,6 @@ function _resume(){
 			mesh_interval_monitor   = setInterval(_mesh_detail, mesh_monitor_timeout);
 			mesh_interval_pid_check = setInterval(_mesh_pid_check, mesh_monitor_timeout);	
 		}
-		_resume_images(1, scan_image, scan_uri);
-		_init_gallery('.image-link-laser');
 		
 		$('.wizard').wizard('selectedItem', { step: current_step });
 		
@@ -815,60 +887,13 @@ function _resume(){
 			
 			
 		}
+		
+		$("#btn-prev").addClass('disabled');
 			
 }
 
 
 
-/**
- *  INIT GALLERY
- */
-function _init_gallery(element){
-
-	$(element).magnificPopup({
-		type:'image', 
-		gallery: {
-	    	enabled: true 
-	  	},
-	  	retina: {
-	  	    ratio: 2
-	  	},
-	  	removalDelay: 300,
-	  	mainClass: 'mfp-fade',
-	  	image: {
-            markup: '<div class="mfp-figure">'+
-	  	            '<div class="mfp-close"></div>'+
-	  	            '<div class="mfp-img"></div>'+
-	  	            '<div class="mfp-bottom-bar">'+
-	  	              '<div class="mfp-title"></div>'+
-	  	              '<div class="mfp-counter"></div>'+
-	  	            '</div>'+
-	  	          '</div>',
-
-            cursor: null, 
-	  	    titleSrc: 'title', 
-	  	    verticalFit: true,
-	  	    tError: '<a href="%url%">The image</a> could not be loaded.'
-	  	}
-	});
-	
-};
-
-
-/**
- * 
- */
-function _resume_images(start, end, uri){
-
-	for(var i = start; i <= end; i++){
-
-		var src = uri + 'images/'+ i +'_l.png';
-		var new_image = $('<div class="scan-preview"><a class="image-link-laser" href="'+ src + '"><img src="' + src +'" data-img="'+src+'"  class="superbox-img"></a></div>');
-		$('.laser').append(new_image);
-		
-	}
-	
-};
 
 
 /**
@@ -982,19 +1007,23 @@ function _do_object(){
 
 
 	if(obj_created == false){
+		
+		IS_MACRO_ON = true;
+		
 		$.ajax({
 			  type: "POST",
 			  url: "<?php echo site_url('scan/object') ?>", 
 			  data: {task_id: task_id},
 			  dataType: 'json',
 			  beforeSend: function(  ) {
-				    openWait('Saving file and object creating...');
+				    openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Saving file and object creating');
 		      }
 		}).done(function( response ) {
 
 			obj_created = true;
 			obj_id = response.obj_id;
 
+			IS_MACRO_ON = false;
 			closeWait();
 			
 		});
@@ -1036,7 +1065,7 @@ function ask_stop() {
 	   
 		if (ButtonPressed === "Yes") {
 		  
-			stop_scan('Stopping scan');
+			stop_scan('<i class="fa fa-circle-o-notch fa-spin"></i> Aborting scan');
 		}
 		if (ButtonPressed === "No") {
 
@@ -1058,15 +1087,13 @@ function stop_scan(message){
     
     $.ajax({
 		  type: "POST",
-		  /*url: "<?php echo site_url('scan/stop') ?>",*/
           url: "<?php echo module_url('scan').'ajax/stop.php' ?>", 
 		  data: {task_id: task_id},
 	      dataType: 'json'
 		}).done(function( data ) {
-		  
           if(data.status == 'ok'){
-                setTimeout(function(){document.location.href = '<?php echo site_url('scan') ?>';}, 1000); 
-          }			
+                setTimeout(function(){document.location.href = '<?php echo site_url('make/scan') ?>';}, 5000); 
+          };			
     });
     
 }
@@ -1074,7 +1101,7 @@ function stop_scan(message){
 function _stopper(){
 	elapsed_time_stop = (parseInt(elapsed_time_stop) + 1);
     if(elapsed_time_stop == max_time_stop){
-        document.location.href = '<?php echo site_url('scan') ?>';
+        document.location.href = '<?php echo site_url('make/scan') ?>';
     }
 }
 
@@ -1110,6 +1137,8 @@ function monitor_scan(data){
 			if(data == null){
 				return;
 			}
+			
+			
 				
     			monitor_count++;
     			scan_monitor_response = data.scan;
@@ -1136,19 +1165,14 @@ function monitor_scan(data){
     				scan_progress_step   = precise_round(scan_monitor_response.stats.percent, precision);
     				scan_second_for_step = elapsed_time;
                     
-                    if(!ISPROBING){
+                    if(POST_PROCESS){
                        
                     }
-    				
-    
+    				    
     				$('.estimated-time').html(' - ');
     				$('.estimated-time-left').html(' - ');
     			
     			}
-				
-				
-				
-				
 				
 				
 				
@@ -1186,11 +1210,7 @@ function monitor_scan(data){
     
     			}
     
-                
-                
-    
-    
-    
+
     			/** GLOBAL ESTIMATED TIME LEFT */
     
     			if(monitor_count > 1){
@@ -1226,10 +1246,7 @@ function monitor_scan(data){
                     }
     				
     			}
-	
-	
-	
-	
+
 }
 
 
@@ -1320,29 +1337,35 @@ function monitor_pprocessing(data){
 function finalize_scan(){
 	
 	
-		
-	if(ISPROBING){
+	if(!POST_PROCESS){
 		if(scan_finished == false) return;
 	}else{
 		if(scan_finished == false || pprocess_finished == false) return;
 	}
-	
 	
 	/* */
 			_stop_monitor();
 			_stop_timer();
 	
 			current_step = 5;
+			
+			
+			if(scan_mode == 15){
+				$(".finish_option_1").hide();
+				$(".finish_option_2").show();
+			}else{
+				$(".finish_option_2").hide();
+				$(".finish_option_1").show();
+			}
 	        
 			$('.progress').removeClass('active');
 			$('.estimated-time').html('-');
 			$('.estimated-time-left').html('-');
 	        
-	        openWait('Finalizing scan');
+	        openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Finalizing scan');
 	        
 	        setTimeout(function(){
 	            get_info();
-	            
 	            /** get all info from the task */
 	        }, 15000);
 	
@@ -1350,4 +1373,50 @@ function finalize_scan(){
 }
 
 
+
+function check_connection(obj){
+	
+	$("#connection_test_button").addClass("disabled");
+	$("#connection_test_button").html("Checking connection...");
+	
+	$('#btn-next').addClass('disabled');
+	
+	var data = {ip: $("#pc-host-address").val(), port:$("#pc-host-port").val()};
+
+	$.ajax({
+		  type: "POST",
+		  url: connection_test_url,
+		  data: data,
+		  dataType: 'json',
+	}).done(function( response ) {
+	   
+	   
+	   
+	   
+	   	if(response.connection == 'failed'){
+	   		
+	   		$("#connection_test_button").removeClass("disabled btn-primary btn-success").addClass("btn-warning");
+	   		$("#connection_test_button").html('<i class="fa fa-warning"></i> No connection. Please check desktop server and try again');
+	   		$('#btn-next').removeClass('disabled').addClass('disabled');
+	   		
+	   			   	
+	   	}else{
+	   		
+	   		$("#connection_test_button").html('<i class="fa fa-check"></i> Connection success!');
+	   		$("#connection_test_button").removeClass("disabled btn-primary btn-warning").addClass("btn-success");
+	   		$('#btn-next').removeClass('disabled');
+	   		
+	   	}
+	   
+    	
+		
+		
+		
+	});
+	
+}
+
+
+function debugCoords(c){
+}
 </script>

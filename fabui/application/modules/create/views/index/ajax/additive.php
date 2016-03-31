@@ -1,10 +1,7 @@
-<!-- FIRST STEP WITH INFO TYPE PRINT - ADDITIVE OR SUB -->
-    
-    
-    <!-- SECOND RESULT OF MACRO -->
-    <!-- THIRD ASK FOR AUTO BED LEVELING -->
-
-    <?php if($show_feeder): ?>
+<!-- FIRST STEP WITH INFO TYPE PRINT - ADDITIVE OR SUB -->    
+<!-- SECOND RESULT OF MACRO -->
+<!-- THIRD ASK FOR AUTO BED LEVELING -->
+     <?php if($show_feeder): ?>
     <div id="row_0" class="row interstitial" >
     	
     	
@@ -14,7 +11,7 @@
     			
     			<div class="row">
     				<div class="col-sm-6 text-center">
-    					<img style="max-width: 50%; display: inline;" class="img-responsive" src="application/modules/create/assets/img/close-panel.png" />
+    					<img style="max-width: 50%; display: inline;" class="img-responsive" src="../application/modules/create/assets/img/close-panel.png" />
     				</div>
     				<div class="col-sm-6 text-center">
     					<h1>
@@ -38,7 +35,7 @@
     			
     			<div class="row">
     				<div class="col-sm-6 text-center">
-    					<img style="max-width: 50%; display: inline;" class="img-responsive" src="application/modules/create/assets/img/feeder.png" />
+    					<img style="max-width: 50%; display: inline;" class="img-responsive" src="../application/modules/create/assets/img/feeder.png" />
     				</div>
     				<div class="col-sm-6 text-center">
     					<h1>
@@ -57,10 +54,9 @@
     	
     	
     </div>
-    
     <?php endif; ?>
     
-    <div id="row_1" class="row interstitial" style="<?php echo $show_feeder ? 'display:none' : '' ?>">
+    <div id="row_1" class="row interstitial" style="<?php echo $show_feeder ? 'display: none;' : '' ?>">
 
         <div class="col-sm-6">
             
@@ -69,13 +65,13 @@
                 <div class="row">
                     
                     <div class="col-sm-6 text-center">
-                        <img style="max-width: 50%; display: inline;" class="img-responsive" src="application/modules/create/assets/img/additive/1.png" />
+                        <img style="max-width: 50%; display: inline;" class="img-responsive" src="../application/modules/create/assets/img/additive/1.png" />
                     </div>
                     
                     <div class="col-sm-6 text-center">
                     
                         <h1>
-            				<span class="badge bg-color-blue txt-color-white">3</span>
+            				<span class="badge bg-color-blue txt-color-white"><?php echo $show_feeder ? 3 : 1 ?></span>
             			</h1>
                         
             			<h2>
@@ -96,13 +92,13 @@
                 
                 <div class="row">
                     <div class="col-sm-6 text-center">
-                        <img style="max-width: 50%; display: inline;" class="img-responsive" src="application/modules/create/assets/img/additive/2.png" />
+                        <img style="max-width: 50%; display: inline;" class="img-responsive" src="../application/modules/create/assets/img/additive/2.png" />
                     </div>
                     
                     <div class="col-sm-6 text-center">
                     
                         <h1>
-            				<span class="badge bg-color-blue txt-color-white">4</span>
+            				<span class="badge bg-color-blue txt-color-white"><?php echo $show_feeder ? 4 : 2 ?></span>
             			</h1>
                         
             			<h2>
@@ -160,7 +156,7 @@
     		<div class="row margin-bottom-10">
     			<div class="col-sm-12 text-center"> 
     				<h2>Calibration</h2>
-    				<small>Print will start automatically in <span class="start-countdown">10</span> seconds</small>
+    				<h5>Print will start automatically in <span class="autostart-timer">20</span> seconds</h5>
     			</div>
     		</div>
     		
@@ -171,18 +167,18 @@
 			<div class="well">
 				<div class="row">
 					<div class="col-sm-6 text-center">
-						<img style="max-width: 50%; display: inline;" class="img-responsive" src="application/modules/create/assets/img/homing.png" />
+						<img style="max-width: 50%; display: inline;" class="img-responsive" src="../application/modules/create/assets/img/homing.png" />
 					</div>
 					<div class="col-sm-6 text-center">
 						 <div class="form-group">
 						 	<div class="radio">
 								<label>
-									<input type="radio" class="radiobox choose-calibration" checked="checked"  name="calibration" value="homing">
+									<input type="radio" checked="checked" class="radiobox choose-calibration"  name="calibration" value="homing">
 									<span>Simple homing</span> 
 								</label>
 							</div>
 						 </div>
-						 <p>Quickly home all axis. Works well with a well calibrated working plane. (SUGGESTED)</p>
+						 <p>Quickly home all axis. Works well with a well calibrated working plane.</p>
 					</div>
 				</div>
 				
@@ -193,7 +189,7 @@
 			<div class="well">
 				<div class="row">
 					<div class="col-sm-6 text-center">
-						<img style="max-width: 50%; display: inline;" class="img-responsive" src="application/modules/create/assets/img/abl.png" />
+						<img style="max-width: 50%; display: inline;" class="img-responsive" src="../application/modules/create/assets/img/abl.png" />
 					</div>
 					
 					<div class="col-sm-6 text-center" >
@@ -205,7 +201,7 @@
 								</label>
 							</div>
 						 </div>
-						 <p>Probes the working plane to auto-correct movements to account for not leveled bed </p>
+						 <p>Probes the working plane to auto-correct movements to account for not leveled bed (SUGGESTED)</p>
 					</div>
 					
 				</div>
@@ -221,34 +217,82 @@
 		
     </div>
     
+    <!-- 
+    <div id="row_3" class="row interstitial" style="display: none;">
 
+        <div class="col-sm-6">
+            <div class="well final-step">
+                <h2>Calibration</h2>
+                
+                
+                <div class="form-group">
+											
+					<div class="col-md-10">
+						<div class="radio">
+							<label>
+								<input type="radio" class="radiobox choose-calibration" checked="checked" name="calibration" value="homing">
+								<span>Simple homing</span> 
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" class="radiobox choose-calibration"  name="calibration" value="abl"> 
+								<span>Auto bed leveling</span> 
+							</label>
+						</div>
+						
+					</div>
+				</div>
+                
+                
+                <div class="final-step-response"></div>
+            </div>
+        
+        </div>
+        
+        
+        <div class="col-sm-6">
+        	<div class="well">
+        		<img style="max-width: 50%; display: inline;" class="img-responsive" src="application/modules/create/assets/img/homing.png" />
+        	</div>
+        </div>
+    
+    </div>
+    -->
+    
+    
     
     
     <div class="row button-print-container margin-bottom-10">
         <div class="col-sm-12 text-center ">
-        	
+        
             <a id="modal_link" data-action="<?php echo $action_button; ?>" href="javascript:void(0);" class="btn btn-primary btn-lg"><?php echo $label_button; ?></a>
-        	
-        	
-            <?php if($show_feeder):?>
+            
+            <?php if($show_feeder): ?>
             <a id="skip_engage"  href="javascript:void(0);" class="btn btn-primary btn-lg">Skip</a> 
             <?php endif; ?>
         </div>
     </div>
     
 <script type="text/javascript">
-
-
-
+	
+	
+	var re = /fabui\/make\/print\?obj=(\d+)\&file=(\d+)/;
+	
+	if ((m = re.exec(window.location.href)) !== null) {
+		disable_button("#btn-next");
+	}
+	  
+	
+	
+	
 	$("#velocity-slider-container").removeClass('col-md-6 col-lg-6').addClass('col-md-4 col-lg-4');
 	$("#ext-slider-container").show();
 	$("#bed-slider-container").show();
 	$("#rpm-slider-container").hide();
 	$("#skip_engage").on('click', skip_engage);
 	
-	var countdown_ticker; 
-	var COUNTDOWN_START = 20
-	var seconds_to_start = COUNTDOWN_START;
+	var autostart_timer = 20;
 	
 	function skip_engage(){
 		
@@ -257,6 +301,7 @@
 			
 			$("#row_1").slideDown('slow', function(){
 				$("#skip_engage").hide();
+				
 				$("#modal_link").html('Continue');
                 $("#modal_link").attr('data-action', '');
 				
@@ -276,15 +321,13 @@
             var action = $(this).attr('data-action');
             
             if(action == "exec"){
-            	clearInterval(countdown_ticker);
+            	stopCountDown();
                 print_object();
                 return false; 
             }
             
             
             if(action == "check"){
-                
-                
                 pre_print();
                 return false; 
             }
@@ -292,13 +335,9 @@
             
             
             if(action == "feeder"){
-            	
             	engage_feeder();
             	return false;
-            	
             }
-            
-            
             
             $( ".interstitial" ).each(function( index ) {
                 
@@ -308,13 +347,7 @@
             });
             
             next_row = actual_row + 1;
-            
-            
 
-            
-             
-            
-            
             if ($("#row_" + next_row).length > 0){
                 
                 $("#row_" + actual_row).slideUp('slow', function(){
@@ -329,6 +362,7 @@
                     switch(next_row){
                     	
                     	case 1:
+                    		
                     		 $("#modal_link").html('Continue');
                     		break;
                         
@@ -340,8 +374,7 @@
                             $("#modal_link").html('Start');
                             $("#modal_link").attr('data-action', 'exec');
                             $("#skip").show();
-                            $(".start-countdown").html(COUNTDOWN_START);
-                            countdown_ticker = setInterval(countdown, 1000);
+                            startCountDown();
                             break;
                         
                     }
@@ -355,35 +388,29 @@
         
         
         
-        function countdown(){
-        	
-        	
-        	seconds_to_start = parseInt($(".start-countdown").html()) - 1;
-        	
-        	$(".start-countdown").html(seconds_to_start);
-        	
-        	if(seconds_to_start == 0){
-        		
-        		$("#modal_link").trigger("click");
-        		clearInterval(countdown_ticker);
-        		
-        	}
-        	
-        	
-        	
-        }
-        
-        
         function pre_print(){
             
-            openWait('Checking printer');
+            jog_call("bed_temp", 40);
+            jog_call("ext_temp", 150);
+            
+            if ( typeof (Storage) !== "undefined") {
+            	localStorage.setItem("bed_temp_target", 40);
+            	localStorage.setItem("nozzle_temp_target", 150)
+
+				$("#top-bar-bed-target").html(40);
+				$("#top-bar-nozzle-target").html(150);
+            }
+                        
+            IS_MACRO_ON = true;
+            
+            openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Preparing print');
+            
             $("#res-icon").removeClass('fa-warning fa-check txt-color-green txt-color-red fa-spinner fa-spin');
             $("#res-icon").addClass('fa-spinner fa-spin');
             $('#modal_link').addClass('disabled');
             
             var timestamp = new Date().getTime();
             
-            //ticker_url = '/temp/check_' + timestamp + '.trace';
             ticker_url = '/temp/macro_trace';
                        
             $.ajax({
@@ -403,6 +430,8 @@
                     $('.check_result').html('');
                     $('#modal_link').trigger('click');
                     
+                    disable_button('#btn-next');
+                    
                 }else{
                     $("#res-icon").removeClass('fa-spin').removeClass('fa-spinner').addClass('fa-warning').addClass('txt-color-red');
                     /*$('.check_result').html(response.trace);*/
@@ -417,9 +446,11 @@
 						icon : "fa fa-warning",
 		                timeout: 15000
 		            });
+		            
+		             disable_button('#btn-next');
                         
                 }
-                
+                IS_MACRO_ON = false;
                 ticker_url = '';
                 closeWait();
                 $('#modal_link').removeClass('disabled');    
@@ -431,15 +462,14 @@
         
         function engage_feeder(){
         	
-        	
-        	openWait('Engaging feeder');
+        	IS_MACRO_ON = true;
+        	openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Engaging feeder');
             $("#res-icon").removeClass('fa-warning fa-check txt-color-green txt-color-red fa-spinner fa-spin');
             $("#res-icon").addClass('fa-spinner fa-spin');
             $('#modal_link').addClass('disabled');
             
             var timestamp = new Date().getTime();
             
-            ticker_url = '/temp/engage_feeder_' + timestamp + '.trace';
             ticker_url = '/temp/macro_trace';
                        
             $.ajax({
@@ -471,7 +501,7 @@
                     $("#res-icon").removeClass('fa-spin').removeClass('fa-spinner').addClass('fa-warning').addClass('txt-color-red');
                     /*$('.check_result').html(response.trace);*/
                     $("#modal_link").html('Oops.. try again');
-                    $("#modal_link").attr('data-action', 'feeder');
+                    $("#modal_link").attr('data-action', 'check');
                     
                     $.smallBox({
 						title : "Warning",
@@ -481,14 +511,9 @@
 		                timeout: 15000
 		            });
 		            
-		            isEngageFeeder = 0; 
-		                    
-                    
-                    	
-                    
-                        
+		            isEngageFeeder = 0;                         
                 }
-                
+                IS_MACRO_ON = false;
                 ticker_url = '';
                 closeWait();
                 $('#modal_link').removeClass('disabled');    
@@ -496,17 +521,6 @@
         	
         	
         }
-
-		
-		/*
-        $("#skip").on('click', function() {
-            
-            skip = 1;
-            print_object();
-            
-        });
-        */ 
-        
         
          $(".choose-calibration").on('click', function() {
             

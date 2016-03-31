@@ -1,9 +1,9 @@
 <div class="row">
-	<!-- col -->
+	<!-- col 
 	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 		<h1 class="page-title txt-color-blueDark"><i class="fab-fw icon-fab-plugin"></i> Plugins <span> > Upload</span></h1>
 	</div>
-
+-->
 </div>
 <?php if(isset($error)): ?>
 	<div class="row">
@@ -22,7 +22,7 @@
 				<p>Unpacking the package... </p>
 				<p>Installing the plugin...</p>
 				<p>Plugin installed successfully...</p>
-				<a href="<?php echo site_url("plugin") ?>">Return to Plugins page</a>
+				<a href="<?php echo site_url("plugin/index") ?>">Return to Plugins page</a>
 				
 			<?php else: ?>
 			<form class="form-inline" enctype="multipart/form-data" method="post" action="<?php echo site_url("plugin/upload") ?>">

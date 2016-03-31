@@ -26,10 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$value .= ' F'.$feed;
 		}
 		
+		$ini_array = parse_ini_file(SERIAL_INI);
 		
 		$serial = new phpSerial;
-		$serial->deviceSet(PORT_NAME);
-		$serial->confBaudRate(BOUD_RATE);
+		$serial->deviceSet($ini_array['port']);
+		$serial->confBaudRate($ini_array['baud']);
 		$serial->confParity("none");
 		$serial->confCharacterLength(8);
 		$serial->confStopBits(1);
@@ -53,6 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}
 	
 }
+
+if(!isset($value)) $value = '';
+if(!isset($reply)) $reply = '';
 
 include 'header.php';
 ?>
@@ -149,11 +153,12 @@ include 'header.php';
 							<fieldset>
 								<div class="form-group">
 									<label>Mdi</label>
-									<textarea name="mdi-code" class="form-control uppercase"><?php echo $value; ?></textarea>
+									<textarea name="mdi-code" class="form-control uppercase"><?php echo isset($value) ? $value : ''; ?></textarea>
 									<button type="submit" class="btn btn-primary margin-top-10" name="c" value="mdi">Exec</button>
 								</div>
 							</fieldset>
 						</form>
+						
 						<hr>
 						Console:
 						<pre><?php echo $value.': '.$reply; ?></pre>

@@ -12,22 +12,18 @@ $_id_task = $_POST['id_task'];
 $db    = new Database();
 $_task = $db->query('select * from sys_tasks where id='.$_id_task);
 
+$_attributes = json_decode(file_get_contents(TEMP_PATH.'task_monitor.json'), TRUE);
 
 /** UPDATE TASK */
 $_data_update = array();
 $_data_update['status']      = 'canceled';
 $_data_update['finish_date'] = 'now()';
-
+$_data_update['attributes']  = json_encode($_attributes);
 $db->update('sys_tasks', array('column' => 'id', 'value' => $_id_task, 'sign' => '='), $_data_update);
 
 $db->close();
 
-//call socket
-shell_exec('sudo python '.PYTHON_PATH.'websocket_tasks.py');
 
-
-
-$_attributes = json_decode($_task['attributes'], TRUE);
 
 /** KILL PROCESS */
 $_command = 'sudo kill '.$_attributes['pid'];
@@ -35,7 +31,6 @@ shell_exec($_command);
 
 /** REMOVE ALL TEMPORARY FILES */
 shell_exec('sudo rm -rf '.$_attributes['folder']);
-
 
 $_response_items['response'] = true;
 

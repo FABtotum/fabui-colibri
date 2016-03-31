@@ -2,9 +2,6 @@
 
 include_once ('config/config.php');
 
-// Load system library (with its own autoload facility)
-require_once ('/var/www/lib/Colibri.php');
-
 function check_install() {
 
 	$_install = file_get_contents(INSTALL_FILE, FILE_USE_INCLUDE_PATH) == 1 ? true : false;
@@ -64,14 +61,6 @@ function exec_sql_file() {
 	}
 
 }
-
-/*******************************************************************************
- * REFACTORING:
- * 
- * Move the shared networking function into the Colibri\Networking library class.
- * It's just one directory away: file:///var/www/lib/Colibri/Networking.php
- *
- ******************************************************************************/
 
 /**
  *
@@ -154,7 +143,7 @@ function scan_wlan() {
 function setWifi($ssid, $password, $type = "WPA") {
 
 	$networkConfiguration = networkConfiguration();
-	Colibri::load('Networking')->setNetworkConfiguration($networkConfiguration['eth'], array('ssid' => $ssid, 'password' => $password, 'type' => $type));
+	setNetworkConfiguration($networkConfiguration['eth'], array('ssid' => $ssid, 'password' => $password, 'type' => $type));
 
 	$response = shell_exec("sudo service networking reload");
 
@@ -230,57 +219,51 @@ function networkConfiguration() {
 
 /**
  * Set Network Configuration
- *
- * -> moved into lib/Colibri/Networking
  */
-/*function setNetworkConfiguration($eth_address, $wifi)
-{
+function setNetworkConfiguration($eth, $wifi) {
 
-	$wifi_conf = array();
-	switch($wifi['type'])
-	{		
-		case 'WPA':
-		case 'WPA2':
-			$wifi_conf[] = "    wpa-ssid \"{$wifi['ssid']}\"";
-			$wifi_conf[] = "    wpa-psk  \"{$wifi['password']}\"";
+	
+
+	$interfaces_file = '/etc/network/interfaces';
+
+	$new_configuration = 'auto lo' . PHP_EOL;
+	$new_configuration .= 'iface lo inet loopback' . PHP_EOL . PHP_EOL;
+	$new_configuration .= 'allow-hotplug eth0' . PHP_EOL;
+	$new_configuration .= '    auto eth0' . PHP_EOL;
+	$new_configuration .= '    iface eth0 inet static' . PHP_EOL;
+	$new_configuration .= '    address ' . $eth . PHP_EOL;
+	$new_configuration .= '    netmask 255.255.0.0' . PHP_EOL . PHP_EOL;
+	$new_configuration .= 'allow-hotplug wlan0' . PHP_EOL;
+	$new_configuration .= '    auto wlan0' . PHP_EOL;
+	$new_configuration .= '    iface wlan0 inet dhcp' . PHP_EOL;
+
+	switch($wifi['type']) {
+
+		case 'OPEN' :
+			$new_configuration .= '    wireless-essid ' . $wifi['ssid'] . '' . PHP_EOL;
+			$new_configuration .= '    wireless-mode managed' . PHP_EOL;
 			break;
-		case 'WEP':
-			$wifi_conf[] = "    wireless-essid \"{$wifi['ssid']}\"";
-			$wifi_conf[] = "    wireless-key   \"{$wifi['password']}\"";
+		case 'WEP' :
+			$new_configuration .= '    wireless-essid ' . $wifi['ssid'] . '' . PHP_EOL;
+			$new_configuration .= '    wireless-key ' . $wifi['password'] . '' . PHP_EOL;
 			break;
-		default:
-		case 'OPEN':
-			$wifi_conf[] = "    wireless-essid \"{$wifi['ssid']}\"";
-			$wifi_conf[] = "    wireless-mode  managed";
+		case 'WPA' :
+		case 'WPA2' :
+			$new_configuration .= '    wpa-ssid "' . $wifi['ssid'] . '"' . PHP_EOL;
+			$new_configuration .= '    wpa-psk "' . $wifi['password'] . '"' . PHP_EOL;
+			break;
 	}
-	$wifi_conf = implode(PHP_EOL, $wifi_conf);
 
-	$interfaces_file = NETWORK_INTERFACES;
-
-	$new_configuration = <<<CONF
-auto lo
-iface lo inet loopback
-
-allow-hotplug eth0
-auto eth0
-iface eth0 inet static
-    address {$eth_address}
-    netmask 255.255.0.0
-
-allow-hotplug wlan0
-auto wlan0
-iface wlan0 inet dhcp'.PHP_EOL;
-{$wifi_conf}
-CONF;
-		
-	$backup_command = 'sudo cp /etc/network/interfaces '.$interfaces_file.'.sav';
+	$backup_command = 'sudo cp /etc/network/interfaces ' . $interfaces_file . '.sav';
 	shell_exec($backup_command);
 
-	// can this be handled better?
-	shell_exec('sudo chmod 666'.$interfaces_file);
+	shell_exec('sudo chmod 666 ' . $interfaces_file);
+
 	file_put_contents($interfaces_file, $new_configuration);
-	shell_exec('sudo chmod 640'.$interfaces_file);
-}*/
+
+	shell_exec('sudo chmod 644 ' . $interfaces_file);
+
+}
 
 function wlan() {
 
@@ -337,7 +320,7 @@ function setEthIP($ip) {
 	$ip = '169.254.1.' . $ip;
 	$networkConfiguration = networkConfiguration();
 
-	Colibri::load('Networking')->setNetworkConfiguration($ip, $networkConfiguration['wifi']);
+	setNetworkConfiguration($ip, $networkConfiguration['wifi']);
 
 	$response = shell_exec("sudo service networking reload");
 }

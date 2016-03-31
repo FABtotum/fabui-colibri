@@ -1,35 +1,3 @@
-var smartbgimage = "<h6 class='margin-top-10 semi-bold'>Background</h6><img src='img/pattern/graphy-xs.png' data-htmlbg-url='img/pattern/graphy.png' width='22' height='22' class='margin-right-5 bordered cursor-pointer'><img src='img/pattern/tileable_wood_texture-xs.png' width='22' height='22' data-htmlbg-url='img/pattern/tileable_wood_texture.png' class='margin-right-5 bordered cursor-pointer'><img src='img/pattern/sneaker_mesh_fabric-xs.png' width='22' height='22' data-htmlbg-url='img/pattern/sneaker_mesh_fabric.png' class='margin-right-5 bordered cursor-pointer'><img src='img/pattern/nistri-xs.png' data-htmlbg-url='img/pattern/nistri.png' width='22' height='22' class='margin-right-5 bordered cursor-pointer'><img src='img/pattern/paper-xs.png' data-htmlbg-url='img/pattern/paper.png' width='22' height='22' class='bordered cursor-pointer'>";
-$("#smart-bgimages").fadeOut(), $("#demo-setting").click(function() {
-    $(".demo").toggleClass("activate")
-}), $('input[type="checkbox"]#smart-fixed-header').click(function() {
-    $(this).is(":checked") ? $.root_.addClass("fixed-header") : ($('input[type="checkbox"]#smart-fixed-ribbon').prop("checked", !1), $('input[type="checkbox"]#smart-fixed-navigation').prop("checked", !1), $.root_.removeClass("fixed-header"), $.root_.removeClass("fixed-navigation"), $.root_.removeClass("fixed-ribbon"))
-}), $('input[type="checkbox"]#smart-fixed-navigation').click(function() {
-    $(this).is(":checked") ? ($('input[type="checkbox"]#smart-fixed-header').prop("checked", !0), $.root_.addClass("fixed-header"), $.root_.addClass("fixed-navigation"), $('input[type="checkbox"]#smart-fixed-container').prop("checked", !1), $.root_.removeClass("container")) : ($('input[type="checkbox"]#smart-fixed-ribbon').prop("checked", !1), $.root_.removeClass("fixed-navigation"), $.root_.removeClass("fixed-ribbon"))
-}), $('input[type="checkbox"]#smart-fixed-ribbon').click(function() {
-    $(this).is(":checked") ? ($('input[type="checkbox"]#smart-fixed-header').prop("checked", !0), $('input[type="checkbox"]#smart-fixed-navigation').prop("checked", !0), $('input[type="checkbox"]#smart-fixed-ribbon').prop("checked", !0), $.root_.addClass("fixed-header"), $.root_.addClass("fixed-navigation"), $.root_.addClass("fixed-ribbon"), $('input[type="checkbox"]#smart-fixed-container').prop("checked", !1), $.root_.removeClass("container")) : $.root_.removeClass("fixed-ribbon")
-}), $('input[type="checkbox"]#smart-fixed-footer').click(function() {
-    $(this).is(":checked") ? $.root_.addClass("fixed-page-footer") : $.root_.removeClass("fixed-page-footer")
-}), $('input[type="checkbox"]#smart-rtl').click(function() {
-    $(this).is(":checked") ? $.root_.addClass("smart-rtl") : $.root_.removeClass("smart-rtl")
-}), $('input[type="checkbox"]#smart-top-menu').click(function() {
-	$(this).is(":checked") ? $.root_.addClass("menu-on-top") : $.root_.removeClass("menu-on-top")
-}), "top" == localStorage.getItem("sm-setmenu") ? $("#smart-topmenu").prop("checked", !0) : $("#smart-topmenu").prop("checked", !1), $('input[type="checkbox"]#colorblind-friendly').click(function() {
-    $(this).is(":checked") ? $.root_.addClass("colorblind-friendly") : $.root_.removeClass("colorblind-friendly")
-}), $('input[type="checkbox"]#smart-fixed-container').click(function() {
-    $(this).is(":checked") ? ($.root_.addClass("container"), $('input[type="checkbox"]#smart-fixed-ribbon').prop("checked", !1), $.root_.removeClass("fixed-ribbon"), $('input[type="checkbox"]#smart-fixed-navigation').prop("checked", !1), $.root_.removeClass("fixed-navigation"), smartbgimage ? ($("#smart-bgimages").append(smartbgimage).fadeIn(1e3), $("#smart-bgimages img").bind("click", function() {
-        var e = $(this),
-            t = $("html");
-        bgurl = e.data("htmlbg-url"), t.css("background-image", "url(" + bgurl + ")")
-    }), smartbgimage = null) : $("#smart-bgimages").fadeIn(1e3)) : ($.root_.removeClass("container"), $("#smart-bgimages").fadeOut())
-}), $("#reset-smart-widget").bind("click", function() {
-    return $("#refresh").click(), !1
-}), $("#smart-styles > a").on("click", function() {
-    var e = $(this),
-        t = $("#logo img");
-    $.root_.removeClassPrefix("smart-style").addClass(e.attr("id")), t.attr("src", e.data("skinlogo")), $("#smart-styles > a #skin-checked").remove(), e.prepend("<i class='fa fa-check fa-fw' id='skin-checked'></i>")
-})
-
-
 function number_format(number, decimals, dec_point, thousands_sep) {
 
 	number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
@@ -86,30 +54,23 @@ function pad(val) {
 function freeze_menu(except) {
 
 	var excepet_item_menu = new Array();
-
 	excepet_item_menu[0] = 'dashboard';
 	excepet_item_menu[1] = 'objectmanager';
-	excepet_item_menu[2] = except;
-
-	$("#left-panel nav > ul > li > a").each(function(index, element) {
+	excepet_item_menu[2] = 'make/history';
+	excepet_item_menu[3] = except;
+	
+	var a = $("nav li > a");
+	
+	a.each(function() {
 		var controller = $(this).attr('data-controller');
-
-		// se non è nella lista allora la rendo disabled
-		if (excepet_item_menu.indexOf(controller) < 0) {
-
+		if(jQuery.inArray( controller, excepet_item_menu ) >= 0 ){
+			if(controller == except){
+				$(this).append('<span class="badge bg-color-red pull-right inbox-badge freeze-menu">!</span>');
+			}
+		}else{
 			$(this).addClass('menu-disabled');
 			$(this).removeAttr('href');
 		}
-		//se corrisponde aggiungo punto esclamativo per notifica
-		if (controller == except) {
-
-			if ($(this).find('.freeze-menu').length <= 0) {
-				$(this).append('<span class="badge bg-color-red pull-right inbox-badge freeze-menu">!</span>');
-				freezed = true;
-			}
-
-		}
-
 	});
 }
 
@@ -138,115 +99,7 @@ function bytesToSize(bytes) {
 	return parseFloat((bytes / Math.pow(k, i))).toFixed(3) + ' ' + sizes[i];
 }
 
-/**
- *
- *
- */
 
-/**
- * VARIABLES: fabui global variables
- */
-
-/**
- *  MODAL WAITING
- */
-var loading = $.magnificPopup.instance;
-
-loading.close = function() {
-	$(".white-popup").removeClass('bounceIn').addClass("bounceOut");
-	$.magnificPopup.proto.close.call(this);
-};
-
-function openWait(title, content, spinner) {
-
-	content = content || '';
-	spinner = spinner || true;
-
-	var contentDisplay = 'display:none;'
-
-	if ($(".wait-content").length > 0) {
-		$(".wait-content").html('');
-		$(".wait-content").remove();
-	}
-	
-	var src_html = '<div class="white-popup animated bounceIn fast">';
-	
-	if(!pressedEmergencyButton){
-		src_html += '<a href="#" class="btn btn-default pull-right" data-action="emergencyButton"><i class="fa fa-times-circle txt-color-red"></i></a>';
-	}
-	
-	
-	src_html += '<h6 class="text-align-center wait-title">' + title + ' </h6>';
-
-	if (spinner == true) {
-		
-		src_html += '<div class="progress progress-sm progress-striped active"><div class="progress-bar bg-color-teal"  role="progressbar" style="width: 100%"></div></div>';		
-		//src_html += '<h4 class="text-align-center wait-spinner"><i class="fa fa-spinner fa-spin"></i></h4>'
-	}
-
-	if (content != "") {
-		contentDisplay = '';
-	}
-
-	src_html += '<div class="wait-content margin-top-10" style="' + contentDisplay + '"><pre>' + content + '</pre></div>';
-	src_html += '</div>';
-
-	loading.open({
-		items : {
-			src : src_html
-		},
-
-		removalDelay : 1000,
-		type : 'inline',
-		modal : true,
-		mainClass : 'mfp-zoom-in',
-		alignTop : false
-	});
-
-}
-
-function closeWait() {
-	loading.close();
-}
-
-function waitTitle(title) {
-	if ($(".wait-title").length > 0) {
-		$(".wait-title").html(title);
-	}
-}
-
-function waitContent(content) {
-	if ($(".wait-content").length > 0) {
-
-		$(".wait-content").find('pre').html('');
-		$(".wait-content").show();
-		$(".wait-content").find('pre').html(content);
-	}
-}
-
-var color_green = "#659265";
-var color_red = "#C46A69";
-var freezed = false;
-
-function show_small_box(title, message, color, icon, timeout) {
-	$.smallBox({
-		title : title,
-		content : message,
-		color : color,
-		//timeout: 6000,
-		icon : icon,
-		timeout : timeout
-	});
-}
-
-function show_error(message) {
-	show_small_box('Error', message, color_red, 'fa fa-warning shake animated', 6000);
-}
-
-function show_info_message(message) {
-	show_small_box('Info', message, color_green, 'fa fa-check bounce animated', 4000);
-
-}
 
 //======================================================================================================
 /*
@@ -268,11 +121,17 @@ var PAGE_ACTIVE = true;
 var PAGE_TITLE = '';
 var RESETTING_CONTROLLER = false;
 var STOPPING_ALL = false;
+var IS_MACRO_ON = false;
+var IS_TASK_ON = false;
+var jog_ticket_url = '';
+var interval_temperature;
+
+var BLOCK_TEMP_EXT_SLIDER = false;
 
 /** CHECK PRINTE SAFETY AJAX MODE*/
 function safety() {
-	
-	if(!PAGE_ACTIVE){
+
+	if (!PAGE_ACTIVE) {
 		return false;
 	}
 
@@ -281,10 +140,9 @@ function safety() {
 	}
 
 	if (SOCKET_CONNECTED) {
-		return
+		return false;
 	}
 
-	var timestamp = new Date().getTime();
 	if (EMERGENCY == false) {
 		$.get("/temp/fab_ui_safety.json?time=" + jQuery.now(), function(data) {
 			if (data.type == 'emergency') {
@@ -295,30 +153,30 @@ function safety() {
 }
 
 function secure(mode) {
-	
-	if(SOCKET_CONNECTED){
-		SOCKET.send('message', '{"name": "secure", "data":{"mode":'+ mode +' } }');
-	}else{
-		
+
+	if (SOCKET_CONNECTED) {
+		SOCKET.send('message', '{"name": "secure", "data":{"mode":' + mode + ' } }');
+	} else {
+		IS_MACRO_ON = true;
 		$.ajax({
-		type : "POST",
-		url : "/fabui/application/modules/controller/ajax/secure.php",
-		data : {
-			mode : mode
+			type : "POST",
+			url : "/fabui/application/modules/controller/ajax/secure.php",
+			data : {
+				mode : mode
 			},
 			dataType : 'json'
 		}).done(function(response) {
 			EMERGENCY = false;
+			IS_MACRO_ON = false;
 		});
-		
+
 	}
-	
-	
-	
 
 }
 
 function set_tasks(data) {
+
+	IS_TASK_ON = false;
 
 	number_tasks = data.number;
 	var controller = '';
@@ -327,9 +185,16 @@ function set_tasks(data) {
 
 	if (data.number > 0) {
 
+		IS_TASK_ON = true;
+
 		$.each(data.items, function() {
 			var row = this;
 			controller = row.controller;
+			
+			if (controller == 'make') {
+ 				controller += '/' + row.type;
+			}
+			
 		});
 
 	}
@@ -355,6 +220,12 @@ function set_updates(number) {
 			}
 		});
 	}
+	
+	if(number_updates > 0){
+		var html = '<div class="row"><div class="col-sm-12"><div class="alert alert-danger alert-block animated bounce"><button class="close" data-dismiss="alert">×</button><h4 class="alert-heading"> <i class="fa fa-refresh"></i> New important software updates are now available, <a style="text-decoration:underline; color:white;" href="/fabui/updates">update now!</a> </h4></div></div></div>';
+		if(MODULE != 'updates')	$("#content").prepend(html);
+	}
+	
 
 }
 
@@ -364,7 +235,7 @@ function update_notifications() {
 
 	if (total > 0) {
 		$("#activity").find('.badge').addClass('bg-color-red bounceIn animated');
-		document.title = PAGE_TITLE +' (' + total + ')';
+		document.title = PAGE_TITLE + ' (' + total + ')';
 	} else {
 		$("#activity").find('.badge').removeClass('bg-color-red bounceIn animated');
 		document.title = PAGE_TITLE;
@@ -380,11 +251,11 @@ function update_notifications() {
 }
 
 function refresh_notifications() {
-	
-	if(!PAGE_ACTIVE){
+
+	if (!PAGE_ACTIVE) {
 		return false;
 	}
-	
+
 	if (!do_system_call) {
 		return false;
 	}
@@ -401,11 +272,11 @@ function refresh_notifications() {
 
 /** CHECK TASKS, MENU AJAX MODE */
 function check_notifications() {
-	
-	if(!PAGE_ACTIVE){
+
+	if (!PAGE_ACTIVE) {
 		return false;
 	}
-	
+
 	if (!do_system_call) {
 		return false;
 	}
@@ -436,28 +307,26 @@ function check_notifications() {
 
 	} else {
 
-		$("#lock-screen-form").submit();
+		lockscreen();
 	}
 }
 
 /** ON LOAD */
 
 $(function() {
-	
-	
+
 	PAGE_TITLE = document.title;
 
 	if (fabui) {
 
 		//check is websocket
-
 		if ("WebSocket" in window) {
 
 			var host = window.location.hostname;
 			var port = 9001;
 
 			SOCKET = new FabWebSocket(host, port);
-			
+
 			SOCKET.bind('message', function(payload) {
 
 				try {
@@ -468,8 +337,12 @@ $(function() {
 				}
 
 				switch(obj.type) {
-					
+
 				case 'emergency':
+					if(parseInt(obj.code) == 102) {
+						stopAll('Front panel has been opened.<br> Aborting all operations');
+						return;
+					}
 					show_emergency(obj.code);
 					break;
 				case 'alert':
@@ -489,11 +362,11 @@ $(function() {
 				case 'temperature':
 					if ( typeof update_temperature_info == 'function') {
 						update_temperature_info(obj.data);
-						$(".btn").removeClass('disabled');
+						/*$(".btn").removeClass('disabled');*/
 					}
 					break;
 				case 'error':
-					console.log(obj.error);
+					//console.log(obj.error);
 					break;
 				case 'macro':
 					manage_macro(obj.data);
@@ -511,19 +384,18 @@ $(function() {
 
 					break;
 				case 'create':
-
 					if ( typeof create_socket_response == 'function') {
 						create_socket_response(obj.data);
 					}
 					break;
-					
+
 				case 'system':
 					manage_system_monitor(obj.data);
 					break;
 				case 'post_processing':
 					manage_post_processing(obj.data);
 					break;
-				
+
 				}
 
 			});
@@ -532,10 +404,11 @@ $(function() {
 			SOCKET.bind('open', function() {
 
 				SOCKET_CONNECTED = true;
+				
 				SOCKET.send('message', '{"name": "getTasks"}');
 				SOCKET.send('message', '{"name": "getInternet"}');
 				SOCKET.send('message', '{"name": "getUsb"}');
-
+				
 			});
 
 			//when connection is closed
@@ -554,42 +427,24 @@ $(function() {
 			SOCKET.connect();
 
 		}
-
+		
+		//init UI
+		initUI();
 		// Handler for .ready() called.
+		notifications_interval = setInterval(check_notifications, 10000);
 		idleInterval = setInterval(timerIncrement, 1000);
 		safety_interval = setInterval(safety, 3000);
-		notifications_interval = setInterval(check_notifications, 10000);
+		interval_temperature = setInterval(get_temperatures, 2500);
+
 		/* START TIMER... */
 		$("#refresh-notifications").on('click', refresh_notifications);
 		check_for_updates();
-		check_for_wizard_setup();
 
 	}
 
 });
 
 
-
-$(".lock-ribbon").click(function (){
-
-	$("#lock-screen-form").submit();
-	
-});
-
-
-$(".language").click(function() {
-
-	var actual_lang = $("#actual_lang").val();
-	var new_lang = $(this).attr("data-value");
-
-	if (actual_lang != new_lang) {
-		$("#lang").val(new_lang);
-
-		openWait('<i class="fa fa-flag"></i><br> loading language... ');
-		$("#lang_form").submit();
-	}
-
-});
 
 /** MOUSE MOVE FOR LOCK SCREEN */
 $(document).mousemove(function(e) {
@@ -598,79 +453,101 @@ $(document).mousemove(function(e) {
 
 /** IDLE TIMER */
 function timerIncrement() {
-	IDLETIME++;	
+	IDLETIME++;
+	if( (max_idle_time) > 0 && (IDLETIME > max_idle_time)){
+		lockscreen();
+	}
+}
+
+function lockscreen(){
+	$("#lock-screen-form").submit();
 }
 
 /** SHUTDOWN */
 function shutdown() {
-	openWait('Shutdown in progress');
-
+	IS_MACRO_ON = true;
+	openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Shutdown in progress');
 	clearInterval(notifications_interval);
 	clearInterval(safety_interval);
 	clearInterval(idleInterval);
-
-	$.ajax({
-		type: "POST",
-		url: "/fabui/application/modules/controller/ajax/shutdown.php",
-		dataType: 'json'
-	}).always(function(response, status) {
+	
+	$.get("/fabui/application/modules/controller/ajax/shutdown.php", function(){
 		setTimeout(function() {
-
-			$(".wait-spinner").remove();
 			waitTitle('Now you can switch off the power');
-			waitContent($("#power-off-img").html());
-		}, 5000);
+			showShutdownImage();
+			closeWait();
+			IS_MACRO_ON = false;
+		}, 15000);
 	});
 }
 
 
-function restart(){
+function showShutdownImage(){
 	
-	openWait("Restart in progress");
 	
+	var ShutdownFancyBox = function() {
+		return {
+			initFancybox : function() {
+				jQuery(".fancybox-shutdown").fancybox({
+					groupAttr : 'data-rel',
+					openEffect : 'elastic',
+					modal: true,
+					titleShow: true,
+					titlePosition: 'over',
+					helpers : {
+						title : {
+							type : 'float'
+						}
+					}
+				});
+
+				$(".fbox-modal").fancybox({
+					maxWidth : 800,
+					maxHeight : 600,
+					fitToView : false,
+					width : '70%',
+					height : '70%',
+					autoSize : false,
+					closeClick : false,
+					closeEffect : 'fade',
+					openEffect : 'elastic'
+				});
+			}
+		};
+	
+	}();
+	
+	ShutdownFancyBox.initFancybox();
+	$(".fancybox-shutdown").trigger('click');
+	
+	
+}
+
+function restart() {
+	
+	IS_MACRO_ON = true;
+	openWait("<i class='fa fa-circle-o-notch fa-spin'></i> Restart in progress");
+
 	clearInterval(notifications_interval);
 	clearInterval(safety_interval);
 	clearInterval(idleInterval);
 	
-	
-	$.ajax({
-		type : "POST",
-		url : "/fabui/application/modules/controller/ajax/restart.php",
-		dataType : 'json'
-	}).done(function(response) {
-		
+	$.get("/fabui/application/modules/controller/ajax/restart.php", function(){
 		waitContent("Restarting please wait...");
-		
 		setTimeout(function() {
-			
+			IS_MACRO_ON = false;
 			document.location.href = '/fabui/login/out';
-
-		}, 70000);
-		
-
+		}, 85000);
 	});
-	
-	
 }
 
-
-
-/** SHUTDOWN */
+/** CHECK FOR AVAILABLE UPDATES */
 function check_for_updates() {
-
-	if (!do_system_call) {
-		return false;
-	}
-
-	$.ajax({
-		type : "POST",
-		url : "/fabui/application/modules/controller/ajax/check_updates.php",
-		dataType : 'json'
-	}).done(function(response) {
-		
-		
-		set_updates(response.updates.number);
-		update_notifications();
+	$.get("/fabui/updates/check", function(data, status){
+		if(data.updates.updated == false){
+			set_updates(1);
+			update_notifications();
+		}
 	});
 }
 
@@ -778,29 +655,6 @@ $("#send-bug").on('click', function() {
 
 });
 
-/**
- *
- */
-
-function check_for_wizard_setup() {
-
-	if (!do_system_call) {
-		return false;
-	}
-
-	setTimeout(function() {
-		if (setup_wizard) {
-
-			$.smallBox({
-				title : "Wizard Setup",
-				content : "It seems that you still did not complete the first recommended setup:<ul><li>Manual Bed Calibration</li><li>Probe Lenght Calibration</li><li>Engage Feeder</li></ul><br>Without a proper calibration you will not be able to use the FABtotum correctly<br>Do you want to do it now?<br><br><p class='text-align-right'><a href='/fabui/maintenance/first-setup' class='btn btn-primary btn-sm'>Yes</a> <a href='javascript:void(0);' class='btn btn-danger btn-sm'>No</a> <a href='javascript:dont_ask_wizard();' class='btn btn-warning btn-sm'>Don't ask me anymore</a> </p>",
-				color : "#296191",
-				icon : "fa fa-warning swing animated"
-			});
-		}
-	}, 1000);
-}
-
 function dont_ask_wizard() {
 
 	$.ajax({
@@ -813,7 +667,20 @@ function dont_ask_wizard() {
 	}).done(function(response) {
 
 	});
+}
 
+function finalize_wizard(){
+	
+	
+	$.ajax({
+		type : "POST",
+		url : "/fabui/application/modules/maintenance/ajax/finish_wizard.php",
+		dataType : 'json'
+	}).done(function(response) {
+
+	});
+	
+	
 }
 
 /** GET TRACE */
@@ -834,42 +701,58 @@ function getTrace(url, type, contenitor) {
 
 ////////////////////////
 function show_emergency(code) {
-		
+
 	jogFirstEntry = true;
-	
+
 	if (EMERGENCY == true) {
 		return;
 	}
 	EMERGENCY = true;
 	
+	var buttons ='[OK][IGNORE]';
+	
+	if(code == parseInt(103)){
+		buttons = '[IGNORE] [INSTALL HEAD]';
+	}
+
 	$.SmartMessageBox({
 		title : "<h4><span class='txt-color-orangeDark'><i class='fa fa-warning fa-2x'></i></span>&nbsp;&nbsp;" + decode_emergency_code(code) + "<br>&nbsp;Press OK to continue or Ignore to disable this warning</h4>",
-		buttons : '[OK][IGNORE]'
+		buttons : buttons
 	}, function(ButtonPressed) {
+		
 		if (ButtonPressed === "OK") {
 			secure(1);
 		}
 		if (ButtonPressed === "IGNORE") {
-			secure(0);
+			
+			if(buttons.indexOf("INSTALL HEAD") > -1){		
+				secure(1);
+			}else{
+				secure(0);
+			}
+			
+			
+		}
+		
+		if (ButtonPressed === "INSTALL HEAD") {
+			installHead();
 		}
 	});
 
 }
 
-function show_alert(code){
-	
+function show_alert(code) {
+
 	$.smallBox({
 		title : "Message",
 		content : decode_emergency_code(code),
 		color : "#5384AF",
-		timeout: 10000,
+		timeout : 10000,
 		icon : "fa fa-warning"
 	});
-	
-	
-	console.log(code);
-}
 
+	
+}
 
 function decode_emergency_code(code) {
 
@@ -884,7 +767,7 @@ function decode_emergency_code(code) {
 		return 'Front panel is open, cannot continue';
 		break;
 	case 103:
-		return 'Head not properly locked in place';
+		return 'Head not properly aligned or absent';
 		break;
 	case 104:
 		return 'Extruder Temperature critical, shutting down';
@@ -893,25 +776,34 @@ function decode_emergency_code(code) {
 		return 'Bed Temperature critical, shutting down';
 		break;
 	case 106:
-		return 'X max Endstop hit';
+		return 'X max Endstop hit: Move the carriage to the center or check <span class="txt-color-orangeDark"><strong>Settings > Hardware > Custom Settings > Invert X Endstop Logic</strong></span>';
 		break;
 	case 107:
-		return 'X min Endstop hit';
+		return 'X min Endstop hit: Move the carriage to the center or check <span class="txt-color-orangeDark"><strong>Settings > Hardware > Custom Settings >Invert X Endstop Logic</strong></span>';
 		break;
 	case 108:
-		return 'Y max Endstop hit';
+		return 'Y max Endstop hit: Move the carriage to the center and reset';
 		break;
 	case 109:
-		return 'Y min Endstop hit';
+		return 'Y min Endstop hit: Move the carriage to the center and reset';
 		break;
 	case 110:
-		return 'The FABtotum has been idling for more than 8 minutes. Temperatures and Motors have been turned off.';
+		return 'The FABtotum has been idling for more than 10 minutes. Temperatures and Motors have been turned off.';
 		break;
 	case 120:
 		return 'Both Y Endstops hit at the same time';
 		break;
 	case 121:
 		return 'Both Z Endstops hit at the same time';
+		break;
+	case 122:
+		return 'Ambient temperature is less then 15°C. Cannot continue.';
+		break;
+	case 123:
+		return 'Cannot extrude filament: the nozzle temperature is too low';
+		break;
+	case 124:
+		return 'Cannot extrude so much filament!';
 		break;
 	default:
 		return 'Unknown error Error code: ' + code;
@@ -920,18 +812,22 @@ function decode_emergency_code(code) {
 
 }
 
-
 function show_connected(bool) {
 	if (bool) {
 		$('.internet').show();
+		$('.no-internet-detected').remove();
 	} else {
 		$('.internet').hide();
+		if($('.no-internet-detected').length <= 0){
+			var html = '<div class="row no-internet-detected"><div class="col-sm-12"><div class="alert alert-warning alert-block animated  bounce"><button class="close" data-dismiss="alert">×</button><h4 class="alert-heading"><i class="fa fa-warning"></i>   No internet connectivity detected. For a better experience please <a style="text-decoration:underline;" href="/fabui/settings/network/wlan">connect</a> </h4></div></div></div>';
+			$("#content").prepend(html);		
+		}
+
 	}
 }
 
 function check_connected() {
-	
-	
+
 	if (SOCKET_CONNECTED && PAGE_ACTIVE) {
 		SOCKET.send('message', '{"name": "getInternet"}');
 	}
@@ -945,12 +841,12 @@ function socket_fallback() {
 }
 
 function write_to_console(text, type) {
-	
 
 	type = type || '';
 
 	if (type == 'macro' || type == "task") {
 		$('.console').html(text);
+		waitContent(text);
 	} else {
 		$('.console').append(text);
 	}
@@ -965,10 +861,8 @@ function manage_macro(obj) {
 		write_to_console(obj.content, 'macro');
 	} else if (obj.type == 'response') {
 		manage_macro_response(obj.content);
-	}else if(obj.type == 'status'){
-		
-		
-		
+	} else if (obj.type == 'status') {
+
 	}
 
 }
@@ -991,132 +885,408 @@ function manage_macro_response(response) {
 
 }
 
-function manage_system_monitor(obj){
+function manage_system_monitor(obj) {
 
-	switch(obj.type){
-		case 'usb':
-			mange_usb_monitor(obj.status, obj.alert)
-			break;
+	switch(obj.type) {
+	case 'usb':
+		mange_usb_monitor(obj.status, obj.alert);
+		break;
+	case 'lock':
+		manage_lock_file(obj.status, obj.alert);
+		break;
 	}
 }
 
+function manage_post_processing(obj) {
 
-function manage_post_processing(obj){
-	
 }
 
-function mange_usb_monitor(status, alert){
-	
+function mange_usb_monitor(status, alert) {
+
 	var message = '<p><strong>';
-	
-	if(status){
+
+	if (status) {
 		message += 'Usb disk inserted';
 		$(".usb-ribbon").show();
-	}else{
+	} else {
 		message += 'Usb disk removed';
 		$(".usb-ribbon").hide();
 	}
-	
-	
+
 	message += '</strong></p>';
-	
-	if(alert){
+
+	if (alert) {
 		$.smallBox({
 			title : "System",
 			content : message,
 			color : "#296191",
-			timeout: 3000,
+			timeout : 3000,
 			icon : "icon-fab-usb"
 		});
 	}
 }
 
 
-function reset_controller(){
-		
-		RESETTING_CONTROLLER = true;
-		
-		openWait("Reset Controller...");
-	    $.ajax({
-	      	url : '/fabui/application/modules/controller/ajax/reset_controller.php',
-		  	dataType : 'json',
-		 	type: 'post'
-		}).done(function(response) {
-			closeWait();
-			RESETTING_CONTROLLER = false; 
-	    });
+function manage_lock_file(status, alert){	
 }
 
-
-
-function stopAll(){
-	
-	openWait("Stopping all...");
-	
+function reset_controller() {
+	RESETTING_CONTROLLER = true;
+	openWait("<i class=\"fa fa-circle-o-notch fa-spin\"></i> Resetting controller");
+	$.get('/fabui/application/modules/controller/ajax/reset_controller.php', function(){
+		closeWait();
+		RESETTING_CONTROLLER = false;
+	});
+}
+function stopAll(message) {
+	message = message || 'Aborting all operations ';
+	openWait(message, ' ', false);
 	STOPPING_ALL = true;
-	
-	$.ajax({
-	      	url : '/fabui/application/modules/controller/ajax/stop_all.php',
-		  	dataType : 'json',
-		 	type: 'post',
-		 	data : {'module': MODULE}
-		}).done(function(response) {
-			
-			/*$.xhrPool.abortAll();*/
-			waitContent("Refreshing page");
-			STOPPING_ALL = false;
-			document.location.href = document.location.href; 
-	    });
+	$.get('/fabui/application/modules/controller/ajax/stop_all.php', function(){
+		waitContent("Refreshing page");
+		setTimeout(function(){ 
+			location.reload(); 
+		}, 3000);
+	});
 }
 
 
-$(window).on("blur focus", function(e) {
+
+/********************
+ *
+ *
+ * CALL JOG FUNCTIONS
+ *
+ *******************/
+
+function jog_call(func, value){
 	
-    var prevType = $(this).data("prevType");
+	if(SOCKET_CONNECTED){
+		jog_make_call_ws(func, value);
+	}else{
+		//fallback for socket
+		if (typeof make_jog_call == 'function') make_jog_call(func, value); //if iam on jog page
+		else jog_make_call_ajax(func, value);
+	}
+	
+	
+}
+function jog_make_call_ws(func, value) {
 
-    if (prevType != e.type) {
-        switch (e.type) {
-            case "blur":
-                PAGE_ACTIVE = false;
-                //document.title = document.title + ' (idle)';
-                break;
-            case "focus":
-                PAGE_ACTIVE = true;
-                //document.title = document.title.replace('(idle)', '');
-                break;
-        }
+	var jsonData = {};
+	
+	jsonData['func'] = func;
+	jsonData['value'] = value;
+	jsonData['step'] = $("#step").length > 0 ? $("#step").val() : 10;
+	jsonData['z_step'] = $("#z-step").length > 0 ?  $("#z-step").val() : 5;
+	jsonData['feedrate'] = $("#feedrate").length > 0 ? $("#feedrate").val() : 1000;
+	jsonData['extruderFeedrate'] = $("#extruder-feedrate").length > 0 ? $("#extruder-feedrate").val() : 300;
+	
+	var message = {};
+
+	message['name'] = "serial";
+	message['data'] = jsonData;
+
+	SOCKET.send('message', JSON.stringify(message));
+
+}
+
+function jog_make_call_ajax(func, value){
+	
+	var data = {}
+	data['function'] = func;
+	data['value'] = value;
+	data['step'] = $("#step").length > 0 ? $("#step").val() : 10;
+	data['z_step'] = $("#z-step").length > 0 ?  $("#z-step").val() : 5;
+	data['feedrate'] = $("#feedrate").length > 0 ? $("#feedrate").val() : 1000;
+	data['extruderFeedrate'] = $("#extruder-feedrate").length > 0 ? $("#extruder-feedrate").val() : 300;
+	$.ajax({
+		type: "POST",
+		url: '/fabui/application/modules/jog/ajax/exec.php',
+		data: data,
+		dataType: 'json'
+	}).done(function( data ) {});		
+}
+
+
+function get_temperatures() {
+
+	if (!RESETTING_CONTROLLER && !STOPPING_ALL && !IS_MACRO_ON && !IS_TASK_ON && !PRINTER_BUSY) {
+		if(SOCKET_CONNECTED) jog_call("get_temperature", "");
+	}
+}
+
+/*****************************
+ *
+ * UPDATE TEMPERATURES
+ *
+ */
+function update_temperature_info(data) {
+	
+	
+	if (data.response.indexOf('ok T:') > -1) {
+
+		var str_temp = data.response.replace('ok ', '');
+		var temperature = str_temp.split(' ');
+
+		var ext_temp = temperature[0].split(':')[1];
+		var ext_target = temperature[1].split('/')[1];
+		var bed_temp = temperature[2].split(':')[1];
+		var bed_target = temperature[3].split('/')[1];
+
+		/******* TOP BAR *********************/
+		$("#top-bar-nozzle-actual").html(parseInt(ext_temp));
+		$("#top-bar-nozzle-target").html(parseInt(ext_target));
+		$("#top-bar-bed-actual").html(parseInt(bed_temp));
+		$("#top-bar-bed-target").html(parseInt(bed_target));
+		
+		if($("#top-act-ext-temp").length > 0){
+			document.getElementById('top-act-ext-temp').noUiSlider.set([parseInt(ext_temp)]);
+			document.getElementById('top-ext-target-temp').noUiSlider.set([parseInt(ext_target)]);
+		}
+		
+		document.getElementById('top-act-bed-temp').noUiSlider.set([parseInt(bed_temp)]);
+		document.getElementById('top-bed-target-temp').noUiSlider.set([parseInt(bed_target)]);
+		
+		
+
+		if ( typeof (Storage) !== "undefined") {
+			
+			
+			localStorage.setItem("nozzle_temp", ext_temp);
+			localStorage.setItem("nozzle_temp_target", ext_target);
+			localStorage.setItem("bed_temp", bed_temp);
+			localStorage.setItem("bed_temp_target", bed_target);
+
+		} else {
+
+		}
+
+		/*********** JOG ***************************/
+		if (MODULE == "jog") {
+		
+			if($("#act-ext-temp").length > 0){
+				$("#ext-actual-degrees").html(parseInt(ext_temp) + '&deg;C');
+				document.getElementById('act-ext-temp').noUiSlider.set([parseInt(ext_temp)]);
+				document.getElementById('ext-target-temp').noUiSlider.set([parseInt(ext_target)]);
+			}
+			
+			
+			$("#bed-actual-degrees").html(parseInt(bed_temp) + '&deg;C');
+			document.getElementById('act-bed-temp').noUiSlider.set([parseInt(bed_temp)]);
+			
+			document.getElementById('bed-target-temp').noUiSlider.set([parseInt(bed_target)]);
+			if (showTemperatureConsole) {
+				write_to_console('Temperatures (M105) [Ext: ' + parseInt(ext_temp) + ' / ' + parseInt(ext_target) + ' ---  Bed: ' + parseInt(bed_temp) + ' / ' + parseInt(bed_target) + ']\n');
+				showTemperatureConsole = false;
+			}
+		}
+	}
+
+}
+
+/***
+ * FUNCTION TO AVOID PAGE CHANGE WHEN SOME MACROS ARE ON
+ *
+ */
+function checkExit() {
+	
+	if(STOPPING_ALL == false && IS_MACRO_ON == true){
+		return "You have attempted to leave this page. The Fabtotum Personal Fabricator is still working. Are you sure you want to reload this page?";
+	}
+}
+
+function initUI(){
+	
+	
+	$(".directions").on("click", directions);
+	$( ".axisz" ).on( "click", axisz );
+	$(".zero_all").on("click", zero_all);
+	
+	if ( typeof (Storage) !== "undefined") {
+		/******* TOP BAR *********************/
+		$("#top-bar-nozzle-actual").html(parseInt(localStorage.getItem("nozzle_temp")));
+		$("#top-bar-nozzle-target").html(parseInt(localStorage.getItem("nozzle_temp_target")));
+		$("#top-bar-bed-actual").html(parseInt(localStorage.getItem("bed_temp")));
+		$("#top-bar-bed-target").html(parseInt(localStorage.getItem("bed_temp_target")));
+		
+	}
+	
+	/**
+	 * TOP BAR TEMPERATURES CONTROL 
+	 */
+	// INIT SLIDERS
+	
+	//bed target
+    noUiSlider.create(document.getElementById('top-bed-target-temp'), {
+		start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp_target") : 0,
+		connect: "lower",
+		range: {'min': 0, 'max' : 100},
+		pips: {
+			
+			mode: 'positions',
+			values: [0,25,50,75,100],
+			density: 5,
+			format: wNumb({
+				postfix: '&deg;'
+			})
+		}
+	});
+    
+	//bet actual
+	noUiSlider.create(document.getElementById('top-act-bed-temp'), {
+		start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp") : 0,
+		connect: "lower",
+		range: {'min': 0, 'max' : 100},
+		behaviour: 'none'
+	});
+	
+	$("#top-act-bed-temp .noUi-handle").remove();
+	
+	// ===============================================================================
+	//nozzle target (if is needed)
+	
+	if($("#top-ext-target-temp").length > 0){
+	
+		noUiSlider.create(document.getElementById('top-ext-target-temp'), {
+			start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp_target") : 0,
+			connect: "lower",
+			range: {'min': 0, 'max' : MAX_NOZZLE_TEMP},
+			pips: {
+				mode: 'positions',
+				values: [0,25,50,75,100],
+				density: 5,
+				format: wNumb({
+					postfix: '&deg;'
+				})
+			}
+		});
+		
+		//nozzle actual
+		noUiSlider.create(document.getElementById('top-act-ext-temp'), {
+			start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp") : 0,
+			connect: "lower",
+			range: {'min': 0, 'max' : MAX_NOZZLE_TEMP},
+			behaviour: 'none'
+		});
+		
+		
+		//SLIDER EVENTS - EXTRUDER
+		document.getElementById("top-ext-target-temp").noUiSlider.on('slide', topExtTempSlide);
+		document.getElementById("top-ext-target-temp").noUiSlider.on('change', topExtTempChange);
+		document.getElementById("top-ext-target-temp").noUiSlider.on('start', blockSliders);
+		document.getElementById("top-ext-target-temp").noUiSlider.on('end', enableSliders);
+		
+		$("#top-act-ext-temp .noUi-handle").remove();	
+	
+	}
+	
+	
+	// ===============================================================================
+	
+	//SLIDER EVENTS - BED
+	document.getElementById("top-bed-target-temp").noUiSlider.on('slide', topBedTempSlide);
+	document.getElementById("top-bed-target-temp").noUiSlider.on('change', topBedTempChange);
+	document.getElementById("top-bed-target-temp").noUiSlider.on('start', blockSliders);
+	document.getElementById("top-bed-target-temp").noUiSlider.on('end', enableSliders);
+
+}
+
+
+function blockSliders(){
+}
+
+
+function enableSliders(){ 
+}
+
+
+function topExtTempSlide(e){
+    $("#top-bar-nozzle-target").html(parseInt(e[0]));
+    
+    $("#ext-degrees").html(parseInt(e[0]) + '&deg;C');
+    
+    if($("#ext-target-temp").length > 0){
+    	document.getElementById('ext-target-temp').noUiSlider.set([parseInt(e[0])]);
     }
-    
-        
-    $(this).data("prevType", e.type);
-    
-    
-    
-    
-    
-});
+	
+}
+
+function topExtTempChange(e){
+	jog_call("ext_temp", parseInt(e[0]));
+}
 
 
-$.xhrPool = [];
-$.xhrPool.abortAll = function(url) {
-    $(this).each(function(i, jqXHR) { //  cycle through list of recorded connection
-        console.log('xhrPool.abortAll ' + jqXHR.requestURL);
-        //if (!url || url === jqXHR.requestURL) {
-            jqXHR.abort(); //  aborts connection
-            $.xhrPool.splice(i, 1); //  removes from list by index
-        //}
+function topBedTempSlide(e){
+	
+	$("#top-bar-bed-target").html(parseInt(e[0]));
+	$("#bed-degrees").html(parseInt(e[0]) + '&deg;C');
+    
+    if($("#bed-target-temp").length > 0){
+		document.getElementById('bed-target-temp').noUiSlider.set([parseInt(e[0])]);
+    }
+	
+}
+
+function topBedTempChange(e){
+	
+	jog_call("bed_temp", parseInt(e[0]));
+}
+
+
+function installHead(){
+	document.location.href = '/fabui/maintenance/head?warning=1';
+}
+
+function directions(){
+	var value = $(this).attr("data-attribue-direction");
+	jog_call("directions", value);
+}
+
+
+
+function axisz(){
+    
+	var func = $(this).attr("data-attribute-function");
+	var step = $(this).attr("data-attribute-step");
+	jog_call(func, step);   
+	    
+}
+
+function zero_all(){
+	jog_call("zero_all", true);
+}
+
+function disable_button(element){
+	$(element).addClass('disabled');
+	$(element).prop("disabled",true);
+}
+		
+		
+function enable_button(element){
+	$(element).removeClass('disabled');
+	$(element).prop("disabled",false);
+}
+
+/** REFRESH DATABLE */
+function RefreshTable(tableId, urlData)
+{
+	$(tableId + "_wrapper").css({ opacity: 0.3 });	
+  	$.getJSON(urlData, null, function( json )
+  	{
+		table = $(tableId).dataTable();
+		oSettings = table.fnSettings();
+		
+		table.fnClearTable(this);
+		
+		for (var i=0; i<json.aaData.length; i++)
+		{
+		  table.oApi._fnAddData(oSettings, json.aaData[i]);
+		}
+		
+		oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+		table.fnDraw();
+		$(tableId + "_wrapper").css({ opacity: 1 });
+    
     });
-};
-$.ajaxSetup({
-    beforeSend: function(jqXHR) {
-        $.xhrPool.push(jqXHR); //  add connection to list
-    },
-    complete: function(jqXHR) {
-        var i = $.xhrPool.indexOf(jqXHR); //  get index for current connection completed
-        if (i > -1) $.xhrPool.splice(i, 1); //  soremoves from list by index
-    }
-});
-$.ajaxPrefilter(function(options, originalOptions, jqXHR) {
-    jqXHR.requestURL = options.url;
-});
-
+}

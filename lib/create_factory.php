@@ -1,13 +1,11 @@
-a<?php
+<?php
 require_once '/var/www/lib/config.php';
-require_once '/var/www/lib/serial.php';
 require_once '/var/www/lib/utilities.php';
 require_once '/var/www/lib/database.php';
 
 class CreateFactory {
 
 	private $_function;
-
 	private $_action;
 	private $_value;
 	private $_data_file;
@@ -20,7 +18,12 @@ class CreateFactory {
 
 	private $_command;
 	private $_message;
-
+	
+	
+	private $_attributes_file;
+	
+	private $_type;
+	
 	public function __construct($param) {
 
 
@@ -51,6 +54,7 @@ class CreateFactory {
 			$_response_items['file'] = $this -> _data_file;
 			$_response_items['return'] = true;
 			$_response_items['message'] = $this -> _message;
+			$_response_items['type'] = $this -> _type;
 
 		}
 
@@ -111,13 +115,10 @@ class CreateFactory {
 				$_command = 'M3 S' . $this -> _value;
 				$_message = 'Command for the RPM speed sent ' . $this -> _value;
 				break;
-			case 'send-mail-true' :
+			case 'mail' :
 				$_command = '';
-				$_message = 'A mail will be send at the end of the print';
-				break;
-			case 'send-mail-false' :
-				$_command = '';
-				$_message = 'No mail will be send at the end of the print';
+				if($this->_value) $_message = 'Mail notification enabled';
+				else $_message = 'Mail notification disabled';
 				break;
 			case 'zup' :
 				$_command = '!z_plus:'.$this -> _value;
@@ -141,8 +142,10 @@ class CreateFactory {
 				$_command = 'M221 S'.$this->_value;
 				$_message = 'Extruder factor override command sent ' . $this -> _value . '%';
 				break;
-				
-				
+			case 'notes' :
+				$_command = '';
+				$_message = 'Notes saved';
+				break;	
 		}
 
 		$this -> _command = $_command;
@@ -160,12 +163,10 @@ class CreateFactory {
 
 	public function updateDB() {
 
-		if ($this -> _action == 'velocity' || $this -> _action == 'send-mail-false' || $this -> _action == 'send-mail-true' || $this -> _action == 'rpm' || $this->_action == 'flow-rate' || $this->_action == 'fan') {
-
-			$db = new Database();
-			$_task = $db -> query('select * from sys_tasks where id=' . $this->_id_task);
-
-			$_attributes = json_decode($_task['attributes'], TRUE);
+		if ($this -> _action == 'velocity' || $this -> _action == 'mail' || $this -> _action == 'rpm' 
+				|| $this->_action == 'flow-rate' || $this->_action == 'fan' || $this->_action == 'zup' || $this->_action == 'zdown' || $this->_action == 'notes') {
+					
+			$_attributes = json_decode(file_get_contents($this->_attributes_file), TRUE);
 
 			switch($this->_action) {
 
@@ -173,13 +174,9 @@ class CreateFactory {
 					$_column = 'speed';
 					$_value = $this->_value;
 					break;
-				case 'send-mail-false' :
+				case 'mail' :
 					$_column = 'mail';
-					$_value = 0;
-					break;
-				case 'send-mail-true' :
-					$_column = 'mail';
-					$_value = 1;
+					$_value = $this->_value;
 					break;
 				case 'rpm' :
 					$_column = 'rpm';
@@ -193,15 +190,22 @@ class CreateFactory {
 					$_column = 'flow_rate';
 					$_value = $this->_value;
 					break;
+				case 'notes':
+					$_column = 'note';
+					$_value = $this->_value;
+					break;
 			}	
 
 			//echo $this->_action.PHP_EOL;
 			//kill echo $_column.PHP_EOL;
 			$_attributes[$_column] = $_value;
-
-			$_data_update['attributes'] = json_encode($_attributes);
-			$db -> update('sys_tasks', array('column' => 'id', 'value' => $this->_id_task, 'sign' => '='), $_data_update);
-			$db -> close();
+			
+			
+			file_put_contents($this->_attributes_file, json_encode($_attributes), FILE_USE_INCLUDE_PATH);
+			
+			//$_data_update['attributes'] = json_encode($_attributes);
+			//$db -> update('sys_tasks', array('column' => 'id', 'value' => $this->_id_task, 'sign' => '='), $_data_update);
+			//$db -> close();
 
 		}
 
@@ -209,10 +213,20 @@ class CreateFactory {
 
 	public function stop() {
 		
+		/*
 		if ($this -> _action == 'stop' && ($this -> _progress >= 0 && $this -> _progress <= 0.1)) {
 			//shell_exec('sudo kill '.$_pid);
 			shell_exec('sudo php ' . SCRIPT_PATH . 'finalize.php ' . $this -> _id_task . ' print stopped');
 		}
+		*/
+		
+		if($this -> _action == 'stop' && $this->_type != 'additive'){
+			
+			$task_type = 'mill';
+			
+			shell_exec('sudo php ' . SCRIPT_PATH . 'finalize.php ' . $this -> _id_task . ' '.$task_type.' stopped');
+		}
+		
 	}
 
 	public function update() {

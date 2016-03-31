@@ -7,7 +7,18 @@
 	</li>
 	
 	<li class="pull-right">
-		<a href="javascript:void(0);" data-action="stop" id="stop-button" class="stop txt-color-red"> <i class="fa fa-fw fa-lg fa-times-circle"></i> Cancel Print</a>
+		<a href="javascript:void(0);" data-action="stop" id="stop-button" class="stop txt-color-red"> <i class="fa fa-fw fa-lg fa-times-circle"></i> Cancel <?php echo $label ?></a>
+	</li>
+	<li class="pull-right">
+		<span style="position:relative; top:3px;" rel="tooltip" title="Send a notification mail at the end of the print" data-placement="left">Mail</span>
+		<span class="onoffswitch" style="padding-top:9px; position:relative;">
+			<input data-action="mail" type="checkbox" name="mail" <?php echo $mail; ?> class="onoffswitch-checkbox controls" id="mail">
+			<label class="onoffswitch-label" for="mail"> 
+				<span class="onoffswitch-inner"  data-swchon-text="YES" data-swchoff-text="NO"></span> 
+				<span class="onoffswitch-switch" style="margin-top:8px;"></span> 
+			</label> 
+		</span>
+
 	</li>
 	
 </ul>
@@ -21,16 +32,20 @@
 
 			<div class="col-sm-4 stats-well">
 				
+				<p><i class="fa fa-file-o"></i> File <i><span class="pull-right file_name font-md"><?php echo $_file_name; ?></span></i></p>
+				<p><i class="fa fa-folder-open"></i> Object <i><span class="pull-right object_name "><?php echo $_object_name; ?></span></i></p>
+				
+				<hr class="simple">
 				<!-- PROGRESS -->
-				<p>Progress <span class="pull-right progress-status font-md"></span></p>
+				<p>Progress  <span class="pull-right"><span class="hidden layers" style="margin-left:10px;"> (layer: <span class="layer-actual font-md"><?php echo $layer_actual; ?></span> / <span class="layer-total"><?php echo $layer_total; ?></span> )</span></span> <span class="pull-right progress-status font-md"></span></p>
 				<div class="progress progress-sm progress-striped active">
 					<div id="lines-progress" class="progress-bar bg-color-blue"></div>
 					
 				</div>
 				
-				<!-- LAYERS
-				<p class="additive-print">Layer <span class="pull-right"><span class="layer-actual font-md"><?php echo $layer_actual; ?></span> / <span class="layer-total"><?php echo $layer_total; ?></span> <span class="layer-percent"></span> </span></p>
-				<div class="progress progress-xs progress-striped active additive-print">
+				<!-- LAYERS 
+				<p class="additive-print hidden layers">Layer <span class="pull-right"><span class="layer-actual font-md"><?php echo $layer_actual; ?></span> / <span class="layer-total"><?php echo $layer_total; ?></span> <span class="layer-percent"></span> </span></p>
+				<div class="progress progress-xs progress-striped active additive-print hidden layers">
 					<div class="progress-bar  bg-color-blue progress-layer"></div>
 				</div>
 				 -->
@@ -67,12 +82,12 @@
 			</div>
 			
 			<div class="col-sm-4 additive-print">
-				<h5 class="text-center"><i class="fab-lg fab-fw icon-fab-term "></i> Nozzle (<span class="nozzle-temperature"></span>)</h5>
+				<h5 class="text-center"><i class="fab-lg fab-fw icon-fab-term "></i> Nozzle (<span class="nozzle-temperature"></span> / <span class="nozzle-target"></span> &deg;C)</h5>
 				<div id="nozzle-chart" class="chart"> </div>
 			</div>
 			
 			<div class="col-sm-4 additive-print">
-				<h5 class="text-center"><i class="fab-lg fab-fw icon-fab-term "></i> Bed (<span class="bed-temperature"></span>)</h5>
+				<h5 class="text-center"><i class="fab-lg fab-fw icon-fab-term "></i> Bed (<span class="bed-temperature"></span> / <span class="bed-target"></span> &deg;C)</h5>
 				<div id="bed-chart" class="chart"> </div>
 			</div>
 			
@@ -80,9 +95,9 @@
 		</div>
 		
 		<!-- TEMP GRAPHS -->
-		<div class="row padding-10">
+		<div class="row padding-10 hidden-mobile">
 			<div class="col-sm-12">
-				<pre class="console" id="ace-editor" style="height: 250px;"></pre>
+				<pre class="console " id="ace-editor" style="height: 250px;"></pre>
 			</div>
 			
 		</div>
@@ -116,7 +131,7 @@
 							
 							<div class="row">
 							
-								<div class="col-sm-3 additive-print">
+								<div class="col-sm-3 ">
 									<!--<a href="javascript:void(0);" class="btn btn-default  controls" data-action="zup" title="Change Z height: + 0.1mm" rel="tooltip"><i class="fa fa-angle-double-down"></i>&nbsp;Z</a>-->
 									<button data-action="zup" type="button" class="form-control btn btn-default controls"><i class="fa fa-angle-double-down"></i>&nbsp;Z</button>
 								
@@ -127,12 +142,25 @@
 										<option value="0.1">0.1</option>
 										<option value="0.01">0.01</option>
 									</select>
+									<p class="note text-center">Z Override: <span class="z_override"><?php echo $z_override; ?></span></p>
 								</div>
 								
-								<div class="col-sm-3 additive-print">
+								<div class="col-sm-3 ">
 									<!--<a href="javascript:void(0);" class="btn btn-default controls" data-action="zdown" title="Change Z height: - 0.1mm" rel="tooltip"><i class="fa fa-angle-double-up"></i>&nbsp;Z</a>-->
 									<button data-action="zdown" type="button" class="form-control btn btn-default controls"><i class="fa fa-angle-double-up"></i>&nbsp;Z</button>
 								</div>
+							</div>
+						</div>
+						<div class="col-sm-8">
+							<div class="chat-footer">
+								<!-- CHAT TEXTAREA -->
+								<div class="textarea-div">
+									<div class="typearea">
+										<textarea placeholder="Write notes..." id="notes" class="custom-scroll" rows="10"><?php echo $note; ?></textarea>
+									</div>
+								</div>
+								<span class="textarea-controls"><button data-action="notes" type="button" class="btn btn-sm btn-primary pull-right controls">Save Notes</button></span>
+				
 							</div>
 						</div>		
 					</div>
@@ -226,6 +254,9 @@
 			</div>
 			
 		</div>
+		
+		
+		
 		
 	</div>
 

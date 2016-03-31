@@ -1,20 +1,29 @@
 <?php
 
-/** UTILITIES */ 
+/** * UTILITIES */ 
 include( "inc/utilities.php"); 
-
 $_wlan_list = scan_wlan(); 
 $_lan       = lan();
+
+
 
 $temp = explode('.', $_lan['ip']);
 
 $ipLastNum = $temp[3];
 
 ?>
+
+<script type="text/javascript">
+	var ip_last_num = <?php echo $ipLastNum; ?>;
+</script>
+
 <div class="tab-pane" id="tab3">
 	<br>
 	<h3>
-		<strong>Step 3</strong> - Setup your network configuration
+		<strong>
+			Step 3
+		</strong>
+		- Setup your network configuration
 	</h3>
 	<div class="row">
 		<table class="table table-striped table-forum smart-form">
@@ -31,6 +40,7 @@ $ipLastNum = $temp[3];
 				</tr>
 			</thead>
 			<tbody style="">
+				<!-- TR -->
 				<tr>
 					<td style="width: 20px;">
 						<label class="radio">
@@ -45,7 +55,7 @@ $ipLastNum = $temp[3];
                             
 							</a>
 							<small>
-								<?php echo $_lan[ 'ip'] ?>
+								<?php echo $_lan['ip'] ?>
 							</small>
                            
 						</h4>
@@ -53,6 +63,7 @@ $ipLastNum = $temp[3];
 					<td>
 					</td>
 				</tr>
+				<!-- end TR -->
 			</tbody>
 		</table>
 	</div>
@@ -120,5 +131,4 @@ $ipLastNum = $temp[3];
 		</table>
 	</div>
     -->
-
 </div>

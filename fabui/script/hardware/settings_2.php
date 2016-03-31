@@ -8,6 +8,7 @@
 require_once '/var/www/lib/config.php';
 require_once '/var/www/lib/serial.php';
 
+$ini_array = parse_ini_file(SERIAL_INI);
 
 define('HARDWARE_ID', 2);
 define('SHOW_FEEDER', true);
@@ -17,8 +18,8 @@ define('A_MODE', 177.777778);
 
 //init serial
 $serial = new Serial;
-$serial->deviceSet(PORT_NAME);
-$serial->confBaudRate(BOUD_RATE);
+$serial->deviceSet($ini_array['port']);
+$serial->confBaudRate($ini_array['baud']);
 $serial->confParity("none");
 $serial->confCharacterLength(8);
 $serial->confStopBits(1);
@@ -31,6 +32,13 @@ $serial -> serialflush();
  */
 $serial->sendMessage('M747 X1'.PHP_EOL);
 sleep(0.5);
+/**
+ * Maximum feedrates (mm/s):
+ * 
+ */
+$serial->sendMessage('M203 X550.00 Y550.00 Z15.00 E12.00'.PHP_EOL);
+sleep(0.5);
+$serial->sendMessage('M500'.PHP_EOL);
 //close serial
 $serial->deviceClose();
 

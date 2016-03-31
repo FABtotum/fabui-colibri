@@ -11,7 +11,15 @@ import json
 import ConfigParser
 
 config = ConfigParser.ConfigParser()
-config.read('/var/www/fabui/python/config.ini')
+config.read('/var/www/lib/config.ini')
+
+serialconfig = ConfigParser.ConfigParser()
+serialconfig.read('/var/www/lib/serial.ini')
+
+#check if LOCK FILE EXISTS
+if os.path.isfile(config.get('task', 'lock_file')):
+    print "printer busy"
+    sys.exit()
 
 #PARAMS
 
@@ -37,7 +45,8 @@ begin=0
 end=0
 
 #safety
-safe_z=original_safe_z=6
+safe_z=original_safe_z=highest_z=z_hop=0
+
 probes_to_skip=0
 
 #adaptive control
@@ -70,7 +79,7 @@ X_offset=np.array([float(abs(x1-x)/float(2))+x,0,0,0])	#offset array
 usage= 'Usage: r_scan.py -x<first point x> -y<first point y> -i<second point x> -j<second point y> -n<density num> -a<axis increments> -b<starting deg> -e<ending deg> -o<safe_z offset> -l<log> -d<destination> -v=verborse -t<trace log> -k<task_id>\n'
 
 try:
-	opts, args = getopt.getopt(sys.argv[1:],"x:y:i:j:n:a:b:e:o:l:d:v:t:k:",["x=","y=","i=","j=","n=","a=","b=","e=","o=","l=","d=","v=","t=","k="])
+	opts, args = getopt.getopt(sys.argv[1:],"x:y:i:j:n:a:b:e:o:l:d:v:t:k:z:p:",["x=","y=","i=","j=","n=","a=","b=","e=","o=","l=","d=","v=","t=","k=", "z=", "p="])
 except getopt.GetoptError:
 	#Error handling for unknown or incorrect number of options
 	print "\n\nERROR!\n Correct usage:\n\n",usage
@@ -108,6 +117,14 @@ for opt, arg in opts:
 		log_trace = str(arg)		#trace log
 	elif opt in ("-k", "--k"):
 		task_id = int(arg)
+	elif opt in ("-z", "--z"):
+		z_hop = float(arg)			#the amount to hop (also known as safe Z)
+	elif opt in ("-p", "--p"):
+		probe_skip = float(arg)		#adaptive control
+
+
+#write LOCK FILE    
+open(config.get('task', 'lock_file'), 'w').close()
 
 started=float(time.time())	#start counting
 
@@ -217,8 +234,8 @@ printlog(0,0) #create log vuoto
 trace("\n ---------- Initializing ---------- \n")
 
 '''#### SERIAL PORT COMMUNICATION ####'''
-serial_port = config.get('serial', 'port')
-serial_baud = config.get('serial', 'baud')
+serial_port = serialconfig.get('serial', 'port')
+serial_baud = serialconfig.get('serial', 'baud')
 serial = serial.Serial(serial_port, serial_baud, timeout=0.5)
 
 #initialize serial
@@ -255,8 +272,9 @@ serial.write('G0 X' + str(x) + ' Y' +str(y) + ' F8000\r\n')	#go to abs position
 time.sleep(1)											#take its time to move
 
 #MAIN PROBING LOOP
-while (i <= slices) :
 
+while (i <= slices) :
+	
 	#do each planar scan
 	serial.write('G0 Z140\r\n') #center Z (collimation pstn)
 	time.sleep(2) 				#take some time to move
@@ -272,6 +290,7 @@ while (i <= slices) :
 	d_zeta=0
 	
 	for y_pos in ys:
+	
 		for x_pos in xs:
 			
 			#Adaptive controls (min 2 points collected, first is Null)
@@ -298,7 +317,7 @@ while (i <= slices) :
 				if len(points_on_plane)>=3:	
 					#density control					
 					d_zeta=(points_on_plane[-2][2]-points_on_plane[-1][2])
-					if abs(d_zeta)<0.05:
+					if abs(d_zeta)<probe_skip:
 						#skip probe if object has been very flat recently.
 						if skips<=6:
 							skips+=1	#max 6 skips				
@@ -329,10 +348,13 @@ while (i <= slices) :
 			if safe_z <36:
 				safe_z=original_safe_z+36 #probe lenght + safe z
 				
-			#print "SAFE Z:" + str(safe_z)
-			serial.write('G0 Z'+str(safe_z)+' F1500\r\n') #move to safe Z ADAPTIVE
-			
-			serial.flushInput()						#clean buffer
+			if safe_z>highest_z:
+				highest_z=safe_z #save for later
+            
+            
+			safe_z=safe_z+2
+			serial.write('G0 Z'+str(safe_z)+' F1500\r\n')
+			serial.flushInput()#clean buffer
 			time.sleep(0.5)
 			
 			#update counters
@@ -385,6 +407,9 @@ while (i <= slices) :
 		serial.write('G0 E' + str(deg*i) + ' F10000\r\n')
 		time.sleep(deg*0.05)  #take some time to rotate	
 	
+	serial.write('G0 Z'+str(highest_z)+' F1500\r\n') #move to highest Z
+	highest_z=original_safe_z #reset highest z point for new scan line.
+	serial.write('M402\r\n') #SAFETY RAISE probe
 	i+=1 #slices ++		  
 
 #rotate whole model to up	

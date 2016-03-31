@@ -1,7 +1,7 @@
 /**
  * CREATE MODULE UTILITIES FUNCTIONS
  */
-var object;
+
 var file_selected;
 var stop_monitor = false;
 var interval_monitors;
@@ -23,20 +23,10 @@ var current_estimated_time;
 //in seconds
 var estimated_time_left;
 //in seconds
-/**/
- //var array_estimated_time = new Array();
- //var array_progress_steps = new Array();
- /**/
-var stopped = 0;
-/**/
- var do_trace = false;
- /**/
-var precision = 3;
-/**/
- var scene;
- var gc_code_object;
 
- /**/
+var stopped = 0;
+var precision = 3;
+
 var model;
 
 var not_printable = [".stl", ".asc"];
@@ -59,6 +49,7 @@ function detail_files(object) {
 		html += '<tr>';
 		html += '<th></th>';
 		html += '<th>File</th>';
+		html += '<th class="hidden-xs">Note</th>';
 		html += '<th class="hidden-xs">Type</th>';
 		html += '</tr>';
 		html += '</thead>';
@@ -79,8 +70,9 @@ function detail_files(object) {
 
 			html += '<tr class="file-row ' + extended_class + '" data-id="' + file.id + '">';
 			html += '<td><label class="radio"><input class="obj-file" value="' + file.id + '" type="radio" name="file-selected"><i></i> </label></td>';
-			html += '<td><strong><i class="fa ' + icon_type + '"></i>  ' + file.file_name + status + '</strong> </td>';
-
+			html += '<td><strong><i class="fa ' + icon_type + '"></i>  ' + file.raw_name + status + '</strong> </td>';
+			
+			html += '<td class="hidden-xs">' + file.note + ' </td>';
 			var icon_src = '<span class="icon-fab-additive"></span>';
 			html += '<td class="hidden-xs">' + file.print_type + icon_src + ' </td>';
 
@@ -92,10 +84,14 @@ function detail_files(object) {
 		html += '</table>';
 
 		$('#files-container').html(html);
+		
+		//enable prev button
+		
 
 		$('.obj-file').on('click', function() {
 			select_file($(this).val());
 		});
+		
 
 		$('.file-row').click(function() {
 
@@ -104,7 +100,9 @@ function detail_files(object) {
 			$(".files-table tbody tr").removeClass('success');
 			$(this).addClass('success');
 
+
 			select_file($(this).find(':first-child').find('input').val());
+			startFromRecent = false;
 
 			/** LAOD INTERSTITIAL */
 
@@ -126,45 +124,9 @@ function detail_files(object) {
 				$(".model-info").remove();
 
 				if (file_selected.attributes != '' && file_selected.attributes != 'Processing') {
-
-					if (file_selected.print_type != 'subtractive') {
-
-						var attributes = JSON.parse(file_selected.attributes);
-
-						var model_info_html = '<div class="well well-sm model-info margin-top-10 info">';
-
-						var x = number_format(attributes.dimensions.x, 2, '.', '');
-						var y = number_format(attributes.dimensions.y, 2, '.', '');
-						var z = number_format(attributes.dimensions.z, 2, '.', '');
-
-						model_info_html += '<dl class="dl-horizontal">';
-
-						model_info_html += '<dt>Model Size:</dt>';
-						model_info_html += '<dd>' + x + ' x ' + y + ' x ' + z + ' mm</dd>';
-
-						model_info_html += '<dt>Filament used:</dt>';
-						model_info_html += '<dd>' + number_format(attributes.filament, 2, '.', '') + ' mm</dd>';
-
-						model_info_html += '<dt>Estimated time print:</dt>';
-						model_info_html += '<dd>' + attributes.estimated_time + '</dd>';
-
-						model_info_html += '<dt>Layers:</dt>';
-						model_info_html += '<dd>' + attributes.number_of_layers + '</dd>';
-
-						model_info_html += '</dl>';
-
-						model_info_html += '</div>';
-					}
-				} else {
-
-					var message = file_selected.attributes != 'Processing' ? 'No information avaiable for this file' : 'Processing informations..';
-					var model_info_html = '<div class="alert alert-warning fade in model-info margin-top-10 info">';
-					model_info_html += '<strong><i class="fa fa-warning"></i> ' + message + ' </strong>';
-					model_info_html += '</div>';
-
+					
+					$('#files-container').append(model_info(file_selected));
 				}
-
-				$('#files-container').append(model_info_html);
 
 			} catch(e) {
 
@@ -202,18 +164,20 @@ function detail_files(object) {
 
 /**
  *
- * @param id_file
+ * @param fileID
  */
-function select_file(id_file) {
+function select_file(fileID) {
+
+	id_file = fileID;
 
 	$.each(object.files.data, function(index, file) {
-		if (file.id == id_file) {
+		if (file.id == fileID) {
 			file_selected = file;
-
-			$('.file-title').html(' > ' + file_selected.file_name);
+			
+			$('.file_name').html(file_selected.raw_name);
 
 			/** ABLE NEXT BUTTON */
-			$('#btn-next').removeClass('disabled');
+			enable_button('#btn-next');
 		}
 	});
 
@@ -226,20 +190,72 @@ function select_file(id_file) {
 function detail_file(file) {
 
 	$('#file_name').html(file.file_name);
+	$('.file_name').html(file.raw_name);
 	$('#orig_name').html(file.orig_name);
 	$('#full_path').html(file.full_path);
 	$('#file_ext').html(file.file_ext);
 	$('#file_size').html(file.file_size);
 	$('#insert_date').html(file.insert_date);
 
-	$('.file-title').html(' > ' + file_selected.file_name);
+	$('.file_name').html(file_selected.raw_name);
 }
+
+
+function model_info(file){
+	
+	if(ecent_file.attributes == '' || recent_file.attributes == 'Processing'){
+		return;
+	}
+	
+	if (file.print_type != 'subtractive') {
+
+		var attributes = JSON.parse(file.attributes);
+
+		var model_info_html = '<div class="well well-sm model-info margin-top-10 info">';
+
+		var x = number_format(attributes.dimensions.x, 2, '.', '');
+		var y = number_format(attributes.dimensions.y, 2, '.', '');
+		var z = number_format(attributes.dimensions.z, 2, '.', '');
+
+		model_info_html += '<dl class="dl-horizontal">';
+
+		model_info_html += '<dt>Model Size:</dt>';
+		model_info_html += '<dd>' + x + ' x ' + y + ' x ' + z + ' mm</dd>';
+
+		model_info_html += '<dt>Filament used:</dt>';
+		model_info_html += '<dd>' + number_format(attributes.filament, 2, '.', '') + ' mm</dd>';
+
+		model_info_html += '<dt>Estimated time print:</dt>';
+		model_info_html += '<dd>' + attributes.estimated_time + '</dd>';
+
+		model_info_html += '<dt>Layers:</dt>';
+		model_info_html += '<dd>' + attributes.number_of_layers + '</dd>';
+
+		model_info_html += '</dl>';
+
+		model_info_html += '</div>';
+		
+	} else {
+	
+		var message = file.attributes != 'Processing' ? 'No information avaiable for this file' : 'Processing informations..';
+		var model_info_html = '<div class="alert alert-warning fade in model-info margin-top-10 info">';
+		model_info_html += '<strong><i class="fa fa-warning"></i> ' + message + ' </strong>';
+		model_info_html += '</div>';
+	
+	}
+	
+	return model_info_html;
+	
+}
+
 
 /**
  *
  * @param object
  */
 function detail_object(object) {
+
+	id_object = object.object.id;
 
 	// azzerro lista file
 	$('#files-container').html('');
@@ -250,8 +266,8 @@ function detail_object(object) {
 	$('#date_updated').html(object.object.date_updated);
 
 	$('#btn-next').removeClass('disabled');
-	$('.object-title').html(' > ' + object.object.obj_name);
-	$('.file-title').html('');
+	$('.object_name').html(object.object.obj_name);
+	$('.file_name').html('');
 
 	file_selected = '';
 
@@ -311,20 +327,19 @@ function _trace_call() {
  * @param value
  */
 function _do_action(action, value) {
-	
-	
-	
 
 	if (SOCKET_CONNECTED) {
 
 		var jsonData = {};
 
-		jsonData['function']  = 'operation';
-		jsonData['id_task']   = id_task;
+		jsonData['function'] = 'operation';
+		jsonData['id_task'] = id_task;
 		jsonData['data_file'] = data_file;
-		jsonData['action']    = action;
-		jsonData['value']     = value;
-		jsonData['progress']  = progress;
+		jsonData['action'] = action;
+		jsonData['value'] = value;
+		jsonData['progress'] = progress;
+		jsonData['attributes_file'] = attributes_file;
+		jsonData['type'] = print_type;
 
 		var message = {};
 
@@ -343,7 +358,9 @@ function _do_action(action, value) {
 				data_file : data_file,
 				action : action,
 				value : value,
-				progress : progress
+				progress : progress,
+				attributes_file : attributes_file,
+				type : print_type
 			},
 			type : 'post',
 			dataType : 'json',
@@ -366,10 +383,9 @@ function _do_action(action, value) {
 
 /** ask stop */
 function ask_stop() {
-
+	var make_label = print_type == 'additive' ?  'print' : 'mill';
 	$.SmartMessageBox({
-		title : "Attention!",
-		content : "Stop print ?",
+		title : "<i class='fa fa-warning'></i> Do you really want to stop the " + make_label,
 		buttons : '[No][Yes]'
 	}, function(ButtonPressed) {
 
@@ -380,8 +396,8 @@ function ask_stop() {
 }
 
 function stop_print() {
-
-	openWait('Stopping print, please wait..');
+	var make_label = print_type == 'additive' ?  'print' : 'mill';
+	openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Aborting ' + make_label, '', false);
 	_do_action('stop', true);
 	_stop_monitor();
 	_stop_timer();
@@ -389,8 +405,6 @@ function stop_print() {
 	setTimeout(_stopper, 30000);
 
 }
-
-
 
 /**
  *
@@ -403,7 +417,7 @@ function _update_task() {
 		jsonData['function'] = 'update';
 		jsonData['estimated_time'] = array_estimated_time;
 		jsonData['progress_steps'] = array_progress_steps;
-		jsonData['stats_file']     = stats_file;
+		jsonData['stats_file'] = stats_file;
 
 		var message = {};
 
@@ -485,13 +499,28 @@ var print_monitor = function() {
  *
  */
 function print_object() {
-
+	
+	if(document.getElementById("top-ext-target-temp") != null){
+		document.getElementById("top-ext-target-temp").setAttribute('disabled', true);
+	}
+	document.getElementById("top-bed-target-temp").setAttribute('disabled', true);
+	
+	disable_button('.jog');
+	
+	IS_MACRO_ON = true;
 	$(".final-step-response").html("");
-	openWait('Starting');
-
+	
+	var make_label = print_type == 'additive' ?  'print' : 'mill';
+	
+	openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Starting '+ make_label, '', false);
 	var timestamp = new Date().getTime();
 	//ticker_url = '/temp/print_check_' + timestamp + '.trace';
 	ticker_url = '/temp/macro_trace';
+
+	nozzle_temperatures = [];
+	nozzle_target_temperatures = [];
+	bed_temperatures = [];
+	bed_target_temperatures = [];
 
 	$.ajax({
 		url : ajax_endpoint + 'ajax/create.php',
@@ -499,15 +528,13 @@ function print_object() {
 		dataType : 'json',
 		async : true,
 		data : {
-			object : object.object.id,
-			file : file_selected.id,
+			object_id : id_object,
+			file : id_file,
 			print_type : print_type,
 			calibration : calibration,
 			time : timestamp
 		}
 	}).done(function(response) {
-		
-		
 
 		if (response.response == true) {
 
@@ -523,6 +550,7 @@ function print_object() {
 			uri_trace = response.uri_trace;
 			stats_file = response.stats;
 			folder = response.folder;
+			attributes_file = response.attributes_file;
 
 			var status = JSON.parse(response.status);
 			status = jQuery.parseJSON(status);
@@ -533,39 +561,34 @@ function print_object() {
 
 			interval_monitor = setInterval(print_monitor, monitor_timeout);
 			interval_timer = setInterval(_timer, 1000);
-
 			interval_trace = setInterval(_trace, 1000);
-			
-			
-			
 
 			//vado avanti negli step
 			$('#btn-next').trigger('click');
 			$('#status-icon').removeClass('hide');
 			$("#wizard-buttons").hide();
 			closeWait();
+
 			ticker_url = '';
 			$("#details").trigger('click');
 			$(".stop").removeClass('disabled');
-			
-			if(print_type == 'additive'){
+
+			if (print_type == 'additive') {
 				$(".subtractive-print").hide();
 				initGraphs();
-			}else{
+			} else {
 				$(".additive-print").hide();
 				$(".speed-well").removeClass("col-sm-4").addClass("col-sm-6");
 				$(".stats-well").removeClass("col-sm-4").addClass("col-sm-12");
-				
-				
 				$(".controls-tab").removeClass("disabled");
 				$(".controls-tab").find("a").attr("data-toggle", "tab");
 				print_started = true;
-				
+				enableSliders();
 			}
-			
-			
-			//setTimeout(initGraphs, 2000);
-			
+
+			IS_TASK_ON = true;
+			//disbale wizard previous steps button
+			$(".steps >li").removeClass("complete");
 
 		} else {
 
@@ -574,49 +597,15 @@ function print_object() {
 			$(".final-step-response").append('<h5>try again</h5>');
 			closeWait();
 			ticker_url = '';
+			$(".jog").removeClass('disabled');
+			document.getElementById("top-ext-target-temp").removeAttribute('disabled');
+			document.getElementById("top-bed-target-temp").removeAttribute('disabled');
 
 		}
+
+		IS_MACRO_ON = false;
 
 	});
-
-}
-
-
-
-function check_wizard() {
-
-	var item = $('.wizard').wizard('selectedItem');
-
-	$('#btn-next').show();
-
-	if (item.step > 1) {
-		$('#btn-prev').removeClass('disabled');
-	}
-
-	if (item.step == 1) {
-		$('#btn-prev').addClass('disabled');
-	}
-
-	if (item.step == 2 && file_selected == '') {
-		$('#btn-next').addClass('disabled');
-	}
-
-	if (item.step == 3) {
-		$('#btn-next').hide();
-		
-		if(typeof countdown_ticker == 'function') { 
-			clearInterval(countdown_ticker); 
-		}
-		
-	}
-
-	if (item.step >= 4) {
-
-		$("#wizard-buttons").hide();
-
-	} else {
-
-	}
 
 }
 
@@ -629,13 +618,20 @@ function _stop_monitor() {
 function _controls_listener(obj) {
 
 	var action = obj.attr('data-action');
-	var value  = obj.val();
-	
-	if(action == 'zup' || action == 'zdown'){
-		
-		
-		value = $("#z-height").val();
-		
+	var value = obj.val();
+
+	if (action == 'zup' || action == 'zdown') {
+		value = parseFloat($("#z-height").val());
+		var z_override = parseFloat($(".z_override").html());
+
+		if (action == 'zup') {
+			var new_z_override = z_override + value;
+		} else {
+			var new_z_override = z_override - value;
+		}
+
+		$(".z_override").html(new_z_override.toPrecision(3));
+
 	}
 
 	if (obj.attr("id") == 'light-switch') {
@@ -668,19 +664,16 @@ function _controls_listener(obj) {
 		}
 	}
 
-	if (obj.attr("id") == 'send-mail') {
+	if (obj.attr("id") == 'mail') {
 
-		if (action == 'send-mail-true') {
-			obj.attr('data-action', 'send-mail-false');
-			obj.attr('title', "A mail will be send at the end of the print");
-			obj.removeClass('txt-color-red').addClass('txt-color-green');
-		} else {
-			obj.attr('data-action', 'send-mail-true');
-			obj.removeClass('txt-color-green').addClass('txt-color-red');
-		}
-
+		value = obj.is(':checked');
+	}
+	
+	if(action == 'notes'){
+		value = $("#notes").val();
 	}
 
+	console.log(action + ' ' + value);
 	_do_action(action, value);
 }
 

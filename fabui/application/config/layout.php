@@ -34,6 +34,9 @@ $layout['_css'][] = array('src' => 'application/layout/assets/js/plugin/magnific
 $layout['_css'][] = array('src' => 'application/layout/assets/css/fonts.css', 'comment'=> 'Google Font', 'external' => FALSE, 'font' =>true);
 $layout['_css'][] = array('src' => 'application/layout/assets/css/fabtotum_style.css', 'comment'=> 'Fabtotum', 'external' => FALSE);
 
+$layout['_css'][] = array('src'=>'application/layout/assets/js/plugin/noUiSlider.8.2.1/nouislider.min.css', 'comment' => 'CSS for the noUISlider', 'external' => FALSE);
+$layout['_css'][] = array('src'=>'application/layout/assets/js/plugin/noUiSlider.8.2.1/nouislider.pips.css', 'comment' => 'CSS for the noUISlider', 'external' => FALSE);
+
 /*
  * Default JS to include on all pages
  */
@@ -42,6 +45,7 @@ $layout['_header_js'][] = array('src'=>'application/layout/assets/js/libs/jquery
 $layout['_header_js'][] = array('src'=>'application/layout/assets/js/libs/jquery-ui-1.10.3.min.js', 'comment' => 'jQuery UI', 'external' => FALSE);
 
 $layout['_js'][] = array('src'=>'application/layout/assets/js/app.config.js', 'comment' => 'jQuery UI', 'external' => FALSE);
+$layout['_js'][] = array('src'=>'application/layout/assets/js/speech/voicecommand.min.js', 'comment' => 'fabtotum utilities', 'external' => FALSE);
 $layout['_js'][] = array('src'=>'application/layout/assets/js/plugin/jquery-touch/jquery.ui.touch-punch.min.js', 'comment' => 'jQuery TOUCH', 'external' => FALSE);
 $layout['_js'][] = array('src'=>'application/layout/assets/js/bootstrap/bootstrap.min.js', 'comment' => 'BOOTSTRAP JS', 'external' => FALSE);
 $layout['_js'][] = array('src'=>'application/layout/assets/js/notification/SmartNotification.min.js', 'comment' => 'CUSTOM NOTIFICATION', 'external' => FALSE);
@@ -52,6 +56,10 @@ $layout['_js'][] = array('src'=>'application/layout/assets/js/plugin/fastclick/f
 $layout['_js'][] = array('src'=>'application/layout/assets/js/plugin/magnific-popup/jquery.magnific-popup.min.js', 'comment' => 'magnific-popup', 'external' => FALSE);
 $layout['_js'][] = array('src'=>'application/layout/assets/js/app.min.js', 'comment' => 'Demo', 'external' => FALSE);
 $layout['_js'][] = array('src'=>'application/layout/assets/js/fabwebsocket.js', 'comment' => 'fabtotum websocket', 'external' => FALSE);
+$layout['_js'][] = array('src'=>'application/layout/assets/js/plugin/jquery-number/jquery.number.min.js', 'comment' => 'jQuery number', 'external' => FALSE);
+$layout['_js'][] = array('src'=>'application/layout/assets/js/plugin/noUiSlider.8.2.1/nouislider.min.js', 'comment' => 'javascript for the noUISlider', 'external' => FALSE);
+$layout['_js'][] = array('src'=>'application/layout/assets/js/plugin/wNumb/wNumb.js', 'comment' => 'javascript for the wNumb', 'external' => FALSE);
+$layout['_js'][] = array('src'=>'application/layout/assets/js/FabtotumNotification.js', 'comment' => 'fabtotum notify', 'external' => FALSE);
 $layout['_js'][] = array('src'=>'application/layout/assets/js/fabtotum.js', 'comment' => 'fabtotum utilities', 'external' => FALSE);
 
 

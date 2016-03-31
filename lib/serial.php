@@ -61,7 +61,7 @@ class Serial
 		elseif (substr($sysname, 0, 6) === "Darwin")
 		{
 			$this->_os = "osx";
-            // We know stty is available in Darwin.
+            // We know stty is available in Darwin. 
             // stty returns 1 when run from php, because "stty: stdin isn't a
             // terminal"
             // skip this check
@@ -247,7 +247,8 @@ class Serial
 			19200  => 19,
 			38400  => 38400,
 			57600  => 57600,
-			115200 => 115200
+			115200 => 115200,
+			250000 => 250000
 		);
 
 		if (isset($validBauds[$rate]))

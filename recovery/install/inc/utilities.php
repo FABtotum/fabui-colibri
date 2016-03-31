@@ -7,7 +7,7 @@ function scan_wlan(){
 
 	$_wlan_list = array();
 
-	$_scan_result = shell_exec("LANG=C iwlist wlan0 scan");
+	$_scan_result = shell_exec("sudo iwlist wlan0 scan");
 	
 	$_wlan_device = array();
 	
@@ -65,10 +65,9 @@ function scan_wlan(){
 
 
 
-function lan()
-{
+function lan(){
 	
-	$_ethernet_result = shell_exec("LANG=C ifconfig eth0");
+	$_ethernet_result = shell_exec("sudo ifconfig eth0");
 	
 	$interfaces = array();
 	

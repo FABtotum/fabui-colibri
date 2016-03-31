@@ -62,21 +62,19 @@
 			
 			function hide_divs(search) {
 				
-				
 			    $(".code").hide(); 
 
 			    $(".code").each(function(index, value) {
 			    	
-			    	if(typeof $(this).attr('data-attr') !== typeof undefined && $(this).attr('data-attr') !== false){
-			    		
-			    		var desc = $(this).find('.description').html().toLowerCase();
-			    		var attr = $(this).attr('data-attr');
-			    							    		
-			    		if((attr.indexOf(search) > -1) || (desc.indexOf(search) > -1)){
-			    			$(this).show();
-			    		}
-			    	}
-
+			    	var desc = $(this).find('.description').html().toLowerCase();
+			    	var attr = $(this).attr('data-attr').toLowerCase();
+			    	
+			    	var search_attr = new RegExp(search);
+			    	var search_desc = new RegExp(search);
+					 
+					if (((m = search_attr.exec(attr)) !== null) || (n = search_desc.exec(desc) !== null)  ) {
+					    $(this).show();
+					}
 				});
 		}
 		

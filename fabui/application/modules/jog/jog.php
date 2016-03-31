@@ -19,44 +19,23 @@ class Jog extends Module {
 	public function index(){
 		
 		
+		$this -> config -> load('fabtotum', TRUE);
+		$units = json_decode(file_get_contents($this -> config -> item('fabtotum_config_units', 'fabtotum')), TRUE);
+		
+		if(isset($units['settings_type']) && $units['settings_type'] == 'custom'){
+			$units = json_decode(file_get_contents($this -> config -> item('fabtotum_custom_config_units', 'fabtotum')), TRUE);
+		}
         
-		//carico X class database
-		$this->load->database();
-		$this->load->model('configuration');
-
-        
-        
-        $this->configuration->save_confi_value('coordinates', 'relative');
-        
-        $data['_coordinates'] = $this->configuration->get_config_value('coordinates');
-		$data['_motors']      = $this->configuration->get_config_value('motors');
-        $data['_lights']      = $this->configuration->get_config_value('lights');
-        
-        
-        $ext_temp = 0;
-        $bed_temp = 0;
-        $position = '';
-        
-		$data['_ext_temp']    = $ext_temp;
-        $data['_bed_temp']    = $bed_temp;
-        $data['_position']    = $position;
-        
-         
-
+        $data['max_temp'] = isset($units['hardware']['head']['max_temp']) ? $units['hardware']['head']['max_temp'] : 230;
+		
 		$css_in_page = $this->load->view('index/css', '', TRUE);
 		$js_in_page  = $this->load->view('index/js', $data, TRUE);
 
 		$this->layout->add_css_in_page(array('data'=> $css_in_page, 'comment' => 'JOG CSS'));
 		$this->layout->add_js_in_page(array('data'=> $js_in_page, 'comment' => 'JOG JS'));
-
-        $this->layout->add_js_file(array('src'=>'application/layout/assets/js/plugin/noUiSlider.7.0.10/jquery.nouislider.all.min.js', 'comment' => 'javascript for the noUISlider'));
-        $this->layout->add_css_file(array('src'=>'application/layout/assets/js/plugin/noUiSlider.7.0.10/jquery.nouislider.min.css', 'comment' => 'javascript for the noUISlider'));
-		$this->layout->add_css_file(array('src'=>'application/layout/assets/js/plugin/noUiSlider.7.0.10/jquery.nouislider.pips.min.css', 'comment' => 'javascript for the noUISlider'));
-         
-        $this->layout->add_js_file(array('src'=>'application/layout/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js', 'comment' => ''));
-        
-        
-        $this->layout->add_js_file(array('src'=>'application/layout/assets/js/plugin/knob/jquery.knob.min.js', 'comment'=>'KNOB'));
+		
+		
+        $this->layout->add_js_file(array('src'=>'/assets/js/plugin/knob/jquery.knob.min.js', 'comment'=>'KNOB'));
 		
 		$this->layout->set_compress(false);
 	

@@ -1,10 +1,3 @@
-<?php
-
-
-?>
-
-
-
 <div class="row">
 	<div class="col-sm-6">
 		<h2 class="text-primary">Ready to scan?</h2>
@@ -15,18 +8,8 @@
 <div class="row" id="row_1">
     <div class="col-sm-12">
     
-        <div class="well">
-        
-            <div class="row">
-                <div class="col-sm-6"></div>
-                <div class="col-sm-6">
-                
-                    
-                    <a id="check-pre-scan" href="javascript:void(0);" class="btn btn-primary btn-lg">Click here when ready</a>
-                
-                </div>
-            </div>
-            
+        <div class="well text-center">
+			<a id="check-pre-scan" href="javascript:void(0);" class="btn btn-primary btn-lg">Click here when ready</a>
         </div>
     
     </div>
@@ -80,12 +63,18 @@
     
     
     
+    
+    function start_s_scan(){
+    	
+    }
+    
+    
     function check_pre_scan(){
     
-    
+    	IS_MACRO_ON = true;
         $(".SmallBox").remove();
         $(".result-check-pre-scan").html('');
-        openWait('Checking printer');
+        openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Preparing printer');
         var timestamp = new Date().getTime();
         /*ticker_url    = '/temp/check_pre_scan_' + timestamp + '.trace';*/
         ticker_url    = '/temp/macro_trace';
@@ -102,16 +91,19 @@
             if(response.response == true){
               
                 
+                $("#row_1").slideUp('slow', function(){
+                	
+                	
+                	$("#row_2").slideDown('slow', function(){
+                     	
+                     	
+                     	$("#check-s-scan").trigger("click");
+                     	
+                     });
+                	
+                });
                 
-                setTimeout(function(){ $("#row_1").slideUp('slow', function(){
-                      closeWait();
-                     $("#row_2").slideDown('slow', function(){});
-                     
-                 });}, 3000);
-                
-                
-                /** STEP SUCCESSIVO */
-                
+               
                           
             }else{
                 closeWait();
@@ -126,6 +118,7 @@
             
             
             ticker_url = '';
+            IS_MACRO_ON = false;
     	});
      
     }
@@ -135,10 +128,11 @@
     
     function check_s_scan(){
     
-    
+    	
+    	IS_MACRO_ON = true;
         $(".SmallBox").remove();
         
-        openWait('Checking printer');
+        openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Preparing printer');
         var timestamp = new Date().getTime();
         ticker_url    = '/temp/check_r_scan_' + timestamp + '.trace';
         
@@ -152,14 +146,16 @@
     	}).done(function( response ) {
     
             if(response.response == true){
-                
-               /** STEP SUCCESSIVO */
-                setTimeout(function(){ $("#row_2").slideUp('slow', function(){
-                    closeWait();
-                     $("#row_3").slideDown('slow', function(){});
-                 });}, 3000);
-                 
-                          
+            	
+            	$("#row_2").slideUp('slow', function(){
+            		
+            		$("#row_3").slideDown('slow', function(){
+            			
+            			$("#start-s-scan").trigger("click");
+            			
+            		});
+            		
+            	}); 
             }else{
                 closeWait();
                 $.smallBox({
@@ -171,7 +167,8 @@
                 });     
             }
             
-            ticker_url = '';        
+            ticker_url = '';
+            IS_MACRO_ON = false;        
     	});
          
        

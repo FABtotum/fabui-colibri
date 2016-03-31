@@ -128,12 +128,17 @@ class Database
 
 		if (is_object($this->_result))
 		{
+			
 			$rc = get_class($this->_result);
+			
+			
+			
 			switch ($rc)
 			{
 				case 'PDOStatement':
 					$this->_num_rows = $this->_result->rowCount();
 					$this->_rows = $this->_result->fetchAll(PDO::FETCH_ASSOC);
+					//print_r($this->_rows);exit();
 					if (is_array($this->_rows) and count($this->_rows) > $this->_num_rows)
 						$this->_num_rows = count($this->_rows);
 					break;
@@ -151,7 +156,8 @@ class Database
 
 			if (is_array($this->_rows) and count($this->_rows) == $this->_num_rows)
 			{
-				return $this->_num_rows==1? $this->_rows[0] : $this->_rows;
+				//return $this->_num_rows==1? $this->_rows[0] : $this->_rows;
+				return $this->_rows;
 			}
 			else
 			{
