@@ -8,8 +8,10 @@ sudo yum install y dkms
 
 echo "Installing/updating development environment..."
 sudo yum install -y gcc-c++ libstdc++-static glibc-static
-sudo yum install -y git flex bison patch tree autoconf automake ncurses-devel
+sudo yum install -y git flex bison patch tree autoconf automake ncurses-devel fakeroot
 
 echo "Installing development dependencies..."
 sudo yum install -y perl-ExtUtils-MakeMaker
-sudo yum install -y qemu-system-arm squashfs-tools fakeroot
+
+echo "Installing/updating FABEmu dependencies"
+sudo yum install -y qemu-system-arm squashfs-tools gst123

@@ -1,3 +1,6 @@
+.vagrant
+AUTOINSTALL
+
 # CI logs can be disabled altogether in production env
 /fabui/application/logs/
 
@@ -21,7 +24,7 @@
 # -> /etc/fabui/config.json
 /fabui/config/config.json
 
-# -> /tmp/fabui/
+# -> /tmp/fabui/, /var/tmp/fabui/
 /temp/
 
 
