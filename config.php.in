@@ -15,6 +15,9 @@ defined('TEMP_PATH')     ? null : define("TEMP_PATH",     '@TEMP_PATH@');
 defined('BIGTEMP_PATH')  ? null : define("BIGTEMP_PATH",  '@BIGTEMP_PATH@');
 defined('UPLOAD_PATH')   ? null : define("UPLOAD_PATH",   '@UPLOAD_PATH@');
 defined('USERDATA_PATH') ? null : define("USERDATA_PATH", '@USERDATA_PATH@');
+defined('LOCK_FILE')     ? null : define("LOCK_FILE",     TEMP_PATH.'LOCK');
+defined('INI_FILE')      ? null : define("INI_FILE",      '@LIB_PATH@config.ini');
+defined('SERIAL_INI')    ? null : define("SERIAL_INI",    '@LIB_PATH@serial.ini');
 
 //===================================================================================================================================================
 /** SERIAL PORT CONSTANTS */
