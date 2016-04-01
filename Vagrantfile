@@ -29,17 +29,6 @@ Vagrant.configure(2) do |config|
     vb.memory = "2048"
   end
 
-  # View the documentation for the provider you are using for more
-  # information on available options.
-
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   sudo apt-get update
-  #   sudo apt-get install -y apache2
-  # SHELL
-
   # Install devleopment dependencies and download code repositories
   config.vm.provision "shell", path: "tools/install_deps.sh"
   config.vm.provision "shell", path: "tools/update_repos.sh"

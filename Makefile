@@ -42,7 +42,6 @@ WWW_FILES		= 	index.php \
 					README.md
 					
 FABUI_FILES		=	fabui/index.php \
-					fabui/ajax \
 					fabui/application \
 					fabui/config \
 					fabui/system
@@ -77,7 +76,7 @@ INSTALL			?= install
 FAKEROOT 		?= fakeroot
 FAKEROOT_ENV 	= $(FAKEROOT) -s $(TEMP_DIR)/.fakeroot_env -i $(TEMP_DIR)/.fakeroot_env -- 
 MKSQUASHFS		?= mksquashfs
-BUNDLE_COMP		?= lz4
+BUNDLE_COMP		?= lzo
 ########################### Makefile rules #############################
 
 all:
