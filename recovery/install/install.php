@@ -1,25 +1,30 @@
 <?php
 session_start();
 if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' && count($_POST) > 0) {
-
+	
 	//=========== CONFIG FILES
 	include_once ('/var/www/lib/config.php');
-	include_once ('/var/www/lib/database.php');
 	include_once ('/var/www/lib/serial.php');
 	include_once ('/var/www/lib/utilities.php');
+	
+	/** RESET DB */
+	shell_exec('/usr/bin/sqlite3 '.WWW_PATH.'/fabtotum.db < '.RECOVERY_PATH.'install/sql/fabtotum-default.sqlite3');
+	
+	include_once ('/var/www/lib/database.php');
 
-	$_first_name = $_POST['first_name'];
-	$_last_name = $_POST['last_name'];
-	$_email = $_POST['email'];
-	$_password = $_POST['password'];
-	$_net = $_POST['net'];
+	$_first_name   = $_POST['first_name'];
+	$_last_name    = $_POST['last_name'];
+	$_email        = $_POST['email'];
+	$_password     = $_POST['password'];
+	$_net          = $_POST['net'];
 	$_net_password = $_POST['net_password'];
-	$_ip_address = $_POST['ip_address'];
+	$_ip_address   = $_POST['ip_address'];
 
 	/** CHECK IF IS WIFI CONNCECTION */
 	$_temp = explode('-', $_net);
 	$_is_wifi = $_temp[0] == 'wifi' ? true : false;
-
+	
+	/*
 	if ($_is_wifi) {
 
 		$_net = str_replace('wifi-', '', $_net);
@@ -29,12 +34,9 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 		sleep(3);
 		shell_exec("sudo ifup wlan0");
 
-	}
+	}*/
 
-	//inizialitizzo database
-	$_command = 'sudo mysql -u ' . DB_USERNAME . ' -p' . DB_PASSWORD . ' -h ' . DB_HOSTNAME . '  < ' . SQL_INSTALL_DB;
-	shell_exec($_command);
-
+	
 	/** LOAD DB */
 	$db = new Database();
 	/** ADD USER */
@@ -46,11 +48,13 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 	$_settings['layout'] = '';
 
 	$_user_data['first_name'] = $_first_name;
-	$_user_data['last_name'] = $_last_name;
-	$_user_data['email'] = $_email;
-	$_user_data['password'] = md5($_password);
-	$_user_data['settings'] = json_encode($_settings);
+	$_user_data['last_name']  = $_last_name;
+	$_user_data['email']      = $_email;
+	$_user_data['password']   = md5($_password);
+	$_user_data['settings']   = json_encode($_settings);
 
+	
+	
 	/** ADD TASK RECORD TO DB */
 	$id_user = $db -> insert('sys_user', $_user_data);
 
@@ -60,37 +64,13 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 	$_data_update = array();
 	$_data_update['value'] = json_encode(array('ssid' => $_net, 'password' => $_net_password, 'ip' => $wlan_ip));
 	$db -> update('sys_configuration', array('column' => 'sys_configuration.key', 'value' => 'wifi', 'sign' => '='), $_data_update);
-
-	//=========== SERIAL CLASS - GET FW VERSION
 	
-	$ini_array = parse_ini_file(SERIAL_INI);
+	//get printer info
+	$infos = json_decode(shell_exec(PYTHON_PATH.'sysinfo.py'), TRUE);
+
+	$hw_id = $infos['hw'];
+	$fw_version = $infos['fw'];
 	
-	$serial = new Serial;
-	$serial -> deviceSet($ini_array['port']);
-	$serial -> confBaudRate($ini_array['baud']);
-	$serial -> confParity("none");
-	$serial -> confCharacterLength(8);
-	$serial -> confStopBits(1);
-	$serial -> deviceOpen();
-
-	//firmware version
-	$serial -> sendMessage("M765" . PHP_EOL);
-	$fw_version_reply = $serial -> readPort();
-	$fw_version = '';
-
-	//hardware version
-	$serial -> sendMessage('M763' . PHP_EOL);
-	$hw_id_reply = $serial -> readPort();
-	$hw_id = '';
-
-	$serial -> deviceClose();
-
-	if (strpos($fw_version_reply, 'V') !== false) {
-		$fw_version = trim(str_replace('V', '', $fw_version_reply));
-		$fw_version = trim(str_replace('ok', '', $fw_version));
-	}
-
-	$hw_id = trim(str_replace('ok', '', $hw_id_reply));
 
 	/** UPDATE FW VERSION ON DB */
 	$_data_update = array();
@@ -98,10 +78,8 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 	$db -> update('sys_configuration', array('column' => 'sys_configuration.key', 'value' => 'fw_version', 'sign' => '='), $_data_update);
 
 	
-
 	/** GET UNITS */
 	$configs = json_decode(file_get_contents(FABUI_PATH . 'config/config.json'), TRUE);
-
 	$configs['hardware']['id'] = $hw_id;
 
 	file_put_contents(FABUI_PATH . 'config/config.json', json_encode($configs));
@@ -121,16 +99,15 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 		shell_exec('sudo rm /var/www/AUTOINSTALL');
 	}
 
-	/** UPLOAD SIMBOLIC LINK */
-	if (!is_link(FABUI_PATH . 'upload')) {
-		shell_exec('sudo ln -s ' . UPLOAD_PATH . ' ' . FABUI_PATH . 'upload');
-	}
 
 	/** CLEAN SESSION */
 	foreach ($_SESSION as $key => $value) {
 		unset($_SESSION[$key]);
 	}
-
+	
+	
+	
+	/*
 	// ==== SAMPLES FILES
 	if (file_exists(RECOVERY_PATH . 'install/samples')) {
 
@@ -172,7 +149,8 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 		 
 		
 	}
-
+	
+	*/
 	$db -> close();
 
 	//set ip ethernet static address
@@ -190,9 +168,6 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 
 	echo json_encode($response_items);
 
-} else {
-
-	echo "Access denied";
-
 }
+
 ?>
