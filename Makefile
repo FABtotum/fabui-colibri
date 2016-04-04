@@ -13,19 +13,20 @@ PRIORITY	?= 090
 OS_FLAVOUR	?= colibri
 
 # FAB-UI system paths
-WWW_PATH		?= /var/www
+#LIB_PATH		?= /var/lib/$(NAME)/
+WWW_PATH		?= /var/www/
 MOUNT_BASE_PATH	?= /mnt
-DB_PATH			?= $(WWW_PATH)/
-FABUI_PATH		?= $(WWW_PATH)/fabui/
-PYTHON_PATH		?= $(FABUI_PATH)/python/
-SCRIPT_PATH		?= $(FABUI_PATH)/script/
-TASKS_PATH		?= $(WWW_PATH)/tasks/
-RECOVERY_PATH	?= $(WWW_PATH)/recovery/
-TEMP_PATH		?= $(WWW_PATH)/temp/
-UPLOAD_PATH		?= $(WWW_PATH)/upload/
-LIB_PATH		?= $(WWW_PATH)/lib/
+FABUI_PATH		?= $(WWW_PATH)fabui/
+PYTHON_PATH		?= $(FABUI_PATH)python/
+SCRIPT_PATH		?= $(FABUI_PATH)script/
+TASKS_PATH		?= $(WWW_PATH)tasks/
+RECOVERY_PATH	?= $(WWW_PATH)recovery/
+TEMP_PATH		?= $(WWW_PATH)temp/
+UPLOAD_PATH		?= $(WWW_PATH)upload/
+LIB_PATH		?= $(WWW_PATH)lib/
 BIGTEMP_PATH	?= $(MOUNT_BASE_PATH)/bigtmp/
 USERDATA_PATH	?= $(MOUNT_BASE_PATH)/userdata/
+DB_PATH			?= $(LIB_PATH)/
 
 ############################ Files #####################################
 # <files>/* is to avoid making <files>/<files> path
@@ -138,12 +139,12 @@ $(BDATA_STAMP): $(TEMP_DIR) $(BDATA_DIR) $(CONFIG_FILES) $(DB_FILES)
 # 	Copy recovery files
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)$(RECOVERY_PATH)
 	$(FAKEROOT_ENV) cp -a $(RECOVERY_FILES) 	$(BDATA_DIR)$(RECOVERY_PATH)
-#	Install DB
-	$(FAKEROOT_ENV) cp -a $(DB_FILES) $(BDATA_DIR)$(DB_PATH)
 #	Create runtime data directory
-	$(FAKEROOT_ENV) $(INSTALL) -d -o 33 -g 33 -m 0755 $(BDATA_DIR)/var/lib/fabui
+	$(FAKEROOT_ENV) $(INSTALL) -d -o 33 -g 33 -m 0755 $(BDATA_DIR)$(LIB_PATH)
 #	Create log directory
 	$(FAKEROOT_ENV) $(INSTALL) -d -o 33 -g 33 -m 0755 $(BDATA_DIR)/var/log/fabui
+#	Install DB
+	$(FAKEROOT_ENV) cp -a $(DB_FILES) $(BDATA_DIR)$(DB_PATH)
 #	The autoinstall flag file is created at compile time
 	$(FAKEROOT_ENV) touch $(BDATA_DIR)/$(WWW_PATH)/AUTOINSTALL
 #	Public runtime directories

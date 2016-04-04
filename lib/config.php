@@ -1,36 +1,31 @@
 <?php
 define('OS_FLAVOUR', file_exists('/mnt/live/lib/colibrikitlib')? 'Colibri' : 'Raspbian');
+
 //===================================================================================================================================================
 $www_path   = '/var/www/';
-$fabui_path = $www_path.'fabui/';
+$fabui_path = '/var/www/fabui/';
 
 defined('WWW_PATH')      ? null : define("WWW_PATH",      $www_path);
 defined('FABUI_PATH')    ? null : define("FABUI_PATH",    $fabui_path);
-defined('PYTHON_PATH')   ? null : define("PYTHON_PATH",   FABUI_PATH.'python/');
-defined('SCRIPT_PATH')   ? null : define("SCRIPT_PATH",   FABUI_PATH.'script/');
-defined('TASKS_PATH')    ? null : define("TASKS_PATH",    WWW_PATH.'tasks/');
-defined('RECOVERY_PATH') ? null : define("RECOVERY_PATH", WWW_PATH.'recovery/');
-defined('TEMP_PATH')     ? null : define("TEMP_PATH",     WWW_PATH.'temp/');
-defined('UPLOAD_PATH')   ? null : define("UPLOAD_PATH",   WWW_PATH.'upload/');
-defined('LIB_PATH')      ? null : define("LIB_PATH",      WWW_PATH.'lib/');
-defined('LOCK_FILE')     ? null : define("LOCK_FILE",     WWW_PATH.'temp/LOCK');
-defined('INI_FILE')      ? null : define("INI_FILE",      LIB_PATH.'config.ini');
-defined('SERIAL_INI')    ? null : define("SERIAL_INI",    LIB_PATH.'serial.ini');
+defined('PYTHON_PATH')   ? null : define("PYTHON_PATH",   '/var/www/fabui/python/');
+defined('SCRIPT_PATH')   ? null : define("SCRIPT_PATH",   '/var/www/fabui/script/');
+defined('TASKS_PATH')    ? null : define("TASKS_PATH",    '/var/www/tasks/');
+defined('RECOVERY_PATH') ? null : define("RECOVERY_PATH", '/var/www/recovery/');
+defined('TEMP_PATH')     ? null : define("TEMP_PATH",     '/var/www/temp/');
+defined('BIGTEMP_PATH')  ? null : define("BIGTEMP_PATH",  '/mnt/bigtmp/');
+defined('UPLOAD_PATH')   ? null : define("UPLOAD_PATH",   '/var/www/upload/');
+defined('USERDATA_PATH') ? null : define("USERDATA_PATH", '/mnt/userdata/');
+defined('LOCK_FILE')     ? null : define("LOCK_FILE",     TEMP_PATH.'LOCK');
+defined('INI_FILE')      ? null : define("INI_FILE",      '/var/www/lib/config.ini');
+defined('SERIAL_INI')    ? null : define("SERIAL_INI",    '/var/www/lib/serial.ini');
 
 //===================================================================================================================================================
 /** SERIAL PORT CONSTANTS */
-defined("PORT_NAME")  ? null : define("PORT_NAME", '/dev/ttyAMA0');
-defined("BOUD_RATE")  ? null : define("BOUD_RATE", '115200'); 
+defined("PORT_NAME")  ? null : define("PORT_NAME", '/dev/ttyAMA0');  //TODO: possibly get from env
+defined("BOUD_RATE")  ? null : define("BOUD_RATE", '115200');  //TODO: possibly get from env
 
 //===================================================================================================================================================
-/** DATABASE CONNECTION 
-defined("DB_HOSTNAME")  ? null : define("DB_HOSTNAME", 'localhost');
-defined("DB_USERNAME")  ? null : define("DB_USERNAME", 'root');
-defined("DB_PASSWORD")  ? null : define("DB_PASSWORD", 'fabtotum');
-defined("DB_DATABASE")  ? null : define("DB_DATABASE", 'fabtotum');
-*/
-
-//================================== DATABASE ============
+/** DATABASE CONNECTION */
 if (!defined("DB_DRIVER"))
 	define('DB_DRIVER',  OS_FLAVOUR=='Colibri'? 'pdo:sqlite' : 'mysqli');
 defined("DB_HOSTNAME")  ? null : define("DB_HOSTNAME", 'localhost');
@@ -39,18 +34,11 @@ defined("DB_PASSWORD")  ? null : define("DB_PASSWORD", 'fabtotum');
 if (!defined("DB_DATABASE"))
 	define('DB_DATABASE', DB_DRIVER=='pdo:sqlite'? '/var/www/fabtotum.db' : 'fabtotum');
 
-//================================= DB INSTALL =============
-if (!defined("SQL_INSTALL_DB"))
-	define('SQL_INSTALL_DB', DB_DRIVER=='pdo:sqlite'? '/var/www/recovery/install/sql/fabtotum.sqlite3' : '/var/www/recovery/install/sql/fabtotum.sql');
-
-
-
-
 defined("SQL_INSTALL_DB")  ? null : define("SQL_INSTALL_DB", RECOVERY_PATH.'install/sql/fabtotum.sql');
 
 //===================================================================================================================================================
-defined("CONFIG_UNITS")         ? null : define("CONFIG_UNITS", FABUI_PATH.'config/config.json');
-defined("CUSTOM_CONFIG_UNITS")  ? null : define("CUSTOM_CONFIG_UNITS", FABUI_PATH.'config/custom_config.json');
+defined("CONFIG_UNITS")  ? null : define("CONFIG_UNITS", FABUI_PATH.'config/config.json');
+
 
 //===================================================================================================================================================
 defined("MYFAB_REMOTE_VERSION_URL")  ? null : define("MYFAB_REMOTE_VERSION_URL", 'http://update.fabtotum.com/FAB-UI/version.txt');
@@ -66,7 +54,6 @@ defined("MYFAB_DOWNLOAD_EXTRACT_FOLDER") ? null : define("MYFAB_DOWNLOAD_EXTRACT
 
 //===================================================================================================================================================
 defined("MARLIN_DOWNLOAD_URL")            ? null : define("MARLIN_DOWNLOAD_URL", 'http://update.fabtotum.com/MARLIN/download/');
-defined("MARLIN_DOWNLOAD_FILE_ZIP")       ? null : define("MARLIN_DOWNLOAD_FILE_ZIP", 'firmware.zip');
 defined("MARLIN_DOWNLOAD_FILE")           ? null : define("MARLIN_DOWNLOAD_FILE", 'Marlin.cpp.hex');
 defined("MARLIN_DOWNLOAD_MONITOR_FILE")   ? null : define("MARLIN_DOWNLOAD_MONITOR_FILE",   '/var/www/recovery/update/temp/marlin_progress.json');
 defined("MARLIN_DOWNLOAD_TARGET_FILE")    ? null : define("MARLIN_DOWNLOAD_TARGET_FILE",    '/var/www/recovery/update/temp/');
@@ -112,8 +99,8 @@ define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 
-if(isset($_SERVER['SERVER_NAME'])){
-	defined("SITE_URL") ? null : define("SITE_URL", 'http://'.$_SERVER['SERVER_NAME'].'/fabui/');
+if(isset($_SERVER['HTTP_HOST'])){
+	defined("SITE_URL") ? null : define("SITE_URL", 'http://'.$_SERVER['HTTP_HOST'].'/fabui/');
 }
 
 
@@ -128,7 +115,6 @@ defined('TWITTER_FEED_JSON') ? null : define("TWITTER_FEED_JSON",      TEMP_PATH
 
 defined('BLOG_FEED_URL')  ? null : define("BLOG_FEED_URL",      'http://blog.fabtotum.com/feed/');
 defined('BLOG_FEED_XML')  ? null : define("BLOG_FEED_XML",      TEMP_PATH.'blog.xml');
-
 defined('FAQ_URL')  ? null : define("FAQ_URL", 'http://www.fabtotum.com/faq_new.json');
 defined('FAQ_JSON') ? null : define("FAQ_JSON", TEMP_PATH.'faq.json');
 
@@ -138,15 +124,5 @@ defined('WIZARD_FILE') ? null : define("WIZARD_FILE", WWW_PATH.'WIZARD');
 defined('USB_SYSTEM_FILE') ? null : define("USB_SYSTEM_FILE", '/dev/sda1');
 defined('USB_FOLDER') ? null : define("USB_FOLDER", '/media');
 
-
-// ============ GIT ========================================================
-defined('GIT_RELEASES_URL')  ? null : define("GIT_RELEASES_URL", 'https://api.github.com/repos/FABtotum/dev-fabui/releases');
-defined('GIT_LATEST_RELEASE_URL')  ? null : define("GIT_LATEST_RELEASE_URL", 'https://api.github.com/repos/FABtotum/dev-fabui/releases/latest');
-
-defined('GIT_RELEASES_JSON')  ? null : define("GIT_RELEASES_JSON",TEMP_PATH.'git_releases.json');
-defined('GIT_LATEST_RELEASE_JSON')  ? null : define("GIT_LATEST_RELEASE_JSON",TEMP_PATH.'git_latest_release.json');
-
-
-defined('INTERFACES_FILE') ? null : define("INTERFACES_FILE", '/etc/network/interfaces');
 
 ?>
