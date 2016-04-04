@@ -107,7 +107,7 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 	
 	
 	
-	/*
+	
 	// ==== SAMPLES FILES
 	if (file_exists(RECOVERY_PATH . 'install/samples')) {
 
@@ -121,7 +121,7 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
  
 	} elseif (file_exists(RECOVERY_PATH . 'install/file')) {   
 		
-		
+		/*
 		$query_files = 'INSERT INTO `sys_files` (`id`, `file_name`, `file_type`, `file_path`, `full_path`, `raw_name`, `orig_name`, `client_name`, `file_ext`, `file_size`, `print_type`, `is_image`, `image_width`, `image_height`, `image_type`, `image_size_str`, `insert_date`, `update_date`, `note`, `attributes`) VALUES ';
 		$query_files .= "(1, 'Marvin_KeyChain_FABtotum.gcode', 'text/plain', '/var/www/upload/gcode/', '/var/www/upload/gcode/Marvin_KeyChain_FABtotum.gcode', 'Marvin Key Chain FABtotum', 'Marvin_KeyChain_FABtotum.gcode', 'Marvin_KeyChain_FABtotum.gcode', '.gcode', 2176020, 'additive', 0, 0, 0, 0, '', now(), now(), 'Marvin sample', '{\"dimensions\": {\"x\" : \"109.444000244\", \"y\": \"116.483001709\", \"z\": \"50.0\"}, \"number_of_layers\" : 203, \"filament\": \"1276.94702148\", \"estimated_time\":\"0:25:07\" }'), ";
 		$query_files .= "(2, 'bracelet.gcode', 'text/plain', '/var/www/upload/gcode/', '/var/www/upload/gcode/bracelet.gcode', 'Bracelet', 'bracelet.gcode', 'bracelet.gcode', '.gcode', 1467880, 'additive', 0, 0, 0, 0, '', now(),now(), 'Bracelet sample', '{\"dimensions\":{\"x\":\"101.062004089\",\"y\":\"101.062004089\",\"z\":\"9.80000019073\"},\"number_of_layers\":98,\"filament\":\"3229.01245117\",\"estimated_time\":\"1:11:07\"}');";	
@@ -145,12 +145,14 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST' &&
 		 shell_exec('sudo cp /var/www/recovery/install/file/bracelet.gcode ' . UPLOAD_PATH . 'gcode/bracelet.gcode');
 		 shell_exec('sudo chmod 777 ' . UPLOAD_PATH . 'gcode/Marvin_KeyChain_FABtotum.gcode');
 		 shell_exec('sudo chmod 777 ' . UPLOAD_PATH . 'gcode/bracelet.gcode'); 
+		 * 
+		 */
 		 
 		 
 		
 	}
 	
-	*/
+	
 	$db -> close();
 
 	//set ip ethernet static address

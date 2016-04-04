@@ -18,9 +18,13 @@ $query_objects = 'SELECT `sys_objects`.`user`, `sys_objects`.`private`, `sys_obj
 					OR `private` =  0
 					GROUP BY `sys_objects`.`id`
 					ORDER BY `date_insert` desc';
-					
+
+
+				
 $_objects = $db->query($query_objects);
 $db->close();
+
+
 
 $_rows = array();
 

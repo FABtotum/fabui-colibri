@@ -107,7 +107,7 @@ class Objects extends CI_Model {
 	 */
 	function insert_obj($data){
 			
-		$this->db->set('date_insert', date('Y-m-d H:i:s'), FALSE);
+		$this->db->set('date_insert', date('Y-m-d H:i:s'));
 		
 		$this->db->insert($this->_table_name, $data);
 
@@ -224,7 +224,7 @@ class Objects extends CI_Model {
             $this->db->set($key, $value);
         }
         
-        $this->db->set('date_updated', date('Y-m-d H:i:s'), FALSE);
+        $this->db->set('date_updated', date('Y-m-d H:i:s'));
         
         $this->db->where('id' ,$object_id);
 		$this->db->update($this->_table_name);

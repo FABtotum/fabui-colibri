@@ -19,6 +19,7 @@ class Database
 	protected $_result;
 	protected $_num_rows;
 	protected $_log;
+	protected $_last_insert_id;
 
 	private function _logError()
 	{
@@ -117,14 +118,19 @@ class Database
 			$this->_result = $ret===FALSE? $ret : $st->fetchAll();
 		} else {
 			$this->_result = $this->_db->query($query);
+			
 		}
-
+		
+		
+		
 		if ($this->_result === FALSE)
 		{
 			$this->_logError("Query failed: ".$query);
 			$this->_logError("Error message: ".$this->_db->error);  //TODO: make this driver independent
 			return false;
 		}
+		
+		
 
 		if (is_object($this->_result))
 		{
@@ -132,12 +138,13 @@ class Database
 			$rc = get_class($this->_result);
 			
 			
-			
+
 			switch ($rc)
 			{
 				case 'PDOStatement':
 					$this->_num_rows = $this->_result->rowCount();
 					$this->_rows = $this->_result->fetchAll(PDO::FETCH_ASSOC);
+					$this->_last_insert_id = $this->_db->lastInsertId();
 					//print_r($this->_rows);exit();
 					if (is_array($this->_rows) and count($this->_rows) > $this->_num_rows)
 						$this->_num_rows = count($this->_rows);
@@ -145,11 +152,14 @@ class Database
 				case 'mysqli_result':
       			$this->_num_rows = $this->_result->num_rows;
 					$this->_rows = $this->_result->fetch_all(MYSQLI_ASSOC);
+					$this->_last_insert_id = $this->_db->insert_id();
 					break;
 				default:
 					throw new Exception("Unmanaged result type return from query: {$rc}");
 			}
-
+		
+			
+		
 			if ($this->_rows === FALSE) {
 				return FALSE;
 			}
@@ -258,6 +268,11 @@ class Database
 
 
     }
+	
+	/** */
+	public function last_insert_id(){
+		return $this->_last_insert_id;
+	}
 
 }
 

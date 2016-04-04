@@ -95,6 +95,8 @@ class Objectmanager extends Module {
 
 			//inserisco gli eventuali file dell'oggetto
 			$files = explode(',', $this -> input -> post('files'));
+			
+			
 
 			$usb_files = explode(',', $this -> input -> post('usb_files'));
 
@@ -307,6 +309,8 @@ class Objectmanager extends Module {
 			print_r($error);
 		} else {
 			$data = $this -> upload -> data();
+			
+			
 
 			//carico X class database
 			$this -> load -> database();

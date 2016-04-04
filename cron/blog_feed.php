@@ -2,6 +2,10 @@
 require_once '/var/www/lib/config.php';
 require_once '/var/www/lib/utilities.php';
 
+if(!file_exists(BLOG_FEED_XML)){
+	write_file(BLOG_FEED_XML, '', 'w');
+}
+
 if (is_internet_avaiable()) {
 	
 	$ch = curl_init(BLOG_FEED_URL);
@@ -11,7 +15,6 @@ if (is_internet_avaiable()) {
 	$blog_xml = curl_exec($ch);
 	$info = curl_getinfo($ch);
 	curl_close($ch);
-	
 	
 	if ($info['http_code'] == 200) {
 		write_file(BLOG_FEED_XML, $blog_xml, 'w');

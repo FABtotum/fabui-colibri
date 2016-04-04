@@ -2,6 +2,10 @@
 require_once '/var/www/lib/config.php';
 require_once '/var/www/lib/utilities.php';
 
+if(!file_exists(TWITTER_FEED_JSON)){
+	write_file(TWITTER_FEED_JSON, '', 'w');
+}
+
 if (is_internet_avaiable()) {
 	
 	$ch = curl_init(TWITTER_FEED_URL);

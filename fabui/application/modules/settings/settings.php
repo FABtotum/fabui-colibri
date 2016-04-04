@@ -192,7 +192,7 @@ class Settings extends Module {
 		
 		$data['widget'] = widget('network_wifi' . time(), 'Network - Wifi', $attr, $data['widget'], false, false, false);
 		
-		$this -> layout -> add_js_file(array('src' => 'application/layout/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js', 'comment' => ''));
+		$this -> layout -> add_js_file(array('src' => '/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js', 'comment' => ''));
 		$this -> layout -> add_js_in_page(array('data' => $this -> load -> view('network/wlan/js', $data, TRUE), 'comment' => ''));
 		
 		//$this -> layout -> set_compress(false);

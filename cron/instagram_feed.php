@@ -2,6 +2,15 @@
 require_once '/var/www/lib/config.php';
 require_once '/var/www/lib/utilities.php';
 
+if(!file_exists(INSTAGRAM_FEED_JSON)){
+	write_file(INSTAGRAM_FEED_JSON, '', 'w');
+}
+
+if(!file_exists(INSTAGRAM_HASH_JSON)){
+	write_file(INSTAGRAM_HASH_JSON, '', 'w');
+}
+
+
 if (is_internet_avaiable()) {
 
 	$ch = curl_init(INSTAGRAM_FEED_URL);

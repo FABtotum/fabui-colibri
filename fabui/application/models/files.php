@@ -35,13 +35,9 @@ class Files extends CI_Model {
 	 * @param unknown $data
 	 */
 	function insert_file($data){
-			
-		$this->db->set('insert_date', date('Y-m-d H:i:s'), FALSE);
-		
+		$this->db->set('insert_date', date('Y-m-d H:i:s'));
 		$data['file_size'] = str_replace('.', '', $data['file_size']);
-
 		$this->db->insert($this->_table_name, $data);
-
 		return $this->db->insert_id();
 
 	}

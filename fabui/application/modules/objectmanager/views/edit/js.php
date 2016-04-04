@@ -92,7 +92,7 @@ $(function() {
 		var stats_button = '';		
 		
 		
-		var delete_button = '<a rel="tooltip" data-placement="bottom" data-original-title="Delete the file" href=\'javascript:ask_delete(' + fileId +', "' + fileName + '");\' data-file-id="' + fileId + '" class="btn btn-danger details-button btn-xs pull-right delete-file"><i class="fa fa-trash"></i> <span class="hidden-xs">Delete</span></a>';
+		var delete_button = ' <a rel="tooltip" data-placement="bottom" data-original-title="Delete the file" href=\'javascript:ask_delete(' + fileId +', "' + fileName + '");\' data-file-id="' + fileId + '" class="btn btn-danger details-button btn-xs  delete-file"><i class="fa fa-trash"></i> <span class="hidden-xs">Delete</span></a>';
 		var download_button = '<a rel="tooltip" data-placement="bottom"  data-original-title="Save data on your computer. You can use it in the third party software." href="' + downloadUrl + '" class="btn btn-info btn-xs details-button"><i class="fa fa-download"></i> <span class="hidden-xs">Download</span></a>';
 		
 		
@@ -115,7 +115,7 @@ $(function() {
 			preview_button = '<a rel="tooltip" data-placement="bottom" data-original-title="A web-based 3D viewer ' + endTitle+'" href="'+ previewUrl +'" class="btn btn-xs bg-color-purple txt-color-white details-button"><i class="fa fa-eye"></i> <span class="hidden-xs">Preview</span></a>';
 		}
 		
-		return ' '+ edit_button + delete_button + download_button + preview_button + stats_button + '';
+		return ' '+ edit_button + download_button + preview_button + stats_button +  delete_button + '';
 	}
 
 	$('#save-object').on('click', save_object);

@@ -3,6 +3,9 @@ require_once '/var/www/lib/config.php';
 require_once '/var/www/lib/utilities.php';
 
 
+if(!file_exists(FAQ_JSON)){
+	write_file(FAQ_JSON, '', 'w');
+}
 
 if (is_internet_avaiable()) {
 		
