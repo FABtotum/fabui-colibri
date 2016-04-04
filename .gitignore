@@ -23,6 +23,8 @@ AUTOINSTALL
 
 # -> /etc/fabui/config.json
 /fabui/config/config.json
+/fabui/config/custom_config.json
+/fabui/config/custom_overrides.txt
 
 # -> /tmp/fabui/, /var/tmp/fabui/
 /temp/
