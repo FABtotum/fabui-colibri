@@ -156,12 +156,45 @@ try
 	}
 
 	// TEST: DomDocument
-	echo "Checking DomDocument... ";
-	if (class_exists('DomDocument')) {
+	echo "Checking DOMDocument... ";
+	if (class_exists('DOMDocument')) {
 		echo "ok\n";
 	} else {
 		echo "MISSING\n";
 		exit(2);
+	}
+
+	// TEST: PHP settings
+	echo "Checking PHP time zone... ";
+	$timezone = ini_get('date.timezone');
+	echo "{$timezone}: ";
+	if ($timezone == 'UTC') {
+		echo "ok\n";
+	} else {
+		echo "should be 'UTC'\n";
+		if ($code < 1) $code = 1;
+	}
+
+	echo "Checking PHP max size for POST requests... ";
+	$post_max_size = ini_get('post_max_size');
+	echo "{$post_max_size}: ";
+	$megs = array_shift(explode('M', $post_max_size));
+	if ($megs >= 128) {
+		echo "ok\n";
+	} else {
+		echo "should be at least 128M\n";
+		if ($code < 1) $code = 1;
+	}
+
+	echo "Checking PHP max size for uploaded files... ";
+	$upload_max_size = ini_get('upload_max_filesize');
+	echo "{$upload_max_size}: ";
+	$megs = array_shift(explode('M', $upload_max_size));
+	if ($megs >= 128) {
+		echo "ok\n";
+	} else {
+		echo "should be at least 128M\n";
+		if ($code < 1) $code = 1;
 	}
 
 	//TEST: Slic3r stable (v 1.1.7) at (/var/www/fabui/slic3r/slic3r)

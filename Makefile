@@ -1,5 +1,3 @@
-#TODO: Rewrite this makefile for local installation and testing
-
 # Base name of distribution and release files
 NAME	=	fabui
 
