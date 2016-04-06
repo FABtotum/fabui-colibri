@@ -731,7 +731,7 @@ class Objectmanager extends Module {
 
 					$obj = $this -> objects -> get_obj_by_id($obj_id);
 
-					$obj_folder = $download_folder . '/' . str_replace(' ', '_', $obj -> obj_name);
+					$obj_folder = $download_folder . '/' . str_replace('&', 'and',str_replace(' ', '_', $obj -> obj_name));
 
 					$obj_folder = str_replace('(', '_', $obj_folder);
 					$obj_folder = str_replace(')', '_', $obj_folder);

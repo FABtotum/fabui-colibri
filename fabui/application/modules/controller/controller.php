@@ -11,35 +11,17 @@ class Controller extends Module {
 
 	}
 
-	public function updates() {
-
-		$this -> load -> helper('update_helper');
-
-		$data['local_version']  = myfab_get_local_version();
-		$data['remote_version'] = myfab_get_remote_version();
-		
-		$data['updated'] = version_compare($data['local_version'], $data['remote_version']) > -1;
-
-		echo $this -> load -> view('update', $data, TRUE);
-
-	}
-
 	public function tasks() {
-
 		echo $this -> load -> view('tasks', '', TRUE);
-
 	}
 
 	public function notifications() {
-
 		echo $this -> load -> view('notifications', '', TRUE);
-
 	}
 
 	public function language() {
 
 		if ($this -> input -> post()) {
-
 			$language = $this -> input -> post('lang');
 			$back_url = $this -> input -> post('back_url');
 
@@ -51,9 +33,7 @@ class Controller extends Module {
 			$this -> configuration -> save_confi_value('language', $language);
 
 			$_SESSION['language'] = $languages[$language];
-
 			redirect($back_url);
-
 		}
 
 	}
@@ -184,13 +164,19 @@ class Controller extends Module {
 		echo 1;
 	}
 	
-	/* */
+	/* return if wizard popup  */
 	public function first_setup(){
 		$this->load->helper('wizard_helper');
 		$exist_file_wizard = need_setup_wizard();
 		$response = $exist_file_wizard && $_SESSION['ask_wizard'] == true ? true : false;
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('response' =>$response)));	
 	}
-
+	
+	/* return if internet is available */
+	public function internet($output = 'json'){
+		$this->load->helper('update_helper');
+		$available = is_internet_avaiable();
+		$this->output->set_content_type('application/json')->set_output(json_encode(array('available' =>$available)));
+	}
 }
 ?>

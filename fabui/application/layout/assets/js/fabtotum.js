@@ -406,7 +406,7 @@ $(function() {
 				SOCKET_CONNECTED = true;
 				
 				SOCKET.send('message', '{"name": "getTasks"}');
-				SOCKET.send('message', '{"name": "getInternet"}');
+				/*SOCKET.send('message', '{"name": "getInternet"}');*/
 				SOCKET.send('message', '{"name": "getUsb"}');
 				
 			});
@@ -423,7 +423,7 @@ $(function() {
 
 			});
 
-			interval_internet = setInterval(check_connected, 360000);
+			/*interval_internet = setInterval(check_connected, 360000);*/
 			SOCKET.connect();
 
 		}
@@ -435,11 +435,11 @@ $(function() {
 		idleInterval = setInterval(timerIncrement, 1000);
 		safety_interval = setInterval(safety, 3000);
 		interval_temperature = setInterval(get_temperatures, 2500);
-
+		
 		/* START TIMER... */
 		$("#refresh-notifications").on('click', refresh_notifications);
 		check_for_updates();
-
+		check_connected();
 	}
 
 });
@@ -813,6 +813,7 @@ function decode_emergency_code(code) {
 }
 
 function show_connected(bool) {
+	
 	if (bool) {
 		$('.internet').show();
 		$('.no-internet-detected').remove();
@@ -827,10 +828,11 @@ function show_connected(bool) {
 }
 
 function check_connected() {
-
-	if (SOCKET_CONNECTED && PAGE_ACTIVE) {
-		SOCKET.send('message', '{"name": "getInternet"}');
-	}
+	
+	$.get("/fabui/controller/internet", function(data){
+		show_connected(data.available);
+	});
+	
 }
 
 function socket_fallback() {

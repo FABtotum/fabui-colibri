@@ -203,7 +203,7 @@ function detail_file(file) {
 
 function model_info(file){
 	
-	if(ecent_file.attributes == '' || recent_file.attributes == 'Processing'){
+	if(file.attributes == '' || file.attributes == 'Processing'){
 		return;
 	}
 	

@@ -6,7 +6,7 @@ class Dashboard extends Module {
 	public function __construct() {
 		
 		
-		
+			
 		parent::__construct();
 
 		$this -> lang -> load($_SESSION['language']['name'], $_SESSION['language']['name']);
@@ -14,6 +14,7 @@ class Dashboard extends Module {
 		$this->load->helper('print_helper');
         /** IF PRINTER IS BUSY I CANT CHANGE SETTINGS  */
         if(is_printer_busy()){
+        	exit();
             $this->layout->set_printer_busy(true);
         }
 
@@ -22,7 +23,7 @@ class Dashboard extends Module {
 	
 	public function index(){
 		
-		
+	
 		$this->load->helper('smart_admin_helper');
 		
 		$this -> load -> library('WidgetsFactory');

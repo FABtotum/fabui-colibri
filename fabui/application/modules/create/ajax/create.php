@@ -192,7 +192,7 @@ if($_print_type == 'additive'){
 
 
 $_output_command = shell_exec ( $_command );
-$_print_pid      = intval(trim(str_replace('\n', '', $_output_command))) + 1;
+$_print_pid      = intval(trim(str_replace('\n', '', $_output_command)));
 
 
 /** UPDATE TASKS ATTRIBUTES */

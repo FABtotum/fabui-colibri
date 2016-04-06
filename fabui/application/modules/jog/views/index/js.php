@@ -577,8 +577,7 @@
 			data : {function: func, value: value, time: timestamp, step:$("#step").val(), z_step:$("#z-step").val(), feedrate: $("#feedrate").val(), macro:macro, extruderFeedrate: $("#extruder-feedrate").val()},
 			dataType: "json"
 		}).done(function( data ) {
-			console.log(data);
-			
+
 			if(!macro){
 				var separator = '-----------\n';
 	        	write_to_console(separator + data.data.command + ': ' + data.data.response);
