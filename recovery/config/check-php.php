@@ -6,7 +6,7 @@ try
 
 	include '/var/www/lib/config.php';
 
-	//TODO: test db drivers and report available ones
+	//Test db drivers and report available ones
 	echo "Looking for a DB driver to access database `".DB_DATABASE."`: "; flush();
 	$test_drivers = array(
 		'pdo_sqlite' => function ($q) {
@@ -151,10 +151,18 @@ try
 	if (class_exists('ZipArchive')) {
 		echo "ok\n";
 	} else {
-		echo "MISSING";
+		echo "MISSING\n";
 		exit(2);
 	}
 
+	// TEST: DomDocument
+	echo "Checking DomDocument... ";
+	if (class_exists('DomDocument')) {
+		echo "ok\n";
+	} else {
+		echo "MISSING\n";
+		exit(2);
+	}
 
 	//TEST: Slic3r stable (v 1.1.7) at (/var/www/fabui/slic3r/slic3r)
 	echo "Looking for Slic3r executable... "; flush();

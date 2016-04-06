@@ -87,16 +87,21 @@ try:
 	#except ImportError:
 		#print "missing"
 
-	#TEST: pyserial (https://pypi.python.org/pypi/pyserial)
+	#TEST: pyserial v 3.x (https://pypi.python.org/pypi/pyserial)
 	print "Looking for pyserial module...",
 	if (testModule("serial", 2)):
 			import serial
-	#try:
-		#import serial
-		#print "ok"
-	#except ImportError:
-		#print "ERROR"
-		#sys.exit(2)
+
+	print "Checking pyserial version...",
+	try:
+		serialVersion = serial.VERSION
+		print serialVersion
+	except AttributeError:
+		print "< 2.3: ERROR"
+		sys.exit(2)
+	parts = serialVersion.split(".", 1)
+	if parts[0] != "3":
+		sys.exit(2)
 
 	#TEST: pathtools and watchdog module
 	print "Looking for pathtools module...",
