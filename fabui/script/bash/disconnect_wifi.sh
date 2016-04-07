@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONFIG="ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev\nupdate_config=1\n"
+CONFIG="ctrl_interface=DIR=/run/wpa_supplicant GROUP=netdev\nupdate_config=1\n"
 
 sudo chmod 666 /etc/wpa_supplicant/wpa_supplicant.conf
 echo -e $CONFIG > /etc/wpa_supplicant/wpa_supplicant.conf
