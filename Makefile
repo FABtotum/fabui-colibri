@@ -26,6 +26,9 @@ BIGTEMP_PATH	?= $(MOUNT_BASE_PATH)/bigtmp/
 USERDATA_PATH	?= $(MOUNT_BASE_PATH)/userdata/
 DB_PATH			?= $(LIB_PATH)/
 
+# OS paths
+PHP_CONFIG_FILE_SCANDIR ?= /etc/php/conf.d/
+
 ############################ Files #####################################
 # <files>/* is to avoid making <files>/<files> path
 PYTHON_FILES	= 	fabui/python/*
@@ -194,6 +197,8 @@ $(OS_COMMON_STAMP):
 #	Lighttpd fabui config
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0644 $(OS_FILES_DIR)/common/fabui.lighttpd \
 		$(BDATA_DIR)/etc/lighttpd/conf-available/99-fabui.conf
+# PHP settings file
+	$(FAKEROOT_ENV) install -D $(OS_FILES_DIR)/common/$(NAME).php $(BDATA_DIR)$(PHP_CONFIG_FILE_SCANDIR)$(NAME).ini
 # 	Create a stamp file
 	touch $@
 	
