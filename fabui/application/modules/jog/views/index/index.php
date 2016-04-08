@@ -268,7 +268,7 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-12">
-					<pre class="console"></pre>
+					<div class="console"></div>
 				</div>
 			</div>
 		</div>

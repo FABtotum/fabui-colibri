@@ -343,12 +343,9 @@
 		<!-- JAVASCRIPT VARS -->
 		<script type="text/javascript">
 			var fabui = true;
-			var number_updates = 0;
-			var number_tasks = 0;
 			var number_notifications = 0;
 			var max_idle_time = <?php echo isset($_SESSION['user']['lock-screen']) ? $_SESSION['user']['lock-screen'] : 0 ?>;
-			var MODULE = '<?php echo $this->router->fetch_class(); ?>';
-			var pressedEmergencyButton = false;
+			$.module = '<?php echo $this->router->fetch_class(); ?>';
 			var PRINTER_BUSY = <?php echo $_printer_busy; ?>;
 			var MAX_NOZZLE_TEMP = <?php echo $_max_temp; ?>;
 		</script>

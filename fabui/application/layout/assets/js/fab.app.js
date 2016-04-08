@@ -3,7 +3,7 @@ fabApp = (function(app) {
 	app.FabActions = function(){
 		
 		var fabActions = {
-		
+				
 			userLogout: function($this){
 				
 				$.SmartMessageBox({
@@ -18,49 +18,32 @@ fabApp = (function(app) {
 					if(ButtonPressed == 'Cancel'){
 						return;
 					}
-					
 					if (Option == "Logout") {
-						$.root_.addClass('animated fadeOutUp');
-						setTimeout(logout, 1000);
+						app.logout();
 					}
-					
 					if(Option == 'Shutdown'){
-						shutdown();
+						app.poweroff();
 					}
-					
 					if(Option == 'Restart'){
-						restart();
+						app.reboot();
 					}
-					
-					
 				});
-				
-				function logout() {
-					window.location = $this.attr('href');
-				}
 			},
 			
 			resetController: function($this){
-				
 				$.SmartMessageBox({
                     title: "<i class='fa fa-bolt'></i> <span class='txt-color-orangeDark'><strong>Reset Controller</strong></span> ",
                     content: $this.data("reset-msg") || "You can improve your security further after logging out by closing this opened browser",
                     buttons: "[No][Yes]"
                 }, function(ButtonPressed) {
-                   if(ButtonPressed == 'Yes'){
-                   	reset_controller();
-                   }
+                   if(ButtonPressed == 'Yes') app.resetController();
                });
 				
 			},
-			
-			
 			emergencyButton: function($this){
-				pressedEmergencyButton = true;
-				stopAll();
+				app.stopAll();
 			}
 		};
-		
 		
 		$.root_.on('click', '[data-action="fabUserLogout"]', function(e) {
 			var $this = $(this);
@@ -93,7 +76,6 @@ fabApp = (function(app) {
 	
 	app.domReadyMisc = function() {
 		
-		
 		$("#top-temperatures").click(function(a) {
 			var b = $(this);
 		   	b.next(".top-ajax-temperatures-dropdown").is(":visible") ? (b.next(".top-ajax-temperatures-dropdown").fadeOut(150), b.removeClass("active")) : (b.next(".top-ajax-temperatures-dropdown").fadeIn(150), b.addClass("active"));
@@ -124,7 +106,11 @@ fabApp = (function(app) {
 		});
 		
 		$(".lock-ribbon").click(function() {
-			lockscreen();
+			app.lockScreen();
+		});
+		
+		$("#refresh-notifications").click(function() {
+			app.refreshNotificationsContent();
 		});
         
         $(document).mouseup(function(a) {
@@ -134,18 +120,19 @@ fabApp = (function(app) {
 		
 		
 	};
-	
+	/*
+	 * 
+	 */
 	app.drawBreadCrumb = function () {
-			
 		var a = $("nav li.active > a");
 		var b = a.length;
 		a.each(function() {
 			bread_crumb.append($("<li></li>").html($.trim($(this).clone().children(".badge").remove().end().text()))), --b || (document.title = 'FABUI - ' + bread_crumb.find("li:last-child").text())
 		});
-		
 	};
-	
-	
+	/*
+	 * 
+	 */
 	app.freezeMenu = function(except){
 		var excepet_item_menu = new Array();
 		excepet_item_menu[0] = 'dashboard';
@@ -166,7 +153,9 @@ fabApp = (function(app) {
 			}
 		});
 	};
-	
+	/*
+	 * 
+	 */
 	app.checkForFirstSetupWizard = function(){
 		$.get('/fabui/controller/first_setup', function(data, status){
 			if(data.response == true){
@@ -180,16 +169,249 @@ fabApp = (function(app) {
 				}, 1000);
 			}
 		});
+	};
+	/*
+	 * launch reset controller command
+	 */
+	app.resetController = function() {
+		RESETTING_CONTROLLER = true;
+		openWait("<i class=\"fa fa-circle-o-notch fa-spin\"></i> Resetting controller");
+		$.get($.reset_controller_url_action, function(){
+			closeWait();
+			RESETTING_CONTROLLER = false;
+		});
 	}
-
+	/*
+	 * stop all operations and task on the fabtotum and refresh the page after 3 seconds
+	 */
+	app.stopAll = function(message) {
+		message = message || 'Aborting all operations ';
+		openWait(message, ' ', false);
+		STOPPING_ALL = true;
+		$.get($.stop_all_url_action, function(){
+			waitContent("Refreshing page");
+			setTimeout(function(){ 
+				location.reload(); 
+			}, 3000);
+		});
+	}
+	/*
+	 * launch reboot command and refresh the page after 21 seconds
+	 */
+	app.reboot = function() {
+		IS_MACRO_ON = true;
+		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> Restart in progress");
+		$.ajax({
+			url: $.reboot_url_action,
+		}).done(function(data) {
+		
+		}).fail(function(jqXHR, textStatus){
+			setTimeout(function() {
+				waitContent("Restarting please wait...");
+				IS_MACRO_ON = false;
+				document.location.href = $.logout_url;
+			}, 21000);
+		});
+	};
+	/*
+	 * launch poweroff command and show popup with instructions after 5 seconds
+	 */
+	app.poweroff = function() {
+		IS_MACRO_ON = true;
+		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Shutdown in progress');
+		$.ajax({
+			url: $.poweroff_url_action,
+		}).done(function(data) {
+			
+		}).fail(function(jqXHR, textStatus){
+			setTimeout(function() {
+				waitTitle('Now you can switch off the power');
+				showShutdownImage(); //utility function stored in utilities.js
+				closeWait();
+				IS_MACRO_ON = false;
+			}, 5000);
+		});
+	};
+	/*
+	 *  logout from fabui
+	 */
+	app.logout = function() {
+		$.root_.addClass('animated fadeOutUp');
+		setTimeout(function(){
+			window.location = $.logout_url;
+		}, 1000);
+	};
+	/*
+	 * lock screen
+	 */
+	app.lockScreen = function(){
+		$.root_.addClass('animated fadeOutUp');
+		$("#lock-screen-form").submit();
+	};
+	/*
+	 * check if there are updates avaialabe 
+	 */
+	app.checkUpdates = function () {
+		$.get($.update_check_url, function(data, status){
+			if(data.updates.updated == false){
+				$.number_updates++;
+				$(".update-list").find('span').html('	Updates (1) ');
+				$("nav li > a").each(function() {
+					if ($(this).attr('data-controller') == 'updates') {
+						$(this).append('<span class="badge bg-color-red pull-right inbox-badge animated fadeIn">1</span>');
+					}
+				});
+				app.updateNotificationBadge();
+				var html = '<div class="row"><div class="col-sm-12"><div class="alert alert-danger alert-block animated fadeIn"><button class="close" data-dismiss="alert">×</button><h4 class="alert-heading"> <i class="fa fa-refresh"></i> New important software updates are now available, <a style="text-decoration:underline; color:white;" href="/fabui/updates">update now!</a> </h4></div></div></div>';
+				if($.module != 'updates') $("#content").prepend(html);
+			}
+		});
+	};
+	/*
+	 * update notification badge
+	 */
+	app.updateNotificationBadge = function () {
+		if(($.number_updates + $.number_tasks) > 0){
+			$("#activity").find('.badge').html(($.number_updates + $.number_tasks));
+			$("#activity").find('.badge').addClass('bg-color-red bounceIn animated');
+		}else{
+			$("#activity").find('.badge').removeClass('bg-color-red bounceIn animated');
+		}
+		
+	};
+	/*
+	 * refresh notification content (dropdown list)
+	 */
+	app.refreshNotificationsContent = function () {
+		$(".notification").each(function(index, element) {
+			var obj = $(this);
+			if (obj.hasClass('active')) {
+				var url = obj.find('input[name="activity"]').attr("id");
+				var container = $(".ajax-notifications");
+				loadURL(url, container);
+			}
+		});
+	};
+	/*
+	 * Notification interval, check if there are notifications to show (updates, tasks, etc)
+	 * if app is connected to the websocket return
+	 */
+	app.checkNotifications = function () {
+		
+	}
+	/*
+	 * 
+	 */
+	app.webSocket = function () {
+		
+		function isWebSocketAvailable(){
+			return ("WebSocket" in window);
+		}
+		
+		function onOpen(){
+			$.socket_connected = true;
+		}
+		
+		function onClose(){
+			$.socket_connected = false;
+		}
+		
+		function onMessage(data){
+			try {
+				var obj = jQuery.parseJSON(data);
+				switch(obj.type){
+					case 'temperature':
+						app.updateTemperaturesInfo(obj.data);
+						break;
+					case 'serial':
+						app.writeSerialResponseToConsole(obj.data);
+						break;
+					default:
+						break;
+				}
+			}catch(e){
+				return;
+			}
+		}
+		
+		if(isWebSocketAvailable()){
+			$.socket = new FabWebSocket($.socket_host, $.socket_port);
+			$.socket.bind('message', onMessage);
+			$.socket.bind('open', onOpen);
+			$.socket.bind('close', onClose);
+			$.socket.connect();
+		}
+	};
+	/*
+	 * update temperatures info
+	 */
+	app.updateTemperaturesInfo = function(data){
+		var re = /ok\sT:([+|-]*[0-9]*.[0-9]*)\s\/([+|-]*[0-9]*.[0-9]*)\sB:([+|-]*[0-9]*.[0-9]*)\s\/([+|-]*[0-9]*.[0-9]*)/;
+		if ((match = re.exec(data.response)) !== null){
+			var ext_temp   = match[1];
+			var ext_target = match[2];
+			var bed_temp   = match[3];
+			var bed_target = match[4];
+			//update top bar
+			$("#top-bar-nozzle-actual").html(parseInt(ext_temp));
+			$("#top-bar-nozzle-target").html(parseInt(ext_target));
+			$("#top-bar-bed-actual").html(parseInt(bed_temp));
+			$("#top-bar-bed-target").html(parseInt(bed_target));
+			//top bar sliders
+			document.getElementById('top-act-bed-temp').noUiSlider.set([parseInt(bed_temp)]);
+			document.getElementById('top-bed-target-temp').noUiSlider.set([parseInt(bed_target)]);
+			if($("#top-act-ext-temp").length > 0){
+				document.getElementById('top-act-ext-temp').noUiSlider.set([parseInt(ext_temp)]);
+				document.getElementById('top-ext-target-temp').noUiSlider.set([parseInt(ext_target)]);
+			}
+			//save to browser storage
+			if ( typeof (Storage) !== "undefined") {
+				localStorage.setItem("nozzle_temp", ext_temp);
+				localStorage.setItem("nozzle_temp_target", ext_target);
+				localStorage.setItem("bed_temp", bed_temp);
+				localStorage.setItem("bed_temp_target", bed_target);
+			}
+			//if module is jog
+			if($.module == "jog"){
+				if($("#act-ext-temp").length > 0){
+					$("#ext-actual-degrees").html(parseInt(ext_temp) + '&deg;C');
+					document.getElementById('act-ext-temp').noUiSlider.set([parseInt(ext_temp)]);
+					document.getElementById('ext-target-temp').noUiSlider.set([parseInt(ext_target)]);
+				}
+				$("#bed-actual-degrees").html(parseInt(bed_temp) + '&deg;C');
+				document.getElementById('act-bed-temp').noUiSlider.set([parseInt(bed_temp)]);
+				document.getElementById('bed-target-temp').noUiSlider.set([parseInt(bed_target)]);
+			}
+			
+		}
+	};
+	/*
+	 * 
+	 */
+	app.writeSerialResponseToConsole = function(data){
+			console.log(data);
+			var commands = data.command.split('\n');
+			var replys   = data.response.split('\n');
+			
+			for(var i=0; i<commands.length; i++){
+				$(".console").append(commands[i] + ' : ' +  replys[i] + '\n');
+			}
+			$(".console").append('<hr class="simple">');
+			$('.console').scrollTop(1E10);
+		
+	};
 	return app;
-
 
 })({});
 
 jQuery(document).ready(function() {
-		fabApp.FabActions();
-		fabApp.domReadyMisc();
-		fabApp.drawBreadCrumb();
-		fabApp.checkForFirstSetupWizard();
+	//init
+	fabApp.webSocket();
+	fabApp.FabActions();
+	fabApp.domReadyMisc();
+	fabApp.drawBreadCrumb();
+	fabApp.checkUpdates();
+	fabApp.checkForFirstSetupWizard();
+	//launch intervals
+	$.notification_interval = setInterval(fabApp.checkNotifications, $.notification_interval_timer);
 });

@@ -165,7 +165,6 @@
 			var number_notifications = 0;
 			var setup_wizard = false;
 			var fabui = false;
-			var pressedEmergencyButton = false;
 			// DO NOT REMOVE : GLOBAL FUNCTIONS!
 			$(document).ready(function() {
 				pageSetUp();

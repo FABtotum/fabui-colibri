@@ -617,6 +617,8 @@
 	
 		
 	function write_to_console(text, type) {
+		
+		console.log("aaaa");
 			
 		type = type || '';
 	

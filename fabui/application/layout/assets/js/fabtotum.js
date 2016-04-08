@@ -51,6 +51,7 @@ function pad(val) {
 	return val > 9 ? val : "0" + val;
 }
 
+/*
 function freeze_menu(except) {
 
 	var excepet_item_menu = new Array();
@@ -73,6 +74,7 @@ function freeze_menu(except) {
 		}
 	});
 }
+*/
 
 /**
  *
@@ -112,32 +114,16 @@ var tasks_interval;
 var EMERGENCY = false;
 var IDLETIME = 0;
 var idleInterval;
-var do_system_call = true;
-var SOCKET;
 var SOCKET_CONNECTED = false;
-var interval_internet;
-var jogFirstEntry = true;
-var PAGE_ACTIVE = true;
-var PAGE_TITLE = '';
+
 var RESETTING_CONTROLLER = false;
 var STOPPING_ALL = false;
 var IS_MACRO_ON = false;
 var IS_TASK_ON = false;
-var jog_ticket_url = '';
 var interval_temperature;
-
-var BLOCK_TEMP_EXT_SLIDER = false;
 
 /** CHECK PRINTE SAFETY AJAX MODE*/
 function safety() {
-
-	if (!PAGE_ACTIVE) {
-		return false;
-	}
-
-	if (!do_system_call) {
-		return false;
-	}
 
 	if (SOCKET_CONNECTED) {
 		return false;
@@ -223,7 +209,7 @@ function set_updates(number) {
 	
 	if(number_updates > 0){
 		var html = '<div class="row"><div class="col-sm-12"><div class="alert alert-danger alert-block animated bounce"><button class="close" data-dismiss="alert">×</button><h4 class="alert-heading"> <i class="fa fa-refresh"></i> New important software updates are now available, <a style="text-decoration:underline; color:white;" href="/fabui/updates">update now!</a> </h4></div></div></div>';
-		if(MODULE != 'updates')	$("#content").prepend(html);
+		if($.module != 'updates')	$("#content").prepend(html);
 	}
 	
 
@@ -250,36 +236,12 @@ function update_notifications() {
 
 }
 
-function refresh_notifications() {
 
-	if (!PAGE_ACTIVE) {
-		return false;
-	}
-
-	if (!do_system_call) {
-		return false;
-	}
-
-	$(".notification").each(function(index, element) {
-		var obj = $(this);
-		if (obj.hasClass('active')) {
-			var url = obj.find('input[name="activity"]').attr("id");
-			var container = $(".ajax-notifications");
-			loadURL(url, container);
-		}
-	});
-}
 
 /** CHECK TASKS, MENU AJAX MODE */
 function check_notifications() {
 
-	if (!PAGE_ACTIVE) {
-		return false;
-	}
-
-	if (!do_system_call) {
-		return false;
-	}
+	
 
 	if (SOCKET_CONNECTED) {
 		return false;
@@ -307,7 +269,7 @@ function check_notifications() {
 
 	} else {
 
-		lockscreen();
+		fabApp.lockScreen();
 	}
 }
 
@@ -315,17 +277,12 @@ function check_notifications() {
 
 $(function() {
 
-	PAGE_TITLE = document.title;
-
 	if (fabui) {
 
 		//check is websocket
 		if ("WebSocket" in window) {
-
-			var host = window.location.hostname;
-			var port = 9001;
-
-			SOCKET = new FabWebSocket(host, port);
+			
+			SOCKET = new FabWebSocket($.socket_host, $.socket_port);
 
 			SOCKET.bind('message', function(payload) {
 
@@ -340,7 +297,7 @@ $(function() {
 
 				case 'emergency':
 					if(parseInt(obj.code) == 102) {
-						stopAll('Front panel has been opened.<br> Aborting all operations');
+						fabApp.stopAll('Front panel has been opened.<br> Aborting all operations');
 						return;
 					}
 					show_emergency(obj.code);
@@ -356,12 +313,12 @@ $(function() {
 					show_connected(obj.data);
 					break;
 				case 'serial':
-					write_to_console(obj.data.command + ": " + obj.data.response);
+					/*write_to_console(obj.data.command + ": " + obj.data.response);*/
 					/* */
 					break;
 				case 'temperature':
 					if ( typeof update_temperature_info == 'function') {
-						update_temperature_info(obj.data);
+						//update_temperature_info(obj.data);
 						/*$(".btn").removeClass('disabled');*/
 					}
 					break;
@@ -376,7 +333,7 @@ $(function() {
 
 					if (obj.data.type == 'notifications') {
 						set_tasks(obj.data);
-						update_notifications();
+						fabApp.updateNotificationBadge();
 
 					} else {
 						manage_task(obj.data);
@@ -431,15 +388,14 @@ $(function() {
 		//init UI
 		initUI();
 		// Handler for .ready() called.
-		notifications_interval = setInterval(check_notifications, 10000);
+		//notifications_interval = setInterval(check_notifications, 10000);
 		idleInterval = setInterval(timerIncrement, 1000);
 		safety_interval = setInterval(safety, 3000);
 		interval_temperature = setInterval(get_temperatures, 2500);
 		
 		/* START TIMER... */
-		$("#refresh-notifications").on('click', refresh_notifications);
-		check_for_updates();
-		check_connected();
+		/*check_for_updates();
+		check_connected();*/
 	}
 
 });
@@ -455,36 +411,11 @@ $(document).mousemove(function(e) {
 function timerIncrement() {
 	IDLETIME++;
 	if( (max_idle_time) > 0 && (IDLETIME > max_idle_time)){
-		lockscreen();
+		fabApp.lockScreen();
 	}
 }
 
-function lockscreen(){
-	$("#lock-screen-form").submit();
-}
-
-/** SHUTDOWN */
-function shutdown() {
-	IS_MACRO_ON = true;
-	openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Shutdown in progress');
-	clearInterval(notifications_interval);
-	clearInterval(safety_interval);
-	clearInterval(idleInterval);
-	
-	$.get("/fabui/application/modules/controller/ajax/shutdown.php", function(){
-		setTimeout(function() {
-			waitTitle('Now you can switch off the power');
-			showShutdownImage();
-			closeWait();
-			IS_MACRO_ON = false;
-		}, 15000);
-	});
-}
-
-
 function showShutdownImage(){
-	
-	
 	var ShutdownFancyBox = function() {
 		return {
 			initFancybox : function() {
@@ -516,29 +447,8 @@ function showShutdownImage(){
 		};
 	
 	}();
-	
 	ShutdownFancyBox.initFancybox();
 	$(".fancybox-shutdown").trigger('click');
-	
-	
-}
-
-function restart() {
-	
-	IS_MACRO_ON = true;
-	openWait("<i class='fa fa-circle-o-notch fa-spin'></i> Restart in progress");
-
-	clearInterval(notifications_interval);
-	clearInterval(safety_interval);
-	clearInterval(idleInterval);
-	
-	$.get("/fabui/application/modules/controller/ajax/restart.php", function(){
-		waitContent("Restarting please wait...");
-		setTimeout(function() {
-			IS_MACRO_ON = false;
-			document.location.href = '/fabui/login/out';
-		}, 85000);
-	});
 }
 
 /** CHECK FOR AVAILABLE UPDATES */
@@ -701,8 +611,6 @@ function getTrace(url, type, contenitor) {
 
 ////////////////////////
 function show_emergency(code) {
-
-	jogFirstEntry = true;
 
 	if (EMERGENCY == true) {
 		return;
@@ -932,28 +840,6 @@ function mange_usb_monitor(status, alert) {
 function manage_lock_file(status, alert){	
 }
 
-function reset_controller() {
-	RESETTING_CONTROLLER = true;
-	openWait("<i class=\"fa fa-circle-o-notch fa-spin\"></i> Resetting controller");
-	$.get('/fabui/application/modules/controller/ajax/reset_controller.php', function(){
-		closeWait();
-		RESETTING_CONTROLLER = false;
-	});
-}
-function stopAll(message) {
-	message = message || 'Aborting all operations ';
-	openWait(message, ' ', false);
-	STOPPING_ALL = true;
-	$.get('/fabui/application/modules/controller/ajax/stop_all.php', function(){
-		waitContent("Refreshing page");
-		setTimeout(function(){ 
-			location.reload(); 
-		}, 3000);
-	});
-}
-
-
-
 /********************
  *
  *
@@ -967,8 +853,8 @@ function jog_call(func, value){
 		jog_make_call_ws(func, value);
 	}else{
 		//fallback for socket
-		if (typeof make_jog_call == 'function') make_jog_call(func, value); //if iam on jog page
-		else jog_make_call_ajax(func, value);
+		//if (typeof make_jog_call == 'function') make_jog_call(func, value); //if iam on jog page
+		jog_make_call_ajax(func, value);
 	}
 	
 	
@@ -995,6 +881,7 @@ function jog_make_call_ws(func, value) {
 
 function jog_make_call_ajax(func, value){
 	
+	
 	var data = {}
 	data['function'] = func;
 	data['value'] = value;
@@ -1007,7 +894,9 @@ function jog_make_call_ajax(func, value){
 		url: '/fabui/application/modules/jog/ajax/exec.php',
 		data: data,
 		dataType: 'json'
-	}).done(function( data ) {});		
+	}).done(function( data ) {
+		fabApp.writeSerialResponseToConsole(data.data);
+	});		
 }
 
 
@@ -1027,10 +916,10 @@ function update_temperature_info(data) {
 	
 	
 	if (data.response.indexOf('ok T:') > -1) {
-
+		
+		
 		var str_temp = data.response.replace('ok ', '');
 		var temperature = str_temp.split(' ');
-
 		var ext_temp = temperature[0].split(':')[1];
 		var ext_target = temperature[1].split('/')[1];
 		var bed_temp = temperature[2].split(':')[1];
@@ -1065,7 +954,7 @@ function update_temperature_info(data) {
 		}
 
 		/*********** JOG ***************************/
-		if (MODULE == "jog") {
+		if ($.module == "jog") {
 		
 			if($("#act-ext-temp").length > 0){
 				$("#ext-actual-degrees").html(parseInt(ext_temp) + '&deg;C');
@@ -1111,7 +1000,6 @@ function initUI(){
 		$("#top-bar-nozzle-target").html(parseInt(localStorage.getItem("nozzle_temp_target")));
 		$("#top-bar-bed-actual").html(parseInt(localStorage.getItem("bed_temp")));
 		$("#top-bar-bed-target").html(parseInt(localStorage.getItem("bed_temp_target")));
-		
 	}
 	
 	/**
@@ -1172,7 +1060,6 @@ function initUI(){
 			behaviour: 'none'
 		});
 		
-		
 		//SLIDER EVENTS - EXTRUDER
 		document.getElementById("top-ext-target-temp").noUiSlider.on('slide', topExtTempSlide);
 		document.getElementById("top-ext-target-temp").noUiSlider.on('change', topExtTempChange);
@@ -1180,12 +1067,9 @@ function initUI(){
 		document.getElementById("top-ext-target-temp").noUiSlider.on('end', enableSliders);
 		
 		$("#top-act-ext-temp .noUi-handle").remove();	
-	
 	}
-	
-	
+
 	// ===============================================================================
-	
 	//SLIDER EVENTS - BED
 	document.getElementById("top-bed-target-temp").noUiSlider.on('slide', topBedTempSlide);
 	document.getElementById("top-bed-target-temp").noUiSlider.on('change', topBedTempChange);
@@ -1207,7 +1091,6 @@ function topExtTempSlide(e){
     $("#top-bar-nozzle-target").html(parseInt(e[0]));
     
     $("#ext-degrees").html(parseInt(e[0]) + '&deg;C');
-    
     if($("#ext-target-temp").length > 0){
     	document.getElementById('ext-target-temp').noUiSlider.set([parseInt(e[0])]);
     }
@@ -1258,13 +1141,13 @@ function axisz(){
 function zero_all(){
 	jog_call("zero_all", true);
 }
-
+/** disable button */
 function disable_button(element){
 	$(element).addClass('disabled');
 	$(element).prop("disabled",true);
 }
 		
-		
+/** enable button  */		
 function enable_button(element){
 	$(element).removeClass('disabled');
 	$(element).prop("disabled",false);

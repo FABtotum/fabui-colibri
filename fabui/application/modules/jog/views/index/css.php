@@ -52,6 +52,7 @@
 	.console {
 		height: 200px;
 		overflow: auto !important;
+		white-space: pre;
 	}
 	.list-button {
 		padding: 0;

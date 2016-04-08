@@ -178,5 +178,16 @@ class Controller extends Module {
 		$available = is_internet_avaiable();
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('available' =>$available)));
 	}
+
+	/* poweroff */
+	public function poweroff(){
+		shell_exec('sudo poweroff');
+	}
+	
+	/* reboot system */
+	public function reboot(){
+		session_destroy();
+		shell_exec('sudo reboot');
+	}
 }
 ?>

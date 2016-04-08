@@ -40,7 +40,6 @@
 	 	}
 	 	
 	 	/** disable all systems call */
-	 	do_system_call = false;
 	 	openWait('Saving and restarting net');
 	 	
 		$("#wifi-save-button").addClass('disabled');
@@ -115,11 +114,8 @@
             $("#wifi-save-button").removeClass('disabled');
             $("#save-button").removeClass('disabled');
 			$("#save-button").html('<i class="fa fa-save"></i> Save');
-			
-			/** enable system call */
-			do_system_call = true;
-            
-		                
+		
+                            
 		 });
 	 	
 	 	
