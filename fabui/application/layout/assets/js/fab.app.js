@@ -3,9 +3,7 @@ fabApp = (function(app) {
 	app.FabActions = function(){
 		
 		var fabActions = {
-				
 			userLogout: function($this){
-				
 				$.SmartMessageBox({
 					title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> Hi <span class='txt-color-orangeDark'><strong>" + $this.data("user-name") + "</strong></span> ",
 					content : $this.data('logout-msg') || "You can improve your security further after logging out by closing this opened browser",
@@ -73,7 +71,6 @@ fabApp = (function(app) {
 		});
 		
 	};
-	
 	app.domReadyMisc = function() {
 		
 		$("#top-temperatures").click(function(a) {
@@ -131,7 +128,7 @@ fabApp = (function(app) {
 		});
 	};
 	/*
-	 * 
+	 * freeze menu whene tasks are running
 	 */
 	app.freezeMenu = function(except){
 		var excepet_item_menu = new Array();
@@ -156,8 +153,19 @@ fabApp = (function(app) {
 	/*
 	 * 
 	 */
+	app.unFreezeMenu = function () {
+		var a = $("nav li > a");
+		a.each(function() {
+			$(this).removeClass('menu-disabled');
+			$(this).attr('href', $(this).attr('data-href'));
+		});
+		$(".freeze-menu").remove();
+	}
+	/*
+	 *  check for first setup wizard
+	 */
 	app.checkForFirstSetupWizard = function(){
-		$.get('/fabui/controller/first_setup', function(data, status){
+		$.get($.first_setup_url_action, function(data, status){
 			if(data.response == true){
 				setTimeout(function() {
 						$.smallBox({
@@ -174,11 +182,11 @@ fabApp = (function(app) {
 	 * launch reset controller command
 	 */
 	app.resetController = function() {
-		RESETTING_CONTROLLER = true;
+		$.is_macro_on = true;
 		openWait("<i class=\"fa fa-circle-o-notch fa-spin\"></i> Resetting controller");
 		$.get($.reset_controller_url_action, function(){
 			closeWait();
-			RESETTING_CONTROLLER = false;
+			$.is_task_on = true;
 		});
 	}
 	/*
@@ -187,7 +195,7 @@ fabApp = (function(app) {
 	app.stopAll = function(message) {
 		message = message || 'Aborting all operations ';
 		openWait(message, ' ', false);
-		STOPPING_ALL = true;
+		$.is_stopping_all = true;
 		$.get($.stop_all_url_action, function(){
 			waitContent("Refreshing page");
 			setTimeout(function(){ 
@@ -199,7 +207,7 @@ fabApp = (function(app) {
 	 * launch reboot command and refresh the page after 21 seconds
 	 */
 	app.reboot = function() {
-		IS_MACRO_ON = true;
+		$.is_macro_on = true;
 		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> Restart in progress");
 		$.ajax({
 			url: $.reboot_url_action,
@@ -208,7 +216,7 @@ fabApp = (function(app) {
 		}).fail(function(jqXHR, textStatus){
 			setTimeout(function() {
 				waitContent("Restarting please wait...");
-				IS_MACRO_ON = false;
+				$.is_macro_on = false;
 				document.location.href = $.logout_url;
 			}, 21000);
 		});
@@ -217,7 +225,7 @@ fabApp = (function(app) {
 	 * launch poweroff command and show popup with instructions after 5 seconds
 	 */
 	app.poweroff = function() {
-		IS_MACRO_ON = true;
+		$.is_macro_on = true;
 		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Shutdown in progress');
 		$.ajax({
 			url: $.poweroff_url_action,
@@ -228,7 +236,7 @@ fabApp = (function(app) {
 				waitTitle('Now you can switch off the power');
 				showShutdownImage(); //utility function stored in utilities.js
 				closeWait();
-				IS_MACRO_ON = false;
+				$.is_macro_on = false;
 			}, 5000);
 		});
 	};
@@ -300,22 +308,28 @@ fabApp = (function(app) {
 		
 	}
 	/*
+	 * Safety interval, check safety status when web socket is not available
+	 */
+	app.checkSafetyStatus = function() {
+		if($.socket_connected == false && $.is_emergency == false){
+			$.get($.safety_json_url + '?' + jQuery.now(), function(data) {
+				if (data.type == 'emergency') app.manageEmergency(data);
+			});
+		}
+	}
+	/*
 	 * 
 	 */
 	app.webSocket = function () {
-		
 		function isWebSocketAvailable(){
 			return ("WebSocket" in window);
 		}
-		
 		function onOpen(){
 			$.socket_connected = true;
 		}
-		
 		function onClose(){
 			$.socket_connected = false;
 		}
-		
 		function onMessage(data){
 			try {
 				var obj = jQuery.parseJSON(data);
@@ -326,6 +340,18 @@ fabApp = (function(app) {
 					case 'serial':
 						app.writeSerialResponseToConsole(obj.data);
 						break;
+					case 'macro':
+						app.manageMacro(obj.data);
+						break;
+					case 'emergency':
+						app.manageEmergency(obj);
+						break;
+					case 'alert':
+						app.manageAlert(obj);
+						break;
+					case 'task':
+						app.manageTask(obj.data);
+						break;
 					default:
 						break;
 				}
@@ -333,7 +359,6 @@ fabApp = (function(app) {
 				return;
 			}
 		}
-		
 		if(isWebSocketAvailable()){
 			$.socket = new FabWebSocket($.socket_host, $.socket_port);
 			$.socket.bind('message', onMessage);
@@ -386,32 +411,193 @@ fabApp = (function(app) {
 		}
 	};
 	/*
-	 * 
+	 * write serial replys to jog console
 	 */
 	app.writeSerialResponseToConsole = function(data){
-			console.log(data);
 			var commands = data.command.split('\n');
 			var replys   = data.response.split('\n');
-			
 			for(var i=0; i<commands.length; i++){
-				$(".console").append(commands[i] + ' : ' +  replys[i] + '\n');
+				if(commands.length > 1) $.console.append(commands[i] + ' : ' +  replys[i] + '\n');
+				else{
+					if(replys.length > 2){ // for commands like M763, M765
+						$.console.append(commands[i] + ' : ' +  replys[0] + '\n');					
+						for(var j=1;j<replys.length;j++){
+							if(replys[j] != '\n' && replys[j] != '') $.console.append(replys[j] + '\n');
+						}	
+					} else $.console.append(commands[i] + ' : ' +  replys[i] + '\n'); //for commands that have a lot of replys like M503
+				}
 			}
-			$(".console").append('<hr class="simple">');
-			$('.console').scrollTop(1E10);
-		
+			$.console.append('\n').scrollTop(1E10);
+	};
+	/*
+	 * manage macro response or trace
+	 */
+	app.manageMacro = function(data){
+		switch(data.type){
+			case 'trace':
+				$.console.html(data.content).scrollTop(1E10);
+				waitContent(data.content); //display also on wait modal popup
+				break;
+			case 'response':
+				if(data.content == true) $.is_macro_on = false;
+				break;
+			case 'status':
+				break;
+		}
+	};
+	/*
+	 * check if are some operations before leaving the page
+	 */
+	app.checkExit = function(){
+		if($.is_stopping_all == false && $.is_macro_on == true){
+			return "You have attempted to leave this page. The Fabtotum Personal Fabricator is still working. Are you sure you want to reload this page?";
+		}
+	};
+	/*
+	 * manage emergeny alerts
+	 */
+	app.manageEmergency = function(data) {
+		if($.is_emergency == true) return; //exit if is already on emergency status
+		var code = parseInt(data.code); 
+		if(code == 102){ // if panel door is open force emergency button
+			app.stopAll('Front panel has been opened.<br> Aborting all operations');
+			return;
+		}
+		$.is_emergency = true;
+		var buttons = '[OK][IGNORE]';
+		if(code == 103) buttons = '[IGNORE] [INSTALL HEAD]';
+		$.SmartMessageBox({
+			buttons : buttons,
+			title : "<h4><span class='txt-color-orangeDark'><i class='fa fa-warning fa-2x'></i></span>&nbsp;&nbsp;" + $.emergency_descriptions[code] + "<br>&nbsp;Press OK to continue or Ignore to disable this warning</h4>"
+		},function(ButtonPressed) {
+			if(ButtonPressed == 'OK' || (ButtonPressed == 'IGNORE' && buttons.indexOf("INSTALL HEAD") > -1) ) app.setSecure(1);
+			else if(ButtonPressed == 'IGNORE') app.setSecure(0);
+			else if(ButtonPressed == 'INSTALL HEAD') app.goToInstallNewHead();
+		});
+	};
+	/*
+	 * alive the fabtotum after an emergency
+	 */
+	app.setSecure = function(bool){
+		$.is_macro_on = true;
+		if($.socket_connected == true){
+			$.socket.send('message', '{"name": "secure", "data":{"mode":' + bool + ' } }');
+			$.is_emergency = false;
+			$.is_macro_on  = false;
+			return;
+		}
+		$.ajax({
+			type : "POST",
+			url : "/fabui/application/modules/controller/ajax/secure.php",
+			data : {mode : bool},
+			dataType : 'json'
+		}).done(function(response) {
+			$.is_emergency = false;
+			$.is_macro_on  = false;
+		});
+	}
+	/*
+	 * redirect to new head installation page
+	 */
+	app.goToInstallNewHead = function(){
+		$.root_.addClass('animated fadeOutUp');
+		document.location.href = $.new_head_url_action;
+	};
+	/*
+	 * manage upcoming alerts from the printer
+	 */
+	app.manageAlert = function(data){
+		var code = parseInt(data.code);
+		$.smallBox({
+			title : "Message",
+			content : $.emergency_descriptions[code],
+			color : "#5384AF",
+			timeout : 10000,
+			icon : "fa fa-warning"
+		});
+	};
+	/*
+	 * manage tasks
+	 */
+	app.manageTask = function(data){
+		switch(data.type){
+			case 'notifications':
+				app.setTasks(data);
+				app.updateNotificationBadge();
+				break;
+			case 'monitor':
+				app.manageTaskMonitor(data);
+				break;
+			case 'trace':
+				$.console.html(data.content).scrollTop(1E10);
+				waitContent(data.content);
+				break;
+		}
+	};
+	/*
+	 * set tasks
+	 */
+	app.setTasks = function(data){
+		$.number_tasks = data.number;
+		$.is_task_on = $.number_tasks > 0;
+		if($.is_task_on == true){
+			$.each(data.items, function() {
+				var row = this;
+				controller = row.controller;
+				if (controller == 'make') controller += '/' + row.type;
+				app.freezeMenu(controller); //freeze menu
+				$(".task-list").find('span').html('	Tasks (' + data.number + ') '); //update number on ajax dropdown list
+			});
+		}else app.unFreezeMenu();
+	};
+	/*
+	 * manage tasks's json files known as monitor files
+	 */
+	app.manageTaskMonitor = function(data){
+		if (typeof manage_task_monitor == 'function') manage_task_monitor(data);
+	};
+	/*
+	 * read temperatures
+	 */
+	app.getTemperatures = function(){
+		if($.socket_connected && ($.is_macro_on == false && $.is_task_on == false)) app.serial('get_temperature', '');
+	}
+	/*
+	 * send command to the serial port
+	 */
+	app.serial = function(func, val) {
+		var data = {
+			'function'         : func,
+			'value'            : val,
+			'step'             : $("#step").length > 0 ? $("#step").val() : 10,
+			'z_step'           : $("#z-step").length > 0 ?  $("#z-step").val() : 5,
+			'feedrate'         : $("#feedrate").length > 0 ? $("#feedrate").val() : 1000,
+			'extruderFeedrate' : $("#extruder-feedrate").length > 0 ? $("#extruder-feedrate").val() : 300
+		};
+		if($.socket_connected == true){
+			var messageToSend = {
+				'name' : 'serial',
+				'data' : data
+			};
+			$.socket.send('message', JSON.stringify(messageToSend));
+		}else{
+			$.ajax({
+				type: "POST",
+				url: $.serial_exec_url_action,
+				data: data,
+				dataType: 'json'
+			}).done(function( data ) {
+				app.writeSerialResponseToConsole(data.data);
+			});
+		}
+	};
+	/*
+	 * check if internet connection is available
+	 */
+	app.isInternetAvailable = function(){
+		$.get($.check_internet_url_action, function(data){
+		});
 	};
 	return app;
-
 })({});
 
-jQuery(document).ready(function() {
-	//init
-	fabApp.webSocket();
-	fabApp.FabActions();
-	fabApp.domReadyMisc();
-	fabApp.drawBreadCrumb();
-	fabApp.checkUpdates();
-	fabApp.checkForFirstSetupWizard();
-	//launch intervals
-	$.notification_interval = setInterval(fabApp.checkNotifications, $.notification_interval_timer);
-});

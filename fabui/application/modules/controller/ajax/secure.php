@@ -4,7 +4,6 @@ require_once '/var/www/lib/config.php';
 require_once '/var/www/lib/serial.php';
 require_once '/var/www/lib/utilities.php';
 
-
 $security_file['code'] = '';
 $security_file['type'] = '';
 
@@ -29,9 +28,6 @@ $serial->sendMessage($command);
 $response = $serial->readPort();
 $serial->serialflush();
 $serial->deviceClose();
-
-
-
 
 $_response_items['command']  = $command;
 $_response_items['response'] = $response;

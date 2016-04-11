@@ -35,6 +35,7 @@ class Jog extends Module {
 		$this->layout->add_js_in_page(array('data'=> $js_in_page, 'comment' => 'JOG JS'));
 		
 		
+		
         $this->layout->add_js_file(array('src'=>'/assets/js/plugin/knob/jquery.knob.min.js', 'comment'=>'KNOB'));
 		
 		$this->layout->set_compress(false);

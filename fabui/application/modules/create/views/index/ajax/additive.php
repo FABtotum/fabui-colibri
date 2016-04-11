@@ -401,7 +401,7 @@
 				$("#top-bar-nozzle-target").html(150);
             }
                         
-            IS_MACRO_ON = true;
+            $.is_macro_on = true;
             
             openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Preparing print');
             
@@ -450,7 +450,7 @@
 		             disable_button('#btn-next');
                         
                 }
-                IS_MACRO_ON = false;
+                $.is_macro_on = false;
                 ticker_url = '';
                 closeWait();
                 $('#modal_link').removeClass('disabled');    
@@ -462,7 +462,7 @@
         
         function engage_feeder(){
         	
-        	IS_MACRO_ON = true;
+        	$.is_macro_on = true;
         	openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Engaging feeder');
             $("#res-icon").removeClass('fa-warning fa-check txt-color-green txt-color-red fa-spinner fa-spin');
             $("#res-icon").addClass('fa-spinner fa-spin');
@@ -513,7 +513,7 @@
 		            
 		            isEngageFeeder = 0;                         
                 }
-                IS_MACRO_ON = false;
+                $.is_macro_on = false;
                 ticker_url = '';
                 closeWait();
                 $('#modal_link').removeClass('disabled');    

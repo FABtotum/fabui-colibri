@@ -48,12 +48,11 @@
 	#mdi {
 		text-transform: uppercase;
 	}
-
+	
 	.console {
-		height: 200px;
-		overflow: auto !important;
-		white-space: pre;
+		height: 225px;
 	}
+	
 	.list-button {
 		padding: 0;
 		list-style: none;

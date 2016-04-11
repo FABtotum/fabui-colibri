@@ -78,7 +78,7 @@ function freeze_menu(except) {
 
 /**
  *
- */
+ 
 function unfreeze_menu() {
 
 	$("#left-panel a").each(function(index, element) {
@@ -91,7 +91,7 @@ function unfreeze_menu() {
 	freezed = false;
 
 }
-
+*/
 function bytesToSize(bytes) {
 	var k = 1000;
 	var sizes = ["B", "Kb", "Mb", "Gb", "Tb"];
@@ -122,7 +122,7 @@ var IS_MACRO_ON = false;
 var IS_TASK_ON = false;
 var interval_temperature;
 
-/** CHECK PRINTE SAFETY AJAX MODE*/
+/** CHECK PRINTE SAFETY AJAX MODE
 function safety() {
 
 	if (SOCKET_CONNECTED) {
@@ -137,7 +137,8 @@ function safety() {
 		});
 	}
 }
-
+*/
+/*
 function secure(mode) {
 
 	if (SOCKET_CONNECTED) {
@@ -159,7 +160,8 @@ function secure(mode) {
 	}
 
 }
-
+*/
+/*
 function set_tasks(data) {
 
 	IS_TASK_ON = false;
@@ -176,11 +178,9 @@ function set_tasks(data) {
 		$.each(data.items, function() {
 			var row = this;
 			controller = row.controller;
-			
 			if (controller == 'make') {
  				controller += '/' + row.type;
 			}
-			
 		});
 
 	}
@@ -194,7 +194,7 @@ function set_tasks(data) {
 	}
 
 }
-
+*/
 function set_updates(number) {
 
 	number_updates = number;
@@ -294,18 +294,18 @@ $(function() {
 				}
 
 				switch(obj.type) {
-
+				/*
 				case 'emergency':
 					if(parseInt(obj.code) == 102) {
 						fabApp.stopAll('Front panel has been opened.<br> Aborting all operations');
 						return;
 					}
 					show_emergency(obj.code);
-					break;
-				case 'alert':
+					break; */
+				/*case 'alert':
 					show_alert(obj.code);
 					//show_emergency(obj.code);
-					break;
+					break; */
 				case 'security':
 					EMERGENCY = false;
 					break;
@@ -326,18 +326,18 @@ $(function() {
 					//console.log(obj.error);
 					break;
 				case 'macro':
-					manage_macro(obj.data);
+					/*manage_macro(obj.data);*/
 					break;
 
 				case 'task':
-
+					/*
 					if (obj.data.type == 'notifications') {
 						set_tasks(obj.data);
 						fabApp.updateNotificationBadge();
 
 					} else {
 						manage_task(obj.data);
-					}
+					}*/
 
 					break;
 				case 'create':
@@ -389,9 +389,9 @@ $(function() {
 		initUI();
 		// Handler for .ready() called.
 		//notifications_interval = setInterval(check_notifications, 10000);
-		idleInterval = setInterval(timerIncrement, 1000);
-		safety_interval = setInterval(safety, 3000);
-		interval_temperature = setInterval(get_temperatures, 2500);
+		//idleInterval = setInterval(timerIncrement, 1000);
+		/*safety_interval = setInterval(safety, 3000);*/
+		/*interval_temperature = setInterval(get_temperatures, 2500);*/
 		
 		/* START TIMER... */
 		/*check_for_updates();
@@ -451,7 +451,7 @@ function showShutdownImage(){
 	$(".fancybox-shutdown").trigger('click');
 }
 
-/** CHECK FOR AVAILABLE UPDATES */
+/** CHECK FOR AVAILABLE UPDATES 
 function check_for_updates() {
 	$.get("/fabui/updates/check", function(data, status){
 		if(data.updates.updated == false){
@@ -460,7 +460,7 @@ function check_for_updates() {
 		}
 	});
 }
-
+*/
 /** SUGGESTION */
 $("#send-suggestion").on('click', function() {
 
@@ -610,6 +610,7 @@ function getTrace(url, type, contenitor) {
 }
 
 ////////////////////////
+/*
 function show_emergency(code) {
 
 	if (EMERGENCY == true) {
@@ -647,8 +648,9 @@ function show_emergency(code) {
 		}
 	});
 
-}
+}*/
 
+/*
 function show_alert(code) {
 
 	$.smallBox({
@@ -661,7 +663,8 @@ function show_alert(code) {
 
 	
 }
-
+*/
+/*
 function decode_emergency_code(code) {
 
 	switch(parseInt(code)) {
@@ -717,8 +720,8 @@ function decode_emergency_code(code) {
 		return 'Unknown error Error code: ' + code;
 		break;
 	}
-
 }
+*/
 
 function show_connected(bool) {
 	
@@ -776,7 +779,7 @@ function manage_macro(obj) {
 	}
 
 }
-
+/*
 function manage_task(obj) {
 
 	if (obj.type == 'trace') {
@@ -785,7 +788,7 @@ function manage_task(obj) {
 		manage_task_monitor(obj);
 	}
 
-}
+}*/
 
 function manage_task_monitor(obj) {
 
@@ -899,19 +902,19 @@ function jog_make_call_ajax(func, value){
 	});		
 }
 
-
+/*
 function get_temperatures() {
 
 	if (!RESETTING_CONTROLLER && !STOPPING_ALL && !IS_MACRO_ON && !IS_TASK_ON && !PRINTER_BUSY) {
 		if(SOCKET_CONNECTED) jog_call("get_temperature", "");
 	}
 }
-
+*/
 /*****************************
  *
  * UPDATE TEMPERATURES
  *
- */
+
 function update_temperature_info(data) {
 	
 	
@@ -925,7 +928,7 @@ function update_temperature_info(data) {
 		var bed_temp = temperature[2].split(':')[1];
 		var bed_target = temperature[3].split('/')[1];
 
-		/******* TOP BAR *********************/
+		/******* TOP BAR ********************
 		$("#top-bar-nozzle-actual").html(parseInt(ext_temp));
 		$("#top-bar-nozzle-target").html(parseInt(ext_target));
 		$("#top-bar-bed-actual").html(parseInt(bed_temp));
@@ -953,7 +956,7 @@ function update_temperature_info(data) {
 
 		}
 
-		/*********** JOG ***************************/
+		/*********** JOG *************************
 		if ($.module == "jog") {
 		
 			if($("#act-ext-temp").length > 0){
@@ -975,18 +978,18 @@ function update_temperature_info(data) {
 	}
 
 }
-
+**/
 /***
  * FUNCTION TO AVOID PAGE CHANGE WHEN SOME MACROS ARE ON
  *
- */
+ *
 function checkExit() {
 	
 	if(STOPPING_ALL == false && IS_MACRO_ON == true){
 		return "You have attempted to leave this page. The Fabtotum Personal Fabricator is still working. Are you sure you want to reload this page?";
 	}
 }
-
+*/
 function initUI(){
 	
 	
@@ -1098,48 +1101,35 @@ function topExtTempSlide(e){
 }
 
 function topExtTempChange(e){
-	jog_call("ext_temp", parseInt(e[0]));
+	fabApp.serial("ext_temp", parseInt(e[0]));
 }
 
 
 function topBedTempSlide(e){
-	
 	$("#top-bar-bed-target").html(parseInt(e[0]));
-	$("#bed-degrees").html(parseInt(e[0]) + '&deg;C');
-    
+	$("#bed-degrees").html(parseInt(e[0]) + '&deg;C');    
     if($("#bed-target-temp").length > 0){
 		document.getElementById('bed-target-temp').noUiSlider.set([parseInt(e[0])]);
     }
-	
 }
 
-function topBedTempChange(e){
-	
-	jog_call("bed_temp", parseInt(e[0]));
-}
-
-
-function installHead(){
-	document.location.href = '/fabui/maintenance/head?warning=1';
+function topBedTempChange(e){	
+	fabApp.serial("bed_temp", parseInt(e[0]));
 }
 
 function directions(){
 	var value = $(this).attr("data-attribue-direction");
-	jog_call("directions", value);
+	fabApp.serial("directions", value);
 }
 
-
-
 function axisz(){
-    
 	var func = $(this).attr("data-attribute-function");
 	var step = $(this).attr("data-attribute-step");
-	jog_call(func, step);   
-	    
+	fabApp.serial(func, step);   
 }
 
 function zero_all(){
-	jog_call("zero_all", true);
+	fabApp.serial("zero_all", true);
 }
 /** disable button */
 function disable_button(element){

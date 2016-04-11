@@ -14,6 +14,7 @@
 	var KEY_ALLOWED = false;
 	
 	var PRE_JOG = true;
+	
 
 	
 	$(function() {
@@ -339,7 +340,7 @@
 		var func = 'eeprom'
 		
 		
-		jog_call(func, '');
+		fabApp.serial(func, '');
 		
 		
 	}
@@ -349,25 +350,25 @@
 		var func = 'fan';
 		var value = $(this).attr('data-action');
 		
-		jog_call(func, value);
+		fabApp.serial(func, value);
 		
 		
 	}
 	
 	
 	function bed_align(e){
-	    make_jog_call("bed-align", true, true);
+	    make_fabApp.serial("bed-align", true, true);
 	}
 	
 	function saved_position(){
 	    
 	    var gcode = jQuery.trim($(this).attr("data-code"));
-	    make_jog_call('mdi', gcode);
+	    make_fabApp.serial('mdi', gcode);
 	    
 	}
 	
 	function home_all_axis(){
-	    make_jog_call("home_all_axis", true, true);
+	    make_fabApp.serial("home_all_axis", true, true);
 	}
 	
 	function extTempSlide(e){
@@ -385,7 +386,7 @@
 		
 		EXT_TARGET_BLOCKED = false;
 		
-		jog_call("ext_temp", parseInt(e[0]));
+		fabApp.serial("ext_temp", parseInt(e[0]));
 		
 		document.getElementById('top-ext-target-temp').noUiSlider.set([parseInt(e[0])]);
    		
@@ -400,9 +401,7 @@
 	
 	function bedTempChange(e){
 		BED_TARGET_BLOCKED = false;
-		
-		jog_call("bed_temp", parseInt(e[0]));
-		
+		fabApp.serial("bed_temp", parseInt(e[0]));
 		document.getElementById('top-bed-target-temp').noUiSlider.set([parseInt(e[0])]);	
     	
 	}
@@ -412,8 +411,7 @@
 		var gcode = jQuery.trim($("#mdi").val());
 		jQuery("#mdi").val(gcode.replace('<br>', ''));
 	    if(gcode != ''){
-	    	
-	    	jog_call('mdi', gcode);
+	    	fabApp.serial('mdi', gcode);
 	    	
 	    }	
 	}
@@ -421,45 +419,45 @@
 	function extruder_mode(mode){
 	    
 	    
-	    jog_call("extruder_mode", mode);
+	    fabApp.serial("extruder_mode", mode);
 	    
 	}
 	
 	function motors(value){
 		
-		jog_call("motors", value);
+		fabApp.serial("motors", value);
 	}
 	
 	
 	function coordinates(value){
 		
-		jog_call("coordinates", value);
+		fabApp.serial("coordinates", value);
 	    enable_save_position();
 	}
 	
 	
 	function lights(value){
 		
-		jog_call("lights", value);
+		fabApp.serial("lights", value);
 
 	}
 	
 	function position(){
 		
-		jog_call("position", true);	
+		fabApp.serial("position", true);	
 		
     	
 	}
 	
 	function rotation(value){
 		
-		jog_call("rotation", value);	
+		fabApp.serial("rotation", value);	
 			
 	}
 	
 	function extruder_e_action(action){
 		
-		jog_call("extruder_e", action + $("#extruder-e-value").val());
+		fabApp.serial("extruder_e", action + $("#extruder-e-value").val());
 		
 	}
 	
@@ -470,7 +468,7 @@
 		
 		if(SOCKET_CONNECTED){
 			
-			jog_call("get_temperature", "");
+			fabApp.serial("get_temperature", "");
 			
 			
 			
@@ -559,21 +557,20 @@
 	   }
 	}
 	
-	
-	function make_jog_call(func, value, macro){
+	/*
+	function make_fabApp.serial(func, value, macro){
     
     	macro = macro || false;
 	    var timestamp = new Date().getTime();
 	    
 	    if(macro){
 	    	jog_ticket_url = '/temp/macro_trace';
-	    	isMacro=true;
-	    	IS_MACRO_ON = true;
+	    	$.is_macro_on = true;
 	    }
 	            
 		$.ajax({
 			type: "POST",
-			url : "<?php echo module_url('jog').'ajax/exec.php' ?>",
+			url : "",
 			data : {function: func, value: value, time: timestamp, step:$("#step").val(), z_step:$("#z-step").val(), feedrate: $("#feedrate").val(), macro:macro, extruderFeedrate: $("#extruder-feedrate").val()},
 			dataType: "json"
 		}).done(function( data ) {
@@ -582,15 +579,13 @@
 				var separator = '-----------\n';
 	        	write_to_console(separator + data.data.command + ': ' + data.data.response);
 	       	}
-	       	
-	        isMacro=false;
-	        IS_MACRO_ON = false;
+	        $.is_macro_on = false;
 	        jog_ticket_url = '';
 	        $(".status").html(' ');
 		});
 		
 	}
-	
+	*/
 	
 	function enable_save_position(){
     
@@ -610,8 +605,8 @@
 	function pre_jog(){
 	    
 	 	
-	 	jog_call('extruder_mode', 'e');
-	 	jog_call('mdi', 'M106 S255');
+	 	fabApp.serial('extruder_mode', 'e');
+	 	fabApp.serial('mdi', 'M106 S255');
 
 	}
 	
@@ -676,7 +671,7 @@
 		
 		if(function_name != ''){
 			
-			jog_call(function_name, function_value);
+			fabApp.serial(function_name, function_value);
 			
 			
 		}

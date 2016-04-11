@@ -1,7 +1,7 @@
 <script type="text/javascript">
 	
 	
-	IS_TASK_ON = <?php echo  $_running ? 'true' : 'false' ?>;
+	$.is_task_on = <?php echo  $_running ? 'true' : 'false' ?>;
 	
 	var id_task = <?php echo $_id_task; ?>;
 	var pid     = <?php echo $_pid; ?>;
@@ -539,7 +539,6 @@ function manage_change(e){
  *  OVVERRIDE GENERAL MONITOR FUNCTION
  */
 function manage_task_monitor(obj){
-	
 	if(obj.type=="monitor"){
 		if(obj.content != ""){
 			data = jQuery.parseJSON(obj.content);
@@ -762,7 +761,7 @@ function finalize_print(){
 	openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Finalizing task', '', false);
 	setTimeout(function() {
 		closeWait();
-		IS_TASK_ON = false;
+		$.is_task_on = false;
 		}, 30000);
 	
 	
@@ -776,7 +775,7 @@ function _resume() {
 	monitor_count = 0;
 	//faccio partire il monitor 1000 = 1 secondo
 	interval_monitor = setInterval(print_monitor, monitor_timeout);
-	interval_timer = setInterval(_timer, 1000);
+	interval_timer   = setInterval(_timer, 1000);
 	interval_trace   = setInterval(_trace, 1000);
 	
 	if(print_started){

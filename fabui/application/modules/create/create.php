@@ -25,6 +25,10 @@ class Create extends Module {
 		$this -> load -> database();
 		$this -> load -> model('objects');
 		$this -> load -> model('tasks');
+		
+		//$this->tasks->delete(3);
+
+		//$this->tasks->delete(2);
 
 		/**
 		 * LOAD HELPERS
@@ -54,8 +58,6 @@ class Create extends Module {
 		}
 		
 		$_running = $_task ? true : false;
-		
-		
 
 		if ($_running) {
 			
