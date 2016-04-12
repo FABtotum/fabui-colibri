@@ -7,19 +7,19 @@ usage() {
 
 [ "$1" ] || usage
 
-CURRENT_HOSTNAME=$(</etc/hostname)
+CURRENT_HOSTNAME=$(cat /etc/hostname)
 NEW_HOSTNAME=$1
 NEW_SERVICE_DESCRIPTION=$2
 
 for file in /etc/hostname /etc/hosts
 do
-	[ -f $file ] && sed -i.old -e "s:$CURRENT_HOSTNAME:$NEW_HOSTNAME:g" $file
+	[ -f $file ] && sed -i -e "s:$CURRENT_HOSTNAME:$NEW_HOSTNAME:g" $file
 done
 
-sudo /etc/init.d/hostname.sh start
+sudo /etc/init.d/hostname start
 
 echo "Setting new hostname for Avahi-daemon.."
-sudo avahi-set-host-name $NEW_HOSTNAME
+#sudo avahi-set-host-name $NEW_HOSTNAME
 echo "Setting service description"
 FABOTUM_SERICE="<?xml version=\"1.0\" standalone='no'?>\n
 <!DOCTYPE service-group SYSTEM \"avahi-service.dtd\">\n
@@ -33,3 +33,5 @@ FABOTUM_SERICE="<?xml version=\"1.0\" standalone='no'?>\n
 \t\t</service>\n
 \t</service-group>"
 echo -e $FABOTUM_SERICE > /etc/avahi/services/fabtotum.service
+
+sudo /etc/init.d/avahi-daemon restart
