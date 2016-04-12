@@ -50,7 +50,7 @@ class WebSocketServerFactory {
 			
 			$JogFactory = new JogFactory($data['feedrate'], $data['step'], $data['z_step'], $data['extruderFeedrate']);
 
-			$function = $data['func'];
+			$function = $data['function'];
 
 			if (method_exists($JogFactory, $function)) {
 				return $JogFactory -> $function($data['value']);
