@@ -1,0 +1,3 @@
+@reboot sudo bash /var/www/fabui/script/bash/cron.sh
+*/30 * * * * sudo bash /var/www/fabui/script/bash/cron.sh
+*/5 * * * * sudo bash /var/www/fabui/scrip/basg/internet.sh 

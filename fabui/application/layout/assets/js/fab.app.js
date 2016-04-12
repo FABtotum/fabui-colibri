@@ -595,7 +595,8 @@ fabApp = (function(app) {
 	 * check if internet connection is available
 	 */
 	app.isInternetAvailable = function(){
-		$.get($.check_internet_url_action, function(data){
+		$.get($.check_internet_url_action + '?' + jQuery.now(), function(data){
+		
 		});
 	};
 	return app;

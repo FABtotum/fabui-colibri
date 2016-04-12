@@ -25,7 +25,8 @@ $.new_head_url_action         = '/fabui/maintenance/head?warning=1';
 $.safety_json_url             = '/temp/safety.json';
 $.serial_exec_url_action      = '/fabui/application/modules/jog/ajax/exec.php';
 $.first_setup_url_action      = '/fabui/controller/first_setup';
-$.check_internet_url_action   = '/fabui/controller/internet';
+//$.check_internet_url_action   = '/fabui/controller/internet';
+$.check_internet_url_action   = '/temp/internet';
 /*
  * socket 
  */
