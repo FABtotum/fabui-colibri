@@ -28,7 +28,7 @@ DB_PATH			?= $(LIB_PATH)/
 
 # OS paths
 PHP_CONFIG_FILE_SCANDIR ?= /etc/php/conf.d/
-CRON_FOLDER ?= /var/spool/cron/crontabs
+CRON_FOLDER ?= /var/spool/cron/crontabs/
 
 ############################ Files #####################################
 # <files>/* is to avoid making <files>/<files> path
@@ -206,7 +206,8 @@ $(OS_COMMON_STAMP):
 # PHP settings file
 	$(FAKEROOT_ENV) install -D $(OS_FILES_DIR)/common/$(NAME).php $(BDATA_DIR)$(PHP_CONFIG_FILE_SCANDIR)$(NAME).ini
 # CRON file
-	$(FAKEROOT_ENV) install $(OS_FILES_DIR)/common/cron/* $(BDATA_DIR)$(CRON_FOLDER)
+	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)$(CRON_FOLDER)
+	$(FAKEROOT_ENV) install -D $(OS_FILES_DIR)/common/cron/root $(BDATA_DIR)$(CRON_FOLDER)
 # 	Create a stamp file
 	touch $@
 	
