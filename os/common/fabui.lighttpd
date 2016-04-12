@@ -1,6 +1,8 @@
 server.max-request-size = 134217728
 
-server.modules += ( "mod_rewrite" )
+server.modules += ( "mod_rewrite", "mod_expire" )
+
+expire.url = ("/assets/" => "access plus 1 years")
 
 # Migration of APACHE2 /var/www/fabui/.htaccess to lighttpd syntax
 
