@@ -7,8 +7,7 @@ require_once '/var/www/lib/utilities.php';
 $security_file['code'] = '';
 $security_file['type'] = '';
 
-//file_put_contents('/var/www/temp/fab_ui_safety.json', json_encode($security_file));
-write_file('/var/www/temp/fab_ui_safety.json', '', 'w+');
+write_file(TEMP_PATH.'safety.json', '', 'w+');
 
 $mode = $_POST['mode'] == 1 ? true : false;
 
