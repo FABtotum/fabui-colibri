@@ -31,7 +31,7 @@ debug_file = @TEMP_PATH@monitor_debug
 [system]
 dev_folder = /dev/
 dev_usb_file = /dev/sda1
-usb_folder = /media/usb0
+usb_folder = /media/
 php_script_path = @FABUI_PATH@script
 python_script_path = @FABUI_PATH@python
 
