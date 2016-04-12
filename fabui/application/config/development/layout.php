@@ -37,6 +37,7 @@ $layout['_css'][] = array('src' => '/assets/js/plugin/fancybox/jquery.fancybox.c
 $layout['_header_js'][] = array('src'=>'/assets/js/libs/jquery-2.1.1.min.js', 'comment' => 'jQuery', 'external' => FALSE);
 $layout['_header_js'][] = array('src'=>'/assets/js/libs/jquery-ui-1.10.3.min.js', 'comment' => 'jQuery UI', 'external' => FALSE);
 $layout['_js'][] = array('src'=>'/assets/js/app.config.js', 'comment' => 'jQuery UI', 'external' => FALSE);
+$layout['_js'][] = array('src'=>'/assets/js/fabApp.config.js', 'comment' => 'FABtotum App config', 'external' => FALSE);
 $layout['_js'][] = array('src'=>'/assets/js/plugin/jquery-touch/jquery.ui.touch-punch.min.js', 'comment' => 'jQuery TOUCH', 'external' => FALSE);
 $layout['_js'][] = array('src'=>'/assets/js/bootstrap/bootstrap.min.js', 'comment' => 'BOOTSTRAP JS', 'external' => FALSE);
 $layout['_js'][] = array('src'=>'/assets/js/notification/SmartNotification.min.js', 'comment' => 'CUSTOM NOTIFICATION', 'external' => FALSE);
