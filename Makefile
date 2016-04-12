@@ -157,6 +157,8 @@ $(BDATA_STAMP): $(TEMP_DIR) $(BDATA_DIR) $(CONFIG_FILES) $(DB_FILES)
 #	Public runtime directories
 	$(FAKEROOT_ENV) $(INSTALL) -d -g 33 -m 0775 $(BDATA_DIR)/$(TEMP_PATH)
 	$(FAKEROOT_ENV) $(INSTALL) -d -g 33 -m 0775 $(BDATA_DIR)/$(TASKS_PATH)
+#   create safety file
+	$(FAKEROOT_ENV) touch $(BDATA_DIR)/$(TEMP_PATH)/safety.json
 # 	Fix permissions
 	$(FAKEROOT_ENV) chown -R 33:33 $(BDATA_DIR)$(WWW_PATH)
 # 	Create a stamp file
