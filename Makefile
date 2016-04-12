@@ -56,7 +56,7 @@ RECOVERY_FILES	=	recovery/*
 DB				= 	sqlite3
 DB_FILES		= 	fabtotum.db
 
-CONFIG_FILES	=	lib/config.php
+CONFIG_FILES	=	lib/config.php lib/config.ini
 
 # Build/Install paths
 DESTDIR 		?= .
@@ -117,6 +117,11 @@ lib/config.php: config.php.in
 		LIB_PATH=$(LIB_PATH) \
 		BIGTEMP_PATH=$(BIGTEMP_PATH) \
 		USERDATA_PATH=$(USERDATA_PATH)
+
+lib/config.ini: config.ini.in
+	./generate_config.sh $^ $@ \
+		FABUI_PATH=$(FABUI_PATH) \
+		TEMP_PATH=$(TEMP_PATH) \
 
 $(TEMP_DIR):
 	mkdir -p $@
