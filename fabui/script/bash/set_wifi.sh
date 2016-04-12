@@ -12,10 +12,12 @@ else
 fi
 CONFIG="$CONFIG\tscan_ssid=1\n}"
 
-
 sudo chmod 666 /etc/wpa_supplicant.conf
 echo -e $CONFIG > /etc/wpa_supplicant.conf
 sudo chmod 644 /etc/wpa_supplicant.conf
-
+#restart interface
 sudo ifdown wlan0
 sudo ifup wlan0
+#
+sudo bash /var/www/fabui/script/bash/cron.sh &
+sudo bash /var/www/fabui/script/bash/internet.sh &

@@ -7,6 +7,11 @@ if($reload || !file_exists(BLOG_FEED_XML)){
 	require_once '/var/www/cron/blog_feed.php';
 }
 
+
+if(file_get_contents(BLOG_FEED_XML) == ''){
+	exit('<div class="alert alert-info alert-block animated fadeIn"><i class="fa fa-exclamation-circle "></i> Oooops, Something went wrong!<br/>Please try again later</div>');
+}
+
 $xml = simplexml_load_file(BLOG_FEED_XML,'SimpleXMLElement', LIBXML_NOCDATA);
 $feeds = $xml->channel->item;
 $doc = new DOMDocument();

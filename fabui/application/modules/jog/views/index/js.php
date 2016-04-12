@@ -278,10 +278,7 @@
 	
 		/** TICKER */
     	interval_ticker   = setInterval(ticker, 500);
-    	    	
-    	
-		
-		
+
 		$("#z-step").spinner({
 				step : 0.01,
 				numberFormat : "n",
@@ -549,43 +546,15 @@
 	
 	
 	function ticker(){
-		
+		/*
 		if(!SOCKET_CONNECTED){
 		    if(jog_ticket_url != ''){
 				getTrace(jog_ticket_url, 'GET', $(".console"));
 		    }
-	   }
+	   }*/
 	}
 	
-	/*
-	function make_fabApp.serial(func, value, macro){
-    
-    	macro = macro || false;
-	    var timestamp = new Date().getTime();
-	    
-	    if(macro){
-	    	jog_ticket_url = '/temp/macro_trace';
-	    	$.is_macro_on = true;
-	    }
-	            
-		$.ajax({
-			type: "POST",
-			url : "",
-			data : {function: func, value: value, time: timestamp, step:$("#step").val(), z_step:$("#z-step").val(), feedrate: $("#feedrate").val(), macro:macro, extruderFeedrate: $("#extruder-feedrate").val()},
-			dataType: "json"
-		}).done(function( data ) {
 
-			if(!macro){
-				var separator = '-----------\n';
-	        	write_to_console(separator + data.data.command + ': ' + data.data.response);
-	       	}
-	        $.is_macro_on = false;
-	        jog_ticket_url = '';
-	        $(".status").html(' ');
-		});
-		
-	}
-	*/
 	
 	function enable_save_position(){
     
@@ -668,30 +637,19 @@
 				function_value = '';
 		}
 		
-		
 		if(function_name != ''){
-			
-			fabApp.serial(function_name, function_value);
-			
-			
-		}
-		
+			fabApp.serial(function_name, function_value);	
+		}	
 	}
 	
 	
 	function initJogUI(){
-		
-		
-		
 		if ( typeof (Storage) !== "undefined") {
-		
 			/******* TEMP SLIDERS *********************/
 			$("#ext-actual-degrees").html(parseInt(localStorage.getItem("nozzle_temp")) + '&deg;C');
 			$("#ext-degrees").html(parseInt(localStorage.getItem("nozzle_temp_target")) + '&deg;C');
 			$("#bed-actual-degrees").html(parseInt(localStorage.getItem("bed_temp"))+ '&deg;C');
 			$("#bed-degrees").html(parseInt(localStorage.getItem("bed_temp_target"))+ '&deg;C');
-		
 		}
 	}
-	
 </script>

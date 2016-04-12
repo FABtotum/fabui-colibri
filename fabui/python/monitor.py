@@ -337,7 +337,7 @@ usb_event_handler = UsbEventHandler(usb_observer, dev_usb_file)
 usb_observer.schedule(usb_event_handler, dev_path, recursive=False)
 usb_observer.start()
 
-'''### USB MONITOR ###'''
+'''### LOCK FILE  MONITOR ###'''
 lock_observer = Observer()
 lock_event_handler = LockFileHandler(lock_observer, lock_file)
 lock_observer.schedule(lock_event_handler, '/var/www/temp/', recursive=False)

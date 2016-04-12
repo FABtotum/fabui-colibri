@@ -346,9 +346,9 @@ $(function() {
 					}
 					break;
 
-				case 'system':
-					manage_system_monitor(obj.data);
-					break;
+				//case 'system':
+				//	manage_system_monitor(obj.data);
+				//	break;
 				case 'post_processing':
 					manage_post_processing(obj.data);
 					break;
@@ -358,30 +358,30 @@ $(function() {
 			});
 
 			//when connected to the socket
-			SOCKET.bind('open', function() {
+			//SOCKET.bind('open', function() {
 
-				SOCKET_CONNECTED = true;
+				//SOCKET_CONNECTED = true;
 				
-				SOCKET.send('message', '{"name": "getTasks"}');
+				/*SOCKET.send('message', '{"name": "getTasks"}');*/
 				/*SOCKET.send('message', '{"name": "getInternet"}');*/
-				SOCKET.send('message', '{"name": "getUsb"}');
+				/*SOCKET.send('message', '{"name": "getUsb"}');*/
 				
-			});
+			//});
 
 			//when connection is closed
-			SOCKET.bind('close', function() {
-				SOCKET_CONNECTED = false;
-				socket_fallback();
-			});
+			//SOCKET.bind('close', function() {
+			//	SOCKET_CONNECTED = false;
+			//	socket_fallback();
+			//});
 
 			//when an error occurred
-			SOCKET.bind('error', function() {
-				socket_fallback();
-
-			});
+			//SOCKET.bind('error', function() {
+			//	socket_fallback();
+			//
+			//});
 
 			/*interval_internet = setInterval(check_connected, 360000);*/
-			SOCKET.connect();
+			//SOCKET.connect();
 
 		}
 		
@@ -722,7 +722,7 @@ function decode_emergency_code(code) {
 	}
 }
 */
-
+/*
 function show_connected(bool) {
 	
 	if (bool) {
@@ -737,7 +737,8 @@ function show_connected(bool) {
 
 	}
 }
-
+*/
+/*
 function check_connected() {
 	
 	$.get("/fabui/controller/internet", function(data){
@@ -745,7 +746,7 @@ function check_connected() {
 	});
 	
 }
-
+*/
 function socket_fallback() {
 	SOCKET_CONNECTED = false;
 	//safety_interval = setInterval(safety, 3000);

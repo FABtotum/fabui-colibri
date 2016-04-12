@@ -1,11 +1,7 @@
 <?php 
 
 require_once $_SERVER['DOCUMENT_ROOT'].'/fabui/application/helpers/os_helper.php';
-
 $networks = scan_wlan();
-
-
-
 $mac_address = $_POST['mac_address'];
 ?>
 

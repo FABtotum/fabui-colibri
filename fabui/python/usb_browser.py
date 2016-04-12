@@ -12,6 +12,8 @@ filter = False
 path=media_folder + '/'
 destination=""
 
+print path
+
 filters_extensions=[".gcode",".nc",".gc",".stl",".obj"]
 
 try:
@@ -36,7 +38,6 @@ for opt, arg in opts:
         #print "filter enabled"
 
 files=[]
-
 
 if os.path.isdir(path):
 

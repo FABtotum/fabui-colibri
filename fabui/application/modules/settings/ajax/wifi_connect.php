@@ -1,10 +1,9 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'].'/fabui/application/helpers/os_helper.php';
 
-
 $essid    = $_POST['essid'];
-$password =  $_POST['password'];
-$type     =  $_POST['type'];
+$password = $_POST['password'];
+$type     = $_POST['type'];
 $action   = $_POST['action'];
 
 if($action == 'connect'){
@@ -12,5 +11,3 @@ if($action == 'connect'){
 }else{
 	echo json_encode(array('response' => disconnectWifi()));
 }
-
-

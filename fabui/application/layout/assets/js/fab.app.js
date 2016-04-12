@@ -10,9 +10,7 @@ fabApp = (function(app) {
 					buttons: "[Cancel][Go]",
 					input: "select",
 					options: "[Shutdown][Restart][Logout]"
-		
 				}, function(ButtonPressed, Option) {
-					
 					if(ButtonPressed == 'Cancel'){
 						return;
 					}
@@ -326,6 +324,7 @@ fabApp = (function(app) {
 		}
 		function onOpen(){
 			$.socket_connected = true;
+			app.afterSocketConnect();
 		}
 		function onClose(){
 			$.socket_connected = false;
@@ -351,6 +350,9 @@ fabApp = (function(app) {
 						break;
 					case 'task':
 						app.manageTask(obj.data);
+						break;
+					case 'system':
+						app.manageSystem(obj.data);
 						break;
 					default:
 						break;
@@ -596,9 +598,57 @@ fabApp = (function(app) {
 	 */
 	app.isInternetAvailable = function(){
 		$.get($.check_internet_url_action + '?' + jQuery.now(), function(data){
-		
+			app.showConnected(data == 1);
 		});
 	};
+	/*
+	 * show or hide connected icon
+	 */
+	app.showConnected = function(available) {
+		if(available)$(".lock-ribbon").before('<span class="ribbon-button-alignment internet animated bounceIn" ><span class="btn btn-ribbon "  rel="tooltip" data-placement="right" data-original-title="Connected to internet" data-html="true"><i class="fa fa-globe "></i></span></span>');
+		else $(".internet").remove();
+		$("[rel=tooltip], [data-rel=tooltip]").tooltip();
+	};
+	/*
+	 * manage sockets messages having system type
+	 */
+	app.manageSystem = function(data){
+		switch(data.type){
+			case 'usb':
+				app.usb(data.status, data.alert);
+				break;
+			case 'lock':
+				break;
+		}
+	};
+	/*
+	 * notify when usb disk is inserted or removed
+	 */
+	app.usb = function (inserted, notify){
+		if(inserted)$(".lock-ribbon").before('<span class="ribbon-button-alignment usb-ribbon animated bounceIn" ><span class="btn btn-ribbon "  rel="tooltip" data-placement="right" data-original-title="USB disk inserted" data-html="true"><i class="fa fa-usb "></i></span></span>');
+		else $(".usb-ribbon").remove();
+		$("[rel=tooltip], [data-rel=tooltip]").tooltip();
+		if(notify == true){
+			var message = 'USB Disk';
+			message += inserted == true ? ' inserted' : ' removed';
+			$.smallBox({
+				title : "FABtotum Personal Fabricator",
+				content : message,
+				color : "#296191",
+				timeout : 3000,
+				icon : "fa fa-usb"
+			});
+		}
+	};
+	/*
+	 * things to do when socket is connected
+	 */
+	app.afterSocketConnect = function(){
+		if($.socket_connected == true){
+			$.socket.send('message', '{"name": "getTasks"}'); //check for tasks
+			$.socket.send('message', '{"name": "getUsb"}');   //check for if usb disk is connected
+		}
+	}
 	return app;
 })({});
 

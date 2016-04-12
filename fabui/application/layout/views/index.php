@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="description" content="FABtotum Web User Interface">
-		<meta name="author" content="FABtotum Development Team">
+		<meta name="author"      content="FABtotum Development Team">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<meta name="HandheldFriendly" content="true">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -219,32 +219,16 @@
 		<div id="main" role="main">
 			<!-- RIBBON -->
 			<div id="ribbon">
-				<!-- USB -->
+				<!-- USB 
 				<span class="ribbon-button-alignment usb-ribbon" >
 					<span class="btn btn-ribbon "  rel="tooltip" data-placement="right" data-original-title="USB disk inserted" data-html="true"><i class="fa fa-usb "></i></span>
 				</span>
-				<!-- END USB -->
-				
-				<!-- INTERNET -->
-				<span class="ribbon-button-alignment internet" >
-					<span class="btn btn-ribbon "  rel="tooltip" data-placement="right" data-original-title="Connected to internet" data-html="true"><i class="fa fa-globe "></i></span>
-				</span>
-				<!-- END INTERNET -->
-				
+				<!-- END USB
 				<!-- LOCK -->
 				<span class="ribbon-button-alignment lock-ribbon">
 					<span class="btn btn-ribbon "  rel="tooltip" data-placement="right" data-original-title="Lock Screen" data-html="true"><i class="fa fa-lock"></i></span>
-				</span>
-				
-				<span class="ribbon-button-alignment">
-					<span id="refresh" data-action="resetWidgets" class="btn btn-ribbon" data-title="refresh" rel="tooltip" data-placement="right" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings."
-					data-html="true">
-						<i class="fa fa-refresh"></i>
-					</span>
-				</span>
-				
+				</span>	
 				<!-- BREADCRUMBS -->
-				<?php //echo $_breadcrumbs ?>
 				<ol class="breadcrumb"></ol>
 				<!-- END BREADCRUMBS -->
 				<!-- CUSTOM RIBBON -->
@@ -335,10 +319,7 @@
 		<form id="lock-screen-form" action="<?php echo site_url('login/lock')?>" method="POST"></form>
 		<!-- END FORM LOCK SCREEN -->
 		<!-- POWER OFF IMG -->
-		
 		<a class="fancybox-shutdown hidden" title="Now you can switch off the power" href="/assets/img/power-off.png"><img class="img-responsive" src="/assets/img/power-off.png"></a>
-		
-		<!--<div id="power-off-img" style="display:none;"><img class="img-responsive" src="/assets/img/power-off.png"></div>-->
 		<!-- END POWER OFF IMG -->
 		<!-- JAVASCRIPT VARS -->
 		<script type="text/javascript">

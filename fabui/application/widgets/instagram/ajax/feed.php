@@ -1,21 +1,21 @@
 <?php
 require_once '/var/www/lib/config.php';
 
-
 $reload = isset($_GET['manually']) ? filter_var($_GET['manually'], FILTER_VALIDATE_BOOLEAN) : false;
 
 if($reload || !file_exists(INSTAGRAM_FEED_JSON) || !file_exists(INSTAGRAM_HASH_JSON)){
 	require_once '/var/www/cron/instagram_feed.php';
 }
 
-
-
 $feed = json_decode(file_get_contents(INSTAGRAM_FEED_JSON), true);
 $hash = json_decode(file_get_contents(INSTAGRAM_HASH_JSON), true);
 
+if(count($feed) == 0 && count($hash) == 0){
+	exit('<div class="alert alert-info alert-block animated fadeIn"><i class="fa fa-exclamation-circle "></i> Oooops, Something went wrong!<br/>Please try again later</div>');
+}
+
 $hash_ids = array();
 $images = array();
-
 
 foreach($hash['data'] as $item){
 	$hash_ids[] = $item['id'];
@@ -29,40 +29,28 @@ foreach($feed['data'] as $item){
 	}
 }
 
-
-
-
 uasort($images, 'cmp');
 
 function cmp($a, $b) {
   if ($a['time'] == $b['time']) {
     return 0;
   }
-
   return ($a['time'] > $b['time']) ? -1 : 1;
 }
 
-
-
-//shuffle($images);
-
 ?>
-
-<div class="row images-container">
+<div class="row images-container ">
 	<div class="col-sm-12">
 		<div class="grid">
 			<div class="grid-sizer"></div>
 			<?php foreach($images as $item): ?>
-				<div class="grid-item">
+				<div class="grid-item animated fadeIn">
 					<div class="grid-item-inner">
-						
 						<ul class="list-inline">
 							<li style="display:inline;"><img class="user-profile-picture rounded-x" src="<?php echo $item['user']['profile_picture'] ?>" /></li>
 							<li style="display:inline;margin-left: -15px;"><span  class="instagram-profile-link"><a href="http://www.instagram.com/<?php echo $item['user']['username'] ?>" target="_blank"><?php echo $item['user']['username'] ?></a></span></li>
 							<li style="display:inline;" class="pull-right"><a title="View on Instagram" target="_blank" href="<?php echo $item['link']; ?>"><i class="fa fa-instagram"></i></a></li>
 						</ul>
-						
-						
 						<a href="<?php echo $item['image'] ?>" class="fancybox-instagram" data-rel="fancybox-button" title="<?php echo $item['text'] ?>"><img src="<?php echo $item['image'] ?>" /></a>
 						<ul class="list-inline">
 							<?php if($item['likes'] > 0): ?>
@@ -87,29 +75,17 @@ function cmp($a, $b) {
 	</div>
 </div>
 <script type="text/javascript">
-
 	more_hash_url = '<?php echo $hash['pagination']['next_url']?>';
-
 	$(document).ready( function() {
-		
-		
-		
 		$grid = $('.grid').masonry({
 			itemSelector: '.grid-item',
 		    percentPosition: true,
-		    columnWidth: '.grid-sizer',
-		    
+		    columnWidth: '.grid-sizer', 
 		});
-		
-		
 		$grid.imagesLoaded().progress( function() {
 		    $grid.masonry();
 		});
-		
-	
-		
 		/*$(".load-more").on('click', load_more);*/ 
-		  
 		InstagramFancyBox.initFancybox();
 	});
 </script>

@@ -124,13 +124,11 @@ class WebSocketServerFactory {
 	}
 
 	function getUsb() {
-
+		
 		$this -> _type = 'system';
-
 		$data['type'] = 'usb';
 		$data['status'] = is_usb_inserted();
 		$data['alert'] = false;
-
 		$this -> _data = $data;
 		return $this -> returnResponse();
 

@@ -8,8 +8,11 @@ if($reload || !file_exists(TWITTER_FEED_JSON)){
 	require_once '/var/www/cron/twitter_feed.php';
 }
 
-
 $twitter = json_decode(file_get_contents(TWITTER_FEED_JSON), true);
+
+if(count($twitter) == 0 ){
+	exit('<div class="alert alert-info alert-block animated fadeIn"><i class="fa fa-exclamation-circle "></i> Oooops, Something went wrong!<br/>Please try again later</div>');
+}
 
 ?>
 <div class="row">
