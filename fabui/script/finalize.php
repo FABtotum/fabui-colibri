@@ -126,8 +126,8 @@ function finalize_print($tid, $status) {
 	}
 
 	//}
-
-	shell_exec('sudo kill ' . $attributes['pid']);
+	$pid = intval(trim(str_replace('\n', '', shell_exec('cat /run/create.pid'))));
+	shell_exec('kill -9 ' . $pid);
 
 	//UPDATE TASK
 	update_task($tid, $status, file_get_contents($task['attributes']));

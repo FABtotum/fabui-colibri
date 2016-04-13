@@ -12,8 +12,6 @@ $_print_type  = $_POST['print_type'];
 $_time        = $_POST['time'];
 $_calibration = $_POST['calibration'];
 
-
-
 /** LOAD DB */
 $db    = new Database();
 /** LOAD FILE */
@@ -25,8 +23,7 @@ $_file = $_file[0];
 if($_print_type ==  'additive'){
 	$do_macro        = TRUE;
 	
-	switch($_calibration){
-		
+	switch($_calibration){	
 		case 'homing':
 			$_macro_function = 'home_all';
 			$_macro_response = TEMP_PATH.'calibration_homing_'.$_time.'.log';
@@ -43,16 +40,11 @@ if($_print_type ==  'additive'){
 	$_macro_response = TEMP_PATH.'macro_response';
 	$_macro_trace    = TEMP_PATH.'macro_trace';
 	
-	
 	/** CRAETE TEMPORARY FILES */
 	write_file($_macro_trace, '', 'w');
-	//chmod($_macro_trace, 0777);
-
 	write_file($_macro_response, '', 'w');
-	//chmod($_macro_response, 0777); 
 	
-	if($do_macro){
-		
+	if($do_macro){	
 		/** START MACRO */
 		$_command_macro  = 'sudo python '.PYTHON_PATH.'gmacro.py '.$_macro_function.' '.$_macro_trace.' '.$_macro_response;
 		$_output_macro   = shell_exec ( $_command_macro );
@@ -62,8 +54,7 @@ if($_print_type ==  'additive'){
 		while(str_replace(PHP_EOL, '', file_get_contents($_macro_response)) == ''){   
 			sleep(0.2);
 		}
-		
-		
+				
 		/** CHECK MACRO RESPONSE */
 		if(str_replace(PHP_EOL, '', file_get_contents($_macro_response)) != 'true'){
 			header('Content-Type: application/json');
@@ -71,17 +62,14 @@ if($_print_type ==  'additive'){
 			exit();
 		}	
 	}
-	
+	/** RESET MARCO RESPONSE FILE */
 	file_put_contents($_macro_response, '');
-	
 	/** GET TEMPERATURES FROM GCODE FILE */
 	$temperatures = json_decode(shell_exec('sudo python '.PYTHON_PATH.'read_temperatures.py -f "'.$_file['full_path'].'"'), TRUE);
-	
 	
 	$_command_start_print_macro  = 'sudo python '.PYTHON_PATH.'gmacro.py start_print '.$_macro_trace.' '.$_macro_response.' --ext_temp '.intval($temperatures['extruder']).' --bed_temp '.intval($temperatures['bed']);
 	$_output_start_print_macro   = shell_exec ( $_command_start_print_macro );
     $_pid_start_print_macro      = trim(str_replace('\n', '', $_output_start_print_macro));
-	
 	
 	/** WAIT MACRO TO FINISH */
     while(str_replace(PHP_EOL, '', file_get_contents($_macro_response)) == ''){   
@@ -90,7 +78,6 @@ if($_print_type ==  'additive'){
 	
 	/** CHECK MACRO RESPONSE */
 	if(str_replace(PHP_EOL, '', file_get_contents($_macro_response)) != 'true'){
-		
 		header('Content-Type: application/json');
 		echo json_encode(array('response' => false, 'message' => str_replace(PHP_EOL, '<br>', file_get_contents($_macro_trace)), 'response_text' => file_get_contents($_macro_response)));
 		exit();
@@ -106,10 +93,7 @@ if($_print_type ==  'additive'){
 	
 	/** CRAETE TEMPORARY FILES */
 	write_file($_macro_trace, '', 'w');
-	chmod($_macro_trace, 0777);
-
 	write_file($_macro_response, '', 'w');
-	chmod($_macro_response, 0777); 
 	
 	$_command_start_print_macro  = 'sudo python '.PYTHON_PATH.'gmacro.py start_subtractive_print '.$_macro_trace.' '.$_macro_response;
 	$_output_start_print_macro   = shell_exec ( $_command_start_print_macro );
@@ -160,19 +144,18 @@ $_uri_trace          = '/temp/task_trace';
 mkdir($_destination_folder, 0777);            
 /** create print monitor file */
 write_file($_monitor_file, '', 'w');
-chmod($_monitor_file, 0777);
+//chmod($_monitor_file, 0777);
 /** create print data file */
 write_file($_data_file, '', 'w');
-chmod($_data_file, 0777);
+//chmod($_data_file, 0777);
 /** create print trace file */
 write_file($_trace_file, '', 'w');
-chmod($_trace_file, 0777);
+//chmod($_trace_file, 0777);
 /** create print stats file */
 write_file($_stats_file, '', 'w');
-chmod($_stats_file, 0777);
-
+//chmod($_stats_file, 0777);
 write_file($_attributes_file, '', 'w');
-chmod($_attributes_file, 0777);
+//chmod($_attributes_file, 0777);
 /** create temp gcode file */
 //write_file($_gcode_file, '', 'w');
 //chmod($_gcode_file, 0777);
@@ -184,16 +167,15 @@ sleep(3);
 
 /** START PROCESS */
 if($_print_type == 'additive'){
-	$_command = 'sudo python '.PYTHON_PATH.'gpusher_fast.py "'.$_file['full_path'].'"  '.$_data_file.' '.$id_task.' --ext_temp '.intval($temperatures['extruder']).' --bed_temp '.intval($temperatures['bed']).' 2>'.$_debug_file.' > /dev/null & echo $!';
+	$_command = 'sudo python '.PYTHON_PATH.'gpusher_fast.py "'.$_file['full_path'].'"  '.$_data_file.' '.$id_task.' --ext_temp '.intval($temperatures['extruder']).' --bed_temp '.intval($temperatures['bed']).' 2>'.$_debug_file.' > /dev/null & echo $! > /run/create.pid';
 }else{
-	$_command = 'sudo python '.PYTHON_PATH.'g_mill.py "'.$_file['full_path'].'" '.$_data_file.' '.$id_task.' 2>'.$_debug_file.' > /dev/null & echo $!';
+	$_command = 'sudo python '.PYTHON_PATH.'g_mill.py "'.$_file['full_path'].'" '.$_data_file.' '.$id_task.' 2>'.$_debug_file.'  > /dev/null & echo $! > /run/create.pid';
 }
 
-
-
 $_output_command = shell_exec ( $_command );
-$_print_pid      = intval(trim(str_replace('\n', '', $_output_command)));
-
+//$_pid_commnad    = shell_exec('echo $! > /run/create.pid');
+//$_print_pid      = intval(trim(str_replace('\n', '', $_output_command)));
+$_print_pid      = intval(trim(str_replace('\n', '', shell_exec('cat /run/create.pid'))));
 
 /** UPDATE TASKS ATTRIBUTES */
 $_attributes_items['pid']         =  $_print_pid;

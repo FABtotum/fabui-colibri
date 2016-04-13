@@ -297,15 +297,12 @@
 	function skip_engage(){
 		
 		$("#row_0").slideUp('slow', function(){
-			
-			
+
 			$("#row_1").slideDown('slow', function(){
 				$("#skip_engage").hide();
 				
 				$("#modal_link").html('Continue');
                 $("#modal_link").attr('data-action', '');
-				
-				
 			});	
 			
 			
@@ -390,8 +387,8 @@
         
         function pre_print(){
             
-            jog_call("bed_temp", 40);
-            jog_call("ext_temp", 150);
+            fabApp.serial("bed_temp", 40);
+            fabApp.serial("ext_temp", 150);
             
             if ( typeof (Storage) !== "undefined") {
             	localStorage.setItem("bed_temp_target", 40);

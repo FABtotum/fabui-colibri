@@ -222,14 +222,8 @@
 	 	 
 	 	 
 	 	 
-	 function rotation(value){
-		
-		if(SOCKET_CONNECTED){
-			make_call_ws("rotation", value);
-		}else{
-			make_call("rotation", value);
-		}
-			
+	function rotation(value){
+		fabApp.serial('rotation', value);
 	}		
 
     $('#exec_button').on('click', function(){
@@ -358,7 +352,7 @@
     function zero_all(){
     	
     	setZero = true;
-    	make_call("zero_all_pre_mill", true);
+    	fabApp.serial("zero_all_pre_mill", true);
     	
     	$("#exec_button").removeClass('disabled');
     	
@@ -366,7 +360,7 @@
     	//krios
     }
     
-    
+    /*
     function make_call(func, value){   	
     	
     	if(SOCKET_CONNECTED){	
@@ -386,8 +380,9 @@
             
     	});
 	
-    }
+    }*/
     
+    /*
     function make_call_ws(func, value){
     	
     	var jsonData = {};
@@ -405,7 +400,7 @@
 		
 		SOCKET.send('message', JSON.stringify(message));
 		
-    }
+    }*/
 
 </script>
 

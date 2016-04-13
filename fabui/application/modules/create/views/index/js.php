@@ -444,24 +444,17 @@
 
 /** READ MACRO'S TRACE */    
 function ticker(){
-	
-    if(!SOCKET_CONNECTED){
+    if($.socket_connected == false){
 	    if(ticker_url != ''){
-	    	
 	    	$.ajax({
 				type: 'GET',
 				url: ticker_url,
 			}).done(function(data, statusText, xhr) {
-				
 				if(xhr.status == 200){
 					data = data.replace("\n", "<br>");
 					waitContent(data);
-				
 				}
-				
-			});	
-	    	
-	    	
+			});
 	    }
     }
 }
