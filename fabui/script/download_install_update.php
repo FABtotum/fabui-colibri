@@ -4,14 +4,13 @@ require_once '/var/www/lib/database.php';
 require_once '/var/www/lib/utilities.php';
 require_once '/var/www/lib/jog_factory.php';
 
-/** GET ARGS FROM COMMAND LINE */
+/** GET ARGS FROM COMMAND LINE - UPDATE*/
 play_beep();
 $version      = $argv[1];
 $task_id      = $argv[2];
 $task_folder  = $argv[3];
 $monitor_file = $argv[4];
 
-$version   = 2;
 $file_url  = MYFAB_DOWNLOAD_URL.$version.'/'.MYFAB_DOWNLOAD_FILE;
 $file_size = remote_file_size($file_url);
 $rounded_filesize = roundsize($file_size);
@@ -51,13 +50,15 @@ $monitor_response['installation']['complete'] = false;
 write_to_monitor();
 //unzip file
 extract_zip($temp_file, $task_folder.'temp/');
-$monitor_response['installation']['complete'] = true;
+$monitor_response['installation']['complete'] = false;
 write_to_monitor();
 //exec install file
 if(file_exists($task_folder.'temp/install.php')){
-	//shell_exec('sudo php '.$task_folder.'temp/install.php');
+	include $task_folder.'temp/install.php';
 }
-sleep(20);
+$monitor_response['installation']['complete'] = false;
+write_to_monitor();
+sleep(10);
 $monitor_response['status'] = 'completed';
 write_to_monitor();
 play_beep();

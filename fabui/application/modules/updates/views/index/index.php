@@ -22,6 +22,7 @@
 					<p class="lead semi-bold">
 						<small class="off-message hidden">Please don't turn off the printer until the operation is completed</small>
 					</p>
+					<button data-toggle="modal" data-backdrop="static" data-target="#modal" class="btn btn-xs bg-color-blue txt-color-white " style="">&nbsp;See what's new!</button>
 					
 				<?php endif; ?>
 				
@@ -42,8 +43,8 @@
 								<div class="progress-bar download-progress bg-color-blue" role="progressbar" style="width: 0%"></div>
 							</div>
 						</div>
-						
 					</div>
+					<button id="cancel" class="btn btn-lg bg-color-red txt-color-white"> Cancel</button>
 				</div>
 			</div>
 			
@@ -51,3 +52,23 @@
 		<?php endif; ?>
 	</div>
 </div>
+<?php if(!$updated): ?>
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">FABUI v.<?php echo $remote_version; ?> Changelog</h4>
+			</div>
+			<div class="modal-body no-padding">
+				<?php echo fabui_changelog($remote_version) ?>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+<?php endif; ?>

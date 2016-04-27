@@ -5,6 +5,7 @@
 	$(document).ready(function() {
 		
 		$("#update").on('click', confirm_update);
+		$("#cancel").on('click', confirm_cancel);
 		<?php if($task != false): ?>
 		resume();
 		<?php endif; ?>
@@ -30,14 +31,25 @@
 			$("#update").addClass('animated fadeOut').remove();
 			$(".off-message").removeClass('hidden').addClass('animated fadeIn');
 			$(".mini").show();
+			$("#cancel").show();
 			closeWait();
-			
 		});
 		
 	}
 	
+	function do_cancel(){
+		openWait("Canceling");
+		$.ajax({
+			  url: "<?php echo site_url('updates/cancel') ?>",
+			  type: "POST",
+              dataType: 'json',
+		}).done(function( data ) {
+			document.location.href = document.location.href;
+			
+		});
+	}
+	
 	function confirm_update(){
-		
 		$.SmartMessageBox({
 				title : "<i class='fa fa-refresh'></i> Do you want to download and install the new update?",
 				buttons : '[No][Yes]'
@@ -45,13 +57,21 @@
 			if(ButtonPressed === "Yes") {
 				do_update();		
 			}
-			if (ButtonPressed === "No") {
-			
-			}
-			
+			if (ButtonPressed === "No") {}		
 		});
 	}
 	
+	function confirm_cancel(){
+		$.SmartMessageBox({
+				title : "<i class='fa fa-refresh'></i> Do you really want to cancel the update?",
+				buttons : '[No][Yes]'
+		}, function(ButtonPressed) {
+			if(ButtonPressed === "Yes") {
+				do_cancel();		
+			}
+			if (ButtonPressed === "No") {}		
+		});
+	}
 	
 	function manage_task_monitor(obj){
 		if(obj.content != ''){
@@ -104,12 +124,15 @@
 	}
 	
 	function resume(){
+		closeWait();
+		get_monitor();
 		interval_monitor  = setInterval(retrieve_monitor, 1000);
 		$("#update").addClass('animated fadeOut').remove();
 		$('.title').html('<strong>Updating FABtotum Software</strong>');
 		$(".off-message").removeClass('hidden').addClass('animated fadeIn');
 		$(".mini").show();
-		get_monitor();
+		$("#cancel").show();
+		$(".error").addClass('fa-spin');
 	}
 	
 </script>

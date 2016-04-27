@@ -1,6 +1,8 @@
 <?php
+/*
+ * Update module
+ */
 class Updates extends Module {
-	
 	/* */
 	public function index(){
 		//load helper
@@ -20,7 +22,8 @@ class Updates extends Module {
 		//get versions
 		$_SESSION['fabui_version'] = $data['local_version']  = myfab_get_local_version();
 		//$data['remote_version'] = 2;
-		$_SESSION['updates']['updated'] = $data['updated'] = version_compare($data['local_version'], $data['remote_version']) > -1;
+		//$_SESSION['updates']['updated'] = $data['updated'] = version_compare($data['local_version'], $data['remote_version']) > -1;
+		$_SESSION['updates']['updated'] = $data['updated'] = $data['local_version'] >= $data['remote_version'];
 		$_SESSION['updates']['time'] = time();
 		//layout
 		$this -> layout -> add_js_in_page(array('data' => $this -> load -> view('index/js', $data, TRUE), 'comment' => ''));
@@ -42,7 +45,7 @@ class Updates extends Module {
 		//init data
 		$data['local_version']  = myfab_get_local_version();
 		$data['remote_version'] = myfab_get_remote_version();
-		$data['updated'] = version_compare($data['local_version'], $data['remote_version']) > -1;
+		$data['updated'] = $data['local_version'] >= $data['remote_version'];
 		
 		//if($updated){
 			//return;
@@ -57,6 +60,7 @@ class Updates extends Module {
 		$_task_data['user']       = $_SESSION['user']['id'];
 		//add record to db
 		$task_id = $this->tasks->add_task($_task_data);
+		shell_exec('sudo echo '.$task_id.' > '.TEMPPATH.'/task.pid');
 		//preaparing files and folders
 		$_destination_folder = TASKSPATH.'update_fabui_'.$task_id.'_'.time().'/';
 		$_debug_file         = $_destination_folder.'update_fabui_'.$task_id.'.debug';
@@ -66,9 +70,9 @@ class Updates extends Module {
 		write_file($_monitor_file, '', 'w');
 		write_file($_trace_file, '', 'w');
 		//startin download script
-		$_command          = 'sudo php '.SCRIPTPATH.'download_install_update.php '.$data['remote_version'].' '.$task_id.' '.$_destination_folder.' '.$_monitor_file.' 2>'.$_debug_file.' > '.$_trace_file.' & echo $!';
+		$_command          = 'php '.SCRIPTPATH.'download_install_update.php '.$data['remote_version'].' '.$task_id.' '.$_destination_folder.' '.$_monitor_file.' 2>'.$_debug_file.' > '.$_trace_file.' > /dev/null & echo $! > '.TEMPPATH.'/update.pid';
 		$_response_command = shell_exec ( $_command);
-		$_pid              = intval(trim(str_replace('\n', '', $_response_command))) + 1;
+		$_pid              = intval(trim(str_replace('\n', '', shell_exec('cat '.TEMPPATH.'/update.pid'))));
 		//update task attributes
 		$_attributes_items['pid']         =  $_pid;
 		$_attributes_items['monitor']     =  $_monitor_file;
@@ -76,10 +80,10 @@ class Updates extends Module {
 		$_attributes_items['folder']      =  $_destination_folder;
 		$_data_update['attributes']= json_encode($_attributes_items);
 		$this->tasks->update($task_id, $_data_update);
-		echo 1;
+		echo json_encode(array('command' => $_command));
 	}
 	/* check for updates */
-	public function check($force = 0){
+	public function check($force = 0, $outputReturn = false){
 		$time_to_check = (60 * 60) * 4; //every 4 hours
 		$now = time();
 		$check = false;
@@ -92,17 +96,42 @@ class Updates extends Module {
 			$updates['time'] = time();
 			$data['local_version']  = myfab_get_local_version();
 			$data['remote_version'] = myfab_get_remote_version();
-			$updates['updated'] = version_compare($data['local_version'], $data['remote_version']) > -1;
-			$_SESSION['updates'] = $updates;
+			$updates['updated']     = $data['local_version'] >= $data['remote_version'];
+			$_SESSION['updates']    = $updates;
 			$check = true;			
 		}
-
 		$_response_items = array();
 		$_response_items['updates'] = $updates;
 		$_response_items['check'] = $check;
-		
-		$this->output->set_content_type('application/json')->set_output(json_encode($_response_items));	
-		
-		
+		if($outputReturn == false)$this->output->set_content_type('application/json')->set_output(json_encode($_response_items));
+		else return $_response_items;	
+	}
+	/* cancel update */
+	public function cancel(){
+		if(!file_exists(TEMPPATH.'/task.pid') || !file_exists(TEMPPATH.'/update.pid')) exit('no task'); //it means there's no running task
+		$pid = intval(trim(str_replace('\n', '', shell_exec('cat '.TEMPPATH.'/update.pid')))); //get update pid process
+		shell_exec('sudo kill -9 '.$pid); //kill update process
+		$task_id = intval(trim(str_replace('\n', '', shell_exec('cat '.TEMPPATH.'/task.pid')))); //get task id
+		$this->load->model('tasks');
+		$this->tasks->update($task_id, array('status' => 'canceled', 'finish_date' => 'now()')); //update task
+		$task = $this->tasks->get_by_id($task_id);
+		$_attributes = json_decode($task->attributes, TRUE);
+		shell_exec('sudo rm -rf '.$_attributes['folder']); //remove temporary folders & files
+		shell_exec('rm '.TEMPPATH.'/task.pid '.TEMPPATH.'/update.pid'); //remove pids files
+		echo json_encode(array('response'=>true));
+	}
+	/* */
+	public function notification(){
+		$info = $this->check(1, true);
+		if($info['updates']['updated'] == false){
+			echo '<div class="padding-10">
+			<div class="alert alert-danger alert-block animated fadeIn">
+					
+					<h4 class="alert-heading"> <i class="fa fa-refresh"></i> New important software updates are now available, <a style="text-decoration:underline; color:white;" href="/fabui/updates">update now!</a> 
+					</h4>
+				</div></div>';
+		}else{
+			
+		}
 	}
 }

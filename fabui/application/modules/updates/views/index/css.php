@@ -14,6 +14,9 @@
 	}
 	
 	.off-message {
-		
+	}
+	
+	#cancel {
+		display: none;
 	}
 </style>

@@ -210,7 +210,7 @@ elif preset=="check_pre_scan":
     #macro("M744","open",1,"Building plane control",0.1)
     macro("M744","TRIGGERED",1,"Spool panel control",1, warning=True,verbose=False)
     macro("G90","ok",2,"Setting absolute positioning mode",1,verbose=False)
-    macro("G27 Z241","ok",100,"Zeroing Z axis",1)
+    macro("G27","ok",100,"Zeroing Z axis",1)
     macro("G28 X0 Y0","ok",15,"Zeroing Z axis",1,verbose=False)
     #disable feeder
     macro("G91","ok",2,"Setting relative position",1,verbose=False)
@@ -227,7 +227,7 @@ elif preset=="engage_feeder":
     if(safety_door == 1):
         macro("M741","TRIGGERED",2,"Front panel door control",0.1,verbose=False)
     macro("M744","TRIGGERED",1,"Spool panel control",1, warning=True)
-    macro("G27 Z240","ok",100,"zeroing Z axis",0.1,verbose=False)
+    macro("G27","ok",100,"zeroing Z axis",0.1,verbose=False)
     #macro("G28 X0 Y0","ok",100,"Setting Z position",0.1,verbose=False)
     macro("G91","ok",2,"Set relative movement",0.1,verbose=False)
     #go to fixed position, so feeder botton can be pushed.
@@ -241,7 +241,7 @@ elif preset=="engage_feeder":
 elif preset=="engage_4axis":
     #Used for Jog
     trace("Engaging 4th Axis",log_trace)
-    macro("G27 Z206","ok",100,"Zeroing Z axis",0.1)
+    macro("G27","ok",100,"Zeroing Z axis",0.1)
     macro("G91","ok",1,"Setting Relative position",0.1,verbose=False)
     macro("G0 Z+"+str(feeder_disengage_offset)+" F300","ok",5,"Engaging 4th Axis Motion",0.1)
     macro("M92 E"+str(units['a']),"ok",1,"Setting 4th axis mode",0,verbose=False)
@@ -273,14 +273,12 @@ elif preset=="start_print":
     macro("M140 S"+str(bed_temp),"ok",3,"Pre Heating Bed ("+str(bed_temp)+"&deg;) (fast) ",5)
     macro("M220 S100","ok",1,"Reset Speed factor override",0.1,verbose=False)
     macro("M221 S100","ok",1,"Reset Extruder factor override",0.1,verbose=False)
-    macro("M106 S255","ok",1,"Turning Fan On",1)
+    #macro("M106 S255","ok",1,"Turning Fan On",1) moved to FW
     macro("M92 E"+str(units['e']),"ok",1,"Setting extruder mode",0.1,verbose=False)
-    
     
 elif preset=="start_subtractive_print":
     #macro("G92 X0 Y0 Z0 E0","ok",3,"Setting Origin Point",1)
     #macro("G90","ok",3,"Setting Origin Point",0.1, verbose=False)
-    
     macro("M92 E"+str(units['a']),"ok",1,"Setting 4th Axis mode",0.1,verbose=False)
     
     
@@ -292,9 +290,9 @@ elif preset=="end_print_subtractive":
     macro("M5","ok",100,"Shutting Down Milling Motor",1) #should be moved to firmware       
     macro("M220 S100","ok",50,"Reset Speed factor override",0.1)
     macro("M221 S100","ok",1,"Reset Extruder factor override",0.1)
-    macro("M107","ok",50,"Turning Fan off",1) #should be moved to firmware
-    macro("M18","ok",50,"Motor Off",1) #should be moved to firmware
-    macro("M728","ok",10,"Completed!",0.1) #should be moved to firmware
+    macro("M107","ok",50,"Turning Fan off",1) # moved to firmware
+    macro("M18","ok",50,"Motor Off",1) 
+    macro("M300","ok",10,"Completed!",0.1) #should be moved to firmware
     #trace("Completed",log_trace)
     
 elif preset=="safe_zone":
@@ -336,14 +334,14 @@ elif preset=="raise_bed":
     macro("M402","ok",4,"Raising probe",0.1, verbose=True)
     macro("G90","ok",2,"Setting absolute position",1)
     
-    #macro("G27 Z206","ok",100,"Homing all axes",0.1)
+    #macro("G27","ok",100,"Homing all axes",0.1)
     #macro("G0 Z10 F10000","ok",15,"raising",0.1)
     #macro("G28","ok",100,"homing all axes",0.1)
     if zprobe_disabled:
         macro("G27 X0 Y0 Z" + str(zmax_home_pos),"ok",100,"Homing all axes",0.1)
         macro("G0 Z50 F10000","ok",15,"raising",0.1)
     else:
-        macro("G27 Z206","ok",100,"Homing all axes",0.1)
+        macro("G27","ok",100,"Homing all axes",0.1)
         macro("G0 Z10 F10000","ok",15,"Raising",0.1)
         macro("G28","ok",100,"homing all axes",0.1,verbose=False)
     
@@ -363,14 +361,12 @@ elif preset=="raise_bed_no_g27":
          macro("G0 Z20 F10000","ok",15,"Raising bed",0.1,verbose=False)
          macro("G28","ok",100,"Homing all axes",0.1)
         
-    
-        
 #Auto bed leveling
 elif preset=="auto_bed_leveling":
     trace("Auto Bed leveling Initialized",log_trace)
     macro("G91","ok",2,"Setting relative position",1,verbose=False)
     #macro("G0 X17 Y61.5","ok",1,"Offset",1)
-    macro("G0 Z25","ok",2,"Moving away from the plane",1,verbose=False)
+    macro("G0 Z25 F1000","ok",2,"Moving away from the plane",1,verbose=False)
     macro("G90","ok",2,"Setting abs position",1,verbose=False)
     macro("G28","ok",90,"Homing all axis",1)
     macro("G29","ok",140,"Auto bed leveling procedure",1)
@@ -466,7 +462,7 @@ elif preset=="unload_spool":
     trace("Unloading Spool : Procedure Started.",log_trace)
     macro("G90","ok",10,"set abs position",0,verbose=False)
     macro("M302 S0","ok",10,"extrusion prevention disabled",0.1,verbose=False)
-    macro("G27 Z206","ok",100,"zeroing Z axis",1,verbose=False)
+    macro("G27","ok",100,"zeroing Z axis",1,verbose=False)
     macro("G0 Z150 F10000","ok",10,"Moving to safe zone",0.1,verbose=False) #right top corner Z=150mm
     macro("G91","ok",2,"set rel position",0,verbose=False)
     macro("G92 E0","ok",5,"set extruder to zero",0.1,verbose=False)
@@ -485,7 +481,7 @@ elif preset=="load_spool":
     print str(units['e'])
     trace("Loading Spool : Procedure Started.",log_trace)
     macro("G90","ok",2,"set abs position",0,verbose=False)
-    macro("G27 Z206","ok",100,"zeroing Z axis",0.1,verbose=False)
+    macro("G27","ok",100,"zeroing Z axis",0.1,verbose=False)
     macro("G0 Z150 F10000","ok",10,"Moving to Safe Zone",0.1,verbose=False)
     macro("M302 S0","ok",5,"Enabling Cold extrusion",0.1,verbose=False)
     macro("G91","ok",2,"set relative position",0,verbose=False)
@@ -542,8 +538,6 @@ elif preset=="shutdown":
     macro("M300","ok",5,"play alert sound!",1, verbose=False)
     #trace("shutting down",log_trace) 
     macro("M729","ok",2,"Asleep!",1,verbose=False)
-    #macro("G4 S10","ok",10,"Shutting down!",1, verbose=False)
-    #macro("M300","ok",5,"play alert sound!",1, verbose=False)
     
 #probe calibration
 elif preset=="probe_setup_prepare":
@@ -579,7 +573,7 @@ elif preset=="probe_setup_calibrate":
     ####
     macro("G90","ok",2,"Abs_mode",1, verbose=False)
     macro("G0 Z50 F1000","ok",3,"Moving the plane",1,verbose=False)
-    macro("G28","ok",90,"homing all axis",1,verbose=False)
+    macro("G28 X0 Y0","ok",90,"homing all axis",1,verbose=False)
     trace("Probe calibrated : "+str(z_probe_new)+" mm",log_trace)
     macro("M300","ok",5,"Done!",1)
     

@@ -64,7 +64,7 @@ $route['maintenance/system-info']       = "maintenance/systeminfo";
 $route['settings/raspi-cam']        = 'settings/raspicam';
 $route['settings/network/wlan']     = 'settings/wlan';
 $route['settings/network/eth']      = 'settings/eth';
-$route['settings/network/hostname'] = 'settings/hostname';
+$route['settings/network/dns'] = 'settings/dns';
 
 
 $route['controller/stop-all'] = "controller/stop_all";

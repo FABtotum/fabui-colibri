@@ -148,7 +148,6 @@ class Settings extends Module {
 	public function raspicam() {
 		
 		$this -> load -> library('WidgetsFactory');
-		
 		$raspicam_widget = $this -> widgetsfactory -> load('cam');
 		$data['raspicam_widget'] = $raspicam_widget->content();
 		
@@ -157,41 +156,43 @@ class Settings extends Module {
 
 	
 	public function wlan(){
-		
-		
+				
 		$this->load->helper('os_helper');
 		$this -> load -> helper('smart_admin_helper');
-		
-		
+
 		if($this->input->post()){
 
 			$essid = $this->input->post('essid');
 			$response = $this->input->post('response');
+			$action = $this->input->post('action');
+			$post = $this->input->post();
 			
-			if($response == 'true'){				
-				$data['message'] = array('type' => 'alert-success', 'text' => '<h4 class="alert-heading"><i class="fa fa-check"></i> Great!</h4>Network connection established successfully');
+			
+			if($response == 'true'){
+				if($action == 'connect') $data['message'] = array('type' => 'alert-success', 'text' => '<h4 class="alert-heading"><i class="fa fa-check"></i> Great!</h4>Network connection established successfully');
+				if($action == 'disconnect') $data['message'] = array('type' => 'alert-success', 'text' => '<h4 class="alert-heading"><i class="fa fa-check"></i> Great!</h4> Disconnection performed successfully');
 			}else{
-				$data['message'] = array('type' => 'alert-danger', 'text' => '<h4 class="alert-heading"><i class="fa fa-warning"></i> Error!</h4> Unable to connect to <strong>'.$essid.'</strong> Please check the password and try again');
+				if($action == 'connect') $data['message'] = array('type' => 'alert-danger', 'text' => '<h4 class="alert-heading"><i class="fa fa-warning"></i> Error!</h4> Unable to connect to <strong>'.$essid.'</strong> Please check the password and try again');
+				if($action == 'disconnect') $data['message'] = array('type' => 'alert-danger', 'text' => '<h4 class="alert-heading"><i class="fa fa-warning"></i> Error!</h4> Unable to disconnect from <strong>'.$essid.'</strong> Please try again');
 			}			
 		} 
 		
-		$data['info'] = wlan_info();
+		$data['info'] = wlan_info(); 
+		$data['networks'] = scan_wlan();
 		$data['widget'] = $this -> load -> view('network/wlan/widget', $data, TRUE);
 		$attr['data-widget-icon'] = 'fa fa-wifi';
 		$attr['data-widget-fullscreenbutton'] = 'false';
+
+		$button = '
+			<div class="widget-toolbar">
+				<button data-action="down" class="btn show-details"> Details <i class="fa fa-chevron-down"></i></button>
+			</div>';
+		if($data['info']['ip_address'] == '') $button = '';
 		
-		$switch = '<div class="widget-toolbar" id="switch-1">
-				<span class="onoffswitch-title">Enable</span>
-				<span class="onoffswitch">
-					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="wifi-switch">
-					<label class="onoffswitch-label" for="wifi-switch"> 
-						<span class="onoffswitch-inner" data-swchon-text="YES" data-swchoff-text="NO"></span> 
-						<span class="onoffswitch-switch"></span> </label> 
-					</span>
-				</div>';
+		$widget_label = $data['info']['ip_address'] != '' ? ' - '.$data['info']['ip_address'] : '';
+		$data['widget'] = widget('network_wifi' . time(), 'Wifi'.$widget_label, $attr, $data['widget'], false, true, false, $button);
 		
-		$data['widget'] = widget('network_wifi' . time(), 'Network - Wifi', $attr, $data['widget'], false, false, false);
-		
+		$this -> layout -> add_css_file(array('src' => '/assets/css/line-icons-pro/styles.css'));
 		$this -> layout -> add_js_file(array('src' => '/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js', 'comment' => ''));
 		$this -> layout -> add_js_in_page(array('data' => $this -> load -> view('network/wlan/js', $data, TRUE), 'comment' => ''));
 		
@@ -209,6 +210,7 @@ class Settings extends Module {
 		
 		$data['widget'] = $this -> load -> view('network/eth/widget', $data, TRUE);
 		$attr['data-widget-icon'] = 'fa fa-sitemap';
+		$attr['data-widget-fullscreenbutton'] = 'false';
 		$data['widget'] = widget('network_eth' . time(), 'Network - Ethernet', $attr, $data['widget'], false, false, false);
 		
 		$this -> layout -> add_js_file(array('src' => '/assets/js/plugin/inputmask/jquery.inputmask.bundle.js', 'comment' => ''));
@@ -219,7 +221,7 @@ class Settings extends Module {
 	}
 	
 	
-	public function hostname(){
+	public function dns(){
 			
 		if($this->input->post()){
 			
@@ -240,20 +242,20 @@ class Settings extends Module {
 		$data['current_hostname'] = shell_exec('sudo hostname');
 		$data['current_name'] = avahi_service_name();
 		
-		$data['widget'] = $this -> load -> view('network/hostname/widget', $data, TRUE);
-		$attr['data-widget-icon'] = 'fa fa-caret-square-o-right fa-rotate-90';	
-		$data['widget'] = widget('network_hostname' . time(), 'Network - Hostname', $attr, $data['widget'], false, true, false);
+		$data['widget'] = $this -> load -> view('network/dns/widget', $data, TRUE);
+		$attr['data-widget-icon'] = 'fa fa-binoculars';
+		$attr['data-widget-fullscreenbutton'] = 'false';
+		$data['widget'] = widget('network_hostname' . time(), 'Make the FABtotum Personal Fabricator easily discoverable on local network', $attr, $data['widget'], false, true, false);
 		
-		$this -> layout -> add_js_in_page(array('data' => $this -> load -> view('network/hostname/js', $data, TRUE), 'comment' => ''));
+		$this -> layout -> add_js_in_page(array('data' => $this -> load -> view('network/dns/js', $data, TRUE), 'comment' => ''));
 		
 		$this -> layout -> add_js_file(array('src' => '/assets/js/plugin/jquery-validate/jquery.validate.min.js', 'comment' => 'jquery validate'));
 		
-		$this->layout->view('network/hostname/index', $data);
+		$this->layout->view('network/dns/index', $data);
 		
 	}
 	
 	
 }
-
 
 

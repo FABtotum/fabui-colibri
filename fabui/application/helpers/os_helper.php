@@ -356,14 +356,9 @@ function setEthernet($ip){
  */
 function setWifi($ssid, $password, $type = "WPA") {
 	
-	$response = shell_exec('bash /var/www/fabui/script/bash/set_wifi.sh "'.$ssid.'" "'.$password.'"');
-	if (strpos($response, 'PING') !== false || strpos($response, 'errors') !== false) {
-		return false;
-	} else {
-		return true;
-	}
-	
-	
+	shell_exec('bash /var/www/fabui/script/bash/set_wifi.sh "'.$ssid.'" "'.$password.'"');
+	$info = wlan_info();
+	return $info['ssid'] == $ssid;	
 }
 
 /**
@@ -457,7 +452,7 @@ function pretty_baud($baud) {
 	$strRxBytes = isset($result[1]) ? $result[1] : '';
 	preg_match('/TX Bytes:(\d+ \(\d+.\d+ [K|M|G]iB\))/i',$strWlan0,$result);
 	$strTxBytes = isset($result[1]) ? $result[1] : '' ;
-	preg_match('/ESSID:\"([a-zA-Z0-9\s]+)\"/i',$strWlan0,$result);
+	preg_match('/ESSID:\"((?:(?![\n\s]).)*)\"/i',$strWlan0,$result);
 	$strSSID = isset($result[1]) ? str_replace('"','',$result[1]) : '';
 	preg_match('/Access Point: ([0-9a-f:]+)/i',$strWlan0,$result);
 	$strBSSID = isset($result[1]) ? $result[1] : '' ;
@@ -526,8 +521,9 @@ function eth_info(){
 
 function disconnectWifi(){
 	
-	$response = shell_exec('sh /var/www/fabui/script/bash/disconnect_wifi.sh "'.$ssid.'" "'.$password.'"');
-	
+	shell_exec('bash /var/www/fabui/script/bash/disconnect_wifi.sh');
+	$info = wlan_info();
+	return $info['ssid'] == '';
 }
 
 
