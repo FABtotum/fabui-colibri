@@ -5,7 +5,8 @@
 	 	$("#set-head").on('click', set_head);
 	 	
 	 	
-	 	<?php if(isset($_REQUEST['head_installed']) && $units['hardware']['head']['type'] != 'mill_v2'): ?>
+	 	
+	 	<?php if(isset($_GET['head_installed']) && $units['hardware']['head']['type'] != 'mill_v2'): ?>
 	 		
 	 		$.SmartMessageBox({
 				title : "<i class='fa fa-warning'></i> New head has been installed, it is recommended to repeat the Probe Calibration operation",
@@ -15,6 +16,7 @@
 						document.location.href="<?php echo site_url('maintenance/probe-calibration'); ?>";		
 				}
 				if (ButtonPressed === "Ignore") {
+					
 				}
 		
 			});

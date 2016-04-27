@@ -152,7 +152,7 @@ class Maintenance extends Module {
 			$_units = json_decode(file_get_contents($this -> config -> item('fabtotum_custom_config_units', 'fabtotum')), TRUE);
 		}
 
-		$data['units'] = $_units;
+		$data['units'] = $_units; 
 
 		$data['heads_list'] = array_merge(array('head_shape' => '---'), $this -> config -> item('heads_list', 'fabtotum'), array('more_heads' => 'Get more heads'));
 		$data['heads_descriptions'] = $this -> config -> item('heads_descriptions', 'fabtotum');

@@ -2,7 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/utilities.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/lib/serial.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/fabui/application/config/production/fabtotum.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/fabui/application/config/fabtotum.php';
 
 $ini_array = parse_ini_file(SERIAL_INI);
 

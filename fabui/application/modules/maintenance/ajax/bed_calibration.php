@@ -51,7 +51,7 @@ if(is_array($_response)){ // if there is a valid response
 	<h4 class="text-center">
 	Screw or unscrew following the indication given for each point.<br>
 	Green points are optimally leveled.<br>
-	Always follow the order without skipping any point (even green ones) and repeat until all the points are green.Arrows show the direction (CW or CCW) as seen from above.
+	Always follow the order without skipping any point (even green ones) and repeat until all the points are green. Arrows show the direction (CW or CCW) as seen from above.
 	</h4>
 	<hr class="simple">
 	<div class="margin-top-10">
