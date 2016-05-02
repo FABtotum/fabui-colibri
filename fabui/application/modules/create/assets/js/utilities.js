@@ -8,15 +8,6 @@ var interval_monitors;
 
 //counter for count how many times monitor we'll be called
 var print_finished = false;
-/**/
- var monitor_timeout = 5000; // 1000 = 1s
- var interval_timer;
- var interval_trace;
- var interval_stop;
- var elapsed_time_stop = 0;
- var max_time_stop = 6;
-
- /**/
 var progress_step;
 var second_for_step;
 var current_estimated_time;
@@ -36,7 +27,7 @@ var not_printable = [".stl", ".asc"];
  * @param object
  */
 function detail_files(object) {
-
+	
 	var printable_files = ['.gc', '.gcode', '.nc'];
 	var files = object.files.data;
 	var files_number = object.files.number;
@@ -272,55 +263,6 @@ function detail_object(object) {
 	file_selected = '';
 
 }
-
-/**
- *
- */
-function _timer() {
-
-	/**
-	 * ELAPSED TIME
-	 */
-
-	elapsed_time = (parseInt(elapsed_time) + 1);
-	$('.elapsed-time').html(_time_to_string(elapsed_time));
-
-	/**
-	 * TIME LEFT
-	 */
-	if (!isNaN(estimated_time_left)) {
-		estimated_time_left = (parseInt(estimated_time_left) - 1);
-		if (estimated_time_left >= 0) {
-			$('.estimated-time-left').html(_time_to_string(estimated_time_left));
-		}
-
-	}
-}
-
-/**
- * DISPLAY PRINT TRACE
- */
-function _trace() {
-
-	if (!SOCKET_CONNECTED) {
-		if (!print_finished) {
-			_trace_call();
-		}
-	}
-}
-
-function _trace_call() {
-
-	$.ajax({
-		url : uri_trace,
-		async : true,
-	}).done(function(response) {
-		$(".console").html(response);
-		$('.console').scrollTop(1E10);
-	});
-
-}
-
 /**
  *
  * @param action
@@ -354,7 +296,6 @@ function _do_action(action, value) {
 			url : ajax_endpoint + 'ajax/action.php',
 			data : {
 				id_task : id_task,
-				pid : pid,
 				data_file : data_file,
 				action : action,
 				value : value,
@@ -402,7 +343,7 @@ function stop_print() {
 	_stop_monitor();
 	_stop_timer();
 	stopped = 1;
-	setTimeout(_stopper, 30000);
+	setTimeout(refreshPage, 30000);
 
 }
 
@@ -452,28 +393,7 @@ function _update_task() {
 
 }
 
-/**
- *
- */
-function _monitor_call() {
-
-	if (!print_finished) {
-
-		$.ajax({
-			url : uri_monitor,
-			dataType : 'json',
-			async : true,
-			cache : false,
-		}).done(function(response) {
-			monitor(response);
-		});
-
-	}
-
-}
-
 function tip(show, message) {
-
 	show = show == 'True' ? true : false;
 
 	if (show) {
@@ -482,19 +402,8 @@ function tip(show, message) {
 	} else {
 		$(".tip").hide();
 	}
-
 }
 
-/**
- *
- */
-var print_monitor = function() {
-	if (!SOCKET_CONNECTED) {
-		if (!print_finished) {
-			_monitor_call();
-		}
-	}
-}
 /**
  *
  */
@@ -507,7 +416,7 @@ function print_object() {
 	
 	disable_button('.jog');
 	
-	IS_MACRO_ON = true;
+	$.is_task_on = true;
 	$(".final-step-response").html("");
 	
 	var make_label = print_type == 'additive' ?  'print' : 'mill';
@@ -539,7 +448,7 @@ function print_object() {
 		if (response.response == true) {
 
 			if (!SOCKET_CONNECTED) {
-				check_notifications();
+				/*check_notifications();*/
 			}
 
 			id_task = response.id_task;
@@ -557,11 +466,11 @@ function print_object() {
 
 			monitor(status);
 			//faccio partire il monitor 1000 = 1 secondo
-			print_monitor();
+			
 
-			interval_monitor = setInterval(print_monitor, monitor_timeout);
-			interval_timer = setInterval(_timer, 1000);
-			interval_trace = setInterval(_trace, 1000);
+			interval_monitor = setInterval(getMonitor, 5000);
+			interval_timer = setInterval(timer, 1000);
+			interval_trace = setInterval(getTrace, 1000);
 
 			//vado avanti negli step
 			$('#btn-next').trigger('click');
@@ -672,8 +581,6 @@ function _controls_listener(obj) {
 	if(action == 'notes'){
 		value = $("#notes").val();
 	}
-
-	console.log(action + ' ' + value);
 	_do_action(action, value);
 }
 

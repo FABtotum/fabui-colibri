@@ -1,5 +1,4 @@
 function number_format(number, decimals, dec_point, thousands_sep) {
-
 	number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
 	var n = !isFinite(+number) ? 0 : +number, prec = !isFinite(+decimals) ? 0 : Math.abs(decimals), sep = ( typeof thousands_sep === 'undefined') ? ',' : thousands_sep, dec = ( typeof dec_point === 'undefined') ? '.' : dec_point, s = '', toFixedFix = function(n, prec) {
 		var k = Math.pow(10, prec);
@@ -238,7 +237,7 @@ function update_notifications() {
 
 
 
-/** CHECK TASKS, MENU AJAX MODE */
+/** CHECK TASKS, MENU AJAX MODE 
 function check_notifications() {
 
 	
@@ -271,7 +270,7 @@ function check_notifications() {
 
 		fabApp.lockScreen();
 	}
-}
+}*/
 
 /** ON LOAD */
 
@@ -993,11 +992,6 @@ function checkExit() {
 */
 function initUI(){
 	
-	
-	$(".directions").on("click", directions);
-	$( ".axisz" ).on( "click", axisz );
-	$(".zero_all").on("click", zero_all);
-	
 	if ( typeof (Storage) !== "undefined") {
 		/******* TOP BAR *********************/
 		$("#top-bar-nozzle-actual").html(parseInt(localStorage.getItem("nozzle_temp")));
@@ -1118,20 +1112,6 @@ function topBedTempChange(e){
 	fabApp.serial("bed_temp", parseInt(e[0]));
 }
 
-function directions(){
-	var value = $(this).attr("data-attribue-direction");
-	fabApp.serial("directions", value);
-}
-
-function axisz(){
-	var func = $(this).attr("data-attribute-function");
-	var step = $(this).attr("data-attribute-step");
-	fabApp.serial(func, step);   
-}
-
-function zero_all(){
-	fabApp.serial("zero_all", true);
-}
 /** disable button */
 function disable_button(element){
 	$(element).addClass('disabled');

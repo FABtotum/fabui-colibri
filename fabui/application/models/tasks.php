@@ -4,8 +4,6 @@ class Tasks extends CI_Model {
 
 
 	protected $_table_name = 'sys_tasks';
-	
-	
 	protected $_COMPLETED_STATUS = array('performed', 'stopped', 'deleted');
 
 
@@ -78,15 +76,9 @@ class Tasks extends CI_Model {
 			$this->db->where('type', $type);
 		}
 		
-		//$this->db->join('sys_objects', 'sys_objects.id = sys_tasks.id_object', 'left');
-		//$this->db->join('sys_files', 'sys_files.id = sys_tasks.id_file', 'left');
-		
 		$this->db->where('status' ,'running');
 		$query = $this->db->get($this->_table_name);
 		$result = $query->result_array();
-		
-		
-		
 		
 		if(isset($result[0])){
 			return $result[0];
@@ -105,10 +97,6 @@ class Tasks extends CI_Model {
 		$this->db->where('user', $_SESSION['user']['id']);
 		$this->db->order_by('start_date', 'desc');
 		$query = $this->db->get($this->_table_name, $limit_end, $limit_start);
-		
-		
-		
-	
 		return $query->result_array();
 	}
     

@@ -126,8 +126,9 @@ function finalize_print($tid, $status) {
 	}
 
 	//}
-	$pid = intval(trim(str_replace('\n', '', shell_exec('cat /run/create.pid'))));
+	$pid = intval(trim(str_replace('\n', '', shell_exec('cat /run/task_create.pid'))));
 	shell_exec('kill -9 ' . $pid);
+	shell_exec('rm /run/task_create.pid');
 
 	//UPDATE TASK
 	update_task($tid, $status, file_get_contents($task['attributes']));
@@ -189,11 +190,13 @@ function finalize_mill($tid, $status) {
 
 	//GET TASK ATTRIBUTES
 	$attributes = json_decode(file_get_contents($task['attributes']), TRUE);
-
+	
+	$pid = intval(trim(str_replace('\n', '', shell_exec('cat /run/task_create.pid'))));
+	shell_exec('kill -9 ' . $pid);
+	shell_exec('rm /run/task_create.pid');
+	
 	if ($status == 'stopped') {
-		echo "STOPPING PROCESS..." . $attributes['pid'] . PHP_EOL;
-		shell_exec('sudo kill ' . $attributes['pid']);
-
+		
 		/** FORCE RESET CONTROLLER */
 		echo 'Force Reset' . PHP_EOL;
 		$_command = 'sudo python ' . PYTHON_PATH . 'force_reset.py';
@@ -209,7 +212,9 @@ function finalize_mill($tid, $status) {
 		fopen(LOCK_FILE, "w");
 	}
 
-	shell_exec('sudo kill ' . $attributes['pid']);
+	//$pid = intval(trim(str_replace('\n', '', shell_exec('cat /run/task_create.pid'))));
+	//shell_exec('kill -9 ' . $pid);
+	//shell_exec('rm /run/task_create.pid');
 
 	//UPDATE TASK
 	update_task($tid, $status, file_get_contents($task['attributes']));
@@ -220,14 +225,14 @@ function finalize_mill($tid, $status) {
 	$end_macro = 'end_print_additive';
 
 	write_file($_macro_end_print_trace, '', 'w');
-	chmod($_macro_end_print_trace, 0777);
+	//chmod($_macro_end_print_trace, 0777);
 
 	write_file($_macro_end_print_response, '', 'w');
-	chmod($_macro_end_print_response, 0777);
+	//chmod($_macro_end_print_response, 0777);
 
 	//EXEC END MACRO
-	echo 'MACRO: sudo python ' . PYTHON_PATH . 'gmacro.py ' . $end_macro . ' ' . $_macro_end_print_trace . ' ' . $_macro_end_print_response . ' 1 > /dev/null &' . PHP_EOL;
-	shell_exec('sudo python ' . PYTHON_PATH . 'gmacro.py ' . $end_macro . ' ' . $_macro_end_print_trace . ' ' . $_macro_end_print_response . ' 1 > /dev/null &');
+	//echo 'MACRO: sudo python ' . PYTHON_PATH . 'gmacro.py ' . $end_macro . ' ' . $_macro_end_print_trace . ' ' . $_macro_end_print_response . ' 1 > /dev/null &' . PHP_EOL;
+	shell_exec('python ' . PYTHON_PATH . 'gmacro.py ' . $end_macro . ' ' . $_macro_end_print_trace . ' ' . $_macro_end_print_response . ' 1 > /dev/null &');
 
 	$db -> close();
 

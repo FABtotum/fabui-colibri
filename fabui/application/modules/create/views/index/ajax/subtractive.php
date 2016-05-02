@@ -172,11 +172,19 @@
 	$("#bed-slider-container").hide();
 	$("#rpm-slider-container").show();
 
-    $("#zero-all").on("click", zero_all);
+    $("#zero-all").on("click", function() {
+    	fabApp.jogZeroAll();
+    	$("#exec_button").removeClass("disabled");
+    	setZero = true;
+    });
     
-    $( ".axisz" ).on( "click", axisz );
+    $( ".axisz" ).on( "click", function() {
+    	fabApp.jogAxisZ($(this).attr("data-attribute-function"), $(this).attr("data-attribute-step"));
+    });
     
-	$(".directions").on("click", directions);
+	$(".directions").on("click", function(){
+		fabApp.jogDirections($(this).attr("data-attribue-direction"));
+	});
 	
 	$(".jog").addClass('disabled');
 	
@@ -288,7 +296,7 @@
     
     function pre_print(){
        
-       
+       	$.is_macro_on = true;
        	openWait('Checking printer');
        	 
         $('#exec_button').addClass('disabled');
@@ -336,14 +344,12 @@
                     $("#exec_button").html('Oops.. try again');
                     $("#exec_button").attr('data-action', 'check');
                 }
-                
-                
+                                
                 ticker_url = '';
                 closeWait();
+                $.is_macro_on = false;
                 //$('#exec_button').removeClass('disabled');
-                
-                
-                
+
         	});
         
     }

@@ -1,8 +1,8 @@
-<div class="step-pane <?php echo $_running ? " " : "active " ?>" id="step1">
+<div class="step-pane <?php echo $running ? " " : "active " ?>" id="step1">
 	
 	
 	<article>
-		<?php echo $_widget; ?>
+		<?php echo $widget; ?>
 	</article>
 
 </div>

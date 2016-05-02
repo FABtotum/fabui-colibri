@@ -6,7 +6,7 @@
  */
 require_once '/var/www/lib/config.php';
 require_once '/var/www/lib/serial.php';
-require_once '/var/www/fabui/application/config/production/fabtotum.php';
+require_once '/var/www/fabui/application/config/fabtotum.php';
 
 $ini_array = parse_ini_file(SERIAL_INI);
 

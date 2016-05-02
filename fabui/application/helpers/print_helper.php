@@ -81,10 +81,7 @@ if ( ! function_exists('get_head'))
 	function get_head(){
 		
 		$configs = json_decode(file_get_contents(CONFIG_FOLDER . 'config.json'), true);
-		
 		return isset($configs['hardware']['head']['type']) ? $configs['hardware']['head']['type'] : 'hybrid';
-		
-    
      }
 	 
 }

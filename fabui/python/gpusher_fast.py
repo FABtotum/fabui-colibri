@@ -78,6 +78,8 @@ killed=False  #''' PRINT KILLED FLAG '''
 engine=""
 is_cura=False
 is_slic3r=False
+speed=100
+flow_rate=100
 
 ''' INIT LOG '''
 logging.basicConfig(filename=log_trace,level=logging.INFO,format='%(message)s')
@@ -128,12 +130,13 @@ def writeMonitor(percent,sent):
     global print_started
     global monitor_file
     global engine
+    global speed
     
     _layers={'total':layers, 'actual': str(actual_layer)}
-    _stats={"percent": str(percent), "line_number": str(sent), "extruder": str(ext_temp), "bed":str(bed_temp), "extruder_target":str(ext_temp_target), "bed_target": str(bed_temp_target), "z_override": str(z_override), "layers":_layers, "fan": str(fan) }
+    _stats={"percent": str(percent), "line_number": str(sent), "extruder": str(ext_temp), "bed":str(bed_temp), "extruder_target":str(ext_temp_target), "bed_target": str(bed_temp_target), "z_override": str(z_override), "layers":_layers, "fan": str(fan), "speed": str(speed), "flow_rate":str(flow_rate) }
     _tip={"show":str(tip), "message": str(tipMessage)}
     _print = {"name": gcode_file, "lines": str(lenght),  "print_started": str(print_started), "started": str(started), "paused": str(paused), "completed": str(completed), "completed_time": str(completed_time), "shutdown": str(shutdown), "tip": _tip, "stats": _stats}
-    stats = {"type": "print", "print": _print, "engine": str(engine)}
+    stats = {"type": "print", "print": _print, "engine": str(engine), "task_id":task_id}
     
     stats_file=open(monitor_file,'w+')
     stats_file.write(json.dumps(stats))
@@ -206,6 +209,8 @@ def sender():
     global actual_layer
     global fan
     global progress
+    global speed
+    global flow_rate
     gcode_line=0
     
     ''' taking possession of the file '''
@@ -286,6 +291,10 @@ def sender():
                             trace(override_data[2])
                             if(override_data[0] == 'M106'):
                                 fan = override_data[1]
+                            elif(override_data[0] == "M220"):
+                                speed = override_data[1]
+                            elif(override_data[0] == "M221"):
+                                flow_rate = override_data[1]
                             writeMonitor(progress,sent)
                             
                                 
@@ -497,19 +506,22 @@ else:
     completed_time=int(time.time())
     writeMonitor(progress,sent)
     status="stopped"
+    serial.flushInput()
+    serial.flushOutput()
 
 trace("Now finalizing...")
 if progress >= 0.2:
     trace("Moving to safe zone")
+    serial.write("M220 S100\r\n")
     serial.write("G91\r\n")
     serial.write("G0 E-5 F1000\r\n")
     serial.write("G0 Z+1 F1000\r\n")
     serial.write("G90\r\n")
     serial.write("G27 Z0\r\n")
-    serial.write("G0 X210 Y210\r\n")
+    serial.write("G0 X210 Y210 F3000\r\n")
     time.sleep(10)
 
-call (['sudo php /var/www/fabui/script/finalize.php '+str(task_id)+" print " +str(status)], shell=True)
+call (['php /var/www/fabui/script/finalize.php '+str(task_id)+" print " +str(status)], shell=True)
 
 #shudown the printer if requested
 if shutdown:

@@ -58,12 +58,15 @@ resent=0
 completed=False
 z_override=0
 print_started=False
+speed=100
 #total_layers=0
 #actual_layer=0
-rpm=0
+rpm=6000
 paused=False
 shutdown=False #default shutdown printer on complete = no
 killed=False
+
+print "Entered"
 
 def writeMonitor(percent,sent):
     
@@ -72,10 +75,11 @@ def writeMonitor(percent,sent):
     global rpm
     global z_override
     global started
+    global speed
 
-    _stats={"percent": str(percent), "line_number": str(sent), "z_override": str(z_override), 'rpm':str(rpm) }
+    _stats={"percent": str(percent), "line_number": str(sent), "z_override": str(z_override), 'rpm':str(rpm), 'speed':str(speed)}
     _print = {"name": ncfile, "lines": str(lenght),  "print_started": str(print_started), "started": str(started), "paused": str(paused), "completed": str(completed), "completed_time": str(completed_time), "shutdown": str(shutdown), "stats": _stats}
-    str_log = {"type": "print", "print": _print}
+    str_log = {"type": "print", "print": _print, "task_id":task_id}
     
     handle=open(logfile,'w+')
     print>>handle, json.dumps(str_log)
@@ -83,7 +87,8 @@ def writeMonitor(percent,sent):
     return
 
 def trace(string):
-    logging.info(string) 
+    logging.info(string)
+    print string 
     return
 
 ''' RESET LOG TRACE to avoid annoing verbose '''
@@ -106,6 +111,7 @@ def override_description(command):
     
     global fan
     global rpm
+    global speed
     
     try:
         command_splitted = command.split()
@@ -121,6 +127,7 @@ def override_description(command):
     
     if code=="M220":
         description+="Speed factor override set to "+value+"%"
+        speed = value
     elif code=="M3":
         rpm=value
         description+="RPM speed set to "+value+""
@@ -147,7 +154,9 @@ def sender():
     global print_started
     global rpm
     global progress
+    global speed
     
+    print "Start sender"
     
     gcode_line=0
     with open(ncfile, 'r+') as f:
@@ -172,6 +181,8 @@ def sender():
                 #line is not empty or comment
                 while received<sent and sent>0 and EOF==False:
                     pass #wait!
+                
+                print line
                     
                 if resend>0:
                     #WIP
@@ -272,6 +283,8 @@ def listener():
     
     global killed
     
+    print "Start listener"
+    
     serial_in=""    
     while not EOF:
         
@@ -318,6 +331,8 @@ def tracker():
     global print_started
     global killed
     global time_interval
+    
+    print "Start tracker"
     
     #mtime=os.path.getmtime(comfile) #update override file mtime.
     elapsed=0
@@ -428,7 +443,7 @@ else:
     status="stopped"
 
 trace("Now finalizing...")
-call (['sudo php /var/www/fabui/script/finalize.php '+str(task_id)+" mill " +str(status)], shell=True)
+call (['php /var/www/fabui/script/finalize.php '+str(task_id)+" mill " +str(status)], shell=True)
 
 observer.join()
 
@@ -438,5 +453,3 @@ listener.join()
 serial.close()
 #trace("Serial Close")
 sys.exit()
-
-

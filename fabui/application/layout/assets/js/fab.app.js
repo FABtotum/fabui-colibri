@@ -112,9 +112,39 @@ fabApp = (function(app) {
             $(".top-ajax-temperatures-dropdown").is(a.target) || 0 !== $(".top-ajax-temperatures-dropdown").has(a.target).length || ($(".top-ajax-temperatures-dropdown").fadeOut(150), $(".top-ajax-temperatures-dropdown").prev().removeClass("active"))
             $(".top-ajax-jog-dropdown").is(a.target) || 0 !== $(".top-ajax-jog-dropdown").has(a.target).length || ($(".top-ajax-jog-dropdown").fadeOut(150), $(".top-ajax-jog-dropdown").prev().removeClass("active"))
         });
+        
+        $(".directions").on("click", function(){
+        	app.jogDirections($(this).attr("data-attribue-direction"));
+        });
+        
+        $(".axisz").on("click", function(){
+        	app.jogAxisZ($(this).attr("data-attribute-function"), $(this).attr("data-attribute-step"));
+        });
+        
+		$(".zero_all").on("click", function(){
+			app.jogZeroAll();
+		});
 		
 		
 	};
+	/*
+	 * 
+	 */
+	app.jogDirections = function (value) {
+		app.serial("directions", value);
+	}
+	/*
+	 * 
+	 */
+	app.jogAxisZ = function (func, step){
+		app.serial(func, step); 
+	}
+	/*
+	 * 
+	 */
+	app.jogZeroAll = function () {
+		app.serial("zero_all", true);
+	}
 	/*
 	 * 
 	 */
@@ -268,8 +298,8 @@ fabApp = (function(app) {
 					}
 				});
 				app.updateNotificationBadge();
-				var html = '<div class="row"><div class="col-sm-12"><div class="alert alert-danger alert-block animated fadeIn"><button class="close" data-dismiss="alert">×</button><h4 class="alert-heading"> <i class="fa fa-refresh"></i> New important software updates are now available, <a style="text-decoration:underline; color:white;" href="/fabui/updates">update now!</a> </h4></div></div></div>';
-				if($.module != 'updates') $("#content").prepend(html);
+				//var html = '<div class="row"><div class="col-sm-12"><div class="alert alert-danger alert-block animated fadeIn"><button class="close" data-dismiss="alert">×</button><h4 class="alert-heading"> <i class="fa fa-refresh"></i> New important software updates are now available, <a style="text-decoration:underline; color:white;" href="/fabui/updates">update now!</a> </h4></div></div></div>';
+				//if($.module != 'updates') $("#content").prepend(html);
 			}
 		});
 	};

@@ -121,7 +121,6 @@
 					</span>
 				</div>
 				<!-- END RESET CONTROLLER BUTTON-->
-				
 			</div>
 			
 			
