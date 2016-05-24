@@ -7,29 +7,26 @@
 	var graph;
 	var donut;
 	var table;
+	var format_date = 'DD/MM/YYYY';
 	var breakpointDefinition = {
 			tablet : 1024,
 			phone : 480
 	};
 	var responsiveHelper_dt_basic = undefined;
-	
 	var colors = new Array();
-	colors['stopped'] = 'warning';
+	colors['stopped']   = 'warning';
 	colors['performed'] = 'success';
-	colors['deleted'] = 'danger';
-	
+	colors['deleted']   = 'danger';
 	
 	window.Morris.Donut.prototype.setData = function(data, redraw) {
 	    if (redraw == null) {
 	        redraw = true;
 	    }
-	    
 	    this.data = data;
 	    this.values = (function() {
 	    var _i, _len, _ref, _results;
 	    _ref = this.data;
 	    _results = [];
-	    
 	    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
 	        row = _ref[_i];
 	        _results.push(parseFloat(row.value));
@@ -73,10 +70,6 @@
 			colors: <?php echo json_encode($line_colors); ?>,
 			resize: true
 		});
-			
-		
-		
-		var format_date = 'DD/MM/YYYY';
 		
 		$('#date-picker').daterangepicker({
 			format: format_date,
@@ -108,13 +101,10 @@
 			  dataType: 'json'
 			}).done(function( response ) {
 			    set_new_data(response);
-			    
 			    $("#graphs-container").css({ opacity: 1.0 });
 			});
 			
-			
-			
-		 });
+		});
 		 
 		 
 		 table = $('#table-list').dataTable({
@@ -158,14 +148,15 @@
 		
 		if(response.total_tasks == 0){
 			$("#graphs-container").hide();
-			jQuery(".widget-body-toolbar").find(".col-sm-6:first").html('<div class="alert alert-info animated fadeIn notification"><i class="fa-fw fa fa-info"></i> No data available </div>');
-			
+			jQuery(".widget-body-toolbar").find(".col-sm-6:first").html('<div class="alert alert-info animated fadeIn notification"><i class="fa-fw fa fa-info"></i> No data available </div>');	
 			return;
+		}else{
+			$("#graphs-container").show();
 		}
-		
 		
 		graph.setData(response.line);
 		donut.setData(response.donut);
+		
 		$(".total-tasks").html(response.total_tasks);
 		$(".total-duration").html(response.total_duration);
 		$(".show-stats").html(response.bars);
@@ -174,14 +165,10 @@
 		
 	}
 	
-	function ReloadTable(){
-			
+	function ReloadTable()
+	{
 		var params = {start_date: start_date, end_date:end_date};
 		var url = '<?php echo site_url('objectmanager/get_file_tasks_for_table/'.$file->id) ?>/?' + jQuery.param(params);
 		RefreshTable('#table-list', url);
-		  	
 	}
-	
-	
-	
 </script>

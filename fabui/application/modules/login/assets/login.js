@@ -69,7 +69,7 @@ function ask_power_off() {
 	}, function(ButtonPressed) {
 
 		if (ButtonPressed === "Yes") {
-			shutdown();
+			fabApp.loginPowerOff();
 		}
 		if (ButtonPressed === "No") {
 		}

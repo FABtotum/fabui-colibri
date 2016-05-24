@@ -80,6 +80,10 @@ function createObjectFromGCode(gcode) {
       lastLine = newLine;
     },
 
+	G4 : function(args) {
+		// WAIT 
+	},
+	
     G21: function(args) {
       // G21: Set Units to Millimeters
       // Example: G21
@@ -173,6 +177,16 @@ function createObjectFromGCode(gcode) {
       // in between or after printjobs.
 
       // No-op
+    },
+    
+    M728: function(args)
+    {
+    	//TODO 
+    },
+    
+    T0: function(args)
+    {
+    	//TODO
     },
 
     'default': function(args, info) {

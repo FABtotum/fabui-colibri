@@ -168,17 +168,20 @@ public function history() {
 		return $this -> tasks -> get_make_tasks($filters);
 	}
 
-	function history_table_data() {
-
-		$params = $this -> input -> get();
+	function history_table_data() 
+	{
+		//get filter data from $_GET
+		$params = $this->input->get();
 
 		$filters['start_date'] = !isset($params['start_date']) || $params['start_date'] == '' ? date('d/m/Y', strtotime('today - 30 days')) : $params['start_date'];
 		$filters['end_date']   = !isset($params['end_date'])   || $params['end_date']   == '' ? date('d/m/Y', strtotime('today'))  : $params['end_date'];
-		$filters['type'] = isset($params['type']) ? $params['type'] : '';
-		$filters['status'] = isset($params['status']) ? $params['status'] : '';
+		$filters['type']       = isset($params['type']) ? $params['type'] : '';
+		$filters['status']     = isset($params['status']) ? $params['status'] : '';
 
 		$tasks = $this -> _get_make_tasks($filters);
-
+		
+		
+		
 		$this -> load -> helper('ft_date_helper');
 
 		$data['icons'] = array('print' => 'icon-fab-print', 'mill' => 'icon-fab-mill', 'scan' => 'icon-fab-scan');
@@ -228,19 +231,18 @@ public function history() {
 	}
 
 	function history_stats_data() {
-
-		$params = $this -> input -> get();
-
+		
+		//get request data
+		$params = $this->input->get();
+		
 		$filters['start_date'] = $params['start_date'] == '' ? date('d/m/Y', strtotime('today - 30 days')) : $params['start_date'];
-		$filters['end_date'] = $params['end_date'] == '' ? date('d/m/Y', strtotime('today')) : $params['end_date'];
-		$filters['type'] = $params['type'];
-		$filters['status'] = $params['status'];
-
+		$filters['end_date']   = $params['end_date']   == '' ? date('d/m/Y', strtotime('today')) : $params['end_date'];
+		$filters['type']       = $params['type'];
+		$filters['status']     = $params['status'];
+		
 		$tasks = $this -> _get_make_tasks($filters);
 		
 		$this -> load -> helper('ft_date_helper');
-		
-		
 		
 		$data['icons'] = array('print' => 'icon-fab-print', 'mill' => 'icon-fab-mill', 'scan' => 'icon-fab-scan');
 
@@ -251,45 +253,44 @@ public function history() {
 		$data['type_options'] = array('print' => 'Print', 'mill' => 'Mill', 'scan' => 'Scan');
 
 		$data['status_options'] = array('performed' => 'Completed', 'stopped' => 'Aborted', 'deleted' => 'Stopped');
-		$data['status_colors']  = array('performed' => '#7e9d3a', 'stopped' => '#FF9F01', 'deleted' => '#a90329');
+		$data['status_colors']  = array('performed' => '#7e9d3a',   'stopped' => '#FF9F01', 'deleted' => '#a90329');
 		
 
 		$data['stats'] = array();
 		
-		if(count($tasks) > 0 ){
+		if(count($tasks) > 0 ){ //if are tasks
 			
-		
-
-		if ($filters['type'] == '') {
-
-			foreach ($data['type_options'] as $type => $label) {
-				if ($type != '')
-					$data['stats'][$type]['total_time'] = $this -> tasks -> get_total_time('make', $type, $filters['status'], $filters['start_date'], $filters['end_date']);
-
+			if ($filters['type'] == '') {
+	
+				foreach ($data['type_options'] as $type => $label) {
+					if ($type != '')
+						$data['stats'][$type]['total_time'] = $this -> tasks -> get_total_time('make', $type, $filters['status'], $filters['start_date'], $filters['end_date']);
+						
+						
+						
+					if ($filters['status'] == '') {
+						foreach ($data['status_options'] as $status => $label) {
+							if ($status != '')
+								$data['stats'][$type][$status] = $this -> tasks -> get_total_tasks('make', $type, $status, $filters['start_date'], $filters['end_date']);
+						}
+					} else {
+						$data['stats'][$type][$filters['status']] = $this -> tasks -> get_total_tasks('make', $type, $filters['status'], $filters['start_date'], $filters['end_date']);
+					}
+	
+				}
+	
+			} else {
+				$data['stats'][$filters['type']]['total_time'] = $this -> tasks -> get_total_time('make', $filters['type'], $filters['status'], $filters['start_date'], $filters['end_date']);
+	
 				if ($filters['status'] == '') {
 					foreach ($data['status_options'] as $status => $label) {
 						if ($status != '')
-							$data['stats'][$type][$status] = $this -> tasks -> get_total_tasks('make', $type, $status, $filters['start_date'], $filters['end_date']);
+							$data['stats'][$filters['type']][$status] = $this -> tasks -> get_total_tasks('make', $filters['type'], $status, $filters['start_date'], $filters['end_date']);
 					}
 				} else {
-					$data['stats'][$type][$filters['status']] = $this -> tasks -> get_total_tasks('make', $type, $filters['status'], $filters['start_date'], $filters['end_date']);
+					$data['stats'][$filters['type']][$filters['status']] = $this -> tasks -> get_total_tasks('make', $filters['type'], $filters['status'], $filters['start_date'], $filters['end_date']);
 				}
-
 			}
-
-		} else {
-			$data['stats'][$filters['type']]['total_time'] = $this -> tasks -> get_total_time('make', $filters['type'], $filters['status'], $filters['start_date'], $filters['end_date']);
-
-			if ($filters['status'] == '') {
-				foreach ($data['status_options'] as $status => $label) {
-					if ($status != '')
-						$data['stats'][$filters['type']][$status] = $this -> tasks -> get_total_tasks('make', $filters['type'], $status, $filters['start_date'], $filters['end_date']);
-				}
-			} else {
-				$data['stats'][$filters['type']][$filters['status']] = $this -> tasks -> get_total_tasks('make', $filters['type'], $filters['status'], $filters['start_date'], $filters['end_date']);
-			}
-		}
-		
 		}
 		
 		

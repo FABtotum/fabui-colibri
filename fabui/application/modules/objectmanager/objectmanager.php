@@ -1158,7 +1158,7 @@ class Objectmanager extends Module {
 		$this -> load -> model('objects');
 		$this -> load -> helper('smart_admin_helper');
 		$this -> load -> helper('object_helper');
-		
+		$this -> load -> helper('ft_date_helper');
 		
 		$params  = $this->input->get();
 		
@@ -1172,6 +1172,8 @@ class Objectmanager extends Module {
 		$status = array();
 		
 		$stats = $this->get_statistics($file, $data['start_date'], $data['end_date']);
+		
+		
 		
 		$data['statistics'] = $stats['statistics'];
 		$data['durations'] = $stats['durations'];
@@ -1260,7 +1262,7 @@ class Objectmanager extends Module {
 		$this -> load -> model('tasks');
 		$stats = $this->tasks->get_file_stats($file, $start_date, $end_date);
 		
-		//print_r($stats); 
+		 
 		
 		$temp_stats = array();
 		$durations_stats = array();
@@ -1300,6 +1302,7 @@ class Objectmanager extends Module {
 	
 	function get_json_stats_data($file, $start_date, $end_date){
 		
+		$this->load->helpers('ft_date_helper');
 		$start_date = date('d/m/Y', ($start_date/1000));
 		$end_date   = date('d/m/Y', ($end_date/1000));
 		

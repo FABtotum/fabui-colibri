@@ -208,6 +208,7 @@ function date_to_mysql($date, $time = FALSE, $separator = "/") {
  */
 function sumTimes($times) {
 	
+	
 	$seconds = 0;
 	foreach ($times as $time) {
 		list($hour, $minute, $second) = explode(':', $time);

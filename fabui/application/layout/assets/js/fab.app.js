@@ -269,6 +269,26 @@ fabApp = (function(app) {
 		});
 	};
 	/*
+	 * 
+	 */
+	app.loginPowerOff = function ()
+	{
+		$.is_macro_on = true;
+		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Shutdown in progress', '', false);
+		$.ajax({
+			url: $.login_poweroff_url_action,
+		}).done(function(data) {
+			
+		}).fail(function(jqXHR, textStatus){
+			setTimeout(function() {
+				waitTitle('Now you can switch off the power');
+				showShutdownImage(); //utility function stored in utilities.js
+				//closeWait();
+				$.is_macro_on = false;
+			}, 5000);
+		});
+	}
+	/*
 	 *  logout from fabui
 	 */
 	app.logout = function() {

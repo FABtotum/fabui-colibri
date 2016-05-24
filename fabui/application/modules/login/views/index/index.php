@@ -22,6 +22,7 @@
 		<link rel="stylesheet" href="<?php echo base_url() ?>application/layout/assets/css/fonts.css" />
 		<link rel="stylesheet" href="<?php echo base_url() ?>application/layout/assets/css/fabtotum_style.css" />
 		<link rel="stylesheet" href="<?php echo base_url() ?>application/layout/assets/css/fabtotum_style.css" />
+		<link rel="stylesheet" href="<?php echo base_url() ?>application/layout/assets/js/plugin/fancybox/jquery.fancybox.css">
 
 		<script src="<?php echo base_url() ?>application/layout/assets/js/libs/jquery-2.1.1.min.js"></script>
 		<script src="<?php echo base_url() ?>application/layout/assets/js/libs/jquery-ui-1.10.3.min.js"></script>
@@ -142,20 +143,25 @@
 		<!-- ==========================CONTENT ENDS HERE ========================== -->
 
 		<!--================================================== -->
-		<div id="power-off-img" style="display:none;"><img class="img-responsive" src="/assets/img/power-off.png">
-		</div>
+		<!-- POWER OFF IMG -->
+		<a class="fancybox-shutdown hidden" title="Now you can switch off the power" href="/assets/img/power-off.png"><img class="img-responsive" src="/assets/img/power-off.png"></a>
+		<!-- END POWER OFF IMG -->
 
 		<script src="<?php echo base_url() ?>application/layout/assets/js/app.config.js"></script>
+		<script src="<?php echo base_url() ?>application/layout/assets/js/fabApp.config.js"></script>
 		<script src="<?php echo base_url() ?>application/layout/assets/js/plugin/pace/pace.min.js"></script>
 		<script src="<?php echo base_url() ?>application/layout/assets/js/bootstrap/bootstrap.min.js"></script>
 		<script src="<?php echo base_url() ?>application/layout/assets/js/notification/SmartNotification.min.js"></script>
+		<script src="<?php echo base_url() ?>application/layout/assets/js/notification/FabtotumNotification.js"></script>
 		<script src="<?php echo base_url() ?>application/layout/assets/js/plugin/jquery-validate/jquery.validate.min.js"></script>
 		<script src="<?php echo base_url() ?>application/layout/assets/js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
 		<script src="<?php echo base_url() ?>application/layout/assets/js/plugin/fastclick/fastclick.min.js"></script>
+		<script src="<?php echo base_url() ?>application/layout/assets/js/plugin/fancybox/jquery.fancybox.pack.js">
 		<script src="<?php echo base_url() ?>application/layout/assets/js/plugin/magnific-popup/jquery.magnific-popup.min.js"></script>
 		<script src="<?php echo base_url() ?>application/layout/assets/js/app.min.js"></script>
 		<script src="<?php echo base_url() ?>application/layout/assets/js/fabtotum.js"></script>
 		<script src="<?php echo base_url() ?>application/layout/assets/js/app.min.js"></script>
+		<script src="<?php echo base_url() ?>application/layout/assets/js/fab.app.js"></script>
 		<script src="<?php echo module_url('login') ?>assets/login.js"></script>
 
 		<script type="text/javascript">

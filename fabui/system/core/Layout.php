@@ -5,7 +5,6 @@ class FT_Layout {
 	protected $_css_file = array();
 	protected $_header_js_file = array();
 	protected $_js_file = array();
-
 	protected $_css_in_page = array();
 	protected $_js_in_page = array();
 	protected $_item_menu = array();
@@ -54,6 +53,7 @@ class FT_Layout {
 		$this -> set_layout_hardware();
 
 		$this -> _ft_layout_view_paths = array(APPPATH . 'layout/views/' => TRUE);
+		
 		$this -> _ft_module_view_paths = array(APPPATH . $this -> _ci -> _type . 's/' . lcfirst(get_class($this -> _ci)) . '/views/' => TRUE);
 
 		// Load the config layout.php file.
@@ -61,7 +61,6 @@ class FT_Layout {
 			include (APPPATH . 'config/' . ENVIRONMENT . '/layout.php');
 		} elseif (is_file(APPPATH . 'config/layout.php')) {
 			include (APPPATH . 'config/layout.php');
-
 		}
 
 		$this -> set_layout_title($layout['_layout_title']);
@@ -74,19 +73,16 @@ class FT_Layout {
 
 		//add the default CSS Style
 		foreach ($layout['_css'] as $_css) {
-
 			$this -> add_css_file($_css);
 		}
 
 		//add the default headr JS
 		foreach ($layout['_header_js'] as $_js) {
-
 			$this -> add_header_js_file($_js);
 		}
 
 		//add the default JS
 		foreach ($layout['_js'] as $_js) {
-
 			$this -> add_js_file($_js);
 		}
 
@@ -131,19 +127,14 @@ class FT_Layout {
 			$this -> add_plugin_subitem_menu(array('plugin' => true, 'name' => $plugin -> name, 'label' => $attributes['title'], 'icon' => $icon, 'id' => $plugin -> id));
 		}
 		
-		//if there are plugins is needed to add a subitem page to manage them
-		//if($arePlugin){
-		//	//$this -> add_plugin_subitem_menu(array('plugin' => true, 'name' => '', 'label' => 'Plugins Manager', 'icon' => '', 'id' => ""));
-		//}
 		
 		unset($modules);
 
 		if (isset($_SESSION['language']) && $_SESSION['language'] != '') {
-
 			return $_SESSION['language'];
 
 		} else {
-
+			
 			$this -> _ci -> load -> model('configuration');
 			$languages = json_decode($this -> _ci -> configuration -> get_config_value('languages'), TRUE);
 			$language = $this -> _ci -> configuration -> get_config_value('language');
@@ -238,7 +229,6 @@ class FT_Layout {
 
 	protected function _ft_load($_ci_data, $controller = FALSE) {
 		// Set the default data variables
-
 		foreach (array('_ci_view', '_ci_vars', '_ci_path', '_ci_return') as $_ci_val) {
 			$$_ci_val = (!isset($_ci_data[$_ci_val])) ? FALSE : $_ci_data[$_ci_val];
 		}
@@ -261,7 +251,6 @@ class FT_Layout {
 					$file_exists = TRUE;
 					break;
 				}
-
 				if (!$cascade) {
 					break;
 				}
@@ -345,7 +334,6 @@ class FT_Layout {
 			ob_end_flush();
 		} else {
 			$this -> _compress == true ? $_ci_CI -> output -> append_output($this -> _do_compression(ob_get_contents())) : $_ci_CI -> output -> append_output(ob_get_contents());
-
 			@ob_end_clean();
 		}
 	}

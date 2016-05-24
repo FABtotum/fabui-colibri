@@ -2,9 +2,9 @@
 <html lang="en-us">
 	<head>
 		<meta charset="utf-8">
-		<meta name="description" content="FABtotum Web User Interface">
-		<meta name="author"      content="FABtotum Development Team">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="description"      content="FABtotum Web User Interface">
+		<meta name="author"           content="FABtotum Development Team">
+		<meta name="viewport"         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<meta name="HandheldFriendly" content="true">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -39,7 +39,7 @@
 				<div class="ajax-dropdown">
 					<div class="btn-group btn-group-justified" data-toggle="buttons">
 						<label class="btn btn-default update-list  notification">
-							<input type="radio" name="activity" id="<?php echo site_url('controller/updates') ?>">
+							<input type="radio" name="activity" id="<?php echo site_url('updates/notification') ?>">
 							<span>Updates (0)</span>
 						</label>
 						<label class="btn btn-default task-list notification">
@@ -66,19 +66,6 @@
 						<a href="javascript:void(0);" title="Collapse Menu" data-action="toggleMenu"><i class="fa fa-reorder"></i> </a>
 					</span>
 				</div>
-				<!-- end collapse menu button -->
-				
-				<!-- PROFILE BUTTON 
-				<div class="btn-header transparent pull-right hidden-xs">
-					<span>
-						<?php echo anchor( 'profile', ' <i class="fa fa-user"></i> ', 'rel="tooltip" data-placement="left" title="Profile" style="cursor: pointer !important"'); ?>
-					</span>
-				</div>
-				<!-- END PROFILE BUTTON -->
-				
-				
-				
-				
 				<!-- LOGOUT BUTTON -->
 				<div id="log-out" class="btn-header transparent pull-right hidden-xs">
 					<span>
@@ -86,34 +73,9 @@
 					</span>
 				</div>
 				<!-- END LOGOUT BUTTON -->
-				
-				
-				<!-- #Voice Command: Start Speech
-						<div id="speech-btn" class="btn-header transparent pull-right hidden-sm hidden-xs">
-							<div> 
-								<a href="javascript:void(0)" title="Voice Command" data-action="voiceCommand"><i class="fa fa-microphone"></i></a> 
-								<div class="popover bottom"><div class="arrow"></div>
-									<div class="popover-content">
-										<h4 class="vc-title">Voice command activated <br><small>Please speak clearly into the mic</small></h4>
-										<h4 class="vc-title-error text-center">
-											<i class="fa fa-microphone-slash"></i> Voice command failed
-											<br><small class="txt-color-red">Must <strong>"Allow"</strong> Microphone</small>
-											<br><small class="txt-color-red">Must have <strong>Internet Connection</strong></small>
-										</h4>
-										<a href="javascript:void(0);" class="btn btn-success" onclick="commands.help()">See Commands</a> 
-										<a href="javascript:void(0);" class="btn bg-color-purple txt-color-white" onclick="$('#speech-btn .popover').fadeOut(50);">Close Popup</a> 
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- end voice command -->
 
-				
-				
 			</div>
-			
 			<div class="pull-right emergency-container">
-				
 				<!-- RESET CONTROLLER BUTTON -->
 				<div class="btn-header transparent">
 					<span>
@@ -140,7 +102,6 @@
 					<span id="jog-shortcut">
 						<a href="javascript:void(0)" style="cursor: pointer !important;" title="Jog" rel="tooltip" data-placement="left" data-html="true" data-original-title="Jog"><i class="fa fa-gamepad"></i></a>
 					</span>
-					
 					<div class="top-ajax-jog-dropdown">
 						<div class="">
 							<div class="btn-group-vertical">

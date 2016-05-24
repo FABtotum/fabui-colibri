@@ -285,4 +285,9 @@ class Login extends Module {
 
 	}
 
+	/* poweroff */
+	public function poweroff(){
+		shell_exec('sudo poweroff');
+	}
+
 }

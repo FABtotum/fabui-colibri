@@ -62,11 +62,9 @@ $(document).ready(function() {
 				required : 'You must agree with Terms and Conditions'
 			}
 		},
-
-		// Do not change code below
 		errorPlacement : function(error, element) {
-			error.insertAfter(element.parent());
-		}
+				error.insertAfter(element.parent());
+			}
 	});
 
 	$("#register-button").click(function() {
@@ -92,7 +90,7 @@ function ask_power_off() {
 	}, function(ButtonPressed) {
 
 		if (ButtonPressed === "Yes") {
-			shutdown();
+			fabApp.loginPowerOff();
 		}
 		if (ButtonPressed === "No") {
 		}

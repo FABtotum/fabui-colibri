@@ -207,7 +207,7 @@
     }
 	
 	//select file form recent table
-	function select_recent_file(){
+	function select_recent_file(idFile){
 		
 		$(".model-info").remove();
 		var recent_file = recent_files[idFile];
@@ -308,7 +308,6 @@
 			
 			$("#act-ext-temp .noUi-handle").remove();
 			
-			
 			noUiSlider.create(document.getElementById('temp2'), {
 				start: 0,
 				connect: "lower",
@@ -322,7 +321,6 @@
 					})
 				}
 			});
-			
 			
 			noUiSlider.create(document.getElementById('act-bed-temp'), {
 				start: 0,
@@ -1070,10 +1068,20 @@
 			}
 		}
 	}
-	
+	// refresh page
 	function refreshPage() {
 		waitContent('Refreshing page');
 		document.location.href = '<?php echo site_url("make/".strtolower($label)); ?>';
+	}
+	// reset objects table
+	function resetTableObjects(){
+		$( "#objects_table tbody > tr > td" ).find('input').each(function() {
+			$(this).prop('checked', false);
+		});
+		$( "#objects_table tbody > tr " ).each(function() {
+			$(this).removeClass('success');
+		});
+		object = undefined;
 	}
 	
 </script>

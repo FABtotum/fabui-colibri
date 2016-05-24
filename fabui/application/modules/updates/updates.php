@@ -21,8 +21,6 @@ class Updates extends Module {
 		$data['task'] = $this -> tasks -> get_running('updates'); //check if there's already an updated running process
 		//get versions
 		$_SESSION['fabui_version'] = $data['local_version']  = myfab_get_local_version();
-		//$data['remote_version'] = 2;
-		//$_SESSION['updates']['updated'] = $data['updated'] = version_compare($data['local_version'], $data['remote_version']) > -1;
 		$_SESSION['updates']['updated'] = $data['updated'] = $data['local_version'] >= $data['remote_version'];
 		$_SESSION['updates']['time'] = time();
 		//layout
@@ -30,9 +28,6 @@ class Updates extends Module {
 		$this -> layout -> add_css_in_page(array('data' => $this -> load -> view('index/css', $data, TRUE), 'comment' => ''));
 		$this -> layout -> view('index/index', $data);
 		
-	}
-	/* */
-	public function aa(){
 	}
 	/* */
 	public function uptodate(){
@@ -47,9 +42,6 @@ class Updates extends Module {
 		$data['remote_version'] = myfab_get_remote_version();
 		$data['updated'] = $data['local_version'] >= $data['remote_version'];
 		
-		//if($updated){
-			//return;
-		//}
 		//load model
 		$this->load->model('tasks');
 		//crate data for record
