@@ -64,7 +64,8 @@ DESTDIR 		?= .
 TEMP_DIR 		= ./temp
 BDATA_DIR 		= $(TEMP_DIR)/bdata
 BDATA_STAMP		= $(TEMP_DIR)/.bdata_stamp
-FABUI_BUNDLE	= $(DESTDIR)/$(PRIORITY)-$(NAME)-$(VERSION)-bundle-v$(shell date +%Y%m%d).cb
+#FABUI_BUNDLE	= $(DESTDIR)/$(PRIORITY)-$(NAME)-$(VERSION)-bundle-v$(shell date +%Y%m%d).cb
+FABUI_BUNDLE	= $(DESTDIR)/$(PRIORITY)-$(NAME)-v$(VERSION).cb
 
 OS_FILES_DIR	= ./os
 
@@ -177,7 +178,10 @@ $(OS_COLIBRI_STAMP):
 #	$(FAKEROOT_ENV) $(INSTALL) -D -m 0644 $(OS_FILES_DIR)/colibri/fabui.default \
 #		$(BDATA_DIR)/etc/default/fabui
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fabui.first \
-		$(BDATA_DIR)/etc/firstboot.d/fabui		
+		$(BDATA_DIR)/etc/firstboot.d/fabui	
+		
+	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fixes.init \
+		$(BDATA_DIR)/etc/init.d/fixes
 	
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/rc.d/rc.firstboot.d
 	$(FAKEROOT_ENV) ln -fs ../../firstboot.d/fabui \
@@ -193,7 +197,9 @@ $(OS_COLIBRI_STAMP):
 	$(FAKEROOT_ENV) ln -fs ../../init.d/fabui \
 		$(BDATA_DIR)/etc/rc.d/rc.shutdown.d/S20fabui
 	$(FAKEROOT_ENV) ln -fs ../../init.d/fabtotum \
-		$(BDATA_DIR)/etc/rc.d/rc.shutdown.d/S98fabtotum
+		$(BDATA_DIR)/etc/rc.d/rc.shutdown.d/S65fabtotum
+	$(FAKEROOT_ENV) ln -fs ../../init.d/fixes \
+		$(BDATA_DIR)/etc/rc.d/rc.shutdown.d/S62fixes
 # 	Create a stamp file
 	touch $@
 	

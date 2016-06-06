@@ -1,0 +1,41 @@
+#!/bin/sh
+################################################################
+# Begin $rc_base/init.d/
+#
+# Description : 
+# 
+# Authors     : Daniel Kesler
+# 
+# Version     : 00.10
+#
+# Notes       :
+#
+###############################################################
+
+. /etc/default/rc
+. ${rc_functions}
+
+case "$1" in
+  start)
+ 	#~ boot_msg "Starting..."
+	#~ true
+	#~ evaluate_retval
+	;;
+  stop)
+	boot_msg "Unloading 819acu module."
+	rmmod 8192cu &> /dev/null
+	evaluate_retval
+	;;
+  restart|reload)
+	${0} stop
+	sleep 1
+	${0} start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+
+
