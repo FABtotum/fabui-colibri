@@ -7,11 +7,15 @@ VERSION		?=	$(shell grep '^FABUI [0-9]\+\.[0-9]\+' README.md README.md | head -n
 # Priority for colibri bundle
 PRIORITY	?= 090
 
+# FABUI license
+LICENSE		?= GPLv2
+
 # OS flavour identifier
 OS_FLAVOUR	?= colibri
 
 # FAB-UI system paths
 #LIB_PATH		?= /var/lib/$(NAME)/
+METADATA_PATH	?= /var/lib/colibri/bundle/$(NAME)
 WWW_PATH		?= /var/www/
 MOUNT_BASE_PATH	?= /mnt
 FABUI_PATH		?= $(WWW_PATH)fabui/
@@ -162,6 +166,19 @@ $(BDATA_STAMP): $(TEMP_DIR) $(BDATA_DIR) $(CONFIG_FILES) $(DB_FILES)
 	$(FAKEROOT_ENV) touch $(BDATA_DIR)/$(TEMP_PATH)/safety.json
 # 	Fix permissions
 	$(FAKEROOT_ENV) chown -R 33:33 $(BDATA_DIR)$(WWW_PATH)
+#	Add metadata
+	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)$(METADATA_PATH)
+#	metadata/info
+	$(FAKEROOT_ENV) echo "name: $(NAME)" >> $(BDATA_DIR)$(METADATA_PATH)/info
+	$(FAKEROOT_ENV) echo "version: $(VERSION)" >> $(BDATA_DIR)$(METADATA_PATH)/info
+	$(FAKEROOT_ENV) echo "build-date: $(shell date +%Y-%m-%d)" >> $(BDATA_DIR)$(METADATA_PATH)/info
+#	metadata/packages
+	$(FAKEROOT_ENV) echo "$(NAME): $(VERSION)" >> $(BDATA_DIR)$(METADATA_PATH)/packages
+#	metadata/licenses
+	$(FAKEROOT_ENV) echo "$(NAME): $(LICENSE)" >> $(BDATA_DIR)$(METADATA_PATH)/licenses
+#	license files
+	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/usr/share/licenses/$(NAME)
+	$(FAKEROOT_ENV) cp LICENSE $(BDATA_DIR)/usr/share/licenses/$(NAME)
 # 	Create a stamp file
 	touch $@
 
