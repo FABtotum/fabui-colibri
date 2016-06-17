@@ -1,37 +1,21 @@
-[task]
-trace_file = @TEMP_PATH@task_trace
-monitor_file = @TEMP_PATH@task_monitor.json
-notifications_file = @TEMP_PATH@task_notifications.json
-lock_file = @TEMP_PATH@LOCK
-
-[macro]
-status_file = @TEMP_PATH@macro_status.json
-trace_file = @TEMP_PATH@macro_trace
-response_file = @TEMP_PATH@macro_response
-
-[printer]
-settings_file = @FABUI_PATH@config/config.json
-custom_settings_file = @FABUI_PATH@config/custom_config.json
-
+[hardware]
+default_settings = @LIB_PATH@/settings/default_settings.json
+custom_settings = @LIB_PATH@/settings/custom_settings.json
+heads = @LIB_PATH@/heads
 [socket]
 host = 0.0.0.0
-port = 9001
-
-[safety]
-file = @TEMP_PATH@safety.json
-
-[serial]
-port = /dev/ttyAMA0
-baud = 115200
-
-[monitor]
-log_file = @TEMP_PATH@monitor_log
-debug_file = @TEMP_PATH@monitor_debug
-
-[system]
-dev_folder = /dev/
-dev_usb_file = /dev/sda1
-usb_folder = /media/
-php_script_path = @FABUI_PATH@script
-python_script_path = @FABUI_PATH@python
+port = 9002
+[general]
+lock = /tmp/LOCK
+macro_response = /tmp/macro_response
+trace = /tmp/trace
+task_monitor = /tmp/task_monitor.json
+ext_path = /usr/shared/fabui/ext/
+emergency_file = /tmp/emergency.json
+python_scripts = /usr/shared/fabui/ext/py
+[usb]
+usb_disk_folder = /media/
+usb_file = /dev/sda1
+[gpio]
+pin = 2
 

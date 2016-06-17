@@ -14,7 +14,7 @@ LICENSE		?= GPLv2
 OS_FLAVOUR	?= colibri
 
 # FAB-UI system paths
-#LIB_PATH		?= /var/lib/$(NAME)/
+LIB_PATH		?= /var/lib/$(NAME)/
 METADATA_PATH	?= /var/lib/colibri/bundle/$(NAME)
 WWW_PATH		?= /var/www/
 MOUNT_BASE_PATH	?= /mnt
@@ -25,7 +25,7 @@ TASKS_PATH		?= $(WWW_PATH)tasks/
 RECOVERY_PATH	?= $(WWW_PATH)recovery/
 TEMP_PATH		?= $(WWW_PATH)temp/
 UPLOAD_PATH		?= $(WWW_PATH)upload/
-LIB_PATH		?= $(WWW_PATH)lib/
+#LIB_PATH		?= $(WWW_PATH)lib/
 BIGTEMP_PATH	?= $(MOUNT_BASE_PATH)/bigtmp/
 USERDATA_PATH	?= $(MOUNT_BASE_PATH)/userdata/
 DB_PATH			?= $(LIB_PATH)/
@@ -43,16 +43,13 @@ SCRIPT_FILES	=	fabui/script/*
 WWW_FILES		= 	index.php \
 					install.php \
 					assets \
-					upload \
-					lib \
-					cron \
 					LICENSE \
 					README.md
 					
 FABUI_FILES		=	fabui/index.php \
 					fabui/application \
-					fabui/config \
-					fabui/system
+					fabui/system \
+					fabui/ext
 
 # <files>/* is to avoid making <files>/<files> path
 RECOVERY_FILES	=	recovery/*
@@ -61,7 +58,7 @@ RECOVERY_FILES	=	recovery/*
 DB				= 	sqlite3
 DB_FILES		= 	fabtotum.db
 
-CONFIG_FILES	=	lib/config.php lib/config.ini
+CONFIG_FILES	=	$(LIB_PATH)/config.ini
 
 # Build/Install paths
 DESTDIR 		?= .
