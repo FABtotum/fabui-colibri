@@ -1,4 +1,6 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
 /*
 | -------------------------------------------------------------------------
 | URI ROUTING
@@ -17,13 +19,13 @@
 |
 | Please see the user guide for complete details:
 |
-|	http://codeigniter.com/user_guide/general/routing.html
+|	https://codeigniter.com/user_guide/general/routing.html
 |
 | -------------------------------------------------------------------------
 | RESERVED ROUTES
 | -------------------------------------------------------------------------
 |
-| There area two reserved routes:
+| There are three reserved routes:
 |
 |	$route['default_controller'] = 'welcome';
 |
@@ -33,49 +35,26 @@
 |
 |	$route['404_override'] = 'errors/page_missing';
 |
-| This route will tell the Router what URI segments to use if those provided
-| in the URL cannot be matched to a valid route.
+| This route will tell the Router which controller/method to use if those
+| provided in the URL cannot be matched to a valid route.
 |
+|	$route['translate_uri_dashes'] = FALSE;
+|
+| This is not exactly a route, but allows you to automatically route
+| controller and method names that contain dashes. '-' isn't a valid
+| class or method name character, so it requires translation.
+| When you set this option to TRUE, it will replace ALL dashes in the
+| controller and method URI segments.
+|
+| Examples:	my-controller/index	-> my_controller/index
+|		my-controller/my-method	-> my_controller/my_method
 */
-
-$route['default_controller'] = "dashboard";
-$route['404_override']       = 'error/show_404';
-
-
-/** plugin route */
-$route['plugin/remove/(:any)']     = "plugin/remove/$1";
-$route['plugin/activate/(:any)']   = "plugin/activate/$1";
-$route['plugin/deactivate/(:any)'] = "plugin/deactivate/$1";
-$route['plugin/add']               = "plugin/add";
-$route['plugin/upload']            = "plugin/upload";
-$route['plugin/index']             = "plugin";
-$route['plugin/(:any)']            = "$1";
-
-/** maintenance route */
-$route['maintenance/4-axis']            = "maintenance/fourthaxis";
-$route['maintenance/self-test']         = "maintenance/selftest";
-$route['maintenance/bed-calibration']   = "maintenance/bedcalibration";
-$route['maintenance/probe-calibration'] = "maintenance/probecalibration";
-$route['maintenance/first-setup']       = "maintenance/firstsetup";
-$route['maintenance/system-info']       = "maintenance/systeminfo";
-
-//$route['settings/set-eth']    = "settings/seteth";
-//$route['settings/set-wifi']   = "settings/setwifi";
-$route['settings/raspi-cam']        = 'settings/raspicam';
-$route['settings/network/wlan']     = 'settings/wlan';
-$route['settings/network/eth']      = 'settings/eth';
-$route['settings/network/dns'] = 'settings/dns';
-
-
-$route['controller/stop-all'] = "controller/stop_all";
-
-
-
-/** make route */
-$route['make/print'] = "create";
-$route['make/mill']  = "create/index/subtractive";
+$route['default_controller'] = 'dashboard';
+$route['404_override'] = '';
+$route['translate_uri_dashes'] = FALSE;
+// make
+$route['make/print'] = 'create/index/print';
+$route['make/mill']  = 'create/index/mill';
 $route['make/scan']  = 'scan';
-$route['make/history']  = 'create/history';
-
-/* End of file routes.php */
-/* Location: ./application/config/routes.php */
+// login
+$route['login/do'] = 'login/doLogin';
