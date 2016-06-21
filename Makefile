@@ -15,41 +15,50 @@ OS_FLAVOUR	?= colibri
 
 # FAB-UI system paths
 LIB_PATH		?= /var/lib/$(NAME)/
+SHARED_PATH		?= /usr/share/$(NAME)/
 METADATA_PATH	?= /var/lib/colibri/bundle/$(NAME)
 WWW_PATH		?= /var/www/
-MOUNT_BASE_PATH	?= /mnt
-FABUI_PATH		?= /user/share/fabui/
-PYTHON_PATH		?= $(FABUI_PATH)python/
-SCRIPT_PATH		?= $(FABUI_PATH)script/
+MOUNT_BASE_PATH	?= /mnt/
+FABUI_PATH		?= $(SHARED_PATH)
 TASKS_PATH		?= $(WWW_PATH)tasks/
 RECOVERY_PATH	?= $(WWW_PATH)recovery/
-TEMP_PATH		?= $(WWW_PATH)temp/
 UPLOAD_PATH		?= $(WWW_PATH)upload/
-#LIB_PATH		?= $(WWW_PATH)lib/
-BIGTEMP_PATH	?= $(MOUNT_BASE_PATH)/bigtmp/
-USERDATA_PATH	?= $(MOUNT_BASE_PATH)/userdata/
+FABUI_TEMP_PATH	?= $(WWW_PATH)temp/
+PYTHON_PATH		?= $(FABUI_PATH)ext/py/
+BASH_PATH		?= $(FABUI_PATH)ext/bash/
+TEMP_PATH		?= /tmp/
+RUN_PATH		?= /run/$(NAME)/
+BIGTEMP_PATH	?= $(MOUNT_BASE_PATH)bigtmp/
+USERDATA_PATH	?= $(MOUNT_BASE_PATH)userdata/
 DB_PATH			?= $(LIB_PATH)/
+USB_MEDIA_PATH	?= /run/media/
 
 # OS paths
 PHP_CONFIG_FILE_SCANDIR ?= /etc/php/conf.d/
 CRON_FOLDER ?= /var/spool/cron/crontabs/
 
-############################ Files #####################################
-# <files>/* is to avoid making <files>/<files> path
-PYTHON_FILES	= 	fabui/python/*
-# <files>/* is to avoid making <files>/<files> path
-SCRIPT_FILES	=	fabui/script/*
+########################## Input Files #################################
+# File paths of local files taht will be installed to the configured
+# paths according to their type
 
+
+# <files>/* is to avoid making <files>/<files> path
+#PYTHON_FILES	= 	fabui/ext/py*
+# <files>/* is to avoid making <files>/<files> path
+#SCRIPT_FILES	=	fabui/ext/bash/*
+
+# Files that will end up in WWW_PATH
 WWW_FILES		= 	index.php \
 					install.php \
-					assets \
 					LICENSE \
 					README.md
 					
-FABUI_FILES		=	fabui/index.php \
+# Files that will end up in FABUI_PATH
+FABUI_FILES		=	fabui/ext \
+					fabui/index.php \
 					fabui/application \
 					fabui/system \
-					fabui/ext
+					fabui/assets
 
 # <files>/* is to avoid making <files>/<files> path
 RECOVERY_FILES	=	recovery/*
@@ -58,7 +67,19 @@ RECOVERY_FILES	=	recovery/*
 DB				= 	sqlite3
 DB_FILES		= 	fabtotum.db
 
-CONFIG_FILES	=	$(LIB_PATH)/config.ini
+CONFIG_FILES	=	config.ini
+
+# Files that will end up in SHARED_PATH
+STATIC_FILES	=	
+
+# Files that will end up in LIB_PATH
+DYNAMIC_FILES	=	$(CONFIG_FILES) $(DB_FILES)
+
+# List of files that should go through the generator script
+GENERATED_FILES = $(CONFIG_FILES) \
+				  os/colibri/fabui.default
+
+########################################################################
 
 # Build/Install paths
 DESTDIR 		?= .
@@ -66,7 +87,11 @@ TEMP_DIR 		= ./temp
 BDATA_DIR 		= $(TEMP_DIR)/bdata
 BDATA_STAMP		= $(TEMP_DIR)/.bdata_stamp
 #FABUI_BUNDLE	= $(DESTDIR)/$(PRIORITY)-$(NAME)-$(VERSION)-bundle-v$(shell date +%Y%m%d).cb
+ifneq ($(VERSION),)
 FABUI_BUNDLE	= $(DESTDIR)/$(PRIORITY)-$(NAME)-v$(VERSION).cb
+else
+FABUI_BUNDLE	= $(DESTDIR)/$(PRIORITY)-$(NAME)-devel.cb
+endif
 
 OS_FILES_DIR	= ./os
 
@@ -85,7 +110,7 @@ MKSQUASHFS		?= mksquashfs
 BUNDLE_COMP		?= lzo
 ########################### Makefile rules #############################
 
-all:
+all: $(FABUI_BUNDLE)
 
 clean:
 	rm -rf $(TEMP_DIR)
@@ -95,6 +120,7 @@ clean:
 distclean: clean
 	rm -rf *.cb
 	rm -rf *.cb.md5sum
+	rm -f $(GENERATED_FILES)
 	
 
 check-tools:
@@ -107,24 +133,23 @@ check-tools:
 
 bundle: $(FABUI_BUNDLE)
 
-lib/config.php: config.php.in
+# Collects rules of all *.in files and uses the generator on them.
+% : %.in
 	./generate_config.sh $^ $@ \
 		WWW_PATH=$(WWW_PATH) \
 		FABUI_PATH=$(FABUI_PATH) \
 		PYTHON_PATH=$(PYTHON_PATH) \
-		SCRIPT_PATH=$(SCRIPT_PATH) \
+		BASH_PATH=$(BASH_PATH) \
 		TASKS_PATH=$(TASKS_PATH) \
 		RECOVERY_PATH=$(RECOVERY_PATH) \
 		TEMP_PATH=$(TEMP_PATH) \
+		FABUI_TEMP_PATH=$(FABUI_TEMP_PATH) \
 		UPLOAD_PATH=$(UPLOAD_PATH) \
 		LIB_PATH=$(LIB_PATH) \
+		SHARED_PATH=$(SHARED_PATH) \
 		BIGTEMP_PATH=$(BIGTEMP_PATH) \
-		USERDATA_PATH=$(USERDATA_PATH)
-
-lib/config.ini: config.ini.in
-	./generate_config.sh $^ $@ \
-		FABUI_PATH=$(FABUI_PATH) \
-		TEMP_PATH=$(TEMP_PATH) \
+		USERDATA_PATH=$(USERDATA_PATH) \
+		USB_MEDIA_PATH=$(USB_MEDIA_PATH)
 
 $(TEMP_DIR):
 	mkdir -p $@
@@ -132,13 +157,7 @@ $(TEMP_DIR):
 $(BDATA_DIR):
 	mkdir -p $@
 
-$(BDATA_STAMP): $(TEMP_DIR) $(BDATA_DIR) $(CONFIG_FILES) $(DB_FILES)
-# 	Copy python files
-	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)$(PYTHON_PATH)
-	$(FAKEROOT_ENV) cp -a $(PYTHON_FILES) 	$(BDATA_DIR)$(PYTHON_PATH)
-# 	Copy script files
-	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)$(SCRIPT_PATH)
-	$(FAKEROOT_ENV) cp -a $(SCRIPT_FILES) 	$(BDATA_DIR)$(SCRIPT_PATH)
+$(BDATA_STAMP): $(TEMP_DIR) $(BDATA_DIR) $(DB_FILES) $(GENERATED_FILES)
 # 	Copy www files
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)$(WWW_PATH)
 	$(FAKEROOT_ENV) cp -a $(WWW_FILES) 		$(BDATA_DIR)$(WWW_PATH)
@@ -152,17 +171,31 @@ $(BDATA_STAMP): $(TEMP_DIR) $(BDATA_DIR) $(CONFIG_FILES) $(DB_FILES)
 	$(FAKEROOT_ENV) $(INSTALL) -d -o 33 -g 33 -m 0755 $(BDATA_DIR)$(LIB_PATH)
 #	Create log directory
 	$(FAKEROOT_ENV) $(INSTALL) -d -o 33 -g 33 -m 0755 $(BDATA_DIR)/var/log/fabui
-#	Install DB
-	$(FAKEROOT_ENV) cp -a $(DB_FILES) $(BDATA_DIR)$(DB_PATH)
+#	Install static files
+ifneq ($(STATIC_FILES),)
+	$(FAKEROOT_ENV)mkdir -p $(BDATA_DIR)$(SHARED_PATH)
+	$(FAKEROOT_ENV) cp -a $(STATIC_FILES) $(BDATA_DIR)$(SHARED_PATH)
+endif
+#	Install dynamic files
+ifneq ($(DYNAMIC_FILES),)
+	$(FAKEROOT_ENV) cp -a $(DYNAMIC_FILES) $(BDATA_DIR)$(LIB_PATH)
+endif
+#	Create sym-links
+	$(FAKEROOT_ENV) ln -s $(FABUI_PATH) 		$(BDATA_DIR)$(WWW_PATH)/fabui
+	$(FAKEROOT_ENV) ln -s $(FABUI_PATH)assets 	$(BDATA_DIR)$(WWW_PATH)/assets
+	$(FAKEROOT_ENV) ln -s $(TEMP_PATH)fabui 	$(BDATA_DIR)$(WWW_PATH)/temp
 #	The autoinstall flag file is created at compile time
 	$(FAKEROOT_ENV) touch $(BDATA_DIR)/$(WWW_PATH)/AUTOINSTALL
 #	Public runtime directories
 	$(FAKEROOT_ENV) $(INSTALL) -d -g 33 -m 0775 $(BDATA_DIR)/$(TEMP_PATH)
 	$(FAKEROOT_ENV) $(INSTALL) -d -g 33 -m 0775 $(BDATA_DIR)/$(TASKS_PATH)
-#   create safety file
-	$(FAKEROOT_ENV) touch $(BDATA_DIR)/$(TEMP_PATH)/safety.json
+	$(FAKEROOT_ENV) $(INSTALL) -d -g 33 -m 0775 $(BDATA_DIR)/$(LIB_PATH)heads
+########################################################################
 # 	Fix permissions
 	$(FAKEROOT_ENV) chown -R 33:33 $(BDATA_DIR)$(WWW_PATH)
+	$(FAKEROOT_ENV) chown -R 33:33 $(BDATA_DIR)$(LIB_PATH)
+	$(FAKEROOT_ENV) chown -R 0:0 $(BDATA_DIR)$(SHARED_PATH)
+########################################################################
 #	Add metadata
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)$(METADATA_PATH)
 #	metadata/info
@@ -189,8 +222,8 @@ $(OS_COLIBRI_STAMP):
 		
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fabui.init \
 		$(BDATA_DIR)/etc/init.d/fabui
-#	$(FAKEROOT_ENV) $(INSTALL) -D -m 0644 $(OS_FILES_DIR)/colibri/fabui.default \
-#		$(BDATA_DIR)/etc/default/fabui
+	$(FAKEROOT_ENV) $(INSTALL) -D -m 0644 $(OS_FILES_DIR)/colibri/fabui.default \
+		$(BDATA_DIR)/etc/default/fabui
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fabui.first \
 		$(BDATA_DIR)/etc/firstboot.d/fabui	
 		

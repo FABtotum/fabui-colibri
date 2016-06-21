@@ -1,21 +1,26 @@
 [hardware]
-default_settings = @LIB_PATH@/settings/default_settings.json
-custom_settings = @LIB_PATH@/settings/custom_settings.json
-heads = @LIB_PATH@/heads
+default_settings = @LIB_PATH@settings/default_settings.json
+custom_settings = @LIB_PATH@settings/custom_settings.json
+heads = @LIB_PATH@heads
+
 [socket]
 host = 0.0.0.0
 port = 9002
+
 [general]
-lock = /tmp/LOCK
-macro_response = /tmp/macro_response
-trace = /tmp/trace
-task_monitor = /tmp/task_monitor.json
-ext_path = /usr/shared/fabui/ext/
-emergency_file = /tmp/emergency.json
-python_scripts = /usr/shared/fabui/ext/py
+lock = @FABUI_TEMP_PATH@LOCK
+macro_response = @FABUI_TEMP_PATH@macro_response
+trace = @FABUI_TEMP_PATH@trace
+task_monitor = @FABUI_TEMP_PATH@task_monitor.json
+emergency_file = @FABUI_TEMP_PATH@emergency.json
+ext_path = @SHARED_PATH@ext/
+python_scripts = @PYTHON_PATH@
+bigtemp_path = @BIGTEMP_PATH@
+
 [usb]
-usb_disk_folder = /media/
+usb_disk_folder = @USB_MEDIA_PATH@
 usb_file = /dev/sda1
+
 [gpio]
 pin = 2
 

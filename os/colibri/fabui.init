@@ -22,16 +22,20 @@ SERVICE_NAME=FABUI
 case "$1" in
   start)
  	boot_msg "Starting ${SERVICE_NAME}."
+ 	
+ 	mkdir -p ${TEMP_PATH}/fabui
+ 	touch ${TEMP_PATH}/fabui/safety.json
+ 	
     #python /var/www/fabui/python/baud.py
-	python /usr/shared/fabui/ext/py/setBaud.py &> /var/log/fabui/setBaud.log
+	python ${PYTHON_PATH}/setBaud.py &> /var/log/fabui/setBaud.log
 	######## websocket server ########
-	php /usr/shared/fabui/index.php Server webSocket &> /var/log/fabui/webSocket.log &
+	php ${FABUI_PATH}/index.php Server webSocket &> /var/log/fabui/webSocket.log &
 	echo $! > /run/webSocket.pid
 	######## gpio monitor ########
-	python /usr/shared/fabui/ext/py/SystemMonitor.py &> /var/log/fabui/SystemMonitor.log &
+	python ${PYTHON_PATH}/SystemMonitor.py &> /var/log/fabui/SystemMonitor.log &
 	echo $! > /run/SystemMonitor.pid
 	######## hardware bootstrap ########
-	php /usr/shared/fabui/index.php Control hardwareBootstrap &> /var/log/fabui/hardwareBootstrap.log
+	php ${FABUI_PATH}/index.php Control hardwareBootstrap &> /var/log/fabui/hardwareBootstrap.log
 	
 	#python /var/www/fabui/python/flush.py &> /var/log/fabui/flush.log
 	#php /var/www/fabui/script/boot.php &> /var/log/fabui/boot.log
