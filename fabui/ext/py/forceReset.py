@@ -40,15 +40,12 @@ def reset():
 reset()
 GPIO.cleanup()
 
-
-serial_port = FabtotumConfig.SERIAL_PORT
-serial_baud = FabtotumConfig.SERIAL_BAUD
-
-serial = serial.Serial(serial_port, serial_baud, timeout=0.5)
+serial = serial.Serial(FabtotumConfig.SERIAL_PORT, FabtotumConfig.SERIAL_BAUD, timeout=0.5)
 serial.flush()
-serial.flushInput()
-serial.flushOutput()
+serial.reset_input_buffer()
+serial.reset_output_buffer()
 serial.close()
+time.sleep(1)
 #trace("Controller ready")
 #write_status(False)
 #os.remove(config.get('task', 'lock_file'))

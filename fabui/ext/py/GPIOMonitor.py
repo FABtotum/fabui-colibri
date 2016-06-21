@@ -10,7 +10,7 @@ from ws4py.client.threadedclient import WebSocketClient
 import serial, re, json, os, time
 
 
-
+print "=== GPIOMONITOR ==="
 ws = WebSocketClient('ws://'+FabtotumConfig.SOCKET_HOST +':'+FabtotumConfig.SOCKET_PORT+'/')
 ws.connect();
 
@@ -24,19 +24,19 @@ GPIO.setup(int(FabtotumConfig.GPIO_PIN), GPIO.IN, pull_up_down = GPIO.PUD_DOWN) 
 
 def gpioEventListener(channell):
     open(FabtotumConfig.LOCK_FILE, 'w').close() #lock file to take over serial
-    #print "====== START ============"
-    #print 'GPIO STATUS: ', GPIO.input(int(FabtotumConfig.GPIO_PIN))
+    print "====== START ============"
+    print 'GPIO STATUS: ', GPIO.input(int(FabtotumConfig.GPIO_PIN))
     if GPIO.input(int(FabtotumConfig.GPIO_PIN)) == 0 :
         serialComm.open()
         serialComm.flushInput()
         serialComm.write("M730\r\n")
-        #print "REPLY ALL: ", serialComm.read(4096)
+        print "REPLY ALL: ", serialComm.read(4096)
         #reply=serialComm.readline().strip()
         reply= serialComm.read(4096).strip()
         serialComm.reset_input_buffer()
         serialComm.reset_output_buffer()
         serialComm.close()
-        #print "REPLY: ", reply
+        print "REPLY: ", reply
         search = re.search('ERROR\s:\s(\d+)', reply)
         if search != None:
             errorNumber = int(search.group(1))
@@ -44,8 +44,8 @@ def gpioEventListener(channell):
         else:
             print "Error number not recognized: ", reply
     GPIO_STATUS=GPIO.HIGH
-    #print 'GPIO STATUS on EXIT: ', GPIO.input(int(FabtotumConfig.GPIO_PIN))
-    #print "====== EXIT ============"
+    print 'GPIO STATUS on EXIT: ', GPIO.input(int(FabtotumConfig.GPIO_PIN))
+    print "====== EXIT ============"
     os.remove(FabtotumConfig.LOCK_FILE) # release serial priority
 #########################################################################                  
 ## Check error number to notify UI and do what have to do

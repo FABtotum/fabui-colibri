@@ -33,6 +33,7 @@
 	{
 		//open serial
 		$this->CI->serial->deviceOpen();
+		$this->CI->serial->serialflush();
 		//inver x endstop logic
 		$this->CI->serial->sendMessage('M747 X1'.PHP_EOL);
 		//set maximum feedrate

@@ -30,6 +30,14 @@
 		$this->hardwareId = $id;
 	}
 	
+	/***
+	 * 
+	 */
+	public function getId()
+	{
+		return $this->hardwareId;
+	}
+	
 	/**
 	 * 
 	 */

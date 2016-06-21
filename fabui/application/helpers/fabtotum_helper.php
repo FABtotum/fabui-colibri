@@ -214,9 +214,7 @@ if(!function_exists('stopAll'))
 		$CI->config->load('fabtotum');
 		$extPath = $CI->config->item('ext_path');
 		doCommandLine('php', FCPATH.'index.php Server webSocket &> /var/log/fabui/webSocket.log &');
-		doCommandLine('sudo python', $extPath.'py/GPIOMonitor.py &> /var/log/fabui/GPIOMonitor.log &');
-		//shell_exec('php '.FCPATH.'index.php Server webSocket &> /var/log/fabui/webSocket.log &');
-		//shell_exec('sudo python '.$extPath.'py/GPIOMonitor.py &> /var/log/fabui/GPIOMonitor.log &');
+		doCommandLine('python', $extPath.'py/SystemMonitor.py &> /var/log/fabui/SystemMonitor.log &');
 	}
 }
 ?>

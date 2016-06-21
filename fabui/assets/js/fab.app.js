@@ -113,12 +113,13 @@ fabApp = (function(app) {
             $(".top-ajax-jog-dropdown").is(a.target) || 0 !== $(".top-ajax-jog-dropdown").has(a.target).length || ($(".top-ajax-jog-dropdown").fadeOut(150), $(".top-ajax-jog-dropdown").prev().removeClass("active"))
         });
         
-        $(".directions").on("click", function(){
+        $(".top-directions").on("click", function(){
         	app.jogMoveXY($(this).attr("data-attribue-direction"));
         });
         
-        $(".axisz").on("click", function(){
+        $(".top-axisz").on("click", function(event){
         	app.jogAxisZ($(this).attr("data-attribute-function"), $(this).attr("data-attribute-value"));
+        	event.preventDefault();
         });
         
 		$(".zero_all").on("click", function(){
@@ -621,16 +622,17 @@ fabApp = (function(app) {
 	 */
 	app.setSecure = function(bool){
 		is_macro_on = true;
+		/*
 		if(socket_connected == true){
 			//socket.send('message', '{"function": "serial", "data":{"mode":' + bool + ' } }');
 			app.serial('emergency', bool);
 			is_emergency = false;
 			is_macro_on  = false;
 			return;
-		}
+		}*/
 		$.ajax({
 			type : "POST",
-			url : "/fabui/application/modules/controller/ajax/secure.php",
+			url : set_secure_url + '/'+bool,
 			data : {mode : bool},
 			dataType : 'json'
 		}).done(function(response) {
@@ -710,9 +712,9 @@ fabApp = (function(app) {
 	app.serial = function(func, val) {
 		
 		
-		var xyStep       = $("#step").length > 0 ? $("#step").val() : 10;
-		var zStep        = $("#z-step").length > 0 ?  $("#z-step").val() : 5;
-		var xyzFeed      = $("#feedrate").length > 0 ? $("#feedrate").val() : 1000;
+		var xyStep       = $(".xyStep").length > 0 ? $(".xyStep").val() : 10;
+		var zStep        = $(".zStep").length > 0 ?  $(".zStep").val() : 5;
+		var xyzFeed      = $(".xyzFeed").length > 0 ? $(".xyzFeed").val() : 1000;
 		var extruderFeed = $("#extruder-feedrate").length > 0 ? $("#extruder-feedrate").val() : 300;
 		
 		var data = {
@@ -721,6 +723,9 @@ fabApp = (function(app) {
 			'step'             : {'xy':  xyStep, 'z':zStep},
 			'feedrate'         : {'xyz': xyzFeed, 'extruder':extruderFeed}
 		};
+		
+		
+		console.log(data);
 		
 		if(socket_connected == true){
 			var messageToSend = {

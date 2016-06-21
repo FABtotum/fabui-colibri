@@ -98,7 +98,7 @@
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		
-		if(file_exists($CI->config->item('lock')) && $data['method'] != 'emergency') return;
+		if(file_exists($CI->config->item('lock'))) return;
 		
 		$method      = $data['method'];
 		$methodParam = $data['value'];
@@ -114,6 +114,16 @@
 			return $this->buildResponse();
 		}
 		
+	}
+	
+	/**
+	 * return busy message
+	 */
+	public function fabBusy()
+	{
+		$this->messageData = array('message' => 'FABtotum is busy');
+		$this->messageType = 'alert';
+		return $this->buildResponse();
 	}
 	
  }

@@ -6,7 +6,7 @@
 # 
 # Authors     :
 # 
-# Version     : 00.00
+# Version     : 00.01
 #
 # Notes       :
 #
@@ -22,24 +22,32 @@ SERVICE_NAME=FABUI
 case "$1" in
   start)
  	boot_msg "Starting ${SERVICE_NAME}."
-    python /var/www/fabui/python/baud.py
-	php /var/www/fabui/script/socket_server.php &> /var/log/fabui/socket_server.log &
-	echo $! > /run/fabui_socket_server.pid
-	python /var/www/fabui/python/flush.py &> /var/log/fabui/flush.log
-	php /var/www/fabui/script/boot.php &> /var/log/fabui/boot.log
-	python /var/www/fabui/python/monitor.py &> /var/log/fabui/monitor.log &
-	echo $! > /run/fabui_monitor.pid
+    #python /var/www/fabui/python/baud.py
+	python /usr/shared/fabui/ext/py/setBaud.py &> /var/log/fabui/setBaud.log
+	######## websocket server ########
+	php /usr/shared/fabui/index.php Server webSocket &> /var/log/fabui/webSocket.log &
+	echo $! > /run/webSocket.pid
+	######## gpio monitor ########
+	python /usr/shared/fabui/ext/py/SystemMonitor.py &> /var/log/fabui/SystemMonitor.log &
+	echo $! > /run/SystemMonitor.pid
+	######## hardware bootstrap ########
+	php /usr/shared/fabui/index.php Control hardwareBootstrap &> /var/log/fabui/hardwareBootstrap.log
+	
+	#python /var/www/fabui/python/flush.py &> /var/log/fabui/flush.log
+	#php /var/www/fabui/script/boot.php &> /var/log/fabui/boot.log
+	#python /var/www/fabui/python/monitor.py &> /var/log/fabui/monitor.log &
+	#echo $! > /run/fabui_monitor.pid
 	evaluate_retval
 	;;
   stop)
 	boot_msg "Stopping ${SERVICE_NAME}."
-	if [ -e "/run/fabui_socket_server.pid" ]; then
-		PID=$(cat /run/fabui_socket_server.pid)
+	if [ -e "/run/webSocket.pid" ]; then
+		PID=$(cat /run/webSocket.pid)
 		kill -9 $PID &> /dev/null
 	fi
 	
-	if [ -e "/run/fabui_monitor.pid" ]; then
-		PID=$(cat /run/fabui_monitor.pid)
+	if [ -e "/run/SystemMonitor.pid" ]; then
+		PID=$(cat /run/SystemMonitor.pid)
 		kill -9 $PID &> /dev/null
 	fi
 	evaluate_retval

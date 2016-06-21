@@ -75,25 +75,28 @@
 			</span>
 			<div class="top-ajax-jog-dropdown">
 				<div class="">
+					<!-- left column -->
 					<div class="btn-group-vertical">
-						<a  href="javascript:void(0)" data-attribue-direction="up-left"  data-attribute-keyboard="103" class="btn btn-default btn-circle btn-xl jog directions "> <i class="fa fa-arrow-left fa-1x fa-rotate-45"> </i> </a>
-						<a href="javascript:void(0)" data-attribue-direction="left"      data-attribute-keyboard="100" class="btn btn-default btn-circle btn-xl jog directions "> <i class="fa fa-arrow-left "> </i> </a>
-						<a href="javascript:void(0)" data-attribue-direction="down-left" data-attribute-keyboard="97" class="btn btn-default btn-circle btn-xl jog directions "> <i class="fa fa-arrow-down fa-rotate-45 "> </i> </a>
+						<button type="button" class="btn btn-default btn-circle btn-xl top-directions" data-attribute-direction="up-left"><i class="fa fa-arrow-left fa-1x fa-rotate-45"></i></button>
+						<button type="button" class="btn btn-default btn-circle btn-xl top-directions" data-attribute-direction="left"><i class="fa fa-arrow-left fa-1x"></i></button>
+						<button type="button" class="btn btn-default btn-circle btn-xl top-directions" data-attribute-direction="down-left"><i class="fa fa-arrow-down fa-1x fa-rotate-45"></i></button>
 					</div>
+					<!-- center column -->
 					<div class="btn-group-vertical">
-						<a href="javascript:void(0)" data-attribue-direction="up"   data-attribute-keyboard="104" class="btn btn-default btn-circle btn-xl jog directions btn-xl "> <i class="fa fa-arrow-up fa-1x"> </i> </a>
-						<a href="javascript:void(0)" data-attribue-direction="home" data-attribute-keyboard="101" class="btn btn-default btn-circle btn-xl jog zero_all "> <i class="fa fa-bullseye"> </i> </a>
-						<a href="javascript:void(0)" data-attribue-direction="down" data-attribute-keyboard="98"  class="btn btn-default btn-circle btn-xl jog directions"> <i class="fa fa-arrow-down "> </i> </a>
+						<button type="button" class="btn btn-default btn-circle btn-xl top-directions" data-attribute-direction="up"><i class="fa fa-arrow-up fa-1x"></i></button>
+						<button type="button" class="btn btn-default btn-circle btn-xl top-directions" data-attribute-direction=""></button>
+						<button type="button" class="btn btn-default btn-circle btn-xl top-directions" data-attribute-direction="down"><i class="fa fa-arrow-down fa-1x"></i></button>
 					</div>
+					<!-- right column -->
 					<div class="btn-group-vertical">
-						<a href="javascript:void(0)" data-attribue-direction="up-right"   data-attribute-keyboard="105" class="btn btn-default btn-circle btn-xl jog directions"> <i class="fa fa-arrow-up fa-1x fa-rotate-45"> </i> </a>
-						<a href="javascript:void(0)" data-attribue-direction="right"      data-attribute-keyboard="102" class="btn btn-default btn-circle btn-xl jog directions"> <i class="fa fa-arrow-right"> </i> </a>
-						<a href="javascript:void(0)" data-attribue-direction="down-right" data-attribute-keyboard="99"  class="btn btn-default btn-circle btn-xl jog directions"> <i class="fa fa-arrow-right fa-rotate-45"> </i> </a>
+						<button type="button" class="btn btn-default btn-circle btn-xl top-directions" data-attribute-direction="up-right"><i class="fa fa-arrow-up fa-1x fa-rotate-45"></i></button>
+						<button type="button" class="btn btn-default btn-circle btn-xl top-directions" data-attribute-direction="right"><i class="fa fa-arrow-right fa-1x"></i></button>
+						<button type="button" class="btn btn-default btn-circle btn-xl top-directions" data-attribute-direction="down-right"><i class="fa fa-arrow-right fa-1x fa-rotate-45"></i></button>
 					</div>
-					<div class="btn-group-vertical" style="margin-left: 10px;">
-						<a rel="tooltip" data-placement="right" data-original-title="Move Z Up" href="javascript:void(0)"  class="btn btn-default jog axisz" data-attribute-value="up" data-attribute-function="moveZ"> <i class="fa fa-angle-double-up"> </i>&nbsp;Z </a>
-						<hr/>
-						<a rel="tooltip" data-placement="right" data-original-title="Move Z Down" href="javascript:void(0)" class="btn btn-default jog axisz" data-attribute-value="down" data-attribute-function="moveZ"> <i class="fa fa-angle-double-down"> </i>&nbsp; Z </a>
+					<div class="btn-group-vertical text-center">
+						<button type="button" class="btn btn-default btn-circle btn-xl top-axisz" data-attribute-function="moveZ" data-attribute-value="up"><i class="fa fa-arrow-up fa-1x "></i></button>
+						<span>Z</span>
+						<button type="button" class="btn btn-default btn-circle btn-xl top-axisz" data-attribute-function="moveZ" data-attribute-value="down"><i class="fa fa-arrow-down fa-1x"></i></button>
 					</div>
 				</div>
 			</div>
