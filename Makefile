@@ -160,13 +160,13 @@ $(BDATA_DIR):
 $(BDATA_STAMP): $(TEMP_DIR) $(BDATA_DIR) $(DB_FILES) $(GENERATED_FILES)
 # 	Copy www files
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)$(WWW_PATH)
-	$(FAKEROOT_ENV) cp -a $(WWW_FILES) 		$(BDATA_DIR)$(WWW_PATH)
+	$(FAKEROOT_ENV) cp -R $(WWW_FILES) 		$(BDATA_DIR)$(WWW_PATH)
 # 	Copy fabui files
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)$(FABUI_PATH)
-	$(FAKEROOT_ENV) cp -a $(FABUI_FILES) 		$(BDATA_DIR)$(FABUI_PATH)
+	$(FAKEROOT_ENV) cp -R $(FABUI_FILES) 		$(BDATA_DIR)$(FABUI_PATH)
 # 	Copy recovery files
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)$(RECOVERY_PATH)
-	$(FAKEROOT_ENV) cp -a $(RECOVERY_FILES) 	$(BDATA_DIR)$(RECOVERY_PATH)
+	$(FAKEROOT_ENV) cp -R $(RECOVERY_FILES) 	$(BDATA_DIR)$(RECOVERY_PATH)
 #	Create runtime data directory
 	$(FAKEROOT_ENV) $(INSTALL) -d -o 33 -g 33 -m 0755 $(BDATA_DIR)$(LIB_PATH)
 #	Create log directory
@@ -194,7 +194,7 @@ endif
 # 	Fix permissions
 	$(FAKEROOT_ENV) chown -R 33:33 $(BDATA_DIR)$(WWW_PATH)
 	$(FAKEROOT_ENV) chown -R 33:33 $(BDATA_DIR)$(LIB_PATH)
-	$(FAKEROOT_ENV) chown -R 0:0 $(BDATA_DIR)$(SHARED_PATH)
+#~ 	$(FAKEROOT_ENV) chown -R 0:0 $(BDATA_DIR)$(FABUI_FILES)
 ########################################################################
 #	Add metadata
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)$(METADATA_PATH)
