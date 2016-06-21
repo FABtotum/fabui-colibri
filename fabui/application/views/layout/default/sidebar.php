@@ -13,7 +13,7 @@
 	<div class="login-info">
 		<span>
 			<a href="<?php echo site_url('user'); ?>">
-				<img src="<?php echo base_url(); ?>assets/img/avatars/male.png" alt="me" class="online" />
+				<img src="/assets/img/avatars/male.png" alt="me" class="online" />
 				<span><?php echo $this->session->user['first_name'].' '.$this->session->user['last_name'] ?></span>
 			</a>
 		</span>

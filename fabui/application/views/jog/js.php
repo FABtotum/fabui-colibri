@@ -11,6 +11,8 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		
+		$.console = $(".console");
+		
 		$(".directions").on("click", function(){
         	fabApp.jogMoveXY($(this).attr("data-attribute-direction"));
         });
@@ -18,6 +20,10 @@
         $(".jog-axisz").on("click", function(event){
         	fabApp.jogAxisZ($(this).attr("data-attribute-function"), $(this).attr("data-attribute-value"));
         	event.preventDefault();
+        });
+        
+        $(".extruder").on("click", function(event){
+        	fabApp.jogExtrude($(this).attr('data-attribute-type'));
         });
 	});
 </script>

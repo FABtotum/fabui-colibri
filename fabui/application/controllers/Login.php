@@ -11,8 +11,8 @@
  class Login extends FAB_Controller {
  	
 	public function index(){
-		$this->content = $this->load->view(strtolower(get_class($this)).'/login_form', '', true);
-		$this->addJsInLine($this->load->view(strtolower(get_class($this)).'/login_js', '', true));
+		$this->content = $this->load->view('login/login_form', '', true);
+		$this->addJsInLine($this->load->view('login/login_js', '', true));
 		$this->viewLogin();
 	}
 	

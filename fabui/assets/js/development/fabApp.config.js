@@ -1,7 +1,7 @@
 /*
  * FABTOTUM APP CONFIG
  */
-var base_url = '/ci/index.php'; 
+var base_url = '/fabui/'; 
 /*
  * general
  */
@@ -25,7 +25,7 @@ var check_notification_url      = '/fabui/application/modules/controller/ajax/ch
 var secure_url_action           = '/fabui/application/modules/controller/ajax/secure.php';
 var new_head_url_action         = '/fabui/maintenance/head?warning=1';
 var emergency_json_url          = '/tmp/emergency.json';
-var serial_exec_url_action      = '/fabui/application/modules/jog/ajax/exec.php';
+var serial_exec_url_action      = base_url + '/jog/exec';
 var first_setup_url_action      = '/fabui/controller/first_setup';
 var check_internet_url_action   = '/temp/internet';
 /*

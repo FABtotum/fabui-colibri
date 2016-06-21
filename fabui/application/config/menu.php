@@ -51,32 +51,32 @@
 			'head' => array(
 				'title' => 'Head Installation',
 				'icon' => '',
-				'url' => site_url()
+				'url' => site_url('maintenance/head-installation')
 			),
 			'spool' => array(
 				'title' => 'Spool',
 				'icon' => '',
-				'url' => site_url()
+				'url' => site_url('maintenance/spool')
 			),
 			'bedcalibration' => array(
 				'title' => 'Bed Calibration',
 				'icon' => '',
-				'url' => site_url()
+				'url' => site_url('maintenance/bed-calibration')
 			),
 			'probecalibration' => array(
 				'title' => 'Probe Calibration',
 				'icon' => '',
-				'url' => site_url()
+				'url' => site_url('maintenance/probe-calibration')
 			),
 			'firstsetup' => array(
 				'title' => 'First Setup',
 				'icon' => '',
-				'url' => site_url()
+				'url' => site_url('maintenance/first-setup')
 			),
 			'systeminfo' => array(
 				'title' => 'System Info',
 				'icon' => '',
-				'url' => site_url()
+				'url' => site_url('maintenance/system-info')
 			)
 		)
 	),
@@ -120,7 +120,7 @@
 	'updates' => array(
  		'title' => 'Updates',
  		'icon' => 'fa fa-refresh',
- 		'url' => site_url('dashboard')
+ 		'url' => site_url('updates')
 	),
 	'support' => array(
  		'title' => 'Support',
@@ -128,9 +128,9 @@
  		'url' => site_url('support')
 	),
 	'plugin' => array(
- 		'title' => 'Plugin',
+ 		'title' => 'Plugins',
  		'icon' => 'fa-plug',
- 		'url' => site_url('dashboard')
+ 		'url' => site_url('plugins')
 	),
  );
  

@@ -232,8 +232,8 @@
 }
 
 .top-ajax-jog-dropdown {
-	left: -140px;
-	width: 350px;
+	left: -150px;
+	width: 340px;
 	height: 250px;
 }
 
@@ -451,3 +451,7 @@ body.smart-style-6 .top-bed-target-temp, body.smart-style-6 .top-ext-target-temp
 	text-transform: uppercase;
 }
 
+.console hr {
+	margin-top:1px;
+	margin-bottom:1px;
+}

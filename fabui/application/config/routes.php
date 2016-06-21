@@ -56,5 +56,11 @@ $route['translate_uri_dashes'] = FALSE;
 $route['make/print'] = 'create/index/print';
 $route['make/mill']  = 'create/index/mill';
 $route['make/scan']  = 'scan';
+//maintenance
+$route['maintenance/head-installation'] = 'maintenance/headInstallation';
+$route['maintenance/bed-calibration']   = 'maintenance/bedCalibration';
+$route['maintenance/probe-calibration'] = 'maintenance/probeCalibration';
+$route['maintenance/first-setup']       = 'maintenance/firstSetup';
+$route['maintenance/system-info']       = 'maintenance/systemInfo';
 // login
 $route['login/do'] = 'login/doLogin';

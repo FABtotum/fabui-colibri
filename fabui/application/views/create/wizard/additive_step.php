@@ -18,7 +18,7 @@
 				<div class="row">
 					<div class="col-sm-4 col-sx-4">
 						<div class="product-image medium text-center">
-							<img class="img-responsive" src="<?php echo base_url() ?>/assets/img/modules/create/additive/1.png">
+							<img class="img-responsive" src="/assets/img/modules/create/additive/1.png">
 						</div>
 					</div>
 					<div class="col-sm-8">
@@ -35,7 +35,7 @@
 				<div class="row">
 					<div class="col-sm-4 col-sx-4">
 						<div class="product-image medium  text-center">
-							<img class="img-responsive" src="<?php echo base_url() ?>/assets/img/modules/create/additive/2.png">
+							<img class="img-responsive" src="/assets/img/modules/create/additive/2.png">
 						</div>
 					</div>
 					<div class="col-sm-8">
@@ -56,7 +56,7 @@
 				<div class="row">
 					<div class="col-sm-4 col-sx-4">
 						<div class="product-image mini text-center">
-							<img class="img-responsive" src="<?php echo base_url() ?>/assets/img/modules/create/homing.png">
+							<img class="img-responsive" src="/assets/img/modules/create/homing.png">
 						</div>
 					</div>
 					<div class="col-sm-8">
@@ -78,7 +78,7 @@
 				<div class="row">
 					<div class="col-sm-4 col-sx-4">
 						<div class="product-image mini text-center">
-							<img class="img-responsive" src="<?php echo base_url() ?>/assets/img/modules/create/abl.png">
+							<img class="img-responsive" src="/assets/img/modules/create/abl.png">
 						</div>
 					</div>
 					<div class="col-sm-8">

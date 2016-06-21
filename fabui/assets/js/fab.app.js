@@ -114,7 +114,7 @@ fabApp = (function(app) {
         });
         
         $(".top-directions").on("click", function(){
-        	app.jogMoveXY($(this).attr("data-attribue-direction"));
+        	app.jogMoveXY($(this).attr("data-attribute-direction"));
         });
         
         $(".top-axisz").on("click", function(event){
@@ -252,6 +252,12 @@ fabApp = (function(app) {
 	 */
 	app.jogZeroAll = function () {
 		app.serial("zeroAll", true);
+	}
+	/*
+	 * 
+	 */
+	app.jogExtrude = function(sign) {
+		app.serial('extrude', sign);
 	}
 	/*
 	 * 
@@ -556,20 +562,21 @@ fabApp = (function(app) {
 	 * write serial replys to jog console
 	 */
 	app.writeSerialResponseToConsole = function(data){
-			var commands = data.command.split('\n');
-			var replys   = data.response.split('\n');
+			console.log(data);
+			var commands = data.commands;
+			var replys   = data.response;
 			for(var i=0; i<commands.length; i++){
-				if(commands.length > 1) $.console.append(commands[i] + ' : ' +  replys[i] + '\n');
+				if(commands.length > 1) $.console.append(commands[i] + ' : ' +  replys[i].replace('\n', '') + '\n');
 				else{
 					if(replys.length > 2){ // for commands like M763, M765
-						$.console.append(commands[i] + ' : ' +  replys[0] + '\n');					
+						$.console.append(commands[i] + ' : ' +  replys[0].replace('\n', '') + '\n');					
 						for(var j=1;j<replys.length;j++){
-							if(replys[j] != '\n' && replys[j] != '') $.console.append(replys[j] + '\n');
+							if(replys[j] != '\n' && replys[j] != '') $.console.append(replys[j].replace('\n', '') + '\n');
 						}	
-					} else $.console.append(commands[i] + ' : ' +  replys[i] + '\n'); //for commands that have a lot of replys like M503
+					} else $.console.append(commands[i] + ' : ' +  replys[i].replace('\n', '') + '\n'); //for commands that have a lot of replys like M503
 				}
 			}
-			$.console.append('\n').scrollTop(1E10);
+			$.console.append('<hr>').scrollTop(1E10);
 	};
 	/*
 	 * manage macro response or trace
@@ -712,21 +719,19 @@ fabApp = (function(app) {
 	app.serial = function(func, val) {
 		
 		
-		var xyStep       = $(".xyStep").length > 0 ? $(".xyStep").val() : 10;
-		var zStep        = $(".zStep").length > 0 ?  $(".zStep").val() : 5;
-		var xyzFeed      = $(".xyzFeed").length > 0 ? $(".xyzFeed").val() : 1000;
+		var xyStep       = $("#xyStep").length > 0 ? $("#xyStep").val() : 10;
+		var zStep        = $("#zStep").length > 0 ?  $("#zStep").val() : 5;
+		var extruderStep = $("#extruderStep").length > 0 ?  $("#extruderStep").val() : 10;
+		var xyzFeed      = $("#xyzFeed").length > 0 ? $("#xyzFeed").val() : 1000;
 		var extruderFeed = $("#extruder-feedrate").length > 0 ? $("#extruder-feedrate").val() : 300;
 		
 		var data = {
 			'method'           : func,
 			'value'            : val,
-			'step'             : {'xy':  xyStep, 'z':zStep},
+			'step'             : {'xy':  xyStep, 'z':zStep, 'extruder': extruderStep},
 			'feedrate'         : {'xyz': xyzFeed, 'extruder':extruderFeed}
 		};
-		
-		
-		console.log(data);
-		
+			
 		if(socket_connected == true){
 			var messageToSend = {
 				'function' : 'serial',

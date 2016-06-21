@@ -8,7 +8,7 @@
  */
  defined('BASEPATH') OR exit('No direct script access allowed');
  
- class Scan extends FAB_Controller {
+ class Updates extends FAB_Controller {
  	
 	public function index()
 	{

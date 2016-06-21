@@ -53,12 +53,12 @@
 		$widget->body   = array('content' => $this->load->view(strtolower(get_class($this)).'/main_widget', $data, true ), 'class'=>'fuelux');
 		
 		//add javascript dependencies
-		$this->addJSFile(base_url().'/assets/js/plugin/fuelux/wizard/wizard.min.js'); //wizard
-		$this->addJSFile(base_url().'/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
-		$this->addJSFile(base_url().'/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
-		$this->addJSFile(base_url().'/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
-		$this->addJSFile(base_url().'/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
-		$this->addJSFile(base_url().'/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
+		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.js'); //wizard
+		$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
 		$this->addJsInLine($this->load->view(strtolower(get_class($this)).'/js', $data, true));
 		$this->content = $widget->print_html(true);
 		$this->addCSSInLine('<style>.pagination li{display:inline !important} .img-responsive {display:inline; max-width:50%;} .radio{padding-top:0px !important;} .medium {min-height:190px !important;} .mini {min-height:150px !important;}</style>');

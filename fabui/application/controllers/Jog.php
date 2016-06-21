@@ -32,6 +32,14 @@
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
+	
+	/**
+	 * 
+	 */
+	public function exec()
+	{
+		//TODO
+	}
 			
  }
  

@@ -18,7 +18,8 @@
 	protected $step = array();
 	protected $responseType = 'serial'; //type of response (temperature, gcode, serial)
 	protected $responseData;
-	protected $serialReply; //serial reply
+	protected $serialReply = array(); //serial reply
+	protected $serialCommands = array();
 	
 	
 	/**
@@ -51,15 +52,19 @@
 		$read = '';
 		if(is_array($command)){
 			foreach($command as $comm){
+				$this->serialCommands[] = $comm;
 				$this->serial->sendMessage($comm.PHP_EOL);
-				$read .= $this->serial->readPort();
+				$this->serialReply[] = $this->serial->readPort();
+				//$read .= $this->serial->readPort();
 			}
 		}elseif($command != ''){
+			$this->serialCommands[] = $command;
 			$this->serial->sendMessage($command.PHP_EOL);
-			$read .= $this->serial->readPort();
+			$this->serialReply[] = $this->serial->readPort();
+			//$read .= $this->serial->readPort();
 		}
 		$this->serial->deviceClose();
-		$this->serialReply = $read;
+		//$this->serialReply = $read;
 	}
 	
 	/**
@@ -67,7 +72,7 @@
 	 */
 	function response()
 	{
-		return array('type'=> $this->responseType, 'response' => $this->serialReply);
+		return array('type'=> $this->responseType, 'commands' => $this->serialCommands, 'response' => $this->serialReply);
 	}
 	
 	/**
@@ -168,6 +173,16 @@
 		$commands[] = 'M728';
 		
 		$this->sendCommand($commands);
+		return $this->response();
+	}
+	
+	/**
+	 * 
+	 */
+	function extrude($sign)
+	{
+		//TODO
+		$this->sendCommand(array('G91', 'G0 E'.$sign.$this->step['extruder'].' F'.$this->feedrate['extruder']));
 		return $this->response();
 	}
 }
