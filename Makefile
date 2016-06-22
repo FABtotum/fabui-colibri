@@ -33,6 +33,9 @@ USERDATA_PATH	?= $(MOUNT_BASE_PATH)userdata/
 DB_PATH			?= $(LIB_PATH)/
 USB_MEDIA_PATH	?= /run/media/
 
+# FAB-UI parameters
+SERIAL_PORT 	?= /dev/ttyAMA0
+
 # OS paths
 PHP_CONFIG_FILE_SCANDIR ?= /etc/php/conf.d/
 CRON_FOLDER ?= /var/spool/cron/crontabs/
@@ -67,7 +70,7 @@ RECOVERY_FILES	=	recovery/*
 DB				= 	sqlite3
 DB_FILES		= 	fabtotum.db
 
-CONFIG_FILES	=	config.ini
+CONFIG_FILES	=	config.ini serial.ini
 
 # Files that will end up in SHARED_PATH
 STATIC_FILES	=	
@@ -151,7 +154,8 @@ bundle: $(FABUI_BUNDLE)
 		SHARED_PATH=$(SHARED_PATH) \
 		BIGTEMP_PATH=$(BIGTEMP_PATH) \
 		USERDATA_PATH=$(USERDATA_PATH) \
-		USB_MEDIA_PATH=$(USB_MEDIA_PATH)
+		USB_MEDIA_PATH=$(USB_MEDIA_PATH) \
+		SERIAL_PORT=$(SERIAL_PORT)
 
 $(TEMP_DIR):
 	mkdir -p $@
