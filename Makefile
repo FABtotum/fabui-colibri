@@ -70,7 +70,7 @@ RECOVERY_FILES	=	recovery/*
 DB				= 	sqlite3
 DB_FILES		= 	fabtotum.db
 
-CONFIG_FILES	=	config.ini serial.ini
+CONFIG_FILES	=	config.ini serial.in
 
 # Files that will end up in SHARED_PATH
 STATIC_FILES	=	
@@ -78,7 +78,8 @@ STATIC_FILES	=
 # Files that will end up in LIB_PATH
 DYNAMIC_FILES	=	$(CONFIG_FILES) \
 					$(DB_FILES) \
-					fabui/heads
+					fabui/heads \
+					fabui/settings
 
 # List of files that should go through the generator script
 GENERATED_FILES = $(CONFIG_FILES) \
@@ -195,7 +196,6 @@ endif
 #	Public runtime directories
 	$(FAKEROOT_ENV) $(INSTALL) -d -g 33 -m 0775 $(BDATA_DIR)/$(TEMP_PATH)
 	$(FAKEROOT_ENV) $(INSTALL) -d -g 33 -m 0775 $(BDATA_DIR)/$(TASKS_PATH)
-	$(FAKEROOT_ENV) $(INSTALL) -d -g 33 -m 0775 $(BDATA_DIR)/$(LIB_PATH)settings
 ########################################################################
 # 	Fix permissions
 	$(FAKEROOT_ENV) chown -R 33:33 $(BDATA_DIR)$(WWW_PATH)
