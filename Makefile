@@ -70,7 +70,7 @@ RECOVERY_FILES	=	recovery/*
 DB				= 	sqlite3
 DB_FILES		= 	fabtotum.db
 
-CONFIG_FILES	=	config.ini serial.in
+CONFIG_FILES	=	config.ini serial.ini
 
 # Files that will end up in SHARED_PATH
 STATIC_FILES	=	
