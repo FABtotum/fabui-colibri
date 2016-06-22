@@ -24,6 +24,7 @@ case "$1" in
  	boot_msg "Starting ${SERVICE_NAME}."
  	
  	mkdir -p ${TEMP_PATH}/fabui
+ 	chown 33:33 ${TEMP_PATH}/fabui
  	touch ${TEMP_PATH}/fabui/safety.json
  	
     #python /var/www/fabui/python/baud.py
