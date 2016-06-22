@@ -388,7 +388,7 @@ fabApp = (function(app) {
 	app.logout = function() {
 		$.root_.addClass('animated fadeOutUp');
 		setTimeout(function(){
-			window.location = $.logout_url;
+			window.location = logout_url;
 		}, 1000);
 	};
 	/*

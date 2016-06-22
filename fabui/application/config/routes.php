@@ -53,7 +53,8 @@ $route['default_controller'] = 'dashboard';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 //login
-$route['login/new-account'] = 'login/newAccount';
+$route['login/new-account']    = 'login/newAccount';
+$route['login/reset-password'] = 'login/resetPassword';
 // make
 $route['make/print'] = 'create/index/print';
 $route['make/mill']  = 'create/index/mill';

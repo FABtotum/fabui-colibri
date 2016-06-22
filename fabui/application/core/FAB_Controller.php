@@ -13,6 +13,7 @@
 	protected $layoutDefaultFolder = 'layout/default';
 	protected $layoutLogin         = 'layout/login';
 	protected $layoutAjax          = 'layout/ajax';
+	protected $layoutInstall       = 'layout/install';
 	protected $template            = array();
 	protected $content             = ''; //
 	protected $js                  = array();  //js scripts
@@ -21,6 +22,7 @@
 	protected $css                 = array(); //css files inclusion
 	protected $menu                = array();
 	protected $isAjax              = false;
+	protected $noSessionNeeded     = array('Login', 'Install');
 	
 	function __construct()
     {
@@ -34,7 +36,7 @@
 			$this->load->library(array('session', 'parser'));
 			$this->load->helper(array('url', 'layout'));
 			$this->load->database();
-			if($this->session->loggedIn == false && get_class($this) != 'Login'){
+			if($this->session->loggedIn == false && !in_array(get_class($this), $this->noSessionNeeded)){
 				$this->load->helper('url');	
 				redirect('login/index');	
 			}
@@ -100,6 +102,22 @@
 		$this->template['scripts'] = $this->load-> view($this->layoutLogin.'/scripts', $data, true);
 		$this->template['content'] = $this->content;
 		$this->parser->parse($this->layoutLogin.'/structure', $this->template);
+	}
+	
+	/**
+	 * Install layout page view
+	 */
+	public function installLayout()
+	{
+		$data = array();
+		$data['jsScripts'] = jScriptsInclusion($this->js);
+		$data['jsInLine'] = $this->jsInLine;
+		
+		$this->template['head']    = $this->load-> view($this->layoutInstall.'/head',    $data, true);
+		$this->template['top']     = $this->load-> view($this->layoutInstall.'/top',     $data, true);
+		$this->template['scripts'] = $this->load-> view($this->layoutInstall.'/scripts', $data, true);
+		$this->template['content'] = $this->content;
+		$this->parser->parse($this->layoutInstall.'/structure', $this->template);
 	}
 	
 	/*

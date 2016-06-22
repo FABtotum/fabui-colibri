@@ -91,6 +91,14 @@
 		redirect('login');
 		
 	}
+	
+	/**
+	 * reset user password
+	 */
+	public function resetPassword()
+	{
+		//TODO
+	}
  }
  
 ?>
