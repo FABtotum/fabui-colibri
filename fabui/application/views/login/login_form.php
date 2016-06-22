@@ -38,7 +38,7 @@
 							<input type="password" name="password">
 							<b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> Enter your password</b> </label>
 						<div class="note">
-							<a href="/forgotpassword.php">Forgot password?</a>
+							<a href="#">Forgot password?</a>
 						</div>
 					</section>
 					<section>
