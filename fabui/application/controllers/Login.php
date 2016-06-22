@@ -11,9 +11,11 @@
  class Login extends FAB_Controller {
  	
 	public function index(){
-		$this->content = $this->load->view('login/login_form', '', true);
+		
+		$data['alert'] = $this->session->flashdata('alert');
+		$this->content = $this->load->view('login/login_form', $data, true);
 		$this->addJsInLine($this->load->view('login/login_js', '', true));
-		$this->viewLogin();
+		$this->loginLayout();
 	}
 	
 	//do login
@@ -25,12 +27,13 @@
 		
 		if(isset($postData['remember'])){ // remember user?
 			unset($postData['remember']);
+			//TODO
 		}
 		$postData['password'] = md5($postData['password']);
 		//load libraries, models, helpers
 		$this->load->model('User', 'user');
 		$user = $this->user->get($postData, 1);
-		if($user == false){ //if user dosen't exists
+		if($user == false){ //if user doesn't exists
 			//TO DO add flash message
 			redirect('login');
 		}
@@ -54,6 +57,39 @@
 		$this->session->unset_userdata('user');
 		$this->session->unset_userdata('settings');
 		redirect('login');
+	}
+	
+	/**
+	 * add new account page
+	 */
+	public function newAccount()
+	{
+		$this->content = $this->load->view('login/register_form', '', true);
+		$this->addJsInLine($this->load->view('login/register_js', '', true));
+		$this->loginLayout('register');
+	}
+	
+	/**
+	 * craete new account (post from register form)
+	 */
+	public function doNewAccount()
+	{
+		if($this->input->method() == 'get') redirect('login'); //accessible only passing trough the login form
+		$postData = $this->input->post();
+		if($postData['terms'] != 'on') redirect('login'); //You must agree with Terms and Conditions
+		if($postData['passwordConfirm'] != $postData['password']) redirect('login'); //passwords needs to be equals
+		//unset unuseful data
+		unset($postData['passwordConfirm']);
+		unset($postData['terms']);
+		$postData['session_id'] = $this->session->session_id;
+		$postData['settings'] = '{}';
+		$postData['password'] = md5($postData['password']);
+		//load libraries, models, helpers
+		$this->load->model('User', 'user');
+		$newUserID = $this->user->add($postData);
+		$this->session->set_flashdata('alert', array('type' => 'alert-success', 'message'=> '<i class="fa fa-fw fa-check"></i>New user created successfully' ));
+		redirect('login');
+		
 	}
  }
  

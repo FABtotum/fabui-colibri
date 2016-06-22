@@ -11,5 +11,9 @@
 	<div id="logo-group">
 		<span id="logo"> <img src="/assets/img/logo-0.png" alt="FABUI"> </span>
 	</div>
-	<span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs">Need an account?</span> <a href="/register.php" class="btn btn-primary">Create account</a> </span>
+	<?php if($mode == 'login'): ?>
+	<span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs">Need an account?</span> <a href="<?php echo site_url('login/new-account') ?>" class="btn btn-primary">Create account</a> </span>
+	<?php elseif($mode == 'register'): ?>
+	<span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs">Already registered?</span> <a href="<?php echo site_url('login') ?>" class="btn btn-danger">Sign In</a> </span>
+	<?php endif; ?>
 </header>

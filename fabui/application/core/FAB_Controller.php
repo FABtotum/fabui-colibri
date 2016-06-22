@@ -86,12 +86,15 @@
 	}
 	
 	/**
-	 * Login page view
+	 * Login layout page view
 	 */
-	public function viewLogin(){
+	public function loginLayout($mode = 'login'){
+		
 		$data = array();
 		$data['jsScripts'] = jScriptsInclusion($this->js);
 		$data['jsInLine'] = $this->jsInLine;
+		$data['mode'] = $mode;
+		
 		$this->template['head']    = $this->load-> view($this->layoutLogin.'/head', $data, true);
 		$this->template['top']     = $this->load-> view($this->layoutLogin.'/top', $data, true);
 		$this->template['scripts'] = $this->load-> view($this->layoutLogin.'/scripts', $data, true);
