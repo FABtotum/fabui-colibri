@@ -20,6 +20,7 @@
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-production.min.css">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-skins.min.css">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/demo.min.css">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/lockscreen.min.css">
 <!-- FAVICONS -->
 <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon">
 <link rel="icon"          href="/assets/img/favicon/favicon.ico" type="image/x-icon">
@@ -29,4 +30,4 @@
 <!-- HEADERD JAVASCRIPTS -->
 <script src="/assets/js/libs/jquery-2.1.1.min.js"></script>
 <script src="/assets/js/libs/jquery-ui-1.10.3.min.js"></script>
-<style></style>
+<?php echo $cssInLine; ?>

@@ -8,12 +8,11 @@
  */
 ?>
 <!DOCTYPE html>
-<html id="extr-page" class="animated fadeInDown">
+<html class="animated fadeInDown">
 	<head>{head}</head>
 	<body>
-		{top}
 		<div id="main" role="main">
-			<div id="content">{content}</div>
+			{content}
 		</div>
 		{scripts}
 	</body>

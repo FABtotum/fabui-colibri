@@ -112,9 +112,10 @@
 		$data = array();
 		$data['jsScripts'] = jScriptsInclusion($this->js);
 		$data['jsInLine'] = $this->jsInLine;
+		$data['cssInLine'] = $this->cssInline;
 		
 		$this->template['head']    = $this->load-> view($this->layoutInstall.'/head',    $data, true);
-		$this->template['top']     = $this->load-> view($this->layoutInstall.'/top',     $data, true);
+		//$this->template['top']     = $this->load-> view($this->layoutInstall.'/top',     $data, true);
 		$this->template['scripts'] = $this->load-> view($this->layoutInstall.'/scripts', $data, true);
 		$this->template['content'] = $this->content;
 		$this->parser->parse($this->layoutInstall.'/structure', $this->template);
