@@ -21,3 +21,14 @@ function disableButton(element)
 	$(element).addClass('disabled');
 	$(element).prop("disabled",true);
 }
+
+/**
+ * add # to all links present in $('#content')
+ * is needed if ajax page is true 
+ */
+function transformLinks()
+{
+	$.each( $('#content').find('a'), function() {
+    	$(this).attr('href', '#' + $(this).attr('href'));
+	});
+}

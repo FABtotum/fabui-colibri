@@ -10,6 +10,7 @@
 ?>
 <script type="text/javascript">
 	pageSetUp();
+	transformLinks();
 	<?php echo $jsInLine; ?>
 	//page related scripts
 	<?php echo $jsScripts; ?>

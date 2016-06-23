@@ -62,6 +62,8 @@ $route['login/do']             = 'login/doLogin';
 $route['make/print'] = 'create/index/print';
 $route['make/mill']  = 'create/index/mill';
 $route['make/scan']  = 'scan';
+//file manager
+$route['filemanager/new-object']  = 'filemanager/newObject';
 //maintenance
 $route['maintenance/head-installation'] = 'maintenance/headInstallation';
 $route['maintenance/bed-calibration']   = 'maintenance/bedCalibration';
