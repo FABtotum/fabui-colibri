@@ -15,13 +15,21 @@
 . /etc/default/rc
 . ${rc_functions}
 
+test -r /etc/default/fabui && source /etc/default/fabui
+
 case "$1" in
   pre)
     boot_msg "Configuring lighttpd for FABUI."
     /usr/sbin/lighttpd-enable-mod fastcgi fastcgi-php fabui
     evaluate_retval
+    
     boot_msg "Preparing FABUI for first setup."
-    sudo -uwww-data touch /var/www/AUTOINSTALL /var/www/WIZARD
+    # Create autoinstall files
+    sudo -uwww-data touch ${WWW_PATH}/AUTOINSTALL ${WWW_PATH}/WIZARD
+    # Create a link on userdata partition for upload
+    mkdir -p /mnt/userdata/upload
+    chown 33:33 /mnt/userdata/upload
+    ln -sf /mnt/userdata/upload ${UPLOAD_PATH}
     evaluate_retval
     ;;
   post)
