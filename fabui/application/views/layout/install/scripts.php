@@ -17,9 +17,6 @@
 <script src="/assets/js/plugin/fastclick/fastclick.min.js"></script>
 <script src="/assets/js/plugin/jquery-validate/jquery.validate.min.js"></script>
 <script src="/assets/js/app.min.js"></script>
-<?php if(ENVIRONMENT == 'development'): //only for development purpose ?>
-	<script src="/assets/js/demo.min.js"></script>
-<?php endif; ?>
 <?php echo $jsScripts; ?>
 <?php echo $jsInLine; ?>
 	

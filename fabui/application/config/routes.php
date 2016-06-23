@@ -52,9 +52,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'dashboard';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+//install
+$route['install/do'] = 'install/doInstall';
 //login
 $route['login/new-account']    = 'login/newAccount';
 $route['login/reset-password'] = 'login/resetPassword';
+$route['login/do']             = 'login/doLogin';
 // make
 $route['make/print'] = 'create/index/print';
 $route['make/mill']  = 'create/index/mill';
@@ -65,5 +68,4 @@ $route['maintenance/bed-calibration']   = 'maintenance/bedCalibration';
 $route['maintenance/probe-calibration'] = 'maintenance/probeCalibration';
 $route['maintenance/first-setup']       = 'maintenance/firstSetup';
 $route['maintenance/system-info']       = 'maintenance/systemInfo';
-// login
-$route['login/do'] = 'login/doLogin';
+

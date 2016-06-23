@@ -52,12 +52,12 @@ CRON_FOLDER ?= /var/spool/cron/crontabs/
 
 # Files that will end up in WWW_PATH
 WWW_FILES		= 	index.php \
-					install.php \
 					LICENSE \
 					README.md
 					
 # Files that will end up in FABUI_PATH
-FABUI_FILES		=	fabui/ext \
+FABUI_FILES		=	fabui/recovery \
+					fabui/ext \
 					fabui/index.php \
 					fabui/application \
 					fabui/system \
