@@ -116,4 +116,17 @@ function buildMenu($menu_array, $is_sub = FALSE) {
 	 */
 	return $menu . "</ul>";
 }
+
+
+if(!function_exists('showAlert'))
+{
+	/**
+	 * 
+	 */
+	function showAlert($type, $message)
+	{
+		$html = '<div class="alert '.$type.'" animated fadeIn><button class="close" data-dismiss="alert">×</button>'.$message.'</div>';
+		return $html;
+	}
+}
 ?>

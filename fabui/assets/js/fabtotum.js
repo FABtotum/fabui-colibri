@@ -26,9 +26,10 @@ function disableButton(element)
  * add # to all links present in $('#content')
  * is needed if ajax page is true 
  */
-function transformLinks()
+function transformLinks(container)
 {
-	$.each( $('#content').find('a'), function() {
+	container = container || $('#content');
+	$.each( container.find('a'), function() {
     	$(this).attr('href', '#' + $(this).attr('href'));
 	});
 }

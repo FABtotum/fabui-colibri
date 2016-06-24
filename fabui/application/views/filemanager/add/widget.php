@@ -38,14 +38,13 @@
 					</label>
 				</section>
 			</fieldset>
-			<input type="hidden" name="filesID">
+			<input type="hidden" name="filesID" id="filesID">
 		</form>
 	</div>
 </div>
+<!-- uploads row -->
 <div class="row">
 	<div class="col-sm-12">
-		
-		
 		<ul id="myTab1" class="nav nav-tabs">
 			<li class="active">
 				<a href="#dropzone-tab" data-toggle="tab">Dropzone</a>
@@ -59,12 +58,19 @@
 				<div id="newObjectDropzone" class="dropzone"></div>
 			</div>
 			<div class="tab-pane fade in" id="usb-tab">
-				
 			</div>
 		</div>
-
-		
-		
-		
+	</div>
+</div>
+<!-- PROGRESS MODAL -->
+<div class="modal fade" id="progressModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">Upload progress</h4>
+			</div>
+			<div class="modal-body custom-scroll " id="progressModalBody">
+			</div>	
+		</div>
 	</div>
 </div>

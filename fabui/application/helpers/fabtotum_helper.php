@@ -217,4 +217,27 @@ if(!function_exists('stopAll'))
 		doCommandLine('python', $extPath.'py/SystemMonitor.py &> /var/log/fabui/SystemMonitor.log &');
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('checkManufactoring'))
+{
+	/**
+	 * @param (string) $file_path
+	 * @param (int) $numLines, number of lines to read
+	 * retunr what type of manufactoring file is
+	 */
+	function checkManufactoring($filePath, $numLines = 100)
+	{
+		$subtractiveRe = "/(M3\\s)|(M5\\s)|(M4\\s)|(M03\\s)/"; 
+		$lines = explode(PHP_EOL, doCommandLine('head', '"'.$filePath.'"', array('-n' => $numLines)));
+		foreach($lines as $line){
+			if(substr( $line, 0, 1 ) !== ';'){
+				preg_match($subtractiveRe, $line, $matches);
+				if(count($matches) > 0){
+					return 'subtractive';
+				}
+			}
+		}
+		return 'additive';
+	}
+}
 ?>

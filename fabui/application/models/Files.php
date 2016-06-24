@@ -22,7 +22,7 @@
 	 */
 	function getForCreate($type = '')
 	{
-		$this->db->select('tf.orig_name, to.obj_name, tf.id as id_file, to.id as id_object, to.obj_description');
+		$this->db->select('tf.orig_name, to.name, tf.id as id_file, to.id as id_object, to.description');
 		if($type != '')	$this->db->where('print_type', $type);
 		$this->db->where('to.user', $this->session->user['id']);
 		$this->db->join('sys_obj_files', 'sys_obj_files.id_file = tf.id');
@@ -46,11 +46,24 @@
 	 */
 	function getObject($fileId)
 	{
-		$this->db->select('to.id as id, to.obj_name as obj_name, to.obj_description as obj_description, to.date_insert as date_insert');
+		$this->db->select('to.id as id, to.name as obj_name, to.description as obj_description, to.date_insert as date_insert');
 		$this->db->where('tof.id_file',$fileId);
 		$this->db->join('sys_objects as to', 'to.id = tof.id_obj');
 		$query = $this->db->get('sys_obj_files as tof');
 		return $query->row_array();
+	}
+	
+	/**
+	 * @param (int) object id
+	 * @return all files associated to that object
+	 */
+	function getByObject($objectID)
+	{
+		$this->db->select('*');
+		$this->db->join('sys_obj_files as tof', 'tof.id_file = tf.id');
+		$this->db->where('tof.id_obj', $objectID);
+		$query = $this->db->get($this->tableName.' as tf');
+		return $query->result_array();
 	}
  }
  

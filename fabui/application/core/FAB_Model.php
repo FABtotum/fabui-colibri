@@ -19,7 +19,7 @@
 	}
 	
 	//get record
-	public function get($data, $numRowsExpected = '')
+	public function get($data = '', $numRowsExpected = '')
 	{	
 		if(is_array($data)){ //if parameter is an associative array
 			$this->db->where($data);	
