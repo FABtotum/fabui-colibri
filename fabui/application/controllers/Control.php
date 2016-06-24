@@ -126,7 +126,7 @@
 		$this->hardware->run();
 		log_message('debug', __METHOD__.' - Run hardware: '.$this->hardware->getId());
 		//remove lock file
-		unlink($this->config->item('lock'));
+		if(file_exists($this->config->item('lock'))) unlink($this->config->item('lock'));
 		log_message('debug', __METHOD__.' - End');
 	}
 	

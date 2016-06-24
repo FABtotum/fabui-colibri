@@ -27,7 +27,7 @@
 			dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i> Drops files <span class="font-xs">to upload</span></span><span>&nbsp&nbsp<h4 class="display-inline"> (or click)</h4></span>',
 			//parallelUploads: 2,
 			//maxFiles: 10,
-			uploadMultiple: true,
+			uploadMultiple: false,
 			acceptedFiles: '.gcode, .GCODE, .nc, .NC',
 			autoProcessQueue: false,
 			dictRemoveFile: 'Remove file',
