@@ -20,7 +20,7 @@ python_scripts = @PYTHON_PATH@
 bigtemp_path = @BIGTEMP_PATH@
 database = @LIB_PATH@/fabtotum.db
 autoinstall_file = @WWW_PATH@AUTOINSTALL
-uploads = @UPLOAD_PATH@
+uploads = @UPLOAD_PATH
 
 [usb]
 usb_disk_folder = @USB_MEDIA_PATH@
