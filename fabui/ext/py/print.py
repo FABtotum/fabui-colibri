@@ -76,9 +76,12 @@ class PrintApplication(GCodePusher):
         print "Progress", percentage
     
     def first_move_callback(self):
-        print "Print stared"
+        print "Print stared."
     
     def file_done_callback(self):  
+        print "Print finished."
+        
+        
         if self.standalone:
             print_macros.end_additive(self)
             print_macros.end_additive_safe_zone(self)
@@ -109,6 +112,8 @@ class PrintApplication(GCodePusher):
             print_macros.start_additive(self, [ext_temp_target, bed_temp_target])
         
         self.send_file(gcode_file)
+        
+        print "Print initiated."
 
 
 app = PrintApplication(log_trace, monitor_file, standalone)

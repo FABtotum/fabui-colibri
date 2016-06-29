@@ -615,13 +615,17 @@ class GCodePusher(object):
             reply = self.gcs.send(code, timeout=timeout, group = 'macro')
             if expected_reply:
                 # Check if the reply is as expected
-                if reply[0] != expected_reply:
-                    if warning:
-                        self.trace(error_msg + _(": Warning!"))
-                        self.macro_warning += 1
-                    else:
-                        self.trace(error_msg + _(": Failed ({0})".format(reply[0]) ))
-                        self.macro_error += 1
+                if reply:
+                    if reply[0] != expected_reply:
+                        if warning:
+                            self.trace(error_msg + _(": Warning!"))
+                            self.macro_warning += 1
+                        else:
+                            self.trace(error_msg + _(": Failed ({0})".format(reply[0]) ))
+                            self.macro_error += 1
+                else:
+                    self.trace(error_msg + _(": Failed ({0})".format('<aborted>') ))
+                    self.macro_error += 1
         else:
             self.trace(error_msg + _(": Skipped"))
             self.macro_skipped += 1

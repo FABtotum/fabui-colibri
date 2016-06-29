@@ -95,6 +95,9 @@ class CommandParser:
                 
             elif cmd == '!system_update':
                 pass
+                
+            elif cmd == '!debug':
+                self.gcs.debug(args)
 
         except Exception as e:
             # Just ignore this command

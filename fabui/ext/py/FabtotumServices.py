@@ -43,7 +43,7 @@ def signal_handler(signal, frame):
     gcserver.stop()
     gcservice.stop()
     observer.stop()
-    usbMonitor.stop()
+    #usbMonitor.stop()
     gpioMonitor.stop()
 
 config = ConfigService()
@@ -81,15 +81,13 @@ ws.connect();
 
 ## Folder temp monitor
 ftm = FolderTempMonitor(ws, gcservice, TRACE, MACRO_RESPONSE, TASK_MONITOR, COMMAND)
+## usb disk monitor
+um = UsbMonitor(ws, USB_FILE)
+## The Observer ;)
 observer = Observer()
+observer.schedule(um, '/dev/', recursive=False)
 observer.schedule(ftm, TEMP_PATH, recursive=False)
 observer.start()
-
-## usb disk monitor
-um = UsbMonitor(ws, gcservice, USB_FILE)
-usbMonitor =  Observer()
-usbMonitor.schedule(um, '/dev/', recursive=False)
-usbMonitor.start()
 
 ## Safety monitor
 gpioMonitor = GPIOMonitor(ws, gcservice, GPIO_PIN, EMERGENCY_FILE)
@@ -104,5 +102,5 @@ print "GCodeService stopped."
 gcservice.loop()
 print "Server stopped."
 observer.join()
-usbMonitor.join()
+#usbMonitor.join()
 gpioMonitor.join()

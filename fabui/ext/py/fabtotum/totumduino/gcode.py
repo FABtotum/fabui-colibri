@@ -22,6 +22,7 @@
 # Import standard python module
 import time
 import re
+import threading
 from threading import Event, Thread
 try:
     import queue
@@ -340,10 +341,10 @@ class GCodeService:
         
         self.progress = 100.0
         
-        self.state = GCodeService.IDLE
-        
         if self.callback:
             self.callback('file_done', None)
+        
+        self.state = GCodeService.IDLE
             
         self.progress = 0.0
     
@@ -361,6 +362,7 @@ class GCodeService:
     def __trigger_callback(self, callback_name, data):
         print "trigger_callback", callback_name, data
         callback_thread = Thread( 
+                name="GCodeService-callback-{0}".format(callback_name),
                 target = self.__callback_thread, 
                 args=( [callback_name, data] ) 
                 )
@@ -404,9 +406,9 @@ class GCodeService:
         
         print "<< ", gcode_complete[:-2]
         
-        #~ self.rq.put(gcode_command)
-        self.serial.write(gcode_complete)
         self.rq.put(gcode_command)
+        self.serial.write(gcode_complete)
+        #~ self.rq.put(gcode_command)
         
         return gcode_command
 
@@ -567,18 +569,22 @@ class GCodeService:
         if not self.active_cmd:
             try:
                 if self.rq.qsize() > 0:
-                    #print "there is something, block until I get it."
+                    print "there is something, block until I get it."
                     self.active_cmd = self.rq.get()
-                    #print "ok, I got it:", self.active_cmd
+                    print "ok, I got it:", self.active_cmd
                 else:
-                    #print "there might be something, let's try."
+                    print "there might be something, let's try."
                     self.active_cmd = self.rq.get_nowait()
+                    print "ok, I got something:", self.active_cmd
             except queue.Empty as e:
-                #print "Reply queue is EMPTY, ignoring received reply."
-                print ">>", line
-                return
-         
-        print "@ >>", line, self.active_cmd
+                print "Reply queue is EMPTY, ignoring received reply."
+                #print ">>", line
+                #return
+        
+        if self.active_cmd:
+            print "@ >> [{0}] [{1}]".format(self.active_cmd.data.rstrip(), line.rstrip())
+        else:
+            print "@ >> [{0}] [{1}]".format(None, line.rstrip())
         
         if self.active_cmd:
             # Get the active command as this is the on waiting for the reply.
@@ -587,20 +593,7 @@ class GCodeService:
 
             if cmd.hasExpectedReply(line):
                 
-                
-                #~ if cmd.reply[0][:5] == 'ERROR' and cmd.data[:4] != 'M730':
-                    #~ msg,error_no = cmd.reply[0].split(':')
-                    #~ error_no = error_no.strip()
-                    #~ error_msg = 'UNKNOWN_ERROR: ' + str(cmd.reply[0])
-                    
-                    #~ if error_no in ERROR_CODES:
-                        #~ error_msg = ERROR_CODES[error_no]
-                    #~ self.__trigger_callback('error', [error_no, error_msg] )
-                                        
-                    #~ print error_msg
-                    #~ cmd.reply = []
-                    
-                # TODO: should a command be resent?
+                # TODO: should a lost command be resent?
                 if len(cmd.reply) > 1:
                     if cmd.reply[-2].startswith("Resend:") and cmd.data[:4]: # Second to last line of reply
                         
@@ -636,30 +629,15 @@ class GCodeService:
                 
                 if cmd.data[:4] == 'M109': # Extruder
                     # T:27.4 E:0 W:?
-                    #print "=== M109 [{0}]".format(line)
                     temps = line.split()
                     T = temps[0].replace("T:","").strip()
-                    
-                    #~ match = re.search('T:(?P<T>[0-9.]+)\sE:(?P<E>[0-9.]+)\sB:(?P<B>[0-9.]+)\s', line)
-                    #~ print match
-                    #~ if match:
-                        #~ T = match.group('T')
-                        #~ B = match.group('B')
-                    #print "self.__trigger_callback('temp_change:ext', [{0}])".format(T)
                     self.__trigger_callback('temp_change:ext', [T])
-                        
                         
                 elif cmd.data[:4] == 'M190': # Bed
                     # @ >> T:27.38 E:0 B:54.9
-                    #print "=== M190 [{0}]".format(line)
-                    
                     temps = line.split()
                     T = temps[0].replace("T:","").strip()
                     B = temps[2].replace("B:","").strip()
-                    #~ match = re.search('T:(?P<T>[0-9.]+)\sE:(?P<E>[0-9.]+)\sW:(?P<W>[0-9.?]+)', line)
-                    #~ print match
-                    #~ if match:
-                        #~ T = match.group('T')
                     self.__trigger_callback('temp_change:all', [T,B])
     
         #print "__handle_line: return"
@@ -732,6 +710,8 @@ class GCodeService:
             self.active_cmd.notify()
             self.active_cmd = None
         
+        time.sleep(0.2)
+        
         # Release all threads waiting for a reply (from reply queue)
         while not self.rq.empty:
             print "reply queue is not empty"
@@ -741,6 +721,8 @@ class GCodeService:
                 #print "notifing ", cmd
             except queue.Empty as e:
                 break
+        
+        time.sleep(0.2)
         
         # Release all threads waiting for a reply (from command queue)
         while not self.cq.empty:
@@ -765,10 +747,10 @@ class GCodeService:
         self.running = True
         
         # Sender Thread
-        self.sender = Thread( target = self.__sender_thread )
+        self.sender = Thread( name="GCodeService-sender", target = self.__sender_thread )
         self.sender.start()
         # Receiver Thread
-        self.receiver = Thread( target = self.__receiver_thread )
+        self.receiver = Thread( name="GCodeService-receiver", target = self.__receiver_thread )
         self.receiver.start()
         
         # Wait for both threads to start before continuing
@@ -950,3 +932,11 @@ class GCodeService:
         Return amount of time that no command was executed from a file.
         """
         return self.idle_time_started - time.time()
+        
+    def debug(self, args):
+        
+        print "=== Debug Info: BEGIN ==="
+        print "Thread count:", threading.active_count()
+        print "Thread enumeration:", threading.enumerate()
+        print "=== Debug Info: END ==="
+        return True

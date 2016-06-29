@@ -44,7 +44,10 @@ class GCodeServiceServerPyroWrapper(object):
     
     def send(self, code, block = True, timeout = None, group = 'gcode'):
         return self.gcs.send(code.encode('latin-1'), block, timeout, group)
-        
+    
+    def debug(self, args):
+        return self.gcs.debug(args)
+    
     def send_file(self, filename):
         return self.gcs.send_file(filename)
     

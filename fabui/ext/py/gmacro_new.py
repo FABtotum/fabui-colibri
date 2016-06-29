@@ -27,17 +27,20 @@ import gettext
 # Import external modules
 
 # Import internal modules
-from fabtotum.fabui.gpusher    import GCodePusher
+from fabtotum.fabui.config import ConfigService
+from fabtotum.fabui.gpusher import GCodePusher
 from fabtotum.fabui.macros.all import PRESET_MAP
 
 # Set up message catalog access
 tr = gettext.translation('gmacro', 'locale', fallback=True)
 _ = tr.ugettext
 
+config = ConfigService()
+
 parser = argparse.ArgumentParser()
 parser.add_argument("preset",       help="macro to execute")
-parser.add_argument("log_trace",    help="log trace file")
-parser.add_argument("log_response", help="log response file")
+parser.add_argument("log_trace",    help="log trace file", default=config.get('general', 'trace'), nargs='?')
+parser.add_argument("log_response", help="log response file", default=config.get('general', 'macro_response'), nargs='?')
 parser.add_argument("force",        help="avoid lock control",  default=0, nargs='?')
 
 parser.add_argument("--ext_temp",   help="extruder target",     default=180, nargs='?', type=int)
@@ -90,7 +93,7 @@ class GMacroApplication(GCodePusher):
         if self.macro_error > 0:
             self.response("false")
             self.trace( _("{0} Error(s) occurred").format(str(self.macro_error)) )
-            self.trace( _("{0} operation(s) have been skipped due to errors.").format(str(self.skipped)) )
+            self.trace( _("{0} operation(s) have been skipped due to errors.").format(str(self.macro_skipped)) )
             self.trace( _("<b>Try Again!</b>") )
         else:
             self.response("true")

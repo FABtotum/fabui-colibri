@@ -46,7 +46,7 @@ class UsbMonitor(FileSystemEventHandler):
     ws = None
     USB_FILE = None
      
-    def __init__(self, WebSocket, gcs, usb_file ):
+    def __init__(self, WebSocket, usb_file ):
         self.ws = WebSocket
         self.USB_FILE = usb_file
         self.Empty = None
