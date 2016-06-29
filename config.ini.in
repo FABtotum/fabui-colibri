@@ -12,6 +12,7 @@ lock = @FABUI_TEMP_PATH@LOCK
 macro_response = @FABUI_TEMP_PATH@macro_response
 trace = @FABUI_TEMP_PATH@trace
 command = @FABUI_TEMP_PATH@command
+temp_path = @FABUI_TEMP_PATH@
 task_monitor = @FABUI_TEMP_PATH@task_monitor.json
 emergency_file = @FABUI_TEMP_PATH@emergency.json
 ext_path = @SHARED_PATH@ext/
