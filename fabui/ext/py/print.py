@@ -37,27 +37,26 @@ config = ConfigService()
 
 # SETTING EXPECTED ARGUMENTS
 parser = argparse.ArgumentParser()
-parser.add_argument("file",         help="gcode file to execute")
-parser.add_argument("command_file", help="command file")
-parser.add_argument("task_id",      help="id_task")
-parser.add_argument("monitor",      help="monitor file",  default=config.get('general', 'task_monitor'), nargs='?')
-parser.add_argument("trace",        help="trace file",  default=config.get('general', 'trace'), nargs='?')
-parser.add_argument("--ext_temp",   help="extruder temperature (for UI feedback only)",  default=180, nargs='?')
-parser.add_argument("--bed_temp",   help="bed temperature (for UI feedback only)",  default=50,  nargs='?')
-parser.add_argument("--standalone", help="call macros internally",  default=False, nargs='?')
+parser.add_argument("file",         help="Gcode file to execute.")
+parser.add_argument("task_id",      help="Task ID.")
+parser.add_argument("--standalone", action='store_true',  help="Standalone operatin. Does all printing preparations.")
+group = parser.add_argument_group('standalone arguments')
+group.add_argument("--ext_temp",   help="Extruder temperature (for UI feedback only)",  default=180, nargs='?')
+group.add_argument("--bed_temp",   help="Bed temperature (for UI feedback only)",  default=50,  nargs='?')
+group.add_argument("--autolevel",  action='store_true',  help="Auto bed leveling. Valid only when --standalone is used.")
 
 # GET ARGUMENTS
 args = parser.parse_args()
 
 # INIT VARs
 gcode_file      = args.file         # GCODE FILE
-command_file    = args.command_file # OVERRIDE DATA FILE 
 task_id         = args.task_id      # TASK ID  
-monitor_file    = args.monitor      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
-log_trace       = args.trace        # TASK TRACE FILE 
+monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
+log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
 ext_temp_target = args.ext_temp     # EXTRUDER TARGET TEMPERATURE (previously read from file) 
 bed_temp_target = args.bed_temp     # BED TARGET TEMPERATURE (previously read from file) 
 standalone      = args.standalone   # Standalong operation
+autolevel       = args.autolevel   # Standalong operation
 ################################################################################
 
 class PrintApplication(GCodePusher):
@@ -65,7 +64,7 @@ class PrintApplication(GCodePusher):
     Additive print application.
     """
     
-    def __init__(self, log_trace, monitor_file, standalone = False):
+    def __init__(self, log_trace, monitor_file, standalone = False, autolevel = False):
         super(PrintApplication, self).__init__(log_trace, monitor_file)
         self.standalone = standalone
     
@@ -80,8 +79,7 @@ class PrintApplication(GCodePusher):
     
     def file_done_callback(self):  
         print "Print finished."
-        
-        
+
         if self.standalone:
             print_macros.end_additive(self)
             print_macros.end_additive_safe_zone(self)
@@ -108,7 +106,10 @@ class PrintApplication(GCodePusher):
         self.prepare(gcode_file, task_id, ext_temp_target, bed_temp_target)
         
         if self.standalone:
-            general_macros.raise_bed(self)
+            if self.autolevel:
+                general_macros.auto_bed_leveling(self)
+            else:
+                general_macros.raise_bed(self)
             print_macros.start_additive(self, [ext_temp_target, bed_temp_target])
         
         self.send_file(gcode_file)
@@ -116,7 +117,7 @@ class PrintApplication(GCodePusher):
         print "Print initiated."
 
 
-app = PrintApplication(log_trace, monitor_file, standalone)
+app = PrintApplication(log_trace, monitor_file, standalone, autolevel)
 
 app.run(gcode_file, task_id, ext_temp_target, bed_temp_target)
 app.loop()
