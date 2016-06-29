@@ -49,6 +49,7 @@
 					<tr>
 						<th><label class="checkbox-inline"><input type="checkbox" id="selectAll" name="checkbox-inline" class="checkbox"><span></span> </label></th>
 						<th>Name</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody></tbody>

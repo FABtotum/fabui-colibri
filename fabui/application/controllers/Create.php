@@ -109,7 +109,7 @@
 		foreach($data as $file){
 			$td0 = '<label class="radio"><input type="radio" name="create-file" value="'.$file['id_file'].'"><i></i></label>';
 			$td1 = '<i></i> '.$file['orig_name'];
-			$td2 = '<i class="fa fa-folder-open"></i> '.$file['obj_name'];
+			$td2 = '<i class="fa fa-folder-open"></i> '.$file['name'];
 			$td3 = $file['id_file'];
 			$td4 = $file['id_object'];
 			$aaData[] = array($td0, $td1, $td2, $td3, $td4);

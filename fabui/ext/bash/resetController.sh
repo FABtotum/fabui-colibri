@@ -1,3 +1,7 @@
+#################################
+## RESET CONTROLLER BOARD      ##
+## then init hardware settings ##
+#################################
 #!/bin/bash
 ## include utilities
 CURRENT_DIR="$(dirname "$0")"
@@ -6,5 +10,8 @@ source "$CURRENT_DIR/utilities.sh"
 lock_file=$(getConfigValue lock)
 python_folder=$(getConfigValue python_scripts)
 touch $lock_file
-eval "python $python_folder/forceReset.py"
-sleep 3
+#echo "sudo python $python_folder/forceReset.py"
+eval "sudo python $python_folder/forceReset.py"
+sudo php /usr/share/fabui/index.php Control hardwareBootstrap
+sleep 2
+echo "reset done"

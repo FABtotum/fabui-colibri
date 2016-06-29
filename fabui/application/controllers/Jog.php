@@ -11,9 +11,7 @@
  class Jog extends FAB_Controller {
  	
 	public function index(){
-		//$this->load->library('JogFactory', null, 'jogFactory');
-		//echo $this->jogFactory->getTemperatures();
-		
+			
 		//load libraries, helpers, model, config
 		$this->load->library('smart');
 		
@@ -34,13 +32,29 @@
 	}
 	
 	/**
-	 * 
+	 * @param (POST) - jogfactory params
+	 * @return (json) reponse from serial
+	 * exec serial command
 	 */
 	public function exec()
 	{
-		//TODO
-	}
-			
+		$data = $this->input->post();
+		$this->config->load('fabtotum');
+		if(file_exists($this->config->item('lock'))) return;
+		
+		//prepare JogFactory init args
+		$method      = $data['method'];
+		$methodParam = $data['value'];
+		
+		//load jog factory class
+		$this->load->library('JogFactory', $data, 'jogFactory');
+		
+		if(method_exists($this->jogFactory, $method)){ //if method exists than do it
+			$messageData = $this->jogFactory->$method($methodParam);
+			$messageType = $this->jogFactory->getResponseType();
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('type' => $messageType, 'data' =>$messageData)));
+		}
+	}	
  }
  
 ?>

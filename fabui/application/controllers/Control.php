@@ -36,10 +36,9 @@
 	 */
 	public function emergency()
 	{
+		//load helper
 		$this->load->helper('fabtotum_helper');
-		stopAll();
-		resetController();
-		$this->hardwareBootstrap();
+		emergency();
 	}
 	
 	/**
@@ -47,13 +46,9 @@
 	 */
 	public function resetController()
 	{
+		//load helpers
 		$this->load->helper('fabtotum_helper');
 		resetController();
-		sleep(2); //just sleep for a moment
-		$this->hardwareBootstrap();
-		if($this->input->is_ajax_request()){
-			$this->output->set_content_type('application/json')->set_output(json_encode(true));
-		}
 	}
 	
 	/**

@@ -193,30 +193,31 @@ if(!function_exists('resetController'))
 	 */
 	function resetController()
 	{
-		$CI =& get_instance();
-		$CI->config->load('fabtotum');
-		$extPath = $CI->config->item('ext_path');
-		//use sudo because GPIO needs root permissions
-		return doCommandLine('sudo python', $extPath.'py/forceReset.py');
+		return doCommandLine('bash', './ext/bash/resetController.sh');
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if(!function_exists('stopAll'))
+if(!function_exists('emergency'))
 {
 	/**
-	 * Stop all running tasks and scripts
+	 * Stop all running tasks and scripts and restart main scripts
 	 */
-	function stopAll()
+	function emergency()
 	{
-		//kill all scripts	
-		shell_exec('sudo killall -KILL python php');
-		$CI =& get_instance();
-		$CI->config->load('fabtotum');
-		$extPath = $CI->config->item('ext_path');
-		doCommandLine('php', FCPATH.'index.php Server webSocket &> /var/log/fabui/webSocket.log &');
-		doCommandLine('python', $extPath.'py/SystemMonitor.py &> /var/log/fabui/SystemMonitor.log &');
+		return doCommandLine('bash', './ext/bash/emergency.sh');
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('restart'))
+{
+	/**
+	 * Restart main daemon's scripts
+	 */
+	function restart()
+	{
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('checkManufactoring'))
 {

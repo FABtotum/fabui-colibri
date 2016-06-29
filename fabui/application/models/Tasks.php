@@ -22,7 +22,7 @@
 	 * @param $type (print, mill, '') 
 	 */
 	function getLastCreations($type = '', $limit_end = 10, $limit_start = 0){
-		$this->db->select('tf.orig_name, to.obj_name, tf.id as id_file, to.id as id_object, to.obj_description');
+		$this->db->select('tf.orig_name, to.name, tf.id as id_file, to.id as id_object, to.description');
 		$this->db->join('sys_files as tf', 'tf.id = tt.id_file', 'left');
 		$this->db->join('sys_objects as to', 'to.id = tt.id_object', 'left');
 		if($type != '') $this->db->where('tt.type', $type);
@@ -32,6 +32,7 @@
 		$this->db->group_by('tt.id_file');
 		$this->db->order_by('tt.finish_date', 'DESC');
 		$query = $this->db->get($this->tableName.' as tt', $limit_end, $limit_start);
+		//echo $this->db->last_query();
 		return $query->result_array();
 	}
  }

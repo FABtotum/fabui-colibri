@@ -213,7 +213,7 @@
 			$temp = array();
 			$temp[] = '<label class="checkbox-inline"><input type="checkbox" id="check_'.$file['id'].'" name="checkbox-inline" class="checkbox"><span></span> </label>';
 			$temp[] = '<a href="'.site_url('filemanager/file/'.$file['id']).'">'.$file['raw_name'].'</a>';
-			//$temp[] = $object['description'];
+			$temp[] = $file['print_type'];
 			//$temp[] = $object['num_files'];
 			$aaData[] = $temp;
 		}
