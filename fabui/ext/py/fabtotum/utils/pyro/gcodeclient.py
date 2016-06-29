@@ -32,7 +32,7 @@ import Pyro4
 
 # Import internal modules
 from fabtotum.utils.singleton import Singleton
-from fabtotum.utils.pyro.gcodeservice import PYRO_URI_FILE
+from fabtotum.utils.pyro.gcodeserver import PYRO_URI_FILE
 
 ###############################
 
