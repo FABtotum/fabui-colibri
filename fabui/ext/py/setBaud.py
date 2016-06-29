@@ -7,10 +7,10 @@ __version__ = "1.0"
 import serial
 import ConfigParser
 import os
-import FabtotumConfig
+from fabtotum.os.paths  import CONFIG_INI, SERIAL_INI
+from fabtotum.fabui.config import ConfigService
 
-
-SERIAL_INI = '/var/lib/fabui/serial.ini'
+configService = ConfigService()
 
 ''' Set the highest baudrate available '''
 def testBaud(port, baud_rate):
@@ -27,7 +27,7 @@ baud_list=[250000, 115200]
 accepted_baud=0
 
 for baud in baud_list:
-    if(testBaud(FabtotumConfig.SERIAL_PORT, baud)):
+    if(testBaud(configService.get('serial', 'PORT'), baud)):
         accepted_baud = baud
         break
 
@@ -46,6 +46,6 @@ config = ConfigParser.ConfigParser()
 config.read(SERIAL_INI)
 
 config.set('serial', 'baud', accepted_baud)
-config.set('serial', 'port', FabtotumConfig.SERIAL_PORT)
+config.set('serial', 'port', configService.get('serial', 'PORT'))
 with open(SERIAL_INI, 'w') as configfile:
     config.write(configfile)

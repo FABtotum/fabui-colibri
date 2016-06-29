@@ -27,9 +27,9 @@ case "$1" in
     # Create autoinstall files
     sudo -uwww-data touch ${WWW_PATH}/AUTOINSTALL ${WWW_PATH}/WIZARD
     # Create a link on userdata partition for upload
-    mkdir -p /mnt/userdata/upload
-    chown 33:33 /mnt/userdata/upload
-    ln -sf /mnt/userdata/upload ${UPLOAD_PATH}
+    mkdir -p /mnt/userdata/uploads
+    chown 33:33 /mnt/userdata/uploads
+    ln -sf /mnt/userdata/uploads ${UPLOAD_PATH}
     evaluate_retval
     ;;
   post)
