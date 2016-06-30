@@ -24,6 +24,9 @@ database = @LIB_PATH@/fabtotum.db
 autoinstall_file = @WWW_PATH@AUTOINSTALL
 uploads = @UPLOAD_PATH@
 
+[monitor]
+backtrack = 20
+
 [usb]
 usb_disk_folder = @USB_MEDIA_PATH@
 usb_file = /dev/sda1

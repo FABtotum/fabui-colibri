@@ -82,10 +82,10 @@ class GCodeServiceClient(object):
             self.uri = self.daemon.register( self.ch )
         
         self.callback = callback_fun
-        self.server.register_callback('<pyro_callback>', self.uri.asString())
+        self.server.register_callback(self.uri.asString())
     
     def __unregister_callback(self):
-        self.server.unregister_callback('<pyro_callback>', self.uri.asString())
+        self.server.unregister_callback(self.uri.asString())
     
     def __loop(self):
         if self.daemon:

@@ -60,21 +60,21 @@ class GCodeServiceServerPyroWrapper(object):
                 except CommunicationError:
                     self.callback_list.remove(tup)
     
-    def register_callback(self, callback_name, uri):
+    def register_callback(self, uri):
         remote = Pyro4.Proxy(uri)
         
         self.callback_list.append( (remote, uri) )
             
         if self.callback_list:
-            self.gcs.register_callback(callback_name, self.__callback_handler)
+            self.gcs.register_callback(self.__callback_handler)
 
-    def unregister_callback(self, callback_name, uri):
+    def unregister_callback(self, uri):
         for client in self.callback_list:
             if client[1] == uri:
                 self.callback_list.remove(client)
 
         if not self.callback_list:
-            self.gcs.unregister_callback()
+            self.gcs.unregister_callback(self.__callback_handler)
 
     def get_progress(self):
         return self.gcs.get_progress()

@@ -123,7 +123,7 @@ class CommandParser:
                 pass
                 
             elif cmd == '!debug':
-                self.gcs.debug(args)
+                self.gcs.debug_info(args)
 
         except Exception as e:
             # Just ignore this command

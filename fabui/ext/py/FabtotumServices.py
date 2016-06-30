@@ -30,6 +30,7 @@ from ws4py.client.threadedclient import WebSocketClient
 # Import internal modules
 from fabtotum.os.paths                  import TEMP_PATH
 from fabtotum.fabui.config              import ConfigService
+from fabtotum.fabui.monitor             import StatsMonitor
 from fabtotum.totumduino.gcode          import GCodeService
 from fabtotum.utils.pyro.gcodeserver    import GCodeServiceServer
 from fabtotum.os.monitor.filesystem     import FolderTempMonitor
@@ -45,6 +46,7 @@ def signal_handler(signal, frame):
     observer.stop()
     ftm.parser.stop()
     gpioMonitor.stop()
+    statsMonitor.stop()
 
 config = ConfigService()
 
@@ -52,7 +54,6 @@ config = ConfigService()
 LOCK_FILE           = config.get('general', 'lock')
 TRACE               = config.get('general', 'trace')
 COMMAND             = config.get('general', 'command')
-STATUS              = config.get('general', 'status')
 MACRO_RESPONSE      = config.get('general', 'macro_response')
 JOG_RESPONSE        = config.get('general', 'jog_response')
 TASK_MONITOR        = config.get('general', 'task_monitor')
@@ -70,6 +71,10 @@ USB_FILE            = config.get('usb', 'usb_file')
 SERIAL_PORT = config.get('serial', 'PORT')
 SERIAL_BAUD = config.get('serial', 'BAUD')
 GPIO_PIN    = config.get('gpio', 'pin')
+
+MONITOR_BACKTRACK   = int(config.get('monitor', 'backtrack'))
+MONITOR_PERIOD      = float(config.get('monitor', 'period'))
+STATUS              = config.get('general', 'status')
 
 # Start gcode service
 gcservice = GCodeService(SERIAL_PORT, SERIAL_BAUD)
@@ -95,6 +100,10 @@ observer.start()
 gpioMonitor = GPIOMonitor(ws, gcservice, GPIO_PIN, EMERGENCY_FILE)
 gpioMonitor.start()
 
+## Stats monitor
+statsMonitor = StatsMonitor(STATUS, gcservice, MONITOR_BACKTRACK, MONITOR_PERIOD)
+statsMonitor.start()
+
 # Ensure CTRL+C detection to gracefully stop the server.
 signal.signal(signal.SIGINT, signal_handler)
 
@@ -103,6 +112,7 @@ gcserver.loop()
 print "GCodeService stopped."
 gcservice.loop()
 print "Server stopped."
+statsMonitor.loop()
 observer.join()
 #usbMonitor.join()
 gpioMonitor.join()

@@ -62,14 +62,20 @@ class ConfigService:
             json_f = open(self.HW_CUSTOM_SETTINGS)
             self.units = json.load(json_f)
         
-    def get(self, section, key):        
+    def get(self, section, key, default = None):        
         value = ''
         
-        if section == 'serial':
-            value = self.serialconfig.get('serial', key)
-        elif section == 'units':
-            value = self.units[key]
-        else:
-            value = self.config.get(section, key)
-        
+        try:
+            if section == 'serial':
+                value = self.serialconfig.get('serial', key)
+            elif section == 'units':
+                value = self.units[key]
+            else:
+                value = self.config.get(section, key)
+        except KeyError:
+            if default != None:
+                return default
+            else:
+                raise KeyError
+                
         return value

@@ -89,13 +89,15 @@ class Command(object):
     KILL    = 'kill'
     RESET   = 'reset'
     
-    def __init__(self, id, data = None, expected_reply = 'ok', group = 'raw'):
+    def __init__(self, id, data = None, expected_reply = 'ok', group = 'raw', timeout = None):
         self.id = id
         self.data = data
         self.reply = []
         self.__ev = Event()
         self.expected_reply = expected_reply
         self.group = group
+        self.timestamp = time.time()
+        self.timeout = timeout
 
     def __str__(self):
         msg = 'cmd: ' + self.id
@@ -132,6 +134,10 @@ class Command(object):
         """
         """
         return self.group == group
+    
+    def hasExpired(self):
+        """ Check whether timeout has expired. """
+        return ( (time.time() - self.timestamp) > self.timeout )
     
     def hasExpectedReply(self, line):
         """
@@ -181,7 +187,7 @@ class Command(object):
         return cls(Command.RESUME, None)
 
     @classmethod
-    def gcode(cls, code, expected_reply = 'ok', group = 'gcode'):
+    def gcode(cls, code, expected_reply = 'ok', group = 'gcode', timeout = None):
         """
         Constructor for ``GCODE`` command.
         
@@ -192,7 +198,7 @@ class Command(object):
         :type expected_reply: string
         :type group: string
         """
-        return cls(Command.GCODE, code, expected_reply, group)
+        return cls(Command.GCODE, code, expected_reply, group, timeout)
 
     @classmethod
     def zmodify(cls, z):
@@ -325,7 +331,7 @@ class GCodeService:
         self.atomic_group = None
         
         # Callback handler
-        self.callback = None
+        self.callback = []
     
     """ Internal *private* functions """
     
@@ -342,7 +348,8 @@ class GCodeService:
         self.progress = 100.0
         
         if self.callback:
-            self.callback('file_done', None)
+            for cb in self.callback:
+                cb('file_done', None)
         
         self.state = GCodeService.IDLE
             
@@ -357,7 +364,8 @@ class GCodeService:
         
     def __callback_thread(self, callback_name, data):
         if self.callback:
-            self.callback(callback_name, data)
+            for cb in self.callback:
+                cb(callback_name, data)
         
     def __trigger_callback(self, callback_name, data):
         print "trigger_callback", callback_name, data
@@ -541,7 +549,7 @@ class GCodeService:
         Process a one line of reply message.
         """
         
-        print "__handle_line", line_raw, "[", self.active_cmd, self.rq.qsize(),  "]"
+        #print "__handle_line", line_raw, "[", self.active_cmd, self.rq.qsize(),  "]"
         
         if self.is_resetting:
             return
@@ -569,15 +577,16 @@ class GCodeService:
         if not self.active_cmd:
             try:
                 if self.rq.qsize() > 0:
-                    print "there is something, block until I get it."
+                    #print "there is something, block until I get it."
                     self.active_cmd = self.rq.get()
-                    print "ok, I got it:", self.active_cmd
+                    #print "ok, I got it:", self.active_cmd
                 else:
-                    print "there might be something, let's try."
+                    #print "there might be something, let's try."
                     self.active_cmd = self.rq.get_nowait()
-                    print "ok, I got something:", self.active_cmd
+                    #print "ok, I got something:", self.active_cmd
             except queue.Empty as e:
-                print "Reply queue is EMPTY, ignoring received reply."
+                pass
+                #print "Reply queue is EMPTY, ignoring received reply."
                 #print ">>", line
                 #return
         
@@ -607,7 +616,7 @@ class GCodeService:
                         if cmd.data[:4] != 'M999' and cmd.data[:4] != 'M998':
                             cmd.reply = None
                         
-                print "Notify:", cmd
+               # print "Notify:", cmd
                 cmd.notify()
                 
                 group = self.active_cmd.group
@@ -714,7 +723,7 @@ class GCodeService:
         
         # Release all threads waiting for a reply (from reply queue)
         while not self.rq.empty:
-            print "reply queue is not empty"
+            #print "reply queue is not empty"
             try:
                 cmd = self.rq.get_nowait()
                 cmd.notify()
@@ -726,7 +735,7 @@ class GCodeService:
         
         # Release all threads waiting for a reply (from command queue)
         while not self.cq.empty:
-            print "command queue is not empty"
+            #print "command queue is not empty"
             try:
                 cmd = self.cq.get_nowait()
                 cmd.notify()
@@ -821,18 +830,20 @@ class GCodeService:
         """
         self.cq.put( Command.zplus(z) )
     
-    def register_callback(self, callback_name, callback_fun):
+    def register_callback(self, callback_fun):
         """
         Callbacks: update, file_done, paused, resumed
         """
-        #self.callbacks[callback_name] = callback_fun
-        self.callback = callback_fun
+        #self.callback = callback_fun
+        if callback_fun not in self.callback:
+            self.callback.append(callback_fun)
         
-    def unregister_callback(self):
+    def unregister_callback(self, callback_fun):
         """
         Unregister previously registered callback function.
         """
-        self.callback = None
+        #self.callback = None
+        self.callback.remove(callback_fun)
     
     def set_atomic_group(self, group):
         """
@@ -877,7 +888,7 @@ class GCodeService:
                 self.resume()
                 return None
             
-            cmd = Command.gcode(code, 'ok', group = group)
+            cmd = Command.gcode(code, 'ok', group = group, timeout = timeout)
             self.cq.put(cmd)
             
             # Don't block, return immediately 
@@ -933,7 +944,7 @@ class GCodeService:
         """
         return self.idle_time_started - time.time()
         
-    def debug(self, args):
+    def debug_info(self, args):
         
         print "=== Debug Info: BEGIN ==="
         print "Thread count:", threading.active_count()
