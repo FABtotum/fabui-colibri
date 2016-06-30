@@ -937,6 +937,8 @@ class GCodeService:
         
         print "=== Debug Info: BEGIN ==="
         print "Thread count:", threading.active_count()
-        print "Thread enumeration:", threading.enumerate()
+        print "Thread enumeration:"
+        for e in threading.enumerate():
+            print e
         print "=== Debug Info: END ==="
         return True

@@ -37,10 +37,24 @@ _ = tr.ugettext
 
 class CommandParser:
     
-    def __init__(self, gcs, jog_response_file):
+    def __init__(self, gcs, jog_response_file, autostart = True):
         self.gcs = gcs
-        self.jog = Jog(jog_response_file=jog_response_file, gcs=gcs)
-        self.jog.start()
+        self.jog = False
+        if autostart:
+            self.jog = Jog(jog_response_file=jog_response_file, gcs=gcs)
+            self.jog.start()
+    
+    def start(self):
+        if self.jog:
+            self.jog.start()
+        
+    def loop(self):
+        if self.jog:
+            self.jog.loop()
+        
+    def stop(self):
+        if self.jog:
+            self.jog.stop()
     
     def parse_command(self, line):
         args = line.split(':')
@@ -88,7 +102,7 @@ class CommandParser:
                         self.jog.send(tags[0], tags[1])
                 
             elif cmd == '!jog_clear': # !jog_cclear
-                pass
+                self.jog.clear()
             
             elif cmd == '!gmacro':  # !gmacro:<preset>,<arg1>,<arg2>,...
                 pass

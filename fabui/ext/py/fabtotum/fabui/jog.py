@@ -47,8 +47,32 @@ from fabtotum.utils.pyro.gcodeclient import GCodeServiceClient
 tr = gettext.translation('gpusher', 'locale', fallback=True)
 _ = tr.ugettext
 
-class Jog:
+class Command:
+    GCODE   = 'gcode'
+    KILL    = 'kill'
+    CLEAR   = 'clear'
     
+    def __init__(self, id, data):
+        self.id = id
+        self.data = data
+        
+    @classmethod
+    def clear(cls):
+        """ Constructor for ``CLEAR`` command. """
+        return cls(Command.CLEAR, None)
+
+    @classmethod
+    def kill(cls):
+        """ Constructor for ``KILL`` command. """
+        return cls(Command.KILL, None)
+
+    @classmethod
+    def gcode(cls, token, gcode):
+        """ Constructor for ``GCODE`` command. """
+        return cls(Command.GCODE, [token, gcode])
+
+class Jog:
+ 
     def __init__(self, jog_response_file, gcs = None, config = None):
         if not config:
             self.config = ConfigService()
@@ -61,23 +85,41 @@ class Jog:
             self.gcs = gcs
             
         self.jog_response_file = jog_response_file
+        self.response = {}
         self.cq = queue.Queue()
         self.running = False
         
         self.send_thread = None
         
     def __send_thread(self):
+        print "Jog thread: started"
+        
+        with open(self.jog_response_file, 'w') as f:
+            f.write(json.dumps(self.response) )
+        
         while self.running:
             
             cmd = self.cq.get()
             
-            if cmd:
-                token = [0]
-                gcode = cmd[1]
+            if cmd.id == Command.KILL:
+                break
+            elif cmd.id == Command.CLEAR:
+                self.response = {}
+            elif cmd.id == Command.GCODE:
+                token = cmd.data[0]
+                gcode = cmd.data[1]
                 
                 reply = self.gcs.send(gcode, group = 'jog:{0}'.format(token) )
-                print "jog:", reply
-    
+                #print "jog:", reply
+                
+                self.response[token] = reply
+                
+            print self.response
+            with open(self.jog_response_file, 'w') as f:
+                f.write(json.dumps(self.response) )
+                
+        print "Jog thread: stopped"
+        
     ### API ###
     
     def is_running(self):
@@ -86,13 +128,20 @@ class Jog:
     
     def start(self):
         """ Start the service. """
+        print "Jog.start()"
+        self.running = True
         self.send_thread = Thread( name = "Jog-send", target = self.__send_thread )
+        self.send_thread.start()
+        
+    def clear(self):
+        """ Clear response file """
+        self.cq.put( Command.clear() )
         
     def stop(self):
         """ Stop the service. """
         self.running = False
         # Used to wake up send_thread so it can detect the condition
-        self.cq.put( None )
+        self.cq.put( Command.kill() )
         
     def loop(self):
         """ Loop until the service is stopped. """
@@ -108,4 +157,4 @@ class Jog:
         :type token: string
         :type gcode: string
         """
-        self.cq.put( [token, gcode] )
+        self.cq.put( Command.gcode(token, gcode) )

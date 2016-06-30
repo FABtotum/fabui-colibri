@@ -43,7 +43,7 @@ def signal_handler(signal, frame):
     gcserver.stop()
     gcservice.stop()
     observer.stop()
-    #usbMonitor.stop()
+    ftm.parser.stop()
     gpioMonitor.stop()
 
 config = ConfigService()
