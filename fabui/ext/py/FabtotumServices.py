@@ -52,7 +52,9 @@ config = ConfigService()
 LOCK_FILE           = config.get('general', 'lock')
 TRACE               = config.get('general', 'trace')
 COMMAND             = config.get('general', 'command')
+STATUS              = config.get('general', 'status')
 MACRO_RESPONSE      = config.get('general', 'macro_response')
+JOG_RESPONSE        = config.get('general', 'jog_response')
 TASK_MONITOR        = config.get('general', 'task_monitor')
 EMERGENCY_FILE      = config.get('general', 'emergency_file')
 ##################################################################
@@ -80,7 +82,7 @@ ws = WebSocketClient('ws://'+SOCKET_HOST +':'+SOCKET_PORT+'/')
 ws.connect();
 
 ## Folder temp monitor
-ftm = FolderTempMonitor(ws, gcservice, TRACE, MACRO_RESPONSE, TASK_MONITOR, COMMAND)
+ftm = FolderTempMonitor(ws, gcservice, TRACE, MACRO_RESPONSE, JOG_RESPONSE, TASK_MONITOR, COMMAND)
 ## usb disk monitor
 um = UsbMonitor(ws, USB_FILE)
 ## The Observer ;)

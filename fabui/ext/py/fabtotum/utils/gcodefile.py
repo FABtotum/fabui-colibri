@@ -19,18 +19,14 @@
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import standard python module
+import os
 
 # Import external modules
 
 # Import internal modules
-from fabtotum.utils.slicer import cura_utils
-from fabtotum.utils.slicer import slic3r_utils
+from fabtotum.utils.slicer.cura_utils import Parser as CuraParser
+from fabtotum.utils.slicer.slic3r_utils import Parser as Slic3rParser
 
-
-EXTERNALS = {
-    'CURA'      : cura_utils, 
-    'SLIC3R'    : slic3r_utils
-}
 
 class GCodeFileIter:
     
@@ -84,6 +80,8 @@ class GCodeFile:
     
     def __init__(self, filename):
         self.info = GCodeInfo(filename)
+        self.cura_p   = CuraParser()
+        self.slic3r_p = Slic3rParser()
         self.process_file(filename)
         
     def __iter__(self):
@@ -92,9 +90,28 @@ class GCodeFile:
         """
         parser = None
         if 'slicer' in self.info:
-            if self.info['slicer'] in EXTERNALS:
-                parser = EXTERNALS[ self.info['slicer'] ]
+            slicer = self.info['slicer']
+            if slicer == 'CURA':
+                parser = self.cura_p
+            elif slicer == 'SLIC3R':
+                parser = self.slic3r_p
         return GCodeFileIter(self.info['filename'], parser)
+
+    @staticmethod
+    def __tail(f, n):
+        stdin,stdout = os.popen2("tail -n {0} {1}".format(n,f))
+        stdin.close()
+        lines = stdout.readlines(); 
+        stdout.close()
+        return lines
+
+    @staticmethod
+    def __head(f, n):
+        stdin,stdout = os.popen2("head -n {0} {1}".format(n,f))
+        stdin.close()
+        lines = stdout.readlines(); 
+        stdout.close()
+        return lines
 
     def process_file(self, filename):
         """
@@ -107,34 +124,59 @@ class GCodeFile:
         layer_count = 0
         slicer = None
         gcode_type = None
+        stop_parsing = False
+        
+        head_lines = self.__head(filename, 50)
+        tail_lines = self.__tail(filename, 50)
+        
+        lines = head_lines + tail_lines
+        
+        # Check GCode profile (deduce slicer)
+        for line in lines:
+            if self.cura_p.check_profile(line):
+                slicer = 'CURA'
+                break
+            elif self.slic3r_p.check_profile(line):
+                slicer = 'SLIC3R'
+                break
+                
+        if slicer:
+            self.info['slicer'] = slicer
         
         with open(filename, 'r+') as file:
             for line in file:
                 count += 1
                 
-                head = line[:4]
-                
-                if head == 'M109':
-                    gcode_type = self.info['type'] = GCodeInfo.PRINT
-                elif head == 'M3 S' or head == 'M4 S':
-                    gcode_type = self.info['type'] = GCodeInfo.MILL
-                
-                for external in EXTERNALS.values():
-                    attrs = external.process_line(line)
+                if not gcode_type:
+                    head = line[:4]
                     
-                    if 'type' in attrs:
-                        gcode_type = self.info['type'] = attrs['type']
-                    if 'slicer' in attrs:
-                        slicer = self.info['slicer'] = attrs['slicer']
-                    if 'layer_count' in attrs:
-                        layer_count = self.info['layer_count'] = attrs['layer_count']
-                    if 'layer' in attrs:
-                        layer = int(attrs['layer'])
-                        if layer > max_layer:
-                            max_layer = layer
+                    if head == 'M109':
+                        gcode_type = self.info['type'] = GCodeInfo.PRINT
+                    elif head == 'M3 S' or head == 'M4 S':
+                        gcode_type = self.info['type'] = GCodeInfo.MILL
+                
+                if not stop_parsing:
+                    attrs = {}
+                    
+                    if slicer == 'CURA':
+                        attrs = self.cura_p.process_line(line)
+                    elif slicer == 'SLIC3R':
+                        attrs = self.slic3r_p.process_line(line)
+                    
+                    if attrs:
+                        if 'type' in attrs:
+                            gcode_type = self.info['type'] = attrs['type']
+                            
+                        if 'layer_count' in attrs:
+                            layer_count = self.info['layer_count'] = attrs['layer_count']
+                            stop_parsing = True
+                            
+                        if 'layer' in attrs:
+                            layer = int(attrs['layer'])
+                            if layer > max_layer:
+                                max_layer = layer
         
-                tags = line.strip().split(';')
-                if tags[0]:
+                if line[0] != ';':
                     gcode_count += 1
         
         if not layer_count and gcode_type == GCodeInfo.PRINT and max_layer > 0:

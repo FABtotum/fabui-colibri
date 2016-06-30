@@ -10,6 +10,8 @@ port = 9002
 [general]
 lock = @FABUI_TEMP_PATH@LOCK
 macro_response = @FABUI_TEMP_PATH@macro_response
+jog_response = @FABUI_TEMP_PATH@jog_response.json
+status = @FABUI_TEMP_PATH@status.json
 trace = @FABUI_TEMP_PATH@trace
 command = @FABUI_TEMP_PATH@command
 temp_path = @FABUI_TEMP_PATH@

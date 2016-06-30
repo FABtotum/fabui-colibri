@@ -29,6 +29,7 @@ import gettext
 # Import external modules
 
 # Import internal modules
+from fabtotum.fabui.jog import Jog
 
 # Set up message catalog access
 tr = gettext.translation('command_parser', 'locale', fallback=True)
@@ -36,14 +37,16 @@ _ = tr.ugettext
 
 class CommandParser:
     
-    def __init__(self, gcs):
+    def __init__(self, gcs, jog_response_file):
         self.gcs = gcs
+        self.jog = Jog(jog_response_file=jog_response_file, gcs=gcs)
+        self.jog.start()
     
     def parse_command(self, line):
         args = line.split(':')
         try:
             cmd = args[0]
-            if cmd == '!kill':      #~ !kill
+            if cmd == '!abort':      #~ !abort
                 self.gcs.abort()
             
             elif cmd == '!reset':   #~ !reset
@@ -57,34 +60,43 @@ class CommandParser:
                 # execute gmacro resume_from_pause_position
                 self.gcs.resume()
                 
-            elif cmd == '!z_plus':  #~ !z_plus:<float>
+            elif cmd == '!z_plus':  # !z_plus:<float>
                 self.gcs.z_modify(+float(args[1]))
                 
-            elif cmd == '!z_minus': #~ !z_minus:<float>
+            elif cmd == '!z_minus': # !z_minus:<float>
                 self.gcs.z_modify(-float(args[1]))
                                 
-            elif cmd == '!speed':   #~ !speed:<float>
+            elif cmd == '!speed':   # !speed:<float>
                 self.gcs.send('M220 S{0}'.format(args[1]), block=False)
             
-            elif cmd == '!rpm':     #~ !speed:<int>
+            elif cmd == '!rpm':     # !rpm:<int>
                 pass
             
-            elif cmd == '!fan':     #~ !fan:<int>
+            elif cmd == '!fan':     # !fan:<int>
                 self.gcs.send('M106 S{0}\r\n'.format(args[1]), block=False)
                 
-            elif cmd == '!flow_rate':#~ !flow_rate:<float>
+            elif cmd == '!flow_rate':# !flow_rate:<float>
                 self.gcs.send('M221 S{0}\r\n', block=False)
                 
-            elif cmd == '!gcode':   #~ !gcode:<gcode>
+            elif cmd == '!gcode':   # !gcode:<gcode>
                 self.gcs.send(args[1], block=False)
             
-            elif cmd == '!gmacro':  #~ !gmacro:<preset>,<arg1>,<arg2>,...
+            elif cmd == '!jog':     # !jog:<token>,<gcode>
+                if len(args) > 1:
+                    tags = args[1].split(',')
+                    if len(tags) > 1:
+                        self.jog.send(tags[0], tags[1])
+                
+            elif cmd == '!jog_clear': # !jog_cclear
+                pass
+            
+            elif cmd == '!gmacro':  # !gmacro:<preset>,<arg1>,<arg2>,...
                 pass
                 
-            elif cmd == '!file':    #~ !file:<filename>
+            elif cmd == '!file':    # !file:<filename>
                 pass
 
-            elif cmd == '!auto_shutdown':#~ !shutdown:<on|off>
+            elif cmd == '!auto_shutdown':# !shutdown:<on|off>
                 pass
                 
             elif cmd == '!system_shutdown':

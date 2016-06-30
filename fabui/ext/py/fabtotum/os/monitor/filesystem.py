@@ -53,17 +53,18 @@ class FolderTempMonitor(PatternMatchingEventHandler):
     TASK_MONITOR = None
     COMMAND = None
     
-    def __init__(self, WebSocket, gcs, trace_file, monitor_file, response_file, command_file):
+    def __init__(self, WebSocket, gcs, trace_file, monitor_file, response_file, jog_response_file, command_file):
         
         self.TRACE = trace_file
         self.COMMAND = command_file
         self.TASK_MONITOR = monitor_file
         self.MACRO_RESPONSE = response_file
+        self.JOG_RESPONSE = jog_response_file
         self.gcs = gcs
         
-        self.parser = CommandParser(gcs)
+        self.parser = CommandParser(gcs, jog_response_file)
         
-        self.patterns = [self.TRACE, self.COMMAND, self.TASK_MONITOR, self.MACRO_RESPONSE]
+        self.patterns = [self.TRACE, self.COMMAND, self.TASK_MONITOR, self.MACRO_RESPONSE, self.JOG_RESPONSE]
         self.ignore_directories = None
         self._ignore_patterns = None
         self.case_sensitive = None

@@ -21,30 +21,40 @@
 # Import standard python module
 import re
 
-def _is_number(s):
-    try:
-        float(s)
-        return True
-    except ValueError:
+class Parser:
+    def __init__(self):
+        self.cura_profile = re.compile('CURA_PROFILE_STRING:')
+        self.cura_layer_count = re.compile('Layer count:')
+        self.cura_layer = re.compile('LAYER:')
+
+    @staticmethod
+    def _is_number(s):
+        try:
+            float(s)
+            return True
+        except ValueError:
+            return False
+
+    def check_profile(self, line):
+        if line.startswith(';CURA_PROFILE_STRING:'):
+            return True
+           
         return False
+        
+    def process_line(self, line):
+        attrs = {}
 
-def process_line(line):
-    attrs = {}
-
-    if re.search('CURA_PROFILE_STRING:', line):
-       attrs['slicer'] = 'CURA'
-    
-    tags = line.split(';')
-    
-    if len(tags) == 2:
-        if re.search('Layer count:', tags[1]):
-            tag, value = tags[1].split(':')
-            value = value.strip()
-            if _is_number(value):
-                attrs['layer_count'] = value
-        elif re.search('LAYER:', tags[1]):
-            tag, value = tags[1].split(':')
-            attrs['layer'] = value.strip()
-    
-    
-    return attrs
+        if line[0] == ';':        
+            tags = line.split(';')
+            
+            if len(tags) == 2:
+                if self.cura_layer.search(tags[1]):
+                    tag, value = tags[1].split(':')
+                    attrs['layer'] = value.strip()
+                elif self.cura_layer_count.search(tags[1]):
+                    tag, value = tags[1].split(':')
+                    value = value.strip()
+                    if self._is_number(value):
+                        attrs['layer_count'] = value
+        
+        return attrs

@@ -77,13 +77,8 @@ class GCodePusher(object):
     GCode pusher.
     """
     
-    def __init__(self, log_trace, monitor_file = None, gcs = None, use_callback = True):
-        
-        self.config = ConfigService()
-        
-        self.monitor_file = monitor_file
-        self.trace_file = log_trace
-        
+    def __init__(self, log_trace, monitor_file = None, gcs = None, config = None, use_callback = True):
+                        
         self.monitor_lock = RLock()
         self.monitor_info = {
             "progress"              : 0.0,
@@ -112,6 +107,14 @@ class GCodePusher(object):
             "current_line_number"   : 0,
             "gcode_info"            : None
         }
+        
+        self.monitor_file = monitor_file
+        self.trace_file = log_trace
+        
+        if not config:
+            self.config = ConfigService()
+        else:
+            self.config = config
         
         if not gcs:
             self.gcs = GCodeServiceClient()

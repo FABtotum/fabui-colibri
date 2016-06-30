@@ -67,6 +67,7 @@ class PrintApplication(GCodePusher):
     def __init__(self, log_trace, monitor_file, standalone = False, autolevel = False):
         super(PrintApplication, self).__init__(log_trace, monitor_file)
         self.standalone = standalone
+        self.autolevel = autolevel
     
     def trace(selg, msg):
         print msg
@@ -103,7 +104,9 @@ class PrintApplication(GCodePusher):
         :type bed_temp_target: float
         """
         
+        print "Parsing file..."
         self.prepare(gcode_file, task_id, ext_temp_target, bed_temp_target)
+        print "Done."
         
         if self.standalone:
             if self.autolevel:
