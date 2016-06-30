@@ -98,8 +98,6 @@
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		
-		if(file_exists($CI->config->item('lock'))) return;
-		
 		$method      = $data['method'];
 		$methodParam = $data['value'];
 		

@@ -8,8 +8,6 @@
  * Serial factory
  */
  
- require_once('Serial.php'); //serial class
- 
  class JogFactory {
 	
 	protected $CI; //code igniter instance
@@ -21,7 +19,6 @@
 	protected $serialReply = array(); //serial reply
 	protected $serialCommands = array();
 	
-	
 	/**
 	 * class constructor
 	 */
@@ -30,47 +27,29 @@
   		foreach($params as $key => $value){ //init class attributes (if present)
 			if(property_exists($this, $key))
 				$this->$key = $value;
-		}	
-		
-		/*	
+		}
 		$this->CI =& get_instance(); //init ci instance
 		$this->CI->config->load('fabtotum');
-		//init serial class
-		$this->serial = new Serial();		
-		$this->serial->deviceSet($this->CI->config->item('serial_port'));
-		$this->serial->confBaudRate($this->CI->config->item('serial_baud'));
-		$this->serial->confParity("none");
-		$this->serial->confCharacterLength(8);
-		$this->serial->confStopBits(1);
-		$this->serial->confFlowControl("none");
-		*/
+		$this->CI->load->helper('file_helper');
   	}
 	
 	/***
 	 * send gcode command to serial
 	 */
-	function sendCommand($command)
+	function sendCommand($commands)
 	{
-		/*			
-		$this->serial->deviceOpen();
-		$read = '';
-		if(is_array($command)){
-			foreach($command as $comm){
-				$this->serialCommands[] = $comm;
-				$this->serial->sendMessage($comm.PHP_EOL);
-				$this->serialReply[] = $this->serial->readPort();
-				//$read .= $this->serial->readPort();
-			}
-		}elseif($command != ''){
-			$this->serialCommands[] = $command;
-			$this->serial->sendMessage($command.PHP_EOL);
-			$this->serialReply[] = $this->serial->readPort();
-			//$read .= $this->serial->readPort();
+		if(!is_array($commands) && $commands != '')
+		{
+			array_push($this->serialCommands, $commands);
+		}else{
+			$this->serialCommands = $commands;
 		}
-		$this->serial->deviceClose();
-		//$this->serialReply = $read;
-		*/
 		
+		$commandToWrite = '';
+		foreach($this->serialCommands as $key => $command){
+			$commandToWrite .= '!jog:'.time().$key.','.$command.PHP_EOL;
+		}
+		write_file($this->CI->config->item('command'), $commandToWrite);
 	}
 	
 	/**
