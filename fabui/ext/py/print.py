@@ -86,6 +86,14 @@ class PrintApplication(GCodePusher):
             print_macros.end_additive_safe_zone(self)
         
         self.stop()
+        
+    def state_change_callback(self, state):
+        if state == 'paused':
+            print "Print PAUSED"
+        if state == 'resumed':
+            print "Print RESUMED"
+        if state == 'aborted':
+            print "Print ABORTED"
     
     def temp_change_callback(self, action, data):
         print action, data
@@ -109,10 +117,14 @@ class PrintApplication(GCodePusher):
         print "Done."
         
         if self.standalone:
+            print_macros.check_pre_print(self)
+            
             if self.autolevel:
                 general_macros.auto_bed_leveling(self)
             else:
                 general_macros.raise_bed(self)
+                general_macros.home_all(self, [ext_temp_target, bed_temp_target])
+            
             print_macros.start_additive(self, [ext_temp_target, bed_temp_target])
         
         self.send_file(gcode_file)

@@ -450,7 +450,7 @@ class GCodePusher(object):
         elif action.startswith('temp_change'):
             self.__temp_change_callback(action.split(':')[1], data)
         elif action == 'state_change':
-            self.__state_change_callback()
+            self.__state_change_callback(data)
         elif action == 'error':
             self.__error_callback(data[0], data[1])
 
