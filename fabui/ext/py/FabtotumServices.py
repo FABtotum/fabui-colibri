@@ -82,7 +82,7 @@ ws = WebSocketClient('ws://'+SOCKET_HOST +':'+SOCKET_PORT+'/')
 ws.connect();
 
 ## Folder temp monitor
-ftm = FolderTempMonitor(ws, gcservice, TRACE, MACRO_RESPONSE, JOG_RESPONSE, TASK_MONITOR, COMMAND)
+ftm = FolderTempMonitor(ws, gcservice, TRACE, TASK_MONITOR, MACRO_RESPONSE, JOG_RESPONSE, COMMAND)
 ## usb disk monitor
 um = UsbMonitor(ws, USB_FILE)
 ## The Observer ;)

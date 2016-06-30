@@ -30,7 +30,9 @@
   		foreach($params as $key => $value){ //init class attributes (if present)
 			if(property_exists($this, $key))
 				$this->$key = $value;
-		}		
+		}	
+		
+		/*	
 		$this->CI =& get_instance(); //init ci instance
 		$this->CI->config->load('fabtotum');
 		//init serial class
@@ -41,13 +43,15 @@
 		$this->serial->confCharacterLength(8);
 		$this->serial->confStopBits(1);
 		$this->serial->confFlowControl("none");
+		*/
   	}
 	
 	/***
 	 * send gcode command to serial
 	 */
 	function sendCommand($command)
-	{			
+	{
+		/*			
 		$this->serial->deviceOpen();
 		$read = '';
 		if(is_array($command)){
@@ -65,6 +69,8 @@
 		}
 		$this->serial->deviceClose();
 		//$this->serialReply = $read;
+		*/
+		
 	}
 	
 	/**

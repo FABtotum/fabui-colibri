@@ -168,6 +168,8 @@
 			'start_date' => date('Y-m-d H:i:s')
 		);
 		$taskId = $this->tasks->add($taskData);
+		//start print
+		startPrint($fileToCreate['full_path'], $taskId);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
 	}
 	/**

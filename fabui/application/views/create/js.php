@@ -175,6 +175,7 @@
 	//start create
 	function startCreate()
 	{
+		is_task_on = true;
 		openWait('Init print');
 		var calibration = $('input[name=calibration]:checked').val();
 		var data = {idFile:idFile, skipEngage:skipEngage, calibration:calibration};

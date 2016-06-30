@@ -8,8 +8,8 @@
  */
  
 ?>
-<div class="step-pane" id="step3">
-	
-	<div></div>
-	
+<div class="row">
+	<div class="col-sm-12 table-container">
+		
+	</div>
 </div>

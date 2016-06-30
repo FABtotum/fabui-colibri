@@ -149,9 +149,9 @@ if(!function_exists('doMacro'))
 		if($traceFile == '' or $traceFile == null)        $traceFile    = $CI->config->item('trace');
 		if($responseFile == '' or $responseFile == null ) $responseFile = $CI->config->item('macro_response');
 		
-		doCommandLine('python', $extPath.'py/gmacro.py', is_array($extrArgs) ? array_merge(array($macroName, $traceFile, $responseFile), $extrArgs) : array($macroName, $traceFile, $responseFile, $extrArgs));
+		doCommandLine('python', $extPath.'py/gmacro_new.py', is_array($extrArgs) ? array_merge(array($macroName, $traceFile, $responseFile), $extrArgs) : array($macroName, $traceFile, $responseFile, $extrArgs));
 		//if response is false means that macro failed
-		return str_replace(PHP_EOL, '', trim(file_get_contents($responseFile))) == 'true' ? true : false;
+		return str_replace('<br>', '', trim(file_get_contents($responseFile))) == 'true' ? true : false;
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -193,7 +193,10 @@ if(!function_exists('resetController'))
 	 */
 	function resetController()
 	{
-		return doCommandLine('bash', './ext/bash/resetController.sh');
+		$CI =& get_instance();
+		$CI->load->helper('file');
+		$CI->config->load('fabtotum');
+		write_file($CI->config->item('command'), '!reset');
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -239,6 +242,20 @@ if(!function_exists('checkManufactoring'))
 			}
 		}
 		return 'additive';
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('startPrint'))
+{
+	/**
+	 * 
+	 */
+	function startPrint($gcodeFilePath, $taskID = 0)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$extPath = $CI->config->item('ext_path');
+		doCommandLine('python', $extPath.'/py/print.py "'.$gcodeFilePath.'" '.$taskID.' > /dev/null & echo $! > /run/task_create.pid');	
 	}
 }
 ?>

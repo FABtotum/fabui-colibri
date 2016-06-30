@@ -79,7 +79,7 @@ class FolderTempMonitor(PatternMatchingEventHandler):
         messageData = ''
         
         #print "Monitor:", event.src_path
-        
+                
         if event.src_path == self.TRACE:
             messageData = {'type': 'trace', 'content': str(self.getFileContent(self.TRACE))}
             messageType = "macro"
@@ -87,6 +87,12 @@ class FolderTempMonitor(PatternMatchingEventHandler):
             
         elif event.src_path == self.COMMAND:
             self.parser.parse_file(self.COMMAND)
+        
+        elif event.src_path == self.TASK_MONITOR:
+            messageData = {'type': 'monitor', 'content': json.loads(str(self.getFileContent(self.TASK_MONITOR)))}
+            messageType = 'task'
+            self.sendMessage(messageType, messageData)
+            
             
         #~ elif event.src_path == self.TASK_MONITOR:
             #~ pass

@@ -95,11 +95,46 @@
 	}
 	
 	/***
-	 * 
+	 *  Settings - Network - WiFi page
 	 */
 	public function wifi()
 	{
-		//TODO
+		//load libraries, helpers, model, config
+		$this->load->library('smart');
+		$this->load->helper('os_helper');
+		$this->load->helper('form');
+		$this->config->load('fabtotum');
+		
+		$data['wlanInfo'] = getWlanInfo();
+		$data = array();
+		//page widget
+		$widgetOptions = array(
+			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
+			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
+		);
+		
+		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		
+		$widget         = $this->smart->create_widget($widgetOptions);
+		$widget->id     = 'hardware-wifi-widget';
+		$widget->header = array('icon' => 'fa-wifi', "title" => "<h2>Wi-Fi</h2>", 'toolbar'=>'');
+		$widget->body   = array('content' => $this->load->view('settings/wifi_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
+		$this->addJsInLine($this->load->view('settings/wifi_js', $data, true));
+		$this->addJSFile('/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js'); //datatable */
+		$this->content = $widget->print_html(true);
+		$this->view();
+	}
+	
+	/**
+	 * scan wifi networks
+	 * @return json all scanned networks
+	 */
+	public function scanWifi()
+	{
+		//load helpers
+		$this->load->helper('os_helper');
+		$nets = scanWlan();
+		$this->output->set_content_type('application/json')->set_output(json_encode($nets));
 	}
 	
 	/***
@@ -117,7 +152,7 @@
 	{
 		//TODO
 	}
-	
+
  }
  
 ?>

@@ -60,7 +60,7 @@
 		//load config, libraries, helpers
 		$this->config->load('fabtotum');
 		$this->load->library('serial');
-		$this->load->helper(array('file', 'fabtotum'));
+		$this->load->helper(array('file', 'fabtotum_helper'));
 		//write lock file
 		write_file($this->config->item('lock'), '', 'w+');
 		//load default settings
