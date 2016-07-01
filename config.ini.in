@@ -20,12 +20,13 @@ emergency_file = @FABUI_TEMP_PATH@emergency.json
 ext_path = @SHARED_PATH@ext/
 python_scripts = @PYTHON_PATH@
 bigtemp_path = @BIGTEMP_PATH@
-database = @LIB_PATH@/fabtotum.db
+database = @LIB_PATH@fabtotum.db
 autoinstall_file = @WWW_PATH@AUTOINSTALL
 uploads = @UPLOAD_PATH@
 
 [monitor]
 backtrack = 20
+period = 5
 
 [usb]
 usb_disk_folder = @USB_MEDIA_PATH@
