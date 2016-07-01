@@ -19,6 +19,7 @@
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import standard python module
+import os
 import sys
 import gettext
 import signal
@@ -36,6 +37,12 @@ from fabtotum.utils.pyro.gcodeserver    import GCodeServiceServer
 from fabtotum.os.monitor.filesystem     import FolderTempMonitor
 from fabtotum.os.monitor.usbdrive       import UsbMonitor
 from fabtotum.os.monitor.gpiomonitor    import GPIOMonitor
+
+def create_file(filename):
+    open(filename,'w').close()
+    os.chmod(filename, 0o660)
+    # www-data uid/gid are 33/33
+    os.chown(filename, 33, 33)
 
 def signal_handler(signal, frame):
     print "You pressed Ctrl+C!"
@@ -75,6 +82,15 @@ GPIO_PIN    = config.get('gpio', 'pin')
 MONITOR_BACKTRACK   = int(config.get('monitor', 'backtrack'))
 MONITOR_PERIOD      = float(config.get('monitor', 'period'))
 STATUS              = config.get('general', 'status')
+
+# Prepare files with correct permissions
+create_file(TRACE)
+create_file(STATUS)
+create_file(COMMAND)
+create_file(MACRO_RESPONSE)
+create_file(JOG_RESPONSE)
+create_file(TASK_MONITOR)
+create_file(EMERGENCY_FILE)
 
 # Start gcode service
 gcservice = GCodeService(SERIAL_PORT, SERIAL_BAUD)
