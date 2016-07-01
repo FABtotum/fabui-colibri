@@ -562,6 +562,7 @@ fabApp = (function(app) {
 	 * write serial replys to jog console
 	 */
 	app.writeSerialResponseToConsole = function(data){
+		/*
 			console.log(data);
 			var commands = data.commands;
 			var replys   = data.response;
@@ -577,6 +578,7 @@ fabApp = (function(app) {
 				}
 			}
 			$.console.append('<hr>').scrollTop(1E10);
+		*/
 	};
 	/*
 	 * manage macro response or trace
@@ -671,6 +673,7 @@ fabApp = (function(app) {
 	 * manage tasks
 	 */
 	app.manageTask = function(data){
+		
 		switch(data.type){
 			case 'notifications':
 				app.setTasks(data);
@@ -705,13 +708,14 @@ fabApp = (function(app) {
 	 * manage tasks's json files known as monitor files
 	 */
 	app.manageTaskMonitor = function(data){
-		if (typeof manage_task_monitor == 'function') manage_task_monitor(data);
+		if (typeof manageMonitor == 'function') manageMonitor(data);
 	};
 	/*
 	 * read temperatures
 	 */
 	app.getTemperatures = function(){
-		if(socket_connected && (is_macro_on == false && is_task_on == false && is_emergency == false)) app.serial('getTemperatures', '');
+		//TODO new version
+		//if(socket_connected && (is_macro_on == false && is_task_on == false && is_emergency == false)) app.serial('getTemperatures', '');
 	}
 	/*
 	 * send command to the serial port
@@ -719,10 +723,10 @@ fabApp = (function(app) {
 	app.serial = function(func, val) {
 		
 		
-		var xyStep       = $("#xyStep").length > 0 ? $("#xyStep").val() : 10;
-		var zStep        = $("#zStep").length > 0 ?  $("#zStep").val() : 5;
-		var extruderStep = $("#extruderStep").length > 0 ?  $("#extruderStep").val() : 10;
-		var xyzFeed      = $("#xyzFeed").length > 0 ? $("#xyzFeed").val() : 1000;
+		var xyStep       = $("#xyStep").length            > 0 ? $("#xyStep").val() : 10;
+		var zStep        = $("#zStep").length             > 0 ? $("#zStep").val() : 5;
+		var extruderStep = $("#extruderStep").length      > 0 ? $("#extruderStep").val() : 10;
+		var xyzFeed      = $("#xyzFeed").length           > 0 ? $("#xyzFeed").val() : 1000;
 		var extruderFeed = $("#extruder-feedrate").length > 0 ? $("#extruder-feedrate").val() : 300;
 		
 		var data = {

@@ -22,6 +22,7 @@
 		initWizard();
 		initFilesTable();
 		initRecentFilesTable();
+		fabApp.manageTaskMonitor();
 	});
 	
 	//init wizard flow
@@ -34,20 +35,17 @@
 		$('.wizard').on('changed.fu.wizard', function (evt, data) {
 			checkWizard();
 		});
-		
 		$('.btn-prev').on('click', function() {
 			console.log('prev');
 			if(canWizardPrev()){
 			}
 		});
-		
 		$('.btn-next').on('click', function() {
 			console.log('next');
 			if(canWizardNext()){
 				
 			}
 		});
-		
 	}
 	
 	function initFilesTable()
@@ -187,5 +185,11 @@
 		}).done(function(response) {
 			closeWait();
 		});
+	}
+	
+	if(typeof manageMonitor != 'function'){
+		window.manageMonitor = function(data){
+			console.log(data);
+		};
 	}
 </script>
