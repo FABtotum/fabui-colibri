@@ -801,6 +801,8 @@ class GCodeService:
         """
         Force Totumduino hardware reset.
         """
+        if self.is_resetting:
+            return
         self.__reset_totumduino()
     
     def pause(self):
@@ -808,6 +810,9 @@ class GCodeService:
         Pause current file push. In case no file is being pushed this command
         has no effect.
         """
+        if self.is_resetting:
+            return
+            
         self.cq.put( Command.pause() )
         
     def resume(self):
@@ -815,6 +820,9 @@ class GCodeService:
         Resume current file push. In case no file is being pushed this command
         has no effect.
         """
+        if self.is_resetting:
+            return
+        
         self.cq.put( Command.resume() )
         
     def abort(self):
@@ -822,12 +830,18 @@ class GCodeService:
         Abort current file push. In case no file is being pushed this command
         has no effect.
         """
+        if self.is_resetting:
+            return
+        
         self.cq.put( Command.abort() )
     
     def z_modify(self, z):
         """
         Modify the Z axis by amount z
         """
+        if self.is_resetting:
+            return
+        
         self.cq.put( Command.zplus(z) )
     
     def register_callback(self, callback_fun):
@@ -877,6 +891,9 @@ class GCodeService:
         """
         Send GCode and return reply.
         """
+        if self.is_resetting:
+            return None
+        
         code = code.encode('latin-1')
         if self.running:
             sent_timestamp = time.time()
@@ -923,6 +940,9 @@ class GCodeService:
         
         :rtype: bool
         """
+        if self.is_resetting:
+            return False
+        
         if self.running:
             if self.state == GCodeService.IDLE:
                 cmd = Command.file(filename)

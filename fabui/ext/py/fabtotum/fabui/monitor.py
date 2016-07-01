@@ -111,7 +111,11 @@ class StatsMonitor:
             
         print "StatsMonitor thread: stopped"
     
-    
+    def __temp_change_callback(self, action, data):
+        pass
+        
+    def __gcode_action_callback(self, action, data):
+        pass
     
     def __callback_handler(self, action, data):
         print "Monitor: callback_handler", action, data
@@ -149,7 +153,7 @@ class StatsMonitor:
     def start(self):
         self.running = True
         
-        selg.gcs.register_callback(self.__callback_handler)
+        self.gcs.register_callback(self.__callback_handler)
         
         self.monitor_thread = Thread( name = "Monitor", target = self.__monitor_thread )
         self.monitor_thread.start()
