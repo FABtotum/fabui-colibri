@@ -54,6 +54,13 @@
 			$messageType = $this->jogFactory->getResponseType();
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('type' => $messageType, 'data' =>$messageData)));
 		}
+	}
+	
+	public function test()
+	{
+		$this->load->library('JogFactory', '', 'jogFactory');
+		$messageData = $this->jogFactory->getTemperatures();
+		$this->output->set_content_type('application/json')->set_output(json_encode(array('type' => $this->jogFactory->getResponseType(), 'data' =>$messageData)));
 	}	
  }
  

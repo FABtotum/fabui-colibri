@@ -258,4 +258,18 @@ if(!function_exists('startPrint'))
 		doCommandLine('python', $extPath.'/py/print.py "'.$gcodeFilePath.'" '.$taskID.' > /dev/null & echo $! > /run/task_create.pid');	
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('abort'))
+{
+	/**
+	 * abort task
+	 */
+	function abort()
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$CI->load->helper('file');
+		write_file($CI->config->item('command'), '!abort');
+	}
+}
 ?>

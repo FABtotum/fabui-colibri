@@ -30,6 +30,8 @@ function transformLinks(container)
 {
 	container = container || $('#content');
 	$.each( container.find('a'), function() {
-    	$(this).attr('href', '#' + $(this).attr('href'));
+		if($(this).hasAttr('href') && ( $(this).attr('href') != "javascript:void(0);" || $(this).attr('href').substring(0, 1) != "#") ) {
+    		$(this).attr('href', '#' + $(this).attr('href'));
+		}
 	});
 }

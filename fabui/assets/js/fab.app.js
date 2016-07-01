@@ -477,8 +477,8 @@ fabApp = (function(app) {
 			try {
 				var obj = jQuery.parseJSON(data);
 				switch(obj.type){
-					case 'temperature':
-						app.updateTemperaturesInfo(obj.data);
+					case 'status':
+						app.updateStatus(obj.data);
 						break;
 					case 'serial':
 						app.writeSerialResponseToConsole(obj.data);
@@ -515,35 +515,55 @@ fabApp = (function(app) {
 			socket.connect();
 		}
 	};
+	
 	/*
+	 * update printer status 
+	 */
+	app.updateStatus = function(data){
+		//update temperatures
+		app.updateTemperaturesInfo(data.response.ext_temp, data.response.ext_temp_target, data.response.bed_temp, data.response.bed_temp_target);
+	}
+	
+	/**
+	 * @param array ext_temp, ext_temp_target, bed_temp,bed_temp_target
 	 * update temperatures info
 	 */
-	app.updateTemperaturesInfo = function(data){
-		var re = /ok\sT:([+|-]*[0-9]*.[0-9]*)\s\/([+|-]*[0-9]*.[0-9]*)\sB:([+|-]*[0-9]*.[0-9]*)\s\/([+|-]*[0-9]*.[0-9]*)/;
-		if ((match = re.exec(data.response)) !== null){
-			var ext_temp   = match[1];
-			var ext_target = match[2];
-			var bed_temp   = match[3];
-			var bed_target = match[4];
-			//update top bar
-			$("#top-bar-nozzle-actual").html(parseInt(ext_temp));
-			$("#top-bar-nozzle-target").html(parseInt(ext_target));
-			$("#top-bar-bed-actual").html(parseInt(bed_temp));
-			$("#top-bar-bed-target").html(parseInt(bed_target));
-			//top bar sliders
-			document.getElementById('top-act-bed-temp').noUiSlider.set([parseInt(bed_temp)]);
-			document.getElementById('top-bed-target-temp').noUiSlider.set([parseInt(bed_target)]);
-			if($("#top-act-ext-temp").length > 0){
-				document.getElementById('top-act-ext-temp').noUiSlider.set([parseInt(ext_temp)]);
-				document.getElementById('top-ext-target-temp').noUiSlider.set([parseInt(ext_target)]);
-			}
-			//save to browser storage
-			if ( typeof (Storage) !== "undefined") {
-				localStorage.setItem("nozzle_temp", ext_temp);
-				localStorage.setItem("nozzle_temp_target", ext_target);
-				localStorage.setItem("bed_temp", bed_temp);
-				localStorage.setItem("bed_temp_target", bed_target);
-			}
+	app.updateTemperaturesInfo = function(ext_temp, ext_temp_target, bed_temp,bed_temp_target){	
+		
+		if(ext_temp.constructor === Array){
+			ext_temp = ext_temp[ext_temp.length - 1];
+		}
+		if(ext_temp_target.constructor === Array){
+			ext_temp_target = ext_temp_target[ext_temp_target.length - 1];
+		}
+		if(bed_temp.constructor === Array){
+			bed_temp = bed_temp[bed_temp.length - 1];
+		}
+		if(bed_temp_target.constructor === Array){
+			bed_temp_target = bed_temp_target[bed_temp_target.length - 1];
+		}
+		
+		//update top bar
+		$("#top-bar-nozzle-actual").html(parseInt(ext_temp));
+		$("#top-bar-nozzle-target").html(parseInt(ext_temp_target));
+		$("#top-bar-bed-actual").html(parseInt(bed_temp));
+		$("#top-bar-bed-target").html(parseInt(bed_temp_target));
+		//top bar sliders
+		document.getElementById('top-act-bed-temp').noUiSlider.set([parseInt(bed_temp)]);
+		document.getElementById('top-bed-target-temp').noUiSlider.set([parseInt(bed_temp_target)]);
+		if($("#top-act-ext-temp").length > 0){
+			document.getElementById('top-act-ext-temp').noUiSlider.set([parseInt(ext_temp)]);
+			document.getElementById('top-ext-target-temp').noUiSlider.set([parseInt(ext_temp_target)]);
+		}
+		//save to browser storage
+		if ( typeof (Storage) !== "undefined") {
+			localStorage.setItem("nozzle_temp", ext_temp);
+			localStorage.setItem("nozzle_temp_target", ext_temp_target);
+			localStorage.setItem("bed_temp", bed_temp);
+			localStorage.setItem("bed_temp_target", bed_temp_target);
+		}
+		
+		/*
 			//if module is jog
 			if($.module == "jog"){
 				if($("#act-ext-temp").length > 0){
@@ -557,6 +577,7 @@ fabApp = (function(app) {
 			}
 			
 		}
+		*/
 	};
 	/*
 	 * write serial replys to jog console
@@ -708,8 +729,15 @@ fabApp = (function(app) {
 	 * manage tasks's json files known as monitor files
 	 */
 	app.manageTaskMonitor = function(data){
-		if (typeof manageMonitor == 'function') manageMonitor(data);
+		if (typeof manageMonitor == 'function') manageMonitor(data.content);
 	};
+	
+	/*
+	 * 
+	 */
+	app.getStatus = function(){
+		if(socket_connected && (is_macro_on == false && is_task_on == false && is_emergency == false)) app.serial('getStatus', '');
+	}
 	/*
 	 * read temperatures
 	 */

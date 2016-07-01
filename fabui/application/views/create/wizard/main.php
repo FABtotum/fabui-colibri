@@ -11,13 +11,13 @@
 <div class="wizard">
 	<div class="steps-container">
 		<ul class="steps">
-			<li data-target="#step1" class="active">
+			<li data-target="#step1" class="<?php echo !$runningTask ? 'active' : ''; ?>">
 				<span class="badge badge-info">1</span>Choose File<span class="chevron"></span>
 			</li>
 			<li data-target="#step2">
 				<span class="badge">2</span>Get Ready<span class="chevron"></span>
 			</li>
-			<li data-target="#step3">
+			<li data-target="#step3" class="<?php echo $runningTask ? 'active' : ''; ?>">
 				<span class="badge">3</span>Printing<span class="chevron"></span>
 			</li>
 			<li data-target="#step4">
@@ -36,8 +36,8 @@
 </div>
 <div class="step-content">
 	<form class="form-horizontal" id="fuelux-wizard" method="post">
-		<?php echo $step1; ?>
-		<?php echo $step2; ?>
+		<?php if(isset($step1)) echo $step1; ?>
+		<?php if(isset($step2)) echo $step2; ?>
 		<?php echo $step3; ?>
 		<?php echo $step4; ?>
 	</form>

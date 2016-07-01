@@ -10,31 +10,53 @@
  
  class Create extends FAB_Controller {
  	
+	protected $runningTask = false;
+	
+	function __construct()
+	{
+		parent::__construct();
+		//check if there's a running task
+		//load libraries, models, helpers
+		$this->load->model('Tasks', 'tasks');
+		//$this->tasks->truncate();
+		$this->runningTask = $this->tasks->getRunning();
+	}
+	
 	//controller router
 	public function index($type = 'print'){
-		switch($type){
-			case 'mill':
-				$this->doMill();
-				break;
-			case 'print':
-				$this->doPrint();
-				break;
+		
+		if($this->runningTask){
+			$method = 'do'.ucfirst($this->runningTask['type']);
+			$this->$method();
+		}else{
+			switch($type){
+				case 'mill':
+					$this->doMill();
+					break;
+				case 'print':
+					$this->doPrint();
+					break;
+			}
 		}
 	}
 	
 	//print controller function
 	public function doPrint()
 	{
+		
 		//load libraries, helpers, model
 		$this->load->library('smart');
 		//data
 		$data = array();
 		$data['type']      = 'print';
 		$data['printType'] = 'additive';
-		
+		$data['runningTask'] = $this->runningTask;
+		//if there's no running task don't load all steps
+		if(!$this->runningTask){
+			$data['step1']  = $this->load->view('create/wizard/step1', $data, true );
+			$data['step2']  = $this->load->view('create/wizard/additive_step', $data, true );	
+		}
 		//wizard
-		$data['step1']  = $this->load->view('create/wizard/step1', $data, true );
-		$data['step2']  = $this->load->view('create/wizard/additive_step', $data, true );
 		$data['step3']  = $this->load->view('create/wizard/step3', $data, true );
 		$data['step4']  = $this->load->view('create/wizard/step4', $data, true );
 		$data['wizard'] = $this->load->view('create/wizard/main',  $data, true );
@@ -45,23 +67,32 @@
 			'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
 		);
 		
-		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		//$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-print';
 		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>Print</h2>");
-		$widget->body   = array('content' => $this->load->view(strtolower(get_class($this)).'/main_widget', $data, true ), 'class'=>'fuelux');
+		$widget->body   = array('content' => $this->load->view('create/main_widget', $data, true ), 'class'=>'fuelux');
 		
 		//add javascript dependencies
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.js'); //wizard
-		$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
-		$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
-		$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
-		$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
-		$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
-		$this->addJsInLine($this->load->view(strtolower(get_class($this)).'/js', $data, true));
+		if(!$this->runningTask){ //if task is running these filee are not needed
+			$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
+			$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
+			$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
+			$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
+			$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
+			$this->addCSSInLine('<style>.pagination li{display:inline !important} .img-responsive {display:inline; max-width:50%;} .radio{padding-top:0px !important;} .medium {min-height:190px !important;} .mini {min-height:150px !important;}</style>');
+		}
+		
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.cust.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.resize.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.fillbetween.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.time.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js'); //datatable
+		
+		$this->addJsInLine($this->load->view('create/js', $data, true));
 		$this->content = $widget->print_html(true);
-		$this->addCSSInLine('<style>.pagination li{display:inline !important} .img-responsive {display:inline; max-width:50%;} .radio{padding-top:0px !important;} .medium {min-height:190px !important;} .mini {min-height:150px !important;}</style>');
 		$this->view();
 	}
 	
@@ -178,6 +209,16 @@
 	 */
 	private function startMill($data)
 	{
+		//TODO
+	}
+	
+	/**
+	 *  abort task
+	 */
+	public function abort()
+	{
+		$this->load->helper('fabtotum_helper');
+		abort();
 		//TODO
 	}
 			

@@ -59,7 +59,6 @@
 	{
 		return array('type'=> $this->responseType, 'commands' => $this->serialCommands, 'response' => $this->serialReply);
 	}
-	
 	/**
 	 * @param $type (serial, temperature, etc..)
 	 * set response type
@@ -78,13 +77,13 @@
 	}
 	
 	/***
-	 * @return $string temperatures (ex: ok T:102.0 /102.0 B:66.1 /66.0 T0:102.0 /102.0 @:26 B@:0\n)
+	 * @return array status of the printer (temperatures, fan, floware, speed, etc)
 	 * get Nozzle and Bed temperatures
 	 */
-	public function getTemperatures()
+	public function getStatus()
 	{
-		$this->setResponseType('temperature');
-		$this->sendCommand('M105');
+		$this->setResponseType('status');
+		$this->serialReply = json_decode(file_get_contents($this->CI->config->item('status')), true);
 		return $this->response();
 	}
 	

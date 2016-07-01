@@ -34,7 +34,7 @@
 		fabApp.FabActions();
 		fabApp.domReadyMisc();
 		//start intervals
-		temperatures_interval = setInterval(fabApp.getTemperatures, temperatures_interval_timer);
+		status_interval = setInterval(fabApp.getStatus, status_interval_timer);
 	});
 </script>
 <?php echo $jsInLine; ?>

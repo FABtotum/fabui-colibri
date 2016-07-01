@@ -45,6 +45,8 @@ var safety_interval             = null;
 var safety_interval_timer       = 3000 //3 seconds
 var temperatures_interval       = null;
 var temperatures_interval_timer = 5000 //5 seconds
+var status_interval             = null;
+var status_interval_timer       = 5000;
 /*
  * global flags
  */

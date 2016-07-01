@@ -55,6 +55,14 @@
 		return $this->db->insert_id();
 	}
 	
+	/**
+	 *  delete all data from table
+	 */
+	public function truncate()
+	{
+		$this->db->truncate($this->tableName);
+	}
+	
 	
 	
  } 

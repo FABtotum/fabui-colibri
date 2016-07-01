@@ -11,11 +11,29 @@
  	
 	private $tableName = 'sys_tasks';
 	private $completedStatus = array('performed', 'stopped', 'deleted');
+	
+	const STATUS_RUNNING = 'RUNNING';
  	
 	//init class
 	public function __construct()
 	{
 		parent::__construct($this->tableName);
+	}
+	
+	/**
+	 * get running task
+	 * @return row or false
+	 */
+	public function getRunning()
+	{
+		$this->db->where('status', self::STATUS_RUNNING);
+		$this->db->order_by('start_date', 'DESC');
+		$query = $this->db->get($this->tableName,1,0);
+		if($query->num_rows() > 0){
+			return $query->row_array();
+		}else{
+			return false;
+		}
 	}
 	
 	/**
