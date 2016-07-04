@@ -43,6 +43,8 @@ from fabtotum.fabui.config import ConfigService
 from fabtotum.utils.gcodefile import GCodeFile, GCodeInfo
 from fabtotum.utils.pyro.gcodeclient import GCodeServiceClient
 
+from fabtotum.fabui.macros.all import PRESET_MAP
+
 # Set up message catalog access
 tr = gettext.translation('gpusher', 'locale', fallback=True)
 _ = tr.ugettext
@@ -110,7 +112,17 @@ class GCodePusher(object):
         }
         
         self.monitor_file = monitor_file
+        
         self.trace_file = log_trace
+        
+        self.trace_logger = logging.getLogger('Trace')
+        self.trace_logger.setLevel(logging.INFO)
+        
+        ch = logging.FileHandler(log_trace)
+        formatter = logging.Formatter("%(message)s")
+        ch.setFormatter(formatter)
+        ch.setLevel(logging.INFO)
+        self.trace_logger.addHandler(ch)
         
         if not config:
             self.config = ConfigService()
@@ -130,8 +142,6 @@ class GCodePusher(object):
         self.macro_skipped = 0
         
         self.progress_monitor = None
-        
-        logging.basicConfig( filename=log_trace, level=logging.INFO, format='%(message)s')
     
     def writeMonitor(self):
         """
@@ -175,6 +185,7 @@ class GCodePusher(object):
                     "lines"             : str(line_count),
                     "print_started"     : str(self.monitor_info["print_started"]),
                     "started"           : str(self.monitor_info["started"]),
+                    "duration"          : str( time.time() - float(self.monitor_info["started"]) ),
                     "paused"            : str(self.monitor_info["paused"]),
                     "completed"         : str(self.monitor_info["completed"]),
                     "completed_time"    : str(self.monitor_info["completed_time"]),
@@ -206,7 +217,9 @@ class GCodePusher(object):
         :param log_msg: Log message
         :type log_msg: string
         """
-        logging.info(log_msg)
+        #logging.info(log_msg)
+        self.trace_logger.info(log_msg)
+        pass
         
     def resetTrace(self):
         """ Reset trace file """
@@ -266,7 +279,7 @@ class GCodePusher(object):
 
         self.monitor_lock.acquire()
         
-        if action == 'all':
+        if action == 'ext_bed':
             #print "Ext: {0}, Bed: {1}".format(data[0], data[1])
             self.monitor_info['ext_temp'] = float(data[0])
             self.monitor_info['bed_temp'] = float(data[1])
@@ -276,6 +289,13 @@ class GCodePusher(object):
         elif action == 'ext':
             #print "Ext: {0}".format(data[0])
             self.monitor_info['ext_temp'] = float(data[0])
+        elif action == 'all':
+            self.monitor_info["ext_temp"]           = float(data[0])
+            self.monitor_info["ext_temp_target"]    = float(data[1])
+            self.monitor_info["bed_temp"]           = float(data[2])
+            self.monitor_info["bed_temp_target"]    = float(data[3])
+            
+        print data
             
         self.monitor_lock.release()
         
@@ -471,20 +491,21 @@ class GCodePusher(object):
             
             progress = self.gcs.get_progress()
             
-            if self.monitor_info["gcode_info"]:
-                if self.monitor_info["gcode_info"]["type"] == GCodeInfo.PRINT:
-                    reply = self.gcs.send("M105")
-                    self.monitor_lock.acquire()
-                    try:
-                        a, b, c, d = parse_temperature(reply[0])
-                        self.monitor_info['ext_temp'] = a
-                        self.monitor_info['ext_temp_target'] = b
-                        self.monitor_info['bed_temp'] = c
-                        self.monitor_info['bed_temp_target'] = d
-                    except Exception:
-                        pass
-                    self.monitor_lock.release()
-                    monitor_write = True
+            #~ if self.monitor_info["gcode_info"]:
+                #~ if self.monitor_info["gcode_info"]["type"] == GCodeInfo.PRINT:
+                    #~ pass
+                    #~ reply = self.gcs.send("M105")
+                    #~ self.monitor_lock.acquire()
+                    #~ try:
+                        #~ a, b, c, d = parse_temperature(reply[0])
+                        #~ self.monitor_info['ext_temp'] = a
+                        #~ self.monitor_info['ext_temp_target'] = b
+                        #~ self.monitor_info['bed_temp'] = c
+                        #~ self.monitor_info['bed_temp_target'] = d
+                    #~ except Exception:
+                        #~ pass
+                    #~ self.monitor_lock.release()
+                    #~ monitor_write = True
                 
             if old_progress != progress:
                 old_progress = progress
@@ -584,7 +605,28 @@ class GCodePusher(object):
         """
         stop_thread = Thread( target = self.__stop_thread )
         stop_thread.start()
+    
+    def exec_macro(self, preset, args = None, atomic = True):
+        """
+        Execute macro command.
+        """
+        self.reset_macro_status()
+        if atomic:
+            self.macro_start()
+        
+        if preset in PRESET_MAP:
+            PRESET_MAP[preset](self, args)
+        else:
+            print _("Preset '{0}' not found").format(preset)
+        
+        if atomic:
+            self.macro_end()
+        
+        if self.macro_error > 0:
+            return False
             
+        return True
+    
     def reset_macro_status(self):
         """
         Reset macro status counters to zero.
@@ -594,12 +636,12 @@ class GCodePusher(object):
         self.macro_skipped = 0
     
     def macro_start(self):
-        pass
-        # self.atomic_begin()
+        self.gcs.set_atomic_group('macro')
+        self.gcs.atomic_begin()
         
     def macro_end(self):
-        pass
-        # self.atomic_end()
+         self.gcs.atomic_end()
+         self.gcs.set_atomic_group(None)
     
     def macro(self, code, expected_reply, timeout, error_msg, delay_after, warning=False, verbose=True):
         """

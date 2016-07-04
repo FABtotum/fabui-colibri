@@ -47,6 +47,15 @@ class GCodeServiceServerPyroWrapper(object):
     def send(self, code, block = True, timeout = None, group = 'gcode'):
         return self.gcs.send(code.encode('latin-1'), block, timeout, group)
     
+    def atomic_end(self):
+        return self.gcs.atomic_end()
+        
+    def atomic_begin(self, timeout = None):
+        return self.gcs.atomic_begin(timeout)
+        
+    def set_atomic_group(self, group):
+        return self.gcs.set_atomic_group(group)
+    
     def debug(self, args):
         return self.gcs.debug(args)
     

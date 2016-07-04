@@ -91,6 +91,7 @@ class Command(object):
     
     def __init__(self, id, data = None, expected_reply = 'ok', group = 'raw', timeout = None):
         self.id = id
+        self.aborted = False
         self.data = data
         self.reply = []
         self.__ev = Event()
@@ -115,6 +116,13 @@ class Command(object):
         else:
             return NotImplemented
     
+    def abort(self):
+        """
+        Abort command execution. In case it was not already sent.
+        """
+        self.aborted = True
+        self.notify()
+    
     def notify(self):
         """
         Notify the waiting thread that the reply has been received.
@@ -129,6 +137,11 @@ class Command(object):
         :type timeout: float, None
         """
         return self.__ev.wait(timeout)
+    
+    def isAborted(self):
+        """
+        """
+        return self.aborted
     
     def isGroup(self, group):
         """
@@ -282,16 +295,20 @@ class GCodeService:
     __metaclass__ = Singleton
     
     IDLE        = 0
-    EXECUTING   = 1
-    FILE        = 2
-    PAUSED      = 3
+    ATOMIC      = 1
+    
+    FILE_NONE   = 0
+    FILE_PUSH   = 1
+    FILE_WAIT   = 2
+    FILE_PAUSED = 3
+    FILE_PAUSED_WAIT = 4
     
     WRITE_TERM   = b'\r\n'
     READ_TERM    = b'\n'
     ENCODING = 'utf-8'
     UNICODE_HANDLING = 'replace'
     
-    REPLY_QUEUE_SIZE = 1
+    REPLY_QUEUE_SIZE = 4
         
     def __init__(self, serial_port, serial_baud, serial_timeout = 5, use_checksum = False, logger = None):
         self.running = False
@@ -313,27 +330,16 @@ class GCodeService:
         # Must be defined before any thread is created
         self.cq = queue.Queue() # Command Queue
         self.rq = queue.Queue(self.REPLY_QUEUE_SIZE) # Reply Queue
-        self.active_cmd = None
-        self.wait_for_cmd = None
+
         self.ev_tx_started = Event()
         self.ev_rx_started = Event()
         
-        self.file_time_started = None
-        self.file_time_finished = None
-        self.idle_time_started = time.time()
-        self.progress = 0.0
-        self.current_line_number = 0
-        self.total_line_number = 0
-        
-        # Note: experimental feature
-        self.use_checksum = use_checksum
-        self.line_number = 0
-        
-        self.group_ack = {'gcode' : 0, 'file' : 0, 'gmacro' : 0}
-        self.atomic_group = None
-        
+        self.__init_state()
+                        
         # Callback handler
         self.callback = []
+        
+        self.use_checksum = use_checksum
         
         if logger:
             self.log = logger
@@ -347,13 +353,36 @@ class GCodeService:
     
     """ Internal *private* functions """
     
+    def __init_state(self):
+        self.active_cmd = None
+        self.wait_for_cmd = None
+        
+        self.file_time_started = None
+        self.file_time_finished = None
+        self.idle_time_started = time.time()
+        self.progress = 0.0
+        self.current_line_number = 0
+        self.total_line_number = 0
+        
+        # Note: experimental feature
+        self.line_number = 0
+        
+        self.group_ack = {'gcode' : 0, 'file' : 0, 'macro' : 0, 'override' : 0, 'monitor' : 0}
+        self.atomic_group = None
+        self.is_atomic = False
+        self.file_state = GCodeService.FILE_NONE
+        self.last_command = None
+        self.first_move = False
+        self.gcode_count = 0
+    
     def __file_done_thread(self, last_command):
         """
         To ensure that the callback function cannot block sender/receiver threads
         calling it must be done from a separate thread.
         """
-        self.log.debug("waiting for last_command %s", str(last_command))
-        last_command.wait()
+        if last_command:
+            self.log.debug("waiting for last_command %s", str(last_command))
+            last_command.wait()
         
         self.log.debug("last command finished")
         
@@ -363,8 +392,6 @@ class GCodeService:
             for cb in self.callback:
                 cb('file_done', None)
         
-        self.state = GCodeService.IDLE
-            
         self.progress = 0.0
     
     def __trigger_file_done(self, last_command):
@@ -388,12 +415,19 @@ class GCodeService:
                 )
         callback_thread.start()
     
+    def __reset_thread(self):
+        self.__reset_totumduino()
+    
+    def __trigger_reset(self):
+        callback_thread = Thread( target = self.__reset_thread, )
+        callback_thread.start()
+    
     def __send_gcode_command(self, code, group = 'gcode'):
         """
         Internal gcode send function with command processing hooks
         """
         if isinstance(code, str):
-            gcode_raw = code
+            gcode_raw = code + '\r\n'
             gcode_command = Command.gcode(gcode_raw, group=group)
         elif isinstance(code, Command):
             gcode_raw = code.data + '\r\n'
@@ -424,13 +458,77 @@ class GCodeService:
         else:
             gcode_complete = gcode_raw
         
-        self.log.debug("<< %s", gcode_complete[:-2])
+        if ( self.file_state != GCodeService.FILE_WAIT and
+             self.file_state != GCodeService.FILE_PAUSED_WAIT):
         
-        self.rq.put(gcode_command)
-        self.serial.write(gcode_complete)
-        #~ self.rq.put(gcode_command)
-        
+            self.log.debug("<< %s", gcode_complete[:-2])
+            
+            self.rq.put(gcode_command)
+            self.serial.write(gcode_complete)
+        else:
+            self.log.debug("FILE_WAIT in progress, ignorim command [%s]", gcode_complete[:-2])
+            gcode_command.abort()
+
         return gcode_command
+
+    def __push_line(self):
+        try:
+            if self.file_state == GCodeService.FILE_PUSH:
+                line, attrs = self.file_iter.next()
+                
+                line = line.rstrip()
+                #print "L << ", line
+                
+                if attrs:
+                    self.__trigger_callback('process_comment', attrs)
+                
+                if not self.first_move:
+                    if ( line[:2] == 'G0' or 
+                         line[:2] == 'G1'):
+                        """ If there was not movement yet, this is identified as the first move """
+                        self.__trigger_callback('first_move', None)
+                        self.first_move = True
+                
+                self.current_line_number += 1
+                
+                #~ self.progress = 100 * float(self.current_line_number) / float(self.total_line_number)
+                self.progress = 100 * float(self.group_ack['file']) / float(self.gcode_count)
+                
+                if line:
+                    self.last_command = self.__send_gcode_command(line, group='file')
+                    
+                    if ( line[:4] == 'M109' or
+                         line[:4] == 'M190' or
+                         line[:3] == 'G28'  or
+                         line[:3] == 'G27'):
+                        """ 
+                        Goto wait state as those commands can take a while and 
+                        no push operation must be done before they are executed.
+                        """
+                        self.file_state = GCodeService.FILE_WAIT
+                        #~ self.log.debug(">>>>>>>>>>>>>> FILE WAIT <<<<<<<<<<<<")
+                    
+            elif ( self.file_state == GCodeService.FILE_WAIT or 
+                   self.file_state == GCodeService.FILE_PAUSED_WAIT):
+                """ Wait for reply before continuing (M109, M190, G28, G27) """
+                
+                #~ self.log.debug(">>>>>>>>>>>>>> FILE WAIT (wait) <<<<<<<<<<<<")
+                
+                if self.last_command.wait(1): # Wait for one second and give the context back
+                    #~ self.log.debug(">>>>>>>>>>>>>> FILE WAIT (done) <<<<<<<<<<<<")
+                    if self.file_state == GCodeService.FILE_WAIT:
+                        self.file_state = GCodeService.FILE_PUSH
+                    elif self.file_state == GCodeService.FILE_PAUSED_WAIT:
+                        self.file_state = GCodeService.FILE_PAUSED
+                #~ else:
+                    #~ self.log.debug(">>>>>>>>>>>>>> FILE WAIT (timeout) <<<<<<<<<<<<")
+                    
+        except StopIteration:
+            # Create a new thread that is waiting for the last command 
+            # to get it's reply and call the callback function if one
+            # was specified.
+            self.file_state = GCodeService.FILE_NONE
+            self.__trigger_file_done(self.last_command)
 
     def __sender_thread(self):
         """
@@ -442,115 +540,91 @@ class GCodeService:
         
         self.ev_tx_started.set()
         
-        while (self.running and self.serial.is_open):
-            cmd = self.cq.get()
+        while self.running:
+            
+            if self.is_resetting:
+                time.sleep(1)
+                continue
+            
+            if self.file_state > GCodeService.FILE_NONE:
+                try:
+                    # Try to get a command
+                    cmd = self.cq.get_nowait()
+                except queue.Empty as e:
+                    # No queued commands, send a line from the file
+                    cmd = Command.NONE
+                    self.__push_line()
+                    
+            else:
+                cmd = self.cq.get()
+
+            if self.is_resetting:
+                time.sleep(1)
+                continue
 
             if cmd == Command.GCODE:
-                if not cmd.hasExpired():
-                    self.__send_gcode_command(cmd)
-                else:
-                    self.log.info("Expired [%s]", cmd.data )
                 
+                if (self.is_atomic and cmd.isGroup(self.atomic_group)) or (not self.is_atomic):
+                    if not cmd.hasExpired():
+                        self.__send_gcode_command(cmd)
+                    else:
+                        self.log.info("Expired [%s]", cmd.data )
+                else:
+                    self.log.debug("Atomic in progress, ignoring [%s]", cmd.data)
+                    cmd.abort()
+                    
             elif cmd == Command.FILE:
                 filename = cmd.data
-                last_command = None
-                aborted = False
-                first_move = False
+                self.last_command = None
+                self.first_move = False
                 
-                self.state = GCodeService.FILE
                 self.progress = 0.0
-                # TODO: try except protection
                 
-                gfile = GCodeFile(filename)
-                
-                self.total_line_number = gfile.info['line_count']
-                self.current_line_number = 0
-                
-                gcode_count = self.total_line_number = gfile.info['gcode_count']
-                
-                self.group_ack['file'] = 0
-                
-                for line, attrs in gfile:
-                    line = line.rstrip()
-                    #print "L << ", line
+                try:                
+                    gfile = GCodeFile(filename)
                     
-                    if attrs:
-                        self.__trigger_callback('process_comment', attrs)
+                    self.total_line_number = gfile.info['line_count']
+                    self.current_line_number = 0
+                    self.group_ack['file'] = 0
+                    self.file_iter = iter(gfile)
                     
-                    if not first_move:
-                        if line[:2] == 'G0' or line[:2] == 'G1':
-                            self.__trigger_callback('first_move', None)
-                            first_move = True
+                    self.gcode_count = self.total_line_number = gfile.info['gcode_count']
                     
-                    self.current_line_number += 1
-                    
-                    #~ self.progress = 100 * float(self.current_line_number) / float(self.total_line_number)
-                    self.progress = 100 * float(self.group_ack['file']) / float(gcode_count)
-                    
-                    if line:
-                        # QUESTION: should this be handled or not?
-                        #~ if line == 'M25':
-                            #~ self.pause()
-                        #~ elif line == 'M24':
-                            #~ self.resume()
-                        #~ else:
-                        
-                        last_command = self.__send_gcode_command(line + '\r\n', group='file')
-                        
-                        # Wait until reply received M109 M190 G28 
-                        if ( line[:4] == 'M109' or
-                             line[:4] == 'M190' or
-                             line[:3] == 'G28'):
-                            """ Wait for reply before continuing """
-                            last_command.wait()
-                        
-                        try:
-                            cmd = self.cq.get_nowait()
-                            
-                            if cmd == Command.GCODE:
-                                if not cmd.hasExpired():
-                                    self.__send_gcode_command(cmd)
-                                else:
-                                    self.log.info("Expired [%s]", cmd.data)
-                                
-                            elif cmd == Command.PAUSE:
-                                self.state = GCodeService.PAUSED
-                                
-                                self.__trigger_callback('state_change', 'paused')
-                                
-                                while self.running:
-                                    cmd = self.cq.get()
-                                    if cmd == Command.GCODE:
-                                        self.serial.write(cmd.data + '\r\n')
-                                        self.rq.put(cmd)
-                                    elif cmd == Command.RESUME:
-                                        self.state = GCodeService.FILE
-                                        self.__trigger_callback('state_change', 'resumed')
-                                        break
-                                    elif cmd == Command.ABORT or cmd == Command.KILL:
-                                        break
-                                
-                                # This is not a mistake. Once ABORT or KILL is received
-                                # during PAUSE it will exit that loop and the
-                                # command will be processed.
-                                if cmd == Command.ABORT or cmd == Command.KILL:
-                                    self.__trigger_callback('state_change', 'aborted')
-                                    aborted = True
-                                    break
-                                
-                            elif cmd == Command.ABORT or cmd == Command.KILL:
-                                self.__trigger_callback('state_change', 'aborted')
-                                aborted = True
-                                break
-                                
-                        except queue.Empty as e:
-                            cmd = Command.NONE
-                            continue
+                    self.file_state = GCodeService.FILE_PUSH
+                except Exception as e:
+                    self.log.error("gcode file loading, %s", str(e))
+                    continue
                 
-                # Create a new thread that is waiting for the last command 
-                # to get it's reply and call the callback function if one
-                # was specified.
-                self.__trigger_file_done(last_command)
+                self.log.debug("Kind of ok file loading")
+                
+            elif cmd == Command.PAUSE:
+                self.__trigger_callback('state_change', 'paused')
+                if self.file_state == GCodeService.FILE_PUSH:
+                    self.file_state = GCodeService.FILE_PAUSED
+                    
+                elif self.file_state == GCodeService.FILE_WAIT:
+                    self.file_state = GCodeService.FILE_PAUSED_WAIT
+                
+            elif cmd == Command.RESUME:
+                self.__trigger_callback('state_change', 'resumed')
+                if self.file_state == GCodeService.FILE_PAUSED_WAIT:
+                    self.file_state = GCodeService.FILE_WAIT
+                    
+                elif self.file_state == GCodeService.FILE_PAUSED:
+                    self.file_state = GCodeService.FILE_PUSH
+                
+            elif cmd == Command.ABORT:
+                self.__trigger_callback('state_change', 'aborted')
+                
+                if self.file_state > GCodeService.FILE_NONE:                
+                    if ( self.file_state == GCodeService.FILE_WAIT or
+                         self.file_state == GCodeService.FILE_PAUSED_WAIT):
+                        # There is along command being executed, we need to
+                        # restart the totumduino to abort it.
+                        self.__trigger_reset()
+                    else:
+                        self.file_state = GCodeService.FILE_NONE
+                        self.__trigger_file_done(self.last_command)
                 
             elif cmd == Command.KILL:
                 break
@@ -660,7 +734,7 @@ class GCodeService:
                     temps = line.split()
                     T = temps[0].replace("T:","").strip()
                     B = temps[2].replace("B:","").strip()
-                    self.__trigger_callback('temp_change:all', [T,B])
+                    self.__trigger_callback('temp_change:ext_bed', [T,B])
     
         #print "__handle_line: return"
     
@@ -677,7 +751,7 @@ class GCodeService:
         self.ev_rx_started.set()
 
         # Run this thread while the service is active        
-        while self.running and self.serial.is_open:
+        while self.running:
             
             #while self.serial.is_open:
             try:
@@ -739,8 +813,9 @@ class GCodeService:
             #print "reply queue is not empty"
             try:
                 cmd = self.rq.get_nowait()
-                cmd.notify()
-                #print "notifing ", cmd
+                #cmd.notify()
+                cmd.abort()
+                print "notifing ", cmd
             except queue.Empty as e:
                 break
         
@@ -751,12 +826,13 @@ class GCodeService:
             #print "command queue is not empty"
             try:
                 cmd = self.cq.get_nowait()
-                cmd.notify()
-                #print "notifing ", cmd
+                #cmd.notify()
+                cmd.abort()
+                print "notifing ", cmd
             except queue.Empty as e:
                 break
                 
-
+        self.__init_state()
         
     
     """ APIs *public* functions """
@@ -892,31 +968,32 @@ class GCodeService:
         :param timeout: Maximal allowed time of inactivity before atomic lock is automatically released. 
         :type timeout: float
         """
-        pass
+        self.is_atomic = True
         
     def atomic_end(self):
         """
         Atomic block end. With this command the atomic lock is released.
         """
-        pass
+        self.is_atomic = False
     
     def send(self, code, block = True, timeout = None, group = 'gcode'):
         """
         Send GCode and return reply.
         """
         if self.is_resetting:
+            time.sleep(1)
             return None
         
         code = code.encode('latin-1')
         if self.running:
             sent_timestamp = time.time()
             # QUESTION: should this be handled or not?
-            if code == 'M25':
-                self.pause()
-                return None
-            elif code == 'M24':
-                self.resume()
-                return None
+            #~ if code == 'M25':
+                #~ self.pause()
+                #~ return None
+            #~ elif code == 'M24':
+                #~ self.resume()
+                #~ return None
             
             cmd = Command.gcode(code, 'ok', group = group, timeout = timeout)
             self.cq.put(cmd)
@@ -934,6 +1011,9 @@ class GCodeService:
             # In which case no one will trigger cmd.ev event to unlock it.
             # Timeout is a safety measure to handle this corner case.
             while not cmd.wait(3):
+                if cmd.aborted:
+                    return None
+                    
                 if not self.running:
                     # Aborting because the service has been stopped
                     self.log.info('Aborting reply. [%s]', code)
@@ -941,7 +1021,7 @@ class GCodeService:
                 if timeout:
                     if ( time.time() - sent_timestamp ) >= timeout:
                         self.log.info('Timeout for [%s]', code)
-                        return None                        
+                        return None
             return cmd.reply
         else:
             return None

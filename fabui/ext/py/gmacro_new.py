@@ -86,7 +86,9 @@ class GMacroApplication(GCodePusher):
     def run(self, preset, args):
         
         if preset in PRESET_MAP:
+            self.macro_start() # Ensure atomic macro execution
             PRESET_MAP[preset](self, args)
+            self.macro_end()
         else:
             print _("Preset '{0}' not found").format(preset)
 

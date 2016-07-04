@@ -115,6 +115,7 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         hardwareID = reply[0].strip()
     except Exception as e:
         print "ERROR", e
+        hardwareID = 0
     
     # Raise probe
     gcs.send('M402')

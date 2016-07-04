@@ -101,7 +101,7 @@ class StatsMonitor:
             # Get temperature
             # Timeout is to prevent waiting for too long when there is a long running
             # command like M109,M190,G29 or G28
-            reply = self.gcs.send('M105', timeout = 2) 
+            reply = self.gcs.send('M105', group = 'monitor', timeout = 2) 
             if reply: # No timeout occured
                 try:
                     a, b, c, d = self.__parse_temperature(reply[0])
@@ -109,6 +109,9 @@ class StatsMonitor:
                     self.ext_temp_target = self.__rotate_values(self.ext_temp_target, b)
                     self.bed_temp = self.__rotate_values(self.bed_temp, c)
                     self.bed_temp_target = self.__rotate_values(self.bed_temp_target, d)
+                    
+                    #self.__trigger_callback('temp_change:all', [T,B])
+                    self.gcs.push("temp_change:all", [a, b, c, d])
                     
                     self.__write_stats()
                 except Exception:
@@ -123,7 +126,7 @@ class StatsMonitor:
         self.log.debug("StatsMonitor thread: stopped")
     
     def __temp_change_callback(self, action, data):
-        if action == 'all':
+        if action == 'ext_bed':
             self.log.debug("Ext: %f, Bed: %f", float(data[0]), float(data[1]) )
             self.ext_temp = self.__rotate_values(self.ext_temp, float(data[0]))
             self.bed_temp = self.__rotate_values(self.bed_temp, float(data[1]))
@@ -200,7 +203,7 @@ class StatsMonitor:
                 pass
     
     def __callback_handler(self, action, data):
-        self.log.debug("Monitor: callback_handler %s %s", action, str(data))
+        #self.log.debug("Monitor: callback_handler %s %s", action, str(data))
         
         if action.startswith('temp_change'):
             self.__temp_change_callback(action.split(':')[1], data)

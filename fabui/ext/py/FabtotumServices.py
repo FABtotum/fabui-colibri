@@ -25,6 +25,7 @@ import gettext
 import signal
 import argparse
 import logging
+import time
 
 # Import external modules
 from watchdog.observers import Observer
@@ -36,6 +37,7 @@ from fabtotum.fabui.config              import ConfigService
 from fabtotum.fabui.bootstrap           import hardwareBootstrap
 from fabtotum.fabui.monitor             import StatsMonitor
 from fabtotum.totumduino.gcode          import GCodeService
+from fabtotum.totumduino.hardware       import reset as totumduino_reset
 from fabtotum.utils.pyro.gcodeserver    import GCodeServiceServer
 from fabtotum.os.monitor.filesystem     import FolderTempMonitor
 from fabtotum.os.monitor.usbdrive       import UsbMonitor
@@ -62,12 +64,14 @@ def signal_handler(signal, frame):
 # Setup arguments
 parser = argparse.ArgumentParser()
 parser.add_argument("-B", "--bootstrap", action='store_true',  help="Execute bootstrape commands on startup.")
+parser.add_argument("-R", "--reset", action='store_true',  help="Reset totumduino on startup.")
 parser.add_argument("-L", "--log", help="Use logfile to store log messages.",  default='<stdout>')
 
 # Get arguments
 args = parser.parse_args()
 
 do_bootstrap = args.bootstrap
+do_reset = args.reset
 logging_facility = args.log
 
 config = ConfigService()
@@ -124,6 +128,10 @@ formatter = logging.Formatter("%(levelname)s : %(message)s")
 ch.setFormatter(formatter)
 ch.setLevel(logging.DEBUG)
 logger.addHandler(ch)
+
+if do_reset:
+    totumduino_reset()
+    time.sleep(4)
 
 # Start gcode service
 gcservice = GCodeService(SERIAL_PORT, SERIAL_BAUD, logger=logger)

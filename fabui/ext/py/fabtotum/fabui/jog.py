@@ -113,13 +113,17 @@ class Jog:
             
             if cmd.id == Command.KILL:
                 break
+                
             elif cmd.id == Command.CLEAR:
                 self.response = {}
+                
             elif cmd.id == Command.GCODE:
                 token = cmd.data[0]
                 gcode = cmd.data[1]
                 
-                reply = self.gcs.send(gcode, group = 'jog:{0}'.format(token) )
+                #~ reply = self.gcs.send(gcode, group = 'jog:{0}'.format(token) )
+                self.log.debug("jog.send [%s]", gcode)
+                reply = self.gcs.send(gcode, group = 'jog' )
                 #print "jog:", reply
                 
                 self.response[token] = reply

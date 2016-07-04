@@ -82,8 +82,10 @@ class PrintApplication(GCodePusher):
         print "Print finished."
 
         if self.standalone:
-            print_macros.end_additive(self)
-            print_macros.end_additive_safe_zone(self)
+            self.exec_macro("end_print_additive")
+            self.exec_macro("end_print_additive_safe_zone")
+            #print_macros.end_additive(self)
+            #print_macros.end_additive_safe_zone(self)
         
         self.stop()
         
@@ -94,6 +96,7 @@ class PrintApplication(GCodePusher):
             print "Print RESUMED"
         if state == 'aborted':
             print "Print ABORTED"
+            self.file_done_callback()
     
     def temp_change_callback(self, action, data):
         print action, data
@@ -120,12 +123,14 @@ class PrintApplication(GCodePusher):
             print_macros.check_pre_print(self)
             
             if self.autolevel:
-                general_macros.auto_bed_leveling(self)
+                self.exec_macro("auto_bed_leveling")
             else:
-                general_macros.raise_bed(self)
-                general_macros.home_all(self, [ext_temp_target, bed_temp_target])
+                self.exec_macro("raise_bed")
+                #general_macros.raise_bed(self)
+                #general_macros.home_all(self, [ext_temp_target, bed_temp_target])
             
-            print_macros.start_additive(self, [ext_temp_target, bed_temp_target])
+            #print_macros.start_additive(self, [ext_temp_target, bed_temp_target])
+            self.exec_macro("start_print", [ext_temp_target, bed_temp_target])
         
         self.send_file(gcode_file)
         

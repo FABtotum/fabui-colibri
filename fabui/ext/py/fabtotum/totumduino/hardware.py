@@ -30,6 +30,9 @@ import RPi.GPIO as GPIO
 from fabtotum.fabui.config import ConfigService
 
 def reset():
+    
+    print "TOTUMDUINO: reset"
+    
     #GPIO.setmode(GPIO.BOARD)
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
@@ -38,9 +41,11 @@ def reset():
     pin = 17
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.HIGH)
-    time.sleep(0.15)
+    time.sleep(0.5)
     GPIO.output(pin, GPIO.LOW)
-    time.sleep(0.15)
+    time.sleep(0.5)
     GPIO.output(pin, GPIO.HIGH)
 
     GPIO.cleanup()
+    
+    time.sleep(1)
