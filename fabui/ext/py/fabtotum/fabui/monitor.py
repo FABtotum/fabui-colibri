@@ -28,6 +28,7 @@ import re
 import json
 import time
 import gettext
+import logging
 from threading import Event, Thread
 try:
     import queue
@@ -46,12 +47,22 @@ tr = gettext.translation('gpusher', 'locale', fallback=True)
 _ = tr.ugettext
 
 class StatsMonitor:
-    def __init__(self, stats_file, gcs = None, backtrack = 20, period = 5.0):
+    def __init__(self, stats_file, gcs = None, logger = None, backtrack = 20, period = 5.0):
 
         if not gcs:
             self.gcs = GCodeServiceClient()
         else:
             self.gcs = gcs
+    
+        if logger:
+            self.log = logger
+        else:
+            self.log = logging.getLogger('StatsMonitor')
+            ch = logging.StreamHandler()
+            ch.setLevel(logging.DEBUG)
+            formatter = logging.Formatter("%(levelname)s : %(message)s")
+            ch.setFormatter(formatter)
+            self.log.addHandler(ch)
     
         self.stats_file = stats_file
         self.running = False
@@ -84,7 +95,7 @@ class StatsMonitor:
         return value_list[1:] + [new_value]
     
     def __monitor_thread(self):
-        print "StatsMonitor thread: started"
+        self.log.debug("StatsMonitor thread: started")
         while self.running:
             
             # Get temperature
@@ -109,17 +120,87 @@ class StatsMonitor:
                 self.__write_stats()    
                 self.ev_update.clear()
             
-        print "StatsMonitor thread: stopped"
+        self.log.debug("StatsMonitor thread: stopped")
     
     def __temp_change_callback(self, action, data):
-        pass
+        if action == 'all':
+            self.log.debug("Ext: %f, Bed: %f", float(data[0]), float(data[1]) )
+            self.ext_temp = self.__rotate_values(self.ext_temp, float(data[0]))
+            self.bed_temp = self.__rotate_values(self.bed_temp, float(data[1]))
+            self.ev_update.set()
+        elif action == 'bed':
+            self.log.debug("Bed: %f", float(data[0]) )
+            self.bed_temp = self.__rotate_values(self.bed_temp, float(data[0]))
+            self.ev_update.set()
+        elif action == 'ext':
+            self.log.debug("Ext: %f", float(data[0]) )
+            self.ext_temp = self.__rotate_values(self.ext_temp, float(data[0]))
+            self.ev_update.set()
         
     def __gcode_action_callback(self, action, data):
-        pass
+        if action == 'heating':
+
+            if data[0] == 'M109':
+                pass
+                #self.trace( _("Wait for nozzle temperature to reach {0}&deg;C").format(data[1]) )
+                #~ self.ext_temp_target = self.__rotate_values(self.ext_temp_target, float(data[1]))
+                #~ self.ev_update.set()
+            elif data[0] == 'M190':
+                pass
+                #self.trace( _("Wait for bed temperature to reach {0}&deg;C").format(data[1]) )
+                #~ self.bed_temp_target = self.__rotate_values(self.bed_temp_target, float(data[1]))
+                #~ self.ev_update.set()
+            elif data[0] == 'M104':
+                #self.trace( _("Nozzle temperature set to {0}&deg;C").format(data[1]) )
+                self.ext_temp_target = self.__rotate_values(self.ext_temp_target, float(data[1]))
+                self.ev_update.set()
+            elif data[0] == 'M140':
+                #self.trace( _("Bed temperature set to {0}&deg;C").format(data[1]) )
+                self.bed_temp_target = self.__rotate_values(self.bed_temp_target, float(data[1]))
+                self.ev_update.set()
+            
+        elif action == 'cooling':
+            
+            if data[0] == 'M106':
+                value = int((float( data[1] ) / 255) * 100)
+                self.fan = self.__rotate_values(self.fan, value)
+                #self.trace( _("Fan value set to {0}%").format(value) )
+                self.ev_update.set()
+            elif data[0] == 'M107':
+                #self.trace( _("Fan off") )
+                self.fan = self.__rotate_values(self.fan, 0)
+                self.ev_update.set()
+                
+        elif action == 'printing':
+            
+            if data[0] == 'M220': # Speed factor
+                value = float( data[1] )
+                self.speed = self.__rotate_values(self.speed, value)
+                #self.trace( _("Speed factor set to {0}%").format(value) )
+            elif data[0] == 'M221': # Extruder flow
+                value = float( data[1] )
+                self.flow_rate = self.__rotate_values(self.flow_rate, value)
+                #self.trace( _("Extruder flow set to {0}%").format(value) )
+                
+        elif action == 'milling':
+            if data[0] == 'M0':
+                """ .. todo: do something with it """
+                pass
+            elif data[0] == 'M1':
+                """ .. todo: do something with it """
+                pass
+            elif data[0] == 'M3':
+                #self.trace( _("Milling motor RPM set to {0}%").format(value) )
+                pass
+            elif data[0] == 'M4':
+                #self.trace( _("Milling motor RPM set to {0}%").format(value) )
+                pass
+            elif data[0] == 'M6':
+                #""" .. todo: Check whether laser power should be scaled from 0-255 to 0.0-100.0 """
+                pass
     
     def __callback_handler(self, action, data):
-        print "Monitor: callback_handler", action, data
-        
+        self.log.debug("Monitor: callback_handler %s %s", action, str(data))
         
         if action.startswith('temp_change'):
             self.__temp_change_callback(action.split(':')[1], data)

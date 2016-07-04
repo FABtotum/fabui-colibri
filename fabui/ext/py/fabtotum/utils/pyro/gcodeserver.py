@@ -37,10 +37,12 @@ GCS = None
 
 class GCodeServiceServerPyroWrapper(object):
     def __init__(self, gcs):
-        print "GCodeService PyroWrapper"
         self.gcs = gcs
         self.client_callback = None
         self.callback_list = []
+    
+    def push(self, id, data):
+        return self.gcs.push(id, data)
     
     def send(self, code, block = True, timeout = None, group = 'gcode'):
         return self.gcs.send(code.encode('latin-1'), block, timeout, group)

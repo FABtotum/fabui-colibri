@@ -55,7 +55,7 @@ def pre_unload_spool(app, args = None):
     app.macro("M104 S190",  "ok", 5,    _("Heating Nozzle..."), time_to_wait, verbose=True) #heating and waiting.
     
 def unload_spool(app, args = None):
-    units_e = app.config.get('units', 'e')
+    units_e = app.config.get('settings', 'e')
     
     app.trace( _("Unloading Spool : Procedure Started.") )
     app.macro("G90",                "ok", 10,   _("Set abs position"), 0, verbose=False)
@@ -75,7 +75,7 @@ def unload_spool(app, args = None):
     app.trace( _("Done!") )
     
 def load_spool(app, args = None):
-    units_e = app.config.get('units', 'e')
+    units_e = app.config.get('settings', 'e')
     
     app.trace( _("Loading Spool : Procedure Started.") )
     app.macro("G90",                "ok", 2,    _("Set abs position"), 0, verbose=False)

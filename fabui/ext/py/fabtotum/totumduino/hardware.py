@@ -30,10 +30,12 @@ import RPi.GPIO as GPIO
 from fabtotum.fabui.config import ConfigService
 
 def reset():
-    GPIO.setmode(GPIO.BOARD)
+    #GPIO.setmode(GPIO.BOARD)
+    GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
 
-    pin = 11
+    #~ pin = 11
+    pin = 17
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.HIGH)
     time.sleep(0.15)
@@ -42,41 +44,3 @@ def reset():
     GPIO.output(pin, GPIO.HIGH)
 
     GPIO.cleanup()
-
-def startup(gcs):
-    config = ConfigService()
-    
-    try:
-        color = config.get('units', 'color')
-    except KeyError:
-        color = {
-            'r' : 255,
-            'g' : 255,
-            'b' : 255,
-        }
-    
-    try:
-        safety_door = config.get('units', 'safety')['door']
-    except KeyError:
-        safety_door = 0
-    
-    try:
-        switch = config.get('units', 'switch')
-    except KeyError:
-        switch = 0
-    
-    try:
-        collision_warning = config.get('units', 'safety')['collision-warning']
-    except KeyError:
-        collision_warning = 0
-    
-    gcs.send("M728")
-    gcs.send("M402")
-    gcs.send("M701 S"+str(color['r']))
-    gcs.send("M702 S"+str(color['g']))
-    gcs.send("M703 S"+str(color['b']))
-        
-    gcs.send("M732 S"+str(safety_door))
-    gcs.send("M714 S"+str(switch))
-        
-    gcs.send("M734 S"+str(collision_warning))

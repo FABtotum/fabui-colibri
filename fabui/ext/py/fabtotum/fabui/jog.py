@@ -73,7 +73,7 @@ class Command:
 
 class Jog:
  
-    def __init__(self, jog_response_file, gcs = None, config = None):
+    def __init__(self, jog_response_file, gcs = None, config = None, logger = None):
         if not config:
             self.config = ConfigService()
         else:
@@ -83,7 +83,17 @@ class Jog:
             self.gcs = GCodeServiceClient()
         else:
             self.gcs = gcs
-            
+        
+        if logger:
+            self.log = logger
+        else:
+            self.log = logging.getLogger('Jog')
+            ch = logging.StreamHandler()
+            ch.setLevel(logging.DEBUG)
+            formatter = logging.Formatter("%(levelname)s : %(message)s")
+            ch.setFormatter(formatter)
+            self.log.addHandler(ch)
+        
         self.jog_response_file = jog_response_file
         self.response = {}
         self.cq = queue.Queue()
@@ -92,7 +102,7 @@ class Jog:
         self.send_thread = None
         
     def __send_thread(self):
-        print "Jog thread: started"
+        self.log.debug("Jog thread: started")
         
         with open(self.jog_response_file, 'w') as f:
             f.write(json.dumps(self.response) )
@@ -118,7 +128,7 @@ class Jog:
             with open(self.jog_response_file, 'w') as f:
                 f.write(json.dumps(self.response) )
                 
-        print "Jog thread: stopped"
+        self.log.debug("Jog thread: stopped")
         
     ### API ###
     
@@ -128,7 +138,6 @@ class Jog:
     
     def start(self):
         """ Start the service. """
-        print "Jog.start()"
         self.running = True
         self.send_thread = Thread( name = "Jog-send", target = self.__send_thread )
         self.send_thread.start()

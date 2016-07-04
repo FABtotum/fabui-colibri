@@ -37,7 +37,7 @@ _ = tr.ugettext
 def home_all(app, args = None):
     
     try:
-        zprobe = app.config.get('units', 'zprobe')
+        zprobe = app.config.get('settings', 'zprobe')
         zprobe_disabled = (zprobe['disable'] == 1)
         zmax_home_pos   = float(zprobe['zmax'])
     except KeyError:
@@ -57,7 +57,7 @@ def home_all(app, args = None):
 def start_up(app, args = None):
     
     try:
-        color = app.config.get('units', 'color')
+        color = app.config.get('settings', 'color')
     except KeyError:
         color = {
             'r' : 255,
@@ -66,17 +66,17 @@ def start_up(app, args = None):
         }
     
     try:
-        safety_door = app.config.get('units', 'safety')['door']
+        safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
         safety_door = 0
     
     try:
-        switch = app.config.get('units', 'switch')
+        switch = app.config.get('settings', 'switch')
     except KeyError:
         switch = 0
     
     try:
-        collision_warning = app.config.get('units', 'safety')['collision-warning']
+        collision_warning = app.config.get('settings', 'safety')['collision-warning']
     except KeyError:
         collision_warning = 0
     
@@ -103,7 +103,7 @@ def raise_bed(app, args = None):
     For homing procedure before probe calibration and print without homing.
     """
     try:
-        zprobe = app.config.get('units', 'zprobe')
+        zprobe = app.config.get('settings', 'zprobe')
         zprobe_disabled = (zprobe['disable'] == 1)
         zmax_home_pos   = float(zprobe['zmax'])
     except KeyError:
@@ -149,9 +149,9 @@ def safe_zone(app, args = None):
     app.send("G0 X210 Y210")
 
 def engage_4axis(app, args = None):
-    units_a = app.config.get('units', 'a')
+    units_a = app.config.get('settings', 'a')
     try:
-        feeder_disengage_offset = app.config.get('units', 'feeder')['disengage-offset']
+        feeder_disengage_offset = app.config.get('settings', 'feeder')['disengage-offset']
     except KeyError:
         feeder_disengage_offset = 2
     
@@ -166,5 +166,5 @@ def engage_4axis(app, args = None):
     app.macro("M300",               "ok", 3,    _("Play beep sound"), 1, verbose=False)
     
 def do_4th_axis_mode(app, args = None):
-    units_a = app.config.get('units', 'a')
+    units_a = app.config.get('settings', 'a')
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), 0, verbose=False)

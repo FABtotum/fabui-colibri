@@ -42,9 +42,10 @@ class GPIOMonitor:
     ACTION_PIN = None
     EMERGENCY_FILE = None
     
-    def __init__(self, WebSocket, gcs, action_pin, emergency_file):
+    def __init__(self, WebSocket, gcs, logger, action_pin, emergency_file):
         self.ws = WebSocket
         self.gcs = gcs
+        self.log = logger
         self.ACTION_PIN = int(action_pin)
         self.EMERGENCY_FILE = emergency_file
         
@@ -52,8 +53,8 @@ class GPIOMonitor:
         """
         Triggered when a level change on a pin is detected.
         """
-        print "====== START ============"
-        print 'GPIO STATUS: ', GPIO.input(self.ACTION_PIN)
+        self.log.debug("====== START ============")
+        self.log.debug('GPIO STATUS: %s', str(GPIO.input(self.ACTION_PIN)))
         if GPIO.input(self.ACTION_PIN) == 0 :
             reply = self.gcs.send("M730")
             
@@ -62,14 +63,14 @@ class GPIOMonitor:
                     search = re.search('ERROR\s:\s(\d+)', reply[0])
                     if search != None:
                         errorNumber = int(search.group(1))
-                        print "Error Number:", errorNumber
+                        self.log.warning("Totumduino error no.: %s", errorNumber)
                         self.manageErrorNumber(errorNumber)
                     else:
-                        print "Unrecognized error: ", reply[0]
+                        self.log.error("Totumduino unrecognized error: %s", reply[0])
 
         GPIO_STATUS = GPIO.HIGH
-        print 'GPIO STATUS on EXIT: ', GPIO.input(self.ACTION_PIN)
-        print "====== EXIT ============"
+        self.log.debug('GPIO STATUS on EXIT: %s', str(GPIO.input(self.ACTION_PIN)))
+        self.log.debug("======= EXIT ============")
 
     def manageErrorNumber(self, error):
         alertErrors = [110]
@@ -77,7 +78,7 @@ class GPIOMonitor:
         errorType = 'emergency'
         
         if error in shutdownErros:
-            print "shutdown"
+            self.log.info("shutdown")
             # TODO: trigger shutdown
             return None
         elif error in alertErrors:
@@ -98,7 +99,8 @@ class GPIOMonitor:
     def start(self):
         """ Start gpio event detection """
         # Setup BCM GPIO numbering
-        GPIO.setmode(GPIO.BCM)                                          
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
         # Set GPIO as input (button)
         GPIO.setup(self.ACTION_PIN, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
         # Register callback function for gpio event, callbacks are handled from a separate thread

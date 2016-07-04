@@ -22,5 +22,3 @@ USB_MEDIA_PATH	= '/run/media/'
 
 CONFIG_INI		= LIB_PATH + 'config.ini'
 SERIAL_INI		= LIB_PATH + 'serial.ini'
-
-DEBUG_IS_ON			= False

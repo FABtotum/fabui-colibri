@@ -36,15 +36,15 @@ _ = tr.ugettext
 
 
 def check_pre_scan(app, args = None):
-    units_a = app.config.get('units', 'a')
+    units_a = app.config.get('settings', 'a')
     
     try:
-        feeder_disengage_offset = app.config.get('units', 'feeder')['disengage-offset']
+        feeder_disengage_offset = app.config.get('settings', 'feeder')['disengage-offset']
     except KeyError:
         feeder_disengage_offset = 2
         
     try:
-        safety_door = app.config.get('units', 'safety')['door']
+        safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
         safety_door = 0
     
@@ -82,7 +82,7 @@ def rotary_scan(app, args = None):
     
 def photogrammetry_scan(app, args = None):
     try:
-        safety_door = app.config.get('units', 'safety')['door']
+        safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
         safety_door = 0
         
@@ -101,7 +101,7 @@ def photogrammetry_scan(app, args = None):
 
 def sweep_scan(app, args = None):
     try:
-        safety_door = app.config.get('units', 'safety')['door']
+        safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
         safety_door = 0
     
@@ -121,9 +121,9 @@ def sweep_scan(app, args = None):
     app.macro("G0 Z145 F1000",  "ok", 90,       _("Lowering the plane"), 1, verbose=False)
 
 def probe_scan(app, args = None):
-    units_a = app.config.get('units', 'a')
+    units_a = app.config.get('settings', 'a')
     try:
-        safety_door = app.config.get('units', 'safety')['door']
+        safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
         safety_door = 0
     
@@ -139,7 +139,7 @@ def probe_scan(app, args = None):
 
 def end_scan(app, args = None):
     try:
-        color = app.config.get('units', 'color')
+        color = app.config.get('settings', 'color')
     except KeyError:
         color = {
             'r' : 255,

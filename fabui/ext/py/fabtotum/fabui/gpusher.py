@@ -23,6 +23,7 @@ __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
 # Import standard python module
+import os
 import sys
 import re
 import json
@@ -224,7 +225,7 @@ class GCodePusher(object):
         # Stop the GCodeService connection
         self.gcs.stop()
         
-        # TODO: trigger system shutdown
+        os.system('poweroff')
         
     def first_move_callback(self):
         self.trace( _("Task Started") )
@@ -437,6 +438,12 @@ class GCodePusher(object):
         # TODO: complete ERROR_MESSAGE
         self.error_callback(error_no, error_msg)
     
+    def __config_change_callback(id, data):
+        print "__config_change_callback", id, data 
+        if id == 'shutdown':
+            self.monitor_info["auto_shutdown"] = (data == 'on')
+            
+    
     def callback_handler(self, action, data):
         print "callback_handler", action, data
         if action == 'file_done':
@@ -451,6 +458,8 @@ class GCodePusher(object):
             self.__temp_change_callback(action.split(':')[1], data)
         elif action == 'state_change':
             self.__state_change_callback(data)
+        elif action.startswith('config:'):
+            self.__config_change_callback(action.split(':')[1], data)
         elif action == 'error':
             self.__error_callback(data[0], data[1])
 

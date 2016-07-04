@@ -56,7 +56,7 @@ log_trace       = config.get('general', 'trace')        # TASK TRACE FILE
 ext_temp_target = args.ext_temp     # EXTRUDER TARGET TEMPERATURE (previously read from file) 
 bed_temp_target = args.bed_temp     # BED TARGET TEMPERATURE (previously read from file) 
 standalone      = args.standalone   # Standalong operation
-autolevel       = args.autolevel   # Standalong operation
+autolevel       = args.autolevel    # Standalong operation
 ################################################################################
 
 class PrintApplication(GCodePusher):

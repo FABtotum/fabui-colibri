@@ -37,7 +37,7 @@ _ = tr.ugettext
 def start_additive(app, args):
     ext_temp = args[0]
     bed_temp = args[1]
-    units_e = app.config.get('units', 'e')
+    units_e = app.config.get('settings', 'e')
     
     app.trace( _("Preparing the FABtotum Personal Fabricator") )
     app.macro("G90",                    "ok", 2,    _("Setting absolute position"), 0, verbose=False)
@@ -51,7 +51,7 @@ def start_additive(app, args):
 
 def end_additive(app, args = None):
     try:
-        color = app.config.get('units', 'color')
+        color = app.config.get('settings', 'color')
     except KeyError:
         color = {
             'r' : 255,
@@ -79,7 +79,7 @@ def end_additive(app, args = None):
 
 def check_pre_print(app, args = None):
     try:
-        safety_door = app.config.get('units', 'safety')['door']
+        safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
         safety_door = 0
     
@@ -91,7 +91,7 @@ def check_pre_print(app, args = None):
 
 def engage_feeder(app, args = None):
     try:
-        safety_door = app.config.get('units', 'safety')['door']
+        safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
         safety_door = 0
 

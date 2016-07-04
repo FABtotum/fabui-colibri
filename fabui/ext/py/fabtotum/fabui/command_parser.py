@@ -30,6 +30,7 @@ import gettext
 
 # Import internal modules
 from fabtotum.fabui.jog import Jog
+import fabtotum.os.control as system
 
 # Set up message catalog access
 tr = gettext.translation('command_parser', 'locale', fallback=True)
@@ -37,12 +38,22 @@ _ = tr.ugettext
 
 class CommandParser:
     
-    def __init__(self, gcs, jog_response_file, autostart = True):
+    def __init__(self, gcs, jog_response_file, autostart = True, logger = None):
         self.gcs = gcs
         self.jog = False
         if autostart:
-            self.jog = Jog(jog_response_file=jog_response_file, gcs=gcs)
+            self.jog = Jog(jog_response_file=jog_response_file, gcs=gcs, logger=logger)
             self.jog.start()
+            
+        if logger:
+            self.log = logger
+        else:
+            self.log = logging.getLogger('CommandParser')
+            ch = logging.StreamHandler()
+            ch.setLevel(logging.DEBUG)
+            formatter = logging.Formatter("%(levelname)s : %(message)s")
+            ch.setFormatter(formatter)
+            self.log.addHandler(ch)
     
     def start(self):
         if self.jog:
@@ -99,6 +110,7 @@ class CommandParser:
                 if len(args) > 1:
                     tags = args[1].split(',')
                     if len(tags) > 1:
+                        print "Jog:", tags[0], tags[1]
                         self.jog.send(tags[0], tags[1])
                 
             elif cmd == '!jog_clear': # !jog_cclear
@@ -106,31 +118,21 @@ class CommandParser:
             
             elif cmd == '!gmacro':  # !gmacro:<preset>,<arg1>,<arg2>,...
                 pass
-                
-            elif cmd == '!file':    # !file:<filename>
-                pass
 
             elif cmd == '!auto_shutdown':# !shutdown:<on|off>
-                pass
-                
-            elif cmd == '!system_shutdown':
-                pass
-                
-            elif cmd == '!system_restart':
-                pass
-                
-            elif cmd == '!system_update':
-                pass
+                self.gcs.push('config:shutdown', args[1])
                 
             elif cmd == '!debug':
                 self.gcs.debug_info(args)
 
         except Exception as e:
             # Just ignore this command
-            print _("Error parsing command [{0}]").format(line), e
+            self.log.error( _("Error parsing command [{0}], {1}").format(line, str(e)) )
     
     def parse_file(self, filename):
         erase_file = False
+        
+        self.log.debug("Command Parser %s", filename)
         
         with open(filename, 'r+') as file:
             for line in file:

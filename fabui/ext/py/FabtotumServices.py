@@ -23,6 +23,8 @@ import os
 import sys
 import gettext
 import signal
+import argparse
+import logging
 
 # Import external modules
 from watchdog.observers import Observer
@@ -31,12 +33,14 @@ from ws4py.client.threadedclient import WebSocketClient
 # Import internal modules
 from fabtotum.os.paths                  import TEMP_PATH
 from fabtotum.fabui.config              import ConfigService
+from fabtotum.fabui.bootstrap           import hardwareBootstrap
 from fabtotum.fabui.monitor             import StatsMonitor
 from fabtotum.totumduino.gcode          import GCodeService
 from fabtotum.utils.pyro.gcodeserver    import GCodeServiceServer
 from fabtotum.os.monitor.filesystem     import FolderTempMonitor
 from fabtotum.os.monitor.usbdrive       import UsbMonitor
 from fabtotum.os.monitor.gpiomonitor    import GPIOMonitor
+
 
 def create_file(filename):
     open(filename,'w').close()
@@ -46,7 +50,7 @@ def create_file(filename):
 
 def signal_handler(signal, frame):
     print "You pressed Ctrl+C!"
-    print "Shutting down services. Please wait..."
+    logger.debug("Shutting down services. Please wait...")
     ws.close()
     gcserver.stop()
     gcservice.stop()
@@ -54,6 +58,17 @@ def signal_handler(signal, frame):
     ftm.parser.stop()
     gpioMonitor.stop()
     statsMonitor.stop()
+
+# Setup arguments
+parser = argparse.ArgumentParser()
+parser.add_argument("-B", "--bootstrap", action='store_true',  help="Execute bootstrape commands on startup.")
+parser.add_argument("-L", "--log", help="Use logfile to store log messages.",  default='<stdout>')
+
+# Get arguments
+args = parser.parse_args()
+
+do_bootstrap = args.bootstrap
+logging_facility = args.log
 
 config = ConfigService()
 
@@ -92,9 +107,30 @@ create_file(JOG_RESPONSE)
 create_file(TASK_MONITOR)
 create_file(EMERGENCY_FILE)
 
+# Setup logger
+logger = logging.getLogger('FabtotumService')
+logger.setLevel(logging.DEBUG)
+
+if logging_facility == '<stdout>':
+    ch = logging.StreamHandler()
+elif logging_facility == '<syslog>':
+    # Not supported at this point
+    ch = logging.StreamHandler()
+else:
+    ch = logging.FileHandler(logging_facility)
+
+#~ formatter = logging.Formatter("%(name)s - %(levelname)s : %(message)s")
+formatter = logging.Formatter("%(levelname)s : %(message)s")
+ch.setFormatter(formatter)
+ch.setLevel(logging.DEBUG)
+logger.addHandler(ch)
+
 # Start gcode service
-gcservice = GCodeService(SERIAL_PORT, SERIAL_BAUD)
+gcservice = GCodeService(SERIAL_PORT, SERIAL_BAUD, logger=logger)
 gcservice.start()
+
+if do_bootstrap:
+    hardwareBootstrap(gcservice, config, logger=logger)
 
 # Pyro GCodeService wrapper
 gcserver = GCodeServiceServer(gcservice)
@@ -103,9 +139,9 @@ ws = WebSocketClient('ws://'+SOCKET_HOST +':'+SOCKET_PORT+'/')
 ws.connect();
 
 ## Folder temp monitor
-ftm = FolderTempMonitor(ws, gcservice, TRACE, TASK_MONITOR, MACRO_RESPONSE, JOG_RESPONSE, COMMAND)
+ftm = FolderTempMonitor(ws, gcservice, logger, TRACE, TASK_MONITOR, MACRO_RESPONSE, JOG_RESPONSE, COMMAND)
 ## usb disk monitor
-um = UsbMonitor(ws, USB_FILE)
+um = UsbMonitor(ws, logger, USB_FILE)
 ## The Observer ;)
 observer = Observer()
 observer.schedule(um, '/dev/', recursive=False)
@@ -113,11 +149,11 @@ observer.schedule(ftm, TEMP_PATH, recursive=False)
 observer.start()
 
 ## Safety monitor
-gpioMonitor = GPIOMonitor(ws, gcservice, GPIO_PIN, EMERGENCY_FILE)
+gpioMonitor = GPIOMonitor(ws, gcservice, logger, GPIO_PIN, EMERGENCY_FILE)
 gpioMonitor.start()
 
 ## Stats monitor
-statsMonitor = StatsMonitor(STATUS, gcservice, MONITOR_BACKTRACK, MONITOR_PERIOD)
+statsMonitor = StatsMonitor(STATUS, gcservice, logger, MONITOR_BACKTRACK, MONITOR_PERIOD)
 statsMonitor.start()
 
 # Ensure CTRL+C detection to gracefully stop the server.
@@ -125,9 +161,8 @@ signal.signal(signal.SIGINT, signal_handler)
 
 # Wait for all threads to finish
 gcserver.loop()
-print "GCodeService stopped."
 gcservice.loop()
-print "Server stopped."
+logger.info("Server stopped.")
 statsMonitor.loop()
 observer.join()
 #usbMonitor.join()

@@ -48,19 +48,19 @@ class ConfigService:
         self.HW_CUSTOM_SETTINGS  = self.config.get('hardware', 'custom_settings')
         
         json_f = open(self.HW_DEFAULT_SETTINGS)
-        self.units = json.load(json_f)
+        self.settings = json.load(json_f)
         
-        if 'settings_type' in self.units and self.units['settings_type'] == 'custom':
+        if 'settings_type' in self.settings and self.settings['settings_type'] == 'custom':
             json_f = open(self.HW_CUSTOM_SETTINGS)
-            self.units = json.load(json_f)
+            self.settings = json.load(json_f)
     
     def reload(self):
         json_f = open(self.HW_DEFAULT_SETTINGS)
-        self.units = json.load(json_f)
+        self.settings = json.load(json_f)
         
-        if 'settings_type' in self.units and self.units['settings_type'] == 'custom':
+        if 'settings_type' in self.settings and self.settings['settings_type'] == 'custom':
             json_f = open(self.HW_CUSTOM_SETTINGS)
-            self.units = json.load(json_f)
+            self.settings = json.load(json_f)
         
     def get(self, section, key, default = None):        
         value = ''
@@ -68,8 +68,8 @@ class ConfigService:
         try:
             if section == 'serial':
                 value = self.serialconfig.get('serial', key)
-            elif section == 'units':
-                value = self.units[key]
+            elif section == 'settings':
+                value = self.settings[key]
             else:
                 value = self.config.get(section, key)
         except KeyError:

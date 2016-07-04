@@ -53,7 +53,7 @@ class FolderTempMonitor(PatternMatchingEventHandler):
     TASK_MONITOR = None
     COMMAND = None
     
-    def __init__(self, WebSocket, gcs, trace_file, monitor_file, response_file, jog_response_file, command_file):
+    def __init__(self, WebSocket, gcs, logger, trace_file, monitor_file, response_file, jog_response_file, command_file):
         
         self.TRACE = trace_file
         self.COMMAND = command_file
@@ -62,7 +62,9 @@ class FolderTempMonitor(PatternMatchingEventHandler):
         self.JOG_RESPONSE = jog_response_file
         self.gcs = gcs
         
-        self.parser = CommandParser(gcs, jog_response_file)
+        self.log = logger
+        
+        self.parser = CommandParser(gcs, jog_response_file, logger = logger)
         
         self.patterns = [self.TRACE, self.COMMAND, self.TASK_MONITOR, self.MACRO_RESPONSE, self.JOG_RESPONSE]
         self.ignore_directories = None
@@ -101,12 +103,12 @@ class FolderTempMonitor(PatternMatchingEventHandler):
         
     def on_created(self, event):
         #self.process(event)
-        print "CRAETED: ", event.src_path
+        self.log.debug("CRAETED: " + event.src_path)
         #self.ws.send("CRAETED")
     
     def on_deleted(self, event):
         #self.process(event)
-        print "DELETED: ", event.src_path
+        self.log.debug("DELETED: " + event.src_path)
         #self.ws.send("CRAETED")
         
     def sendMessage(self, type, data):

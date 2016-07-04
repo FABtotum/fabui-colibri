@@ -36,7 +36,7 @@ _ = tr.ugettext
 
 
 def start_subtractive(app, args = None):
-    units_a = app.config.get('units', 'a')
+    units_a = app.config.get('settings', 'a')
     
     #macro("G92 X0 Y0 Z0 E0","ok",3,"Setting Origin Point",1)
     #macro("G90","ok",3,"Setting Origin Point",0.1, verbose=False)
@@ -46,7 +46,7 @@ def start_subtractive(app, args = None):
 def end_subtractive(app, args = None):
 
     try:
-        color = app.config.get('units', 'color')
+        color = app.config.get('settings', 'color')
     except KeyError:
         color = {
             'r' : 255,

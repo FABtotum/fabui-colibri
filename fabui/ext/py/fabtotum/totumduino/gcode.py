@@ -37,7 +37,7 @@ from fabtotum.utils.singleton import Singleton
 from fabtotum.utils.gcodefile import GCodeFile
 from fabtotum.totumduino.hooks import action_hook
 from fabtotum.totumduino.hardware import reset as totumduino_reset
-from fabtotum.totumduino.hardware import startup as totumduino_startup
+from fabtotum.fabui.bootstrap import hardwareBootstrap
 
 #############################################
 
@@ -137,6 +137,8 @@ class Command(object):
     
     def hasExpired(self):
         """ Check whether timeout has expired. """
+        if self.timeout == None:
+            return False
         return ( (time.time() - self.timestamp) > self.timeout )
     
     def hasExpectedReply(self, line):
@@ -291,7 +293,7 @@ class GCodeService:
     
     REPLY_QUEUE_SIZE = 1
         
-    def __init__(self, serial_port, serial_baud, serial_timeout = 5, use_checksum = False):
+    def __init__(self, serial_port, serial_baud, serial_timeout = 5, use_checksum = False, logger = None):
         self.running = False
         self.is_resetting = False
         self.SERIAL_PORT = serial_port
@@ -332,6 +334,16 @@ class GCodeService:
         
         # Callback handler
         self.callback = []
+        
+        if logger:
+            self.log = logger
+        else:
+            self.log = logging.getLogger('GCodeService')
+            ch = logging.StreamHandler()
+            ch.setLevel(logging.DEBUG)
+            formatter = logging.Formatter("%(levelname)s : %(message)s")
+            ch.setFormatter(formatter)
+            self.log.addHandler(ch)
     
     """ Internal *private* functions """
     
@@ -340,10 +352,10 @@ class GCodeService:
         To ensure that the callback function cannot block sender/receiver threads
         calling it must be done from a separate thread.
         """
-        print "waiting for last_command", last_command
+        self.log.debug("waiting for last_command %s", str(last_command))
         last_command.wait()
         
-        print "last command finished"
+        self.log.debug("last command finished")
         
         self.progress = 100.0
         
@@ -368,7 +380,7 @@ class GCodeService:
                 cb(callback_name, data)
         
     def __trigger_callback(self, callback_name, data):
-        print "trigger_callback", callback_name, data
+        self.log.debug("trigger_callback %s %s", callback_name, str(data) )
         callback_thread = Thread( 
                 name="GCodeService-callback-{0}".format(callback_name),
                 target = self.__callback_thread, 
@@ -387,7 +399,7 @@ class GCodeService:
             gcode_raw = code.data + '\r\n'
             gcode_command = code
         else:
-            print "Unknown command"
+            self.log.debug("Unknown command")
             raise AttributeError
         
         for hook in HOOKS:
@@ -412,7 +424,7 @@ class GCodeService:
         else:
             gcode_complete = gcode_raw
         
-        print "<< ", gcode_complete[:-2]
+        self.log.debug("<< %s", gcode_complete[:-2])
         
         self.rq.put(gcode_command)
         self.serial.write(gcode_complete)
@@ -424,7 +436,7 @@ class GCodeService:
         """
         Sender thread used to send commands to Totumduino.
         """
-        print "sender thread: started"
+        self.log.debug("sender thread: started")
         
         self.state = GCodeService.IDLE
         
@@ -434,8 +446,10 @@ class GCodeService:
             cmd = self.cq.get()
 
             if cmd == Command.GCODE:
-                self.__send_gcode_command(cmd)
-                #print "G <<", cmd.data
+                if not cmd.hasExpired():
+                    self.__send_gcode_command(cmd)
+                else:
+                    self.log.info("Expired [%s]", cmd.data )
                 
             elif cmd == Command.FILE:
                 filename = cmd.data
@@ -494,11 +508,10 @@ class GCodeService:
                             cmd = self.cq.get_nowait()
                             
                             if cmd == Command.GCODE:
-                                #~ self.serial.write(cmd.data + '\r\n')
-                                #~ #print "# >>", cmd.data
-                                #~ self.rq.put(cmd)
-                                
-                                self.__send_gcode_command(cmd)
+                                if not cmd.hasExpired():
+                                    self.__send_gcode_command(cmd)
+                                else:
+                                    self.log.info("Expired [%s]", cmd.data)
                                 
                             elif cmd == Command.PAUSE:
                                 self.state = GCodeService.PAUSED
@@ -542,7 +555,7 @@ class GCodeService:
             elif cmd == Command.KILL:
                 break
                 
-        print "sender thread: stopped"
+        self.log.debug("sender thread: stopped")
     
     def __handle_line(self, line_raw):
         """
@@ -591,9 +604,9 @@ class GCodeService:
                 #return
         
         if self.active_cmd:
-            print "@ >> [{0}] [{1}]".format(self.active_cmd.data.rstrip(), line.rstrip())
+            self.log.debug("  >> [%s] [%s]", self.active_cmd.data.rstrip(), line.rstrip())
         else:
-            print "@ >> [{0}] [{1}]".format(None, line.rstrip())
+            self.log.debug("  >> [%s] [%s]", 'None', line.rstrip())
         
         if self.active_cmd:
             # Get the active command as this is the on waiting for the reply.
@@ -655,11 +668,11 @@ class GCodeService:
         """
         Thread handling incoming serial data.
         """
-        print "receiver thread: started"
+        self.log.debug("receiver thread: started")
         
         if not hasattr(self.serial, 'cancel_read'):
             self.serial.timeout = 1
-            print "has no cancel_read"
+            self.log.info(" serial has no cancel_read")
         
         self.ev_rx_started.set()
 
@@ -684,7 +697,7 @@ class GCodeService:
                         line_raw, self.buffer = self.buffer.split(self.READ_TERM, 1)
                         self.__handle_line(line_raw)
         
-        print "receiver thread: stopped"
+        self.log.debug("receiver thread: stopped")
     
     def __reset_totumduino(self):
         """ Does a hardware reset of the totumduino board. """
@@ -704,7 +717,7 @@ class GCodeService:
         self.is_resetting = False
         
         time.sleep(1)
-        totumduino_startup(self)
+        hardwareBootstrap(self, logger=self.log)
     
     def __cleanup(self):
         """
@@ -795,7 +808,7 @@ class GCodeService:
         
         self.serial.close()
         
-        print "All threads stopped"       
+        self.log.info("All threads stopped")
     
     def reset(self):
         """
@@ -923,15 +936,19 @@ class GCodeService:
             while not cmd.wait(3):
                 if not self.running:
                     # Aborting because the service has been stopped
-                    print 'Aborting reply.'
+                    self.log.info('Aborting reply. [%s]', code)
                     return None
                 if timeout:
                     if ( time.time() - sent_timestamp ) >= timeout:
-                        print 'Timeout for ',code
+                        self.log.info('Timeout for [%s]', code)
                         return None                        
             return cmd.reply
         else:
             return None
+        
+    def push(self, id, data):
+        self.__trigger_callback(id, data)
+        return True
         
     def send_file(self, filename):
         """
@@ -966,10 +983,10 @@ class GCodeService:
         
     def debug_info(self, args):
         
-        print "=== Debug Info: BEGIN ==="
-        print "Thread count:", threading.active_count()
-        print "Thread enumeration:"
+        self.log.debug("=== Debug Info: BEGIN ===")
+        self.log.debug("Thread count: %d", threading.active_count())
+        self.log.debug("Thread enumeration:")
         for e in threading.enumerate():
-            print e
-        print "=== Debug Info: END ==="
+            self.log.debug("%s", str(e))
+        self.log.debug("=== Debug Info: END ===")
         return True
