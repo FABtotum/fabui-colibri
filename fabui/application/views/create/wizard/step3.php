@@ -81,15 +81,15 @@
 							</section>
 							<div class="row">
 								<section class="col col-4">
-									<button type="button" class="btn btn-default btn-block extruder"  style="padding:6px 10px 5px"><i class="fa fa-minus"></i></button>
+									<button type="button" data-action="zHeight" data-attribute="+" class="btn btn-default btn-block action"  style="padding:6px 10px 5px"><i class="fa fa-minus"></i></button>
 								</section>
 								<section class="col col-4">
 									<label class="select">
-										<?php echo form_dropdown('shirts', $zHeightOptions, 'large'); ?> <i></i>
+										<?php echo form_dropdown('zHeight', $zHeightOptions, '', 'id="zHeight"'); ?> <i></i>
 									</label>
 								</section>
 								<section class="col col-4">
-									<button type="button" class="btn btn-default btn-block extruder"  style="padding:6px 10px 5px"><i class="fa fa-plus"></i></button>
+									<button type="button" data-action="zHeight" data-attribute="-" class="btn btn-default btn-block action"  style="padding:6px 10px 5px"><i class="fa fa-plus"></i></button>
 								</section>
 							</div>
 						</fieldset>

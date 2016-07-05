@@ -237,10 +237,10 @@
 				temperaturesPlot =  JSON.parse(localStorage.getItem("temperaturesPlot"));
 			}
 		}
-		getTaskMonitor(true);
+		setTimeout(initSliders,  1000);
 		setInterval(jsonMonitor, 1000);
-		setTimeout(initGraph, 1000);
-		setTimeout(initSliders, 1000);
+		setTimeout(initGraph,    1000);
+		getTaskMonitor(true);
 	}
 	
 	/**
@@ -465,6 +465,10 @@
 			case 'resume':
 				pauseResume(action, element);
 				break;
+			case 'zHeight':
+				var sign = element.attr('data-attribute');
+				sendActionRequest('zHeight', sign+$("#zHeight").val());
+				break;
 		}
 	}
 	/**
@@ -494,14 +498,22 @@
 			element.attr('data-action', 'pause');
 			element.html('<i class="fa fa-pause"></i> Pause print');
 		}
-		
+		sendActionRequest(action);			
+	}
+	/**
+	 * 
+	 */
+	function sendActionRequest(action, value)
+	{
+		value = value || '';
 		$.ajax({
 			type: 'post',
-			url: '<?php echo site_url('create/action/'); ?>/' + action,
+			url: '<?php echo site_url('create/action/'); ?>/' + action + '/' + value,
 			dataType: 'json'
 		}).done(function(response) {
-		});		
+		});
 	}
+	
 	/**
 	 * 
 	 */
@@ -589,6 +601,20 @@
 		bedSlider.noUiSlider.on('set', function(e){
 			onSet('bed-target', e);
 		});
+		//flow rate
+		flowRateSlider.noUiSlider.on('set', function(e){
+			onSet('flow-rate', e);
+		});
+		flowRateSlider.noUiSlider.on('slide', function(e){
+			onSlide('flow-rate', e);
+		});
+		//fan
+		fanSlider.noUiSlider.on('set', function(e){
+			onSet('fan', e);
+		});
+		fanSlider.noUiSlider.on('slide', function(e){
+			onSlide('fan', e);
+		});
 		<?php endif; ?>
 		//speed slider
 		noUiSlider.create(document.getElementById('create-speed-slider'), {
@@ -602,12 +628,13 @@
 				format: wNumb({})
 			}
 		});
-		
-		//speedSlider = document.getElementById('create-speed-slider');
-		
-		$(".sliders").on({
-			'slide': onSlide,
-			'set': onSet
+		speedSlider = document.getElementById('create-speed-slider');
+		//speed slider
+		speedSlider.noUiSlider.on('set', function(e){
+			onSet('speed', e);
+		});
+		speedSlider.noUiSlider.on('slide', function(e){
+			onSlide('speed', e);
 		});
 	}
 	
@@ -616,6 +643,7 @@
 	 */
 	function onSlide(element, value)
 	{
+		
 		switch(element){
 			case 'extruder-target':
 				$(".slider-extruder-target").html(value);
@@ -623,6 +651,15 @@
 			case 'bed-target':
 				$(".slider-bed-target").html(value);
 				break;
+			case 'flow-rate':
+				$('.task-flow-rate').html(value);
+				break;
+			case 'fan':
+				break;
+			case 'speed':
+				$('.task-speed').html(value);
+				break;
+			
 		}
 	}
 	/**
@@ -630,6 +667,7 @@
 	 */
 	function onSet(element, value)
 	{
+		console.log(element);
 		switch(element){
 			case 'extruder-target':
 				fabApp.serial("setExtruderTemp",value[0]);
@@ -637,17 +675,29 @@
 			case 'bed-target':
 				fabApp.serial("setBedTemp",value[0]);
 				break;
+			case 'flow-rate':
+				sendActionRequest('flowRate', value[0]);
+				break;
+			case 'fan':
+				break;
+			case 'speed':
+				sendActionRequest('speed', value[0]);
+				break;
+				
 		}
 	}
 	/**
 	 * set initial target for temperatures sliders
 	 */
 	function setTemperaturesSlidersValue(extruder, bed)
-	{
+	{	
 		$(".slider-extruder-target").html(extruder);
 		$(".slider-bed-target").html(bed);
-		
-		extruderSlider.noUiSlider.set(extruder);
-		bedSlider.noUiSlider.set(bed);
+		if(typeof extruderSlider !== 'undefined'){
+			extruderSlider.noUiSlider.set(extruder);
+		}
+		if(typeof bedSlider !== 'undefined'){
+			bedSlider.noUiSlider.set(bed);
+		}
 	}
 </script>

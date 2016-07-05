@@ -15,11 +15,13 @@
 	function __construct()
 	{
 		parent::__construct();
-		//check if there's a running task
-		//load libraries, models, helpers
-		$this->load->model('Tasks', 'tasks');
-		//$this->tasks->truncate();
-		$this->runningTask = $this->tasks->getRunning();
+		if(!$this->input->is_cli_request()){ //avoid this form command line
+			//check if there's a running task
+			//load libraries, models, helpers
+			$this->load->model('Tasks', 'tasks');
+			//$this->tasks->truncate();
+			$this->runningTask = $this->tasks->getRunning();
+		}
 	}
 	
 	//controller router
@@ -230,10 +232,10 @@
 		//TODO
 	}
 	
-	public function action($action)
+	public function action($action, $value = '')
 	{
 		$this->load->helper('fabtotum_helper');
-		$action();
+		$action($value);
 		
 	}
 			
