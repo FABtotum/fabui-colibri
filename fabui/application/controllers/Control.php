@@ -157,9 +157,7 @@
 		if($this->input->is_ajax_request()){
 			$this->output->set_content_type('application/json')->set_output(json_encode(true));
 		}
-	}
-	
-			
+	}		
  }
  
 ?>

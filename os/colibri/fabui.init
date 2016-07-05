@@ -32,12 +32,12 @@ case "$1" in
 	######## websocket server ########
 	php ${FABUI_PATH}/index.php Server webSocket &> /var/log/fabui/webSocket.log &
 	echo $! > /run/webSocket.pid
-	######## gpio monitor ########
 	#python ${PYTHON_PATH}/SystemMonitor.py &> /var/log/fabui/SystemMonitor.log &
-	python ${PYTHON_PATH}/FabtotumServices.py &> /var/log/fabui/FabtotumServices.log &
-	echo $! > /run/SystemMonitor.pid
+	start-stop-daemon -S --exec python ${PYTHON_PATH}/FabtotumServices.py -b -p ${FABSERVICE_PID} -- -B -L /var/log/fabui/FabtotumServices.log
+	#python ${PYTHON_PATH}/FabtotumServices.py &> /var/log/fabui/FabtotumServices.log &
+	#echo $! > /run/SystemMonitor.pid
 	######## hardware bootstrap ########
-	php ${FABUI_PATH}/index.php Control hardwareBootstrap &> /var/log/fabui/hardwareBootstrap.log
+	#php ${FABUI_PATH}/index.php Control hardwareBootstrap &> /var/log/fabui/hardwareBootstrap.log
 	
 	#python /var/www/fabui/python/flush.py &> /var/log/fabui/flush.log
 	#php /var/www/fabui/script/boot.php &> /var/log/fabui/boot.log
@@ -52,10 +52,8 @@ case "$1" in
 		kill -9 $PID &> /dev/null
 	fi
 	
-	if [ -e "/run/SystemMonitor.pid" ]; then
-		PID=$(cat /run/SystemMonitor.pid)
-		kill -9 $PID &> /dev/null
-	fi
+	start-stop-daemon -K -q -p $FABSERVICE_PID
+	
 	evaluate_retval
 	;;
   restart|reload)

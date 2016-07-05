@@ -167,14 +167,13 @@
 			url: '<?php echo site_url('create/startCreate/'.$type); ?>',
 			dataType: 'json'
 		}).done(function(response) {
-			setTimeout(function(){
-				getTaskMonitor(true)}, 2000);
 			setInterval(timer, 1000);
 			setInterval(jsonMonitor, 1000);
 			idTask = response.id_task;
 			closeWait();
 			initSliders();
 			setTimeout(initGraph, 1000);
+			setTemperaturesSlidersValue(response.temperatures.extruder, response.temperatures.bed);
 			//TODO freeze menu fabApp.freezeMenu();
 		});
 	}
@@ -256,8 +255,7 @@
 				var serverDate = new Date((data.<?php echo $type; ?>.started) * 1000 );
 				var browserDate = new Date();
 				//set sliders target - just on first call
-				$(".slider-extruder-target").html(data.<?php echo $type; ?>.stats.extruder_target);
-				$(".slider-bed-target").html(data.<?php echo $type; ?>.stats.bed_target);
+				setTemperaturesSlidersValue(data.<?php echo $type; ?>.stats.extruder_target, data.<?php echo $type; ?>.stats.bed_target);
 				
 			}
 		});
@@ -640,5 +638,16 @@
 				fabApp.serial("setBedTemp",value[0]);
 				break;
 		}
+	}
+	/**
+	 * set initial target for temperatures sliders
+	 */
+	function setTemperaturesSlidersValue(extruder, bed)
+	{
+		$(".slider-extruder-target").html(extruder);
+		$(".slider-bed-target").html(bed);
+		
+		extruderSlider.noUiSlider.set(extruder);
+		bedSlider.noUiSlider.set(bed);
 	}
 </script>
