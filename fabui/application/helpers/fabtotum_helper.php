@@ -268,6 +268,7 @@ if(!function_exists('writeToCommandFile'))
 		$CI->config->load('fabtotum');
 		$CI->load->helper('file');
 		write_file($CI->config->item('command'), $command);
+		log_message('debug', "Command: ".$command);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -301,6 +302,42 @@ if(!function_exists('resume'))
 	function resume()
 	{
 		writeToCommandFile('!resume');
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('flowRate'))
+{
+	/**
+	 * resume task
+	 */
+	function flowRate($value)
+	{
+		writeToCommandFile('!flow_rate:'.$value);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('speed'))
+{
+	/**
+	 * resume task
+	 */
+	function speed($value)
+	{
+		writeToCommandFile('!speed:'.$value);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('zHeight'))
+{
+	/**
+	 * resume task
+	 */
+	function zHeight($value)
+	{
+		$sign = substr($value, 0,1);
+		$value = str_replace($sign, '' , $value);
+		$command = $sign == '-' ? '!z_minus' : '!z_plus';
+		writeToCommandFile($command.':'.$value);
 	}
 }
 ?>
