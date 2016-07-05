@@ -431,7 +431,7 @@ class GCodeService:
         callback_thread = Thread( target = self.__reset_thread, )
         callback_thread.start()
     
-    def __send_gcode_command(self, code, group = 'gcode'):
+    def __send_gcode_command(self, code, group = 'gcode', modify = True):
         """
         Internal gcode send function.
         """
@@ -451,7 +451,7 @@ class GCodeService:
                 self.__trigger_callback(callback_name, callback_data)
         
         # Z Override modification
-        if self.z_override != 0.0 and 'Z' in gcode_raw:
+        if (self.z_override != 0.0) and ('Z' in gcode_raw) and modify:
             get_z_match = self.re_z_override.search(gcode_raw[:-2])
             if get_z_match:
                 num_orig = get_z_match.group(1)
@@ -460,7 +460,11 @@ class GCodeService:
                     new_z = float(num_orig)+float(self.z_override)
                     str_new = 'Z' + str(new_z) # Safer to use 'Z{num}' then just '{num}'
                     new_cmd = gcode_raw[:-2].replace(str_orig, str_new)
+                    
+                    self.log.debug('MODIFIED [%s] -> [%s]', gcode_raw[:-2], new_cmd )
+                    
                     gcode_raw = new_cmd + '\r\n'
+                    
                                 
         # Note: experimental feature
         if self.use_checksum:
@@ -602,9 +606,9 @@ class GCodeService:
                 self.z_override += z_offset
                 
                 self.log.debug("ZMODIFY: %f", z_offset)
-                self.__send_gcode_command("G91", group="override")
-                self.__send_gcode_command("G0 Z{0}".format(z_offset), group="override")
-                self.__send_gcode_command("G90", group="override")
+                self.__send_gcode_command("G91", group="override", modify=False)
+                self.__send_gcode_command("G0 Z{0}".format(z_offset), group="override", modify=False)
+                self.__send_gcode_command("G90", group="override", modify=False)
             
             elif cmd == Command.FILE:
                 filename = cmd.data
