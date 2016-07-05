@@ -101,7 +101,7 @@
 	 * @param int $temperature
 	 * set nozzle temperature
 	 */
-	public function setNozzleTemp($temperature)
+	public function setExtruderTemp($temperature)
 	{
 		$this->sendCommand('M104 S'.$temperature);
 		return $this->response();

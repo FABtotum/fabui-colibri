@@ -10,7 +10,7 @@
  class Tasks extends FAB_Model {
  	
 	private $tableName = 'sys_tasks';
-	private $completedStatus = array('performed', 'stopped', 'deleted');
+	private $completedStatus = array('performed', 'abort', 'deleted');
 	
 	const STATUS_RUNNING = 'RUNNING';
  	

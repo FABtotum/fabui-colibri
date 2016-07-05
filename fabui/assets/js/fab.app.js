@@ -233,7 +233,7 @@ fabApp = (function(app) {
 	 * 
 	 */
 	app.topExtTempChange = function(e){
-		app.serial("setNozzleTemp", parseInt(e[0]));
+		app.serial("setExtruderTemp", parseInt(e[0]));
 	}
 	/*
 	 * 

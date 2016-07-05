@@ -42,7 +42,14 @@
 	//update
 	public function update($id, $data)
 	{
-		//TODO
+		if(is_array($id)){
+			foreach($id as $column => $value){
+				$this->db->where($column, $value);
+			}
+		}else{
+			$this->db->where('id', $id);	
+		}
+		$this->db->update($this->tableName, $data);
 	}
 	
 	/**

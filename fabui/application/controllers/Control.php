@@ -49,6 +49,7 @@
 		//load helpers
 		$this->load->helper('fabtotum_helper');
 		resetController();
+		sleep(5);
 	}
 	
 	/**

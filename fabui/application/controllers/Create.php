@@ -46,11 +46,13 @@
 		
 		//load libraries, helpers, model
 		$this->load->library('smart');
+		$this->load->helper('form');
 		//data
 		$data = array();
 		$data['type']      = 'print';
 		$data['printType'] = 'additive';
 		$data['runningTask'] = $this->runningTask;
+		$data['zHeightOptions'] = array('0.1' => '0.1', '0.01' => '0.01');
 		//if there's no running task don't load all steps
 		if(!$this->runningTask){
 			$data['step1']  = $this->load->view('create/wizard/step1', $data, true );
@@ -90,6 +92,7 @@
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.fillbetween.min.js'); //datatable
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.time.min.js'); //datatable
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js'); //datatable
+		$this->addCSSInLine('<style>.fake-progress{margin-bottom:15px;}</style>');
 		
 		$this->addJsInLine($this->load->view('create/js', $data, true));
 		$this->content = $widget->print_html(true);
@@ -215,11 +218,23 @@
 	/**
 	 *  abort task
 	 */
-	public function abort()
+	public function abort($taskId)
 	{
 		$this->load->helper('fabtotum_helper');
+		//abort
 		abort();
+		//update db status
+		$this->load->model('Tasks', 'tasks');
+		$this->tasks->update($taskId, array('status' => 'abort'));
+		$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
 		//TODO
+	}
+	
+	public function action($action)
+	{
+		$this->load->helper('fabtotum_helper');
+		$action();
+		
 	}
 			
  }

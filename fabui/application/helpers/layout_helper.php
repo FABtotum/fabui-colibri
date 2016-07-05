@@ -58,7 +58,7 @@ function ajaxJSInline($javascript, $initFunction = true)
 		return 'var pagefunction = function() { '.$javascript.' }';
 }
 
-function buildMenu($menu_array, $is_sub = FALSE) {
+function buildMenu($menu_array, $is_sub = FALSE, $parent = '') {
 	/*
 	 * If the supplied array is part of a sub-menu, add the
 	 * sub-menu class instead of the menu ID for CSS styling
@@ -83,7 +83,7 @@ function buildMenu($menu_array, $is_sub = FALSE) {
 				 * build the sub-menu and store it in $sub
 				 */
 				if (is_array($val)) {
-					$sub = buildMenu($val, TRUE);
+					$sub = buildMenu($val, TRUE, $id);
 				}
 				/*
 				 * Otherwise, set $sub to NULL and store the
@@ -103,7 +103,7 @@ function buildMenu($menu_array, $is_sub = FALSE) {
 			/*
 			 * Use the created variables to output HTML
 			 */
-			$menu .= '<li><a href="' . $url . '"><i class="fa fa-lg fa-fw ' . $icon . '"></i> <span ' . $attr . '>' . $title . '</span></a> ' . $sub . '</li>';
+			$menu .= '<li><a data-controller="'.$id.'" href="' . $url . '"><i class="fa fa-lg fa-fw ' . $icon . '"></i> <span ' . $attr . '>' . $title . '</span></a> ' . $sub . '</li>';
 			/*
 			 * Destroy the variables to ensure they're reset
 			 * on each iteration

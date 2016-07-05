@@ -193,10 +193,7 @@ if(!function_exists('resetController'))
 	 */
 	function resetController()
 	{
-		$CI =& get_instance();
-		$CI->load->helper('file');
-		$CI->config->load('fabtotum');
-		write_file($CI->config->item('command'), '!reset');
+		writeToCommandFile('!reset');
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -207,7 +204,8 @@ if(!function_exists('emergency'))
 	 */
 	function emergency()
 	{
-		return doCommandLine('bash', './ext/bash/emergency.sh');
+		doCommandLine('/etc/init.d/fabui', 'restart');
+		resetController();
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -259,6 +257,20 @@ if(!function_exists('startPrint'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('writeToCommandFile'))
+{
+	/**
+	 * write to command to command file
+	 */
+	function writeToCommandFile($command)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$CI->load->helper('file');
+		write_file($CI->config->item('command'), $command);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('abort'))
 {
 	/**
@@ -266,10 +278,29 @@ if(!function_exists('abort'))
 	 */
 	function abort()
 	{
-		$CI =& get_instance();
-		$CI->config->load('fabtotum');
-		$CI->load->helper('file');
-		write_file($CI->config->item('command'), '!abort');
+		writeToCommandFile('!abort');
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('pause'))
+{
+	/**
+	 * pause task
+	 */
+	function pause()
+	{
+		writeToCommandFile('!pause');
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('resume'))
+{
+	/**
+	 * resume task
+	 */
+	function resume()
+	{
+		writeToCommandFile('!resume');
 	}
 }
 ?>

@@ -20,6 +20,18 @@
 	var temperaturesGraph;
 	var temperaturesPlot = {extruder: {temp: [], target: []}, bed: {temp:[], target:[]}};
 	var maxTemperaturesPlot = 200;
+	var idTask <?php echo $runningTask ? ' = '.$runningTask['id'] : ''; ?>;
+	var monitorInterval;
+	var timerInterval;
+	var elapsedTime = 0;
+	//sliders
+	<?php if($type == "print"): ?>
+	var extruderSlider;
+	var bedSlider;
+	var flowRateSlider;
+	<?php endif; ?>
+	var speedSlider;
+	var fanSlider;
 	
 	
 	$(document).ready(function() {
@@ -31,6 +43,7 @@
 		initRunningTaskPage();
 		<?php endif; ?>
 		$(".action").on('click', doAction);
+		
 	});
 	
 	//init wizard flow
@@ -154,8 +167,15 @@
 			url: '<?php echo site_url('create/startCreate/'.$type); ?>',
 			dataType: 'json'
 		}).done(function(response) {
+			setTimeout(function(){
+				getTaskMonitor(true)}, 2000);
+			setInterval(timer, 1000);
+			setInterval(jsonMonitor, 1000);
+			idTask = response.id_task;
 			closeWait();
-			initGraph();
+			initSliders();
+			setTimeout(initGraph, 1000);
+			//TODO freeze menu fabApp.freezeMenu();
 		});
 	}
 	<?php endif; ?>
@@ -164,7 +184,6 @@
 	function canWizardPrev()
 	{
 		var step = $('.wizard').wizard('selectedItem').step;
-		console.log('Can Wizard PREv: ' + step);
 		return false;
 	}
 	
@@ -194,10 +213,10 @@
 				break;
 			case 3:
 				startCreate();
-				break;
+				break; 
 		}
 	}
-		
+	
 	if(typeof manageMonitor != 'function'){
 		window.manageMonitor = function(data){
 			updateProgress(data.<?php echo $type; ?>.stats.percent);
@@ -205,10 +224,10 @@
 			updateFlowRate(data.<?php echo $type; ?>.stats.flow_rate);
 			updateFan(data.<?php echo $type; ?>.stats.fan);
 			updateTemperatures(data.<?php echo $type; ?>.stats.extruder, data.<?php echo $type; ?>.stats.extruder_target, data.<?php echo $type; ?>.stats.bed, data.<?php echo $type; ?>.stats.bed_target);
-			updateGraph();
+			//updateGraph();
+			updateTimers(data.<?php echo $type ?>.started);
 		};
 	}
-	
 	/**
 	 * 
 	 */
@@ -219,20 +238,51 @@
 				temperaturesPlot =  JSON.parse(localStorage.getItem("temperaturesPlot"));
 			}
 		}
-		getTaskMonitor();
-		initGraph();
+		getTaskMonitor(true);
+		setInterval(jsonMonitor, 1000);
+		setTimeout(initGraph, 1000);
+		setTimeout(initSliders, 1000);
 	}
 	
 	/**
 	 * get task monitor json
 	 */
-	function getTaskMonitor()
+	function getTaskMonitor(firstCall)
 	{
 		$.get('/temp/task_monitor.json', function(data, status){
 			manageMonitor(data);
+			if(firstCall) {
+				isPaused(data.<?php echo $type; ?>.paused);
+				var serverDate = new Date((data.<?php echo $type; ?>.started) * 1000 );
+				var browserDate = new Date();
+				//set sliders target - just on first call
+				$(".slider-extruder-target").html(data.<?php echo $type; ?>.stats.extruder_target);
+				$(".slider-bed-target").html(data.<?php echo $type; ?>.stats.bed_target);
+				
+			}
 		});
 	}
-	
+	/**
+	 *  monitor interval if websocket is not available
+	 */
+	function jsonMonitor()
+	{
+		if(!socket_connected) getTaskMonitor(false);
+	}
+	/**
+	 * set if task is paused
+	 */
+	function isPaused(bool)
+	{
+		var element = $(".isPaused-button");
+		if(bool == 'False'){
+			element.html('<i class="fa fa-pause"></i> Pause Print');
+			element.attr('data-action', 'pause');
+		}else if(bool == 'True'){
+			element.html('<i class="fa fa-play"></i> Resume Print');
+			element.attr('data-action', 'resume');
+		}
+	}
 	/**
 	 * update progress infos
 	 */
@@ -247,7 +297,7 @@
 	function updateSpeed(value)
 	{
 		$(".task-speed").html(parseInt(value));
-		$("#task-speed-bar").attr("style", "width:" +value +"%;");
+		$("#task-speed-bar").attr("style", "width:" + ((value/500)*100) +"%;");
 	}
 	/**
 	 * update flow rate infos
@@ -255,15 +305,22 @@
 	function updateFlowRate(value)
 	{
 		$(".task-flow-rate").html(parseInt(value));
-		$("#task-flow-rate-bar").attr("style", "width:" +value +"%;");
+		$("#task-flow-rate-bar").attr("style", "width:" + ((value/500)*100) +"%;");
 	}
 	/**
 	 * update fan infos
 	 */
 	function updateFan(value)
 	{
-		$(".task-fan").html(parseInt(value));
-		$("#task-fan-bar").attr("style", "width:" +value +"%;");
+		$(".task-fan").html(((value/255)*100));
+		$("#task-fan-bar").attr("style", "width:" +((value/255)*100) +"%;");
+	}
+	/**
+	 * update timers
+	 */
+	function updateTimers(started)
+	{
+		
 	}
 	/**
 	 * update temperatures info
@@ -284,6 +341,11 @@
 		temperaturesPlot.extruder.target.push(extruderTargetTemp);
 		temperaturesPlot.bed.temp.push(bedTemp);
 		temperaturesPlot.bed.target.push(bedTargetTemp);
+		
+		$(".extruder-temp").html(ext);
+		$(".extruder-target").html(extTarget);
+		$(".bed-temp").html(bed);
+		$(".bed-target").html(bedTarget);
 		
 		if(typeof (Storage) !== "undefined") {
 			localStorage.setItem('temperaturesPlot', JSON.stringify(temperaturesPlot));
@@ -339,6 +401,8 @@
 				borderWidth : 0
 			},
 		});
+		
+		setInterval(updateGraph, 1000);
 	}
 	/**
 	 * get plots for temperatures graph
@@ -369,19 +433,9 @@
 		     	 	label: "Ext temp: ",
 		    	},
 		    	{
-		      		data: seriesExtTarget,
-		      		lines: { show: true, fill: false },
-		      		label: "Ext target: ",
-		    	},
-		    	{
 		 			data: seriesBedTemp,
 		      		lines: { show: true, fill: false },
 		     	 	label: "Bed temp: ",
-		    	},
-		    	{
-		      		data: seriesBedTarget,
-		      		lines: { show: true, fill: false },
-		      		label: "Bed target: ",
 		    	}
 		  	];
 	}
@@ -390,10 +444,12 @@
 	 */
 	function updateGraph()
 	{
-		var data = 	getPlotTemperatures();
-		temperaturesGraph.setData(data);
-		temperaturesGraph.draw();
-		temperaturesGraph.setupGrid();
+		var data = getPlotTemperatures();	
+		if(typeof temperaturesGraph !== 'undefined' ){
+			temperaturesGraph.setData(data);
+			temperaturesGraph.draw();
+			temperaturesGraph.setupGrid();	
+		}
 	}
 	/**
 	 * exec action 
@@ -407,6 +463,10 @@
 			case 'abort':
 				abort();
 				break;
+			case 'pause':
+			case 'resume':
+				pauseResume(action, element);
+				break;
 		}
 	}
 	/**
@@ -414,11 +474,171 @@
 	 */
 	function abort()
 	{
+		openWait('Aborting print');
 		$.ajax({
 			type: 'post',
-			url: '<?php echo site_url('create/abort/'); ?>',
+			url: '<?php echo site_url('create/abort/'); ?>/' + idTask,
 			dataType: 'json'
 		}).done(function(response) {
+			document.location.href = '<?php echo site_url('make/'.$type); ?>';
 		});
+	}
+	
+	/**
+	 * 
+	 */
+	function pauseResume(action, element)
+	{
+		if(action == 'pause') {
+			element.attr('data-action', 'resume');
+			element.html('<i class="fa fa-play"></i> Resume print');
+		}else if(action == 'resume'){
+			element.attr('data-action', 'pause');
+			element.html('<i class="fa fa-pause"></i> Pause print');
+		}
+		
+		$.ajax({
+			type: 'post',
+			url: '<?php echo site_url('create/action/'); ?>/' + action,
+			dataType: 'json'
+		}).done(function(response) {
+		});		
+	}
+	/**
+	 * 
+	 */
+	function timer()
+	{
+		elapsedTime++;
+		$(".elapsed-time").html(transformSeconds(elapsedTime));
+	}
+	/**
+	 * init sliders
+	 */
+	function initSliders()
+	{	
+		<?php if($type == 'print'): ?>
+		//extruder target
+		noUiSlider.create(document.getElementById('create-ext-target-slider'), {
+			start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp_target") : 0,
+			connect: "lower",
+			range: {'min': 0, 'max' : 250},
+			pips: {
+				mode: 'positions',
+				values: [0,25,50,75,100],
+				density: 5,
+				format: wNumb({
+					postfix: '&deg;'
+				})
+			}
+		});
+		//bed target slider
+		noUiSlider.create(document.getElementById('create-bed-target-slider'), {
+			start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp_target") : 0,
+			connect: "lower",
+			range: {'min': 0, 'max' : 100},
+			pips: {
+				mode: 'positions',
+				values: [0,25,50,75,100],
+				density: 5,
+				format: wNumb({
+					postfix: '&deg;'
+				})
+			}
+		});
+		//flow-rate slider
+		noUiSlider.create(document.getElementById('create-flow-rate-slider'), { 
+			start: 100,
+			connect: "lower",
+			range: {'min': 0, 'max' : 500},
+			pips: {
+				mode: 'positions',
+				values: [0,20,40,60,80,100],
+				density: 10,
+				format: wNumb({})
+			}
+		});
+		//fan slider
+		noUiSlider.create(document.getElementById('create-fan-slider'), {
+			start: 255,
+			connect: "lower",
+			range: {'min': 50, 'max' : 100},
+			pips: {
+				mode: 'positions',
+				values: [0,50,100],
+				density: 10,
+				format: wNumb({})
+			}
+		});
+		
+		extruderSlider = document.getElementById('create-ext-target-slider');
+		bedSlider      = document.getElementById('create-bed-target-slider');
+		flowRateSlider = document.getElementById('create-flow-rate-slider');
+		fanSlider      = document.getElementById('create-fan-slider');
+		
+		//sliders events
+		//extruder
+		extruderSlider.noUiSlider.on('slide',  function(e){
+			onSlide('extruder-target', e);
+		});
+		extruderSlider.noUiSlider.on('set', function(e){
+			onSet('extruder-target', e);
+		});
+		//bed
+		bedSlider.noUiSlider.on('slide',  function(e){
+			onSlide('bed-target', e);
+		});
+		bedSlider.noUiSlider.on('set', function(e){
+			onSet('bed-target', e);
+		});
+		<?php endif; ?>
+		//speed slider
+		noUiSlider.create(document.getElementById('create-speed-slider'), {
+			start: 100,
+			connect: "lower",
+			range: {'min': 0, 'max' : 500},
+			pips: {
+				mode: 'positions',
+				values: [0,20,40,60,80,100],
+				density: 10,
+				format: wNumb({})
+			}
+		});
+		
+		//speedSlider = document.getElementById('create-speed-slider');
+		
+		$(".sliders").on({
+			'slide': onSlide,
+			'set': onSet
+		});
+	}
+	
+	/**
+	 * event on slider slide
+	 */
+	function onSlide(element, value)
+	{
+		switch(element){
+			case 'extruder-target':
+				$(".slider-extruder-target").html(value);
+				break;
+			case 'bed-target':
+				$(".slider-bed-target").html(value);
+				break;
+		}
+	}
+	/**
+	 * event on slider set
+	 */
+	function onSet(element, value)
+	{
+		switch(element){
+			case 'extruder-target':
+				fabApp.serial("setExtruderTemp",value[0]);
+				break;
+			case 'bed-target':
+				fabApp.serial("setBedTemp",value[0]);
+				break;
+		}
 	}
 </script>
