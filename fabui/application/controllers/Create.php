@@ -204,7 +204,7 @@
 		$taskId = $this->tasks->add($taskData);
 		//start print
 		startPrint($fileToCreate['full_path'], $taskId);
-		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
+		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId, 'temperatures'=> $temperatures)));
 	}
 	/**
 	 * @param $data (POST DATA)
