@@ -116,17 +116,11 @@ class Command(object):
         else:
             return NotImplemented
     
-    def abort(self):
-        """
-        Abort command execution. In case it was not already sent.
-        """
-        self.aborted = True
-        self.notify()
-    
-    def notify(self):
+    def notify(self, abort = False):
         """
         Notify the waiting thread that the reply has been received.
         """
+        self.aborted = abort
         self.__ev.set()
         
     def wait(self, timeout = None):
@@ -140,11 +134,13 @@ class Command(object):
     
     def isAborted(self):
         """
+        Check whether the command was aborted.
         """
         return self.aborted
     
     def isGroup(self, group):
         """
+        Check whether the command belongs to he provided group.
         """
         return self.group == group
     
@@ -379,6 +375,7 @@ class GCodeService:
         self.first_move = False
         self.gcode_count = 0
     
+    @staticmethod
     def __is_number(s):
         """ Check whether a string is a valid number """
         try:
@@ -436,7 +433,7 @@ class GCodeService:
     
     def __send_gcode_command(self, code, group = 'gcode'):
         """
-        Internal gcode send function with command processing hooks
+        Internal gcode send function.
         """
         if isinstance(code, str):
             gcode_raw = code + '\r\n'
@@ -454,13 +451,13 @@ class GCodeService:
                 self.__trigger_callback(callback_name, callback_data)
         
         # Z Override modification
-        if self.z_override != 0.0 and 'Z' in command:
+        if self.z_override != 0.0 and 'Z' in gcode_raw:
             get_z_match = self.re_z_override.search(gcode_raw[:-2])
             if get_z_match:
                 num_orig = get_z_match.group(1)
-                str_orig = 'Z' + match
-                if self.__is_number():
-                    new_z = float(num_orig)+float(z_override)
+                str_orig = 'Z' + num_orig
+                if self.__is_number(num_orig):
+                    new_z = float(num_orig)+float(self.z_override)
                     str_new = 'Z' + str(new_z) # Safer to use 'Z{num}' then just '{num}'
                     new_cmd = gcode_raw[:-2].replace(str_orig, str_new)
                     gcode_raw = new_cmd + '\r\n'
@@ -491,7 +488,7 @@ class GCodeService:
             self.serial.write(gcode_complete)
         else:
             self.log.debug("FILE_WAIT in progress, ignorig command [%s]", gcode_complete[:-2])
-            gcode_command.abort()
+            gcode_command.notify(abort=True)
 
         return gcode_command
 
@@ -587,6 +584,7 @@ class GCodeService:
                 continue
 
             if cmd == Command.GCODE:
+                # Synchronisation with atomic start/end
                 self.atomic_sync_lock.acquire()
                 self.atomic_sync_lock.release()
                 if (self.is_atomic and cmd.isGroup(self.atomic_group)) or (not self.is_atomic):
@@ -596,7 +594,7 @@ class GCodeService:
                         self.log.info("Expired [%s]", cmd.data )
                 else:
                     self.log.debug("Atomic (%s) in progress, ignoring [%s / %s]", self.atomic_group, cmd.data, cmd.group)
-                    cmd.abort()
+                    cmd.notify(abort=True)
             
             elif cmd == Command.ZMODIFY:
                 z_offset = float( cmd.data )
@@ -846,8 +844,7 @@ class GCodeService:
             #print "reply queue is not empty"
             try:
                 cmd = self.rq.get_nowait()
-                #cmd.notify()
-                cmd.abort()
+                cmd.notify(abort=True)
                 print "notifing ", cmd
             except queue.Empty as e:
                 break
@@ -859,8 +856,7 @@ class GCodeService:
             #print "command queue is not empty"
             try:
                 cmd = self.cq.get_nowait()
-                #cmd.notify()
-                cmd.abort()
+                cmd.notify(abort=True)
                 print "notifing ", cmd
             except queue.Empty as e:
                 break
@@ -1048,10 +1044,7 @@ class GCodeService:
             # In which case no one will trigger cmd.ev event to unlock it.
             # Timeout is a safety measure to handle this corner case.
             while not cmd.wait(3):
-                if cmd.aborted:
-                    self.log.info('Command aborted. [%s]', code)
-                    return None
-                    
+                self.log.debug("Waiting (3) for [%s] aborted: %s", code, str(cmd.aborted))
                 if not self.running:
                     # Aborting because the service has been stopped
                     self.log.info('Aborting reply due to stop. [%s]', code)
@@ -1060,6 +1053,11 @@ class GCodeService:
                     if ( time.time() - sent_timestamp ) >= timeout:
                         self.log.info('Timeout for [%s]', code)
                         return None
+                        
+            if cmd.aborted:
+                self.log.info('Command aborted. [%s]', code)
+                return None
+                        
             return cmd.reply
         else:
             return None

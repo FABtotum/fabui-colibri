@@ -130,8 +130,10 @@ class StatsMonitor:
                     
                     self.ev_update.set()
                     #self.__write_stats()
-                except Exception:
-                    pass
+                except Exception as e:
+                    self.log.debug("MONITOR: M105 error, %s", str(e))
+            else:
+                self.log.debug("MONITOR: M105 aborted")
                     
             time.sleep(self.update_period)
             #~ # Used both as a delay and event trigger

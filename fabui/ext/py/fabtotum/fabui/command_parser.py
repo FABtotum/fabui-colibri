@@ -100,7 +100,7 @@ class CommandParser:
                 self.gcs.send('M106 S{0}\r\n'.format(args[1]), block=False)
                 
             elif cmd == '!flow_rate':# !flow_rate:<float>
-                self.gcs.send('M221 S{0}\r\n', block=False)
+                self.gcs.send('M221 S{0}\r\n'.format(args[1]), block=False)
                 
             elif cmd == '!gcode':   # !gcode:<gcode>
                 self.gcs.send(args[1], block=False)
