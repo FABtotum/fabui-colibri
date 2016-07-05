@@ -31,7 +31,7 @@ from fabtotum.utils.slicer.slic3r_utils import Parser as Slic3rParser
 class GCodeFileIter:
     
     def __init__(self, filename, attr_parser = None):
-        self.fd = open(filename, 'r+')
+        self.fd = open(filename, 'r')
         self.parser = attr_parser
         
     def next(self):

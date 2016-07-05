@@ -30,7 +30,6 @@ import gettext
 
 # Import internal modules
 from fabtotum.fabui.jog import Jog
-import fabtotum.os.control as system
 
 # Set up message catalog access
 tr = gettext.translation('command_parser', 'locale', fallback=True)

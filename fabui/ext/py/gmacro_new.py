@@ -41,7 +41,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument("preset",       help="macro to execute")
 parser.add_argument("log_trace",    help="log trace file", default=config.get('general', 'trace'), nargs='?')
 parser.add_argument("log_response", help="log response file", default=config.get('general', 'macro_response'), nargs='?')
-parser.add_argument("force",        help="avoid lock control",  default=0, nargs='?')
 
 parser.add_argument("--ext_temp",   help="extruder target",     default=180, nargs='?', type=int)
 parser.add_argument("--bed_temp",   help="bed target",          default=50,  nargs='?', type=int)
@@ -51,7 +50,6 @@ args = parser.parse_args()
 preset          = args.preset
 log_trace       = args.log_trace
 log_response    = args.log_response
-force           = args.force
 ext_temp        = args.ext_temp
 bed_temp        = args.bed_temp
 

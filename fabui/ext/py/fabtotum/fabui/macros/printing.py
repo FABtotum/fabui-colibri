@@ -64,7 +64,7 @@ def end_additive(app, args = None):
     #macro("G90","ok",100,"Set Absolute movement",0.1,verbose=False)
     #macro("G90","ok",2,"Set Absolute movement",1)
     #macro("G0 X210 Y210 Z200 F10000","ok",100,"Moving to safe zone",0.1,verbose=False) #right top, normally Z=240mm
-    app.macro("M400",       "ok", 1,    _("Waiting for all moves to finish"), 1)
+    app.macro("M400",       "ok", 60,   _("Waiting for all moves to finish"), 1)
     app.macro("M104 S0",    "ok", 50,   _("Shutting down Extruder"), 1)
     app.macro("M140 S0",    "ok", 50,   _("Shutting down Heated Bed"), 1)
     app.macro("M220 S100",  "ok", 20,   _("Reset Speed factor override"), 0.1)
@@ -76,6 +76,11 @@ def end_additive(app, args = None):
     app.macro("M702 S"+str(color['g']), "ok", 2,    _("Turning on lights"), 0.1, verbose=False)
     app.macro("M703 S"+str(color['b']), "ok", 2,    _("Turning on lights"), 0.1, verbose=False)
     app.macro("M300",                   "ok", 1,    _("Printing completed!"), 1, verbose=False)  #end print signal
+
+def end_additive_safe_zone(app, args = None):
+    app.macro("G90",                        "ok", 2,    _("Setting Absolute position"), 0)
+    app.macro("G0 X210 Y210 Z200 F10000",   "ok", 100,  _("Moving to safe zone"), 1)
+    app.macro("M400",       "ok", 100,    _("Waiting for all moves to finish"), 1)
 
 def check_pre_print(app, args = None):
     try:
@@ -94,6 +99,8 @@ def engage_feeder(app, args = None):
         safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
         safety_door = 0
+        
+    units_e = app.config.get('settings', 'e')
 
     app.trace( _("Engaging 3D-Printer Feeder") )
     if safety_door == 1:
@@ -105,10 +112,4 @@ def engage_feeder(app, args = None):
     app.macro("G90",                "ok", 2,        _("Set absolute movement"), 0.1, verbose=False)
     app.macro("M92 E"+str(units_e), "ok", 2,        _("Setting steps/units for 3D printing"), 0.5, verbose=False)
     app.macro("M18",                "ok", 3,        _("Stopping motors"), 0.1, verbose=False)
-    app.macro("M300",               "ok", 3,        _("Play beep sound"), 1, verbose=False)
-
-def end_additive_safe_zone(app, args = None):
-    app.macro("G90",                        "ok", 2,    _("Setting Absolute position"), 0)
-    app.macro("G0 X210 Y210 Z200 F10000",   "ok", 100,  _("Moving to safe zone"), 1)
-    app.macro("M400",       "ok", 100,    _("Waiting for all moves to finish"), 1)
-    
+    app.macro("M300",               "ok", 3,        _("Play beep sound"), 1, verbose=False)   

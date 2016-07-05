@@ -68,6 +68,7 @@ class StatsMonitor:
         self.running = False
         
         self.monitor_thread = None
+        self.monitor_write_thread = None
         self.ev_update = Event()
         self.backtrack = backtrack
         self.update_period = period
@@ -94,6 +95,19 @@ class StatsMonitor:
     def __rotate_values(value_list, new_value):
         return value_list[1:] + [new_value]
     
+    def __write_thread(self):
+        self.log.debug("StatsMonitor write thread: started")
+        while self.running:
+            # Used both as a delay and event trigger
+            if self.ev_update.wait(self.update_period):
+                # There was an update event, so write the new data
+                self.__write_stats()    
+                self.ev_update.clear()
+                
+                self.__write_stats()
+                
+        self.log.debug("StatsMonitor write thread: stopped")
+    
     def __monitor_thread(self):
         self.log.debug("StatsMonitor thread: started")
         while self.running:
@@ -101,7 +115,8 @@ class StatsMonitor:
             # Get temperature
             # Timeout is to prevent waiting for too long when there is a long running
             # command like M109,M190,G29 or G28
-            reply = self.gcs.send('M105', group = 'monitor', timeout = 2) 
+            #~ reply = self.gcs.send('M105', group = 'monitor', timeout = 2) 
+            reply = self.gcs.send('M105', group = 'monitor')
             if reply: # No timeout occured
                 try:
                     a, b, c, d = self.__parse_temperature(reply[0])
@@ -113,15 +128,17 @@ class StatsMonitor:
                     #self.__trigger_callback('temp_change:all', [T,B])
                     self.gcs.push("temp_change:all", [a, b, c, d])
                     
-                    self.__write_stats()
+                    self.ev_update.set()
+                    #self.__write_stats()
                 except Exception:
                     pass
                     
-            # Used both as a delay and event trigger
-            if self.ev_update.wait(self.update_period):
-                # There was an update event, so write the new data
-                self.__write_stats()    
-                self.ev_update.clear()
+            time.sleep(self.update_period)
+            #~ # Used both as a delay and event trigger
+            #~ if self.ev_update.wait(self.update_period):
+                #~ # There was an update event, so write the new data
+                #~ self.__write_stats()    
+                #~ self.ev_update.clear()
             
         self.log.debug("StatsMonitor thread: stopped")
     
@@ -241,6 +258,9 @@ class StatsMonitor:
         
         self.monitor_thread = Thread( name = "Monitor", target = self.__monitor_thread )
         self.monitor_thread.start()
+        
+        self.monitor_write_thread = Thread( name = "Monitor_write", target = self.__write_thread )
+        self.monitor_write_thread.start()
         
     def loop(self):
         if self.monitor_thread:

@@ -22,6 +22,7 @@
 import argparse
 import time
 import gettext
+from threading import Event, Thread, RLock
 
 # Import external modules
 from watchdog.observers import Observer
@@ -77,15 +78,11 @@ class PrintApplication(GCodePusher):
     
     def first_move_callback(self):
         print "Print stared."
-    
-    def file_done_callback(self):  
-        print "Print finished."
 
+    def file_done_callback(self):  
         if self.standalone:
             self.exec_macro("end_print_additive")
             self.exec_macro("end_print_additive_safe_zone")
-            #print_macros.end_additive(self)
-            #print_macros.end_additive_safe_zone(self)
         
         self.stop()
         

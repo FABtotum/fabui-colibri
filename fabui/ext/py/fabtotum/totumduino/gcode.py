@@ -23,7 +23,7 @@
 import time
 import re
 import threading
-from threading import Event, Thread
+from threading import Event, Thread, RLock
 try:
     import queue
 except ImportError:
@@ -223,7 +223,7 @@ class Command(object):
         :param z: Amount by which to modify z axis.
         :type z: float
         """
-        return cls(Command.ZPLUS, z)
+        return cls(Command.ZMODIFY, z)
 
     @classmethod
     def file(cls, filename):
@@ -308,7 +308,7 @@ class GCodeService:
     ENCODING = 'utf-8'
     UNICODE_HANDLING = 'replace'
     
-    REPLY_QUEUE_SIZE = 4
+    REPLY_QUEUE_SIZE = 1
         
     def __init__(self, serial_port, serial_baud, serial_timeout = 5, use_checksum = False, logger = None):
         self.running = False
@@ -334,6 +334,9 @@ class GCodeService:
         self.ev_tx_started = Event()
         self.ev_rx_started = Event()
         
+        self.atomic_sync_lock = RLock()
+        
+        self.re_z_override = re.compile('(?<=Z)([+|-]*[0-9]*.[0-9]*)')
         self.__init_state()
                         
         # Callback handler
@@ -363,6 +366,7 @@ class GCodeService:
         self.progress = 0.0
         self.current_line_number = 0
         self.total_line_number = 0
+        self.z_override = 0.0
         
         # Note: experimental feature
         self.line_number = 0
@@ -374,6 +378,14 @@ class GCodeService:
         self.last_command = None
         self.first_move = False
         self.gcode_count = 0
+    
+    def __is_number(s):
+        """ Check whether a string is a valid number """
+        try:
+            float(s)
+            return True
+        except ValueError:
+            return False
     
     def __file_done_thread(self, last_command):
         """
@@ -441,6 +453,18 @@ class GCodeService:
             if trigger:
                 self.__trigger_callback(callback_name, callback_data)
         
+        # Z Override modification
+        if self.z_override != 0.0 and 'Z' in command:
+            get_z_match = self.re_z_override.search(gcode_raw[:-2])
+            if get_z_match:
+                num_orig = get_z_match.group(1)
+                str_orig = 'Z' + match
+                if self.__is_number():
+                    new_z = float(num_orig)+float(z_override)
+                    str_new = 'Z' + str(new_z) # Safer to use 'Z{num}' then just '{num}'
+                    new_cmd = gcode_raw[:-2].replace(str_orig, str_new)
+                    gcode_raw = new_cmd + '\r\n'
+                                
         # Note: experimental feature
         if self.use_checksum:
             data = gcode_raw[:-2]
@@ -461,12 +485,12 @@ class GCodeService:
         if ( self.file_state != GCodeService.FILE_WAIT and
              self.file_state != GCodeService.FILE_PAUSED_WAIT):
         
-            self.log.debug("<< %s", gcode_complete[:-2])
+            self.log.debug("<< %s [RQ: %d]", gcode_complete[:-2], self.rq.qsize() )
             
             self.rq.put(gcode_command)
             self.serial.write(gcode_complete)
         else:
-            self.log.debug("FILE_WAIT in progress, ignorim command [%s]", gcode_complete[:-2])
+            self.log.debug("FILE_WAIT in progress, ignorig command [%s]", gcode_complete[:-2])
             gcode_command.abort()
 
         return gcode_command
@@ -563,21 +587,32 @@ class GCodeService:
                 continue
 
             if cmd == Command.GCODE:
-                
+                self.atomic_sync_lock.acquire()
+                self.atomic_sync_lock.release()
                 if (self.is_atomic and cmd.isGroup(self.atomic_group)) or (not self.is_atomic):
                     if not cmd.hasExpired():
                         self.__send_gcode_command(cmd)
                     else:
                         self.log.info("Expired [%s]", cmd.data )
                 else:
-                    self.log.debug("Atomic in progress, ignoring [%s]", cmd.data)
+                    self.log.debug("Atomic (%s) in progress, ignoring [%s / %s]", self.atomic_group, cmd.data, cmd.group)
                     cmd.abort()
-                    
+            
+            elif cmd == Command.ZMODIFY:
+                z_offset = float( cmd.data )
+                
+                self.z_override += z_offset
+                
+                self.log.debug("ZMODIFY: %f", z_offset)
+                self.__send_gcode_command("G91", group="override")
+                self.__send_gcode_command("G0 Z{0}".format(z_offset), group="override")
+                self.__send_gcode_command("G90", group="override")
+            
             elif cmd == Command.FILE:
                 filename = cmd.data
                 self.last_command = None
                 self.first_move = False
-                
+                self.z_override = 0.0
                 self.progress = 0.0
                 
                 try:                
@@ -594,8 +629,6 @@ class GCodeService:
                 except Exception as e:
                     self.log.error("gcode file loading, %s", str(e))
                     continue
-                
-                self.log.debug("Kind of ok file loading")
                 
             elif cmd == Command.PAUSE:
                 self.__trigger_callback('state_change', 'paused')
@@ -931,13 +964,12 @@ class GCodeService:
         if self.is_resetting:
             return
         
-        self.cq.put( Command.zplus(z) )
+        self.cq.put( Command.zmodify(z) )
     
     def register_callback(self, callback_fun):
         """
         Callbacks: update, file_done, paused, resumed
         """
-        #self.callback = callback_fun
         if callback_fun not in self.callback:
             self.callback.append(callback_fun)
         
@@ -945,7 +977,6 @@ class GCodeService:
         """
         Unregister previously registered callback function.
         """
-        #self.callback = None
         self.callback.remove(callback_fun)
     
     def set_atomic_group(self, group):
@@ -957,7 +988,7 @@ class GCodeService:
         """
         self.atomic_group = group
     
-    def atomic_begin(self, timeout = None):
+    def atomic_begin(self, timeout = None, group = 'macro'):
         """
         Initiate an atomic block lock. Wait if an atomic operation is already
         in progress.
@@ -968,13 +999,19 @@ class GCodeService:
         :param timeout: Maximal allowed time of inactivity before atomic lock is automatically released. 
         :type timeout: float
         """
+        self.atomic_sync_lock.acquire()
+        self.atomic_group = group
         self.is_atomic = True
+        self.atomic_sync_lock.release()
         
     def atomic_end(self):
         """
         Atomic block end. With this command the atomic lock is released.
         """
+        self.atomic_sync_lock.acquire()
         self.is_atomic = False
+        self.atomic_group = None
+        self.atomic_sync_lock.release()
     
     def send(self, code, block = True, timeout = None, group = 'gcode'):
         """
@@ -1012,11 +1049,12 @@ class GCodeService:
             # Timeout is a safety measure to handle this corner case.
             while not cmd.wait(3):
                 if cmd.aborted:
+                    self.log.info('Command aborted. [%s]', code)
                     return None
                     
                 if not self.running:
                     # Aborting because the service has been stopped
-                    self.log.info('Aborting reply. [%s]', code)
+                    self.log.info('Aborting reply due to stop. [%s]', code)
                     return None
                 if timeout:
                     if ( time.time() - sent_timestamp ) >= timeout:

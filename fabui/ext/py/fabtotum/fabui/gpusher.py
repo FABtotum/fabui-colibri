@@ -239,7 +239,7 @@ class GCodePusher(object):
         self.gcs.stop()
         
         os.system('poweroff')
-        
+                
     def first_move_callback(self):
         self.trace( _("Task Started") )
     
@@ -490,22 +490,6 @@ class GCodePusher(object):
         while self.gcs.still_running():
             
             progress = self.gcs.get_progress()
-            
-            #~ if self.monitor_info["gcode_info"]:
-                #~ if self.monitor_info["gcode_info"]["type"] == GCodeInfo.PRINT:
-                    #~ pass
-                    #~ reply = self.gcs.send("M105")
-                    #~ self.monitor_lock.acquire()
-                    #~ try:
-                        #~ a, b, c, d = parse_temperature(reply[0])
-                        #~ self.monitor_info['ext_temp'] = a
-                        #~ self.monitor_info['ext_temp_target'] = b
-                        #~ self.monitor_info['bed_temp'] = c
-                        #~ self.monitor_info['bed_temp_target'] = d
-                    #~ except Exception:
-                        #~ pass
-                    #~ self.monitor_lock.release()
-                    #~ monitor_write = True
                 
             if old_progress != progress:
                 old_progress = progress
@@ -636,12 +620,12 @@ class GCodePusher(object):
         self.macro_skipped = 0
     
     def macro_start(self):
-        self.gcs.set_atomic_group('macro')
-        self.gcs.atomic_begin()
+        #self.gcs.set_atomic_group('macro')
+        self.gcs.atomic_begin(group = 'macro')
         
     def macro_end(self):
          self.gcs.atomic_end()
-         self.gcs.set_atomic_group(None)
+         #self.gcs.set_atomic_group(None)
     
     def macro(self, code, expected_reply, timeout, error_msg, delay_after, warning=False, verbose=True):
         """

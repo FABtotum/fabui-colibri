@@ -50,8 +50,8 @@ class GCodeServiceServerPyroWrapper(object):
     def atomic_end(self):
         return self.gcs.atomic_end()
         
-    def atomic_begin(self, timeout = None):
-        return self.gcs.atomic_begin(timeout)
+    def atomic_begin(self, timeout = None, group = 'macro'):
+        return self.gcs.atomic_begin(timeout, group)
         
     def set_atomic_group(self, group):
         return self.gcs.set_atomic_group(group)
@@ -69,7 +69,9 @@ class GCodeServiceServerPyroWrapper(object):
                 try:
                     remote.do_callback(action, data)
                 except CommunicationError:
-                    self.callback_list.remove(tup)
+                    print "Callback removed due to CommunicationError"
+                    if tup in self.callback_list:
+                        self.callback_list.remove(tup)
     
     def register_callback(self, uri):
         remote = Pyro4.Proxy(uri)
@@ -80,9 +82,16 @@ class GCodeServiceServerPyroWrapper(object):
             self.gcs.register_callback(self.__callback_handler)
 
     def unregister_callback(self, uri):
+        print "unregister_callback", uri
         for client in self.callback_list:
-            if client[1] == uri:
-                self.callback_list.remove(client)
+            print "++ ", client
+        
+        try:
+            for client in self.callback_list:
+                if client[1] == uri:
+                    self.callback_list.remove(client)
+        except Exception as e:
+            print "ERROR:", e
 
         if not self.callback_list:
             self.gcs.unregister_callback(self.__callback_handler)
