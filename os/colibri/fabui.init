@@ -33,7 +33,7 @@ case "$1" in
 	php ${FABUI_PATH}/index.php Server webSocket &> /var/log/fabui/webSocket.log &
 	echo $! > /run/webSocket.pid
 	#python ${PYTHON_PATH}/SystemMonitor.py &> /var/log/fabui/SystemMonitor.log &
-	start-stop-daemon -S --exec python ${PYTHON_PATH}/FabtotumServices.py -p ${FABSERVICE_PID} -- -B
+	start-stop-daemon -S --exec python ${PYTHON_PATH}/FabtotumServices.py -b -p ${FABSERVICE_PID} -- -B -L /var/log/fabui/FabtotumServices.log
 	#python ${PYTHON_PATH}/FabtotumServices.py &> /var/log/fabui/FabtotumServices.log &
 	#echo $! > /run/SystemMonitor.pid
 	######## hardware bootstrap ########
