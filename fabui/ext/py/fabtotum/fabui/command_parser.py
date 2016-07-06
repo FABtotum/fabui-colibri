@@ -115,6 +115,9 @@ class CommandParser:
             elif cmd == '!jog_clear': # !jog_cclear
                 self.jog.clear()
             
+            elif cmd == '!notify':    # !notify:<preset>
+                self.gcs.push('notify', args[1])
+            
             elif cmd == '!gmacro':  # !gmacro:<preset>,<arg1>,<arg2>,...
                 pass
 

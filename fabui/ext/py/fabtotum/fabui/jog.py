@@ -95,6 +95,9 @@ class Jog:
             self.log.addHandler(ch)
         
         self.jog_response_file = jog_response_file
+        # Erase content of jog_response_file
+        open(jog_response_file, 'w').close()
+        
         self.response = {}
         self.cq = queue.Queue()
         self.running = False

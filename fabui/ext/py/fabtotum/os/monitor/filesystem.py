@@ -64,6 +64,9 @@ class FolderTempMonitor(PatternMatchingEventHandler):
         
         self.log = logger
         
+        # Erase the file(s)
+        open(command_file, 'w').close()
+        
         self.parser = CommandParser(gcs, jog_response_file, logger = logger)
         
         self.patterns = [self.TRACE, self.COMMAND, self.TASK_MONITOR, self.MACRO_RESPONSE, self.JOG_RESPONSE]
