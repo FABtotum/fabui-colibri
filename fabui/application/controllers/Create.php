@@ -232,11 +232,13 @@
 		//TODO
 	}
 	
+	/**
+	 *  exec action from print/mill control panel
+	 */
 	public function action($action, $value = '')
 	{
 		$this->load->helper('fabtotum_helper');
 		$action($value);
-		
 	}
 			
  }

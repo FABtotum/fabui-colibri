@@ -111,11 +111,11 @@
 			<?php endif; ?>
 			<div class="row padding-10">
 				<div class="col-sm-4 margin-bottom-50">
-					<h4>Speed <span class="pull-right"><strong><span class="task-speed"></span></strong>  %</span></h4>
+					<h4>Speed <span class="pull-right"><strong><span class="slider-task-speed"></span></strong>  %</span></h4>
 					<div id="create-speed-slider" class="noUiSlider sliders"></div>
 				</div>
 				<div class="col-sm-4 margin-bottom-50">
-					<h4>Flow rate <span class="pull-right"><strong><span class="task-flow-rate"></span></strong> %</span></h4>
+					<h4>Flow rate <span class="pull-right"><strong><span class="slider-task-flow-rate"></span></strong> %</span></h4>
 					<div id="create-flow-rate-slider" class="noUiSlider sliders"></div>
 				</div>
 				<div class="col-sm-4 margin-bottom-50">

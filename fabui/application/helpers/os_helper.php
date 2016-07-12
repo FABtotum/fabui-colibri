@@ -86,4 +86,36 @@ if(!function_exists('getFromRegEx'))
 		return isset($tempResult[1]) ? $tempResult[1] : '';
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('wifiConnect'))
+{
+	/**
+	 * connecto to a wifi network
+	 */
+	function wifiConnect($essid, $password)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$setWifiCommand = 'sudo sh '.$CI->config->item('ext_path').'bash/set_wifi.sh "'.$essid.'" "'.$password.'"';
+		log_message('debug', $setWifiCommand);
+		$scriptResult = shell_exec($setWifiCommand);
+		return true;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('wifiDisconnect'))
+{
+	/**
+	 * disconnecto from wifi network
+	 */
+	function wifiDisconnect()
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$setWifiCommand = 'sudo sh '.$CI->config->item('ext_path').'bash/set_wifi.sh';
+		log_message('debug', $setWifiCommand);
+		$scriptResult = shell_exec($setWifiCommand);
+		return true;
+	}
+}
 ?>

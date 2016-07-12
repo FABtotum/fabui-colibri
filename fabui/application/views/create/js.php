@@ -237,10 +237,14 @@
 				temperaturesPlot =  JSON.parse(localStorage.getItem("temperaturesPlot"));
 			}
 		}
+		
 		setTimeout(initSliders,  1000);
 		setInterval(jsonMonitor, 1000);
 		setTimeout(initGraph,    1000);
-		getTaskMonitor(true);
+		setTimeout(function(){
+			getTaskMonitor(true);
+		},    1000);
+		
 	}
 	
 	/**
@@ -256,7 +260,8 @@
 				var browserDate = new Date();
 				//set sliders target - just on first call
 				setTemperaturesSlidersValue(data.<?php echo $type; ?>.stats.extruder_target, data.<?php echo $type; ?>.stats.bed_target);
-				
+				setSpeedSliderValue(data.<?php echo $type; ?>.stats.speed);
+				setFlowRateSliderValue(data.<?php echo $type; ?>.stats.flow_rate);	
 			}
 		});
 	}
@@ -652,16 +657,16 @@
 				$(".slider-bed-target").html(value);
 				break;
 			case 'flow-rate':
-				$('.task-flow-rate').html(value);
+				$('.slider-task-flow-rate').html(value);
 				break;
 			case 'fan':
 				break;
 			case 'speed':
-				$('.task-speed').html(value);
+				$('.slider-task-speed').html(value);
 				break;
 			
 		}
-	}
+	} 
 	/**
 	 * event on slider set
 	 */
@@ -698,6 +703,26 @@
 		}
 		if(typeof bedSlider !== 'undefined'){
 			bedSlider.noUiSlider.set(bed);
+		}
+	}
+	/**
+	 * set initial speed slider values
+	 */
+	function setSpeedSliderValue(value)
+	{
+		$('.slider-task-speed').html(value);
+		if(typeof speedSlider !== 'undefined'){
+			speedSlider.noUiSlider.set(value);
+		}
+	}
+	/**
+	 * set initial flow rate slider values
+	 */
+	function setFlowRateSliderValue(value)
+	{
+		$('.slider-task-flow-rate').html(value);
+		if(typeof flowRateSlider !== 'undefined'){
+			flowRateSlider.noUiSlider.set(value);
 		}
 	}
 </script>

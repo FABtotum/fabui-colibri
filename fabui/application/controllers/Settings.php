@@ -106,21 +106,22 @@
 		$this->config->load('fabtotum');
 		
 		$data['wlanInfo'] = getWlanInfo();
-		$data = array();
 		//page widget
 		$widgetOptions = array(
 			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
 			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
 		);
 		
-		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		$widgeFooterButtons = $this->smart->create_button('Hidden Wifi', 'default')->attr(array('id' => 'hiddenWifiButton'))->icon('fa-user-secret')->print_html(true).' '.
+							  $this->smart->create_button('Scan', 'primary')->attr(array('id' => 'scanButton'))->attr('data-action', 'exec')->icon('fa-search')->print_html(true);
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'hardware-wifi-widget';
 		$widget->header = array('icon' => 'fa-wifi', "title" => "<h2>Wi-Fi</h2>", 'toolbar'=>'');
 		$widget->body   = array('content' => $this->load->view('settings/wifi_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 		$this->addJsInLine($this->load->view('settings/wifi_js', $data, true));
-		$this->addJSFile('/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js'); //datatable */
+		$this->addJSFile('/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js'); // progressbar*/
+		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
@@ -135,6 +136,21 @@
 		$this->load->helper('os_helper');
 		$nets = scanWlan();
 		$this->output->set_content_type('application/json')->set_output(json_encode($nets));
+	}
+	
+	/**
+	 * 
+	 */
+	public function wifiAction($action)
+	{
+		$data = $this->input->post();
+		$essid = $data['essid'];
+		$password = $data['password'];
+		//load helpers
+		$this->load->helper('os_helper');
+		if($action == 'connect') wifiConnect($essid, $password);
+		else wifiDisconnect();
+		$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
 	}
 	
 	/***
