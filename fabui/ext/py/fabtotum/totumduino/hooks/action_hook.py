@@ -76,8 +76,8 @@ def process_command(line):
         trigger = True
          
     elif (code == 'M240' or # Trigger camera
-          code == 'M700' or # Scanning laser
           code == 'M401' or # Lower probe
+          #code == 'M700' or # Scanning laser
           code == 'M402' ): # Raise probe
         """ Scanning action """
         callback_name += ':scanning'

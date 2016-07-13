@@ -155,10 +155,15 @@ def engage_4axis(app, args = None):
     except KeyError:
         feeder_disengage_offset = 2
     
+    print feeder_disengage_offset
+    
     app.trace( _("Engaging 4th Axis") )
     app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), 0.1)
     app.macro("G91",                "ok", 1,    _("Setting Relative position"), 0.1,verbose=False)
+    app.macro("M120",               "ok", 1,    _("Disable Endstop checking"), 0.1,verbose=False)
     app.macro("G0 Z+"+str(feeder_disengage_offset)+" F300", "ok", 5,    _("Engaging 4th Axis Motion"), 0.1)
+    app.macro("M400",               "ok", 5,    _("Sync"), 0.1)
+    app.macro("M121",               "ok", 1,    _("Enable Endstop checking"), 0.1,verbose=False)
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), 0, verbose=False)
     app.macro("G92 Z241",           "ok", 1,    _("Setting position"), 0.1, verbose=False)
     app.macro("G90",                "ok", 1,    _("Setting Absolute position"), 0.1, verbose=False)

@@ -22,7 +22,6 @@
 import argparse
 import time
 import gettext
-from threading import Event, Thread, RLock
 
 # Import external modules
 from watchdog.observers import Observer
@@ -37,7 +36,7 @@ import fabtotum.fabui.macros.printing as print_macros
 config = ConfigService()
 
 # SETTING EXPECTED ARGUMENTS
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument("file",         help="Gcode file to execute.")
 parser.add_argument("task_id",      help="Task ID.")
 parser.add_argument("--standalone", action='store_true',  help="Standalone operatin. Does all printing preparations.")

@@ -57,7 +57,8 @@ class GCodeInfo:
     RAW      = 'raw'
     PRINT    = 'print'
     MILL     = 'mill'
-    LASER    = 'lase'
+    DRILL    = 'drill'
+    LASER    = 'laser'
     
     def __init__(self, filename):
         self.attribs = {

@@ -1013,7 +1013,7 @@ class GCodeService:
         self.atomic_group = None
         self.atomic_sync_lock.release()
     
-    def send(self, code, block = True, timeout = None, group = 'gcode'):
+    def send(self, code, block = True, timeout = None, group = 'gcode', expected_reply = 'ok'):
         """
         Send GCode and return reply.
         """
@@ -1031,8 +1031,8 @@ class GCodeService:
             #~ elif code == 'M24':
                 #~ self.resume()
                 #~ return None
-            
-            cmd = Command.gcode(code, 'ok', group = group, timeout = timeout)
+                        
+            cmd = Command.gcode(code, expected_reply, group = group, timeout = timeout)
             self.cq.put(cmd)
             
             # Don't block, return immediately 

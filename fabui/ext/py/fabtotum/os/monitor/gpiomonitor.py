@@ -60,7 +60,7 @@ class GPIOMonitor:
             
             if reply:
                 if len(reply) > 1:
-                    search = re.search('ERROR\s:\s(\d+)', reply[0])
+                    search = re.search('ERROR\s:\s(\d+)', reply[-2])
                     if search != None:
                         errorNumber = int(search.group(1))
                         self.log.warning("Totumduino error no.: %s", errorNumber)

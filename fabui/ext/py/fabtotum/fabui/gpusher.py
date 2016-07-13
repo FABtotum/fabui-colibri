@@ -80,6 +80,16 @@ class GCodePusher(object):
     GCode pusher.
     """
     
+    TASK_INITIALIZED    = 'initialized'
+    TASK_STARTED        = 'started'
+    TASK_PAUSED         = 'paused'
+    TASK_COMPLETED      = 'completed'
+    
+    TYPE_PRINT          = 'print'
+    TYPE_MILL           = 'mill'
+    TYPE_SCAN           = 'scan'
+    TYPE_LASER          = 'laser'
+    
     def __init__(self, log_trace, monitor_file = None, gcs = None, config = None, use_callback = True):
                         
         self.monitor_lock = RLock()
@@ -108,7 +118,45 @@ class GCodePusher(object):
             "tip"                   : False,
             "message"               : '',
             "current_line_number"   : 0,
-            "gcode_info"            : None
+            "gcode_info"            : None,
+            "pid"                   : os.getpid()
+        }
+        
+        # Task specific attributes
+        self.task_stats = {
+            'type'                  : 'unknown',
+            'id'                    : 0,
+            'pid'                   : os.getpid(),
+            'status'                : GCodePusher.TASK_INITIALIZED,
+            'started_time'          : time.time(),
+            'completed_time'        : 0,
+            'duration'              : 0,
+            'percent'               : 0.0,
+            'auto_shutdown'         : False
+        }
+        
+        # Pusher/File specific attributes
+        self.pusher_stats = {
+            'filename'              : '',
+            'line_total'            : 0,
+            'line_current'          : 0,
+            'type'                  : GCodeInfo.RAW
+        }
+        
+        # Pusher/File specific attributes
+        self.override_stats = {
+            'z_override'            : 0.0,
+            'fan'                   : 0,
+            'rpm'                   : 0,
+            'laser'                 : 0,
+            'flow_rate'             : 0,
+            'speed'                 : 0    
+        }
+        
+        self.standardized_stats = {
+            'task'      : self.task_stats,
+            'gpusher'   : self.pusher_stats,
+            'override'  : self.override_stats
         }
         
         self.monitor_file = monitor_file
@@ -142,6 +190,31 @@ class GCodePusher(object):
         self.macro_skipped = 0
         
         self.progress_monitor = None
+    
+    def add_monitor_group(self, group, content = {}):
+        """
+        Add a custom group to monitor file with a specific content.
+        If not content is provided, the groups is initialized with an empty dict.
+        
+        :param group: Group name.
+        :param content: Dictinary containg group attributes.
+        :type group: string
+        :type content: dict
+        """
+        if group not in self.standardized_stats:
+            self.standardized_stats[group] = content
+            
+        return self.standardized_stats[group]
+        
+    def remove_monitor_group(self, group):
+        """
+        Remove a custom group from the monitor file.
+        
+        :param group: Group name.
+        :type group: string
+        """
+        if group not in ['task', 'override', 'gpusher']:
+            del self.standardized_stats[group]
     
     def writeMonitor(self):
         """
@@ -182,6 +255,7 @@ class GCodePusher(object):
          
         _print  =   {
                     "name"              : str(filename),
+                    "pid"               : str(self.monitor_info["pid"]),
                     "lines"             : str(line_count),
                     "print_started"     : str(self.monitor_info["print_started"]),
                     "started"           : str(self.monitor_info["started"]),
@@ -483,6 +557,12 @@ class GCodePusher(object):
         elif action == 'error':
             self.__error_callback(data[0], data[1])
 
+    def get_progress(self):
+        """ 
+        Get progress of file push or override this function for custom progress calculation.
+        """
+        return self.gcs.get_progress()
+
     def progress_monitor_thread(self):
         old_progress = -1
         monitor_write = False
@@ -670,7 +750,7 @@ class GCodePusher(object):
                 
         #time.sleep(delay_after) #wait the desired amount
         
-    def send(self, code, block = True, timeout = None, trace = None, group = 'gcode'):
+    def send(self, code, block = True, timeout = None, trace = None, group = 'gcode', expected_reply = 'ok'):
         """
         Send a single gcode command and display trace message.
         """
@@ -678,7 +758,7 @@ class GCodePusher(object):
             self.trace(trace)
             
         #TODO: ConnectionClosedError
-        return self.gcs.send(code, block=block, timeout=timeout, group=group)
+        return self.gcs.send(code, block=block, timeout=timeout, group=group, expected_reply=expected_reply)
         
     def send_file(self, filename):
         """
