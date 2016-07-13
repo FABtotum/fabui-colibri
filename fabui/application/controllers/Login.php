@@ -15,6 +15,7 @@
 		$data['alert'] = $this->session->flashdata('alert');
 		$this->content = $this->load->view('login/login_form', $data, true);
 		$this->addJsInLine($this->load->view('login/login_js', '', true));
+		$this->addJSFile('/assets/js/plugin/moment/moment.min.js'); //moment
 		$this->loginLayout();
 	}
 	
@@ -29,6 +30,14 @@
 			unset($postData['remember']);
 			//TODO
 		}
+		if(isset($postData['browser-date'])){
+			$this->load->helpers('os_helper');
+			if(!isInternetAvaialable()){
+				setSystemDate($postData['browser-date']);
+			}
+			unset($postData['browser-date']);
+		}
+		
 		$postData['password'] = md5($postData['password']);
 		//load libraries, models, helpers
 		$this->load->model('User', 'user');

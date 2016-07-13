@@ -118,4 +118,27 @@ if(!function_exists('wifiDisconnect'))
 		return true;
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('setSystemDate'))
+{
+	/**
+	 * set system date format = YYYY-MM-DD HH:mm:ss
+	 */
+	function setSystemDate($date)
+	{
+		log_message('debug', 'sudo date -s "'.$date.'"');
+		shell_exec('sudo date -s "'.$date.'"');
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('isInternetAvaialable'))
+{
+	/**
+	 * check if internet connection is avaialable
+	 */
+	function isInternetAvaialable($date)
+	{
+		return !$sock = @fsockopen('http://www.google.com', 80, $num, $error, 2) ? false : true;
+	}
+}
 ?>

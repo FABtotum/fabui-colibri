@@ -46,11 +46,11 @@
 							<input type="checkbox" name="remember" checked="">
 							<i></i>Stay signed in</label>
 					</section>
-					
 				</fieldset>
 				<footer>
-					<button type="submit" class="btn btn-primary">Sign in</button>
+					<button type="submit"  class="btn btn-primary">Sign in</button>
 				</footer>
+				<input type="hidden" name="browser-date" id="browser-date">
 			</form>
 		</div>
 	</div>

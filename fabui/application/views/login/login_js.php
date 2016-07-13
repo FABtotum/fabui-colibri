@@ -11,7 +11,16 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		initValidate();
+		$("#login-form").on('submit', submitForm);
+		//$("#submit").on('click', submitForm);
 	});
+	
+	
+	function submitForm()
+	{
+		$("#browser-date").val(moment().format('YYYY-MM-DD HH:mm:ss'));
+	}
+	
 	
 	function initValidate()
 	{
