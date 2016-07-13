@@ -17,9 +17,11 @@
 		scan();
 		initPasswordModalValidator();
 		$("#scanButton").on('click', scan);
-		$("#show-password").on('click', showPassword);
+		$(".show-password").on('click', showPassword);
 		$("#modalConnectButton").on('click', passwordModalConnect);
 		$("#hiddenWifiButton").on('click', showHiddenModal);
+		$("#hiddenModalConnectButton").on('click', hiddenWifiModalConnect);
+		$(".show-details").on('click', showDetails);
 	});
 	
 	/**
@@ -129,6 +131,7 @@
 	 */
 	function showPasswordModal(essid)
 	{	
+		resetForms();
 		$("#passwordModalTitle").html('Password for <strong>' + essid + '</strong>');
 		$('#passwordModal').modal({});
 	}
@@ -138,7 +141,7 @@
 	function showPassword()
 	{
 		var type = $(this).is(":checked") ? 'text' : 'password';
-		$("#wifiPassword").attr('type', type);
+		$(".input-password").attr('type', type);
 	}
 	/**
 	 * called from "connect" button on password modal
@@ -174,7 +177,73 @@
 	 * 
 	 */
 	function showHiddenModal()
+	{	
+		resetForms();
+		$('#hiddenWifiModal').modal({});
+	}
+	/**
+	 * 
+	 */
+	function initHiddenWifiFormValidator()
 	{
-		
+		$("#hiddenWifiForm").validate({
+			rules:{
+				hiddenWifiPassword:{
+					required: true
+				},
+				hiddenWifiName: {
+					required: true
+				}
+			},
+			messages: {
+				hiddenWifiPassword: {
+					required: 'Please insert valid password'
+				},
+				hiddenWifiName: {
+					required: 'Please insert WiFi Name'
+				}
+			},
+			errorPlacement : function(error, element) {
+				error.insertAfter(element.parent());
+			}
+		});
+	}
+	/**
+	 * called from "connect" button on hidden wifi modal
+	 */
+	function hiddenWifiModalConnect()
+	{
+		if($("#hiddenWifiForm").valid()){
+			sendActionRequest('connect', $("#hiddenWifiName").val(), $("#hiddenWifiPassword").val());
+		}
+	}
+	/**
+	 * 
+	 */
+	function resetForms()
+	{	
+		$("#wifiPassword").val('');
+		$("#hiddenWifiName").val('');
+		$("#hiddenWifiPassword").val('');
+		$(".show-password").attr('checked', false);
+		$(".input-password").attr('type', 'password');
+	}
+	/**
+	 * 
+	 */
+	function showDetails()
+	{
+		var button = $(this);
+		var isVisible = $('.wifi-details').is(":visible");
+		console.log(isVisible);
+		if(isVisible){
+			$('.wifi-details').slideUp(function(){
+				button.find('i').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
+			});
+		}else{
+			$('.wifi-details').slideDown(function(){
+				button.find('i').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
+			});
+		}
 	}
 </script>

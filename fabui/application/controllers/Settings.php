@@ -106,6 +106,7 @@
 		$this->config->load('fabtotum');
 		
 		$data['wlanInfo'] = getWlanInfo();
+		
 		//page widget
 		$widgetOptions = array(
 			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
@@ -114,10 +115,14 @@
 		
 		$widgeFooterButtons = $this->smart->create_button('Hidden Wifi', 'default')->attr(array('id' => 'hiddenWifiButton'))->icon('fa-user-secret')->print_html(true).' '.
 							  $this->smart->create_button('Scan', 'primary')->attr(array('id' => 'scanButton'))->attr('data-action', 'exec')->icon('fa-search')->print_html(true);
+		$headerToolbar = '';
+		if(isset($data['wlanInfo']['ip_address'])){
+			$headerToolbar = '<div class="widget-toolbar" role="menu"><button class="btn btn-default show-details"><i class="fa fa-angle-double-up"></i> Details </button></div>';
+		}
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'hardware-wifi-widget';
-		$widget->header = array('icon' => 'fa-wifi', "title" => "<h2>Wi-Fi</h2>", 'toolbar'=>'');
+		$widget->header = array('icon' => 'fa-wifi', "title" => "<h2>Wi-Fi </h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('settings/wifi_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 		$this->addJsInLine($this->load->view('settings/wifi_js', $data, true));
 		$this->addJSFile('/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js'); // progressbar*/
