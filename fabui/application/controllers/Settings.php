@@ -116,7 +116,7 @@
 		$widgeFooterButtons = $this->smart->create_button('Hidden Wifi', 'default')->attr(array('id' => 'hiddenWifiButton'))->icon('fa-user-secret')->print_html(true).' '.
 							  $this->smart->create_button('Scan', 'primary')->attr(array('id' => 'scanButton'))->attr('data-action', 'exec')->icon('fa-search')->print_html(true);
 		$headerToolbar = '';
-		if(isset($data['wlanInfo']['ip_address'])){
+		if(isset($data['wlanInfo']['ip_address']) && $data['wlanInfo']['ip_address'] != ''){
 			$headerToolbar = '<div class="widget-toolbar" role="menu"><button class="btn btn-default show-details"><i class="fa fa-angle-double-up"></i> Details </button></div>';
 		}
 		

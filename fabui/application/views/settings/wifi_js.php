@@ -109,6 +109,8 @@
 	 */
 	function sendActionRequest(action, essid, password)
 	{
+		$('#passwordModal').modal('hide');
+		$('#hiddenWifiModal').modal('hide');
 		var connectionLabel = action == 'connect' ? 'Connecting to ' : 'Disconnecting from ';
 		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> '+ connectionLabel + ' ' + essid);
 		essid = essid || '';
@@ -235,7 +237,6 @@
 	{
 		var button = $(this);
 		var isVisible = $('.wifi-details').is(":visible");
-		console.log(isVisible);
 		if(isVisible){
 			$('.wifi-details').slideUp(function(){
 				button.find('i').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');

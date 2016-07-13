@@ -8,7 +8,7 @@
  */
  
 ?>
-<?php if(isset($wlanInfo['ip_address'])): ?>
+<?php if(isset($wlanInfo['ip_address']) && $wlanInfo['ip_address'] != ''): ?>
 <div class="row wifi-details">
 	<div class="col-sm-12">
 		<div class="well">
@@ -59,7 +59,7 @@
 						</section>
 						<section>
 							<label class="checkbox">
-								<input type="checkbox" id="show-password"> <i></i> Show password
+								<input type="checkbox" class="show-password"> <i></i> Show password
 							</label>
 						</section>
 					</fieldset>
