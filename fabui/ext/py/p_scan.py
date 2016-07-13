@@ -214,8 +214,8 @@ class ProbeScan(GCodePusher):
         self.send('M401')
         self.probe()
         
-        #self.send('G90')
-        #self.send('G0 Z+2 F1000')
+        #self.send('G91')
+        self.send('G0 Z+2 F1500')
         #self.send('M402')
         #self.send('M401') 
         #position = start_a

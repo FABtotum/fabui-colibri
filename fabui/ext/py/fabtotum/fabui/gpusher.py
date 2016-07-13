@@ -84,43 +84,20 @@ class GCodePusher(object):
     TASK_STARTED        = 'started'
     TASK_PAUSED         = 'paused'
     TASK_COMPLETED      = 'completed'
+    TASK_ABORTED        = 'aborted'
     
     TYPE_PRINT          = 'print'
     TYPE_MILL           = 'mill'
     TYPE_SCAN           = 'scan'
     TYPE_LASER          = 'laser'
     
+    UPDATE_PERIOD       = 2 # seconds
+    
     def __init__(self, log_trace, monitor_file = None, gcs = None, config = None, use_callback = True):
                         
         self.monitor_lock = RLock()
-        self.monitor_info = {
-            "progress"              : 0.0,
-            "paused"                : False,
-            "print_started"         : False,
-            "started"               : time.time(),
-            "auto_shutdown"         : False,
-            "completed"             : False,
-            "completed_time"        : 0,
-            "layer_count"           : 0,
-            "current_layer"         : 0,
-            "filename"              : "",
-            "task_id"               : 0,
-            "ext_temp"              : 0.0,
-            "ext_temp_target"       : 0.0,
-            "bed_temp"              : 0.0,
-            "bed_temp_target"       : 0.0,
-            "z_override"            : 0.0,
-            "rpm"                   : 0.0,
-            "laser"                 : 0.0,
-            "fan"                   : 0.0,    
-            "speed"                 : 100.0,
-            "flow_rate"             : 100.0,
-            "tip"                   : False,
-            "message"               : '',
-            "current_line_number"   : 0,
-            "gcode_info"            : None,
-            "pid"                   : os.getpid()
-        }
+        
+        self.gcode_info = None
         
         # Task specific attributes
         self.task_stats = {
@@ -132,7 +109,9 @@ class GCodePusher(object):
             'completed_time'        : 0,
             'duration'              : 0,
             'percent'               : 0.0,
-            'auto_shutdown'         : False
+            'auto_shutdown'         : False,
+            'send_email'            : False,
+            'message'               : ''
         }
         
         # Pusher/File specific attributes
@@ -160,7 +139,6 @@ class GCodePusher(object):
         }
         
         self.monitor_file = monitor_file
-        
         self.trace_file = log_trace
         
         self.trace_logger = logging.getLogger('Trace')
@@ -216,73 +194,17 @@ class GCodePusher(object):
         if group not in ['task', 'override', 'gpusher']:
             del self.standardized_stats[group]
     
-    def writeMonitor(self):
+    def update_monitor_file(self):
         """
         Write stats to monitor file
         """
-        _layers =   {
-                    'total' : str(self.monitor_info['layer_count']), 
-                    'actual': str(self.monitor_info['current_layer'])
-                    }
- 
-        _stats  =   {
-                    "percent"           : str(self.monitor_info['progress']),
-                    "line_number"       : str(self.monitor_info['current_line_number']),
-                    "extruder"          : str(self.monitor_info['ext_temp']),
-                    "bed"               : str(self.monitor_info['bed_temp']),
-                    "extruder_target"   : str(self.monitor_info['ext_temp_target']),
-                    "bed_target"        : str(self.monitor_info['bed_temp_target'] ),
-                    "z_override"        : str(self.monitor_info['z_override']),
-                    "layers"            : str(self.monitor_info['layer_count']),
-                    "rpm"               : str(self.monitor_info['rpm']),
-                    "fan"               : str(self.monitor_info['fan']),
-                    "speed"             : str(self.monitor_info['speed']),
-                    "flow_rate"         : str(self.monitor_info['flow_rate'])
-                    }
-                                
-        _tip    =   {
-                    "show"              : str(self.monitor_info['tip']),
-                    "message"           : str(self.monitor_info['message'])
-                    }
-
-        if self.monitor_info["gcode_info"]:
-            filename = self.monitor_info["gcode_info"]["filename"]
-            line_count = self.monitor_info["gcode_info"]["line_count"]
-        else:
-            filename =''
-            line_count = 0
-
-         
-        _print  =   {
-                    "name"              : str(filename),
-                    "pid"               : str(self.monitor_info["pid"]),
-                    "lines"             : str(line_count),
-                    "print_started"     : str(self.monitor_info["print_started"]),
-                    "started"           : str(self.monitor_info["started"]),
-                    "duration"          : str( time.time() - float(self.monitor_info["started"]) ),
-                    "paused"            : str(self.monitor_info["paused"]),
-                    "completed"         : str(self.monitor_info["completed"]),
-                    "completed_time"    : str(self.monitor_info["completed_time"]),
-                    "shutdown"          : str(self.monitor_info["auto_shutdown"]),
-                    "tip"               : _tip,
-                    "stats"             : _stats
-                    }
-
-        engine = 'unknown'
-        if self.monitor_info["gcode_info"]:
-            if 'slicer' in self.monitor_info["gcode_info"]:
-                engine = self.monitor_info["gcode_info"]["slicer"]
-        
-        stats   =   {
-                    "type"      : "print", 
-                    "print"     : _print,
-                    "engine"    : str(engine),
-                    "task_id"   : self.monitor_info["task_id"]
-                    }
-            
+        # Update duration
+        self.task_stats['duration'] = str( time.time() - float(self.task_stats['started_time']) )
+                
         if self.monitor_file:
             with open(self.monitor_file,'w+') as file:
-                file.write(json.dumps(stats))
+                file.write( json.dumps(self.standardized_stats) )
+        
     
     def trace(self, log_msg):
         """ 
@@ -320,11 +242,10 @@ class GCodePusher(object):
     def __first_move_callback(self):
         """
         Triggered when first move command in file executed
-        """
-        
-        self.monitor_lock.acquire()
-        self.monitor_info['print_started'] = True
-        self.monitor_lock.release()
+        """        
+        with self.monitor_lock:
+            self.task_stats['status'] = GCodePusher.TASK_STARTED
+            self.update_monitor_file()
         
         self.first_move_callback()
     
@@ -335,11 +256,12 @@ class GCodePusher(object):
         pass
     
     def __gcode_comment_callback(self, data):
-
-        self.monitor_lock.acquire()
+        
         if 'layer' in data:
-            self.monitor_info['current_layer'] = data['layer']
-        self.monitor_lock.release()
+            with self.monitor_lock:
+                if 'print' in self.standardized_stats:
+                    self.standardized_stats['print']['layer_current'] = data['layer']
+                    self.update_monitor_file()
         
         self.gcode_comment_callback(data)
 
@@ -351,29 +273,29 @@ class GCodePusher(object):
         
     def __temp_change_callback(self, action, data):
 
-        self.monitor_lock.acquire()
+        #~ self.monitor_lock.acquire()
         
-        if action == 'ext_bed':
-            #print "Ext: {0}, Bed: {1}".format(data[0], data[1])
-            self.monitor_info['ext_temp'] = float(data[0])
-            self.monitor_info['bed_temp'] = float(data[1])
-        elif action == 'bed':
-            #print "Bed: {0}".format(data[0])
-            self.monitor_info['bed_temp'] = float(data[0])
-        elif action == 'ext':
-            #print "Ext: {0}".format(data[0])
-            self.monitor_info['ext_temp'] = float(data[0])
-        elif action == 'all':
-            self.monitor_info["ext_temp"]           = float(data[0])
-            self.monitor_info["ext_temp_target"]    = float(data[1])
-            self.monitor_info["bed_temp"]           = float(data[2])
-            self.monitor_info["bed_temp_target"]    = float(data[3])
+        #~ if action == 'ext_bed':
+            #~ #print "Ext: {0}, Bed: {1}".format(data[0], data[1])
+            #~ self.monitor_info['ext_temp'] = float(data[0])
+            #~ self.monitor_info['bed_temp'] = float(data[1])
+        #~ elif action == 'bed':
+            #~ #print "Bed: {0}".format(data[0])
+            #~ self.monitor_info['bed_temp'] = float(data[0])
+        #~ elif action == 'ext':
+            #~ #print "Ext: {0}".format(data[0])
+            #~ self.monitor_info['ext_temp'] = float(data[0])
+        #~ elif action == 'all':
+            #~ self.monitor_info["ext_temp"]           = float(data[0])
+            #~ self.monitor_info["ext_temp_target"]    = float(data[1])
+            #~ self.monitor_info["bed_temp"]           = float(data[2])
+            #~ self.monitor_info["bed_temp_target"]    = float(data[3])
             
-        print data
+        #~ print data
             
-        self.monitor_lock.release()
+        #~ self.monitor_lock.release()
         
-        self.writeMonitor()
+        #~ self.update_monitor_file()
         
         self.temp_change_callback(action, data)
     
@@ -387,86 +309,76 @@ class GCodePusher(object):
 
         monitor_write = False
 
-        self.monitor_lock.acquire()
-        
-        if action == 'heating':
+        with self.monitor_lock:
+            if action == 'heating':
 
-            if data[0] == 'M109':
-                self.trace( _("Wait for nozzle temperature to reach {0}&deg;C").format(data[1]) )
-                self.monitor_info['ext_temp_target'] = float(data[1])
-                monitor_write = True
-            elif data[0] == 'M190':
-                self.trace( _("Wait for bed temperature to reach {0}&deg;C").format(data[1]) )
-                self.monitor_info['bed_temp_target'] = float(data[1])
-                monitor_write = True
-            elif data[0] == 'M104':
-                self.trace( _("Nozzle temperature set to {0}&deg;C").format(data[1]) )
-                self.monitor_info['ext_temp_target'] = float(data[1])
-                monitor_write = True
-            elif data[0] == 'M140':
-                self.trace( _("Bed temperature set to {0}&deg;C").format(data[1]) )
-                self.monitor_info['bed_temp_target'] = float(data[1])
-                monitor_write = True
-            
-        elif action == 'cooling':
-            
-            if data[0] == 'M106':
-                value = int((float( data[1] ) / 255) * 100)
-                self.trace( _("Fan value set to {0}%").format(value) )
-                self.monitor_info['fan'] = float(data[1])
-                monitor_write = True
-            elif data[0] == 'M107':
-                self.trace( _("Fan off") )
-                self.monitor_info['fan'] = 0.0
-                monitor_write = True
+                if data[0] == 'M109':
+                    self.trace( _("Wait for nozzle temperature to reach {0}&deg;C").format(data[1]) )
+                elif data[0] == 'M190':
+                    self.trace( _("Wait for bed temperature to reach {0}&deg;C").format(data[1]) )
+                elif data[0] == 'M104':
+                    self.trace( _("Nozzle temperature set to {0}&deg;C").format(data[1]) )
+                elif data[0] == 'M140':
+                    self.trace( _("Bed temperature set to {0}&deg;C").format(data[1]) )
                 
-        elif action == 'printing':
-            
-            if data[0] == 'M220': # Speed factor
-                value = float( data[1] )
-                self.trace( _("Speed factor set to {0}%").format(value) )
-                self.monitor_info['speed'] = float(data[1])
-                monitor_write = True
-            elif data[0] == 'M221': # Extruder flow
-                value = float( data[1] )
-                self.trace( _("Extruder flow set to {0}%").format(value) )
-                self.monitor_info['flow_rate'] = float(data[1])
-                monitor_write = True
+            elif action == 'cooling':
                 
-        elif action == 'milling':
-            if data[0] == 'M0':
-                """ .. todo: do something with it """
-                pass
-            elif data[0] == 'M1':
-                """ .. todo: do something with it """
-                pass
-            elif data[0] == 'M3':
-                self.trace( _("Milling motor RPM set to {0}%").format(value) )
-                self.monitor_info['rpm'] = float(data[1])
-                monitor_write = True
-            elif data[0] == 'M4':
-                self.trace( _("Milling motor RPM set to {0}%").format(value) )
-                self.monitor_info['rpm'] = float(data[1])
-                monitor_write = True
-            elif data[0] == 'M6':
-                """ .. todo: Check whether laser power should be scaled from 0-255 to 0.0-100.0 """
-                self.trace( _("Laser power set to {0}%").format(value) )
-                self.monitor_info['laser'] = float(data[1])
-                monitor_write = True
+                if data[0] == 'M106':
+                    value = int((float( data[1] ) / 255) * 100)
+                    self.trace( _("Fan value set to {0}%").format(value) )
+                    self.override_stats['fan'] = float(data[1])
+                    monitor_write = True
+                elif data[0] == 'M107':
+                    self.trace( _("Fan off") )
+                    self.override_stats['fan'] = 0.0
+                    monitor_write = True
+                    
+            elif action == 'printing':
                 
-        elif action == 'message':
-            print "MSG: {0}".format(data)
+                if data[0] == 'M220': # Speed factor
+                    value = float( data[1] )
+                    self.trace( _("Speed factor set to {0}%").format(value) )
+                    self.override_stats['speed'] = float(data[1])
+                    monitor_write = True
+                elif data[0] == 'M221': # Extruder flow
+                    value = float( data[1] )
+                    self.trace( _("Extruder flow set to {0}%").format(value) )
+                    self.override_stats['flow_rate'] = float(data[1])
+                    monitor_write = True
+                    
+            elif action == 'milling':
+                if data[0] == 'M0':
+                    """ .. todo: do something with it """
+                    pass
+                elif data[0] == 'M1':
+                    """ .. todo: do something with it """
+                    pass
+                elif data[0] == 'M3':
+                    self.trace( _("Milling motor RPM set to {0}%").format(value) )
+                    self.override_stats['rpm'] = float(data[1])
+                    monitor_write = True
+                elif data[0] == 'M4':
+                    self.trace( _("Milling motor RPM set to {0}%").format(value) )
+                    self.override_stats['rpm'] = float(data[1])
+                    monitor_write = True
+                elif data[0] == 'M6':
+                    """ .. todo: Check whether laser power should be scaled from 0-255 to 0.0-100.0 """
+                    self.trace( _("Laser power set to {0}%").format(value) )
+                    self.override_stats['laser'] = float(data[1])
+                    monitor_write = True
+                    
+            elif action == 'message':
+                self.task_stats['message'] = data
+                print "MSG: {0}".format(data)
             
-        self.monitor_lock.release()
-        
-        if monitor_write:
-            self.writeMonitor()
+            if monitor_write:
+                self.update_monitor_file()
         
         self.gcode_action_callback(action, data)
 
     def file_done_callback(self):
         """ Triggered when gcode file execution is completed """
-        if self.monitor_info["auto_shutdown"]:
+        if self.task_stats["auto_shutdown"]:
             self.__shutdown_procedure()
         else:
             self._stop()
@@ -475,14 +387,12 @@ class GCodePusher(object):
         """
         Internal file done callback preventing user from overloading it.
         """
-        self.monitor_lock.acquire()
-        
-        self.monitor_info["completed_time"] = int(time.time())
-        self.monitor_info["completed"] = True        
-        self.monitor_info['progress'] = 100.0 #gcs.get_progress()
-        self.writeMonitor()
-        
-        self.monitor_lock.release()
+        with self.monitor_lock:        
+            self.task_stats['completed_time'] = int(time.time())
+            self.task_stats['status'] = GCodePusher.TASK_COMPLETED
+            self.task_stats['percent'] = 100.0
+            
+            self.update_monitor_file()
         
         self.file_done_callback()
     
@@ -493,17 +403,23 @@ class GCodePusher(object):
         pass
         
     def __state_change_callback(self, data):
-        self.monitor_lock.acquire()
         
-        if data == 'paused':
-            self.trace( _("Print is now paused") )
-            self.monitor_info["paused"] = True
-        elif data == 'resumed':
-            self.monitor_info["paused"] = False
+        
+        with self.monitor_lock:        
+            if data == 'paused':
+                self.trace( _("Task has been paused") )
+                self.task_stats['status'] = GCodePusher.TASK_PAUSED
+                #self.monitor_info["paused"] = True
+                
+            elif data == 'resumed':
+                self.trace( _("Task has been resumed") )
+                self.task_stats['status'] = GCodePusher.TASK_STARTED
             
-        self.monitor_lock.release()
-        
-        self.writeMonitor()
+            elif data == 'aborted':
+                self.trace( _("Task has been aborted") )
+                self.task_stats['status'] = GCodePusher.TASK_ABORTED
+                        
+            self.update_monitor_file()
         
         self.state_change_callback(data)
     
@@ -535,7 +451,7 @@ class GCodePusher(object):
     def __config_change_callback(id, data):
         print "__config_change_callback", id, data 
         if id == 'shutdown':
-            self.monitor_info["auto_shutdown"] = (data == 'on')
+            self.task_stats["auto_shutdown"] = (data == 'on')
             
     
     def callback_handler(self, action, data):
@@ -573,58 +489,77 @@ class GCodePusher(object):
                 
             if old_progress != progress:
                 old_progress = progress
-                self.monitor_lock.acquire()
-                self.monitor_info['progress'] = progress
-                self.monitor_lock.release()
                 self.progress_callback(progress)
-                monitor_write = True
+            
+            # Write progress even if it did not change because duration is update
+            # during update_monitor_file()
+            with self.monitor_lock:
+                self.task_stats['percent'] = progress
+                self.update_monitor_file()
 
-            if monitor_write:
-                self.writeMonitor()
-                monitor_write = False
-
-            time.sleep(2)
-       
-    def prepare(self, gcode_file, task_id,
-                    ext_temp_target = 0.0,
-                    bed_temp_target = 0.0,
-                    rpm = 0):
-        """
+            time.sleep(GCodePusher.UPDATE_PERIOD)
+    
+    def prepare_task(self, task_id, task_type = 'unknown', gcode_file = None, auto_shutdown = False, send_email = False):
         
+        self.task_stats['type']             = task_type
+        self.task_stats['id']               = task_id
+        self.task_stats['status']           = GCodePusher.TASK_INITIALIZED
+        self.task_stats['started_time']     = time.time()
+        self.task_stats['completed_time']   = 0
+        self.task_stats['duration']         = 0
+        self.task_stats['percent']          = 0.0
+        self.task_stats['auto_shutdown']    = auto_shutdown
+        self.task_stats['send_email']       = send_email
+        self.task_stats['message']          = ''
+                
+        self.override_stats['z_override']   = 0.0
+        self.override_stats['fan']          = 0
+        self.override_stats['rpm']          = 0
+        self.override_stats['laser']        = 0
+        self.override_stats['flow_rate']    = 0
+        self.override_stats['speed']        = 0
         
-        :param gcode_file:
-        :param task_id:
-        :param ext_temp_target:
-        :param bed_temp_target:
-        :param rpm: ???
-        """
-        
-        gfile = GCodeFile(gcode_file)
-        
-        self.monitor_info["progress"] = 0.0
-        self.monitor_info["paused"] = False
-        self.monitor_info["print_started"] = False
-        self.monitor_info["started"] = time.time()
-        self.monitor_info["auto_shutdown"] = False
-        self.monitor_info["completed"] = False
-        self.monitor_info["completed_time"] = 0
-        self.monitor_info["layer_count" ] = 0
-        self.monitor_info["current_layer"] = 0
-        self.monitor_info["filename"] = gcode_file
-        self.monitor_info["task_id"] = task_id
-        #self.monitor_info["ext_temp"] = ext_temp
-        self.monitor_info["ext_temp_target"] = ext_temp_target
-        #self.monitor_info["bed_temp"] = bed_temp
-        self.monitor_info["bed_temp_target"] = bed_temp_target
-        self.monitor_info["z_override"] = 0.0
-        self.monitor_info["rpm"] = 0
-        self.monitor_info["fan"] = 0.0
-        self.monitor_info["speed"] = 100.0
-        self.monitor_info["flow_rate"] = 100.0
-        self.monitor_info["tip"] = False
-        self.monitor_info["message"] = ''
-        self.monitor_info["current_line_number"] = 0
-        self.monitor_info["gcode_info"] = gfile.info
+        if gcode_file:
+            gfile = GCodeFile(gcode_file)
+            self.pusher_stats['filename']       = gcode_file
+            self.pusher_stats['line_total']     = gfile.info['line_count']
+            self.pusher_stats['line_current']   = 0
+            self.pusher_stats['type']           = gfile.info['type']
+            
+            if gfile.info['type'] == GCodeInfo.PRINT:
+                engine = 'unknown'
+                if 'slicer' in gfile.info:
+                    engine = gfile.info['slicer']
+                    
+                layer_total = 0
+                if 'layer_count' in gfile.info:
+                    layer_total = int(gfile.info['layer_count'])
+                
+                if 'print' not in self.standardized_stats:
+                    self.print_stats = {
+                        'layer_total'   : layer_total,
+                        'layer_current' : 0,
+                        'engine'        : engine
+                    }
+                    self.add_monitor_group('print', self.print_stats)
+                else:
+                    self.standardized_stats['print']['engine'] = engine
+                    self.standardized_stats['print']['layer_current'] = 0
+                    self.standardized_stats['print']['layer_total'] = layer_total
+                    
+            elif gfile.info['type'] == GCodeInfo.MILL or gfile.info['type'] == GCodeInfo.DRILL:
+                    self.mill_stats = {
+                        # Place holder
+                    }
+                    self.add_monitor_group('mill', self.mill_stats)
+                    
+            elif gfile.info['type'] == GCodeInfo.LASER:
+                    self.laser_stats = {
+                        # Place holder
+                    }
+                    self.add_monitor_group('laser', self.laser_stats)
+                    
+        self.resetTrace()
         
         if self.monitor_file:
             print "Creating monitor thread"
@@ -633,21 +568,6 @@ class GCodePusher(object):
             self.progress_monitor.start() 
         else:
             print "Skipping monitor thread"
-        
-        if gfile.info['type'] == GCodeInfo.PRINT:
-            # READ TEMPERATURES BEFORE PRINT STARTS (improve UI feedback response)
-            reply = self.gcs.send("M105")
-            if reply:
-                ext_temp, ext_temp_target, bed_temp, bed_temp_target = parse_temperature(reply[0])
-
-        self.monitor_info["ext_temp"] = ext_temp
-        self.monitor_info["ext_temp_target"] = ext_temp_target
-        self.monitor_info["bed_temp"] = bed_temp
-        self.monitor_info["bed_temp_target"] = bed_temp_target
-        self.monitor_info["z_override"] = 0.0
-        self.monitor_info["rpm"] = rpm
-        
-        self.resetTrace()
     
     def loop(self):
         """

@@ -100,16 +100,16 @@ GPIO_PIN    = config.get('gpio', 'pin')
 
 MONITOR_BACKTRACK   = int(config.get('monitor', 'backtrack'))
 MONITOR_PERIOD      = float(config.get('monitor', 'period'))
-STATUS              = config.get('general', 'status')
+MONITOR_FILE        = config.get('general', 'temperature')
 
 # Prepare files with correct permissions
 create_file(TRACE)
-create_file(STATUS)
 create_file(COMMAND)
 create_file(MACRO_RESPONSE)
 create_file(JOG_RESPONSE)
 create_file(TASK_MONITOR)
 create_file(EMERGENCY_FILE)
+create_file(MONITOR_FILE)
 
 # Setup logger
 logger = logging.getLogger('FabtotumService')
@@ -161,7 +161,7 @@ gpioMonitor = GPIOMonitor(ws, gcservice, logger, GPIO_PIN, EMERGENCY_FILE)
 gpioMonitor.start()
 
 ## Stats monitor
-statsMonitor = StatsMonitor(STATUS, gcservice, logger, MONITOR_BACKTRACK, MONITOR_PERIOD)
+statsMonitor = StatsMonitor(MONITOR_FILE, gcservice, logger, MONITOR_BACKTRACK, MONITOR_PERIOD)
 statsMonitor.start()
 
 # Ensure CTRL+C detection to gracefully stop the server.

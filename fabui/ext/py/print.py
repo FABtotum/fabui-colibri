@@ -97,23 +97,17 @@ class PrintApplication(GCodePusher):
     def temp_change_callback(self, action, data):
         print action, data
         
-    def run(self, gcode_file, task_id, ext_temp_target, bed_temp_target):
+    def run(self, task_id, gcode_file):
         """
         Run the print application.
         
         :param gcode_file: GCode file containing print commands.
         :param task_id: Task ID
-        :param ext_temp_target: Pre-heat temperature for the extruder
-        :param bed_temp_target: Pre-heat temperature for the bed
         :type gcode_file: string
         :type task_id: int
-        :type ext_temp_target: float
-        :type bed_temp_target: float
         """
-        
-        print "Parsing file..."
-        self.prepare(gcode_file, task_id, ext_temp_target, bed_temp_target)
-        print "Done."
+
+        self.prepare_task(task_id, task_type='print', gcode_file=gcode_file)
         
         if self.standalone:
             print_macros.check_pre_print(self)
@@ -129,11 +123,12 @@ class PrintApplication(GCodePusher):
             self.exec_macro("start_print", [ext_temp_target, bed_temp_target])
         
         self.send_file(gcode_file)
+        #self.push_file()
         
         print "Print initiated."
 
 
 app = PrintApplication(log_trace, monitor_file, standalone, autolevel)
 
-app.run(gcode_file, task_id, ext_temp_target, bed_temp_target)
+app.run(task_id, gcode_file)
 app.loop()
