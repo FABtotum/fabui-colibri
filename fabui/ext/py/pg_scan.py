@@ -23,10 +23,16 @@ import argparse
 import time
 import gettext
 import os
+import sys
 import errno
+import socket
 from fractions import Fraction
-from threading import Event, Thread
-
+from threading import Event, Thread, RLock
+try:
+    import queue
+except ImportError:
+    import Queue as queue
+    
 # Import external modules
 from picamera import PiCamera
 
@@ -52,6 +58,8 @@ config = ConfigService()
 # SETTING EXPECTED ARGUMENTS
 parser = argparse.ArgumentParser(add_help=False, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument("task_id",          help=_("Task ID.") )
+parser.add_argument("address",  help=_("Remove server address.") )
+parser.add_argument(      "--port",     help=_("Remove server port."),     default=9898)
 parser.add_argument("-d", "--dest",     help=_("Destination folder."),     default=config.get('general', 'bigtemp_path') )
 parser.add_argument("-s", "--slices",   help=_("Number of slices."),       default=100)
 parser.add_argument("-i", "--iso",      help=_("ISO."),                    default=400)
@@ -71,6 +79,8 @@ args = parser.parse_args()
 
 slices          = args.slices
 destination     = args.dest
+host_address    = args.address
+host_port       = args.port
 iso             = args.iso
 power           = args.power
 start_a         = args.begin
@@ -113,17 +123,23 @@ print 'Estimated Scan time =', str(estimated) + " " + str(unit) + "  [Pessimisti
 
 ################################################################################
 
-class RotaryScan(GCodePusher):
+class PhotogrammetryScan(GCodePusher):
     """
-    Rotary scan application.
+    Photogrammetry scan application.
     """
     
     XY_FEEDRATE     = 5000
     Z_FEEDRATE      = 1500
     E_FEEDRATE      = 800
-    
-    def __init__(self, log_trace, monitor_file, scan_dir, standalone = False, width = 2592, height = 1944, rotation = 270, iso = 800, power = 230, shutter_speed = 35000):
-        super(RotaryScan, self).__init__(log_trace, monitor_file)
+        
+    START   = 1
+    CREATE  = 2
+    FINISH  = 3
+        
+    def __init__(self, log_trace, monitor_file, scan_dir, host_address, host_port,
+                standalone = False, 
+                width = 2592, height = 1944, rotation = 270, iso = 800, power = 230, shutter_speed = 35000):
+        super(PhotogrammetryScan, self).__init__(log_trace, monitor_file)
         
         self.standalone = standalone
         
@@ -140,13 +156,23 @@ class RotaryScan(GCodePusher):
         self.scan_dir = scan_dir
         
         self.scan_stats = {
-            'type'          : 'rotary',
+            'type'          : 'photogrammetry',
             'projection'    : 'rotary',
             'scan_total'    : 0,
             'scan_current'  : 0
         }
         
         self.add_monitor_group('scan', self.scan_stats)
+        self.host_address = host_address
+        self.host_port = host_port
+        
+        self.skipped_images = []
+        #~ self.cq = queue.Queue() # Command queue
+        #~ self.upload_thread = Thread(
+            #~ target = self.__upload_thread,
+            #~ args =( [host_address, host_port] )
+            #~ )
+        #~ self.upload_thread.start()
             
     def get_progress(self):
         """ Custom progress implementation """
@@ -156,10 +182,57 @@ class RotaryScan(GCodePusher):
         """ Camera control wrapper """
         scanfile = os.path.join(self.scan_dir, "{0}{1}.jpg".format(number, suffix) )
         self.camera.capture(scanfile, quality=100)
+        
+        return scanfile
+    
+    def manage(self, action, file = '', slices = 0):        
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(1)
+            sock.connect((self.host_address, self.host_port))
+            SOCK_CONNECTED = True
+        except Exception as e:
+            print _("Connection error:"), e
+            SOCK_CONNECTED = False
+            #SKIPPED_IMAGES.append(file)
+            #return None
+            
+        if(action == self.START):
+            sock.send(str(self.START) + '\n')
+            sock.send(str(slices) + '\n')
+            
+        elif(action == self.CREATE):
+            time.sleep(2)
+            try:
+                os.chmod(file, 0777)
+                sock.send(str(self.CREATE) + '\n')
+                sock.send(file + '\n')
+                
+                data = sock.recv(4096)
+                if(data.strip() == 'DELETE'):
+                    os.remove(file)
+            except Exception as e:
+                print _("Unexpected error:"), e
+                self.skipped_images.append(file)
+                #SKIPPED_IMAGES.append(file)
+                
+        elif(action == self.FINISH):
+            sock.send(str(self.FINISH) + '\n')
+        
+        sock.close();
+    
+    def start_transfer(self, slices):
+        self.manage(self.START, slices=slices)
+        
+    def transfer_file(self, filename):
+        self.manage(self.CREATE, file=filename)
+        
+    def finish_transfer(self):
+        self.manage(self.FINISH)
     
     def run(self, task_id, start_a, end_a, y_offset, slices):
         """
-        Run the rotary scan.
+        Run the photogrammetry scan.
         """
         
         self.prepare_task(task_id, task_type='scan')
@@ -167,38 +240,36 @@ class RotaryScan(GCodePusher):
         
         if self.standalone:
             self.exec_macro("check_pre_scan")
-            self.exec_macro("start_rotary_scan")
-        
-        LASER_ON  = 'M700 S{0}'.format(self.laser_power)
-        LASER_OFF = 'M700 S0'
+            self.exec_macro("start_photogrammetry_scan")
         
         position = start_a
         
         if start_a != 0:
             # If an offset is set .
-            self.send('G0 E{0} F{1}'.format(start_a, RotaryScan.E_FEEDRATE) )
+            self.send('G0 E{0} F{1}'.format(start_a, self.E_FEEDRATE) )
+            self.send('M400')
             
         if(y_offset!=0):
             #if an offset for Z (Y in the rotated reference space) is set, moves to it.
-            self.send('G0 Y{0} F{1}'.format(y_offset, RotaryScan.XY_FEEDRATE))  #go to y offset
+            self.send('G0 Y{0} F{1}'.format(y_offset, self.XY_FEEDRATE))  #go to y offset
+            self.send('M400')
         
         #~ dx = abs((float(end_x)-float(start_x))/float(slices))  #mm to move each slice
         deg = abs((float(end_a)-float(start_a))/float(slices))  #degrees to move each slice
         
         self.scan_stats['scan_total'] = slices
         
+        self.start_transfer(slices)
+        
         for i in xrange(0, slices):
             #move the laser!
             print str(i) + "/" + str(slices) +" (" + str(deg*i) + "/" + str(deg*slices) +")"
             
-            self.send('G0 E{0} F{1}'.format(position, RotaryScan.E_FEEDRATE))
+            self.send('G0 E{0} F{1}'.format(position, self.E_FEEDRATE))
             self.send('M400')
 
-            self.send(LASER_ON)
-            self.take_a_picture(i, '_l')
-            
-            self.send(LASER_OFF)
-            self.take_a_picture(i)
+            filename = self.take_a_picture(i)
+            self.transfer_file(filename)
             
             position += deg
             
@@ -211,6 +282,12 @@ class RotaryScan(GCodePusher):
             if self.is_aborted():
                 break
         
+        for image in self.skipped_images:
+            print _("Resending:"), image
+            self.transfer_file(image)
+        
+        self.finish_transfer()
+        
         self.trace( _("Scan completed.") )
         self.set_task_status(GCodePusher.TASK_COMPLETED)
         
@@ -219,14 +296,16 @@ class RotaryScan(GCodePusher):
         
         self.stop()
                 
-app = RotaryScan(log_trace, 
+app = PhotogrammetryScan(log_trace, 
                 monitor_file,
                 scan_dir,
                 standalone=standalone,
                 width=width,
                 height=height,
                 iso=iso,
-                power=power)
+                power=power,
+                host_address=host_address,
+                host_port=host_port)
 
 app_thread = Thread( 
         target = app.run, 

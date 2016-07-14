@@ -66,6 +66,7 @@ def check_pre_scan(app, args = None):
     # macro("M18","ok",1,"Motor Off",1) #should be moved to firmware
     
 def rotary_scan(app, args = None):
+    units_a = app.config.get('settings', 'a')
     
     try:
         safety_door = app.config.get('settings', 'safety')['door']
@@ -84,10 +85,13 @@ def rotary_scan(app, args = None):
     app.macro("G90",        "ok", 2,            _("Setting Absolute position"), 1, verbose=False)
     app.macro("G0 X96 Y175 Z135 E0 F10000", "ok", 90,   _("Moving to collimation position"),1)
     app.macro("M302 S0",    "ok", 2,            _("Enabling cold extrusion"), 0, verbose=False)
+    app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), 0, verbose=True)
     app.macro("M400",        "ok", 55,          _("Wait for all moves to finish"), 1, verbose=False)
     #macro("M92 E"+str(units['a']),"ok",1,"Setting 4th axis mode",0)
     
 def photogrammetry_scan(app, args = None):
+    units_a = app.config.get('settings', 'a')
+    
     try:
         safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
@@ -105,6 +109,7 @@ def photogrammetry_scan(app, args = None):
     app.macro("G90",        "ok", 2,            _("Setting Absloute position"), 1, verbose=False)
     app.macro("G0 X96 Y175 Z135 E0 F10000", "ok", 90,   _("Moving to collimation position"), 1)
     app.macro("M302 S0",    "ok",2,             _("Enabling cold extrusion"), 0, verbose=False)
+    app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), 0, verbose=True)
     app.macro("M400",       "ok", 55,           _("Wait for all moves to finish"), 1, verbose=False)
 
 def sweep_scan(app, args = None):

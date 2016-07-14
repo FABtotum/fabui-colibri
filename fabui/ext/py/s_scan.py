@@ -222,7 +222,10 @@ class SweepScan(GCodePusher):
                 
             if self.is_aborted():
                 break
-            
+                
+        self.trace( _("Scan completed.") )
+        self.set_task_status(GCodePusher.TASK_COMPLETED)
+        
         if self.standalone:
             self.exec_macro("end_scan")
         

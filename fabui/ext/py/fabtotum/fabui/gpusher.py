@@ -407,6 +407,9 @@ class GCodePusher(object):
         
     def is_started(self):
         return self.task_stats['status'] == GCodePusher.TASK_STARTED
+        
+    def is_completed(self):
+        return self.task_stats['status'] == GCodePusher.TASK_COMPLETED
     
     def state_change_callback(self, data):
         """

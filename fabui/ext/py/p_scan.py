@@ -308,6 +308,7 @@ class ProbeScan(GCodePusher):
         self.save_as_cloud(points, output_file)
         
         self.trace( _("Physical Probing completed") )
+        self.set_task_status(GCodePusher.TASK_COMPLETED)
         
         if self.standalone:
             self.exec_macro("end_scan")
@@ -321,4 +322,6 @@ app_thread = Thread(
         args=( [task_id, output_file, x1, y1, x2, y2, probe_density] ) 
         )
 app_thread.start()
-app.loop()
+
+app.loop()          # app.loop() must be started to allow callbacks
+app_thread.join()
