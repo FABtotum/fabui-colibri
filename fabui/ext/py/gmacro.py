@@ -38,12 +38,12 @@ _ = tr.ugettext
 config = ConfigService()
 
 parser = argparse.ArgumentParser()
-parser.add_argument("preset",       help="macro to execute")
-parser.add_argument("log_trace",    help="log trace file", default=config.get('general', 'trace'), nargs='?')
-parser.add_argument("log_response", help="log response file", default=config.get('general', 'macro_response'), nargs='?')
+parser.add_argument("preset",       help=_("macro to execute") )
+parser.add_argument("log_trace",    help=_("log trace file"), default=config.get('general', 'trace'), nargs='?')
+parser.add_argument("log_response", help=_("log response file"), default=config.get('general', 'macro_response'), nargs='?')
 
-parser.add_argument("--ext_temp",   help="extruder target",     default=180, nargs='?', type=int)
-parser.add_argument("--bed_temp",   help="bed target",          default=50,  nargs='?', type=int)
+parser.add_argument("--ext_temp",   help=_("extruder target"),     default=180, nargs='?', type=int)
+parser.add_argument("--bed_temp",   help=_("bed target"),          default=50,  nargs='?', type=int)
 
 args = parser.parse_args()
 
@@ -88,7 +88,7 @@ class GMacroApplication(GCodePusher):
             PRESET_MAP[preset](self, args)
             self.macro_end()
         else:
-            print _("Preset '{0}' not found").format(preset)
+            self.trace( _("Preset '{0}' not found").format(preset) )
 
         if self.macro_error > 0:
             self.response("false")

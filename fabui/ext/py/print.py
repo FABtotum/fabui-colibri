@@ -33,17 +33,21 @@ from fabtotum.fabui.gpusher import GCodePusher
 import fabtotum.fabui.macros.general as general_macros
 import fabtotum.fabui.macros.printing as print_macros
 
+# Set up message catalog access
+tr = gettext.translation('print', 'locale', fallback=True)
+_ = tr.ugettext
+
 config = ConfigService()
 
 # SETTING EXPECTED ARGUMENTS
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument("file",         help="Gcode file to execute.")
-parser.add_argument("task_id",      help="Task ID.")
-parser.add_argument("--standalone", action='store_true',  help="Standalone operatin. Does all printing preparations.")
-group = parser.add_argument_group('standalone arguments')
-group.add_argument("--ext_temp",   help="Extruder temperature (for UI feedback only)",  default=180, nargs='?')
-group.add_argument("--bed_temp",   help="Bed temperature (for UI feedback only)",  default=50,  nargs='?')
-group.add_argument("--autolevel",  action='store_true',  help="Auto bed leveling. Valid only when --standalone is used.")
+parser.add_argument("file",         help=_("Gcode file to execute.")
+parser.add_argument("task_id",      help=_("Task ID.")
+parser.add_argument("--standalone", action='store_true',  help=_("Standalone operation. Does all preparations and cleanup.") )
+group = parser.add_argument_group( _('standalone arguments') )
+group.add_argument("--ext_temp",   help=_("Extruder temperature (for UI feedback only)"),  default=180, nargs='?')
+group.add_argument("--bed_temp",   help=_("Bed temperature (for UI feedback only)"),  default=50,  nargs='?')
+group.add_argument("--autolevel",  action='store_true',  help=_("Auto bed leveling. Valid only when --standalone is used.") )
 
 # GET ARGUMENTS
 args = parser.parse_args()
@@ -76,7 +80,7 @@ class PrintApplication(GCodePusher):
         print "Progress", percentage
     
     def first_move_callback(self):
-        print "Print stared."
+        self.trace( _("Print STARTED") )
 
     def file_done_callback(self):  
         if self.standalone:
@@ -87,11 +91,11 @@ class PrintApplication(GCodePusher):
         
     def state_change_callback(self, state):
         if state == 'paused':
-            print "Print PAUSED"
+            self.trace( _("Print PAUSED") )
         if state == 'resumed':
-            print "Print RESUMED"
+            self.trace( _("Print RESUMED") )
         if state == 'aborted':
-            print "Print ABORTED"
+            self.trace( _("Print ABORTED") )
             self.file_done_callback()
     
     def temp_change_callback(self, action, data):
@@ -99,7 +103,7 @@ class PrintApplication(GCodePusher):
         
     def run(self, task_id, gcode_file):
         """
-        Run the print application.
+        Run the print.
         
         :param gcode_file: GCode file containing print commands.
         :param task_id: Task ID
@@ -125,7 +129,7 @@ class PrintApplication(GCodePusher):
         self.send_file(gcode_file)
         #self.push_file()
         
-        print "Print initiated."
+        self.trace( _("Print initiated.") )
 
 
 app = PrintApplication(log_trace, monitor_file, standalone, autolevel)

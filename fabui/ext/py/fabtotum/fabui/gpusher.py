@@ -396,6 +396,18 @@ class GCodePusher(object):
         
         self.file_done_callback()
     
+    def set_task_status(self, status):
+        self.task_stats['status'] = status
+    
+    def is_aborted(self):
+        return self.task_stats['status'] == GCodePusher.TASK_ABORTED
+        
+    def is_paused(self):
+        return self.task_stats['status'] == GCodePusher.TASK_PAUSED
+        
+    def is_started(self):
+        return self.task_stats['status'] == GCodePusher.TASK_STARTED
+    
     def state_change_callback(self, data):
         """
         Triggered when state is changed. (paused/resumed)
@@ -485,7 +497,7 @@ class GCodePusher(object):
         
         while self.gcs.still_running():
             
-            progress = self.gcs.get_progress()
+            progress = self.get_progress()
                 
             if old_progress != progress:
                 old_progress = progress
