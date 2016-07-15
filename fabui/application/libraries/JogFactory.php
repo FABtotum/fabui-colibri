@@ -77,13 +77,13 @@
 	}
 	
 	/***
-	 * @return array status of the printer (temperatures, fan, floware, speed, etc)
+	 * @return array status of the printer (temperatures)
 	 * get Nozzle and Bed temperatures
 	 */
-	public function getStatus()
+	public function getTemperatures()
 	{
-		$this->setResponseType('status');
-		$this->serialReply = json_decode(file_get_contents($this->CI->config->item('status')), true);
+		$this->setResponseType('temperatures');
+		$this->serialReply = json_decode(file_get_contents($this->CI->config->item('temperature')), true);
 		return $this->response();
 	}
 	

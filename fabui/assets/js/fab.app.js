@@ -477,8 +477,8 @@ fabApp = (function(app) {
 			try {
 				var obj = jQuery.parseJSON(data);
 				switch(obj.type){
-					case 'status':
-						app.updateStatus(obj.data);
+					case 'temperatures':
+						app.updateTemperatures(obj.data);
 						break;
 					case 'serial':
 						app.writeSerialResponseToConsole(obj.data);
@@ -519,7 +519,7 @@ fabApp = (function(app) {
 	/*
 	 * update printer status 
 	 */
-	app.updateStatus = function(data){
+	app.updateTemperatures = function(data){
 		//update temperatures
 		app.updateTemperaturesInfo(data.response.ext_temp, data.response.ext_temp_target, data.response.bed_temp, data.response.bed_temp_target);
 	}
@@ -562,6 +562,8 @@ fabApp = (function(app) {
 			localStorage.setItem("bed_temp", bed_temp);
 			localStorage.setItem("bed_temp_target", bed_temp_target);
 		}
+		
+		if (typeof updateTaskTemperatures == 'function') updateTaskTemperatures(ext_temp, ext_temp_target, bed_temp, bed_temp_target);
 		
 		/*
 			//if module is jog
@@ -743,7 +745,14 @@ fabApp = (function(app) {
 	 */
 	app.getTemperatures = function(){
 		//TODO new version
-		//if(socket_connected && (is_macro_on == false && is_task_on == false && is_emergency == false)) app.serial('getTemperatures', '');
+		if(socket_connected) { 
+			app.serial('getTemperatures', '');
+		}
+		else{
+			$.get(temperatures_file_url + '?' + jQuery.now(), function(data){
+				app.updateTemperaturesInfo(data.ext_temp, data.ext_temp_target, data.bed_temp, data.bed_temp_target);
+			});
+		}
 	}
 	/*
 	 * send command to the serial port
