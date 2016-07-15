@@ -332,7 +332,10 @@ class GCodePusher(object):
                     self.trace( _("Fan off") )
                     self.override_stats['fan'] = 0.0
                     monitor_write = True
-                    
+            
+            elif action == 'z_override':
+                self.override_stats['z_override'] = str(data[0])
+            
             elif action == 'printing':
                 
                 if data[0] == 'M220': # Speed factor
@@ -344,7 +347,7 @@ class GCodePusher(object):
                     value = float( data[1] )
                     self.trace( _("Extruder flow set to {0}%").format(value) )
                     self.override_stats['flow_rate'] = float(data[1])
-                    monitor_write = True
+                    monitor_write = True                    
                     
             elif action == 'milling':
                 if data[0] == 'M0':

@@ -609,6 +609,8 @@ class GCodeService:
                 self.__send_gcode_command("G91", group="override", modify=False)
                 self.__send_gcode_command("G0 Z{0}".format(z_offset), group="override", modify=False)
                 self.__send_gcode_command("G90", group="override", modify=False)
+                
+                self.__trigger_callback('gcode_action:z_override', [ str( round(self.z_override,5) ) ] )
             
             elif cmd == Command.FILE:
                 filename = cmd.data

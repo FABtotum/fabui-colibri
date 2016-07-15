@@ -41,8 +41,8 @@ config = ConfigService()
 
 # SETTING EXPECTED ARGUMENTS
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument("file",         help=_("Gcode file to execute.")
-parser.add_argument("task_id",      help=_("Task ID.")
+parser.add_argument("task_id",      help=_("Task ID.") )
+parser.add_argument("file",         help=_("Gcode file to execute.") )
 parser.add_argument("--standalone", action='store_true',  help=_("Standalone operation. Does all preparations and cleanup.") )
 group = parser.add_argument_group( _('standalone arguments') )
 group.add_argument("--ext_temp",   help=_("Extruder temperature (for UI feedback only)"),  default=180, nargs='?')
@@ -73,8 +73,9 @@ class PrintApplication(GCodePusher):
         self.standalone = standalone
         self.autolevel = autolevel
     
-    def trace(selg, msg):
-        print msg
+    # Only for development
+    #~ def trace(selg, msg):
+        #~ print msg
     
     def progress_callback(self, percentage):
         print "Progress", percentage
