@@ -8,7 +8,7 @@
  */
  
 ?>
-<div class="step-pane" id="step2">
+<div class="step-pane" id="step2" data-step="2">
 	<hr class="simple">
 	<?php if($this->session->settings['feeder']['show'] == false): ?>
 	<h4 class="text-center">Follow the instructions</h4>

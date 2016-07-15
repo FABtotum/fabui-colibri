@@ -98,6 +98,7 @@
 		
 		$this->addJsInLine($this->load->view('create/js', $data, true));
 		$this->content = $widget->print_html(true);
+		
 		$this->view();
 	}
 	
@@ -230,6 +231,17 @@
 		$this->tasks->update($taskId, array('status' => 'abort'));
 		$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
 		//TODO
+	}
+	
+	/**
+	 * complete task
+	 */
+	public function complete($taskID)
+	{
+		//update db status
+		$this->load->model('Tasks', 'tasks');
+		$this->tasks->update($taskID, array('status' => 'completed'));
+		$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
 	}
 	
 	/**
