@@ -119,7 +119,7 @@ class SweepScan(GCodePusher):
     Sweep scan application.
     """
     
-    XY_FEEDRATE     = 5000
+    XY_FEEDRATE     = 10000
     Z_FEEDRATE      = 1500
     E_FEEDRATE      = 800
     
@@ -198,6 +198,8 @@ class SweepScan(GCodePusher):
         dx = abs((float(end_x)-float(start_x))/float(slices))  #mm to move each slice
         
         self.scan_stats['scan_total'] = slices
+        
+        self.send('M702 S255')
         
         for i in xrange(0, slices):
             #~ #move the laser!

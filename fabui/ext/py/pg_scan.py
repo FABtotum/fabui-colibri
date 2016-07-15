@@ -77,21 +77,21 @@ parser.add_argument('--help', action='help', help=_("Show this help message and 
 # GET ARGUMENTS
 args = parser.parse_args()
 
-slices          = args.slices
+slices          = int(args.slices)
 destination     = args.dest
 host_address    = args.address
-host_port       = args.port
-iso             = args.iso
-power           = args.power
-start_a         = args.begin
-end_a           = args.end
-width           = args.width
-height          = args.height
-z_offset        = args.z_offset
-y_offset        = args.y_offset
-a_offset        = args.a_offset
+host_port       = int(args.port)
+iso             = int(args.iso)
+power           = int(args.power)
+start_a         = float(args.begin)
+end_a           = float(args.end)
+width           = int(args.width)
+height          = int(args.height)
+z_offset        = float(args.z_offset)
+y_offset        = float(args.y_offset)
+a_offset        = float(args.a_offset)
 standalone      = args.standalone
-task_id         = args.task_id
+task_id         = int(args.task_id)
 
 monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
 log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 

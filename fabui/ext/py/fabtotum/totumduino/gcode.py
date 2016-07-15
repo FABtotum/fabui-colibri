@@ -720,7 +720,12 @@ class GCodeService:
         if self.active_cmd:
             # Get the active command as this is the on waiting for the reply.
             cmd = self.active_cmd
-            cmd.reply.append( line )
+            
+            if cmd.data[:4] == 'M303':
+                if line[:2] != 'ok':
+                    cmd.reply.append( line )
+            else:
+                cmd.reply.append( line )
 
             if cmd.hasExpectedReply(line):
                 
@@ -759,17 +764,24 @@ class GCodeService:
             else:
                 
                 if cmd.data[:4] == 'M109': # Extruder
-                    # T:27.4 E:0 W:?
+                    # [T:27.4 E:0 W:?]
                     temps = line.split()
                     T = temps[0].replace("T:","").strip()
                     self.__trigger_callback('temp_change:ext', [T])
                         
                 elif cmd.data[:4] == 'M190': # Bed
-                    # @ >> T:27.38 E:0 B:54.9
+                    # [T:27.38 E:0 B:54.9]
                     temps = line.split()
                     T = temps[0].replace("T:","").strip()
                     B = temps[2].replace("B:","").strip()
                     self.__trigger_callback('temp_change:ext_bed', [T,B])
+                    
+                elif cmd.data[:4] == 'M303': # PID autotune
+                    # [ok T:200.57 @:26]
+                    temps = line.split()
+                    if temps[0][:2] == 'ok':
+                        T = temps[1].replace("T:","").strip()
+                        self.__trigger_callback('temp_change:ext', [T])
     
         #print "__handle_line: return"
     

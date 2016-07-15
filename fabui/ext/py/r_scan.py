@@ -71,15 +71,15 @@ args = parser.parse_args()
 
 slices          = args.slices
 destination     = args.dest
-iso             = args.iso
-power           = args.power
-start_a         = args.begin
-end_a           = args.end
-width           = args.width
-height          = args.height
-z_offset        = args.z_offset
-y_offset        = args.y_offset
-a_offset        = args.a_offset
+iso             = int(args.iso)
+power           = int(args.power)
+start_a         = float(args.begin)
+end_a           = float(args.end)
+z_offset        = float(args.z_offset)
+y_offset        = float(args.y_offset)
+a_offset        = float(args.a_offset)
+width           = int(args.width)
+height          = int(args.height)
 standalone      = args.standalone
 task_id         = args.task_id
 
