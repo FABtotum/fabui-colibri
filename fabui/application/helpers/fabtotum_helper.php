@@ -23,7 +23,7 @@ if ( !function_exists('createDefaultSettings'))
 		
 		$dafault_settings = array(
 			'color'         	 => array('r'=>255, 'g'=>255, 'b'=>255),
-			'safety'        	 => array('door'=>0, 'collision_warning'=>1),
+			'safety'        	 => array('door'=>1, 'collision_warning'=>1),
 			'switch'        	 => 0,
 			'feeder'        	 => array('disengage-offset'=> 2, 'show' => true),
 			'milling'       	 => array('layer_offset' => 12),
@@ -136,7 +136,7 @@ if(!function_exists('doMacro'))
 	 * @param $extrArgs
 	 * Exec macro operation
 	 * 
-	 */
+	 */ 
 	function doMacro($macroName, $traceFile = '', $responseFile = '', $extrArgs = '')
 	{
 		if($macroName == '') return;
@@ -149,7 +149,7 @@ if(!function_exists('doMacro'))
 		if($traceFile == '' or $traceFile == null)        $traceFile    = $CI->config->item('trace');
 		if($responseFile == '' or $responseFile == null ) $responseFile = $CI->config->item('macro_response');
 		
-		doCommandLine('python', $extPath.'py/gmacro_new.py', is_array($extrArgs) ? array_merge(array($macroName, $traceFile, $responseFile), $extrArgs) : array($macroName, $traceFile, $responseFile, $extrArgs));
+		doCommandLine('python', $extPath.'py/gmacro.py', is_array($extrArgs) ? array_merge(array($macroName, $traceFile, $responseFile), $extrArgs) : array($macroName, $traceFile, $responseFile, $extrArgs));
 		//if response is false means that macro failed
 		return str_replace('<br>', '', trim(file_get_contents($responseFile))) == 'true' ? true : false;
 	}
@@ -251,9 +251,9 @@ if(!function_exists('startPrint'))
 	function startPrint($gcodeFilePath, $taskID = 0)
 	{
 		$CI =& get_instance();
-		$CI->config->load('fabtotum');
+		$CI->config->load('fabtotum'); 
 		$extPath = $CI->config->item('ext_path');
-		doCommandLine('python', $extPath.'/py/print.py "'.$gcodeFilePath.'" '.$taskID.' > /dev/null & echo $! > /run/task_create.pid');	
+		doCommandLine('python', $extPath.'/py/print.py "'.$taskID.'" '.$gcodeFilePath.' > /dev/null & echo $! > /run/task_create.pid');	
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -319,7 +319,7 @@ if(!function_exists('flowRate'))
 if(!function_exists('speed'))
 {
 	/**
-	 * resume task
+	 * set speed override
 	 */
 	function speed($value)
 	{
@@ -330,7 +330,7 @@ if(!function_exists('speed'))
 if(!function_exists('zHeight'))
 {
 	/**
-	 * resume task
+	 * set z height override
 	 */
 	function zHeight($value)
 	{
@@ -338,6 +338,20 @@ if(!function_exists('zHeight'))
 		$value = str_replace($sign, '' , $value);
 		$command = $sign == '-' ? '!z_minus' : '!z_plus';
 		writeToCommandFile($command.':'.$value);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('fan'))
+{
+	/**
+	 * set fan override
+	 */
+	function fan($value, $percent = true)
+	{
+		if($percent){
+			$value = (($value/100)*255);
+		}
+		writeToCommandFile('!fan:'.$value);
 	}
 }
 ?>

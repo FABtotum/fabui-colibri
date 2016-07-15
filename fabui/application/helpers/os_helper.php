@@ -136,7 +136,7 @@ if(!function_exists('isInternetAvaialable'))
 	/**
 	 * check if internet connection is avaialable
 	 */
-	function isInternetAvaialable($date)
+	function isInternetAvaialable()
 	{
 		return !$sock = @fsockopen('http://www.google.com', 80, $num, $error, 2) ? false : true;
 	}

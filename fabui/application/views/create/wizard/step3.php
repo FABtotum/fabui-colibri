@@ -77,7 +77,7 @@
 					<div class="smart-form">
 						<fieldset>
 							<section>
-								<label class="label text-center">Change Z Height</label>
+								<label class="label">Override Z Height: <strong><span class="z-height"></span></strong></label>
 							</section>
 							<div class="row">
 								<section class="col col-4">
@@ -119,7 +119,7 @@
 					<div id="create-flow-rate-slider" class="noUiSlider sliders"></div>
 				</div>
 				<div class="col-sm-4 margin-bottom-50">
-					<h4>Fan <span class="pull-right"><strong><span class="task-fan"></span></strong> %</span></h4>
+					<h4>Fan <span class="pull-right"><strong><span class="slider-task-fan"></span></strong> %</span></h4>
 					<div id="create-fan-slider" class="noUiSlider sliders"></div>
 				</div>
 			</div>

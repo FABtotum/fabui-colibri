@@ -218,13 +218,13 @@
 	
 	if(typeof manageMonitor != 'function'){
 		window.manageMonitor = function(data){
-			updateProgress(data.<?php echo $type; ?>.stats.percent);
-			updateSpeed(data.<?php echo $type; ?>.stats.speed);
-			updateFlowRate(data.<?php echo $type; ?>.stats.flow_rate);
-			updateFan(data.<?php echo $type; ?>.stats.fan);
-			updateTemperatures(data.<?php echo $type; ?>.stats.extruder, data.<?php echo $type; ?>.stats.extruder_target, data.<?php echo $type; ?>.stats.bed, data.<?php echo $type; ?>.stats.bed_target);
-			//updateGraph();
-			updateTimers(data.<?php echo $type ?>.started);
+			updateProgress(data.task.percent);
+			updateSpeed(data.override.speed);
+			updateFlowRate(data.override.flow_rate);
+			updateFan(data.override.fan);
+			updateTimers(data.task.started_time);
+			updateZOverride(data.override.z_override);
+			
 		};
 	}
 	/**
@@ -255,13 +255,14 @@
 		$.get('/temp/task_monitor.json', function(data, status){
 			manageMonitor(data);
 			if(firstCall) {
-				isPaused(data.<?php echo $type; ?>.paused);
+				handleTaskStatus(data.task.status);
 				var serverDate = new Date((data.<?php echo $type; ?>.started) * 1000 );
 				var browserDate = new Date();
 				//set sliders target - just on first call
-				setTemperaturesSlidersValue(data.<?php echo $type; ?>.stats.extruder_target, data.<?php echo $type; ?>.stats.bed_target);
-				setSpeedSliderValue(data.<?php echo $type; ?>.stats.speed);
-				setFlowRateSliderValue(data.<?php echo $type; ?>.stats.flow_rate);	
+				setTemperaturesSlidersValue();
+				setSpeedSliderValue(data.override.speed);
+				setFlowRateSliderValue(data.override.flow_rate);
+				setFanSliderValue(data.override.fan);
 			}
 		});
 	}
@@ -273,17 +274,21 @@
 		if(!socket_connected) getTaskMonitor(false);
 	}
 	/**
-	 * set if task is paused
+	 * handle task status
 	 */
-	function isPaused(bool)
+	function handleTaskStatus(status)
 	{
-		var element = $(".isPaused-button");
-		if(bool == 'False'){
-			element.html('<i class="fa fa-pause"></i> Pause Print');
-			element.attr('data-action', 'pause');
-		}else if(bool == 'True'){
-			element.html('<i class="fa fa-play"></i> Resume Print');
-			element.attr('data-action', 'resume');
+		switch(status){
+			case 'paused':
+				var element = $(".isPaused-button");
+				element.html('<i class="fa fa-play"></i> Resume Print');
+				element.attr('data-action', 'resume');
+				break;
+			case 'started':
+				var element = $(".isPaused-button");
+				element.html('<i class="fa fa-pause"></i> Pause Print');
+				element.attr('data-action', 'pause');
+				break;		
 		}
 	}
 	/**
@@ -319,6 +324,13 @@
 		$("#task-fan-bar").attr("style", "width:" +((value/255)*100) +"%;");
 	}
 	/**
+	* update z override value
+	*/
+	function updateZOverride(value)
+	{
+		$(".z-height").html(value);
+	}
+	/**
 	 * update timers
 	 */
 	function updateTimers(started)
@@ -328,32 +340,36 @@
 	/**
 	 * update temperatures info
 	 */
-	function updateTemperatures(ext, extTarget, bed, bedTarget)
-	{
-		var extruderTemp = {'value': parseFloat(ext), 'time': new Date().getTime()};
-		var extruderTargetTemp = {'value': parseFloat(extTarget), 'time': new Date().getTime()};
-		var bedTemp = {'value': parseFloat(bed), 'time': new Date().getTime()};
-		var bedTargetTemp = {'value': parseFloat(bedTarget), 'time': new Date().getTime()};
-		
-		if(temperaturesPlot.extruder.temp.length > maxTemperaturesPlot)   temperaturesPlot.extruder.temp.shift();
-		if(temperaturesPlot.extruder.target.length > maxTemperaturesPlot) temperaturesPlot.extruder.target.shift();
-		if(temperaturesPlot.bed.temp.length > maxTemperaturesPlot)        temperaturesPlot.bed.temp.shift();
-		if(temperaturesPlot.bed.target.length > maxTemperaturesPlot)      temperaturesPlot.bed.target.shift();
-		
-		temperaturesPlot.extruder.temp.push(extruderTemp);
-		temperaturesPlot.extruder.target.push(extruderTargetTemp);
-		temperaturesPlot.bed.temp.push(bedTemp);
-		temperaturesPlot.bed.target.push(bedTargetTemp);
-		
-		$(".extruder-temp").html(ext);
-		$(".extruder-target").html(extTarget);
-		$(".bed-temp").html(bed);
-		$(".bed-target").html(bedTarget);
-		
-		if(typeof (Storage) !== "undefined") {
-			localStorage.setItem('temperaturesPlot', JSON.stringify(temperaturesPlot));
+	if(typeof updateTaskTemperatures != 'function'){
+		window.updateTaskTemperatures = function(ext, extTarget, bed, bedTarget)
+		{
+			console.log("update temps task");
+			var extruderTemp = {'value': parseFloat(ext), 'time': new Date().getTime()};
+			var extruderTargetTemp = {'value': parseFloat(extTarget), 'time': new Date().getTime()};
+			var bedTemp = {'value': parseFloat(bed), 'time': new Date().getTime()};
+			var bedTargetTemp = {'value': parseFloat(bedTarget), 'time': new Date().getTime()};
+			
+			if(temperaturesPlot.extruder.temp.length > maxTemperaturesPlot)   temperaturesPlot.extruder.temp.shift();
+			if(temperaturesPlot.extruder.target.length > maxTemperaturesPlot) temperaturesPlot.extruder.target.shift();
+			if(temperaturesPlot.bed.temp.length > maxTemperaturesPlot)        temperaturesPlot.bed.temp.shift();
+			if(temperaturesPlot.bed.target.length > maxTemperaturesPlot)      temperaturesPlot.bed.target.shift();
+			
+			temperaturesPlot.extruder.temp.push(extruderTemp);
+			temperaturesPlot.extruder.target.push(extruderTargetTemp);
+			temperaturesPlot.bed.temp.push(bedTemp);
+			temperaturesPlot.bed.target.push(bedTargetTemp);
+			
+			$(".extruder-temp").html(ext);
+			$(".extruder-target").html(extTarget);
+			$(".bed-temp").html(bed);
+			$(".bed-target").html(bedTarget);
+			
+			if(typeof (Storage) !== "undefined") {
+				localStorage.setItem('temperaturesPlot', JSON.stringify(temperaturesPlot));
+			}
+
+						
 		}
-		
 	}
 	/**
 	 * init graph
@@ -404,7 +420,8 @@
 				borderWidth : 0
 			},
 		});
-		
+
+		//init updateGraph interval
 		setInterval(updateGraph, 1000);
 	}
 	/**
@@ -412,9 +429,9 @@
 	 */
 	function getPlotTemperatures()
 	{
-		var seriesExtTemp = [];
+		var seriesExtTemp   = [];
 		var seriesExtTarget = [];
-		var seriesBedTemp = [];
+		var seriesBedTemp   = [];
 		var seriesBedTarget = [];
 		
 		$.each( temperaturesPlot.extruder.temp, function( key, plot ) {
@@ -433,12 +450,12 @@
 		return [{
 		 			data: seriesExtTemp,
 		      		lines: { show: true, fill: false },
-		     	 	label: "Ext temp: ",
+		     	 	label: "Ext temp",
 		    	},
 		    	{
 		 			data: seriesBedTemp,
 		      		lines: { show: true, fill: false },
-		     	 	label: "Bed temp: ",
+		     	 	label: "Bed temp",
 		    	}
 		  	];
 	}
@@ -461,7 +478,6 @@
 	{
 		var element = $(this);
 		action = element.attr('data-action');
-		
 		switch(action){
 			case 'abort':
 				abort();
@@ -472,6 +488,7 @@
 				break;
 			case 'zHeight':
 				var sign = element.attr('data-attribute');
+				$(".z-height").html(eval($(".z-height").html()+sign+$("#zHeight").val()));
 				sendActionRequest('zHeight', sign+$("#zHeight").val());
 				break;
 		}
@@ -660,6 +677,7 @@
 				$('.slider-task-flow-rate').html(value);
 				break;
 			case 'fan':
+				$('.slider-task-fan').html(value);
 				break;
 			case 'speed':
 				$('.slider-task-speed').html(value);
@@ -672,7 +690,6 @@
 	 */
 	function onSet(element, value)
 	{
-		console.log(element);
 		switch(element){
 			case 'extruder-target':
 				fabApp.serial("setExtruderTemp",value[0]);
@@ -684,26 +701,35 @@
 				sendActionRequest('flowRate', value[0]);
 				break;
 			case 'fan':
+				sendActionRequest('fan', value[0]);
 				break;
 			case 'speed':
 				sendActionRequest('speed', value[0]);
-				break;
-				
+				break;			
 		}
 	}
 	/**
 	 * set initial target for temperatures sliders
 	 */
-	function setTemperaturesSlidersValue(extruder, bed)
+	function setTemperaturesSlidersValue()
 	{	
-		$(".slider-extruder-target").html(extruder);
-		$(".slider-bed-target").html(bed);
-		if(typeof extruderSlider !== 'undefined'){
-			extruderSlider.noUiSlider.set(extruder);
-		}
-		if(typeof bedSlider !== 'undefined'){
-			bedSlider.noUiSlider.set(bed);
-		}
+		$.get(temperatures_file_url + '?' + jQuery.now(), function(data){
+			if(data.ext_temp_target.constructor === Array){
+				ext_temp_target = data.ext_temp_target[data.ext_temp_target.length - 1];
+			}
+			if(data.bed_temp_target.constructor === Array){
+				bed_temp_target = data.bed_temp_target[data.bed_temp_target.length - 1];
+			}
+			$(".slider-extruder-target").html(ext_temp_target);
+			$(".slider-bed-target").html(bed_temp_target);
+
+			if(typeof extruderSlider !== 'undefined'){
+				extruderSlider.noUiSlider.set(ext_temp_target);
+			}
+			if(typeof bedSlider !== 'undefined'){
+				bedSlider.noUiSlider.set(bed_temp_target);
+			}
+		});
 	}
 	/**
 	 * set initial speed slider values
@@ -725,4 +751,15 @@
 			flowRateSlider.noUiSlider.set(value);
 		}
 	}
+	/**
+	* set initial fan slider value
+	*/
+	function setFanSliderValue(value){
+		value = ((value/255)*100);
+		$('.slider-task-fan').html(value);
+		if(typeof fanSlider !== 'undefined'){
+			fanSlider.noUiSlider.set(value);
+		}
+	}
+	
 </script>
