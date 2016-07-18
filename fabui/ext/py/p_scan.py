@@ -38,118 +38,6 @@ from fabtotum.fabui.gpusher import GCodePusher
 tr = gettext.translation('p_scan', 'locale', fallback=True)
 _ = tr.ugettext
 
-def makedirs(path):
-    try:
-        os.makedirs(path)
-    except OSError as exc:  # Python >2.5
-        if exc.errno == errno.EEXIST and os.path.isdir(path):
-            pass
-        else:
-            raise
-
-config = ConfigService()
-
-#~ usage= 'Usage: r_scan.py 
-
-#~ -x<first point x> 
-#~ -y<first point y> 
-#~ -i<second point x> 
-#~ -j<second point y> 
-#~ -n<density num> 
-#~ -a<axis increments> 
-#~ -b<starting deg> 
-#~ -e<ending deg> 
-#~ -o<safe_z offset> 
-#~ -l<log> 
-#~ -d<destination> 
-#~ -v=verborse 
-#~ -t<trace log> 
-#~ -k<task_id>\n'
-
-#~ try:
-	#~ opts, args = getopt.getopt(sys.argv[1:],"x:y:i:j:n:a:b:e:o:l:d:v:t:k:z:p:",["x=","y=","i=","j=","n=","a=","b=","e=","o=","l=","d=","v=","t=","k=", "z=", "p="])
-#~ except getopt.GetoptError:
-	#~ #Error handling for unknown or incorrect number of options
-	#~ print "\n\nERROR!\n Correct usage:\n\n",usage
-	#~ sys.exit(2)
-#~ for opt, arg in opts:
-	#~ if opt =='--help':
-		#~ print usage 
-		#~ sys.exit()
-	#~ elif opt in ("-x", "--x"):
-		#~ x = float(arg)
-	#~ elif opt in ("-y", "--y"):
-		#~ y = float(arg)
-	#~ elif opt in ("-i", "--i"):
-		#~ x1 = float(arg)
-	#~ elif opt in ("-j", "--j"):
-		#~ y1 = float(arg)
-	#~ elif opt in ("-n", "--n"):
-		#~ probe_density = float(arg) #number of probes each unit: can be a float
- 	#~ elif opt in ("-a", "--a"):
-		#~ deg = int(arg)  #must be int deg
-	#~ elif opt in ("-b", "--b"):
-		#~ begin = int(arg)
-	#~ elif opt in ("-e", "--e"):
-		#~ end = int(arg)
-	#~ elif opt in ("-o", "--o"):
-		#~ safe_z = float(arg) 	# float
-		#~ original_safe_z=safe_z
-	#~ elif opt in ("-l", "--log"):
-		#~ logfile = arg
-	#~ elif opt in ("-d", "--d"):
-		#~ destination = arg			#dest folder
-	#~ elif opt in ("-v", "--v"):
-		#~ debug=1						#verbose active?
-	#~ elif opt in ("-t", "--t"):
-		#~ log_trace = str(arg)		#trace log
-	#~ elif opt in ("-k", "--k"):
-		#~ task_id = int(arg)
-	#~ elif opt in ("-z", "--z"):
-		#~ z_hop = float(arg)			#the amount to hop (also known as safe Z)
-	#~ elif opt in ("-p", "--p"):
-		#~ probe_skip = float(arg)		#adaptive control
-
-# SETTING EXPECTED ARGUMENTS
-parser = argparse.ArgumentParser(add_help=False, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument("task_id",          help=_("Task ID.") )
-parser.add_argument("-d", "--dest",     help=_("Destination folder."),     default=config.get('general', 'bigtemp_path') )
-parser.add_argument("-o", "--output",   help=_("Output cloud file."),      default='cloud.asc' )
-parser.add_argument("-n", "--n-probes", help=_("Number of probes."),       default=1)
-parser.add_argument("-b", "--begin",    help=_("Begin scanning from X."),  default=0)
-parser.add_argument("-e", "--end",      help=_("End scanning at X."),      default=360)
-parser.add_argument("-x", "--x1",       help=_("X1."),                     default=0)
-parser.add_argument("-y", "--y1",       help=_("Y1."),                     default=0)
-parser.add_argument("-i", "--x2",       help=_("X2."),                     default=10)
-parser.add_argument("-j", "--y2",       help=_("Y2."),                     default=10)
-parser.add_argument("-z", "--safe-z",   help=_("Safe Z."),                 default=0)
-parser.add_argument("--standalone", action='store_true',  help=_("Standalone operation. Does all preparations and cleanup.") )
-parser.add_argument('--help', action='help', help=_("Show this help message and exit") )
-
-# GET ARGUMENTS
-args = parser.parse_args()
-
-destination     = args.dest
-output_file     = args.output
-x1              = float(args.x1)
-y1              = float(args.y1)
-x2              = float(args.x2)
-y2              = float(args.y2)
-probe_density   = float(args.n_probes)
-safe_z          = float(args.safe_z)
-standalone      = args.standalone
-task_id         = int(args.task_id)
-
-monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
-log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
-
-################################################################################
-
-print 'PROBE MODULE STARTING'
-print 'scanning from' + str(x1)+ "," +str(y1)+ " to " +str(x2)+ "," +str(y2); 
-print 'Probing density : ', probe_density , " points/mm"
-#print 'Start/End       : ', begin ,' to ', end, 'deg'
-
 ################################################################################
 
 class ProbeScan(GCodePusher):
@@ -212,7 +100,7 @@ class ProbeScan(GCodePusher):
         :param y: Y position
         :rtype: float
         """
-        self.send('G0 X{0} Y{1} F{2}'.format(x, y, ProbeScan.XY_FEEDRATE) )
+        self.send('G0 X{0} Y{1} F{2}'.format(x, y, self.XY_FEEDRATE) )
         
         reply = self.send('G30', expected_reply = 'echo:', timeout = 90)
         if reply:
@@ -221,7 +109,7 @@ class ProbeScan(GCodePusher):
             z = float( reply[-1].split("Z:")[1].strip() )
             z = round(z, 3)  # round to 3 decimanl points
             
-            self.trace( _("Probed {0},{1} / {2} degrees = {3}").format(x, y, 0.0, z))
+            #self.trace( _("Probed {0},{1} / {2} degrees = {3}").format(x, y, 0.0, z))
             
             return [x,y,z,1]
             
@@ -294,11 +182,11 @@ class ProbeScan(GCodePusher):
                     
                     safe_z = new_point[2] + hop_z
                     
-                    if safe_z < ProbeScan.MINIMAL_SAFE_Z:
-                        safe_z = ProbeScan.MINIMAL_SAFE_Z
+                    if safe_z < self.MINIMAL_SAFE_Z:
+                        safe_z = self.MINIMAL_SAFE_Z
                         
-                    safe_z = safe_z + ProbeScan.SAFE_Z_OFFSET
-                    self.send('G0 Z{0} F{1}'.format(safe_z, ProbeScan.Z_FEEDRATE) )
+                    safe_z = safe_z + self.SAFE_Z_OFFSET
+                    self.send('G0 Z{0} F{1}'.format(safe_z, self.Z_FEEDRATE) )
                     
                 probe_num += 1
                 self.scan_stats['scan_current'] = probe_num
@@ -314,14 +202,71 @@ class ProbeScan(GCodePusher):
             self.exec_macro("end_scan")
         
         self.stop()
-                
-app = ProbeScan(log_trace, monitor_file, standalone)
 
-app_thread = Thread( 
-        target = app.run, 
-        args=( [task_id, output_file, x1, y1, x2, y2, probe_density] ) 
-        )
-app_thread.start()
+def makedirs(path):
+    """ python implementation of `mkdir -p` """
+    try:
+        os.makedirs(path)
+    except OSError as exc:  # Python >2.5
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else:
+            raise
 
-app.loop()          # app.loop() must be started to allow callbacks
-app_thread.join()
+def main():
+    config = ConfigService()
+
+    # SETTING EXPECTED ARGUMENTS
+    parser = argparse.ArgumentParser(add_help=False, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("task_id",          help=_("Task ID.") )
+    parser.add_argument("-d", "--dest",     help=_("Destination folder."),     default=config.get('general', 'bigtemp_path') )
+    parser.add_argument("-o", "--output",   help=_("Output cloud file."),      default='cloud.asc' )
+    parser.add_argument("-n", "--n-probes", help=_("Number of probes."),       default=1)
+    parser.add_argument("-b", "--begin",    help=_("Begin scanning from X."),  default=0)
+    parser.add_argument("-e", "--end",      help=_("End scanning at X."),      default=360)
+    parser.add_argument("-x", "--x1",       help=_("X1."),                     default=0)
+    parser.add_argument("-y", "--y1",       help=_("Y1."),                     default=0)
+    parser.add_argument("-i", "--x2",       help=_("X2."),                     default=10)
+    parser.add_argument("-j", "--y2",       help=_("Y2."),                     default=10)
+    parser.add_argument("-z", "--safe-z",   help=_("Safe Z."),                 default=0)
+    parser.add_argument("--standalone", action='store_true',  help=_("Standalone operation. Does all preparations and cleanup.") )
+    parser.add_argument('--help', action='help', help=_("Show this help message and exit") )
+
+    # GET ARGUMENTS
+    args = parser.parse_args()
+
+    destination     = args.dest
+    output_file     = args.output
+    x1              = float(args.x1)
+    y1              = float(args.y1)
+    x2              = float(args.x2)
+    y2              = float(args.y2)
+    probe_density   = float(args.n_probes)
+    safe_z          = float(args.safe_z)
+    standalone      = args.standalone
+    task_id         = int(args.task_id)
+
+    monitor_file    = config.get('general', 'task_monitor')
+    log_trace       = config.get('general', 'trace')
+
+    ############################################################################
+
+    print 'PROBE MODULE STARTING'
+    print 'scanning from' + str(x1)+ "," +str(y1)+ " to " +str(x2)+ "," +str(y2); 
+    print 'Probing density : ', probe_density , " points/mm"
+    #print 'Start/End       : ', begin ,' to ', end, 'deg'
+
+    app = ProbeScan(log_trace, monitor_file, standalone)
+
+    app_thread = Thread( 
+            target = app.run, 
+            args=( [task_id, output_file, x1, y1, x2, y2, probe_density] ) 
+            )
+    app_thread.start()
+
+    # app.loop() must be started to allow callbacks
+    app.loop()
+    app_thread.join()
+
+if __name__ == "__main__":
+    main()

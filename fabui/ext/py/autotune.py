@@ -36,27 +36,13 @@ import fabtotum.fabui.macros.printing as print_macros
 tr = gettext.translation('autotune', 'locale', fallback=True)
 _ = tr.ugettext
 
-config = ConfigService()
-
-# SETTING EXPECTED ARGUMENTS
-parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument("task_id",          help=_("Task ID.") )
-parser.add_argument("-e", "--extruder", help=_("Extruder to select."),              default=0)
-parser.add_argument("-t", "--temp",     help=_("Temperature used for PID tunind."), default=200)
-parser.add_argument("-c", "--cycles",   help=_("Number of tuning cycles"),          default=8)
-
-# GET ARGUMENTS
-args = parser.parse_args()
-
-# INIT VARs
-task_id         = int(args.task_id)      # TASK ID  
-monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, ex: temperatures, speed, etc
-log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
-temperature     = int(args.temp)
-extruder        = int(args.extruder)
-cycles          = int(args.cycles)
+################################################################################
 
 class PIDAutotune(GCodePusher):
+    """
+    Automatic PID tuninig.
+    """
+    
     def __init__(self, log_trace, monitor_file):
         super(PIDAutotune, self).__init__(log_trace, monitor_file)
         
@@ -106,22 +92,39 @@ class PIDAutotune(GCodePusher):
         
         self.stop()
 
-app = PIDAutotune(log_trace, monitor_file)
+def main():
+    config = ConfigService()
 
-app_thread = Thread( 
-        target = app.run, 
-        args=( [task_id, extruder, temperature, cycles] ) 
-        )
-app_thread.start()
+    # SETTING EXPECTED ARGUMENTS
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("task_id",          help=_("Task ID.") )
+    parser.add_argument("-e", "--extruder", help=_("Extruder to select."),              default=0)
+    parser.add_argument("-t", "--temp",     help=_("Temperature used for PID tunind."), default=200)
+    parser.add_argument("-c", "--cycles",   help=_("Number of tuning cycles"),          default=8)
 
-app.loop()          # app.loop() must be started to allow callbacks
-app_thread.join()
+    # GET ARGUMENTS
+    args = parser.parse_args()
+
+    # INIT VARs
+    task_id         = int(args.task_id)      # TASK ID  
+    monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, ex: temperatures, speed, etc
+    log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
+    temperature     = int(args.temp)
+    extruder        = int(args.extruder)
+    cycles          = int(args.cycles)
+    
+    app = PIDAutotune(log_trace, monitor_file)
+
+    app_thread = Thread( 
+            target = app.run, 
+            args=( [task_id, extruder, temperature, cycles] ) 
+            )
+    app_thread.start()
+
+    # app.loop() must be started to allow callbacks
+    app.loop()
+    app_thread.join()
 
 
-#~ bias: 154 d: 100 min: 198.88 max: 202.08]
-#~ DEBUG :   >> [None] [ Ku: 79.59 Tu: 19.66]
-#~ DEBUG :   >> [None] [ Classic PID]
-#~ DEBUG :   >> [None] [ Kp: 47.76]
-#~ DEBUG :   >> [None] [ Ki: 4.86]
-#~ DEBUG :   >> [None] [ Kd: 117.36]
-#~ DEBUG :   >> [None] [PID Autotune finished! Put the last Kp, Ki and Kd constants from above into Configuration.h]
+if __name__ == "__main__":
+    main()

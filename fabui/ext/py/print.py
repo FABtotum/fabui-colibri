@@ -37,30 +37,6 @@ import fabtotum.fabui.macros.printing as print_macros
 tr = gettext.translation('print', 'locale', fallback=True)
 _ = tr.ugettext
 
-config = ConfigService()
-
-# SETTING EXPECTED ARGUMENTS
-parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument("task_id",      help=_("Task ID.") )
-parser.add_argument("file",         help=_("Gcode file to execute.") )
-parser.add_argument("--standalone", action='store_true',  help=_("Standalone operation. Does all preparations and cleanup.") )
-group = parser.add_argument_group( _('standalone arguments') )
-group.add_argument("--ext_temp",   help=_("Extruder temperature (for UI feedback only)"),  default=180, nargs='?')
-group.add_argument("--bed_temp",   help=_("Bed temperature (for UI feedback only)"),  default=50,  nargs='?')
-group.add_argument("--autolevel",  action='store_true',  help=_("Auto bed leveling. Valid only when --standalone is used.") )
-
-# GET ARGUMENTS
-args = parser.parse_args()
-
-# INIT VARs
-gcode_file      = args.file         # GCODE FILE
-task_id         = args.task_id      # TASK ID  
-monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
-log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
-ext_temp_target = args.ext_temp     # EXTRUDER TARGET TEMPERATURE (previously read from file) 
-bed_temp_target = args.bed_temp     # BED TARGET TEMPERATURE (previously read from file) 
-standalone      = args.standalone   # Standalong operation
-autolevel       = args.autolevel    # Standalong operation
 ################################################################################
 
 class PrintApplication(GCodePusher):
@@ -132,8 +108,36 @@ class PrintApplication(GCodePusher):
         
         self.trace( _("Print initiated.") )
 
+def main():
+    config = ConfigService()
 
-app = PrintApplication(log_trace, monitor_file, standalone, autolevel)
+    # SETTING EXPECTED ARGUMENTS
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("task_id",      help=_("Task ID.") )
+    parser.add_argument("file",         help=_("Gcode file to execute.") )
+    parser.add_argument("--standalone", action='store_true',  help=_("Standalone operation. Does all preparations and cleanup.") )
+    group = parser.add_argument_group( _('standalone arguments') )
+    group.add_argument("--ext_temp",   help=_("Extruder temperature (for UI feedback only)"),  default=180, nargs='?')
+    group.add_argument("--bed_temp",   help=_("Bed temperature (for UI feedback only)"),  default=50,  nargs='?')
+    group.add_argument("--autolevel",  action='store_true',  help=_("Auto bed leveling. Valid only when --standalone is used.") )
 
-app.run(task_id, gcode_file)
-app.loop()
+    # GET ARGUMENTS
+    args = parser.parse_args()
+
+    # INIT VARs
+    gcode_file      = args.file         # GCODE FILE
+    task_id         = args.task_id      # TASK ID  
+    monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
+    log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
+    ext_temp_target = args.ext_temp     # EXTRUDER TARGET TEMPERATURE (previously read from file) 
+    bed_temp_target = args.bed_temp     # BED TARGET TEMPERATURE (previously read from file) 
+    standalone      = args.standalone   # Standalong operation
+    autolevel       = args.autolevel    # Standalong operation
+
+    app = PrintApplication(log_trace, monitor_file, standalone, autolevel)
+
+    app.run(task_id, gcode_file)
+    app.loop()
+
+if __name__ == "__main__":
+    main()

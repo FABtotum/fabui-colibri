@@ -35,24 +35,6 @@ from fabtotum.fabui.macros.all import PRESET_MAP
 tr = gettext.translation('gmacro', 'locale', fallback=True)
 _ = tr.ugettext
 
-config = ConfigService()
-
-parser = argparse.ArgumentParser()
-parser.add_argument("preset",       help=_("macro to execute") )
-parser.add_argument("log_trace",    help=_("log trace file"), default=config.get('general', 'trace'), nargs='?')
-parser.add_argument("log_response", help=_("log response file"), default=config.get('general', 'macro_response'), nargs='?')
-
-parser.add_argument("--ext_temp",   help=_("extruder target"),     default=180, nargs='?', type=int)
-parser.add_argument("--bed_temp",   help=_("bed target"),          default=50,  nargs='?', type=int)
-
-args = parser.parse_args()
-
-preset          = args.preset
-log_trace       = args.log_trace
-log_response    = args.log_response
-ext_temp        = args.ext_temp
-bed_temp        = args.bed_temp
-
 ################################################################################
 
 class GMacroApplication(GCodePusher):
@@ -100,8 +82,30 @@ class GMacroApplication(GCodePusher):
             self.trace( _("Done!") )
 
         self.stop()
-    
-app = GMacroApplication(log_trace, log_response)
+   
+def main():
+    config = ConfigService()
 
-app.run(preset, [ext_temp, bed_temp])
-app.loop()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("preset",       help=_("macro to execute") )
+    parser.add_argument("log_trace",    help=_("log trace file"), default=config.get('general', 'trace'), nargs='?')
+    parser.add_argument("log_response", help=_("log response file"), default=config.get('general', 'macro_response'), nargs='?')
+
+    parser.add_argument("--ext_temp",   help=_("extruder target"),     default=180, nargs='?', type=int)
+    parser.add_argument("--bed_temp",   help=_("bed target"),          default=50,  nargs='?', type=int)
+
+    args = parser.parse_args()
+
+    preset          = args.preset
+    log_trace       = args.log_trace
+    log_response    = args.log_response
+    ext_temp        = args.ext_temp
+    bed_temp        = args.bed_temp
+    
+    app = GMacroApplication(log_trace, log_response)
+
+    app.run(preset, [ext_temp, bed_temp])
+    app.loop()
+
+if __name__ == "__main__":
+    main()
