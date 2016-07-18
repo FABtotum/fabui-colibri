@@ -179,15 +179,22 @@
 	{
 		//load helpers
 		$this->load->helpers('fabtotum_helper');
-		if(!doMacro('home_all')){
-			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false)));
+		
+		$homAllResult = doMacro('home_all');
+		if($homAllResult['response'] == false){
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $homAllResult['trace'])));
 			return;
 		}
 		$this->load->model('Files', 'files');
 		$fileToCreate = $this->files->get($data['idFile'], 1);
 		$temperatures = readInitialTemperatures($fileToCreate['full_path']);
-		if(!doMacro('start_print', null, null, array('--ext_temp' => $temperatures['extruder'], '--bed_temp' => $temperatures['bed']))){
-			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false)));
+		if($temperatures == false){
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => 'File not found')));
+			return;
+		}
+		$startPrintResult = doMacro('start_print', null, null, array('--ext_temp' => $temperatures['extruder'], '--bed_temp' => $temperatures['bed']));
+		if($startPrintResult['response'] == false){
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace'=>$startPrintResult['trace'])));
 			return;
 		}
 		//get object record
@@ -251,8 +258,8 @@
 	{
 		$this->load->helper('fabtotum_helper');
 		$action($value);
-	}
-			
+		$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
+	}		
  }
  
 ?>

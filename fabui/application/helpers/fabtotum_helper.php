@@ -151,7 +151,8 @@ if(!function_exists('doMacro'))
 		
 		doCommandLine('python', $extPath.'py/gmacro.py', is_array($extrArgs) ? array_merge(array($macroName, $traceFile, $responseFile), $extrArgs) : array($macroName, $traceFile, $responseFile, $extrArgs));
 		//if response is false means that macro failed
-		return str_replace('<br>', '', trim(file_get_contents($responseFile))) == 'true' ? true : false;
+		$response = str_replace('<br>', '', trim(file_get_contents($responseFile))) == 'true' ? true : false;
+		return array('response' => $response, 'trace' => file_get_contents($traceFile));
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -164,24 +165,25 @@ if(!function_exists('readInitialTemperatures'))
 	 */
 	function readInitialTemperatures($file, $numLines = 500){
 		
-		$re = "\"M(\d+)\sS([+|-]*[0-9]*.[0-9]*)\""; //regular expression to catch temperatures
-		$extruderGCodes = array(109);
-		$bedGCodes      = array(190);
-		
-		$extruderTemp = 0;
-		$bedTemp      = 0;
-		//read first $numLines lines of the file
-		$lines = explode(PHP_EOL, doCommandLine('head', '"'.$file.'"', array('-n' => $numLines)));
-		foreach($lines as $line){
-			preg_match($re, $line, $matches);
-			if(count($matches) > 0){
-				if(in_array($matches[1], $extruderGCodes)) $extruderTemp = $matches[2];
-				if(in_array($matches[1], $bedGCodes))      $bedTemp      = $matches[2];
+		if(file_exists($file)){
+			$re = "\"M(\d+)\sS([+|-]*[0-9]*.[0-9]*)\""; //regular expression to catch temperatures
+			$extruderGCodes = array(109);
+			$bedGCodes      = array(190);
+			$extruderTemp = 1;
+			$bedTemp      = 1;
+			//read first $numLines lines of the file
+			$lines = explode(PHP_EOL, doCommandLine('head', '"'.$file.'"', array('-n' => $numLines)));
+			foreach($lines as $line){
+				preg_match($re, $line, $matches);
+				if(count($matches) > 0){
+					if(in_array($matches[1], $extruderGCodes)) $extruderTemp = $matches[2];
+					if(in_array($matches[1], $bedGCodes))      $bedTemp      = $matches[2];
+				}
+				if($bedTemp > 1 && $extruderTemp > 1) break;
 			}
-			
-			if($bedTemp > 0 && $extruderTemp > 0) break;
-		}
-		return array('extruder' => intval($extruderTemp), 'bed' => intval($bedTemp));
+			return array('extruder' => intval($extruderTemp), 'bed' => intval($bedTemp));
+		}else 
+			return false;
 	}
 	
 }

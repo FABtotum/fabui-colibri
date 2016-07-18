@@ -81,7 +81,7 @@
 							</section>
 							<div class="row">
 								<section class="col col-4">
-									<button type="button" data-action="zHeight" data-attribute="+" class="btn btn-default btn-block action"  style="padding:6px 10px 5px"><i class="fa fa-minus"></i></button>
+									<button data-rel="tooltip" data-original-title="Away from the nozzle" type="button" data-action="zHeight" data-attribute="+" class="btn btn-default btn-block action"  style="padding:6px 10px 5px"><i class="fa fa-arrow-down"></i></button>
 								</section>
 								<section class="col col-4">
 									<label class="select">
@@ -89,7 +89,7 @@
 									</label>
 								</section>
 								<section class="col col-4">
-									<button type="button" data-action="zHeight" data-attribute="-" class="btn btn-default btn-block action"  style="padding:6px 10px 5px"><i class="fa fa-plus"></i></button>
+									<button rel="tooltip" title="Closer to the nozzle" type="button" data-action="zHeight" data-attribute="-" class="btn btn-default btn-block action"  style="padding:6px 10px 5px"><i class="fa fa-arrow-up"></i></button>
 								</section>
 							</div>
 						</fieldset>

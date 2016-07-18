@@ -32,6 +32,7 @@
 	<?php endif; ?>
 	var speedSlider;
 	var fanSlider;
+	var zOverride = 0;
 	
 	$(document).ready(function() {
 		initWizard();
@@ -166,15 +167,19 @@
 			url: '<?php echo site_url('create/startCreate/'.$type); ?>',
 			dataType: 'json'
 		}).done(function(response) {
-			disableButton('.btn-prev');
-			disableButton('.btn-next');
-			setInterval(timer, 1000);
-			setInterval(jsonMonitor, 1000);
-			idTask = response.id_task;
-			initSliders();
-			setTimeout(initGraph, 1000);
-			setTemperaturesSlidersValue(response.temperatures.extruder, response.temperatures.bed);
-			updateZOverride(0);
+			if(response.start == false){
+				$('.wizard').wizard('selectedItem', { step: 2 });
+				showErrorResponse(response.trace);
+			}else{
+				freezeUI();
+				setInterval(timer, 1000);
+				setInterval(jsonMonitor, 1000);
+				idTask = response.id_task;
+				initSliders();
+				setTimeout(initGraph, 1000);
+				setTemperaturesSlidersValue(response.temperatures.extruder, response.temperatures.bed);
+				updateZOverride(0);
+			}
 			closeWait();
 			//TODO freeze menu fabApp.freezeMenu();
 		});
@@ -214,12 +219,14 @@
 				break;
 			case 3:
 				startCreate();
+				return false;
 				break; 
 		}
 	}
 	
 	if(typeof manageMonitor != 'function'){
 		window.manageMonitor = function(data){
+			handleTaskStatus(data.task.status);
 			updateProgress(data.task.percent);
 			updateSpeed(data.override.speed);
 			updateFlowRate(data.override.flow_rate);
@@ -237,12 +244,11 @@
 				temperaturesPlot =  JSON.parse(localStorage.getItem("temperaturesPlot"));
 			}
 		}
-		
+		freezeUI();
 		setTimeout(initSliders,  1000);
 		setInterval(jsonMonitor, 1000);
 		setTimeout(initGraph,    1000);
 		setTimeout(function(){
-			console.log('initRunningTaskPage pre getTaskMonitor');
 			getTaskMonitor(true);
 		},    1000);
 		
@@ -256,7 +262,6 @@
 		$.get('/temp/task_monitor.json'+ '?' + jQuery.now(), function(data, status){
 			manageMonitor(data);
 			if(firstCall) {
-				console.log("first call");
 				handleTaskStatus(data.task.status);
 				setTemperaturesSlidersValue();
 				setSpeedSliderValue(data.override.speed);
@@ -278,6 +283,7 @@
 	 */
 	function handleTaskStatus(status)
 	{
+		console.log("Task status: " + status);
 		switch(status){
 			case 'paused':
 				var element = $(".isPaused-button");
@@ -331,6 +337,7 @@
 	*/
 	function updateZOverride(value)
 	{	
+		zOverride = value;
 		$(".z-height").html(value);
 	}
 	/**
@@ -492,7 +499,7 @@
 				var sign = element.attr('data-attribute');
 				var overrideToAdd = parseFloat($("#zHeight").val()).toFixed(2);
 				var actualOverride = parseFloat($(".z-height").html()).toFixed(2);
-				var operation = '(' + overrideToAdd +')' + sign + '(' + actualOverride + ')';
+				var operation = '(' + actualOverride +')' + sign + '(' + overrideToAdd + ')';
 				$(".z-height").html(parseFloat(eval(operation)).toFixed(2));
 				sendActionRequest('zHeight', sign+$("#zHeight").val());
 				break;
@@ -532,12 +539,39 @@
 	 */
 	function sendActionRequest(action, value)
 	{
+		console.log(action);
+		console.log(value);
 		value = value || '';
+		var message;
 		$.ajax({
 			type: 'post',
 			url: '<?php echo site_url('create/action/'); ?>/' + action + '/' + value,
 			dataType: 'json'
 		}).done(function(response) {
+			switch(action){
+				case 'pause':
+					message="Print paused";
+					break;
+				case 'resume':
+					message="Print resumed";
+					break;
+				case 'speed':
+					message="Speed override changed to: " + value;
+					break;
+				case 'flowRate':
+					message="Flow Rate override changed to: " + value;
+					break;
+				case 'fan':
+					message="Fan override changed to: " + value;
+					break;
+				case 'zHeight':
+					if(value.charAt(0) == '+') message="Z height increased";
+					else message="Z height decreased";
+					break;
+				default:
+					message="Unknown action: "+ action;
+			}
+			showActionAlert(message);
 		});
 	}
 	
@@ -779,9 +813,51 @@
 		}).done(function(response) {
 			$('.wizard').wizard('selectedItem', { step: 4 });
 			closeWait();
+			unFreezeUI();
 		});
-		
-		
 	}
-	
+	/**
+	* show error message 
+	*/
+	function showErrorResponse(message)
+	{
+		$.smallBox({
+			title : "Warning",
+			content : message,
+			color : "#C46A69",
+			timeout: 10000,
+			icon : "fa fa-warning"
+		});
+	}
+	/**
+	* freeze ui
+	*/
+	function freezeUI()
+	{
+		disableButton('.btn-prev');
+		disableButton('.btn-next');
+		disableButton('.top-directions');
+		disableButton('.top-axisz');
+	}
+	/**
+	*
+	*/
+	function unFreezeUI()
+	{
+		enableButton('.top-directions');
+		enableButton('.top-axisz');
+	}
+	/**
+	*
+	*/
+	function showActionAlert(message)
+	{
+		$.smallBox({
+			title : "Info",
+			content : message,
+			color : "#5384AF",
+			timeout: 3000,
+			icon : "fa fa-check bounce animated"
+		});
+	}
 </script>

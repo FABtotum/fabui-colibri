@@ -12,6 +12,6 @@
 	<hr class="simple">
 	<h1 class="text-center text-success margin-top-50">
 		<i class="fa fa-check"></i> <?php echo ucfirst($type) ?> completed!
-		<br><small>Click finish to end wizard</small>
+		<br>
 	</h1>
 </div>

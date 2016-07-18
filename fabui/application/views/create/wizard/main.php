@@ -8,7 +8,7 @@
  */
 ?>
 
-<div class="wizard">
+<div class="wizard" data-initialize="wizard" id="myWizard">
 	<div class="steps-container">
 		<ul class="steps">
 			<li data-step="1" data-target="#step1" class="<?php echo !$runningTask ? 'active' : ''; ?>">
