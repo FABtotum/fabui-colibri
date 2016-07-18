@@ -8,6 +8,6 @@
  */
  
 ?>
-<div class="step-pane" id="step2">
+<div class="step-pane" id="step2" data-step="2">
 	STEP 2
 </div>

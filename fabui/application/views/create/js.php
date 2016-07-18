@@ -15,7 +15,7 @@
 	var breakpointDefinition = { tablet : 1024, phone : 480};
 	var filesTable; //table object
 	var recentFilesTable; //table object
-	var idFile <?php echo $runningTask ? ' = '.$runningTask['id_file'] : ''; ?>; //file to create
+	var idFile <?php echo $runningTask != false ? ' = '.$runningTask['id_file'] : ''; ?>; //file to create
 	var skipEngage = <?php echo $this->session->settings['feeder']['show'] == false ? 'true' : 'false' ?>; //force true if feeder engage is hidden
 	var temperaturesGraph;
 	var temperaturesPlot = {extruder: {temp: [], target: []}, bed: {temp:[], target:[]}};
@@ -33,10 +33,9 @@
 	var speedSlider;
 	var fanSlider;
 	
-	
 	$(document).ready(function() {
 		initWizard();
-		<?php if(!$runningTask): ?>
+		<?php if($runningTask == false): ?>
 		initFilesTable();
 		initRecentFilesTable();
 		<?php else: ?>
@@ -69,7 +68,7 @@
 		});
 	}
 	
-	<?php if(!$runningTask): ?>
+	<?php if($runningTask == false): ?>
 	function initFilesTable()
 	{
 		filesTable = $('#files_table').dataTable({
@@ -167,13 +166,16 @@
 			url: '<?php echo site_url('create/startCreate/'.$type); ?>',
 			dataType: 'json'
 		}).done(function(response) {
+			disableButton('.btn-prev');
+			disableButton('.btn-next');
 			setInterval(timer, 1000);
 			setInterval(jsonMonitor, 1000);
 			idTask = response.id_task;
-			closeWait();
 			initSliders();
 			setTimeout(initGraph, 1000);
 			setTemperaturesSlidersValue(response.temperatures.extruder, response.temperatures.bed);
+			updateZOverride(0);
+			closeWait();
 			//TODO freeze menu fabApp.freezeMenu();
 		});
 	}
@@ -223,8 +225,6 @@
 			updateFlowRate(data.override.flow_rate);
 			updateFan(data.override.fan);
 			updateTimers(data.task.started_time);
-			updateZOverride(data.override.z_override);
-			
 		};
 	}
 	/**
@@ -242,6 +242,7 @@
 		setInterval(jsonMonitor, 1000);
 		setTimeout(initGraph,    1000);
 		setTimeout(function(){
+			console.log('initRunningTaskPage pre getTaskMonitor');
 			getTaskMonitor(true);
 		},    1000);
 		
@@ -252,17 +253,16 @@
 	 */
 	function getTaskMonitor(firstCall)
 	{
-		$.get('/temp/task_monitor.json', function(data, status){
+		$.get('/temp/task_monitor.json'+ '?' + jQuery.now(), function(data, status){
 			manageMonitor(data);
 			if(firstCall) {
+				console.log("first call");
 				handleTaskStatus(data.task.status);
-				var serverDate = new Date((data.<?php echo $type; ?>.started) * 1000 );
-				var browserDate = new Date();
-				//set sliders target - just on first call
 				setTemperaturesSlidersValue();
 				setSpeedSliderValue(data.override.speed);
 				setFlowRateSliderValue(data.override.flow_rate);
 				setFanSliderValue(data.override.fan);
+				updateZOverride(data.override.z_override);
 			}
 		});
 	}
@@ -288,7 +288,10 @@
 				var element = $(".isPaused-button");
 				element.html('<i class="fa fa-pause"></i> Pause Print');
 				element.attr('data-action', 'pause');
-				break;		
+				break;
+			case 'completed':
+				completeTask();
+				break;
 		}
 	}
 	/**
@@ -327,7 +330,7 @@
 	* update z override value
 	*/
 	function updateZOverride(value)
-	{
+	{	
 		$(".z-height").html(value);
 	}
 	/**
@@ -343,7 +346,6 @@
 	if(typeof updateTaskTemperatures != 'function'){
 		window.updateTaskTemperatures = function(ext, extTarget, bed, bedTarget)
 		{
-			console.log("update temps task");
 			var extruderTemp = {'value': parseFloat(ext), 'time': new Date().getTime()};
 			var extruderTargetTemp = {'value': parseFloat(extTarget), 'time': new Date().getTime()};
 			var bedTemp = {'value': parseFloat(bed), 'time': new Date().getTime()};
@@ -488,7 +490,10 @@
 				break;
 			case 'zHeight':
 				var sign = element.attr('data-attribute');
-				$(".z-height").html(eval($(".z-height").html()+sign+$("#zHeight").val()));
+				var overrideToAdd = parseFloat($("#zHeight").val()).toFixed(2);
+				var actualOverride = parseFloat($(".z-height").html()).toFixed(2);
+				var operation = '(' + overrideToAdd +')' + sign + '(' + actualOverride + ')';
+				$(".z-height").html(parseFloat(eval(operation)).toFixed(2));
 				sendActionRequest('zHeight', sign+$("#zHeight").val());
 				break;
 		}
@@ -613,26 +618,26 @@
 		extruderSlider.noUiSlider.on('slide',  function(e){
 			onSlide('extruder-target', e);
 		});
-		extruderSlider.noUiSlider.on('set', function(e){
-			onSet('extruder-target', e);
+		extruderSlider.noUiSlider.on('change', function(e){
+			onChange('extruder-target', e);
 		});
 		//bed
 		bedSlider.noUiSlider.on('slide',  function(e){
 			onSlide('bed-target', e);
 		});
-		bedSlider.noUiSlider.on('set', function(e){
-			onSet('bed-target', e);
+		bedSlider.noUiSlider.on('change', function(e){
+			onChange('bed-target', e);
 		});
 		//flow rate
-		flowRateSlider.noUiSlider.on('set', function(e){
-			onSet('flow-rate', e);
+		flowRateSlider.noUiSlider.on('change', function(e){
+			onChange('flow-rate', e);
 		});
 		flowRateSlider.noUiSlider.on('slide', function(e){
 			onSlide('flow-rate', e);
 		});
 		//fan
-		fanSlider.noUiSlider.on('set', function(e){
-			onSet('fan', e);
+		fanSlider.noUiSlider.on('change', function(e){
+			onChange('fan', e);
 		});
 		fanSlider.noUiSlider.on('slide', function(e){
 			onSlide('fan', e);
@@ -652,8 +657,8 @@
 		});
 		speedSlider = document.getElementById('create-speed-slider');
 		//speed slider
-		speedSlider.noUiSlider.on('set', function(e){
-			onSet('speed', e);
+		speedSlider.noUiSlider.on('change', function(e){
+			onChange('speed', e);
 		});
 		speedSlider.noUiSlider.on('slide', function(e){
 			onSlide('speed', e);
@@ -688,7 +693,7 @@
 	/**
 	 * event on slider set
 	 */
-	function onSet(element, value)
+	function onChange(element, value)
 	{
 		switch(element){
 			case 'extruder-target':
@@ -760,6 +765,23 @@
 		if(typeof fanSlider !== 'undefined'){
 			fanSlider.noUiSlider.set(value);
 		}
+	}
+	/**
+	* complete task
+	*/
+	function completeTask()
+	{	
+		openWait("Task completed");
+		$.ajax({
+			type: 'post',
+			url: '<?php echo site_url('create/complete/'); ?>/' + idTask,
+			dataType: 'json'
+		}).done(function(response) {
+			$('.wizard').wizard('selectedItem', { step: 4 });
+			closeWait();
+		});
+		
+		
 	}
 	
 </script>

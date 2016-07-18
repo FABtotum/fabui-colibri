@@ -11,7 +11,7 @@
  */
  
 ?>
-<div class="step-pane active" id="step1">
+<div class="step-pane active" id="step1" data-step="1">
 	<hr class="simple">
 	<ul id="filesTab"  class="nav nav-tabs  bordered">
 		<li class=" active">

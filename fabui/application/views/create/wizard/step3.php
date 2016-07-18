@@ -8,7 +8,7 @@
  */
  
 ?>
-<div class="step-pane <?php echo $runningTask ? 'active' : ''; ?>" id="step3">
+<div class="step-pane <?php echo $runningTask ? 'active' : ''; ?>" id="step3" data-step="3">
 	<hr class="simple">
 	<ul id="createFeed" class="nav nav-tabs bordered">
 		<li class="active"><a href="#live-feeds-tab" data-toggle="tab">Live feeds</a></li>

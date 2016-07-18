@@ -253,7 +253,7 @@ if(!function_exists('startPrint'))
 		$CI =& get_instance();
 		$CI->config->load('fabtotum'); 
 		$extPath = $CI->config->item('ext_path');
-		doCommandLine('python', $extPath.'/py/print.py "'.$taskID.'" '.$gcodeFilePath.' > /dev/null & echo $! > /run/task_create.pid');	
+		doCommandLine('python', $extPath.'/py/print.py '.$taskID.' "'.$gcodeFilePath.'" > /dev/null & echo $! > /run/task_create.pid');	
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
