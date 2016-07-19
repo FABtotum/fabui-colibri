@@ -29,14 +29,12 @@ import re
 import json
 import argparse
 import time
+import gettext
 import logging
 from threading import Event, Thread, RLock
 
-import gettext
 
 # Import external modules
-from watchdog.observers import Observer
-from watchdog.events import PatternMatchingEventHandler
 
 # Import internal modules
 from fabtotum.fabui.config import ConfigService

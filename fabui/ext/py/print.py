@@ -78,7 +78,7 @@ class PrintApplication(GCodePusher):
     def temp_change_callback(self, action, data):
         print action, data
         
-    def run(self, task_id, gcode_file):
+    def run(self, task_id, gcode_file, ext_temp_target, bed_temp_target):
         """
         Run the print.
         
@@ -91,9 +91,11 @@ class PrintApplication(GCodePusher):
         self.prepare_task(task_id, task_type='print', gcode_file=gcode_file)
         
         if self.standalone:
-            print_macros.check_pre_print(self)
+            #print_macros.check_pre_print(self)
+            self.exec_macro("check_pre_print")
             
             if self.autolevel:
+                self.exec_macro("raise_bed")
                 self.exec_macro("auto_bed_leveling")
             else:
                 self.exec_macro("raise_bed")
@@ -136,7 +138,7 @@ def main():
 
     app = PrintApplication(log_trace, monitor_file, standalone, autolevel)
 
-    app.run(task_id, gcode_file)
+    app.run(task_id, gcode_file, ext_temp_target, bed_temp_target)
     app.loop()
 
 if __name__ == "__main__":

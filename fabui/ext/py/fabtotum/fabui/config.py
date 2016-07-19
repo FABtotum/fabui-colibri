@@ -18,6 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
 
+__authors__ = "Daniel Kesler"
+__license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
+__version__ = "1.0"
 
 # Import standard python module
 import json
