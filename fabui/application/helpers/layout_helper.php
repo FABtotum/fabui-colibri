@@ -15,12 +15,30 @@ function jScriptsInclusion($scripts) {
 	if (is_array($scripts)) {
 		$html = '';
 		foreach ($scripts as $script) {
-			$html .= '<script type="text/javascript" src="' . $script . '"></script>'.PHP_EOL;
+			$html .= '<script type="text/javascript" src="' . $script . '?v='.FABUI_VERSION.'"></script>'.PHP_EOL;
 		}
 		return $html;
 	}
 	if ($scripts != '') {
-		return '<script type="text/javascript" src="' . $scripts . '"></script>' . PHP_EOL;
+		return '<script type="text/javascript" src="' . $scripts . '?v='.FABUI_VERSION.'"></script>' . PHP_EOL;
+	}
+}
+
+/**
+ * 
+ * generate html for css files inclusion
+ */
+function cssFilesInclusion($files, $ajax = false)
+{
+	if(is_array($files)){
+		$html = '';
+		foreach($files as $file){
+			$html .= '<link rel="stylesheet" type="text/css" media="screen" href="'.$file.'?v='.FABUI_VERSION.'">'.PHP_EOL;
+		}
+		return $html;
+	}
+	if($files != '' ){
+		return '<link rel="stylesheet" type="text/css" media="screen" href="'.$files.'?v='.FABUI_VERSION.'">'.PHP_EOL;
 	}
 }
 
@@ -32,9 +50,9 @@ function ajaxJScriptsInclusion($scripts)
 	$html = '';
 	for($i = 0; $i<count($scripts); $i++){
 		if($i == (count($scripts)-1)){
-			$html .= 'loadScript("'.$scripts[$i].'", pagefunction);'.PHP_EOL;
+			$html .= 'loadScript("'.$scripts[$i].'?v='.FABUI_VERSION.'", pagefunction);'.PHP_EOL;
 		}else{
-			$html .= 'loadScript("'.$scripts[$i].'", function(){'.PHP_EOL;
+			$html .= 'loadScript("'.$scripts[$i].'?v='.FABUI_VERSION.'", function(){'.PHP_EOL;
 		}
 	}
 	for($i = 0; $i<count($scripts); $i++){

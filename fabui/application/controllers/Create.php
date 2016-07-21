@@ -78,6 +78,8 @@
 		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>Print</h2>");
 		$widget->body   = array('content' => $this->load->view('create/main_widget', $data, true ), 'class'=>'fuelux');
 		
+		//add css files
+		$this->addCssFile('/assets/css/create/style.css');
 		//add javascript dependencies
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.js'); //wizard
 		if(!$this->runningTask){ //if task is running these filee are not needed
@@ -86,15 +88,12 @@
 			$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
 			$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
 			$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
-			$this->addCSSInLine('<style>.pagination li{display:inline !important} .img-responsive {display:inline; max-width:50%;} .radio{padding-top:0px !important;} .medium {min-height:190px !important;} .mini {min-height:150px !important;}</style>');
 		}
-		
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.cust.min.js'); //datatable
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.resize.min.js'); //datatable
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.fillbetween.min.js'); //datatable
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.time.min.js'); //datatable
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js'); //datatable
-		$this->addCSSInLine('<style>.fake-progress{margin-bottom:15px;}</style>');
 		
 		$this->addJsInLine($this->load->view('create/js', $data, true));
 		$this->content = $widget->print_html(true);
@@ -142,11 +141,13 @@
 	 */
 	private function dataTableFormat($data)
 	{
+		//load text helper
+		$this->load->helper('text_helper');
 		$aaData = array();
-		foreach($data as $file){
+		foreach($data as $file){ 
 			$td0 = '<label class="radio"><input type="radio" name="create-file" value="'.$file['id_file'].'"><i></i></label>';
-			$td1 = '<i></i> '.$file['orig_name'];
-			$td2 = '<i class="fa fa-folder-open"></i> '.$file['name'];
+			$td1 = '<i></i><span class="hidden-xs">'.$file['orig_name'].'</span><span class="hidden-md hidden-sm hidden-lg">'.ellipsize($file['orig_name'], 35).'</span>';
+			$td2 = '<i class="fa fa-folder-open"></i> <span class="hidden-xs">'.$file['name'].'</span><span class="hidden-md hidden-sm hidden-lg">'.ellipsize($file['name'], 35).'</span>';
 			$td3 = $file['id_file'];
 			$td4 = $file['id_object'];
 			$aaData[] = array($td0, $td1, $td2, $td3, $td4);
@@ -235,7 +236,7 @@
 		abort();
 		//update db status
 		$this->load->model('Tasks', 'tasks');
-		$this->tasks->update($taskId, array('status' => 'abort'));
+		$this->tasks->update($taskId, array('status' => 'abort','finish_date' => date('Y-m-d H:i:s')));
 		$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
 		//TODO
 	}
@@ -247,7 +248,7 @@
 	{
 		//update db status
 		$this->load->model('Tasks', 'tasks');
-		$this->tasks->update($taskID, array('status' => 'completed'));
+		$this->tasks->update($taskID, array('status' => 'completed', 'finish_date' => date('Y-m-d H:i:s')));
 		$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
 	}
 	

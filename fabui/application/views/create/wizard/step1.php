@@ -27,9 +27,9 @@
 				<table id="files_table" class="table table-striped table-bordered table-hover smart-form has-tickbox cursor-pointer" width="100%">
 					<thead>
 						<tr>
-							<th></th>
+							<th width="20" class="text-center"></th>
 							<th>File</th>
-							<th>Object</th>
+							<th class="hidden-xs">Object</th>
 							<th class="hidden"></th>
 							<th class="hidden"></th>
 						</tr>
@@ -43,9 +43,9 @@
 				<table id="recent_files_table" class="table table-striped table-bordered table-hover smart-form has-tickbox cursor-pointer" width="100%">
 					<thead>
 						<tr>
-							<th></th>
+							<th width="20" class="text-center"></th>
 							<th>File</th>
-							<th>Object</th>
+							<th class="hidden-xs">Object</th>
 							<th class="hidden"></th>
 							<th class="hidden"></th>
 						</tr>

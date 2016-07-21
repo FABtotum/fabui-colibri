@@ -13,21 +13,22 @@
 <meta name="viewport"    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="robots"      content="noindex,nofollow">
 <!-- Basic Styles -->
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/line-icons-pro/styles.css">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/bootstrap.min.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/font-awesome.min.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/line-icons-pro/styles.css?v=<?php echo FABUI_VERSION ?>">
 <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-production-plugins.min.css">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-production.min.css">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-skins.min.css">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/font-fabtotum.css">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/fonts.css">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/demo.min.css">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/fabtotum_style.css">
-
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/js/plugin/noUiSlider.8.2.1/nouislider.min.css">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/js/plugin/noUiSlider.8.2.1/nouislider.pips.css">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/js/plugin/fancybox/jquery.fancybox.css">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-production-plugins.min.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-production.min.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-skins.min.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/font-fabtotum.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/fonts.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/demo.min.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/fabtotum_style.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/js/plugin/noUiSlider.8.2.1/nouislider.min.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/js/plugin/noUiSlider.8.2.1/nouislider.pips.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/js/plugin/fancybox/jquery.fancybox.css?v=<?php echo FABUI_VERSION ?>">
+<!-- PAGE RELATED CSS FILES -->
+<?php echo $cssFiles; ?>
 <!-- FAVICONS -->
 <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon">
 <link rel="icon"          href="/assets/img/favicon/favicon.ico" type="image/x-icon">
@@ -37,6 +38,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <!-- HEADERD JAVASCRIPTS -->
-<script src="/assets/js/libs/jquery-2.1.1.min.js"></script>
-<script src="/assets/js/libs/jquery-ui-1.10.3.min.js"></script>
+<script src="/assets/js/libs/jquery-2.1.1.min.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script src="/assets/js/libs/jquery-ui-1.10.3.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <?php echo $cssInLine; ?>

@@ -1,0 +1,51 @@
+.fake-progress {
+	margin-bottom:15px;
+}
+
+.extruder-temp, .extruder-target{
+	color:#FF0000 !important
+}
+
+#create-ext-target-slider {
+	background-color: #FF0000 !important;
+}
+
+.bed-temp, .bed-target{
+	color:#3276B1 !important
+}
+
+#create-bed-target-slider {
+	background-color: #3276B1 !important;
+}
+
+.noUi-horizontal{
+	height:12px !important
+}
+
+.noUi-handle {
+	height: 25px !important;
+}
+
+.pagination li{
+	display:inline !important
+} 
+.img-responsive {
+	display:inline; max-width:50%;
+} 
+.radio{
+	padding-top:0px !important;
+} 
+.medium {
+	min-height:190px !important;
+} 
+.mini {
+	min-height:150px !important;
+}
+
+#create-speed-slider, #create-flow-rate-slider, #create-fan-slider {
+	background-color: #7e9d3a !important;
+}
+
+.bg-color-primary {
+	background-color: #3276b1 !important;
+}
