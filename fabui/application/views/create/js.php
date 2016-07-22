@@ -272,6 +272,8 @@
 				setFlowRateSliderValue(data.override.flow_rate);
 				setFanSliderValue(data.override.fan);
 				updateZOverride(data.override.z_override);
+				elapsedTime = parseInt(data.task.duration);
+				setInterval(timer, 1000);
 			}
 		});
 	}

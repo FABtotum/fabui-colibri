@@ -11,7 +11,7 @@ if ( !function_exists('createDefaultSettings'))
 {
 	/**
 	 * 
-	 * Create ./settings/default_settings.json with default data
+	 * Create /var/lib/fabui/settings/default_settings.json with default data
 	 * 
 	 * 
 	 */
@@ -354,6 +354,17 @@ if(!function_exists('fan'))
 			$value = (($value/100)*255);
 		}
 		writeToCommandFile('!fan:'.$value);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('clearJogResponse'))
+{
+	/**
+	 * send command to clear jog response
+	 */
+	function clearJogResponse()
+	{
+		writeToCommandFile('!jog_clear');
 	}
 }
 ?>

@@ -32,7 +32,6 @@
 		$this->CI->config->load('fabtotum');
 		$this->CI->load->helper('file_helper');
   	}
-	
 	/***
 	 * send gcode command to serial
 	 */
@@ -51,7 +50,6 @@
 		}
 		write_file($this->CI->config->item('command'), $commandToWrite);
 	}
-	
 	/**
 	 * @return Array data response
 	 */
@@ -67,7 +65,6 @@
 	{
 		$this->responseType = $type;
 	}
-	
 	/**
 	 * @return response type
 	 */
@@ -75,7 +72,6 @@
 	{
 		return $this->responseType;
 	}
-	
 	/***
 	 * @return array status of the printer (temperatures)
 	 * get Nozzle and Bed temperatures
@@ -86,7 +82,6 @@
 		$this->serialReply = json_decode(file_get_contents($this->CI->config->item('temperature')), true);
 		return $this->response();
 	}
-	
 	/***
 	 * @param int $temperature
 	 * set heated bed temperature
@@ -96,7 +91,6 @@
 		$this->sendCommand('M140 S'.$temperature);
 		return $this->response();
 	}
-	
 	/**
 	 * @param int $temperature
 	 * set nozzle temperature
@@ -106,7 +100,6 @@
 		$this->sendCommand('M104 S'.$temperature);
 		return $this->response();
 	}
-	
 	/**
 	 * @param string $direction 
 	 * move head on X Y axis
@@ -125,7 +118,6 @@
 		$this->sendCommand(array('G91', sprintf($directions[$direction], $this->step['xy'], $this->feedrate['xyz']),'G90'));
 		return $this->response();
 	}
-	
 	/**
 	 * @param string $direction
 	 * move Z axis
@@ -136,7 +128,6 @@
 		$this->sendCommand(array('G91', 'GO Z'.$sign.$this->step['z'].' F'.$this->feedrate['xyz']));
 		return $this->response();
 	}
-	
 	/**
 	 * zero all 
 	 */
@@ -145,7 +136,6 @@
 		$this->sendCommand('G92 X0 Y0 Z0 E0');
 		return $this->response();
 	}
-	
 	/***
 	 * 
 	 */
@@ -159,7 +149,6 @@
 		$this->sendCommand($commands);
 		return $this->response();
 	}
-	
 	/**
 	 * 
 	 */
@@ -168,6 +157,21 @@
 		//TODO
 		$this->sendCommand(array('G91', 'G0 E'.$sign.$this->step['extruder'].' F'.$this->feedrate['extruder']));
 		return $this->response();
+	}
+	/**
+	 * Manual Data Input (MDI)
+	 */
+	function manualDataInput($inputCommands)
+	{
+		//TODO
+		$commandsToSend = array();
+		$list = explode(PHP_EOL, $inputCommands);
+		foreach($list as $command){
+			$cleanCommand = trim(strtoupper($command));
+			if($cleanCommand != '') $commandsToSend[] = $cleanCommand;
+			
+		}
+		$this->sendCommand($commandsToSend);
 	}
 }
  

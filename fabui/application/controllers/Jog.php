@@ -18,7 +18,7 @@
 		$widgetOptions = array(
 			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
 			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
-		);
+		); 
 		
 		$data = array();
 		$widget = $this->smart->create_widget($widgetOptions);
@@ -27,6 +27,8 @@
 		$widget->body   = array('content' => $this->load->view('jog/widget', $data, true ), 'class'=>'');
 		
 		$this->addJsInLine($this->load->view('jog/js', $data, true));
+		//css
+		$this->addCssFile('/assets/css/jog/style.css');
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
@@ -40,7 +42,6 @@
 	{
 		$data = $this->input->post();
 		$this->config->load('fabtotum');
-		if(file_exists($this->config->item('lock'))) return;
 		
 		//prepare JogFactory init args
 		$method      = $data['method'];
@@ -55,11 +56,20 @@
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('type' => $messageType, 'data' =>$messageData)));
 		}
 	}
+	/**
+	 * clear jog response file
+	 */
+	public function clear()
+	{
+		$this->load->helper('fabtotum_helper');
+		clearJogResponse();
+		$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
+	}
 	
 	public function test()
 	{
 		$this->load->library('JogFactory', '', 'jogFactory');
-		$messageData = $this->jogFactory->getTemperatures();
+		$messageData = $this->jogFactory->manualDataInput('M402');
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('type' => $this->jogFactory->getResponseType(), 'data' =>$messageData)));
 	}	
  }

@@ -262,6 +262,13 @@ fabApp = (function(app) {
 	/*
 	 * 
 	 */
+	app.jogMdi = function(value){
+		console.log(value);
+		app.serial('manualDataInput', value);
+	}
+	/*
+	 * 
+	 */
 	app.drawBreadCrumb = function () {
 		var a = $("nav li.active > a");
 		var b = a.length;
@@ -500,6 +507,10 @@ fabApp = (function(app) {
 						break;
 					case 'usb':
 						app.usb(obj.data.status, obj.data.alert);
+						break;
+					case 'jog':
+						app.writeJogResponse(obj.data.content);
+						break;
 					default:
 						break;
 				}
@@ -582,26 +593,32 @@ fabApp = (function(app) {
 		*/
 	};
 	/*
+	 * display jog response
+	 */
+	app.writeJogResponse = function(data){
+		var added = false;
+		if($(".jogResponseContainer").length > 0){
+			$.each(data, function(i, item) {
+				if($(".consoleContainer .response_" + i).length == 0){
+					var html = '<i>' + item.code + '</i> :';
+					if(item.reply.length > 1){
+						$.each(item.reply, function(index, value){
+							html += '<p>' + value +'</p>';
+						});
+					}else{
+						html += item.reply[0];
+					}
+					$(".consoleContainer").append('<div class="jog_response response_' + i + '">' + html + '</div><hr class="simple">');
+					added = true;
+			    }
+			});
+			if(added) $(".jogResponseContainer").animate({ scrollTop: $('.jogResponseContainer').prop("scrollHeight")}, 1000);
+		}
+	}
+	/*
 	 * write serial replys to jog console
 	 */
 	app.writeSerialResponseToConsole = function(data){
-		/*
-			console.log(data);
-			var commands = data.commands;
-			var replys   = data.response;
-			for(var i=0; i<commands.length; i++){
-				if(commands.length > 1) $.console.append(commands[i] + ' : ' +  replys[i].replace('\n', '') + '\n');
-				else{
-					if(replys.length > 2){ // for commands like M763, M765
-						$.console.append(commands[i] + ' : ' +  replys[0].replace('\n', '') + '\n');					
-						for(var j=1;j<replys.length;j++){
-							if(replys[j] != '\n' && replys[j] != '') $.console.append(replys[j].replace('\n', '') + '\n');
-						}	
-					} else $.console.append(commands[i] + ' : ' +  replys[i].replace('\n', '') + '\n'); //for commands that have a lot of replys like M503
-				}
-			}
-			$.console.append('<hr>').scrollTop(1E10);
-		*/
 	};
 	/*
 	 * manage macro response or trace
@@ -759,7 +776,6 @@ fabApp = (function(app) {
 	 */
 	app.serial = function(func, val) {
 		
-		
 		var xyStep       = $("#xyStep").length            > 0 ? $("#xyStep").val() : 10;
 		var zStep        = $("#zStep").length             > 0 ? $("#zStep").val() : 5;
 		var extruderStep = $("#extruderStep").length      > 0 ? $("#extruderStep").val() : 10;
@@ -786,7 +802,7 @@ fabApp = (function(app) {
 				data: data,
 				dataType: 'json'
 			}).done(function( data ) {
-				app.writeSerialResponseToConsole(data.data);
+				//app.writeSerialResponseToConsole(data.data);
 			});
 		}
 	};
@@ -845,6 +861,14 @@ fabApp = (function(app) {
 			socket.send('message', '{"function": "getTasks"}'); //check for tasks
 			socket.send('message', '{"function": "usbInserted"}');   //check for if usb disk is connected
 		}
+	}
+	/*
+	 * get jog response
+	 */
+	app.getJogResponse = function(){
+		$.get(jog_response_file_url + '?' + jQuery.now(), function(data){
+			app.writeJogResponse(data);
+		});
 	}
 	return app;
 })({});
