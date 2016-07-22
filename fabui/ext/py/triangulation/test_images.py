@@ -40,7 +40,7 @@ _ = tr.ugettext
 
 ################################################################################
 
-class SweepScan(GCodePusher):
+class TestCapture(GCodePusher):
     """
     Sweep scan application.
     """
@@ -50,7 +50,7 @@ class SweepScan(GCodePusher):
     E_FEEDRATE      = 800
     
     def __init__(self, log_trace, monitor_file, scan_dir, standalone = False, width = 2592, height = 1944, rotation = 270, iso = 800, power = 230, shutter_speed = 35000):
-        super(SweepScan, self).__init__(log_trace, monitor_file)
+        super(TestCapture, self).__init__(log_trace, monitor_file)
         
         self.standalone = standalone
         
@@ -85,77 +85,60 @@ class SweepScan(GCodePusher):
     
     def take_a_picture(self, number = 0, suffix = ''):
         """ Camera control wrapper """
-        scanfile = os.path.join(self.scan_dir, "{0}{1}.jpg".format(number, suffix) )
+        scanfile = os.path.join(self.scan_dir, "test_{0}.jpg".format(number) )
         self.camera.capture(scanfile, quality=100)
     
-    def run(self, task_id, start_x, end_x, a_offset, y_offset, z_offset, slices):
+    def run(self, start_z, end_z, slices, x_offset, y_offset):
         """
         Run the sweep scan.
         """
         
-        self.prepare_task(task_id, task_type='scan')
-        self.set_task_status(GCodePusher.TASK_STARTED)
+        self.send('G28')
+                
+        position = start_z
         
-        if self.standalone:
-            self.exec_macro("start_sweep_scan")
-        #self.send('G90')
-        
-        LASER_ON  = 'M700 S{0}'.format(self.laser_power)
-        LASER_OFF = 'M700 S0'
-        
-        position = start_x
-        
-        if start_x != 0:
-            # If an offset is set .
-            self.send('G0 X{0} F{1}'.format(start_x, self.XY_FEEDRATE) )  #set zero
-
-        if a_offset != 0:
-            #if an offset is set, rotates to the specified A angle.
-            self.send('G0 E{0} {1}'.format(a_offset, self.E_FEEDRATE) )
-
-        if z_offset != 0:
+        if x_offset != 0:
             #if an offset for Z (Y in the rotated reference space) is set, moves to it.
-            self.send('G0 Z{0} F{1}'.format(z_offset, self.Z_FEEDRATE))  #go to y offset
+            self.send('G0 X{0} F{1}'.format(x_offset, self.XY_FEEDRATE))  #go to y offset
             
         if y_offset != 0:
             #if an offset for Z (Y in the rotated reference space) is set, moves to it.
             self.send('G0 Y{0} F{1}'.format(y_offset, self.XY_FEEDRATE))  #go to y offset
-                
-        dx = abs((float(end_x)-float(start_x))/float(slices))  #mm to move each slice
+        
+        if start_z != 0:
+            # If an offset is set .
+            self.send('G0 Z{0} F{1}'.format(start_z, self.Z_FEEDRATE) )  #set zero
+               
+        dz = abs((float(end_z)-float(start_z))/float(slices))  #mm to move each slice
         
         self.scan_stats['scan_total'] = slices
         
-        #self.send('M702 S255')
+        LASER_ON  = 'M700 S{0}'.format(self.laser_power)
+        LASER_OFF = 'M700 S0'
+        
+        self.send(LASER_ON)
+        
+        self.camera.start_preview()
         
         for i in xrange(0, slices):
             #~ #move the laser!
-            print str(i) + "/" + str(slices) +" (" + str(dx*i) + "/" + str(slices) +")"
+            print str(i) + "/" + str(slices) + " @ " + str(position)
             #~ serial.write('G0 X' + str(pos) + 'F2500\r\n') 
-            self.send('G0 X{0} F{1}'.format(position, self.XY_FEEDRATE))
+            self.send('G0 Z{0} F{1}'.format(position, self.Z_FEEDRATE))
             self.send('M400') # Wait for the move to finish
 
-            self.send(LASER_ON) #turn laser ON
-            self.take_a_picture(i, '_l')
-            
-            self.send(LASER_OFF) #turn laser ON
-            self.take_a_picture(i)
-            
-            position += dx
+            self.take_a_picture( int(position) )
+           
+            position += dz
             
             self.scan_stats['scan_current'] = i+1
             self.progress = float(i+1)*100.0 / float(slices)
-            
-            with self.monitor_lock:
-                self.update_monitor_file()
-                
-            if self.is_aborted():
-                break
-                
-        self.trace( _("Scan completed.") )
-        self.set_task_status(GCodePusher.TASK_COMPLETED)
         
-        if self.standalone:
-            self.exec_macro("end_scan")
+        self.send(LASER_OFF)
+        
+        self.camera.stop_preview()
+        
+        self.trace( _("Scan completed.") )
         
         self.stop()
 
@@ -174,19 +157,16 @@ def main():
 
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(add_help=False, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("task_id",          help=_("Task ID.") )
     parser.add_argument("-d", "--dest",     help=_("Destination folder."),     default=config.get('general', 'bigtemp_path') )
     parser.add_argument("-s", "--slices",   help=_("Number of slices."),       default=100)
+    parser.add_argument("-p", "--power",    help=_("Scan laser power 0-255."), default=0)
     parser.add_argument("-i", "--iso",      help=_("ISO."),                    default=400)
-    parser.add_argument("-p", "--power",    help=_("Scan laser power 0-255."), default=230)
     parser.add_argument("-w", "--width",    help=_("Image width in pixels."),  default=1920)
     parser.add_argument("-h", "--height",   help=_("Image height in pixels"),  default=1080)
     parser.add_argument("-b", "--begin",    help=_("Begin scanning from X."),  default=0)
     parser.add_argument("-e", "--end",      help=_("End scanning at X."),      default=100)
+    parser.add_argument("-x", "--x-offset", help=_("X offset."),               default=0)
     parser.add_argument("-y", "--y-offset", help=_("Y offset."),               default=0)
-    parser.add_argument("-z", "--z-offset", help=_("Z offset."),               default=0)
-    parser.add_argument("-a", "--a-offset", help=_("A offset/rotation."),      default=0)
-    parser.add_argument("--standalone", action='store_true',  help=_("Standalone operation. Does all preparations and cleanup.") )
     parser.add_argument('--help', action='help', help=_("Show this help message and exit") )
 
     # GET ARGUMENTS
@@ -195,16 +175,13 @@ def main():
     slices          = int(args.slices)
     destination     = args.dest
     iso             = int(args.iso)
-    power           = int(args.power)
-    start_x         = float(args.begin)
-    end_x           = float(args.end)
+    start_z         = float(args.begin)
+    end_z           = float(args.end)
     width           = int(args.width)
     height          = int(args.height)
-    z_offset        = float(args.z_offset)
+    power           = int(args.power)
+    x_offset        = float(args.x_offset)
     y_offset        = float(args.y_offset)
-    a_offset        = float(args.a_offset)
-    standalone      = args.standalone
-    task_id         = int(args.task_id)
 
     monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
     log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
@@ -216,37 +193,16 @@ def main():
 
     ################################################################################
 
-    print 'SWEEP SCAN MODULE STARTING' 
-    print 'scanning from'+str(start_x)+"to"+str(end_x); 
-    print 'Num of scans : [{0}]'.format(slices)
-    print 'ISO  setting : ', iso
-    print 'Resolution   : ', width ,'*', height, ' px'
-    print 'Y-offset (y) : ', y_offset
-    print 'Z-offset (z) : ', z_offset
-    print 'A-Offset.    : ', a_offset
-
-    #ESTIMATED SCAN TIME ESTIMATION
-    estimated = (slices*2) / 60.0
-    if estimated<1 :
-        estimated *= 60.0
-        unit= "Seconds"
-    else:
-        unit= "Minutes"
-
-    print 'Estimated Scan time =', str(estimated) + " " + str(unit) + "  [Pessimistic]"
-
-    app = SweepScan(log_trace, 
+    app = TestCapture(log_trace, 
                     monitor_file,
                     scan_dir,
-                    standalone=standalone,
                     width=width,
                     height=height,
-                    iso=iso,
-                    power=power)
+                    iso=iso)
 
     app_thread = Thread( 
             target = app.run, 
-            args=( [task_id, start_x, end_x, a_offset, y_offset, z_offset, slices] ) 
+            args=( [start_z, end_z, slices, x_offset, y_offset] ) 
             )
     app_thread.start()
     

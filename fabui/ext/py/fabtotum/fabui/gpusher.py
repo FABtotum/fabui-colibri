@@ -532,8 +532,8 @@ class GCodePusher(object):
         self.override_stats['fan']          = 0
         self.override_stats['rpm']          = 0
         self.override_stats['laser']        = 0
-        self.override_stats['flow_rate']    = 0
-        self.override_stats['speed']        = 0
+        self.override_stats['flow_rate']    = 100.0
+        self.override_stats['speed']        = 100.0
         
         if gcode_file:
             gfile = GCodeFile(gcode_file)
