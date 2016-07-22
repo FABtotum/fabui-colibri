@@ -36,6 +36,8 @@
  * @filesource
  */
 
+ define('FABUI_VERSION', 1);
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT

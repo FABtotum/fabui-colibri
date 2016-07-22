@@ -129,7 +129,7 @@ class Jog:
                 reply = self.gcs.send(gcode, group = 'jog' )
                 #print "jog:", reply
                 
-                self.response[token] = reply
+                self.response[token] = {'code': gcode, 'reply': reply}
                 
             print self.response
             with open(self.jog_response_file, 'w') as f:

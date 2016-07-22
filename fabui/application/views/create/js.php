@@ -93,6 +93,8 @@
 			},
 			"sAjaxSource": "<?php echo site_url('create/getFiles/'.$printType) ?>",
 			"fnRowCallback": function (row, data, index ){
+				$('td', row).eq(0).addClass('text-center');
+				$('td', row).eq(2).addClass('hidden-xs');
 				$('td', row).eq(3).addClass('hidden');
 				$('td', row).eq(4).addClass('hidden');
 			}
@@ -122,6 +124,8 @@
 			},
 			"sAjaxSource": "<?php echo site_url('create/getRecentFiles/'.$type) ?>",
 			"fnRowCallback": function (row, data, index ){
+				$('td', row).eq(0).addClass('text-center');
+				$('td', row).eq(2).addClass('hidden-xs');
 				$('td', row).eq(3).addClass('hidden');
 				$('td', row).eq(4).addClass('hidden');
 			}
@@ -305,7 +309,7 @@
 	 */
 	function updateProgress(value)
 	{
-		$(".task-progress").html(value + " %");
+		$(".task-progress").html(parseFloat(value).toFixed(1) + " %");
 		$("#task-progress-bar").attr("style", "width:" +value +"%;");
 	}
 	/**
@@ -329,7 +333,7 @@
 	 */
 	function updateFan(value)
 	{
-		$(".task-fan").html(((value/255)*100));
+		$(".task-fan").html(parseFloat((value/255)*100).toFixed(0));
 		$("#task-fan-bar").attr("style", "width:" +((value/255)*100) +"%;");
 	}
 	/**
@@ -368,10 +372,10 @@
 			temperaturesPlot.bed.temp.push(bedTemp);
 			temperaturesPlot.bed.target.push(bedTargetTemp);
 			
-			$(".extruder-temp").html(ext);
-			$(".extruder-target").html(extTarget);
-			$(".bed-temp").html(bed);
-			$(".bed-target").html(bedTarget);
+			$(".extruder-temp").html(parseFloat(ext).toFixed(0));
+			$(".extruder-target").html(parseFloat(extTarget).toFixed(0));
+			$(".bed-temp").html(parseFloat(bed).toFixed(0));
+			$(".bed-target").html(parseFloat(bedTarget).toFixed(0));
 			
 			if(typeof (Storage) !== "undefined") {
 				localStorage.setItem('temperaturesPlot', JSON.stringify(temperaturesPlot));
@@ -419,14 +423,18 @@
 				content : "%s: %y &deg;C",
 				defaultTheme : false
 			},
-			colors : ["#FF0000", "#57889c", "#0000FF"],
+			
+			colors : ["#FF0000", "#3276B1"],
 			legend: {
 				show : true
 			},
 			grid: {
 				hoverable : true,
 				clickable : true,
-				borderWidth : 0
+				borderWidth : 0,
+				borderColor : "#efefef",
+				tickColor :  "#efefef"
+				
 			},
 		});
 
@@ -458,12 +466,14 @@
 		
 		return [{
 		 			data: seriesExtTemp,
-		      		lines: { show: true, fill: false },
+		      		lines: { show: true, fill: true },
 		     	 	label: "Ext temp",
+		     	 	points: {"show" : false},
+		     	 	shadowSize : 0
 		    	},
 		    	{
 		 			data: seriesBedTemp,
-		      		lines: { show: true, fill: false },
+		      		lines: { show: true, fill: true },
 		     	 	label: "Bed temp",
 		    	}
 		  	];
@@ -593,7 +603,7 @@
 		noUiSlider.create(document.getElementById('create-ext-target-slider'), {
 			start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp_target") : 0,
 			connect: "lower",
-			range: {'min': 0, 'max' : 250},
+			range: {'min': 175, 'max' : 250},
 			pips: {
 				mode: 'positions',
 				values: [0,25,50,75,100],
@@ -607,7 +617,7 @@
 		noUiSlider.create(document.getElementById('create-bed-target-slider'), {
 			start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp_target") : 0,
 			connect: "lower",
-			range: {'min': 0, 'max' : 100},
+			range: {'min': 10, 'max' : 100},
 			pips: {
 				mode: 'positions',
 				values: [0,25,50,75,100],
@@ -707,19 +717,19 @@
 		
 		switch(element){
 			case 'extruder-target':
-				$(".slider-extruder-target").html(value);
+				$(".slider-extruder-target").html(parseFloat(value).toFixed(0));
 				break;
 			case 'bed-target':
-				$(".slider-bed-target").html(value);
+				$(".slider-bed-target").html(parseFloat(value).toFixed(0));
 				break;
 			case 'flow-rate':
-				$('.slider-task-flow-rate').html(value);
+				$('.slider-task-flow-rate').html(parseFloat(value).toFixed(0));
 				break;
 			case 'fan':
-				$('.slider-task-fan').html(value);
+				$('.slider-task-fan').html(parseFloat(value).toFixed(0));
 				break;
 			case 'speed':
-				$('.slider-task-speed').html(value);
+				$('.slider-task-speed').html(parseFloat(value).toFixed(0));
 				break;
 			
 		}
@@ -748,19 +758,40 @@
 		}
 	}
 	/**
-	 * set initial target for temperatures sliders
+	 * set initial target for temperatures sliders and temperatures labels
 	 */
 	function setTemperaturesSlidersValue()
 	{	
 		$.get(temperatures_file_url + '?' + jQuery.now(), function(data){
+
+			/**
+			* extruder
+			*/
+			if(data.ext_temp.constructor === Array){
+				ext_temp = data.ext_temp[data.ext_temp.length - 1];
+			}
 			if(data.ext_temp_target.constructor === Array){
 				ext_temp_target = data.ext_temp_target[data.ext_temp_target.length - 1];
 			}
+			$(".extruder-temp").html(parseFloat(ext_temp).toFixed(0));
+			$(".extruder-target").html(parseFloat(ext_temp_target).toFixed(0));
+			/**
+			* bed
+			*/
 			if(data.bed_temp_target.constructor === Array){
 				bed_temp_target = data.bed_temp_target[data.bed_temp_target.length - 1];
 			}
-			$(".slider-extruder-target").html(ext_temp_target);
-			$(".slider-bed-target").html(bed_temp_target);
+			if(data.bed_temp.constructor === Array){
+				bed_temp = data.bed_temp[data.bed_temp.length - 1];
+			}
+			$(".bed-temp").html(parseFloat(bed_temp).toFixed(0));
+			$(".bed-target").html(parseFloat(bed_temp_target).toFixed(0));
+
+			/***
+			* init sliders values
+			*/
+			$(".slider-extruder-target").html(parseFloat(ext_temp_target).toFixed(0));
+			$(".slider-bed-target").html(parseFloat(bed_temp_target).toFixed(0));
 
 			if(typeof extruderSlider !== 'undefined'){
 				extruderSlider.noUiSlider.set(ext_temp_target);
@@ -775,7 +806,7 @@
 	 */
 	function setSpeedSliderValue(value)
 	{
-		$('.slider-task-speed').html(value);
+		$('.slider-task-speed').html(parseFloat(value).toFixed(0));
 		if(typeof speedSlider !== 'undefined'){
 			speedSlider.noUiSlider.set(value);
 		}
@@ -785,7 +816,7 @@
 	 */
 	function setFlowRateSliderValue(value)
 	{
-		$('.slider-task-flow-rate').html(value);
+		$('.slider-task-flow-rate').html(parseFloat(value).toFixed(0));
 		if(typeof flowRateSlider !== 'undefined'){
 			flowRateSlider.noUiSlider.set(value);
 		}
@@ -795,7 +826,7 @@
 	*/
 	function setFanSliderValue(value){
 		value = ((value/255)*100);
-		$('.slider-task-fan').html(value);
+		$('.slider-task-fan').html(parseFloat(value).toFixed(0));
 		if(typeof fanSlider !== 'undefined'){
 			fanSlider.noUiSlider.set(value);
 		}

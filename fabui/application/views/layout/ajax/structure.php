@@ -8,6 +8,7 @@
  */
  
 ?>
+{cssFiles}
 {cssInLine}
 {content}
 {scripts}

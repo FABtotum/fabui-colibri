@@ -59,6 +59,7 @@
  		}
 		
 		$data['jsScripts'] = jScriptsInclusion($this->js);
+		$data['cssFiles']  = cssFilesInclusion($this->css);
 		$data['jsInLine']  = $this->jsInLine;
 		$data['cssInLine'] = $this->cssInline;
 		$this->template['head']    = $this->load->view($this->layoutDefaultFolder.'/head', $data, true);
@@ -80,6 +81,7 @@
 		
 		$data['jsScripts'] = ajaxJScriptsInclusion($this->js);
 		$data['jsInLine']  = ajaxJSInline($this->jsInLine, count($this->js) == 0);
+		$this->template['cssFiles'] = cssFilesInclusion($this->css, true); 
 		$this->template['cssInLine'] = $this->cssInline;
 		$this->template['content'] = $this->content;
 		$this->template['scripts'] = $this->load->view($this->layoutAjax.'/scripts', $data, true);
@@ -135,6 +137,14 @@
 	public function addJsInLine($js)
 	{
 		$this->jsInLine .= $js;
+	}
+	
+	/*
+	 * add css file
+	 */
+	public function addCssFile($css)
+	{
+		$this->css[] = $css;
 	}
 	
 	/**

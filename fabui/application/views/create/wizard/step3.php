@@ -15,16 +15,17 @@
 		<li><a href="#controls-tab" data-toggle="tab"><i class="fa fa-sliders"></i> Controls</a></li>
 	</ul>
 	<div id="createFeedContent" class="tab-content padding-10">
+		<br>
 		<div class="tab-pane fade in active" id="live-feeds-tab">
 			<div class="row">
 				<?php if($type == 'print'): ?>
 				<div class="col-sm-6">
 					<div class="row">
 						<span class="col-xs-6 col-sm-6 col-md-12 col-lg-6 text-center">
-							<span>Extruder <span class="extruder-temp"></span> / <span class="extruder-target"></span> </span>
+							<span><i class="fab-lg fab-fw icon-fab-term"></i> <span class="hidden-xs">Extruder</span> <span class="hidden-md hidden-sm hidden-lg font-md">E</span> <span class="extruder-temp"></span> / <span class="extruder-target"></span> </span>
 						</span>
 						<span class="col-xs-6 col-sm-6 col-md-12 col-lg-6 text-center">
-							<span>Bed <span class="bed-temp"></span> / <span class="bed-target"></span></span>
+							<span><i class="fab-lg fab-fw icon-fab-term"></i> <span class="hidden-xs">Extruder</span> <span class="hidden-md hidden-sm hidden-lg font-md">B</span> <span class="bed-temp"></span> / <span class="bed-target"></span></span>
 						</span>
 					</div>
 					<div class="row">
@@ -36,21 +37,21 @@
 					<div class="row ">
 						<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> Progress <span class="pull-right task-progress"></span> </span>
 							<div class="progress">
-								<div class="progress-bar bg-color-blue" id="task-progress-bar"></div>
+								<div class="progress-bar" id="task-progress-bar"></div>
 							</div> </div>
 						<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> Speed <span class="pull-right"><span class="task-speed"></span> / 500 %</span> </span>
 							<div class="progress">
-								<div class="progress-bar bg-color-blue" id="task-speed-bar"></div>
+								<div class="progress-bar" id="task-speed-bar"></div>
 							</div> </div>
 						<?php if($type == 'print'): ?>
 						<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> Flow rate<span class="pull-right"><span class="task-flow-rate"></span> / 500 %</span></span></span>
 							<div class="progress">
-								<div class="progress-bar bg-color-blue" id="task-flow-rate-bar"></div>
+								<div class="progress-bar" id="task-flow-rate-bar"></div>
 							</div> </div>
 						<?php endif; ?>
 						<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> Fan <span class="pull-right"><span class="task-fan"></span> %</span> </span>
 							<div class="progress">
-								<div class="progress-bar bg-color-blue" id="task-fan-bar"></div>
+								<div class="progress-bar" id="task-fan-bar"></div>
 							</div> </div>
 						<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> Elapsed time <span class="pull-right"><span class="elapsed-time"></span> </span> </span>
 							<div class="fake-progress"></div>
@@ -72,38 +73,36 @@
 			</div>
 		</div>
 		<div class="tab-pane fade in" id="controls-tab">
-			<div class="row">
-				<div class="col-sm-6">
-					<div class="smart-form">
-						<fieldset>
-							<section>
-								<label class="label">Override Z Height: <strong><span class="z-height"></span></strong></label>
-							</section>
-							<div class="row">
-								<section class="col col-4">
-									<button data-rel="tooltip" data-original-title="Away from the nozzle" type="button" data-action="zHeight" data-attribute="+" class="btn btn-default btn-block action"  style="padding:6px 10px 5px"><i class="fa fa-arrow-down"></i></button>
-								</section>
-								<section class="col col-4">
-									<label class="select">
-										<?php echo form_dropdown('zHeight', $zHeightOptions, '', 'id="zHeight"'); ?> <i></i>
-									</label>
-								</section>
-								<section class="col col-4">
-									<button rel="tooltip" title="Closer to the nozzle" type="button" data-action="zHeight" data-attribute="-" class="btn btn-default btn-block action"  style="padding:6px 10px 5px"><i class="fa fa-arrow-up"></i></button>
-								</section>
-							</div>
-						</fieldset>
-					</div>
+			<div class="row margin-bottom-20">
+				<div class="col-sm-6 col-xs-12">
+					<span class="col-xs-12 col-sm-12 margin-bottom-10">
+						<label>Override Z Height: <strong><span class="z-height"></span></strong></label>
+					</span>
+					<span class="show-stat-buttons"> 
+						<span class="col-xs-4 col-sm-4 col-md-4 col-lg-4"> 
+							<button data-rel="tooltip" data-original-title="Away from the nozzle" type="button" data-action="zHeight" data-attribute="+" class="btn btn-default btn-block action"><i class="fa fa-arrow-down"></i></button>
+						</span> 
+						<span class="col-xs-4 col-sm-4 col-md-4 col-lg-4"> 
+							<label style="width:100%;">
+								<?php echo form_dropdown('zHeight', $zHeightOptions, '', 'id="zHeight" class="form-control"'); ?> <i></i>
+							</label>
+						</span>
+						<span class="col-xs-4 col-sm-4 col-md-4 col-lg-4"> 
+							<button rel="tooltip" title="Closer to the nozzle" type="button" data-action="zHeight" data-attribute="-" class="btn btn-default btn-block action"><i class="fa fa-arrow-up"></i></button>
+						</span>
+					</span>
 				</div>
 			</div>
+			<hr class="simple hidden-md hidden-sm hidden-lg">
 			<?php if($type == 'print'): ?>
 			<div class="row padding-10">
 				<div class="col-sm-6 margin-bottom-50">
-					<h4><i class="icon-fab-term"></i> Extruder <span class="pull-right"><span class="extruder-temp"></span> / <strong><span class="slider-extruder-target"></span></strong></span></h4>
+					<h4><i class="icon-fab-term"></i> <span>Extruder</span> <span class="pull-right"><span rel="tooltip" data-placement="top" data-original-title="Extruder current temperature"  class="extruder-temp"></span> / <strong><span rel="tooltip" data-placement="top" data-original-title="Extruder target temperature" class="slider-extruder-target"></span></strong> &deg;C</span></h4>
 					<div id="create-ext-target-slider" class="noUiSlider sliders"></div>
 				</div>
+				<hr class="simple hidden-md hidden-sm hidden-lg">
 				<div class="col-sm-6 margin-bottom-50">
-					<h4><i class="icon-fab-term"></i> Bed <span class="pull-right"><span class="bed-temp"></span> / <strong><span class="slider-bed-target"></span></strong></span></h4>
+					<h4><i class="icon-fab-term"></i> Bed <span class="pull-right"><span rel="tooltip" data-placement="top" data-original-title="Bed current temperature" class="bed-temp"></span> / <strong><span rel="tooltip" data-placement="top" data-original-title="Bed target temperature" class="slider-bed-target"></span></strong> &deg;C</span></h4>
 					<div id="create-bed-target-slider" class="noUiSlider sliders"></div>
 				</div>
 			</div>
@@ -114,10 +113,12 @@
 					<h4>Speed <span class="pull-right"><strong><span class="slider-task-speed"></span></strong>  %</span></h4>
 					<div id="create-speed-slider" class="noUiSlider sliders"></div>
 				</div>
+				<hr class="simple hidden-md hidden-sm hidden-lg">
 				<div class="col-sm-4 margin-bottom-50">
 					<h4>Flow rate <span class="pull-right"><strong><span class="slider-task-flow-rate"></span></strong> %</span></h4>
 					<div id="create-flow-rate-slider" class="noUiSlider sliders"></div>
 				</div>
+				<hr class="simple hidden-md hidden-sm hidden-lg">
 				<div class="col-sm-4 margin-bottom-50">
 					<h4>Fan <span class="pull-right"><strong><span class="slider-task-fan"></span></strong> %</span></h4>
 					<div id="create-fan-slider" class="noUiSlider sliders"></div>

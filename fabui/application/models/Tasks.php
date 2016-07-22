@@ -10,7 +10,7 @@
  class Tasks extends FAB_Model {
  	
 	private $tableName = 'sys_tasks';
-	private $completedStatus = array('performed', 'abort', 'deleted');
+	private $completedStatus = array('completed', 'abort', 'deleted');
 	
 	const STATUS_RUNNING = 'RUNNING';
  	
@@ -50,7 +50,6 @@
 		$this->db->group_by('tt.id_file');
 		$this->db->order_by('tt.finish_date', 'DESC');
 		$query = $this->db->get($this->tableName.' as tt', $limit_end, $limit_start);
-		//echo $this->db->last_query();
 		return $query->result_array();
 	}
  }

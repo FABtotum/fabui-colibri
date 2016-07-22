@@ -97,6 +97,10 @@ class FolderTempMonitor(PatternMatchingEventHandler):
             messageData = {'type': 'monitor', 'content': json.loads(str(self.getFileContent(self.TASK_MONITOR)))}
             messageType = 'task'
             self.sendMessage(messageType, messageData)
+        elif event.src_path == self.JOG_RESPONSE:
+            messageData = {'content': json.loads(str(self.getFileContent(self.JOG_RESPONSE)))}
+            messageType = 'jog'
+            self.sendMessage(messageType, messageData)
             
             
         #~ elif event.src_path == self.TASK_MONITOR:

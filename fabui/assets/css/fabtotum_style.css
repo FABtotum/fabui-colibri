@@ -162,11 +162,12 @@
 
 
 .noUi-connect {
-		box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
+		/*box-shadow: inset 0 -1px 0 rgba(0,0,0,.15);
 		font-weight: 700;
-		text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+		text-shadow: 0 -1px 0 rgba(0,0,0,.25); */
 		background-image: url(/fabui/application/layout/assets/img/pattern/overlay-pattern.png);
 		background-color: #a65858 !important;
+		font-size: 10px;
 }
 
 .noUi-handle {
@@ -201,7 +202,7 @@
 
 
 .top-bar-temperatures span {
-	font-size:18px;
+	font-size:18px;UI
 }
 
 #top-temperatures {
@@ -219,7 +220,7 @@
     left: -42px;
     width: 344px;
     min-height: 170px;
-    height: 280px;
+    height: 250px;
     border-radius: 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -466,4 +467,12 @@ body.smart-style-6 .top-bed-target-temp, body.smart-style-6 .top-ext-target-temp
 
 .va-middle {
 	vertical-align: middle !important;
+}
+
+.noUi-horizontal{
+	height:12px !important
+}
+
+.noUi-marker-large {
+	height:10px !important;
 }
