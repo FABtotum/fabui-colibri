@@ -87,7 +87,7 @@ def main():
     config = ConfigService()
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("preset",       help=_("macro to execute") )
+    parser.add_argument("preset",       help=_("Macro to execute. To list all macros type 'list-macros'") )
     parser.add_argument("log_trace",    help=_("log trace file"), default=config.get('general', 'trace'), nargs='?')
     parser.add_argument("log_response", help=_("log response file"), default=config.get('general', 'macro_response'), nargs='?')
 
@@ -102,10 +102,14 @@ def main():
     ext_temp        = args.ext_temp
     bed_temp        = args.bed_temp
     
-    app = GMacroApplication(log_trace, log_response)
+    if not preset == 'list-macros':    
+        app = GMacroApplication(log_trace, log_response)
 
-    app.run(preset, [ext_temp, bed_temp])
-    app.loop()
+        app.run(preset, [ext_temp, bed_temp])
+        app.loop()
+    else:
+        for key in PRESET_MAP.keys():
+            print key
 
 if __name__ == "__main__":
     main()
