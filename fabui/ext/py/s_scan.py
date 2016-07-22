@@ -94,7 +94,7 @@ class SweepScan(GCodePusher):
         """
         
         self.prepare_task(task_id, task_type='scan')
-        self.set_task_status(GCodePusher.TASK_STARTED)
+        self.set_task_status(GCodePusher.TASK_RUNNING)
         
         if self.standalone:
             self.exec_macro("start_sweep_scan")

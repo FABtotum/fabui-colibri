@@ -33,19 +33,16 @@ from fabtotum.database import TableItem
 ################################################################################
 
 #~ DROP TABLE IF EXISTS `sys_tasks`;
-#~ CREATE TABLE `sys_tasks` (
-  #~ `id` int(11) NOT NULL AUTO_INCREMENT,
+#~ CREATE TABLE IF NOT EXISTS `sys_tasks` (
+  #~ `id` INTEGER PRIMARY KEY,
   #~ `user` int(11) NOT NULL,
   #~ `controller` varchar(255) NOT NULL,
   #~ `type` varchar(255) DEFAULT NULL,
-  #~ `id_object` int(11) NOT NULL,
-  #~ `id_file` int(11) NOT NULL,
   #~ `status` varchar(255) DEFAULT NULL,
   #~ `attributes` text,
   #~ `start_date` datetime NOT NULL,
-  #~ `finish_date` datetime NOT NULL,
-  #~ PRIMARY KEY (`id`)
-#~ ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+  #~ `finish_date` datetime
+#~ );
 
 class Task(TableItem):
     
@@ -57,8 +54,6 @@ class Task(TableItem):
         attribs['user']         = 0
         attribs['controller']   = ""
         attribs['type']         = ""
-        attribs['id_object']    = 0
-        attribs['id_file']      = 0
         attribs['status']       = ""
         attribs['attributes']   = "{}"
         attribs['start_date']   = 0

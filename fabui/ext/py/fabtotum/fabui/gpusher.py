@@ -78,8 +78,8 @@ class GCodePusher(object):
     GCode pusher.
     """
     
-    TASK_INITIALIZED    = 'initialized'
-    TASK_STARTED        = 'started'
+    TASK_PREPARING      = 'preparing'
+    TASK_RUNNING        = 'running'
     TASK_PAUSED         = 'paused'
     TASK_COMPLETED      = 'completed'
     TASK_ABORTED        = 'aborted'
@@ -102,7 +102,7 @@ class GCodePusher(object):
             'type'                  : 'unknown',
             'id'                    : 0,
             'pid'                   : os.getpid(),
-            'status'                : GCodePusher.TASK_INITIALIZED,
+            'status'                : GCodePusher.TASK_PREPARING,
             'started_time'          : time.time(),
             'completed_time'        : 0,
             'duration'              : 0,
@@ -242,7 +242,7 @@ class GCodePusher(object):
         Triggered when first move command in file executed
         """        
         with self.monitor_lock:
-            self.task_stats['status'] = GCodePusher.TASK_STARTED
+            self.task_stats['status'] = GCodePusher.TASK_RUNNING
             self.update_monitor_file()
         
         self.first_move_callback()
@@ -407,7 +407,7 @@ class GCodePusher(object):
         return self.task_stats['status'] == GCodePusher.TASK_PAUSED
         
     def is_started(self):
-        return self.task_stats['status'] == GCodePusher.TASK_STARTED
+        return self.task_stats['status'] == GCodePusher.TASK_RUNNING
         
     def is_completed(self):
         return self.task_stats['status'] == GCodePusher.TASK_COMPLETED
@@ -429,7 +429,7 @@ class GCodePusher(object):
                 
             elif data == 'resumed':
                 self.trace( _("Task has been resumed") )
-                self.task_stats['status'] = GCodePusher.TASK_STARTED
+                self.task_stats['status'] = GCodePusher.TASK_RUNNING
             
             elif data == 'aborted':
                 self.trace( _("Task has been aborted") )
@@ -519,7 +519,7 @@ class GCodePusher(object):
         
         self.task_stats['type']             = task_type
         self.task_stats['id']               = task_id
-        self.task_stats['status']           = GCodePusher.TASK_INITIALIZED
+        self.task_stats['status']           = GCodePusher.TASK_PREPARING
         self.task_stats['started_time']     = time.time()
         self.task_stats['completed_time']   = 0
         self.task_stats['duration']         = 0

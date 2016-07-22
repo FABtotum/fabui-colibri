@@ -58,8 +58,12 @@ class PrintApplication(GCodePusher):
     
     def first_move_callback(self):
         self.trace( _("Print STARTED") )
+        
+        self.print_stats['first_move'] = True
+        with self.monitor_lock:
+            self.update_monitor_file()
 
-    def file_done_callback(self):  
+    def file_done_callback(self):        
         if self.standalone:
             self.exec_macro("end_print_additive")
             self.exec_macro("end_print_additive_safe_zone")
@@ -89,6 +93,7 @@ class PrintApplication(GCodePusher):
         """
 
         self.prepare_task(task_id, task_type='print', gcode_file=gcode_file)
+         TASK_RUNNING
         
         if self.standalone:
             #print_macros.check_pre_print(self)

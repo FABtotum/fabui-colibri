@@ -35,16 +35,15 @@ from fabtotum.database import TableItem
 
 #~ DROP TABLE IF EXISTS `sys_user`;
 #~ CREATE TABLE IF NOT EXISTS `sys_user` (
-  #~ `id` int(11) NOT NULL AUTO_INCREMENT,
+  #~ `id` INTEGER PRIMARY KEY,
   #~ `email` varchar(255) DEFAULT NULL,
   #~ `password` varchar(255) DEFAULT NULL,
   #~ `first_name` varchar(255) NOT NULL,
   #~ `last_name` varchar(255) NOT NULL,
-  #~ `last_login` datetime NOT NULL,
+  #~ `last_login` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
   #~ `session_id` varchar(255) NOT NULL,
-  #~ `settings` text NOT NULL,
-  #~ PRIMARY KEY (`id`)
-#~ ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  #~ `settings` text NOT NULL
+#~ );
 
 class User(TableItem):
     

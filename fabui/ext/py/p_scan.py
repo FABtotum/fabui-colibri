@@ -135,7 +135,7 @@ class ProbeScan(GCodePusher):
         """
                 
         self.prepare_task(task_id, 'scan')
-        self.set_task_status(GCodePusher.TASK_STARTED)
+        self.set_task_status(GCodePusher.TASK_RUNNING)
         
         if self.standalone:
             self.exec_macro("start_probe_scan")
