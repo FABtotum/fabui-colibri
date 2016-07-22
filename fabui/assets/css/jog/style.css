@@ -1,0 +1,20 @@
+.typearea { 
+	max-height:150px;
+} 
+.typearea textarea{
+		text-transform: uppercase !important;
+}
+.consoleContainer{
+	min-height:150px;
+}
+.jog_response {
+	width:100%;
+	font-size:12px;
+}
+.jog_response p {
+	margin-bottom:0px !important;
+}
+hr.simple {
+	margin-top:5px !important;
+	margin-bottom:5px !important;
+}
