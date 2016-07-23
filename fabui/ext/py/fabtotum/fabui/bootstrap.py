@@ -35,23 +35,27 @@ from fabtotum.fabui.config import ConfigService
 tr = gettext.translation('gpusher', 'locale', fallback=True)
 _ = tr.ugettext
 
-def hardware1(log):
+def hardware1(gcodeSender,log):
     """
     Rev1: September 2014 - May 2015
     - Original FABtotum
     """
     log.debug("Rev1")
     
-def hardware2(log):
+def hardware2(gcodeSender,log):
     """
     Rev2: June 2015 - August 2015
     - Simplified Feeder (Removed the disengagement and engagement procedure), if you want you can update it easily following this Tutorial: Feeder update.
     - Bowden tube improvement (Added a protection external sleeve to avoid the bowden tube get stuck in the back panel).
     - Endstops logic inverted.
     """
+    gcodeSender.send("M747 X1")
+    gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00")
+    gcodeSender.send("M500")
     log.debug("Rev2")
     
-def hardware3(log):
+def hardware3(gcodeSender,log):
+    print "do hware 3"
     """
     Rev3: Aug 2015 - Jan 2016
     - Back panel modified to minimize bowden tube collisions
@@ -61,7 +65,11 @@ def hardware3(log):
     - Milling Head V2 (store.fabtotum.com/eu/store/milling-head-v2.html).
     - Print head V2 (store.fabtotum.com/eu/store/printing-head-v2.html).
     """
+    gcodeSender.send("M747 X1")
+    gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00")
+    gcodeSender.send("M500")
     log.debug("Rev3")
+    
     
 def hardware4(log):
     """
@@ -156,6 +164,6 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         '4' : hardware4
     }
     if hardwareID in HW_VERSION_CMDS:
-        HW_VERSION_CMDS[hardwareID](log)
+        HW_VERSION_CMDS[hardwareID](gcs,log)
     else:
         log.error("Unsupported hardware version: %s", hardwareID)
