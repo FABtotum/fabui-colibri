@@ -1,3 +1,8 @@
-@reboot bash /var/www/fabui/script/bash/cron.sh
-*/30 * * * * bash /var/www/fabui/script/bash/cron.sh
-*/5 * * * * bash /var/www/fabui/script/bash/internet.sh 
+@reboot php /usr/share/fabui/index.php Cron blogFeeds &
+@reboot php /usr/share/fabui/index.php Cron twitterFeeds &
+@reboot php /usr/share/fabui/index.php Cron instagramFeeds &
+@reboot php /usr/share/fabui/index.php Cron instagramHashFeeds &
+*/30 * * * * php /usr/share/fabui/index.php Cron blogFeeds &
+*/30 * * * * php /usr/share/fabui/index.php Cron twitterFeeds &
+*/30 * * * * php /usr/share/fabui/index.php Cron instagramFeeds &
+*/30 * * * * php /usr/share/fabui/index.php Cron instagramHashFeeds &

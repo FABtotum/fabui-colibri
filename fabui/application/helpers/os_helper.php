@@ -141,4 +141,28 @@ if(!function_exists('isInternetAvaialable'))
 		return !$sock = @fsockopen('http://www.google.com', 80, $num, $error, 2) ? false : true;
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('downloadRemoteFile'))
+{
+	/**
+	 * download remote file
+	 */
+	function downloadRemoteFile($remoteUrl, $path)
+	{
+		$curl = curl_init($remoteUrl);
+		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 3);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		$downloadedFile = curl_exec($curl); //make call
+		$info = curl_getinfo($curl);
+		if(isset($info['http_code']) && $info['http_code'] == 200){ //if response is OK
+			$CI =& get_instance();
+			$CI->load->helper('file_helper');
+			write_file($path, $downloadedFile, 'w+');
+			return true;
+		}else{
+			return false;
+		}
+	}
+}
+
 ?>
