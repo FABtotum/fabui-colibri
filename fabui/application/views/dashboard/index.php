@@ -8,4 +8,10 @@
  */
  
 ?>
-DASHBOARD - INDEX
+<section id="widget-grid">
+	<div class="row">
+		<div class="col-sm-4"><?php echo $blogWidget;?></div>
+		<div class="col-sm-4"><?php echo $twitterWidget;?></div>
+		<div class="col-sm-4"><?php echo $instagramWidget;?></div>
+	</div>
+</section>
