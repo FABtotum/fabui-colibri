@@ -49,10 +49,11 @@ class SweepScan(GCodePusher):
     Z_FEEDRATE      = 1500
     E_FEEDRATE      = 800
     
-    def __init__(self, log_trace, monitor_file, scan_dir, standalone = False, width = 2592, height = 1944, rotation = 270, iso = 800, power = 230, shutter_speed = 35000):
+    def __init__(self, log_trace, monitor_file, scan_dir, standalone = False, finalize = True, width = 2592, height = 1944, rotation = 270, iso = 800, power = 230, shutter_speed = 35000):
         super(SweepScan, self).__init__(log_trace, monitor_file)
         
         self.standalone = standalone
+        self.finalize = finalize
         
         self.camera = PiCamera()
         self.camera.resolution = (width, height)
@@ -151,10 +152,14 @@ class SweepScan(GCodePusher):
             if self.is_aborted():
                 break
                 
-        self.trace( _("Scan completed.") )
-        self.set_task_status(GCodePusher.TASK_COMPLETED)
+        if self.is_aborted():
+            self.trace( _("Scan aborted.") )
+            self.set_task_status(GCodePusher.TASK_ABORTED)
+        else:
+            self.trace( _("Scan completed.") )
+            self.set_task_status(GCodePusher.TASK_COMPLETED)
         
-        if self.standalone:
+        if self.standalone or self.finalize:
             self.exec_macro("end_scan")
         
         self.stop()

@@ -51,10 +51,11 @@ class ProbeScan(GCodePusher):
     Z_FEEDRATE      = 1500
     E_FEEDRATE      = 800
     
-    def __init__(self, log_trace, monitor_file, standalone = False):
+    def __init__(self, log_trace, monitor_file, standalone = False, finalize = True):
         super(ProbeScan, self).__init__(log_trace, monitor_file)
         
         self.standalone = standalone
+        self.finalize   = finalize
         self.progress = 0.0
         
         self.scan_stats = {
@@ -195,8 +196,12 @@ class ProbeScan(GCodePusher):
         self.trace( _("Saving point cloud to file {0}").format(output_file) )
         self.save_as_cloud(points, output_file)
         
-        self.trace( _("Physical Probing completed") )
-        self.set_task_status(GCodePusher.TASK_COMPLETED)
+        if self.is_aborted():
+            self.trace( _("Physical Probing aborted.") )
+            self.set_task_status(GCodePusher.TASK_ABORTED)
+        else:
+            self.trace( _("Physical Probing completed.") )
+            self.set_task_status(GCodePusher.TASK_COMPLETED)
         
         if self.standalone:
             self.exec_macro("end_scan")

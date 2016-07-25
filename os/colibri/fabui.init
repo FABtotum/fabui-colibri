@@ -21,51 +21,41 @@ SERVICE_NAME=FABUI
 
 case "$1" in
   start)
- 	boot_msg "Starting ${SERVICE_NAME}."
- 	
- 	mkdir -p ${TEMP_PATH}/fabui
- 	chown 33:33 ${TEMP_PATH}/fabui
- 	touch ${TEMP_PATH}/fabui/safety.json
- 	
+    mkdir -p ${TEMP_PATH}/fabui
+    chown 33:33 ${TEMP_PATH}/fabui
+    boot_msg "Starting ${SERVICE_NAME}."
+
     #python /var/www/fabui/python/baud.py
-	python ${PYTHON_PATH}/setBaud.py &> /var/log/fabui/setBaud.log
-	######## websocket server ########
-	php ${FABUI_PATH}/index.php Server webSocket &> /var/log/fabui/webSocket.log &
-	echo $! > /run/webSocket.pid
-	#python ${PYTHON_PATH}/SystemMonitor.py &> /var/log/fabui/SystemMonitor.log &
-	start-stop-daemon -S --exec python ${PYTHON_PATH}/FabtotumServices.py -b -p ${FABSERVICE_PID} -- -B -L /var/log/fabui/FabtotumServices.log
-	#python ${PYTHON_PATH}/FabtotumServices.py &> /var/log/fabui/FabtotumServices.log &
-	#echo $! > /run/SystemMonitor.pid
-	######## hardware bootstrap ########
-	#php ${FABUI_PATH}/index.php Control hardwareBootstrap &> /var/log/fabui/hardwareBootstrap.log
-	
-	#python /var/www/fabui/python/flush.py &> /var/log/fabui/flush.log
-	#php /var/www/fabui/script/boot.php &> /var/log/fabui/boot.log
-	#python /var/www/fabui/python/monitor.py &> /var/log/fabui/monitor.log &
-	#echo $! > /run/fabui_monitor.pid
-	evaluate_retval
-	;;
+    python ${PYTHON_PATH}/setBaud.py &> /var/log/fabui/setBaud.log
+    
+    ######## websocket server ########
+    php ${FABUI_PATH}/index.php Server webSocket &> /var/log/fabui/webSocket.log &
+    echo $! > /run/webSocket.pid
+    
+    ######## fabtotum server ########
+    start-stop-daemon -b -S -q -m -p ${FABSERVICE_PID} --exec python ${PYTHON_PATH}/FabtotumServices.py -- -B -L /var/log/fabui/FabtotumServices.log
+    
+    evaluate_retval
+    ;;
   stop)
-	boot_msg "Stopping ${SERVICE_NAME}."
-	if [ -e "/run/webSocket.pid" ]; then
-		PID=$(cat /run/webSocket.pid)
-		kill -9 $PID &> /dev/null
-	fi
-	
-	start-stop-daemon -K -q -p $FABSERVICE_PID
-	
-	evaluate_retval
-	;;
+    boot_msg "Stopping ${SERVICE_NAME}."
+    if [ -e "/run/webSocket.pid" ]; then
+        PID=$(cat /run/webSocket.pid)
+        kill -9 $PID &> /dev/null
+    fi
+    
+    start-stop-daemon -K -q -p $FABSERVICE_PID
+    
+    evaluate_retval
+    ;;
   restart|reload)
-	${0} stop
-	sleep 1
-	${0} start
-	;;
+    ${0} stop
+    sleep 1
+    ${0} start
+    ;;
   *)
-	echo "Usage: $0 {start|stop|restart}"
-	exit 1
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
 esac
 
 exit $?
-
-
