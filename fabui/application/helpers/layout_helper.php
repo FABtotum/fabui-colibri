@@ -135,7 +135,7 @@ function buildMenu($menu_array, $is_sub = FALSE, $parent = '') {
 	return $menu . "</ul>";
 }
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('showAlert'))
 {
 	/**
@@ -145,6 +145,127 @@ if(!function_exists('showAlert'))
 	{
 		$html = '<div class="alert '.$type.'" animated fadeIn><button class="close" data-dismiss="alert">×</button>'.$message.'</div>';
 		return $html;
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('displayBlogFeedItem'))
+{
+	/**
+	 *
+	 */
+	function displayBlogFeedItem($feed)
+	{
+		return <<<EOT
+		<div class="panel panel-default">
+			<div class="panel-body status">
+				<div class="who clearfix">
+					<img src="{$feed['img_src']}" />
+					<span class="name font-sm">
+						<a href="#">{$feed['title']}</a>
+						<br>
+						<span class="text-muted">{$feed['date']}</span>
+					</span>
+				</div>
+				<div class="text hidden-xs">
+					<p>{$feed['text']}</p>
+				</div>
+				<ul class="links text-right hidden-xs">
+					<li class="">
+						<a target="_blank" href="{$feed['link']}"> Read More <i class="fa fa-arrow-right"></i></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+EOT;
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('displayTwitterFeedItem'))
+{
+	/**
+	 *
+	 */
+	function displayTwitterFeedItem($feed)
+	{
+		$date = date('j M, Y',strtotime($feed['created_at']));
+		$place     = '';
+		$images    = '';
+		$retweet   = '';
+		$favourite = '';
+		if(is_array($feed['place']))
+			$place .= '<br><i class="fa fa-map-marker"></i> '.$feed['place']['full_name'];
+		if(isset($feed['entities']['media'])){
+			foreach($feed['entities']['media'] as $media){
+				if($media['type'] == 'photo')
+					$images .= '<div class="image padding-top-0 padding-10"><img src="'.$media['media_url'].'" /></div>';
+			}
+		}
+		if($feed['retweet_count'] > 0)
+			$retweet .= '<li class="txt-color-green"><i class="fa fa-retweet"></i> ('.$feed['retweet_count'].')</li>';
+		if($feed['favorite_count'] > 0)
+			$favourite .= '<li class="txt-color-red"><i class="fa fa-heart"></i> ('.$feed['favorite_count'].')</li>';
+		
+		return <<<EOT
+		<div class="panel panel-default">
+			<div class="panel-body status">
+				<div class="who clearfix">
+					<img src="{$feed['user']['profile_image_url']}" />
+					<span class="name"><b>{$feed['user']['screen_name']}</b><span class="pull-right"><i class="fa fa-twitter"></i></span></span>
+					<span class="from">{$date}
+						{$place}
+					</span>
+					</span>
+				</div>
+				<div class="text">
+					<p>{$feed['text']}</p>
+				</div>
+				{$images}
+				<ul class="links">
+					{$retweet}
+					{$favourite}
+				</ul>
+			</div>
+		</div>
+EOT;
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('displayInstagramFeedItem'))
+{
+	/**
+	 *
+	 */
+	function displayInstagramFeedItem($feed)
+	{
+		$date = date('j M, Y',$feed['caption']['created_time']);
+		$location = '';
+		$likes    = '';
+		$comments = '';
+		if(is_array($feed['location']))
+			$location .= ', <i class="fa fa-map-marker"></i> '.$feed['location']['name'];
+		if(is_array($feed['likes']))
+			$likes .= '<li class="txt-color-red"><i class="fa fa-heart"></i> ('.$feed['likes']['count'].')</li>';
+		if(is_array($feed['comments']))
+			$comments .= '<li class="txt-color-blue"><i class="fa fa-comments"></i> ('.$feed['comments']['count'].')</li>';
+		return <<<EOT
+			<div class="panel panel-default">
+				<div class="panel-body status">
+					<div class="who clearfix padding-10">
+						<img src="{$feed['user']['profile_picture']}" />
+						<span class="name"><b>{$feed['user']['username']}</b>
+							<span class="pull-right"><i class="fa fa-instagram"></i></span>
+						</span>
+						<span class="from">{$date} {$location}</span>
+					</div>
+					<div class="image padding-10"><img src="{$feed['images']['standard_resolution']['url']}" /></div>
+					<div class="text padding-top-0 hidden-xs"><p>{$feed['caption']['text']}</p></div>
+					<ul class="links">
+						{$likes}
+						{$comments}
+					</ul>
+				</div>
+			</div>
+EOT;
 	}
 }
 ?>

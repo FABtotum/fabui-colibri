@@ -2,6 +2,7 @@
 /**
  * 
  * @author Krios Mane
+ * @author Fabtotum Development Team
  * @version 0.1
  * @license https://opensource.org/licenses/GPL-3.0
  * 
@@ -31,15 +32,15 @@
 		$widgetOptions['load'] = site_url('dashboard/twitter');
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'twitter-feeds-widget';
-		$widget->class = 'well';
+		$widget->class = 'well transparent'; 
 		$widget->header = array('icon' => 'fa-twitter', "title" => "<h2>Latest Tweets</h2>", 'toolbar'=>'');
 		$widget->body   = array('content' => '', 'class'=>'no-padding');
 		$tweeterFeedsWidget  = $widget->print_html(true);
 		//instagram feeds widget
 		$widgetOptions['load'] = site_url('dashboard/instagram');
 		$widget = $this->smart->create_widget($widgetOptions);
-		$widget->id = 'twitter-feeds-widget';
-		$widget->class = 'well';
+		$widget->id = 'instagram-feeds-widget';
+		$widget->class = 'well transparent';
 		$widget->header = array('icon' => 'fa-instagram', "title" => "<h2>Instagram</h2>", 'toolbar'=>'');
 		$widget->body   = array('content' => '', 'class'=>'no-padding');
 		$instagramFeedsWidget  = $widget->print_html(true);
@@ -48,7 +49,8 @@
 		$data['twitterWidget']   = $tweeterFeedsWidget;
 		$data['instagramWidget'] = $instagramFeedsWidget;
 								
-		$this->addCSSInLine('<style>#blog-feeds-widget.jarviswidget>div{background-color:transparent !important;}</style>');
+		$this->addCssFile('/assets/css/dashboard/style.css');
+		$this->addJsInLine($this->load->view('dashboard/js', $data, true));
 		
 		$this->content = $this->load->view('dashboard/index', $data, true );
 		$this->view();
@@ -60,6 +62,7 @@
 	{
 		//load configs
 		$this->config->load('fabtotum');
+		$this->load->helper('layout_helper');
 		if(file_exists($this->config->item('blog_feed_file'))){
 			$xml = simplexml_load_file($this->config->item('blog_feed_file'),'SimpleXMLElement', LIBXML_NOCDATA);
 			$data["blogTitle"] = $xml->channel->title;
@@ -74,7 +77,6 @@
 				$html->loadHTML(mb_convert_encoding($description, 'HTML-ENTITIES', 'UTF-8'));
 				
 				$images = $html->getElementsByTagName('img');
-				//
 				foreach($images as $imgTag){
 					$imageSrc = $imgTag->getAttribute('src');
 					$imgTag->parentNode->removeChild($imgTag);
@@ -96,6 +98,41 @@
 	 */
 	public function twitter()
 	{
+		//load configs
+		$this->config->load('fabtotum');
+		$this->load->helper('text_helper');
+		$this->load->helper('layout_helper');
+		if(file_exists($this->config->item('twitter_feed_file'))){
+			$feeds = json_decode(file_get_contents($this->config->item('twitter_feed_file')), true);
+			$processedFeeds    = array();
+			foreach($feeds as $feed){
+				
+				$temporaryFeed = $feed;
+				if(isset($feed['retweeted_status']) && $feed['retweeted_status']){
+					$temporaryFeed = $feed['retweeted_status'];
+				}
+				//highlitght hashtags
+				$hashtags = $temporaryFeed['entities']['hashtags'];
+				foreach($hashtags as $hash){
+					$temporaryFeed['text'] = highlight_phrase($temporaryFeed['text'], '#'.$hash['text'], '<a target="_blank" href="https://twitter.com/search?q='.$hash['text'].'">', '</a>');
+				}
+				//highlitght mentions
+				$mentions = $temporaryFeed['entities']['user_mentions'];
+				foreach($mentions as $mention){
+					$temporaryFeed['text'] = highlight_phrase($temporaryFeed['text'], $mention['screen_name'], '<a target="_blank" href="https://twitter.com/'.$mention['screen_name'].'">', '</a>');
+				}
+				//highlight urls
+				$urls = $temporaryFeed['entities']['urls'];
+				foreach($urls as $url){
+					$temporaryFeed['text'] = highlight_phrase($temporaryFeed['text'], $url['url'], '<a target="_blank" href="'.$url['url'].'">', '</a>');
+				}
+				
+				$processedFeeds[] = $temporaryFeed;
+			}
+			
+			$data['feeds'] = $processedFeeds;
+			$this->load->view('dashboard/twitter', $data);
+		}
 		
 	}
 	/**
@@ -103,7 +140,46 @@
 	 */
 	public function instagram()
 	{
+		//load configs
+		$this->config->load('fabtotum');
+		$this->load->helper('text_helper');
+		$this->load->helper('layout_helper');
+		$data['feeds'] = array();
+		$data['hash_feeds'] = array();
 		
+		if(file_exists($this->config->item('instagram_feed_hash_file'))){
+			$feeds = json_decode(file_get_contents($this->config->item('instagram_feed_hash_file')), true);
+			$feeds = $feeds['data'];
+			$processedFeeds = array();
+			foreach($feeds as $feed){
+				$temporaryFeed = $feed;
+				//highlitght tags
+				$tags = $temporaryFeed['tags'];
+				foreach($tags as $tag){
+					$temporaryFeed['caption']['text'] = highlight_phrase($temporaryFeed['caption']['text'], '#'.$tag, '<a target="_blank" href="javascript:void(0)">', '</a>');
+				}
+				
+				$processedFeeds[] = $temporaryFeed;
+			}
+			$data['hash_feeds'] = $processedFeeds;
+		}
+		if(file_exists($this->config->item('instagram_feed_file'))){
+			$feeds = json_decode(file_get_contents($this->config->item('instagram_feed_file')), true);
+			$feeds = $feeds['data'];
+			$processedFeeds = array();
+			foreach($feeds as $feed){
+				$temporaryFeed = $feed;
+				//highlitght tags
+				$tags = $temporaryFeed['tags'];
+				foreach($tags as $tag){
+					$temporaryFeed['caption']['text'] = highlight_phrase($temporaryFeed['caption']['text'], '#'.$tag, '<a target="_blank" href="javascript:void(0)">', '</a>');
+				}
+				$processedFeeds[] = $temporaryFeed;
+			}
+			$data['feeds'] = $processedFeeds;
+		}
+		
+		$this->load->view('dashboard/instagram', $data);
 	}
 			
  }
