@@ -197,7 +197,7 @@ def project_array(a, model_m, cam_m, persp_m):
         result.append( (x,y) )
     return result
 
-def scale(points, lines, w, h):
+def scale(points, lines, w, h, aratio):
     
     def quadrant(pt, w, h):
         return 0
@@ -205,13 +205,13 @@ def scale(points, lines, w, h):
     scaled = []
     point_done = []
     
-    ratio = float(w) / float(h)
+    #~ ratio = float(h) / float(w)
     #~ ratio = 1
-    print "ratio", ratio
+    print "ratio", aratio
         
     for p in points:
         x = int(0.5*w + w*p[0])        
-        y = int( 0.5*h + h*p[1] * ratio )
+        y = int( 0.5*h + w*p[1] * aratio )
         scaled.append( (x,y) )
         
     return scaled
@@ -273,19 +273,25 @@ def add_grid(x, y, z, w, h, xn, yn, color):
         
     return points, lines
     
-def test(pos, showit = False, fovx = 54, fovy = 41, ang_x = 35, ang_y = 0, ang_z = 0, cam_x = 0, cam_y = 27, cam_z = 30, id = None, label = None):
+def test(pos, img=0, showit = False, fovx = 54, fovy = 41, ang_x = 35, ang_y = 0, ang_z = 0, cam_x = 0, cam_y = 27, cam_z = 30, id = None, label = None):
 
     #~ bed_pos = [0,0,71]
     #~ image_f = cv2.imread('test_full_{0}.jpg'.format(bed_pos[2]))
     #bed_pos = [0,0,h]
     
-    h = pos[2]
     #tmp = cv2.imread('checker_{0}.jpg'.format(bed_pos[2]))
     #~ image_f = cv2.imread('checker_{0}.jpg'.format(bed_pos[2]))
-    if h < 27:
-        image_f = cv2.imread('images/test_{0}.jpg'.format(70))
+    if img < 27:
+        image_f = cv2.imread('images/test_{0}.jpg'.format(27))
     else:
-        image_f = cv2.imread('images/test_{0}.jpg'.format(h))
+        image_f = cv2.imread('images/test_{0}.jpg'.format(img))
+
+
+    aratio = 1 #float(fovx) / float(fovy)
+    #~ rows,cols,ch = image_f.shape
+    
+    #~ M = cv2.getRotationMatrix2D((cols/2,rows/2),90,1)
+    #~ dst = cv2.warpAffine(image_f,M,(cols,rows))
 
     #~ image_f = cv2.flip(image_f, 0)
 
@@ -344,20 +350,20 @@ def test(pos, showit = False, fovx = 54, fovy = 41, ang_x = 35, ang_y = 0, ang_z
 
     lines = [ # BGR
         # 
-        [4,0, (255,0,0)],
-        [5,1, (255,0,0)],
-        [6,2, (255,0,0)],
-        [7,3, (255,0,0)],
+        #~ [4,0, (255,0,0)],
+        #~ [5,1, (255,0,0)],
+        #~ [6,2, (255,0,0)],
+        #~ [7,3, (255,0,0)],
         
-        [0,1, (0,255,0)],
-        [1,2, (0,255,255)],
-        [2,3, (0,255,0)],
-        [3,0, (0,255,0)],
+        #~ [0,1, (0,255,0)],
+        #~ [1,2, (0,255,255)],
+        #~ [2,3, (0,255,0)],
+        #~ [3,0, (0,255,0)],
         
-        [4,5, (0,0,255)],
-        [5,6, (0,255,255)],
-        [6,7, (0,0,255)],
-        [7,4, (0,0,255)],
+        #~ [4,5, (0,0,255)],
+        #~ [5,6, (0,255,255)],
+        #~ [6,7, (0,0,255)],
+        #~ [7,4, (0,0,255)],
         # Axes
         [9, 8,  (0,0,255)],
         [10,8, (0,255,0)],
@@ -366,14 +372,18 @@ def test(pos, showit = False, fovx = 54, fovy = 41, ang_x = 35, ang_y = 0, ang_z
     ]
     
     m_model = eye_matrix()
-    m_model = trans_matrix(0,0,h) * rotx_matrix(0)
+    #~ m_model = rotx_matrix(55) * trans_matrix(-3.4,131.5,pos[2]+38)
+    #~ m_model = rotx_matrix(55) * trans_matrix(pos[0]-3.5-10, pos[1]+70.5, pos[2]-16) # Good @ 80
+    m_model = rotx_matrix(pos[3]) * trans_matrix(pos[0], pos[1], pos[2]) # Good @ 80
+    #~ m_model = rotx_matrix(66) * trans_matrix(0,0,pos[2]) #* trans_matrix(pos[0]-3.5-10, pos[1]+70.5, pos[2]-16)
+    
     #~ m_model = trans_matrix(-2,6,h) * rotx_matrix(0)
     #m_model = trans_matrix(-1,-1,h) * rotx_matrix(ang)
     #~ m_model = rotx_matrix(35)
     
     
     xy = project_array(xyz, m_model, m_cam, m_persp)
-    xy = scale(xy, lines, width, height)
+    xy = scale(xy, lines, width, height, aratio)
 
     #~ print xy
     
@@ -383,15 +393,15 @@ def test(pos, showit = False, fovx = 54, fovy = 41, ang_x = 35, ang_y = 0, ang_z
     w2 = int(width/2)
     h2 = int(height/2)
     
-    #~ cv2.line(image_f, ( w2, 0) , (w2, height), (255,255,255), 1 )
-    #~ cv2.line(image_f, (0, h2) , (width, h2), (255,255,255), 1 )
+    cv2.line(image_f, ( w2, 0) , (w2, height), (255,255,255), 1 )
+    cv2.line(image_f, (0, h2) , (width, h2), (255,255,255), 1 )
     
     #~ xyz, lines = add_grid(0,0,bed_pos[2], 210, 230, 21, 23, (255,255,255) )
-    xyz, lines   = add_grid( 0,0,0, 210, 230, 21, 23, (100,100,100) )
-    xyz2, lines2 = add_grid( 0,0,20, 210, 230, 21, 23, (150,150,150) )
+    xyz, lines   = add_grid( 0,0,0, 230, 210, 23, 21, (100,100,100) )
+    #xyz2, lines2 = add_grid( 0,0,20, 210, 230, 21, 23, (150,150,150) )
     
-    xyz += xyz2
-    lines += lines2
+    #xyz += xyz2
+    #lines += lines2
     
     #~ m_model = trans_matrix(-2,6,h) * rotx_matrix(0)
     #m_model = trans_matrix(0,0,h) * rotx_matrix(0)
@@ -400,7 +410,7 @@ def test(pos, showit = False, fovx = 54, fovy = 41, ang_x = 35, ang_y = 0, ang_z
     #m_model = trans_matrix(0,0,30)
 
     xy = project_array(xyz, m_model, m_cam, m_persp)
-    xy = scale(xy, lines, width, height)
+    xy = scale(xy, lines, width, height, aratio)
     
     for ln in lines:
         cv2.line(image_f, xy[ ln[0] ] , xy[ ln[1] ], ln[2], 1 )
@@ -415,10 +425,10 @@ def test(pos, showit = False, fovx = 54, fovy = 41, ang_x = 35, ang_y = 0, ang_z
     if id:
         cv2.imwrite('out/out{0}.jpg'.format(id), image_f)
     else:
-        cv2.imwrite('out/out{0}.jpg'.format(h), image_f)
+        cv2.imwrite('out/out{0}.jpg'.format(img), image_f)
     
     if showit:
-        cv2.imshow('orig{0}'.format(h), image_f)
+        cv2.imshow('orig{0}'.format(img), image_f)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 #~ -6.5 + 
@@ -438,6 +448,16 @@ def test(pos, showit = False, fovx = 54, fovy = 41, ang_x = 35, ang_y = 0, ang_z
 #~ i=63
 #~ test(i, showit=True, fovx=54, fovy=41 , ang_x=55, ang_y=0, ang_z=1, cam_x=-1.5, cam_y=0, cam_z=60, id=idx)
 
+#~ x = 88
+#~ y = 60
+#~ z = 199
+#~ test([x, y, z], showit=s, fovx=41, fovy=54, ang_x=35, ang_y=0, ang_z=0, cam_x=-y+19, cam_y=0, cam_z=0, id=idx, label=i)
+#~ m_model = rotx_matrix(55) * trans_matrix(pos[0]-3.5-10, pos[1]+70.5, pos[2]-16) # Good @ 80
+
+#~ test([-3.5-10, +70.5, 80-16, 55], img=80, showit=True, fovx=55, fovy=55, ang_x=0, ang_y=0, ang_z=0.5, cam_x=0, cam_y=0, cam_z=0)
+test([0, 0, 0, 52], img=80, showit=True, fovx=53, fovy=41, ang_x=0, ang_y=0.0, ang_z=0.0, cam_x=-3.5, cam_y=-0.5, cam_z=120)
+exit()
+
 idx = 0
 
 #~ for i in xrange(27, 200, 2):
@@ -446,14 +466,15 @@ for i in xrange(199, 200):
     s=True
     #~ test(i, showit=s, ang_x=35, ang_y=1, ang_z=0, cam_x=-4.5, cam_y=52, cam_z=27, id=idx) Almost there
 
-
-#~ for i in xrange(30, 75):
-    #~ s=False
-    x = 88
-    y = 60
-    #~ z = i      
-    z = 199
+    #~ x = 88
+    #~ y = 60
+    #~ z = i
+    x = 0
+    y = 0  
+    z = i
     #~ test([88, 60, i], showit=s, fovx=60, ang_x=40, ang_y=-1.3, ang_z=1, cam_x=-y+11.5, cam_y=31.5, cam_z=27, id=idx)
-    test([x, y, z], showit=s, fovx=54, ang_x=55, ang_y=-2, ang_z=1, cam_x=-y+19, cam_y=90, cam_z=-40, id=idx, label=i)
+    test([x, y, i], img=i, showit=s, fovx=55, fovy=55, ang_x=0, ang_y=0, ang_z=0.5, cam_x=0, cam_y=0, cam_z=0, id=idx, label=i)
     idx += 1
 
+    #32.6373388942 37.6319955104
+    # 40.5 30.75

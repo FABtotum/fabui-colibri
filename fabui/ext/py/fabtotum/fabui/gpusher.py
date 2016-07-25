@@ -40,6 +40,8 @@ from threading import Event, Thread, RLock
 from fabtotum.fabui.config import ConfigService
 from fabtotum.utils.gcodefile import GCodeFile, GCodeInfo
 from fabtotum.utils.pyro.gcodeclient import GCodeServiceClient
+from fabtotum.database      import Database, timestamp2datetime
+from fabtotum.database.task import Task
 
 from fabtotum.fabui.macros.all import PRESET_MAP
 
@@ -241,10 +243,6 @@ class GCodePusher(object):
         """
         Triggered when first move command in file executed
         """        
-        with self.monitor_lock:
-            self.task_stats['status'] = GCodePusher.TASK_RUNNING
-            self.update_monitor_file()
-        
         self.first_move_callback()
     
     def gcode_comment_callback(self, data):
@@ -392,6 +390,8 @@ class GCodePusher(object):
             self.task_stats['completed_time'] = int(time.time())
             self.task_stats['status'] = GCodePusher.TASK_COMPLETED
             self.task_stats['percent'] = 100.0
+            self.task_stats['completed_time'] = time.time()
+            self.__update_task_db()
             
             self.update_monitor_file()
         
@@ -399,6 +399,10 @@ class GCodePusher(object):
     
     def set_task_status(self, status):
         self.task_stats['status'] = status
+        if (status == GCodePusher.TASK_COMPLETED or
+            status == GCodePusher.TASK_ABORTED or
+            status == GCodePusher.TASK_RUNNING):
+            self.__update_task_db()
     
     def is_aborted(self):
         return self.task_stats['status'] == GCodePusher.TASK_ABORTED
@@ -423,17 +427,18 @@ class GCodePusher(object):
         
         with self.monitor_lock:        
             if data == 'paused':
-                self.trace( _("Task has been paused") )
+                #~ self.trace( _("Task has been paused") )
                 self.task_stats['status'] = GCodePusher.TASK_PAUSED
                 #self.monitor_info["paused"] = True
                 
             elif data == 'resumed':
-                self.trace( _("Task has been resumed") )
+                #~ self.trace( _("Task has been resumed") )
                 self.task_stats['status'] = GCodePusher.TASK_RUNNING
             
             elif data == 'aborted':
-                self.trace( _("Task has been aborted") )
+                #~ self.trace( _("Task has been aborted") )
                 self.task_stats['status'] = GCodePusher.TASK_ABORTED
+                self.__update_task_db()
                         
             self.update_monitor_file()
         
@@ -584,6 +589,31 @@ class GCodePusher(object):
             self.progress_monitor.start() 
         else:
             print "Skipping monitor thread"
+            
+        #~ self.task_db = Task(self.db, task_id)
+    
+    def __update_task_db(self):
+        """
+        Converts task_stats to compatible format for sys_tasks table and writes
+        the values to the database.
+        """
+        db          = Database(self.config)
+        task_id     = self.task_stats['id']
+        task_db     = Task(db, task_id)
+        
+        if (self.task_stats['status'] == GCodePusher.TASK_PREPARING or
+            self.task_stats['status'] == GCodePusher.TASK_RUNNING or
+            self.task_stats['status'] == GCodePusher.TASK_PAUSED):
+            
+            task_db['status'] = GCodePusher.TASK_RUNNING
+            
+        elif (self.task_stats['status'] == GCodePusher.TASK_COMPLETED or
+            self.task_stats['status'] == GCodePusher.TASK_ABORTED):
+            task_db['status'] = self.task_stats['status']
+            
+            task_db['finish_date'] = timestamp2datetime( self.task_stats['completed_time'] )
+        
+        task_db.write()
     
     def loop(self):
         """

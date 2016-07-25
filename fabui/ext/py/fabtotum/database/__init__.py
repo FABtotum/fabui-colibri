@@ -23,6 +23,7 @@ __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
 # Import standard python module
+from datetime import datetime
 from collections import OrderedDict
 
 # Import external modules
@@ -32,6 +33,11 @@ import sqlite3
 from fabtotum.fabui.config import ConfigService
 
 ################################################################################
+
+def timestamp2datetime(ts):
+    """ Covert python timestamp number to sqlite3 datetime format """
+    dt = datetime.fromtimestamp(ts)
+    return dt.strftime('%Y-%m-%d %H:%M:%S')
 
 class Database(object):
     """
@@ -74,6 +80,8 @@ class TableItem(object):
         self._db = database
         self._primary = primary
         self._table = table
+        # Do an initial read to get the values if the item already exists in the databases
+        self.read()
         
     def __contains__(self, key):
         return key in self._attribs
@@ -115,7 +123,7 @@ class TableItem(object):
                 self._attribs[k] = raw[idx]
                 idx += 1
             
-            self.exists = True
+            self._exists = True
             return True
         return False
         
@@ -151,6 +159,7 @@ class TableItem(object):
                         args += ( self._attribs[k] ,)
                         statement += ",?"
             statement += ")"
+            self._exists = True
             print args
             print statement
             cursor = self._db.conn.execute(statement, args )

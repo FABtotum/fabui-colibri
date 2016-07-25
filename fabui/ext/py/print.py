@@ -44,10 +44,11 @@ class PrintApplication(GCodePusher):
     Additive print application.
     """
     
-    def __init__(self, log_trace, monitor_file, standalone = False, autolevel = False):
+    def __init__(self, log_trace, monitor_file, standalone = False, autolevel = False, finalize = True):
         super(PrintApplication, self).__init__(log_trace, monitor_file)
         self.standalone = standalone
         self.autolevel = autolevel
+        self.finalize = finalize
     
     # Only for development
     #~ def trace(selg, msg):
@@ -56,19 +57,23 @@ class PrintApplication(GCodePusher):
     def progress_callback(self, percentage):
         print "Progress", percentage
     
-    def first_move_callback(self):
-        self.trace( _("Print STARTED") )
-        
-        self.print_stats['first_move'] = True
-        with self.monitor_lock:
-            self.update_monitor_file()
-
-    def file_done_callback(self):        
-        if self.standalone:
+    def print_finalize(self):
+        if self.standalone or self.finalize:
             self.exec_macro("end_print_additive")
             self.exec_macro("end_print_additive_safe_zone")
         
         self.stop()
+    
+    def first_move_callback(self):
+        self.trace( _("Print STARTED") )
+        
+        with self.monitor_lock:
+            self.print_stats['first_move'] = True
+            self.set_task_status(GCodePusher.TASK_RUNNING)
+            self.update_monitor_file()
+
+    def file_done_callback(self):   
+        self.print_finalize()
         
     def state_change_callback(self, state):
         if state == 'paused':
@@ -93,21 +98,18 @@ class PrintApplication(GCodePusher):
         """
 
         self.prepare_task(task_id, task_type='print', gcode_file=gcode_file)
-         TASK_RUNNING
+        self.set_task_status(GCodePusher.TASK_RUNNING)
         
         if self.standalone:
-            #print_macros.check_pre_print(self)
             self.exec_macro("check_pre_print")
             
             if self.autolevel:
                 self.exec_macro("raise_bed")
                 self.exec_macro("auto_bed_leveling")
             else:
-                self.exec_macro("raise_bed")
-                #general_macros.raise_bed(self)
+                self.exec_macro("home_all")
                 #general_macros.home_all(self, [ext_temp_target, bed_temp_target])
             
-            #print_macros.start_additive(self, [ext_temp_target, bed_temp_target])
             self.exec_macro("start_print", [ext_temp_target, bed_temp_target])
         
         self.send_file(gcode_file)
