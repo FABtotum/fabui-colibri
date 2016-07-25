@@ -35,6 +35,16 @@ from fabtotum.fabui.config import ConfigService
 tr = gettext.translation('gpusher', 'locale', fallback=True)
 _ = tr.ugettext
 
+def customHardware(gcodeSender,config,log):
+    """
+    Revision for customs edits
+    """
+    #set x endstop logic
+    gcodeSender.send("M747 X{0}".format(config.get('settings', 'invert_x_endstop_logic')))
+    #save settings
+    gcodeSender.send("M500")
+    log.debug("Custom Hardware")
+
 def hardware1(gcodeSender,log):
     """
     Rev1: September 2014 - May 2015
@@ -49,13 +59,15 @@ def hardware2(gcodeSender,log):
     - Bowden tube improvement (Added a protection external sleeve to avoid the bowden tube get stuck in the back panel).
     - Endstops logic inverted.
     """
+    #invert x endstop logic
     gcodeSender.send("M747 X1")
+    #set maximum feedrate
     gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00")
+    #save settings
     gcodeSender.send("M500")
     log.debug("Rev2")
     
 def hardware3(gcodeSender,log):
-    print "do hware 3"
     """
     Rev3: Aug 2015 - Jan 2016
     - Back panel modified to minimize bowden tube collisions
@@ -65,8 +77,11 @@ def hardware3(gcodeSender,log):
     - Milling Head V2 (store.fabtotum.com/eu/store/milling-head-v2.html).
     - Print head V2 (store.fabtotum.com/eu/store/printing-head-v2.html).
     """
+    #invert x endstop logic
     gcodeSender.send("M747 X1")
+    #set maximum feedrate
     gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00")
+    #save settings
     gcodeSender.send("M500")
     log.debug("Rev3")
     
@@ -158,12 +173,15 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         
     # Execute version specific intructions
     HW_VERSION_CMDS = {
-        '1' : hardware1,
-        '2' : hardware2,
-        '3' : hardware3,
-        '4' : hardware4
+        'custom' : customHardware,
+        '1'      : hardware1,
+        '2'      : hardware2,
+        '3'      : hardware3,
+        '4'      : hardware4
     }
-    if hardwareID in HW_VERSION_CMDS:
+    if config.get('settings', 'settings_type') == 'custom':
+        customHardware(gcs,config,log)
+    elif hardwareID in HW_VERSION_CMDS:
         HW_VERSION_CMDS[hardwareID](gcs,log)
     else:
         log.error("Unsupported hardware version: %s", hardwareID)
