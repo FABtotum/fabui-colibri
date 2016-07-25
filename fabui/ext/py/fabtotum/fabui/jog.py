@@ -128,7 +128,7 @@ class Jog:
                 self.log.debug("jog.send [%s]", gcode)
                 reply = self.gcs.send(gcode, group = 'jog' )
                 for ln in reply:
-                    self.log.debug("jog.reply [%s] : ", gcode, ln)
+                    self.log.debug("jog.reply [%s] : %s", gcode, ln)
                 #print "jog:", reply
                 
                 self.response[token] = {'code': gcode, 'reply': reply}

@@ -27,6 +27,9 @@ import json
 import ConfigParser
 
 # Import external modules
+from watchdog.observers import Observer
+from watchdog.events import PatternMatchingEventHandler
+from watchdog.events import FileSystemEventHandler
 
 # Import internal modules
 from fabtotum.os.paths        import CONFIG_INI, SERIAL_INI

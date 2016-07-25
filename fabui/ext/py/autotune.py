@@ -57,7 +57,7 @@ class PIDAutotune(GCodePusher):
     def run(self, task_id, extruder, temperature, cycles):
         
         self.prepare_task(task_id, task_type='autotune')
-        self.set_task_status(GCodePusher.TASK_STARTED)
+        self.set_task_status(GCodePusher.TASK_RUNNING)
         
         self.trace( _('PID Autotune started.') )
         
@@ -80,10 +80,10 @@ class PIDAutotune(GCodePusher):
             self.autotune_stats['I'] = Ki
             self.autotune_stats['D'] = Kd
             
-            trace('Result: P: {0}, I: {1}, D: {2}'.format(Kp, Ki, Kd) )
+            self.trace('Result: P: {0}, I: {1}, D: {2}'.format(Kp, Ki, Kd) )
             
         else:
-            trace( _('No results. Failed.') )
+            self.trace( _('No results. Failed.') )
             
         
         self.send('M300')

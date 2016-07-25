@@ -51,8 +51,8 @@ class PrintApplication(GCodePusher):
         self.finalize = finalize
     
     # Only for development
-    #~ def trace(selg, msg):
-        #~ print msg
+    def trace(selg, msg):
+        print msg
     
     def progress_callback(self, percentage):
         print "Progress", percentage
@@ -61,6 +61,11 @@ class PrintApplication(GCodePusher):
         if self.standalone or self.finalize:
             self.exec_macro("end_print_additive")
             self.exec_macro("end_print_additive_safe_zone")
+            
+            if self.is_aborted():
+                self.set_task_status(GCodePusher.TASK_ABORTED)
+            else:
+                self.set_task_status(GCodePusher.TASK_COMPLETED)
         
         self.stop()
     

@@ -84,6 +84,7 @@ class GCodePusher(object):
     TASK_RUNNING        = 'running'
     TASK_PAUSED         = 'paused'
     TASK_COMPLETED      = 'completed'
+    TASK_ABORTING       = 'aborting'
     TASK_ABORTED        = 'aborted'
     
     TYPE_PRINT          = 'print'
@@ -387,25 +388,27 @@ class GCodePusher(object):
         Internal file done callback preventing user from overloading it.
         """
         with self.monitor_lock:        
-            self.task_stats['completed_time'] = int(time.time())
-            self.task_stats['status'] = GCodePusher.TASK_COMPLETED
             self.task_stats['percent'] = 100.0
-            self.task_stats['completed_time'] = time.time()
-            self.__update_task_db()
-            
             self.update_monitor_file()
         
         self.file_done_callback()
     
     def set_task_status(self, status):
         self.task_stats['status'] = status
+
         if (status == GCodePusher.TASK_COMPLETED or
+            status == GCodePusher.TASK_ABORTED):        
+            self.task_stats['completed_time'] = time.time()
+        
+        if (status == GCodePusher.TASK_COMPLETED or
+            status == GCodePusher.TASK_ABORTING or
             status == GCodePusher.TASK_ABORTED or
             status == GCodePusher.TASK_RUNNING):
             self.__update_task_db()
     
     def is_aborted(self):
-        return self.task_stats['status'] == GCodePusher.TASK_ABORTED
+        return ( self.task_stats['status'] == GCodePusher.TASK_ABORTED
+              or self.task_stats['status'] == GCodePusher.TASK_ABORTING)
         
     def is_paused(self):
         return self.task_stats['status'] == GCodePusher.TASK_PAUSED
@@ -437,7 +440,7 @@ class GCodePusher(object):
             
             elif data == 'aborted':
                 #~ self.trace( _("Task has been aborted") )
-                self.task_stats['status'] = GCodePusher.TASK_ABORTED
+                self.task_stats['status'] = GCodePusher.TASK_ABORTING
                 self.__update_task_db()
                         
             self.update_monitor_file()
@@ -608,11 +611,13 @@ class GCodePusher(object):
             task_db['status'] = GCodePusher.TASK_RUNNING
             
         elif (self.task_stats['status'] == GCodePusher.TASK_COMPLETED or
+            self.task_stats['status'] == GCodePusher.TASK_ABORTING or
             self.task_stats['status'] == GCodePusher.TASK_ABORTED):
             task_db['status'] = self.task_stats['status']
             
             task_db['finish_date'] = timestamp2datetime( self.task_stats['completed_time'] )
         
+        print "DB.write, status:", self.task_stats['status']
         task_db.write()
     
     def loop(self):
@@ -714,7 +719,7 @@ class GCodePusher(object):
             self.trace(error_msg + _(": Skipped"))
             self.macro_skipped += 1
                 
-        #time.sleep(delay_after) #wait the desired amount
+        time.sleep(delay_after) #wait the desired amount
         
     def send(self, code, block = True, timeout = None, trace = None, group = 'gcode', expected_reply = 'ok'):
         """

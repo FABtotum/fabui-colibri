@@ -36,23 +36,9 @@ tr = gettext.translation('gmacro', 'locale', fallback=True)
 _ = tr.ugettext
 
 
-def pre_unload_spool(app, args = None):
-    reply = app.send("M105")
-    serial_reply = reply[0].rstrip()
-    
-    ext_temp = serial_reply.split()[1]
-    ext_temp = ext_temp.split(":")[1]
-    
-    if(float(ext_temp) < 100):
-        time_to_wait = 60
-    elif(float(ext_temp) > 100 and float(ext_temp) < 150 ):
-        time_to_wait = 30
-    elif(float(ext_temp) > 150 and float(ext_temp) < 190 ):
-        time_to_wait = 10
-    elif(float(ext_temp) > 190):
-        time_to_wait = 0
-        
-    app.macro("M104 S190",  "ok", 5,    _("Heating Nozzle..."), time_to_wait, verbose=True) #heating and waiting.
+def pre_unload_spool(app, args = None):        
+    app.macro("M104 S190",  "ok", 5,    _("Heating Nozzle..."), 0, verbose=False)
+    app.macro("M109 S190",  "ok", 400,  _("Waiting for nozzle to reach temperature..."), 0, verbose=True) #heating and waiting.
     
 def unload_spool(app, args = None):
     units_e = app.config.get('settings', 'e')
@@ -90,7 +76,7 @@ def load_spool(app, args = None):
 
     app.macro("G0 E110 F500",       "ok", 1,    _("Loading filament"), 15)
     app.macro("G0 E660 F700",       "ok", 1,    _("Loading filament (fast)"), 20,verbose=False)
-    app.macro("M109 S210",          "ok", 200,  _("Waiting to get to temperature..."), 0.1) #heating and waiting.
+    app.macro("M109 S210",          "ok", 400,  _("Waiting to get to temperature..."), 0.1) #heating and waiting.
     app.macro("G0 E100 F200",       "ok", 1,    _("Entering the hotend (slow)"), 0.1)
 
     app.macro("M104 S0",            "ok", 1,    _("Turning off heat"), 0.1)
