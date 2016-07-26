@@ -76,11 +76,12 @@ class PIDAutotune(GCodePusher):
             Ki = reply[-3]
             Kd = reply[-2]
             
-            self.autotune_stats['P'] = Kp
-            self.autotune_stats['I'] = Ki
-            self.autotune_stats['D'] = Kd
+            self.autotune_stats['P'] = Kp.split(':')[1].rstrip()
+            self.autotune_stats['I'] = Ki.split(':')[1].rstrip()
+            self.autotune_stats['D'] = Kd.split(':')[1].rstrip()
             
-            self.trace('Result: P: {0}, I: {1}, D: {2}'.format(Kp, Ki, Kd) )
+            self.trace( _('Result: P: {0}, I: {1}, D: {2}').format(Kp, Ki, Kd) )
+            print( _('Result: P: {0}, I: {1}, D: {2}').format(Kp, Ki, Kd) )
             
         else:
             self.trace( _('No results. Failed.') )

@@ -42,6 +42,7 @@ from fabtotum.utils.pyro.gcodeserver    import GCodeServiceServer
 from fabtotum.os.monitor.filesystem     import FolderTempMonitor
 from fabtotum.os.monitor.usbdrive       import UsbMonitor
 from fabtotum.os.monitor.gpiomonitor    import GPIOMonitor
+from fabtotum.os.monitor.configmonitor  import ConfigMonitor
 
 
 def create_file(filename):
@@ -98,8 +99,6 @@ SERIAL_PORT = config.get('serial', 'PORT')
 SERIAL_BAUD = config.get('serial', 'BAUD')
 GPIO_PIN    = config.get('gpio', 'pin')
 
-MONITOR_BACKTRACK   = int(config.get('monitor', 'backtrack'))
-MONITOR_PERIOD      = float(config.get('monitor', 'period'))
 MONITOR_FILE        = config.get('general', 'temperature')
 
 # Prepare files with correct permissions
@@ -150,9 +149,13 @@ ws.connect();
 ftm = FolderTempMonitor(ws, gcservice, logger, TRACE, TASK_MONITOR, MACRO_RESPONSE, JOG_RESPONSE, COMMAND)
 ## usb disk monitor
 um = UsbMonitor(ws, logger, USB_FILE)
+## Configuration monitor
+cm = ConfigMonitor(ws, gcservice, logger)
+
 ## The Observer ;)
 observer = Observer()
 observer.schedule(um, '/dev/', recursive=False)
+observer.schedule(cm, '/var/lib/fabui', recursive=True)
 observer.schedule(ftm, TEMP_PATH, recursive=False)
 observer.start()
 
@@ -161,7 +164,7 @@ gpioMonitor = GPIOMonitor(ws, gcservice, logger, GPIO_PIN, EMERGENCY_FILE)
 gpioMonitor.start()
 
 ## Stats monitor
-statsMonitor = StatsMonitor(MONITOR_FILE, gcservice, logger, MONITOR_BACKTRACK, MONITOR_PERIOD)
+statsMonitor = StatsMonitor(MONITOR_FILE, gcservice, config, logger=logger)
 statsMonitor.start()
 
 # Ensure CTRL+C detection to gracefully stop the server.

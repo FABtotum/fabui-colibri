@@ -37,13 +37,11 @@ from fabtotum.utils.singleton import Singleton
 
 #####################################################
 
-# TODO: check whether ConfigParser needs reloading too
-
 class ConfigService:
     __metaclass__ = Singleton
     
     def __init__(self):
-        """ LOAD INI FILE """
+        """ Load config files """
         self.config = ConfigParser.ConfigParser()
         self.config.read(CONFIG_INI)
 
@@ -61,6 +59,14 @@ class ConfigService:
             self.settings = json.load(json_f)
     
     def reload(self):
+        """ Reload config files """
+        
+        self.config.read(CONFIG_INI)
+        self.serialconfig.read(SERIAL_INI)
+
+        self.HW_DEFAULT_SETTINGS = self.config.get('hardware', 'default_settings')
+        self.HW_CUSTOM_SETTINGS  = self.config.get('hardware', 'custom_settings')
+        
         json_f = open(self.HW_DEFAULT_SETTINGS)
         self.settings = json.load(json_f)
         

@@ -50,12 +50,17 @@ class StatsMonitor:
     
     MAX_DELTA_TIME  = 60    # Maximum allowed delta time
     
-    def __init__(self, stats_file, gcs = None, logger = None, backtrack = 20, period = 5.0):
+    def __init__(self, stats_file, gcs = None, config = None, logger = None):
 
         if not gcs:
             self.gcs = GCodeServiceClient()
         else:
             self.gcs = gcs
+    
+        if not config:
+            self.config = ConfigService()
+        else:
+            self.config = config
     
         if logger:
             self.log = logger
@@ -73,8 +78,8 @@ class StatsMonitor:
         self.monitor_thread = None
         self.monitor_write_thread = None
         self.ev_update = Event()
-        self.backtrack = backtrack
-        self.update_period = period
+        self.backtrack = int(self.config.get('monitor', 'backtrack'))
+        self.update_period = float(self.config.get('monitor', 'period'))
         
         ## Monitor variables, fill arrays with zeros
         self.ext_temp           = [0.0] * self.backtrack
@@ -86,6 +91,22 @@ class StatsMonitor:
         
         # re
         self.re_temp = re.compile('ok\sT:(?P<T>[0-9]+\.[0-9]+)\s\/(?P<TT>[0-9]+\.[0-9]+)\sB:(?P<B>[0-9]+\.[0-9]+)\s\/(?P<BT>[0-9]+\.[0-9]+)\s')
+    
+    def __reload_config(self):
+        self.config.reload()
+        
+        old_backtrack = self.backtrack
+        
+        self.backtrack = int(self.config.get('monitor', 'backtrack'))
+        self.update_period = float(self.config.get('monitor', 'period'))
+    
+        if old_backtrack != self.backtrack:
+            self.ext_temp           = [0.0] * self.backtrack
+            self.ext_temp_target    = [0.0] * self.backtrack
+            self.bed_temp           = [0.0] * self.backtrack
+            self.bed_temp_target    = [0.0] * self.backtrack
+            self.delta              = [0] * self.backtrack
+            self.last_update_time   = time.time()
     
     def __parse_temperature(self, line):
         match = self.re_temp.search(line)
@@ -216,6 +237,8 @@ class StatsMonitor:
             self.__temp_change_callback(action.split(':')[1], data)
         elif action.startswith('gcode_action'):
             self.__gcode_action_callback(action.split(':')[1], data)
+        elif action.startswith('config:'):
+            self.__reload_config()
     
     def __write_stats(self):
         """

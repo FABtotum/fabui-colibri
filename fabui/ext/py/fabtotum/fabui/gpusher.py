@@ -476,7 +476,8 @@ class GCodePusher(object):
         print "__config_change_callback", id, data 
         if id == 'shutdown':
             self.task_stats["auto_shutdown"] = (data == 'on')
-            
+        elif id == 'reload':
+            self.config.reload()
     
     def callback_handler(self, action, data):
         print "callback_handler", action, data

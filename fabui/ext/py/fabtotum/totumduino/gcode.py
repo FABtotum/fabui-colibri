@@ -1081,6 +1081,9 @@ class GCodeService:
             return None
         
     def push(self, id, data):
+        """
+        Push a notification to all clients.
+        """
         self.__trigger_callback(id, data)
         return True
         
