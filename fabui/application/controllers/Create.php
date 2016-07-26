@@ -207,7 +207,7 @@
 			'user'       => $this->session->user['id'],
 			'controller' => 'create',
 			'type'       => 'print',
-			'status'     => 'RUNNING',
+			'status'     => 'running',
 			'id_file'    => $data['idFile'],
 			'id_object'  => $object['id'],
 			'start_date' => date('Y-m-d H:i:s')
@@ -234,11 +234,8 @@
 		$this->load->helper('fabtotum_helper');
 		//abort
 		abort();
-		//update db status
-		$this->load->model('Tasks', 'tasks');
-		$this->tasks->update($taskId, array('status' => 'abort','finish_date' => date('Y-m-d H:i:s')));
 		$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
-		//TODO
+		//TODO 
 	}
 	
 	/**
@@ -247,8 +244,8 @@
 	public function complete($taskID)
 	{
 		//update db status
-		$this->load->model('Tasks', 'tasks');
-		$this->tasks->update($taskID, array('status' => 'completed', 'finish_date' => date('Y-m-d H:i:s')));
+		//$this->load->model('Tasks', 'tasks');
+		//$this->tasks->update($taskID, array('status' => 'completed', 'finish_date' => date('Y-m-d H:i:s')));
 		$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
 	}
 	

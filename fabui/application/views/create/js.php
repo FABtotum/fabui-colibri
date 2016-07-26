@@ -301,6 +301,11 @@
 				element.html('<i class="fa fa-pause"></i> Pause Print');
 				element.attr('data-action', 'pause');
 				break;
+			case 'aborting':
+				break;
+			case 'aborted':
+				aborted();
+				break;
 			case 'completed':
 				completeTask();
 				break;
@@ -522,14 +527,23 @@
 	 */
 	function abort()
 	{
-		openWait('Aborting print');
+		openWait('<i class="fa fa-spinner fa-spin "></i> Aborting print', 'Please wait..', false);
 		$.ajax({
 			type: 'post',
 			url: '<?php echo site_url('create/abort/'); ?>/' + idTask,
 			dataType: 'json'
 		}).done(function(response) {
-			document.location.href = '<?php echo site_url('make/'.$type); ?>';
 		});
+	}
+	/**
+	* handle called when task is aborted
+	*/
+	function aborted()
+	{
+		openWait('<i class="fa fa-check "></i> Print aborted', 'Reloading page...', false);
+		setTimeout(function(){
+			document.location.href = '<?php echo site_url('make/'.$type); ?>';
+		}, 5000);
 	}
 	
 	/**
