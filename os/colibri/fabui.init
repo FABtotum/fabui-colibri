@@ -33,7 +33,9 @@ case "$1" in
     echo $! > /run/webSocket.pid
     
     ######## fabtotum server ########
-    start-stop-daemon -b -S -q -m -p ${FABSERVICE_PID} --exec python ${PYTHON_PATH}/FabtotumServices.py -- -B -L /var/log/fabui/FabtotumServices.log
+    #start-stop-daemon -b -S -q -m -p ${FABSERVICE_PID} --exec python ${PYTHON_PATH}/FabtotumServices.py -- -B -L /var/log/fabui/FabtotumServices.log
+    python ${PYTHON_PATH}/FabtotumServices.py -B &> /var/log/fabui/FabtotumServices.log 2>&1 &
+    echo $! > ${FABSERVICE_PID}
     
     evaluate_retval
     ;;
