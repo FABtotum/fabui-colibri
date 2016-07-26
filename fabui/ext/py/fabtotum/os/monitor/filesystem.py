@@ -24,6 +24,7 @@ __version__ = "1.0"
 
 # Import standard python module
 import json
+import time
 import gettext
 
 # Import external modules
@@ -98,15 +99,21 @@ class FolderTempMonitor(PatternMatchingEventHandler):
             messageType = 'task'
             self.sendMessage(messageType, messageData)
         elif event.src_path == self.JOG_RESPONSE:
-            messageData = {'content': json.loads(str(self.getFileContent(self.JOG_RESPONSE)))}
-            messageType = 'jog'
-            self.sendMessage(messageType, messageData)
+            #time.sleep(0.5)
             
+            retry = 5
             
-        #~ elif event.src_path == self.TASK_MONITOR:
-            #~ pass
-        #~ elif event.src_path == self.MACRO_RESPONSE:
-            #~ pass      
+            while retry:
+                tmp = str(self.getFileContent(self.JOG_RESPONSE))
+                if tmp:
+                    messageData = {'content': json.loads(tmp)}
+                    messageType = 'jog'
+                    self.sendMessage(messageType, messageData)
+                    break
+                else:
+                    print "---------------- EMPTY FILE -----------------", retry
+                    retry -= 1
+   
         
     def on_created(self, event):
         #self.process(event)
