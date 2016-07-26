@@ -52,7 +52,7 @@ class ProbeScan(GCodePusher):
     E_FEEDRATE      = 800
     
     def __init__(self, log_trace, monitor_file, standalone = False, finalize = True):
-        super(ProbeScan, self).__init__(log_trace, monitor_file)
+        super(ProbeScan, self).__init__(log_trace, monitor_file, use_stdout=standalone)
         
         self.standalone = standalone
         self.finalize   = finalize

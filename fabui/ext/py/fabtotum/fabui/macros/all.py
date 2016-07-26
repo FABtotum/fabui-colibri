@@ -54,8 +54,8 @@ PRESET_MAP = {
     "unload_spool"                  : maint_macros.unload_spool,
     "load_spool"                    : maint_macros.load_spool,
     # Milling
-    "start_subtractive_print"       : mill_macros.start_subtractive,
-    "end_print_subtractive"         : mill_macros.end_subtractive,
+    "start_subtractive"             : mill_macros.start_subtractive,
+    "end_subtractive"               : mill_macros.end_subtractive,
     # Scanning    
     "check_pre_scan"                : scan_macros.check_pre_scan, 
     "r_scan"                        : scan_macros.rotary_scan,

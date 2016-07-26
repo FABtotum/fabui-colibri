@@ -94,12 +94,12 @@ class GCodePusher(object):
     
     UPDATE_PERIOD       = 2 # seconds
     
-    def __init__(self, log_trace, monitor_file = None, gcs = None, config = None, use_callback = True):
+    def __init__(self, log_trace, monitor_file = None, gcs = None, config = None, use_callback = True, use_stdout = False):
                         
         self.monitor_lock = RLock()
         
         self.gcode_info = None
-        
+        self.use_stdout = use_stdout
         # Task specific attributes
         self.task_stats = {
             'type'                  : 'unknown',
@@ -214,9 +214,10 @@ class GCodePusher(object):
         :param log_msg: Log message
         :type log_msg: string
         """
-        #logging.info(log_msg)
-        self.trace_logger.info(log_msg)
-        pass
+        if self.use_stdout:
+            print log_msg
+        else:
+            self.trace_logger.info(log_msg)
         
     def resetTrace(self):
         """ Reset trace file """

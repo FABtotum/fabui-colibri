@@ -44,6 +44,19 @@ from fabtotum.database import TableItem
   #~ `finish_date` datetime
 #~ );
 
+#~ CREATE TABLE "sys_tasks" ( 
+    #~ "id" INTEGER, 
+    #~ "user" int(11) NOT NULL, 
+    #~ "controller" varchar(255) NOT NULL, 
+    #~ "type" varchar(255) DEFAULT NULL, 
+    #~ "status" varchar(255) DEFAULT NULL, 
+    #~ "attributes" text, 
+    #~ "start_date" datetime NOT NULL, 
+    #~ "finish_date" datetime, 
+    #~ "id_object" INTEGER, 
+    #~ "id_file" INTEGER, 
+    #~ PRIMARY KEY ("id" ASC) );
+
 class Task(TableItem):
     
     def __init__(self, database, task_id):
@@ -58,5 +71,7 @@ class Task(TableItem):
         attribs['attributes']   = "{}"
         attribs['start_date']   = 0
         attribs['finish_date']  = 0
+        attribs['id_object']  = 0
+        attribs['id_file']  = 0
         
         super(Task, self).__init__(database, table='sys_tasks', primary='id', attribs=attribs)

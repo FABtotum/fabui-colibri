@@ -50,7 +50,7 @@ class SweepScan(GCodePusher):
     E_FEEDRATE      = 800
     
     def __init__(self, log_trace, monitor_file, scan_dir, standalone = False, finalize = True, width = 2592, height = 1944, rotation = 270, iso = 800, power = 230, shutter_speed = 35000):
-        super(SweepScan, self).__init__(log_trace, monitor_file)
+        super(SweepScan, self).__init__(log_trace, monitor_file, use_stdout=standalone)
         
         self.standalone = standalone
         self.finalize = finalize
@@ -75,11 +75,7 @@ class SweepScan(GCodePusher):
         }
         
         self.add_monitor_group('scan', self.scan_stats)
-            
-    def trace(self, msg):
-        """ for debug only, should be removed in production """
-        print msg
-            
+
     def get_progress(self):
         """ Custom progress implementation """
         return self.progress
