@@ -73,7 +73,7 @@ class ConfigMonitor(PatternMatchingEventHandler):
            or event.src_path == self.HW_DEFAULT_SETTINGS
            or event.src_path == self.HW_CUSTOM_SETTINGS
            ):
-            self.config.read(CONFIG_INI)
+
             self.HW_DEFAULT_SETTINGS = self.config.get('hardware', 'default_settings')
             self.HW_CUSTOM_SETTINGS  = self.config.get('hardware', 'custom_settings')
             
