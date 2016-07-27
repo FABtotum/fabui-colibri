@@ -54,7 +54,7 @@ class FolderTempMonitor(PatternMatchingEventHandler):
     TASK_MONITOR = None
     COMMAND = None
     
-    def __init__(self, WebSocket, gcs, logger, trace_file, monitor_file, response_file, jog_response_file, command_file):
+    def __init__(self, notifyservice, gcs, logger, trace_file, monitor_file, response_file, jog_response_file, command_file):
         
         self.TRACE = trace_file
         self.COMMAND = command_file
@@ -74,7 +74,7 @@ class FolderTempMonitor(PatternMatchingEventHandler):
         self.ignore_directories = None
         self._ignore_patterns = None
         self.case_sensitive = None
-        self.ws = WebSocket
+        self.ns = notifyservice
         
     def on_modified(self, event):
         """
@@ -89,7 +89,8 @@ class FolderTempMonitor(PatternMatchingEventHandler):
         if event.src_path == self.TRACE:
             messageData = {'type': 'trace', 'content': str(self.getFileContent(self.TRACE))}
             messageType = "macro"
-            self.sendMessage(messageType, messageData)
+            #~ self.sendMessage(messageType, messageData)
+            self.ns.notify(messageType, messageData)
             
         elif event.src_path == self.COMMAND:
             self.parser.parse_file(self.COMMAND)
@@ -97,7 +98,9 @@ class FolderTempMonitor(PatternMatchingEventHandler):
         elif event.src_path == self.TASK_MONITOR:
             messageData = {'type': 'monitor', 'content': json.loads(str(self.getFileContent(self.TASK_MONITOR)))}
             messageType = 'task'
-            self.sendMessage(messageType, messageData)
+            #self.sendMessage(messageType, messageData)
+            self.ns.notify(messageType, messageData)
+            
         elif event.src_path == self.JOG_RESPONSE:
             #time.sleep(0.5)
             
@@ -108,7 +111,8 @@ class FolderTempMonitor(PatternMatchingEventHandler):
                 if tmp:
                     messageData = {'content': json.loads(tmp)}
                     messageType = 'jog'
-                    self.sendMessage(messageType, messageData)
+                    #self.sendMessage(messageType, messageData)
+                    self.ns.notify(messageType, messageData)
                     break
                 else:
                     print "---------------- EMPTY FILE -----------------", retry
@@ -125,17 +129,17 @@ class FolderTempMonitor(PatternMatchingEventHandler):
         self.log.debug("DELETED: " + event.src_path)
         #self.ws.send("CRAETED")
         
-    def sendMessage(self, type, data):
-        """
-        Send message to WebSocket server.
+    #~ def sendMessage(self, type, data):
+        #~ """
+        #~ Send message to WebSocket server.
         
-        :param type: Message type
-        :param data: Message data
-        :type type: string
-        :type data: string
-        """
-        message = {'type': type, 'data':data}
-        self.ws.send(json.dumps(message))
+        #~ :param type: Message type
+        #~ :param data: Message data
+        #~ :type type: string
+        #~ :type data: string
+        #~ """
+        #~ message = {'type': type, 'data':data}
+        #~ self.ws.send(json.dumps(message))
         
     def getFileContent(self, file_path):
         file = open(file_path, 'r')

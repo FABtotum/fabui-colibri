@@ -36,6 +36,7 @@ from fabtotum.os.paths                  import TEMP_PATH
 from fabtotum.fabui.config              import ConfigService
 from fabtotum.fabui.bootstrap           import hardwareBootstrap
 from fabtotum.fabui.monitor             import StatsMonitor
+from fabtotum.fabui.notify              import NotifyService
 from fabtotum.totumduino.gcode          import GCodeService
 from fabtotum.totumduino.hardware       import reset as totumduino_reset
 from fabtotum.utils.pyro.gcodeserver    import GCodeServiceServer
@@ -100,6 +101,7 @@ SERIAL_BAUD = config.get('serial', 'BAUD')
 GPIO_PIN    = config.get('gpio', 'pin')
 
 MONITOR_FILE        = config.get('general', 'temperature')
+NOTIFY_FILE         = config.get('general', 'notify_file')
 
 # Prepare files with correct permissions
 create_file(TRACE)
@@ -145,12 +147,15 @@ gcserver = GCodeServiceServer(gcservice)
 ws = WebSocketClient('ws://'+SOCKET_HOST +':'+SOCKET_PORT+'/')
 ws.connect();
 
+# Notification service
+ns = NotifyService(ws, NOTIFY_FILE, config)
+
 ## Folder temp monitor
-ftm = FolderTempMonitor(ws, gcservice, logger, TRACE, TASK_MONITOR, MACRO_RESPONSE, JOG_RESPONSE, COMMAND)
+ftm = FolderTempMonitor(ns, gcservice, logger, TRACE, TASK_MONITOR, MACRO_RESPONSE, JOG_RESPONSE, COMMAND)
 ## usb disk monitor
-um = UsbMonitor(ws, logger, USB_FILE)
+um = UsbMonitor(ns, logger, USB_FILE)
 ## Configuration monitor
-cm = ConfigMonitor(ws, gcservice, logger)
+cm = ConfigMonitor(gcservice, config, logger)
 
 ## The Observer ;)
 observer = Observer()
@@ -160,7 +165,7 @@ observer.schedule(ftm, TEMP_PATH, recursive=False)
 observer.start()
 
 ## Safety monitor
-gpioMonitor = GPIOMonitor(ws, gcservice, logger, GPIO_PIN, EMERGENCY_FILE)
+gpioMonitor = GPIOMonitor(ns, gcservice, logger, GPIO_PIN, EMERGENCY_FILE)
 gpioMonitor.start()
 
 ## Stats monitor

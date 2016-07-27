@@ -70,7 +70,6 @@ class Command(object):
     Command objects store individual commands sent to the ``GCodeService``. Along with the 
     command id they contain all the necesary data to execute and handle it.
     
-    
     :param id: Command id can be ``NONE``, ``GCODE``, ``FILE``, ``ABORT``, ``PAUSE``, ``RESUME``, ``ZMODIFY`` and ``RESET``
     :param data: Any command data
     :param expected_reply: Expected command reply

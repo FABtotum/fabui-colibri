@@ -23,10 +23,14 @@ bigtemp_path = @BIGTEMP_PATH@
 database = @LIB_PATH@fabtotum.db
 autoinstall_file = @WWW_PATH@AUTOINSTALL
 uploads = @UPLOAD_PATH@
+notify_file = @FABUI_TEMP_PATH@notify.json
 
 [monitor]
 backtrack = 20
 period = 5
+
+[notify]
+backtrack = 30
 
 [usb]
 usb_disk_folder = @USB_MEDIA_PATH@

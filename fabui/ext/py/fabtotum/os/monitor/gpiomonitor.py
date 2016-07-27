@@ -42,8 +42,8 @@ class GPIOMonitor:
     ACTION_PIN = None
     EMERGENCY_FILE = None
     
-    def __init__(self, WebSocket, gcs, logger, action_pin, emergency_file):
-        self.ws = WebSocket
+    def __init__(self, notifyservice, gcs, logger, action_pin, emergency_file):
+        self.ns = notifyservice
         self.gcs = gcs
         self.log = logger
         self.ACTION_PIN = int(action_pin)
@@ -85,16 +85,17 @@ class GPIOMonitor:
             errorType = 'alert'
             self.gcs.send('M999', block=False)
         
-        message = {'type': errorType, 'code': error}
-        json_msg = json.dumps(message)
+        #message = {'type': errorType, 'code': error}
+        #json_msg = json.dumps(message)
         
         # Send the emergency error via websocket
-        self.ws.send(json_msg)
+        #self.ws.send(json_msg)
         
         # If the browser doesn't support websockets write emgency error to a file
         # so the UI can check it via pulling
-        with open(self.EMERGENCY_FILE, 'w+') as file:
-            file.write(json_msg)
+        #with open(self.EMERGENCY_FILE, 'w+') as file:
+        #    file.write(json_msg)
+        self.ns.notify(errorType, {'code': error} )
 
     def start(self):
         """ Start gpio event detection """

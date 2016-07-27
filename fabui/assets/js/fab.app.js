@@ -494,10 +494,10 @@ fabApp = (function(app) {
 						app.manageMacro(obj.data);
 						break;
 					case 'emergency':
-						app.manageEmergency(obj);
+						app.manageEmergency(obj.data);
 						break;
 					case 'alert':
-						app.manageAlert(obj);
+						app.manageAlert(obj.data);
 						break;
 					case 'task':
 						app.manageTask(obj.data);
@@ -837,13 +837,13 @@ fabApp = (function(app) {
 	/*
 	 * notify when usb disk is inserted or removed
 	 */
-	app.usb = function (inserted, notify){
-		if(inserted && $(".usb-ribbon").length == 0) $(".breadcrumb").before('<span class="ribbon-button-alignment usb-ribbon animated bounceIn" ><span class="btn btn-ribbon "  rel="tooltip" data-placement="right" data-original-title="USB disk inserted" data-html="true"><i class="fa fa-usb "></i></span></span>');
-		else if(inserted == false) $(".usb-ribbon").remove();
+	app.usb = function (status, notify){
+		if(status == 'inserted' && $(".usb-ribbon").length == 0) $(".breadcrumb").before('<span class="ribbon-button-alignment usb-ribbon animated bounceIn" ><span class="btn btn-ribbon "  rel="tooltip" data-placement="right" data-original-title="USB disk inserted" data-html="true"><i class="fa fa-usb "></i></span></span>');
+		else if(status == 'removed') $(".usb-ribbon").remove();
 		$("[rel=tooltip], [data-rel=tooltip]").tooltip();
 		if(notify == true){
 			var message = 'USB Disk';
-			message += inserted == true ? ' inserted' : ' removed';
+			message += ' ' + status;
 			$.smallBox({
 				title : "FABtotum Personal Fabricator",
 				content : message,

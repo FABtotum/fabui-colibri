@@ -50,12 +50,11 @@ class ConfigMonitor(PatternMatchingEventHandler):
     case_sensitive = None
     ws = None #web socket, used to notify UI (future use)
 
-    def __init__(self, WebSocket, gcs, logger):
+    def __init__(self, gcs, config, logger):
         
         self.gcs = gcs
         self.log = logger
-        self.config = ConfigParser.ConfigParser()
-        self.config.read(CONFIG_INI)
+        self.config = config
         self.HW_DEFAULT_SETTINGS = self.config.get('hardware', 'default_settings')
         self.HW_CUSTOM_SETTINGS  = self.config.get('hardware', 'custom_settings')
         
@@ -63,7 +62,6 @@ class ConfigMonitor(PatternMatchingEventHandler):
         self.ignore_directories = None
         self._ignore_patterns = None
         self.case_sensitive = None
-        self.ws = WebSocket
         
     def on_modified(self, event):
         """
@@ -82,8 +80,8 @@ class ConfigMonitor(PatternMatchingEventHandler):
             self.patterns = [CONFIG_INI, SERIAL_INI, self.HW_DEFAULT_SETTINGS, self.HW_CUSTOM_SETTINGS]
             
             self.log.debug('Reloading config files')
-            
-            self.gcs.push('config:reload', event.src_path)
+            self.config.reload()
+            #~ self.gcs.push('config:reload', event.src_path)
 
 
 

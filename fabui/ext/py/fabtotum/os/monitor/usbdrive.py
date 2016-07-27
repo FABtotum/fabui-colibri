@@ -46,8 +46,8 @@ class UsbMonitor(FileSystemEventHandler):
     ws = None
     USB_FILE = None
      
-    def __init__(self, WebSocket, logger, usb_file):
-        self.ws = WebSocket
+    def __init__(self, notifyservice, logger, usb_file):
+        self.ns = notifyservice
         self.USB_FILE = usb_file
         self.Empty = None
         self.log = logger
@@ -55,13 +55,9 @@ class UsbMonitor(FileSystemEventHandler):
     def on_created(self, event):
         if(event.src_path == self.USB_FILE):
             self.log.debug("USB_FILE: created %s", event.src_path)
-            self.sendMessage(True)
+            self.ns.notify('usb', {'status':'inserted', 'alert':True, 'device':event.src_path})
     
     def on_deleted(self, event):
         self.log.debug("USB_FILE: deleted %s", event.src_path)
         if(event.src_path == self.USB_FILE):
-            self.sendMessage(False)
-    
-    def sendMessage(self, status):
-        message={'type':'usb', 'data':{'status': status, 'alert':True}}
-        self.ws.send(json.dumps(message))
+            self.ns.notify('usb', {'status':'removed', 'alert':True, 'device':event.src_path})

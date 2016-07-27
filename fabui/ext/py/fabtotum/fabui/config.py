@@ -39,7 +39,7 @@ from fabtotum.utils.singleton import Singleton
 
 class ConfigService:
     __metaclass__ = Singleton
-    
+        
     def __init__(self):
         """ Load config files """
         self.config = ConfigParser.ConfigParser()
@@ -57,6 +57,14 @@ class ConfigService:
         if 'settings_type' in self.settings and self.settings['settings_type'] == 'custom':
             json_f = open(self.HW_CUSTOM_SETTINGS)
             self.settings = json.load(json_f)
+            
+        self.reload_callback = []
+    
+    def register_callback(self, handler):
+        pass
+        
+    def unregister_callback(self, handler):
+        pass
     
     def reload(self):
         """ Reload config files """
