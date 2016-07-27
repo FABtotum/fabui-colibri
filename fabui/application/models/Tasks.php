@@ -12,7 +12,7 @@
 	private $tableName = 'sys_tasks';
 	private $completedStatus = array('completed', 'abort', 'deleted');
 	
-	const STATUS_RUNNING = 'RUNNING';
+	const STATUS_RUNNING = 'running';
  	
 	//init class
 	public function __construct()
