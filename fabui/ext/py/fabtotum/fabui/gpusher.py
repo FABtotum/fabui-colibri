@@ -84,6 +84,7 @@ class GCodePusher(object):
     TASK_RUNNING        = 'running'
     TASK_PAUSED         = 'paused'
     TASK_COMPLETED      = 'completed'
+    TASK_COMPLETING     = 'completing'
     TASK_ABORTING       = 'aborting'
     TASK_ABORTED        = 'aborted'
     

@@ -204,15 +204,20 @@ class PhotogrammetryScan(GCodePusher):
         
         self.finish_transfer()
         
-        if self.is_aborted():
-            self.trace( _("Scan aborted.") )
-            self.set_task_status(GCodePusher.TASK_ABORTED)
-        else:
-            self.trace( _("Scan completed.") )
-            self.set_task_status(GCodePusher.TASK_COMPLETED)
-        
         if self.standalone or self.finalize:
+            if self.is_aborted():
+                self.set_task_status(GCodePusher.TASK_ABORTING)
+            else:
+                self.set_task_status(GCodePusher.TASK_COMPLETING)
+            
             self.exec_macro("end_scan")
+            
+            if self.is_aborted():
+                self.trace( _("Scan aborted.") )
+                self.set_task_status(GCodePusher.TASK_ABORTED)
+            else:
+                self.trace( _("Scan completed.") )
+                self.set_task_status(GCodePusher.TASK_COMPLETED)
         
         self.stop()
 

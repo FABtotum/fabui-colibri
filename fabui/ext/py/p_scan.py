@@ -195,16 +195,21 @@ class ProbeScan(GCodePusher):
         
         self.trace( _("Saving point cloud to file {0}").format(output_file) )
         self.save_as_cloud(points, output_file)
-        
-        if self.is_aborted():
-            self.trace( _("Physical Probing aborted.") )
-            self.set_task_status(GCodePusher.TASK_ABORTED)
-        else:
-            self.trace( _("Physical Probing completed.") )
-            self.set_task_status(GCodePusher.TASK_COMPLETED)
-        
+               
         if self.standalone:
+            if self.is_aborted():
+                self.set_task_status(GCodePusher.TASK_ABORTING)
+            else:
+                self.set_task_status(GCodePusher.TASK_COMPLETING)
+                
             self.exec_macro("end_scan")
+        
+            if self.is_aborted():
+                self.trace( _("Physical Probing aborted.") )
+                self.set_task_status(GCodePusher.TASK_ABORTED)
+            else:
+                self.trace( _("Physical Probing completed.") )
+                self.set_task_status(GCodePusher.TASK_COMPLETED)
         
         self.stop()
 

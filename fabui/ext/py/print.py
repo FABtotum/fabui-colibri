@@ -59,6 +59,11 @@ class PrintApplication(GCodePusher):
     
     def print_finalize(self):
         if self.standalone or self.finalize:
+            if self.is_aborted():
+                self.set_task_status(GCodePusher.TASK_ABORTING)
+            else:
+                self.set_task_status(GCodePusher.TASK_COMPLETING)
+            
             self.exec_macro("end_print_additive")
             self.exec_macro("end_print_additive_safe_zone")
             

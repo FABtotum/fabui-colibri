@@ -61,10 +61,11 @@ class ConfigService:
         self.reload_callback = []
     
     def register_callback(self, handler):
-        pass
+        if handler not in self.reload_callback:
+            self.reload_callback.append(handler)
         
     def unregister_callback(self, handler):
-        pass
+        self.reload_callback.remove(handler)
     
     def reload(self):
         """ Reload config files """
@@ -81,6 +82,9 @@ class ConfigService:
         if 'settings_type' in self.settings and self.settings['settings_type'] == 'custom':
             json_f = open(self.HW_CUSTOM_SETTINGS)
             self.settings = json.load(json_f)
+        
+        for cb in self.reload_callback:
+            cb()
         
     def get(self, section, key, default = None):        
         value = ''

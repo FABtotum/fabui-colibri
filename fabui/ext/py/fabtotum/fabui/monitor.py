@@ -91,9 +91,13 @@ class StatsMonitor:
         
         # re
         self.re_temp = re.compile('ok\sT:(?P<T>[0-9]+\.[0-9]+)\s\/(?P<TT>[0-9]+\.[0-9]+)\sB:(?P<B>[0-9]+\.[0-9]+)\s\/(?P<BT>[0-9]+\.[0-9]+)\s')
+        
+        self.config.register_callback(self.__reload_config)
     
     def __reload_config(self):
-        self.config.reload()
+        #self.config.reload()
+        
+        print "__reload_config"
         
         old_backtrack = self.backtrack
         
@@ -237,8 +241,6 @@ class StatsMonitor:
             self.__temp_change_callback(action.split(':')[1], data)
         elif action.startswith('gcode_action'):
             self.__gcode_action_callback(action.split(':')[1], data)
-        elif action.startswith('config:'):
-            self.__reload_config()
     
     def __write_stats(self):
         """
