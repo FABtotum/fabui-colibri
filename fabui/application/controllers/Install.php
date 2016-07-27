@@ -27,9 +27,11 @@
 	 */
 	public function doInstall()
 	{
+		//database is installed during bundle creation
+		/*
 		if(!$this->installDefaultDatabase()){
 			show_error('Can\'t install default database');
-		}
+		}*/
 	
 		//load libraries, models, helpers
 		$this->load->model('User', 'user');
