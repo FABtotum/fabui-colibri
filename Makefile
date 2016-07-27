@@ -273,7 +273,7 @@ $(OS_COMMON_STAMP):
 # 	Create a stamp file
 	touch $@
 	
-%.db: recovery/install/sql/%.$(DB)
+%.db: fabui/recovery/sql/%.$(DB)
 	$(DB) $@ < $< 
 		
 $(FABUI_BUNDLE): $(BDATA_STAMP) $(OS_COMMON_STAMP) $(OS_STAMP)
