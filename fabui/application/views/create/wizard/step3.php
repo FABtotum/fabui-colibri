@@ -25,7 +25,7 @@
 							<span><i class="fab-lg fab-fw icon-fab-term"></i> <span class="hidden-xs">Extruder</span> <span class="hidden-md hidden-sm hidden-lg font-md">E</span> <span class="extruder-temp"></span> / <span class="extruder-target"></span> </span>
 						</span>
 						<span class="col-xs-6 col-sm-6 col-md-12 col-lg-6 text-center">
-							<span><i class="fab-lg fab-fw icon-fab-term"></i> <span class="hidden-xs">Extruder</span> <span class="hidden-md hidden-sm hidden-lg font-md">B</span> <span class="bed-temp"></span> / <span class="bed-target"></span></span>
+							<span><i class="fab-lg fab-fw icon-fab-term"></i> <span class="hidden-xs">Bed</span> <span class="hidden-md hidden-sm hidden-lg font-md">B</span> <span class="bed-temp"></span> / <span class="bed-target"></span></span>
 						</span>
 					</div>
 					<div class="row">
@@ -69,7 +69,16 @@
 						</span>
 					</div>
 				</div>
-				
+			</div>
+			<hr class="simple">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="textarea-div">
+						<div class="typearea">
+							<textarea class="custom-scroll trace-console" rows="20" readonly="readonly"></textarea>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="tab-pane fade in" id="controls-tab">

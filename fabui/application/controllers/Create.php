@@ -246,7 +246,7 @@
 		//update db status
 		//$this->load->model('Tasks', 'tasks');
 		//$this->tasks->update($taskID, array('status' => 'completed', 'finish_date' => date('Y-m-d H:i:s')));
-		$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
+		//$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
 	}
 	
 	/**

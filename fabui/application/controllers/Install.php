@@ -63,7 +63,7 @@
 		//load configs
 		$this->config->load('fabtotum');
 		//install comand
-		return shell_exec('/usr/bin/sqlite3 '.$this->config->item('database').' <  ./recovery/sql/fabtotum-default.sqlite3') == '' ;
+		return shell_exec('/usr/bin/sqlite3 '.$this->config->item('database').' <  ./recovery/sql/fabtotum.sqlite3') == '' ;
 	}
 	
 	/**

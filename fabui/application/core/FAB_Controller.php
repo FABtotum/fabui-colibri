@@ -14,6 +14,7 @@
 	protected $layoutLogin         = 'layout/login';
 	protected $layoutAjax          = 'layout/ajax';
 	protected $layoutInstall       = 'layout/install';
+	protected $layoutDebug         = 'layout/debug';
 	protected $template            = array();
 	protected $content             = ''; //
 	protected $js                  = array();  //js scripts
@@ -121,6 +122,24 @@
 		$this->template['scripts'] = $this->load-> view($this->layoutInstall.'/scripts', $data, true);
 		$this->template['content'] = $this->content;
 		$this->parser->parse($this->layoutInstall.'/structure', $this->template);
+	}
+	
+	/**
+	 * 
+	 */
+	public function debugLayout()
+	{
+		$data = array();
+		$data['jsScripts'] = jScriptsInclusion($this->js);
+		$data['cssFiles']  = cssFilesInclusion($this->css);
+		$data['jsInLine']  = $this->jsInLine;
+		$data['cssInLine'] = $this->cssInline;
+		$this->template['head'] = $this->load-> view($this->layoutDebug.'/head', $data, true);
+		$this->template['top']     = $this->load-> view($this->layoutDebug.'/top', $data, true);
+		$this->template['scripts'] = $this->load-> view($this->layoutDebug.'/scripts', $data, true);
+		$this->template['footer']  = $this->load->view($this->layoutDebug.'/footer', $data, true);
+		$this->template['content'] = $this->content;
+		$this->parser->parse($this->layoutDebug.'/structure', $this->template);
 	}
 	
 	/*

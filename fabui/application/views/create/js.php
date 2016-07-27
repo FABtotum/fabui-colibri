@@ -249,12 +249,15 @@
 			}
 		}
 		freezeUI();
+		getTrace();
 		setTimeout(initSliders,  1000);
 		setInterval(jsonMonitor, 1000);
 		setTimeout(initGraph,    1000);
+		setTimeout(traceMonitor, 1000);
 		setTimeout(function(){
 			getTaskMonitor(true);
 		},    1000);
+		
 		
 	}
 	
@@ -285,6 +288,23 @@
 		if(!socket_connected) getTaskMonitor(false);
 	}
 	/**
+	 *  trace interval if websocket is not available
+	 */
+	function traceMonitor()
+	{
+		if(!socket_connected) getTrace();
+	}
+	/**
+	* get trace
+	*/
+	function getTrace()
+	{
+		$.get('/temp/trace'+ '?' + jQuery.now(), function(data, status){
+			fabApp.handleTrace(data);
+		});
+	}
+	
+	/**
 	 * handle task status
 	 */
 	function handleTaskStatus(status)
@@ -305,6 +325,9 @@
 				break;
 			case 'aborted':
 				aborted();
+				break;
+			case 'completing':
+				completingTask();
 				break;
 			case 'completed':
 				completeTask();
@@ -848,20 +871,27 @@
 		}
 	}
 	/**
+	* handle "completing" status
+	*/
+	function completingTask()
+	{
+		openWait('<i class="fa fa-spinner fa-spin "></i> Completing <?php echo ucfirst($type) ?>', 'Please wait...\r\nMoving to safe zone', false);
+	}
+	/**
 	* complete task
 	*/
 	function completeTask()
 	{	
-		openWait("Task completed");
-		$.ajax({
-			type: 'post',
-			url: '<?php echo site_url('create/complete/'); ?>/' + idTask,
-			dataType: 'json'
-		}).done(function(response) {
-			$('.wizard').wizard('selectedItem', { step: 4 });
+		openWait('<i class="fa fa-check "></i> <?php echo ucfirst($type) ?> completed ! ', null, false);
+
+		setTimeout(function(){
 			closeWait();
-			unFreezeUI();
-		});
+			$('.wizard').wizard('selectedItem', { step: 4 });
+			unFreezeUI();	
+		}, 3000);
+		
+		if(zOverride > 0){ //	
+		}
 	}
 	/**
 	* show error message 

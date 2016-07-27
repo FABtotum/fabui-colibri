@@ -15,6 +15,7 @@
 	var fileList = new Array();
 	
 	$(document).ready(function() {
+		Dropzone.autoDiscover = false;
 		initDropzone();
 		initValidate();
 		$("#save").on('click', saveObject);

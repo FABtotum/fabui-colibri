@@ -13,5 +13,6 @@
 	<h1 class="text-center text-success margin-top-50">
 		<i class="fa fa-check"></i> <?php echo ucfirst($type) ?> completed!
 		<br>
+		
 	</h1>
 </div>

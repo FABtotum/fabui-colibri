@@ -511,6 +511,9 @@ fabApp = (function(app) {
 					case 'jog':
 						app.writeJogResponse(obj.data.content);
 						break;
+					case 'trace':
+						app.handleTrace(obj.data.content);
+						break;
 					default:
 						break;
 				}
@@ -625,10 +628,6 @@ fabApp = (function(app) {
 	 */
 	app.manageMacro = function(data){
 		switch(data.type){
-			case 'trace':
-				$.console.html(data.content).scrollTop(1E10);
-				waitContent(data.content); //display also on wait modal popup
-				break;
 			case 'response':
 				if(data.content == true) $.is_macro_on = false;
 				break;
@@ -721,10 +720,6 @@ fabApp = (function(app) {
 				break;
 			case 'monitor':
 				app.manageTaskMonitor(data);
-				break;
-			case 'trace':
-				$.console.html(data.content).scrollTop(1E10);
-				waitContent(data.content);
 				break;
 		}
 	};
@@ -869,6 +864,19 @@ fabApp = (function(app) {
 		$.get(jog_response_file_url + '?' + jQuery.now(), function(data){
 			app.writeJogResponse(data);
 		});
+	}
+	/**
+	 * handle trace content from task/macro
+	 */
+	app.handleTrace = function(content) {
+		
+		if($(".trace-console").length > 0){
+			$(".trace-console").html(content).scrollTop(1E10);
+			$(".trace-console").parent().animate({ scrollTop: $(".trace-console").parent().prop("scrollHeight")}, 1000);
+			waitContent(content);
+			
+		}
+		
 	}
 	return app;
 })({});
