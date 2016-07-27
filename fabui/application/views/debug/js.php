@@ -1,9 +1,13 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
+
+		getTaskMonitor();
+		getTemperatures();
+		getNotify();
 		
 		setInterval(getTaskMonitor, 1000);
-		setInterval(getTemperatures, 1000);
+		setInterval(getTemperatures, 5000);
 		setInterval(getNotify, 1000);
 	});
 
