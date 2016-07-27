@@ -78,7 +78,7 @@ class StatsMonitor:
         self.monitor_thread = None
         self.monitor_write_thread = None
         self.ev_update = Event()
-        self.backtrack = int(self.config.get('monitor', 'backtrack'))
+        self.backtrack = int(self.config.get('monitor', 'backtrack', 20))
         self.update_period = float(self.config.get('monitor', 'period'))
         
         ## Monitor variables, fill arrays with zeros
@@ -95,9 +95,6 @@ class StatsMonitor:
         self.config.register_callback(self.__reload_config)
     
     def __reload_config(self):
-        #self.config.reload()
-        
-        print "__reload_config"
         
         old_backtrack = self.backtrack
         

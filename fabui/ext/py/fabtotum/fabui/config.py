@@ -96,7 +96,7 @@ class ConfigService:
                 value = self.settings[key]
             else:
                 value = self.config.get(section, key)
-        except KeyError:
+        except Exception:
             if default != None:
                 return default
             else:

@@ -128,19 +128,7 @@ class FolderTempMonitor(PatternMatchingEventHandler):
         #self.process(event)
         self.log.debug("DELETED: " + event.src_path)
         #self.ws.send("CRAETED")
-        
-    #~ def sendMessage(self, type, data):
-        #~ """
-        #~ Send message to WebSocket server.
-        
-        #~ :param type: Message type
-        #~ :param data: Message data
-        #~ :type type: string
-        #~ :type data: string
-        #~ """
-        #~ message = {'type': type, 'data':data}
-        #~ self.ws.send(json.dumps(message))
-        
+                
     def getFileContent(self, file_path):
         file = open(file_path, 'r')
         content= file.read()

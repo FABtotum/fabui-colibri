@@ -60,7 +60,7 @@ class NotifyService(object):
         else:
             self.config = config
         
-        self.backtrack = 30
+        self.backtrack = int(self.config.get('notify', 'backtrack', 30))
         self.event_id = 0
         self.events = []
             

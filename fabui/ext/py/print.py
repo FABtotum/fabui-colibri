@@ -92,7 +92,6 @@ class PrintApplication(GCodePusher):
             self.trace( _("Print RESUMED") )
         if state == 'aborted':
             self.trace( _("Print ABORTED") )
-            self.file_done_callback()
     
     def temp_change_callback(self, action, data):
         print action, data

@@ -32,6 +32,9 @@ period = 5
 [notify]
 backtrack = 30
 
+[jog]
+backtrack = 20
+
 [usb]
 usb_disk_folder = @USB_MEDIA_PATH@
 usb_file = /dev/sda1

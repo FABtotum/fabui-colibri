@@ -98,12 +98,27 @@ class Jog:
         # Erase content of jog_response_file
         open(jog_response_file, 'w').close()
         
+        self.backtrack = int(self.config.get('jog', 'backtrack', 20))
         self.response = {}
+        self.tokens = []
         self.cq = queue.Queue()
         self.running = False
         
         self.send_thread = None
+    
+    def __add_token(self, token):
+        to_remove = []
         
+        if len(self.tokens) < self.backtrack:
+            if token not in self.tokens:
+                self.tokens.append(token)
+        else:
+            if token not in self.tokens:
+                to_remove.append( self.tokens[0] )
+                self.tokens = self.tokens[1:] + [token]
+        
+        return to_remove
+    
     def __send_thread(self):
         self.log.debug("Jog thread: started")
         
@@ -130,6 +145,12 @@ class Jog:
                 #~ for ln in reply:
                     #~ self.log.debug("jog.reply [%s] : %s", gcode, ln)
                 #print "jog:", reply
+                
+                # self.tokens
+                
+                to_remove = self.__add_token(token)
+                for tok in to_remove:
+                    del self.response[tok]
                 
                 self.response[token] = {'code': gcode, 'reply': reply}
                 
