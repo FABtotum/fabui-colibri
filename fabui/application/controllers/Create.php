@@ -95,7 +95,7 @@
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.time.min.js'); //datatable
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js'); //datatable
 		
-		$this->addJsInLine($this->load->view('create/js', $data, true));
+		$this->addJsInLine($this->load->view('create/js', $data, true)); 
 		$this->content = $widget->print_html(true);
 		
 		$this->view();

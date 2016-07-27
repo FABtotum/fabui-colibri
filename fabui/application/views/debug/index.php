@@ -9,5 +9,8 @@
 	<div class="tab-pane fade in" id="notify-tab">
 		<div id="notify"></div>
 	</div>
+	<div class="tab-pane fade in" id="trace-tab">
+		<pre id="trace"></pre> 
+	</div>
 
 </div>

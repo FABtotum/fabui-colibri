@@ -25,6 +25,7 @@
 				<li class="active"><a data-toggle="tab" href="#monitor-tab"> task_monitor.json</a></li>
 				<li><a data-toggle="tab" href="#temperatures-tab"> temperatures.json</a></li>
 				<li><a data-toggle="tab" href="#notify-tab"> notify.json</a></li>
+				<li><a data-toggle="tab" href="#trace-tab"> trace</a></li>
 			</ul>';
 		$data = array();
 		$widget = $this->smart->create_widget($widgetOptions);
@@ -36,6 +37,7 @@
 		$this->addJSFile('/assets/js/plugin/jsonview/jquery.jsonview.min.js'); //datatable */
 		$this->addCssFile('/assets/js/plugin/jsonview/jquery.jsonview.min.css'); //datatable */
 		$this->addJsInLine($this->load->view('debug/js', null, true));
+		$this->addCSSInLine('<style>hr{margin-top:0px;margin-bottom:0px;}#trace{overflow:auto; height:500px;}</style>'); 
 		
 		$this->debugLayout();
 	}
