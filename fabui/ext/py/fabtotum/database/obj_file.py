@@ -32,22 +32,20 @@ from fabtotum.database import TableItem
 
 ################################################################################
 
-#~ DROP TABLE IF EXISTS `sys_obj_files`;
-#~ CREATE TABLE IF NOT EXISTS `sys_obj_files` (
-  #~ `id` int(11) NOT NULL AUTO_INCREMENT,
-  #~ `id_obj` int(11) DEFAULT NULL,
-  #~ `id_file` int(11) DEFAULT NULL,
-  #~ PRIMARY KEY (`id`)
-#~ ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+#~ CREATE TABLE sys_obj_files (
+#~ id INTEGER PRIMARY KEY AUTOINCREMENT, 
+#~ id_obj int (11) DEFAULT NULL, 
+#~ id_file int (11) DEFAULT NULL);
 
 class ObjFile(TableItem):
     
-    def __init__(self, database, obj_file_id):
-         #database, table, primary, primary_value=0, attribs=OrderedDict() ):
-         
+    def __init__(self, database, id_obj=0, id_file=0, obj_file_id=TableItem.DEFAULT):
+        """
+        Table used to map files to objects.
+        """
         attribs = OrderedDict()
-        attribs['id']       = obj_file_id
-        attribs['id_obj']   = 0
-        attribs['id_file']  = 0
+        attribs['id']       = obj_file_id   # ObjFile map ID
+        attribs['id_obj']   = id_obj             # Object ID of the parent object
+        attribs['id_file']  = id_file             # File ID
         
-        super(ObjFile, self).__init__(database, table='sys_obj_files', primary='id', attribs=attribs)
+        super(ObjFile, self).__init__(database, table='sys_obj_files', primary='id', primary_autoincrement=True, attribs=attribs)

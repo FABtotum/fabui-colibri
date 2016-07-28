@@ -43,13 +43,13 @@ from fabtotum.database import TableItem
 
 class Plugin(TableItem):
     
-    def __init__(self, database, plugin_id):
+    def __init__(self, database, plugin_id=TableItem.DEFAULT):
          
         attribs = OrderedDict()
         attribs['id']           = plugin_id
         attribs['name']        = ""
         attribs['attributes']  = ""
         
-        super(Plugin, self).__init__(database, table='sys_plugins', primary='id', attribs=attribs)
+        super(Plugin, self).__init__(database, table='sys_plugins', primary='id', primary_autoincrement=True, attribs=attribs)
 
 

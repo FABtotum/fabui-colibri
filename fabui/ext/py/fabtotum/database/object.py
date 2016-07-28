@@ -32,28 +32,29 @@ from fabtotum.database import TableItem
 
 ################################################################################
 
-#~ DROP TABLE IF EXISTS `sys_objects`;
-#~ CREATE TABLE IF NOT EXISTS `sys_objects` (
-  #~ `id` int(11) NOT NULL AUTO_INCREMENT,
-  #~ `user` int(11) NOT NULL,
-  #~ `obj_name` varchar(255) DEFAULT NULL,
-  #~ `obj_description` text,
-  #~ `date_insert` datetime DEFAULT NULL,
-  #~ `date_updated` datetime DEFAULT NULL,
-  #~ `private` int(1) NOT NULL DEFAULT '1',
-  #~ PRIMARY KEY (`id`)
-#~ ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+#~ CREATE TABLE sys_objects (
+#~ id INTEGER PRIMARY KEY AUTOINCREMENT, 
+#~ user int (11) NOT NULL, 
+#~ name varchar (255) DEFAULT NULL, 
+#~ description text, 
+#~ date_insert datetime DEFAULT NULL, 
+#~ date_update datetime DEFAULT NULL, 
+#~ public int (1) NOT NULL DEFAULT '1');
 
 class Object(TableItem):
     
-    def __init__(self, database, object_id):         
+    def __init__(self, database, object_id=TableItem.DEFAULT):
+        """
+        Table containing all objects. Files associated with objects are tracked
+        in sys_obj_files table.
+        """
         attribs = OrderedDict()
-        attribs['id']               = object_id
-        attribs['user']             = 0
-        attribs['obj_name']         = ""
-        attribs['obj_description']  = ""
-        attribs['date_insert']      = ""
-        attribs['date_updated']     = ""
-        attribs['private']          = 0
+        attribs['id']               = object_id # Object ID
+        attribs['user']             = 0         # User ID of the user owning this object
+        attribs['name']             = ""        # Object name
+        attribs['description']      = ""        # Object description
+        attribs['date_insert']      = ""        # Date/time when the object was inserted into the table
+        attribs['date_updated']     = ""        # Date/time when the object was updated
+        attribs['private']          = 0         # If set to 1 object is only visible to it's owner
         
-        super(Object, self).__init__(database, table='sys_objects', primary='id', attribs=attribs)
+        super(Object, self).__init__(database, table='sys_objects', primary='id', primary_autoincrement=True, attribs=attribs)

@@ -202,7 +202,9 @@ class GCodePusher(object):
         """
         # Update duration
         self.task_stats['duration'] = str( time.time() - float(self.task_stats['started_time']) )
-                
+        
+        print "update_monitor_file:", self.task_stats['status']
+        
         if self.monitor_file:
             with open(self.monitor_file,'w+') as file:
                 file.write( json.dumps(self.standardized_stats) )
@@ -396,13 +398,17 @@ class GCodePusher(object):
         self.file_done_callback()
     
     def set_task_status(self, status):
-        self.task_stats['status'] = status
+        with self.monitor_lock:
+            self.task_stats['status'] = status 
+            self.update_monitor_file()
 
         if (status == GCodePusher.TASK_COMPLETED or
             status == GCodePusher.TASK_ABORTED):        
             self.task_stats['completed_time'] = time.time()
+            self.__update_task_db()
         
         if (status == GCodePusher.TASK_COMPLETED or
+            status == GCodePusher.TASK_COMPLETING or
             status == GCodePusher.TASK_ABORTING or
             status == GCodePusher.TASK_ABORTED or
             status == GCodePusher.TASK_RUNNING):
@@ -597,6 +603,9 @@ class GCodePusher(object):
             print "Skipping monitor thread"
             
         #~ self.task_db = Task(self.db, task_id)
+        
+        with self.monitor_lock:
+            self.update_monitor_file()
     
     def __update_task_db(self):
         """

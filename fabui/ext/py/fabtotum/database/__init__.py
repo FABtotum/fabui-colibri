@@ -56,7 +56,9 @@ class Database(object):
 
 class TableItem(object):
     
-    def __init__(self, database, table, primary, primary_value=0, attribs=OrderedDict() ):
+    DEFAULT = -1
+    
+    def __init__(self, database, table, primary, primary_value=0, primary_autoincrement=False, attribs=OrderedDict() ):
         """
         TableItem contructor.
         
@@ -79,6 +81,7 @@ class TableItem(object):
         self._fetched = False
         self._db = database
         self._primary = primary
+        self._autoincrement = primary_autoincrement
         self._table = table
         # Do an initial read to get the values if the item already exists in the databases
         self.read()
@@ -132,41 +135,61 @@ class TableItem(object):
         Write the full content to the database based on the `primary` column.
         If the item does not exist yet, INSERT is used otherwise UPDATE is used.
         """
+        lastrowid = -1
+        
         if self.exists():
             args = None
-            statement = "UPDATE {0} SET ".format(self._table)
+            arg_names = ''
             
             for k in self._attribs:
                 if k != self._primary:
                     if not args:
                         args = ( self._attribs[k] ,)
-                        statement += "{0}=?".format(k)
+                        arg_names += "{0}=?".format(k)
                     else:
                         args += ( self._attribs[k] ,)
-                        statement += ", {0}=?".format(k)
-            args += ( self[self._primary], )
-            statement += " WHERE {0}=?".format(self._primary)
+                        arg_names += ", {0}=?".format(k)
+            args += ( self[self._primary], )            
+            statement = "UPDATE {0} SET {1} WHERE {2}=?".format(self._table, arg_names, self._primary)
+            #~ print args
+            #~ print statement
             cursor = self._db.conn.execute(statement, args )
+            lastrowid = cursor.lastrowid
         else:
             args = None
-            statement = "INSERT INTO {0} VALUES (".format(self._table)
+            arg_names = ''
+            arg_questionmarks = ''
             
             for k in self._attribs:
+                if self._autoincrement and k == self._primary:
+                    pass # skip
+                else:
                     if not args:
                         args = ( self._attribs[k] ,)
-                        statement += "?"
+                        arg_questionmarks += "?"
+                        arg_names += k
                     else:
                         args += ( self._attribs[k] ,)
-                        statement += ",?"
-            statement += ")"
-            self._exists = True
-            print args
-            print statement
-            cursor = self._db.conn.execute(statement, args )
-        self._db.conn.commit()
+                        arg_questionmarks += ",?"
+                        arg_names += "," + k
             
-    def delete(self):
-        args = ( self[self._primary], )
-        
-        cursor = self._db.conn.execute("DELETE from {0} where {1}=?".format(self._table, self._primary), args )
+            statement = "INSERT INTO {0} ({1}) VALUES ({2})".format(self._table, arg_names, arg_questionmarks)
+            self._exists = True
+            #~ print args
+            #~ print statement
+            cursor = self._db.conn.execute(statement, args )
+            lastrowid = cursor.lastrowid
         self._db.conn.commit()
+        
+        return lastrowid
+            
+    def delete(self, multiple = None):
+        if multiple:
+            for id in multiple:
+                args = ( id, )
+                cursor = self._db.conn.execute("DELETE from {0} where {1}=?".format(self._table, self._primary), args )
+            self._db.conn.commit()
+        else:
+            args = ( self[self._primary], )
+            cursor = self._db.conn.execute("DELETE from {0} where {1}=?".format(self._table, self._primary), args )
+            self._db.conn.commit()

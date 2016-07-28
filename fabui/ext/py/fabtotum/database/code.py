@@ -32,30 +32,24 @@ from fabtotum.database import TableItem
 
 ################################################################################
 
-#~ DROP TABLE IF EXISTS `sys_user`;
-#~ CREATE TABLE IF NOT EXISTS `sys_user` (
-  #~ `id` int(11) NOT NULL AUTO_INCREMENT,
-  #~ `email` varchar(255) DEFAULT NULL,
-  #~ `password` varchar(255) DEFAULT NULL,
-  #~ `first_name` varchar(255) NOT NULL,
-  #~ `last_name` varchar(255) NOT NULL,
-  #~ `last_login` datetime NOT NULL,
-  #~ `session_id` varchar(255) NOT NULL,
-  #~ `settings` text NOT NULL,
-  #~ PRIMARY KEY (`id`)
-#~ ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+#~ CREATE TABLE sys_codes (
+#~ id INTEGER PRIMARY KEY AUTOINCREMENT, 
+#~ type varchar (5) NOT NULL, 
+#~ code int (10) NOT NULL, 
+#~ label varchar (255) NOT NULL, 
+#~ description text NOT NULL);
 
 class Code(TableItem):
     
-    def __init__(self, database, code_id):
+    def __init__(self, database, code_id=TableItem.DEFAULT):
          
         attribs = OrderedDict()
-        attribs['id'] = code_id
-        attribs['type'] = ""
-        attribs['code'] = 0
-        attribs['label'] = ""
-        attribs['description'] = ""
+        attribs['id'] = code_id     # Code ID
+        attribs['type'] = ""        # G or M
+        attribs['code'] = 0         # Code number
+        attribs['label'] = ""       # Full code name (ex. G27)
+        attribs['description'] = "" # Code description
         
-        super(Code, self).__init__(database, table='sys_code', primary='id', attribs=attribs)
+        super(Code, self).__init__(database, table='sys_code', primary='id', primary_autoincrement=True, attribs=attribs)
 
 

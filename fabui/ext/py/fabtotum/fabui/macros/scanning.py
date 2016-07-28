@@ -50,19 +50,21 @@ def check_pre_scan(app, args = None):
     
     app.trace( _("Preparing the FABtotum to scan") )
     if(safety_door == 1):
-        app.macro("M741",   "TRIGGERED", 2,     _("Front panel door control"), 0.1)
+        app.macro("M741",   "TRIGGERED", 2,     _("Front panel door control"), 0)
     # macro("M744","open",1,"Building plane control",0.1)
-    app.macro("M744",       "TRIGGERED",1,      _("Spool panel control"), 1, warning=True, verbose=False)
-    app.macro("G90",        "ok", 2,            _("Setting absolute positioning mode"), 1, verbose=False)
-    app.macro("G27",        "ok", 100,          _("Zeroing Z axis"), 1)
-    app.macro("G28 X0 Y0",  "ok", 15,           _("Zeroing Z axis"), 1, verbose=False)
+    app.macro("M744",       "TRIGGERED",1,      _("Spool panel control"), 0, warning=True, verbose=False)
+    app.macro("G90",        "ok", 2,            _("Setting absolute positioning mode"), 0, verbose=False)
+    app.macro("G27",        "ok", 100,          _("Zeroing Z axis"), 0)
+    app.macro("G28 X0 Y0",  "ok", 15,           _("Zeroing Z axis"), 0, verbose=False)
     # Disable feeder
-    app.macro("G91",                "ok", 2,    _("Setting relative position"), 1, verbose=False)
-    app.macro("G0 X5 Y5 Z-"+str(feeder_disengage_offset)+" F400",   "ok", 2, _("Engaging 4th Axis Motion"), 1)
-    app.macro("G90",                "ok", 2,    _("Setting Absolute position"), 1, verbose=False)
+    app.macro("G91",                "ok", 2,    _("Setting relative position"), 0, verbose=False)
+    app.macro("G0 X5 Y5 Z-"+str(feeder_disengage_offset)+" F400",   "ok", 5, _("Engaging 4th Axis Motion"), 0)
+    app.macro("M400",                "ok", 5,   _("Wait for moves to finish"), 0, verbose=False)
+    app.macro("G90",                "ok", 2,    _("Setting Absolute position"), 0, verbose=False)
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), 0, verbose=True)
     # Move to collimation
-    app.macro("G0 Z135 F1000",  "ok", 5,        _("Moving to pre-scan position"), 1)
+    app.macro("G0 Z135 F1000",  "ok", 5,        _("Moving to pre-scan position"), 0)
+    app.macro("M400",           "ok", 55,       _("Wait for all moves to finish"), 0, verbose=False)
     # macro("M18","ok",1,"Motor Off",1) #should be moved to firmware
     
 def rotary_scan(app, args = None):
