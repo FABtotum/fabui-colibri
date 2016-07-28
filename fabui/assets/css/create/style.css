@@ -49,3 +49,17 @@
 .bg-color-primary {
 	background-color: #3276b1 !important;
 }
+.trace-console {
+	/*white-space: pre;*/
+}
+.trace-console p {
+	margin: 0 0 2px;
+	font-size: 12px;
+}
+.trace-console p:before {
+	content: ">"; 
+    padding-right: 8px;
+}
+.typearea {
+	height:150px !important;
+}

@@ -71,6 +71,12 @@ fabApp = (function(app) {
 	};
 	app.domReadyMisc = function() {
 		
+		if (typeof(Storage) !== "undefined"){
+			if(localStorage.getItem("temperaturesPlot") !== null){			
+				temperaturesPlot =  JSON.parse(localStorage.getItem("temperaturesPlot"));
+			}
+		}
+		
 		$("#top-temperatures").click(function(a) {
 			var b = $(this);
 		   	b.next(".top-ajax-temperatures-dropdown").is(":visible") ? (b.next(".top-ajax-temperatures-dropdown").fadeOut(150), b.removeClass("active")) : (b.next(".top-ajax-temperatures-dropdown").fadeIn(150), b.addClass("active"));
@@ -476,13 +482,19 @@ fabApp = (function(app) {
 		function onOpen(){
 			socket_connected = true;
 			app.afterSocketConnect();
+			if(debugState)
+				root.console.log("✔ WebSocket: %c connected",debugStyle_green);
 		}
 		function onClose(){
 			socket_connected = false;
+			if(debugState)
+				root.console.log("%c WebSocket: disconnected", debugStyle_warning);
 		}
 		function onMessage(data){
 			try {
 				var obj = jQuery.parseJSON(data);
+				if(debugState)
+					root.console.log("✔ WebSocket received message: %c [" + obj.type + "]", debugStyle);
 				switch(obj.type){
 					case 'temperatures':
 						app.updateTemperatures(obj.data);
@@ -527,6 +539,9 @@ fabApp = (function(app) {
 			socket.bind('open', onOpen);
 			socket.bind('close', onClose);
 			socket.connect();
+		}else{
+			if(debugState)
+				root.console.log("%c WebSocket not available", debugStyle_warning);
 		}
 	};
 	
@@ -542,7 +557,7 @@ fabApp = (function(app) {
 	 * @param array ext_temp, ext_temp_target, bed_temp,bed_temp_target
 	 * update temperatures info
 	 */
-	app.updateTemperaturesInfo = function(ext_temp, ext_temp_target, bed_temp,bed_temp_target){	
+	app.updateTemperaturesInfo = function(ext_temp, ext_temp_target, bed_temp,bed_temp_target){
 		
 		if(ext_temp.constructor === Array){
 			ext_temp = ext_temp[ext_temp.length - 1];
@@ -577,23 +592,32 @@ fabApp = (function(app) {
 			localStorage.setItem("bed_temp_target", bed_temp_target);
 		}
 		
-		if (typeof updateTaskTemperatures == 'function') updateTaskTemperatures(ext_temp, ext_temp_target, bed_temp, bed_temp_target);
+		//handle tempearaturesPlot for graphs
+		var extruderTemp = {'value': parseFloat(ext_temp), 'time': new Date().getTime()};
+		var extruderTargetTemp = {'value': parseFloat(ext_temp_target), 'time': new Date().getTime()};
+		var bedTemp = {'value': parseFloat(bed_temp), 'time': new Date().getTime()};
+		var bedTargetTemp = {'value': parseFloat(bed_temp_target), 'time': new Date().getTime()};
 		
-		/*
-			//if module is jog
-			if($.module == "jog"){
-				if($("#act-ext-temp").length > 0){
-					$("#ext-actual-degrees").html(parseInt(ext_temp) + '&deg;C');
-					document.getElementById('act-ext-temp').noUiSlider.set([parseInt(ext_temp)]);
-					document.getElementById('ext-target-temp').noUiSlider.set([parseInt(ext_target)]);
-				}
-				$("#bed-actual-degrees").html(parseInt(bed_temp) + '&deg;C');
-				document.getElementById('act-bed-temp').noUiSlider.set([parseInt(bed_temp)]);
-				document.getElementById('bed-target-temp').noUiSlider.set([parseInt(bed_target)]);
-			}
-			
+		if(temperaturesPlot.extruder.temp.length > maxTemperaturesPlot)   temperaturesPlot.extruder.temp.shift();
+		if(temperaturesPlot.extruder.target.length > maxTemperaturesPlot) temperaturesPlot.extruder.target.shift();
+		if(temperaturesPlot.bed.temp.length > maxTemperaturesPlot)        temperaturesPlot.bed.temp.shift();
+		if(temperaturesPlot.bed.target.length > maxTemperaturesPlot)      temperaturesPlot.bed.target.shift();
+		
+		temperaturesPlot.extruder.temp.push(extruderTemp);
+		temperaturesPlot.extruder.target.push(extruderTargetTemp);
+		temperaturesPlot.bed.temp.push(bedTemp);
+		temperaturesPlot.bed.target.push(bedTargetTemp);
+		
+		if(typeof (Storage) !== "undefined") {
+			localStorage.setItem('temperaturesPlot', JSON.stringify(temperaturesPlot));
 		}
-		*/
+		
+		//just for create controller
+		if($(".extruder-temp").length > 0) $(".extruder-temp").html(parseFloat(ext_temp).toFixed(0));
+		if($(".extruder-target").length > 0) $(".extruder-target").html(parseFloat(ext_temp_target).toFixed(0));
+		if($(".bed-temp").length > 0) $(".bed-temp").html(parseFloat(bed_temp).toFixed(0));
+		if($(".bed-target").length > 0) $(".bed-target").html(parseFloat(bed_temp_target).toFixed(0));
+		
 	};
 	/*
 	 * display jog response
@@ -756,6 +780,8 @@ fabApp = (function(app) {
 	 * read temperatures
 	 */
 	app.getTemperatures = function(){
+		if(debugState)
+			root.console.log("✔ getTemperatures");
 		//TODO new version
 		if(socket_connected) { 
 			app.serial('getTemperatures', '');
@@ -770,6 +796,9 @@ fabApp = (function(app) {
 	 * send command to the serial port
 	 */
 	app.serial = function(func, val) {
+		
+		if(debugState)
+			root.console.log("✔ app.serial: " + func + ', ' + val);
 		
 		var xyStep       = $("#xyStep").length            > 0 ? $("#xyStep").val() : 10;
 		var zStep        = $("#zStep").length             > 0 ? $("#zStep").val() : 5;
@@ -805,6 +834,8 @@ fabApp = (function(app) {
 	 * check if internet connection is available
 	 */
 	app.isInternetAvailable = function(){
+		if(debugState)
+			root.console.log("✔ app.isInternetAvailable");
 		$.get(check_internet_url_action + '?' + jQuery.now(), function(data){
 			app.showConnected(data == 1);
 		});
@@ -871,10 +902,15 @@ fabApp = (function(app) {
 	app.handleTrace = function(content) {
 		
 		if($(".trace-console").length > 0){
-			$(".trace-console").html(content).scrollTop(1E10);
-			$(".trace-console").parent().animate({ scrollTop: $(".trace-console").parent().prop("scrollHeight")}, 1000);
+			var contentSplitted = content.split('\n');
+			var html = '';
+			$.each(contentSplitted, function( index, value ) {
+				if(value != '')
+					html += '<p>'+ value +'</p>';
+			});
+			$(".trace-console").html(html).scrollTop(1E10);
+			$(".trace-console").parent().scrollTop(1E10);
 			waitContent(content);
-			
 		}
 		
 	}
