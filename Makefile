@@ -108,6 +108,12 @@ OS_COLIBRI_STAMP= $(TEMP_DIR)/.os_colibri_stamp
 
 OS_COMMON_STAMP	= $(TEMP_DIR)/.os_common_stamp
 
+# User/group
+WWW_DATA_NAME	= www-data
+WWW_DATA_UID 	= 33
+WWW_DATA_GID 	= 33
+WWW_DATA_GROUPS	= wheel,dialout,tty,plugdev,video
+
 # Tools
 INSTALL			?= install
 FAKEROOT 		?= fakeroot
@@ -176,9 +182,9 @@ $(BDATA_STAMP): $(TEMP_DIR) $(BDATA_DIR) $(DB_FILES) $(GENERATED_FILES)
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)$(RECOVERY_PATH)
 	$(FAKEROOT_ENV) cp -R $(RECOVERY_FILES) 	$(BDATA_DIR)$(RECOVERY_PATH)
 #	Create runtime data directory
-	$(FAKEROOT_ENV) $(INSTALL) -d -o 33 -g 33 -m 0755 $(BDATA_DIR)$(LIB_PATH)
+	$(FAKEROOT_ENV) $(INSTALL) -d -o $(WWW_DATA_UID) -g $(WWW_DATA_GID) -m 0755 $(BDATA_DIR)$(LIB_PATH)
 #	Create log directory
-	$(FAKEROOT_ENV) $(INSTALL) -d -o 33 -g 33 -m 0755 $(BDATA_DIR)/var/log/fabui
+	$(FAKEROOT_ENV) $(INSTALL) -d -o $(WWW_DATA_UID) -g $(WWW_DATA_GID) -m 0755 $(BDATA_DIR)/var/log/fabui
 #	Install static files
 ifneq ($(STATIC_FILES),)
 	$(FAKEROOT_ENV)mkdir -p $(BDATA_DIR)$(SHARED_PATH)
@@ -195,12 +201,12 @@ endif
 #	The autoinstall flag file is created at compile time
 	$(FAKEROOT_ENV) touch $(BDATA_DIR)/$(WWW_PATH)/AUTOINSTALL
 #	Public runtime directories
-	$(FAKEROOT_ENV) $(INSTALL) -d -g 33 -m 0775 $(BDATA_DIR)/$(TEMP_PATH)
-	$(FAKEROOT_ENV) $(INSTALL) -d -g 33 -m 0775 $(BDATA_DIR)/$(TASKS_PATH)
+	$(FAKEROOT_ENV) $(INSTALL) -d -g $(WWW_DATA_GID) -m 0775 $(BDATA_DIR)/$(TEMP_PATH)
+	$(FAKEROOT_ENV) $(INSTALL) -d -g $(WWW_DATA_GID) -m 0775 $(BDATA_DIR)/$(TASKS_PATH)
 ########################################################################
 # 	Fix permissions
-	$(FAKEROOT_ENV) chown -R 33:33 $(BDATA_DIR)$(WWW_PATH)
-	$(FAKEROOT_ENV) chown -R 33:33 $(BDATA_DIR)$(LIB_PATH)
+	$(FAKEROOT_ENV) chown -R $(WWW_DATA_UID):$(WWW_DATA_GID) $(BDATA_DIR)$(WWW_PATH)
+	$(FAKEROOT_ENV) chown -R $(WWW_DATA_UID):$(WWW_DATA_GID) $(BDATA_DIR)$(LIB_PATH)
 #~ 	$(FAKEROOT_ENV) chown -R 0:0 $(BDATA_DIR)$(FABUI_FILES)
 ########################################################################
 #	Add metadata
@@ -216,6 +222,8 @@ endif
 #	license files
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/usr/share/licenses/$(NAME)
 	$(FAKEROOT_ENV) cp LICENSE $(BDATA_DIR)/usr/share/licenses/$(NAME)
+#|username |uid |group |gid |password |home |shell |groups |comment
+	$(FAKEROOT_ENV) echo "$(WWW_DATA_NAME) $(WWW_DATA_UID) $(WWW_DATA_NAME) $(WWW_DATA_GID) * /var/www /bin/sh $(WWW_DATA_GROUPS) Web Data" > $(BDATA_DIR)$(METADATA_PATH)/user_table
 # 	Create a stamp file
 	touch $@
 
@@ -279,75 +287,3 @@ $(OS_COMMON_STAMP):
 $(FABUI_BUNDLE): $(BDATA_STAMP) $(OS_COMMON_STAMP) $(OS_STAMP)
 	$(FAKEROOT_ENV) $(MKSQUASHFS) $(BDATA_DIR) $@ -noappend -comp $(BUNDLE_COMP) -b 512K -no-xattrs
 	md5sum $@ > $@.md5sum
-
-	
-#~ # Application files
-#~ legacy_HTDOCS_FILES  := assets fabui .htaccess index.php install.php lib LICENSE README.md recovery
-#~ HTDOCS_FILES := assets fabui index.php install.php lib LICENSE README.md recovery
-
-#~ all: dist dist-legacy
-
-#~ #
-#~ # make dist-legacy
-#~ #
-#~ # Make a versioned distribution archive for the legacy system.
-#~ #
-#~ legacy_NAME := $(NAME)
-#~ dist-legacy: DESTDIR ?= ./dist
-#~ dist-legacy: temp/$(NAME).zip
-#~ 	mkdir -p $(DESTDIR)/update/FAB-UI/download/$(VERSION)
-#~ 	mv temp/$(NAME).zip $(DESTDIR)/update/FAB-UI/download/$(VERSION)/
-#~ 	echo $(VERSION) > $(DESTDIR)/update/FAB-UI/version.txt
-#~ #	TODO: extract changelog from README
-#~ #	TODO: compute and write md5 checksum into MD5
-#~ 	touch $(DESTDIR)
-
-#~ %.zip:
-#~ 	zip -r9 $@ $(legacy_HTDOCS_FILES) -x Makefile
-
-#~ #
-#~ # make dist-colibri
-#~ #
-#~ # Make a versioned bundle for colibri system.
-#~ #
-#~ RELEASE=$(PRIORITY)-$(NAME)-$(VERSION)-v$(shell date +%Y%m%d)
-#~ dist: DESTDIR ?= ./dist
-#~ dist: temp/$(RELEASE).cb
-#~ 	mkdir -p $(DESTDIR)/bundles
-#~ 	mv temp/$(RELEASE).cb $(DESTDIR)/bundles/
-#~ 	touch $(DESTDIR)
-
-#~ %.cb: clean $(DB_FILES)
-#~ #	TODO: maybe separate 'installation' step from 'squashing' step
-#~ #	Copy public htdocs files
-#~ 	mkdir -p temp/bdata$(HTDOCSDIR)
-#~ 	cp -a $(HTDOCS_FILES) $(DB_FILES) temp/bdata$(HTDOCSDIR)/
-#~ #	Create runtime data directory
-#~ #	mkdir -p temp/bdata$(LOCALSTATEDIR)/lib/fabui
-#~ #	The autoinstall flag file is created now
-#~ 	touch temp/bdata$(HTDOCSDIR)/AUTOINSTALL
-#~ #	We still need a temp directory for fab_ui_security
-#~ 	mkdir temp/bdata$(HTDOCSDIR)/temp
-#~ #	Relocate system configuration files into their final place
-#~ 	mkdir -p temp/bdata$(SYSCONFDIR)
-#~ 	for file in $(SYSCONF_FILES); do mv temp/bdata/var/www/recovery/install/system/etc/$$file temp/bdata$(SYSCONFDIR)/; done
-#~ #	Fix some ownership
-#~ 	chown -R root:$(htdocs_GID) temp/bdata$(HTDOCSDIR)
-#~ 	chmod -R ug+rwX temp/bdata$(HTDOCSDIR)
-#~ 	chown -R --from=$(maintainer_UID)  root:root temp/bdata$(SYSCONFDIR)/*
-#~ #	Squash the file system thus created
-#~ 	mksquashfs temp/bdata $@ -noappend -comp xz -b 512K -no-xattrs
-
-#~ %.db: recovery/install/sql/%.$(DB)
-#~ 	$(DB) $@ < $< 
-
-#~ clean:
-#~ #	Remove any runtime or installation files from temp directory
-#~ 	rm -rf temp/*
-
-#~ distclean: clean
-#~ #	Remove distribution files
-#~ 	rm -rf dist
-
-#~ maintainer-clean:
-#~ 	chown -R --from=:$(maintainer_GID) :www-data $(colibri_HTDOCS_FILES)
