@@ -509,7 +509,7 @@ class GCodeService:
                 #print "L << ", line
                 
                 if attrs:
-                    self.__trigger_callback('process_comment', attrs)
+                    self.__trigger_callback('gcode_comment', attrs)
                 
                 if not self.first_move:
                     if ( line[:2] == 'G0' or 

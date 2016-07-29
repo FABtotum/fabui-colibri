@@ -39,13 +39,43 @@ from fabtotum.database import TableItem
 
 class ObjFile(TableItem):
     
-    def __init__(self, database, id_obj=0, id_file=0, obj_file_id=TableItem.DEFAULT):
+    def __init__(self, database, object_id=0, file_id=0, obj_file_id=TableItem.DEFAULT):
         """
         Table used to map files to objects.
         """
         attribs = OrderedDict()
         attribs['id']       = obj_file_id   # ObjFile map ID
-        attribs['id_obj']   = id_obj             # Object ID of the parent object
-        attribs['id_file']  = id_file             # File ID
+        attribs['id_obj']   = object_id     # Object ID of the parent object
+        attribs['id_file']  = file_id       # File ID
         
         super(ObjFile, self).__init__(database, table='sys_obj_files', primary='id', primary_autoincrement=True, attribs=attribs)
+
+    def object_files(self, object_id):
+        result = []
+        with self._db.lock:
+            conn = self._db.get_connection()
+            
+            cursor = conn.execute("SELECT {2} from {0} where {1}=?".format(self._table, 'id_obj', 'id_file'), (object_id,) )
+            for row in cursor:
+                result.append(row[0])
+        return result
+        
+    def object_associations(self, object_id):
+        result = []
+        with self._db.lock:
+            conn = self._db.get_connection()
+            
+            cursor = conn.execute("SELECT {2} from {0} where {1}=?".format(self._table, 'id_obj', 'id'), (object_id,) )
+            for row in cursor:
+                result.append(row[0])
+        return result
+        
+    def file_associations(self, file_id):
+        result = []
+        with self._db.lock:
+            conn = self._db.get_connection()
+            
+            cursor = conn.execute("SELECT {2} from {0} where {1}=?".format(self._table, 'id_file', 'id'), (file_id,) )
+            for row in cursor:
+                result.append(row[0])
+        return result

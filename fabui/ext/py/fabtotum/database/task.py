@@ -23,12 +23,13 @@ __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
 # Import standard python module
+import time
 from collections import OrderedDict
 
 # Import external modules
 
 # Import internal modules
-from fabtotum.database import TableItem
+from fabtotum.database import TableItem, timestamp2datetime
 
 ################################################################################
 
@@ -57,7 +58,8 @@ class Task(TableItem):
         attribs['type']         = ""        # Task type (print, mill, scan...TODO)
         attribs['status']       = ""        # Task status (running, aborting, aborted, completing, completed)
         attribs['attributes']   = "{}"
-        attribs['start_date']   = 0         # Date/time when the task was started
+        now = timestamp2datetime(time.time())
+        attribs['start_date']   = now       # Date/time when the task was started
         attribs['finish_date']  = 0         # Date/time when the task was finished (completed or aborted)
         attribs['id_object']  = 0           # ID of the object associated to this task
         attribs['id_file']  = 0             # ID of the file associated to this task

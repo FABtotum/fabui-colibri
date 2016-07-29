@@ -24,15 +24,19 @@ __version__ = "1.0"
 
 # Import standard python module
 import os
+import shutil
+import errno
 import mimetypes
+import time
 from collections import OrderedDict
 
 # Import external modules
 import cv2
 
 # Import internal modules
-from fabtotum.database import TableItem
+from fabtotum.database import TableItem, timestamp2datetime
 from fabtotum.utils.gcodefile import GCodeFile, GCodeInfo
+from fabtotum.os import USER_UID, USER_GID
 
 ################################################################################
 
@@ -62,7 +66,7 @@ from fabtotum.utils.gcodefile import GCodeFile, GCodeInfo
 
 class File(TableItem):
     
-    def __init__(self, database, file_id=TableItem.DEFAULT):
+    def __init__(self, database, file_id=TableItem.DEFAULT, filename = None, client_name = None, upload_dir = None):
         """
         Table containing all file description and paths.
         """
@@ -89,12 +93,37 @@ class File(TableItem):
         attribs['attributes']       = "{}"      # Attributes
         
         super(File, self).__init__(database, table='sys_files', primary='id', primary_autoincrement=True, attribs=attribs)
+        
+        if filename:
+            self.from_file(filename, client_name, upload_dir)
 
 # files should be sorted by extension
 
-    def from_file(self, filename, client_name):
+    def from_file(self, filename, client_name = None, upload_dir = None):
         """
         """
+        
+        if upload_dir:
+            fname = os.path.basename(filename)
+            ext   = 'other'
+            tmp = fname.split('.')
+            if len(tmp) > 1:
+                ext = tmp[1].strip()
+            
+            dst_path = os.path.join(upload_dir, ext)
+            dst_fname = os.path.join(dst_path, fname)
+            try:
+                os.makedirs(dst_path)
+            except OSError as exc:  # Python >2.5
+                if exc.errno == errno.EEXIST and os.path.isdir(dst_path):
+                    pass
+                else:
+                    raise
+                    
+            shutil.copyfile(filename, dst_fname)
+            os.chown(dst_fname, USER_UID, USER_GID)
+            filename = dst_fname
+                
         image_types = ['.jpg', '.jpeg', '.png', '.bmp', '.gif']
         
         mimetypes.init()
@@ -116,6 +145,9 @@ class File(TableItem):
         if dext in mimetypes.types_map:
             ftype = mimetypes.types_map[dext]
         
+        if not client_name:
+            client_name = fname
+        
         # General file handling
         self['file_name']     = fname               #[file_name]     => mypic.jpg
         self['file_type']     = ftype               #[file_type]     => image/jpeg
@@ -126,6 +158,9 @@ class File(TableItem):
         self['client_name']   = client_name         #[client_name]   => mypic.jpg
         self['file_ext']      = '.'+ext             #[file_ext]      => .jpg
         self['file_size']     = size / 1000.0       #[file_size]     => 22.2
+        now = timestamp2datetime( time.time() )
+        self['insert_date']   = now        # Date and time the file was inserted in the table
+        self['update_date']   = now        # Date and time the file was updated
         
         # Image handling
         if dext in image_types:
@@ -145,9 +180,9 @@ class File(TableItem):
 
         # GCode handling
         if dext == '.gcode' or dext == '.gc' or dext == '.nc':
-            gc = GCodeFile(filename)
+            gc = GCodeFile(filename, lite_parsing=True)
             t  = gc.info['type']
             if t == GCodeInfo.PRINT:
-                self['print_type'] == 'additive'
+                self['print_type'] = 'additive'
             elif t ==GCodeInfo.MILL:
-                self['print_type'] == 'substractive' 
+                self['print_type'] = 'substractive' 

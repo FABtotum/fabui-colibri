@@ -79,11 +79,11 @@ class GCodeInfo:
 
 class GCodeFile:
     
-    def __init__(self, filename):
+    def __init__(self, filename, lite_parsing=False):
         self.info = GCodeInfo(filename)
         self.cura_p   = CuraParser()
         self.slic3r_p = Slic3rParser()
-        self.process_file(filename)
+        self.process_file(filename, lite_parsing)
         
     def __iter__(self):
         """
@@ -100,7 +100,7 @@ class GCodeFile:
 
     @staticmethod
     def __tail(f, n):
-        stdin,stdout = os.popen2("tail -n {0} {1}".format(n,f))
+        stdin,stdout = os.popen2('tail -n {0} "{1}"'.format(n,f))
         stdin.close()
         lines = stdout.readlines(); 
         stdout.close()
@@ -108,13 +108,13 @@ class GCodeFile:
 
     @staticmethod
     def __head(f, n):
-        stdin,stdout = os.popen2("head -n {0} {1}".format(n,f))
+        stdin,stdout = os.popen2('head -n {0} "{1}"'.format(n,f))
         stdin.close()
         lines = stdout.readlines(); 
         stdout.close()
         return lines
 
-    def process_file(self, filename):
+    def process_file(self, filename, lite_parsing):
         """
         Go threough the whole gcode file and extract usefull information about it.
         This information include gcode type, code count, layer count...
@@ -153,10 +153,14 @@ class GCodeFile:
                     
                     if head == 'M109':
                         gcode_type = self.info['type'] = GCodeInfo.PRINT
+                        if lite_parsing:
+                            break
                     elif head == 'M3 S' or head == 'M4 S':
                         gcode_type = self.info['type'] = GCodeInfo.MILL
+                        if lite_parsing:
+                            break
                 
-                if not stop_parsing:
+                if not stop_parsing and not lite_parsing:
                     attrs = {}
                     
                     if slicer == 'CURA':
