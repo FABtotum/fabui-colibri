@@ -20,6 +20,44 @@
 			<div class="row">
 				<?php if($type == 'print'): ?>
 				<div class="col-sm-6">
+					
+					<div class="row">
+						<div class="col-xs-6 col-sm-6 col-md-12 col-lg-6">
+							<button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown">
+								<span><i class="fab-lg fab-fw icon-fab-term"></i> <span class="hidden-xs">Extruder</span> <span class="hidden-md hidden-sm hidden-lg font-md">E</span> <span class="extruder-temp"></span> / <span class="extruder-target"></span> <span class="pull-right"><i class="fa fa-caret-down"></i></span></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li>
+									<div class="checkbox">
+										<label><input type="checkbox" class="checkbox graph-line-selector" checked="checked" name="ext-actual"><span>Actual</span></label>
+									</div>
+								</li>
+								<li>
+									<div class="checkbox">
+										<label><input type="checkbox" class="checkbox graph-line-selector" name="ext-target"><span>Target</span></label>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="col-xs-6 col-sm-6 col-md-12 col-lg-6">
+							<button type="button" class="btn btn-default btn-sm btn-block dropdown-toggle" data-toggle="dropdown">
+								<span><i class="fab-lg fab-fw icon-fab-term"></i> <span class="hidden-xs">Bed</span> <span class="hidden-md hidden-sm hidden-lg font-md">B</span> <span class="bed-temp"></span> / <span class="bed-target"></span><span class="pull-right"><i class="fa fa-caret-down"></i></span></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li>
+									<div class="checkbox">
+										<label><input type="checkbox" class="checkbox graph-line-selector" checked="checked" name="bed-actual"><span>Actual</span></label>
+									</div>
+								</li>
+								<li>
+									<div class="checkbox">
+										<label><input type="checkbox" class="checkbox graph-line-selector" name="bed-target"><span>Target</span></label>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!--  
 					<div class="row">
 						<span class="col-xs-6 col-sm-6 col-md-12 col-lg-6 text-center">
 							<span><i class="fab-lg fab-fw icon-fab-term"></i> <span class="hidden-xs">Extruder</span> <span class="hidden-md hidden-sm hidden-lg font-md">E</span> <span class="extruder-temp"></span> / <span class="extruder-target"></span> </span>
@@ -28,6 +66,7 @@
 							<span><i class="fab-lg fab-fw icon-fab-term"></i> <span class="hidden-xs">Bed</span> <span class="hidden-md hidden-sm hidden-lg font-md">B</span> <span class="bed-temp"></span> / <span class="bed-target"></span></span>
 						</span>
 					</div>
+					-->
 					<div class="row">
 						<div id="temperatures-chart" class="chart"> </div>			
 					</div>
@@ -75,7 +114,7 @@
 				<div class="col-sm-12">
 					<div class="textarea-div">
 						<div class="typearea">
-							<textarea class="custom-scroll trace-console" rows="20" readonly="readonly"></textarea>
+							<div class="custom-scroll trace-console" ></div>
 						</div>
 					</div>
 				</div>

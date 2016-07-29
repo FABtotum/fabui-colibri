@@ -403,6 +403,7 @@ class GCodeService:
         self.progress = 0.0
     
     def __trigger_file_done(self, last_command):
+        self.log.debug("trigger_callback %s %s", 'file_done', str(last_command) )
         callback_thread = Thread( 
                 target = self.__file_done_thread, 
                 args=( [last_command] ) 
@@ -423,11 +424,15 @@ class GCodeService:
                 )
         callback_thread.start()
     
-    def __reset_thread(self):
+    def __reset_thread(self, trigger_file_done = False):
         self.__reset_totumduino()
+        if trigger_file_done:
+            self.__trigger_file_done(None)
     
-    def __trigger_reset(self):
-        callback_thread = Thread( target = self.__reset_thread, )
+    def __trigger_reset(self, trigger_file_done=False):
+        callback_thread = Thread(
+            target = self.__reset_thread, 
+            args = ([trigger_file_done]) )
         callback_thread.start()
     
     def __send_gcode_command(self, code, group = 'gcode', modify = True):
@@ -504,7 +509,7 @@ class GCodeService:
                 #print "L << ", line
                 
                 if attrs:
-                    self.__trigger_callback('process_comment', attrs)
+                    self.__trigger_callback('gcode_comment', attrs)
                 
                 if not self.first_move:
                     if ( line[:2] == 'G0' or 
@@ -655,9 +660,11 @@ class GCodeService:
                 if self.file_state > GCodeService.FILE_NONE:                
                     if ( self.file_state == GCodeService.FILE_WAIT or
                          self.file_state == GCodeService.FILE_PAUSED_WAIT):
-                        # There is along command being executed, we need to
+                        # There is a long command being executed, we need to
                         # restart the totumduino to abort it.
-                        self.__trigger_reset()
+                        self.__trigger_reset(True)
+                        self.file_state = GCodeService.FILE_NONE
+                        # self.__trigger_file_done(self.last_command), True above means it will be triggered after reset
                     else:
                         self.file_state = GCodeService.FILE_NONE
                         self.__trigger_file_done(self.last_command)

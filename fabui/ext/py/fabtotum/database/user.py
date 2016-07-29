@@ -33,21 +33,19 @@ from fabtotum.database import TableItem
 
 ################################################################################
 
-#~ DROP TABLE IF EXISTS `sys_user`;
-#~ CREATE TABLE IF NOT EXISTS `sys_user` (
-  #~ `id` INTEGER PRIMARY KEY,
-  #~ `email` varchar(255) DEFAULT NULL,
-  #~ `password` varchar(255) DEFAULT NULL,
-  #~ `first_name` varchar(255) NOT NULL,
-  #~ `last_name` varchar(255) NOT NULL,
-  #~ `last_login` datetime NOT NULL DEFAULT '1970-01-01 00:00:00',
-  #~ `session_id` varchar(255) NOT NULL,
-  #~ `settings` text NOT NULL
-#~ );
+#~ CREATE TABLE sys_user (
+#~ id INTEGER PRIMARY KEY AUTOINCREMENT, 
+#~ email varchar (255) DEFAULT NULL, 
+#~ password varchar (255) DEFAULT NULL, 
+#~ first_name varchar (255) NOT NULL, 
+#~ last_name varchar (255) NOT NULL, 
+#~ last_login datetime DEFAULT '1970-01-01 00:00:00', 
+#~ session_id varchar (255), 
+#~ settings text NOT NULL);
 
 class User(TableItem):
     
-    def __init__(self, database, user_id):
+    def __init__(self, database, user_id = TableItem.DEFAULT):
          
         attribs = OrderedDict()
         attribs['id']           = user_id
@@ -64,5 +62,5 @@ class User(TableItem):
         # dt = datetime.fromtimestamp( time.time()  )
         # str = datetime.strftime(dt, "%Y-%m-%d %H:%M:%S")
         
-        super(User, self).__init__(database, table='sys_user', primary='id', attribs=attribs)
+        super(User, self).__init__(database, table='sys_user', primary='id', primary_autoincrement=True, attribs=attribs)
 

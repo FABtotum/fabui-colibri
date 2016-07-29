@@ -58,6 +58,13 @@ var is_stopping_all = false; //true if emergency button was clicked
 var is_emergency    = false; //true if printer is in emergency status
 
 /*
+ * 
+ * 
+ */
+var maxTemperaturesPlot = 200;
+var temperaturesPlot = {extruder: {temp: [], target: []}, bed: {temp:[], target:[]}};
+
+/*
  * emergency descriptions 
  */
 emergency_descriptions = {

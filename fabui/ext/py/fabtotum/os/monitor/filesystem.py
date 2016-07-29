@@ -87,8 +87,8 @@ class FolderTempMonitor(PatternMatchingEventHandler):
         #print "Monitor:", event.src_path
                 
         if event.src_path == self.TRACE:
-            messageData = {'type': 'trace', 'content': str(self.getFileContent(self.TRACE))}
-            messageType = "macro"
+            messageData = {'content': str(self.getFileContent(self.TRACE))}
+            messageType = "trace"
             #~ self.sendMessage(messageType, messageData)
             self.ns.notify(messageType, messageData)
             

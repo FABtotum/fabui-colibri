@@ -79,7 +79,7 @@ def end_additive(app, args = None):
 
 def end_additive_safe_zone(app, args = None):
     app.macro("G90",                        "ok", 2,    _("Setting Absolute position"), 0)
-    app.macro("G0 X210 Y210 Z200 F10000",   "ok", 100,  _("Moving to safe zone"), 1)
+    app.macro("G0 X210 Y210 Z100 F10000",   "ok", 100,  _("Moving to safe zone"), 1)
     app.macro("M400",       "ok", 100,    _("Waiting for all moves to finish"), 1)
 
 def check_pre_print(app, args = None):

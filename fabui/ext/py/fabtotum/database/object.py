@@ -23,37 +23,66 @@ __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
 # Import standard python module
+import time
 from collections import OrderedDict
 
 # Import external modules
 
 # Import internal modules
-from fabtotum.database import TableItem
+from fabtotum.database import TableItem, timestamp2datetime
+from fabtotum.database.file import File
+from fabtotum.database.obj_file import ObjFile
+from fabtotum.fabui.config import ConfigService
 
 ################################################################################
 
-#~ DROP TABLE IF EXISTS `sys_objects`;
-#~ CREATE TABLE IF NOT EXISTS `sys_objects` (
-  #~ `id` int(11) NOT NULL AUTO_INCREMENT,
-  #~ `user` int(11) NOT NULL,
-  #~ `obj_name` varchar(255) DEFAULT NULL,
-  #~ `obj_description` text,
-  #~ `date_insert` datetime DEFAULT NULL,
-  #~ `date_updated` datetime DEFAULT NULL,
-  #~ `private` int(1) NOT NULL DEFAULT '1',
-  #~ PRIMARY KEY (`id`)
-#~ ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+#~ CREATE TABLE sys_objects (
+#~ id INTEGER PRIMARY KEY AUTOINCREMENT, 
+#~ user int (11) NOT NULL, 
+#~ name varchar (255) DEFAULT NULL, 
+#~ description text, 
+#~ date_insert datetime DEFAULT NULL, 
+#~ date_update datetime DEFAULT NULL, 
+#~ public int (1) NOT NULL DEFAULT '1');
 
 class Object(TableItem):
     
-    def __init__(self, database, object_id):         
+    PUBLIC  = 1
+    PRIVATE = 0
+    
+    def __init__(self, database, object_id=TableItem.DEFAULT, user_id=0, name="", desc="", public=1):
+        """
+        Table containing all objects. Files associated with objects are tracked
+        in sys_obj_files table.
+        """
         attribs = OrderedDict()
-        attribs['id']               = object_id
-        attribs['user']             = 0
-        attribs['obj_name']         = ""
-        attribs['obj_description']  = ""
-        attribs['date_insert']      = ""
-        attribs['date_updated']     = ""
-        attribs['private']          = 0
+        attribs['id']               = object_id # Object ID
+        attribs['user']             = user_id   # User ID of the user owning this object
+        attribs['name']             = name  # Object name
+        attribs['description']      = desc  # Object description
+        now = timestamp2datetime( time.time() )
+        attribs['date_insert']      = now       # Date/time when the object was inserted into the table
+        attribs['date_update']      = now       # Date/time when the object was updated
+        attribs['public']           = public   # If set to 1 object is only visible to it's owner
         
-        super(Object, self).__init__(database, table='sys_objects', primary='id', attribs=attribs)
+        super(Object, self).__init__(database, table='sys_objects', primary='id', primary_autoincrement=True, attribs=attribs)
+
+    def add_file(self, filename, client_name=None, upload_dir=None):
+        """
+        """
+        if not upload_dir:
+            config = ConfigService()
+            upload_dir = config.get('general', 'uploads')
+            
+        file = File(self._db, filename=filename, client_name=client_name, upload_dir=upload_dir)
+        file_id = file.write()
+        object_id = self['id']
+        
+        objfile = ObjFile(self._db, object_id, file_id)
+        objfile.write()
+        
+    def remove_file(self):
+        pass
+        
+    def get_files(self):
+        pass

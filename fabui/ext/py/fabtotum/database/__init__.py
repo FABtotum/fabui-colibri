@@ -25,6 +25,7 @@ __version__ = "1.0"
 # Import standard python module
 from datetime import datetime
 from collections import OrderedDict
+from threading import RLock
 
 # Import external modules
 import sqlite3
@@ -48,15 +49,18 @@ class Database(object):
             self.config = ConfigService()
         else:
             self.config = config
-            
-        database_file = self.config.get('general', 'database')
         
-        # Database connection
-        self.conn = sqlite3.connect(database_file)
+        self.lock = RLock()
+        self.database_file = self.config.get('general', 'database')
+        
+    def get_connection(self):
+        return sqlite3.connect(self.database_file)
 
 class TableItem(object):
     
-    def __init__(self, database, table, primary, primary_value=0, attribs=OrderedDict() ):
+    DEFAULT = -1
+    
+    def __init__(self, database, table, primary, primary_value=0, primary_autoincrement=False, attribs=OrderedDict() ):
         """
         TableItem contructor.
         
@@ -79,6 +83,7 @@ class TableItem(object):
         self._fetched = False
         self._db = database
         self._primary = primary
+        self._autoincrement = primary_autoincrement
         self._table = table
         # Do an initial read to get the values if the item already exists in the databases
         self.read()
@@ -96,15 +101,18 @@ class TableItem(object):
         """
         Returns whether the item exists in the database.
         """
-        if not self._fetched:
-            args = ( self[self._primary], )
-            cursor = self._db.conn.execute("SELECT * from {0} where {1}=?".format(self._table, self._primary), args )
-            raw =  cursor.fetchone()
-            if raw:
-                self._exists = True
-            else:
-                self._exists = False
-            self._fatched = True
+        with self._db.lock:
+            conn = self._db.get_connection()
+            
+            if not self._fetched:
+                args = ( self[self._primary], )
+                cursor = conn.execute("SELECT * from {0} where {1}=?".format(self._table, self._primary), args )
+                raw =  cursor.fetchone()
+                if raw:
+                    self._exists = True
+                else:
+                    self._exists = False
+                self._fatched = True
             
         return self._exists
 
@@ -113,60 +121,91 @@ class TableItem(object):
         Get the full content from the database based on the `primary` key.
         """
         args = ( self[self._primary], )
+        result = False
         
-        cursor = self._db.conn.execute("SELECT * from {0} where {1}=?".format(self._table, self._primary), args )
-        self._fetched = True
-        raw =  cursor.fetchone()
-        if raw:
-            idx = 0
-            for k in self._attribs:
-                self._attribs[k] = raw[idx]
-                idx += 1
-            
-            self._exists = True
-            return True
-        return False
+        with self._db.lock:
+            conn = self._db.get_connection()
+        
+            cursor = conn.execute("SELECT * from {0} where {1}=?".format(self._table, self._primary), args )
+            self._fetched = True
+            raw =  cursor.fetchone()
+            if raw:
+                idx = 0
+                for k in self._attribs:
+                    self._attribs[k] = raw[idx]
+                    idx += 1
+                
+                self._exists = True
+                result = True
+        
+        return result
         
     def write(self):
         """
         Write the full content to the database based on the `primary` column.
         If the item does not exist yet, INSERT is used otherwise UPDATE is used.
         """
-        if self.exists():
-            args = None
-            statement = "UPDATE {0} SET ".format(self._table)
+        lastrowid = -1
+        with self._db.lock:
+            conn = self._db.get_connection()
             
-            for k in self._attribs:
-                if k != self._primary:
-                    if not args:
-                        args = ( self._attribs[k] ,)
-                        statement += "{0}=?".format(k)
+            if self.exists():
+                args = None
+                arg_names = ''
+                
+                for k in self._attribs:
+                    if k != self._primary:
+                        if not args:
+                            args = ( self._attribs[k] ,)
+                            arg_names += "{0}=?".format(k)
+                        else:
+                            args += ( self._attribs[k] ,)
+                            arg_names += ", {0}=?".format(k)
+                args += ( self[self._primary], )            
+                statement = "UPDATE {0} SET {1} WHERE {2}=?".format(self._table, arg_names, self._primary)
+                #~ print args
+                #~ print statement
+                cursor = conn.execute(statement, args )
+                lastrowid = self[self._primary]
+            else:
+                args = None
+                arg_names = ''
+                arg_questionmarks = ''
+                
+                for k in self._attribs:
+                    if self._autoincrement and k == self._primary:
+                        pass # skip
                     else:
-                        args += ( self._attribs[k] ,)
-                        statement += ", {0}=?".format(k)
-            args += ( self[self._primary], )
-            statement += " WHERE {0}=?".format(self._primary)
-            cursor = self._db.conn.execute(statement, args )
-        else:
-            args = None
-            statement = "INSERT INTO {0} VALUES (".format(self._table)
-            
-            for k in self._attribs:
-                    if not args:
-                        args = ( self._attribs[k] ,)
-                        statement += "?"
-                    else:
-                        args += ( self._attribs[k] ,)
-                        statement += ",?"
-            statement += ")"
-            self._exists = True
-            print args
-            print statement
-            cursor = self._db.conn.execute(statement, args )
-        self._db.conn.commit()
-            
-    def delete(self):
-        args = ( self[self._primary], )
+                        if not args:
+                            args = ( self._attribs[k] ,)
+                            arg_questionmarks += "?"
+                            arg_names += k
+                        else:
+                            args += ( self._attribs[k] ,)
+                            arg_questionmarks += ",?"
+                            arg_names += "," + k
+                
+                statement = "INSERT INTO {0} ({1}) VALUES ({2})".format(self._table, arg_names, arg_questionmarks)
+                self._exists = True
+                #~ print args
+                #~ print statement
+                cursor = conn.execute(statement, args )
+                lastrowid = cursor.lastrowid
+                self[self._primary] = lastrowid
+            conn.commit()
         
-        cursor = self._db.conn.execute("DELETE from {0} where {1}=?".format(self._table, self._primary), args )
-        self._db.conn.commit()
+        return lastrowid
+            
+    def delete(self, multiple = None):
+        with self._db.lock:
+            conn = self._db.get_connection()
+            
+            if multiple:
+                for id in multiple:
+                    args = ( id, )
+                    cursor = conn.execute("DELETE from {0} where {1}=?".format(self._table, self._primary), args )
+                conn.commit()
+            else:
+                args = ( self[self._primary], )
+                cursor = conn.execute("DELETE from {0} where {1}=?".format(self._table, self._primary), args )
+                conn.commit()

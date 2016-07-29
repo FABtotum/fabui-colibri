@@ -42,6 +42,9 @@ from fabtotum.utils.gcodefile import GCodeFile, GCodeInfo
 from fabtotum.utils.pyro.gcodeclient import GCodeServiceClient
 from fabtotum.database      import Database, timestamp2datetime
 from fabtotum.database.task import Task
+from fabtotum.database.file import File
+from fabtotum.database.object  import Object
+from fabtotum.database.obj_file import ObjFile
 
 from fabtotum.fabui.macros.all import PRESET_MAP
 
@@ -170,6 +173,7 @@ class GCodePusher(object):
         self.macro_skipped = 0
         
         self.progress_monitor = None
+        self.db = Database(self.config)
     
     def add_monitor_group(self, group, content = {}):
         """
@@ -202,7 +206,9 @@ class GCodePusher(object):
         """
         # Update duration
         self.task_stats['duration'] = str( time.time() - float(self.task_stats['started_time']) )
-                
+        
+        print "update_monitor_file:", self.task_stats['status']
+        
         if self.monitor_file:
             with open(self.monitor_file,'w+') as file:
                 file.write( json.dumps(self.standardized_stats) )
@@ -271,31 +277,6 @@ class GCodePusher(object):
         pass
         
     def __temp_change_callback(self, action, data):
-
-        #~ self.monitor_lock.acquire()
-        
-        #~ if action == 'ext_bed':
-            #~ #print "Ext: {0}, Bed: {1}".format(data[0], data[1])
-            #~ self.monitor_info['ext_temp'] = float(data[0])
-            #~ self.monitor_info['bed_temp'] = float(data[1])
-        #~ elif action == 'bed':
-            #~ #print "Bed: {0}".format(data[0])
-            #~ self.monitor_info['bed_temp'] = float(data[0])
-        #~ elif action == 'ext':
-            #~ #print "Ext: {0}".format(data[0])
-            #~ self.monitor_info['ext_temp'] = float(data[0])
-        #~ elif action == 'all':
-            #~ self.monitor_info["ext_temp"]           = float(data[0])
-            #~ self.monitor_info["ext_temp_target"]    = float(data[1])
-            #~ self.monitor_info["bed_temp"]           = float(data[2])
-            #~ self.monitor_info["bed_temp_target"]    = float(data[3])
-            
-        #~ print data
-            
-        #~ self.monitor_lock.release()
-        
-        #~ self.update_monitor_file()
-        
         self.temp_change_callback(action, data)
     
     def gcode_action_callback(self, action, data):
@@ -396,13 +377,22 @@ class GCodePusher(object):
         self.file_done_callback()
     
     def set_task_status(self, status):
-        self.task_stats['status'] = status
+        """
+        Set task status.
+        
+        :param status: Can be one of `GCodePusher.TASK_*` values
+        """
+        with self.monitor_lock:
+            self.task_stats['status'] = status 
+            self.update_monitor_file()
 
         if (status == GCodePusher.TASK_COMPLETED or
             status == GCodePusher.TASK_ABORTED):        
             self.task_stats['completed_time'] = time.time()
+            self.__update_task_db()
         
         if (status == GCodePusher.TASK_COMPLETED or
+            status == GCodePusher.TASK_COMPLETING or
             status == GCodePusher.TASK_ABORTING or
             status == GCodePusher.TASK_ABORTED or
             status == GCodePusher.TASK_RUNNING):
@@ -410,7 +400,7 @@ class GCodePusher(object):
     
     def is_aborted(self):
         return ( self.task_stats['status'] == GCodePusher.TASK_ABORTED
-              or self.task_stats['status'] == GCodePusher.TASK_ABORTING)
+              or self.task_stats['status'] == GCodePusher.TASK_ABORTING )
         
     def is_paused(self):
         return self.task_stats['status'] == GCodePusher.TASK_PAUSED
@@ -419,7 +409,8 @@ class GCodePusher(object):
         return self.task_stats['status'] == GCodePusher.TASK_RUNNING
         
     def is_completed(self):
-        return self.task_stats['status'] == GCodePusher.TASK_COMPLETED
+        return ( self.task_stats['status'] == GCodePusher.TASK_COMPLETED
+              or self.task_stats['status'] == GCodePusher.TASK_COMPLETING )
     
     def state_change_callback(self, data):
         """
@@ -428,7 +419,8 @@ class GCodePusher(object):
         pass
         
     def __state_change_callback(self, data):
-        
+        """
+        """
         
         with self.monitor_lock:        
             if data == 'paused':
@@ -483,6 +475,7 @@ class GCodePusher(object):
     
     def callback_handler(self, action, data):
         print "callback_handler", action, data
+        
         if action == 'file_done':
             self.__file_done_callback(data)
         elif action == 'gcode_comment':
@@ -506,7 +499,7 @@ class GCodePusher(object):
         """
         return self.gcs.get_progress()
 
-    def progress_monitor_thread(self):
+    def __progress_monitor_thread(self):
         old_progress = -1
         monitor_write = False
         
@@ -553,6 +546,8 @@ class GCodePusher(object):
             self.pusher_stats['line_current']   = 0
             self.pusher_stats['type']           = gfile.info['type']
             
+            print gfile.info.attribs
+            
             if gfile.info['type'] == GCodeInfo.PRINT:
                 engine = 'unknown'
                 if 'slicer' in gfile.info:
@@ -591,21 +586,23 @@ class GCodePusher(object):
         if self.monitor_file:
             print "Creating monitor thread"
             
-            self.progress_monitor = Thread( target=self.progress_monitor_thread )
+            self.progress_monitor = Thread( target=self.__progress_monitor_thread )
             self.progress_monitor.start() 
         else:
             print "Skipping monitor thread"
             
         #~ self.task_db = Task(self.db, task_id)
+        
+        with self.monitor_lock:
+            self.update_monitor_file()
     
     def __update_task_db(self):
         """
         Converts task_stats to compatible format for sys_tasks table and writes
         the values to the database.
         """
-        db          = Database(self.config)
         task_id     = self.task_stats['id']
-        task_db     = Task(db, task_id)
+        task_db     = Task(self.db, task_id)
         
         if (self.task_stats['status'] == GCodePusher.TASK_PREPARING or
             self.task_stats['status'] == GCodePusher.TASK_RUNNING or
@@ -674,12 +671,15 @@ class GCodePusher(object):
         self.macro_skipped = 0
     
     def macro_start(self):
-        #self.gcs.set_atomic_group('macro')
+        """ 
+        Start macro execution block. This will activate atomic execution and 
+        only commands marked as `macro` will be executed. Others will be aborted.
+        """
         self.gcs.atomic_begin(group = 'macro')
         
     def macro_end(self):
-         self.gcs.atomic_end()
-         #self.gcs.set_atomic_group(None)
+        """ End macro execution block and atomic execution. """
+        self.gcs.atomic_end()
     
     def macro(self, code, expected_reply, timeout, error_msg, delay_after, warning=False, verbose=True):
         """
@@ -736,6 +736,74 @@ class GCodePusher(object):
         
     def send_file(self, filename):
         """
+        Send a file to totumduino. File will be send line by line and it's progress 
+        can be monitored using `get_progress` function.
+        When the file has been completely sent `file_done_callback` will be called.
         """
         return self.gcs.send_file(filename)
  
+    #### Object related API ####
+ 
+    def get_object(self, object_id):
+        obj = Object(self.db, object_id)
+        if obj.exists():
+            return obj
+        return None
+ 
+    def add_object(self, name, desc, user_id, public=Object.PUBLIC):
+        """
+        Add object to database.
+        """
+        obj = Object(self.db, user_id=user_id, name=name, desc=desc, public=public)
+        obj.write()
+        
+        return obj
+        
+    #~ def add_file2object(self, object_id, filename, client_name = None):
+        #~ """
+        #~ """
+        #~ upload_dir = self.config.get('general', 'uploads')
+        #~ if not client_name:
+            #~ client_name = os.path.basename(filename).split('.')[0].strip()
+        
+        #~ with self.db_lock:
+            #~ obj = Object(self.db, object_id=object_id)
+            #~ obj.add_file(filename, client_name, upload_dir)
+        
+    def delete_object(self, object_id):
+        """
+        Remove object from database and all the files associated to it.
+        """
+        #obj = Object(self.db, object_id=object_id)
+        #obj.delete()
+        
+        to_delete = []
+        
+        obj = self.get_object(object_id)
+        if obj:
+            ofmap = ObjFile(self.db)
+            
+            files = ofmap.object_files(object_id)
+            for fid in files:
+                f = File(self.db, file_id=fid)
+                aids = ofmap.file_associations(fid)
+                # Check if file is only associated to one object
+                # if so we can remove it from db and filesystem
+                if len(aids) == 1:
+                    to_delete.append( f['full_path'] )
+                    f.delete()
+            
+            # Remove all associations with object_id
+            aids = ofmap.object_associations(object_id)
+            ofmap.delete(aids)
+            
+            obj.delete()
+            
+            for f in to_delete:
+                try:
+                    os.remove(f)
+                except Exception as e: 
+                    print e
+            
+        else:
+            print "Object {0} not found".format(object_id)

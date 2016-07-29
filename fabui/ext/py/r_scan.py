@@ -26,13 +26,18 @@ import os
 import errno
 from fractions import Fraction
 from threading import Event, Thread
-
+try:
+    import queue
+except ImportError:
+    import Queue as queue
+    
 # Import external modules
 from picamera import PiCamera
 
 # Import internal modules
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
+from fabtotum.utils.triangulation import process_slice, rotary_line_to_xyz
 
 # Set up message catalog access
 tr = gettext.translation('r_scan', 'locale', fallback=True)
@@ -48,9 +53,10 @@ class RotaryScan(GCodePusher):
     XY_FEEDRATE     = 5000
     Z_FEEDRATE      = 1500
     E_FEEDRATE      = 800
+    QUEUE_SIZE      = 64
     
     def __init__(self, log_trace, monitor_file, scan_dir, standalone = False, finalize = True, width = 2592, height = 1944, rotation = 270, iso = 800, power = 230, shutter_speed = 35000):
-        super(RotaryScan, self).__init__(log_trace, monitor_file, use_stdout=standalone)
+        super(RotaryScan, self).__init__(log_trace, monitor_file, use_stdout=False)
         
         self.standalone = standalone
         self.finalize   = finalize
@@ -71,10 +77,13 @@ class RotaryScan(GCodePusher):
             'type'          : 'rotary',
             'projection'    : 'rotary',
             'scan_total'    : 0,
-            'scan_current'  : 0
+            'scan_current'  : 0,
+            'postprocessing_percent'   : 0.0
         }
         
         self.add_monitor_group('scan', self.scan_stats)
+        
+        self.imq = queue.Queue(self.QUEUE_SIZE)
             
     def get_progress(self):
         """ Custom progress implementation """
@@ -85,6 +94,44 @@ class RotaryScan(GCodePusher):
         scanfile = os.path.join(self.scan_dir, "{0}{1}.jpg".format(number, suffix) )
         self.camera.capture(scanfile, quality=100)
     
+    def __post_processing(self, start, end, slices):
+        """
+        """
+        threshold = 0
+        idx = 0
+        while True:
+            img_idx = self.imq.get()
+            
+            img_fn   = os.path.join(self.scan_dir, "{0}.jpg".format(img_idx) )
+            img_l_fn = os.path.join(self.scan_dir, "{0}_l.jpg".format(img_idx) )
+            
+            print "post_processing: ", img_idx
+            
+            if img_idx == None:
+                break
+                
+            # do processing
+            line_pos, threshold, w, h = process_slice(img_fn, img_l_fn, threshold)
+            pos = float(idx*(end-start))/ float(slices)
+            print "{0} / {1}".format(idx,pos)
+            #print json.dumps(line_pos)
+
+            #print len(line_pos)
+
+            #points = rotary_line_to_xyz(line_pos, pos, w, h)
+            #write_points(cloud_file, points)
+            
+            idx += 1
+            
+            self.scan_stats 
+            with self.monitor_lock:
+                self.scan_stats['postprocessing_percent'] = float(idx)*100.0 / float(slices)
+                self.update_monitor_file()
+            
+            # remove images
+            os.remove(img_fn)
+            os.remove(img_l_fn)
+    
     def run(self, task_id, start_a, end_a, y_offset, slices):
         """
         Run the rotary scan.
@@ -92,6 +139,12 @@ class RotaryScan(GCodePusher):
         
         self.prepare_task(task_id, task_type='scan')
         self.set_task_status(GCodePusher.TASK_RUNNING)
+        
+        self.post_processing_thread = Thread(
+            target = self.__post_processing,
+            args=( [start_a, end_a, slices] )
+            )
+        self.post_processing_thread.start()
         
         if self.standalone:
             self.exec_macro("check_pre_scan")
@@ -128,16 +181,21 @@ class RotaryScan(GCodePusher):
             self.send(LASER_OFF)
             self.take_a_picture(i)
             
+            self.imq.put(i)
+            
             position += deg
             
-            self.scan_stats['scan_current'] = i+1
-            self.progress = float(i+1)*100.0 / float(slices)
-            
             with self.monitor_lock:
+                self.scan_stats['scan_current'] = i+1
+                self.progress = float(i+1)*100.0 / float(slices)
                 self.update_monitor_file()
                 
             if self.is_aborted():
                 break
+        
+        self.imq.put(None)
+        
+        self.post_processing_thread.join()
                 
         if self.standalone or self.finalize:
             if self.is_aborted():
@@ -214,7 +272,7 @@ def main():
     ############################################################################
 
     print 'ROTARY SCAN MODULE STARTING' 
-    print 'scanning from'+str(start_a)+"to"+str(end_a); 
+    print 'scanning from '+str(start_a)+" to "+str(end_a); 
     print 'Num of scans : ', slices
     print 'ISO  setting : ', iso
     print 'Resolution   : ', width ,'*', height, ' px'
