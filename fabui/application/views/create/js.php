@@ -17,9 +17,6 @@
 	var recentFilesTable; //table object
 	var idFile <?php echo $runningTask != false ? ' = '.$runningTask['id_file'] : ''; ?>; //file to create
 	var skipEngage = <?php echo $this->session->settings['feeder']['show'] == false ? 'true' : 'false' ?>; //force true if feeder engage is hidden
-	var temperaturesGraph;
-	var temperaturesPlot = {extruder: {temp: [], target: []}, bed: {temp:[], target:[]}};
-	var maxTemperaturesPlot = 200;
 	var idTask <?php echo $runningTask ? ' = '.$runningTask['id'] : ''; ?>;
 	var monitorInterval;
 	var timerInterval;
@@ -33,6 +30,12 @@
 	var speedSlider;
 	var fanSlider;
 	var zOverride = 0;
+	//graph
+	var temperaturesGraph;
+	var showExtActual = true;
+	var showExtTarget = false;
+	var showBedActual = true;
+	var showBedTarget = false;
 	
 	$(document).ready(function() {
 		initWizard();
@@ -43,6 +46,7 @@
 		initRunningTaskPage();
 		<?php endif; ?>
 		$(".action").on('click', doAction);
+		$(".graph-line-selector").on('click', setGraphLines);
 		
 	});
 	
@@ -175,6 +179,7 @@
 				$('.wizard').wizard('selectedItem', { step: 2 });
 				showErrorResponse(response.trace);
 			}else{
+				fabApp.resetTemperaturesPlot(50);	
 				freezeUI();
 				setInterval(timer, 1000);
 				setInterval(jsonMonitor, 1000);
@@ -381,39 +386,7 @@
 	{
 		
 	}
-	/**
-	 * update temperatures info
-	 */
-	if(typeof updateTaskTemperatures != 'function'){
-		window.updateTaskTemperatures = function(ext, extTarget, bed, bedTarget)
-		{
-			var extruderTemp = {'value': parseFloat(ext), 'time': new Date().getTime()};
-			var extruderTargetTemp = {'value': parseFloat(extTarget), 'time': new Date().getTime()};
-			var bedTemp = {'value': parseFloat(bed), 'time': new Date().getTime()};
-			var bedTargetTemp = {'value': parseFloat(bedTarget), 'time': new Date().getTime()};
-			
-			if(temperaturesPlot.extruder.temp.length > maxTemperaturesPlot)   temperaturesPlot.extruder.temp.shift();
-			if(temperaturesPlot.extruder.target.length > maxTemperaturesPlot) temperaturesPlot.extruder.target.shift();
-			if(temperaturesPlot.bed.temp.length > maxTemperaturesPlot)        temperaturesPlot.bed.temp.shift();
-			if(temperaturesPlot.bed.target.length > maxTemperaturesPlot)      temperaturesPlot.bed.target.shift();
-			
-			temperaturesPlot.extruder.temp.push(extruderTemp);
-			temperaturesPlot.extruder.target.push(extruderTargetTemp);
-			temperaturesPlot.bed.temp.push(bedTemp);
-			temperaturesPlot.bed.target.push(bedTargetTemp);
-			
-			$(".extruder-temp").html(parseFloat(ext).toFixed(0));
-			$(".extruder-target").html(parseFloat(extTarget).toFixed(0));
-			$(".bed-temp").html(parseFloat(bed).toFixed(0));
-			$(".bed-target").html(parseFloat(bedTarget).toFixed(0));
-			
-			if(typeof (Storage) !== "undefined") {
-				localStorage.setItem('temperaturesPlot', JSON.stringify(temperaturesPlot));
-			}
-
-						
-		}
-	}
+	
 	/**
 	 * init graph
 	 */
@@ -453,8 +426,6 @@
 				content : "%s: %y &deg;C",
 				defaultTheme : false
 			},
-			
-			colors : ["#FF0000", "#3276B1"],
 			legend: {
 				show : true
 			},
@@ -480,6 +451,7 @@
 		var seriesExtTarget = [];
 		var seriesBedTemp   = [];
 		var seriesBedTarget = [];
+		var data            = new Array();
 		
 		$.each( temperaturesPlot.extruder.temp, function( key, plot ) {
   			seriesExtTemp.push([plot.time, plot.value]);
@@ -493,20 +465,41 @@
 		$.each( temperaturesPlot.bed.target, function( key, plot ) {
   			seriesBedTarget.push([plot.time, plot.value]);
 		});
-		
-		return [{
-		 			data: seriesExtTemp,
-		      		lines: { show: true, fill: true },
-		     	 	label: "Ext temp",
-		     	 	points: {"show" : false},
-		     	 	shadowSize : 0
-		    	},
-		    	{
-		 			data: seriesBedTemp,
-		      		lines: { show: true, fill: true },
-		     	 	label: "Bed temp",
-		    	}
-		  	];
+		//extruder actual line
+		if(showExtActual)
+			data.push({
+				data: seriesExtTemp,
+	      		lines: { show: true, fill: true },
+	     	 	label: "Ext temp",
+	     	 	color: "#FF0000",
+	     	 	points: {"show" : false}
+			});
+		//extruder target line
+		if(showExtTarget)
+			data.push({
+				data: seriesExtTarget,
+	      		lines: { show: true, fill: false, lineWidth:1 },
+	     	 	label: "Ext target",
+	     	 	color: "#ff9933",
+	     	 	points: {"show" : false}
+			});
+		//bed actul line
+		if(showBedActual)
+			data.push({
+				data: seriesBedTemp,
+	      		lines: { show: true, fill: true },
+	     	 	label: "Bed temp",
+	     	 	color: "#3276B1"
+			});
+		//bed target line
+		if(showBedTarget)
+			data.push({
+				data: seriesBedTarget,
+				lines: { show: true, fill: false, lineWidth:1 },
+	     	 	label: "Bed target",
+	     	 	color: "#33ccff"
+			});
+		return data;
 	}
 	/**
 	 * update graph
@@ -936,5 +929,28 @@
 			timeout: 3000,
 			icon : "fa fa-check bounce animated"
 		});
+	}
+	/**
+	*	show or hide lines on graph
+	*/
+	function setGraphLines(event)
+	{	
+		var name = $(this).attr('name');
+		switch(name){
+			case 'ext-actual':
+				showExtActual = $(this).is(":checked");
+				break;
+			case 'ext-target':
+				showExtTarget = $(this).is(":checked");
+				break;
+			case 'bed-actual':
+				showBedActual = $(this).is(":checked");
+				break;
+			case 'bed-target':
+				showBedTarget = $(this).is(":checked");
+				break;
+		}
+		updateGraph();
+		event.isPropagationStopped();
 	}
 </script>

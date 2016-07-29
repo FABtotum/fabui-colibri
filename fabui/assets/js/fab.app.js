@@ -914,6 +914,32 @@ fabApp = (function(app) {
 		}
 		
 	}
+	/**
+	 * reset temperatures plot
+	 * @param (int) elements - how many elements to keep. 0 reset all
+	 */
+	app.resetTemperaturesPlot = function(elements)
+	{
+		elements = elements || 0;
+		
+		if(elements > 0){
+			if(temperaturesPlot.extruder.temp.length > elements){
+				temperaturesPlot.extruder.temp.splice(0, temperaturesPlot.extruder.temp.length - 10);
+			}
+			if(temperaturesPlot.extruder.target.length > elements){
+				temperaturesPlot.extruder.target.splice(0, temperaturesPlot.extruder.target.length - 10);
+			}
+			if(temperaturesPlot.bed.temp.length > elements){
+				temperaturesPlot.bed.temp.splice(0, temperaturesPlot.bed.temp.length - 10);
+			}
+			if(temperaturesPlot.bed.target.length > elements){
+				temperaturesPlot.bed.target.splice(0, temperaturesPlot.bed.target.length - 10);
+			}
+		}else{
+			temperaturesPlot = {extruder: {temp: [], target: []}, bed: {temp:[], target:[]}};
+		}
+		
+	}
 	return app;
 })({});
 

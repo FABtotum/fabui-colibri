@@ -63,3 +63,9 @@
 .typearea {
 	height:150px !important;
 }
+.dropdown-menu {
+	left:13px !important;
+}
+.checkbox {
+	margin-left: 10px !important;
+}
