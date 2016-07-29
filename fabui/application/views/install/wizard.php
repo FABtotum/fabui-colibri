@@ -9,6 +9,7 @@
  
 ?>
 <form class="lockscreen animated flipInY" method="POST" action="<?php echo site_url('install/do');?>" id="install-form">
+	<input type="hidden" name="browser-date" id="browser-date" />
 	<div class="logo">
 		<h1 class="semi-bold"> FABTOTUM</h1>
 	</div>
@@ -105,6 +106,17 @@
 				<div class="tab-pane" id="settings-tab">
 					<br>
 					<h3><strong>Step 3 </strong> - Settings</h3>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label>On which timezone you are? </label>
+								<div class="icon-addon addon-md">
+				                    <?php echo timezone_menu('form-control', 'timezone', 'id="timezone"');?>
+				                    <label class="fa fa-map-marker"></label>
+				                </div>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="tab-pane" id="finish-tab">
 					<br>

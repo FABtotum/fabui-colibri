@@ -951,6 +951,6 @@
 				break;
 		}
 		updateGraph();
-		event.isPropagationStopped();
+		event.stopPropagation();  
 	}
 </script>

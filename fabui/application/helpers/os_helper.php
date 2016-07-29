@@ -126,7 +126,7 @@ if(!function_exists('setSystemDate'))
 	 */
 	function setSystemDate($date)
 	{
-		log_message('debug', 'sudo date -s "'.$date.'"');
+		log_message('debug', 'Set system date: "'.$date.'"');
 		shell_exec('sudo date -s "'.$date.'"');
 	}
 }
@@ -161,6 +161,24 @@ if(!function_exists('downloadRemoteFile'))
 			return true;
 		}else{
 			return false;
+		}
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('setTimeZone'))
+{
+	/**
+	 * set time zone 
+	 */
+	function setTimeZone($timeZone)
+	{	
+		if($timeZone != ''){
+			$CI =& get_instance();
+			$CI->config->load('fabtotum');
+			$setTimeZoneCommand = 'sudo sh '.$CI->config->item('ext_path').'bash/set_time_zone.sh '.$timeZone;
+			log_message('debug', $setTimeZoneCommand);
+			$scriptResult = shell_exec($setTimeZoneCommand);
+			return true;
 		}
 	}
 }
