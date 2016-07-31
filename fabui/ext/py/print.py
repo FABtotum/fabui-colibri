@@ -54,8 +54,8 @@ class PrintApplication(GCodePusher):
     #~ def trace(selg, msg):
         #~ print msg
     
-    def progress_callback(self, percentage):
-        print "Progress", percentage
+    #~ def progress_callback(self, percentage):
+        #~ print "Progress", percentage
     
     def print_finalize(self):
         if self.standalone or self.finalize:
@@ -128,30 +128,44 @@ class PrintApplication(GCodePusher):
 
 def main():
     config = ConfigService()
+    
 
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("task_id",      help=_("Task ID.") )
-    parser.add_argument("file",         help=_("Gcode file to execute.") )
-    parser.add_argument("--standalone", action='store_true',  help=_("Standalone operation. Does all preparations and cleanup.") )
-    group = parser.add_argument_group( _('standalone arguments') )
-    group.add_argument("--ext_temp",   help=_("Extruder temperature (for UI feedback only)"),  default=180, nargs='?')
-    group.add_argument("--bed_temp",   help=_("Bed temperature (for UI feedback only)"),  default=50,  nargs='?')
-    group.add_argument("--autolevel",  action='store_true',  help=_("Auto bed leveling. Valid only when --standalone is used.") )
+    parser.add_argument("--ext_temp",   help=_("Pre-heat extruder temperature"),  default=180, nargs='?')
+    parser.add_argument("--bed_temp",   help=_("Pre-heat bed temperature"),  default=50,  nargs='?')
+    subparsers = parser.add_subparsers(help='sub-command help', dest='type')
 
+    # create the parser for the "standalone" command
+    parser_s = subparsers.add_parser('standalone', help='standalone help')
+    parser_s.add_argument('filename', help=_("Gcode file to execute."))
+    parser_s.add_argument("--autolevel",  action='store_true',  help=_("Auto bed leveling. Valid only when --standalone is used.") )
+    # create the parser for the "managed" command
+    parser_m = subparsers.add_parser('managed', help='managed help')
+    parser_m.add_argument('task_id', type=int, help=_("Task ID."))
+    #~ parser_m.add_argument('object_id', type=int, help=_("Object ID."))
+    #~ parser_m.add_argument('file_id', type=int, help=_("File ID."))
+    parser_m.add_argument('filename', help=_("Gcode file to execute."))
+    
     # GET ARGUMENTS
     args = parser.parse_args()
 
     # INIT VARs
-    gcode_file      = args.file         # GCODE FILE
-    task_id         = args.task_id      # TASK ID  
+    gcode_file      = args.filename     # GCODE FILE
+    if args.type == 'standalone':
+        task_id     = 0
+        standalone  = True
+        autolevel   = args.autolevel
+    else:
+        task_id     = args.task_id      # TASK ID
+        standalone  = False
+        autolevel   = False
+    
     monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
     log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
     ext_temp_target = args.ext_temp     # EXTRUDER TARGET TEMPERATURE (previously read from file) 
     bed_temp_target = args.bed_temp     # BED TARGET TEMPERATURE (previously read from file) 
-    standalone      = args.standalone   # Standalong operation
-    autolevel       = args.autolevel    # Standalong operation
-
+    
     app = PrintApplication(log_trace, monitor_file, standalone, autolevel)
 
     app.run(task_id, gcode_file, ext_temp_target, bed_temp_target)

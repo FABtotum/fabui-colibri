@@ -1,8 +1,9 @@
+#!/bin/bash
 #################################
 ## RESET CONTROLLER BOARD      ##
 ## then init hardware settings ##
 #################################
-#!/bin/bash
+
 ## include utilities
 CURRENT_DIR="$(dirname "$0")"
 source "$CURRENT_DIR/utilities.sh" 

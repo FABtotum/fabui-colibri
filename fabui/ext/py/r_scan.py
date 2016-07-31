@@ -21,6 +21,7 @@
 # Import standard python module
 import argparse
 import time
+from datetime import datetime
 import gettext
 import os
 import errno
@@ -38,6 +39,7 @@ from picamera import PiCamera
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
 from fabtotum.utils.triangulation import process_slice, rotary_line_to_xyz
+from fabtotum.utils.ascfile import ASCFile
 
 # Set up message catalog access
 tr = gettext.translation('r_scan', 'locale', fallback=True)
@@ -94,11 +96,14 @@ class RotaryScan(GCodePusher):
         scanfile = os.path.join(self.scan_dir, "{0}{1}.jpg".format(number, suffix) )
         self.camera.capture(scanfile, quality=100)
     
-    def __post_processing(self, start, end, slices):
+    def __post_processing(self, start, end, slices, cloud_file, task_id, object_id):
         """
         """
         threshold = 0
         idx = 0
+        
+        asc = ASCFile(cloud_file)
+        
         while True:
             img_idx = self.imq.get()
             
@@ -118,8 +123,8 @@ class RotaryScan(GCodePusher):
 
             #print len(line_pos)
 
-            #points = rotary_line_to_xyz(line_pos, pos, w, h)
-            #write_points(cloud_file, points)
+            points = rotary_line_to_xyz(line_pos, pos, w, h)
+            asc.write_points(points)
             
             idx += 1
             
@@ -131,8 +136,36 @@ class RotaryScan(GCodePusher):
             # remove images
             os.remove(img_fn)
             os.remove(img_l_fn)
+            
+        asc.close()
+        
+        obj = self.get_object(object_id)
+        task = self.get_task(task_id)
+        
+        ts = time.time()
+        dt = datetime.fromtimestamp(ts)
+        datestr = dt.strftime('%Y-%m-%d %H:%M:%S')
+        datestr_fs_friendly = 'cloud_'+dt.strftime('%Y%m%d_%H%M%S')
+        
+        if not obj:
+            # File should not be part of an existing object so create a new one
+            user_id = 0
+            if task:
+                user_id = task['user']
+            
+            obj = self.add_object("Scan object ({0})".format(datestr), "", user_id)
+        
+        f = obj.add_file(cloud_file, client_name=datestr_fs_friendly)
+        os.remove(cloud_file)
+
+        # Update task content
+        if task:
+            task['id_object'] = obj['id']
+            task['id_file'] = f['id']
+            task.write()
+        
     
-    def run(self, task_id, start_a, end_a, y_offset, slices):
+    def run(self, task_id, object_id, start_a, end_a, y_offset, slices, cloud_file):
         """
         Run the rotary scan.
         """
@@ -142,7 +175,7 @@ class RotaryScan(GCodePusher):
         
         self.post_processing_thread = Thread(
             target = self.__post_processing,
-            args=( [start_a, end_a, slices] )
+            args=( [start_a, end_a, slices, cloud_file, task_id, object_id] )
             )
         self.post_processing_thread.start()
         
@@ -228,26 +261,38 @@ def main():
     config = ConfigService()
 
     # SETTING EXPECTED ARGUMENTS
-    parser = argparse.ArgumentParser(add_help=False, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("task_id",          help=_("Task ID.") )
-    parser.add_argument("-d", "--dest",     help=_("Destination folder."),     default=config.get('general', 'bigtemp_path') )
+    destination = config.get('general', 'bigtemp_path')
+    
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    subparsers = parser.add_subparsers(help='sub-command help', dest='type')
+
+    parser.add_argument("-d", "--dest",     help=_("Destination folder."),     default=destination )
     parser.add_argument("-s", "--slices",   help=_("Number of slices."),       default=100)
     parser.add_argument("-i", "--iso",      help=_("ISO."),                    default=400)
     parser.add_argument("-p", "--power",    help=_("Scan laser power 0-255."), default=230)
-    parser.add_argument("-w", "--width",    help=_("Image width in pixels."),  default=1920)
-    parser.add_argument("-h", "--height",   help=_("Image height in pixels"),  default=1080)
+    parser.add_argument("-W", "--width",    help=_("Image width in pixels."),  default=1920)
+    parser.add_argument("-H", "--height",   help=_("Image height in pixels"),  default=1080)
     parser.add_argument("-b", "--begin",    help=_("Begin scanning from X."),  default=0)
     parser.add_argument("-e", "--end",      help=_("End scanning at X."),      default=360)
     parser.add_argument("-z", "--z-offset", help=_("Z offset."),               default=0)
     parser.add_argument("-y", "--y-offset", help=_("Y offset."),               default=0)
     parser.add_argument("-a", "--a-offset", help=_("A offset/rotation."),      default=0)
-    parser.add_argument("--standalone", action='store_true',  help=_("Standalone operation. Does all preparations and cleanup.") )
-    parser.add_argument('--help', action='help', help=_("Show this help message and exit") )
+    parser.add_argument("-o", "--output",   help=_("Output point cloud file."),default=os.path.join(destination, 'cloud.asc'))
+    #~ parser.add_argument('--help', action='help', help=_("Show this help message and exit") )
+
+    # create the parser for the "standalone" command
+    parser_s = subparsers.add_parser('standalone', help='standalone help')
+    
+    # create the parser for the "managed" command
+    parser_m = subparsers.add_parser('managed', help='managed help')
+    parser_m.add_argument('task_id',   type=int, help=_("Task ID."))
+    parser_m.add_argument('object_id', type=int, help=_("Object ID."))
+
 
     # GET ARGUMENTS
     args = parser.parse_args()
 
-    slices          = args.slices
+    slices          = int(args.slices)
     destination     = args.dest
     iso             = int(args.iso)
     power           = int(args.power)
@@ -258,11 +303,20 @@ def main():
     a_offset        = float(args.a_offset)
     width           = int(args.width)
     height          = int(args.height)
-    standalone      = args.standalone
-    task_id         = args.task_id
+    
+    if args.type == 'standalone':
+        task_id     = -1
+        object_id   = 0
+        standalone  = True
+    else:
+        task_id     = args.task_id
+        object_id   = args.object_id
+        standalone  = False
 
-    monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
-    log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
+    cloud_file      = args.output
+
+    monitor_file    = config.get('general', 'task_monitor')
+    log_trace       = config.get('general', 'trace')
 
     scan_dir        = os.path.join(destination, "images")
 
@@ -300,7 +354,7 @@ def main():
 
     app_thread = Thread( 
             target = app.run, 
-            args=( [task_id, start_a, end_a, y_offset, slices] ) 
+            args=( [task_id, object_id, start_a, end_a, y_offset, slices, cloud_file] ) 
             )
     app_thread.start()
 

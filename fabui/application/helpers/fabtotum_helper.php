@@ -250,12 +250,12 @@ if(!function_exists('startPrint'))
 	/**
 	 * 
 	 */
-	function startPrint($gcodeFilePath, $taskID = 0)
+	function startPrint($gcodeFilePath, $taskID = 0, $userID = 0, $objectID = 0, $fileID = 0)
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum'); 
 		$extPath = $CI->config->item('ext_path');
-		doCommandLine('python', $extPath.'/py/print.py '.$taskID.' "'.$gcodeFilePath.'" > /dev/null & echo $! > /run/task_create.pid');	
+		doCommandLine('python', $extPath.'/py/print.py managed '.$taskID.' "'.$gcodeFilePath.'" &> /tmp/print.log & echo $! > /run/task_create.pid');
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

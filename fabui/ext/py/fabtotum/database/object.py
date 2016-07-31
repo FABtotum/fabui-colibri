@@ -81,6 +81,8 @@ class Object(TableItem):
         objfile = ObjFile(self._db, object_id, file_id)
         objfile.write()
         
+        return file
+        
     def remove_file(self):
         pass
         

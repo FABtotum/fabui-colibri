@@ -27,7 +27,7 @@
 					<section class="col col-6">
 						<label class="label">Z Step (mm)</label>
 						<label class="input">
-							<input type="number" min="1" value="10" id="#Step">
+							<input type="number" min="1" value="10" id="zStep">
 						</label>
 					</section>
 				</div>

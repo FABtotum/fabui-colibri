@@ -33,6 +33,7 @@ from picamera import PiCamera
 # Import internal modules
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
+from fabtotum.utils.ascfile import ASCFile
 
 # Set up message catalog access
 tr = gettext.translation('s_scan', 'locale', fallback=True)
@@ -179,21 +180,33 @@ def main():
     config = ConfigService()
 
     # SETTING EXPECTED ARGUMENTS
-    parser = argparse.ArgumentParser(add_help=False, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    destination = config.get('general', 'bigtemp_path')
+    
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    subparsers = parser.add_subparsers(help='sub-command help', dest='type')
+    
     parser.add_argument("task_id",          help=_("Task ID.") )
-    parser.add_argument("-d", "--dest",     help=_("Destination folder."),     default=config.get('general', 'bigtemp_path') )
+    parser.add_argument("-d", "--dest",     help=_("Destination folder."),     default=destination )
     parser.add_argument("-s", "--slices",   help=_("Number of slices."),       default=100)
     parser.add_argument("-i", "--iso",      help=_("ISO."),                    default=400)
     parser.add_argument("-p", "--power",    help=_("Scan laser power 0-255."), default=230)
-    parser.add_argument("-w", "--width",    help=_("Image width in pixels."),  default=1920)
-    parser.add_argument("-h", "--height",   help=_("Image height in pixels"),  default=1080)
+    parser.add_argument("-W", "--width",    help=_("Image width in pixels."),  default=1920)
+    parser.add_argument("-H", "--height",   help=_("Image height in pixels"),  default=1080)
     parser.add_argument("-b", "--begin",    help=_("Begin scanning from X."),  default=0)
     parser.add_argument("-e", "--end",      help=_("End scanning at X."),      default=100)
     parser.add_argument("-y", "--y-offset", help=_("Y offset."),               default=0)
     parser.add_argument("-z", "--z-offset", help=_("Z offset."),               default=0)
     parser.add_argument("-a", "--a-offset", help=_("A offset/rotation."),      default=0)
-    parser.add_argument("--standalone", action='store_true',  help=_("Standalone operation. Does all preparations and cleanup.") )
-    parser.add_argument('--help', action='help', help=_("Show this help message and exit") )
+    parser.add_argument("-o", "--output",   help=_("Output point cloud file."),default=os.path.join(destination, 'cloud.asc'))
+    
+    #parser.add_argument("--standalone", action='store_true',  help=_("Standalone operation. Does all preparations and cleanup.") )
+    # create the parser for the "standalone" command
+    parser_s = subparsers.add_parser('standalone', help='standalone help')
+    
+    # create the parser for the "managed" command
+    parser_m = subparsers.add_parser('managed', help='managed help')
+    parser_m.add_argument('task_id',   type=int, help=_("Task ID."))
+    parser_m.add_argument('object_id', type=int, help=_("Object ID."))
 
     # GET ARGUMENTS
     args = parser.parse_args()
@@ -209,8 +222,19 @@ def main():
     z_offset        = float(args.z_offset)
     y_offset        = float(args.y_offset)
     a_offset        = float(args.a_offset)
-    standalone      = args.standalone
-    task_id         = int(args.task_id)
+
+    if args.type == 'standalone':
+        task_id     = 0
+        object_id   = 0
+        standalone  = True
+    else:
+        task_id     = args.task_id
+        object_id   = args.object_id
+        standalone  = False
+
+    cloud_file      = args.output
+    
+    
 
     monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
     log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 

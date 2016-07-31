@@ -40,7 +40,7 @@ from threading import Event, Thread, RLock
 from fabtotum.fabui.config import ConfigService
 from fabtotum.utils.gcodefile import GCodeFile, GCodeInfo
 from fabtotum.utils.pyro.gcodeclient import GCodeServiceClient
-from fabtotum.database      import Database, timestamp2datetime
+from fabtotum.database      import Database, timestamp2datetime, TableItem
 from fabtotum.database.task import Task
 from fabtotum.database.file import File
 from fabtotum.database.object  import Object
@@ -107,6 +107,7 @@ class GCodePusher(object):
         # Task specific attributes
         self.task_stats = {
             'type'                  : 'unknown',
+            'controller'            : 'unknown',
             'id'                    : 0,
             'pid'                   : os.getpid(),
             'status'                : GCodePusher.TASK_PREPARING,
@@ -206,8 +207,6 @@ class GCodePusher(object):
         """
         # Update duration
         self.task_stats['duration'] = str( time.time() - float(self.task_stats['started_time']) )
-        
-        print "update_monitor_file:", self.task_stats['status']
         
         if self.monitor_file:
             with open(self.monitor_file,'w+') as file:
@@ -519,9 +518,10 @@ class GCodePusher(object):
 
             time.sleep(GCodePusher.UPDATE_PERIOD)
     
-    def prepare_task(self, task_id, task_type = 'unknown', gcode_file = None, auto_shutdown = False, send_email = False):
+    def prepare_task(self, task_id, task_type = 'unknown', task_controller = 'create', gcode_file = None, auto_shutdown = False, send_email = False):
         
         self.task_stats['type']             = task_type
+        self.task_stats['controller']       = task_controller
         self.task_stats['id']               = task_id
         self.task_stats['status']           = GCodePusher.TASK_PREPARING
         self.task_stats['started_time']     = time.time()
@@ -602,6 +602,10 @@ class GCodePusher(object):
         the values to the database.
         """
         task_id     = self.task_stats['id']
+        
+        if task_id == 0:
+            return
+        
         task_db     = Task(self.db, task_id)
         
         if (self.task_stats['status'] == GCodePusher.TASK_PREPARING or
@@ -616,9 +620,18 @@ class GCodePusher(object):
             task_db['status'] = self.task_stats['status']
             
             task_db['finish_date'] = timestamp2datetime( self.task_stats['completed_time'] )
+
+        task_db['type']         = self.task_stats['type']
+        task_db['controller']   = self.task_stats['controller']
         
         print "DB.write, status:", self.task_stats['status']
-        task_db.write()
+        
+        tid = task_db.write()
+        
+        if task_id == TableItem.DEFAULT:
+            self.task_stats['id'] = tid
+            with self.monitor_lock:
+                self.update_monitor_file()
     
     def loop(self):
         """
@@ -744,6 +757,18 @@ class GCodePusher(object):
  
     #### Object related API ####
  
+    def get_task(self, task_id):
+        t = Task(self.db, task_id)
+        if t.exists():
+            return t
+        return None
+ 
+    def get_file(self, file_id):
+        f = File(self.db, file_id)
+        if f.exists():
+            return f
+        return None
+ 
     def get_object(self, object_id):
         obj = Object(self.db, object_id)
         if obj.exists():
@@ -758,17 +783,6 @@ class GCodePusher(object):
         obj.write()
         
         return obj
-        
-    #~ def add_file2object(self, object_id, filename, client_name = None):
-        #~ """
-        #~ """
-        #~ upload_dir = self.config.get('general', 'uploads')
-        #~ if not client_name:
-            #~ client_name = os.path.basename(filename).split('.')[0].strip()
-        
-        #~ with self.db_lock:
-            #~ obj = Object(self.db, object_id=object_id)
-            #~ obj.add_file(filename, client_name, upload_dir)
         
     def delete_object(self, object_id):
         """

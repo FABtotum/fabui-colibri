@@ -1,7 +1,8 @@
+#!/bin/bash
 #################################
 ## STOP ALL SCRIPTS 
 #################################
-#!/bin/bash
+
 ## include utilities
 CURRENT_DIR="$(dirname "$0")"
 source "$CURRENT_DIR/utilities.sh"

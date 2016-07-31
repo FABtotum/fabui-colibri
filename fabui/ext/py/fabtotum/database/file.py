@@ -28,6 +28,7 @@ import shutil
 import errno
 import mimetypes
 import time
+import md5
 from collections import OrderedDict
 
 # Import external modules
@@ -99,6 +100,12 @@ class File(TableItem):
 
 # files should be sorted by extension
 
+    @staticmethod
+    def get_unique_filename():
+        m = md5.new()
+        m.update("{0}".format(time.time()))
+        return m.hexdigest()
+
     def from_file(self, filename, client_name = None, upload_dir = None):
         """
         """
@@ -111,6 +118,9 @@ class File(TableItem):
                 ext = tmp[1].strip()
             
             dst_path = os.path.join(upload_dir, ext)
+            
+            ufname = self.get_unique_filename()
+            fname = ufname + '.' + ext
             dst_fname = os.path.join(dst_path, fname)
             try:
                 os.makedirs(dst_path)

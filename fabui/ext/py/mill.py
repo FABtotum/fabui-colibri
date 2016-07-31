@@ -112,23 +112,32 @@ def main():
 
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("task_id",      help=_("Task ID.") )
-    parser.add_argument("file",         help=_("Gcode file to execute.") )
-    parser.add_argument("--standalone", action='store_true',  help=_("Standalone operation. Does all preparations and cleanup.") )
-    group = parser.add_argument_group( _('standalone arguments') )
-#    group.add_argument("--autolevel",  action='store_true',  help=_("Auto bed leveling. Valid only when --standalone is used.") )
+    subparsers = parser.add_subparsers(help='sub-command help', dest='type')
+
+    # create the parser for the "standalone" command
+    parser_s = subparsers.add_parser('standalone', help='standalone help')
+    parser_s.add_argument('filename', help=_("Gcode file to execute."))
+    # create the parser for the "managed" command
+    parser_m = subparsers.add_parser('managed', help='managed help')
+    parser_m.add_argument('task_id', type=int, help=_("Task ID."))
+    parser_m.add_argument('filename', help=_("Gcode file to execute."))
 
     # GET ARGUMENTS
     args = parser.parse_args()
 
     # INIT VARs
-    gcode_file      = args.file         # GCODE FILE
-    task_id         = args.task_id      # TASK ID  
+    gcode_file      = args.filename     # GCODE FILE
+    if args.type == 'standalone':
+        task_id     = 0
+        standalone  = True
+        
+    else:
+        task_id     = args.task_id      # TASK ID
+        standalone  = False
+        
+    autolevel       = False
     monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
     log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
-    standalone      = args.standalone   # Standalong operation
-    #~ autolevel       = args.autolevel    # Standalong operation
-    autolevel       = False
 
     app = MillApplication(log_trace, monitor_file, standalone, autolevel)
 

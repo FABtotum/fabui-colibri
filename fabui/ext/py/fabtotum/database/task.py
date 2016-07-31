@@ -48,9 +48,7 @@ from fabtotum.database import TableItem, timestamp2datetime
 
 class Task(TableItem):
     
-    def __init__(self, database, task_id=TableItem.DEFAULT):
-         #database, table, primary, primary_value=0, attribs=OrderedDict() ):
-         
+    def __init__(self, database, task_id=TableItem.DEFAULT, object_id=0, file_id=0):
         attribs = OrderedDict()
         attribs['id']           = task_id   # Task ID
         attribs['user']         = 0         # User ID of the user that has started this task
@@ -61,7 +59,7 @@ class Task(TableItem):
         now = timestamp2datetime(time.time())
         attribs['start_date']   = now       # Date/time when the task was started
         attribs['finish_date']  = 0         # Date/time when the task was finished (completed or aborted)
-        attribs['id_object']  = 0           # ID of the object associated to this task
-        attribs['id_file']  = 0             # ID of the file associated to this task
+        attribs['id_object']    = object_id # ID of the object associated to this task
+        attribs['id_file']      = file_id   # ID of the file associated to this task
         
         super(Task, self).__init__(database, table='sys_tasks', primary='id', primary_autoincrement=True, attribs=attribs)
