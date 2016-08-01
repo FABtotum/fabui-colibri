@@ -213,9 +213,9 @@
 			'start_date' => date('Y-m-d H:i:s')
 		);
 		$taskId   = $this->tasks->add($taskData);
-        $userID   = $this->session->user['id']
-        $fileID   = $data['idFile']
-        $objectID = $object['id']
+        	$userID   = $this->session->user['id'];
+        	$fileID   = $data['idFile'];
+        	$objectID = $object['id'];
 		//start print
 		startPrint($fileToCreate['full_path'], $taskId, $userID, $objectID, $fileID);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId, 'temperatures'=> $temperatures)));
