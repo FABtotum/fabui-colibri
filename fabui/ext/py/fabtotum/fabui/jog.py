@@ -150,7 +150,8 @@ class Jog:
                 
                 to_remove = self.__add_token(token)
                 for tok in to_remove:
-                    del self.response[tok]
+                    if tok in self.response:
+                        del self.response[tok]
                 
                 self.response[token] = {'code': gcode, 'reply': reply}
                 

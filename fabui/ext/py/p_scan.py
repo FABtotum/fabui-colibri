@@ -192,6 +192,8 @@ class ProbeScan(GCodePusher):
                 probe_num += 1
                 self.scan_stats['scan_current'] = probe_num
                 self.progress = ( float(probe_num) / float(total_num) ) * 100.0
+                
+                self.send('M401')   # Renew probe position in case it got moved.
         
         self.trace( _("Saving point cloud to file {0}").format(output_file) )
         self.save_as_cloud(points, output_file)

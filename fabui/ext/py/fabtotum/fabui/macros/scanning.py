@@ -59,7 +59,7 @@ def check_pre_scan(app, args = None):
     # Disable feeder
     app.macro("G91",                "ok", 2,    _("Setting relative position"), 0, verbose=False)
     app.macro("G0 X5 Y5 Z-"+str(feeder_disengage_offset)+" F400",   "ok", 5, _("Engaging 4th Axis Motion"), 0)
-    app.macro("M400",                "ok", 5,   _("Wait for moves to finish"), 0, verbose=False)
+    app.macro("M400",                "ok", 100,   _("Wait for moves to finish"), 0, verbose=False)
     app.macro("G90",                "ok", 2,    _("Setting Absolute position"), 0, verbose=False)
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), 0, verbose=True)
     # Move to collimation

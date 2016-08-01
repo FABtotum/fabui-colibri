@@ -64,7 +64,7 @@ def end_additive(app, args = None):
     #macro("G90","ok",100,"Set Absolute movement",0.1,verbose=False)
     #macro("G90","ok",2,"Set Absolute movement",1)
     #macro("G0 X210 Y210 Z200 F10000","ok",100,"Moving to safe zone",0.1,verbose=False) #right top, normally Z=240mm
-    app.macro("M400",       "ok", 60,   _("Waiting for all moves to finish"), 1)
+    app.macro("M400",       "ok", 100,   _("Waiting for all moves to finish"), 1)
     app.macro("M104 S0",    "ok", 50,   _("Shutting down Extruder"), 1)
     app.macro("M140 S0",    "ok", 50,   _("Shutting down Heated Bed"), 1)
     app.macro("M220 S100",  "ok", 20,   _("Reset Speed factor override"), 0.1)
@@ -80,7 +80,7 @@ def end_additive(app, args = None):
 def end_additive_safe_zone(app, args = None):
     app.macro("G90",                        "ok", 2,    _("Setting Absolute position"), 0)
     app.macro("G0 X210 Y210 Z100 F10000",   "ok", 100,  _("Moving to safe zone"), 1)
-    app.macro("M400",       "ok", 100,    _("Waiting for all moves to finish"), 1)
+    app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), 1)
 
 def check_pre_print(app, args = None):
     try:

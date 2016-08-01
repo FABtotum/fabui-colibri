@@ -58,10 +58,10 @@ def end_subtractive(app, args = None):
     #macro("G27","ok",100,"Lowering the building platform",1,verbose=False) #normally Z=240mm
     #note: movement here is done so it works with manual positioning (subtractive mode).
     
-    app.macro("M400",       "ok", 1,    _("Waiting for all moves to finish"), 1)
+    app.macro("M400",       "ok",200,   _("Waiting for all moves to finish"), 1)
     app.macro("M5",         "ok",100,   _("Shutting Down Milling Motor"), 1) #should be moved to firmware       
     app.macro("M220 S100",  "ok",50,    _("Reset Speed factor override"), 0.1)
-    app.macro("M221 S100",  "ok",1,     _("Reset Extruder factor override"), 0.1)
+    app.macro("M221 S100",  "ok",5,     _("Reset Extruder factor override"), 0.1)
     app.macro("M107",       "ok",50,    _("Turning Fan off"), 1) # moved to firmware
     app.macro("M18",        "ok",50,    _("Motor Off"), 1) 
     #go back to user-defined colors
