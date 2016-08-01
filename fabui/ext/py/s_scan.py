@@ -21,18 +21,24 @@
 # Import standard python module
 import argparse
 import time
+from datetime import datetime
 import gettext
 import os
 import errno
 from fractions import Fraction
 from threading import Event, Thread
-
+try:
+    import queue
+except ImportError:
+    import Queue as queue
+    
 # Import external modules
 from picamera import PiCamera
 
 # Import internal modules
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
+from fabtotum.utils.triangulation import process_slice, sweep_line_to_xyz
 from fabtotum.utils.ascfile import ASCFile
 
 # Set up message catalog access
@@ -49,6 +55,7 @@ class SweepScan(GCodePusher):
     XY_FEEDRATE     = 10000
     Z_FEEDRATE      = 1500
     E_FEEDRATE      = 800
+    QUEUE_SIZE      = 64
     
     def __init__(self, log_trace, monitor_file, scan_dir, standalone = False, finalize = True, width = 2592, height = 1944, rotation = 270, iso = 800, power = 230, shutter_speed = 35000):
         super(SweepScan, self).__init__(log_trace, monitor_file, use_stdout=standalone)
@@ -72,10 +79,13 @@ class SweepScan(GCodePusher):
             'type'          : 'sweep',
             'projection'    : 'planar',
             'scan_total'    : 0,
-            'scan_current'  : 0
+            'scan_current'  : 0,
+            'postprocessing_percent' : 0.0
         }
         
         self.add_monitor_group('scan', self.scan_stats)
+        
+        self.imq = queue.Queue(self.QUEUE_SIZE)
 
     def get_progress(self):
         """ Custom progress implementation """
@@ -86,7 +96,76 @@ class SweepScan(GCodePusher):
         scanfile = os.path.join(self.scan_dir, "{0}{1}.jpg".format(number, suffix) )
         self.camera.capture(scanfile, quality=100)
     
-    def run(self, task_id, start_x, end_x, a_offset, y_offset, z_offset, slices):
+    def __post_processing(self, start, end, z_offset, y_offset, a_offset, slices, cloud_file, task_id, object_id):
+        """
+        """
+        threshold = 0
+        idx = 0
+        
+        asc = ASCFile(cloud_file)
+        
+        while True:
+            img_idx = self.imq.get()
+            
+            img_fn   = os.path.join(self.scan_dir, "{0}.jpg".format(img_idx) )
+            img_l_fn = os.path.join(self.scan_dir, "{0}_l.jpg".format(img_idx) )
+            
+            print "post_processing: ", img_idx
+            
+            if img_idx == None:
+                break
+                
+            # do processing
+            line_pos, threshold, w, h = process_slice(img_fn, img_l_fn, threshold)
+            pos = (float(idx*(end-start)) / float(slices)) + start
+            print "{0} / {1}".format(idx,pos)
+            #print json.dumps(line_pos)
+
+            #print len(line_pos)
+
+            points = sweep_line_to_xyz(line_pos, pos, z_offset, y_offset, a_offset, w, h)
+            asc.write_points(points)
+            
+            idx += 1
+            
+            self.scan_stats 
+            with self.monitor_lock:
+                self.scan_stats['postprocessing_percent'] = float(idx)*100.0 / float(slices)
+                self.update_monitor_file()
+            
+            # remove images
+            os.remove(img_fn)
+            os.remove(img_l_fn)
+            
+        print "close post processing"
+        asc.close()
+        
+        obj = self.get_object(object_id)
+        task = self.get_task(task_id)
+        
+        ts = time.time()
+        dt = datetime.fromtimestamp(ts)
+        datestr = dt.strftime('%Y-%m-%d %H:%M:%S')
+        datestr_fs_friendly = 'cloud_'+dt.strftime('%Y%m%d_%H%M%S')
+        
+        if not obj:
+            # File should not be part of an existing object so create a new one
+            user_id = 0
+            if task:
+                user_id = task['user']
+            
+            obj = self.add_object("Scan object ({0})".format(datestr), "", user_id)
+        
+        f = obj.add_file(cloud_file, client_name=datestr_fs_friendly)
+        os.remove(cloud_file)
+
+        # Update task content
+        if task:
+            task['id_object'] = obj['id']
+            task['id_file'] = f['id']
+            task.write()
+    
+    def run(self, task_id, object_id, start_x, end_x, a_offset, y_offset, z_offset, slices, cloud_file):
         """
         Run the sweep scan.
         """
@@ -94,9 +173,14 @@ class SweepScan(GCodePusher):
         self.prepare_task(task_id, task_type='scan')
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
+        self.post_processing_thread = Thread(
+            target = self.__post_processing,
+            args=( [start_x, end_x, z_offset, y_offset, a_offset, slices, cloud_file, task_id, object_id] )
+            )
+        self.post_processing_thread.start()
+        
         if self.standalone:
             self.exec_macro("start_sweep_scan")
-        #self.send('G90')
         
         LASER_ON  = 'M700 S{0}'.format(self.laser_power)
         LASER_OFF = 'M700 S0'
@@ -138,6 +222,8 @@ class SweepScan(GCodePusher):
             self.send(LASER_OFF) #turn laser ON
             self.take_a_picture(i)
             
+            self.imq.put(i)
+            
             position += dx
             
             self.scan_stats['scan_current'] = i+1
@@ -148,6 +234,10 @@ class SweepScan(GCodePusher):
                 
             if self.is_aborted():
                 break
+                
+        self.imq.put(None)
+        
+        self.post_processing_thread.join()
                         
         if self.standalone or self.finalize:
             if self.is_aborted():
@@ -185,7 +275,6 @@ def main():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     subparsers = parser.add_subparsers(help='sub-command help', dest='type')
     
-    parser.add_argument("task_id",          help=_("Task ID.") )
     parser.add_argument("-d", "--dest",     help=_("Destination folder."),     default=destination )
     parser.add_argument("-s", "--slices",   help=_("Number of slices."),       default=100)
     parser.add_argument("-i", "--iso",      help=_("ISO."),                    default=400)
@@ -233,8 +322,6 @@ def main():
         standalone  = False
 
     cloud_file      = args.output
-    
-    
 
     monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
     log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
@@ -276,7 +363,7 @@ def main():
 
     app_thread = Thread( 
             target = app.run, 
-            args=( [task_id, start_x, end_x, a_offset, y_offset, z_offset, slices] ) 
+            args=( [task_id, object_id, start_x, end_x, a_offset, y_offset, z_offset, slices, cloud_file] ) 
             )
     app_thread.start()
     

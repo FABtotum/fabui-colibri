@@ -109,20 +109,25 @@ def process_slice(img_fn, img_l_fn, threshold = 40):
 
     return line_pos, threshold, img_width, img_height
 
-def sweep_line_to_xyz(line_pos, pos, img_width, img_height):
-    pass
-        #-----------------------------------
-        #~ if mode == "s":
-            #~ #SWEEPING laser scan reconstruction
-            #~ #area params:
-            #~ #			start  : x0 (mm, x position)
-            #~ #			end	   : x1 (mm, x position)
-            #~ #			slices : linear slices
+def sweep_line_to_xyz(line_pos, pos, z_offset, y_offset, a_offset, img_width, img_height):
+    # Convert to XYZ points
+    tri_side = float(2*np.tan( np.radians(LASER_ANGLE) ))
+    points = np.zeros(4, dtype=np.float)
+    
+    for col,value in enumerate(line_pos):
+        if value == 0:
+            continue
 
-            #~ x = ((end-start)/slices*cs)+int(start)															#distance from the camera
-            #~ y = float((230-z_offset)-((float(img_height)/float(2))-col)/float(mmpph))		   					#Y columns
-            #~ #z=float(((img_width/2)-w_positionline_pos[col])/(img_width/2))*np.tan(30*math.pi/180)*x		#
-            #~ z = x*(np.tan(np.radians(self.BETA_ANGLE)-np.arctan(((img_width/2-line_pos[col])/(img_width/2))*self.HALF_APARATURE)))
+        x = pos # distance from the camera
+        y = float((230-z_offset)-((float(img_height)/float(2))-col)/float(MMPPH))    # Y columns
+        #z=float(((img_width/2)-w_positionline_pos[col])/(img_width/2))*np.tan(30*math.pi/180)*x
+        z = x*(np.tan(np.radians(BETA_ANGLE)-np.arctan(((img_width/2-line_pos[col])/(img_width/2))*HALF_APARATURE)))
+
+        #data collected, now add to cloud
+        new_point = [x,y,z,1]
+        points = np.vstack([points, new_point])
+
+    return points
 
 def rotary_line_to_xyz(line_pos, pos, img_width, img_height):
     # Convert to XYZ points

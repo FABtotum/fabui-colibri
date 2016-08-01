@@ -105,7 +105,7 @@ def engage_feeder(app, args = None):
     app.trace( _("Engaging 3D-Printer Feeder") )
     if safety_door == 1:
         app.macro("M741",           "TRIGGERED", 2, _("Front panel door control"), 0.1, verbose=False)
-    app.macro("M744",               "TRIGGERED", 1, _("Spool panel control"), 1, warning=True)
+    app.macro("M742",               "TRIGGERED", 1, _("Spool panel control"), 1, warning=True)
     app.macro("G27",                "ok", 100,      _("Zeroing Z axis"), 0.1, verbose=False)
     app.macro("G91",                "ok", 2,        _("Set relative movement"), 0.1, verbose=False)
     app.macro("G0 Z-4 F1000",       "ok", 3,        _("Setting Z position"), 0.1, verbose=False)

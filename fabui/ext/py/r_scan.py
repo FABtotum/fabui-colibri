@@ -163,7 +163,6 @@ class RotaryScan(GCodePusher):
             task['id_object'] = obj['id']
             task['id_file'] = f['id']
             task.write()
-        
     
     def run(self, task_id, object_id, start_a, end_a, y_offset, slices, cloud_file):
         """
