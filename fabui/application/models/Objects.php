@@ -44,6 +44,18 @@
 		$this->db->insert($this->objFilesTable, $data);
 		return $this->db->insert_id();
 	}
+	/**
+	 * @return array optimized for dropdown list
+	 */
+	public function getObjectsorDropdown()
+	{
+		$objects = $this->get();
+		$dropdown = array();
+		foreach($objects as $object){
+			$dropdown[$object['id']] = $object['name'];
+		}
+		return $dropdown;
+	}
  }
  
 ?>

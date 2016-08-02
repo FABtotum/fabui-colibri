@@ -84,6 +84,9 @@
 		}
 		//update settings on session
 		$this->session->settings = $newSettings;
+		//reload configuration settings
+		resetController();
+		$this->output->set_content_type('application/json')->set_output(true);
 	}
 	
 	/***

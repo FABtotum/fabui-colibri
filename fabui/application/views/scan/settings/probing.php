@@ -7,6 +7,5 @@
  * @license https://opensource.org/licenses/GPL-3.0
  * 
  */
-
-echo $wizard; 
+ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>

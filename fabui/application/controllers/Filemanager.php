@@ -138,8 +138,11 @@
 		//crate folder extension if doesn't exist
 		if(!file_exists($this->config->item('upload_path').$fileExtension)) create_folder($this->config->item('upload_path').$fileExtension);
 		//load upload library
-		$config['upload_path']   = $this->config->item('upload_path').$fileExtension;
-		$config['allowed_types'] = $this->config->item('allowed_types');
+		$config['upload_path']      = $this->config->item('upload_path').$fileExtension;
+		$config['allowed_types']    = $this->config->item('allowed_types');
+		$config['file_ext_tolower'] = true ; 
+		$config['remove_spaces']    = true ;
+		$config['encrypt_name']     = true;
 		$this->load->library('upload', $config);
 		if($this->upload->do_upload('file')) { //do upload
 			//load db model
@@ -212,13 +215,20 @@
 		foreach($files as $file){
 			$temp = array();
 			$temp[] = '<label class="checkbox-inline"><input type="checkbox" id="check_'.$file['id'].'" name="checkbox-inline" class="checkbox"><span></span> </label>';
-			$temp[] = '<a href="'.site_url('filemanager/file/'.$file['id']).'">'.$file['raw_name'].'</a>';
+			$temp[] = '<a href="'.site_url('filemanager/file/'.$file['id']).'">'.str_replace($file['file_ext'], '', $file['client_name']).'</a>';
 			$temp[] = $file['print_type'];
 			//$temp[] = $object['num_files'];
 			$aaData[] = $temp;
 		}
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('aaData' => $aaData)));
-	}		
+	}
+	
+	public function file($fileId)
+	{
+		//load db model
+		$this->load->model('Files', 'files');
+		$file = $this->files->get($fileId, 1);
+	}
  }
  
 ?>

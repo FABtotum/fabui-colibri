@@ -2,11 +2,11 @@
 /**
  * 
  * @author Krios Mane
- * @author Fabtotum Development Team
  * @version 0.1
  * @license https://opensource.org/licenses/GPL-3.0
  * 
+ * 
  */
-
-echo $wizard; 
+ 
 ?>
+<div class="step-pane" id="step2" data-step="2"></div>

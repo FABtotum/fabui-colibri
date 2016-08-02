@@ -2,16 +2,21 @@
 	margin-bottom:15px;
 }
 
-.extruder-temp, .extruder-target{
+.extruder-temp{
 	color:#FF0000 !important
 }
-
+.extruder-target {
+	color: #ff9933 !important;
+}
 #create-ext-target-slider {
 	background-color: #FF0000 !important;
 }
 
-.bed-temp, .bed-target{
+.bed-temp{
 	color:#3276B1 !important
+}
+.bed-target {
+	color:#33ccff !important
 }
 
 #create-bed-target-slider {
