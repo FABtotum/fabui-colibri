@@ -75,23 +75,28 @@ object_z = laser_z
 #~ print "laser ({0}, {1}, {2})".format(laser_x, laser_y, laser_z)
 #~ print "object_z", object_z
 
-uvPoint = np.matrix([u, v, 1])
+#~ uvPoint = np.matrix([u, v, 1])
 
 
 cameraMatrix = np.asmatrix(mtx, dtype=float)
 rotationMatrix = np.asmatrix(rotM, dtype=float)
 
-tempMat = rotationMatrix.I * cameraMatrix.I * uvPoint.T
-tempMat2 = rotationMatrix.I * tvec
+#~ tempMat = rotationMatrix.I * cameraMatrix.I * uvPoint.T
+#~ tempMat2 = rotationMatrix.I * tvec
 #~ print "tempMat", tempMat
 #~ print "tempMat2", tempMat2
 
-s = float(object_z) + tempMat2[2][0]
-s /= tempMat[2][0]
+#~ s = float(object_z) + tempMat2[2][0]
+#~ s /= tempMat[2][0]
 
-P = rotationMatrix.I * np.multiply(s,cameraMatrix.I)  * uvPoint.T - tvec
+#~ P = rotationMatrix.I * np.multiply(s,cameraMatrix.I)  * uvPoint.T - tvec
 
 ######################
+
+M   = cameraMatrix
+R   = rotationMatrix
+Rt  = np.hstack( (rotationMatrix, tvec) )
+MRt = M * Rt
 
 tmp1 = np.hstack( (rotationMatrix, tvec) )
 tranformationMatrix = np.vstack( (tmp1, [0, 0, 0, 1]) )
@@ -100,27 +105,43 @@ cameraMatrix = np.vstack( (tmp1, [0,0,0,1] ) )
 MR = cameraMatrix * tranformationMatrix
 #######################################
 
+#~ with open('../test.json', 'w') as f:
+    #~ f.write( json.dumps( {'MR':MR.tolist()} ) )
+
 #~ sPP = cameraMatrix * (rotationMatrix * uvPoint.T + tvec)
 # idx (x,y): 1 (613.931274414,472.373596191) = (100,120,196)
 uvPoint = np.matrix([613, 472, 1, 1])
 xyzPoint = np.matrix([100, 120, 196, 1])
 
+uvPoint = np.matrix([ 424,  716, 1, 1])
+xyzPoint = np.matrix([ 80,  80, 220,   1])
+
+x_known = xyzPoint.T[0]
+
 # Direct
-sPP = MR * xyzPoint.T
+sPP = MRt * xyzPoint.T
 s = sPP[2]
 PP = sPP / s
+print "s:",s
 
-uvPoint = PP.T
-print "3d -> 2d: {0} -> {1}".format( xyzPoint, np.int32(uvPoint) )
+#~ uvPoint = PP.T
+print "3d -> 2d: {0} -> {1}".format( xyzPoint, np.int32(PP.T) )
+
+uvPoint = np.int32(PP.T)
 
 # Inverse
-tmp1 = MR.I * uvPoint.T
+tmp1 = MRt.I * uvPoint.T
 #~ print "tmp1", tmp1
-s2 = xyzPoint.T[0] / tmp1[0]
-print "s2:",s2
+s2 = x_known / tmp1[0]
 tmp1 *= s2
+print "s2:",s2
 
 print "2d -> 3d: {0} -> {1}".format(np.int32(uvPoint), np.int32(tmp1.T) )
+
+if round(s,5) == round(s2,5):
+    print "CORRECT!!!"
+else:
+    print "WRONG!!!"
 
 #~ print "s:", sPP[2]
 #~ print "s2:", s2
