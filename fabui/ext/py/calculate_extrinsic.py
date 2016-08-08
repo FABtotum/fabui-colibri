@@ -115,6 +115,8 @@ class Extrinsic(GCodePusher):
         json_f = open(self.intrinsic)
         intrinsic = json.load(json_f)
         
+        z_offset = z # this one bas bed heigh correction
+        
         self.trace( _('Loaded intrinsic parameters from "{0}".'.format(self.intrinsic)) )
         
          # Checkerboard size 
@@ -240,7 +242,7 @@ class Extrinsic(GCodePusher):
         
         return True
         
-    def run(self, task_id, x_offset, y_offset, z_offset):
+    def run(self, task_id, x_offset, y_offset, z_offset, base_height):
         
         self.prepare_task(task_id, task_type='capture')
         self.set_task_status(GCodePusher.TASK_RUNNING)
@@ -257,7 +259,9 @@ class Extrinsic(GCodePusher):
         fn = self.take_a_picture()
         
         self.trace( _('Calculation started.') )
-        retval = self.calculate_extrinsic(fn, self.output_file, 130, 150, z_offset, x_offset, y_offset, z_offset)
+        # Because chessboard base raises the image for base_height, the real z_offset should be reduced by it 
+        # as the Z axis descreses the higher you go
+        retval = self.calculate_extrinsic(fn, self.output_file, 130, 150, z_offset-base_height, x_offset, y_offset, z_offset)
         if not retval:
             self.trace( _('Calculation failed.') )
         else:
@@ -288,6 +292,8 @@ def main():
     parser.add_argument("-x", "--x-offset", help=_("X offset."),                default=104)
     parser.add_argument("-y", "--y-offset", help=_("Y offset."),                default=117)
     parser.add_argument("-z", "--z-offset", help=_("Z offset."),                default=220)
+    parser.add_argument("-b", "--base-height", help=_("Chessboard height of it's base."), default=0)
+    
     
     # GET ARGUMENTS    
     args = parser.parse_args()
@@ -304,6 +310,7 @@ def main():
     x_offset        = float(args.x_offset)
     y_offset        = float(args.y_offset)
     z_offset        = float(args.z_offset)
+    base_height     = float(args.base_height)
     output_file     = args.output
     
     output_dir      = destination
@@ -322,7 +329,7 @@ def main():
 
     app_thread = Thread( 
             target = app.run, 
-            args=( [task_id, x_offset, y_offset, z_offset] ) 
+            args=( [task_id, x_offset, y_offset, z_offset, base_height] ) 
             )
     app_thread.start()
     #~ app.calculate_extrinsic('sample.png', x =130, y=150, z=z_offset)
