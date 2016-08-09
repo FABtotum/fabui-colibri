@@ -96,7 +96,7 @@ class RotaryScan(GCodePusher):
         scanfile = os.path.join(self.scan_dir, "{0}{1}.jpg".format(number, suffix) )
         self.camera.capture(scanfile, quality=100)
     
-    def __post_processing(self, start, end, slices, cloud_file, task_id, object_id):
+    def __post_processing(self, start, end, slices, cloud_file, task_id, object_id, object_name, file_name):
         """
         """
         threshold = 0
@@ -139,6 +139,26 @@ class RotaryScan(GCodePusher):
             
         asc.close()
         
+        self.store_object(task_id, object_id, object_name, cloud_file, file_name)
+        
+    def store_object(self, task_id, object_id, object_name, cloud_file, file_name):
+        """
+        Store object and file to database. If `object_id` is not zero the new file
+        is added to that object. Otherwise a new object is created with name `object_name`.
+        If `object_name` is empty an object name is automatically generated. Same goes for
+        `file_name`.
+        
+        :param task_id:     Task ID used to read User ID from the task
+        :param object_id:   Object ID used to add file to an object
+        :param object_name: Object name used to name the new object
+        :param cloud_file:  Full file path and filename to the cloud file to be stored
+        :param file_name:   User file name for the cloud file
+        :type task_id: int
+        :type object_id: int
+        :type object_name: string
+        :type cloud_file: string
+        :type file_name: string
+        """
         obj = self.get_object(object_id)
         task = self.get_task(task_id)
         
@@ -147,15 +167,23 @@ class RotaryScan(GCodePusher):
         datestr = dt.strftime('%Y-%m-%d %H:%M:%S')
         datestr_fs_friendly = 'cloud_'+dt.strftime('%Y%m%d_%H%M%S')
         
+        if not object_name:
+            object_name = "Scan object ({0})".format(datestr)
+        
+        client_name = file_name
+        
+        if not file_name:
+            client_name = datestr_fs_friendly
+        
         if not obj:
             # File should not be part of an existing object so create a new one
             user_id = 0
             if task:
                 user_id = task['user']
             
-            obj = self.add_object("Scan object ({0})".format(datestr), "", user_id)
+            obj = self.add_object(object_name, "", user_id)
         
-        f = obj.add_file(cloud_file, client_name=datestr_fs_friendly)
+        f = obj.add_file(cloud_file, client_name=client_name)
         os.remove(cloud_file)
 
         # Update task content
@@ -164,7 +192,7 @@ class RotaryScan(GCodePusher):
             task['id_file'] = f['id']
             task.write()
     
-    def run(self, task_id, object_id, start_a, end_a, y_offset, slices, cloud_file):
+    def run(self, task_id, object_id, object_name, file_name, start_a, end_a, y_offset, slices, cloud_file):
         """
         Run the rotary scan.
         """
@@ -174,7 +202,7 @@ class RotaryScan(GCodePusher):
         
         self.post_processing_thread = Thread(
             target = self.__post_processing,
-            args=( [start_a, end_a, slices, cloud_file, task_id, object_id] )
+            args=( [start_a, end_a, slices, cloud_file, task_id, object_id, object_name, file_name] )
             )
         self.post_processing_thread.start()
         
@@ -263,7 +291,12 @@ def main():
     destination = config.get('general', 'bigtemp_path')
     
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    subparsers = parser.add_subparsers(help='sub-command help', dest='type')
+    
+    parser.add_argument("-T", "--task-id",     help=_("Task ID."),              default=0)
+    parser.add_argument("-U", "--user-id",     help=_("User ID. (future use)"), default=0)
+    parser.add_argument("-O", "--object-id",   help=_("Object ID."),            default=0)
+    parser.add_argument("-N", "--object-name", help=_("Object name."),          default='')
+    parser.add_argument("-F", "--file-name",   help=_("File name."),            default='')
 
     parser.add_argument("-d", "--dest",     help=_("Destination folder."),     default=destination )
     parser.add_argument("-s", "--slices",   help=_("Number of slices."),       default=100)
@@ -278,15 +311,6 @@ def main():
     parser.add_argument("-a", "--a-offset", help=_("A offset/rotation."),      default=0)
     parser.add_argument("-o", "--output",   help=_("Output point cloud file."),default=os.path.join(destination, 'cloud.asc'))
     #~ parser.add_argument('--help', action='help', help=_("Show this help message and exit") )
-
-    # create the parser for the "standalone" command
-    parser_s = subparsers.add_parser('standalone', help='standalone help')
-    
-    # create the parser for the "managed" command
-    parser_m = subparsers.add_parser('managed', help='managed help')
-    parser_m.add_argument('task_id',   type=int, help=_("Task ID."))
-    parser_m.add_argument('object_id', type=int, help=_("Object ID."))
-
 
     # GET ARGUMENTS
     args = parser.parse_args()
@@ -303,13 +327,15 @@ def main():
     width           = int(args.width)
     height          = int(args.height)
     
-    if args.type == 'standalone':
-        task_id     = -1
-        object_id   = 0
+    task_id         = int(args.task_id)
+    user_id         = int(args.user_id)
+    object_id       = int(args.object_id)
+    object_name     = args.object_name
+    file_name       = args.file_name
+    
+    if task_id == 0:
         standalone  = True
     else:
-        task_id     = args.task_id
-        object_id   = args.object_id
         standalone  = False
 
     cloud_file      = args.output
@@ -353,7 +379,7 @@ def main():
 
     app_thread = Thread( 
             target = app.run, 
-            args=( [task_id, object_id, start_a, end_a, y_offset, slices, cloud_file] ) 
+            args=( [task_id, object_id, object_name, file_name, start_a, end_a, y_offset, slices, cloud_file] ) 
             )
     app_thread.start()
 

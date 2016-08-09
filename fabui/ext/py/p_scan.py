@@ -21,6 +21,7 @@
 # Import standard python module
 import argparse
 import time
+from datetime import datetime
 import gettext
 import os
 import errno
@@ -47,7 +48,7 @@ class ProbeScan(GCodePusher):
     
     MINIMAL_SAFE_Z  = 36.0
     SAFE_Z_OFFSET   = 2.0
-    XY_FEEDRATE     = 5000
+    XY_FEEDRATE     = 4000
     Z_FEEDRATE      = 1500
     E_FEEDRATE      = 800
     
@@ -92,7 +93,7 @@ class ProbeScan(GCodePusher):
         rotation_matrix_x[3,3]  = np.cos(angle*math.pi/180)
         #End rotation matrix definition------------------------
         return np.dot(point, rotation_matrix_x)
-    
+        
     def probe(self, x, y):
         """ 
         Probe Z at specific (X,Y). Returns Z or ``None`` on failure.
@@ -102,8 +103,9 @@ class ProbeScan(GCodePusher):
         :rtype: float
         """
         self.send('G0 X{0} Y{1} F{2}'.format(x, y, self.XY_FEEDRATE) )
+        self.send('M400')
         
-        reply = self.send('G30', expected_reply = 'echo:', timeout = 90)
+        reply = self.send('G30', expected_reply = 'echo:', timeout = 200)
         if reply:
             print reply
             
@@ -125,12 +127,63 @@ class ProbeScan(GCodePusher):
         :type points: list
         :type cloud_file: string
         """
-        with open(output_file,"w")  as cloud_file:
+        with open(cloud_file,"w")  as cloud_file:
             if len(points)>0:
                 for row in xrange(0, len(points)):
                     cloud_file.write( '{0}, {1}, {2}\n'.format( points[row][0], points[row][1], points[row][2])) 
     
-    def run(self, task_id, output_file, x1, y1, x2, y2, probe_density):
+    def store_object(self, task_id, object_id, object_name, cloud_file, file_name):
+        """
+        Store object and file to database. If `object_id` is not zero the new file
+        is added to that object. Otherwise a new object is created with name `object_name`.
+        If `object_name` is empty an object name is automatically generated. Same goes for
+        `file_name`.
+        
+        :param task_id:     Task ID used to read User ID from the task
+        :param object_id:   Object ID used to add file to an object
+        :param object_name: Object name used to name the new object
+        :param cloud_file:  Full file path and filename to the cloud file to be stored
+        :param file_name:   User file name for the cloud file
+        :type task_id: int
+        :type object_id: int
+        :type object_name: string
+        :type cloud_file: string
+        :type file_name: string
+        """
+        obj = self.get_object(object_id)
+        task = self.get_task(task_id)
+        
+        ts = time.time()
+        dt = datetime.fromtimestamp(ts)
+        datestr = dt.strftime('%Y-%m-%d %H:%M:%S')
+        datestr_fs_friendly = 'cloud_'+dt.strftime('%Y%m%d_%H%M%S')
+        
+        if not object_name:
+            object_name = "Scan object ({0})".format(datestr)
+        
+        client_name = file_name
+        
+        if not file_name:
+            client_name = datestr_fs_friendly
+        
+        if not obj:
+            # File should not be part of an existing object so create a new one
+            user_id = 0
+            if task:
+                user_id = task['user']
+            
+            obj = self.add_object(object_name, "", user_id)
+        
+        f = obj.add_file(cloud_file, client_name=client_name)
+        os.remove(cloud_file)
+
+        # Update task content
+        if task:
+            task['id_object'] = obj['id']
+            task['id_file'] = f['id']
+            task.write()
+    
+    def run(self, task_id, object_id, object_name, file_name, x1, y1, x2, y2, probe_density, cloud_file):
         """
         Run the probe scan.
         """
@@ -188,6 +241,7 @@ class ProbeScan(GCodePusher):
                         
                     safe_z = safe_z + self.SAFE_Z_OFFSET
                     self.send('G0 Z{0} F{1}'.format(safe_z, self.Z_FEEDRATE) )
+                    self.send('M400')
                     
                 probe_num += 1
                 self.scan_stats['scan_current'] = probe_num
@@ -195,8 +249,10 @@ class ProbeScan(GCodePusher):
                 
                 self.send('M401')   # Renew probe position in case it got moved.
         
-        self.trace( _("Saving point cloud to file {0}").format(output_file) )
-        self.save_as_cloud(points, output_file)
+        self.trace( _("Saving point cloud to file {0}").format(cloud_file) )
+        self.save_as_cloud(points, cloud_file)
+        
+        self.store_object(task_id, object_id, object_name, cloud_file, file_name)
                
         if self.standalone:
             if self.is_aborted():
@@ -229,10 +285,18 @@ def main():
     config = ConfigService()
 
     # SETTING EXPECTED ARGUMENTS
+    destination = config.get('general', 'bigtemp_path')
+    
     parser = argparse.ArgumentParser(add_help=False, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("task_id",          help=_("Task ID.") )
+    
+    parser.add_argument("-T", "--task-id",     help=_("Task ID."),              default=0)
+    parser.add_argument("-U", "--user-id",     help=_("User ID. (future use)"), default=0)
+    parser.add_argument("-O", "--object-id",   help=_("Object ID."),            default=0)
+    parser.add_argument("-N", "--object-name", help=_("Object name."),          default='')
+    parser.add_argument("-F", "--file-name",   help=_("File name."),            default='')
+    
     parser.add_argument("-d", "--dest",     help=_("Destination folder."),     default=config.get('general', 'bigtemp_path') )
-    parser.add_argument("-o", "--output",   help=_("Output cloud file."),      default='cloud.asc' )
+    parser.add_argument("-o", "--output",   help=_("Output point cloud file."),default=os.path.join(destination, 'cloud.asc'))
     parser.add_argument("-n", "--n-probes", help=_("Number of probes."),       default=1)
     parser.add_argument("-b", "--begin",    help=_("Begin scanning from X."),  default=0)
     parser.add_argument("-e", "--end",      help=_("End scanning at X."),      default=360)
@@ -241,22 +305,31 @@ def main():
     parser.add_argument("-i", "--x2",       help=_("X2."),                     default=10)
     parser.add_argument("-j", "--y2",       help=_("Y2."),                     default=10)
     parser.add_argument("-z", "--safe-z",   help=_("Safe Z."),                 default=0)
-    parser.add_argument("--standalone", action='store_true',  help=_("Standalone operation. Does all preparations and cleanup.") )
     parser.add_argument('--help', action='help', help=_("Show this help message and exit") )
 
     # GET ARGUMENTS
     args = parser.parse_args()
 
     destination     = args.dest
-    output_file     = args.output
     x1              = float(args.x1)
     y1              = float(args.y1)
     x2              = float(args.x2)
     y2              = float(args.y2)
     probe_density   = float(args.n_probes)
     safe_z          = float(args.safe_z)
-    standalone      = args.standalone
+    
     task_id         = int(args.task_id)
+    user_id         = int(args.user_id)
+    object_id       = int(args.object_id)
+    object_name     = args.object_name
+    file_name       = args.file_name
+    
+    if task_id == 0:
+        standalone  = True
+    else:
+        standalone  = False
+        
+    cloud_file      = args.output
 
     monitor_file    = config.get('general', 'task_monitor')
     log_trace       = config.get('general', 'trace')
@@ -264,7 +337,7 @@ def main():
     ############################################################################
 
     print 'PROBE MODULE STARTING'
-    print 'scanning from' + str(x1)+ "," +str(y1)+ " to " +str(x2)+ "," +str(y2); 
+    print 'scanning from ' + str(x1)+ "," +str(y1)+ " to " +str(x2)+ "," +str(y2); 
     print 'Probing density : ', probe_density , " points/mm"
     #print 'Start/End       : ', begin ,' to ', end, 'deg'
 
@@ -272,7 +345,7 @@ def main():
 
     app_thread = Thread( 
             target = app.run, 
-            args=( [task_id, output_file, x1, y1, x2, y2, probe_density] ) 
+            args=( [task_id, object_id, object_name, file_name, x1, y1, x2, y2, probe_density, cloud_file] )
             )
     app_thread.start()
 
