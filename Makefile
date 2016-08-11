@@ -80,6 +80,7 @@ STATIC_FILES	=
 DYNAMIC_FILES	=	$(CONFIG_FILES) \
 					$(DB_FILES) \
 					fabui/heads \
+					fabui/cameras \
 					fabui/settings
 
 # List of files that should go through the generator script

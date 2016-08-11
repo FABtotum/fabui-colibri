@@ -38,7 +38,7 @@ from picamera import PiCamera
 # Import internal modules
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
-from fabtotum.utils.triangulation import process_slice, sweep_line_to_xyz
+from fabtotum.utils.triangulation import process_slice2, sweep_line_to_xyz2
 from fabtotum.utils.ascfile import ASCFile
 
 # Set up message catalog access

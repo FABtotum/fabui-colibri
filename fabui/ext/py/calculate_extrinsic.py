@@ -136,9 +136,8 @@ class Extrinsic(GCodePusher):
         h,  w = img.shape[:2]
 
         #~ print "cam_m",cam_m
-        dist_coef = np.zeros(4)
         print "get new matrix"
-        newcameramtx, roi=cv2.getOptimalNewCameraMatrix(cam_m, dist_coefs, (width,height), 1, (w,h))
+        newcameramtx, roi = cv2.getOptimalNewCameraMatrix(cam_m, dist_coefs, (width,height), 1, (w,h))
         
         print "newcameramtx",newcameramtx
         
