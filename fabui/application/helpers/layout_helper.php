@@ -65,15 +65,16 @@ function ajaxJScriptsInclusion($scripts)
 /**
  * prepare inline javascript for ajax pages
  */
-function ajaxJSInline($javascript, $initFunction = true)
+function ajaxJSInline($javascript, $initFunction = true, $function = 'pagefunction')
 {
+	if($javascript == '') return;
 	$javascript = str_replace('<script type="text/javascript">', '', $javascript);
 	$javascript = str_replace('</script>', '', $javascript);
 	
 	if($initFunction == true) // if need to init the pagefunction
-		return 'var pagefunction = function() { '.$javascript.' }'.PHP_EOL.'pagefunction();';
+		return 'var '.$function.' = function() { '.$javascript.' }'.PHP_EOL.$function.'();';
 	else
-		return 'var pagefunction = function() { '.$javascript.' }';
+		return 'var '.$function.' = function() { '.$javascript.' }';
 }
 
 function buildMenu($menu_array, $is_sub = FALSE, $parent = '') {

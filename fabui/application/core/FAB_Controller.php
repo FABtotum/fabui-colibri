@@ -18,7 +18,8 @@
 	protected $template            = array();
 	protected $content             = ''; //
 	protected $js                  = array();  //js scripts
-	protected $jsInLine            = ''; //inline javascript code 
+	protected $jsInLine            = ''; //inline javascript code
+	protected $jsInLineTop         = ''; //inline javascript to add on top, just for variable declarations
 	protected $cssInline           = ''; //inline css style
 	protected $css                 = array(); //css files inclusion
 	protected $menu                = array();
@@ -62,6 +63,7 @@
 		$data['jsScripts'] = jScriptsInclusion($this->js);
 		$data['cssFiles']  = cssFilesInclusion($this->css);
 		$data['jsInLine']  = $this->jsInLine;
+		$data['jsInlineTop'] = $this->jsInLineTop;
 		$data['cssInLine'] = $this->cssInline;
 		$this->template['head']    = $this->load->view($this->layoutDefaultFolder.'/head', $data, true);
 		$this->template['top']     = $this->load->view($this->layoutDefaultFolder.'/top', $data, true);
@@ -82,6 +84,7 @@
 		
 		$data['jsScripts'] = ajaxJScriptsInclusion($this->js);
 		$data['jsInLine']  = ajaxJSInline($this->jsInLine, count($this->js) == 0);
+		$this->template['jsInlineTop'] = $this->jsInLineTop;
 		$this->template['cssFiles'] = cssFilesInclusion($this->css, true); 
 		$this->template['cssInLine'] = $this->cssInline;
 		$this->template['content'] = $this->content;
@@ -153,9 +156,12 @@
 	/*
 	 * add inline javascript
 	 */
-	public function addJsInLine($js)
+	public function addJsInLine($js, $top = false)
 	{
-		$this->jsInLine .= $js;
+		if(!$top)
+			$this->jsInLine .= $js;
+		else
+			$this->jsInLineTop .= $js; //just for variable declarations
 	}
 	
 	/*

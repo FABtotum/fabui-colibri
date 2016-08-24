@@ -64,7 +64,7 @@
 		$this->config->load('fabtotum');
 		$this->load->helper('layout_helper');
 		if(file_exists($this->config->item('blog_feed_file'))){
-			$xml = simplexml_load_file($this->config->item('blog_feed_file'),'SimpleXMLElement', LIBXML_NOCDATA);
+			$xml = simplexml_load_file($this->config->item('blog_feed_file'),'SimpleXMLElement', LIBXML_NOCDATA); 
 			$data["blogTitle"] = $xml->channel->title;
 			$data["blogUrl"]   = $xml->channel->link;
 			$feeds             = $xml->channel->item;

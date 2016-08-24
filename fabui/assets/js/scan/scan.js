@@ -9,8 +9,105 @@
 function initWizard()
 {
 	wizard = $('.wizard').wizard();
-	disableButton('.btn-prev');
-	disableButton('.btn-next');
+	disableButton('.button-prev');
+	disableButton('.button-next');
+	
+	$('.wizard').on('changed.fu.wizard', function (evt, data) {
+		
+		//checkWizard();
+	});
+	
+	$('#myWizard').on('clicked.fu.wizard', function (evt, data) {
+		//console.log(evt);
+		//console.log(data);
+	});
+	
+	$('.button-prev').on('click', function(e) {
+		handleWizard('prev');
+	});
+	
+	$('.button-next').on('click', function(e) {
+		handleWizard('next');
+	});
+	
+}
+/**
+*
+*/
+function handleWizard(action)
+{
+	if(action == 'next') handleWizardNext();
+	if(action == 'prev') handleWizardPrev();
+	/*
+	var step = $('.wizard').wizard('selectedItem').step;
+	console.log(action + " : " + step);
+	
+	switch(step){
+		case 1:
+			break;
+		case 2:
+			getReady(scanMode);
+			return;
+			break;
+		case 3:
+			break;
+	}
+	if(action == 'next') $('#myWizard').wizard('next');
+	if(action == 'prev') $('#myWizard').wizard('previous');
+	*/
+}
+/**
+*
+*/
+function handleWizardNext()
+{
+	var step = $('.wizard').wizard('selectedItem').step;
+	var button = $('.button-next');
+	console.log("next : " + step);
+	switch(step){
+		case 1:
+			$('#myWizard').wizard('next');
+			enableButton('.button-prev');
+			enableButton('.button-next');
+			break;
+		case 2:
+			getReady(scanMode);
+			/*disableButton('.button-next');*/
+			break;
+		case 3:
+			if(button.attr('data-scan') == 'rotating') handleRotatingScan(); //if rotating
+			if(button.attr('data-scan') == 'sweep') handleSweepScan(); //if sweep
+			if(button.attr('data-scan') == 'probing') handleProbingScan(); //if probing
+	}
+}
+/**
+*
+*/
+function handleWizardPrev()
+{
+	var step = $('.wizard').wizard('selectedItem').step;
+	console.log("prev : " + step);
+	switch(step){
+		case 1:
+			break;
+		case 2:
+			$('#myWizard').wizard('previous');
+			disableButton('.button-prev');
+			break;
+		case 3:
+			$('#myWizard').wizard('previous');
+			enableButton('.button-prev');
+			enableButton('.button-next');
+			break;
+	}
+}
+/**
+*
+*/
+function checkWizard()
+{
+	var step = $('.wizard').wizard('selectedItem').step;
+	//console.log("Step: ", step);
 }
 /**
 * retrieve scan mode information
@@ -59,16 +156,37 @@ function objectAction()
 function setScanMode()
 {
 	var button = $(this);
-	var mode_id = button.attr('data-scan-mode');
+	scanMode = button.attr('data-scan-mode');
 	
 	$.ajax({
 		type: 'post',
-		url: '/fabui/scan/getScanModeSettings/' + mode_id,
+		url: '/fabui/scan/getScanModeSettings/' + scanMode,
 	}).done(function(response) {
 		$("#step2").html(response);
-		$('.wizard').wizard('next');
-		enableButton('.btn-prev');
-		disableButton('.btn-next');
+		$('#myWizard').wizard('next');
+		enableButton('.button-prev');
+		enableButton('.button-next');
+		pageSetUp();
+		//getReady(mode_id);
+	});
+}
+/**
+* get ready instructions
+*/
+function getReady(modeId)
+{
+	if(scanModeInstructions == modeId) {
+		$('#myWizard').wizard('next'); //load only if is scan mode is different
+		return;
+	}
+	$.ajax({
+		type: 'post',
+		url: '/fabui/scan/getReady/' + modeId,
+	}).done(function(response) {
+		$("#step3").html(response);
+		$('#myWizard').wizard('next');
+		//disableButton('.button-next');
+		scanModeInstructions = modeId;
 	});
 }
 /**
@@ -87,7 +205,7 @@ function setObjectMode()
 	}
 }
 /**
-*
+* handle rotating slider scan
 */
 function initRotatingSlider()
 {
@@ -97,16 +215,357 @@ function initRotatingSlider()
 		connect: "lower",
 		range: {'min': 20, 'max' : 100},
 	});
-	
 	rotatingSlider = document.getElementById('rotating-slider');
 	
 	rotatingSlider.noUiSlider.on('slide',  function(e){
-		console.log(e);
+		var qualityIndex;
+		switch(parseInt(e)){
+			case 0:
+				qualityIndex = 0;
+				break;
+			case 20:
+				qualityIndex = 0;
+				break;
+			case 40:
+				qualityIndex = 1;
+				break;
+			case 60:
+				qualityIndex = 2;
+				break;
+			case 80:
+				qualityIndex = 3;
+				break;
+			case 100:
+				qualityIndex = 4;
+				break;
+			default:
+				qualityIndex = 0;
+				break;
+		}
+		setScanQuality('rotating', scanQualites[qualityIndex], qualityIndex);
 	});
+}
+/**
+* handle rotating slider scan
+*/
+function initSweepSlider()
+{
+	noUiSlider.create(document.getElementById('sweep-slider'), {
+		start: 20,
+		step: 20,
+		connect: "lower",
+		range: {'min': 20, 'max' : 100},
+	});
+	sweepSlider = document.getElementById('sweep-slider');
+	
+	sweepSlider.noUiSlider.on('slide',  function(e){
+		var qualityIndex;
+		switch(parseInt(e)){
+			case 0:
+				qualityIndex = 0;
+				break;
+			case 20:
+				qualityIndex = 0;
+				break;
+			case 40:
+				qualityIndex = 1;
+				break;
+			case 60:
+				qualityIndex = 2;
+				break;
+			case 80:
+				qualityIndex = 3;
+				break;
+			case 100:
+				qualityIndex = 4;
+				break;
+			default:
+				qualityIndex = 0;
+				break;
+		}
+		setScanQuality('sweep', scanQualites[qualityIndex], qualityIndex);
+	});
+}
+/**
+* display scan quality infos
+*/
+function setScanQuality(mode, object, index)
+{
+	$(".scan-quality-name").html(object.info.name);
+	$(".scan-quality-description").html(object.info.description);
+	$(".duck_container").html('<img src="/assets/img/scan/duck_'+ index +'.png"  class="img_responsive" />');
+	
+	$(".quality-slices").val(object.values.slices);
+	$(".quality-iso").val(object.values.iso);
+	$(".quality-resolution-width").val(object.values.resolution.width);
+	$(".quality-resolution-height").val(object.values.resolution.height);
 	
 }
-//when page is ready
-$(document).ready(function() {
+/**
+*
+*/
+function initSweepCrop()
+{	
+	var $image = $('#image');
+	
+	var options = {
+		responsive: true,
+		guides: false,
+		viewMode: 1,
+		toggleDragModeOnDblclick : false,
+		zoomable: false,
+		cropBoxResizable: true,
+		minCropBoxHeight: 233,
+		minCropBoxWidth: 1,
+		background: false,
+        crop: function (e) {}
+    };
+	
+	$image.on({
+    'build.cropper': function (e) {
+      //console.log(e.type);
+    },
+    'built.cropper': function (e) {
+      //console.log(e.type);
+    },
+    'cropstart.cropper': function (e) {
+      //console.log(e.type, e.action);
+    },
+    'cropmove.cropper': function (e) {
+      //console.log(e.type, e.action);
+    },
+    'cropend.cropper': function (e) {
+      //console.log(e.type, e.action);
+    },
+    'crop.cropper': function (e) {
+		$(".sweep-start").val(parseInt(e.x).toFixed());
+		$(".sweep-end").val((parseInt(e.width) + parseInt(e.x)));
+		
+      //console.log(e.type, e.x, e.y, e.width, e.height, e.rotate, e.scaleX, e.scaleY);
+    },
+    'zoom.cropper': function (e) {
+      //console.log(e.type, e.ratio);
+    }
+  }).cropper(options);
+}
+/**
+*
+*/
+function initProbeCrop()
+{
+	var $image = $('#image');
+	var options = {
+		responsive: true,
+		guides: false,
+		viewMode: 1,
+		toggleDragModeOnDblclick : false,
+		zoomable: false,
+		cropBoxResizable: true,
+		//minCropBoxHeight: 233,
+		//minCropBoxWidth: 185,
+		background: false,
+        crop: function (e) {}
+    };
+	
+	$image.on({
+    'build.cropper': function (e) {
+      //console.log(e.type);
+    },
+    'built.cropper': function (e) {
+      //console.log(e.type);
+    },
+    'cropstart.cropper': function (e) {
+      //console.log(e.type, e.action);
+    },
+    'cropmove.cropper': function (e) {
+      //console.log(e.type, e.action);
+    },
+    'cropend.cropper': function (e) {
+		var coords = $image.cropper("getData");
+		if(parseInt(coords.x).toFixed() < 32) {
+			coords.x = 32;
+			$image.cropper("setData", coords);
+		}
+		//console.log(parseInt(coords.x).toFixed());
+		
+    },
+    'crop.cropper': function (e) {
+		
+		var coords = e;
+		
+		if(coords.x < 32) coords.x = 32;
+		if(coords.y > 168) coords.y = 168;
+		
+		$(".probing-x1").val(parseInt(coords.x).toFixed());
+		$(".probing-y1").val(parseInt(coords.y).toFixed());
+		$(".probing-x2").val(parseInt(coords.width).toFixed());
+		$(".probing-y2").val(parseInt(coords.height).toFixed());
+		
+		/*if(e.x < 32) {
+			$image.cropper("setData", {"x": 32});
+			return;
+		}*/
+	 /*
+	 if((e.y+ e.height) > 168){
+		 console.log("fuori: ", (e.y+ e.height));
+		 //$image.cropper("setData", {"y": 170});
+		 //$image.cropper("setData", {"height": 168});
+	 } 
+	 */
+	 //if(e.y > 170 ) $image.cropper("setData", {"y": 170});
+	 //if(e.height > 168) $image.cropper("setData", {"height": 168});
+     //console.log(e.type, e.x, e.y, e.width, e.height, e.rotate, e.scaleX, e.scaleY);
+		
+	 
+    },
+    'zoom.cropper': function (e) {
+      //console.log(e.type, e.ratio);
+    }
+  }).cropper(options);
+}
+/**
+*
+*/
+function initProbingSlider()
+{
+	noUiSlider.create(document.getElementById('probing-slider'), {
+		start: 0,
+		step: 20,
+		connect: "lower",
+		range: {'min': 0, 'max' : 100},
+	});
+	probingSlider = document.getElementById('probing-slider');
+	
+	probingSlider.noUiSlider.on('slide',  function(e){
+		var qualityIndex;
+		switch(parseInt(e)){
+			case 0:
+				qualityIndex = 0;
+				break;
+			case 20:
+				qualityIndex = 1;
+				break;
+			case 40:
+				qualityIndex = 2;
+				break;
+			case 60:
+				qualityIndex = 3;
+				break;
+			case 80:
+				qualityIndex = 4;
+				break;
+			case 100:
+				qualityIndex = 5;
+				break;
+			default:
+				qualityIndex = 0;
+				break;
+		}
+		setProbingQuality(probingQualities[qualityIndex], qualityIndex);
+	});		
+}
+/**
+*
+*/
+function setProbingQuality(object, index)
+{
+	$(".scan-probing-quality-name").html(object.info.name);
+	$(".scan-probing-sqmm").html(object.values.sqmm);
+}
+/**
+*
+*/
+function handleRotatingScan()
+{
+	var button = $('.button-next');
+	var action = button.attr('data-action');
+	
+	if(action == 'prepare'){
+		openWait('<i class="fa fa-spinner fa-spin"></i> Preaparing Scan');
+		$.ajax({
+			type: 'get',
+			url: '/fabui/scan/prepareScan',
+			dataType: 'json'
+		}).done(function(response) {
+			console.log(response);
+			if(response.response == false){
+				closeWait();
+				showErrorAlert('Warning', response.trace);
+			}else{
+				button.attr('data-action', 'start');
+				closeWait();
+				$( "#rotating-first-row" ).remove();
+				$( "#rotating-second-row" ).removeClass('hidden').addClass("animated slideInRight");
+			}
+		});
+	}else if(action == 'start'){
+		console.log('start');
+		openWait('start');
+	}
+}
+/**
+*
+*/
+function handleSweepScan()
+{
+	var button = $('.button-next');
+	var action = button.attr('data-action');
+	
+	if(action == 'start'){
+		console.log('start');
+		openWait('start');
+		$.ajax({
+			type: 'post',
+			url: '/fabui/scan/startScan/' + scanMode,
+			dataType: 'json'
+		}).done(function(response) {
+			console.log(response);
+			if(response.start == false){
+				closeWait();
+				showErrorAlert('Warning', response.trace);
+			}else{
+				closeWait();
+				console.log("START");
+			}
+		});
+	}
+}
+/**
+*
+*/
+function handleProbingScan()
+{
+	var button = $('.button-next');
+	var action = button.attr('data-action');
+	
+	if(action == 'start'){
+		console.log('start');
+		openWait('start');
+		$.ajax({
+			type: 'post',
+			url: '/fabui/scan/startScan/' + scanMode,
+			dataType: 'json'
+		}).done(function(response) {
+			console.log(response);
+			if(response.start == false){
+				closeWait();
+				showErrorAlert('Warning', response.trace);
+			}else{
+				closeWait();
+				console.log("START");
+			}
+		});
+	}
+}
+/**
+*
+*/
+function initScanPage()
+{
 	initWizard();
 	$(".mode-choise").on('click', setScanMode);
+}
+//when page is ready
+$(document).ready(function() { 
+	
 });    
