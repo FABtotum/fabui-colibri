@@ -78,6 +78,7 @@ function handleWizardNext()
 			if(button.attr('data-scan') == 'rotating') handleRotatingScan(); //if rotating
 			if(button.attr('data-scan') == 'sweep') handleSweepScan(); //if sweep
 			if(button.attr('data-scan') == 'probing') handleProbingScan(); //if probing
+			if(button.attr('data-scan') == 'photogrammetry') handlePhotogrammetry();
 	}
 }
 /**
@@ -512,11 +513,14 @@ function handleSweepScan()
 	var action = button.attr('data-action');
 	
 	if(action == 'start'){
-		console.log('start');
+		
+		var data = {'slices': $(".quality-slices").val(), 'iso': $(".quality-iso").val(), 'width': $(".quality-resolution-width").val(), 'height': $(".quality-resolution-height").val(), 'start': $(".sweep-start").val(), 'end': $(".sweep-end").val()};
+		
 		openWait('start');
 		$.ajax({
 			type: 'post',
 			url: '/fabui/scan/startScan/' + scanMode,
+			data: data,
 			dataType: 'json'
 		}).done(function(response) {
 			console.log(response);
@@ -555,6 +559,37 @@ function handleProbingScan()
 				console.log("START");
 			}
 		});
+	}
+}
+/**
+*
+*/
+function handlePhotogrammetry()
+{
+	var button = $('.button-next');
+	var action = button.attr('data-action');
+	
+	if(action == 'prepare'){
+		openWait('<i class="fa fa-spinner fa-spin"></i> Preaparing Scan');
+		$.ajax({
+			type: 'get',
+			url: '/fabui/scan/prepareScan',
+			dataType: 'json'
+		}).done(function(response) {
+			console.log(response);
+			if(response.response == false){
+				closeWait();
+				showErrorAlert('Warning', response.trace);
+			}else{
+				button.attr('data-action', 'start');
+				closeWait();
+				$( "#rotating-first-row" ).remove();
+				$( "#rotating-second-row" ).removeClass('hidden').addClass("animated slideInRight");
+			}
+		});
+	}else if(action == 'start'){
+		console.log('start');
+		openWait('start'); 
 	}
 }
 /**

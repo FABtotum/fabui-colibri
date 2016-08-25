@@ -147,7 +147,7 @@
 	public function photogrammetryInstructions()
 	{
 		//TODO
-		return "Photogrammetry";
+		return $this->load->view('scan/instructions/photogrammetry', null, true);
 	}
 	/**
 	 * prepare scan macro
@@ -168,12 +168,13 @@
 		$this->load->model('ScanConfiguration', 'scanconfiguration');
 		$scanMode = $this->scanconfiguration->getModeById($scanModeId);
 		$methodName = $scanMode['name'].'Start';
-		if(method_exists ($this, $methodName)) $this->$methodName();
+		$params = $this->input->post();
+		if(method_exists ($this, $methodName)) $this->$methodName($params);
 	}
 	/**
 	 * start sweep mode scan task
 	 */
-	public function sweepStart()
+	public function sweepStart($params)
 	{
 		//load helpers
 		$this->load->helpers('fabtotum_helper');
@@ -188,7 +189,17 @@
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $sScanResult['trace'])));
 			return;
 		}
-		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true)));
+		//starting task
+		$taskArgs = array(
+			'-s' => $params['slices'],
+			'-i' => $params['iso'],
+			'-b' => $params['start'],
+			'-e' => $params['end'],
+			'-w' => $params['width'],
+			'-h' => $params['height']
+		);
+		startScan('s_scan.py', $taskArgs);
+		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'params'=>$params)));
 	}
 	/**
 	 * start probing mode scan task
