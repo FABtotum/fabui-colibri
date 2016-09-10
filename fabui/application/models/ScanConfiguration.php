@@ -44,11 +44,18 @@
 		return $dropdown;
 	}
 	/**
-	 * return all scan quality
+	 * return all scan qualities
 	 */
 	public function getQualities()
 	{
 		return $this->get(array('type' => 'quality'));
+	}
+	/**
+	 * return all scan probing qualities
+	 */
+	public function getProbingQualities()
+	{
+		return $this->get(array('type' => 'probe_quality'));
 	}
 	
  }

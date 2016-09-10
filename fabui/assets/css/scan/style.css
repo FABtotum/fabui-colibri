@@ -1,3 +1,16 @@
-#rotating-slider {
+#rotating-slider, #sweep-slider, #probing-slider {
 	background-color: #739e73 !important;
 }
+
+.duck_container img {
+	max-width: 50%;
+	text-align: center !important;
+}
+
+.form-control[readonly] {
+	background-color: #fff !important;
+}
+
+.prova {
+	width: 100px;
+} 

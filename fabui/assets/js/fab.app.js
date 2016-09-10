@@ -910,8 +910,8 @@ fabApp = (function(app) {
 			});
 			$(".trace-console").html(html).scrollTop(1E10);
 			$(".trace-console").parent().scrollTop(1E10);
-			waitContent(content);
 		}
+		waitContent(content);
 		
 	}
 	/**

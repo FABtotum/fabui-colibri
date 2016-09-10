@@ -113,7 +113,7 @@
 			'raspicam' => array(
 				'title' => 'Raspicam',
 				'icon' => '',
-				'url' => site_url('settings/raspicam')
+				'url' => site_url('settings/cam')
 			)
 		)
 	),

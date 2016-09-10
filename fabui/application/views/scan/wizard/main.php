@@ -15,28 +15,32 @@
 				<span class="badge badge-info">1</span>Choose Mode<span class="chevron"></span>
 			</li>
 			<li data-step="2" data-target="#step2">
-				<span class="badge">2</span>Get Ready<span class="chevron"></span>
+				<span class="badge">2</span>Settings<span class="chevron"></span>
 			</li>
-			<li data-step="3" data-target="#step3" class="">
-				<span class="badge">3</span>Scan<span class="chevron"></span>
+			<li data-step="3" data-target="#step3">
+				<span class="badge">3</span>Get ready<span class="chevron"></span>
 			</li>
-			<li data-step="4" data-target="#step4">
-				<span class="badge">4</span>Finish<span class="chevron"></span>
+			<li data-step="4" data-target="#step4" class="">
+				<span class="badge">4</span>Scan<span class="chevron"></span>
+			</li>
+			<li data-step="5" data-target="#step5">
+				<span class="badge">5</span>Finish<span class="chevron"></span>
 			</li>
 		</ul>
 	</div>
 	<div class="actions">
-		<button type="button" class="btn btn-sm btn-primary btn-prev">
+		<button type="button" class="btn btn-sm btn-primary button-prev">
 			<i class="fa fa-arrow-left"></i> <span>Prev</span>
 		</button>
-		<button type="button" class="btn btn-sm btn-success btn-next" data-last="Finish">
+		<button type="button" class="btn btn-sm btn-success button-next" data-last="Finish">
 			<span>Next</span> <i class="fa fa-arrow-right"></i>
 		</button>
 	</div>
 </div>
-<div class="step-content">
-	<form id="fuelux-wizard" method="post">
+<div class="step-content" id="fuelux-wizard">
+	  
 		<?php if(isset($step1)) echo $step1; ?>
 		<?php if(isset($step2)) echo $step2; ?>
-	</form>
+		<?php if(isset($step3)) echo $step3; ?>
+		
 </div>

@@ -37,7 +37,7 @@ class Cron extends CI_Controller {
 			log_message('debug', 'Blog feeds unavailable');
 		}
 	}
-	/**
+	/** 
 	 * retrieve fabtotum last tweets
 	 */
 	public function twitterFeeds()

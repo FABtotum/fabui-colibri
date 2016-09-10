@@ -145,7 +145,7 @@ if(!function_exists('isInternetAvaialable'))
 if(!function_exists('downloadRemoteFile'))
 {
 	/**
-	 * download remote file
+	 * download remote file 
 	 */
 	function downloadRemoteFile($remoteUrl, $path)
 	{

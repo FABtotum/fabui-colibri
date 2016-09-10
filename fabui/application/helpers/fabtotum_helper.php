@@ -367,4 +367,18 @@ if(!function_exists('clearJogResponse'))
 		writeToCommandFile('!jog_clear');
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('startScan'))
+{
+	/**
+	 * start scan task
+	 */
+	function startScan($script, $params)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$extPath = $CI->config->item('ext_path');
+		doCommandLine('python', $extPath.'/py/'.$script, $params);
+	}
+}
 ?>

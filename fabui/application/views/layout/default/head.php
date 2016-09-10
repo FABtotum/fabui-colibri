@@ -41,3 +41,4 @@
 <script src="/assets/js/libs/jquery-2.1.1.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script src="/assets/js/libs/jquery-ui-1.10.3.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <?php echo $cssInLine; ?>
+<?php echo $jsInlineTop; ?>
