@@ -38,7 +38,7 @@ from picamera import PiCamera
 # Import internal modules
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
-from fabtotum.utils.triangulation import process_slice2, sweep_line_to_xyz2
+from fabtotum.utils.triangulation import process_slice, sweep_line_to_xyz
 from fabtotum.utils.ascfile import ASCFile
 
 # Set up message catalog access
@@ -188,7 +188,9 @@ class SweepScan(GCodePusher):
             obj = self.add_object(object_name, "", user_id)
         
         f = obj.add_file(cloud_file, client_name=client_name)
-        os.remove(cloud_file)
+        
+        if task:
+            os.remove(cloud_file)
 
         # Update task content
         if task:

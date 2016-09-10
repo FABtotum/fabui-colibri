@@ -32,7 +32,7 @@ class ASCFile:
 
     def write_points(self, points):
         if len(points)>4:
-            for row in xrange(0,len(points)-1):
+            for row in xrange(0,len(points)):
                 p = np.float32(points[row].T)
                 
                 x = float(p[0])
