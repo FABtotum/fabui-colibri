@@ -28,6 +28,8 @@
 		initJogResponseConsole();
         setInterval(getJogResponse, 500);
         $("#clearButton").on('click', clearJogResponse);
+
+        $("#mdiCommands").on('keyup', handleMdiInputs);
 	});
 
 	/**
@@ -57,5 +59,16 @@
 			$(".consoleContainer").html('');
 		});
 	}
-
+	/**
+	* handle mdi key inputs
+	*/
+	function handleMdiInputs(e)
+	{
+		var code = e.keyCode ? e.keyCode : e.which;
+		if($('#enterSend').is(":checked"))
+			if(code == 13){ /* enter key */
+				if( ! e.shiftKey) fabApp.jogMdi($("#mdiCommands").val());
+			}
+	}
+		
 </script>

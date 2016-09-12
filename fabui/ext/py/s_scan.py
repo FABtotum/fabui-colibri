@@ -188,7 +188,9 @@ class SweepScan(GCodePusher):
             obj = self.add_object(object_name, "", user_id)
         
         f = obj.add_file(cloud_file, client_name=client_name)
-        os.remove(cloud_file)
+        
+        if task:
+            os.remove(cloud_file)
 
         # Update task content
         if task:

@@ -22,7 +22,6 @@
 						<input type="radio" id="object_type" name="object_type" value="add"><i></i> Add to an existing object
 					</label>
 				</section>
-				
 			</fieldset>
 		</div>
 	</div>
@@ -32,7 +31,7 @@
 				<section class="section-new-object">
 					<label class="input">
 						<i class="icon-prepend fa fa-folder-open"></i>
-						<input type="text" placeholder="Type object name">
+						<input type="text" placeholder="Type object name" value="<?php echo $suggestedObjectName; ?>">
 					</label>
 				</section>
 				<section class="section-existing-object" style="display: none;">
@@ -43,7 +42,7 @@
 				<section>
 					<label class="input">
 						<i class="icon-prepend fa fa-file-o"></i>
-						<input type="text" placeholder="Type file name">
+						<input type="text" placeholder="Type file name" value="<?php echo $suggestedFileName; ?>">
 					</label>
 				</section>
 			</fieldset>

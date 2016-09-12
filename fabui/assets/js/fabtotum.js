@@ -52,3 +52,17 @@ function transformSeconds(seconds)
     if (seconds < 10) {seconds = "0"+seconds;}
     return hours+':'+minutes+':'+seconds;
 }
+
+/**
+* display alert message 
+*/
+function showErrorAlert(title, content)
+{
+	$.smallBox({
+		title : title,
+		content : content,
+		color : "#C46A69",
+		timeout: 10000,
+		icon : "fa fa-warning"
+	});
+}

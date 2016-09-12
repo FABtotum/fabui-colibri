@@ -121,8 +121,8 @@
 			<span class="textarea-controls">
 				<button class="btn btn-sm btn-primary pull-right" type="button" id="mdiButton">Send</button> 
 				<span class="pull-right smart-form" style="margin-top: 3px; margin-right: 10px;"> <label class="checkbox pull-right">
-					<input type="checkbox" name="subscription" id="subscription">
-					<i></i>Press <strong> ENTER </strong> to send </label> </span> <a href="javascript:void(0);" class="pull-left"></a> 
+					<input type="checkbox" name="enterSend" id="enterSend" checked="checked">
+					<i></i>Press <strong> ENTER </strong> to </label> </span> <a href="javascript:void(0);" class="pull-left"></a> 
 			</span>
 		</div>
 	</div>

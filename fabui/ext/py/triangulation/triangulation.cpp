@@ -16,6 +16,41 @@ std::string version()
     return VERSION_STRING;
 }
 
+/*
+std::vector<cv::Point2f> imagePoints;
+std::vector<cv::Point3f> objectPoints;
+//img points are green dots in the picture
+imagePoints.push_back(cv::Point2f(271.,109.));
+imagePoints.push_back(cv::Point2f(65.,208.));
+imagePoints.push_back(cv::Point2f(334.,459.));
+imagePoints.push_back(cv::Point2f(600.,225.));
+
+//object points are measured in millimeters because calibration is done in mm also
+objectPoints.push_back(cv::Point3f(0., 0., 0.));
+objectPoints.push_back(cv::Point3f(-511.,2181.,0.));
+objectPoints.push_back(cv::Point3f(-3574.,2354.,0.));
+objectPoints.push_back(cv::Point3f(-3400.,0.,0.));
+
+cv::Mat rvec(1,3,cv::DataType<double>::type);
+cv::Mat tvec(1,3,cv::DataType<double>::type);
+cv::Mat rotationMatrix(3,3,cv::DataType<double>::type);
+
+cv::solvePnP(objectPoints, imagePoints, cameraMatrix, distCoeffs, rvec, tvec);
+cv::Rodrigues(rvec,rotationMatrix);
+ 
+cv::Mat uvPoint = cv::Mat::ones(3,1,cv::DataType<double>::type); //u,v,1
+uvPoint.at<double>(0,0) = 363.; //got this point using mouse callback
+uvPoint.at<double>(1,0) = 222.;
+cv::Mat tempMat, tempMat2;
+double s;
+tempMat = rotationMatrix.inv() * cameraMatrix.inv() * uvPoint;
+tempMat2 = rotationMatrix.inv() * tvec;
+s = 285 + tempMat2.at<double>(2,0); //285 represents the height Zconst
+s /= tempMat.at<double>(2,0);
+std::cout << "P = " << rotationMatrix.inv() * (s * cameraMatrix.inv() * uvPoint - tvec) << std::endl;
+ 
+ */
+
 float average(cv::Mat &a, cv::Mat &w)
 {
     float avg   = 0.0f;

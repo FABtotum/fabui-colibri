@@ -35,7 +35,112 @@ LASER_ANGLE = 35
 BETA_ANGLE  = 24
 FAN_ANGLE   = 53
 HALF_APARATURE = np.tan( np.radians(FAN_ANGLE/2) )
+
+def process_slice2(img_fn, img_l_fn, cam_m, dist_coefs, width, height):
+    fail        = 0
+    subrange    = 15
+    domain      = np.arange(subrange*2, dtype=np.uint8)
     
+    dil         = 4
+    thr2        = 12
+    
+    img     = cv2.imread(img_fn)
+    img_l   = cv2.imread(img_l_fn)
+    
+    img_height = img.shape[0]
+    img_width = img.shape[1]
+    
+    newcameramtx, roi = cv2.getOptimalNewCameraMatrix(cam_m, dist_coefs, (width,height), 1, (img_width,img_height))
+    
+    img     = cv2.undistort(img, cam_m, dist_coefs, None, newcameramtx)
+    img_l   = cv2.undistort(img_l, cam_m, dist_coefs, None, newcameramtx)
+    
+    or_difference = cv2.absdiff(img_l, img)
+    img_gray = cv2.cvtColor(or_difference, cv.CV_BGR2GRAY)
+    
+    img_hvs = cv2.cvtColor(img_l, cv2.COLOR_BGR2HSV);
+    # Low intensity laser light
+    r_mask = cv2.inRange(img_hvs, cv.Scalar(150, 0, 50), cv.Scalar(255, 255, 255))
+    # High intensity laser light
+    y_mask = cv2.inRange(img_hvs, cv.Scalar(0, 51, 209), cv.Scalar(90, 171, 255))
+    
+    ry_mask = cv2.bitwise_or(r_mask, y_mask)
+    
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (dil, dil) )
+    mask3 = cv2.dilate( ry_mask, kernel ); 
+    
+    res = cv2.bitwise_and(img_gray, img_gray, mask=mask3)
+    
+    line_pos = np.zeros(img_height, dtype=np.float)
+    
+    ind = res.argmax(axis=1)
+    
+    for col,value in enumerate(ind):
+        if value > 0 and int(res[col:col+1,value]) > thr2:
+            # Resize analysis domain if outside image size values
+            if(value-subrange <= 0):
+                x1 = 0
+            else:
+                x1 = value-subrange
+                
+            if(value+subrange >= img_width):
+                x2 = img_height
+            else:
+                x2 = value+subrange
+            
+            luminance_col = res[col:col+1,x1:x2]
+
+            if( domain.shape == luminance_col[0].shape):
+                w_position = np.average(domain, 0, luminance_col[0])
+                w_position = value+(w_position-subrange)
+            else:
+                fail +=1
+                w_position = value
+            
+            #cv2.circle(darw, (int(w_position), col), 2, (0,255,255), 1)
+            line_pos[col] = w_position
+    
+    return line_pos, img_width, img_height
+
+def rotary_line_to_xyz2(line_pos, M, R, t, x_known, z_offset, y_offset, a_offset, img_width, img_height):
+    xyz_points = None
+    first = True
+    
+    return xyz_points
+
+def sweep_line_to_xyz2(line_pos, M, R, t, x_known, z_offset, y_offset, img_width, img_height):
+    
+    xyz_points = None
+    first = True
+    
+    offset = np.matrix( [0, 0, z_offset] )
+    
+    y2d = 0
+    for x2d in line_pos:
+        if x2d != 0:
+            
+            uvPoint3 = np.matrix( [x2d, y2d, 1] )
+            
+            T1 = R.I * M.I * uvPoint3.T
+            T2 = R.I * t
+            s2 = float( (x_known + T2[0]) / T1[0] )
+            PP = (s2 * T1 - T2)
+            
+            # Correct the Z offset
+            PP -= offset.T
+            
+            if first:
+                xyz_points = np.array(PP.T)
+                first = False
+            else:
+                xyz_points = np.vstack([xyz_points, PP.T])
+            
+        y2d += 1
+        
+    return xyz_points
+
+#def sweep_line_to_xyz2(line_pos, M, R, t, x_known, z_offset, y_offset, img_width, img_height):
+
 def process_slice(img_fn, img_l_fn, threshold = 40):
     
     #threshold   =   40

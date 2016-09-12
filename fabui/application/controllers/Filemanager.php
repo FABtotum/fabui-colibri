@@ -56,7 +56,7 @@
 		foreach($objects as $object){
 			$temp = array();
 			$temp[] = '<label class="checkbox-inline"><input type="checkbox" id="check_'.$object['id'].'" name="checkbox-inline" class="checkbox"><span></span> </label>';
-			$temp[] = '<a href="'.site_url('filemanager/object/'.$object['id']).'">'.$object['name'].'</a>';
+			$temp[] = '<i class="fa fa-folder-open"></i> <a href="'.site_url('filemanager/object/'.$object['id']).'">'.$object['name'].'</a>';
 			$temp[] = $object['description'];
 			$temp[] = $object['num_files'];
 			$aaData[] = $temp;
