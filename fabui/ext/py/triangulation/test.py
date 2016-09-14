@@ -31,6 +31,7 @@ import numpy as np
 def test1(img_fn, img_l_fn, threshold):
     
     #threshold   =   40
+    fail = 0
     subrange    = 15
     domain=np.arange(subrange*2, dtype=np.uint8)
     
@@ -123,7 +124,7 @@ def test1(img_fn, img_l_fn, threshold):
 
 print ( "Version:", triangulation.version() )
 
-IMG_DIR = "../out/images"
+IMG_DIR = "../sweep_scan/images"
 IMG_NUM = 28
 
 #~ triangulation.test1("{0}/{1}.jpg".format(IMG_DIR, IMG_NUM),  "{0}/{1}_l.jpg".format(IMG_DIR, IMG_NUM))

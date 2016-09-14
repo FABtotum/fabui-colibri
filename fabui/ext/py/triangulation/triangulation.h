@@ -26,6 +26,12 @@
 
 #define VERSION_STRING  "v0.1"
 
+#include <boost/python.hpp>
+#include <cv.h>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+
 /*
  *  @brief Returns version string.
  */
@@ -35,5 +41,12 @@ std::string version();
  * 
  */
 void test1(const std::string &img_filename, const std::string &img_l_filename, unsigned threshold);
+
+/*
+ * 
+ */
+//~ void test2(PyObject *M);
+//~ void test2(const cv::Mat& mat);
+
 
 #endif /* __TRIANGULATION_H__ */

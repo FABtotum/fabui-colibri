@@ -67,8 +67,8 @@ pkgcfg_args['libraries'].append('boost_python')
 
 hello_ext = Extension('fabtotum.speedups.triangulation',
                     sources=["triangulation.cpp", 
-							 "pyboost_cv2_converter.cpp", 
-							 "pyboost_cv3_converter.cpp"],
+                             "pyboost_cv2_converter.cpp", 
+                             "pyboost_cv3_converter.cpp"],
                     **pkgcfg_args
                  )
 

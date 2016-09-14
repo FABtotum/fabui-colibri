@@ -53,10 +53,14 @@ def pkgconfig(*packages, **kw):
 
 os.environ["CC"] = "g++"
 
+pkgcfg = pkgconfig('opencv')
+
+pkgcfg['libraries'].append('boost_python')
 hello_ext = Extension('_triangulation',
+                    #~ sources=["triangulation_boost.cpp", "conversion.cpp"],
                     sources=["triangulation.cpp", "triangulation.i"],
                     swig_opts=['-c++'],
-                    **pkgconfig('opencv')
+                    **pkgcfg
                  )
 
 setup (

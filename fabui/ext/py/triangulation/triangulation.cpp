@@ -245,3 +245,8 @@ void test1(const std::string &img_filename, const std::string &img_l_filename, u
             //~ hole_image[col,cs,2]=255 #place a red pixel (BGR)
     
 }
+
+void test2(const float**M)
+{
+    std::cout << "M[0]: " << M[0] << std::endl;
+}
