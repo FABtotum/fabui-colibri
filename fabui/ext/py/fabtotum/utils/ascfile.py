@@ -31,6 +31,9 @@ class ASCFile:
         self.fd = open(filename, 'w')
 
     def write_points(self, points):
+        if points == None:
+            return
+            
         if len(points)>4:
             for row in xrange(0,len(points)):
                 p = np.float32(points[row].T)
