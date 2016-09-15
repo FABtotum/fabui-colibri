@@ -209,6 +209,9 @@ class SweepScan(GCodePusher):
         obj = self.get_object(object_id)
         task = self.get_task(task_id)
         
+        if not task:
+            return
+        
         ts = time.time()
         dt = datetime.fromtimestamp(ts)
         datestr = dt.strftime('%Y-%m-%d %H:%M:%S')
