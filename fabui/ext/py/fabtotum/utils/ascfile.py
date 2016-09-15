@@ -31,7 +31,7 @@ class ASCFile:
         self.fd = open(filename, 'w')
 
     def write_points(self, points):
-        if points == None:
+        if points is None:
             return
             
         if len(points)>4:

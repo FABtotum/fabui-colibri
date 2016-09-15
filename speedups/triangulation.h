@@ -36,14 +36,17 @@
  */
 std::string version();
 
+/*
+ * @brief Extract a 2d laser line from two images (with and without laser line).
+ */
 cv::Mat process_slice(  const std::string img_fn, const std::string img_l_fn, 
                         const cv::Mat& cam_m, const cv::Mat& dist_coefs,
                         const int width, const int height);
 
-cv::Mat sweep_line_to_xyz( const cv::Mat& line_pos, const cv::Mat& M, const cv::Mat& R, const cv::Mat& t, 
-                            const float x_known, const float z_offset, const float y_offset, 
-                            const int width, const int height);
-
-// def rotary_line_to_xyz2(line_pos, M, R, t, x_known, z_offset, y_offset, a_offset, img_width, img_height):
+/*
+ * @brief Calculates 3d points from a 2d laser line.
+ */
+cv::Mat laser_line_to_xyz(  const cv::Mat& line_pos, const cv::Mat& M, const cv::Mat& R, const cv::Mat& t, 
+                            const float x_known, const cv::Mat& offset, const cv::Mat& T);
 
 #endif /* __TRIANGULATION_H__ */

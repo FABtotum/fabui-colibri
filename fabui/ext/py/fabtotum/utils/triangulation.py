@@ -102,18 +102,87 @@ def process_slice2(img_fn, img_l_fn, cam_m, dist_coefs, width, height):
     
     return line_pos, img_width, img_height
 
-def rotary_line_to_xyz2(line_pos, M, R, t, x_known, z_offset, y_offset, a_offset, img_width, img_height):
-    xyz_points = None
-    first = True
-    
-    return xyz_points
+def rotx_matrix(a):
+    a = np.radians(a)
+    c1 = np.cos(a)
+    c2 = np.sin(a)
 
-def sweep_line_to_xyz2(line_pos, M, R, t, x_known, z_offset, y_offset, img_width, img_height):
+    return np.matrix([
+                [1, 0,    0],
+                [0, c1, -c2],
+                [0, c2,  c1],
+                ])
+                
+def rotz_matrix(a):
+    a = np.radians(a)
+    c1 = np.cos(a)
+    c2 = np.sin(a)
+
+    return np.matrix([
+                    [c1, -c2,  0],
+                    [c2,  c1,  0],
+                    [0,    0,  1],
+                    ])
+                    
+def roty_matrix(a):
+    a = np.radians(a)
+    c1 = np.cos(a)
+    c2 = np.sin(a)
+
+    return np.matrix([
+                    [c1,  0,  c2],
+                    [0,   1,  0],
+                    [-c2, 0,  c1],
+                    ])
+
+def scale_matrix(sx, sy, sz):
+    return np.matrix([
+                    [sx, 0, 0],
+                    [0, sy, 0],
+                    [0, 0, sz],
+                    ])
+
+def laser_line_to_xyz(line_pos, M, R, t, x_known, offset, T):
+    xyz_points = None
+    first = True
+
+    RMi = R.I * M.I
+    T2 = R.I * t
+
+    y2d = 0
+    for x2d in line_pos:
+        if x2d != 0:
+            
+            uvPoint3 = np.matrix( [x2d, y2d, 1] )
+            
+            T1 = RMi * uvPoint3.T
+            s2 = float( (x_known + T2[0]) / T1[0] )
+            PP = (s2 * T1 - T2)
+            
+            # Correct the Z offset
+            PP -= offset.T
+            
+            if PP[2] >= 0:
+                
+                PP = T * PP
+                
+                if first:
+                    xyz_points = np.array(PP.T)
+                    first = False
+                else:
+                    xyz_points = np.vstack([xyz_points, PP.T])
+            
+        y2d += 1
+        
+    return xyz_points
+    
+#~ def sweep_line_to_xyz2(line_pos, M, R, t, x_known, y_offset, z_offset, img_width, img_height):
+def sweep_line_to_xyz2(line_pos, M, R, t, x_known, offset, img_width, img_height):
     
     xyz_points = None
     first = True
     
-    offset = np.matrix( [0, 0, z_offset] )
+    #~ offset = np.matrix( [0, 0, z_offset] )
     
     y2d = 0
     for x2d in line_pos:

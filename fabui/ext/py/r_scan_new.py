@@ -23,11 +23,11 @@ import argparse
 import time
 from datetime import datetime
 import gettext
-import os
+import os, sys
+import json
 import errno
 from fractions import Fraction
 from threading import Event, Thread
-import json
 try:
     import queue
 except ImportError:
@@ -45,27 +45,26 @@ import fabtotum.speedups.triangulation as tricpp
 from fabtotum.utils.ascfile import ASCFile
 
 # Set up message catalog access
-tr = gettext.translation('s_scan', 'locale', fallback=True)
+tr = gettext.translation('r_scan', 'locale', fallback=True)
 _ = tr.ugettext
 
 ################################################################################
 
-class SweepScan(GCodePusher):
+class RotaryScan(GCodePusher):
     """
-    Sweep scan application.
+    Rotary scan application.
     """
     
-    XY_FEEDRATE     = 10000
+    XY_FEEDRATE     = 5000
     Z_FEEDRATE      = 1500
     E_FEEDRATE      = 800
     QUEUE_SIZE      = 64
     
     def __init__(self, log_trace, monitor_file, scan_dir, standalone = False, finalize = True, width = 2592, height = 1944, rotation = 0, iso = 800, power = 230, shutter_speed = 35000):
-        
-        super(SweepScan, self).__init__(log_trace, monitor_file, use_stdout=standalone)
+        super(RotaryScan, self).__init__(log_trace, monitor_file, use_stdout=False)
         
         self.standalone = standalone
-        self.finalize = finalize
+        self.finalize   = finalize
         
         self.camera = PiCamera()
         self.camera.resolution = (width, height)
@@ -80,19 +79,17 @@ class SweepScan(GCodePusher):
         self.scan_dir = scan_dir
         
         self.scan_stats = {
-            'type'          : 'sweep',
-            'projection'    : 'planar',
+            'type'          : 'rotary',
+            'projection'    : 'rotary',
             'scan_total'    : 0,
             'scan_current'  : 0,
-            'postprocessing_percent' : 0.0
+            'postprocessing_percent'   : 0.0
         }
         
         self.add_monitor_group('scan', self.scan_stats)
         
         self.imq = queue.Queue(self.QUEUE_SIZE)
-        
-        print "__init__: done"
-
+            
     def get_progress(self):
         """ Custom progress implementation """
         return self.progress
@@ -102,12 +99,12 @@ class SweepScan(GCodePusher):
         scanfile = os.path.join(self.scan_dir, "{0}{1}.jpg".format(number, suffix) )
         self.camera.capture(scanfile, quality=100)
     
-    def __post_processing(self, camera_file, start, end, head_y, bed_z, a_offset, slices, cloud_file, task_id, object_id, object_name, file_name):
+    def __post_processing(self, camera_file, start, end, head_x, head_y, bed_z, slices, cloud_file, task_id, object_id, object_name, file_name):
         """
         """
         threshold = 0
         idx = 0
-
+        
         json_f = open(camera_file)
         camera = json.load(json_f)
         intrinsic = camera['intrinsic']
@@ -122,15 +119,12 @@ class SweepScan(GCodePusher):
         #~ extrinsic = json.load(json_f)
 
         offset      = extrinsic['offset']
-        #~ dist_coefs  = np.matrix( extrinsic['dist_coef'] )
         M           = np.matrix( extrinsic['M33'] )
         R           = np.matrix( extrinsic['R33'] )
         t           = np.matrix( extrinsic['t'] )
         r           = np.matrix( extrinsic['r'] )
         
-        T           = np.eye(3, dtype=float)
-        
-        mid         = (begin+end) / 2
+        z_offset    = 2*offset[2] - bed_z
         
         asc = ASCFile(cloud_file)
         
@@ -146,31 +140,22 @@ class SweepScan(GCodePusher):
                 break
                 
             # do processing
-            #~ line_pos, threshold, w, h = tripy.process_slice(img_fn, img_l_fn, threshold)
-            #~ line_pos, w, h = tripy.process_slice(img_fn, img_l_fn, threshold)
-            
+            #~ line_pos, threshold, w, h = process_slice(img_fn, img_l_fn, threshold)
             xy_line, w, h = tripy.process_slice2(img_fn, img_l_fn, cam_m, dist_coefs, width, height)
-            #~ xy_line = tricpp.process_slice(img_fn, img_l_fn, cam_m, dist_coefs, width, height)
-            #~ w = width
-            #~ h = height
             
-            pos = (float(idx*(end-start)) / float(slices)) + start
+            pos = float(idx*(end-start))/ float(slices)
             print "{0} / {1}".format(idx,pos)
             #print json.dumps(line_pos)
 
             #print len(line_pos)
-            head_x = float(pos)
-            head_y = float(y_offset)
-            bed_z  = float(z_offset)
 
-            z_offset = 2*offset[2] - bed_z
+            T = tripy.roty_matrix(pos)
+            offset = np.matrix([head_x, head_y, z_offset])
             
-            offset = np.matrix([mid, head_y, z_offset])
-            #~ points = sweep_line_to_xyz(line_pos, pos, z_offset, y_offset, a_offset, w, h)
-            points = tricpp.laser_line_to_xyz(xy_line, M, R, t, head_x, offset, T)
-            #~ points = tripy.sweep_line_to_xyz2(xy_line, M, R, t, head_x, head_y, z_offset, w, h)
+            xyz_points = laser_line_to_xyz(xy_line, M, R, t, head_x, offset, T)
 
-            asc.write_points(points)
+            #~ points = rotary_line_to_xyz(xy_line, pos, w, h)
+            asc.write_points(xyz_points)
             
             idx += 1
             
@@ -183,7 +168,6 @@ class SweepScan(GCodePusher):
             os.remove(img_fn)
             os.remove(img_l_fn)
             
-        print "close post processing"
         asc.close()
         
         self.store_object(task_id, object_id, object_name, cloud_file, file_name)
@@ -231,9 +215,7 @@ class SweepScan(GCodePusher):
             obj = self.add_object(object_name, "", user_id)
         
         f = obj.add_file(cloud_file, client_name=client_name)
-        
-        if task:
-            os.remove(cloud_file)
+        os.remove(cloud_file)
 
         # Update task content
         if task:
@@ -241,81 +223,76 @@ class SweepScan(GCodePusher):
             task['id_file'] = f['id']
             task.write()
     
-    def run(self, task_id, object_id, object_name, file_name, camera_file, start_x, end_x, a_offset, y_offset, z_offset, slices, cloud_file):
+    def run(self, task_id, object_id, object_name, file_name, camera_file, start_a, end_a, y_offset, slices, cloud_file):
         """
-        Run the sweep scan.
+        Run the rotary scan.
         """
         
         self.prepare_task(task_id, task_type='scan')
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
+        head_y   = 175.0
+        head_x   = 96.0
+        bed_z    = 135.0 + 45.0 # Platform position + 4axis offset
+        
         self.post_processing_thread = Thread(
             target = self.__post_processing,
-            args=( [camera_file, start_x, end_x, y_offset, z_offset, a_offset, slices, cloud_file,
+            args=( [camera_file, start_a, end_a, head_x, head_y, bed_z, slices, cloud_file, 
                     task_id, object_id, object_name, file_name] )
             )
         self.post_processing_thread.start()
         
         if self.standalone:
-            self.exec_macro("start_sweep_scan")
+            self.exec_macro("check_pre_scan")
+            self.exec_macro("start_rotary_scan")
         
         LASER_ON  = 'M700 S{0}'.format(self.laser_power)
         LASER_OFF = 'M700 S0'
         
-        position = start_x
+        position = start_a
         
-        if start_x != 0:
+        if start_a != 0:
             # If an offset is set .
-            self.send('G0 X{0} F{1}'.format(start_x, self.XY_FEEDRATE) )  #set zero
-
-        if a_offset != 0:
-            #if an offset is set, rotates to the specified A angle.
-            self.send('G0 E{0} {1}'.format(a_offset, self.E_FEEDRATE) )
-
-        if z_offset != 0:
-            #if an offset for Z (Y in the rotated reference space) is set, moves to it.
-            self.send('G0 Z{0} F{1}'.format(z_offset, self.Z_FEEDRATE))  #go to y offset
+            self.send('G0 E{0} F{1}'.format(start_a, self.E_FEEDRATE) )
             
-        if y_offset != 0:
+        if(y_offset!=0):
             #if an offset for Z (Y in the rotated reference space) is set, moves to it.
             self.send('G0 Y{0} F{1}'.format(y_offset, self.XY_FEEDRATE))  #go to y offset
-                
-        dx = abs((float(end_x)-float(start_x))/float(slices))  #mm to move each slice
+        
+        #~ dx = abs((float(end_x)-float(start_x))/float(slices))  #mm to move each slice
+        deg = abs((float(end_a)-float(start_a))/float(slices))  #degrees to move each slice
         
         self.scan_stats['scan_total'] = slices
         
-        #self.send('M702 S255')
-        
         for i in xrange(0, slices):
-            #~ #move the laser!
-            print str(i) + "/" + str(slices) +" (" + str(dx*i) + "/" + str(slices) +")"
-            #~ serial.write('G0 X' + str(pos) + 'F2500\r\n') 
-            self.send('G0 X{0} F{1}'.format(position, self.XY_FEEDRATE))
-            self.send('M400') # Wait for the move to finish
+            #move the laser!
+            print str(i) + "/" + str(slices) +" (" + str(deg*i) + "/" + str(deg*slices) +")"
+            
+            self.send('G0 E{0} F{1}'.format(position, self.E_FEEDRATE))
+            self.send('M400')
 
-            self.send(LASER_ON) #turn laser ON
+            self.send(LASER_ON)
             self.take_a_picture(i, '_l')
             
-            self.send(LASER_OFF) #turn laser ON
+            self.send(LASER_OFF)
             self.take_a_picture(i)
             
             self.imq.put(i)
             
-            position += dx
-            
-            self.scan_stats['scan_current'] = i+1
-            self.progress = float(i+1)*100.0 / float(slices)
+            position += deg
             
             with self.monitor_lock:
+                self.scan_stats['scan_current'] = i+1
+                self.progress = float(i+1)*100.0 / float(slices)
                 self.update_monitor_file()
                 
             if self.is_aborted():
                 break
-                
+        
         self.imq.put(None)
         
         self.post_processing_thread.join()
-                        
+                
         if self.standalone or self.finalize:
             if self.is_aborted():
                 self.set_task_status(GCodePusher.TASK_ABORTING)
@@ -342,7 +319,7 @@ def makedirs(path):
             pass
         else:
             raise
-            
+
 def main():
     config = ConfigService()
 
@@ -350,14 +327,13 @@ def main():
     destination = config.get('general', 'bigtemp_path')
     
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    #~ subparsers = parser.add_subparsers(help='sub-command help', dest='type')
     
     parser.add_argument("-T", "--task-id",     help=_("Task ID."),              default=0)
     parser.add_argument("-U", "--user-id",     help=_("User ID. (future use)"), default=0)
     parser.add_argument("-O", "--object-id",   help=_("Object ID."),            default=0)
     parser.add_argument("-N", "--object-name", help=_("Object name."),          default='')
     parser.add_argument("-F", "--file-name",   help=_("File name."),            default='')
-    
+
     parser.add_argument("-d", "--dest",     help=_("Destination folder."),     default=destination )
     parser.add_argument("-s", "--slices",   help=_("Number of slices."),       default=100)
     parser.add_argument("-i", "--iso",      help=_("ISO."),                    default=400)
@@ -365,12 +341,13 @@ def main():
     parser.add_argument("-W", "--width",    help=_("Image width in pixels."),  default=1920)
     parser.add_argument("-H", "--height",   help=_("Image height in pixels"),  default=1080)
     parser.add_argument("-b", "--begin",    help=_("Begin scanning from X."),  default=0)
-    parser.add_argument("-e", "--end",      help=_("End scanning at X."),      default=100)
-    parser.add_argument("-y", "--y-offset", help=_("Y offset."),               default=117)
-    parser.add_argument("-z", "--z-offset", help=_("Z offset."),               default=180)
+    parser.add_argument("-e", "--end",      help=_("End scanning at X."),      default=360)
+    parser.add_argument("-z", "--z-offset", help=_("Z offset."),               default=0)
+    parser.add_argument("-y", "--y-offset", help=_("Y offset."),               default=0)
     parser.add_argument("-a", "--a-offset", help=_("A offset/rotation."),      default=0)
     parser.add_argument("-o", "--output",   help=_("Output point cloud file."),default=os.path.join(destination, 'cloud.asc'))
-    
+    #~ parser.add_argument('--help', action='help', help=_("Show this help message and exit") )
+
     # GET ARGUMENTS
     args = parser.parse_args()
 
@@ -378,14 +355,14 @@ def main():
     destination     = args.dest
     iso             = int(args.iso)
     power           = int(args.power)
-    start_x         = float(args.begin)
-    end_x           = float(args.end)
-    width           = int(args.width)
-    height          = int(args.height)
+    start_a         = float(args.begin)
+    end_a           = float(args.end)
     z_offset        = float(args.z_offset)
     y_offset        = float(args.y_offset)
     a_offset        = float(args.a_offset)
-
+    width           = int(args.width)
+    height          = int(args.height)
+    
     task_id         = int(args.task_id)
     user_id         = int(args.user_id)
     object_id       = int(args.object_id)
@@ -399,8 +376,8 @@ def main():
 
     cloud_file      = args.output
 
-    monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
-    log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
+    monitor_file    = config.get('general', 'task_monitor')
+    log_trace       = config.get('general', 'trace')
 
     scan_dir        = os.path.join(destination, "images")
 
@@ -409,28 +386,27 @@ def main():
 
     camera_file     = os.path.join( config.get('hardware', 'cameras') , "camera_v1.json")
 
-    ################################################################################
+    ############################################################################
 
-    print 'SWEEP SCAN MODULE STARTING' 
-    print 'scanning from'+str(start_x)+"to"+str(end_x); 
-    print 'Num of scans : [{0}]'.format(slices)
+    print 'ROTARY SCAN MODULE STARTING' 
+    print 'scanning from '+str(start_a)+" to "+str(end_a); 
+    print 'Num of scans : ', slices
     print 'ISO  setting : ', iso
     print 'Resolution   : ', width ,'*', height, ' px'
-    print 'Y-offset (y) : ', y_offset
-    print 'Z-offset (z) : ', z_offset
-    print 'A-Offset.    : ', a_offset
+    print 'Laser PWM.  : ', power
+    print 'z offset     : ', z_offset
 
     #ESTIMATED SCAN TIME ESTIMATION
-    estimated = (slices*2) / 60.0
+    estimated = (slices*1.99)/60
     if estimated<1 :
-        estimated *= 60.0
+        estimated *= 60
         unit= "Seconds"
     else:
         unit= "Minutes"
 
     print 'Estimated Scan time =', str(estimated) + " " + str(unit) + "  [Pessimistic]"
 
-    app = SweepScan(log_trace, 
+    app = RotaryScan(log_trace, 
                     monitor_file,
                     scan_dir,
                     standalone=standalone,
@@ -442,12 +418,11 @@ def main():
     app_thread = Thread( 
             target = app.run, 
             args=( [task_id, object_id, object_name, file_name, camera_file, 
-                    start_x, end_x, a_offset, y_offset, z_offset, slices, cloud_file] ) 
+                    start_a, end_a, y_offset, slices, cloud_file] ) 
             )
     app_thread.start()
-    
-    # app.loop() must be started to allow callbacks
-    app.loop()
+
+    app.loop()          # app.loop() must be started to allow callbacks
     app_thread.join()
 
 if __name__ == "__main__":

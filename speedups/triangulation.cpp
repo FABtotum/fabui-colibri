@@ -222,6 +222,71 @@ cv::Mat process_slice(  const std::string img_fn, const std::string img_l_fn,
     return line_pos;
 }
 
+cv::Mat laser_line_to_xyz(  const cv::Mat& line_pos, const cv::Mat& M, const cv::Mat& R, const cv::Mat& t, 
+                            const float x_known, const cv::Mat& offset, const cv::Mat& T)
+{
+    cv::Mat xyz_points = cv::Mat::zeros(line_pos.rows,3, cv::DataType<double>::type);
+    unsigned count = 0;
+        
+    //~ y2d = 0
+    float y2d = 0;
+    
+    cv::Mat uvPoint3 = cv::Mat::ones(3,1,cv::DataType<double>::type);
+    
+    cv::Mat T1, T2, PP;
+    cv::Mat Ri, Mi, RMi;
+    Ri = R.inv();
+    Mi = M.inv();
+    RMi = Ri * Mi;
+    T2 = Ri * t;
+    //~ for x2d in line_pos:
+    for (unsigned i=0; i<line_pos.rows; i++)
+    {
+
+        float x2d = line_pos.at<double>(i,0);
+        
+        //~ if x2d != 0:
+        if(x2d != 0)
+        {
+            //~ std::cout << "x: " << x2d << ", y: " << y2d << " @ " << i << std::endl;
+            //~ std::cout << " != 0" << std::endl;
+            
+            //~ uvPoint3 = np.matrix( [x2d, y2d, 1] )
+            uvPoint3.at<double>(0) = x2d;
+            uvPoint3.at<double>(1) = y2d;
+            
+            //~ T1 = R.I * M.I * uvPoint3.T
+            T1 = RMi * uvPoint3;
+            // T2 = ...pre-calculated
+            double s2 = double( (x_known + T2.at<double>(0) ) / T1.at<double>(0) );
+            PP = (s2 * T1 - T2);
+            
+            //~ # Correct post-offset
+            PP -= offset.t();
+            
+            if( PP.at<double>(2) >= 0 )
+            {
+                // Apply post-transformation
+                //~ PP = T * PP
+                cv::Mat tmp = T * PP;
+                
+                //~ xyz_points = np.vstack([xyz_points, PP.T])
+                xyz_points.row(count) = tmp.t();
+                count++;
+            }
+        }
+        
+        y2d += 1;
+    }
+    
+    xyz_points.resize(count);
+    
+    //~ std::cout << "count = " << count << std::endl;
+    
+    return xyz_points;
+}
+
+/*
 cv::Mat sweep_line_to_xyz(  const cv::Mat& line_pos, const cv::Mat& M, const cv::Mat& R, const cv::Mat& t, 
                             const float x_known, const float z_offset, const float y_offset, 
                             const int width, const int height)
@@ -283,6 +348,7 @@ cv::Mat sweep_line_to_xyz(  const cv::Mat& line_pos, const cv::Mat& M, const cv:
     
     return xyz_points;
 }
+*/
 
 /* Python Module wrapper code */
 
@@ -312,7 +378,7 @@ namespace pbcvt {
         py::def("version", version);
         
         py::def("process_slice",        process_slice);
-        py::def("sweep_line_to_xyz",    sweep_line_to_xyz);
+        py::def("laser_line_to_xyz",    laser_line_to_xyz);
 
     }
 
