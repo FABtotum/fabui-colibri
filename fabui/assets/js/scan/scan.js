@@ -309,6 +309,8 @@ function initSweepCrop()
 {	
 	var $image = $('#image');
 	
+	console.log($image);
+	
 	var options = {
 		responsive: true,
 		guides: false,
@@ -338,7 +340,8 @@ function initSweepCrop()
     'cropend.cropper': function (e) {
       //console.log(e.type, e.action);
     },
-    'crop.cropper': function (e) {
+    'crop.cropper': function (e, t) {
+		
 		$(".sweep-start").val(parseInt(e.x).toFixed());
 		$(".sweep-end").val((parseInt(e.width) + parseInt(e.x)));
 		
@@ -500,8 +503,31 @@ function handleRotatingScan()
 			}
 		});
 	}else if(action == 'start'){
-		console.log('start');
+		
 		openWait('start');
+		
+		var data = {
+			'slices': $(".quality-slices").val(),
+			'iso'   : $(".quality-iso").val(),
+			'width' : $(".quality-resolution-width").val(), 
+			'height': $(".quality-resolution-height").val(),
+		};
+		
+		$.ajax({
+			type: 'post',
+			url: '/fabui/scan/startScan/' + scanMode,
+			data: data,
+			dataType: 'json'
+		}).done(function(response) {
+			console.log(response);
+			if(response.start == false){
+				closeWait();
+				showErrorAlert('Warning', response.trace);
+			}else{
+				closeWait();
+				console.log("START");
+			}
+		});
 	}
 }
 /**
@@ -514,7 +540,16 @@ function handleSweepScan()
 	
 	if(action == 'start'){
 		
-		var data = {'slices': $(".quality-slices").val(), 'iso': $(".quality-iso").val(), 'width': $(".quality-resolution-width").val(), 'height': $(".quality-resolution-height").val(), 'start': $(".sweep-start").val(), 'end': $(".sweep-end").val()};
+		var data = {
+			'slices': $(".quality-slices").val(), 
+			'iso'   : $(".quality-iso").val(), 
+			'width' : $(".quality-resolution-width").val(), 
+			'height': $(".quality-resolution-height").val(), 
+			'start' : $(".sweep-start").val(), 
+			'end'   : $(".sweep-end").val()
+			//'start'   : 5,
+			//'end'     : 8
+		};
 		
 		openWait('start');
 		$.ajax({

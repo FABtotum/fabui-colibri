@@ -51,6 +51,7 @@
 	{
 		$objects = $this->get();
 		$dropdown = array();
+		if(!$objects) return $dropdown; //if no objects
 		foreach($objects as $object){
 			$dropdown[$object['id']] = $object['name'];
 		}

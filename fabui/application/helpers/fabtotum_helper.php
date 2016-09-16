@@ -99,7 +99,7 @@ if(!function_exists('doCommandLine'))
 	 * doCL => do Command Line
 	 * exec script from command line
 	 */
-	function doCommandLine($bin, $scriptPath, $args = '')
+	function doCommandLine($bin, $scriptPath, $args = '', $background = false)
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
@@ -122,6 +122,7 @@ if(!function_exists('doCommandLine'))
 				}
 			}
 		}
+		if($background) $command .= ' &';
 		log_message('debug', $command);
 		return shell_exec($command);
 	}
@@ -373,12 +374,12 @@ if(!function_exists('startScan'))
 	/**
 	 * start scan task
 	 */
-	function startScan($script, $params)
+	function startScan($script, $params, $background = true)
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		$extPath = $CI->config->item('ext_path');
-		doCommandLine('python', $extPath.'/py/'.$script, $params);
+		doCommandLine('python', $extPath.'py/'.$script, $params, $background);
 	}
 }
 ?>
