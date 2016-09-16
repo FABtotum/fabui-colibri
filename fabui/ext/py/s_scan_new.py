@@ -102,7 +102,7 @@ class SweepScan(GCodePusher):
         scanfile = os.path.join(self.scan_dir, "{0}{1}.jpg".format(number, suffix) )
         self.camera.capture(scanfile, quality=100)
     
-    def __post_processing(self, camera_file, start, end, head_y, bed_z, a_offset, slices, cloud_file, task_id, object_id, object_name, file_name):
+    def __post_processing(self, camera_file, start_x, end_x, head_y, bed_z, a_offset, slices, cloud_file, task_id, object_id, object_name, file_name):
         """
         """
         threshold = 0
@@ -130,7 +130,8 @@ class SweepScan(GCodePusher):
         
         T           = np.eye(3, dtype=float)
         
-        mid         = (begin+end) / 2
+        mid_x       = float( (start_x+end_x) / 2 )
+        z_offset    = float(2*offset[2] - bed_z)
         
         asc = ASCFile(cloud_file)
         
@@ -150,27 +151,20 @@ class SweepScan(GCodePusher):
             #~ line_pos, w, h = tripy.process_slice(img_fn, img_l_fn, threshold)
             
             xy_line, w, h = tripy.process_slice2(img_fn, img_l_fn, cam_m, dist_coefs, width, height)
-            #~ xy_line = tricpp.process_slice(img_fn, img_l_fn, cam_m, dist_coefs, width, height)
-            #~ w = width
-            #~ h = height
             
-            pos = (float(idx*(end-start)) / float(slices)) + start
+            pos = (float(idx*(end_x-start_x)) / float(slices)) + start_x
             print "{0} / {1}".format(idx,pos)
             #print json.dumps(line_pos)
 
             #print len(line_pos)
             head_x = float(pos)
-            head_y = float(y_offset)
-            bed_z  = float(z_offset)
-
-            z_offset = 2*offset[2] - bed_z
             
-            offset = np.matrix([mid, head_y, z_offset])
-            #~ points = sweep_line_to_xyz(line_pos, pos, z_offset, y_offset, a_offset, w, h)
-            points = tricpp.laser_line_to_xyz(xy_line, M, R, t, head_x, offset, T)
-            #~ points = tripy.sweep_line_to_xyz2(xy_line, M, R, t, head_x, head_y, z_offset, w, h)
+            offset = np.matrix([mid_x, head_y, z_offset])
+            
+            xyz_points = tripy.laser_line_to_xyz(xy_line, M, R, t, head_x, offset, T)
+            #~ xyz_points = tricpp.laser_line_to_xyz(xy_line, M, R, t, head_x, offset, T)
 
-            asc.write_points(points)
+            asc.write_points(xyz_points)
             
             idx += 1
             
