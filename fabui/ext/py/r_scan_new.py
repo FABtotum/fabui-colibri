@@ -152,7 +152,7 @@ class RotaryScan(GCodePusher):
             T = tripy.roty_matrix(pos)
             offset = np.matrix([head_x, head_y, z_offset])
             
-            xyz_points = laser_line_to_xyz(xy_line, M, R, t, head_x, offset, T)
+            xyz_points = tricpp.laser_line_to_xyz(xy_line, M, R, t, head_x, offset, T)
 
             #~ points = rotary_line_to_xyz(xy_line, pos, w, h)
             asc.write_points(xyz_points)
@@ -193,6 +193,9 @@ class RotaryScan(GCodePusher):
         obj = self.get_object(object_id)
         task = self.get_task(task_id)
         
+        if not task:
+            return
+        
         ts = time.time()
         dt = datetime.fromtimestamp(ts)
         datestr = dt.strftime('%Y-%m-%d %H:%M:%S')
@@ -215,7 +218,9 @@ class RotaryScan(GCodePusher):
             obj = self.add_object(object_name, "", user_id)
         
         f = obj.add_file(cloud_file, client_name=client_name)
-        os.remove(cloud_file)
+        
+        if task:
+            os.remove(cloud_file)
 
         # Update task content
         if task:
