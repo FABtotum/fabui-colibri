@@ -47,6 +47,6 @@ cv::Mat process_slice(  const std::string img_fn, const std::string img_l_fn,
  * @brief Calculates 3d points from a 2d laser line.
  */
 cv::Mat laser_line_to_xyz(  const cv::Mat& line_pos, const cv::Mat& M, const cv::Mat& R, const cv::Mat& t, 
-                            const float x_known, const cv::Mat& offset, const cv::Mat& T);
+                            const float x_known, const float z_cut_off, const cv::Mat& offset, const cv::Mat& T);
 
 #endif /* __TRIANGULATION_H__ */

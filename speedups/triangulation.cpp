@@ -223,7 +223,7 @@ cv::Mat process_slice(  const std::string img_fn, const std::string img_l_fn,
 }
 
 cv::Mat laser_line_to_xyz(  const cv::Mat& line_pos, const cv::Mat& M, const cv::Mat& R, const cv::Mat& t, 
-                            const float x_known, const cv::Mat& offset, const cv::Mat& T)
+                            const float x_known, const float z_cut_off, const cv::Mat& offset, const cv::Mat& T)
 {
     cv::Mat xyz_points = cv::Mat::zeros(line_pos.rows,3, cv::DataType<double>::type);
     unsigned count = 0;
@@ -264,7 +264,7 @@ cv::Mat laser_line_to_xyz(  const cv::Mat& line_pos, const cv::Mat& M, const cv:
             //~ # Correct post-offset
             PP -= offset.t();
             
-            if( PP.at<double>(2) >= 0 )
+            if( PP.at<double>(2) >= z_cut_off )
             {
                 // Apply post-transformation
                 //~ PP = T * PP
@@ -278,6 +278,9 @@ cv::Mat laser_line_to_xyz(  const cv::Mat& line_pos, const cv::Mat& M, const cv:
         
         y2d += 1;
     }
+    
+    if(count == 0)
+        count = 1;
     
     xyz_points.resize(count);
     

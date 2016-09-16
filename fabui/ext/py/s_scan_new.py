@@ -102,7 +102,7 @@ class SweepScan(GCodePusher):
         scanfile = os.path.join(self.scan_dir, "{0}{1}.jpg".format(number, suffix) )
         self.camera.capture(scanfile, quality=100)
     
-    def __post_processing(self, camera_file, start_x, end_x, head_y, bed_z, a_offset, slices, cloud_file, task_id, object_id, object_name, file_name):
+    def __post_processing(self, camera_file, start, end, head_y, bed_z, a_offset, slices, cloud_file, task_id, object_id, object_name, file_name):
         """
         """
         threshold = 0
@@ -129,8 +129,9 @@ class SweepScan(GCodePusher):
         r           = np.matrix( extrinsic['r'] )
         
         T           = np.eye(3, dtype=float)
+        T = tripy.roty_matrix(0)
         
-        mid_x       = float( (start_x+end_x) / 2 )
+        mid_x       = float( (start+end) / 2 )
         z_offset    = float(2*offset[2] - bed_z)
         
         asc = ASCFile(cloud_file)
@@ -146,23 +147,17 @@ class SweepScan(GCodePusher):
             if img_idx == None:
                 break
                 
-            # do processing
-            #~ line_pos, threshold, w, h = tripy.process_slice(img_fn, img_l_fn, threshold)
-            #~ line_pos, w, h = tripy.process_slice(img_fn, img_l_fn, threshold)
-            
+            # do processing           
             xy_line, w, h = tripy.process_slice2(img_fn, img_l_fn, cam_m, dist_coefs, width, height)
             
-            pos = (float(idx*(end_x-start_x)) / float(slices)) + start_x
+            pos = (float(idx*(end-start)) / float(slices)) + start
             print "{0} / {1}".format(idx,pos)
-            #print json.dumps(line_pos)
 
-            #print len(line_pos)
             head_x = float(pos)
             
-            offset = np.matrix([mid_x, head_y, z_offset])
-            
-            xyz_points = tripy.laser_line_to_xyz(xy_line, M, R, t, head_x, offset, T)
-            #~ xyz_points = tricpp.laser_line_to_xyz(xy_line, M, R, t, head_x, offset, T)
+            offset = np.matrix([mid_x, head_y, z_offset], dtype=float)
+
+            xyz_points = tricpp.laser_line_to_xyz(xy_line, M, R, t, head_x, -50.0, offset, T)
 
             asc.write_points(xyz_points)
             
