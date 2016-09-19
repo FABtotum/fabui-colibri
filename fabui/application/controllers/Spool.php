@@ -2,33 +2,18 @@
 /**
  * 
  * @author Krios Mane
+ * @author Daniel Kesler
  * @version 0.1
  * @license https://opensource.org/licenses/GPL-3.0
  * 
  */
- defined('BASEPATH') OR exit('No direct script access allowed');
+
+defined('BASEPATH') OR exit('No direct script access allowed');
  
- class Maintenance extends FAB_Controller {
- 	
-	public function index()
+class Spool extends FAB_Controller {
+
+	public function index($type = 'load')
 	{
-		//TODO
-	}
-	
-	/**
-	 * 
-	 */
-	public function headInstallation()
-	{
-		//TODO
-	}
-	
-	/**
-	 * 
-	 */
-	public function spool()
-	{
-		//load libraries, helpers, model, config
 		$this->load->library('smart');
 		$this->load->helper('fabtotum_helper');
 		$this->load->helper('form');
@@ -39,12 +24,12 @@
 			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
 			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
 		);
-        
-        $data['myvar'] = False;
-        
-        $headerToolbar = '';
-        $widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
-        
+
+		$data['myvar'] = False;
+
+		$headerToolbar = '';
+		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'maintenance-spool-widget';
 		$widget->header = array('icon' => 'fa-cog', "title" => "<h2>Spool</h2>", 'toolbar'=>$headerToolbar);
@@ -55,39 +40,7 @@
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
-	
-	/**
-	 * 
-	 */
-	public function bedCalibration()
-	{
-		//TODO
-	}
-	
-	/**
-	 * 
-	 */
-	public function probeCalibration()
-	{
-		//TODO
-	}
-	
-	/**
-	 * 
-	 */
-	public function firstSetup()
-	{
-		//TODO
-	}
-	
-	/**
-	 * 
-	 */
-	public function systemInfo()
-	{
-		//TODO
-	}
-			
- }
+
+}
  
 ?>

@@ -67,9 +67,14 @@ $route['filemanager/new-object']  = 'filemanager/newObject';
 //settings
 $route['settings/cam'] = 'cam';
 //maintenance
-$route['maintenance/head-installation'] = 'maintenance/headInstallation';
-$route['maintenance/bed-calibration']   = 'maintenance/bedCalibration';
-$route['maintenance/probe-calibration'] = 'maintenance/probeCalibration';
-$route['maintenance/first-setup']       = 'maintenance/firstSetup';
-$route['maintenance/system-info']       = 'maintenance/systemInfo';
+$route['maintenance/head-installation']         = 'head';
+$route['maintenance/bed-calibration']           = 'bed';
+$route['maintenance/spool-management']          = 'spool';
+$route['maintenance/probe-length-calibration']  = 'probe/index/length';
+$route['maintenance/probe-angle-calibration']   = 'probe/index/angle';
+$route['maintenance/feeder-calibration']        = 'feeder/index/calibrate';
+$route['maintenance/feeder-engage']             = 'feeder/index/engage';
+$route['maintenance/4th-axis']                  = 'fourthaxis';
+$route['maintenance/first-setup']               = 'firstsetup';
+$route['maintenance/system-info']               = 'systeminfo';
 

@@ -152,7 +152,7 @@ class RotaryScan(GCodePusher):
             T = tripy.roty_matrix(pos)
             offset = np.matrix([head_x, head_y, z_offset])
             
-            xyz_points = tripy.laser_line_to_xyz(xy_line, M, R, t, head_x, 0.0, offset, T)
+            xyz_points = tricpp.laser_line_to_xyz(xy_line, M, R, t, head_x, 0.0, offset, T)
 
             #~ points = rotary_line_to_xyz(xy_line, pos, w, h)
             asc.write_points(xyz_points)

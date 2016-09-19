@@ -79,6 +79,50 @@ if(!function_exists('saveSettings'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('loadHeads'))
+{
+	/**
+	 * 
+	 * 
+	 *  Load settings configuration
+	 *  @return settings configuration
+	 * 
+	 */
+	function loadHeads()
+	{
+		$CI =& get_instance();
+		$CI->load->helper('file');
+		$CI->config->load('fabtotum');
+		#$settings = json_decode(file_get_contents($CI->config->item($type.'_settings')), true);
+		$heads_dir = $CI->config->item('heads');
+		$heads_files = array_diff(scandir($heads_dir), array('..', '.'));
+		
+		$heads = array();
+		
+		$constants = get_defined_constants(true);
+		$json_errors = array();
+		foreach ($constants["json"] as $name => $value) {
+			if (!strncmp($name, "JSON_ERROR_", 11)) {
+				$json_errors[$value] = $name;
+			}
+		}
+		
+		foreach($heads_files as $head)
+		{
+			$head_file = $heads_dir . '/' . $head;
+			$key = basename($head_file, '.json');
+			$content = file_get_contents($head_file);
+			// UTF-8 safety
+			$content = iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($content));
+			$heads[$key] = json_decode($content , true);
+			
+			//echo '<p>Last error: ' . $json_errors[json_last_error()] . '</p>';
+		}
+		
+		return $heads;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('loadHead'))
 {
 	/**

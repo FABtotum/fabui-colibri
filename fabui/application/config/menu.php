@@ -6,12 +6,12 @@
  * @license https://opensource.org/licenses/GPL-3.0
  * 
  */
- 
- $config['menu'] = array(
- 	'dashboard' => array(
- 		'title' => 'Dashboard',
- 		'icon' => 'fa fa-dashboard',
- 		'url' => site_url('dashboard')
+
+$config['menu'] = array(
+	'dashboard' => array(
+		'title' => 'Dashboard',
+		'icon' => 'fa fa-dashboard',
+		'url' => site_url('dashboard')
 	),
 	'make' => array(
 		'title' => 'Make',
@@ -50,32 +50,64 @@
 		'sub' => array(
 			'head' => array(
 				'title' => 'Head Installation',
-				'icon' => '',
+				'icon' => 'fa-toggle-down',
 				'url' => site_url('maintenance/head-installation')
 			),
 			'spool' => array(
-				'title' => 'Spool',
-				'icon' => '',
-				'url' => site_url('maintenance/spool')
+				'title' => 'Spool Management',
+				'icon' => 'fa-circle-o-notch',
+				'url' => site_url('maintenance/spool-management')
 			),
 			'bedcalibration' => array(
 				'title' => 'Bed Calibration',
-				'icon' => '',
+				'icon' => 'fa-arrows-h',
 				'url' => site_url('maintenance/bed-calibration')
 			),
 			'probecalibration' => array(
 				'title' => 'Probe Calibration',
-				'icon' => '',
-				'url' => site_url('maintenance/probe-calibration')
+				'icon' => 'fa-level-down',
+				'sub'  => array(
+					'length' => array(
+						'title' => 'Length Calibration',
+						'icon' => 'fa-arrows-v',
+						'url' => site_url('maintenance/probe-length-calibration')
+					),
+					'angle' => array(
+						'title' => 'Angle Calibration',
+						'icon' => 'fa-angle-left',
+						'url' => site_url('maintenance/probe-angle-calibration')
+					)
+				)
+			),
+			'feedercalibration' => array(
+				'title' => 'Feeder',
+				'icon' => 'fa-level-down',
+				'sub'  => array(
+					'length' => array(
+						'title' => 'Feeder Calibration',
+						'icon' => 'fa-cog',
+						'url' => site_url('maintenance/feeder-calibration')
+					),
+					'angle' => array(
+						'title' => 'Feeder Engage',
+						'icon' => '',
+						'url' => site_url('maintenance/feeder-engage')
+					)
+				)
+			),
+			'4thaxis' => array(
+				'title' => '4th Axis',
+				'icon' => 'fa-arrows-h',
+				'url' => site_url('maintenance/4th-axis')
 			),
 			'firstsetup' => array(
 				'title' => 'First Setup',
-				'icon' => '',
+				'icon' => 'fa-magic',
 				'url' => site_url('maintenance/first-setup')
 			),
 			'systeminfo' => array(
 				'title' => 'System Info',
-				'icon' => '',
+				'icon' => 'fa-info-circle',
 				'url' => site_url('maintenance/system-info')
 			)
 		)
