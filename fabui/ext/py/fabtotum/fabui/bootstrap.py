@@ -25,6 +25,7 @@ __version__ = "1.0"
 # Import standard python module
 import gettext
 import json
+import os
 
 # Import external modules
 
@@ -159,7 +160,7 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     
     # Load Head
     #~ try:
-    head_file = config.get('settings', 'hardware')['head']
+    head_file = os.path.join( config.get('hardware', 'heads'), config.get('settings', 'hardware')['head'] + '.json');
     with open(head_file) as json_f:
         head = json.load(json_f)
     # Set head PID

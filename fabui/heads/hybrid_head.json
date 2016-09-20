@@ -4,5 +4,6 @@
   "link": "https://store.fabtotum.com/eu/hybrid-head-v2-hyb.html",
   "pid": "M301 P15 I5 D30",
   "max_temp": "230",
+  "max_rpm": "14000",
   "fw_id": "1"
 }
