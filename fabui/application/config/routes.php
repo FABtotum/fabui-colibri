@@ -67,7 +67,7 @@ $route['filemanager/new-object']  = 'filemanager/newObject';
 //settings
 $route['settings/cam'] = 'cam';
 //maintenance
-$route['maintenance/head-installation']         = 'head';
+$route['maintenance/head/install']              = 'head/index/install';
 $route['maintenance/bed-calibration']           = 'bed';
 $route['maintenance/spool-management']          = 'spool';
 $route['maintenance/probe-length-calibration']  = 'probe/index/length';

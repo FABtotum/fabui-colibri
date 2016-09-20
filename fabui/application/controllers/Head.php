@@ -12,7 +12,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 class Head extends FAB_Controller {
 
-	public function index()
+	public function index($type = 'install')
+	{
+		switch($type){
+			case 'install':
+				$this->doInstall();
+				break;
+			case 'add':
+				$this->doAdd();
+				break;
+		}
+	}
+	
+	public function doInstall()
 	{
 		//load libraries, helpers, model
 		$this->load->library('smart');
@@ -22,29 +34,33 @@ class Head extends FAB_Controller {
 		$data = array();
 
 		$_units = loadSettings();
+/*
+		if (isset($_units['settings_type']) && $_units['settings_type'] == 'custom') {
+			$_units = json_decode(file_get_contents($this -> config -> item('fabtotum_custom_config_units', 'fabtotum')), TRUE);
+		}
+*/
+		if (isset($_units['settings_type']) && $_units['settings_type'] == 'custom') {
+			$_units = loadSettings( $_units['settings_type'] );
+		}
+		
 		$heads  = loadHeads();
 		
 		$data['units'] = $_units;
 		$data['heads'] = $heads;
 
 		$heads_list = array();
-		$heads_list[] = array('head_shape' => '---');
+		$heads_list['head_shape'] = '---';
 		
 		foreach($heads as $head => $val)
 		{
-			$heads_list[] = array($head => $val['name']);
+			$heads_list[$head] = $val['name'];
 		}
 		
-		$heads_list[] = array('more_heads' => 'Get more heads');
+		$heads_list['more_heads'] = 'Get more heads';
 		$data['heads_list'] = $heads_list;
 		
-		$data['head'] = isset($_units['hardware']['head']['type']) ? $_units['hardware']['head']['type'] : 'head_shape';
+		$data['head'] = isset($_units['hardware']['head']) ? $_units['hardware']['head'] : 'head_shape';
 		
-/*
-		if (isset($_units['settings_type']) && $_units['settings_type'] == 'custom') {
-			$_units = json_decode(file_get_contents($this -> config -> item('fabtotum_custom_config_units', 'fabtotum')), TRUE);
-		}
-*/
 		//main page widget
 		$widgetOptions = array(
 			'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
@@ -62,6 +78,51 @@ class Head extends FAB_Controller {
 		$this->addJsInLine($this->load->view('head/install_js', $data, true));
 		$this->content = $widget->print_html(true);
 		$this->view();
+	}
+	
+	public function doAdd()
+	{
+		$this->view();
+	}
+	
+	public function setHead($new_head)
+	{
+		// $params = $this->input->post(); // for POST parameters
+		$this->load->helper('fabtotum_helper');
+		$heads  = loadHeads();
+
+		$_data = loadSettings();
+		$settings_type = $_data['settings_type'];
+		if (isset($_data['settings_type']) && $_data['settings_type'] == 'custom') {
+			$_data = loadSettings( $_data['settings_type'] );
+		}
+
+		$head_info = $heads[$new_head];
+		$pid	   = $head_info['pid'];
+		$fw_id	   = $head_info['fw_id'];
+		
+		if ($pid != '') {
+			writeToCommandFile('!gcode:'.$pid);
+			sleep(0.1);
+			writeToCommandFile('!gcode:M500');
+			sleep(0.1);
+		}
+		writeToCommandFile('!gcode:M793 S'.$fw_id);
+		sleep(0.1);
+		writeToCommandFile('!gcode:M500');
+		sleep(0.1);
+		writeToCommandFile('!gcode:M999');
+		sleep(0.1);
+		writeToCommandFile('!gcode:G4 P500');
+		sleep(0.1);
+		writeToCommandFile('!gcode:M728');
+		sleep(0.1);
+
+		$_data['hardware']['head'] = $new_head;
+		
+		saveSettings($_data, $settings_type);
+
+		$this->output->set_content_type('application/json')->set_output(json_encode( $head_info ));
 	}
 
 }

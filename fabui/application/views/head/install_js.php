@@ -16,22 +16,22 @@
 	 	$("#set-head").on('click', set_head);
 	 	
 	 	
-	 	//~ <?php if(isset($_REQUEST['head_installed']) && $units['hardware']['head']['type'] != 'mill_v2'): ?>
+	 	<?php if(isset($_REQUEST['head_installed']) && $units['hardware']['head'] != 'mill_v2'): ?>
 	 		
-	 		//~ $.SmartMessageBox({
-				//~ title : "<i class='fa fa-warning'></i> New head has been installed, it is recommended to repeat the Probe Calibration operation",
-				//~ buttons : '[<i class="fa fa-crosshairs"></i> Calibrate][Ignore]'
-			//~ }, function(ButtonPressed) {
-				//~ if(ButtonPressed === "Calibrate") {	
-						//~ document.location.href="<?php echo site_url('maintenance/probe-calibration'); ?>";		
-				//~ }
-				//~ if (ButtonPressed === "Ignore") {
+	 		$.SmartMessageBox({
+				title : "<i class='fa fa-warning'></i> New head has been installed, it is recommended to repeat the Probe Calibration operation",
+				buttons : '[<i class="fa fa-crosshairs"></i> Calibrate][Ignore]'
+			}, function(ButtonPressed) {
+				if(ButtonPressed === "Calibrate") {	
+						document.location.href="<?php echo site_url('maintenance/probe-length-calibration'); ?>";		
+				}
+				if (ButtonPressed === "Ignore") {
 					
-				//~ }
+				}
 		
-			//~ });
+			});
 	 	
-	 	//~ <?php endif; ?>
+	 	<?php endif; ?>
 	 	
 	 	
 	 });
@@ -62,5 +62,29 @@
 	 }
 
 	function set_head(){
+	 	if($("#heads").val() == 'head_shape'){
+	 		alert('Please select a Head');
+	 		return false;
+	 	}
+	 	
+	 	IS_MACRO_ON = true;
+	 	openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Installing head');
+	 	
+	 	$.ajax({
+			type: "POST",
+			url: "<?php echo site_url("head/setHead") ?>/"+ $("#heads").val(),
+			dataType: 'json'
+		}).done(function( data ) {
+			
+			$(".alerts-container").find('div:first-child').remove();
+			$(".alerts-container").append('<div class="alert alert-success animated  fadeIn" role="alert"><i class="fa fa-check"></i> Well done! Now your <strong>FABtotum Personal Fabricator</strong> is set for the <strong>'+ data.name +'</strong>.</div>');
+			IS_MACRO_ON = false;
+			
+			waitContent('Well done! Now your <strong><i>FABtotum Personal Fabricator</i></strong> is configured to use <strong><i>'+ data.name+'</i></strong>.');
+			
+			setTimeout(function(){document.location.href =  '<?php echo site_url('head/index/install'); ?>?head_installed';}, 2000);
+			
+		});
 	}
+	
 </script>
