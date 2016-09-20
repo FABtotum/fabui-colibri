@@ -10,6 +10,16 @@
  
  class Scan extends FAB_Controller {
  	
+ 	function __construct()
+ 	{
+ 		parent::__construct();
+ 		if(!$this->input->is_cli_request()){ //avoid this form command line
+ 			$this->load->model('Tasks', 'tasks');
+ 			//$this->tasks->truncate();
+ 			$this->runningTask = $this->tasks->getRunning();
+ 		}
+ 	}
+ 	
 	public function index()
 	{
 		//load libraries, helpers, model
@@ -17,13 +27,18 @@
 		$this->load->model('ScanConfiguration', 'scanconfiguration');
 		//data
 		$data = array();
-		$data['scanModes'] = $this->scanconfiguration->getModes();
-		$data['scanQualities'] = $this->scanconfiguration->getQualities();
-		$data['probingQualities'] = $this->scanconfiguration->getProbingQualities(); 
-		$data['modesForDropdown'] = $this->scanconfiguration->getModesForDropdown();
-		$data['step1']  = $this->load->view('scan/wizard/step1', $data, true );
-		$data['step2']  = $this->load->view('scan/wizard/step2', null, true );
-		$data['step3']  = $this->load->view('scan/wizard/step3', null, true );
+		$data['runningTask'] = $this->runningTask;
+		if(!$this->runningTask){
+			$data['scanModes'] = $this->scanconfiguration->getModes();
+			$data['scanQualities'] = $this->scanconfiguration->getQualities();
+			$data['probingQualities'] = $this->scanconfiguration->getProbingQualities();
+			$data['modesForDropdown'] = $this->scanconfiguration->getModesForDropdown();
+			$data['step1']  = $this->load->view('scan/wizard/step1', $data, true );
+			$data['step2']  = $this->load->view('scan/wizard/step2', null, true );
+			$data['step3']  = $this->load->view('scan/wizard/step3', null, true );
+		}
+		
+		$data['step4']  = $this->load->view('scan/wizard/step4', null, true );
 		$data['wizard'] = $this->load->view('scan/wizard/main',  $data, true );
 		//main page widget
 		$widgetOptions = array(
@@ -36,12 +51,12 @@
 		$widget->body   = array('content' => $this->load->view('scan/main_widget', $data, true ), 'class'=>'fuelux');
 		$this->content = $widget->print_html(true);
 		
-		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.js'); //wizard
+		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
 		$this->addJSFile('/assets/js/plugin/cropper/cropper.js'); //validator
 		$this->addCssFile('/assets/js/plugin/cropper/cropper.min.css');
 		$this->addCssFile('/assets/css/scan/style.css');
-		$this->addJsFile('/assets/js/scan/scan.js');
+		$this->addJsFile('/assets/js/controllers/scan/scan.js');
 		$this->addJsInLine($this->load->view('scan/js', $data, true),true);
 		$this->addJsInLine('<script type="text/javascript">initScanPage();</script>');
 		

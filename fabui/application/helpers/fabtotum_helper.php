@@ -82,11 +82,11 @@ if(!function_exists('saveSettings'))
 if(!function_exists('loadHeads'))
 {
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 *  Load settings configuration
 	 *  @return settings configuration
-	 * 
+	 *
 	 */
 	function loadHeads()
 	{
@@ -96,9 +96,9 @@ if(!function_exists('loadHeads'))
 		#$settings = json_decode(file_get_contents($CI->config->item($type.'_settings')), true);
 		$heads_dir = $CI->config->item('heads');
 		$heads_files = array_diff(scandir($heads_dir), array('..', '.'));
-		
+
 		$heads = array();
-		
+
 		$constants = get_defined_constants(true);
 		$json_errors = array();
 		foreach ($constants["json"] as $name => $value) {
@@ -106,7 +106,7 @@ if(!function_exists('loadHeads'))
 				$json_errors[$value] = $name;
 			}
 		}
-		
+
 		foreach($heads_files as $head)
 		{
 			$head_file = $heads_dir . '/' . $head;
@@ -115,10 +115,10 @@ if(!function_exists('loadHeads'))
 			// UTF-8 safety
 			$content = iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($content));
 			$heads[$key] = json_decode($content , true);
-			
+				
 			//echo '<p>Last error: ' . $json_errors[json_last_error()] . '</p>';
 		}
-		
+
 		return $heads;
 	}
 }
@@ -166,7 +166,7 @@ if(!function_exists('doCommandLine'))
 				}
 			}
 		}
-		if($background) $command .= ' &';
+		if($background) $command .= ' > /tmp/fabui/scan.log &';
 		log_message('debug', $command);
 		return shell_exec($command);
 	}

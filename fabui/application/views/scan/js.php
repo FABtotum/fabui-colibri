@@ -13,12 +13,16 @@
 	var wizard; //wizard object
 	var scanQualites = new Array();
 	var probingQualities = new Array();
+	<?php if(isset($scanQualities)): ?>
 	<?php foreach($scanQualities as $quality):?>
 	scanQualites.push(<?php echo $quality['values'];?>);
 	<?php endforeach;?>
+	<?php endif; ?>
+	<?php if(isset($probingQualities)): ?>
 	<?php foreach($probingQualities as $quality):?>
 	probingQualities.push(<?php echo $quality['values'];?>);
 	<?php endforeach;?>
+	<?php endif; ?>
 	var scanMode = 0;
 	var scanModeInstructions = 0;
 </script>  
