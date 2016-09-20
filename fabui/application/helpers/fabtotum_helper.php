@@ -115,8 +115,6 @@ if(!function_exists('loadHeads'))
 			// UTF-8 safety
 			$content = iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($content));
 			$heads[$key] = json_decode($content , true);
-				
-			//echo '<p>Last error: ' . $json_errors[json_last_error()] . '</p>';
 		}
 
 		return $heads;

@@ -28,14 +28,19 @@ class Head extends FAB_Controller {
 		$data['heads'] = $heads;
 
 		$heads_list = array();
-		$heads_list[] = array('head_shape' => '---');
+		$heads_list['head_shape'] = '---';
+		
+		
 		
 		foreach($heads as $head => $val)
 		{
-			$heads_list[] = array($head => $val['name']);
+			//$heads_list[] = array($head => $val['name']);
+			$heads_list[$head] = $val['name'];
+			
 		}
 		
-		$heads_list[] = array('more_heads' => 'Get more heads');
+		$heads_list['more_heads'] ='Get more heads';
+		
 		$data['heads_list'] = $heads_list;
 		
 		$data['head'] = isset($_units['hardware']['head']['type']) ? $_units['hardware']['head']['type'] : 'head_shape';

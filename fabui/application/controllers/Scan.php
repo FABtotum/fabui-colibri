@@ -38,7 +38,7 @@
 			$data['step3']  = $this->load->view('scan/wizard/step3', null, true );
 		}
 		
-		$data['step4']  = $this->load->view('scan/wizard/step4', null, true );
+		$data['step4']  = $this->load->view('scan/wizard/step4', $data, true );
 		$data['wizard'] = $this->load->view('scan/wizard/main',  $data, true );
 		//main page widget
 		$widgetOptions = array(
@@ -58,7 +58,8 @@
 		$this->addCssFile('/assets/css/scan/style.css');
 		$this->addJsFile('/assets/js/controllers/scan/scan.js');
 		$this->addJsInLine($this->load->view('scan/js', $data, true),true);
-		$this->addJsInLine('<script type="text/javascript">initScanPage();</script>');
+		if($this->runningTask) $this->addJsInLine('<script type="text/javascript">initScanPage(true);</script>');
+		else $this->addJsInLine('<script type="text/javascript">initScanPage(false);</script>');
 		
 		$this->view(); 
 	}

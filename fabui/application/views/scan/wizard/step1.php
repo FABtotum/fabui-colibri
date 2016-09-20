@@ -8,7 +8,7 @@
  * 
  */
 ?>
-<div class="step-pane active" id="step1" data-step="1">
+<div class="step-pane <?php echo !$runningTask ? 'active' : ''; ?>" id="step1" data-step="1">
 	<hr class="simple">
 	<div class="row">
 		<?php foreach($scanModes as $mode): ?>

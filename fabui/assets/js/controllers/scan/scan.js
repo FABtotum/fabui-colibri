@@ -500,6 +500,7 @@ function handleRotatingScan()
 				closeWait();
 				$( "#rotating-first-row" ).remove();
 				$( "#rotating-second-row" ).removeClass('hidden').addClass("animated slideInRight");
+				setInterval(timer, 1000);
 			}
 		});
 	}else if(action == 'start'){
@@ -525,6 +526,9 @@ function handleRotatingScan()
 				showErrorAlert('Warning', response.trace);
 			}else{
 				closeWait();
+				$('#myWizard').wizard('next');
+				disableButton('.button-prev');
+				disableButton('.button-next');
 				console.log("START");
 			}
 		});
@@ -630,12 +634,86 @@ function handlePhotogrammetry()
 /**
 *
 */
-function initScanPage()
+function initScanPage(running)
 {
 	initWizard();
-	$(".mode-choise").on('click', setScanMode);
+	if(running){
+		console.log("running");
+		initRunningTaskPage();
+	}else{
+		$(".mode-choise").on('click', setScanMode);
+	}
+	
 }
 //when page is ready
 $(document).ready(function() { 
 	
-});    
+});  
+/**
+* override default manage monitor for scan controller
+*/
+if(typeof manageMonitor != 'function'){
+	window.manageMonitor = function(data){
+		updateTaskProgress(data.task.percent);
+		if(data.scan.hasOwnProperty('postprocessing_percent')){
+			$(".postprocessing").show();
+			updatePostprocessingProgressBar(data.scan.postprocessing_percent);
+		}
+		
+		updateSlices(data.scan.scan_total, data.scan.scan_current);
+			
+		console.log(data.scan);
+	};
+}
+/**
+*
+**/
+function initRunningTaskPage()
+{
+	getTaskMonitor(true);
+}
+/**
+*
+**/
+function getTaskMonitor(firstCall)
+{
+	$.get('/temp/task_monitor.json'+ '?' + jQuery.now(), function(data, status){
+		manageMonitor(data);
+		if(firstCall){
+			elapsedTime = parseInt(data.task.duration);
+			setInterval(timer, 1000);
+		}
+	});
+}
+/**
+*
+**/
+function updateTaskProgress(value)
+{
+	$(".task-progress").html(parseFloat(value).toFixed(1) + " %");
+	$("#task-progress-bar").attr("style", "width:" +value +"%;");
+}
+/**
+*
+**/
+function updatePostprocessingProgressBar(value)
+{
+	$(".postprocessing-progress").html(parseFloat(value).toFixed(1) + " %");
+	$("#postprocessing-progress-bar").attr("style", "width:" +value + "%");
+}
+/**
+*
+**/
+function updateSlices(total, current)
+{
+	$(".current-scan").html(current);
+	$(".total-scan").html(total);
+}
+/**
+*
+**/
+function timer()
+{	
+	elapsedTime++;
+	$(".elapsed-time").html(transformSeconds(elapsedTime));
+}

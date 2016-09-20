@@ -25,4 +25,5 @@
 	<?php endif; ?>
 	var scanMode = 0;
 	var scanModeInstructions = 0;
+	var elapsedTime = 0;
 </script>  

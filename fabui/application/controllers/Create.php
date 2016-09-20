@@ -80,7 +80,7 @@
 		//add css files
 		$this->addCssFile('/assets/css/create/style.css');
 		//add javascript dependencies
-		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.js'); //wizard
+		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
 		if(!$this->runningTask){ //if task is running these filee are not needed
 			$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
 			$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
