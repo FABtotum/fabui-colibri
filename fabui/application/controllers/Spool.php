@@ -15,7 +15,6 @@ class Spool extends FAB_Controller {
 	public function index($type = 'load')
 	{
 		$this->load->library('smart');
-		$this->load->helper('fabtotum_helper');
 		$this->load->helper('form');
 		$this->config->load('fabtotum');
         
@@ -25,22 +24,42 @@ class Spool extends FAB_Controller {
 			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
 		);
 
-		$data['myvar'] = False;
+		$data = array();
 
-		$headerToolbar = '';
-		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		$headerToolbar = ''; //'<div class="alert alert-info animated fadeIn"><h4 class="text-center"><i class="fa fa-shopping-cart"></i> <a target="_blank" href="https://store.fabtotum.com/eu/store/filaments.html?from=fabui">Get new filaments!</a></h4></div>';
+		$widgeFooterButtons = '';
+		//$this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'maintenance-spool-widget';
 		$widget->header = array('icon' => 'fa-cog', "title" => "<h2>Spool</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('maintenance/spool_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
+		$widget->body   = array('content' => $this->load->view('spool/main_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 		
-		//~ $this->add JsInLine($this->load->view('maintenance/spool_js', $data, true));
-		//~ //$this->addCSSInLine('<style type="text/css">.custom_settings{display:none !important;}</style>'); 
+		$this->addJsInLine($this->load->view('spool/js', $data, true));
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
 
+	public function load()
+	{
+		
+	}
+
+	public function preUnload()
+	{
+		$this->load->helpers('fabtotum_helper');
+		
+		result = doMacro('pre_unload_spool');
+		
+		//~ result = array(true);
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode(result));
+	}
+
+	public function unload()
+	{
+		//$this->output->set_content_type('application/json')->set_output(json_encode( $head_info ));
+	}
 }
  
 ?>
