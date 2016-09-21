@@ -637,6 +637,7 @@ function handlePhotogrammetry()
 function initScanPage(running)
 {
 	initWizard();
+	$(".abort").on('click', abortScan);
 	if(running){
 		console.log("running");
 		initRunningTaskPage();
@@ -735,6 +736,7 @@ function timer()
 **/
 function handleTaskStatus(status)
 {
+	
 	if(status == 'completing'){		
 		if(isCompleting == false) openWait('Finalizing scan');
 		isCompleting = true;
@@ -743,10 +745,22 @@ function handleTaskStatus(status)
 			openWait('Scan completed');
 			waitContent('refreshing page');
 			setTimeout(function () {
-				document.location.href = document.location.href;
+				location.reload();
 			}, 5000);
 		}
 		isCompleted = true;
+	}else if(status == 'aborting'){
+		if(isAborting == false) openWait('Aborting scan');
+		isAborting = true;
+	}else if(status == 'aborted'){
+		if(isAborted == false){
+			openWait('Scan aborted');
+			waitContent('refreshing page');
+			setTimeout(function () {
+				location.reload();
+			}, 5000);
+		}
+		isAborted = true;
 	}else{
 		isRunning = true;
 	}
@@ -773,4 +787,32 @@ function updateResolution(width, height)
 function updateIso(value)
 {
 	$(".iso").html(value);
+}
+/**
+*
+**/
+function abortScan()
+{	
+	disableButton('.abort');
+	doAction('abort', abortCallback);
+}
+/**
+*
+**/
+function abortCallback(data)
+{
+	console.log(data);
+}
+/**
+*
+**/
+function doAction(action, callback)
+{
+	$.ajax({
+		type: 'get',
+		url: '/fabui/scan/action/' + action,
+		dataType: 'json'
+	}).done(function(response) {
+		callback(response);
+	});
 }

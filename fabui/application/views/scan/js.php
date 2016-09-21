@@ -30,4 +30,6 @@
 	var isRunning = false;
 	var isCompleting = false;
 	var isCompleted = false;
+	var isAborting = false;
+	var isAborted = false;
 </script>  

@@ -62,6 +62,12 @@
 							<div class="fake-progress"></div>
 						</div>
 					</div>
+					<hr class="simple">
+					<div class="row">
+						<div class="col-sm-6">
+							<button type="button" class="btn btn-default btn-sm btn-block abort"><i class="fa fa-stop"></i> Abort scan</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
