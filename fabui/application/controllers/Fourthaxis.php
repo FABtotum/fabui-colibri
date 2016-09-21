@@ -31,8 +31,17 @@ class FourthAxis extends FAB_Controller {
 		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>Engage 4th Axis</h2>");
 		$widget->body   = array('content' => $this->load->view('fourthaxis/main_widget', $data, true ), 'class'=>'fuelux');
 		
+		$this->addJsInLine($this->load->view('fourthaxis/js', $data, true));
 		$this->content = $widget->print_html(true);
 		$this->view();
+	}
+	
+	public function engage($time)
+	{
+		// load jog factory class
+		$this->load->helpers('fabtotum_helper');
+		$response = doMacro('engage_4axis');
+		$this->output->set_content_type('application/json')->set_output(json_encode( $response ));
 	}
 
 }

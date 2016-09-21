@@ -63,7 +63,9 @@ class ProbeScan(GCodePusher):
             'type'          : 'probe',
             'projection'    : 'planar',
             'scan_total'    : 0,
-            'scan_current'  : 0
+            'scan_current'  : 0,
+            'point_count'   : 0,
+            'cloud_size'    : 0.0
         }
         
         self.add_monitor_group('scan', self.scan_stats)

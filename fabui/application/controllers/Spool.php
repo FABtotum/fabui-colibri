@@ -49,9 +49,7 @@ class Spool extends FAB_Controller {
 	{
 		$this->load->helpers('fabtotum_helper');
 		
-		result = doMacro('pre_unload_spool');
-		
-		//~ result = array(true);
+		$result = doMacro('pre_unload_spool');
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode(result));
 	}

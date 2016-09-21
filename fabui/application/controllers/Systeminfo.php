@@ -76,6 +76,7 @@ class SystemInfo extends FAB_Controller {
 		$data['os_info'] = shell_exec('uname -a');
 		
 		// == FABTOTUM INFO
+		// $data['fabtotum_info'] = json_decode(shell_exec('sudo python '.PYTHONPATH.'sysinfo.py'), true);
 		$data['fabtotum_info'] = array('fw' => '0.96', 'hw' => 'v1.0');
 		
 		$_units = loadSettings();
@@ -102,6 +103,11 @@ class SystemInfo extends FAB_Controller {
 		$this->content = $widget->print_html(true);
 		$this->view();
     }
+    
+    public function test()
+    {
+		
+	}
 
 }
  

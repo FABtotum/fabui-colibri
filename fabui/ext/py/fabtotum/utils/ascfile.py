@@ -19,7 +19,7 @@
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import standard python module
-
+import os
 # Import external modules
 import numpy as np
 
@@ -32,7 +32,7 @@ class ASCFile:
 
     def write_points(self, points):
         if points is None:
-            return
+            return 0
             
         if len(points)>4:
             for row in xrange(0,len(points)):
@@ -44,6 +44,12 @@ class ASCFile:
                 
                 line = "{0}, {1}, {2}\n".format(x,y,z)
                 self.fd.write(line)
-                
+            return len(points)
+            
+        return 0
+
+    def get_size(self):
+        return os.fstat(self.fd.fileno()).st_size
+
     def close(self):
         self.fd.close()

@@ -6,7 +6,7 @@
 				
 				<div class="col-sm-6 text-center">
 		
-		<img style="max-width: 50%; display: inline;" class="img-responsive" src="assets/img/fourthaxis/a_mode.png">
+		<img style="max-width: 50%; display: inline;" class="img-responsive" src="/assets/img/fourthaxis/a_mode.png">
 		
 	</div>
 	

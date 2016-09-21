@@ -84,7 +84,12 @@ class SweepScan(GCodePusher):
             'projection'    : 'planar',
             'scan_total'    : 0,
             'scan_current'  : 0,
-            'postprocessing_percent' : 0.0
+            'postprocessing_percent' : 0.0,
+            'width'         : width,
+            'height'        : height,
+            'iso'           : iso,
+            'point_count'   : 0,
+            'cloud_size'    : 0.0
         }
         
         self.add_monitor_group('scan', self.scan_stats)
@@ -107,6 +112,7 @@ class SweepScan(GCodePusher):
         """
         threshold = 0
         idx = 0
+        point_count = 0
 
         json_f = open(camera_file)
         camera = json.load(json_f)
@@ -159,13 +165,14 @@ class SweepScan(GCodePusher):
 
             xyz_points = tricpp.laser_line_to_xyz(xy_line, M, R, t, head_x, -50.0, offset, T)
 
-            asc.write_points(xyz_points)
+            point_count += asc.write_points(xyz_points)
             
             idx += 1
             
-            self.scan_stats 
             with self.monitor_lock:
                 self.scan_stats['postprocessing_percent'] = float(idx)*100.0 / float(slices)
+                self.scan_stats['point_count'] = point_count
+                self.scan_stats['cloud_size']  = asc.get_size()
                 self.update_monitor_file()
             
             # remove images
