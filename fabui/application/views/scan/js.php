@@ -26,4 +26,8 @@
 	var scanMode = 0;
 	var scanModeInstructions = 0;
 	var elapsedTime = 0;
+	var objectMode = 'new';
+	var isRunning = false;
+	var isCompleting = false;
+	var isCompleted = false;
 </script>  

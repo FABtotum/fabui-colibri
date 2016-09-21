@@ -223,11 +223,17 @@
 			'-i' => $params['iso'],
 			//'-b' => $params['start'],
 			//'-e' => $params['end'],
-			'-W' => $params['width'],
-			'-H' => $params['height'],
+			//'-W' => $params['width'],
+			//'-H' => $params['height'],
+			//1296x972
+			'-W' => 1296,
+			'-H' => 972,
 			'-d' => '/tmp/fabui',
-			'-N' => 'Object_name_'.time()
+			'-F' => $params['file_name']
 		);
+		if($params['object_mode'] == 'new') $scanArgs['-N'] = $params['object'];
+		if($params['object_mode'] == 'add') $scanArgs['-O'] = $params['object'];
+		
 		startScan('r_scan_new.py', $scanArgs);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'params'=>$scanArgs)));
 		
@@ -291,11 +297,15 @@
 			'-e' => 20,
 			//'-b' => $params['start'],
 			//'-e' => $params['end'],
-			'-W' => $params['width'],
-			'-H' => $params['height'],
+			//'-W' => $params['width'],
+			//'-H' => $params['height'],
+			'-W' => 1296,
+			'-H' => 972,
 			'-d' => '/tmp/fabui',
-			'-N' => 'Object name '.time()
+			'-F' => $params['file_name']
 		);
+		if($params['object_mode'] == 'new') $scanArgs['-N'] = $params['object'];
+		if($params['object_mode'] == 'add') $scanArgs['-O'] = $params['object'];
 		startScan('s_scan_new.py', $scanArgs);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'params'=>$scanArgs)));
 	}

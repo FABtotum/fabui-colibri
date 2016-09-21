@@ -196,8 +196,8 @@ function getReady(modeId)
 function setObjectMode()
 {
 	var radio = $(this);
-	var mode = radio.val();
-	if(mode == 'new'){
+	objecMode = radio.val();
+	if(objecMode == 'new'){
 		$(".section-existing-object").hide();
 		$(".section-new-object").show();
 	}else{
@@ -500,7 +500,7 @@ function handleRotatingScan()
 				closeWait();
 				$( "#rotating-first-row" ).remove();
 				$( "#rotating-second-row" ).removeClass('hidden').addClass("animated slideInRight");
-				setInterval(timer, 1000);
+				
 			}
 		});
 	}else if(action == 'start'){
@@ -508,10 +508,13 @@ function handleRotatingScan()
 		openWait('start');
 		
 		var data = {
-			'slices': $(".quality-slices").val(),
-			'iso'   : $(".quality-iso").val(),
-			'width' : $(".quality-resolution-width").val(), 
-			'height': $(".quality-resolution-height").val(),
+			'slices'      : $(".quality-slices").val(),
+			'iso'         : $(".quality-iso").val(),
+			'width'       : $(".quality-resolution-width").val(), 
+			'height'      : $(".quality-resolution-height").val(),
+			'object_mode' : objectMode,
+			'object'      : objectMode == 'new' ? $("#scan-object-name").val() : $("#scan-objects-list").val(),
+			'file_name'   : $("#scan-file-name").val()
 		};
 		
 		$.ajax({
@@ -525,11 +528,7 @@ function handleRotatingScan()
 				closeWait();
 				showErrorAlert('Warning', response.trace);
 			}else{
-				closeWait();
-				$('#myWizard').wizard('next');
-				disableButton('.button-prev');
-				disableButton('.button-next');
-				console.log("START");
+				startTask();
 			}
 		});
 	}
@@ -550,9 +549,13 @@ function handleSweepScan()
 			'width' : $(".quality-resolution-width").val(), 
 			'height': $(".quality-resolution-height").val(), 
 			'start' : $(".sweep-start").val(), 
-			'end'   : $(".sweep-end").val()
+			'end'   : $(".sweep-end").val(),
 			//'start'   : 5,
 			//'end'     : 8
+			'object_mode' : objectMode,
+			'object'      : objectMode == 'new' ? $("#scan-object-name").val() : $("#scan-objects-list").val(),
+			'file_name'   : $("#scan-file-name").val()
+			
 		};
 		
 		openWait('start');
@@ -567,8 +570,7 @@ function handleSweepScan()
 				closeWait();
 				showErrorAlert('Warning', response.trace);
 			}else{
-				closeWait();
-				console.log("START");
+				startTask();
 			}
 		});
 	}
@@ -594,8 +596,7 @@ function handleProbingScan()
 				closeWait();
 				showErrorAlert('Warning', response.trace);
 			}else{
-				closeWait();
-				console.log("START");
+				startTask();
 			}
 		});
 	}
@@ -627,8 +628,7 @@ function handlePhotogrammetry()
 			}
 		});
 	}else if(action == 'start'){
-		console.log('start');
-		openWait('start'); 
+		startTask();
 	}
 }
 /**
@@ -648,7 +648,18 @@ function initScanPage(running)
 //when page is ready
 $(document).ready(function() { 
 	
-});  
+});
+/**
+*
+**/
+function startTask()
+{
+	closeWait();
+	$('#myWizard').wizard('next');
+	disableButton('.button-prev');
+	disableButton('.button-next');
+	setInterval(timer, 1000);
+}  
 /**
 * override default manage monitor for scan controller
 */
@@ -661,8 +672,10 @@ if(typeof manageMonitor != 'function'){
 		}
 		
 		updateSlices(data.scan.scan_total, data.scan.scan_current);
-			
-		console.log(data.scan);
+		updateClouds(data.scan.point_count, data.scan.cloud_size);
+		updateResolution(data.scan.width, data.scan.height);
+		updateIso(data.scan.iso);
+		handleTaskStatus(data.task.status);
 	};
 }
 /**
@@ -716,4 +729,48 @@ function timer()
 {	
 	elapsedTime++;
 	$(".elapsed-time").html(transformSeconds(elapsedTime));
+}
+/**
+*
+**/
+function handleTaskStatus(status)
+{
+	if(status == 'completing'){		
+		if(isCompleting == false) openWait('Finalizing scan');
+		isCompleting = true;
+	}else if(status == 'completed'){
+		if(isCompleted == false) {
+			openWait('Scan completed');
+			waitContent('refreshing page');
+			setTimeout(function () {
+				document.location.href = document.location.href;
+			}, 5000);
+		}
+		isCompleted = true;
+	}else{
+		isRunning = true;
+	}
+}
+/**
+*
+**/
+function updateClouds(number, size)
+{
+	$(".cloud-points").html(number);
+	$(".cloud-size").html(humanFileSize(size));
+}
+/**
+*
+**/
+function updateResolution(width, height)
+{
+	$(".resolution-width").html(width);
+	$(".resolution-height").html(height);
+}
+/**
+*
+**/
+function updateIso(value)
+{
+	$(".iso").html(value);
 }

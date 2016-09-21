@@ -31,18 +31,18 @@
 				<section class="section-new-object">
 					<label class="input">
 						<i class="icon-prepend fa fa-folder-open"></i>
-						<input type="text" placeholder="Type object name" value="<?php echo $suggestedObjectName; ?>">
+						<input type="text" id="scan-object-name" placeholder="Type object name" value="<?php echo $suggestedObjectName; ?>">
 					</label>
 				</section>
 				<section class="section-existing-object" style="display: none;">
 					<label class="select">
-						<?php echo form_dropdown('shirts', $objectsForDropdown, ''); ?> <i></i>
+						<?php echo form_dropdown('shirts', $objectsForDropdown, '', 'id="scan-objects-list"'); ?> <i></i>
 					</label>
 				</section>
 				<section>
 					<label class="input">
 						<i class="icon-prepend fa fa-file-o"></i>
-						<input type="text" placeholder="Type file name" value="<?php echo $suggestedFileName; ?>">
+						<input type="text" id="scan-file-name" placeholder="Type file name" value="<?php echo $suggestedFileName; ?>">
 					</label>
 				</section>
 			</fieldset>

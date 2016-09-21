@@ -28,8 +28,10 @@
 	public function index($type = 'print'){
 		
 		if($this->runningTask){
+			print_r($this->runningTask);
 			$method = 'do'.ucfirst($this->runningTask['type']);
-			$this->$method();
+			if(method_exists($this, $method)) $this->$method();
+			else redirect('dashboard');
 		}else{
 			switch($type){
 				case 'mill':
@@ -38,6 +40,8 @@
 				case 'print':
 					$this->doPrint();
 					break;
+				default:
+					$this->doPrint();
 			}
 		}
 	}

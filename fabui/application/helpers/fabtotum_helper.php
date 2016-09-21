@@ -156,7 +156,10 @@ if(!function_exists('doCommandLine'))
 					if(array_key_exists($key, $args) && $key != '' && !is_int($key)){
 						$command .= $key.' ';
 					}
-					if($value != '') $command .= ' '.$value.' ';
+					if($value != '') {
+						if(is_int($value)) $command .= ' '.$value.' ';
+						else $command .= ' "'.$value.'" ';
+					}
 				}
 			}else{
 				foreach($args as $arg){
