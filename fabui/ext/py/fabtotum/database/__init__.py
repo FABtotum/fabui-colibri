@@ -97,6 +97,25 @@ class TableItem(object):
     def __getitem__(self, key):
         return self._attribs[key]
     
+    def query_by(self, key, value):
+        """
+        Query item from database by specific key and value.
+        """
+        result = False
+        with self._db.lock:
+            conn = self._db.get_connection()
+            args = ( value, )
+            cursor = conn.execute("SELECT * from {0} where {1}=?".format(self._table, key), args )
+            raw =  cursor.fetchone()
+            if raw:
+                idx = 0
+                for k in self._attribs:
+                    self._attribs[k] = raw[idx]
+                    idx += 1
+                    result = True
+                    
+        return result
+        
     def exists(self):
         """
         Returns whether the item exists in the database.

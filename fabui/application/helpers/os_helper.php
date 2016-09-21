@@ -183,4 +183,44 @@ if(!function_exists('setTimeZone'))
 	}
 }
 
+/**
+ * Pretty bitrate
+ * @param $int
+ * @return string
+ */
+function pretty_bitrate($baud) {
+	$baud = intval($baud);
+	$ret = "unknown";
+	if ($baud > 1000000) {
+		$baud = $baud / 1000000;
+		$ret = "$baud MB/s";
+	} else if ($baud > 1000) {
+		$baud = $baud / 1000;
+		$ret = "$baud kB/s";
+	} else {
+		$ret = "$baud B/s";
+	}
+	return $ret;
+}
+
+/**
+ * Human readable byte size
+ * @param $int
+ * @return string
+ */
+function human_readable_bytes($baud) {
+	$baud = intval($baud);
+	$ret = "unknown";
+	if ($baud > 1000000) {
+		$baud = round($baud / 1000000, 2);
+		$ret = "$baud MB";
+	} else if ($baud > 1000) {
+		$baud = round($baud / 1000, 2);
+		$ret = "$baud kB";
+	} else {
+		$ret = "$baud bytes";
+	}
+	return $ret;
+}
+
 ?>
