@@ -183,24 +183,17 @@ if(!function_exists('setTimeZone'))
 	}
 }
 
-/**
- * Pretty bitrate
- * @param $int
- * @return string
- */
-function pretty_bitrate($baud) {
-	$baud = intval($baud);
-	$ret = "unknown";
-	if ($baud > 1000000) {
-		$baud = $baud / 1000000;
-		$ret = "$baud MB/s";
-	} else if ($baud > 1000) {
-		$baud = $baud / 1000;
-		$ret = "$baud kB/s";
-	} else {
-		$ret = "$baud B/s";
-	}
-	return $ret;
+function transformSeconds($seconds)
+{
+	$sec_num = intval($seconds); // don't forget the second param
+    $hours   = floor($sec_num / 3600);
+    $minutes = floor(($sec_num - ($hours * 3600)) / 60);
+    $seconds = $sec_num - ($hours * 3600) - ($minutes * 60);
+
+    if ($hours   < 10) {$hours   = "0".$hours;}
+    if ($minutes < 10) {$minutes = "0".$minutes;}
+    if ($seconds < 10) {$seconds = "0".$seconds;}
+    return $hours . ':' . $minutes . ':' . $seconds;
 }
 
 /**
@@ -208,17 +201,17 @@ function pretty_bitrate($baud) {
  * @param $int
  * @return string
  */
-function human_readable_bytes($baud) {
-	$baud = intval($baud);
+function humanFileSize($bytes) {
+	$bytes = intval($bytes);
 	$ret = "unknown";
-	if ($baud > 1000000) {
-		$baud = round($baud / 1000000, 2);
-		$ret = "$baud MB";
-	} else if ($baud > 1000) {
-		$baud = round($baud / 1000, 2);
-		$ret = "$baud kB";
+	if ($bytes > 1000000) {
+		$bytes = round($bytes / 1000000, 2);
+		$ret = "$bytes MB";
+	} else if ($bytes > 1000) {
+		$bytes = round($bytes / 1000, 2);
+		$ret = "$bytes kB";
 	} else {
-		$ret = "$baud bytes";
+		$ret = "$bytes bytes";
 	}
 	return $ret;
 }

@@ -168,7 +168,7 @@ if(!function_exists('doCommandLine'))
 			}
 		}
 		if($background) $command .= ' > /tmp/fabui/scan.log &';
-		log_message('debug', $command);
+		log_message('debug', $command . ' &> /tmp/fabui/command_line.log' );
 		return shell_exec($command);
 	}
 }
@@ -183,7 +183,7 @@ if(!function_exists('doMacro'))
 	 * Exec macro operation
 	 * 
 	 */ 
-	function doMacro($macroName, $traceFile = '', $responseFile = '', $extrArgs = '')
+	function doMacro($macroName, $traceFile = '', $extrArgs = '')
 	{
 		if($macroName == '') return;
 		//load CI instancem, helpers, config
@@ -193,12 +193,23 @@ if(!function_exists('doMacro'))
 		
 		$extPath = $CI->config->item('ext_path');
 		if($traceFile == '' or $traceFile == null)        $traceFile    = $CI->config->item('trace');
-		if($responseFile == '' or $responseFile == null ) $responseFile = $CI->config->item('macro_response');
+		//~ if($responseFile == '' or $responseFile == null ) $responseFile = $CI->config->item('macro_response');
 		
-		doCommandLine('python', $extPath.'py/gmacro.py', is_array($extrArgs) ? array_merge(array($macroName, $traceFile, $responseFile), $extrArgs) : array($macroName, $traceFile, $responseFile, $extrArgs));
+		$cmdArgs = array('--log_trace' => $traceFile, 1 => $macroName);
+		if( !is_array($extrArgs) ) { $extrArgs = array($extrArgs); }
+		$params = array_merge( $cmdArgs, $extrArgs);
+		
+		//~ doCommandLine('python', $extPath.'py/gmacro.py', is_array($extrArgs) ? array_merge(array($macroName, $traceFile, $responseFile), $extrArgs) : array($macroName, $traceFile, $responseFile, $extrArgs));
+		$data = doCommandLine('python', $extPath.'py/gmacro.py', $params);
+		
+		$result = json_decode($data, true);
 		//if response is false means that macro failed
-		$response = str_replace('<br>', '', trim(file_get_contents($responseFile))) == 'true' ? true : false;
-		return array('response' => $response, 'trace' => file_get_contents($traceFile));
+		//$response = str_replace('<br>', '', trim(file_get_contents($responseFile))) == 'true' ? true : false;
+		$response = $result['response'];
+		$reply    = $result['reply'];
+		$trace    = file_get_contents($traceFile);
+		
+		return array('response' => $response, 'reply' => $reply, 'trace' => $trace);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -10,16 +10,10 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
  
-function seconds_to_time($seconds) {
-	$dtF = new DateTime("@0");
-	$dtT = new DateTime("@$seconds");
-	return $dtF -> diff($dtT) -> format('%ad %hh %im');
-}
- 
 class SystemInfo extends FAB_Controller {
 
-    public function index()
-    {
+	public function index()
+	{
 		$this->load->library('smart');
 		$this->load->helper('fabtotum_helper');
 		$this->load->helper('os_helper');
@@ -44,11 +38,6 @@ class SystemInfo extends FAB_Controller {
 		$this->addJsInLine($this->load->view('systeminfo/js', $data, true)); 
 		$this->content = $widget->print_html(true);
 		$this->view();
-    }
-    
-    public function test()
-    {
-		
 	}
 
 }

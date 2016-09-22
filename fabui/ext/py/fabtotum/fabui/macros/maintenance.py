@@ -35,6 +35,12 @@ import gettext
 tr = gettext.translation('gmacro', 'locale', fallback=True)
 _ = tr.ugettext
 
+def extrude(app, args):
+    filamentToExtrude = float(args[0])
+    app.macro("M302",  "ok", 1,    _("Allowing cold extrusion"), 0, verbose=False)
+    app.macro("G91",   "ok", 1,    _("Set rel position"), 0, verbose=False)
+    app.macro("G0 E{0} F400".format(filamentToExtrude),    "ok", 100,    _("Extruding..."), 0, verbose=False)
+    app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), 1)
 
 def pre_unload_spool(app, args = None):        
     app.macro("M104 S190",  "ok", 5,    _("Heating Nozzle..."), 0, verbose=False)

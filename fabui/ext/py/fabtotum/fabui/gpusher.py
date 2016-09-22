@@ -351,7 +351,6 @@ class GCodePusher(object):
                     
             elif action == 'message':
                 self.task_stats['message'] = data
-                print "MSG: {0}".format(data)
             
             if monitor_write:
                 self.update_monitor_file()
@@ -466,15 +465,13 @@ class GCodePusher(object):
         self.error_callback(error_no, error_msg)
     
     def __config_change_callback(id, data):
-        print "__config_change_callback", id, data 
         if id == 'shutdown':
             self.task_stats["auto_shutdown"] = (data == 'on')
         elif id == 'reload':
             self.config.reload()
     
     def callback_handler(self, action, data):
-        print "callback_handler", action, data
-        
+                
         if action == 'file_done':
             self.__file_done_callback(data)
         elif action == 'gcode_comment':
@@ -546,8 +543,6 @@ class GCodePusher(object):
             self.pusher_stats['line_current']   = 0
             self.pusher_stats['type']           = gfile.info['type']
             
-            print gfile.info.attribs
-            
             if gfile.info['type'] == GCodeInfo.PRINT:
                 engine = 'unknown'
                 if 'slicer' in gfile.info:
@@ -583,15 +578,9 @@ class GCodePusher(object):
                     
         self.resetTrace()
         
-        if self.monitor_file:
-            print "Creating monitor thread"
-            
+        if self.monitor_file:            
             self.progress_monitor = Thread( target=self.__progress_monitor_thread )
             self.progress_monitor.start() 
-        else:
-            print "Skipping monitor thread"
-            
-        #~ self.task_db = Task(self.db, task_id)
         
         with self.monitor_lock:
             self.update_monitor_file()
@@ -624,8 +613,6 @@ class GCodePusher(object):
         task_db['type']         = self.task_stats['type']
         task_db['controller']   = self.task_stats['controller']
         
-        print "DB.write, status:", self.task_stats['status']
-        
         tid = task_db.write()
         
         if task_id == TableItem.DEFAULT:
@@ -643,9 +630,7 @@ class GCodePusher(object):
         time.sleep(0.5)
         
     def __stop_thread(self):
-        print "Trying to stop..."
         self.gcs.stop()   
-        print "Stopped."
         
     def stop(self):
         """
@@ -664,8 +649,8 @@ class GCodePusher(object):
         
         if preset in PRESET_MAP:
             PRESET_MAP[preset](self, args)
-        else:
-            print _("Preset '{0}' not found").format(preset)
+        #~ else:
+            #~ print _("Preset '{0}' not found").format(preset)
         
         if atomic:
             self.macro_end()
@@ -713,6 +698,8 @@ class GCodePusher(object):
         :type warning: bool
         :type verbose: bool
         """
+        reply = None
+        
         if self.macro_error == 0:
             if verbose:
                 self.trace(error_msg)
@@ -736,6 +723,8 @@ class GCodePusher(object):
             self.macro_skipped += 1
                 
         time.sleep(delay_after) #wait the desired amount
+        
+        return reply
         
     def send(self, code, block = True, timeout = None, trace = None, group = 'gcode', expected_reply = 'ok'):
         """
@@ -817,7 +806,8 @@ class GCodePusher(object):
                 try:
                     os.remove(f)
                 except Exception as e: 
-                    print e
+                    #~ print e
+                    pass
             
-        else:
-            print "Object {0} not found".format(object_id)
+        #~ else:
+            #~ print "Object {0} not found".format(object_id)

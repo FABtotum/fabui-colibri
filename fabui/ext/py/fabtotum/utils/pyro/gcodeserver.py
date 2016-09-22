@@ -69,7 +69,7 @@ class GCodeServiceServerPyroWrapper(object):
                 try:
                     remote.do_callback(action, data)
                 except CommunicationError:
-                    print "Callback removed due to CommunicationError"
+                    #~ print "Callback removed due to CommunicationError"
                     if tup in self.callback_list:
                         self.callback_list.remove(tup)
     
@@ -82,10 +82,8 @@ class GCodeServiceServerPyroWrapper(object):
             self.gcs.register_callback(self.__callback_handler)
 
     def unregister_callback(self, uri):
-        print "unregister_callback", uri
-        for client in self.callback_list:
-            print "++ ", client
-        
+        #~ for client in self.callback_list:
+            #~ print "++ ", client
         try:
             for client in self.callback_list:
                 if client[1] == uri:

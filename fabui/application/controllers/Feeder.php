@@ -26,7 +26,33 @@ class Feeder extends FAB_Controller {
 
 	public function doCalibration()
 	{
+		//load libraries, helpers, model
+		$this->load->library('smart');
+		$this->load->helper('form');
+		$this->load->helper('fabtotum_helper');
+		$this->config->load('fabtotum');
+		$extPath = $this->config->item('ext_path');
 		
+		//data
+		$data = array();
+		
+		$json_data = doCommandLine('python', $extPath.'/py/read_eeprom.py');
+		$data['eeprom'] = json_decode($json_data, true);
+		
+		//main page widget
+		$widgetOptions = array(
+			'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
+			'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
+		);
+		
+		$widget         = $this->smart->create_widget($widgetOptions);
+		$widget->id     = 'main-widget-feeder-calibration';
+		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>Feeder Calibration</h2>");
+		$widget->body   = array('content' => $this->load->view('feeder/calibration_widget', $data, true ), 'class'=>'fuelux');
+		
+		$this->addJsInLine($this->load->view('feeder/calibration_js', $data, true));
+		$this->content = $widget->print_html(true);
+		$this->view();
 	}
 	
 	public function doEngage()
@@ -44,12 +70,46 @@ class Feeder extends FAB_Controller {
 		);
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
-		$widget->id     = 'main-widget-4th-axis';
+		$widget->id     = 'main-widget-feeder-engage';
 		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>Engage Feeder</h2>");
 		$widget->body   = array('content' => $this->load->view('feeder/engage_widget', $data, true ), 'class'=>'fuelux');
 		
 		$this->content = $widget->print_html(true);
 		$this->view();
+	}
+	
+	public function extrude($filament_to_extrude)
+	{
+		$this->load->helpers('fabtotum_helper');
+		$json_data = doMacro('extrude', null, $filament_to_extrude);
+		$this->output->set_content_type('application/json')->set_output(json_encode( $json_data ));
+	}
+	
+	public function changeStep($new_step)
+	{
+		$this->load->helpers('fabtotum_helper');
+		
+		//doMacro('change_step', $filament_to_extrude);
+		//$jogFactory -> mdi('M92 E'.$new_step_value.PHP_EOL.'M500');
+		
+		$response = array();
+		$response['new_step'] = $new_step;
+		$this->output->set_content_type('application/json')->set_output(json_encode( $response ));
+	}
+	
+	public function calculateStep($actual_step, $filament_to_extrude, $filament_extruded)
+	{
+		$this->load->helpers('fabtotum_helper');
+		
+		$new_step_value = floatval($actual_step) / ( floatval($filament_extruded) / floatval($filament_to_extrude)) ;
+		
+		$response = array();
+		$response['new_step'] = $new_step_value;
+		$response['old_step']            = $actual_step;
+		$response['filament_to_extrude'] = $filament_to_extrude;
+		$response['filament_extruded']   = $filament_extruded;
+	
+		$this->output->set_content_type('application/json')->set_output(json_encode( $response ));
 	}
 
 }

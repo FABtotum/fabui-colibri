@@ -23,6 +23,7 @@ __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
 # Import standard python module
+import re
 import gettext
 
 # Import external modules
@@ -155,8 +156,6 @@ def engage_4axis(app, args = None):
     except KeyError:
         feeder_disengage_offset = 2
     
-    print feeder_disengage_offset
-    
     app.trace( _("Engaging 4th Axis") )
     app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), 0.1)
     app.macro("G91",                "ok", 1,    _("Setting Relative position"), 0.1,verbose=False)
@@ -173,3 +172,42 @@ def engage_4axis(app, args = None):
 def do_4th_axis_mode(app, args = None):
     units_a = app.config.get('settings', 'a')
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), 0, verbose=False)
+
+def version(app, args = None):
+    pass
+
+def read_eeprom(app, args = None):
+    
+    def serialize(string_source, regex_to_serach, keys):
+        match = re.search(regex_to_serach, string_source, re.IGNORECASE)
+        if match != None:
+            string = match.group(1)
+            object = {}
+            object.update({'string':string})
+            for index in keys:
+                match_temp = re.search(index+'([0-9.]+)', string, re.IGNORECASE)
+                if match_temp != None:
+                    val = match_temp.group(1)
+                    object.update({index:val})
+            return object
+            
+    def getServoEndstopValues(string_source):
+        match = re.search('Servo\sEndstop\ssettings:\sR:\s([0-9.]+)\sE:\s([0-9.]+)', string_source, re.IGNORECASE)
+        if match != None:
+            object = {'r': match.group(1), 'e': match.group(2)}
+            return object
+    
+    reply = app.macro('M503', "ok", 1, _("Reading settings from eeprom"), 1, verbose=False, warning=True)
+    
+    eeprom = {
+        "steps_per_unit"        : serialize(reply[3], '(M92\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e']),
+        "maximum_feedrates"     : serialize(reply[5], '(M203\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e']),
+        "maximum_accelaration"  : serialize(reply[7], '(M201\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e']),
+        "acceleration"          : serialize(reply[9], '(M204\sS[0-9.]+\sT1[0-9.]+)', ['s', 't1']),
+        "advanced_variables"    : serialize(reply[11],'(M205\sS[0-9.]+\sT0[0-9.]+\sB[0-9.]+\sX[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['s', 't', 'b', 'x', 'z', 'e']),
+        "home_offset"           : serialize(reply[13],'(M206\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+)', ['x', 'y', 'z']),
+        "pid"                   : serialize(reply[15],'(M301\sP[0-9.]+\sI[0-9.]+\sD[0-9.]+)', ['p', 'i', 'd']),
+        "servo_endstop"         : getServoEndstopValues(reply[16])
+    }
+    
+    return eeprom

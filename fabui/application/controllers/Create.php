@@ -195,7 +195,7 @@
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => 'File not found')));
 			return;
 		}
-		$startPrintResult = doMacro('start_print', null, null, array('--ext_temp' => $temperatures['extruder'], '--bed_temp' => $temperatures['bed']));
+		$startPrintResult = doMacro('start_print', null, array($temperatures['extruder'], $temperatures['bed']));
 		if($startPrintResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace'=>$startPrintResult['trace'])));
 			return;

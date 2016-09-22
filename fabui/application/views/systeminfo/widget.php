@@ -69,7 +69,7 @@
 				-->
 					<tr>
 						<td>Time Alive</td>
-						<td><span class="pull-right"><?php echo $time_alive?></span></td>
+						<td><span class="pull-right"><?php echo transformSeconds($time_alive)?></span></td>
 					</tr>
 					<tr>
 						<td>Board Temperature</td>
@@ -86,11 +86,11 @@
 				<tbody>
 					<tr>
 						<td>Down</td>
-						<td><span class="pull-right"><?php echo human_readable_bytes($eth_bytes[0]) ?> / <?php echo human_readable_bytes($wlan_bytes[0])?></span></td>
+						<td><span class="pull-right"><?php echo humanFileSize($eth_bytes[0]) ?> / <?php echo humanFileSize($wlan_bytes[0])?></span></td>
 					</tr>
 					<tr>
 						<td>Up</td>
-						<td><span class="pull-right"><?php echo human_readable_bytes($eth_bytes[1])?> / <?php echo human_readable_bytes($wlan_bytes[1])?></span></td>
+						<td><span class="pull-right"><?php echo humanFileSize($eth_bytes[1])?> / <?php echo humanFileSize($wlan_bytes[1])?></span></td>
 					</tr>
 				</tbody>
 			</table>

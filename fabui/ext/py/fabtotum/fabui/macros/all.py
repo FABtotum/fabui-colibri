@@ -43,6 +43,7 @@ PRESET_MAP = {
     "safe_zone"                     : general_macros.safe_zone,
     "engage_4axis"                  : general_macros.engage_4axis,
     "4th_axis_mode"                 : general_macros.do_4th_axis_mode,  
+    "read_eeprom"                   : general_macros.read_eeprom,  
     # Print
     "check_pre_print"               : print_macros.check_pre_print,
     "engage_feeder"                 : print_macros.engage_feeder,
@@ -53,6 +54,7 @@ PRESET_MAP = {
     "pre_unload_spool"              : maint_macros.pre_unload_spool,
     "unload_spool"                  : maint_macros.unload_spool,
     "load_spool"                    : maint_macros.load_spool,
+    "extrude"                       : maint_macros.extrude,
     # Milling
     "start_subtractive"             : mill_macros.start_subtractive,
     "end_subtractive"               : mill_macros.end_subtractive,

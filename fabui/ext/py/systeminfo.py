@@ -42,20 +42,6 @@ _ = tr.ugettext
 
 ################################################################################
 
-def human_time(*args, **kwargs):
-    secs  = float(datetime.timedelta(*args, **kwargs).total_seconds())
-    units = [("day", 86400), ("hour", 3600), ("minute", 60), ("second", 1)]
-    parts = []
-    for unit, mul in units:
-        if secs / mul >= 1 or mul == 1:
-            if mul > 1:
-                n = int(math.floor(secs / mul))
-                secs -= n * mul
-            else:
-                n = secs if secs != int(secs) else int(secs)
-            parts.append("%s %s%s" % (n, unit, "" if n == 1 else "s"))
-    return " ".join(parts)
-
 def shell_exec(cmd):
     stdin,stdout = os.popen2(cmd)
     stdin.close()
@@ -91,7 +77,7 @@ def main():
     # Uptime
     with open('/proc/uptime', 'r') as f:
         tmp = f.read().split()
-        data['time_alive'] = human_time( seconds=round(float(tmp[0])) )
+        data['time_alive'] = round(float(tmp[0]))
     
     # BCM2709 RPi2/RPi3
     # BCM2708 RPi1

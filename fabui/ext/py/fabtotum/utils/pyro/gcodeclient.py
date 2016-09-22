@@ -69,9 +69,7 @@ class GCodeServiceClient(object):
     def still_running(self):
         return self.running
     
-    def __close(self):
-        print "Client: CLOSE()"
-        
+    def __close(self):        
         if not self.running:
             return
         
@@ -91,7 +89,6 @@ class GCodeServiceClient(object):
         self.server.register_callback(self.uri.asString())
     
     def __unregister_callback(self):
-        print "CLIENT: __unregister_callback"
         try:
             self.server.unregister_callback(self.uri.asString())
         except Exception as e:
