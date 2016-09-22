@@ -88,7 +88,6 @@ class Head extends FAB_Controller {
 	
 	public function setHead($new_head)
 	{
-		// $params = $this->input->post(); // for POST parameters
 		$this->load->helper('fabtotum_helper');
 		$heads  = loadHeads();
 
@@ -103,21 +102,9 @@ class Head extends FAB_Controller {
 		$fw_id	   = $head_info['fw_id'];
 		
 		if ($pid != '') {
-			writeToCommandFile('!gcode:'.$pid);
-			sleep(0.1);
-			writeToCommandFile('!gcode:M500');
-			sleep(0.1);
+			doGCode( array($pid, 'M500') );
 		}
-		writeToCommandFile('!gcode:M793 S'.$fw_id);
-		sleep(0.1);
-		writeToCommandFile('!gcode:M500');
-		sleep(0.1);
-		writeToCommandFile('!gcode:M999');
-		sleep(0.1);
-		writeToCommandFile('!gcode:G4 P500');
-		sleep(0.1);
-		writeToCommandFile('!gcode:M728');
-		sleep(0.1);
+		doGCode( array('M793 S'.$fw_id, 'M500', 'M999', 'G4 P500', 'M728') );
 
 		$_data['hardware']['head'] = $new_head;
 		

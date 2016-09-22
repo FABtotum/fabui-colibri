@@ -213,6 +213,34 @@ if(!function_exists('doMacro'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('doGCode'))
+{
+	/**
+	 * @param $gcodes GCode command or an array of GCode commands
+	 * Write !gcode:* to command file
+	 */
+	function doGCode($gcodes)
+	{
+		$data = '';
+		
+		if(is_array($gcodes) || $gcodes != ''){
+			if(is_array($gcodes)){
+				foreach($gcodes as $gc)
+				{
+					$data .= '!gcode:' . $gc . PHP_EOL;
+				}
+			}
+			else
+			{
+				$data = '!gcode:' . $gcodes;
+			}
+			
+			writeToCommandFile($data);
+		}
+		
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('readInitialTemperatures')) 
 {
 	/**
