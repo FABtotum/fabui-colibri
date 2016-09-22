@@ -44,20 +44,25 @@ PRESET_MAP = {
     "engage_4axis"                  : general_macros.engage_4axis,
     "4th_axis_mode"                 : general_macros.do_4th_axis_mode,  
     "read_eeprom"                   : general_macros.read_eeprom,  
+    
     # Print
     "check_pre_print"               : print_macros.check_pre_print,
     "engage_feeder"                 : print_macros.engage_feeder,
-    "start_print"                   : print_macros.start_additive,
-    "end_print_additive"            : print_macros.end_additive,
-    "end_print_additive_safe_zone"  : print_macros.end_additive_safe_zone,
+    "start_additive"                : print_macros.start_additive,
+    "end_additive"                  : print_macros.end_additive,
+    "end_additive_safe_zone"        : print_macros.end_additive_safe_zone,
+    
     # Maintenance
     "pre_unload_spool"              : maint_macros.pre_unload_spool,
     "unload_spool"                  : maint_macros.unload_spool,
     "load_spool"                    : maint_macros.load_spool,
     "extrude"                       : maint_macros.extrude,
+    "change_step"                   : maint_macros.change_step,
+    
     # Milling
     "start_subtractive"             : mill_macros.start_subtractive,
     "end_subtractive"               : mill_macros.end_subtractive,
+    
     # Scanning    
     "check_pre_scan"                : scan_macros.check_pre_scan, 
     "r_scan"                        : scan_macros.rotary_scan,
@@ -69,6 +74,7 @@ PRESET_MAP = {
     "p_scan"                        : scan_macros.probe_scan,
     "start_probe_scan"              : scan_macros.probe_scan,
     "end_scan"                      : scan_macros.end_scan,
+    
     # Calibration
     "probe_setup_prepare"           : calib_macros.probe_setup_prepare,
     "probe_setup_calibrate"         : calib_macros.probe_setup_calibrate,

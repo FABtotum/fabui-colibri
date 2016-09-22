@@ -489,7 +489,7 @@ class GCodeService:
         
         if ( self.file_state != GCodeService.FILE_WAIT and
              self.file_state != GCodeService.FILE_PAUSED_WAIT):
-        
+            
             self.log.debug("<< %s [RQ: %d]", gcode_complete[:-2], self.rq.qsize() )
             
             self.rq.put(gcode_command)
@@ -830,35 +830,50 @@ class GCodeService:
     
     def __reset_totumduino(self):
         """ Does a hardware reset of the totumduino board. """
+
+        # Send a self_descruct command to all running gpusher applications
+        self.__trigger_callback('self_descruct', None)
+        time.sleep(0.1)
         
         self.is_resetting = True
         
-        self.__cleanup()
+        self.log.debug("__reset_totumduino: started")
         
-        #self.serial.close()
+        self.__cleanup()
         
         totumduino_reset()
-        time.sleep(1)
-        #self.serial.open()
         
+        self.atomic_begin('bootstrap')
+        
+        time.sleep(1)
         self.__cleanup()
+        time.sleep(1)
     
         self.is_resetting = False
         
-        time.sleep(1)
+        self.log.debug("__reset_totumduino: finished")
+        
+        
+        
+        self.log.debug("__reset_totumduino: bootstrap")
         hardwareBootstrap(self, logger=self.log)
+        self.log.debug("__reset_totumduino: bootstrap-finished")
+        
+        self.atomic_end()
     
     def __cleanup(self):
         """
         Internal function cleaning up queues and serial communication.
         """
+        self.atomic_end()
+        
         self.serial.flush()
         self.serial.reset_input_buffer()
         self.serial.reset_output_buffer()
         
         if self.active_cmd:
             self.active_cmd.reply = None
-            self.active_cmd.notify()
+            self.active_cmd.notify(abort=True)
             self.active_cmd = None
         
         time.sleep(0.2)
@@ -1051,7 +1066,9 @@ class GCodeService:
             #~ elif code == 'M24':
                 #~ self.resume()
                 #~ return None
-                        
+            
+            self.log.debug("put on command queue: %s,%s", code, group)
+            
             cmd = Command.gcode(code, expected_reply, group = group, timeout = timeout)
             self.cq.put(cmd)
             
@@ -1068,7 +1085,13 @@ class GCodeService:
             # In which case no one will trigger cmd.ev event to unlock it.
             # Timeout is a safety measure to handle this corner case.
             while not cmd.wait(3):
-                self.log.debug("Waiting (3) for [%s] aborted: %s", code, str(cmd.aborted))
+                self.log.debug("Waiting (3) for [%s,%s] aborted: %s", code, group, str(cmd.aborted))
+                
+                if self.is_resetting:
+                    cmd.notify(abort=True)
+                    time.sleep(1)
+                    return None
+                
                 if not self.running:
                     # Aborting because the service has been stopped
                     self.log.info('Aborting reply due to stop. [%s]', code)

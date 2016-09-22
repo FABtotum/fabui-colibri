@@ -57,7 +57,7 @@ def check_pre_scan(app, args = None):
     app.macro("G27",        "ok", 100,          _("Zeroing Z axis"), 0)
     app.macro("G28 X0 Y0",  "ok", 15,           _("Zeroing Z axis"), 0, verbose=False)
     # Disable feeder
-    app.macro("G91",                "ok", 2,    _("Setting relative position"), 0, verbose=False)
+    app.macro("G91",                "ok", 2,    _("Setting rel position"), 0, verbose=False)
     app.macro("G0 X5 Y5 Z-"+str(feeder_disengage_offset)+" F400",   "ok", 5, _("Engaging 4th Axis Motion"), 0)
     app.macro("M400",                "ok", 100,   _("Wait for moves to finish"), 0, verbose=False)
     app.macro("G90",                "ok", 2,    _("Setting Absolute position"), 0, verbose=False)

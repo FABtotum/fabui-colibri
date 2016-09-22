@@ -14,8 +14,49 @@ class Bed extends FAB_Controller {
 
     public function index()
     {
-        $this->view();
+		//load libraries, helpers, model
+		$this->load->library('smart');
+		$this->load->helper('form');
+		$this->load->helper('fabtotum_helper');
+
+		$data = array();
+		
+		//main page widget
+		$widgetOptions = array(
+			'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
+			'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
+		);
+		
+		$widget         = $this->smart->create_widget($widgetOptions);
+		$widget->id     = 'main-widget-bed-calibration';
+		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>Bed Calibration</h2>");
+		$widget->body   = array('content' => $this->load->view('bed/calibration_widget', $data, true ), 'class'=>'fuelux');
+		
+		$this->addJsInLine($this->load->view('bed/calibration_js', $data, true));
+		$this->content = $widget->print_html(true);
+		$this->view();
     }
+    
+	public function calibrate($time, $num_probes, $skip_homing)
+	{ 
+		$this->load->helpers('fabtotum_helper');
+		$this->config->load('fabtotum');
+		$extPath = $this->config->item('ext_path');
+		$task_monitor = $this->config->item('task_monitor');
+		
+		doCommandLine('python', $extPath.'/py/manual_bed_leveling.py', array('-T' => '0') );
+		
+		$monitor = json_decode(file_get_contents($task_monitor), true);
+		
+		$data = array();
+		$data['_response'] = $monitor;
+		$content = $this->load->view('bed/calibration_results', $data, true );
+		
+		$html = $content;
+		
+		//$json_data = array(true);
+		$this->output->set_content_type('application/json')->set_output(json_encode( array('html' => $html) ));
+	}
 
 }
  

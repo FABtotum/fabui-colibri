@@ -1,7 +1,6 @@
 <script type="text/javascript">
     
     $(function () {
-        //~ jog_call('extruder_mode', 'e');
         $(".extrude").on("click", extrudeFilament);
         $(".recalculate").on('click', calculateStep);
         $(".step-change-modal-open").on('click', openModal);
@@ -12,7 +11,7 @@
     function extrudeFilament()
     {
         var button = $(this);
-        button.html('<i class="fa fa-spin fa-spinner"></i> Extruding..');
+        button.html('<i class="fa fa-spin fa-spinner"></i> Extruding...');
         disableButton('.extrude');
         disableButton('.step-change-modal-open');
         $(".response-container").html('');
@@ -36,7 +35,7 @@
     function calculateStep()
     {
         var button = $(this);
-        button.html('<i class="fa fa-spin fa-spinner"></i> Calculating..');
+        button.html('<i class="fa fa-spin fa-spinner"></i> Calculating...');
         disableButton('.recalculate');
         disableButton('.extrude');
         disableButton('.step-change-modal-open');
@@ -60,7 +59,6 @@
                 $(".response-container").html(html);
             //~ });
             $("#actual-step").val(data.new_step);
-            //~ jog_call('extruder_mode', 'e');
         });
     }
     
@@ -78,6 +76,9 @@
     function changeExtruderStepValue()
     {
         $(".calc-row").slideUp(function(){});
+        var button = $("#change-extruder-step-value-button");
+        button.html('<i class="fa fa-spin fa-spinner"></i> Storing...');
+        disableButton('.step-change-modal-cancel');
         var data = {
             action : 'change',
             new_step : $("#feeder-step-new-value").val()
@@ -89,9 +90,11 @@
                 + $("#feeder-step-new-value").val(),
             dataType: 'json'
         }).done(function( data ) {
+            var button = $("#change-extruder-step-value-button");
+            button.html('<i class="fa fa-check"></i>Change');
+            enableButton('.step-change-modal-cancel');
             $('#change-value-modal').modal('hide');
             $("#actual-step").val(data.new_step);
-            //~ jog_call('extruder_mode', 'e');
         });
     }
 </script> 

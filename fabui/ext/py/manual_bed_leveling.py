@@ -61,7 +61,7 @@ class ManualBedLeveling(GCodePusher):
     E_FEEDRATE          = 800
     
     def __init__(self, log_trace, monitor_file, config):
-        super(ManualBedLeveling, self).__init__(log_trace, monitor_file, config=config)
+        super(ManualBedLeveling, self).__init__(log_trace, monitor_file, config=config, use_stdout=False)
         
         self.bed_leveling_stats = {
             'screw_1' : [0.0, 0.0, 0.0], # [turns, degree, height]
@@ -71,9 +71,6 @@ class ManualBedLeveling(GCodePusher):
         }
         
         self.add_monitor_group('bed_leveling', self.bed_leveling_stats)
-
-    def trace(self, msg):
-        print msg
 
     def probe(self, x, y, timeout = 90):
         """ 
@@ -141,7 +138,7 @@ class ManualBedLeveling(GCodePusher):
                     
 
         self.prepare_task(task_id, task_type='bed_leveling')
-        self.set_task_status(GCodePusher.TASK_STARTED)
+        self.set_task_status(GCodePusher.TASK_RUNNING)
         
         self.trace( _("Manual bed leveling started.") )
         try:
@@ -158,11 +155,11 @@ class ManualBedLeveling(GCodePusher):
             self.macro_warning = 0
 
             try:
-                milling_offset = float(config.get('settings', 'milling')['layer-offset'])
+                milling_offset = float(self.config.get('settings', 'milling')['layer-offset'])
                 self.trace("Milling sacrificial layer thickness: "+str(milling_offset))
                 probe_height += milling_offset
             except KeyError:
-                trace("Milling sacrificial layer thickness not configured - assuming zero")
+                self.trace("Milling sacrificial layer thickness not configured - assuming zero")
 
         self.macro("M402",  "ok",   2,  _("Retracting Probe (safety)"), 0.1, warning=True, verbose=False)
         self.macro("G90",   "ok",   5,  _("Setting abs mode"),          0.1, verbose=False)
@@ -172,7 +169,7 @@ class ManualBedLeveling(GCodePusher):
             self.macro("G92 Z241.2",    "ok",   5,      _("Setting correct Z"), 0.1, verbose=False)
             self.macro("M402",          "ok",   2,      _("Retracting Probe (safety)"), 1, verbose=False)
 
-        self.macro("G0 Z{0} F5000".format(probe_height),    "ok",   5,  _("Moving to start Z height"), 10) #mandatory!
+        self.macro("G0 Z{0} F5000".format(probe_height),    "ok",   5,  _("Moving to start Z height"), 5) #mandatory!
         self.send("M400")
 
         self.send("M401")
@@ -191,7 +188,7 @@ class ManualBedLeveling(GCodePusher):
             probes = 0
             
             for i in xrange(0, num_probes):
-                print "x: {0}, y: {1} / {2}".format(x,y, i)
+                #self.trace("x: {0}, y: {1} / {2}".format(x,y, i))
                 new_point = self.probe(x, y, timeout = 20)
                 if new_point:
                     probes += 1
@@ -199,8 +196,9 @@ class ManualBedLeveling(GCodePusher):
                 else:
                     print "Error probing"
                 
-                self.macro("G0 Z{0} F5000".format(probe_height),    "ok",   5,  _("Rising Bed."), 10)
-        
+                self.send("G0 Z{0} F5000".format(probe_height))
+                self.send("M400")
+                
             probed_points[p,2] /= probes
         
             print probed_points[p,2]
@@ -260,7 +258,7 @@ def main():
 
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("task_id",                                  help=_("Task ID.") )
+    parser.add_argument("-T", "--task-id",                          help=_("Task ID."),              default=0)
     parser.add_argument("-n", "--num_probes",                       help=_("Number of probings per screw."),     default=4)
     parser.add_argument("-s", "--skip_homing", action='store_true', help=_("Skip homing.") )
 

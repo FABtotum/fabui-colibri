@@ -159,11 +159,11 @@ def engage_4axis(app, args = None):
     app.trace( _("Engaging 4th Axis") )
     app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), 0.1)
     app.macro("G91",                "ok", 1,    _("Setting Relative position"), 0.1,verbose=False)
-    app.macro("M120",               "ok", 1,    _("Disable Endstop checking"), 0.1,verbose=False)
+    app.macro("M120",               "ok", 1,    _("Disable Endstop checking"), 0.1)
     app.macro("G0 Z+"+str(feeder_disengage_offset)+" F300", "ok", 5,    _("Engaging 4th Axis Motion"), 0.1)
-    app.macro("M400",               "ok", 5,    _("Sync"), 0.1)
-    app.macro("M121",               "ok", 1,    _("Enable Endstop checking"), 0.1,verbose=False)
-    app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), 0, verbose=False)
+    app.macro("M400",               "ok", 5,    _("Waiting for all moves to finish"), 0.1, verbose=False)
+    app.macro("M121",               "ok", 1,    _("Enable Endstop checking"), 0.1)
+    app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), 0)
     app.macro("G92 Z241",           "ok", 1,    _("Setting position"), 0.1, verbose=False)
     app.macro("G90",                "ok", 1,    _("Setting Absolute position"), 0.1, verbose=False)
     app.macro("G0 Z234",            "ok", 1,    _("Check position"), 0.1, verbose=False)
@@ -197,7 +197,7 @@ def read_eeprom(app, args = None):
             object = {'r': match.group(1), 'e': match.group(2)}
             return object
     
-    reply = app.macro('M503', "ok", 1, _("Reading settings from eeprom"), 1, verbose=False, warning=True)
+    reply = app.macro('M503', None, 1, _("Reading settings from eeprom"), 1, verbose=False)
     
     eeprom = {
         "steps_per_unit"        : serialize(reply[3], '(M92\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e']),

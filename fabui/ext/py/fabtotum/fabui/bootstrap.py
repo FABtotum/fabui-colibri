@@ -41,9 +41,9 @@ def customHardware(gcodeSender,config,log):
     Revision for customs edits
     """
     #set x endstop logic
-    gcodeSender.send("M747 X{0}".format(config.get('settings', 'invert_x_endstop_logic')))
+    gcodeSender.send("M747 X{0}".format(config.get('settings', 'invert_x_endstop_logic')), group='bootstrap')
     #save settings
-    gcodeSender.send("M500")
+    gcodeSender.send("M500", group='bootstrap')
     log.debug("Custom Hardware")
 
 def hardware1(gcodeSender,log):
@@ -61,11 +61,11 @@ def hardware2(gcodeSender,log):
     - Endstops logic inverted.
     """
     #invert x endstop logic
-    gcodeSender.send("M747 X1")
+    gcodeSender.send("M747 X1", group='bootstrap')
     #set maximum feedrate
-    gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00")
+    gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00", group='bootstrap')
     #save settings
-    gcodeSender.send("M500")
+    gcodeSender.send("M500", group='bootstrap')
     log.debug("Rev2")
     
 def hardware3(gcodeSender,log):
@@ -79,11 +79,11 @@ def hardware3(gcodeSender,log):
     - Print head V2 (store.fabtotum.com/eu/store/printing-head-v2.html).
     """
     #invert x endstop logic
-    gcodeSender.send("M747 X1")
+    gcodeSender.send("M747 X1", group='bootstrap')
     #set maximum feedrate
-    gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00")
+    gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00", group='bootstrap')
     #save settings
-    gcodeSender.send("M500")
+    gcodeSender.send("M500", group='bootstrap')
     log.debug("Rev3")
     
     
@@ -133,8 +133,10 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     except KeyError:
         collision_warning = 0
 
+    gcs.atomic_begin(group='bootstrap')
+
     # Get hardware id (version)
-    reply = gcs.send('M763')
+    reply = gcs.send('M763', group='bootstrap')
     try:
         hardwareID = reply[0].strip()
     except Exception as e:
@@ -142,21 +144,21 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         hardwareID = 0
     
     # Raise probe
-    gcs.send('M402')
+    gcs.send('M402', group='bootstrap')
     # Send ALIVE
-    gcs.send('M728')
+    gcs.send('M728', group='bootstrap')
 
     # Set ambient colors
-    gcs.send("M701 S{0}".format(color['r']))
-    gcs.send("M702 S{0}".format(color['g']))
-    gcs.send("M703 S{0}".format(color['b']))
+    gcs.send("M701 S{0}".format(color['r']), group='bootstrap')
+    gcs.send("M702 S{0}".format(color['g']), group='bootstrap')
+    gcs.send("M703 S{0}".format(color['b']), group='bootstrap')
     
     # Set safety door open warnings: enabled/disabled
-    gcs.send("M732 S{0}".format(safety_door))
+    gcs.send("M732 S{0}".format(safety_door), group='bootstrap')
     # Set collision warning: enabled/disabled
-    gcs.send("M734 S{0}".format(collision_warning))
+    gcs.send("M734 S{0}".format(collision_warning), group='bootstrap')
     # Set homing preferences
-    gcs.send("M714 S{0}".format(switch))
+    gcs.send("M714 S{0}".format(switch), group='bootstrap')
     
     # Load Head
     #~ try:
@@ -166,9 +168,9 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     # Set head PID
     gcs.send( head['pid'] )
     # Set installed head
-    gcs.send( "M793 S{0}".format( head['fw_id'] ) )
+    gcs.send( "M793 S{0}".format( head['fw_id'] ), group='bootstrap' )
     # Save settings
-    gcs.send( "M500" )
+    gcs.send( "M500", group='bootstrap' )
     #~ except Exception as e:
         #~ print "ERROR", e
         
@@ -186,3 +188,5 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         HW_VERSION_CMDS[hardwareID](gcs,log)
     else:
         log.error("Unsupported hardware version: %s", hardwareID)
+
+    gcs.atomic_end()

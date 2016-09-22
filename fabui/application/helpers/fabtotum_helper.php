@@ -168,7 +168,7 @@ if(!function_exists('doCommandLine'))
 			}
 		}
 		if($background) $command .= ' > /tmp/fabui/scan.log &';
-		log_message('debug', $command . ' &> /tmp/fabui/command_line.log' );
+		log_message('debug', $command);
 		return shell_exec($command);
 	}
 }
@@ -263,8 +263,8 @@ if(!function_exists('emergency'))
 	 */
 	function emergency()
 	{
-		doCommandLine('/etc/init.d/fabui', 'restart');
-		resetController();
+		doCommandLine('/etc/init.d/fabui', 'emergency');
+		//~ resetController();
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

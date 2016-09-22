@@ -84,13 +84,13 @@ $config['menu'] = array(
 				'icon' => 'fa-level-down',
 				'sub'  => array(
 					'length' => array(
-						'title' => 'Feeder Calibration',
+						'title' => 'Step Calibration',
 						'icon' => 'fa-cog',
 						'url' => site_url('maintenance/feeder-calibration')
 					),
 					'angle' => array(
-						'title' => 'Feeder Engage',
-						'icon' => '',
+						'title' => 'Engage',
+						'icon' => 'fa-hand-o-right',
 						'url' => site_url('maintenance/feeder-engage')
 					)
 				)

@@ -18,6 +18,7 @@
 test -r /etc/default/fabui && source /etc/default/fabui
 
 SERVICE_NAME=FABUI
+FORCED="$2"
 
 case "$1" in
   start)
@@ -35,7 +36,11 @@ case "$1" in
     
     ######## fabtotum server ########
     #start-stop-daemon -b -S -q -m -p ${FABSERVICE_PID} --exec python ${PYTHON_PATH}/FabtotumServices.py -- -B -L /var/log/fabui/FabtotumServices.log
-    python ${PYTHON_PATH}/FabtotumServices.py -B &> /var/log/fabui/FabtotumServices.log 2>&1 &
+    ARGS="-B"
+    if [ x"$FORCED" != x ]; then
+        ARGS = "-R -B"
+    fi
+    python ${PYTHON_PATH}/FabtotumServices.py ${ARGS} &> /var/log/fabui/FabtotumServices.log 2>&1 &
     echo $! > ${FABSERVICE_PID}
     
     evaluate_retval
@@ -51,13 +56,18 @@ case "$1" in
     
     evaluate_retval
     ;;
+  emergency)
+    ${0} stop
+    sleep 1
+    ${0} start "forced"
+    ;;
   restart|reload)
     ${0} stop
     sleep 1
     ${0} start
     ;;
   *)
-    echo "Usage: $0 {start|stop|restart}"
+    echo "Usage: $0 {start|stop|restart|reload|emergency}"
     exit 1
 esac
 

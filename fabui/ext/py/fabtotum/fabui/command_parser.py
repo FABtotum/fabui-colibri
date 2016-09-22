@@ -68,6 +68,7 @@ class CommandParser:
     
     def parse_command(self, line):
         args = line.split(':')
+        self.log.debug("Command %s", args[0])
         try:
             cmd = args[0]
             if cmd == '!abort':      #~ !abort

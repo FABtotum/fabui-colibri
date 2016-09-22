@@ -176,6 +176,13 @@ class GCodePusher(object):
         self.progress_monitor = None
         self.db = Database(self.config)
     
+    def __self_destruct(self):
+        import signal
+        print 'Initiating SIGKILL'
+        pid = os.getpid()
+        os.kill(pid, signal.SIGKILL)
+        print 'SIGKILL Failed'
+    
     def add_monitor_group(self, group, content = {}):
         """
         Add a custom group to monitor file with a specific content.
@@ -488,6 +495,9 @@ class GCodePusher(object):
             self.__config_change_callback(action.split(':')[1], data)
         elif action == 'error':
             self.__error_callback(data[0], data[1])
+        elif action == 'self_descruct':
+            print 'Self Descruct sequence activated...'
+            self.__self_destruct()
 
     def get_progress(self):
         """ 

@@ -37,14 +37,21 @@ _ = tr.ugettext
 
 def extrude(app, args):
     filamentToExtrude = float(args[0])
-    app.macro("M302",  "ok", 1,    _("Allowing cold extrusion"), 0, verbose=False)
-    app.macro("G91",   "ok", 1,    _("Set rel position"), 0, verbose=False)
-    app.macro("G0 E{0} F400".format(filamentToExtrude),    "ok", 100,    _("Extruding..."), 0, verbose=False)
-    app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), 1)
+    units_e = app.config.get('settings', 'e')
+    app.macro("M92 E"+str(units_e), "ok", 2, _("Setting extruder mode"), 0)
+    app.macro("M302",  "ok", 1,    _("Allowing cold extrusion"), 0)
+    app.macro("G91",   "ok", 1,    _("Set rel position"), 0)
+    app.macro("G0 E{0} F400".format(filamentToExtrude),    "ok", 100,    _("Extruding..."), 0)
+    app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), 1, verbose=False)
+    
+def change_step(app, args):
+    new_step = float(args[0])
+    app.macro("M92 E{0}".format(new_step),  "ok", 1,   _("Setting extruder mode"), 0)
+    app.macro("M500",                       None, 1,   _("Writing settings to eeprom"), 0)
 
 def pre_unload_spool(app, args = None):        
-    app.macro("M104 S190",  "ok", 5,    _("Heating Nozzle..."), 0, verbose=False)
-    app.macro("M109 S190",  "ok", 400,  _("Waiting for nozzle to reach temperature..."), 0, verbose=True) #heating and waiting.
+    app.macro("M104 S190",  "ok", 5,    _("Heating Nozzle..."), 0)
+    app.macro("M109 S190",  "ok", 400,  _("Waiting for nozzle to reach temperature..."), 0) #heating and waiting.
     
 def unload_spool(app, args = None):
     units_e = app.config.get('settings', 'e')
@@ -81,7 +88,7 @@ def load_spool(app, args = None):
     app.macro("M300",               "ok", 5,    _("<b>Start pushing!</b>"), 3)
 
     app.macro("G0 E110 F500",       "ok", 1,    _("Loading filament"), 15)
-    app.macro("G0 E660 F700",       "ok", 1,    _("Loading filament (fast)"), 20,verbose=False)
+    app.macro("G0 E660 F700",       "ok", 1,    _("Loading filament (fast)"), 20)
     app.macro("M109 S210",          "ok", 400,  _("Waiting to get to temperature..."), 0.1) #heating and waiting.
     app.macro("G0 E100 F200",       "ok", 1,    _("Entering the hotend (slow)"), 0.1)
 

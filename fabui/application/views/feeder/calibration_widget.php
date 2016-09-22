@@ -69,7 +69,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-default step-change-modal-cancel" data-dismiss="modal">Cancel</button>
 				<button type="button" id="change-extruder-step-value-button" class="btn btn-primary"><i class="fa fa-check"></i> Change</button>
 			</div>
 		</div><!-- /.modal-content -->
