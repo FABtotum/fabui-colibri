@@ -36,49 +36,58 @@ _ = tr.ugettext
 
 
 def probe_setup_prepare(app, args = None):
-    app.trace( _("Preparing Calibration procedure") )
-    app.trace( _("This may take a wile") )
-    app.macro("M104 S200",          "ok", 90,   _("Heating extruder"), 0.1, verbose=True)
-    app.macro("M140 S45",           "ok", 90,   _("Heating Bed - fast"), 0.1,verbose=True)
+    #~ app.trace( _("Preparing Calibration procedure") )
+    #~ app.trace( _("This may take a wile") )
+    app.macro("M104 S200",          "ok", 90,   _("Heating Extruder"),      0.1)
+    app.macro("M140 S45",           "ok", 90,   _("Heating Bed (fast)"),    0.1)
+    app.macro("G28",                "ok", 100,  _("Homing all axes"),       0.1)
     app.macro("G91",                "ok", 2,    _("Relative mode"), 1, verbose=False)
     app.macro("G0 X17 Y61.5 F6000", "ok", 2,    _("Offset"), 1, verbose=False)
-    app.macro("G90",                "ok", 2,    _("Abs_mode"), 1, verbose=False)
+    app.macro("G90",                "ok", 2,    _("Setting rel position"), 1, verbose=False)
     app.macro("G0 Z5 F1000",        "ok", 2,    _("Moving to calibration position"), 1)
+    app.macro("G91",                "ok", 2,    _("Setting abs position"), 1, verbose=False)
+    app.macro("M109",               None, 300,  _("Witing for extruder temperature"), 1, warning=False)
     
 def probe_setup_calibrate(app, args = None):
     
     app.trace( _("Calibrating probe") )
-    app.macro("M104 S0",    "ok", 90,   _("Nozzle heating off"), 1, verbose=False)
-    app.macro("M140 S0",    "ok", 90,   _("Bed heating off"),1 , verbose=False)
+    app.macro("M104 S0",    "ok", 90,   _("Extruder heating off"), 1)
+    app.macro("M140 S0",    "ok", 90,   _("Bed heating off"), 1)
     
     # Get old probe-nozzle height difference
     
-    # TODO: handle error case
+    # TODO: handle error cases
     z_probe_old = None
     
-    data = app.send("M503")
+    data = app.send("M503", group='macro')
     for line in data:
         if line.startswith("echo:Z Probe Length:"):
             z_probe_old = float(line.split("Z Probe Length: ")[1])
     
     app.trace( _("Old Position : {0} mm").format(str(z_probe_old)) )
     
-    #get Z position
-    data = app.send("M114")
+    # get Z position
+    data = app.send("M114", group='macro')
     data = data[0]
     z_touch = float(data.split("Z:")[1].split(" ")[0])
 
     app.trace( _("Current height : {0} mm").format(str(z_touch)) )
     
-    #write config to EEPROM
+    # write config to EEPROM
     z_probe_new = abs( z_probe_old + (z_touch - 0.1) )
-    app.send("M710 S"+str(z_probe_new))
+    app.send("M710 S"+str(z_probe_new), group='macro')
     
     app.macro("G90","ok",2,"Abs_mode",1, verbose=False)
     app.macro("G0 Z50 F1000",   "ok", 3,    _("Moving the plane"), 1, verbose=False)
     app.macro("G28 X0 Y0",      "ok", 90,   _("homing all axis"), 1, verbose=False)
     app.trace( _("Probe calibrated : {0} mm").format(str(z_probe_new)) )
-    app.macro("M300",           "ok", 5,    _("Done!"), 1)
+    app.macro("M300",           "ok", 5,    _("Done!"), 1, verbose=False)
+    
+    return {
+        'old_probe_lenght' : str(z_probe_old),
+        'new_probe_length' : str(z_probe_new),
+        'z_touch'    : str(z_touch)
+    }
     
 def raise_bed_no_g27(app, args = None):
     #for homing procedure before probe calibration.
@@ -88,7 +97,7 @@ def raise_bed_no_g27(app, args = None):
     zmax_home_pos   = float(zprobe['zmax'])
     
     app.macro("M402",   "ok", 4,    _("Raising probe"), 0.1)
-    app.macro("G90",    "ok", 2,    _("Setting absolute position"), 1, verbose=False)
+    app.macro("G90",    "ok", 2,    _("Setting abs position"), 1, verbose=False)
     
     if zprobe_disabled:
         app.macro("G27 X0 Y0 Z" + str(zmax_home_pos),   "ok", 100,  _("Homing all axes"), 0.1)

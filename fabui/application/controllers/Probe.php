@@ -118,7 +118,9 @@ class Probe extends FAB_Controller {
 	
 	public function getLength()
 	{
-		$probe_length = 0;
+		$this->load->helper('fabtotum_helper');
+		$_result = doMacro('read_eeprom');
+		$probe_length = $_result['reply']['probe_length'];
 		$this->output->set_content_type('application/json')->set_output(
 				json_encode( array('probe_length' => $probe_length) )
 			);
@@ -126,8 +128,13 @@ class Probe extends FAB_Controller {
 
 	public function overrideLenght($override_by)
 	{
-		$new_probe_lenght = 0;
-		$old_probe_lenght = 0;
+		$this->load->helper('fabtotum_helper');
+		$_result = doMacro('read_eeprom');
+		$old_probe_lenght = $_result['reply']['probe_length'];
+		$new_probe_lenght = abs($old_probe_lenght) - $override_by;
+		
+		// override probe value
+		doGCode('M710 S'.$new_probe_lenght );
 		
 		$this->output->set_content_type('application/json')->set_output(
 				json_encode( array(
@@ -137,8 +144,22 @@ class Probe extends FAB_Controller {
 			);
 	}
 	
+	public function clibrateLength()
+	{
+		$this->load->helper('fabtotum_helper');
+		$_result = doMacro('probe_setup_calibrate');
+		$this->output->set_content_type('application/json')->set_output(
+			json_encode( array(
+				'old_probe_lenght' => $_result['reply']['old_probe_lenght'],
+				'probe_length'     => $_result['reply']['new_probe_length']
+				) )
+			);
+	}
+	
 	public function heatup()
 	{
+		$this->load->helper('fabtotum_helper');
+		$_result = doMacro('probe_setup_prepare');
 		$this->output->set_content_type('application/json')->set_output(
 			json_encode( array(true) )
 			);

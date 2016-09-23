@@ -60,9 +60,6 @@ class GMacroApplication(GCodePusher):
         if(self.log_response != self.response_file):
             with open(log_response,"a+") as out_file:
                 out_file.write( str(status) + "<br>" )
-    
-    #~ def trace(self, msg):
-        #~ print msg
             
     def run(self, preset, args):
         response = False

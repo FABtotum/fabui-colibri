@@ -109,21 +109,21 @@
             });
         
         }else{
-            
-                $( ".choice" ).slideUp( "slow", function() {});
-                $("#row-fast-1").slideDown('slow');
-                $(".re-choice").slideDown('slow');
-                $(".start").slideDown('slow');
-            
+            $( ".choice" ).slideUp( "slow", function() {});
+            $("#row-fast-1").slideDown('slow');
+            $(".re-choice").slideDown('slow');
+            $(".start").slideDown('slow');
         }
     }
     
     function prepare()
     {
-        var content = 'Heating extruder and bed<br>This operation will take a while';
+        $(".re-choice").slideUp('slow');
+        
+        //var content = 'Heating extruder and bed<br>This operation will take a while';
         index = 1;
         
-        openWait('Calibration', content);
+        openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Please wait');
         $.ajax({
               type: "POST",
               url: "<?php echo site_url("probe/heatup") ?>",
@@ -134,22 +134,37 @@
                 $("#row-normal-" + (index+1)).slideDown('slow');
                 
                 closeWait();
-                //~ if(mode == 'prepare'){
-                    //~ jog_call('mdi', 'G91');
-                //~ }
-                
-                //~ if(mode == 'calibrate'){
-                    
-                    //~ $("#calibrate-trace").html(response.trace);
-                    
-                //~ }
             });
         });
     }
     
     function calibrate()
     {
+        $(".re-choice").slideUp('slow');
         
+        //~ var content = 'Heating extruder and bed<br>This operation will take a while';
+        index = 2;
+        
+        openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Please wait');
+        $.ajax({
+              type: "POST",
+              url: "<?php echo site_url("probe/clibrateLength") ?>",
+              dataType: 'json',
+        }).done(function( data ) {
+                          
+            $("#row-normal-" + index).slideUp('slow', function(){
+                $("#row-normal-" + (index+1)).slideDown('slow');
+                
+                closeWait();
+                
+                var html = 'Calibrating probe\n';
+                html += '====================================\n';
+                html += 'Old Probe Length: ' + Math.abs(data.old_probe_lenght) + '\n';
+                html += 'New Probe Length: ' + data.probe_length;
+                
+                $("#calibrate-trace").html(html);
+            });
+        });
     }
     
     function do_again()
@@ -163,7 +178,10 @@
         
     function move_z()
     {
-        
+        var sign = $(this).attr('data-action');
+        var value = $("#z-value").val();
+        var gcode = 'G0 Z' + sign + value;
+        fabApp.jogMdi(gcode);
     }
     
     function override_probe_length()

@@ -35,7 +35,7 @@
 <hr class="simple">
 <div class="row">
 	<div class="col-sm-6 margin-bottom-10">
-		<h1 class="txt-color-blueDark"><?php echo $rpi_version?> <small>Board details</small></h1>
+		<h1 class="txt-color-blueDark"> Board details</h1>
 	</div>
 	<div class="col-sm-6 margin-bottom-10">
 		<div class="well no-padding well-light">
@@ -61,12 +61,10 @@
 			<table class="table table-striped">
 				<caption>Hardware</caption>
 				<tbody>
-				<!--
 					<tr>
-						<td>Version</td>
+						<td>Board</td>
 						<td><span class="pull-right"><?php echo $rpi_version?></span></td>
 					</tr>
-				-->
 					<tr>
 						<td>Time Alive</td>
 						<td><span class="pull-right"><?php echo transformSeconds($time_alive)?></span></td>

@@ -123,7 +123,7 @@ def raise_bed(app, args = None):
     else:
         app.macro("G27",            "ok", 100,  _("Homing all axes"), 0.1)
         app.macro("G0 Z10 F10000",  "ok", 15,   _("Raising"), 0.1)
-        app.macro("G28",            "ok", 100,  _("homing all axes"), 0.1, verbose=False)
+        app.macro("G28",            "ok", 100,  _("Homing all axes"), 0.1, verbose=False)
 
 def auto_bed_leveling(app, args = None):
     app.trace( _("Auto Bed leveling Initialized") )
@@ -199,6 +199,9 @@ def read_eeprom(app, args = None):
     
     reply = app.macro('M503', None, 1, _("Reading settings from eeprom"), 1, verbose=False)
     
+    #echo:Z Probe Length: -32.05
+    probe_length = reply[17].split('Probe Length:')[1].strip()
+    
     eeprom = {
         "steps_per_unit"        : serialize(reply[3], '(M92\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e']),
         "maximum_feedrates"     : serialize(reply[5], '(M203\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e']),
@@ -207,6 +210,7 @@ def read_eeprom(app, args = None):
         "advanced_variables"    : serialize(reply[11],'(M205\sS[0-9.]+\sT0[0-9.]+\sB[0-9.]+\sX[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['s', 't', 'b', 'x', 'z', 'e']),
         "home_offset"           : serialize(reply[13],'(M206\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+)', ['x', 'y', 'z']),
         "pid"                   : serialize(reply[15],'(M301\sP[0-9.]+\sI[0-9.]+\sD[0-9.]+)', ['p', 'i', 'd']),
+        "probe_length"          : probe_length,
         "servo_endstop"         : getServoEndstopValues(reply[16])
     }
     
