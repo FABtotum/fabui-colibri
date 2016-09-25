@@ -42,7 +42,9 @@ class Spool extends FAB_Controller {
 
 	public function load()
 	{
-		
+		$this->load->helpers('fabtotum_helper');
+		$result = doMacro('load_spool');
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
 
 	public function preUnload()
@@ -51,12 +53,14 @@ class Spool extends FAB_Controller {
 		
 		$result = doMacro('pre_unload_spool');
 		
-		$this->output->set_content_type('application/json')->set_output(json_encode(result));
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
 
 	public function unload()
 	{
-		//$this->output->set_content_type('application/json')->set_output(json_encode( $head_info ));
+		$this->load->helpers('fabtotum_helper');
+		$result = doMacro('unload_spool');
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
 }
  
