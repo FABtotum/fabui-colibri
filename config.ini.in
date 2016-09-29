@@ -8,6 +8,10 @@ cameras = @LIB_PATH@cameras
 host = 0.0.0.0
 port = 9002
 
+[xmlrpc]
+host = 0.0.0.0
+port = 8000
+
 [general]
 lock = @FABUI_TEMP_PATH@LOCK
 macro_response = @FABUI_TEMP_PATH@macro_response

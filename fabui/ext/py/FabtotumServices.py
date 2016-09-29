@@ -45,7 +45,6 @@ from fabtotum.os.monitor.usbdrive       import UsbMonitor
 from fabtotum.os.monitor.gpiomonitor    import GPIOMonitor
 from fabtotum.os.monitor.configmonitor  import ConfigMonitor
 
-
 def create_file(filename):
     open(filename,'w').close()
     os.chmod(filename, 0o660)

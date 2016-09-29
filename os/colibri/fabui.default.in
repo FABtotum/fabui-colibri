@@ -7,3 +7,4 @@ WWW_PATH=@WWW_PATH@
 UPLOAD_PATH=@UPLOAD_PATH_LNS@
 
 FABSERVICE_PID=/run/FabtotumServices.pid
+XMLRPCS_PID=/run/xmlrpcserver.pid
