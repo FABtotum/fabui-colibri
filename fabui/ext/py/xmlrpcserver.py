@@ -151,6 +151,8 @@ ch.setFormatter(formatter)
 ch.setLevel(logging.DEBUG)
 logger.addHandler(ch)
 
+time.sleep(2)
+
 gcs = GCodeServiceClient()
 
 config = ConfigService()
