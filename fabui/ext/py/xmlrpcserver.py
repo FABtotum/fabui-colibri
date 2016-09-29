@@ -25,37 +25,64 @@ def signal_handler(signal, frame):
 
 class ExposeCommands:
     
-    def __init__(self, gcs, config):
-        print "MyFuncs.__init__"
+    def __init__(self, gcs, config, log_trace):
         self.gcs = gcs
         self.config = config
         self.macro_warning = 0
         self.macro_error = 0
         self.macro_skipped = 0
+        
+        self.use_stdout = False
+        self.trace_file = log_trace
+        
+        self.trace_logger = logging.getLogger('Trace')
+        self.trace_logger.setLevel(logging.INFO)
+        
+        ch = logging.FileHandler(log_trace)
+        formatter = logging.Formatter("%(message)s")
+        ch.setFormatter(formatter)
+        ch.setLevel(logging.INFO)
+        self.trace_logger.addHandler(ch)
     
-    def trace(self, msg):
-        print msg
+    def __resetTrace(self):
+        """ Reset trace file """
+        with open(self.trace_file, 'w'):
+            pass
+    
+    def trace(self, log_msg):
+        """ 
+        Write to log message to trace file
+        
+        :param log_msg: Log message
+        :type log_msg: string
+        """
+        if self.use_stdout:
+            print log_msg
+        else:
+            self.trace_logger.info(log_msg)
     
     def send(self, code, block = True, timeout = None):
+        """
+        Send GCode and receive it's reply.
+        """
         return self.gcs.send(code, block=block, timeout=timeout)
-        
-    def exec_macro(self, preset, args = None, atomic = True):
+    
+    def do_macro(self, preset, args = None, atomic = True):
         """
         Execute macro command.
         """
-        self.reset_macro_status()
+        self.__reset_macro_status()
+        self.__resetTrace()
         if atomic:
-            self.macro_start()
+            self.__macro_start()
         
         if preset in PRESET_MAP:
             reply = PRESET_MAP[preset](self, args)
-        #~ else:
-            #~ print _("Preset '{0}' not found").format(preset)
         
         print 'reply:', reply
         
         if atomic:
-            self.macro_end()
+            self.__macro_end()
         
         if self.macro_error > 0:
             response = False
@@ -74,7 +101,7 @@ class ExposeCommands:
         
         return json.dumps(result)
     
-    def reset_macro_status(self):
+    def __reset_macro_status(self):
         """
         Reset macro status counters to zero.
         """
@@ -82,14 +109,14 @@ class ExposeCommands:
         self.macro_error = 0
         self.macro_skipped = 0
     
-    def macro_start(self):
+    def __macro_start(self):
         """ 
         Start macro execution block. This will activate atomic execution and 
         only commands marked as `macro` will be executed. Others will be aborted.
         """
         self.gcs.atomic_begin(group = 'macro')
         
-    def macro_end(self):
+    def __macro_end(self):
         """ End macro execution block and atomic execution. """
         self.gcs.atomic_end()
     
@@ -139,9 +166,46 @@ class ExposeCommands:
         time.sleep(delay_after) #wait the desired amount
         
         return reply
+        
+    def do_abort(self):
+        """ Send abort request """
+        self.gcs.abort()
+        return 'ok'
+        
+    def do_pause(self):
+        """ Send pause request """
+        self.gcs.pause()
+        return 'ok'
+        
+    def do_resume(self):
+        """ Send resume request """
+        self.gcs.resume()
+        return 'ok'
+        
+    def do_reset(self):
+        """ Send reset request """
+        self.gcs.reset()
+        return 'ok'
+
+    def set_z_modify(self, value):
+        self.gcs.z_modify(float(value))
+        return 'ok'
+        
+    def set_speed(self, value):
+        return self.gcs.send('M220 S{0}\r\n'.format(value))
+        
+    def set_fan(self, value):
+        return self.gcs.send('M106 S{0}\r\n'.format(value))
+        
+    def set_flow_rate(self, value):
+        return self.gcs.send('M221 S{0}\r\n'.format(value))
+        
+    def set_auto_shutdown(self, value): # !shutdown:<on|off>
+        self.gcs.push('config:shutdown', value)
+        return 'ok'
 
 # Setup logger
-logger = logging.getLogger('FabtotumService')
+logger = logging.getLogger('XML-RPC')
 logger.setLevel(logging.DEBUG)
 
 ch = logging.StreamHandler()
@@ -160,7 +224,9 @@ config = ConfigService()
 SOCKET_HOST         = config.get('xmlrpc', 'xmlrpc_host')
 SOCKET_PORT         = config.get('xmlrpc', 'xmlrpc_port')
 
-rpc = ServerContainer(SOCKET_HOST, int(SOCKET_PORT), ExposeCommands(gcs, config), logger)
+log_trace           = config.get('general', 'trace')
+
+rpc = ServerContainer(SOCKET_HOST, int(SOCKET_PORT), ExposeCommands(gcs, config, log_trace), logger)
 rpc.start()
 
 # Ensure CTRL+C detection to gracefully stop the server.

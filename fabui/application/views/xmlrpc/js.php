@@ -10,13 +10,13 @@
 
         $.ajax({
               type: "POST",
-              data: {'cmd' : $('#command').val() },
-              url: "<?php echo site_url("test/doGCode") ?>",
+              data: {'code' : $('#command').val() },
+              url: "<?php echo site_url("xmlrpc/doGCode") ?>",
               dataType: 'json'
         }).done(function( data ) { 
             $(".response-container").html( data.reply );
         });
-
+        
     }
     
     function execMacro()
@@ -34,8 +34,8 @@
         
         $.ajax({
               type: "POST",
-              data: {'macro' : macro },
-              url: "<?php echo site_url("test/doMacro") ?>",
+              data: {'macro' : macro, 'args' : null },
+              url: "<?php echo site_url("xmlrpc/doMacro") ?>",
               dataType: 'json'
         }).done(function( data ) { 
             $(".response-container").html( JSON.stringify(data.reply) );

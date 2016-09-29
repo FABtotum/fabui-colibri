@@ -41,6 +41,21 @@ class GCodeServiceServerPyroWrapper(object):
         self.client_callback = None
         self.callback_list = []
     
+    def abort(self):
+        self.gcs.abort()
+    
+    def pause(self):
+        self.gcs.pause()
+    
+    def resume(self):
+        self.gcs.resume()
+    
+    def reset(self):
+        self.gcs.reset()
+    
+    def z_modify(self, value):
+        return self.gcs.z_modify(value)
+    
     def push(self, id, data):
         return self.gcs.push(id, data)
     
