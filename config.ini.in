@@ -9,8 +9,8 @@ host = 0.0.0.0
 port = 9002
 
 [xmlrpc]
-host = 0.0.0.0
-port = 8000
+xmlrpc_host = 0.0.0.0
+xmlrpc_port = 8000
 
 [general]
 lock = @FABUI_TEMP_PATH@LOCK

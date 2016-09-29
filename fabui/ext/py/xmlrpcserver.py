@@ -158,7 +158,7 @@ config = ConfigService()
 SOCKET_HOST         = config.get('xmlrpc', 'host')
 SOCKET_PORT         = config.get('xmlrpc', 'port')
 
-rpc = ServerContainer(SOCKET_HOST, SOCKET_PORT, ExposeCommands(gcs, config), logger)
+rpc = ServerContainer(SOCKET_HOST, int(SOCKET_PORT), ExposeCommands(gcs, config), logger)
 rpc.start()
 
 # Ensure CTRL+C detection to gracefully stop the server.
