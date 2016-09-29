@@ -155,8 +155,8 @@ gcs = GCodeServiceClient()
 
 config = ConfigService()
 
-SOCKET_HOST         = config.get('xmlrpc', 'host')
-SOCKET_PORT         = config.get('xmlrpc', 'port')
+SOCKET_HOST         = config.get('xmlrpc', 'xmlrpc_host')
+SOCKET_PORT         = config.get('xmlrpc', 'xmlrpc_port')
 
 rpc = ServerContainer(SOCKET_HOST, int(SOCKET_PORT), ExposeCommands(gcs, config), logger)
 rpc.start()
