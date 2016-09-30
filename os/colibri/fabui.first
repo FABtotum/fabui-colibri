@@ -30,6 +30,9 @@ case "$1" in
     mkdir -p /mnt/userdata/uploads
     chown 33:33 /mnt/userdata/uploads
     ln -sf /mnt/userdata/uploads ${UPLOAD_PATH}
+    # Detect camera version
+    python ${PYTHON_PATH}/setCamera.py &> /var/log/fabui/setCamera.log
+    
     evaluate_retval
     ;;
   post)

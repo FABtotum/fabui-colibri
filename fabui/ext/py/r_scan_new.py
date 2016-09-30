@@ -164,7 +164,7 @@ class RotaryScan(GCodePusher):
             T = tripy.roty_matrix(pos)
             offset = np.matrix([head_x, head_y, z_offset])
             
-            xyz_points = tricpp.laser_line_to_xyz(xy_line, M, R, t, head_x, 0.0, offset, T)
+            xyz_points = tricpp.laser_line_to_xyz(xy_line, M, R, t, head_x, -100.0, offset, T)
 
             point_count += asc.write_points(xyz_points)
             
@@ -251,7 +251,7 @@ class RotaryScan(GCodePusher):
         self.prepare_task(task_id, task_type='scan')
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
-        head_y   = 175.0
+        head_y   = y_offset
         head_x   = 96.0
         bed_z    = 135.0 + 45.0 # Platform position + 4axis offset
         
@@ -364,7 +364,7 @@ def main():
     parser.add_argument("-b", "--begin",    help=_("Begin scanning from X."),  default=0)
     parser.add_argument("-e", "--end",      help=_("End scanning at X."),      default=360)
     parser.add_argument("-z", "--z-offset", help=_("Z offset."),               default=0)
-    parser.add_argument("-y", "--y-offset", help=_("Y offset."),               default=0)
+    parser.add_argument("-y", "--y-offset", help=_("Y offset."),               default=175.0)
     parser.add_argument("-a", "--a-offset", help=_("A offset/rotation."),      default=0)
     parser.add_argument("-o", "--output",   help=_("Output point cloud file."),default=os.path.join(destination, 'cloud.asc'))
     #~ parser.add_argument('--help', action='help', help=_("Show this help message and exit") )

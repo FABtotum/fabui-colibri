@@ -22,7 +22,6 @@ def signal_handler(signal, frame):
     logger.debug("Shutting down services. Please wait...")
     rpc.stop()
 
-
 class ExposeCommands:
     
     def __init__(self, gcs, config, log_trace):

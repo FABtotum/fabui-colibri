@@ -22,3 +22,4 @@ USB_MEDIA_PATH	= '/run/media/'
 
 CONFIG_INI		= LIB_PATH + 'config.ini'
 SERIAL_INI		= LIB_PATH + 'serial.ini'
+CAMERA_INI		= LIB_PATH + 'camera.ini'
