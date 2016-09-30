@@ -17,7 +17,10 @@
 	protected $responseType = 'serial'; //type of response (temperature, gcode, serial)
 	protected $responseData;
 	protected $serialReply = array(); //serial reply
-	protected $serialCommands = array();
+	protected $useXmlrpc = false;
+	protected $xmlrpc = null;
+	protected $commands = array();
+	protected $result; 
 	
 	/**
 	 * class constructor
@@ -30,32 +33,85 @@
 		}
 		$this->CI =& get_instance(); //init ci instance
 		$this->CI->config->load('fabtotum');
-		$this->CI->load->helper('file_helper');
-  	}
-	/***
-	 * send gcode command to serial
-	 */
-	function sendCommand($commands)
-	{
-		if(!is_array($commands) && $commands != '')
-		{
-			array_push($this->serialCommands, $commands);
+		
+		if(!$this->useXmlrpc){
+			$this->CI->load->helper('file_helper');
 		}else{
-			$this->serialCommands = $commands;
+			$this->CI->load->library('xmlrpc');
+			$this->CI->xmlrpc->server('127.0.0.1/FABUI', $this->CI->config->item('xmlrpc_port'));
+			$this->CI->xmlrpc->method('send');
 		}
 		
-		$commandToWrite = '';
-		foreach($this->serialCommands as $key => $command){
-			$commandToWrite .= '!jog:'.time().$key.','.$command.PHP_EOL;
+  	}
+  	/**
+  	 * build list commands
+  	 * @param array commands or string
+  	 */
+  	function buildCommands($commands)
+  	{	
+  		if(!is_array($commands) && $commands != '')
+  		{
+  			array_push($this->commands, $commands);
+  		}else{
+  			$this->commands = $commands;
+  		}
+  	}
+  	/**
+  	 * @param string $type ['array', 'text']
+  	 * return commands lists
+  	 */
+  	function getCommands($type = 'array')
+  	{	
+  		if($type == 'array')
+  			return $this->commands;
+  		else if ($type == 'text'){
+  			$text = '';
+  			foreach($this->commands as $key => $command){
+  				$text .= $command.PHP_EOL;
+  			}
+  			return $text;
+  		}
+  	}
+	/***
+	 * send gcode
+	 * @param array|string $commands
+	 */
+	function sendCommands($commands)
+	{	
+		$this->buildCommands($commands);
+		
+		if(!$this->useXmlrpc){
+			$commandToWrite = '';
+			foreach($this->commands as $key => $command){
+				$commandToWrite .= '!jog:'.time().$key.','.$command.PHP_EOL;
+			}
+			write_file($this->CI->config->item('command'), $commandToWrite);
+		}else{
+			
+			$request = array($this->getCommands('text'));
+			$this->CI->xmlrpc->request($request);
+			
+			$this->result = False;
+			$this->serialReply = '';
+			 
+			if (!$this->CI->xmlrpc->send_request())
+			{
+				$this->serialReply .= $this->CI->xmlrpc->display_error();
+			}
+			else
+			{
+				$this->serialReply .= implode('<br>', $this->CI->xmlrpc->display_response()) ;
+				$this->result = True;
+			}
+			
 		}
-		write_file($this->CI->config->item('command'), $commandToWrite);
 	}
 	/**
 	 * @return Array data response
 	 */
 	function response()
 	{
-		return array('type'=> $this->responseType, 'commands' => $this->serialCommands, 'response' => $this->serialReply);
+		return array('type'=> $this->responseType, 'commands' => $this->commands, 'response' => $this->serialReply, 'result' => $this->result);
 	}
 	/**
 	 * @param $type (serial, temperature, etc..)
@@ -88,7 +144,7 @@
 	 */
 	public function setBedTemp($temperature)
 	{
-		$this->sendCommand('M140 S'.$temperature);
+		$this->sendCommands('M140 S'.$temperature);
 		return $this->response();
 	}
 	/**
@@ -97,7 +153,7 @@
 	 */
 	public function setExtruderTemp($temperature)
 	{
-		$this->sendCommand('M104 S'.$temperature);
+		$this->sendCommands('M104 S'.$temperature);
 		return $this->response();
 	}
 	/**
@@ -115,8 +171,9 @@
 		$directions['left']       = 'GO X-%.2f F%.2f';
 		$directions['right']      = 'GO X+%.2f F%.2f';
 		
-		$this->sendCommand(array('G91', sprintf($directions[$direction], $this->step['xy'], $this->feedrate['xyz']),'G90'));
+		$this->sendCommands(array('G91', sprintf($directions[$direction], $this->step['xy'], $this->feedrate['xyz']),'G90'));
 		return $this->response();
+		
 	}
 	/**
 	 * @param string $direction
@@ -125,7 +182,7 @@
 	public function moveZ($direction)
 	{
 		$sign = $direction == 'up' ? '-' : '+';
-		$this->sendCommand(array('G91', 'GO Z'.$sign.$this->step['z'].' F'.$this->feedrate['xyz']));
+		$this->sendCommands(array('G91', 'GO Z'.$sign.$this->step['z'].' F'.$this->feedrate['xyz']));
 		return $this->response();
 	}
 	/**
@@ -133,7 +190,7 @@
 	 */
 	public function zeroAll()
 	{
-		$this->sendCommand('G92 X0 Y0 Z0 E0');
+		$this->sendCommands('G92 X0 Y0 Z0 E0');
 		return $this->response();
 	}
 	/***
@@ -146,7 +203,7 @@
 		$commands[] = 'M999';
 		$commands[] = 'M728';
 		
-		$this->sendCommand($commands);
+		$this->sendCommands($commands);
 		return $this->response();
 	}
 	/**
@@ -155,7 +212,7 @@
 	function extrude($sign)
 	{
 		//TODO
-		$this->sendCommand(array('G91', 'G0 E'.$sign.$this->step['extruder'].' F'.$this->feedrate['extruder']));
+		$this->sendCommands(array('G91', 'G0 E'.$sign.$this->step['extruder'].' F'.$this->feedrate['extruder']));
 		return $this->response();
 	}
 	/**
@@ -171,7 +228,8 @@
 			if($cleanCommand != '') $commandsToSend[] = $cleanCommand;
 			
 		}
-		$this->sendCommand($commandsToSend);
+		$this->sendCommands($commandsToSend);
+		return $this->response();
 	}
 }
  

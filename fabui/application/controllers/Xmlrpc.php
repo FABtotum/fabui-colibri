@@ -154,7 +154,6 @@ class XmlRPC extends FAB_Controller {
         $request = array();
         $this->xmlrpc->request($request);
 
-        
         if ( ! $this->xmlrpc->send_request())
         {
             $_reply = $this->xmlrpc->display_error();
@@ -163,9 +162,9 @@ class XmlRPC extends FAB_Controller {
         {
             $_reply = $this->xmlrpc->display_response();
         }
-        
         $this->output->set_content_type('application/json')->set_output( json_encode( $_reply) );
     }
+    
 }
  
 ?>

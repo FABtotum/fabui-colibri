@@ -229,7 +229,8 @@
 			'-W' => 1296,
 			'-H' => 972,
 			'-d' => '/tmp/fabui',
-			'-F' => $params['file_name']
+			'-F' => $params['file_name'],
+			'-C' => 'v1'
 		);
 		if($params['object_mode'] == 'new') $scanArgs['-N'] = $params['object'];
 		if($params['object_mode'] == 'add') $scanArgs['-O'] = $params['object'];
@@ -302,7 +303,8 @@
 			'-W' => 1296,
 			'-H' => 972,
 			'-d' => '/tmp/fabui',
-			'-F' => $params['file_name']
+			'-F' => $params['file_name'],
+			'-C' = 'v1'
 		);
 		if($params['object_mode'] == 'new') $scanArgs['-N'] = $params['object'];
 		if($params['object_mode'] == 'add') $scanArgs['-O'] = $params['object'];

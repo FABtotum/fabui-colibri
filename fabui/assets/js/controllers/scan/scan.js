@@ -794,7 +794,7 @@ function updateIso(value)
 function abortScan()
 {	
 	disableButton('.abort');
-	doAction('abort', abortCallback);
+	doAction('do_abort', abortCallback);
 }
 /**
 *
@@ -810,7 +810,7 @@ function doAction(action, callback)
 {
 	$.ajax({
 		type: 'get',
-		url: '/fabui/scan/action/' + action,
+		url: '/fabui/xmlrpc/method/' + action,
 		dataType: 'json'
 	}).done(function(response) {
 		callback(response);

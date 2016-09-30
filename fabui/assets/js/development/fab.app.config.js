@@ -31,6 +31,10 @@ var serial_exec_url_action      = base_url + '/jog/exec';
 var first_setup_url_action      = '/fabui/controller/first_setup';
 var check_internet_url_action   = '/temp/internet';
 /*
+* xmlrpc
+*/
+var xmlrpc = true;
+/*
  * socket 
  */
 var socket_host = window.location.hostname;

@@ -800,15 +800,16 @@ fabApp = (function(app) {
 		if(debugState)
 			root.console.log("✔ app.serial: " + func + ', ' + val);
 		
-		var xyStep       = $("#xyStep").length            > 0 ? $("#xyStep").val() : 10;
-		var zStep        = $("#zStep").length             > 0 ? $("#zStep").val() : 5;
-		var extruderStep = $("#extruderStep").length      > 0 ? $("#extruderStep").val() : 10;
-		var xyzFeed      = $("#xyzFeed").length           > 0 ? $("#xyzFeed").val() : 1000;
+		var xyStep       = $("#xyStep").length            > 0 ? $("#xyStep").val()            : 10;
+		var zStep        = $("#zStep").length             > 0 ? $("#zStep").val()             : 5;
+		var extruderStep = $("#extruderStep").length      > 0 ? $("#extruderStep").val()      : 10;
+		var xyzFeed      = $("#xyzFeed").length           > 0 ? $("#xyzFeed").val()           : 1000;
 		var extruderFeed = $("#extruder-feedrate").length > 0 ? $("#extruder-feedrate").val() : 300;
 		
 		var data = {
 			'method'           : func,
 			'value'            : val,
+			'useXmlrpc'        : xmlrpc,
 			'step'             : {'xy':  xyStep, 'z':zStep, 'extruder': extruderStep},
 			'feedrate'         : {'xyz': xyzFeed, 'extruder':extruderFeed}
 		};
