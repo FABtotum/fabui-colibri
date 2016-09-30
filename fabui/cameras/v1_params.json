@@ -1,0 +1,16 @@
+{
+    "resolution" : {
+        "low" : {
+            "width" : 640,
+            "height" : 480
+        },
+        "medium" : {
+            "width" : 1296,
+            "height" : 972
+        },
+        "high" : {
+            "width" : 2592,
+            "height" : 1944
+        }
+    }
+}

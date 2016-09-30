@@ -68,6 +68,7 @@ class RotaryScan(GCodePusher):
         
         self.camera = PiCamera()
         self.camera.resolution = (width, height)
+        self.resolution_label = "{0}x{1}".format(width, height)
         self.camera.iso = iso
         self.camera.awb_mode = 'off'
         self.camera.awb_gains = ( Fraction(1.5), Fraction(1.2) )
@@ -104,17 +105,22 @@ class RotaryScan(GCodePusher):
         scanfile = os.path.join(self.scan_dir, "{0}{1}.jpg".format(number, suffix) )
         self.camera.capture(scanfile, quality=100)
     
-    def __post_processing(self, camera_file, start, end, head_x, head_y, bed_z, slices, cloud_file, task_id, object_id, object_name, file_name):
+    def __post_processing(self, camera_path, camera_version,
+                          start, end, head_x, head_y, bed_z, slices, 
+                          cloud_file, task_id, object_id, object_name, file_name):
         """
         """
         threshold = 0
         idx = 0
         point_count = 0
         
+        camera_file = os.path.join(camera_path, camera_version + '_intrinsic.json')
         json_f = open(camera_file)
-        camera = json.load(json_f)
-        intrinsic = camera['intrinsic']
-        extrinsic = camera['extrinsic']
+        intrinsic = json.load(json_f)[self.resolution_label]
+        
+        camera_file = os.path.join(camera_path, camera_version + '_extrinsic.json')
+        json_f = open(camera_file)
+        extrinsic = json.load(json_f)[self.resolution_label]
 
         cam_m       = np.matrix( intrinsic['matrix'], dtype=float )
         dist_coefs  = np.matrix( intrinsic['dist_coefs'], dtype=float )
@@ -173,6 +179,9 @@ class RotaryScan(GCodePusher):
             # remove images
             os.remove(img_fn)
             os.remove(img_l_fn)
+            
+            if self.is_aborted():
+                break
             
         asc.close()
         
@@ -234,7 +243,7 @@ class RotaryScan(GCodePusher):
             task['id_file'] = f['id']
             task.write()
     
-    def run(self, task_id, object_id, object_name, file_name, camera_file, start_a, end_a, y_offset, slices, cloud_file):
+    def run(self, task_id, object_id, object_name, file_name, camera_path, camera_version, start_a, end_a, y_offset, slices, cloud_file):
         """
         Run the rotary scan.
         """
@@ -248,7 +257,7 @@ class RotaryScan(GCodePusher):
         
         self.post_processing_thread = Thread(
             target = self.__post_processing,
-            args=( [camera_file, start_a, end_a, head_x, head_y, bed_z, slices, cloud_file, 
+            args=( [camera_path, camera_version, start_a, end_a, head_x, head_y, bed_z, slices, cloud_file, 
                     task_id, object_id, object_name, file_name] )
             )
         self.post_processing_thread.start()
@@ -349,8 +358,9 @@ def main():
     parser.add_argument("-s", "--slices",   help=_("Number of slices."),       default=100)
     parser.add_argument("-i", "--iso",      help=_("ISO."),                    default=400)
     parser.add_argument("-p", "--power",    help=_("Scan laser power 0-255."), default=230)
-    parser.add_argument("-W", "--width",    help=_("Image width in pixels."),  default=1920)
-    parser.add_argument("-H", "--height",   help=_("Image height in pixels"),  default=1080)
+    parser.add_argument("-W", "--width",    help=_("Image width in pixels."),  default=1296)
+    parser.add_argument("-H", "--height",   help=_("Image height in pixels"),  default=972)
+    parser.add_argument("-C", "--camera",   help=_("Camera version"),          default='v1')
     parser.add_argument("-b", "--begin",    help=_("Begin scanning from X."),  default=0)
     parser.add_argument("-e", "--end",      help=_("End scanning at X."),      default=360)
     parser.add_argument("-z", "--z-offset", help=_("Z offset."),               default=0)
@@ -379,6 +389,7 @@ def main():
     object_id       = int(args.object_id)
     object_name     = args.object_name
     file_name       = args.file_name
+    camera_version  = args.camera
     
     if task_id == 0:
         standalone  = True
@@ -395,7 +406,7 @@ def main():
     if not os.path.exists(scan_dir):
         makedirs(scan_dir)
 
-    camera_file     = os.path.join( config.get('hardware', 'cameras') , "camera_v1.json")
+    camera_path = os.path.join( config.get('hardware', 'cameras') )
 
     ############################################################################
 
@@ -428,7 +439,7 @@ def main():
 
     app_thread = Thread( 
             target = app.run, 
-            args=( [task_id, object_id, object_name, file_name, camera_file, 
+            args=( [task_id, object_id, object_name, file_name, camera_path, camera_version, 
                     start_a, end_a, y_offset, slices, cloud_file] ) 
             )
     app_thread.start()

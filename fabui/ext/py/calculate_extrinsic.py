@@ -40,7 +40,7 @@ tr = gettext.translation('calibration', 'locale', fallback=True)
 _ = tr.ugettext
 
 class Extrinsic(GCodePusher):
-    def __init__(self, log_trace, monitor_file, scan_dir, intrinsic, output_file, width, height, rotation):
+    def __init__(self, log_trace, monitor_file, scan_dir, output_file, width, height, rotation):
         super(Extrinsic, self).__init__(log_trace, monitor_file)
 
         self.camera = PiCamera()
@@ -49,49 +49,57 @@ class Extrinsic(GCodePusher):
         self.progress           = 0.0
         
         self.scan_dir           = scan_dir
-        self.intrinsic          = intrinsic
         self.output_file        = output_file
+
+    def trace(self, msg):
+        print msg
 
     def get_progress(self):
         """ Custom progress implementation """
         return self.progress
 
-    def take_a_picture(self):
+    def take_a_picture(self, resolution = None):
         """ Camera control wrapper """
         scanfile = os.path.join(self.scan_dir, "sample.png" )
+        if resolution:
+            self.camera.resolution = resolution
         self.camera.capture(scanfile, quality=100)
         
         return scanfile
     
-    def check_projection(self, point2d, point3d, M, R, t, error_margin2d = 2.0, error_margin3d = 1.0):
+    def check_projection(self, point2d, point3d, M, R, t, error_margin2d = 4.0, error_margin3d = 1.0):
         uvPoint3 = np.matrix( np.round( point2d + [1] ) )
         xyzPoint3 = np.matrix( point3d )
         
         # 3D to 2D projection
-        PP = M * ( R*xyzPoint3.T + t)
-        s1 = float(PP[2])
-        PP /= s1
+        PP2d = M * ( R*xyzPoint3.T + t)
+        s1 = float(PP2d[2])
+        PP2d /= s1
         
         err = False
         
-        ex = abs( PP[0] - uvPoint3.T[0] )
+        ex = abs( PP2d[0] - uvPoint3.T[0] )
         if ex > error_margin2d:
             err = True
         
-        ey = abs( PP[1] - uvPoint3.T[1] )
+        ey = abs( PP2d[1] - uvPoint3.T[1] )
         if ey > error_margin2d:
             err = True
             
         if err:
-            print "Error(2D->3D): {0} {1}".format(PP.T, uvPoint3)
+            print "Warning: (2D->3D): {0} {1}".format(PP2d.T, uvPoint3)
             return False
+        
+        #~ PP2d = np.round(PP2d)
         
         # 2D to 3D projection
         x_known = xyzPoint3.T[0]
-        T1 = R.I * M.I * uvPoint3.T
+        T1 = R.I * M.I * PP2d
         T2 = R.I * t
         s2 = float( (x_known + T2[0]) / T1[0] )
         PP = (s2 * T1 - T2)
+        
+        err = False
         
         ex = abs( PP[0] - xyzPoint3.T[0] )
         if ex > error_margin3d:
@@ -106,21 +114,18 @@ class Extrinsic(GCodePusher):
             err = True
             
         if err:
-            print "Error(3D->2D): {0} {1} [{2}/{3}]".format(PP.T, xyzPoint3, float(s1), float(s2))
+            print "Warning: (3D->2D): {0} {1} [{2}/{3}]".format(PP.T, xyzPoint3, float(s1), float(s2))
+            print "       * {0}".format(PP.T - xyzPoint3)
             return False
             
         return True
     
-    def calculate_extrinsic(self, fn, output_file, x, y, z, x_offset, y_offset, z_offset):
-        json_f = open(self.intrinsic)
-        intrinsic = json.load(json_f)
+    def calculate_extrinsic(self, fn, intrinsic, output_file, x, y, z, x_offset, y_offset, z_offset):
         
         z_offset = z # this one bas bed heigh correction
         
-        self.trace( _('Loaded intrinsic parameters from "{0}".'.format(self.intrinsic)) )
-        
-         # Checkerboard size 
-        pattern_size = (8,6)
+         # Chessboard size 
+        pattern_size = (6,8)
         # Square size in mm
         square_size  = (10,10)
         
@@ -135,14 +140,13 @@ class Extrinsic(GCodePusher):
         img = cv2.imread(fn)
         h,  w = img.shape[:2]
 
-        #~ print "cam_m",cam_m
         print "get new matrix"
         newcameramtx, roi = cv2.getOptimalNewCameraMatrix(cam_m, dist_coefs, (width,height), 1, (w,h))
         
         print "newcameramtx",newcameramtx
         
-        #~ newcameramtx, roi=cv2.getOptimalNewCameraMatrix(cam_m, dist_coefs, (w,h), 1)
-        img = cv2.undistort(img, newcameramtx, dist_coefs)
+        img = cv2.undistort(img, cam_m, dist_coefs, None, newcameramtx)
+        cv2.imwrite('undistort.jpg', img)
         
         print "find chessboard"
         found, corners = cv2.findChessboardCorners(img, pattern_size)
@@ -154,19 +158,23 @@ class Extrinsic(GCodePusher):
                 x2d = corners[i][0][0]
                 y2d = corners[i][0][1]
                 obj2d_points.append( [x2d, y2d] )
-                #~ cv2.circle(img, (x2d,y2d), 3, (0,0,255), 1 )
+                cv2.circle(img, (x2d,y2d), 3, (0,0,255), 1 )
+                cv2.imwrite('found_chess.jpg', img)
         else:
             self.trace( _('Find chessboard: FAILED.') )
             return False
 
+        cx = x - (pattern_size[0]-1)*square_size[1]
+        cy = y
+
         # Create 3d points
-        for i in xrange(0, pattern_size[1] ):
-            for j in xrange(0, pattern_size[0] ):
-                x3d = x-i*square_size[0]
-                y3d = y-j*square_size[0]
+        for j in xrange(0, pattern_size[1] ):
+            for i in xrange(0, pattern_size[0] ):
+                x3d = cx+i*square_size[0]
+                y3d = cy-j*square_size[1]
                 z3d = z
                 obj3d_points.append( [ x3d, y3d, z3d] )
-        
+            
         verts3d = np.float32(obj3d_points)
         verts2d = np.float32(obj2d_points)
         
@@ -184,7 +192,18 @@ class Extrinsic(GCodePusher):
             return False
         
         #~ print "project points"
-        #~ verts = cv2.projectPoints(verts3d, rvec, tvec, newcameramtx, dist_coef)[0].reshape(-1, 2)
+        verts = cv2.projectPoints(verts3d, rvec, tvec, newcameramtx, dist_coef)[0].reshape(-1, 2)
+        
+        idx = 0
+        for v in verts:
+            x = v[0]
+            y = v[1]
+
+            cv2.circle(img, (x,y), 10, (255,255,255), 1 )
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            cv2.putText(img, '{0}'.format(idx),(x,y), font, 0.3,(0,0,255), 1)
+            #cv2.putText(img, '({0},{1})'.format(p[0], p[1]),(x,int(y+15)), font, 0.3,(255,0,255), 1)
+            idx += 1
         
         print "rotation matrix"
         rotM, jacobian = cv2.Rodrigues(rvec)
@@ -210,7 +229,14 @@ class Extrinsic(GCodePusher):
         
         Rit = R33.I * tvec
         
-        data = {
+        label = "{0}x{1}".format(w, h)
+        data = {}
+
+        if os.path.exists(output_file):
+            json_f = open(output_file)
+            data = json.load(json_f)
+        
+        data[label] = {
             'offset'    : [x_offset, y_offset, z_offset],
             'dist_coef' : dist_coef.tolist(),
             'M33'       : cmatrix.tolist(),
@@ -234,39 +260,57 @@ class Extrinsic(GCodePusher):
                 
         self.trace( _('Parameter validation: PASSED.') )
         
-        
         with open(output_file, 'w') as f:
             f.write( json.dumps(data) )
         self.trace( _('Parameter saved to "{0}".'.format(output_file)) )
         
         return True
         
-    def run(self, task_id, x_offset, y_offset, z_offset, base_height):
+    def run(self, task_id, intrinsic_file, x_offset, y_offset, z_offset, base_height):
         
         self.prepare_task(task_id, task_type='capture')
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
         self.send("G27")
-        #self.send("M700 S200")
+        self.send("M700 S200")
+        
+        self.send("M701 S255")
+        self.send("M702 S255")
+        self.send("M703 S255")
+        
         self.send("G0 X{0} Y{1} Z{2} F5000".format(x_offset, y_offset, z_offset) )
         self.camera.start_preview()
         
-        #~ raw_input("Press Enter to continue..." )
+        raw_input("Press Enter to continue..." )
         self.send("M400")
-        #self.send("M700 S0")
+        self.send("M700 S0")
+
         
-        fn = self.take_a_picture()
+        json_f = open(intrinsic_file)
+        intrinsic_data = json.load(json_f)
         
-        self.trace( _('Calculation started.') )
-        # Because chessboard base raises the image for base_height, the real z_offset should be reduced by it 
-        # as the Z axis descreses the higher you go
-        retval = self.calculate_extrinsic(fn, self.output_file, 130, 150, z_offset-base_height, x_offset, y_offset, z_offset)
-        if not retval:
-            self.trace( _('Calculation failed.') )
-        else:
-            self.trace( _('Calculation successful.') )
+        self.trace( _('Loaded intrinsic parameters from "{0}".'.format(intrinsic_file)) )
         
+        for label in intrinsic_data.keys():
+            w = intrinsic_data[label]['width']
+            h = intrinsic_data[label]['height']
+            
+            fn = self.take_a_picture( resolution=(w,h) )
+            
+            self.trace( _('Calculation started.') )
+            # Because chessboard base raises the image for base_height, the real z_offset should be reduced by it 
+            # as the Z axis decreses the higher you go
+            retval = self.calculate_extrinsic(fn, intrinsic_data[label], self.output_file, 130, 150, z_offset-base_height, x_offset, y_offset, z_offset)
+            if not retval:
+                self.trace( _('Calculation for {0} failed.'.format(label) ) )
+            else:
+                self.trace( _('Calculation for {0} successful.'.format(label) ) )
+            
         self.camera.stop_preview()
+        
+        self.send("M701 S0")
+        self.send("M702 S0")
+        self.send("M703 S0")
         self.send('M300')
         #self.trace( _('Calculation finished.') )
         self.set_task_status(GCodePusher.TASK_COMPLETED)
@@ -300,7 +344,7 @@ def main():
     # INIT VARs
     task_id         = int(args.task_id)
     destination     = args.dest
-    intrinsic       = args.intrinsic
+    intrinsic_file  = args.intrinsic
     monitor_file    = config.get('general', 'task_monitor') # TASK MONITOR FILE (write stats & task info, ex: temperatures, speed, etc
     log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
     width           = int(args.width)
@@ -320,7 +364,6 @@ def main():
     app = Extrinsic(log_trace,
                   monitor_file, 
                   output_dir,
-                  intrinsic,
                   output_file,
                   width=width,
                   height=height,
@@ -328,7 +371,7 @@ def main():
 
     app_thread = Thread( 
             target = app.run, 
-            args=( [task_id, x_offset, y_offset, z_offset, base_height] ) 
+            args=( [task_id, intrinsic_file, x_offset, y_offset, z_offset, base_height] ) 
             )
     app_thread.start()
     #~ app.calculate_extrinsic('sample.png', x =130, y=150, z=z_offset)
