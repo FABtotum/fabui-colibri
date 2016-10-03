@@ -6,5 +6,5 @@ PYTHON_PATH=@PYTHON_PATH@
 WWW_PATH=@WWW_PATH@
 UPLOAD_PATH=@UPLOAD_PATH_LNS@
 
-FABSERVICE_PID=/run/FabtotumServices.pid
+FABSERVICE_PID=/run/fabtotumservices.pid
 XMLRPCS_PID=/run/xmlrpcserver.pid

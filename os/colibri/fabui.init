@@ -36,15 +36,15 @@ case "$1" in
     
     ######## fabtotum server ########
     #start-stop-daemon -b -S -q -m -p ${FABSERVICE_PID} --exec python ${PYTHON_PATH}/FabtotumServices.py -- -B -L /var/log/fabui/FabtotumServices.log
-    ARGS="-B"
+    ARGS="-B -p ${FABSERVICE_PID} -x ${XMLRPCS_PID}"
     if [ x"$FORCED" != x ]; then
-        ARGS = "-R -B"
+        ARGS="-R ${ARGS}"
     fi
     python ${PYTHON_PATH}/FabtotumServices.py ${ARGS} &> /var/log/fabui/FabtotumServices.log 2>&1 &
-    echo $! > ${FABSERVICE_PID}
+    #~ echo $! > ${FABSERVICE_PID}
     
-    python ${PYTHON_PATH}/xmlrpcserver.py &> /var/log/fabui/xmlrpcserver.log 2>&1 &
-    echo $! > ${XMLRPCS_PID}
+    #~ python ${PYTHON_PATH}/xmlrpcserver.py &> /var/log/fabui/xmlrpcserver.log 2>&1 &
+    #~ echo $! > ${XMLRPCS_PID}
     
     evaluate_retval
     ;;
@@ -55,8 +55,8 @@ case "$1" in
         kill -9 $PID &> /dev/null
     fi
     
-    start-stop-daemon -K -q -p $FABSERVICE_PID
-    start-stop-daemon -K -q -p $XMLRPCS_PID
+    start-stop-daemon -K -q -p ${FABSERVICE_PID}
+    start-stop-daemon -K -q -p ${XMLRPCS_PID}
     
     evaluate_retval
     ;;

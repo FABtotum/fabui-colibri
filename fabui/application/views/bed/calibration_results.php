@@ -65,7 +65,11 @@ function elaborate_screw($data){
 	$t_exploded = explode('.', $t_value);
 	
 	$units    = $t_exploded[0];
-	$decimals = $t_exploded[1];
+	$decimals = 0;
+	
+	if( count($t_exploded) > 1 ) {
+		$decimals = $t_exploded[1];
+	}
 	
 	$turns_number = $units;
 	$degrees      = roundUpToAny(round((floatval(floatval('0.'.$decimals) * 360))));

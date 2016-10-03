@@ -66,7 +66,9 @@ def signal_handler(signal, frame):
 parser = argparse.ArgumentParser()
 parser.add_argument("-B", "--bootstrap", action='store_true',  help="Execute bootstrape commands on startup.")
 parser.add_argument("-R", "--reset", action='store_true',  help="Reset totumduino on startup.")
-parser.add_argument("-L", "--log", help="Use logfile to store log messages.",  default='<stdout>')
+parser.add_argument("-L", "--log", help="Use logfile to store log messages.",               default='<stdout>')
+parser.add_argument("-p", "--pidfile", help="File to store process pid.",                   default=os.path.join(RUN_PATH,'fabtotumservices.pid') )
+parser.add_argument("-x", "--xmlrpc_pidfile", help="File to store xmlrpc process pid.",     default=os.path.join(RUN_PATH,'xmlrpcserver.pid') )
 
 # Get arguments
 args = parser.parse_args()
@@ -173,6 +175,10 @@ statsMonitor.start()
 
 # Ensure CTRL+C detection to gracefully stop the server.
 signal.signal(signal.SIGINT, signal_handler)
+
+# Start XMLRPC server
+xmlrpc_exe = os.path.join(PYTHON_PATH, 'xmlrpcserver.py')
+#os.system("some_command &")
 
 # Wait for all threads to finish
 gcserver.loop()

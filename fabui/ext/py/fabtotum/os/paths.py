@@ -19,6 +19,7 @@ TEMP_PATH		= WWW_PATH + 'temp/'
 BIGTEMP_PATH	= '/mnt/bigtemp/'
 USERDATA_PATH	= '/mnt/userdata/'
 USB_MEDIA_PATH	= '/run/media/'
+RUN_PATH	    = '/run'
 
 CONFIG_INI		= LIB_PATH + 'config.ini'
 SERIAL_INI		= LIB_PATH + 'serial.ini'

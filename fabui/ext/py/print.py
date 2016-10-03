@@ -64,8 +64,8 @@ class PrintApplication(GCodePusher):
             else:
                 self.set_task_status(GCodePusher.TASK_COMPLETING)
             
-            self.exec_macro("end_print_additive")
-            self.exec_macro("end_print_additive_safe_zone")
+            self.exec_macro("end_additive")
+            self.exec_macro("end_additive_safe_zone")
             
             if self.is_aborted():
                 self.set_task_status(GCodePusher.TASK_ABORTED)
