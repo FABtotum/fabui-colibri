@@ -11,12 +11,12 @@
 				</section>
 				<section class="col col-2">
 						<label class="label">&nbsp;</label>
-						<a href="javascript:void(0);" data-action="open" class="btn btn-sm btn-default btn-block probe-action"><i class="fa fa-long-arrow-down"></i> Open probe</a>
+						<button data-action="open" class="btn btn-sm btn-default btn-block probe-action"><i class="fa fa-long-arrow-down"></i> Open probe</button>
 				</section>
 				 
 				<section class="col col-2">
 						<label class="label">&nbsp;</label>
-						<a href="javascript:void(0);" data-action="open" class="btn btn-sm btn-default btn-block reset"><i class="fa fa-refresh"></i> Reset</a>
+						<button data-action="open" class="btn btn-sm btn-default btn-block reset"><i class="fa fa-refresh"></i> Reset</button>
 				</section>
 				
 			</div>
@@ -33,12 +33,12 @@
 				</section>
 				<section class="col col-2">
 						<label class="label">&nbsp;</label>
-						<a href="javascript:void(0);" data-action="close" class="btn btn-sm btn-default btn-block probe-action"><i class="fa fa-long-arrow-up"></i> Close probe</a>
+						<button data-action="close" class="btn btn-sm btn-default btn-block probe-action"><i class="fa fa-long-arrow-up"></i> Close probe</button>
 				</section>
 			 
 				<section class="col col-2">
 						<label class="label">&nbsp;</label>
-						<a href="javascript:void(0);" data-action="close" class="btn btn-sm btn-default btn-block reset"><i class="fa fa-refresh"></i> Reset</a>
+						<button data-action="close" class="btn btn-sm btn-default btn-block reset"><i class="fa fa-refresh"></i> Reset</button>
 				</section>
 				
 			</div>

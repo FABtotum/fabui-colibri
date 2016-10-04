@@ -34,11 +34,6 @@ class Head extends FAB_Controller {
 		$data = array();
 
 		$_units = loadSettings();
-/*
-		if (isset($_units['settings_type']) && $_units['settings_type'] == 'custom') {
-			$_units = json_decode(file_get_contents($this -> config -> item('fabtotum_custom_config_units', 'fabtotum')), TRUE);
-		}
-*/
 		if (isset($_units['settings_type']) && $_units['settings_type'] == 'custom') {
 			$_units = loadSettings( $_units['settings_type'] );
 		}
@@ -100,7 +95,7 @@ class Head extends FAB_Controller {
 		$head_info = $heads[$new_head];
 		$pid	   = $head_info['pid'];
 		$fw_id	   = $head_info['fw_id'];
-		
+
 		if ($pid != '') {
 			doGCode( array($pid, 'M500') );
 		}

@@ -182,34 +182,65 @@ if(!function_exists('doMacro'))
 	 * @param $extrArgs
 	 * Exec macro operation
 	 * 
-	 */ 
+	 //~ */ 
+	//~ function doMacro($macroName, $traceFile = '', $extrArgs = '')
+	//~ {
+		//~ if($macroName == '') return;
+		//~ //load CI instancem, helpers, config
+		//~ $CI =& get_instance();
+		//~ $CI->load->helper('file');
+		//~ $CI->config->load('fabtotum');
+		
+		//~ $extPath = $CI->config->item('ext_path');
+		//~ if($traceFile == '' or $traceFile == null)        $traceFile    = $CI->config->item('trace');
+		
+		//~ $cmdArgs = array('--log_trace' => $traceFile, 1 => $macroName);
+		//~ if( !is_array($extrArgs) ) { $extrArgs = array($extrArgs); }
+		//~ $params = array_merge( $cmdArgs, $extrArgs);
+		
+		//~ $data = doCommandLine('python', $extPath.'py/gmacro.py', $params);
+		
+		//~ $result = json_decode($data, true);
+		//~ //if response is false means that macro failed
+		//~ //$response = str_replace('<br>', '', trim(file_get_contents($responseFile))) == 'true' ? true : false;
+		//~ $response = $result['response'];
+		//~ $reply    = $result['reply'];
+		//~ $trace    = file_get_contents($traceFile);
+		
+		//~ return array('response' => $response, 'reply' => $reply, 'trace' => $trace);
+	//~ }
 	function doMacro($macroName, $traceFile = '', $extrArgs = '')
 	{
-		if($macroName == '') return;
-		//load CI instancem, helpers, config
-		$CI =& get_instance();
-		$CI->load->helper('file');
+		$CI =& get_instance(); //init ci instance
 		$CI->config->load('fabtotum');
+		$CI->load->library('xmlrpc');
 		
-		$extPath = $CI->config->item('ext_path');
-		if($traceFile == '' or $traceFile == null)        $traceFile    = $CI->config->item('trace');
-		//~ if($responseFile == '' or $responseFile == null ) $responseFile = $CI->config->item('macro_response');
+		$CI->xmlrpc->server('127.0.0.1/FABUI', $CI->config->item('xmlrpc_port'));
+		$CI->xmlrpc->method('do_macro');
 		
-		$cmdArgs = array('--log_trace' => $traceFile, 1 => $macroName);
-		if( !is_array($extrArgs) ) { $extrArgs = array($extrArgs); }
-		$params = array_merge( $cmdArgs, $extrArgs);
+		$CI->xmlrpc->request( array($macroName, $extrArgs) );
 		
-		//~ doCommandLine('python', $extPath.'py/gmacro.py', is_array($extrArgs) ? array_merge(array($macroName, $traceFile, $responseFile), $extrArgs) : array($macroName, $traceFile, $responseFile, $extrArgs));
-		$data = doCommandLine('python', $extPath.'py/gmacro.py', $params);
+		if($traceFile == '' or $traceFile == null)
+			$traceFile = $CI->config->item('trace');
+
+		$_reply = '';
+		$_response = False;
 		
-		$result = json_decode($data, true);
-		//if response is false means that macro failed
-		//$response = str_replace('<br>', '', trim(file_get_contents($responseFile))) == 'true' ? true : false;
-		$response = $result['response'];
-		$reply    = $result['reply'];
-		$trace    = file_get_contents($traceFile);
+		if ( !$CI->xmlrpc->send_request())
+		{
+			$_reply = $CI->xmlrpc->display_error();
+			$_response = False;
+		}
+		else
+		{
+			$tmp = json_decode( $CI->xmlrpc->display_response(), true );
+			$_response = $tmp['response'];
+			$_reply = $tmp['reply'];
+		}
 		
-		return array('response' => $response, 'reply' => $reply, 'trace' => $trace);
+		$trace	= file_get_contents($traceFile);
+		
+		return array('reply' => $_reply, 'response' => $_response, 'trace' => $trace);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -217,27 +248,15 @@ if(!function_exists('doGCode'))
 {
 	/**
 	 * @param $gcodes GCode command or an array of GCode commands
-	 * Write !gcode:* to command file
+	 * Send gcode commands using JogFactory
 	 */
 	function doGCode($gcodes)
 	{
-		$data = '';
-		
-		if(is_array($gcodes) || $gcodes != ''){
-			if(is_array($gcodes)){
-				foreach($gcodes as $gc)
-				{
-					$data .= '!gcode:' . $gc . PHP_EOL;
-				}
-			}
-			else
-			{
-				$data = '!gcode:' . $gcodes;
-			}
-			
-			writeToCommandFile($data);
-		}
-		
+		$CI =& get_instance();
+		$CI->load->helper('file');
+		$CI->load->library('JogFactory', '', 'jogFactory');
+		$CI->jogFactory->sendCommands( $gcodes );
+		return $CI->jogFactory->response();
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

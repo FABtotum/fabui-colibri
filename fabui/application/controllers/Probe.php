@@ -69,8 +69,8 @@ class Probe extends FAB_Controller {
 		//data
 		$data = array();
 		
-		$json_data = doCommandLine('python', $extPath.'/py/read_eeprom.py');
-		$data['eeprom'] = json_decode($json_data, true);
+		$tmp = doMacro('read_eeprom');
+		$data['eeprom'] = $tmp['reply'];
 		
 		//main page widget
 		$widgetOptions = array(
