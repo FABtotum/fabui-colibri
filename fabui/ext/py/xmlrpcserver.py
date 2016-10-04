@@ -1,9 +1,35 @@
+#!/bin/env python
+# -*- coding: utf-8; -*-
+#
+# (c) 2016 FABtotum, http://www.fabtotum.com
+#
+# This file is part of FABUI.
+#
+# FABUI is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# FABUI is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
+
+# Import standard python module
+import os
+import signal
+import argparse
 import logging
 import time
-import signal
 import json
 
+# Import external modules
+
 # Import internal modules
+from fabtotum.os.paths     import RUN_PATH
 from fabtotum.fabui.config import ConfigService
 from fabtotum.utils.gcodefile import GCodeFile, GCodeInfo
 from fabtotum.utils.pyro.gcodeclient import GCodeServiceClient
@@ -202,6 +228,19 @@ class ExposeCommands:
     def set_auto_shutdown(self, value): # !shutdown:<on|off>
         self.gcs.push('config:shutdown', value)
         return 'ok'
+
+
+# Setup arguments
+parser = argparse.ArgumentParser()
+parser.add_argument("-L", "--log", help="Use logfile to store log messages.",   default='<stdout>')
+parser.add_argument("-p", "--pidfile", help="File to store process pid.",       default=os.path.join(RUN_PATH, 'xmlrpcserver.pid') )
+
+# Get arguments
+args = parser.parse_args()
+pidfile = args.pidfile
+
+with open(pidfile, 'w') as f:
+    f.write( str(os.getpid()) )
 
 # Setup logger
 logger = logging.getLogger('XML-RPC')

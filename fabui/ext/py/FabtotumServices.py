@@ -32,7 +32,7 @@ from watchdog.observers import Observer
 from ws4py.client.threadedclient import WebSocketClient
 
 # Import internal modules
-from fabtotum.os.paths                  import TEMP_PATH
+from fabtotum.os.paths                  import TEMP_PATH, RUN_PATH, PYTHON_PATH
 from fabtotum.fabui.config              import ConfigService
 from fabtotum.fabui.bootstrap           import hardwareBootstrap
 from fabtotum.fabui.monitor             import StatsMonitor
@@ -73,9 +73,14 @@ parser.add_argument("-x", "--xmlrpc_pidfile", help="File to store xmlrpc process
 # Get arguments
 args = parser.parse_args()
 
-do_bootstrap = args.bootstrap
-do_reset = args.reset
-logging_facility = args.log
+do_bootstrap        = args.bootstrap
+do_reset            = args.reset
+logging_facility    = args.log
+pidfile             = args.pidfile
+xmlrpc_pidfile      = args.xmlrpc_pidfile
+
+with open(pidfile, 'w') as f:
+    f.write( str(os.getpid()) )
 
 config = ConfigService()
 
@@ -178,7 +183,7 @@ signal.signal(signal.SIGINT, signal_handler)
 
 # Start XMLRPC server
 xmlrpc_exe = os.path.join(PYTHON_PATH, 'xmlrpcserver.py')
-#os.system("some_command &")
+os.system('python {0} -p {1} &'.format(xmlrpc_exe, xmlrpc_pidfile) )
 
 # Wait for all threads to finish
 gcserver.loop()

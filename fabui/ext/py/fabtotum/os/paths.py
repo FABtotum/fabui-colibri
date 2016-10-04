@@ -2,7 +2,7 @@
 
 OS_FLAVOUR		= 'colibri'
 WWW_PATH		= '/var/www/';
-SHARED_PATH		= '/usr/shared/fabui/';
+SHARED_PATH		= '/usr/share/fabui/';
 LIB_PATH		= '/var/lib/fabui/';
 FABUI_PATH		= SHARED_PATH;
 
