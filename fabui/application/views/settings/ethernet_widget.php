@@ -63,7 +63,13 @@
 					<div class="col-sm-12"></div>
 				</div>
 			</fieldset>
-
+			<div class="form-actions">
+				<div class="row">
+					<div class="col-md-12">
+						<button class="btn btn-primary" type="button" id="save"><i class="fa fa-save"></i> Save new address</button>
+					</div>
+				</div>
+			</div>
 		</form>
 	</div>
 </div>

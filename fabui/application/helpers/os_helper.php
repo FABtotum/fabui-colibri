@@ -7,6 +7,7 @@
  * @license https://opensource.org/licenses/GPL-3.0
  * 
  */
+ 
 if(!function_exists('getEthInfo'))
 {
 	/**
@@ -43,6 +44,15 @@ if(!function_exists('getEthInfo'))
 		);
 	}
 
+}
+
+if(!function_exists('setEthIPAddress'))
+{
+	function setEthIPAddress($ip_address)
+	{
+		 $response = shell_exec('sudo sh /usr/share/fabui/ext/bash/set_ethernet.sh "'.$ip_address.'"');
+		 return $response;
+	}
 }
  
 if(!function_exists('getWlanInfo'))
@@ -220,38 +230,45 @@ if(!function_exists('setTimeZone'))
 		}
 	}
 }
-
-function transformSeconds($seconds)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('transformSeconds'))
 {
-	$sec_num = intval($seconds); // don't forget the second param
-    $hours   = floor($sec_num / 3600);
-    $minutes = floor(($sec_num - ($hours * 3600)) / 60);
-    $seconds = $sec_num - ($hours * 3600) - ($minutes * 60);
+	function transformSeconds($seconds)
+	{
+		$sec_num = intval($seconds); // don't forget the second param
+		$hours   = floor($sec_num / 3600);
+		$minutes = floor(($sec_num - ($hours * 3600)) / 60);
+		$seconds = $sec_num - ($hours * 3600) - ($minutes * 60);
 
-    if ($hours   < 10) {$hours   = "0".$hours;}
-    if ($minutes < 10) {$minutes = "0".$minutes;}
-    if ($seconds < 10) {$seconds = "0".$seconds;}
-    return $hours . ':' . $minutes . ':' . $seconds;
+		if ($hours   < 10) {$hours   = "0".$hours;}
+		if ($minutes < 10) {$minutes = "0".$minutes;}
+		if ($seconds < 10) {$seconds = "0".$seconds;}
+		return $hours . ':' . $minutes . ':' . $seconds;
+	}
 }
 
-/**
- * Human readable byte size
- * @param $int
- * @return string
- */
-function humanFileSize($bytes) {
-	$bytes = intval($bytes);
-	$ret = "unknown";
-	if ($bytes > 1000000) {
-		$bytes = round($bytes / 1000000, 2);
-		$ret = "$bytes MB";
-	} else if ($bytes > 1000) {
-		$bytes = round($bytes / 1000, 2);
-		$ret = "$bytes kB";
-	} else {
-		$ret = "$bytes bytes";
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('humanFileSize'))
+{
+	/**
+	 * Human readable byte size
+	 * @param $int
+	 * @return string
+	 */
+	function humanFileSize($bytes) {
+		$bytes = intval($bytes);
+		$ret = "unknown";
+		if ($bytes > 1000000) {
+			$bytes = round($bytes / 1000000, 2);
+			$ret = "$bytes MB";
+		} else if ($bytes > 1000) {
+			$bytes = round($bytes / 1000, 2);
+			$ret = "$bytes kB";
+		} else {
+			$ret = "$bytes bytes";
+		}
+		return $ret;
 	}
-	return $ret;
 }
 
 ?>

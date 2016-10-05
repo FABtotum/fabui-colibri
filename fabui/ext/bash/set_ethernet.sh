@@ -10,10 +10,7 @@
 ##                                                                       ##
 ###########################################################################
 
-usage() {
-    echo "usage: <IP_ADDRESS>"
-    exit 1
-}
+# usage: <IP_ADDRESS>
 
 IP=${1}
 
@@ -32,4 +29,4 @@ iface eth0 inet static
   gateway 169.254.1.1
 
 EOF
-sudo /etc/init.d/networking restart
+sudo /etc/init.d/network restart

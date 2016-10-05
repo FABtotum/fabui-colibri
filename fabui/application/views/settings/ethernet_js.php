@@ -34,20 +34,20 @@
             url : "<?php echo site_url("settings/ethernetSaveAddress") ?>",
             dataType : 'html',
             type: 'post',
-            timeout: 60000,
+            timeout: 10000,
             data: {ip: $("#ip").val()}
-        }).done(function(reponse) {
+        }).done(function(data) {
             
             document.location.href =  '<?php echo site_url('settings/ethernet/ip_changed'); ?>';
             
         }).fail(function(jqXHR, textStatus) {
-            
-            if(textStatus == 'timeout' && (imOnCable && (ip_address != $("#ip").val()))){
-                
+
+            if(textStatus == 'timeout' && (imOnCable && (ip_address != $("#ip").val())))
+            {
                 waitTitle('<i class="fa fa-check"></i> New IP address saved');
-                document.location.href = 'http://' + $("#ip").val() + '/fabui/settings/ethernet/ip_changed'
-                        
             }
+            
+            document.location.href = 'http://' + $("#ip").val() + '/fabui/settings/ethernet/ip_changed'
             
         });
         

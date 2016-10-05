@@ -118,7 +118,7 @@ class Settings extends FAB_Controller {
 		
 		$headerToolbar = '';
 		
-		$widgeFooterButtons = $this->smart->create_button('Save new address', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		$widgeFooterButtons = ''; //$this->smart->create_button('Save new address', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'ethernet-settings-widget';
@@ -134,7 +134,21 @@ class Settings extends FAB_Controller {
 	
 	public function ethernetSaveAddress()
 	{
+		$postData = $this->input->post();
+		
 		$this->load->helper('os_helper');
+		$result = setEthIPAddress( $postData['ip'] );
+		
+		$this->output->set_content_type('html')->set_output('ok');
+	}
+	
+	public function ethernetSaveAddressTest($ip_address)
+	{
+
+		$this->load->helper('os_helper');
+		$result = setEthIPAddress( $ip_address );
+		
+		$this->output->set_content_type('html')->set_output('ok');
 	}
 	
 	/***
