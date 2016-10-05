@@ -8,6 +8,42 @@
  * 
  */
  
+if(!function_exists('getHostName'))
+{
+	/**
+	 * @return Hostname
+	 */
+	function getHostName()
+	{
+		return shell_exec('cat /etc/hostname');
+	}
+}
+
+if(!function_exists('setHostName'))
+{
+	function setHostName($hostname, $name)
+	{
+		 $response = shell_exec('sudo sh /usr/share/fabui/ext/bash/set_hostname.sh "'.$hostname.'" "'.$name.'"');
+		 return $response;
+	}
+}
+
+if(!function_exists('getAvahiServiceName'))
+{
+	/**
+	 * @return Service name stored in avahi fabtotum.service
+	 */
+	function getAvahiServiceName()
+	{
+		if(file_exists('/etc/avahi/services/fabtotum.service')){
+			$xml_service = simplexml_load_file('/etc/avahi/services/fabtotum.service','SimpleXMLElement', LIBXML_NOCDATA);
+			return trim(str_replace('(%h)', '', $xml_service->name));
+		}else{
+			return 'Fabtotum Personal Fabricator';
+		}
+	}
+}
+ 
 if(!function_exists('getEthInfo'))
 {
 	/**

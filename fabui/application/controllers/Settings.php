@@ -122,7 +122,7 @@ class Settings extends FAB_Controller {
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'ethernet-settings-widget';
-		$widget->header = array('icon' => 'fa-cog', "title" => "<h2>Ethernet</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-sitemap', "title" => "<h2>Ethernet</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('settings/ethernet_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 		
 		$this->addJsInLine($this->load->view('settings/ethernet_js', $data, true));
@@ -138,15 +138,6 @@ class Settings extends FAB_Controller {
 		
 		$this->load->helper('os_helper');
 		$result = setEthIPAddress( $postData['ip'] );
-		
-		$this->output->set_content_type('html')->set_output('ok');
-	}
-	
-	public function ethernetSaveAddressTest($ip_address)
-	{
-
-		$this->load->helper('os_helper');
-		$result = setEthIPAddress( $ip_address );
 		
 		$this->output->set_content_type('html')->set_output('ok');
 	}
@@ -182,7 +173,7 @@ class Settings extends FAB_Controller {
 		$widget->header = array('icon' => 'fa-wifi', "title" => "<h2>Wi-Fi </h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('settings/wifi_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 		$this->addJsInLine($this->load->view('settings/wifi_js', $data, true));
-		//~ $this->addJSFile('/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js'); // progressbar*/
+		$this->addJSFile('/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js'); // progressbar*/
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
 		$this->content = $widget->print_html(true);
 		$this->view();
@@ -220,9 +211,51 @@ class Settings extends FAB_Controller {
 	 */
 	public function dnssd()
 	{
-		//TODO
+		$postData = $this->input->post();
+		
+		//load libraries, helpers, model, config
+		$this->load->library('smart');
+		$this->load->helper('fabtotum_helper');
+		$this->load->helper('os_helper');
+		$this->load->helper('form');
+		$this->config->load('fabtotum');
+
+		$data = array();
+		$data['current_hostname'] = getHostName();
+		$data['current_name'] = getAvahiServiceName();
+		
+		//main page widget
+		$widgetOptions = array(
+			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
+			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
+		);
+		
+		$headerToolbar = '';
+		
+		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		
+		$widget         = $this->smart->create_widget($widgetOptions);
+		$widget->id     = 'ethernet-settings-widget';
+		$widget->header = array('icon' => 'fa-binoculars', "title" => "<h2>Make the FABtotum Personal Fabricator easily disoverable on local network</h2>", 'toolbar'=>$headerToolbar);
+		$widget->body   = array('content' => $this->load->view('settings/dnssd_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
+		
+		$this->addJsInLine($this->load->view('settings/dnssd_js', $data, true));
+		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
+		//$this->addCSSInLine('<style type="text/css">.custom_settings{display:none !important;}</style>'); 
+		$this->content = $widget->print_html(true);
+		$this->view();
 	}
 	
+	public function setHostname()
+	{
+		$postData = $this->input->post();
+		$hostname = $postData['hostname'];
+		$name = $postData['name'];
+		
+		$this->load->helper('os_helper');
+		$result = setHostName($hostname, $name);
+		echo $result;
+	}
 
  }
  
