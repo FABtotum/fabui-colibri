@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 
  * @author Krios Mane
@@ -6,6 +7,43 @@
  * @license https://opensource.org/licenses/GPL-3.0
  * 
  */
+if(!function_exists('getEthInfo'))
+{
+	/**
+	 * @param string interface name
+	 * @return array infos about wlan interface
+	 */
+	function getEthInfo(){
+			
+		exec('sudo ifconfig eth0', $info);
+		$info = implode(" ",$info);
+		$info = preg_replace('/\s\s+/', ' ', $info);
+		
+		preg_match('/inet addr:([0-9]+.[0-9]+.[0-9]+.[0-9]+)/i',$info,$result);
+		$inet_address = isset($result[1]) ? $result[1] : '';
+		
+		preg_match('/Bcast:([0-9]+.[0-9]+.[0-9]+.[0-9]+)/i',$info,$result);
+		$broadcast = isset($result[1]) ? $result[1] : '';
+		
+		preg_match('/HWaddr ([0-9a-f:]+)/i',$info,$result);
+		$mac_address = isset($result[1]) ? $result[1] : '';
+		
+		preg_match('/RX Bytes:(\d+ \(\d+.\d+ MiB\))/i',$info,$result);
+		$received_bytes = isset($result[1]) ? $result[1] : '';
+		
+		preg_match('/TX Bytes:(\d+ \(\d+.\d+ [K|M|G]iB\))/i',$info,$result);
+		$transferred_bytes = isset($result[1]) ? $result[1] : '';
+			
+		return array(
+			'inet_address' => $inet_address,
+			'broadcast' => $broadcast,
+			'mac_address' => $mac_address,
+			'received_bytes' => $received_bytes,
+			'transferred_bytes' => $transferred_bytes
+		);
+	}
+
+}
  
 if(!function_exists('getWlanInfo'))
 {

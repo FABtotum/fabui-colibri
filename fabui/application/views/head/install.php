@@ -1,4 +1,3 @@
-<style>.jumbotron{padding:20px;} .jumbotron p {font-size: 15px;} </style>
 <div class="row">
 	<div class="col-sm-12 alerts-container">
 <?php if(!isset($units['hardware']['head']) || $units['hardware']['head'] == ''): ?>
@@ -12,6 +11,8 @@
 <?php endif; ?>
 	</div>
 </div>
+
+<style>.jumbotron{padding:20px;} .jumbotron p {font-size: 15px;} </style>
 
 <div class="row">
 	<div class="col-sm-12">
@@ -68,3 +69,4 @@
 		</div>
 	<?php endforeach; ?>
 </div>
+

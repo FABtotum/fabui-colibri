@@ -22,6 +22,12 @@
  	$config['serial_'.$iniKey] = $iniValue;
  }
  
+ //serial ini
+ $ini = parse_ini_file("/var/lib/fabui/camera.ini");
+ foreach($ini as $iniKey => $iniValue){
+ 	$config['camera_'.$iniKey] = $iniValue;
+ }
+ 
  unset($ini);
  
 ?>

@@ -8,8 +8,11 @@
  */
  defined('BASEPATH') OR exit('No direct script access allowed');
  
- class Settings extends FAB_Controller {
- 	
+class Settings extends FAB_Controller {
+	
+	/***
+	 *  Settings - Hardware page
+	 */
 	public function hardware(){
 			
 		//load libraries, helpers, model, config
@@ -90,11 +93,48 @@
 	}
 	
 	/***
-	 * 
+	 *  Settings - Network - Ethernet page
 	 */
-	public function ethernet()
+	public function ethernet($action = '')
 	{
-		//TODO
+		$postData = $this->input->post();
+		
+		//load libraries, helpers, model, config
+		$this->load->library('smart');
+		$this->load->helper('fabtotum_helper');
+		$this->load->helper('os_helper');
+		$this->load->helper('form');
+		$this->config->load('fabtotum');
+
+		$data = array();
+		$data['info'] = getEthInfo();
+		$data['action'] = $action;
+		
+		//main page widget
+		$widgetOptions = array(
+			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
+			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
+		);
+		
+		$headerToolbar = '';
+		
+		$widgeFooterButtons = $this->smart->create_button('Save new address', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		
+		$widget         = $this->smart->create_widget($widgetOptions);
+		$widget->id     = 'ethernet-settings-widget';
+		$widget->header = array('icon' => 'fa-cog', "title" => "<h2>Ethernet</h2>", 'toolbar'=>$headerToolbar);
+		$widget->body   = array('content' => $this->load->view('settings/ethernet_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
+		
+		$this->addJsInLine($this->load->view('settings/ethernet_js', $data, true));
+		$this->addJSFile('/assets/js/plugin/inputmask/jquery.inputmask.bundle.js');
+		//$this->addCSSInLine('<style type="text/css">.custom_settings{display:none !important;}</style>'); 
+		$this->content = $widget->print_html(true);
+		$this->view();
+	}
+	
+	public function ethernetSaveAddress()
+	{
+		$this->load->helper('os_helper');
 	}
 	
 	/***
@@ -128,7 +168,7 @@
 		$widget->header = array('icon' => 'fa-wifi', "title" => "<h2>Wi-Fi </h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('settings/wifi_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 		$this->addJsInLine($this->load->view('settings/wifi_js', $data, true));
-		$this->addJSFile('/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js'); // progressbar*/
+		//~ $this->addJSFile('/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js'); // progressbar*/
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
 		$this->content = $widget->print_html(true);
 		$this->view();
@@ -169,13 +209,6 @@
 		//TODO
 	}
 	
-	/***
-	 * 
-	 */
-	public function raspicam()
-	{
-		//TODO
-	}
 
  }
  

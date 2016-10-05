@@ -56,6 +56,8 @@ class Head extends FAB_Controller {
 		$data['heads_list'] = $heads_list;
 		
 		$data['head'] = isset($_units['hardware']['head']) ? $_units['hardware']['head'] : 'head_shape';
+
+		$headerToolbar = '';
 		
 		//main page widget
 		$widgetOptions = array(
@@ -68,7 +70,7 @@ class Head extends FAB_Controller {
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';
-		$widget->header = array('icon' => 'fa-toggle-down', "title" => "<h2>Heads</h2>");
+		$widget->header = array('icon' => 'fa-toggle-down', "title" => "<h2>Heads</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('head/install', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 
 		$this->addJsInLine($this->load->view('head/install_js', $data, true));

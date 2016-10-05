@@ -167,7 +167,7 @@ if(!function_exists('doCommandLine'))
 				}
 			}
 		}
-		if($background) $command .= ' > /tmp/fabui/scan.log &';
+		if($background) $command .= ' > /tmp/fabui/doCommandLine.log &';
 		log_message('debug', $command);
 		return shell_exec($command);
 	}
