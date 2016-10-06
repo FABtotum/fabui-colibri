@@ -584,11 +584,26 @@ function handleProbingScan()
 	var action = button.attr('data-action');
 	
 	if(action == 'start'){
+		
+		var data = {
+			'safe_z': $(".probing-z-hop").val(), 
+			'threshold': $(".probing-probe-skip").val(), 
+			'density' : $(".scan-probing-sqmm").html(),
+			'x1' : $(".probing-x1").val(), 
+			'y1' : $(".probing-y1").val(), 
+			'x2' : $(".probing-x2").val(), 
+			'y2' : $(".probing-y2").val(),
+			'object_mode' : objectMode,
+			'object'      : objectMode == 'new' ? $("#scan-object-name").val() : $("#scan-objects-list").val(),
+			'file_name'   : $("#scan-file-name").val()
+		};
+		
 		console.log('start');
 		openWait('start');
 		$.ajax({
 			type: 'post',
 			url: '/fabui/scan/startScan/' + scanMode,
+			data: data,
 			dataType: 'json'
 		}).done(function(response) {
 			console.log(response);

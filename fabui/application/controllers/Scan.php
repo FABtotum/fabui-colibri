@@ -280,7 +280,7 @@
 		if($params['object_mode'] == 'new') $scanArgs['-N'] = $params['object'];
 		if($params['object_mode'] == 'add') $scanArgs['-O'] = $params['object'];
 		
-		startScan('r_scan_new.py', $scanArgs);
+		startScan('r_scan.py', $scanArgs);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'params'=>$scanArgs)));
 		
 		
@@ -354,14 +354,14 @@
 		);
 		if($params['object_mode'] == 'new') $scanArgs['-N'] = $params['object'];
 		if($params['object_mode'] == 'add') $scanArgs['-O'] = $params['object'];
-		startScan('s_scan_new.py', $scanArgs);
+		startScan('s_scan.py', $scanArgs);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'params'=>$scanArgs)));
 	}
 	
 	/**
 	 * start probing mode scan task
 	 */
-	public function probingStart()
+	public function probingStart($params)
 	{
 		//load helpers
 		$this->load->helpers('fabtotum_helper');
@@ -378,7 +378,42 @@
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $sScanResult['trace'])));
 			return;
 		}
-		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true)));
+		
+		//create db record
+		$this->load->model('Tasks', 'tasks');
+		$taskData = array(
+				'user'       => $this->session->user['id'],
+				'controller' => 'create',
+				'type'       => 'scan',
+				'status'     => 'running',
+				'start_date' => date('Y-m-d H:i:s')
+		);
+		$taskId   = $this->tasks->add($taskData);
+		//~ $taskId = 12;
+		//starting scan
+		$scanArgs = array();
+		$scanArgs = array(
+			'-T' => $taskId,
+			'-U' => $this->session->user['id'],
+			'-d' => '/tmp/fabui',
+			'-n' => $params['density'],
+			//~ //'-x' => $params['x1'],
+			'-x' => 107,
+			//~ //'-y' => $params['y1'],
+			'-y' => 117,
+			//~ //'-i' => $params['x2'],
+			'-i' => 110,
+			//~ //'-j' => $params['y2'],
+			'-j' => 120,
+			'-z' => $params['safe_z'],
+			'-t' => $params['threshold'],
+			'-F' => $params['file_name']
+		);
+		if($params['object_mode'] == 'new') $scanArgs['-N'] = $params['object'];
+		if($params['object_mode'] == 'add') $scanArgs['-O'] = $params['object'];
+				
+		startScan('p_scan.py', $scanArgs);
+		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'params'=>$scanArgs)));
 	}
 	
 	/**

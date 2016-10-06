@@ -67,7 +67,6 @@
 	 		return false;
 	 	}
 	 	
-	 	IS_MACRO_ON = true;
 	 	openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Installing head');
 	 	
 	 	$.ajax({
@@ -78,7 +77,6 @@
 			
 			$(".alerts-container").find('div:first-child').remove();
 			$(".alerts-container").append('<div class="alert alert-success animated  fadeIn" role="alert"><i class="fa fa-check"></i> Well done! Now your <strong>FABtotum Personal Fabricator</strong> is set for the <strong>'+ data.name +'</strong>.</div>');
-			IS_MACRO_ON = false;
 			
 			waitContent('Well done! Now your <strong><i>FABtotum Personal Fabricator</i></strong> is configured to use <strong><i>'+ data.name+'</i></strong>.');
 			

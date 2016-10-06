@@ -73,29 +73,7 @@ class ProbeScan(GCodePusher):
     def get_progress(self):
         """ Custom progress implementation """
         return self.progress
-    
-    def rotate_y_axis(self, point, angle):
-        #Rotation matrix definition---------------------------
-        rotation_matrix_y       = np.zeros(shape=(4,4))
-        rotation_matrix_y[0,0]  = rotation_matrix_y[2,2] = np.cos(angle*math.pi/180)
-        rotation_matrix_y[1,1]  = 1
-        rotation_matrix_y[3,3]  = 1
-        rotation_matrix_y[0,2]  = np.sin(angle*math.pi/180)
-        rotation_matrix_y[2,0]  = -np.sin(angle*math.pi/180)
-        #End rotation matrix definition------------------------
-        return np.dot(point, rotation_matrix_y)
-        
-    def rotate_x_axis(self, point, angle):
-        #Rotation matrix definition---------------------------
-        rotation_matrix_x       = np.zeros(shape=(4,4))
-        rotation_matrix_x[0,0]  = 1
-        rotation_matrix_x[1,1]  = np.cos(angle*math.pi/180)
-        rotation_matrix_x[2,2]  = np.cos(angle*math.pi/180)
-        rotation_matrix_x[3,2]  = -np.sin(angle*math.pi/180)
-        rotation_matrix_x[3,3]  = np.cos(angle*math.pi/180)
-        #End rotation matrix definition------------------------
-        return np.dot(point, rotation_matrix_x)
-        
+            
     def probe(self, x, y):
         """ 
         Probe Z at specific (X,Y). Returns Z or ``None`` on failure.
@@ -154,6 +132,11 @@ class ProbeScan(GCodePusher):
         """
         obj = self.get_object(object_id)
         task = self.get_task(task_id)
+        
+        print "Object_name:", object_name
+        print "File_name:", file_name
+        print "Cloud_name:", cloud_file
+        print "Task_ID:", task_id
         
         ts = time.time()
         dt = datetime.fromtimestamp(ts)
@@ -251,12 +234,12 @@ class ProbeScan(GCodePusher):
                 
                 self.send('M401')   # Renew probe position in case it got moved.
         
-        self.trace( _("Saving point cloud to file {0}").format(cloud_file) )
-        self.save_as_cloud(points, cloud_file)
-        
-        self.store_object(task_id, object_id, object_name, cloud_file, file_name)
+        if not self.is_aborted():
+            self.trace( _("Saving point cloud to file {0}").format(cloud_file) )
+            self.save_as_cloud(points, cloud_file)
+            self.store_object(task_id, object_id, object_name, cloud_file, file_name)
                
-        if self.standalone:
+        if self.standalone or self.finalize:
             if self.is_aborted():
                 self.set_task_status(GCodePusher.TASK_ABORTING)
             else:
@@ -306,7 +289,8 @@ def main():
     parser.add_argument("-y", "--y1",       help=_("Y1."),                     default=0)
     parser.add_argument("-i", "--x2",       help=_("X2."),                     default=10)
     parser.add_argument("-j", "--y2",       help=_("Y2."),                     default=10)
-    parser.add_argument("-z", "--safe-z",   help=_("Safe Z."),                 default=0)
+    parser.add_argument("-z", "--safe-z",   help=_("Safe Z."),                 default=1)
+    parser.add_argument("-t", "--threshold", help=_("Detail threshold."),      default=0)
     parser.add_argument('--help', action='help', help=_("Show this help message and exit") )
 
     # GET ARGUMENTS

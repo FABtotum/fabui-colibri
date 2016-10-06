@@ -170,11 +170,11 @@ def probe_scan(app, args = None):
     if(safety_door == 1):
         app.macro("M741",           "TRIGGERED", 2, _("Front panel door control"), 0.1,warning=True)
     app.macro("M402",               "ok", 2,        _("Raising Probe"), 0)
-    app.macro("M744",               "open", 2,      _("Building plane is absent"), 0.1, warning=True)
-    app.macro("M742",               "TRIGGERED", 2, _("Spool panel"), 0.1, warning=True)
-    app.macro("G90",                "ok", 2,        _("Setting Absolute position"), 0, verbose=False)
-    app.macro("M302 S0",            "ok", 2,        _("Disabling cold extrusion prevention"), 0, verbose=False)
-    app.macro("M92 E"+str(units_a), "ok", 2,        _("Setting 4th axis mode"), 0, verbose=False)
+    app.macro("M744",               "TRIGGERED", 2, _("Building plane is absent"), 0.1, warning=True)
+    app.macro("M742",               "TRIGGERED", 2, _("Spool panel"), 0.1, warning=False)
+    app.macro("G90",                "ok", 2,        _("Setting Absolute position"), 0, verbose=True)
+    app.macro("M302 S0",            "ok", 2,        _("Disabling cold extrusion prevention"), 0, verbose=True)
+    app.macro("M92 E"+str(units_a), "ok", 2,        _("Setting 4th axis mode"), 0, verbose=True)
 
 def end_scan(app, args = None):
     try:

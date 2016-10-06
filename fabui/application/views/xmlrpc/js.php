@@ -32,12 +32,16 @@
             $('#macro').val('probe_down');
         }
         
+        openWait('<i class="fa fa-circle-o-notch fa-spin"></i>Executing "' + macro + '"');
+        
         $.ajax({
               type: "POST",
               data: {'macro' : macro, 'args' : null },
               url: "<?php echo site_url("xmlrpc/doMacro") ?>",
               dataType: 'json'
         }).done(function( data ) { 
+            closeWait();
+            
             $(".response-container").html( JSON.stringify(data.reply) );
         });
 
