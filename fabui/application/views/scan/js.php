@@ -15,12 +15,12 @@
 	var probingQualities = new Array();
 	<?php if(isset($scanQualities)): ?>
 	<?php foreach($scanQualities as $quality):?>
-	scanQualites.push(<?php echo $quality['values'];?>);
+	scanQualites.push(<?php echo json_encode($quality);?>);
 	<?php endforeach;?>
 	<?php endif; ?>
 	<?php if(isset($probingQualities)): ?>
 	<?php foreach($probingQualities as $quality):?>
-	probingQualities.push(<?php echo $quality['values'];?>);
+	probingQualities.push(<?php echo json_encode($quality);?>);
 	<?php endforeach;?>
 	<?php endif; ?>
 	var scanMode = 0;

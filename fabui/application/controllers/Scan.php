@@ -20,19 +20,49 @@
  		}
  	}
  	
+ 	public function test()
+ 	{
+		$this->config->load('fabtotum');
+		$settingsPath = $this->config->item('settings_path');
+		$scanconfiguration = json_decode( file_get_contents($settingsPath . 'scan_presets.json'), true);
+		
+		foreach($scanconfiguration['mode'] as $mode)
+		{
+			echo '<p>'.$mode['info']['description'].'</p>';
+		}
+		//~ echo file_get_contents($settingsPath . 'scan_presets.json');
+	}
+ 	
 	public function index()
 	{
 		//load libraries, helpers, model
 		$this->load->library('smart');
-		$this->load->model('ScanConfiguration', 'scanconfiguration');
+		$this->load->library('Camera', null, 'camera');
+		
+		$this->config->load('fabtotum');
+		$settingsPath = $this->config->item('settings_path');
+		$scanconfiguration = json_decode(file_get_contents($settingsPath . 'scan_presets.json'), true);
+		$res_map = $this->camera->getResolutionMapping();
+		
+		foreach($scanconfiguration['quality'] as $label => $values)
+		{
+			$res_tuple = array();
+			$res_label = $scanconfiguration['quality'][$label]['values']['resolution'];
+			$scanconfiguration['quality'][$label]['values']['resolution'] = $res_map[$res_label];
+		}
+		
+		
 		//data
 		$data = array();
 		$data['runningTask'] = $this->runningTask;
 		if(!$this->runningTask){
-			$data['scanModes'] = $this->scanconfiguration->getModes();
-			$data['scanQualities'] = $this->scanconfiguration->getQualities();
-			$data['probingQualities'] = $this->scanconfiguration->getProbingQualities();
-			$data['modesForDropdown'] = $this->scanconfiguration->getModesForDropdown();
+			$data['scanModes'] = $scanconfiguration['mode'];
+			$data['scanQualities'] = $scanconfiguration['quality'];
+			$data['probingQualities'] = $scanconfiguration['probe_quality'];
+			
+			// TODO: if needed
+			//$data['modesForDropdown'] = $this->scanconfiguration->getModesForDropdown();
+			
 			$data['step1']  = $this->load->view('scan/wizard/step1', $data, true );
 			$data['step2']  = $this->load->view('scan/wizard/step2', null, true );
 			$data['step3']  = $this->load->view('scan/wizard/step3', null, true );
@@ -63,34 +93,43 @@
 		
 		$this->view(); 
 	}
+	
 	/**
 	 * @param int scan mode id
 	 */
 	public function getScanModeInfo($scanModeId)
 	{
 		//load libraries, helpers, model
-		$this->load->model('ScanConfiguration', 'scanconfiguration');
-		$scan = $this->scanconfiguration->getModeById($scanModeId);
+		$this->config->load('fabtotum');
+		$settingsPath = $this->config->item('settings_path');
+		$scanconfiguration = json_decode(file_get_contents($settingsPath . 'scan_presets.json'), true);
+		
+		$scan = $scanconfiguration['mode'][$scanModeId];
 		$this->output->set_content_type('application/json')->set_output($scan['values']);
 	}
+	
 	/**
 	 * @param int scan mode id
 	 */
 	public function getScanModeSettings($scanModeId)
 	{
 		//load models, libraries, helpers
-		$this->load->model('ScanConfiguration', 'scanconfiguration');
+		$this->config->load('fabtotum');
+		$settingsPath = $this->config->item('settings_path');
+		$scanconfiguration = json_decode(file_get_contents($settingsPath . 'scan_presets.json'), true);
+		
 		$this->load->model('Objects', 'objects');
 		$this->load->helper('form');
-		$scanMode = $this->scanconfiguration->getModeById($scanModeId);
-		$methodName = $scanMode['name'].'Settings';
-		$data['label'] = json_decode($scanMode['values'], true)['info']['name'];
-		$data['suggestedObjectName'] = json_decode($scanMode['values'], true)['info']['name'].' - Object name';
-		$data['suggestedFileName'] = json_decode($scanMode['values'], true)['info']['name'].' - File name';
+		$scanMode = $scanconfiguration['mode'][$scanModeId];
+		$methodName = $scanModeId.'Settings';
+		$data['label'] = $scanMode['info']['name'];
+		$data['suggestedObjectName'] = $scanMode['info']['name'].' - Object name';
+		$data['suggestedFileName'] = $scanMode['info']['name'].' - File name';
 		$data['objectsForDropdown'] = $this->objects->getObjectsorDropdown();
 		$data['content'] = $this->$methodName();
 		$this->load->view('scan/settings/default', $data);
 	}
+	
 	/**
 	 * return settings form for sweep mode
 	 */
@@ -99,6 +138,7 @@
 		//TODO
 		return $this->load->view('scan/settings/sweep', null, true);
 	}
+	
 	/**
 	 * return settings form for rotating mode
 	 */
@@ -107,6 +147,7 @@
 		//load models, libraries, helpers
 		return $this->load->view('scan/settings/rotating', null, true);
 	}
+	
 	/**
 	 * return settings form for probing mode
 	 */
@@ -114,6 +155,7 @@
 		//TODO
 		return $this->load->view('scan/settings/probing', null, true);
 	}
+	
 	/**
 	 * return settings form for photogrammetry mode
 	 */
@@ -121,18 +163,18 @@
 		//TODO
 		return $this->load->view('scan/settings/photogrammetry', null, true);
 	}
+	
 	/**
 	 * return get ready instructions
 	 */
 	public function getReady($scanModeId)
 	{
 		//load models, libraries, helpers
-		$this->load->model('ScanConfiguration', 'scanconfiguration');
-		$scanMode = $this->scanconfiguration->getModeById($scanModeId);
-		$methodName = $scanMode['name'].'Instructions';
+		$methodName = $scanModeId.'Instructions';
 		$data['content'] = method_exists ($this, $methodName) ? $this->$methodName() : '';
 		$this->load->view('scan/instructions/default', $data);
 	}
+	
 	/**
 	 * return instructions for rotating mode
 	 */
@@ -141,6 +183,7 @@
 		//TODO
 		return $this->load->view('scan/instructions/rotating', null, true);
 	}
+	
 	/**
 	 * return instructions for sweep mode
 	 */
@@ -149,6 +192,7 @@
 		//TODO
 		return $this->load->view('scan/instructions/sweep', null, true);
 	}
+	
 	/**
 	 * return instructions for probing mode
 	 */
@@ -157,6 +201,7 @@
 		//TODO
 		return $this->load->view('scan/instructions/probing', null, true);
 	}
+	
 	/**
 	 * return instructions for photogrammetry mode
 	 */
@@ -165,6 +210,7 @@
 		//TODO
 		return $this->load->view('scan/instructions/photogrammetry', null, true);
 	}
+	
 	/**
 	 * prepare scan macro
 	 */
@@ -175,18 +221,18 @@
 		$checkPreScanResult = doMacro('check_pre_scan');
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('response' => $checkPreScanResult['response'], 'trace' => $checkPreScanResult['trace'])));
 	}
+	
 	/**
 	 * start scan
 	 */
 	public function startScan($scanModeId)
 	{
 		//load models, libraries, helpers
-		$this->load->model('ScanConfiguration', 'scanconfiguration');
-		$scanMode = $this->scanconfiguration->getModeById($scanModeId);
-		$methodName = $scanMode['name'].'Start';
+		$methodName = $scanModeId.'Start';
 		$params = $this->input->post();
 		if(method_exists ($this, $methodName)) $this->$methodName($params);
 	}
+	
 	/**
 	 * start rotating mode task
 	 */
@@ -194,13 +240,15 @@
 	{
 		//load helpers
 		$this->load->helpers('fabtotum_helper');
+		
 		//preparing printer
 		$checkPreScanResult = doMacro('check_pre_scan');
 		if($checkPreScanResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $checkPreScanResult['trace'])));
 			return;
 		}
-		$rScanResult = doMacro('r_scan');
+		
+		$rScanResult = doMacro('start_rotary_scan');
 		if($rScanResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $rScanResult['trace'])));
 			return;
@@ -223,11 +271,8 @@
 			'-i' => $params['iso'],
 			//'-b' => $params['start'],
 			//'-e' => $params['end'],
-			//'-W' => $params['width'],
-			//'-H' => $params['height'],
-			//1296x972
-			'-W' => 1296,
-			'-H' => 972,
+			'-W' => $params['width'],
+			'-H' => $params['height'],
 			'-d' => '/tmp/fabui',
 			'-F' => $params['file_name'],
 			'-C' => 'v1'
@@ -240,6 +285,7 @@
 		
 		
 	}
+	
 	/**
 	 * start sweep mode scan task
 	 */
@@ -253,7 +299,7 @@
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $checkPreScanResult['trace'])));
 			return;
 		}
-		$sScanResult = doMacro('s_scan');
+		$sScanResult = doMacro('start_sweep_scan');
 		if($sScanResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $sScanResult['trace'])));
 			return;
@@ -298,10 +344,10 @@
 			'-e' => 20,
 			//'-b' => $params['start'],
 			//'-e' => $params['end'],
-			//'-W' => $params['width'],
-			//'-H' => $params['height'],
-			'-W' => 1296,
-			'-H' => 972,
+			'-W' => $params['width'],
+			'-H' => $params['height'],
+			//'-W' => 1296,
+			//'-H' => 972,
 			'-d' => '/tmp/fabui',
 			'-F' => $params['file_name'],
 			'-C' => 'v1'
@@ -311,6 +357,7 @@
 		startScan('s_scan_new.py', $scanArgs);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'params'=>$scanArgs)));
 	}
+	
 	/**
 	 * start probing mode scan task
 	 */
@@ -318,19 +365,22 @@
 	{
 		//load helpers
 		$this->load->helpers('fabtotum_helper');
+		
 		//preparing printer
 		$checkPreScanResult = doMacro('check_pre_scan');
 		if($checkPreScanResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $checkPreScanResult['trace'])));
 			return;
 		}
-		$sScanResult = doMacro('p_scan');
+		
+		$sScanResult = doMacro('start_probe_scan');
 		if($sScanResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $sScanResult['trace'])));
 			return;
 		}
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true)));
 	}
+	
 	/**
 	 * 
 	 */

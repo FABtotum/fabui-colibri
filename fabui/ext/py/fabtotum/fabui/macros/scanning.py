@@ -124,7 +124,7 @@ def sweep_scan(app, args = None):
     app.trace( _("checking panel door status and bed inserted") )
     if(safety_door == 1):
         app.macro("M741",       "TRIGGERED", 2, _("Front panel door control"), 0.1)
-    app.macro("M744",           "open", 2,      _("Building plane removed!"), 0.1, warning=True)
+    app.macro("M744",           "TRIGGERED", 2,      _("Building plane removed!"), 0.1, warning=True)
     app.macro("M742",           "TRIGGERED", 1, _("Spool panel is not closed!"), 0.1, warning=True, verbose=False)
     app.macro("M701 S0",        "ok", 2,        _("Turning off lights"), 0.1)
     app.macro("M702 S0",        "ok", 2,        _("Turning off lights"), 0.1, verbose=False)
@@ -147,7 +147,7 @@ def sweep_scan_new(app, args = None):
     app.trace( _("checking panel door status and bed inserted") )
     if(safety_door == 1):
         app.macro("M741",       "TRIGGERED", 2, _("Front panel door control"), 0.1)
-    app.macro("M744",           "open", 2,      _("Building plane removed!"), 0.1, warning=True)
+    app.macro("M744",           "TRIGGERED", 2, _("Building plane removed!"), 0.1, warning=True)
     app.macro("M742",           "TRIGGERED", 1, _("Spool panel is not closed!"), 0.1, warning=True, verbose=False)
     app.macro("M701 S0",        "ok", 2,        _("Turning off lights"), 0.1)
     app.macro("M702 S0",        "ok", 2,        _("Turning off lights"), 0.1, verbose=False)

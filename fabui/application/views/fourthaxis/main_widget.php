@@ -16,7 +16,7 @@
 					
 					<hr>
 					
-					<p class="text-center"><a href="javascript:void(0);" class="btn btn-primary btn-default do-engage"> Start </a></p>
+					<p class="text-center"><button class="btn btn-primary btn-default do-engage"> Start </button></p>
 					
 				</div>
 				

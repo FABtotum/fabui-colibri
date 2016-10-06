@@ -65,13 +65,13 @@ PRESET_MAP = {
     
     # Scanning    
     "check_pre_scan"                : scan_macros.check_pre_scan, 
-    "r_scan"                        : scan_macros.rotary_scan,
+    #~ "r_scan"                        : scan_macros.rotary_scan,
     "start_rotary_scan"             : scan_macros.rotary_scan,
-    "pg_scan"                       : scan_macros.photogrammetry_scan,
+    #~ "pg_scan"                       : scan_macros.photogrammetry_scan,
     "start_photogrammetry_scan"     : scan_macros.photogrammetry_scan,
-    "s_scan"                        : scan_macros.sweep_scan,
-    "start_sweep_scan"              : scan_macros.sweep_scan_new,
-    "p_scan"                        : scan_macros.probe_scan,
+    "start_sweep_scan"              : scan_macros.sweep_scan,
+    #"start_sweep_scan"              : scan_macros.sweep_scan_new,
+    #~ "p_scan"                        : scan_macros.probe_scan,
     "start_probe_scan"              : scan_macros.probe_scan,
     "end_scan"                      : scan_macros.end_scan,
     

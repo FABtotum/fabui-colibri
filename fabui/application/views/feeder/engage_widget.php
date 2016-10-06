@@ -10,7 +10,7 @@
 
 					<h2>Please press the START button to initiate</h2>
 
-					<a href="javascript:void(0);" class="btn btn-default btn-primary prepare-engage"> Start</a>
+					<button class="btn btn-default btn-primary prepare-engage"> Start</button>
 
 				</div>
 

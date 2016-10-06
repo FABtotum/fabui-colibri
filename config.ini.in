@@ -29,6 +29,7 @@ database = @LIB_PATH@fabtotum.db
 autoinstall_file = @WWW_PATH@AUTOINSTALL
 uploads = @UPLOAD_PATH@
 notify_file = @FABUI_TEMP_PATH@notify.json
+settings_path = @LIB_PATH@settings/
 
 [monitor]
 backtrack = 20
