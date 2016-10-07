@@ -34,28 +34,36 @@
 				<div class="row margin-bottom-10">
 					<div class="col-sm-6 col-xs-6">
 						<div class="form-group">
-							<label>Slices</label>
-							<input type="text"  class="form-control quality-slices" readonly="readonly">   
+							<div class="input-group">
+								<span class="input-group-addon">Slices</span>
+								<input type="text"  class="form-control quality-slices" readonly="readonly">   
+							</div>
 						</div>
 					</div>
 					<div class="col-sm-6 col-xs-6">
 						<div class="form-group">
-							<label>Iso</label>
-							<input type="text"  class="form-control quality-iso" readonly="readonly">  
+							<div class="input-group">
+								<span class="input-group-addon">ISO</span>
+								<input type="text"  class="form-control quality-iso" readonly="readonly">  
+							</div>
 						</div>
 					</div> 
 				</div>
 				<div class="row">
 					<div class="col-sm-6 col-xs-6">
 						<div class="form-group">
-							<label>Width</label>
-							<input type="text"  class="form-control quality-resolution-width" readonly="readonly">  
+							<div class="input-group">
+								<span class="input-group-addon">Width</span>
+								<input type="text"  class="form-control quality-resolution-width" readonly="readonly">  
+							</div>
 						</div>
 					</div>
 					<div class="col-sm-6 col-xs-6">
 						<div class="form-group">
-							<label>Height</label>
-							<input type="text" class="form-control quality-resolution-height" readonly="readonly">  
+							<div class="input-group">
+								<span class="input-group-addon">Width</span>
+								<input type="text" class="form-control quality-resolution-height" readonly="readonly">  
+							</div>
 						</div>
 					</div>
 				</div>

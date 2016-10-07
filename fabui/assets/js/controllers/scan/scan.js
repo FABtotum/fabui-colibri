@@ -3,7 +3,32 @@
  * Provides utilities for Scan
  *
  */
- 
+
+var buildPlateDimensions = {
+    probe: {
+        minX : 0,
+        maxX : 214,
+        minY : 0,
+        maxY : 234,
+        width : 214,
+        height : 234
+    },
+    sweep : {
+        minX : 0,
+        maxX : 214,
+        minY : 0,
+        maxY : 234,
+        width : 214,
+        height : 234
+    }
+};
+
+var buildPlateImageOffsets = {
+    left  : 10,
+    right : 9,
+    top   : 12,
+    bottom: 10
+};
 
 //init wizard
 function initWizard()
@@ -308,9 +333,15 @@ function setScanQuality(mode, object, index)
 function initSweepCrop()
 {	
 	var $image = $('#image');
+	var freez = false;
 	
-	console.log($image);
+	var img = document.querySelector('#image');
 	
+	var xCorrect = buildPlateImageOffsets.left;
+	var yCorrect = buildPlateImageOffsets.top;   
+	var realWidth = buildPlateDimensions.sweep.width + buildPlateImageOffsets.left + buildPlateImageOffsets.right;
+	var realHeight = buildPlateDimensions.sweep.height + buildPlateImageOffsets.top + buildPlateImageOffsets.bottom;
+
 	var options = {
 		responsive: true,
 		guides: false,
@@ -318,34 +349,41 @@ function initSweepCrop()
 		toggleDragModeOnDblclick : false,
 		zoomable: false,
 		cropBoxResizable: true,
-		minCropBoxHeight: 233,
-		minCropBoxWidth: 1,
+		
+		// Bed mapping
+		useMappedDimensions : true,
+		mappedWidth : realWidth,
+		mappedHeight : realHeight,
+		
+		initCropBoxX : xCorrect,
+		initCropBoxY : yCorrect,
+		initCropBoxWidth : buildPlateDimensions.sweep.width, 
+		initCropBoxHeight : buildPlateDimensions.sweep.height,
+		
+		minCropBoxLeft : xCorrect,
+		minCropBoxTop : yCorrect,
+		
+		maxCropBoxWidth : buildPlateDimensions.sweep.width,
+		maxCropBoxHeight : buildPlateDimensions.sweep.height,
+		
+		minCropBoxHeight: 50,
+		minCropBoxWidth: 10,
+		
 		background: false,
         crop: function (e) {}
     };
 	
 	$image.on({
-    'build.cropper': function (e) {
-      //console.log(e.type);
-    },
-    'built.cropper': function (e) {
-      //console.log(e.type);
-    },
-    'cropstart.cropper': function (e) {
-      //console.log(e.type, e.action);
-    },
-    'cropmove.cropper': function (e) {
-      //console.log(e.type, e.action);
-    },
-    'cropend.cropper': function (e) {
-      //console.log(e.type, e.action);
-    },
-    'crop.cropper': function (e, t) {
-		
-		$(".sweep-start").val(parseInt(e.x).toFixed());
-		$(".sweep-end").val((parseInt(e.width) + parseInt(e.x)));
-		
-      //console.log(e.type, e.x, e.y, e.width, e.height, e.rotate, e.scaleX, e.scaleY);
+    'crop.cropper': function (e) {
+
+      var tmp1 = $image.cropper('mapToDimensionNatural', e.x, e.y);
+      var tmp2 = $image.cropper('mapToDimensionNatural', e.width, e.height);
+
+      var x1 = Math.abs(tmp1.x - xCorrect);
+      var x2 = Math.abs(tmp1.x + tmp2.x - xCorrect);
+      
+      $(".sweep-start").val( x1.toFixed() );
+      $(".sweep-end").val( x2.toFixed() );
     },
     'zoom.cropper': function (e) {
       //console.log(e.type, e.ratio);
@@ -366,7 +404,7 @@ function initProbeCrop()
 		zoomable: false,
 		cropBoxResizable: true,
 		//minCropBoxHeight: 233,
-		//minCropBoxWidth: 185,
+		//minCropBoxWidth: 185,       
 		background: false,
         crop: function (e) {}
     };
@@ -426,6 +464,8 @@ function initProbeCrop()
       //console.log(e.type, e.ratio);
     }
   }).cropper(options);
+  
+  $image.cropper('');
 }
 /**
 *

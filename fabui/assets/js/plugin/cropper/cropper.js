@@ -1090,6 +1090,46 @@
       }
     },
 
+    mapToDimensionNatural: function (x, y) {
+      var options = this.options;
+      var canvas = this.canvas;
+      var container = this.container;
+      
+      if(options.useMappedDimensions)
+      {
+        //newx = options.mappedWidth
+        var sX = canvas.naturalWidth / options.mappedWidth;
+        var sY = canvas.naturalHeight / options.mappedHeight;
+        var newx = (x / sX);
+        var newy = (y / sY);
+        return {x:newx, y:newy};
+      }
+      else
+      {
+        return {x:x, y:y};
+      }
+    },
+
+    mapToDimension: function (x, y) {
+      var options = this.options;
+      var canvas = this.canvas;
+      var container = this.container;
+      
+      if(options.useMappedDimensions)
+      {
+        //newx = options.mappedWidth
+        var sX = container.width / options.mappedWidth;
+        var sY = container.height / options.mappedHeight;
+        var newx = x * sX;
+        var newy = y * sY;
+        return {x:newx, y:newy};
+      }
+      else
+      {
+        return {x:x, y:y};
+      }
+    },
+
     initCropBox: function () {
       var options = this.options;
       var canvas = this.canvas;
@@ -1111,6 +1151,13 @@
       this.cropBox = cropBox;
       this.limitCropBox(true, true);
 
+      var mapxy = this.mapToDimension(options.initCropBoxX, options.initCropBoxY);
+      var initX = mapxy.x;
+      var initY = mapxy.y;
+      var mapxy = this.mapToDimension(options.initCropBoxWidth, options.initCropBoxHeight);
+      var initWidth = mapxy.x;
+      var initHeight = mapxy.y;
+
       // Initialize auto crop area
       cropBox.width = min(max(cropBox.width, cropBox.minWidth), cropBox.maxWidth);
       cropBox.height = min(max(cropBox.height, cropBox.minHeight), cropBox.maxHeight);
@@ -1118,8 +1165,21 @@
       // The width of auto crop area must large than "minWidth", and the height too. (#164)
       cropBox.width = max(cropBox.minWidth, cropBox.width * autoCropArea);
       cropBox.height = max(cropBox.minHeight, cropBox.height * autoCropArea);
-      cropBox.oldLeft = cropBox.left = canvas.left + (canvas.width - cropBox.width) / 2;
-      cropBox.oldTop = cropBox.top = canvas.top + (canvas.height - cropBox.height) / 2;
+      
+      if(options.initCropBoxX > -1)
+        cropBox.oldLeft = cropBox.left = initX;
+      else
+        cropBox.oldLeft = cropBox.left = canvas.left + (canvas.width - cropBox.width) / 2;
+      
+      if(options.initCropBoxY > -1)
+        cropBox.oldTop = cropBox.top = initY;
+      else
+        cropBox.oldTop = cropBox.top = canvas.top + (canvas.height - cropBox.height) / 2;
+      
+      if(options.initCropBoxWidth > 0)
+        cropBox.width = min(cropBox.maxWidth, initWidth);
+      if(options.initCropBoxHeight > 0)
+        cropBox.height = min(cropBox.maxHeight, initHeight);
 
       this.initialCropBox = $.extend({}, cropBox);
     },
@@ -1137,16 +1197,42 @@
       var minCropBoxHeight;
       var maxCropBoxWidth;
       var maxCropBoxHeight;
-
+      var mapped;
+        
+      if (isPositionLimited) {
+        if (isLimited) {
+          mapped = this.mapToDimension(options.minCropBoxLeft, options.minCropBoxTop)
+          cropBox.minLeft = max(mapped.x, canvas.left);
+          cropBox.minTop = max(mapped.y, canvas.top);
+          cropBox.maxLeft = min(containerWidth, canvas.left + canvas.width) - cropBox.width;
+          cropBox.maxTop = min(containerHeight, canvas.top + canvas.height) - cropBox.height;
+        } else {
+          cropBox.minLeft = 0;
+          cropBox.minTop = 0;
+          cropBox.maxLeft = containerWidth - cropBox.width;
+          cropBox.maxTop = containerHeight - cropBox.height;
+        }
+      }
+      
       if (isSizeLimited) {
         minCropBoxWidth = num(options.minCropBoxWidth) || 0;
         minCropBoxHeight = num(options.minCropBoxHeight) || 0;
+        maxCropBoxWidth = num(options.maxCropBoxWidth) || containerWidth;
+        maxCropBoxHeight = num(options.maxCropBoxHeight) || containerHeight;
+       
+        mapped = this.mapToDimension(minCropBoxWidth, minCropBoxHeight);
+        minCropBoxWidth = mapped.x;
+        minCropBoxHeight = mapped.y;
+        
+        mapped = this.mapToDimension(maxCropBoxWidth, maxCropBoxHeight);
+        maxCropBoxWidth = mapped.x;
+        maxCropBoxHeight = mapped.y;
 
         // The min/maxCropBoxWidth/Height must be less than containerWidth/Height
         minCropBoxWidth = min(minCropBoxWidth, containerWidth);
         minCropBoxHeight = min(minCropBoxHeight, containerHeight);
-        maxCropBoxWidth = min(containerWidth, isLimited ? canvas.width : containerWidth);
-        maxCropBoxHeight = min(containerHeight, isLimited ? canvas.height : containerHeight);
+        maxCropBoxWidth = min(maxCropBoxWidth, isLimited ? canvas.width : containerWidth);
+        maxCropBoxHeight = min(maxCropBoxHeight, isLimited ? canvas.height : containerHeight);
 
         if (aspectRatio) {
           if (minCropBoxWidth && minCropBoxHeight) {
@@ -1174,20 +1260,7 @@
         cropBox.maxWidth = maxCropBoxWidth;
         cropBox.maxHeight = maxCropBoxHeight;
       }
-
-      if (isPositionLimited) {
-        if (isLimited) {
-          cropBox.minLeft = max(0, canvas.left);
-          cropBox.minTop = max(0, canvas.top);
-          cropBox.maxLeft = min(containerWidth, canvas.left + canvas.width) - cropBox.width;
-          cropBox.maxTop = min(containerHeight, canvas.top + canvas.height) - cropBox.height;
-        } else {
-          cropBox.minLeft = 0;
-          cropBox.minTop = 0;
-          cropBox.maxLeft = containerWidth - cropBox.width;
-          cropBox.maxTop = containerHeight - cropBox.height;
-        }
-      }
+      
     },
 
     renderCropBox: function () {
@@ -1208,7 +1281,7 @@
       cropBox.width = min(max(cropBox.width, cropBox.minWidth), cropBox.maxWidth);
       cropBox.height = min(max(cropBox.height, cropBox.minHeight), cropBox.maxHeight);
 
-      this.limitCropBox(false, true);
+      this.limitCropBox(true, true);
 
       cropBox.oldLeft = cropBox.left = min(max(cropBox.left, cropBox.minLeft), cropBox.maxLeft);
       cropBox.oldTop = cropBox.top = min(max(cropBox.top, cropBox.minTop), cropBox.maxTop);
@@ -1658,6 +1731,9 @@
       var renderable = true;
       var offset;
       var range;
+      var mapped;
+      var maxRight;
+      var maxBottom;
 
       // Locking aspect ratio in "free mode" by holding shift key (#259)
       if (!aspectRatio && shiftKey) {
@@ -1667,8 +1743,15 @@
       if (this.isLimited) {
         minLeft = cropBox.minLeft;
         minTop = cropBox.minTop;
-        maxWidth = minLeft + min(container.width, canvas.width, canvas.left + canvas.width);
-        maxHeight = minTop + min(container.height, canvas.height, canvas.top + canvas.height);
+        
+        mapped = this.mapToDimension(options.maxCropBoxWidth, options.maxCropBoxHeight);
+        
+        maxWidth = minLeft + min(container.width, canvas.width, canvas.left + canvas.width, mapped.x);
+        maxHeight = minTop + min(container.height, canvas.height, canvas.top + canvas.height, mapped.y);
+        
+        mapped = this.mapToDimension(options.minCropBoxLeft, options.minCropBoxTop);
+        maxRight = minLeft + maxWidth - mapped.x;
+        maxBottom = minTop + maxHeight - mapped.y;
       }
 
       range = {
@@ -2027,6 +2110,31 @@
       }
 
       if (renderable) {
+        
+        if(left < minLeft)
+          left = minLeft;
+          
+        if(top < minTop)
+          top = minTop;
+        
+        right = left+width;
+        bottom = top+height;
+        
+        if(action != ACTION_ALL)
+        {
+          if( right > maxRight )
+            width = maxRight - left;
+          if( bottom > maxBottom )
+            height = maxBottom - top;
+        }
+        else
+        {
+          if( right > maxRight )
+            left = maxRight - width;
+          if( bottom > maxBottom )
+            top = maxBottom - height;
+        }
+        
         cropBox.width = width;
         cropBox.height = height;
         cropBox.left = left;
@@ -2919,6 +3027,22 @@
     minCropBoxHeight: 0,
     minContainerWidth: 200,
     minContainerHeight: 100,
+
+    // Extra Limits
+    minCropBoxLeft : 0,
+    minCropBoxTop  : 0,
+    maxCropBoxWidth : 0,
+    maxCropBoxHeight : 0,
+    
+    // Dimension mapping
+    useMappedDimensions : false,
+    mappedWidth : 0,
+    mappedHeight : 0,
+    
+    initCropBoxX : 0,
+    initCropBoxY : 0,
+    initCropBoxWidth : 0, 
+    initCropBoxHeight : 0,
 
     // Shortcuts of events
     build: null,
