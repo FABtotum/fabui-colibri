@@ -54,8 +54,8 @@ def check_pre_scan(app, args = None):
     # macro("M744","open",1,"Building plane control",0.1)
     app.macro("M742",       "TRIGGERED",1,      _("Spool panel control"), 0, warning=True, verbose=False)
     app.macro("G90",        "ok", 2,            _("Setting absolute positioning mode"), 0, verbose=False)
-    app.macro("G27",        "ok", 100,          _("Zeroing Z axis"), 0)
-    app.macro("G28 X0 Y0",  "ok", 15,           _("Zeroing Z axis"), 0, verbose=False)
+    app.macro("G28 X Y",    "ok", 15,           _("Zeroing Z axis"), 0, verbose=False)
+    app.macro("G27 Z",      None, 100,          _("Zeroing Z axis"), 0)
     # Disable feeder
     app.macro("G91",                "ok", 2,    _("Setting rel position"), 0, verbose=False)
     app.macro("G0 X5 Y5 Z-"+str(feeder_disengage_offset)+" F400",   "ok", 5, _("Engaging 4th Axis Motion"), 0)

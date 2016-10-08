@@ -9,6 +9,7 @@
  */
  defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+<?php if( $mode != "photogrammetry"): ?>
 <hr class="simple">
 <div class="row">
 	<div class="col-sm-3">
@@ -52,4 +53,5 @@
 <script type="text/javascript">
 	$(':radio[name="object_type"]').on('change', setObjectMode);
 </script>
+<?php endif; ?>
 <?php echo $content; ?>

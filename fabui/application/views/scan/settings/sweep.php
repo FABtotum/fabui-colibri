@@ -11,12 +11,12 @@
 ?>
 <hr class="simple">
 <div class="row">
-	<div class="col-sm-4 text-center">
+	<div class="col-sm-3 text-center">
 		<div>
 			<img style="max-width: 100%;" id="image" class="" src="/assets/img/scan/working_plane_v2.jpg">
 		</div>
 	</div>
-	<div class="col-sm-8">
+	<div class="col-sm-9">
 		<!-- benchmark image -->
 		<div class="col-sm-4 hidden-xs">
 			<div class="duck_container text-center va-middle">

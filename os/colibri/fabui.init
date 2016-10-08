@@ -25,6 +25,11 @@ case "$1" in
     mkdir -p ${TEMP_PATH}/fabui
     chown 33:33 ${TEMP_PATH}/fabui
     chown 33:33 ${BIGTEMP_PATH}
+    
+    mkdir -p ${BIGTEMP_PATH}/fabui
+    chown 33:33 ${BIGTEMP_PATH}/fabui
+    chown 33:33 ${BIGTEMP_PATH}
+    
     boot_msg "Starting ${SERVICE_NAME}."
 
     #python /var/www/fabui/python/baud.py

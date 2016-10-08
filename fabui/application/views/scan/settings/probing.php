@@ -11,12 +11,12 @@
 ?>
 <hr class="simple">
 <div class="row">
-	<div class="col-sm-4 text-center">
+	<div class="col-sm-3 text-center">
 		<div>
 			<img style="max-width: 100%;" id="image" class="" src="/assets/img/scan/working_plane_v2.jpg">
 		</div>
 	</div>
-	<div class="col-sm-8">
+	<div class="col-sm-9">
 		<div class="row">
 			<div class="col-sm-6 col-xs-6  margin-top-10">
 				<div class="form-group">

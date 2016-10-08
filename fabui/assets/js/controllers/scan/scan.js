@@ -6,10 +6,10 @@
 
 var buildPlateDimensions = {
     probe: {
-        minX : 0,
-        maxX : 214,
-        minY : 0,
-        maxY : 234,
+        minX : 20,
+        maxX : 210,
+        minY : 60,
+        maxY : 230,
         width : 214,
         height : 234
     },
@@ -333,9 +333,6 @@ function setScanQuality(mode, object, index)
 function initSweepCrop()
 {	
 	var $image = $('#image');
-	var freez = false;
-	
-	var img = document.querySelector('#image');
 	
 	var xCorrect = buildPlateImageOffsets.left;
 	var yCorrect = buildPlateImageOffsets.top;   
@@ -396,6 +393,17 @@ function initSweepCrop()
 function initProbeCrop()
 {
 	var $image = $('#image');
+	
+	var xCorrect = buildPlateImageOffsets.left;
+	var yCorrect = buildPlateImageOffsets.top;   
+	var realWidth = buildPlateDimensions.probe.width + buildPlateImageOffsets.left + buildPlateImageOffsets.right;
+	var realHeight = buildPlateDimensions.probe.height + buildPlateImageOffsets.top + buildPlateImageOffsets.bottom;
+
+	var probeLeft = xCorrect + buildPlateDimensions.probe.minX;
+	var probeTop  = yCorrect + (buildPlateDimensions.probe.height - buildPlateDimensions.probe.maxY);
+	var probeWidth = buildPlateDimensions.probe.maxX - buildPlateDimensions.probe.minX;
+	var probeHeight = buildPlateDimensions.probe.maxY - buildPlateDimensions.probe.minY;
+
 	var options = {
 		responsive: true,
 		guides: false,
@@ -403,66 +411,45 @@ function initProbeCrop()
 		toggleDragModeOnDblclick : false,
 		zoomable: false,
 		cropBoxResizable: true,
-		//minCropBoxHeight: 233,
-		//minCropBoxWidth: 185,       
+		
+		// Bed mapping
+		useMappedDimensions : true,
+		mappedWidth : realWidth,
+		mappedHeight : realHeight,
+		
+		initCropBoxX : probeLeft,
+		initCropBoxY : probeTop,
+		initCropBoxWidth : probeWidth, 
+		initCropBoxHeight : probeHeight,
+		
+		minCropBoxLeft : probeLeft,
+		minCropBoxTop : probeTop,
+		
+		maxCropBoxWidth : probeWidth,
+		maxCropBoxHeight : probeHeight,
+		
+		minCropBoxHeight: 5,
+		minCropBoxWidth: 5,
+		
 		background: false,
-        crop: function (e) {}
+		crop: function (e) {}
     };
 	
 	$image.on({
-    'build.cropper': function (e) {
-      //console.log(e.type);
-    },
-    'built.cropper': function (e) {
-      //console.log(e.type);
-    },
-    'cropstart.cropper': function (e) {
-      //console.log(e.type, e.action);
-    },
-    'cropmove.cropper': function (e) {
-      //console.log(e.type, e.action);
-    },
-    'cropend.cropper': function (e) {
-		var coords = $image.cropper("getData");
-		if(parseInt(coords.x).toFixed() < 32) {
-			coords.x = 32;
-			$image.cropper("setData", coords);
-		}
-		//console.log(parseInt(coords.x).toFixed());
+	'crop.cropper': function (e) {
+		var tmp1 = $image.cropper('mapToDimensionNatural', e.x, e.y);
+		var tmp2 = $image.cropper('mapToDimensionNatural', e.width, e.height);
 		
-    },
-    'crop.cropper': function (e) {
+		var x1 = Math.abs(tmp1.x - xCorrect);
+		var x2 = Math.abs(tmp1.x + tmp2.x - xCorrect);
+		var y2 = Math.abs(buildPlateDimensions.probe.height - (tmp1.y - yCorrect) );
+		var y1 = Math.abs(buildPlateDimensions.probe.height - (tmp1.y + tmp2.y - yCorrect) );
 		
-		var coords = e;
-		
-		if(coords.x < 32) coords.x = 32;
-		if(coords.y > 168) coords.y = 168;
-		
-		$(".probing-x1").val(parseInt(coords.x).toFixed());
-		$(".probing-y1").val(parseInt(coords.y).toFixed());
-		$(".probing-x2").val(parseInt(coords.width).toFixed());
-		$(".probing-y2").val(parseInt(coords.height).toFixed());
-		
-		/*if(e.x < 32) {
-			$image.cropper("setData", {"x": 32});
-			return;
-		}*/
-	 /*
-	 if((e.y+ e.height) > 168){
-		 console.log("fuori: ", (e.y+ e.height));
-		 //$image.cropper("setData", {"y": 170});
-		 //$image.cropper("setData", {"height": 168});
-	 } 
-	 */
-	 //if(e.y > 170 ) $image.cropper("setData", {"y": 170});
-	 //if(e.height > 168) $image.cropper("setData", {"height": 168});
-     //console.log(e.type, e.x, e.y, e.width, e.height, e.rotate, e.scaleX, e.scaleY);
-		
-	 
-    },
-    'zoom.cropper': function (e) {
-      //console.log(e.type, e.ratio);
-    }
+		$(".probing-x1").val(x1.toFixed());
+		$(".probing-y1").val(y1.toFixed());
+		$(".probing-x2").val(x2.toFixed());
+		$(".probing-y2").val(y2.toFixed());
+	},
   }).cropper(options);
   
   $image.cropper('');
@@ -545,7 +532,7 @@ function handleRotatingScan()
 		});
 	}else if(action == 'start'){
 		
-		openWait('start');
+		openWait('Start');
 		
 		var data = {
 			'slices'      : $(".quality-slices").val(),
@@ -573,6 +560,7 @@ function handleRotatingScan()
 		});
 	}
 }
+
 /**
 *
 */
@@ -598,7 +586,7 @@ function handleSweepScan()
 			
 		};
 		
-		openWait('start');
+		openWait('Start');
 		$.ajax({
 			type: 'post',
 			url: '/fabui/scan/startScan/' + scanMode,
@@ -615,6 +603,7 @@ function handleSweepScan()
 		});
 	}
 }
+
 /**
 *
 */
@@ -639,7 +628,7 @@ function handleProbingScan()
 		};
 		
 		console.log('start');
-		openWait('start');
+		openWait('Start');
 		$.ajax({
 			type: 'post',
 			url: '/fabui/scan/startScan/' + scanMode,
@@ -683,7 +672,30 @@ function handlePhotogrammetry()
 			}
 		});
 	}else if(action == 'start'){
-		startTask();
+		var data = {
+			'iso': $("#pg-iso option:selected").val(), 
+			'slices': $("#pg-slices").val(), 
+			'size' : $("#pg-size option:selected").val(),
+			'address' : $("#pc-host-address").val(), 
+			'port' : $("#pc-host-port").val(), 
+		};
+		
+		console.log('start');
+		openWait('Start');
+		$.ajax({
+			type: 'post',
+			url: '/fabui/scan/startScan/' + scanMode,
+			data: data,
+			dataType: 'json'
+		}).done(function(response) {
+			console.log(response);
+			if(response.start == false){
+				closeWait();
+				showErrorAlert('Warning', response.trace);
+			}else{
+				startTask();
+			}
+		});
 	}
 }
 /**
@@ -728,7 +740,12 @@ if(typeof manageMonitor != 'function'){
 		}
 		
 		updateSlices(data.scan.scan_total, data.scan.scan_current);
-		updateClouds(data.scan.point_count, data.scan.cloud_size);
+		if(data.scan.hasOwnProperty('point_count'))
+		{
+			$(".pointcloudinfo").show();
+			updateClouds(data.scan.point_count, data.scan.cloud_size);
+		}
+		
 		updateResolution(data.scan.width, data.scan.height);
 		updateIso(data.scan.iso);
 		handleTaskStatus(data.task.status);

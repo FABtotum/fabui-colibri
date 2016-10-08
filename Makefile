@@ -62,7 +62,8 @@ FABUI_FILES		=	fabui/recovery \
 					fabui/index.php \
 					fabui/application \
 					fabui/system \
-					fabui/assets
+					fabui/assets \
+					fabui/utilities
 
 # <files>/* is to avoid making <files>/<files> path
 RECOVERY_FILES	=	recovery/*
@@ -196,9 +197,11 @@ ifneq ($(DYNAMIC_FILES),)
 	$(FAKEROOT_ENV) cp -a $(DYNAMIC_FILES) $(BDATA_DIR)$(LIB_PATH)
 endif
 #	Create sym-links
-	$(FAKEROOT_ENV) ln -s $(FABUI_PATH) 		$(BDATA_DIR)$(WWW_PATH)fabui
-	$(FAKEROOT_ENV) ln -s $(FABUI_PATH)assets 	$(BDATA_DIR)$(WWW_PATH)assets
-	$(FAKEROOT_ENV) ln -s $(TEMP_PATH)fabui 	$(BDATA_DIR)$(WWW_PATH)temp
+	$(FAKEROOT_ENV) ln -s $(FABUI_PATH) 			$(BDATA_DIR)$(WWW_PATH)fabui
+	$(FAKEROOT_ENV) ln -s $(FABUI_PATH)assets 		$(BDATA_DIR)$(WWW_PATH)assets
+	$(FAKEROOT_ENV) ln -s $(FABUI_PATH)utilities	$(BDATA_DIR)$(WWW_PATH)utilities
+	$(FAKEROOT_ENV) ln -s $(TEMP_PATH)fabui 		$(BDATA_DIR)$(WWW_PATH)temp
+	$(FAKEROOT_ENV) ln -s $(BIGTEMP_PATH) 			$(BDATA_DIR)$(WWW_PATH)bigtemp
 #	The autoinstall flag file is created at compile time
 	$(FAKEROOT_ENV) touch $(BDATA_DIR)/$(WWW_PATH)/AUTOINSTALL
 #	Public runtime directories

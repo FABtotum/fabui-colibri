@@ -61,7 +61,7 @@ class PhotogrammetryScan(GCodePusher):
         
     def __init__(self, log_trace, monitor_file, scan_dir, host_address, host_port,
                 standalone = False, finalize = True,
-                width = 2592, height = 1944, rotation = 270, iso = 800, power = 230, shutter_speed = 35000):
+                width = 2592, height = 1944, rotation = 270, iso = 800, shutter_speed = 35000):
         super(PhotogrammetryScan, self).__init__(log_trace, monitor_file, use_stdout=standalone)
         
         self.standalone = standalone
@@ -76,14 +76,16 @@ class PhotogrammetryScan(GCodePusher):
         self.camera.shutter_speed = shutter_speed # shutter_speed in microseconds
         
         self.progress = 0.0
-        self.laser_power = power
         self.scan_dir = scan_dir
         
         self.scan_stats = {
             'type'          : 'photogrammetry',
             'projection'    : 'rotary',
             'scan_total'    : 0,
-            'scan_current'  : 0
+            'scan_current'  : 0,
+            'width'         : width,
+            'height'        : height,
+            'iso'           : iso,
         }
         
         self.add_monitor_group('scan', self.scan_stats)
@@ -114,7 +116,9 @@ class PhotogrammetryScan(GCodePusher):
             if file:
                 self.skipped_images.append(file)
                 return
-            
+        
+        print "action:", action, "file:", file, "slices:", slices
+        
         if(action == self.START):
             sock.send(str(self.START) + '\n')
             sock.send(str(slices) + '\n')
@@ -153,7 +157,7 @@ class PhotogrammetryScan(GCodePusher):
         """
         
         self.prepare_task(task_id, task_type='scan')
-        self.set_task_status(GCodePusher.TASK_STARTED)
+        self.set_task_status(GCodePusher.TASK_RUNNING)
         
         if self.standalone:
             self.exec_macro("check_pre_scan")
@@ -236,15 +240,17 @@ def main():
     
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(add_help=False, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("task_id",          help=_("Task ID.") )
-    parser.add_argument("address",  help=_("Remove server address.") )
+    
+    parser.add_argument("-T", "--task-id",     help=_("Task ID."),              default=0)
+    parser.add_argument("-U", "--user-id",     help=_("User ID. (future use)"), default=0)
+    
+    parser.add_argument(      "--address",  help=_("Remove server address.") )
     parser.add_argument(      "--port",     help=_("Remove server port."),     default=9898)
     parser.add_argument("-d", "--dest",     help=_("Destination folder."),     default=config.get('general', 'bigtemp_path') )
     parser.add_argument("-s", "--slices",   help=_("Number of slices."),       default=100)
     parser.add_argument("-i", "--iso",      help=_("ISO."),                    default=400)
-    parser.add_argument("-p", "--power",    help=_("Scan laser power 0-255."), default=230)
-    parser.add_argument("-w", "--width",    help=_("Image width in pixels."),  default=1920)
-    parser.add_argument("-h", "--height",   help=_("Image height in pixels"),  default=1080)
+    parser.add_argument("-W", "--width",    help=_("Image width in pixels."),  default=1920)
+    parser.add_argument("-H", "--height",   help=_("Image height in pixels"),  default=1080)
     parser.add_argument("-b", "--begin",    help=_("Begin scanning from X."),  default=0)
     parser.add_argument("-e", "--end",      help=_("End scanning at X."),      default=360)
     parser.add_argument("-z", "--z-offset", help=_("Z offset."),               default=0)
@@ -261,7 +267,6 @@ def main():
     host_address    = args.address
     host_port       = int(args.port)
     iso             = int(args.iso)
-    power           = int(args.power)
     start_a         = float(args.begin)
     end_a           = float(args.end)
     width           = int(args.width)
@@ -279,24 +284,6 @@ def main():
 
     if not os.path.exists(scan_dir):
         makedirs(scan_dir)
-        
-    print 'ROTARY SCAN MODULE STARTING' 
-    print 'scanning from'+str(start_a)+"to"+str(end_a); 
-    print 'Num of scans : ', slices
-    print 'ISO  setting : ', iso
-    print 'Resolution   : ', width ,'*', height, ' px'
-    print 'Laser PWM.  : ', power
-    print 'z offset     : ', z_offset
-
-    #ESTIMATED SCAN TIME ESTIMATION
-    estimated = (slices*1.99)/60
-    if estimated<1 :
-        estimated *= 60
-        unit= "Seconds"
-    else:
-        unit= "Minutes"
-
-    print 'Estimated Scan time =', str(estimated) + " " + str(unit) + "  [Pessimistic]"
 
     ################################################################################
 
@@ -307,7 +294,6 @@ def main():
                     width=width,
                     height=height,
                     iso=iso,
-                    power=power,
                     host_address=host_address,
                     host_port=host_port)
 

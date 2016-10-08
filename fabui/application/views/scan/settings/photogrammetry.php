@@ -9,6 +9,12 @@
  */
  defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
+
+<?php
+$iso_default = '400';
+$size_default = '1920x1080';
+?>
+
 <div class="row">
 	<div class="col-sm-12">
 		<div class="smart-form">
@@ -16,24 +22,32 @@
 			<fieldset>
 				<div class="row">
 					<section class="col col-6">
-						<label class="label">Iso</label>
-						<label class="input">
-							<input type="text">
-						</label>
+						<div class="input-group">
+							<span class="input-group-addon">ISO</span>
+							<label class="select"> 
+								<?php echo form_dropdown('iso', $params['ISO'], $iso_default, 'class="input-sm" id="pg-iso"'); ?> 
+								<i></i> 
+							</label>
+						</div>
 					</section>
 					<section class="col col-6">
-						<label class="label">Size</label>
-						<label class="input">
-							<input type="text">
-						</label>
+						<div class="input-group">
+							<span class="input-group-addon">Size</span>
+							<label class="select"> 
+								<?php echo form_dropdown('size', $params['size'], $size_default, 'class="input-sm" id="pg-size"'); ?> 
+								<i></i> 
+							</label>
+						</div>
 					</section>
 				</div>
 				<div class="row">
 					<section class="col col-6">
-						<label class="label">Slices</label>
-						<label class="input">
-							<input type="number" value="60" step="1">
-						</label>
+						<div class="input-group">
+							<span class="input-group-addon">Slices</span>
+							<label class="input">
+								<input type="number" value="60" step="1" id="pg-slices">
+							</label>
+						</div>
 					</section>
 				</div>
 			</fieldset>
@@ -41,18 +55,32 @@
 			<fieldset>
 				<div class="row">
 					<section class="col col-6">
-						<label class="label">IP Address</label>
-						<label class="input">
-							<input type="text">
-						</label>
+						<div class="input-group">
+							<span class="input-group-addon">IP address</span>
+							<label class="input">
+								<input name="pc-host-address" id="pc-host-address" value="<?php echo $_SERVER["REMOTE_ADDR"] ?>" type="text">
+							</label>
+						</div>
+						<div class="margin-top-10">
+						<span class="help-block"><strong>Before proceeding start desktop server on your pc and check connection. If you don't have the desktop server you can download it <a target="_blank" href="/utilities/FabtotumDesktopServer.jar">here</a></strong></span>
+						</div>
 					</section>
+					
 					<section class="col col-3">
-						<label class="label">Port</label>
-						<label class="input">
-							<input type="text">
-						</label>
+						<div class="input-group">
+							<span class="input-group-addon">Port</span>
+							<label class="input">
+								<input name="pc-host-port" id="pc-host-port" value="9898" type="number">
+							</label>
+						</div>
 					</section>
-					<section class="col col-3"></section>
+					
+					<section class="col col-3">
+						<button id="connection_test_button" class="btn btn-sm btn-primary btn-block" >Check Connection</button>
+						<div class="margin-top-10">
+						<span class="help-block" id="connection-note" ></span>
+						</div>
+					</section>
 				</div>
 			</fieldset>
 		</div>
@@ -62,5 +90,6 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	$(".button-next").attr('data-scan', 'photogrammetry');
+	$("#connection_test_button").on('click', checkConnection);
 });
 </script>

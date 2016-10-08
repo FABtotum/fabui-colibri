@@ -51,11 +51,13 @@
 							<div class="fake-progress"></div>
 						</div>
 						<hr class="simple">
-						<div class="col-sm-12"> <span class="text"> Cloud points <span class="pull-right"> # <span class="cloud-points"></span>  </span> </span>
-							<div class="fake-progress"></div>
-						</div>
-						<div class="col-sm-12"> <span class="text"> Cloud size <span class="pull-right">  <span class="cloud-size"></span>  </span> </span>
-							<div class="fake-progress"></div>
+						<div class="pointcloudinfo" style="display:none">
+							<div class="col-sm-12"> <span class="text"> Cloud points <span class="pull-right"> # <span class="cloud-points"></span>  </span> </span>
+								<div class="fake-progress"></div>
+							</div>
+							<div class="col-sm-12"> <span class="text"> Cloud size <span class="pull-right">  <span class="cloud-size"></span>  </span> </span>
+								<div class="fake-progress"></div>
+							</div>
 						</div>
 						<hr class="simple">
 						<div class="col-sm-12"> <span class="text"> Elapsed time <span class="pull-right"><span class="elapsed-time"></span> </span> </span>
