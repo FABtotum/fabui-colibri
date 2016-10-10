@@ -10,6 +10,7 @@
  class Files extends FAB_Model {
  	
 	private $tableName = 'sys_files';
+	private $objFilesTable = 'sys_obj_files';
  	
 	//init class
 	public function __construct()
@@ -25,8 +26,8 @@
 		$this->db->select('tf.orig_name, to.name, tf.id as id_file, to.id as id_object, to.description');
 		if($type != '')	$this->db->where('print_type', $type);
 		$this->db->where('to.user', $this->session->user['id']);
-		$this->db->join('sys_obj_files', 'sys_obj_files.id_file = tf.id');
-		$this->db->join('sys_objects as to', 'to.id = sys_obj_files.id_obj');
+		$this->db->join($this->objFilesTable, $this->objFilesTable.'.id_file = tf.id');
+		$this->db->join('sys_objects as to', 'to.id = '.$this->objFilesTable.'.id_obj');
 		$this->db->order_by('date_insert', 'desc');
 		$query = $this->db->get($this->tableName.' as tf');
 		return $query->result_array();
@@ -49,7 +50,7 @@
 		$this->db->select('to.id as id, to.name as obj_name, to.description as obj_description, to.date_insert as date_insert');
 		$this->db->where('tof.id_file',$fileId);
 		$this->db->join('sys_objects as to', 'to.id = tof.id_obj');
-		$query = $this->db->get('sys_obj_files as tof');
+		$query = $this->db->get($this->objFilesTable.' as tof');
 		return $query->row_array();
 	}
 	
@@ -59,7 +60,8 @@
 	 */
 	function getByObject($objectID)
 	{
-		$this->db->select('*');
+		//~ $this->db->select('*');
+		$this->db->select('tf.id , tf.file_name , tf.file_path, tf.full_path, tf.raw_name, tf.orig_name, tf.client_name, tf.file_ext, tf.file_size, tf.print_type, tf.is_image, tf.insert_date, tf.update_date, tf.note, tf.attributes');
 		$this->db->join('sys_obj_files as tof', 'tof.id_file = tf.id');
 		$this->db->where('tof.id_obj', $objectID);
 		$query = $this->db->get($this->tableName.' as tf');

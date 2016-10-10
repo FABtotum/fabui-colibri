@@ -126,7 +126,7 @@
 		$data['mode'] = $scanModeId;
 		$data['suggestedObjectName'] = $scanMode['info']['name'].' - Object name';
 		$data['suggestedFileName'] = $scanMode['info']['name'].' - File name';
-		$data['objectsForDropdown'] = $this->objects->getObjectsorDropdown();
+		$data['objectsForDropdown'] = $this->objects->getObjectsForDropdown();
 		$data['content'] = $this->$methodName();
 		$this->load->view('scan/settings/default', $data);
 	}

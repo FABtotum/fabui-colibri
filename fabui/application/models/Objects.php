@@ -11,7 +11,7 @@
  	
 	private $tableName = 'sys_objects';
 	private $objFilesTable = 'sys_obj_files';
- 	
+	
 	//init class
 	public function __construct()
 	{
@@ -22,9 +22,9 @@
 	 * @param (int) user id
 	 * @return all users's objects
 	 */
-	public function userObjects($userID)
+	public function getUserObjects($userID)
 	{
-		$this->db->select('to.id as id, name, description, count(id_file) as num_files');
+		$this->db->select('to.id as id, name, description, date_insert, count(id_file) as num_files');
 		$this->db->where('user', $userID);
 		$this->db->join($this->objFilesTable.' as tof', 'tof.id_obj = to.id', 'left');
 		$this->db->group_by('to.id');
@@ -35,19 +35,59 @@
 	/**
 	 * @param (int) object id
 	 * @param (int) file id
-	 * assoc file to abject
+	 * assoc file to object
 	 */
 	public function addFile($objectID, $fileID)
 	{
-		$data['id_obj']  = $objectID;
-		$data['id_file'] = $fileID;
-		$this->db->insert($this->objFilesTable, $data);
-		return $this->db->insert_id();
+		if( is_array($fileID) )
+		{
+			$result = array();
+			foreach($fileID as $file)
+			{
+				$data['id_obj']  = $objectID;
+				$data['id_file'] = $file;
+				$this->db->insert($this->objFilesTable, $data);
+				$result[] = $this->db->insert_id();
+			}
+		}
+		else
+		{
+			$data['id_obj']  = $objectID;
+			$data['id_file'] = $fileID;
+			$this->db->insert($this->objFilesTable, $data);
+			$result = $this->db->insert_id();
+		}
+		return $result;
 	}
+	
+	/**
+	 * @param (int) object id
+	 * @param (int|array) file id
+	 * unassoc file(s) from object
+	 */
+	public function deleteFile($objectID, $fileID)
+	{
+		if( is_array($fileID) )
+		{
+			foreach($fileID as $file)
+			{
+				$data['id_obj'] = $objectID;
+				$data['id_file'] = $file;
+				$this->db->delete($this->objFilesTable, $data);
+			}
+		}
+		else
+		{
+			$data['id_obj'] = $objectID;
+			$data['id_file'] = $fileID;
+			$this->db->delete($this->objFilesTable, $data);
+		}
+	}
+	
 	/**
 	 * @return array optimized for dropdown list
 	 */
-	public function getObjectsorDropdown()
+	public function getObjectsForDropdown()
 	{
 		$objects = $this->get();
 		$dropdown = array();

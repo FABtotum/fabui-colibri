@@ -22,7 +22,7 @@
 	public function get($data = '', $numRowsExpected = '')
 	{	
 		if(is_array($data)){ //if parameter is an associative array
-			$this->db->where($data);	
+			$this->db->where($data);
 		}
 		if(is_numeric($data)){ //if parameter is an int then it means that select by ID
 			$this->db->where('id', $data);
@@ -60,6 +60,18 @@
 	{
 		$this->db->insert($this->tableName, $data);
 		return $this->db->insert_id();
+	}
+	
+	public function delete($data)
+	{
+		if(is_array($data))
+		{
+			$this->db->delete($this->tableName, $data);
+		}
+		if(is_numeric($data))
+		{
+			$this->db->delete($this->tableName, array('id' => $data) );
+		}
 	}
 	
 	/**

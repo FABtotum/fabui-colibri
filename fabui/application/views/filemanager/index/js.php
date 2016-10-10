@@ -18,9 +18,11 @@
 		$("#selectAll").on('click', function(){
 			var that = this;
 			$(this).closest("table").find("tr > td input:checkbox").each(function() {
-				this.checked = that.checked;			
+				this.checked = that.checked;
 			});
 		});
+		
+		$(".bulk-button").on('click', bulk_actions);
 	});
 	
 	/**
@@ -55,4 +57,139 @@
 		});
 	}
 	
+	function bulk_actions(){
+		console.log('bulk_actions');
+		
+		var action = $( this ).attr('data-action');
+		
+		if(action == ""){
+			show_message("Please select an action");
+			return false;
+		}
+		
+		switch(action){
+			case 'delete':
+				bulk_delete();
+				break;
+			case 'download':
+				bulk_download();
+				break;
+		}	
+	}
+	
+	function bulk_delete()
+	{
+		var ids = new Array();
+		
+		var boxes = $(".table tbody").find(":checkbox:checked");
+		
+		if(boxes.length > 0){
+			boxes.each(function() {
+				ids.push($(this).attr("id").replace("check_", ""));
+			});
+			bulk_ask_delete(ids);
+		}
+		else
+		{
+			show_message("Please select at least 1 object");
+			return false;
+		}
+
+	}
+
+	function bulk_download(){
+		var ids = new Array();
+		var boxes = $(".table tbody").find(":checkbox:checked");
+		
+		if(boxes.length > 0)
+		{
+			boxes.each(function() {
+				ids.push($(this).attr("id").replace("check_", ""));
+			});
+			bulk_ask_download(ids);
+		}
+		else
+		{
+			 show_message("Please select at least 1 object");
+			 return false;
+		}
+	}
+
+	function show_message(message){
+		$.SmartMessageBox({
+				title: "<i class='fa fa-info-circle'></i> Information",
+				content: message,
+				buttons: '[Ok]'
+			}, function(ButtonPressed) {
+				if (ButtonPressed === "OK") 
+				{
+				}
+			});
+	}
+
+	function bulk_ask_delete(ids){
+		$.SmartMessageBox({
+				title: "<i class='fa fa-warning txt-color-orangeDark'></i> Warning!",
+				content: "Do you really want to remove the selected objects",
+				buttons: '[No][Yes]'
+		}, function(ButtonPressed) {
+			if (ButtonPressed === "Yes") 
+			{
+				delete_objects(ids);
+			}
+			if (ButtonPressed === "No")
+			{
+
+			}
+		});
+	}
+
+	function delete_objects(list){
+		
+		$(".bulk-button").addClass("disabled");
+		$(".bulk-button[data-action='delete']").html("<i class='fa fa-spinner'></i> Deleting...");
+		
+		$.ajax({
+				type: "POST",
+				url: "<?php echo site_url('filemanager/deleteObjects') ?>",
+				dataType: 'json',
+				data: {ids: list}
+			}).done(function(response) {
+				
+				if (response.success == true)
+				{
+					objectsTable._fnAjaxUpdate();
+				}
+				else
+				{
+					showErrorAlert('Error deleting object', response.message);
+				}
+				
+				$(".bulk-button[data-action='delete']").html("<i class='fa fa-trash'></i> Delete");
+				$(".bulk-button").removeClass("disabled");
+				
+			});
+
+    }
+
+	function bulk_ask_download(ids){
+		$.SmartMessageBox({
+				title: "<i class='fa fa-warning txt-color-orangeDark'></i> Warning!",
+				content: "Do you really want download the selected objects",
+				buttons: '[No][Yes]'
+		}, function(ButtonPressed) {
+			if (ButtonPressed === "Yes") {
+				download_objects(ids);
+			}
+			if (ButtonPressed === "No") {
+
+			}
+		});
+	}
+	
+	function download_objects(list){  	
+		document.location.href = '<?php echo site_url('filemanager/download/object/') ?>/' + list.join('-');
+	}
+    
+
 </script>

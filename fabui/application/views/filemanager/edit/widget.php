@@ -33,7 +33,7 @@
 				</div>
 				<section>
 					<label class="label">Description</label>
-					<label class="textarea textarea-resizable"> 										
+					<label class="textarea textarea-resizable">
 						<textarea name="description" rows="5" class="custom-scroll"><?php echo $object['description'] ?></textarea> 
 					</label>
 				</section>
