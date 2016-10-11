@@ -28,7 +28,7 @@ class Filemanager extends FAB_Controller {
 		);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-success" href="'.site_url('filemanager/add-object').'"><i class="fa fa-plus"></i> Add New Object </a>
+		<a class="btn btn-success" href="#filemanager/add-object"><i class="fa fa-plus"></i> Add New Object </a>
 		<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> Delete </button>
 		<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> Download </button>
 		</div>';
@@ -73,8 +73,8 @@ class Filemanager extends FAB_Controller {
 			$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save-object'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 			
 			$headerToolbar = '<div class="widget-toolbar" role="menu">
-			<a class="btn btn-default" href="'.site_url('filemanager').'"><i class="fa fa-arrow-left"></i> Back </a>
-			<a class="btn btn-success" href="'.site_url('filemanager/add-file').'/'.$objectId.'"><i class="fa fa-plus"></i> Add Files </a>
+			<a class="btn btn-default" href="#filemanager"><i class="fa fa-arrow-left"></i> Back </a>
+			<a class="btn btn-success" href="#filemanager/add-file/'.$objectId.'"><i class="fa fa-plus"></i> Add Files </a>
 			<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> Delete </button>
 			<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> Download </button>
 			</div>';
@@ -116,6 +116,9 @@ class Filemanager extends FAB_Controller {
 		
 		if($data['file']) // if file existss
 		{
+			$data['object'] = $this->files->getObject($fileId);
+			$objectId = $data['object']['id'];
+			
 			$widgetOptions = array(
 				'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
 				'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
@@ -123,12 +126,9 @@ class Filemanager extends FAB_Controller {
 			
 			$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save-object'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 			
-			$headerToolbar = ''; /*'<div class="widget-toolbar" role="menu">
-			<a class="btn btn-default" href="'.site_url('filemanager').'"><i class="fa fa-arrow-left"></i> Back </a>
-			<a class="btn btn-success" href="'.site_url('filemanager/newFile').'/'.$objectId.'"><i class="fa fa-plus"></i> Add Files </a>
-			<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> Delete </button>
-			<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> Download </button>
-			</div>';*/
+			$headerToolbar = '<div class="widget-toolbar" role="menu">
+			<a class="btn btn-default" href="#filemanager/object/'.$objectId.'"><i class="fa fa-arrow-left"></i> Back </a>
+			</div>';
 			
 			$widget = $this->smart->create_widget($widgetOptions);
 			$widget->id = 'file-manager-edit-object-widget';
@@ -168,12 +168,15 @@ class Filemanager extends FAB_Controller {
 		
 		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
+		$headerToolbar = '<div class="widget-toolbar" role="menu">
+		<a class="btn btn-danger" href="#filemanager"><i class="fa fa-arrow-left"></i> Cancel </a>
+		</div>';
+		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-add-object-widget';
-		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>Add new object</h2>", 'toolbar'=>'');
+		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>Add new object</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('filemanager/add/widget', '', true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
-		
 		
 		//add needed scripts
 		$this->addJSFile('/assets/js/plugin/dropzone/dropzone.min.js'); //dropzpone
@@ -199,12 +202,15 @@ class Filemanager extends FAB_Controller {
 		
 		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
+		$headerToolbar = '<div class="widget-toolbar" role="menu">
+		<a class="btn btn-danger" href="#filemanager/object/'.$objectID.'"><i class="fa fa-arrow-left"></i> Cancel </a>
+		</div>';
+		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-add-object-widget';
-		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>Add new file</h2>", 'toolbar'=>'');
+		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>Add new file</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('filemanager/file/add/widget', '', true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
-		
 		
 		//add needed scripts
 		$this->addJSFile('/assets/js/plugin/dropzone/dropzone.min.js'); //dropzpone
@@ -228,7 +234,7 @@ class Filemanager extends FAB_Controller {
 		foreach($objects as $object){
 			$temp = array();
 			$temp[] = '<label class="checkbox-inline"><input type="checkbox" id="check_'.$object['id'].'" name="checkbox-inline" class="checkbox"><span></span> </label>';
-			$temp[] = '<i class="fa fa-folder-open"></i> <a href="'.site_url('filemanager/object/'.$object['id']).'">'.$object['name'].'</a>';
+			$temp[] = '<i class="fa fa-folder-open"></i> <a href="#filemanager/object/'.$object['id'].'">'.$object['name'].'</a>';
 			$temp[] = $object['description'];
 			
 			$date_inserted = date('d/m/Y', strtotime($object['date_insert']));
@@ -386,7 +392,7 @@ class Filemanager extends FAB_Controller {
 		foreach($files as $file){
 			$temp = array();
 			$temp[] = '<label class="checkbox-inline"><input type="checkbox" id="check_'.$file['id'].'" name="checkbox-inline" class="checkbox"><span></span> </label>';
-			$temp[] = '<a href="'.site_url('filemanager/file/'.$file['id']).'">'.str_replace($file['file_ext'], '', $file['client_name']).'</a>';
+			$temp[] = '<a href="#filemanager/file/'.$file['id'].'">'.str_replace($file['file_ext'], '', $file['client_name']).'</a>';
 			$temp[] = $file['print_type'];
 			$temp[] = $file['note'];
 			

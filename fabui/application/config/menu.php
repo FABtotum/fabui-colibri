@@ -11,7 +11,7 @@ $config['menu'] = array(
 	'dashboard' => array(
 		'title' => 'Dashboard',
 		'icon' => 'fa fa-dashboard',
-		'url' => site_url('dashboard')
+		'url' => 'dashboard'
 	),
 	'make' => array(
 		'title' => 'Make',
@@ -20,29 +20,29 @@ $config['menu'] = array(
 			'print' => array(
 				'title' => 'Print',
 				'icon' => 'icon-fab-print',
-				'url' => site_url('make/print')
+				'url' => 'make/print'
 			),
 			'mill' => array(
 				'title' => 'Mill',
 				'icon' => 'icon-fab-mill',
-				'url' => site_url('make/mill')
+				'url' => 'make/mill'
 			),
 			'scan' => array(
 				'title' => 'Scan',
 				'icon' => 'icon-fab-scan',
-				'url' => site_url('scan')
+				'url' => 'scan'
 			)
 		)
 	),
 	'jog' => array(
 		'title' => 'Jog',
 		'icon' => 'icon-fab-jog',
-		'url' => site_url('jog')
+		'url' => 'jog'
 	),
 	'objectmanager' => array(
 		'title' => 'File Manager',
 		'icon' => 'fa-folder-open',
-		'url' => site_url('filemanager')
+		'url' => 'filemanager'
 	),
 	'maintenance' => array(
 		'title' => 'Maintenance',
@@ -51,17 +51,17 @@ $config['menu'] = array(
 			'head' => array(
 				'title' => 'Head Installation',
 				'icon' => 'fa-toggle-down',
-				'url' => site_url('maintenance/head/install')
+				'url' => 'maintenance/head/install'
 			),
 			'spool' => array(
 				'title' => 'Spool Management',
 				'icon' => 'fa-circle-o-notch',
-				'url' => site_url('maintenance/spool-management')
+				'url' => 'maintenance/spool-management'
 			),
 			'bedcalibration' => array(
 				'title' => 'Bed Calibration',
 				'icon' => 'fa-arrows-h',
-				'url' => site_url('maintenance/bed-calibration')
+				'url' => 'maintenance/bed-calibration'
 			),
 			'probecalibration' => array(
 				'title' => 'Probe Calibration',
@@ -70,12 +70,12 @@ $config['menu'] = array(
 					'length' => array(
 						'title' => 'Length Calibration',
 						'icon' => 'fa-arrows-v',
-						'url' => site_url('maintenance/probe-length-calibration')
+						'url' => 'maintenance/probe-length-calibration'
 					),
 					'angle' => array(
 						'title' => 'Angle Calibration',
 						'icon' => 'fa-angle-left',
-						'url' => site_url('maintenance/probe-angle-calibration')
+						'url' => 'maintenance/probe-angle-calibration'
 					)
 				)
 			),
@@ -86,29 +86,29 @@ $config['menu'] = array(
 					'length' => array(
 						'title' => 'Step Calibration',
 						'icon' => 'fa-cog',
-						'url' => site_url('maintenance/feeder-calibration')
+						'url' => 'maintenance/feeder-calibration'
 					),
 					'angle' => array(
 						'title' => 'Engage',
 						'icon' => 'fa-hand-o-right',
-						'url' => site_url('maintenance/feeder-engage')
+						'url' => 'maintenance/feeder-engage'
 					)
 				)
 			),
 			'4thaxis' => array(
 				'title' => '4th Axis',
 				'icon' => 'fa-arrows-h',
-				'url' => site_url('maintenance/4th-axis')
+				'url' => 'maintenance/4th-axis'
 			),
 			'firstsetup' => array(
 				'title' => 'First Setup',
 				'icon' => 'fa-magic',
-				'url' => site_url('maintenance/first-setup')
+				'url' => 'maintenance/first-setup'
 			),
 			'systeminfo' => array(
 				'title' => 'System Info',
 				'icon' => 'fa-info-circle',
-				'url' => site_url('maintenance/system-info')
+				'url' => 'maintenance/system-info'
 			)
 		)
 	),
@@ -119,7 +119,7 @@ $config['menu'] = array(
 			'hardware' => array(
 				'title' => 'Hardware',
 				'icon' => 'fa-cog',
-				'url' => site_url('settings/hardware')
+				'url' => 'settings/hardware'
 			),
 			'network' => array(
 				'title' => 'Network',
@@ -128,41 +128,41 @@ $config['menu'] = array(
 					'ethernet' => array (
 						'title' => 'Ethernet',
 						'icon' => '',
-						'url' => site_url('settings/ethernet')
+						'url' => 'settings/ethernet'
 					),
 					'wifi' => array (
 						'title' => 'Wi-Fi',
 						'icon' => '',
-						'url' => site_url('settings/wifi')
+						'url' => 'settings/wifi'
 					),
 					'dnssd' => array (
 						'title' => 'DNS-SD',
 						'icon' => '',
-						'url' => site_url('settings/dnssd')
+						'url' => 'settings/dnssd'
 					)
 				)
 			),
 			'raspicam' => array(
 				'title' => 'Raspicam',
 				'icon' => '',
-				'url' => site_url('settings/cam')
+				'url' => 'settings/cam'
 			)
 		)
 	),
 	'updates' => array(
  		'title' => 'Updates',
  		'icon' => 'fa fa-refresh',
- 		'url' => site_url('updates')
+ 		'url' => 'updates'
 	),
 	'support' => array(
  		'title' => 'Support',
  		'icon' => 'fa-life-ring',
- 		'url' => site_url('support')
+ 		'url' => 'support'
 	),
 	'plugin' => array(
  		'title' => 'Plugins',
  		'icon' => 'fa-plug',
- 		'url' => site_url('plugins')
+ 		'url' => 'plugins'
 	),
  );
  

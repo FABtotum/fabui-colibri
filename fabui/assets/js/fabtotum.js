@@ -28,10 +28,13 @@ function disableButton(element)
  */
 function transformLinks(container)
 {
-	container = container || $('#content');
 	$.each( container.find('a'), function() {
-		if($(this).attr('title') !== undefined && ( $(this).attr('href') != "javascript:void(0);" || $(this).attr('href').substring(0, 1) != "#") ) {
-    		$(this).attr('href', '#' + $(this).attr('href'));
+	console.log( "transformLinks:", $(this).attr('href').substring(0, 1));
+		if( 
+			$(this).attr('href') !== undefined 
+		&&( $(this).attr('href') != "javascript:void(0);" || $(this).attr('href').startsWith('#') == false ) 
+		) {
+			$(this).attr('href', '#' + $(this).attr('href'));
 		}
 	});
 }

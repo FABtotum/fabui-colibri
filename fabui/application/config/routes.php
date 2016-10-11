@@ -64,7 +64,7 @@ $route['make/mill']  = 'create/index/mill';
 $route['make/scan']  = 'scan';
 //file manager
 $route['filemanager/add-object']  = 'filemanager/newObject';
-$route['filemanager/add-file']  = 'filemanager/newFile';
+$route['filemanager/add-file/(:num)']  = 'filemanager/newFile/$1';
 //settings
 $route['settings/cam'] = 'cam';
 //maintenance
