@@ -101,8 +101,13 @@ class ExposeCommands:
         if atomic:
             self.__macro_start()
         
-        if preset in PRESET_MAP:
-            reply = PRESET_MAP[preset](self, args)
+        try:
+            if preset in PRESET_MAP:
+                reply = PRESET_MAP[preset](self, args)
+        except Exception as e:
+            print "Error:", e.strerr
+            self.macro_error = 1
+            reply = e.strerr
         
         print 'reply:', reply
         
@@ -120,9 +125,6 @@ class ExposeCommands:
         result = {}
         result['response']  = response
         result['reply']     = reply
-        
-        print 'reply fixed:', reply
-        print 'result', result
         
         return json.dumps(result)
     
@@ -165,6 +167,8 @@ class ExposeCommands:
         :type verbose: bool
         """
         reply = None
+        
+        print ">>", code
         
         if self.macro_error == 0:
             if verbose:

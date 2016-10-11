@@ -18,6 +18,37 @@
 # You should have received a copy of the GNU General Public License
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
 
+def parse_gcode(raw_code):
+    """
+    Parse raw gcode command into it's code and fields.
+    
+    :param raw_code: Full GCode string.
+    :type raw_code: string
+    :returns:   A tuple of (code, fields) where fields is a dict with field 
+                names as keys and values as their parsed values.
+                If the field was not found or is not supported then those values
+                are stored in the dict as indexed numerical keys fields[0]...
+    :rtype: tuple(string, dict)
+    """
+    code = None
+    fields = {}
+    index = 0
+    
+    tmp = raw_code.split(';')
+    tags = tmp[0].split()    
+    for tag in tags:
+        try:
+            if tag[0] in "XYZEIJFRSTQN":
+                fields[ tag[0] ] = tag[1:]
+            elif tag[0] in "GM":
+                code = tag
+            else:
+                fields[index] = tag
+                index += 1
+        except:
+            pass
+    
+    return code, fields
 
 def process_command(line):
     """
@@ -30,23 +61,24 @@ def process_command(line):
     trigger = False
     callback_name = 'gcode_action'
     callback_data = line
-    code = '<none>'
+    code = None
     
-    tags = line.split()
-    if tags:
-        code = tags[0]
+    code, fields = parse_gcode(line)
     
-    callback_data = tags
+    if code is None:
+        return False, '', []
+    
+    callback_data = [code]
     
     if (code == 'M0' or # Unconditional stop 
         code == 'M1' or # Same as M0
         code == 'M3' or # Spindle CounterClocwise
         code == 'M4' or # Spindle Clocwise
         code == 'M6' ): # Laser
-        """ Milling action """    
+        """ Milling action """
         callback_name += ':milling'
-        if len(tags) > 1:
-            callback_data[1] = float(tags[1].replace("S","").strip())
+        if 'S' in fields:
+            callback_data.append(fields['S'])
         trigger = True
         
     elif (code == 'M104' or # Set extruder temp
@@ -55,24 +87,24 @@ def process_command(line):
           code == 'M190' ): # wait for bed temp
         """ Heating action """
         callback_name += ':heating'
-        if len(tags) > 1:
-            callback_data[1] = float(tags[1].replace("S","").strip())
+        if 'S' in fields:
+            callback_data.append(fields['S'])
         trigger = True
          
     elif (code == 'M106' or # Fan ON
           code == 'M107' ): # Fan OFF
         """ Cooling action """
         callback_name += ':cooling'
-        if len(tags) > 1:
-            callback_data[1] = float(tags[1].replace("S","").strip())
+        if 'S' in fields:
+            callback_data.append(fields['S'])
         trigger = True
          
     elif (code == 'M220' or # Set speed factor
           code == 'M221' ): # Set extruder factor
         """ Printing action """
         callback_name += ':printing'
-        if len(tags) > 1:
-            callback_data[1] = float(tags[1].replace("S","").strip())
+        if 'S' in fields:
+            callback_data.append(fields['S'])
         trigger = True
          
     elif (code == 'M240' or # Trigger camera
@@ -81,8 +113,8 @@ def process_command(line):
           code == 'M402' ): # Raise probe
         """ Scanning action """
         callback_name += ':scanning'
-        if len(tags) > 1:
-            callback_data[1] = float(tags[1].replace("S","").strip())
+        if 'S' in fields:
+            callback_data.append(fields['S'])
         trigger = True
         
     elif (code == 'M117'):  # Display message

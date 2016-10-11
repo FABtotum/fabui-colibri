@@ -8,7 +8,6 @@
     function do_engage()
     {
         openWait('Engaging in process');
-        IS_MACRO_ON = true;
         
         var now = jQuery.now();
         
@@ -20,7 +19,6 @@
         }).done(function( data ) {
             
             closeWait();
-            IS_MACRO_ON = false;
             
         });
     }
