@@ -28,7 +28,7 @@ class Filemanager extends FAB_Controller {
 		);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-success" href="'.site_url('filemanager/newObject').'"><i class="fa fa-plus"></i> Add New Object </a>
+		<a class="btn btn-success" href="'.site_url('filemanager/add-object').'"><i class="fa fa-plus"></i> Add New Object </a>
 		<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> Delete </button>
 		<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> Download </button>
 		</div>';
@@ -74,7 +74,7 @@ class Filemanager extends FAB_Controller {
 			
 			$headerToolbar = '<div class="widget-toolbar" role="menu">
 			<a class="btn btn-default" href="'.site_url('filemanager').'"><i class="fa fa-arrow-left"></i> Back </a>
-			<a class="btn btn-success" href="'.site_url('filemanager/newFile').'/'.$objectId.'"><i class="fa fa-plus"></i> Add Files </a>
+			<a class="btn btn-success" href="'.site_url('filemanager/add-file').'/'.$objectId.'"><i class="fa fa-plus"></i> Add Files </a>
 			<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> Delete </button>
 			<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> Download </button>
 			</div>';
