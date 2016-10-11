@@ -63,7 +63,8 @@ $route['make/print'] = 'create/index/print';
 $route['make/mill']  = 'create/index/mill';
 $route['make/scan']  = 'scan';
 //file manager
-$route['filemanager/new-object']  = 'filemanager/newObject';
+$route['filemanager/add-object']  = 'filemanager/newObject';
+$route['filemanager/add-file']  = 'filemanager/newFile';
 //settings
 $route['settings/cam'] = 'cam';
 //maintenance

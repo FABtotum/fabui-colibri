@@ -34,10 +34,10 @@
 	
 	/**
 	 * @param (int) object id
-	 * @param (int) file id
-	 * assoc file to object
+	 * @param (int|array) file id
+	 * assoc file(s) to object
 	 */
-	public function addFile($objectID, $fileID)
+	public function addFiles($objectID, $fileID)
 	{
 		if( is_array($fileID) )
 		{
@@ -65,7 +65,7 @@
 	 * @param (int|array) file id
 	 * unassoc file(s) from object
 	 */
-	public function deleteFile($objectID, $fileID)
+	public function deleteFiles($objectID, $fileID)
 	{
 		if( is_array($fileID) )
 		{

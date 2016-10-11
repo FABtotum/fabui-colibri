@@ -28,7 +28,7 @@ class Filemanager extends FAB_Controller {
 		);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-success" href="'.site_url('filemanager/new-object').'"><i class="fa fa-plus"></i> Add New Object </a>
+		<a class="btn btn-success" href="'.site_url('filemanager/newObject').'"><i class="fa fa-plus"></i> Add New Object </a>
 		<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> Delete </button>
 		<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> Download </button>
 		</div>';
@@ -74,7 +74,7 @@ class Filemanager extends FAB_Controller {
 			
 			$headerToolbar = '<div class="widget-toolbar" role="menu">
 			<a class="btn btn-default" href="'.site_url('filemanager').'"><i class="fa fa-arrow-left"></i> Back </a>
-			<a class="btn btn-success" href="'.site_url('filemanager/new-file').'"><i class="fa fa-plus"></i> Add Files </a>
+			<a class="btn btn-success" href="'.site_url('filemanager/newFile').'/'.$objectId.'"><i class="fa fa-plus"></i> Add Files </a>
 			<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> Delete </button>
 			<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> Download </button>
 			</div>';
@@ -92,6 +92,57 @@ class Filemanager extends FAB_Controller {
 			$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
 			$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
 			$this->addJsInLine($this->load->view('filemanager/edit/js',$data['object'], true));
+			
+			$this->view();
+		}
+		else
+		{
+			redirect('filemanager');
+		}
+	}
+	
+	/**
+	 * show file actions view
+	 */
+	public function file($fileId)
+	{
+		if($fileId == '') redirect('filemanager');
+		
+		//load libraries, helpers, model, config
+		$this->load->library('smart');
+		//load db model
+		$this->load->model('Files', 'files');
+		$data['file'] = $this->files->get($fileId, 1);
+		
+		if($data['file']) // if file existss
+		{
+			$widgetOptions = array(
+				'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
+				'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
+			);
+			
+			$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save-object'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+			
+			$headerToolbar = ''; /*'<div class="widget-toolbar" role="menu">
+			<a class="btn btn-default" href="'.site_url('filemanager').'"><i class="fa fa-arrow-left"></i> Back </a>
+			<a class="btn btn-success" href="'.site_url('filemanager/newFile').'/'.$objectId.'"><i class="fa fa-plus"></i> Add Files </a>
+			<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> Delete </button>
+			<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> Download </button>
+			</div>';*/
+			
+			$widget = $this->smart->create_widget($widgetOptions);
+			$widget->id = 'file-manager-edit-object-widget';
+			$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>File view</h2>", 'toolbar'=>$headerToolbar);
+			$widget->body   = array('content' => $this->load->view('filemanager/file/view/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
+			$this->content  = $widget->print_html(true);
+			
+			//add needed scripts
+			$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
+			$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
+			$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
+			$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
+			$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
+			$this->addJsInLine($this->load->view('filemanager/file/view/js',$data['file'], true));
 			
 			$this->view();
 		}
@@ -128,6 +179,37 @@ class Filemanager extends FAB_Controller {
 		$this->addJSFile('/assets/js/plugin/dropzone/dropzone.min.js'); //dropzpone
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
 		$this->addJsInLine($this->load->view('filemanager/add/js','', true));
+		
+		$this->view();
+	}
+	
+	/**
+	 * add files to object page
+	 */
+	public function newFile($objectID)
+	{
+		//TODO
+		//load libraries, helpers, model, config
+		$this->load->library('smart');
+		
+		$widgetOptions = array(
+			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
+			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
+		);
+		
+		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		
+		$widget = $this->smart->create_widget($widgetOptions);
+		$widget->id = 'file-manager-add-object-widget';
+		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>Add new file</h2>", 'toolbar'=>'');
+		$widget->body   = array('content' => $this->load->view('filemanager/file/add/widget', '', true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
+		$this->content  = $widget->print_html(true);
+		
+		
+		//add needed scripts
+		$this->addJSFile('/assets/js/plugin/dropzone/dropzone.min.js'); //dropzpone
+		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
+		$this->addJsInLine($this->load->view('filemanager/file/add/js','', true));
 		
 		$this->view();
 	}
@@ -177,7 +259,7 @@ class Filemanager extends FAB_Controller {
 		$objectID = $this->objects->add($data);
 		if(count($files) > 0)
 		{ //if files are presents add to object
-			$this->objects->addFile($objectID, $files);
+			$this->objects->addFiles($objectID, $files);
 		}
 		$this->session->set_flashdata('alert', array('type' => 'alert-success', 'message'=> '<i class="fa fa-fw fa-check"></i> Object has been added' ));
 		redirect('filemanager');
@@ -218,7 +300,7 @@ class Filemanager extends FAB_Controller {
 				$this->files->delete( $fileID );
 			}
 			
-			$this->objects->deleteFile($objectID, $fileIDs);
+			$this->objects->deleteFiles($objectID, $fileIDs);
 			$this->objects->delete( $objectID );
 		}
 		
@@ -241,7 +323,7 @@ class Filemanager extends FAB_Controller {
 		foreach($ids as $fileID)
 		{
 			$objectID = $this->files->getObject($fileID)['id'];
-			$this->objects->deleteFile($objectID, $fileID);
+			$this->objects->deleteFiles($objectID, $fileID);
 			$this->files->delete($fileID);
 		}
 		$this->output->set_content_type('application/json')->set_output(json_encode( $response ));
@@ -289,7 +371,6 @@ class Filemanager extends FAB_Controller {
 		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
 	
-	
 	/**
 	 * @param (int) object id
 	 * @return all files associated to the object
@@ -307,6 +388,12 @@ class Filemanager extends FAB_Controller {
 			$temp[] = '<label class="checkbox-inline"><input type="checkbox" id="check_'.$file['id'].'" name="checkbox-inline" class="checkbox"><span></span> </label>';
 			$temp[] = '<a href="'.site_url('filemanager/file/'.$file['id']).'">'.str_replace($file['file_ext'], '', $file['client_name']).'</a>';
 			$temp[] = $file['print_type'];
+			$temp[] = $file['note'];
+			
+			$date_inserted = date('d/m/Y', strtotime($file['insert_date']));
+			
+			$temp[] = $date_inserted;
+			$temp[] = '';
 			//$temp[] = $object['num_files'];
 			$aaData[] = $temp;
 		}
@@ -377,12 +464,6 @@ class Filemanager extends FAB_Controller {
 
 	}
 	
-	public function file($fileId)
-	{
-		//load db model
-		$this->load->model('Files', 'files');
-		$file = $this->files->get($fileId, 1);
-	}
  }
  
 ?>
