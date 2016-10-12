@@ -39,13 +39,13 @@ def start_additive(app, args):
     
     app.trace( _("Preparing the FABtotum Personal Fabricator") )
     app.macro("G90",                    "ok", 2,    _("Setting absolute position"), 0, verbose=False)
-    app.macro("G0 X5 Y5 Z60 F1500",     "ok", 3,    _("Moving to oozing point"), 1)
+    app.macro("G0 X5 Y5 Z60 F1500",     "ok", 3,    _("Moving to oozing point"), 0)
     #~ # Pre-heating (dismissed)
     #~ app.macro("M104 S"+str(ext_temp),   "ok", 3,    _("Pre Heating Nozzle ({0}&deg;) (fast)").format(str(ext_temp)), 5)
     #~ app.macro("M140 S"+str(bed_temp),   "ok", 3,    _("Pre Heating Bed ({0}&deg;) (fast)").format(str(bed_temp)) , 5)
-    app.macro("M220 S100",              "ok", 1,    _("Reset Speed factor override"),      0.1, verbose=False)
-    app.macro("M221 S100",              "ok", 1,    _("Reset Extruder factor override"),   0.1, verbose=False)
-    app.macro("M92 E"+str(units_e),     "ok", 1,    _("Setting extruder mode"),            0.1, verbose=False)
+    app.macro("M220 S100",              "ok", 1,    _("Reset Speed factor override"),      0, verbose=False)
+    app.macro("M221 S100",              "ok", 1,    _("Reset Extruder factor override"),  0, verbose=False)
+    app.macro("M92 E"+str(units_e),     "ok", 1,    _("Setting extruder mode"),            0, verbose=False)
 
 def end_additive(app, args = None):
     try:
@@ -62,23 +62,23 @@ def end_additive(app, args = None):
     #macro("G90","ok",100,"Set Absolute movement",0.1,verbose=False)
     #macro("G90","ok",2,"Set Absolute movement",1)
     #macro("G0 X210 Y210 Z200 F10000","ok",100,"Moving to safe zone",0.1,verbose=False) #right top, normally Z=240mm
-    app.macro("M400",       "ok", 100,  _("Waiting for all moves to finish"), 1)
-    app.macro("M104 S0",    "ok", 50,   _("Shutting down Extruder"), 1)
-    app.macro("M140 S0",    "ok", 50,   _("Shutting down Heated Bed"), 1)
-    app.macro("M220 S100",  "ok", 20,   _("Reset Speed factor override"), 0.1)
-    app.macro("M221 S100",  "ok", 20,   _("Reset Extruder factor override"), 0.1, verbose=False)
-    app.macro("M107",       "ok", 50,   _("Turning Fan off"), 1)       #should be moved to firmware
-    app.macro("M18",        "ok", 10,   _("Motor Off"), 1)             #should be moved to firmware
+    app.macro("M400",       "ok", 100,  _("Waiting for all moves to finish"), 0)
+    app.macro("M104 S0",    "ok", 50,   _("Shutting down Extruder"), 0)
+    app.macro("M140 S0",    "ok", 50,   _("Shutting down Heated Bed"), 0)
+    app.macro("M220 S100",  "ok", 20,   _("Reset Speed factor override"), 0)
+    app.macro("M221 S100",  "ok", 20,   _("Reset Extruder factor override"), 0, verbose=False)
+    app.macro("M107",       "ok", 50,   _("Turning Fan off"), 0)       #should be moved to firmware
+    app.macro("M18",        "ok", 10,   _("Motor Off"), 0)             #should be moved to firmware
     #go back to user-defined colors
-    app.macro("M701 S"+str(color['r']), "ok", 2,    _("Turning on lights"), 0.1, verbose=False)
-    app.macro("M702 S"+str(color['g']), "ok", 2,    _("Turning on lights"), 0.1, verbose=False)
-    app.macro("M703 S"+str(color['b']), "ok", 2,    _("Turning on lights"), 0.1, verbose=False)
-    app.macro("M300",                   "ok", 1,    _("Printing completed!"), 1, verbose=False)  #end print signal
+    app.macro("M701 S"+str(color['r']), "ok", 2,    _("Turning on lights"), 0, verbose=False)
+    app.macro("M702 S"+str(color['g']), "ok", 2,    _("Turning on lights"), 0, verbose=False)
+    app.macro("M703 S"+str(color['b']), "ok", 2,    _("Turning on lights"), 0, verbose=False)
+    app.macro("M300",                   "ok", 1,    _("Printing completed!"), 0, verbose=False)  #end print signal
 
 def end_additive_safe_zone(app, args = None):
     app.macro("G90",                        "ok", 2,    _("Setting Absolute position"), 0)
-    app.macro("G0 X210 Y210 Z100 F10000",   "ok", 100,  _("Moving to safe zone"), 1)
-    app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), 1)
+    app.macro("G0 X210 Y210 Z100 F10000",   "ok", 100,  _("Moving to safe zone"), 0)
+    app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), 0)
 
 def check_pre_print(app, args = None):
     try:
@@ -88,9 +88,9 @@ def check_pre_print(app, args = None):
     
     app.trace( _("Checking safety measures") )
     if safety_door == 1:
-        app.macro("M741",   "TRIGGERED", 2, _("Front panel door control"), 0.1)
-    app.macro("M744",       "TRIGGERED", 1, _("Building plane inserted correctly"), 0.1, warning=True)
-    app.macro("M742",       "TRIGGERED", 1, _("Spool panel control"), 0.1, warning=True)
+        app.macro("M741",   "TRIGGERED", 2, _("Front panel door control"), 0)
+    app.macro("M744",       "TRIGGERED", 1, _("Building plane inserted correctly"), 0, warning=True)
+    app.macro("M742",       "TRIGGERED", 1, _("Spool panel control"), 0, warning=True)
 
 def engage_feeder(app, args = None):
     try:
@@ -102,13 +102,13 @@ def engage_feeder(app, args = None):
 
     app.trace( _("Engaging 3D-Printer Feeder") )
     if safety_door == 1:
-        app.macro("M741",           "TRIGGERED", 2, _("Front panel door control"), 0.1)
-    app.macro("M742",               "TRIGGERED", 1, _("Spool panel control"), 1, warning=True, verbose=False)
-    app.macro("G27",                "ok", 100,      _("Zeroing Z axis"), 0.1)
-    app.macro("G91",                "ok", 1,        _("Set rel movement"), 0.1, verbose=False)
-    app.macro("G0 Z-4 F1000",       "ok", 5,        _("Setting Z position"), 0.1)
+        app.macro("M741",           "TRIGGERED", 2, _("Front panel door control"), 0)
+    app.macro("M742",               "TRIGGERED", 1, _("Spool panel control"), 0, warning=True, verbose=False)
+    app.macro("G27",                "ok", 100,      _("Zeroing Z axis"), 0)
+    app.macro("G91",                "ok", 1,        _("Set rel movement"), 0, verbose=False)
+    app.macro("G0 Z-4 F1000",       "ok", 5,        _("Setting Z position"), 0)
     app.macro("M400",               "ok", 5,        _("Waiting for all moves to finish"), 0, verbose=False)
-    app.macro("G90",                "ok", 1,        _("Set absolute movement"), 0.1)
-    app.macro("M92 E"+str(units_e), "ok", 1,        _("Setting extruder mode"), 0.5)
-    app.macro("M18",                "ok", 3,        _("Stopping motors"), 0.1, verbose=False)
-    app.macro("M300",               "ok", 3,        _("Play beep sound"), 1, verbose=False)   
+    app.macro("G90",                "ok", 1,        _("Set absolute movement"), 0)
+    app.macro("M92 E"+str(units_e), "ok", 1,        _("Setting extruder mode"), 0)
+    app.macro("M18",                "ok", 3,        _("Stopping motors"), 0, verbose=False)
+    app.macro("M300",               "ok", 3,        _("Play beep sound"), 0, verbose=False)   

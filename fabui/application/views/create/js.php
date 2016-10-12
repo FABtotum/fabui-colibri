@@ -190,7 +190,10 @@
 				idTask = response.id_task;
 				initSliders();
 				setTimeout(initGraph, 1000);
+				setTemperaturesSlidersValue(response.temperatures.extruder, response.temperatures.bed);
 				updateZOverride(0);
+				
+				console.log('temp1:', response.temperatures.extruder, 'temp2:', response.temperatures.bed);
 			}
 			
 			closeWait();
@@ -780,9 +783,11 @@
 		switch(element){
 			case 'extruder-target':
 				fabApp.serial("setExtruderTemp",value[0]);
+				showActionAlert("Extruder temperature set to "+value[0]+'&deg;');
 				break;
 			case 'bed-target':
 				fabApp.serial("setBedTemp",value[0]);
+				showActionAlert("Bed temperature set to "+value[0]+'&deg;');
 				break;
 			case 'flow-rate':
 				sendActionRequest('flowRate', value[0]);
@@ -798,7 +803,7 @@
 	/**
 	 * set initial target for temperatures sliders and temperatures labels
 	 */
-	function setTemperaturesSlidersValue()
+	function setTemperaturesSlidersValue(ext_temp_target = 0, bed_temp_target = 0)
 	{	
 		$.get(temperatures_file_url + '?' + jQuery.now(), function(data){
 
@@ -809,7 +814,8 @@
 				ext_temp = data.ext_temp[data.ext_temp.length - 1];
 			}
 			if(data.ext_temp_target.constructor === Array){
-				ext_temp_target = data.ext_temp_target[data.ext_temp_target.length - 1];
+				if(!ext_temp_target)
+					ext_temp_target = data.ext_temp_target[data.ext_temp_target.length - 1];
 			}
 			$(".extruder-temp").html(parseFloat(ext_temp).toFixed(0));
 			$(".extruder-target").html(parseFloat(ext_temp_target).toFixed(0));
@@ -817,7 +823,8 @@
 			* bed
 			*/
 			if(data.bed_temp_target.constructor === Array){
-				bed_temp_target = data.bed_temp_target[data.bed_temp_target.length - 1];
+				if(!bed_temp_target)
+					bed_temp_target = data.bed_temp_target[data.bed_temp_target.length - 1];
 			}
 			if(data.bed_temp.constructor === Array){
 				bed_temp = data.bed_temp[data.bed_temp.length - 1];

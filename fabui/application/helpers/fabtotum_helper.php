@@ -175,40 +175,6 @@ if(!function_exists('doCommandLine'))
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('doMacro'))
 {
-	/**
-	 * @param $macroName
-	 * @param $traceFile
-	 * @param $responseFile
-	 * @param $extrArgs
-	 * Exec macro operation
-	 * 
-	 //~ */ 
-	//~ function doMacro($macroName, $traceFile = '', $extrArgs = '')
-	//~ {
-		//~ if($macroName == '') return;
-		//~ //load CI instancem, helpers, config
-		//~ $CI =& get_instance();
-		//~ $CI->load->helper('file');
-		//~ $CI->config->load('fabtotum');
-		
-		//~ $extPath = $CI->config->item('ext_path');
-		//~ if($traceFile == '' or $traceFile == null)        $traceFile    = $CI->config->item('trace');
-		
-		//~ $cmdArgs = array('--log_trace' => $traceFile, 1 => $macroName);
-		//~ if( !is_array($extrArgs) ) { $extrArgs = array($extrArgs); }
-		//~ $params = array_merge( $cmdArgs, $extrArgs);
-		
-		//~ $data = doCommandLine('python', $extPath.'py/gmacro.py', $params);
-		
-		//~ $result = json_decode($data, true);
-		//~ //if response is false means that macro failed
-		//~ //$response = str_replace('<br>', '', trim(file_get_contents($responseFile))) == 'true' ? true : false;
-		//~ $response = $result['response'];
-		//~ $reply    = $result['reply'];
-		//~ $trace    = file_get_contents($traceFile);
-		
-		//~ return array('response' => $response, 'reply' => $reply, 'trace' => $trace);
-	//~ }
 	function doMacro($macroName, $traceFile = '', $extrArgs = '')
 	{
 		$CI =& get_instance(); //init ci instance
@@ -306,7 +272,56 @@ if(!function_exists('restart'))
 	{
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('readInitialTemperatures')) 
+{
+	/**
+	 * @param $file
+	 * @param $numLines
+	 * get the initial temperatures of an additive file
+	 */
+	function readInitialTemperatures($file, $numLines = 500){
+		
+		if(file_exists($file)){
+			//$re = "\"M(\d+)\sS([+|-]*[0-9]*.[0-9]*)\""; //regular expression to catch temperatures
+			$extruderGCodes = array('M109');
+			$bedGCodes      = array('M190');
+			$extruderTemp = 1;
+			$bedTemp      = 1;
+			//read first $numLines lines of the file
+			$lines = explode(PHP_EOL, doCommandLine('head', '"'.$file.'"', array('-n' => $numLines)));
+			foreach($lines as $line){
+				$tags = explode(' ', $line);
+				if( in_array($tags[0], $extruderGCodes) )
+				{
+					foreach($tags as $tag)
+					{
+						if($tag[0] == 'S')
+						{
+							$extruderTemp = intval(substr($tag,1));
+							break;
+						}
+					}
+				}
+				if( in_array($tags[0], $bedGCodes) )
+				{
+					foreach($tags as $tag)
+					{
+						if($tag[0] == 'S')
+						{
+							$bedTemp = intval(substr($tag,1));
+							break;
+						}
+					}
+				}
+				if($bedTemp > 1 && $extruderTemp > 1) break;
+			}
+			return array('extruder' => intval($extruderTemp), 'bed' => intval($bedTemp));
+		}else 
+			return false;
+	}
+	
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('checkManufactoring'))
 {

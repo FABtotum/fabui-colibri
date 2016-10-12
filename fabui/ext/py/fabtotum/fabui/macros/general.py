@@ -49,10 +49,10 @@ def home_all(app, args = None):
     app.macro("G90", "ok", 2, _("Set abs position"), 0, verbose=False)
     
     if zprobe_disabled:
-        app.macro("G27 X0 Y0 Z" + str(zmax_home_pos),   "ok", 100,  _("Homing all axes"), 0.1)
-        app.macro("G0 Z50 F10000",                      "ok", 15,   _("Raising"), 0.1, verbose=True)
+        app.macro("G27 X0 Y0 Z" + str(zmax_home_pos),   "ok", 100,  _("Homing all axes"), 0)
+        app.macro("G0 Z50 F10000",                      "ok", 15,   _("Raising"), 0, verbose=True)
     else:
-        app.macro("G28",                                "ok", 200,  _("Homing all axes"), 1, verbose=True)
+        app.macro("G28",                                "ok", 200,  _("Homing all axes"), 0, verbose=True)
 
 def start_up(app, args = None):
     
@@ -95,8 +95,8 @@ def start_up(app, args = None):
 
 def shutdown(app, args = None):
     app.trace( _("Shutting down...") ) 
-    app.macro("M300",   "ok", 5, _("Play alert sound!"), 1, verbose=False)
-    app.macro("M729",   "ok", 2, _("Asleep!"), 1, verbose=False)
+    app.macro("M300",   "ok", 5, _("Play alert sound!"), 0, verbose=False)
+    app.macro("M729",   "ok", 2, _("Asleep!"), 0, verbose=False)
     
 def raise_bed(app, args = None):
     """
@@ -110,28 +110,28 @@ def raise_bed(app, args = None):
         zmax_home_pos = 206.0
         zprobe_disabled = False
     
-    app.macro("M402",   "ok", 4,    _("Raising probe"), 0.1, verbose=True)
-    app.macro("G90",    "ok", 2,    _("Setting absolute position"), 1)
+    app.macro("M402",   "ok", 4,    _("Raising probe"), 0, verbose=True)
+    app.macro("G90",    "ok", 2,    _("Setting absolute position"), 0)
     
     #macro("G27","ok",100,"Homing all axes",0.1)
     #macro("G0 Z10 F10000","ok",15,"raising",0.1)
     #macro("G28","ok",100,"homing all axes",0.1)
     if zprobe_disabled:
-        app.macro("G27 X0 Y0 Z" + str(zmax_home_pos),   "ok", 100,  _("Homing all axes"), 0.1)
-        app.macro("G0 Z50 F10000",                      "ok", 15,   _("Raising"), 0.1)
+        app.macro("G27 X0 Y0 Z" + str(zmax_home_pos),   "ok", 100,  _("Homing all axes"), 0)
+        app.macro("G0 Z50 F10000",                      "ok", 15,   _("Raising"), 0)
     else:
-        app.macro("G27",            "ok", 100,  _("Homing all axes"), 0.1)
-        app.macro("G0 Z10 F10000",  "ok", 15,   _("Raising"), 0.1)
-        app.macro("G28",            "ok", 100,  _("Homing all axes"), 0.1, verbose=False)
+        app.macro("G27",            "ok", 100,  _("Homing all axes"), 0)
+        app.macro("G0 Z10 F10000",  "ok", 15,   _("Raising"), 0)
+        app.macro("G28",            "ok", 100,  _("Homing all axes"), 0, verbose=False)
 
 def auto_bed_leveling(app, args = None):
     app.trace( _("Auto Bed leveling Initialized") )
-    app.macro("G91",                "ok", 2,    _("Setting relative position"), 1, verbose=False)
-    app.macro("G0 Z25 F1000",       "ok", 2,    _("Moving away from the plane"), 1,verbose=False)
-    app.macro("G90",                "ok", 2,    _("Setting abs position"), 1, verbose=False)
-    app.macro("G28",                "ok", 90,   _("Homing all axis"), 1)
-    app.macro("G29",                "ok", 140,  _("Auto bed leveling procedure"), 1)
-    app.macro("G0 X5 Y5 Z60 F2000", "ok", 100,  _("Getting to idle position"), 1)
+    app.macro("G91",                "ok", 2,    _("Setting relative position"), 0, verbose=False)
+    app.macro("G0 Z25 F1000",       "ok", 2,    _("Moving away from the plane"), 0,verbose=False)
+    app.macro("G90",                "ok", 2,    _("Setting abs position"), 0, verbose=False)
+    app.macro("G28",                "ok", 90,   _("Homing all axis"), 0)
+    app.macro("G29",                "ok", 140,  _("Auto bed leveling procedure"), 0)
+    app.macro("G0 X5 Y5 Z60 F2000", "ok", 100,  _("Getting to idle position"), 0)
 
 def probe_down(app, args = None):
     app.macro("M401",   "ok", 1, _("Probe Down"), 0)
@@ -156,17 +156,17 @@ def engage_4axis(app, args = None):
         feeder_disengage_offset = 2
     
     app.trace( _("Engaging 4th Axis") )
-    app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), 0.1)
-    app.macro("G91",                "ok", 1,    _("Setting Relative position"), 0.1,verbose=False)
-    app.macro("M120",               "ok", 1,    _("Disable Endstop checking"), 0.1)
-    app.macro("G0 Z+"+str(feeder_disengage_offset)+" F300", "ok", 5,    _("Engaging 4th Axis Motion"), 0.1)
-    app.macro("M400",               "ok", 5,    _("Waiting for all moves to finish"), 0.1, verbose=False)
-    app.macro("M121",               "ok", 1,    _("Enable Endstop checking"), 0.1)
+    app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), 0)
+    app.macro("G91",                "ok", 1,    _("Setting Relative position"), 0,verbose=False)
+    app.macro("M120",               "ok", 1,    _("Disable Endstop checking"), 0)
+    app.macro("G0 Z+"+str(feeder_disengage_offset)+" F300", "ok", 5,    _("Engaging 4th Axis Motion"), 0)
+    app.macro("M400",               "ok", 5,    _("Waiting for all moves to finish"), 0, verbose=False)
+    app.macro("M121",               "ok", 1,    _("Enable Endstop checking"), 0)
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), 0)
-    app.macro("G92 Z241",           "ok", 1,    _("Setting position"), 0.1, verbose=False)
-    app.macro("G90",                "ok", 1,    _("Setting Absolute position"), 0.1, verbose=False)
-    app.macro("G0 Z234",            "ok", 1,    _("Check position"), 0.1, verbose=False)
-    app.macro("M300",               "ok", 3,    _("Play beep sound"), 1, verbose=False)
+    app.macro("G92 Z241",           "ok", 1,    _("Setting position"), 0, verbose=False)
+    app.macro("G90",                "ok", 1,    _("Setting Absolute position"), 0, verbose=False)
+    app.macro("G0 Z234",            "ok", 1,    _("Check position"), 0, verbose=False)
+    app.macro("M300",               "ok", 3,    _("Play beep sound"), 0, verbose=False)
     
 def do_4th_axis_mode(app, args = None):
     units_a = app.config.get('settings', 'a')
@@ -196,7 +196,7 @@ def read_eeprom(app, args = None):
             object = {'r': match.group(1), 'e': match.group(2)}
             return object
     
-    reply = app.macro('M503', None, 1, _("Reading settings from eeprom"), 1, verbose=False)
+    reply = app.macro('M503', None, 1, _("Reading settings from eeprom"), 0, verbose=False)
     
     #echo:Z Probe Length: -32.05
     probe_length = reply[17].split('Probe Length:')[1].strip()

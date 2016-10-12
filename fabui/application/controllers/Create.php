@@ -187,6 +187,14 @@
 		//load helpers
 		$this->load->helpers('fabtotum_helper');
 		
+		$this->load->model('Files', 'files');
+		$fileToCreate = $this->files->get($data['idFile'], 1);
+		$temperatures = readInitialTemperatures($fileToCreate['full_path']);
+		if($temperatures == false){
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => 'File not found')));
+			return;
+		}
+		
 		$homAllResult = doMacro('home_all');
 		if($homAllResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $homAllResult['trace'])));
@@ -199,8 +207,6 @@
 			return;
 		}
 		
-		$this->load->model('Files', 'files');
-		$fileToCreate = $this->files->get($data['idFile'], 1);
 		//get object record
 		$object = $this->files->getObject($fileToCreate['id']);
 		//ready to print
@@ -225,7 +231,7 @@
 						);
 		startScript('py/print.py', $printArgs);
 		
-		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
+		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId, 'temperatures' => $temperatures)));
 	}
 	/**
 	 * @param $data (POST DATA)
