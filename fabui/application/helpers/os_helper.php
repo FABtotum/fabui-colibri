@@ -117,7 +117,7 @@ if(!function_exists('getWlanInfo'))
 			'ap_mac_address'      => getFromRegEx('/Access Point: ([0-9a-f:]+)/i', $strInterface),
 			'bitrate'             => getFromRegEx('/Bit Rate:([0-9]+.[0-9]+\s[a-z]+\/[a-z]+)/i', $strInterface),
 			'link_quality'        => getFromRegEx('/Link Quality=([0-9]+\/[0-9]+)/i', $strInterface),
-			'signal_level'        => getFromRegEx('/Signal Level=([0-9]+\/[0-9]+)/i', $strInterface),
+			'signal_level'        => decodeWifiSignal(getFromRegEx('/Signal Level=([0-9]+\/[0-9]+)/i', $strInterface)),
 			'power_management'    => getFromRegEx('/Power Management:([a-zA-Z]+)/i', $strInterface),
 			'frequency'           => getFromRegEx('/Frequency:([0-9]+.[0-9]+\s[a-z]+)/i', $strInterface),
 			'ieee'                => getFromRegEx('/IEEE ([0-9]+.[0-9]+[a-z]+)/i', $strInterface)
@@ -150,7 +150,7 @@ if(!function_exists('scanWlan'))
 				$temp['encryption_key'] = getFromRegEx('/Encryption key:([a-zA-Z]+)/i', $net);	
 				$temp['bit_rates']      = getFromRegEx('/Bit Rates:([0-9]+.[0-9]+\s[a-z]+\/[a-z]+)/i', $net);
 				$temp['quality']        = getFromRegEx('/Quality=([0-9]+)/i', $net); 
-				$temp['signal_level']   = getFromRegEx('/Signal level=([0-9]+)/i', $net);
+				$temp['signal_level']   = decodeWifiSignal(getFromRegEx('/Signal level=([0-9]+)/i', $net));
 				//add to nets lists
 				$nets[] = $temp;
 			}
@@ -306,5 +306,28 @@ if(!function_exists('humanFileSize'))
 		return $ret;
 	}
 }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('decodeWifiSignal'))
+{
+	/**
+	 * 
+	 */
+	function decodeWifiSignal($value)
+	{
+		if (strpos($value, 'dBm') !== false) {
+			$value = abs(intval(trim(str_replace('dBm', '', $value))));
+			if($value < 50){
+				return 100;
+			}elseif($value > 50 && $value < 60){
+				return 75;
+			}elseif($value > 60 && $value < 70){
+				return 50;
+			}else{
+				return 25;
+			}
+		}else{
+			return $value;
+		}
+	}
+}
 ?>
