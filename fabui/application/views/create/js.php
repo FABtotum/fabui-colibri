@@ -175,9 +175,12 @@
 			url: '<?php echo site_url('create/startCreate/'.$type); ?>',
 			dataType: 'json'
 		}).done(function(response) {
+			
+			console.log('startCreate:',response);
+			
 			if(response.start == false){
 				$('.wizard').wizard('selectedItem', { step: 2 });
-				showErrorResponse(response.trace);
+				showErrorResponse(response.trace + '<br>' + response.error);
 			}else{
 				fabApp.resetTemperaturesPlot(50);	
 				freezeUI();

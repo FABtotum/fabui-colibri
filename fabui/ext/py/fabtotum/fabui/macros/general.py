@@ -48,12 +48,11 @@ def home_all(app, args = None):
     app.trace( _("Now homing all axes") )
     app.macro("G90", "ok", 2, _("Set abs position"), 0, verbose=False)
     
-    #macro("G28","ok",100,"homing all axes",1,verbose=False)
     if zprobe_disabled:
         app.macro("G27 X0 Y0 Z" + str(zmax_home_pos),   "ok", 100,  _("Homing all axes"), 0.1)
-        app.macro("G0 Z50 F10000",                      "ok", 15,   _("Raising"), 0.1, verbose=False)
+        app.macro("G0 Z50 F10000",                      "ok", 15,   _("Raising"), 0.1, verbose=True)
     else:
-        app.macro("G28",                                "ok", 100,  _("Homing all axes"), 1, verbose=False)
+        app.macro("G28",                                "ok", 200,  _("Homing all axes"), 1, verbose=True)
 
 def start_up(app, args = None):
     

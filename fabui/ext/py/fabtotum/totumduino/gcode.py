@@ -424,15 +424,19 @@ class GCodeService:
                 )
         callback_thread.start()
     
-    def __reset_thread(self, trigger_file_done = False):
+    def __reset_thread(self, trigger_file_done = False, destroy_scripts=True):
+        if destroy_scripts:
+            self.__trigger_callback('self_descruct', None)
+            time.sleep(0.1)
+            
         self.__reset_totumduino()
         if trigger_file_done:
             self.__trigger_file_done(None)
     
-    def __trigger_reset(self, trigger_file_done=False):
+    def __trigger_reset(self, trigger_file_done=False, destroy_scripts=True):
         callback_thread = Thread(
             target = self.__reset_thread, 
-            args = ([trigger_file_done]) )
+            args = ([trigger_file_done, destroy_scripts]) )
         callback_thread.start()
     
     def __send_gcode_command(self, code, group = 'gcode', modify = True):
@@ -662,7 +666,7 @@ class GCodeService:
                          self.file_state == GCodeService.FILE_PAUSED_WAIT):
                         # There is a long command being executed, we need to
                         # restart the totumduino to abort it.
-                        self.__trigger_reset(True)
+                        self.__trigger_reset(True, False);
                         self.file_state = GCodeService.FILE_NONE
                         # self.__trigger_file_done(self.last_command), True above means it will be triggered after reset
                     else:
@@ -832,8 +836,6 @@ class GCodeService:
         """ Does a hardware reset of the totumduino board. """
 
         # Send a self_descruct command to all running gpusher applications
-        self.__trigger_callback('self_descruct', None)
-        time.sleep(0.1)
         
         self.is_resetting = True
         

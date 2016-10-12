@@ -223,6 +223,8 @@ if(!function_exists('doMacro'))
 			$extrArgs = array($extrArgs);
 		}
 		
+		$CI->xmlrpc->timeout(300);
+		
 		$data = array( array($macroName, 'string'),
 					   array($extrArgs, 'array'),
 					   array(true, 'boolean')
@@ -240,15 +242,17 @@ if(!function_exists('doMacro'))
 		{
 			$_reply = $CI->xmlrpc->display_error();
 			$_response = False;
+			$trace = 'request had an error: '.$CI->xmlrpc->display_error();
 		}
 		else
 		{
 			$tmp = json_decode( $CI->xmlrpc->display_response(), true );
 			$_response = $tmp['response'];
 			$_reply = $tmp['reply'];
+			$trace	= file_get_contents($traceFile);
 		}
 		
-		$trace	= file_get_contents($traceFile);
+		
 		
 		return array('reply' => $_reply, 'response' => $_response, 'trace' => $trace);
 	}

@@ -188,10 +188,11 @@
 		if($homAllResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $homAllResult['trace'])));
 			return;
-		}		
+		}
+		
 		$startPrintResult = doMacro('start_additive');
 		if($startPrintResult['response'] == false){
-			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace'=>$startPrintResult['trace'])));
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace'=>$startPrintResult['trace'], 'error' => $startPrintResult['reply'])));
 			return;
 		}
 		

@@ -175,6 +175,7 @@ class ExposeCommands:
                 self.trace(error_msg)
             
             reply = self.gcs.send(code, timeout=timeout, group = 'macro')
+            print "++++++MACRO-reply:", reply
             if expected_reply:
                 # Check if the reply is as expected
                 if reply:
@@ -189,6 +190,7 @@ class ExposeCommands:
                     self.trace(error_msg + _(": Failed ({0})".format('<aborted>') ))
                     self.macro_error += 1
         else:
+            print "++++++MACRO-skipped"
             self.trace(error_msg + _(": Skipped"))
             self.macro_skipped += 1
                 
