@@ -55,7 +55,7 @@
 		if($hardwareSettings['settings_type'] == 'custom') $hardwareSettings = loadSettings('custom');
 		//save hardware settings on session
 		$this->session->settings = $hardwareSettings;
-		redirect('dashboard');
+		redirect('#dashboard');
 	}
 	
 	//log out
