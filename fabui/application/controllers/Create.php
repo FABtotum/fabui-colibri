@@ -174,13 +174,16 @@
 				break;
 		}
 	}
-	
+
 	/**
 	 * @param $data (POST DATA)
 	 * start print task
 	 */
+	//~ private function startPrint($data)
 	private function startPrint($data)
 	{
+		//startPrint
+		
 		//load helpers
 		$this->load->helpers('fabtotum_helper');
 		
@@ -213,12 +216,16 @@
 			'start_date' => date('Y-m-d H:i:s')
 		);
 		$taskId   = $this->tasks->add($taskData);
-        $userID   = $this->session->user['id'];
-        $fileID   = $data['idFile'];
-        $objectID = $object['id'];
+		$userID   = $this->session->user['id'];
+		
 		//start print
-		startPrint($fileToCreate['full_path'], $taskId, $userID, $objectID, $fileID);
-		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId, 'temperatures'=> $temperatures)));
+		$printArgs = array(
+						'-T' => $taskId, 
+						'-F' => $fileToCreate['full_path']
+						);
+		startScript('py/print.py', $printArgs);
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
 	}
 	/**
 	 * @param $data (POST DATA)

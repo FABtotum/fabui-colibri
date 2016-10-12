@@ -31,13 +31,12 @@ class Feeder extends FAB_Controller {
 		$this->load->helper('form');
 		$this->load->helper('fabtotum_helper');
 		$this->config->load('fabtotum');
-		$extPath = $this->config->item('ext_path');
 		
 		//data
 		$data = array();
 		
-		$json_data = doCommandLine('python', $extPath.'/py/read_eeprom.py');
-		$data['eeprom'] = json_decode($json_data, true);
+		$tmp = doMacro('read_eeprom');
+		$data['eeprom'] = $tmp['reply'];
 		
 		//main page widget
 		$widgetOptions = array(

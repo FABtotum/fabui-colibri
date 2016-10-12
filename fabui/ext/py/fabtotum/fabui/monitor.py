@@ -213,13 +213,15 @@ class StatsMonitor:
             if data[0] == 'M109':
                 pass
                 #self.trace( _("Wait for nozzle temperature to reach {0}&deg;C").format(data[1]) )
-                #~ self.ext_temp_target = self.__rotate_values(self.ext_temp_target, float(data[1]))
+                #self.ext_temp_target = self.__rotate_values(self.ext_temp_target, float(data[1]))
                 #~ self.ev_update.set()
+                self.__update_values(ext_temp_target=float(data[1]))
             elif data[0] == 'M190':
-                pass
+                #pass
                 #self.trace( _("Wait for bed temperature to reach {0}&deg;C").format(data[1]) )
                 #~ self.bed_temp_target = self.__rotate_values(self.bed_temp_target, float(data[1]))
                 #~ self.ev_update.set()
+                self.__update_values(bed_temp_target=float(data[1]))
             elif data[0] == 'M104':
                 #self.trace( _("Nozzle temperature set to {0}&deg;C").format(data[1]) )
                 #~ self.ext_temp_target = self.__rotate_values(self.ext_temp_target, float(data[1]))

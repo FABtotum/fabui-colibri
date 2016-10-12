@@ -19,9 +19,9 @@ class SystemInfo extends FAB_Controller {
 		$this->load->helper('os_helper');
 		
 		$this->config->load('fabtotum');
-		$extPath = $this->config->item('ext_path');
+		//~ $extPath = $this->config->item('ext_path');
 		
-		$json_data = doCommandLine('python', $extPath.'/py/systeminfo.py');
+		$json_data = startScript('py/systeminfo.py', '', false);
 		$data = json_decode($json_data, true);
 		
 		$widgetOptions = array(

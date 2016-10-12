@@ -167,6 +167,7 @@
 	{
 		is_task_on = true;
 		openWait('Init print');
+		
 		var calibration = $('input[name=calibration]:checked').val();
 		var data = {idFile:idFile, skipEngage:skipEngage, calibration:calibration};
 		$.ajax({
@@ -182,17 +183,19 @@
 				$('.wizard').wizard('selectedItem', { step: 2 });
 				showErrorResponse(response.trace + '<br>' + response.error);
 			}else{
-				fabApp.resetTemperaturesPlot(50);	
+				fabApp.resetTemperaturesPlot(50);
 				freezeUI();
 				setInterval(timer, 1000);
 				setInterval(jsonMonitor, 1000);
 				idTask = response.id_task;
 				initSliders();
 				setTimeout(initGraph, 1000);
-				setTemperaturesSlidersValue(response.temperatures.extruder, response.temperatures.bed);
 				updateZOverride(0);
 			}
+			
 			closeWait();
+			
+			console.log('closeWait()');
 			//TODO freeze menu fabApp.freezeMenu();
 		});
 	}

@@ -176,7 +176,7 @@ def version(app, args = None):
     pass
 
 def read_eeprom(app, args = None):
-    
+        
     def serialize(string_source, regex_to_serach, keys):
         match = re.search(regex_to_serach, string_source, re.IGNORECASE)
         if match != None:

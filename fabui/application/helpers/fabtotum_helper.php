@@ -223,7 +223,7 @@ if(!function_exists('doMacro'))
 			$extrArgs = array($extrArgs);
 		}
 		
-		$CI->xmlrpc->timeout(300);
+		//~ $CI->xmlrpc->timeout(300);
 		
 		$data = array( array($macroName, 'string'),
 					   array($extrArgs, 'array'),
@@ -330,20 +330,7 @@ if(!function_exists('checkManufactoring'))
 		return 'additive';
 	}
 }
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if(!function_exists('startPrint'))
-{
-	/**
-	 * 
-	 */
-	function startPrint($gcodeFilePath, $taskID = 0, $userID = 0, $objectID = 0, $fileID = 0)
-	{
-		$CI =& get_instance();
-		$CI->config->load('fabtotum'); 
-		$extPath = $CI->config->item('ext_path');
-		doCommandLine('python', $extPath.'/py/print.py managed '.$taskID.' "'.$gcodeFilePath.'" &> /tmp/print.log & echo $! > /run/task_create.pid');
-	}
-}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('writeToCommandFile'))
 {
@@ -454,17 +441,18 @@ if(!function_exists('clearJogResponse'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if(!function_exists('startScan'))
+if(!function_exists('startScript'))
 {
 	/**
-	 * start scan task
+	 * start python task
 	 */
-	function startScan($script, $params, $background = true)
+	function startScript($script, $params = '', $background = true)
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		$extPath = $CI->config->item('ext_path');
-		doCommandLine('python', $extPath.'py/'.$script, $params, $background);
+		// TODO: check trailing /
+		return doCommandLine('python', $extPath.$script, $params, $background);
 	}
 }
 ?>

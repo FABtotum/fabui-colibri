@@ -133,10 +133,11 @@ if(!function_exists('scanWlan'))
 	 */
 	function scanWlan($interface = 'wlan0')
 	{
-		$scanResult = shell_exec('iwlist '.$interface.' scan');
+		$scanResult = shell_exec('sudo iwlist '.$interface.' scan && sleep 1');
 		$scanResult = preg_replace('/\s\s+/', ' ', $scanResult);
 		$scanResult = str_replace($interface.' Scan completed :', '', $scanResult);
 		$scanResult = explode('Cell ', $scanResult);
+		
 		$nets = array();
 		foreach($scanResult as $net){
 			if(trim($net) != ''){
