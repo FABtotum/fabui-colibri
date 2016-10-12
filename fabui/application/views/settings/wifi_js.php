@@ -125,7 +125,7 @@
 		}).done(function(response) {
 			waitContent('Refreshing page');
 			setTimeout(function() {
-				document.location.href = '<?php echo site_url('settings/wifi'); ?>';
+				location.reload();
 			}, 3000);
 		});
 	}
