@@ -217,8 +217,18 @@ if(!function_exists('doMacro'))
 		
 		$CI->xmlrpc->server('127.0.0.1/FABUI', $CI->config->item('xmlrpc_port'));
 		$CI->xmlrpc->method('do_macro');
+
+		if( !is_array($extrArgs) )
+		{
+			$extrArgs = array($extrArgs);
+		}
 		
-		$CI->xmlrpc->request( array($macroName, $extrArgs) );
+		$data = array( array($macroName, 'string'),
+					   array($extrArgs, 'array'),
+					   array(true, 'boolean')
+				);
+		
+		$CI->xmlrpc->request( $data );
 		
 		if($traceFile == '' or $traceFile == null)
 			$traceFile = $CI->config->item('trace');
@@ -258,38 +268,6 @@ if(!function_exists('doGCode'))
 		$CI->jogFactory->sendCommands( $gcodes );
 		return $CI->jogFactory->response();
 	}
-}
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if(!function_exists('readInitialTemperatures')) 
-{
-	/**
-	 * @param $file
-	 * @param $numLines
-	 * get the initial temperatures of an additive file
-	 */
-	function readInitialTemperatures($file, $numLines = 500){
-		
-		if(file_exists($file)){
-			$re = "\"M(\d+)\sS([+|-]*[0-9]*.[0-9]*)\""; //regular expression to catch temperatures
-			$extruderGCodes = array(109);
-			$bedGCodes      = array(190);
-			$extruderTemp = 1;
-			$bedTemp      = 1;
-			//read first $numLines lines of the file
-			$lines = explode(PHP_EOL, doCommandLine('head', '"'.$file.'"', array('-n' => $numLines)));
-			foreach($lines as $line){
-				preg_match($re, $line, $matches);
-				if(count($matches) > 0){
-					if(in_array($matches[1], $extruderGCodes)) $extruderTemp = $matches[2];
-					if(in_array($matches[1], $bedGCodes))      $bedTemp      = $matches[2];
-				}
-				if($bedTemp > 1 && $extruderTemp > 1) break;
-			}
-			return array('extruder' => intval($extruderTemp), 'bed' => intval($bedTemp));
-		}else 
-			return false;
-	}
-	
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('resetController'))

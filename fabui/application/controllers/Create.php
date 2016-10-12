@@ -174,6 +174,7 @@
 				break;
 		}
 	}
+	
 	/**
 	 * @param $data (POST DATA)
 	 * start print task
@@ -187,19 +188,15 @@
 		if($homAllResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $homAllResult['trace'])));
 			return;
-		}
-		$this->load->model('Files', 'files');
-		$fileToCreate = $this->files->get($data['idFile'], 1);
-		$temperatures = readInitialTemperatures($fileToCreate['full_path']);
-		if($temperatures == false){
-			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => 'File not found')));
-			return;
-		}
-		$startPrintResult = doMacro('start_additive', null, array($temperatures['extruder'], $temperatures['bed']));
+		}		
+		$startPrintResult = doMacro('start_additive');
 		if($startPrintResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace'=>$startPrintResult['trace'])));
 			return;
 		}
+		
+		$this->load->model('Files', 'files');
+		$fileToCreate = $this->files->get($data['idFile'], 1);
 		//get object record
 		$object = $this->files->getObject($fileToCreate['id']);
 		//ready to print
