@@ -61,7 +61,7 @@
   			table += '<td class="text-center va-middle" style="width: 40px;"><i class="icon-communication-035 fa-2x text-muted"></i></td>';
   			table += '<td>';
   			table += '<p>'+net.essid+'<span class="hidden-xs pull-right">Signal level: '+net.signal_level +'/100</span></p>';
-  			table += '<div class="hidden-xs progress progress-sm progress-striped active"><div class="progress-bar  bg-color-blue" aria-valuetransitiongoal="'+ net.signal_level +'"></div></div>';
+  			table += '<div class="hidden-xs progress progress-sm progress-striped active"><div class="progress-bar  bg-color-blue" aria-valuetransitiongoal="'+ net.signal_level +'" style="width:'+net.signal_level+'%"></div></div>';
   			table += '<small class="hidden-xs note">'+ protected +' ' + net.protocol + ' / ' + net.mode +' / ' + net.frequency + ' ' + channel + ' </small>';
   			table += '</td>';
   			table += '<td style="width: 100px" class="text-right va-middle"><button data-attribute-essid="'+net.essid+'" data-attribute-action="'+buttonAttributeAction+'" data-attribute-protected="'+buttonAttributeProtected+'" class="btn btn-default btn-sm btn-block connect">'+buttonLabel+'</button></td></td>';
@@ -69,7 +69,8 @@
 		});
 		table += '</tbody></table>';
 		$(".table-container").html(table);
-		$('.progress-bar').progressbar();
+		$('.progress-bar').progressbar({display_text : 'fill'
+			});
 		$('.connect').on('click', connectionManager);
 	}
 	/**
@@ -124,7 +125,7 @@
 		}).done(function(response) {
 			waitContent('Refreshing page');
 			setTimeout(function() {
-				document.location.href = '<?php echo site_url('settings/wifi'); ?>';
+				location.reload();
 			}, 3000);
 		});
 	}
