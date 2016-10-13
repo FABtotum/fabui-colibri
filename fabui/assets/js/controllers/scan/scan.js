@@ -334,6 +334,11 @@ function initSweepCrop()
 {	
 	var $image = $('#image');
 	
+	$(".sweep-start").attr('min', buildPlateDimensions.sweep.minX);
+	$(".sweep-start").attr('max', buildPlateDimensions.sweep.maxX);
+	$(".sweep-end").attr('min', buildPlateDimensions.sweep.minX);
+	$(".sweep-end").attr('max', buildPlateDimensions.sweep.maxX);
+	
 	var xCorrect = buildPlateImageOffsets.left;
 	var yCorrect = buildPlateImageOffsets.top;   
 	var realWidth = buildPlateDimensions.sweep.width + buildPlateImageOffsets.left + buildPlateImageOffsets.right;
@@ -393,6 +398,14 @@ function initSweepCrop()
 function initProbeCrop()
 {
 	var $image = $('#image');
+	$(".probing-x1").attr( {'min' : buildPlateDimensions.probe.minX
+	 						'max' : buildPlateDimensions.probe.maxX} );
+	$(".probing-x2").attr( {'min' : buildPlateDimensions.probe.minX
+	 						'max' : buildPlateDimensions.probe.maxX} );
+	$(".probing-y1").attr( {'min' : buildPlateDimensions.probe.minY
+	 						'max' : buildPlateDimensions.probe.maxY} );
+	$(".probing-y2").attr( {'min' : buildPlateDimensions.probe.minY
+							'max' : buildPlateDimensions.probe.maxY} );
 	
 	var xCorrect = buildPlateImageOffsets.left;
 	var yCorrect = buildPlateImageOffsets.top;   

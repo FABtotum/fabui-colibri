@@ -128,6 +128,8 @@
 		$data['suggestedFileName'] = $scanMode['info']['name'].' - File name';
 		$data['objectsForDropdown'] = $this->objects->getObjectsForDropdown();
 		$data['content'] = $this->$methodName();
+		
+		$this->addJSFile('/assets/js/plugin/inputmask/jquery.inputmask.bundle.js');
 		$this->load->view('scan/settings/default', $data);
 	}
 	

@@ -88,7 +88,7 @@
 				<label>Start</label>
 				<div class="input-group">
 					<span class="input-group-addon">x</span>
-					<input type="text"  class="form-control sweep-start">  
+					<input type="number" class="form-control sweep-start">  
 				</div>
 			</div>
 		</div>
@@ -98,7 +98,7 @@
 				<label>End</label>
 				<div class="input-group">
 					<span class="input-group-addon">x</span>
-					<input type="text"  class="form-control sweep-end"> 
+					<input type="number"  class="form-control sweep-end"> 
 				</div>
 			</div>
 		</div>

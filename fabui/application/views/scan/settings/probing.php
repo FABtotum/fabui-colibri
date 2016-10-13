@@ -23,7 +23,7 @@
 					<label>First point</label>
 					<div class="input-group">
 						<span class="input-group-addon">x</span>
-						<input class="form-control probing-x1" type="text">
+						<input class="form-control probing-x1" type="number">
 					</div>  
 				</div>
 			</div>
@@ -32,7 +32,7 @@
 					<label>&nbsp;</label>
 					<div class="input-group">
 						<span class="input-group-addon">y</span>
-						<input class="form-control probing-y1"  type="text">
+						<input class="form-control probing-y1"  type="number">
 					</div>  
 				</div>
 			</div>
@@ -43,7 +43,7 @@
 					<label>Second point</label>
 					<div class="input-group">
 						<span class="input-group-addon">x</span>
-						<input class="form-control probing-x2" type="text">
+						<input class="form-control probing-x2" type="number">
 					</div>  
 				</div>
 			</div>
@@ -52,7 +52,7 @@
 					<label>&nbsp;</label>
 					<div class="input-group">
 						<span class="input-group-addon">y</span>
-						<input class="form-control probing-y2" type="text">
+						<input class="form-control probing-y2" type="number">
 					</div>  
 				</div>
 			</div>
