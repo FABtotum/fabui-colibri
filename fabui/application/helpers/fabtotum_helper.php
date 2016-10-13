@@ -189,7 +189,7 @@ if(!function_exists('doMacro'))
 			$extrArgs = array($extrArgs);
 		}
 		
-		//~ $CI->xmlrpc->timeout(300);
+		$CI->xmlrpc->timeout(120);
 		
 		$data = array( array($macroName, 'string'),
 					   array($extrArgs, 'array'),
@@ -202,6 +202,7 @@ if(!function_exists('doMacro'))
 			$traceFile = $CI->config->item('trace');
 
 		$_reply = '';
+		$_message = '';
 		$_response = False;
 		
 		if ( !$CI->xmlrpc->send_request())
@@ -213,14 +214,16 @@ if(!function_exists('doMacro'))
 		else
 		{
 			$tmp = json_decode( $CI->xmlrpc->display_response(), true );
-			$_response = $tmp['response'];
-			$_reply = $tmp['reply'];
+			if($tmp['response'] == 'success')
+			{
+				$_response = True;
+			}
+			$_reply   = $tmp['reply'];
+			$_message = $tmp['message'];
 			$trace	= file_get_contents($traceFile);
 		}
 		
-		
-		
-		return array('reply' => $_reply, 'response' => $_response, 'trace' => $trace);
+		return array('reply' => $_reply, 'response' => $_response, 'message' => $_message, 'trace' => $trace);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

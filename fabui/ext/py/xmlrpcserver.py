@@ -39,7 +39,7 @@ from fabtotum.database.file import File
 from fabtotum.database.object  import Object
 from fabtotum.database.obj_file import ObjFile
 
-from fabtotum.fabui.macros.all import PRESET_MAP
+from fabtotum.utils.gmacro import GMacroHandler
 
 from fabtotum.utils.xmlrpc.servercontainer import ServerContainer
 
@@ -68,6 +68,8 @@ class ExposeCommands:
         ch.setFormatter(formatter)
         ch.setLevel(logging.INFO)
         self.trace_logger.addHandler(ch)
+        
+        self.gmacro = GMacroHandler(self.gcs, self.config, self.trace, self.__resetTrace)
     
     def __resetTrace(self):
         """ Reset trace file """
@@ -96,107 +98,7 @@ class ExposeCommands:
         """
         Execute macro command.
         """
-        self.__reset_macro_status()
-        self.__resetTrace()
-        if atomic:
-            self.__macro_start()
-        
-        try:
-            if preset in PRESET_MAP:
-                reply = PRESET_MAP[preset](self, args)
-        except Exception as e:
-            print "Error:", e.strerr
-            self.macro_error = 1
-            reply = e.strerr
-        
-        print 'reply:', reply
-        
-        if atomic:
-            self.__macro_end()
-        
-        if self.macro_error > 0:
-            response = False
-        else:
-            response = True
-            
-        if reply is None:
-            reply = 'ok'
-            
-        result = {}
-        result['response']  = response
-        result['reply']     = reply
-        
-        return json.dumps(result)
-    
-    def __reset_macro_status(self):
-        """
-        Reset macro status counters to zero.
-        """
-        self.macro_warning = 0
-        self.macro_error = 0
-        self.macro_skipped = 0
-    
-    def __macro_start(self):
-        """ 
-        Start macro execution block. This will activate atomic execution and 
-        only commands marked as `macro` will be executed. Others will be aborted.
-        """
-        self.gcs.atomic_begin(group = 'macro')
-        
-    def __macro_end(self):
-        """ End macro execution block and atomic execution. """
-        self.gcs.atomic_end()
-    
-    def macro(self, code, expected_reply, timeout, error_msg, delay_after, warning=False, verbose=True):
-        """
-        Send a command and check it's reply.
-        
-        :param code: gcode
-        :param expected_reply: Expected reply
-        :param error_msg: Error message to display
-        :param timeout: Reply timeout in seconds
-        :param delay_after: Time in seconds to wait after receiving the rely
-        :param warning: Treat wrong reply as warning not as error
-        :param verbose: Whether initial message should be displayed or not.
-        :type code: string
-        :type expected_reply: string
-        :type timeout: float
-        :type error_msg: string
-        :type delay_after: float
-        :type warning: bool
-        :type verbose: bool
-        """
-        reply = None
-        
-        print ">>", code
-        
-        if self.macro_error == 0:
-            if verbose:
-                self.trace(error_msg)
-            
-            reply = self.gcs.send(code, timeout=timeout, group = 'macro')
-            print "++++++MACRO-reply:", reply
-            if expected_reply:
-                # Check if the reply is as expected
-                if reply:
-                    if reply[0] != expected_reply:
-                        if warning:
-                            self.trace(error_msg + _(": Warning!"))
-                            self.macro_warning += 1
-                        else:
-                            self.trace(error_msg + _(": Failed ({0})".format(reply[0]) ))
-                            self.macro_error += 1
-                else:
-                    self.trace(error_msg + _(": Failed ({0})".format('<aborted>') ))
-                    self.macro_error += 1
-        else:
-            print "++++++MACRO-skipped"
-            self.trace(error_msg + _(": Skipped"))
-            self.macro_skipped += 1
-                
-        time.sleep(delay_after) #wait the desired amount
-        
-        return reply
+        return self.gmacro.run(preset, args, atomic)
         
     def do_abort(self):
         """ Send abort request """

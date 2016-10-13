@@ -41,7 +41,14 @@
 		
 		$this->debugLayout();
 	}
-			
+	
+	public function test()
+	{
+		$this->load->helpers('fabtotum_helper');
+		$homAllResult = doMacro('start_additive');
+		var_dump($homAllResult);
+	}
+	
  }
  
 ?>

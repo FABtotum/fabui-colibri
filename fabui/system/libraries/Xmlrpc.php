@@ -720,6 +720,9 @@ class XML_RPC_Client extends CI_Xmlrpc
 			return new XML_RPC_Response(0, $this->xmlrpcerr['http_error'], $this->xmlrpcstr['http_error']);
 		}
 
+		// See note for timeout parameter http://php.net/manual/en/function.fsockopen.php
+		stream_set_timeout($fp, $this->timeout);
+
 		if (empty($msg->payload))
 		{
 			// $msg = XML_RPC_Messages

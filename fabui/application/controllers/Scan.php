@@ -254,7 +254,7 @@
 		
 		$rScanResult = doMacro('start_rotary_scan');
 		if($rScanResult['response'] == false){
-			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $rScanResult['trace'])));
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $rScanResult['message'], 'trace' => $rScanResult['trace'])));
 			return;
 		}
 		//create db record
@@ -298,12 +298,12 @@
 		//preparing printer
 		$checkPreScanResult = doMacro('check_pre_scan');
 		if($checkPreScanResult['response'] == false){
-			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $checkPreScanResult['trace'])));
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $checkPreScanResult['message'], 'trace' => $checkPreScanResult['trace'])));
 			return;
 		}
 		$sScanResult = doMacro('start_sweep_scan');
 		if($sScanResult['response'] == false){
-			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $sScanResult['trace'])));
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $sScanResult['message'], 'trace' => $sScanResult['trace'])));
 			return;
 		}
 		//create db record
@@ -349,13 +349,13 @@
 		//preparing printer
 		$checkPreScanResult = doMacro('check_pre_scan');
 		if($checkPreScanResult['response'] == false){
-			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $checkPreScanResult['trace'])));
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $checkPreScanResult['message'], 'trace' => $checkPreScanResult['trace'])));
 			return;
 		}
 		
 		$sScanResult = doMacro('start_probe_scan');
 		if($sScanResult['response'] == false){
-			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $sScanResult['trace'])));
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $sScanResult['message'], 'trace' => $sScanResult['trace'])));
 			return;
 		}
 		
@@ -413,7 +413,7 @@
 		
 		$sScanResult = doMacro('start_photogrammetry_scan');
 		if($sScanResult['response'] == false){
-			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $sScanResult['trace'])));
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $sScanResult['message'], 'trace' => $sScanResult['trace'])));
 			return;
 		}
 		

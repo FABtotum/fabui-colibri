@@ -177,11 +177,11 @@
 			dataType: 'json'
 		}).done(function(response) {
 			
-			console.log('startCreate:',response);
+			console.log('startCreate:', response);
 			
 			if(response.start == false){
 				$('.wizard').wizard('selectedItem', { step: 2 });
-				showErrorResponse(response.trace + '<br>' + response.error);
+				showErrorAlert(response.message);
 			}else{
 				fabApp.resetTemperaturesPlot(50);
 				freezeUI();
@@ -902,7 +902,7 @@
 	/**
 	* show error message 
 	*/
-	function showErrorResponse(message)
+	function showErrorAlert(message)
 	{
 		$.smallBox({
 			title : "Warning",

@@ -202,6 +202,9 @@ endif
 	$(FAKEROOT_ENV) ln -s $(FABUI_PATH)utilities	$(BDATA_DIR)$(WWW_PATH)utilities
 	$(FAKEROOT_ENV) ln -s $(TEMP_PATH)fabui 		$(BDATA_DIR)$(WWW_PATH)temp
 	$(FAKEROOT_ENV) ln -s $(BIGTEMP_PATH) 			$(BDATA_DIR)$(WWW_PATH)bigtemp
+#	Python integration
+	$(FAKEROOT_ENV) $(INSTALL) -d -m 0755 			$(BDATA_DIR)/usr/lib/python2.7/site-packages
+	$(FAKEROOT_ENV) ln -s $(PYTHON_PATH)fabtotum 	$(BDATA_DIR)/usr/lib/python2.7/site-packages/fabtotum
 #	The autoinstall flag file is created at compile time
 	$(FAKEROOT_ENV) touch $(BDATA_DIR)/$(WWW_PATH)/AUTOINSTALL
 #	Public runtime directories

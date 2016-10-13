@@ -175,6 +175,13 @@
 		}
 	}
 
+	public function test($id)
+	{
+		$data = array();
+		$data['idFile'] = $id;
+		$this->startPrint($data);
+	}
+
 	/**
 	 * @param $data (POST DATA)
 	 * start print task
@@ -191,19 +198,19 @@
 		$fileToCreate = $this->files->get($data['idFile'], 1);
 		$temperatures = readInitialTemperatures($fileToCreate['full_path']);
 		if($temperatures == false){
-			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => 'File not found')));
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => 'File not found')));
 			return;
 		}
 		
 		$homAllResult = doMacro('home_all');
 		if($homAllResult['response'] == false){
-			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace' => $homAllResult['trace'])));
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $homAllResult['message'])));
 			return;
 		}
 		
 		$startPrintResult = doMacro('start_additive');
 		if($startPrintResult['response'] == false){
-			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'trace'=>$startPrintResult['trace'], 'error' => $startPrintResult['reply'])));
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $startPrintResult['message'], 'trace'=>$startPrintResult['trace'], 'error' => $startPrintResult['reply'])));
 			return;
 		}
 		

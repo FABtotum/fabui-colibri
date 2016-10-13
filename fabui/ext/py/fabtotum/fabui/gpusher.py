@@ -39,14 +39,13 @@ from threading import Event, Thread, RLock
 # Import internal modules
 from fabtotum.fabui.config import ConfigService
 from fabtotum.utils.gcodefile import GCodeFile, GCodeInfo
+from fabtotum.utils.gmacro import GMacroHandler
 from fabtotum.utils.pyro.gcodeclient import GCodeServiceClient
 from fabtotum.database      import Database, timestamp2datetime, TableItem
 from fabtotum.database.task import Task
 from fabtotum.database.file import File
 from fabtotum.database.object  import Object
 from fabtotum.database.obj_file import ObjFile
-
-from fabtotum.fabui.macros.all import PRESET_MAP
 
 # Set up message catalog access
 tr = gettext.translation('gpusher', 'locale', fallback=True)
@@ -169,9 +168,7 @@ class GCodePusher(object):
         if use_callback:
             self.gcs.register_callback(self.callback_handler)
         
-        self.macro_error = 0
-        self.macro_warning = 0
-        self.macro_skipped = 0
+        self.gmacro = GMacroHandler(self.gcs, self.config, self.trace, self.resetTrace)
         
         self.progress_monitor = None
         self.db = Database(self.config)
@@ -653,88 +650,89 @@ class GCodePusher(object):
         """
         Execute macro command.
         """
-        self.reset_macro_status()
-        if atomic:
-            self.macro_start()
+        return self.gmacro.run(preset, args, atomic)
+        #~ self.reset_macro_status()
+        #~ if atomic:
+            #~ self.macro_start()
         
-        if preset in PRESET_MAP:
-            PRESET_MAP[preset](self, args)
+        #~ if preset in PRESET_MAP:
+            #~ PRESET_MAP[preset](self, args)
         #~ else:
             #~ print _("Preset '{0}' not found").format(preset)
         
-        if atomic:
-            self.macro_end()
+        #~ if atomic:
+            #~ self.macro_end()
         
-        if self.macro_error > 0:
-            return False
+        #~ if self.macro_error > 0:
+            #~ return False
             
-        return True
+        #~ return True
     
-    def reset_macro_status(self):
-        """
-        Reset macro status counters to zero.
-        """
-        self.macro_warning = 0
-        self.macro_error = 0
-        self.macro_skipped = 0
+    #~ def reset_macro_status(self):
+        #~ """
+        #~ Reset macro status counters to zero.
+        #~ """
+        #~ self.macro_warning = 0
+        #~ self.macro_error = 0
+        #~ self.macro_skipped = 0
     
-    def macro_start(self):
-        """ 
-        Start macro execution block. This will activate atomic execution and 
-        only commands marked as `macro` will be executed. Others will be aborted.
-        """
-        self.gcs.atomic_begin(group = 'macro')
+    #~ def macro_start(self):
+        #~ """ 
+        #~ Start macro execution block. This will activate atomic execution and 
+        #~ only commands marked as `macro` will be executed. Others will be aborted.
+        #~ """
+        #~ self.gcs.atomic_begin(group = 'macro')
         
-    def macro_end(self):
-        """ End macro execution block and atomic execution. """
-        self.gcs.atomic_end()
+    #~ def macro_end(self):
+        #~ """ End macro execution block and atomic execution. """
+        #~ self.gcs.atomic_end()
     
-    def macro(self, code, expected_reply, timeout, error_msg, delay_after, warning=False, verbose=True):
-        """
-        Send a command and check it's reply.
+    #~ def macro(self, code, expected_reply, timeout, error_msg, delay_after, warning=False, verbose=True):
+        #~ """
+        #~ Send a command and check it's reply.
         
-        :param code: gcode
-        :param expected_reply: Expected reply
-        :param error_msg: Error message to display
-        :param timeout: Reply timeout in seconds
-        :param delay_after: Time in seconds to wait after receiving the rely
-        :param warning: Treat wrong reply as warning not as error
-        :param verbose: Whether initial message should be displayed or not.
-        :type code: string
-        :type expected_reply: string
-        :type timeout: float
-        :type error_msg: string
-        :type delay_after: float
-        :type warning: bool
-        :type verbose: bool
-        """
-        reply = None
+        #~ :param code: gcode
+        #~ :param expected_reply: Expected reply
+        #~ :param error_msg: Error message to display
+        #~ :param timeout: Reply timeout in seconds
+        #~ :param delay_after: Time in seconds to wait after receiving the rely
+        #~ :param warning: Treat wrong reply as warning not as error
+        #~ :param verbose: Whether initial message should be displayed or not.
+        #~ :type code: string
+        #~ :type expected_reply: string
+        #~ :type timeout: float
+        #~ :type error_msg: string
+        #~ :type delay_after: float
+        #~ :type warning: bool
+        #~ :type verbose: bool
+        #~ """
+        #~ reply = None
         
-        if self.macro_error == 0:
-            if verbose:
-                self.trace(error_msg)
+        #~ if self.macro_error == 0:
+            #~ if verbose:
+                #~ self.trace(error_msg)
             
-            reply = self.gcs.send(code, timeout=timeout, group = 'macro')
-            if expected_reply:
-                # Check if the reply is as expected
-                if reply:
-                    if reply[0] != expected_reply:
-                        if warning:
-                            self.trace(error_msg + _(": Warning!"))
-                            self.macro_warning += 1
-                        else:
-                            self.trace(error_msg + _(": Failed ({0})".format(reply[0]) ))
-                            self.macro_error += 1
-                else:
-                    self.trace(error_msg + _(": Failed ({0})".format('<aborted>') ))
-                    self.macro_error += 1
-        else:
-            self.trace(error_msg + _(": Skipped"))
-            self.macro_skipped += 1
+            #~ reply = self.gcs.send(code, timeout=timeout, group = 'macro')
+            #~ if expected_reply:
+                #~ # Check if the reply is as expected
+                #~ if reply:
+                    #~ if reply[0] != expected_reply:
+                        #~ if warning:
+                            #~ self.trace(error_msg + _(": Warning!"))
+                            #~ self.macro_warning += 1
+                        #~ else:
+                            #~ self.trace(error_msg + _(": Failed ({0})".format(reply[0]) ))
+                            #~ self.macro_error += 1
+                #~ else:
+                    #~ self.trace(error_msg + _(": Failed ({0})".format('<aborted>') ))
+                    #~ self.macro_error += 1
+        #~ else:
+            #~ self.trace(error_msg + _(": Skipped"))
+            #~ self.macro_skipped += 1
                 
-        time.sleep(delay_after) #wait the desired amount
+        #~ time.sleep(delay_after) #wait the desired amount
         
-        return reply
+        #~ return reply
         
     def send(self, code, block = True, timeout = None, trace = None, group = 'gcode', expected_reply = 'ok'):
         """

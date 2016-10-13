@@ -521,7 +521,7 @@ function handleRotatingScan()
 			console.log(response);
 			if(response.response == false){
 				closeWait();
-				showErrorAlert('Warning', response.trace);
+				showErrorAlert('Warning', response.message);
 			}else{
 				button.attr('data-action', 'start');
 				closeWait();
@@ -553,7 +553,7 @@ function handleRotatingScan()
 			console.log(response);
 			if(response.start == false){
 				closeWait();
-				showErrorAlert('Warning', response.trace);
+				showErrorAlert('Warning', response.message);
 			}else{
 				startTask();
 			}
@@ -596,7 +596,7 @@ function handleSweepScan()
 			console.log(response);
 			if(response.start == false){
 				closeWait();
-				showErrorAlert('Warning', response.trace);
+				showErrorAlert('Warning', response.message);
 			}else{
 				startTask();
 			}
@@ -638,7 +638,7 @@ function handleProbingScan()
 			console.log(response);
 			if(response.start == false){
 				closeWait();
-				showErrorAlert('Warning', response.trace);
+				showErrorAlert('Warning', response.message);
 			}else{
 				startTask();
 			}
@@ -663,7 +663,7 @@ function handlePhotogrammetry()
 			console.log(response);
 			if(response.response == false){
 				closeWait();
-				showErrorAlert('Warning', response.trace);
+				showErrorAlert('Warning', response.message);
 			}else{
 				button.attr('data-action', 'start');
 				closeWait();
@@ -691,7 +691,7 @@ function handlePhotogrammetry()
 			console.log(response);
 			if(response.start == false){
 				closeWait();
-				showErrorAlert('Warning', response.trace);
+				showErrorAlert('Warning', response.message);
 			}else{
 				startTask();
 			}

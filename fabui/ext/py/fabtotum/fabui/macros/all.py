@@ -79,12 +79,4 @@ PRESET_MAP = {
     "probe_setup_prepare"           : calib_macros.probe_setup_prepare,
     "probe_setup_calibrate"         : calib_macros.probe_setup_calibrate,
     "raise_bed_no_g27"              : calib_macros.raise_bed_no_g27,
-    # Test
-    #~ "laser"                         : test_macros.laser,
-    #~ "mill"                          : test_macros.mill,
-    #~ "blower"                        : test_macros.blower,
-    #~ "head_light"                    : test_macros.head_light,
-    #~ "g28"                           : test_macros.g28,
-    #~ "end_stop"                      : test_macros.end_stop,
-    #~ "temperature"                   : test_macros.temperature
 }
