@@ -28,7 +28,6 @@
 	public function index($type = 'print'){
 		
 		if($this->runningTask){
-			print_r($this->runningTask);
 			$method = 'do'.ucfirst($this->runningTask['type']);
 			if(method_exists($this, $method)) $this->$method();
 			else redirect('dashboard');
@@ -256,8 +255,8 @@
 	{
 		$this->load->helper('fabtotum_helper');
 		//abort
-		abort();
-		$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
+		$response = abort();
+		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 		//TODO 
 	}
 	
