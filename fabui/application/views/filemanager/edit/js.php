@@ -61,16 +61,21 @@
 		$("#save-object").addClass('disabled');
 		$('#save-object').html('<i class="fa fa-save"></i> Saving...');
 		
+		var object_data = {
+			object_id : 	<?php echo $object['id'] ?>, 
+			name: 			$("#obj_name").val(), 
+			description: 	$("#obj_description").val(), 
+			public: 		$('[name="public"]:checked').val()
+			};
+		
 		$.ajax({
 			type: "POST",
 			url: "<?php echo site_url('filemanager/updateObject') ?>",
-			data: {object_id : <?php echo $object['id'] ?>, name: $("#obj_name").val(), description: $("#obj_description").val(), private: $('[name="private"]:checked').val()},
+			data: object_data,
 			dataType: 'json'
 		}).done(function(response) {
-
 			$("#save-object").removeClass('disabled');
 			$('#save-object').html('<i class="fa fa-save"></i> Save');
-			
 			
 			$.smallBox({
 				title : "Object saved with success",

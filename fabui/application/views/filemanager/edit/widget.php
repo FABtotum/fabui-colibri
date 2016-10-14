@@ -16,7 +16,7 @@
 					<section class="col col-6">
 						<label class="label">Name</label>
 						<label class="input">
-							<input type="text" name="name" id="name" value="<?php echo $object['name'] ?>">
+							<input type="text" name="name" id="obj_name" value="<?php echo $object['name'] ?>">
 						</label>
 					</section>
 					<section class="col col-6">
@@ -26,7 +26,7 @@
 								<input type="radio" <?php echo $object['public'] == 1 ? 'checked="checked"' : ''; ?> name="public" value="1"><i></i> Yes
 							</label>
 							<label class="radio">
-								<input type="radio" <?php echo $object['public'] == 0 ? 'checked="checked"' : ''; ?> name="public" value="0"><i></i> Yes
+								<input type="radio" <?php echo $object['public'] == 0 ? 'checked="checked"' : ''; ?> name="public" value="0"><i></i> No
 							</label>
 						</div>
 					</section>
@@ -34,7 +34,7 @@
 				<section>
 					<label class="label">Description</label>
 					<label class="textarea textarea-resizable">
-						<textarea name="description" rows="5" class="custom-scroll"><?php echo $object['description'] ?></textarea> 
+						<textarea id="obj_description" rows="5" class="custom-scroll"><?php echo $object['description'] ?></textarea> 
 					</label>
 				</section>
 			</fieldset>

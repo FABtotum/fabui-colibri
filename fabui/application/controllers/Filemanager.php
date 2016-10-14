@@ -10,7 +10,6 @@
  
 class Filemanager extends FAB_Controller {
 	
-	
 	/**
 	 * show objects page
 	 **/
@@ -195,6 +194,8 @@ class Filemanager extends FAB_Controller {
 		//load libraries, helpers, model, config
 		$this->load->library('smart');
 		
+		$data = array('object_id' => $objectID);
+		
 		$widgetOptions = array(
 			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
 			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
@@ -209,13 +210,13 @@ class Filemanager extends FAB_Controller {
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-add-object-widget';
 		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>Add new file</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('filemanager/file/add/widget', '', true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
+		$widget->body   = array('content' => $this->load->view('filemanager/file/add/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
 		
 		//add needed scripts
 		$this->addJSFile('/assets/js/plugin/dropzone/dropzone.min.js'); //dropzpone
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
-		$this->addJsInLine($this->load->view('filemanager/file/add/js','', true));
+		$this->addJsInLine($this->load->view('filemanager/file/add/js', $data, true));
 		
 		$this->view();
 	}
@@ -249,7 +250,7 @@ class Filemanager extends FAB_Controller {
 	/**
 	 * 
 	 */
-	public function saveObject()
+	public function saveObject($objectID = '')
 	{
 		//TODO
 		$data = $this->input->post();
@@ -261,14 +262,25 @@ class Filemanager extends FAB_Controller {
 		//~ $data['date_insert'] = date('Y-m-d H:i:s');
 		$data['date_update'] = date('Y-m-d H:i:s');
 		
+		$redirectTo = '#filemanager';
 		//add object record
-		$objectID = $this->objects->add($data);
+		if(!$objectID)
+		{
+			$data['date_insert'] = date('Y-m-d H:i:s');
+			$objectID = $this->objects->add($data);
+		}
+		else
+		{
+			$redirectTo = '#filemanager/object/' . $objectID;
+		}
+		
 		if(count($files) > 0)
 		{ //if files are presents add to object
 			$this->objects->addFiles($objectID, $files);
 		}
 		$this->session->set_flashdata('alert', array('type' => 'alert-success', 'message'=> '<i class="fa fa-fw fa-check"></i> Object has been added' ));
-		redirect('filemanager');
+		
+		redirect($redirectTo);
 	}
 	
 	/**
@@ -276,7 +288,30 @@ class Filemanager extends FAB_Controller {
 	 */
 	public function updateObject()
 	{
-		$response['success'] = true;
+		$data = $this->input->post();
+		$this->load->model('Objects', 'objects');
+
+		$objectID = $data['object_id'];
+		
+		$this->load->model('Objects', 'objects');
+		$object = $this->objects->get($objectID, 1);
+		
+		if($object) // if object existss
+		{
+			$new_data = array(
+				'name' 			=> $data['name'],
+				'description'	=> $data['description'],
+				'public' 		=> $data['public'],
+				'date_update'	=> date('Y-m-d H:i:s')
+			);
+			
+			$this->objects->update($objectID, $new_data);
+			$response['success'] = true;
+		}
+		else
+		{
+			$response['success'] = false;
+		}
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
