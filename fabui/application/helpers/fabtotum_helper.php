@@ -199,13 +199,17 @@ if(!function_exists('sendToXmlrpcServer'))
 		else
 		{
 			$tmp = json_decode( $CI->xmlrpc->display_response(), true ); 
-			print_r($tmp);
-			if($tmp['response'] == 'success')
-			{
+			if(json_last_error()){
+				$reply = $CI->xmlrpc->display_response();
 				$response = True;
+			}else{
+				if($tmp['response'] == 'success')
+				{
+					$response = True;
+				}
+				$reply   = $tmp['reply'];
+				$message = $tmp['message'];
 			}
-			$reply   = $tmp['reply'];
-			$message = $tmp['message'];
 		}
 		return array('response' => $response, 'reply' => $reply, 'message' => $message);
 		
@@ -321,7 +325,8 @@ if(!function_exists('resetController'))
 	 */
 	function resetController()
 	{
-		writeToCommandFile('!reset');
+		return sendToXmlrpcServer('do_reset');
+		//writeToCommandFile('!reset');
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -455,7 +460,8 @@ if(!function_exists('pause'))
 	 */
 	function pause()
 	{
-		writeToCommandFile('!pause');
+		return sendToXmlrpcServer('do_pause');
+		//writeToCommandFile('!pause');
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -466,7 +472,8 @@ if(!function_exists('resume'))
 	 */
 	function resume()
 	{
-		writeToCommandFile('!resume');
+		return sendToXmlrpcServer('do_resume');
+		//writeToCommandFile('!resume');
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
