@@ -195,10 +195,7 @@
 				
 				console.log('temp1:', response.temperatures.extruder, 'temp2:', response.temperatures.bed);
 			}
-			
 			closeWait();
-			
-			console.log('closeWait()');
 			//TODO freeze menu fabApp.freezeMenu();
 		});
 	}
@@ -567,7 +564,7 @@
 	{
 		openWait('<i class="fa fa-check "></i> Print aborted', 'Reloading page...', false);
 		setTimeout(function(){
-			document.location.href = '<?php echo site_url('make/'.$type); ?>';
+			location.reload();
 		}, 5000);
 	}
 	
