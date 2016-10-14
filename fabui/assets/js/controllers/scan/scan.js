@@ -398,13 +398,13 @@ function initSweepCrop()
 function initProbeCrop()
 {
 	var $image = $('#image');
-	$(".probing-x1").attr( {'min' : buildPlateDimensions.probe.minX
+	$(".probing-x1").attr( {'min' : buildPlateDimensions.probe.minX,
 	 						'max' : buildPlateDimensions.probe.maxX} );
-	$(".probing-x2").attr( {'min' : buildPlateDimensions.probe.minX
+	$(".probing-x2").attr( {'min' : buildPlateDimensions.probe.minX,
 	 						'max' : buildPlateDimensions.probe.maxX} );
-	$(".probing-y1").attr( {'min' : buildPlateDimensions.probe.minY
+	$(".probing-y1").attr( {'min' : buildPlateDimensions.probe.minY,
 	 						'max' : buildPlateDimensions.probe.maxY} );
-	$(".probing-y2").attr( {'min' : buildPlateDimensions.probe.minY
+	$(".probing-y2").attr( {'min' : buildPlateDimensions.probe.minY,
 							'max' : buildPlateDimensions.probe.maxY} );
 	
 	var xCorrect = buildPlateImageOffsets.left;
