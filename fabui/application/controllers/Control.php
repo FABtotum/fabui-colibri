@@ -48,7 +48,7 @@
 	{
 		//load helpers
 		$this->load->helper('fabtotum_helper');
-		resetController();
+		$this->output->set_content_type('application/json')->set_output(json_encode(resetController()));
 		sleep(5);
 	}
 	
