@@ -74,15 +74,17 @@ class XmlRPC extends FAB_Controller {
     }
     
     //~ public function doMacro($command)
-    public function doMacro()
+    public function doMacro($command)
     {
-        $postData = $this->input->post(); //home_all
+        //~ $postData = $this->input->post(); //home_all
         
-        $command = $postData['macro'];
-        $args = $postData['args'];
+        //~ $command = $postData['macro'];
+        //~ $args = $postData['args'];
+        $args = array('');
         
         $this->load->library('xmlrpc');
         $this->xmlrpc->server($this->xmlrpc_uri, $this->xmlrpc_port);
+        $this->xmlrpc->timeout(120);
         $this->xmlrpc->method('do_macro');
         
         $request = array($command, $args);
@@ -94,14 +96,17 @@ class XmlRPC extends FAB_Controller {
         if ( ! $this->xmlrpc->send_request())
         {
             $_reply = $this->xmlrpc->display_error();
+            var_dump($_reply);
         }
         else
         {
-            $_reply = json_decode( $this->xmlrpc->display_response(), true );
+            //~ $_reply = json_decode( $this->xmlrpc->display_response(), true );
+            $tmp = $this->xmlrpc->display_response();
+            var_dump( $tmp );
             $_result = True;
         }
         
-        $this->output->set_content_type('application/json')->set_output( json_encode(array('reply' => $_reply['reply'], 'result' => $_reply['response'])) );
+        //~ $this->output->set_content_type('application/json')->set_output( json_encode(array('reply' => $_reply['reply'], 'result' => $_reply['response'])) );
     }
         
     public function method($method, $value1 = Null, $value2 = Null, $value3 = Null, $value4 = Null)

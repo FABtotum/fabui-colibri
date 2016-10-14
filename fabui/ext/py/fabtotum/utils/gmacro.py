@@ -118,10 +118,11 @@ class GMacroHandler:
             """ End macro execution block and atomic execution. """
             self.gcs.atomic_end()
             
-        if reply is None and response == MACRO_SUCCESS:
-            reply = 'ok'
-        else:
-            reply = ''
+        if reply is None:
+            if response == MACRO_SUCCESS:
+                reply = 'ok'
+            else:
+                reply = ''
             
         result = {}
         result['response']  = response

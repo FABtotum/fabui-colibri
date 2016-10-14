@@ -203,7 +203,7 @@ INSERT INTO sys_configuration (id, "key", value) VALUES (5, 'wifi', '{"ssid":"",
 
 -- Table: sys_objects
 DROP TABLE IF EXISTS sys_objects;
-CREATE TABLE sys_objects (id INTEGER PRIMARY KEY AUTOINCREMENT, user int (11) NOT NULL, name varchar (255) DEFAULT NULL, description text, date_insert datetime DEFAULT NULL, date_update datetime DEFAULT NULL, public int (1) NOT NULL DEFAULT '1', attributes text NOT NULL DEFAULT '{}');
+CREATE TABLE sys_objects (id INTEGER PRIMARY KEY AUTOINCREMENT, user int (11) NOT NULL, name varchar (255) DEFAULT NULL, description text, date_insert datetime DEFAULT NULL, date_update datetime DEFAULT NULL, public int (1) NOT NULL DEFAULT '1', tags text DEFAULT '');
 -- Table: sys_plugins
 DROP TABLE IF EXISTS sys_plugins;
 CREATE TABLE sys_plugins (id INTEGER PRIMARY KEY AUTOINCREMENT, name text NOT NULL, attributes text NOT NULL);
