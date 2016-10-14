@@ -173,6 +173,76 @@ if(!function_exists('doCommandLine'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('sendToXmlrpcServer'))
+{
+	function sendToXmlrpcServer($method, $data = array())
+	{
+		$CI =& get_instance(); //init ci instance
+		$CI->config->load('fabtotum');
+		$CI->load->library('xmlrpc');
+		
+		$CI->xmlrpc->server('127.0.0.1/FABUI', $CI->config->item('xmlrpc_port'));
+		$CI->xmlrpc->method($method);
+		$CI->xmlrpc->timeout(120);
+		$CI->xmlrpc->request( $data );
+		
+		$response = false;
+		$reply    = '';
+		$message = '';
+		
+		if ( !$CI->xmlrpc->send_request())
+		{
+			$reply    = $CI->xmlrpc->display_error();
+			$response = False;
+			$message    = 'request had an error: '.$CI->xmlrpc->display_error();
+		}
+		else
+		{
+			$tmp = json_decode( $CI->xmlrpc->display_response(), true ); 
+			print_r($tmp);
+			if($tmp['response'] == 'success')
+			{
+				$response = True;
+			}
+			$reply   = $tmp['reply'];
+			$message = $tmp['message'];
+		}
+		return array('response' => $response, 'reply' => $reply, 'message' => $message);
+		
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('doMacro'))
+{
+	function doMacro($macroName, $traceFile = '', $extrArgs = '')
+	{		
+		if($traceFile == '' or $traceFile == null){
+			$CI =& get_instance(); //init ci instance
+			$CI->config->load('fabtotum');
+			$traceFile = $CI->config->item('trace');
+		}
+		
+		if( !is_array($extrArgs) )
+		{
+			$extrArgs = array($extrArgs);
+		}
+		
+		$data = array( array($macroName, 'string'),
+				array($extrArgs, 'array'),
+				array(true, 'boolean')
+		);
+		
+		$serverResponse = sendToXmlrpcServer('do_macro', $data);
+		
+		if($serverResponse['response'] == false){
+			$serverResponse['trace'] = $serverResponse['message'];
+		}else{
+			$serverResponse['trace'] = file_get_contents($traceFile);
+		}
+		return $serverResponse;
+	}
+}
+/*
 if(!function_exists('doMacro'))
 {
 	function doMacro($macroName, $traceFile = '', $extrArgs = '')
@@ -226,6 +296,7 @@ if(!function_exists('doMacro'))
 		return array('reply' => $_reply, 'response' => $_response, 'message' => $_message, 'trace' => $trace);
 	}
 }
+*/
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('doGCode'))
 {
@@ -372,7 +443,8 @@ if(!function_exists('abort'))
 	 */
 	function abort()
 	{
-		writeToCommandFile('!abort');
+		return sendToXmlrpcServer('do_abort');
+		//writeToCommandFile('!abort');
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
