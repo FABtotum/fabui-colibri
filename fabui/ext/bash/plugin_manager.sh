@@ -5,7 +5,58 @@ source /etc/default/fabui
 CMD=$1
 PLUGIN=$2
 
-echo "Activating $1"
+extract_plugin() {
+    FN=$1
+    DST=$2
+    EXT=${FN##*.}
+    case $EXT in
+        zip)
+            unzip $FN -d $DST -o &> /dev/null
+            ;;
+        #~ gz)
+            #~ ;;
+        #~ bz2)
+            #~ ;;
+        #~ xz)
+            #~ ;;
+        #~ tgz)
+            #~ ;;
+    esac
+}
+
+install_plugin()  {
+    FN=$1
+    TMP="${TEMP_PATH}new_plugin"
+    mkdir -p $TMP
+    
+    extract_plugin $FN $TMP
+
+    HAVE_META=no    
+
+    # Find out what the top directory is
+    TOP=$(ls $TMP)
+    PLUGIN=$(basename $FN | tr '[:upper:]' '[:lower:]')
+    PLUGIN=${PLUGIN%.*}
+    
+    if [ -d "$TMP/$TOP" ]; then
+        TOP=$TMP/$TOP
+    else
+        TOP=$TMP
+    fi
+    
+    if [ -f "$TOP/meta.json" ]; then
+        HAVE_META=yes
+    fi
+    
+    PLUGIN_DIR=${PLUGINS_PATH}${PLUGIN}
+    echo $PLUGIN_DIR
+    mkdir -p $PLUGIN_DIR
+    
+    cp -aR $TOP/* $PLUGIN_DIR
+    
+    rm -rf $TMP
+    rm $FN
+}
 
 case $CMD in
     activate)
@@ -27,7 +78,9 @@ case $CMD in
         ${0} deactivate $PLUGIN
         rm -rf ${PLUGINS_PATH}/${PLUGIN}
         ;;
-    add)
+    install)
+        echo "Installing from '$2' file"
+        install_plugin $PLUGIN
         ;;
     *)
         echo "Unknown command"

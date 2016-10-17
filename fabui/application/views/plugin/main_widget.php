@@ -26,10 +26,10 @@
 							</h4>
 							<p class="margin-top-10">
 								<?php if(isPluginActive($plugin)):  ?>
-								<a class="btn btn-xs btn-warning" href="<?php echo 'plugin/deactivate/'.$plugin ?>" title="Deactivate">Deactivate</a>	
+								<button class="btn btn-xs btn-warning action-button" data-action="deactivate" data-title="<?php echo $plugin ?>" title="Deactivate">Deactivate</button>	
 							<?php else: ?>
-								<a class="btn btn-xs btn-success" href="<?php echo 'plugin/activate/'.$plugin ?>" title="Activate">Activate</a>&nbsp;
-								<a class="btn btn-xs btn-danger remove" data-title="<?php echo $plugin_info['name'] ?>"  data-href="<?php echo 'plugin/remove/'.$plugin ?>" title="Remove">Remove</a>
+								<button class="btn btn-xs btn-success action-button" data-action="activate" data-title="<?php echo $plugin ?>" " title="Activate">Activate</button>&nbsp;
+								<button class="btn btn-xs btn-danger remove action-button" data-action="remove" data-title="<?php echo $plugin ?>" title="Remove">Remove</button>
 							<?php endif; ?>
 							</p>
 						</td>
@@ -47,7 +47,7 @@
 			<?php else: ?>
 				
 				<h2 class="text-center"><i class="fa fa-plug"></i> No plugin installed</h2>
-				<h6 class="text-center">Click "Add new" button to upload a new plugin</h6>
+				<h6 class="text-center">Click "Add New Plugin" button to upload a new plugin</h6>
 				
 			<?php endif; ?>
 		

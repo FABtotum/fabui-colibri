@@ -167,11 +167,9 @@ if(!function_exists('doCommandLine'))
 				}
 			}
 		}
-		//~ if($background) $command .= ' &> /tmp/fabui/doCommandLine.log &';
-		$command .= ' &> /tmp/fabui/doCommandLine.log';
+		if($background) $command .= ' &> /tmp/fabui/doCommandLine.log &';
 		log_message('debug', $command);
-		return $command;
-		//~ return shell_exec($command);
+		return shell_exec($command);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -158,7 +158,6 @@ if ( ! function_exists('managePlugin'))
 		$CI->load->helper('fabtotum');
 		
 		return startBashScript('plugin_manager.sh', array($action, $plugin), false, true);
-		//~ return doCommandLine('sudo sh','/usr/share/fabui/ext/bash/plugin_manager.sh', array($action, $plugin) );
 	}
 	 
 }

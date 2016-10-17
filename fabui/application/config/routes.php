@@ -80,6 +80,7 @@ $route['maintenance/first-setup']               = 'firstsetup';
 $route['maintenance/system-info']               = 'systeminfo';
 
 $route['plugin/add'] = 'plugin/add';
+$route['plugin/upload'] = 'plugin/upload';
 $route['plugin/remove/(:any)'] = 'plugin/manage/remove/$1';
 $route['plugin/activate/(:any)'] = 'plugin/manage/activate/$1';
 $route['plugin/deactivate/(:any)'] = 'plugin/manage/deactivate/$1';
