@@ -37,12 +37,15 @@ _ = tr.ugettext
 def start_additive(app, args = None):
     units_e = app.config.get('settings', 'e')
     
+    ext_temp = args[0];
+    bed_temp = args[1];
+    
     app.trace( _("Preparing the FABtotum Personal Fabricator") )
     app.macro("G90",                    "ok", 2,    _("Setting absolute position"), verbose=False)
     app.macro("G0 X5 Y5 Z60 F1500",     "ok", 3,    _("Moving to oozing point") )
     #~ # Pre-heating (dismissed)
-    #~ app.macro("M104 S"+str(ext_temp),   "ok", 3,    _("Pre Heating Nozzle ({0}&deg;) (fast)").format(str(ext_temp)), 5)
-    #~ app.macro("M140 S"+str(bed_temp),   "ok", 3,    _("Pre Heating Bed ({0}&deg;) (fast)").format(str(bed_temp)) , 5)
+    app.macro("M104 S"+str(ext_temp),   "ok", 3,    _("Pre Heating Nozzle ({0}&deg;) (fast)").format(str(ext_temp)))
+    app.macro("M140 S"+str(bed_temp),   "ok", 3,    _("Pre Heating Bed ({0}&deg;) (fast)").format(str(bed_temp)))
     app.macro("M220 S100",              "ok", 1,    _("Reset Speed factor override"),     verbose=False)
     app.macro("M221 S100",              "ok", 1,    _("Reset Extruder factor override"),  verbose=False)
     app.macro("M92 E"+str(units_e),     "ok", 1,    _("Setting extruder mode"),           verbose=False)

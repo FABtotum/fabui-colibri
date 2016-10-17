@@ -207,7 +207,7 @@
 			return;
 		}
 		
-		$startPrintResult = doMacro('start_additive');
+		$startPrintResult = doMacro('start_additive', '', [ $temperatures['extruder'], $temperatures['bed'] ] );
 		if($startPrintResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $startPrintResult['message'], 'trace'=>$startPrintResult['trace'], 'error' => $startPrintResult['reply'])));
 			return;

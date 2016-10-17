@@ -211,7 +211,7 @@ class StatsMonitor:
         if action == 'heating':
 
             if data[0] == 'M109':
-                pass
+                #~ pass
                 #self.trace( _("Wait for nozzle temperature to reach {0}&deg;C").format(data[1]) )
                 #self.ext_temp_target = self.__rotate_values(self.ext_temp_target, float(data[1]))
                 #~ self.ev_update.set()

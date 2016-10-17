@@ -69,9 +69,9 @@ def unload_spool(app, args = None):
     app.macro("M300",               "ok", 2,    _("<b>Start Pulling!</b>"), verbose=False)
     app.macro("M400",               "ok", 100,  _("Wait for move to finish"), verbose=False)
     app.trace( _("<b>Start Pulling!</b>") )
-    app.macro("G0 E-80 F550",      "ok", 10,   _("Expelling filament") )
+    app.macro("G0 E-800 F550",      "ok", 10,   _("Expelling filament") )
     app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
-    app.macro("G0 E-20 F550",      "ok", 10,   _("Expelling filament"), verbose=False)
+    app.macro("G0 E-200 F550",      "ok", 10,   _("Expelling filament"), verbose=False)
     app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
     
     app.macro("M104 S0",            "ok", 1,    _("Turning off heater") )
