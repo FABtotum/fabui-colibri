@@ -2,29 +2,7 @@
 	
 	$(function() {
 		
-		$("#install-button").on('click', function(){
-
-
-			var pluginFile = $('#plugin-file').prop('files')[0];   
-		    var form_data = new FormData();                  
-		    form_data.append('plugin-file', pluginFile);
-		    console.log(form_data);                             
-		    $.ajax({
-		                url: '<?php echo site_url('plugin/doUpload') ?>', // point to server-side PHP script 
-		                dataType: 'text',  // what to expect back from the PHP script, if anything
-		                cache: false,
-		                contentType: false,
-		                processData: false,
-		                data: form_data,                         
-		                type: 'post',
-		                success: function(php_script_response){
-		                    console.log(php_script_response)// display response from the PHP script, if any
-		                }
-		     });
-
-
-			
-		});
+		$("#install-button").on('click', doUpload);
 		
 		$("#plugin-file").on('change', function(){
 			
@@ -52,4 +30,31 @@
 		});
 		
 	});
+
+function doUpload()
+{
+	openWait('<i class="fa fa-spinner fa-spin"></i> Uploading and installing plugin...');
+	var pluginFile = $('#plugin-file').prop('files')[0];   
+    var form_data = new FormData();                  
+    form_data.append('plugin-file', pluginFile);
+    console.log(form_data);                             
+    $.ajax({
+    	url: '<?php echo site_url('plugin/doUpload') ?>',
+        dataType: 'json',
+       	cache: false,
+        contentType: false,
+        processData: false,
+        data: form_data,                         
+        type: 'post',
+        success: function(response){
+        	console.log(response);
+        	if(response.installed == true){
+				waitContent('Plugin installed successfully<br>Redirecting to plugins page...');
+            	setTimeout(function(){
+        			window.location = '<?php echo site_url("#plugin");?>';
+            	}, 3000);
+        	}
+        }
+     });
+}
 </script>

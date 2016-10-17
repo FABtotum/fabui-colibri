@@ -16,7 +16,6 @@
 				<p>Installing the plugin...</p>
 				<p>Plugin installed successfully...</p>
 				<a href="<?php echo "plugin"; ?>">Return to Plugins page</a>
-				
 			<?php else: ?>
 			<form class="form-inline" enctype="multipart/form-data">
 
@@ -24,7 +23,6 @@
 					<legend>
 						If you have a plugin in .zip format, you may install it by uploading it here.
 					</legend>
-
 					<div class="form-group">
 						<input type="file" class="btn btn-default" id="plugin-file" name="plugin-file" accept=".zip">
 					</div>
