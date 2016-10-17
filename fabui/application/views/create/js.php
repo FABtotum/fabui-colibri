@@ -36,6 +36,8 @@
 	var showExtTarget = false;
 	var showBedActual = true;
 	var showBedTarget = false;
+	//
+	var soft_extruder_min  = 175;
 	
 	$(document).ready(function() {
 		initWizard();
@@ -641,11 +643,11 @@
 		noUiSlider.create(document.getElementById('create-ext-target-slider'), {
 			start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp_target") : 0,
 			connect: "lower",
-			range: {'min': 175, 'max' : 250},
+			range: {'min': 0, 'max' : 250},
 			pips: {
-				mode: 'positions',
-				values: [0,25,50,75,100],
-				density: 5,
+				mode: 'values',
+				values: [0, 175, 250],
+				density: 4,
 				format: wNumb({
 					postfix: '&deg;'
 				})
@@ -755,7 +757,9 @@
 		
 		switch(element){
 			case 'extruder-target':
-				$(".slider-extruder-target").html(parseFloat(value).toFixed(0));
+				var extruder_target = parseFloat(value).toFixed(0);
+				if(extruder_target < soft_extruder_min) extruder_target = soft_extruder_min;
+				$(".slider-extruder-target").html(extruder_target);
 				break;
 			case 'bed-target':
 				$(".slider-bed-target").html(parseFloat(value).toFixed(0));
@@ -779,8 +783,13 @@
 	{
 		switch(element){
 			case 'extruder-target':
-				fabApp.serial("setExtruderTemp",value[0]);
-				showActionAlert("Extruder temperature set to "+value[0]+'&deg;');
+				var extruder_target = parseInt(value[0]);
+				if(extruder_target <= soft_extruder_min) {
+					 extruder_target = soft_extruder_min;
+					 extruderSlider.noUiSlider.set(soft_extruder_min);
+				}
+				fabApp.serial("setExtruderTemp",extruder_target);
+				showActionAlert("Extruder temperature set to "+extruder_target+'&deg;');
 				break;
 			case 'bed-target':
 				fabApp.serial("setBedTemp",value[0]);
