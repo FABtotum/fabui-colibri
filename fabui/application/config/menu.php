@@ -162,7 +162,7 @@ $config['menu'] = array(
 	'plugin' => array(
  		'title' => 'Plugins',
  		'icon' => 'fa-plug',
- 		'url' => 'plugins'
+ 		'url' => 'plugin'
 	),
  );
  

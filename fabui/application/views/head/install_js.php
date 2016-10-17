@@ -23,7 +23,8 @@
 				buttons : '[<i class="fa fa-crosshairs"></i> Calibrate][Ignore]'
 			}, function(ButtonPressed) {
 				if(ButtonPressed === "Calibrate") {	
-						document.location.href="<?php echo site_url('maintenance/probe-length-calibration'); ?>";		
+						document.location.href="<?php echo site_url('maintenance/probe-length-calibration'); ?>";
+						location.reload();
 				}
 				if (ButtonPressed === "Ignore") {
 					
@@ -80,7 +81,11 @@
 			
 			waitContent('Well done! Now your <strong><i>FABtotum Personal Fabricator</i></strong> is configured to use <strong><i>'+ data.name+'</i></strong>.');
 			
-			setTimeout(function(){document.location.href =  '<?php echo site_url('head/index/install'); ?>?head_installed';}, 2000);
+			setTimeout(function(){
+					document.location.href =  '<?php echo site_url('head/index/install'); ?>?head_installed';
+					location.reload();
+				}, 2000
+			);
 			
 		});
 	}

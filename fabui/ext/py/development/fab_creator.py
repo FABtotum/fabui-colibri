@@ -77,7 +77,7 @@ def create_plugin(args):
         "name" : plugin_name,
         "version" : plugin_version,
         "description" : plugin_desc,
-        "download" : "",
+        "plugin_uri" : "",
         "author" : plugin_author,
         "author_uri" : "",
         "plugin_slug" : plugin_slug,

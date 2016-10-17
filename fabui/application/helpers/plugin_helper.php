@@ -13,8 +13,10 @@ if ( ! function_exists('isPluginActive'))
 	 * @return plugin metadata info
 	 */
 	function isPluginActive($plugin_slug){
-		// TODO
-		return true;
+		$CI =& get_instance();
+		$CI->load->model('Plugins', 'plugins');
+		
+		return $CI->plugins->isActive($plugin_slug);
 	}
 }
  
@@ -61,12 +63,12 @@ if ( ! function_exists('getInstalledPlugins'))
 		{
 			if(is_dir($plugins_path.$_key))
 			{
-				$_installed_plugins[] = trim($_key,'/');
+				$slug = trim($_key,'/');
+				$_installed_plugins[$slug] = getPluginInfo($slug);
 			}
 		}
 		
 		return $_installed_plugins;
-		
 	}
 	 
 }
@@ -101,12 +103,12 @@ if ( !function_exists('extendMenuWithPlugins'))
 		
 		$items = array();
 		
-		foreach($installed as $plugin)
+		foreach($installed as $plugin => $info)
 		{
 			if( isPluginActive($plugin) )
 			{
-				$plugin_items = getPluginInfo($plugin);
-				$items = array_merge($items, $plugin_items['menu'] );
+				//~ $plugin_items = getPluginInfo($plugin);
+				$items = array_merge($items, $info['menu'] );
 			}
 		}
 		
@@ -140,6 +142,25 @@ if ( !function_exists('extendMenuWithPlugins'))
 			
 		}
 	}
+}
+
+ 
+if ( ! function_exists('managePlugin'))
+{
+	/**
+	 * Plugin manager wrapper.
+	 * @param $action activate|deactivate|remove
+	 * @param $plugin Plugin slug.
+	 */
+	function managePlugin($action, $plugin){
+		
+		$CI =& get_instance();
+		$CI->load->helper('fabtotum');
+		
+		return startBashScript('plugin_manager.sh', array($action, $plugin), false, true);
+		//~ return doCommandLine('sudo sh','/usr/share/fabui/ext/bash/plugin_manager.sh', array($action, $plugin) );
+	}
+	 
 }
 
 

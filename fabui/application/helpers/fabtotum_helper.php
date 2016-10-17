@@ -167,9 +167,11 @@ if(!function_exists('doCommandLine'))
 				}
 			}
 		}
-		if($background) $command .= ' &> /tmp/fabui/doCommandLine.log &';
+		//~ if($background) $command .= ' &> /tmp/fabui/doCommandLine.log &';
+		$command .= ' &> /tmp/fabui/doCommandLine.log';
 		log_message('debug', $command);
-		return shell_exec($command);
+		return $command;
+		//~ return shell_exec($command);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -550,6 +552,40 @@ if(!function_exists('startScript'))
 		$extPath = $CI->config->item('ext_path');
 		// TODO: check trailing /
 		return doCommandLine('python', $extPath.$script, $params, $background);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('startPyScript'))
+{
+	/**
+	 * start python task
+	 */
+	function startPyScript($script, $params = '', $background = true)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$extPath = $CI->config->item('ext_path');
+		// TODO: check trailing /
+		return doCommandLine('python', $extPath.'py/'.$script, $params, $background);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('startBashScript'))
+{
+	/**
+	 * start bash script
+	 */
+	function startBashScript($script, $params = '', $background = true, $sudo = false)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$extPath = $CI->config->item('ext_path');
+		// TODO: check trailing /
+		$cmd = 'sh';
+		if($sudo)
+			$cmd = 'sudo ' . $cmd;
+		return doCommandLine($cmd, $extPath.'bash/'.$script, $params, $background);
 	}
 }
 ?>

@@ -20,7 +20,6 @@ METADATA_PATH	?= /var/lib/colibri/bundle/$(NAME)
 WWW_PATH		?= /var/www/
 MOUNT_BASE_PATH	?= /mnt/
 FABUI_PATH		?= $(SHARED_PATH)
-TASKS_PATH		?= $(WWW_PATH)tasks/
 RECOVERY_PATH	?= $(WWW_PATH)recovery/
 UPLOAD_PATH_LNS ?= $(WWW_PATH)uploads
 UPLOAD_PATH		?= $(UPLOAD_PATH_LNS)/
@@ -154,7 +153,6 @@ bundle: $(FABUI_BUNDLE)
 		FABUI_PATH=$(FABUI_PATH) \
 		PYTHON_PATH=$(PYTHON_PATH) \
 		BASH_PATH=$(BASH_PATH) \
-		TASKS_PATH=$(TASKS_PATH) \
 		RECOVERY_PATH=$(RECOVERY_PATH) \
 		TEMP_PATH=$(TEMP_PATH) \
 		FABUI_TEMP_PATH=$(FABUI_TEMP_PATH) \
@@ -208,8 +206,8 @@ endif
 #	The autoinstall flag file is created at compile time
 	$(FAKEROOT_ENV) touch $(BDATA_DIR)/$(WWW_PATH)/AUTOINSTALL
 #	Public runtime directories
-	$(FAKEROOT_ENV) $(INSTALL) -d -g $(WWW_DATA_GID) -m 0775 $(BDATA_DIR)/$(TEMP_PATH)
-	$(FAKEROOT_ENV) $(INSTALL) -d -g $(WWW_DATA_GID) -m 0775 $(BDATA_DIR)/$(TASKS_PATH)
+#~ 	$(FAKEROOT_ENV) $(INSTALL) -d -g $(WWW_DATA_GID) -m 0775 $(BDATA_DIR)/$(TEMP_PATH)
+	$(FAKEROOT_ENV) $(INSTALL) -d -g $(WWW_DATA_GID) -m 0775 $(BDATA_DIR)$(LIB_PATH)/plugins
 ########################################################################
 # 	Fix permissions
 	$(FAKEROOT_ENV) chown -R $(WWW_DATA_UID):$(WWW_DATA_GID) $(BDATA_DIR)$(WWW_PATH)
