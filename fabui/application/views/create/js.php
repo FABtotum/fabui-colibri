@@ -36,6 +36,8 @@
 	var showExtTarget = false;
 	var showBedActual = true;
 	var showBedTarget = false;
+	//
+	var soft_extruder_min  = 175;
 	
 	$(document).ready(function() {
 		initWizard();
@@ -175,10 +177,7 @@
 			data: data,
 			url: '<?php echo site_url('create/startCreate/'.$type); ?>',
 			dataType: 'json'
-		}).done(function(response) {
-			
-			console.log('startCreate:', response);
-			
+		}).done(function(response) {	
 			if(response.start == false){
 				$('.wizard').wizard('selectedItem', { step: 2 });
 				showErrorAlert(response.message);
@@ -191,9 +190,8 @@
 				initSliders();
 				setTimeout(initGraph, 1000);
 				setTemperaturesSlidersValue(response.temperatures.extruder, response.temperatures.bed);
+				getTaskMonitor(true);
 				updateZOverride(0);
-				
-				console.log('temp1:', response.temperatures.extruder, 'temp2:', response.temperatures.bed);
 			}
 			closeWait();
 			//TODO freeze menu fabApp.freezeMenu();
@@ -280,7 +278,7 @@
 		$.get('/temp/task_monitor.json'+ '?' + jQuery.now(), function(data, status){
 			manageMonitor(data);
 			if(firstCall) {
-				handleTaskStatus(data.task.status);
+				handleTaskStatus(data.task.status, true);
 				setTemperaturesSlidersValue();
 				setSpeedSliderValue(data.override.speed);
 				setFlowRateSliderValue(data.override.flow_rate);
@@ -318,19 +316,23 @@
 	/**
 	 * handle task status
 	 */
-	function handleTaskStatus(status)
+	function handleTaskStatus(status, firstCall)
 	{
 		console.log("Task status: " + status);
 		switch(status){
 			case 'paused':
-				var element = $(".isPaused-button");
-				element.html('<i class="fa fa-play"></i> Resume Print');
-				element.attr('data-action', 'resume');
+				if(firstCall){
+					var element = $(".isPaused-button");
+					element.html('<i class="fa fa-play"></i> Resume Print');
+					element.attr('data-action', 'resume');
+				}
 				break;
 			case 'started':
-				var element = $(".isPaused-button");
-				element.html('<i class="fa fa-pause"></i> Pause Print');
-				element.attr('data-action', 'pause');
+				if(firstCall){
+					var element = $(".isPaused-button");
+					element.html('<i class="fa fa-pause"></i> Pause Print');
+					element.attr('data-action', 'pause');
+				}
 				break;
 			case 'aborting':
 				break;
@@ -522,7 +524,7 @@
 	/**
 	 * exec action 
 	 */
-	function doAction()
+	function doAction(e)
 	{
 		var element = $(this);
 		action = element.attr('data-action');
@@ -580,15 +582,13 @@
 			element.attr('data-action', 'pause');
 			element.html('<i class="fa fa-pause"></i> Pause print');
 		}
-		sendActionRequest(action);			
+		sendActionRequest(action);		
 	}
 	/**
 	 * 
 	 */
 	function sendActionRequest(action, value)
 	{
-		console.log(action);
-		console.log(value);
 		value = value || '';
 		var message;
 		$.ajax({
@@ -641,11 +641,11 @@
 		noUiSlider.create(document.getElementById('create-ext-target-slider'), {
 			start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp_target") : 0,
 			connect: "lower",
-			range: {'min': 175, 'max' : 250},
+			range: {'min': 0, 'max' : 250},
 			pips: {
-				mode: 'positions',
-				values: [0,25,50,75,100],
-				density: 5,
+				mode: 'values',
+				values: [0, 175, 250],
+				density: 4,
 				format: wNumb({
 					postfix: '&deg;'
 				})
@@ -755,7 +755,9 @@
 		
 		switch(element){
 			case 'extruder-target':
-				$(".slider-extruder-target").html(parseFloat(value).toFixed(0));
+				var extruder_target = parseFloat(value).toFixed(0);
+				if(extruder_target < soft_extruder_min) extruder_target = soft_extruder_min;
+				$(".slider-extruder-target").html(extruder_target);
 				break;
 			case 'bed-target':
 				$(".slider-bed-target").html(parseFloat(value).toFixed(0));
@@ -779,8 +781,13 @@
 	{
 		switch(element){
 			case 'extruder-target':
-				fabApp.serial("setExtruderTemp",value[0]);
-				showActionAlert("Extruder temperature set to "+value[0]+'&deg;');
+				var extruder_target = parseInt(value[0]);
+				if(extruder_target <= soft_extruder_min) {
+					 extruder_target = soft_extruder_min;
+					 extruderSlider.noUiSlider.set(soft_extruder_min);
+				}
+				fabApp.serial("setExtruderTemp",extruder_target);
+				showActionAlert("Extruder temperature set to "+extruder_target+'&deg;');
 				break;
 			case 'bed-target':
 				fabApp.serial("setBedTemp",value[0]);
