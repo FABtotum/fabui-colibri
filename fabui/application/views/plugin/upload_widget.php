@@ -18,7 +18,7 @@
 				<a href="<?php echo "plugin"; ?>">Return to Plugins page</a>
 				
 			<?php else: ?>
-			<form class="form-inline" enctype="multipart/form-data" method="post" action="plugin/upload">
+			<form class="form-inline" enctype="multipart/form-data">
 
 				<fieldset>
 					<legend>
@@ -28,7 +28,7 @@
 					<div class="form-group">
 						<input type="file" class="btn btn-default" id="plugin-file" name="plugin-file" accept=".zip">
 					</div>
-					<button type="submit" id="install-button" class="btn btn-primary disabled" style="margin-left:5px;">Install now</button>
+					<button type="button" id="install-button" class="btn btn-primary disabled" style="margin-left:5px;">Install now</button>
 					
 				</fieldset>
 			</form>

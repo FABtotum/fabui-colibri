@@ -51,6 +51,8 @@
 		
 		$data = array();
 		
+		print_r($_FILES);
+		
 		if(isset($_FILES['plugin-file'])){ //if is uploading
 			$upload_config['upload_path']   = '/tmp/fabui/';
 			$upload_config['allowed_types'] = 'zip';
@@ -105,7 +107,48 @@
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
-
+	
+	public function doUpload()
+	{
+		//load helpers
+		$this->load->helper('file');
+		$this->load->helper('fabtotum');
+		$this->load->helper('plugin_helper');
+		
+		$upload_config['upload_path']   = '/tmp/fabui/';
+		$upload_config['allowed_types'] = 'zip';
+		
+		$this->load->library('upload', $upload_config);
+		
+		if($this->upload->do_upload('plugin-file')){ //do upload
+			$github = false;
+			$upload_data = $this->upload->data();
+		
+			//check if is a master file from github
+			if(strpos($upload_data['orig_name'], '-master') !== false) {	
+				$github = true;
+				//rename file
+				shell_exec('sudo mv '.$upload_data['full_path'].' '.str_replace('-master', '', $upload_data['full_path']));
+				//update values
+				$upload_data['file_name']   = str_replace('-master', '', $upload_data['file_name']);
+				$upload_data['full_path']   = str_replace('-master', '', $upload_data['full_path']);
+				$upload_data['raw_name']    = str_replace('-master', '', $upload_data['raw_name']);
+				$upload_data['client_name'] = str_replace('-master', '', $upload_data['client_name']);
+			}
+			managePlugin('install', $upload_data['full_path']);
+			$data['installed'] = true;
+			$data['file_name'] = $upload_data['file_name'];
+		
+			//shell_exec('sudo rm -rvf '.$upload_data['full_path']);
+			//shell_exec('sudo rm -rvf '.$upload_data['file_path'].$upload_data['raw_name']);
+		}else{
+			$data['error'] = strip_tags($this->upload->display_errors());
+		}
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($data));
+		
+	}
+	
 	public function manage($action, $plugin)
 	{
 		$this->load->model('Plugins', 'plugins');
