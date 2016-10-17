@@ -177,10 +177,7 @@
 			data: data,
 			url: '<?php echo site_url('create/startCreate/'.$type); ?>',
 			dataType: 'json'
-		}).done(function(response) {
-			
-			console.log('startCreate:', response);
-			
+		}).done(function(response) {	
 			if(response.start == false){
 				$('.wizard').wizard('selectedItem', { step: 2 });
 				showErrorAlert(response.message);
@@ -193,9 +190,8 @@
 				initSliders();
 				setTimeout(initGraph, 1000);
 				setTemperaturesSlidersValue(response.temperatures.extruder, response.temperatures.bed);
+				getTaskMonitor(true);
 				updateZOverride(0);
-				
-				console.log('temp1:', response.temperatures.extruder, 'temp2:', response.temperatures.bed);
 			}
 			closeWait();
 			//TODO freeze menu fabApp.freezeMenu();
@@ -282,7 +278,7 @@
 		$.get('/temp/task_monitor.json'+ '?' + jQuery.now(), function(data, status){
 			manageMonitor(data);
 			if(firstCall) {
-				handleTaskStatus(data.task.status);
+				handleTaskStatus(data.task.status, true);
 				setTemperaturesSlidersValue();
 				setSpeedSliderValue(data.override.speed);
 				setFlowRateSliderValue(data.override.flow_rate);
@@ -320,19 +316,23 @@
 	/**
 	 * handle task status
 	 */
-	function handleTaskStatus(status)
+	function handleTaskStatus(status, firstCall)
 	{
 		console.log("Task status: " + status);
 		switch(status){
 			case 'paused':
-				var element = $(".isPaused-button");
-				element.html('<i class="fa fa-play"></i> Resume Print');
-				element.attr('data-action', 'resume');
+				if(firstCall){
+					var element = $(".isPaused-button");
+					element.html('<i class="fa fa-play"></i> Resume Print');
+					element.attr('data-action', 'resume');
+				}
 				break;
 			case 'started':
-				var element = $(".isPaused-button");
-				element.html('<i class="fa fa-pause"></i> Pause Print');
-				element.attr('data-action', 'pause');
+				if(firstCall){
+					var element = $(".isPaused-button");
+					element.html('<i class="fa fa-pause"></i> Pause Print');
+					element.attr('data-action', 'pause');
+				}
 				break;
 			case 'aborting':
 				break;
@@ -524,7 +524,7 @@
 	/**
 	 * exec action 
 	 */
-	function doAction()
+	function doAction(e)
 	{
 		var element = $(this);
 		action = element.attr('data-action');
@@ -582,15 +582,13 @@
 			element.attr('data-action', 'pause');
 			element.html('<i class="fa fa-pause"></i> Pause print');
 		}
-		sendActionRequest(action);			
+		sendActionRequest(action);		
 	}
 	/**
 	 * 
 	 */
 	function sendActionRequest(action, value)
 	{
-		console.log(action);
-		console.log(value);
 		value = value || '';
 		var message;
 		$.ajax({
