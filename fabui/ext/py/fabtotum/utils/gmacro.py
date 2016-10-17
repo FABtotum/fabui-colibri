@@ -129,4 +129,4 @@ class GMacroHandler:
         result['reply']     = reply
         result['message']   = error_message
         
-        return json.dumps(result)
+        return result

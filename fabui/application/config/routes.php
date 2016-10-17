@@ -79,3 +79,15 @@ $route['maintenance/4th-axis']                  = 'fourthaxis';
 $route['maintenance/first-setup']               = 'firstsetup';
 $route['maintenance/system-info']               = 'systeminfo';
 
+$route['plugin/(:any)'] = 'plugin_$1';
+$route['plugin/(:any)/(:any)'] = 'plugin_$1/$2';
+# 1 arg
+$route['plugin/(:any)/(:any)/(:any)'] = 'plugin_$1/$2/$3';
+# 2
+$route['plugin/(:any)/(:any)/(:any)/(:any)'] = 'plugin_$1/$2/$3/$4';
+# 3
+$route['plugin/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'plugin_$1/$2/$3/$5';
+# 4
+$route['plugin/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'plugin_$1/$2/$3/$6';
+# 5
+$route['plugin/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'plugin_$1/$2/$3/$6/$7';

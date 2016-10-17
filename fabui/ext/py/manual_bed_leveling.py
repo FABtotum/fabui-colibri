@@ -44,10 +44,16 @@ class ManualBedLeveling(GCodePusher):
 
     PROBE_POINTS  = [
                         [5+17,      5+61.5,     0.0], # (1)
-                        [5+17,      148.5+61.5, 0.0], # (2)
-                        [178+17,    148.5+61.5, 0.0], # (3)
+                        [5+17,      158.5+61.5, 0.0], # (2)
+                        [178+17,    158.5+61.5, 0.0], # (3)
                         [178+17,    5+61.5,     0.0]  # (4)
                     ]
+    #~ PROBE_POINTS  = [
+                        #~ [5+17,      5+61.5,     0.0], # (1)
+                        #~ [5+17,      148.5+61.5, 0.0], # (2)
+                        #~ [178+17,    148.5+61.5, 0.0], # (3)
+                        #~ [178+17,    5+61.5,     0.0]  # (4)
+                    #~ ]
     # First screw offset (lower left corner)
     SCREW_OFFSET        = [8.726, 10.579, 0]
     SCREW_PITCH         = 0.5 # mm/deg
@@ -122,6 +128,9 @@ class ManualBedLeveling(GCodePusher):
         #return plane
         return B[:]
 
+    #~ def trace(self, msg):
+        #~ print msg
+
     def run(self, task_id, num_probes, skip_homing):
         """
         """
@@ -130,49 +139,29 @@ class ManualBedLeveling(GCodePusher):
         milling_offset  = self.MILLING_OFFSET
         
         # Get probe length
-        data = self.send("M503")
-        for line in data:
-            if line.startswith("echo:Z Probe Length:"):
-                probe_length = abs(float(line.split("Z Probe Length: ")[1]))
-                probe_height = (probe_length + 1) + self.PROBE_SECURE_OFFSET
-                    
+        #~ data = self.send("M503")
+        #~ for line in data:
+            #~ if line.startswith("echo:Z Probe Length:"):
+                #~ probe_length = abs(float(line.split("Z Probe Length: ")[1]))
+                #~ probe_height = (probe_length + 1) + self.PROBE_SECURE_OFFSET
+        
+        result = self.exec_macro('manual_bed_leveling');
+        
+        if result['response'] != 'success':
+            self.update_monitor_file()
+            
+            self.send("M300")
+            self.trace( _("Manual bed leveling error.") )
+            self.set_task_status(GCodePusher.TASK_COMPLETED)
+            
+            self.stop()
+            
+            return
+        
+        probe_height = result['reply']['probe_height']
 
         self.prepare_task(task_id, task_type='bed_leveling')
         self.set_task_status(GCodePusher.TASK_RUNNING)
-        
-        self.trace( _("Manual bed leveling started.") )
-        try:
-            safety_door = self.config.get('settings', 'safety')['door']
-        except KeyError:
-            safety_door = 0
-    
-        if safety_door == 1:
-            self.macro("M741",  "TRIGGERED",    2,  _("Front panel door control"), 1, verbose=False)
-        
-        # If milling bed side up, add milling sacrificial layer offset to probe_height
-        self.macro("M744",  "TRIGGERED",    2,  _("Milling bed side up"),  1, warning=True, verbose=False)
-        if self.macro_warning != 0:
-            self.macro_warning = 0
-
-            try:
-                milling_offset = float(self.config.get('settings', 'milling')['layer-offset'])
-                self.trace("Milling sacrificial layer thickness: "+str(milling_offset))
-                probe_height += milling_offset
-            except KeyError:
-                self.trace("Milling sacrificial layer thickness not configured - assuming zero")
-
-        self.macro("M402",  "ok",   2,  _("Retracting Probe (safety)"), 0.1, warning=True, verbose=False)
-        self.macro("G90",   "ok",   5,  _("Setting abs mode"),          0.1, verbose=False)
-        
-        if not skip_homing:
-            self.macro("G27",           "ok",   100,    _("Homing Z - Fast"), 0.1 )
-            self.macro("G92 Z241.2",    "ok",   5,      _("Setting correct Z"), 0.1, verbose=False)
-            self.macro("M402",          "ok",   2,      _("Retracting Probe (safety)"), 1, verbose=False)
-
-        self.macro("G0 Z{0} F5000".format(probe_height),    "ok",   5,  _("Moving to start Z height"), 5) #mandatory!
-        self.send("M400")
-
-        self.send("M401")
         
         probed_points = np.array(self.PROBE_POINTS)            
         print probed_points

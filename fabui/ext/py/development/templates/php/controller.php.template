@@ -1,0 +1,41 @@
+<?php
+/**
+ * 
+ * @author {{plugin_author}}
+ * @version {{plugin_version}}
+ * @license https://opensource.org/licenses/GPL-3.0
+ * 
+ */
+ 
+defined('BASEPATH') OR exit('No direct script access allowed');
+ 
+class Plugin_{{plugin_slug}} extends FAB_Controller {
+
+	public function index()
+	{
+		$this->load->library('smart');
+		$this->load->helper('form');
+		$this->load->helper('fabtotum_helper');
+		
+		$data = array();
+		
+		$widgetOptions = array(
+			'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
+			'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
+		);
+		
+		$widgeFooterButtons = '';
+
+		$widget         = $this->smart->create_widget($widgetOptions);
+		$widget->id     = 'main-widget-head-installation';
+		$widget->header = array('icon' => '{{plugin_icon}}', "title" => "<h2>{{plugin_name}}</h2>");
+		$widget->body   = array('content' => $this->load->view('plugins/{{plugin_slug}}/main_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
+
+		$this->addJsInLine($this->load->view('plugins/{{plugin_slug}}/js', $data, true));
+		$this->content = $widget->print_html(true);
+		$this->view();
+	}
+
+ }
+ 
+?>

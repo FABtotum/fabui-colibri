@@ -100,3 +100,57 @@ def load_spool(app, args = None):
 
     app.macro("M104 S0",            "ok", 1,    _("Turning off heater") )
     app.macro("M302 S170",          "ok", 1,    _("Disabling Cold Extrusion Prevention"), verbose=False)
+
+def manual_bed_leveling(app, apps = None):
+    
+    app.trace( _("Manual bed leveling started.") )
+    
+    skip_homing = False
+    PROBE_SECURE_OFFSET = 15.0
+    probe_height    = 50.0
+    
+    try:
+        safety_door = app.config.get('settings', 'safety')['door']
+    except KeyError:
+        safety_door = 0
+
+    if safety_door == 1:
+        app.macro("M741",           "TRIGGERED", 2, _("Front panel door control") )
+    
+    zprobe = app.config.get('settings', 'zprobe')
+    zprobe_disabled = (zprobe['enable'] == 0)
+    zmax_home_pos   = float(zprobe['zmax'])
+    
+    probe_length = 50.0
+    
+    reply = app.macro("M503", "ok", 2, _("Get proble length"), verbose=False)
+    for line in reply:
+        if line.startswith("echo:Z Probe Length:"):
+            probe_length = abs(float(line.split("Z Probe Length: ")[1]))
+            probe_height = (probe_length + 1) + PROBE_SECURE_OFFSET
+
+    try:
+        app.macro("M744",  "TRIGGERED",    2,  _("Milling bed side up"), verbose=False)
+    except:
+        app.trace(_("Milling bed side up"))
+        try:
+            milling_offset = float(app.config.get('settings', 'milling')['layer_offset'])
+            app.trace("Milling sacrificial layer thickness: "+str(milling_offset))
+            probe_height += milling_offset
+        except KeyError:
+            app.trace("Milling sacrificial layer thickness not configured - assuming zero")                
+
+    app.macro("M402",  "ok",   2,  _("Retracting Probe (safety)"), warning=True, verbose=False)
+    app.macro("G90",   "ok",   5,  _("Setting abs mode"),          verbose=False)
+
+    if not skip_homing:
+        app.macro("G27",           "ok",   100,    _("Homing Z - Fast") )
+        app.macro("G92 Z241.2",    "ok",   5,      _("Setting correct Z"), verbose=False)
+        app.macro("M402",          "ok",   2,      _("Retracting Probe (safety)"), verbose=False)
+
+    app.macro("G0 Z{0} F5000".format(probe_height),    "ok",   5,  _("Moving to start Z height")) #mandatory!
+    app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), verbose=False )
+
+    app.macro("M401",          "ok",   2,      _("Extend Probe"), verbose=False)
+
+    return {'probe_height' : probe_height}

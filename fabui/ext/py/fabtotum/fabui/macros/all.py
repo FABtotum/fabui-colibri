@@ -58,6 +58,7 @@ PRESET_MAP = {
     "load_spool"                    : maint_macros.load_spool,
     "extrude"                       : maint_macros.extrude,
     "change_step"                   : maint_macros.change_step,
+    "manual_bed_leveling"           : maint_macros.manual_bed_leveling,
     
     # Milling
     "start_subtractive"             : mill_macros.start_subtractive,

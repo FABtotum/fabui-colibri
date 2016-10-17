@@ -30,6 +30,7 @@ autoinstall_file = @WWW_PATH@AUTOINSTALL
 uploads = @UPLOAD_PATH@
 notify_file = @FABUI_TEMP_PATH@notify.json
 settings_path = @LIB_PATH@settings/
+plugins_path  = @LIB_PATH@plugins/
 
 [monitor]
 backtrack = 20

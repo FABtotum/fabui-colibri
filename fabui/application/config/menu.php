@@ -166,4 +166,9 @@ $config['menu'] = array(
 	),
  );
  
+$CI =& get_instance();
+$CI->load->helper('plugin_helper');
+
+extendMenuWithPlugins($config['menu']);
+ 
 ?>

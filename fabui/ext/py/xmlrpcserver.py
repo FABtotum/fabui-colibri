@@ -98,7 +98,7 @@ class ExposeCommands:
         """
         Execute macro command.
         """
-        return self.gmacro.run(preset, args, atomic)
+        return json.dumps( self.gmacro.run(preset, args, atomic) )
         
     def do_abort(self):
         """ Send abort request """
