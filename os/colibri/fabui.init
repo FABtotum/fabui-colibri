@@ -66,8 +66,14 @@ case "$1" in
     evaluate_retval
     ;;
   emergency)
-    ${0} stop
-    sleep 1
+    # Forcefully stop python and php scripts
+    killall -9 python
+    killall -9 php
+    rm -f ${FABSERVICE_PID}
+    rm -f ${XMLRPCS_PID}
+    #${0} stop
+    #sleep 1
+    # Start the services with totumduino hw reset
     ${0} start "forced"
     ;;
   restart|reload)

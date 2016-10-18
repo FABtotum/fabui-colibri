@@ -159,6 +159,13 @@ class Filemanager extends FAB_Controller {
 		//TODO
 		//load libraries, helpers, model, config
 		$this->load->library('smart');
+		$this->load->helper('upload_helper');
+		
+		$data = array();
+		
+		//load configs
+		$this->config->load('upload');
+		$data['accepted_files'] = allowedTypesToDropzoneAcceptedFiles( $this->config->item('allowed_types') );
 		
 		$widgetOptions = array(
 			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
@@ -174,13 +181,13 @@ class Filemanager extends FAB_Controller {
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-add-object-widget';
 		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>Add new object</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('filemanager/add/widget', '', true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
+		$widget->body   = array('content' => $this->load->view('filemanager/add/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
 		
 		//add needed scripts
 		$this->addJSFile('/assets/js/plugin/dropzone/dropzone.min.js'); //dropzpone
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
-		$this->addJsInLine($this->load->view('filemanager/add/js','', true));
+		$this->addJsInLine($this->load->view('filemanager/add/js',$data, true));
 		
 		$this->view();
 	}
@@ -195,6 +202,10 @@ class Filemanager extends FAB_Controller {
 		$this->load->library('smart');
 		
 		$data = array('object_id' => $objectID);
+		$this->config->load('upload');
+		$this->load->helpers('upload_helper');
+		$data['accepted_files'] = allowedTypesToDropzoneAcceptedFiles( $this->config->item('allowed_types') );
+		//~ var_dump($data);
 		
 		$widgetOptions = array(
 			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
@@ -412,6 +423,131 @@ class Filemanager extends FAB_Controller {
 		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
 	
+	private function generateActionDropdown($default_action, $builtin_actions, $plugin_actions)
+	{
+		$html = '<div class="btn-group">
+					<button data-action="'.site_url($default_action['url']).'"type="button" class="btn btn-xs btn-success file-action"><i class="fa '.$default_action['icon'].'"></i> '.$default_action['title'].' </button>';
+		
+		if( count($plugin_actions) > 0 || count($builtin_actions) > 0 )
+		{
+			$html .= '
+			<button type="button" class="btn btn-xs btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<span class="caret"></span>
+			<span class="sr-only">Toggle Dropdown</span>
+			</button>
+			<ul class="dropdown-menu">';
+			
+			foreach($builtin_actions as $a)
+			{
+				$html .= '<li><a class="file-action" data-action="'.$a['url'].'"><i class="fa '.$a['icon'].'"></i> '.$a['title'].' </a></li>';
+			}
+			
+			if(count($plugin_actions) > 0)
+			{
+				$html .= '<li role="separator" class="divider"></li>';
+				foreach($plugin_actions as $a)
+				{
+					$html .= '<li><a class="file-action" data-action="'.$a['url'].'"><i class="fa '.$a['icon'].'"></i> '.$a['title'].' </a></li>';
+				}
+			}
+			
+			$html .= '</ul>';
+		}
+		
+		$html .= '</div>';
+		
+		return $html;
+	}
+	
+	/**
+	 * Return a menu formated action button with dropdown menu for more supported actions.
+	 */
+	private function getFileActionDropdown($fileID)
+	{
+		//load db model
+		$this->load->helpers('plugin_helper');
+		$this->load->model('Files', 'files');
+		$file = $this->files->get($fileID, 1);
+		$file_ext = ltrim($file['file_ext'], '.');
+		
+		$builtin_actions = array();
+		
+		if($file['print_type'] == 'additive')
+		{
+			$builtin_actions[] = array(
+				"title" => "Print",
+				"icon" => "fa-rotate-90 fa-play",
+				"url" => "make/print/file/".$fileID
+			);
+			$default_action = $builtin_actions[0];
+		}
+		else if($file['print_type'] == 'substractive')
+		{
+			$builtin_actions[] = array(
+				"title" => "Mill",
+				"icon" => "fa-rotate-90 fa-play",
+				"url" => "make/mill/file/".$fileID
+			);
+			$default_action = $builtin_actions[0];
+		}
+			
+		$builtin_actions[] = array(
+				"title" => "Download",
+				"icon" => "fa-download",
+				"url" => "filemanager/download/file/".$fileID
+			);
+			
+		if( $file['print_type'] == 'additive' or $file['print_type'] == 'substractive' )
+		{
+			$builtin_actions[] = array(
+				"title" => "Preview",
+				"icon" => "fa-eye",
+				"url" => ""
+			);
+			$builtin_actions[] = array(
+				"title" => "Stats",
+				"icon" => "fa-area-chart",
+				"url" => ""
+			);
+		}
+		
+		$plugin_actions = array();
+		
+		$actions = getFileActionList($file_ext);
+		foreach($actions as $action)
+		{
+			$plugin_actions[] = array(
+				'title' => $action['title'],
+				'icon' => $action['icon'],
+				'url' => '#'.str_replace('$1', $fileID, $action['url'] )
+			);
+		}
+		
+		if( count($builtin_actions) == 1) // There are no builtin actions except "Download"
+		{
+			if( count($plugin_actions) > 0 ) // Plugins provide an actions
+			{
+				$default_action = $plugin_actions[0];
+				
+				unset($plugin_actions[0]);
+			}
+			else
+			{
+				$default_action = $builtin_actions[0];
+				unset($builtin_actions[0]);
+			}
+		}
+		else // There are some built
+		{
+			unset($builtin_actions[0]);
+		}
+		
+		// Generate action buttons
+		
+		
+		return $this->generateActionDropdown($default_action, $builtin_actions, $plugin_actions);
+	}
+	
 	/**
 	 * @param (int) object id
 	 * @return all files associated to the object
@@ -434,7 +570,7 @@ class Filemanager extends FAB_Controller {
 			$date_inserted = date('d/m/Y', strtotime($file['insert_date']));
 			
 			$temp[] = $date_inserted;
-			$temp[] = '';
+			$temp[] = $this->getFileActionDropdown($file['id']);
 			//$temp[] = $object['num_files'];
 			$aaData[] = $temp;
 		}

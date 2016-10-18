@@ -23,13 +23,15 @@
 	
 	function initDropzone()
 	{
+		console.log("accepted_files", "<?php echo $accepted_files; ?>");
+		
 		$("div#newObjectDropzone").dropzone({ 
 			url: "<?php echo site_url('filemanager/uploadFile/') ?>",
 			addRemoveLinks : true, 
 			dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-xs-block visible-sm-block visible-lg-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i> Drops files <span class="font-xs">to upload</span></span><span>&nbsp&nbsp<h4 class="display-inline"> (or click)</h4></span>',
 			parallelUploads: 1,
 			uploadMultiple: false,
-			acceptedFiles: '.gcode, .GCODE, .nc, .NC',
+			acceptedFiles: "<?php echo $accepted_files; ?>",
 			autoProcessQueue: false,
 			dictRemoveFile: 'Remove file',
 			dictMaxFilesExceeded: 'You can upload 10 files at time',

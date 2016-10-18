@@ -411,6 +411,13 @@ if(!function_exists('checkManufactoring'))
 	 */
 	function checkManufactoring($filePath, $numLines = 100)
 	{
+		
+		$ext = strtolower(get_file_extension($filePath));
+		$supported_filetypes = array('gcode', 'gc', 'nc');
+		
+		if( !in_array($ext, $supported_filetypes) )
+			return strtoupper($ext);
+		
 		$subtractiveRe = "/(M3\\s)|(M5\\s)|(M4\\s)|(M03\\s)/"; 
 		$lines = explode(PHP_EOL, doCommandLine('head', '"'.$filePath.'"', array('-n' => $numLines)));
 		foreach($lines as $line){

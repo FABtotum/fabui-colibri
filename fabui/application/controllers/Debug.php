@@ -44,9 +44,12 @@
 	
 	public function test()
 	{
-		$this->load->helpers('fabtotum_helper');
-		$homAllResult = doMacro('start_additive');
-		var_dump($homAllResult);
+		$this->load->helpers('plugin_helper');
+		$this->load->helpers('upload_helper');
+		$this->config->load('upload');
+		#$tmp = allowedTypesToDropzoneAcceptedFiles( $this->config->item('allowed_types') );
+		$tmp = getFileActionList('drl');
+		var_dump($tmp);
 	}
 	
  }

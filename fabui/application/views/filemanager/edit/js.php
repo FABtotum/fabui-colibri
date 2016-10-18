@@ -48,10 +48,10 @@
 			},
 			"drawCallback" : function(oSettings) {
 				transformLinks($('#files-table'));
+				$(".file-action").on('click', do_file_action);
 			},
 			"sAjaxSource": "<?php echo site_url("filemanager/getFiles/".$object['id']) ?>",
 			"fnRowCallback": function (row, data, index ){
-				
 			}
 		});
 	}
@@ -255,6 +255,14 @@
 	
 	function download_files(list){
 		document.location.href = '<?php echo site_url('filemanager/download/file/') ?>/' + list.join('-');
+	}
+	
+	function do_file_action(){
+		var url = $(this).attr("data-action");
+		
+		console.log('do_file_action', $(this).attr("data-action"));
+		document.location.href = $(this).attr("data-action");
+		//~ location.reload();
 	}
 	
 </script>

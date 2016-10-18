@@ -52,7 +52,7 @@
 						<th>Type</th>
 						<th>Note</th>
 						<th>Date</th>
-						<th>Action</th>
+						<th>Default action</th>
 					</tr>
 				</thead>
 				<tbody></tbody>

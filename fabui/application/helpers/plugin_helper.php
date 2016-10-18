@@ -42,7 +42,33 @@ if ( ! function_exists('getPluginInfo'))
 		return false;
 	}
 }
- 
+
+if ( ! function_exists('getActivePlugins'))
+{
+	/**
+	 * @return all active plugins
+	 */
+	function getActivePlugins(){
+		$CI =& get_instance();
+		$CI->load->model('Plugins', 'plugins');
+		
+		$plugins = $CI->plugins->get();
+		
+		$result = array();
+		
+		if( $plugins )
+		{
+			foreach($plugins as $plugin)
+			{
+				$info = json_decode($plugin['attributes'], true);
+				$result[$info['plugin_slug']] = $info;
+			}
+		}
+		
+		return $result;
+	}
+}
+
 if ( ! function_exists('getInstalledPlugins'))
 {
 	/**
@@ -76,7 +102,7 @@ if ( ! function_exists('getInstalledPlugins'))
 if ( !function_exists('extendMenuWithPlugins'))
 {
 	/**
-	 * 
+	 * Extend menu structure with "menu" specified in active plugins meta.json
 	 */
 	function extendMenuWithPlugins(&$menu)
 	{
@@ -99,17 +125,15 @@ if ( !function_exists('extendMenuWithPlugins'))
 		$tree = array('/' => &$menu);
 		
 		$tree = recursiveWalk($menu, '/', $tree);
-		$installed = getInstalledPlugins();
+		#$installed = getInstalledPlugins();
+		$active = getActivePlugins();
+		
 		
 		$items = array();
 		
-		foreach($installed as $plugin => $info)
+		foreach($active as $plugin => $info)
 		{
-			if( isPluginActive($plugin) )
-			{
-				//~ $plugin_items = getPluginInfo($plugin);
-				$items = array_merge($items, $info['menu'] );
-			}
+			$items = array_merge($items, $info['menu'] );
 		}
 		
 		foreach($items as $item => $content)
@@ -162,5 +186,104 @@ if ( ! function_exists('managePlugin'))
 	 
 }
 
+if ( ! function_exists('extendAllowedTypesWithPlugins'))
+{
+	/**
+	 * Extend allowed types by filetypes specified in active plugin meta.json.
+	 */
+	function extendAllowedTypesWithPlugins($allowed_types)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		
+		$allowed_types = explode('|', $allowed_types);
+		
+		$plugins = getActivePlugins();
+		
+		foreach($plugins as $plugin => $info)
+		{
+			foreach($info['filetypes'] as $ext)
+			{
+				$allowed_types[] = $ext;
+			}
+		}
+		
+		return join($allowed_types, '|');
+	}
+}
+
+if ( ! function_exists('getfileActionList'))
+{
+	/**
+	 * Return a list of file actions provided by active plugins
+	 * @param ext File extension
+	 * @return array of file-action hooks
+	 */
+	function getFileActionList($ext)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$plugins = getActivePlugins();
+		
+		$action_type = 'file-action';
+		
+		$actions = array();
+		
+		foreach($plugins as $plugin => $info)
+		{
+			foreach($info['hooks'] as $hook)
+			{
+				// safety check if "action" is defined
+				if( array_key_exists("action",$hook) && array_key_exists("filetypes", $hook) )
+				{
+					// check if the actions is what we are looking for
+					if( $hook['action'] == $action_type && in_array($ext, $hook['filetypes']) )
+					{
+						$actions[] = $hook;
+					}
+				}
+			}
+		}
+		
+		return $actions;
+	}
+}
+
+if ( ! function_exists('getObjectActionList'))
+{
+	/**
+	 * Return a list of object actions provided by active plugins
+	 * @param ext File extension
+	 * @return array of object-action hooks
+	 */
+	function getObjectActionList($ext)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$plugins = getActivePlugins();
+		
+		$action_type = 'object-action';
+		
+		$actions = array();
+		
+		foreach($plugins as $plugin => $info)
+		{
+			foreach($info['hooks'] as $hook)
+			{
+				// safety check if "action" is defined
+				if( array_key_exists("action",$hook) && array_key_exists("tags", $hook) )
+				{
+					// check if the actions is what we are looking for
+					if( $hook['action'] == $action_type )
+					{
+						$actions[] = $hook;
+					}
+				}
+			}
+		}
+		
+		return $actions;
+	}
+}
 
 ?>
