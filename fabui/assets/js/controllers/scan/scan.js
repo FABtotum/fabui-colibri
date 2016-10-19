@@ -202,9 +202,11 @@ function setScanMode()
 function getReady(modeId)
 {
 	if(scanModeInstructions == modeId) {
+		console.log("is the same mode, I'm not goint to load getReady");
 		$('#myWizard').wizard('next'); //load only if is scan mode is different
 		return;
 	}
+	console.log("loading new instruction page");
 	$.ajax({
 		type: 'post',
 		url: '/fabui/scan/getReady/' + modeId,
@@ -213,6 +215,7 @@ function getReady(modeId)
 		$('#myWizard').wizard('next');
 		//disableButton('.button-next');
 		scanModeInstructions = modeId;
+		console.log("done loading new instruction page");
 	});
 }
 /**
@@ -229,6 +232,8 @@ function setObjectMode()
 		$(".section-existing-object").show();
 		$(".section-new-object").hide();
 	}
+	
+	console.log('setObjectMode', objecMode);
 }
 /**
 * handle rotating slider scan
@@ -462,10 +467,10 @@ function initProbeCrop()
 		$(".probing-y1").val(y1.toFixed());
 		$(".probing-x2").val(x2.toFixed());
 		$(".probing-y2").val(y2.toFixed());
+		
+		console.log('cropper.probe:', x1,x2,y1,y2);
 	},
   }).cropper(options);
-  
-  $image.cropper('');
 }
 /**
 *
@@ -547,13 +552,16 @@ function handleRotatingScan()
 		
 		openWait('Start');
 		
+		var $radio = $(':radio[name="object_type"]:checked');
+		var object_mode = $radio.val();
+		
 		var data = {
 			'slices'      : $(".quality-slices").val(),
 			'iso'         : $(".quality-iso").val(),
 			'width'       : $(".quality-resolution-width").val(), 
 			'height'      : $(".quality-resolution-height").val(),
-			'object_mode' : objectMode,
-			'object'      : objectMode == 'new' ? $("#scan-object-name").val() : $("#scan-objects-list").val(),
+			'object_mode' : object_mode,
+			'object'      : object_mode == 'new' ? $("#scan-object-name").val() : $("#scan-objects-list option:selected").val(),
 			'file_name'   : $("#scan-file-name").val()
 		};
 		
@@ -584,6 +592,9 @@ function handleSweepScan()
 	
 	if(action == 'start'){
 		
+		var $radio = $(':radio[name="object_type"]:checked');
+		var object_mode = $radio.val();
+		
 		var data = {
 			'slices': $(".quality-slices").val(), 
 			'iso'   : $(".quality-iso").val(), 
@@ -591,29 +602,28 @@ function handleSweepScan()
 			'height': $(".quality-resolution-height").val(), 
 			'start' : $(".sweep-start").val(), 
 			'end'   : $(".sweep-end").val(),
-			//'start'   : 5,
-			//'end'     : 8
-			'object_mode' : objectMode,
-			'object'      : objectMode == 'new' ? $("#scan-object-name").val() : $("#scan-objects-list").val(),
+			'object_mode' : object_mode,
+			'object'      : object_mode == 'new' ? $("#scan-object-name").val() : $("#scan-objects-list option:selected").val(),
 			'file_name'   : $("#scan-file-name").val()
-			
 		};
 		
-		openWait('Start');
-		$.ajax({
-			type: 'post',
-			url: '/fabui/scan/startScan/' + scanMode,
-			data: data,
-			dataType: 'json'
-		}).done(function(response) {
-			console.log(response);
-			if(response.start == false){
-				closeWait();
-				showErrorAlert('Warning', response.message);
-			}else{
-				startTask();
-			}
-		});
+		console.log('handleSweepScan', data);
+		
+		//~ openWait('Start');
+		//~ $.ajax({
+			//~ type: 'post',
+			//~ url: '/fabui/scan/startScan/' + scanMode,
+			//~ data: data,
+			//~ dataType: 'json'
+		//~ }).done(function(response) {
+			//~ console.log(response);
+			//~ if(response.start == false){
+				//~ closeWait();
+				//~ showErrorAlert('Warning', response.message);
+			//~ }else{
+				//~ startTask();
+			//~ }
+		//~ });
 	}
 }
 
@@ -627,6 +637,9 @@ function handleProbingScan()
 	
 	if(action == 'start'){
 		
+		var $radio = $(':radio[name="object_type"]:checked');
+		var object_mode = $radio.val();
+		
 		var data = {
 			'safe_z': $(".probing-z-hop").val(), 
 			'threshold': $(".probing-probe-skip").val(), 
@@ -635,27 +648,29 @@ function handleProbingScan()
 			'y1' : $(".probing-y1").val(), 
 			'x2' : $(".probing-x2").val(), 
 			'y2' : $(".probing-y2").val(),
-			'object_mode' : objectMode,
-			'object'      : objectMode == 'new' ? $("#scan-object-name").val() : $("#scan-objects-list").val(),
+			'object_mode' : object_mode,
+			'object'      : object_mode == 'new' ? $("#scan-object-name").val() : $("#scan-objects-list option:selected").val(),
 			'file_name'   : $("#scan-file-name").val()
 		};
 		
-		console.log('start');
-		openWait('Start');
-		$.ajax({
-			type: 'post',
-			url: '/fabui/scan/startScan/' + scanMode,
-			data: data,
-			dataType: 'json'
-		}).done(function(response) {
-			console.log(response);
-			if(response.start == false){
-				closeWait();
-				showErrorAlert('Warning', response.message);
-			}else{
-				startTask();
-			}
-		});
+		console.log('handleProbingScan', data);
+		
+		//~ console.log('start');
+		//~ openWait('Start');
+		//~ $.ajax({
+			//~ type: 'post',
+			//~ url: '/fabui/scan/startScan/' + scanMode,
+			//~ data: data,
+			//~ dataType: 'json'
+		//~ }).done(function(response) {
+			//~ console.log(response);
+			//~ if(response.start == false){
+				//~ closeWait();
+				//~ showErrorAlert('Warning', response.message);
+			//~ }else{
+				//~ startTask();
+			//~ }
+		//~ });
 	}
 }
 /**

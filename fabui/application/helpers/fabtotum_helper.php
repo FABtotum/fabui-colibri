@@ -183,7 +183,7 @@ if(!function_exists('sendToXmlrpcServer'))
 		
 		$CI->xmlrpc->server('127.0.0.1/FABUI', $CI->config->item('xmlrpc_port'));
 		$CI->xmlrpc->method($method);
-		$CI->xmlrpc->timeout(120);
+		$CI->xmlrpc->timeout(120*5);
 		$CI->xmlrpc->request( $data );
 		
 		$response = false;
@@ -337,8 +337,7 @@ if(!function_exists('emergency'))
 	 */
 	function emergency()
 	{
-		doCommandLine('/etc/init.d/fabui', 'emergency');
-		//~ resetController();
+		doCommandLine('sudo /etc/init.d/fabui', 'emergency');
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -411,12 +410,17 @@ if(!function_exists('checkManufactoring'))
 	 */
 	function checkManufactoring($filePath, $numLines = 100)
 	{
+		$CI =& get_instance();
+		$CI->load->helper('plugin_helper');
 		
 		$ext = strtolower(get_file_extension($filePath));
 		$supported_filetypes = array('gcode', 'gc', 'nc');
 		
 		if( !in_array($ext, $supported_filetypes) )
+		{
+			
 			return strtoupper($ext);
+		}
 		
 		$subtractiveRe = "/(M3\\s)|(M5\\s)|(M4\\s)|(M03\\s)/"; 
 		$lines = explode(PHP_EOL, doCommandLine('head', '"'.$filePath.'"', array('-n' => $numLines)));
@@ -566,13 +570,16 @@ if(!function_exists('startPyScript'))
 	/**
 	 * start python task
 	 */
-	function startPyScript($script, $params = '', $background = true)
+	function startPyScript($script, $params = '', $background = true, $sudo = false)
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		$extPath = $CI->config->item('ext_path');
 		// TODO: check trailing /
-		return doCommandLine('python', $extPath.'py/'.$script, $params, $background);
+		$cmd = 'python';
+		if($sudo)
+			$cmd = 'sudo ' . $cmd;
+		return doCommandLine($cmd, $extPath.'py/'.$script, $params, $background);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

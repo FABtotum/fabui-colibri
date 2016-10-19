@@ -69,9 +69,9 @@ case $CMD in
         ;;
     deactivate)
         echo "Deactivating $2"
-        rm -f ${FABUI_PATH}/application/controllers/Plugin_${PLUGIN}.php
-        rm -f ${FABUI_PATH}/fabui/application/views/plugin/${PLUGIN}
-        rm -f ${FABUI_PATH}/fabui/assets/plugin/${PLUGIN}
+        rm -f ${FABUI_PATH}application/controllers/Plugin_${PLUGIN}.php
+        rm -f ${FABUI_PATH}application/views/plugin/${PLUGIN}
+        rm -f ${FABUI_PATH}assets/plugin/${PLUGIN}
         ;;
     remove)
         echo "Removing $2"

@@ -756,8 +756,6 @@ class XML_RPC_Client extends CI_Xmlrpc
 					$result = FALSE;
 					break;
 				}
-
-				usleep(250000);
 				continue;
 			}
 			else

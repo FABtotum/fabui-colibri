@@ -286,4 +286,33 @@ if ( ! function_exists('getObjectActionList'))
 	}
 }
 
+//~ if ( ! function_exists('getManufactoringMapping'))
+//~ {
+	//~ /**
+	 //~ * Return an array that maps extensions to manufactoring type,
+	 //~ * based on plugin meta info.
+	 //~ * @return array of ext => print_type map
+	 //~ */
+	//~ function getManufactoringMapping()
+	//~ {
+		//~ $CI =& get_instance();
+		//~ $CI->config->load('fabtotum');
+		//~ $plugins = getActivePlugins();
+		
+		//~ $action_type = '';
+		
+		//~ $manumap = array();
+		
+		//~ foreach($plugins as $plugin => $info)
+		//~ {
+			//~ if( array_key_exists("manufactoring_map",$info) )
+			//~ {
+				//~ foreach($info)
+			//~ }
+		//~ }
+		
+		//~ return $manumap;
+	//~ }
+//~ }
+
 ?>

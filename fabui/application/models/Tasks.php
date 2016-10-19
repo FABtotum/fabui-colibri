@@ -10,7 +10,7 @@
  class Tasks extends FAB_Model {
  	
 	private $tableName = 'sys_tasks';
-	private $completedStatus = array('completed', 'abort', 'deleted');
+	private $completedStatus = array('completed', 'aborted', 'deleted');
 	
 	const STATUS_RUNNING = 'running';
  	
@@ -40,7 +40,7 @@
 	 * @param $type (print, mill, '') 
 	 */
 	function getLastCreations($type = '', $limit_end = 10, $limit_start = 0){
-		$this->db->select('tf.orig_name, to.name, tf.id as id_file, to.id as id_object, to.description');
+		$this->db->select('tf.orig_name, tf.client_name, to.name, tf.id as id_file, to.id as id_object, to.description');
 		$this->db->join('sys_files as tf', 'tf.id = tt.id_file', 'left');
 		$this->db->join('sys_objects as to', 'to.id = tt.id_object', 'left');
 		if($type != '') $this->db->where('tt.type', $type);

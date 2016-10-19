@@ -23,8 +23,33 @@
 	 */
 	function getForCreate($type = '')
 	{
-		$this->db->select('tf.orig_name, to.name, tf.id as id_file, to.id as id_object, to.description');
+		$this->db->select('tf.orig_name, tf.client_name, tf.file_ext, to.name, tf.id as id_file, to.id as id_object, to.description');
 		if($type != '')	$this->db->where('print_type', $type);
+		$this->db->where('to.user', $this->session->user['id']);
+		$this->db->join($this->objFilesTable, $this->objFilesTable.'.id_file = tf.id');
+		$this->db->join('sys_objects as to', 'to.id = '.$this->objFilesTable.'.id_obj');
+		$this->db->order_by('date_insert', 'desc');
+		$query = $this->db->get($this->tableName.' as tf');
+		return $query->result_array();
+	}
+	
+	/**
+	 * Return an array of files, filtered by extension
+	 * @param $ext Can be a string or an array of strings
+	 */
+	function getByExtension($ext = '')
+	{
+		$this->db->select('tf.orig_name, tf.client_name, tf.file_ext, to.name, tf.id as id_file, to.id as id_object, to.description');
+		
+		if(is_array($ext))
+		{
+			$this->db->where_in('file_ext', $ext);
+		}
+		else if($ext != '')
+		{
+			$this->db->where('file_ext', $ext);
+		}
+		
 		$this->db->where('to.user', $this->session->user['id']);
 		$this->db->join($this->objFilesTable, $this->objFilesTable.'.id_file = tf.id');
 		$this->db->join('sys_objects as to', 'to.id = '.$this->objFilesTable.'.id_obj');

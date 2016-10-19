@@ -143,6 +143,8 @@ class Filemanager extends FAB_Controller {
 			$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
 			$this->addJsInLine($this->load->view('filemanager/file/view/js',$data['file'], true));
 			
+			$this->content = json_encode($data['file']);
+			
 			$this->view();
 		}
 		else
@@ -596,7 +598,7 @@ class Filemanager extends FAB_Controller {
 					
 					$file = $this->files->get($files[0], 1);
 					$data = file_get_contents($file['full_path']);
-					force_download($file['client_name'], $data);
+					force_download($file['client_name'].$file['file_ext'], $data);
 				} 
 				else
 				{

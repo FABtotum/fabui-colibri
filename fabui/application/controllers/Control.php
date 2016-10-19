@@ -28,7 +28,7 @@
 	 */
 	public function poweroff()
 	{
-		shell_exec('sudo poweroff');	
+		shell_exec('sudo poweroff');
 	}
 	
 	/**
@@ -37,8 +37,11 @@
 	public function emergency()
 	{
 		//load helper
+		$this->load->model('Tasks', 'tasks');
 		$this->load->helper('fabtotum_helper');
 		emergency();
+		
+		// TODO remove running and aborting tasks
 	}
 	
 	/**
@@ -49,7 +52,6 @@
 		//load helpers
 		$this->load->helper('fabtotum_helper');
 		$this->output->set_content_type('application/json')->set_output(json_encode(resetController()));
-		sleep(5);
 	}
 	
 	/**
