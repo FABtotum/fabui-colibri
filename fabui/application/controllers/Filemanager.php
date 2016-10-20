@@ -382,6 +382,8 @@ class Filemanager extends FAB_Controller {
 			}
 			
 			$this->objects->deleteFiles($objectID, $fileIDs);
+			$file = $this->files->get($fileID, True);
+			shell_exec('sudo rm '.$file['full_path']);
 			$this->objects->delete( $objectID );
 		}
 		
@@ -405,6 +407,8 @@ class Filemanager extends FAB_Controller {
 		{
 			$objectID = $this->files->getObject($fileID)['id'];
 			$this->objects->deleteFiles($objectID, $fileID);
+			$file = $this->files->get($fileID, True);
+			shell_exec('sudo rm '.$file['full_path']);
 			$this->files->delete($fileID);
 		}
 		$this->output->set_content_type('application/json')->set_output(json_encode( $response ));

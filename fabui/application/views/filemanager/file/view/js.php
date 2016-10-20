@@ -74,7 +74,7 @@
 				if (response.success == true)
 				{
 					document.location.href = "<?php echo site_url('#filemanager/object/'. $object['id']); ?>";
-					location.reload();
+					//~ location.reload();
 				}
 				else 
 				{
