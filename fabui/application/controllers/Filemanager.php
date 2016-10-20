@@ -113,6 +113,14 @@ class Filemanager extends FAB_Controller {
 		$this->load->model('Files', 'files');
 		$data['file'] = $this->files->get($fileId, 1);
 		
+		$data['is_editable'] = False;
+		
+		// additive
+		$data['dimesions'] = '';
+		$data['filament'] = '';
+		$data['estimated_time'] = '';
+		$data['number_of_layers'] = '';
+		
 		if($data['file']) // if file existss
 		{
 			$data['object'] = $this->files->getObject($fileId);
@@ -136,14 +144,13 @@ class Filemanager extends FAB_Controller {
 			$this->content  = $widget->print_html(true);
 			
 			//add needed scripts
+			$this->addJSFile('/assets/js/plugin/ace/src-min/ace.js'); // editor
 			$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
 			$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
 			$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
 			$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
 			$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
-			$this->addJsInLine($this->load->view('filemanager/file/view/js',$data['file'], true));
-			
-			$this->content = json_encode($data['file']);
+			$this->addJsInLine($this->load->view('filemanager/file/view/js', $data, true));
 			
 			$this->view();
 		}

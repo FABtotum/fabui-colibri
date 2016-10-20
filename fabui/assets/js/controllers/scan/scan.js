@@ -96,6 +96,7 @@ function handleWizardNext()
 			enableButton('.button-next');
 			break;
 		case 2:
+			$('#image').cropper('disable');
 			getReady(scanMode);
 			/*disableButton('.button-next');*/
 			break;
@@ -121,6 +122,8 @@ function handleWizardPrev()
 			disableButton('.button-prev');
 			break;
 		case 3:
+			$('#image').cropper('enable');
+
 			$('#myWizard').wizard('previous');
 			enableButton('.button-prev');
 			enableButton('.button-next');
@@ -467,8 +470,6 @@ function initProbeCrop()
 		$(".probing-y1").val(y1.toFixed());
 		$(".probing-x2").val(x2.toFixed());
 		$(".probing-y2").val(y2.toFixed());
-		
-		console.log('cropper.probe:', x1,x2,y1,y2);
 	},
   }).cropper(options);
 }
@@ -590,6 +591,9 @@ function handleSweepScan()
 	var button = $('.button-next');
 	var action = button.attr('data-action');
 	
+	$('#image').cropper('disable');
+	console.log('image.cropper disable');
+	
 	if(action == 'start'){
 		
 		var $radio = $(':radio[name="object_type"]:checked');
@@ -607,23 +611,21 @@ function handleSweepScan()
 			'file_name'   : $("#scan-file-name").val()
 		};
 		
-		console.log('handleSweepScan', data);
-		
-		//~ openWait('Start');
-		//~ $.ajax({
-			//~ type: 'post',
-			//~ url: '/fabui/scan/startScan/' + scanMode,
-			//~ data: data,
-			//~ dataType: 'json'
-		//~ }).done(function(response) {
-			//~ console.log(response);
-			//~ if(response.start == false){
-				//~ closeWait();
-				//~ showErrorAlert('Warning', response.message);
-			//~ }else{
-				//~ startTask();
-			//~ }
-		//~ });
+		openWait('Start');
+		$.ajax({
+			type: 'post',
+			url: '/fabui/scan/startScan/' + scanMode,
+			data: data,
+			dataType: 'json'
+		}).done(function(response) {
+			console.log(response);
+			if(response.start == false){
+				closeWait();
+				showErrorAlert('Warning', response.message);
+			}else{
+				startTask();
+			}
+		});
 	}
 }
 
@@ -653,24 +655,22 @@ function handleProbingScan()
 			'file_name'   : $("#scan-file-name").val()
 		};
 		
-		console.log('handleProbingScan', data);
-		
-		//~ console.log('start');
-		//~ openWait('Start');
-		//~ $.ajax({
-			//~ type: 'post',
-			//~ url: '/fabui/scan/startScan/' + scanMode,
-			//~ data: data,
-			//~ dataType: 'json'
-		//~ }).done(function(response) {
-			//~ console.log(response);
-			//~ if(response.start == false){
-				//~ closeWait();
-				//~ showErrorAlert('Warning', response.message);
-			//~ }else{
-				//~ startTask();
-			//~ }
-		//~ });
+		console.log('start');
+		openWait('Start');
+		$.ajax({
+			type: 'post',
+			url: '/fabui/scan/startScan/' + scanMode,
+			data: data,
+			dataType: 'json'
+		}).done(function(response) {
+			console.log(response);
+			if(response.start == false){
+				closeWait();
+				showErrorAlert('Warning', response.message);
+			}else{
+				startTask();
+			}
+		});
 	}
 }
 /**
