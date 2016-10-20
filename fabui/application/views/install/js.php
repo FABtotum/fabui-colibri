@@ -131,7 +131,7 @@
 	 */
 	function install()
 	{
-		$(".next").find('a').html('Istalling..');
+		$(".next").find('a').html('Installing...');
 		$("#browser-date").val(moment().format('YYYY-MM-DD HH:mm:ss'));
 		$("#install-form").submit();
 	}

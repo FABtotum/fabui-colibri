@@ -61,7 +61,9 @@ if ( ! function_exists('getActivePlugins'))
 			foreach($plugins as $plugin)
 			{
 				$info = json_decode($plugin['attributes'], true);
-				$result[$info['plugin_slug']] = $info;
+				//~ $result[$info['plugin_slug']] = $info;
+				$slug = $info['plugin_slug'];
+				$result[$slug] = getPluginInfo($slug);
 			}
 		}
 		
@@ -131,6 +133,8 @@ if ( !function_exists('extendMenuWithPlugins'))
 		
 		$items = array();
 		
+		// Read all menu entries from all active plugins 
+		// and merge them into one array
 		foreach($active as $plugin => $info)
 		{
 			$items = array_merge($items, $info['menu'] );
@@ -145,19 +149,21 @@ if ( !function_exists('extendMenuWithPlugins'))
 			$tmp = explode($path, $item);
 			$slug = ltrim(end($tmp), '/');
 			
+			// Menu item path is the root of menu
 			if($path == '/')
 			{
 				$tree['/'][$slug] = $content;
-				if( array_key_exists('sub', $content) )
+				if( !array_key_exists('url', $content) )
 				{
+					// Add the new item to the path tree map
 					$path = '/'.$slug;
 					$tree[$path] = &$tree['/'][$slug];
 				}
 			}
-			else
+			else // Item is a sub-menu
 			{
 				$tree[$path]['sub'][$slug] = $content;
-				if( array_key_exists('sub', $content) )
+				if( !array_key_exists('url', $content) )
 				{
 					$path2 = rtrim($path,'/').'/'.$slug;
 					$tree[$path2] = &$tree[$path]['sub'][$slug];
@@ -285,6 +291,27 @@ if ( ! function_exists('getObjectActionList'))
 		return $actions;
 	}
 }
+
+if ( ! function_exists('plugin_url'))
+{
+	function plugin_url($url)
+	{
+		$CI =& get_instance();
+		$plugin_name = str_replace('plugin_', '', $CI->router->class);
+		return '/plugin/'.$plugin_name.'/'.$url;
+	}
+}
+
+if ( ! function_exists('plugin_assets_url'))
+{
+	function plugin_assets_url($url)
+	{
+		$CI =& get_instance();
+		$plugin_name = str_replace('plugin_', '', $CI->router->class);
+		return '/assets/plugin/'.$plugin_name.'/'.$url;
+	}
+}
+
 
 //~ if ( ! function_exists('getManufactoringMapping'))
 //~ {
