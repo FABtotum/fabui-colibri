@@ -51,13 +51,7 @@
 	*/
 	function clearJogResponse()
 	{
-		$.ajax({
-			type: "POST",
-			url: '<?php echo site_url('jog/clear') ?>',
-			dataType: 'json'
-		}).done(function( data ) {
-			$(".consoleContainer").html('');
-		});
+		$(".consoleContainer").html('');
 	}
 	/**
 	* handle mdi key inputs
