@@ -1,10 +1,10 @@
 
 <div class="row">
 	<div class="col-sm-12">
-		<div class="well well-light">
+
 			<div class="row">
 				<div class="col-sm-8">
-					<div class="form-horizontal">			
+					<div class="form-horizontal">
 						<fieldset>
 							<div class="form-group">
 								<label class="col-md-2 control-label">Name</label>
@@ -38,12 +38,13 @@
 						</div>
 					</div>
 				</div>
+                <?php else: ?>
 				<?php endif; ?>
 			</div>
 			
-			<div class="row">
+			<div class="row row-sm-6">
 				<div class="col-sm-12">
-					<div class="well" id="editor" style="display:none;"></div>
+					<div class="well file-content-small" id="editor" style="display:none;"></div>
 				</div>
 			</div>
 			
@@ -54,21 +55,15 @@
 							<div class="row">
 								
 								<div class="col-sm-12">
-									<?php if(!$is_editable): ?>
+									<?php if($is_editable): ?>
 										<button class="btn btn-default pull-left" type="button" id="load-content"><i class="fa fa-angle-double-down"></i> view content </button>
 									<?php endif; ?>
-
-									<label class="checkbox-inline" style="padding-top:0px;">
-										 <input type="checkbox" class="checkbox" disabled="disabled" id="also-content">
-										 <span>Save content also </span>
-									</label>
-									<button class="btn btn-primary" type="button" id="save"><i class="fa fa-save"></i> Save </button>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+
 	</div>
 </div>

@@ -1,4 +1,8 @@
 #!/bin/bash
+################################################################################
+# @author FABteam (C) 2016 
+# @license https://opensource.org/licenses/GPL-3.0
+################################################################################
 
 source /etc/default/fabui
 
@@ -46,16 +50,19 @@ install_plugin()  {
     
     if [ -f "$TOP/meta.json" ]; then
         HAVE_META=yes
+        
+        PLUGIN_DIR=${PLUGINS_PATH}${PLUGIN}
+        echo $PLUGIN_DIR
+        mkdir -p $PLUGIN_DIR
+        
+        cp -aR $TOP/* $PLUGIN_DIR
+        
+        rm -rf $TMP
+        rm $FN
+    else
+        echo "Not a plugin .zip file."
+        exit 1
     fi
-    
-    PLUGIN_DIR=${PLUGINS_PATH}${PLUGIN}
-    echo $PLUGIN_DIR
-    mkdir -p $PLUGIN_DIR
-    
-    cp -aR $TOP/* $PLUGIN_DIR
-    
-    rm -rf $TMP
-    rm $FN
 }
 
 case $CMD in

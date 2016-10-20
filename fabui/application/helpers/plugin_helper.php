@@ -126,6 +126,7 @@ if ( !function_exists('extendMenuWithPlugins'))
 		$path = '/';    
 		$tree = array('/' => &$menu);
 		
+		// generate a map of menu paths and corresponding meni item &reference
 		$tree = recursiveWalk($menu, '/', $tree);
 		#$installed = getInstalledPlugins();
 		$active = getActivePlugins();
@@ -218,7 +219,7 @@ if ( ! function_exists('extendAllowedTypesWithPlugins'))
 	}
 }
 
-if ( ! function_exists('getfileActionList'))
+if ( ! function_exists('getFileActionList'))
 {
 	/**
 	 * Return a list of file actions provided by active plugins

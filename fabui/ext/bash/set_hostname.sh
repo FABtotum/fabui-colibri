@@ -1,4 +1,8 @@
 #!/bin/bash
+################################################################################
+# @author FABteam (C) 2016 
+# @license https://opensource.org/licenses/GPL-3.0
+################################################################################
 
 usage() {
    echo "uso: $0 <new hostname> <new description>"

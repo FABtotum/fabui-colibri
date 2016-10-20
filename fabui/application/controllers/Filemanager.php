@@ -113,7 +113,7 @@ class Filemanager extends FAB_Controller {
 		$this->load->model('Files', 'files');
 		$data['file'] = $this->files->get($fileId, 1);
 		
-		$data['is_editable'] = False;
+		$data['is_editable'] = True;
 		
 		// additive
 		$data['dimesions'] = '';
@@ -131,10 +131,17 @@ class Filemanager extends FAB_Controller {
 				'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
 			);
 			
-			$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save-object'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+			$widgeFooterButtons = 	
+				'<label class="checkbox-inline" style="padding-top:0px;">
+					 <input type="checkbox" class="checkbox" disabled="disabled" id="also-content">
+					 <span>Save content also </span>
+				</label>' .
+				$this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 			
 			$headerToolbar = '<div class="widget-toolbar" role="menu">
 			<a class="btn btn-default" href="filemanager/object/'.$objectId.'"><i class="fa fa-arrow-left"></i> Back </a>
+			<button class="btn btn-danger button-action" data-action="delete"><i class="fa fa-download"></i> Delete </a>
+			<button class="btn btn-info button-action" data-action="download"><i class="fa fa-download"></i> Download </a>
 			</div>';
 			
 			$widget = $this->smart->create_widget($widgetOptions);
@@ -143,6 +150,8 @@ class Filemanager extends FAB_Controller {
 			$widget->body   = array('content' => $this->load->view('filemanager/file/view/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 			$this->content  = $widget->print_html(true);
 			
+			//add css files
+			$this->addCssFile('/assets/css/filemanager/style.css');
 			//add needed scripts
 			$this->addJSFile('/assets/js/plugin/ace/src-min/ace.js'); // editor
 			$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
@@ -241,6 +250,7 @@ class Filemanager extends FAB_Controller {
 		$this->view();
 	}
 	
+	
 	/**
 	 * @return get all objects for table view
 	 */
@@ -301,6 +311,16 @@ class Filemanager extends FAB_Controller {
 		$this->session->set_flashdata('alert', array('type' => 'alert-success', 'message'=> '<i class="fa fa-fw fa-check"></i> Object has been added' ));
 		
 		redirect($redirectTo);
+	}
+	
+	public function updateFile()
+	{
+		$response['success'] = true;
+		$response['message'] = '';
+		
+		
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
 	
 	/**
@@ -605,7 +625,7 @@ class Filemanager extends FAB_Controller {
 					
 					$file = $this->files->get($files[0], 1);
 					$data = file_get_contents($file['full_path']);
-					force_download($file['client_name'].$file['file_ext'], $data);
+					force_download($file['orig_name'], $data);
 				} 
 				else
 				{

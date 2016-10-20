@@ -39,6 +39,7 @@
 		}else{
 			$this->CI->load->library('xmlrpc');
 			$this->CI->xmlrpc->server('127.0.0.1/FABUI', $this->CI->config->item('xmlrpc_port'));
+			$this->CI->xmlrpc->timeout(120*5);
 			$this->CI->xmlrpc->method('send');
 		}
 		
