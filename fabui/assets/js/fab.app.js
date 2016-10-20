@@ -646,6 +646,15 @@ fabApp = (function(app) {
 	 * write serial replys to jog console
 	 */
 	app.writeSerialResponseToConsole = function(data){
+		if($(".jogResponseContainer").length > 0){
+			var html = '';
+			$.each(data.commands, function(i, item) {
+				html += '<span class="jog_response ">' + item + '</span><hr class="simple">';
+			});
+			html += '<span class="jog_response "><b>' + data.response + '</b></span><hr class="simple">';
+			$(".consoleContainer").append(html);
+			$(".jogResponseContainer").animate({ scrollTop: $('.jogResponseContainer').prop("scrollHeight")}, 1000);
+		}
 	};
 	/*
 	 * manage macro response or trace
