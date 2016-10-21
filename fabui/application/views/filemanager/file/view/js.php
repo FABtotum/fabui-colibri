@@ -116,7 +116,11 @@
 		var name         = encodeURIComponent($.trim($("#name").val()));
 		var file_content = '';
 
-		var data = { file_id: <?php echo $file['id']; ?>,  file_path : '<?php echo $file['full_path'] ?>', note: note, name: name};
+		var data = { 
+				file_id: <?php echo $file['id']; ?>,  
+				file_path : '<?php echo $file['full_path'] ?>', 
+				note: note, 
+				name: name};
 
 		if($('#also-content').is(":checked")){
 			data.file_content = encodeURIComponent($.trim(editor.getSession().getValue()));

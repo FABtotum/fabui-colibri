@@ -109,11 +109,15 @@ class Filemanager extends FAB_Controller {
 		
 		//load libraries, helpers, model, config
 		$this->load->library('smart');
+		$this->load->helper('fabtotum_helper');
 		//load db model
 		$this->load->model('Files', 'files');
 		$data['file'] = $this->files->get($fileId, 1);
 		
 		$data['is_editable'] = True;
+		
+		$data['printables_files'] = array('.gc', '.gcode', '.nc');
+		$data['preview_files'] = array('.gc', '.gcode', '.stl');
 		
 		// additive
 		$data['dimesions'] = '';
@@ -125,6 +129,34 @@ class Filemanager extends FAB_Controller {
 		{
 			$data['object'] = $this->files->getObject($fileId);
 			$objectId = $data['object']['id'];
+		
+			$attributes = json_decode($data['file']['attributes'], true);
+			
+			$data['dimesions'] = 'processing';
+			$data['filament'] = 'processing';
+			$data['number_of_layers'] = 'processing';
+			$data['estimated_time'] = 'processing';
+			
+			if(is_array($attributes) and $attributes)
+			{
+				$dimensions = $attributes['dimensions'];
+
+				$x = number_format($dimensions['x'], 2, '.', '');
+				$y = number_format($dimensions['y'], 2, '.', '');
+				$z = number_format($dimensions['z'], 2, '.', '');
+
+				$data['dimesions'] = $x . ' x ' . $y . ' x ' . $z . ' mm';
+				$data['filament'] = number_format($attributes['filament'], 2, '.', '') . ' mm';
+				$data['number_of_layers'] = $attributes['number_of_layers'];
+				$data['estimated_time'] = $attributes['estimated_time'];
+			}
+			else
+			{
+				if( $data['file']['print_type'] == 'additive' )
+				{
+					startPyScript('gcode_analyzer.py', array($fileId), true);
+				}
+			}
 			
 			$widgetOptions = array(
 				'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
@@ -315,10 +347,39 @@ class Filemanager extends FAB_Controller {
 	
 	public function updateFile()
 	{
+		$data = $this->input->post();
+		$this->load->model('Files', 'files');
+
 		$response['success'] = true;
 		$response['message'] = '';
+
+		if($data)
+		{
+			$fileId = $data['file_id'];
+			$file_path = $data['file_path'];
+			
+			if( $this->input->post('file_content') )
+			{
+				$file_content = urldecode($data['file_content']);
+				file_put_contents($file_path, $file_content);
+			}
+			
+			$new_data = array(
+				'client_name'	=> urldecode($data['name']),
+				'note'			=> urldecode($data['note']),
+				'file_size'		=> filesize($file_path),
+				'update_date'	=> date('Y-m-d H:i:s')
+			);
+			
+			$this->files->update($fileId, $new_data);
+		}
+		else
+		{
+			$response['success'] = false;
+			$response['message'] = 'No POST data.';
+		}
 		
-		
+		// TODO: exec gcode_analyzer.py 
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
@@ -422,7 +483,7 @@ class Filemanager extends FAB_Controller {
 		//TODO
 		//load helpers
 		$this->load->helper('file');
-		$this->load->helper('fabtotum');
+		$this->load->helper('fabtotum_helper');
 		//get file extension to save the file in the correct directory
 		$fileExtension = get_file_extension($_FILES['file']['name']);
 		//load configs
@@ -449,6 +510,10 @@ class Filemanager extends FAB_Controller {
 			$fileId = $this->files->add($data);
 			$response['upload'] = true;
 			$response['fileId'] = $fileId;
+			if( $data['print_type'] == 'additive' )
+			{
+				startPyScript('gcode_analyzer.py', array($fileId), true);
+			}
 		}else{
 			$response['upload'] = false;
 			$response['message'] = $this -> upload -> display_errors();
