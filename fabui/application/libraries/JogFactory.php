@@ -17,10 +17,11 @@
 	protected $responseType = 'serial'; //type of response (temperature, gcode, serial)
 	protected $responseData;
 	protected $serialReply = array(); //serial reply
-	protected $useXmlrpc = false;
+	protected $useXmlrpc = true;
 	protected $xmlrpc = null;
 	protected $commands = array();
-	protected $result; 
+	protected $result;
+	protected $xmlRpcResponse = array();
 	
 	/**
 	 * class constructor
@@ -37,10 +38,13 @@
 		if(!$this->useXmlrpc){
 			$this->CI->load->helper('file_helper');
 		}else{
+			/*
 			$this->CI->load->library('xmlrpc');
 			$this->CI->xmlrpc->server('127.0.0.1/FABUI', $this->CI->config->item('xmlrpc_port'));
 			$this->CI->xmlrpc->timeout(120*5);
 			$this->CI->xmlrpc->method('send');
+			*/
+			$this->CI->load->helper('fabtotum_helper');
 		}
 		
   	}
@@ -89,6 +93,10 @@
 			write_file($this->CI->config->item('command'), $commandToWrite);
 		}else{
 			
+			$this->xmlRpcResponse =  sendToXmlrpcServer('send', array($this->getCommands('text')));
+			$this->serialReply = $this->xmlRpcResponse['reply'];
+			$this->result = $this->xmlRpcResponse['response'];
+			/*
 			$request = array($this->getCommands('text'));
 			$this->CI->xmlrpc->request($request);
 			
@@ -104,6 +112,7 @@
 				$this->serialReply .= implode('<br>', $this->CI->xmlrpc->display_response()) ;
 				$this->result = True;
 			}
+			*/
 			
 		}
 	}
@@ -112,7 +121,7 @@
 	 */
 	function response()
 	{
-		return array('type'=> $this->responseType, 'commands' => $this->commands, 'response' => $this->serialReply, 'result' => $this->result);
+		return array('type'=> $this->responseType, 'commands' => $this->commands, 'reply' => $this->serialReply, 'result' => $this->result);
 	}
 	/**
 	 * @param $type (serial, temperature, etc..)

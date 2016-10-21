@@ -197,18 +197,23 @@ if(!function_exists('sendToXmlrpcServer'))
 			$message    = 'request had an error: '.$CI->xmlrpc->display_error();
 		}
 		else
-		{
-			$tmp = json_decode( $CI->xmlrpc->display_response(), true ); 
-			if(json_last_error()){
+		{	
+			if(is_array($CI->xmlrpc->display_response())){
 				$reply = $CI->xmlrpc->display_response();
 				$response = True;
-			}else{
-				if($tmp['response'] == 'success')
-				{
+			}else {
+				$tmp = json_decode( $CI->xmlrpc->display_response(), true );
+				if(json_last_error()){
+					$reply = $CI->xmlrpc->display_response();
 					$response = True;
+				}else{
+					if($tmp['response'] == 'success')
+					{
+						$response = True;
+					}
+					$reply   = $tmp['reply'];
+					$message = $tmp['message'];
 				}
-				$reply   = $tmp['reply'];
-				$message = $tmp['message'];
 			}
 		}
 		return array('response' => $response, 'reply' => $reply, 'message' => $message);

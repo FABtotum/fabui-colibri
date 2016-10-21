@@ -651,7 +651,16 @@ fabApp = (function(app) {
 			$.each(data.commands, function(i, item) {
 				html += '<span class="jog_response ">' + item + '</span><hr class="simple">';
 			});
-			html += '<span class="jog_response "><b>' + data.response + '</b></span><hr class="simple">';
+			console.log(data.reply.constructor);
+			if(data.reply.constructor === Array){
+				html += '<span class="jog_response ">';
+				$.each(data.reply, function(i, item) {
+					html += '<b>' + item + '</b><br>';
+				});
+				html += '</span><hr class="simple">';
+			}else{
+				html += '<span class="jog_response "><b>' + data.reply + '</b></span><hr class="simple">';
+			}
 			$(".consoleContainer").append(html);
 			$(".jogResponseContainer").animate({ scrollTop: $('.jogResponseContainer').prop("scrollHeight")}, 1000);
 		}
