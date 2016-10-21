@@ -46,6 +46,10 @@ def main():
     # Load file info from database    
     f = File(db, fileID)
     
+    # Prevent UI from starting analyzer again
+    f['attributes'] = 'Processing';
+    f.write()
+    
     # Analyze the gcode file
     gcode = GCode(open(f['full_path'], "rU"))
     

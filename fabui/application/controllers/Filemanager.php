@@ -152,7 +152,7 @@ class Filemanager extends FAB_Controller {
 			}
 			else
 			{
-				if( $data['file']['print_type'] == 'additive' )
+				if( $data['file']['print_type'] == 'additive' && $attributes != 'Processing' )
 				{
 					startPyScript('gcode_analyzer.py', array($fileId), true);
 				}
@@ -199,6 +199,75 @@ class Filemanager extends FAB_Controller {
 		{
 			redirect('filemanager');
 		}
+	}
+	
+	public function gcodeviewer($fileId = '')
+	{
+		//load libraries, helpers, model, config
+		$this->load->library('smart');
+		$this->load->helper('fabtotum_helper');
+		
+		$data = array();
+		
+		$widgetOptions = array(
+			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
+			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
+		);
+		
+		$widgeFooterButtons = '';
+		
+		$headerToolbar = '';
+		
+		$widget = $this->smart->create_widget($widgetOptions);
+		$widget->id = 'file-manager-edit-object-widget';
+		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>gCodeViewer</h2>", 'toolbar'=>$headerToolbar);
+		$widget->body   = array('content' => $this->load->view('filemanager/file/gcodeviewer/index', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
+		$this->content  = $widget->print_html(true);
+		
+    //~ <link rel="stylesheet" type="text/css" href="css/cupertino/jquery-ui-1.9.0.custom.css" media="screen" />
+    //~ <link rel="stylesheet" type="text/css" href="css/bootstrap.css" media="screen" />
+    //~ <link rel="stylesheet" type="text/css" href="lib/codemirror.css" media="screen" />
+    //~ <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+		$this->addCssFile('/assets/css/filemanager/gcodeviewer/cupertino/jquery-ui-1.9.0.custom.css');
+		$this->addCssFile('/assets/css/filemanager/gcodeviewer/bootstrap.css');
+		$this->addCssFile('/assets/css/filemanager/gcodeviewer/lib/codemirror.css');
+		$this->addCssFile('/assets/css/filemanager/gcodeviewer/style.css');
+		
+    //~ <script type="text/javascript" src="assets/js/libs/jquery-2.1.1.min.js"></script>
+    //~ <script type="text/javascript" src="assets/js/libs/jquery-ui-1.10.3.min.js"></script>
+
+    //~ <script type="text/javascript" src="lib/codemirror.js"></script>
+    //~ <script type="text/javascript" src="lib/mode_gcode/gcode_mode.js"></script>
+    //~ <script type="text/javascript" src="lib/three.js"></script>
+    //~ <script type="text/javascript" src="lib/bootstrap.js"></script>
+    //~ <script type="text/javascript" src="lib/modernizr.custom.09684.js"></script>
+    //~ <script type="text/javascript" src="lib/TrackballControls.js"></script>
+    //~ <script type="text/javascript" src="lib/zlib.min.js"></script>
+    //~ <script type="text/javascript" src="js/ui.js"></script>
+    //~ <script type="text/javascript" src="js/gCodeReader.js"></script>
+    //~ <script type="text/javascript" src="js/renderer.js"></script>
+    //~ <script type="text/javascript" src="js/analyzer.js"></script>
+    //~ <script type="text/javascript" src="js/renderer3d.js"></script>
+		
+		$this->addJSFile('/assets/js/libs/jquery-2.1.1.min.js');
+		$this->addJSFile('/assets/js/libs/jquery-ui-1.10.3.min.js');
+		
+		$this->addJSFile('/assets/js/plugin/gcodeviewer/lib/codemirror.js');
+		$this->addJSFile('/assets/js/plugin/gcodeviewer/lib/mode_gcode/gcode_mode.js');
+		$this->addJSFile('/assets/js/plugin/gcodeviewer/lib/three.js');
+		$this->addJSFile('/assets/js/plugin/gcodeviewer/lib/bootstrap.js');
+		$this->addJSFile('/assets/js/plugin/gcodeviewer/lib/modernizr.custom.09684.js');
+		$this->addJSFile('/assets/js/plugin/gcodeviewer/lib/TrackballControls.js');
+		$this->addJSFile('/assets/js/plugin/gcodeviewer/lib/zlib.min.js');
+		$this->addJSFile('/assets/js/plugin/gcodeviewer/ui.js');
+		$this->addJSFile('/assets/js/plugin/gcodeviewer/gCodeReader.js');
+		$this->addJSFile('/assets/js/plugin/gcodeviewer/renderer.js');
+		$this->addJSFile('/assets/js/plugin/gcodeviewer/analyzer.js');
+		$this->addJSFile('/assets/js/plugin/gcodeviewer/renderer3d.js');
+		
+		$this->addJsInLine($this->load->view('filemanager/file/gcodeviewer/js', $data, true));
+		
+		$this->view();
 	}
 	
 	/**
@@ -454,7 +523,7 @@ class Filemanager extends FAB_Controller {
 	/*
 	 * delete file
 	 */
-	public function deleteFiles()
+	public function deleteProcessingFiles()
 	{
 		// TODO: error handling
 		$this->load->model('Objects', 'objects');

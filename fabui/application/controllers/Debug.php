@@ -52,6 +52,61 @@
 		var_dump($tmp);
 	}
 	
+	public function gcodeviewer()
+	{
+		$this->content = $this->load->view('filemanager/file/preview/index', null, true );
+    //~ <script src="lib/modernizr.custom.93389.js"></script>
+    //~ <script src="lib/jquery-1.7.1.min.js"></script>
+    //~ <script src="lib/bootstrap-modal.js"></script>
+    //~ <script src="lib/sugar-1.2.4.min.js"></script>
+    //~ <script src="lib/three.js"></script>
+    //~ <script src="lib/TrackballControls.js"></script>
+
+    //~ <script src="js/ShaderExtras.js"></script>
+    //~ <script src="js/postprocessing/EffectComposer.js"></script>
+    //~ <script src="js/postprocessing/MaskPass.js"></script>
+    //~ <script src="js/postprocessing/RenderPass.js"></script>
+    //~ <script src="js/postprocessing/ShaderPass.js"></script>
+    //~ <script src="js/postprocessing/BloomPass.js"></script>
+
+    //~ <script src="js/Stats.js"></script>
+    //~ <script src="js/DAT.GUI.min.js"></script>
+    //~ <!-- Custom code -->
+    //~ <script type="text/javascript" src="gcode_model.js"></script>
+    //~ <script type="text/javascript" src="gcode_parser.js"></script>
+    //~ <script type="text/javascript" src="gcode_interpreter.js"></script>
+    //~ <script type="text/javascript" src="gcode_importer.js"></script>
+    //~ <script type="text/javascript" src="gcode_renderer.js"></script>
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/lib/modernizr.custom.93389.js');
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/lib/jquery-1.7.1.min.js');
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/lib/sugar-1.2.4.min.js');
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/lib/three.js');
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/lib/TrackballControls.js');
+		
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/js/ShaderExtras.js');
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/js/postprocessing/EffectComposer.js');
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/js/postprocessing/MaskPass.js');
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/js/postprocessing/RenderPass.js');
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/js/postprocessing/ShaderPass.js');
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/js/postprocessing/BloomPass.js');
+		
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/js/Stats.js');
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/js/dat.gui.min.js');
+
+		
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/gcode_model.js');
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/gcode_parser.js');
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/gcode_interpreter.js');
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/gcode_importer.js');
+		$this->addJSFile('/assets/js/plugin/gcode-viewer/gcode_renderer.js');
+		
+		$this->addCssFile('/assets/js/plugin/gcode-viewer/lib/bootstrap.min.css');
+		
+		$this->addJsInLine($this->load->view('filemanager/file/preview/renderer_js', null, true));
+		$this->addJsInLine($this->load->view('filemanager/file/preview/ui_js', null, true));
+		
+		$this->view();
+	}
  }
  
 ?>
