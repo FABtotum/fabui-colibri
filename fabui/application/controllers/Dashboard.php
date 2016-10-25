@@ -145,40 +145,25 @@
 		$this->load->helper('text_helper');
 		$this->load->helper('layout_helper');
 		$data['feeds'] = array();
-		$data['hash_feeds'] = array();
 		
-		if(file_exists($this->config->item('instagram_feed_hash_file'))){
-			$feeds = json_decode(file_get_contents($this->config->item('instagram_feed_hash_file')), true);
-			$feeds = $feeds['data'];
-			$processedFeeds = array();
-			foreach($feeds as $feed){
-				$temporaryFeed = $feed;
-				//highlitght tags
-				$tags = $temporaryFeed['tags'];
-				foreach($tags as $tag){
-					$temporaryFeed['caption']['text'] = highlight_phrase($temporaryFeed['caption']['text'], '#'.$tag, '<a target="_blank" href="javascript:void(0)">', '</a>');
-				}
-				
-				$processedFeeds[] = $temporaryFeed;
-			}
-			$data['hash_feeds'] = $processedFeeds;
-		}
 		if(file_exists($this->config->item('instagram_feed_file'))){
 			$feeds = json_decode(file_get_contents($this->config->item('instagram_feed_file')), true);
 			$feeds = $feeds['data'];
-			$processedFeeds = array();
-			foreach($feeds as $feed){
-				$temporaryFeed = $feed;
-				//highlitght tags
-				$tags = $temporaryFeed['tags'];
-				foreach($tags as $tag){
-					$temporaryFeed['caption']['text'] = highlight_phrase($temporaryFeed['caption']['text'], '#'.$tag, '<a target="_blank" href="javascript:void(0)">', '</a>');
-				}
-				$processedFeeds[] = $temporaryFeed;
+			/**
+			 * sort by date and order columns to have the most recent on top
+			 */
+			uasort($feeds, 'instaSort');
+			$a = array();
+			$b = array();
+			foreach($feeds as $key => $feed){
+				if($key%2==0)
+					array_push($a, $feed);
+				else
+					array_push($b, $feed);
 			}
-			$data['feeds'] = $processedFeeds;
+			$data['feedsA'] = $a;
+			$data['feedsB'] = $b;
 		}
-		
 		$this->load->view('dashboard/instagram', $data);
 	}
 			

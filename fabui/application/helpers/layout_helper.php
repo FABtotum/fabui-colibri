@@ -238,12 +238,10 @@ if(!function_exists('displayInstagramFeedItem'))
 	 */
 	function displayInstagramFeedItem($feed)
 	{
-		$date = date('j M, Y',$feed['caption']['created_time']);
+		$date = date('j M, Y',$feed['date']);
 		$location = '';
 		$likes    = '';
 		$comments = '';
-		if(is_array($feed['location']))
-			$location .= ', <i class="fa fa-map-marker"></i> '.$feed['location']['name'];
 		if(is_array($feed['likes']))
 			$likes .= '<li class="txt-color-red"><i class="fa fa-heart"></i> ('.$feed['likes']['count'].')</li>';
 		if(is_array($feed['comments']))
@@ -252,14 +250,10 @@ if(!function_exists('displayInstagramFeedItem'))
 			<div class="panel panel-default">
 				<div class="panel-body status">
 					<div class="who clearfix padding-10">
-						<img src="{$feed['user']['profile_picture']}" />
-						<span class="name"><b>{$feed['user']['username']}</b>
-							<span class="pull-right"><i class="fa fa-instagram"></i></span>
-						</span>
-						<span class="from">{$date} {$location}</span>
+						<span class="from">{$date} </span>
 					</div>
-					<div class="image padding-10"><img src="{$feed['images']['standard_resolution']['url']}" /></div>
-					<div class="text padding-top-0 hidden-xs"><p>{$feed['caption']['text']}</p></div>
+					<div class="image padding-10"><img src="{$feed['display_src']}" /></div>
+					<div class="text padding-top-0 hidden-xs"><p>{$feed['caption']}</p></div>
 					<ul class="links">
 						{$likes}
 						{$comments}
@@ -267,6 +261,20 @@ if(!function_exists('displayInstagramFeedItem'))
 				</div>
 			</div>
 EOT;
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('instaSort')){
+	
+	/*
+	 * 
+	 */
+	function instaSort($feedA, $feedB)
+	{
+		if ($feedA['date'] == $feedB['date']) {
+			return 0;
+		}
+		return ($feedA['date'] > $feedB['date']) ? -1 : 1;
 	}
 }
 ?>
