@@ -50,7 +50,7 @@ usb_file = /dev/sda1
 pin = 2
 
 [social]
-blog_feed_url = http://www.fabtotum.com/feed/?cat=5%2C6
+blog_feed_url = http://www.fabtotum.com/feed/?cat%3D5%2C6
 blog_feed_file = @FABUI_TEMP_PATH@blog_feed.xml
 twitter_feed_url = http://www.fabtotum.com/twitter_feed.json
 twitter_feed_file = @FABUI_TEMP_PATH@twitter_feed.json

@@ -30,8 +30,7 @@ class Cron extends CI_Controller {
 		//load helpers, config
 		$this->load->helper('os_helper');
 		$this->config->load('fabtotum');
-		
-		if(downloadRemoteFile($this->config->item('blog_feed_url'), $this->config->item('blog_feed_file'))){
+		if(downloadRemoteFile(str_replace('%3D', '=', $this->config->item('blog_feed_url')), $this->config->item('blog_feed_file'))){
 			log_message('debug', 'Blog feeds updated');
 		}else{
 			log_message('debug', 'Blog feeds unavailable');
