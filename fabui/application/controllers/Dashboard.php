@@ -71,6 +71,7 @@
 			$processedFeeds    = array();
 			//process feeds
 			foreach($feeds as $feed){
+				$imageSrc = null;
 				$html = new DOMDocument();
 				//print_r($feed); exit();
 				$description = str_replace('[&#8230;]', '...', $feed->description);
