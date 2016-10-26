@@ -82,12 +82,13 @@ class ProbeScan(GCodePusher):
         :param y: Y position
         :rtype: float
         """
+        self.send("M401")
         self.send('G0 X{0} Y{1} F{2}'.format(x, y, self.XY_FEEDRATE) )
         self.send('M400')
         
         reply = self.send('G30', expected_reply = 'echo:', timeout = 200)
         if reply:
-            print reply
+            #print reply
             
             z = float( reply[-1].split("Z:")[1].strip() )
             z = round(z, 3)  # round to 3 decimanl points
@@ -160,7 +161,8 @@ class ProbeScan(GCodePusher):
             obj = self.add_object(object_name, "", user_id)
         
         f = obj.add_file(cloud_file, client_name=client_name)
-        os.remove(cloud_file)
+        if task:
+            os.remove(cloud_file)
 
         # Update task content
         if task:
@@ -168,7 +170,7 @@ class ProbeScan(GCodePusher):
             task['id_file'] = f['id']
             task.write()
     
-    def run(self, task_id, object_id, object_name, file_name, x1, y1, x2, y2, probe_density, cloud_file):
+    def run(self, task_id, object_id, object_name, file_name, x1, y1, x2, y2, probe_density, orig_safe_z, threshold, max_skip, cloud_file):
         """
         Run the probe scan.
         """
@@ -184,7 +186,9 @@ class ProbeScan(GCodePusher):
         
         points = None
         
-        hop_z = 2.0
+        if orig_safe_z < 1.0:
+            orig_safe_z = 1.0
+        
         step  = round(1.0 / probe_density, 3) # round to 3 decimanl points
         
         x_num = int( abs(x2 - x1) / step )
@@ -193,6 +197,11 @@ class ProbeScan(GCodePusher):
         probe_num = 0
         
         self.scan_stats['scan_total'] = total_num
+            
+        # Planned number of skips
+        skipping = 0
+        # Number of skips left to do
+        to_skip = 0
 
         for x_idx in xrange(0, x_num):
             x_pos = x1 + step*x_idx
@@ -200,39 +209,75 @@ class ProbeScan(GCodePusher):
             if self.is_aborted():
                 break
             
+            skipping = 0
+            to_skip = 0
+            prev_point = None
+            slope = 0.0
+            
             for y_idx in xrange(0, y_num):
                 y_pos = y1 + step*y_idx
             
-                
-            
                 if self.is_aborted():
                     break
-                # Get Z at (x_pos, y_pos)
-                new_point = self.probe(x_pos, y_pos)
                 
-                print "probed point: ", new_point
+                if to_skip == 0:
                 
-                if new_point != None:
+                    # Get Z at (x_pos, y_pos)
                     
-                    if points == None:
-                        points = np.array(new_point)
-                    else:
-                        points = np.vstack([points, new_point])
+                    new_point = self.probe(x_pos, y_pos)
+                                        
+                    print "probed point: ", new_point
                     
-                    safe_z = new_point[2] + hop_z
-                    
-                    if safe_z < self.MINIMAL_SAFE_Z:
-                        safe_z = self.MINIMAL_SAFE_Z
+                    if new_point != None:
+                        # No old_z stored
+                        if prev_point is None:
+                            prev_point = new_point
+                            slope = 0.0
+                        else:
+                            dz = float( abs(prev_point[2] - new_point[2]) )
+                            dy = float( abs(prev_point[1] - new_point[1]) )
+                            
+                            try:
+                                slope = dz / dy
+                            except:
+                                slope = 0.0
+                                
+                            if dz < threshold:
+                                print "** dz < threshold ", dz, threshold
+                                if skipping < max_skip:
+                                    skipping += 1
+                                to_skip = skipping
+                            else:
+                                skipping -= 2
+                                if skipping < 0:
+                                    skipping = 0
                         
-                    safe_z = safe_z + self.SAFE_Z_OFFSET
-                    self.send('G0 Z{0} F{1}'.format(safe_z, self.Z_FEEDRATE) )
-                    self.send('M400')
+                        if points == None:
+                            points = np.array(new_point)
+                        else:
+                            points = np.vstack([points, new_point])
+                        
+                        print "-- slope", slope
+                        
+                        safe_z = new_point[2] + (to_skip)*step * slope
+                        
+                        if safe_z < self.MINIMAL_SAFE_Z:
+                            safe_z = self.MINIMAL_SAFE_Z
+                            
+                        safe_z = safe_z + self.SAFE_Z_OFFSET + orig_safe_z
+                        self.send('G0 Z{0} F{1}'.format(safe_z, self.Z_FEEDRATE) )
+                        self.send('M400')
+                else:
+                    # Reduce the counter of points to be skipped
+                    print "skipping a point: to_skip = ", to_skip
+                    to_skip -= 1
                     
                 probe_num += 1
-                self.scan_stats['scan_current'] = probe_num
-                self.progress = ( float(probe_num) / float(total_num) ) * 100.0
-                
-                self.send('M401')   # Renew probe position in case it got moved.
+                if to_skip == 0:
+                    self.scan_stats['scan_current'] = probe_num
+                    self.progress = ( float(probe_num) / float(total_num) ) * 100.0
+        
+        self.progress = ( float(probe_num) / float(total_num) ) * 100.0
         
         if not self.is_aborted():
             self.trace( _("Saving point cloud to file {0}").format(cloud_file) )
@@ -283,14 +328,13 @@ def main():
     parser.add_argument("-d", "--dest",     help=_("Destination folder."),     default=config.get('general', 'bigtemp_path') )
     parser.add_argument("-o", "--output",   help=_("Output point cloud file."),default=os.path.join(destination, 'cloud.asc'))
     parser.add_argument("-n", "--n-probes", help=_("Number of probes."),       default=1)
-    parser.add_argument("-b", "--begin",    help=_("Begin scanning from X."),  default=0)
-    parser.add_argument("-e", "--end",      help=_("End scanning at X."),      default=360)
     parser.add_argument("-x", "--x1",       help=_("X1."),                     default=0)
     parser.add_argument("-y", "--y1",       help=_("Y1."),                     default=0)
     parser.add_argument("-i", "--x2",       help=_("X2."),                     default=10)
     parser.add_argument("-j", "--y2",       help=_("Y2."),                     default=10)
     parser.add_argument("-z", "--safe-z",   help=_("Safe Z."),                 default=1)
     parser.add_argument("-t", "--threshold", help=_("Detail threshold."),      default=0)
+    parser.add_argument("-s", "--max-skip",  help=_("Maximum number of skipped probes."),      default=10)
     parser.add_argument('--help', action='help', help=_("Show this help message and exit") )
 
     # GET ARGUMENTS
@@ -303,6 +347,8 @@ def main():
     y2              = float(args.y2)
     probe_density   = float(args.n_probes)
     safe_z          = float(args.safe_z)
+    threshold       = float(args.threshold)
+    max_skip        = float(args.max_skip)
     
     task_id         = int(args.task_id)
     user_id         = int(args.user_id)
@@ -331,7 +377,7 @@ def main():
 
     app_thread = Thread( 
             target = app.run, 
-            args=( [task_id, object_id, object_name, file_name, x1, y1, x2, y2, probe_density, cloud_file] )
+            args=( [task_id, object_id, object_name, file_name, x1, y1, x2, y2, probe_density, safe_z, threshold, max_skip, cloud_file] )
             )
     app_thread.start()
 

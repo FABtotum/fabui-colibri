@@ -749,8 +749,7 @@ class GCodeService:
                         
                         self.line_number = int(line_no) -1
                         
-                        #print "Communication error. Need to resend command [{0}]".format(cmd.data)
-                        print cmd.reply
+                        self.log.error("Communication error. Need to resend command [{0}]".format(cmd.data))
                         
                         if cmd.data[:4] != 'M999' and cmd.data[:4] != 'M998':
                             cmd.reply = None

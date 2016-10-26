@@ -228,8 +228,8 @@ class Filemanager extends FAB_Controller {
     //~ <link rel="stylesheet" type="text/css" href="css/bootstrap.css" media="screen" />
     //~ <link rel="stylesheet" type="text/css" href="lib/codemirror.css" media="screen" />
     //~ <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
-		$this->addCssFile('/assets/css/filemanager/gcodeviewer/cupertino/jquery-ui-1.9.0.custom.css');
-		$this->addCssFile('/assets/css/filemanager/gcodeviewer/bootstrap.css');
+		//~ $this->addCssFile('/assets/css/filemanager/gcodeviewer/cupertino/jquery-ui-1.9.0.custom.css');
+		//~ $this->addCssFile('/assets/css/filemanager/gcodeviewer/bootstrap.css');
 		$this->addCssFile('/assets/css/filemanager/gcodeviewer/lib/codemirror.css');
 		$this->addCssFile('/assets/css/filemanager/gcodeviewer/style.css');
 		
@@ -523,7 +523,7 @@ class Filemanager extends FAB_Controller {
 	/*
 	 * delete file
 	 */
-	public function deleteProcessingFiles()
+	public function deleteFiles()
 	{
 		// TODO: error handling
 		$this->load->model('Objects', 'objects');

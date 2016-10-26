@@ -217,8 +217,10 @@ class SweepScan(GCodePusher):
         obj = self.get_object(object_id)
         task = self.get_task(task_id)
         
-        if not task:
-            return
+        print "Object_name:", object_name
+        print "File_name:", file_name
+        print "Cloud_name:", cloud_file
+        print "Task_ID:", task_id
         
         ts = time.time()
         dt = datetime.fromtimestamp(ts)
@@ -242,7 +244,6 @@ class SweepScan(GCodePusher):
             obj = self.add_object(object_name, "", user_id)
         
         f = obj.add_file(cloud_file, client_name=client_name)
-        
         if task:
             os.remove(cloud_file)
 
