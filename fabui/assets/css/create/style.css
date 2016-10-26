@@ -66,11 +66,14 @@
     padding-right: 8px;
 }
 .typearea {
-	height:150px !important;
+	height:250px !important;
 }
 .dropdown-menu {
 	left:13px !important;
 }
 .checkbox {
 	margin-left: 10px !important;
+}
+.border-black {
+	border-color: #333 !important;
 }

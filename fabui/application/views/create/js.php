@@ -49,6 +49,7 @@
 		<?php endif; ?>
 		$(".action").on('click', doAction);
 		$(".graph-line-selector").on('click', setGraphLines);
+		$(".new-print").on('click', function(){$('.wizard').wizard('selectedItem', { step: 1 });});
 		
 	});
 	
