@@ -605,4 +605,23 @@ if(!function_exists('startBashScript'))
 		return doCommandLine($cmd, $extPath.'bash/'.$script, $params, $background);
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('resetTaskMonitor'))
+{
+	/**
+	 * reset task monitor
+	 */
+	function resetTaskMonitor()
+	{
+		$CI =& get_instance();
+		$CI->load->helper('file');
+		$CI->config->load('fabtotum');
+		$monitor = json_decode(file_get_contents($CI->config->item('task_monitor')), true);
+		$monitor['task']['status'] = '';
+		$monitor['task']['duration'] = 0;
+		$monitor['task']['pid'] = '';
+		write_file($CI->config->item('task_monitor'), json_encode($monitor));
+		
+	}
+}
 ?>

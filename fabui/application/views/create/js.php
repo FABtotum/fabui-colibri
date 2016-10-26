@@ -168,7 +168,7 @@
 	function startCreate()
 	{
 		is_task_on = true;
-		openWait('Init print');
+		openWait('<i class="fa fa-spinner fa-spin "></i> Preparing <?php echo ucfirst($type) ?>', 'Please wait');
 		
 		var calibration = $('input[name=calibration]:checked').val();
 		var data = {idFile:idFile, skipEngage:skipEngage, calibration:calibration};
@@ -184,7 +184,7 @@
 			}else{
 				fabApp.resetTemperaturesPlot(50);
 				freezeUI();
-				setInterval(timer, 1000);
+				/*timerInterval = setInterval(timer, 1000);*/
 				setInterval(jsonMonitor, 1000);
 				idTask = response.id_task;
 				initSliders();
@@ -278,6 +278,8 @@
 		$.get('/temp/task_monitor.json'+ '?' + jQuery.now(), function(data, status){
 			manageMonitor(data);
 			if(firstCall) {
+				console.log("first call");
+				console.log(data);
 				handleTaskStatus(data.task.status, true);
 				setTemperaturesSlidersValue();
 				setSpeedSliderValue(data.override.speed);
@@ -285,7 +287,7 @@
 				setFanSliderValue(data.override.fan);
 				updateZOverride(data.override.z_override);
 				elapsedTime = parseInt(data.task.duration);
-				setInterval(timer, 1000);
+				timerInterval = setInterval(timer, 1000);
 			}
 		});
 	}
@@ -352,14 +354,16 @@
 	 */
 	function updateProgress(value)
 	{
-		$(".task-progress").html(parseFloat(value).toFixed(1) + " %");
+		console.log("updateProgress");
+		$(".task-progress").html(parseInt(value) + " %");
 		$("#task-progress-bar").attr("style", "width:" +value +"%;");
 	}
 	/**
 	 * update speed infos
 	 */
 	function updateSpeed(value)
-	{
+	{	
+		console.log("updateSpeed");
 		$(".task-speed").html(parseInt(value));
 		$("#task-speed-bar").attr("style", "width:" + ((value/500)*100) +"%;");
 	}
@@ -368,6 +372,7 @@
 	 */
 	function updateFlowRate(value)
 	{
+		console.log("updateFlowRate");
 		$(".task-flow-rate").html(parseInt(value));
 		$("#task-flow-rate-bar").attr("style", "width:" + ((value/500)*100) +"%;");
 	}
@@ -376,8 +381,11 @@
 	 */
 	function updateFan(value)
 	{
-		$(".task-fan").html(parseFloat((value/255)*100).toFixed(0));
+		console.log("update fan");
+		$(".task-fan").html(parseInt((value/255)*100));
 		$("#task-fan-bar").attr("style", "width:" +((value/255)*100) +"%;");
+
+		
 	}
 	/**
 	* update z override value
@@ -755,21 +763,21 @@
 		
 		switch(element){
 			case 'extruder-target':
-				var extruder_target = parseFloat(value).toFixed(0);
+				var extruder_target = parseInt(value);
 				if(extruder_target < soft_extruder_min) extruder_target = soft_extruder_min;
 				$(".slider-extruder-target").html(extruder_target);
 				break;
 			case 'bed-target':
-				$(".slider-bed-target").html(parseFloat(value).toFixed(0));
+				$(".slider-bed-target").html(parseInt(value));
 				break;
 			case 'flow-rate':
-				$('.slider-task-flow-rate').html(parseFloat(value).toFixed(0));
+				$('.slider-task-flow-rate').html(parseInt(value));
 				break;
 			case 'fan':
-				$('.slider-task-fan').html(parseFloat(value).toFixed(0));
+				$('.slider-task-fan').html(parseInt(value));
 				break;
 			case 'speed':
-				$('.slider-task-speed').html(parseFloat(value).toFixed(0));
+				$('.slider-task-speed').html(parseInt(value));
 				break;
 			
 		}
@@ -790,17 +798,17 @@
 				showActionAlert("Extruder temperature set to "+extruder_target+'&deg;');
 				break;
 			case 'bed-target':
-				fabApp.serial("setBedTemp",value[0]);
-				showActionAlert("Bed temperature set to "+value[0]+'&deg;');
+				fabApp.serial("setBedTemp",parseInt(value[0]));
+				showActionAlert("Bed temperature set to "+parseInt(value[0])+'&deg;');
 				break;
 			case 'flow-rate':
-				sendActionRequest('flowRate', value[0]);
+				sendActionRequest('flowRate', parseInt(value[0]));
 				break;
 			case 'fan':
-				sendActionRequest('fan', value[0]);
+				sendActionRequest('fan', parseInt(value[0]));
 				break;
 			case 'speed':
-				sendActionRequest('speed', value[0]);
+				sendActionRequest('speed', parseInt(value[0]));
 				break;			
 		}
 	}
@@ -855,7 +863,8 @@
 	 */
 	function setSpeedSliderValue(value)
 	{
-		$('.slider-task-speed').html(parseFloat(value).toFixed(0));
+		console.log("setSpeedSliderValue");
+		$('.slider-task-speed').html(parseInt(value));
 		if(typeof speedSlider !== 'undefined'){
 			speedSlider.noUiSlider.set(value);
 		}
@@ -865,7 +874,8 @@
 	 */
 	function setFlowRateSliderValue(value)
 	{
-		$('.slider-task-flow-rate').html(parseFloat(value).toFixed(0));
+		console.log("setFlowRateSliderValue");
+		$('.slider-task-flow-rate').html(parseInt(value));
 		if(typeof flowRateSlider !== 'undefined'){
 			flowRateSlider.noUiSlider.set(value);
 		}
@@ -874,8 +884,9 @@
 	* set initial fan slider value
 	*/
 	function setFanSliderValue(value){
+		console.log("setFanSliderValue");
 		value = ((value/255)*100);
-		$('.slider-task-fan').html(parseFloat(value).toFixed(0));
+		$('.slider-task-fan').html(parseInt(value));
 		if(typeof fanSlider !== 'undefined'){
 			fanSlider.noUiSlider.set(value);
 		}
@@ -897,7 +908,9 @@
 		setTimeout(function(){
 			closeWait();
 			$('.wizard').wizard('selectedItem', { step: 4 });
-			unFreezeUI();	
+			unFreezeUI();
+			clearInterval(timerInterval);
+			elapsedTime = 0;			
 		}, 3000);
 		
 		if(zOverride > 0){ //	

@@ -174,7 +174,7 @@
 		}
 	}
 
-	public function test($id)
+	public function test($id = null)
 	{
 		$data = array();
 		$data['idFile'] = $id;
@@ -212,6 +212,9 @@
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $startPrintResult['message'], 'trace'=>$startPrintResult['trace'], 'error' => $startPrintResult['reply'])));
 			return;
 		}
+		
+		//reset task monitor file
+		resetTaskMonitor();
 		
 		//get object record
 		$object = $this->files->getObject($fileToCreate['id']);
@@ -279,7 +282,7 @@
 		$this->load->helper('fabtotum_helper');
 		$action($value);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
-	}		
+	}
  }
  
 ?>
