@@ -609,19 +609,35 @@ if(!function_exists('startBashScript'))
 if(!function_exists('resetTaskMonitor'))
 {
 	/**
-	 * reset task monitor
+	 * reset task monitor values
 	 */
-	function resetTaskMonitor()
+	function resetTaskMonitor($resetArray = array())
 	{
 		$CI =& get_instance();
 		$CI->load->helper('file');
 		$CI->config->load('fabtotum');
 		$monitor = json_decode(file_get_contents($CI->config->item('task_monitor')), true);
-		$monitor['task']['status'] = '';
-		$monitor['task']['duration'] = 0;
-		$monitor['task']['pid'] = '';
-		write_file($CI->config->item('task_monitor'), json_encode($monitor));
 		
+		//override keys value
+		$default_monitor['override']['z_override'] = 0;
+		$default_monitor['override']['laser']      = 0;
+		$default_monitor['override']['speed']      = 100;
+		$default_monitor['override']['flow_rate']  = 100;
+		$default_monitor['override']['fan']        = 0;
+		$default_monitor['override']['rpm']        = 0;
+		//task keys value
+		$default_monitor['task']['status']         = '';
+		$default_monitor['task']['pid']            = '';
+		$default_monitor['task']['completed_time'] = 0;
+		$default_monitor['task']['started_time']   = 0;
+		$default_monitor['task']['duration']       = 0;
+		$default_monitor['task']['controller']     = '';
+		$default_monitor['task']['id']             = '';
+		$default_monitor['task']['type']           = '';
+		$default_monitor['task']['percent']        = 0;
+		
+		$monitor = array_replace_recursive ($monitor, $default_monitor, $resetArray);
+		write_file($CI->config->item('task_monitor'), json_encode($monitor));
 	}
 }
 ?>

@@ -187,35 +187,30 @@
 	 */
 	//~ private function startPrint($data)
 	private function startPrint($data)
-	{
-		//startPrint
-		
+	{		
 		//load helpers
 		$this->load->helpers('fabtotum_helper');
-		
 		$this->load->model('Files', 'files');
 		$fileToCreate = $this->files->get($data['idFile'], 1);
 		$temperatures = readInitialTemperatures($fileToCreate['full_path']);
+		
+		//reset task monitor file
+		resetTaskMonitor();
+		
 		if($temperatures == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => 'File not found')));
 			return;
 		}
-		
 		$homAllResult = doMacro('home_all');
 		if($homAllResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $homAllResult['message'])));
 			return;
 		}
-		
 		$startPrintResult = doMacro('start_additive', '', [ $temperatures['extruder'], $temperatures['bed'] ] );
 		if($startPrintResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $startPrintResult['message'], 'trace'=>$startPrintResult['trace'], 'error' => $startPrintResult['reply'])));
 			return;
 		}
-		
-		//reset task monitor file
-		resetTaskMonitor();
-		
 		//get object record
 		$object = $this->files->getObject($fileToCreate['id']);
 		//ready to print
