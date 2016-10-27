@@ -50,6 +50,8 @@
 		$(".action").on('click', doAction);
 		$(".graph-line-selector").on('click', setGraphLines);
 		$(".new-print").on('click', function(){$('.wizard').wizard('selectedItem', { step: 1 });});
+		$(".restart-print").on('click', function(){$('.wizard').wizard('selectedItem', { step: 1 });});
+		$(".save-z-height").on('click', saveZHeight);
 		
 	});
 	
@@ -983,5 +985,18 @@
 		}
 		updateGraph();
 		event.stopPropagation();  
+	}
+	/**
+	* save and override z height
+	*/
+	function saveZHeight()
+	{
+		$.ajax({
+			type: 'post',
+			url: '<?php echo site_url('probe/overrideLenght'); ?>/' + zOverride,
+			dataType: 'json'
+		}).done(function(response) {
+			console.log(response);
+		});
 	}
 </script>

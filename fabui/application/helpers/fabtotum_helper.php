@@ -616,6 +616,10 @@ if(!function_exists('resetTaskMonitor'))
 		$CI =& get_instance();
 		$CI->load->helper('file');
 		$CI->config->load('fabtotum');
+		
+		//it must exists, but if not
+		if(!file_exists($CI->config->item('task_monitor'))) write_file($CI->config->item('task_monitor'), json_encode(array()));
+		
 		$monitor = json_decode(file_get_contents($CI->config->item('task_monitor')), true); 
 		
 		if(!is_array($monitor)) $monitor = array();
