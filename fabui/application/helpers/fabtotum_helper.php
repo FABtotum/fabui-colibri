@@ -616,7 +616,9 @@ if(!function_exists('resetTaskMonitor'))
 		$CI =& get_instance();
 		$CI->load->helper('file');
 		$CI->config->load('fabtotum');
-		$monitor = json_decode(file_get_contents($CI->config->item('task_monitor')), true);
+		$monitor = json_decode(file_get_contents($CI->config->item('task_monitor')), true); 
+		
+		if(!is_array($monitor)) $monitor = array();
 		
 		//override keys value
 		$default_monitor['override']['z_override'] = 0;
@@ -638,6 +640,6 @@ if(!function_exists('resetTaskMonitor'))
 		
 		$monitor = array_replace_recursive ($monitor, $default_monitor, $resetArray);
 		write_file($CI->config->item('task_monitor'), json_encode($monitor));
-	}
+	} 
 }
 ?>
