@@ -16,6 +16,7 @@ class Plugin_{{plugin_slug}} extends FAB_Controller {
 		$this->load->library('smart');
 		$this->load->helper('form');
 		$this->load->helper('fabtotum_helper');
+		$this->load->helper('plugin_helper');
 		
 		$data = array();
 		
@@ -29,9 +30,9 @@ class Plugin_{{plugin_slug}} extends FAB_Controller {
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';
 		$widget->header = array('icon' => '{{plugin_icon}}', "title" => "<h2>{{plugin_name}}</h2>");
-		$widget->body   = array('content' => $this->load->view('plugins/{{plugin_slug}}/main_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
+		$widget->body   = array('content' => $this->load->view(plugin_url('main_widget'), $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 
-		$this->addJsInLine($this->load->view('plugins/{{plugin_slug}}/js', $data, true));
+		$this->addJsInLine($this->load->view(plugin_url('js'), $data, true));
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}

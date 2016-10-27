@@ -355,6 +355,7 @@ class GCodePusher(object):
                     
             elif action == 'message':
                 self.task_stats['message'] = data
+                self.trace( data )
             
             if monitor_write:
                 self.update_monitor_file()
