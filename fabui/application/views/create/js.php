@@ -40,6 +40,9 @@
 	var soft_extruder_min  = 175;
 	
 	$(document).ready(function() {
+
+		
+		
 		initWizard();
 		<?php if($runningTask == false): ?>
 		initFilesTable();
@@ -396,6 +399,7 @@
 	function updateZOverride(value)
 	{	
 		zOverride = value;
+		console.log('updateZOverride: ', zOverride);
 		$(".z-height").html(value);
 	}
 	/**
@@ -649,57 +653,61 @@
 	{	
 		<?php if($type == 'print'): ?>
 		//extruder target
-		noUiSlider.create(document.getElementById('create-ext-target-slider'), {
-			start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp_target") : 0,
-			connect: "lower",
-			range: {'min': 0, 'max' : 250},
-			pips: {
-				mode: 'values',
-				values: [0, 175, 250],
-				density: 4,
-				format: wNumb({
-					postfix: '&deg;'
-				})
-			}
-		});
+		if(typeof extruderSlider == "undefined")
+			noUiSlider.create(document.getElementById('create-ext-target-slider'), {
+				start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp_target") : 0,
+				connect: "lower",
+				range: {'min': 0, 'max' : 250},
+				pips: {
+					mode: 'values',
+					values: [0, 175, 250],
+					density: 4,
+					format: wNumb({
+						postfix: '&deg;'
+					})
+				}
+			});
 		//bed target slider
-		noUiSlider.create(document.getElementById('create-bed-target-slider'), {
-			start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp_target") : 0,
-			connect: "lower",
-			range: {'min': 10, 'max' : 100},
-			pips: {
-				mode: 'positions',
-				values: [0,25,50,75,100],
-				density: 5,
-				format: wNumb({
-					postfix: '&deg;'
-				})
-			}
-		});
+		if(typeof bedSlider == "undefined")
+			noUiSlider.create(document.getElementById('create-bed-target-slider'), {
+				start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp_target") : 0,
+				connect: "lower",
+				range: {'min': 10, 'max' : 100},
+				pips: {
+					mode: 'positions',
+					values: [0,25,50,75,100],
+					density: 5,
+					format: wNumb({
+						postfix: '&deg;'
+					})
+				}
+			});
 		//flow-rate slider
-		noUiSlider.create(document.getElementById('create-flow-rate-slider'), { 
-			start: 100,
-			connect: "lower",
-			range: {'min': 0, 'max' : 500},
-			pips: {
-				mode: 'positions',
-				values: [0,20,40,60,80,100],
-				density: 10,
-				format: wNumb({})
-			}
-		});
+		if(typeof flowRateSlider == "undefined")
+			noUiSlider.create(document.getElementById('create-flow-rate-slider'), { 
+				start: 100,
+				connect: "lower",
+				range: {'min': 0, 'max' : 500},
+				pips: {
+					mode: 'positions',
+					values: [0,20,40,60,80,100],
+					density: 10,
+					format: wNumb({})
+				}
+			});
 		//fan slider
-		noUiSlider.create(document.getElementById('create-fan-slider'), {
-			start: 255,
-			connect: "lower",
-			range: {'min': 50, 'max' : 100},
-			pips: {
-				mode: 'positions',
-				values: [0,50,100],
-				density: 10,
-				format: wNumb({})
-			}
-		});
+		if(typeof fanSlider == "undefined")
+			noUiSlider.create(document.getElementById('create-fan-slider'), {
+				start: 255,
+				connect: "lower",
+				range: {'min': 50, 'max' : 100},
+				pips: {
+					mode: 'positions',
+					values: [0,50,100],
+					density: 10,
+					format: wNumb({})
+				}
+			});
 		
 		extruderSlider = document.getElementById('create-ext-target-slider');
 		bedSlider      = document.getElementById('create-bed-target-slider');
@@ -737,17 +745,18 @@
 		});
 		<?php endif; ?>
 		//speed slider
-		noUiSlider.create(document.getElementById('create-speed-slider'), {
-			start: 100,
-			connect: "lower",
-			range: {'min': 0, 'max' : 500},
-			pips: {
-				mode: 'positions',
-				values: [0,20,40,60,80,100],
-				density: 10,
-				format: wNumb({})
-			}
-		});
+		if(typeof speedSlider == "undefined")
+			noUiSlider.create(document.getElementById('create-speed-slider'), {
+				start: 100,
+				connect: "lower",
+				range: {'min': 0, 'max' : 500},
+				pips: {
+					mode: 'positions',
+					values: [0,20,40,60,80,100],
+					density: 10,
+					format: wNumb({})
+				}
+			});
 		speedSlider = document.getElementById('create-speed-slider');
 		//speed slider
 		speedSlider.noUiSlider.on('change', function(e){
@@ -991,12 +1000,15 @@
 	*/
 	function saveZHeight()
 	{
+		disableButton('.save-z-height');
 		$.ajax({
 			type: 'post',
 			url: '<?php echo site_url('probe/overrideLenght'); ?>/' + zOverride,
 			dataType: 'json'
 		}).done(function(response) {
 			console.log(response);
+			showActionAlert("Z's Height saved");
+			enableButton('.save-z-height');
 		});
 	}
 </script>

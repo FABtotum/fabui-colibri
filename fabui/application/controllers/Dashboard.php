@@ -145,7 +145,9 @@
 		$this->config->load('fabtotum');
 		$this->load->helper('text_helper');
 		$this->load->helper('layout_helper');
-		$data['feeds'] = array();
+		$data['feeds']  = array();
+		$data['feedsA'] = array();
+		$data['feedsB'] = array();
 		
 		if(file_exists($this->config->item('instagram_feed_file'))){
 			$feeds = json_decode(file_get_contents($this->config->item('instagram_feed_file')), true);
