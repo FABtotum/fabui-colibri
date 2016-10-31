@@ -31,6 +31,11 @@ $config['menu'] = array(
 				'title' => 'Scan',
 				'icon' => 'icon-fab-scan',
 				'url' => 'scan'
+			),
+			'history' => array(
+				'title' => 'History',
+				'icon' => 'icon-fab-scan',
+				'url' => 'history'
 			)
 		)
 	),
@@ -123,24 +128,8 @@ $config['menu'] = array(
 			),
 			'network' => array(
 				'title' => 'Network',
-				'icon' => '',
-				'sub' => array(
-					'ethernet' => array (
-						'title' => 'Ethernet',
-						'icon' => '',
-						'url' => 'settings/ethernet'
-					),
-					'wifi' => array (
-						'title' => 'Wi-Fi',
-						'icon' => '',
-						'url' => 'settings/wifi'
-					),
-					'dnssd' => array (
-						'title' => 'DNS-SD',
-						'icon' => '',
-						'url' => 'settings/dnssd'
-					)
-				)
+				'icon' => 'fa-globe',
+				'url' => 'settings/network'
 			),
 			'raspicam' => array(
 				'title' => 'Raspicam',

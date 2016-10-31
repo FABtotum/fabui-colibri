@@ -62,6 +62,9 @@ if(!function_exists('getEthInfo'))
 		preg_match('/Bcast:([0-9]+.[0-9]+.[0-9]+.[0-9]+)/i',$info,$result);
 		$broadcast = isset($result[1]) ? $result[1] : '';
 		
+		preg_match('/Mask:([0-9]+.[0-9]+.[0-9]+.[0-9]+)/i',$info,$result);
+		$netmask = isset($result[1]) ? $result[1] : '';
+		
 		preg_match('/HWaddr ([0-9a-f:]+)/i',$info,$result);
 		$mac_address = isset($result[1]) ? $result[1] : '';
 		
@@ -73,6 +76,7 @@ if(!function_exists('getEthInfo'))
 			
 		return array(
 			'inet_address' => $inet_address,
+			'netmask_address' => $netmask,
 			'broadcast' => $broadcast,
 			'mac_address' => $mac_address,
 			'received_bytes' => $received_bytes,

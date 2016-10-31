@@ -256,6 +256,54 @@ class Settings extends FAB_Controller {
 		$result = setHostName($hostname, $name);
 		echo $result;
 	}
+	
+	public function network()
+	{
+		$postData = $this->input->post();
+		
+		//load libraries, helpers, model, config
+		$this->load->library('smart');
+		$this->load->helper('fabtotum_helper');
+		$this->load->helper('os_helper');
+		$this->load->helper('form');
+		$this->config->load('fabtotum');
+
+		$data = array();
+		$data['yesNoOptions'] = array('1' => 'Yes', '0' => 'No');
+		$data['addressMode'] = array('static' => 'Static', 'dhcp' => 'Automatic (DHCP)');
+		$data['current_hostname'] = getHostName();
+		$data['current_name'] = getAvahiServiceName();
+		
+		$data['iface'] = array(
+			'eth0' => getEthInfo()
+		);
+		
+		//main page widget
+		$widgetOptions = array(
+			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
+			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
+		);
+		
+		$headerToolbar = '
+			<ul class="nav nav-tabs pull-right">
+				<li class="active"><a data-toggle="tab" href="#ethernet-tab"> Ethernet</a></li>
+				<li><a data-toggle="tab" href="#wireless-wlan0-tab"> Wireless</a></li>
+				<li><a data-toggle="tab" href="#dnssd-tab"> DNS-SD</a></li>
+			</ul>';;
+		
+		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		
+		$widget         = $this->smart->create_widget($widgetOptions);
+		$widget->id     = 'network-settings-widget';
+		$widget->header = array('icon' => 'fa-globe', "title" => "<h2>Network settings</h2>", 'toolbar'=>$headerToolbar);
+		$widget->body   = array('content' => $this->load->view('settings/network_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
+		
+		$this->addJsInLine($this->load->view('settings/network_js', $data, true));
+		$this->addJSFile('/assets/js/plugin/inputmask/jquery.inputmask.bundle.js');
+		//$this->addCSSInLine('<style type="text/css">.custom_settings{display:none !important;}</style>'); 
+		$this->content = $widget->print_html(true);
+		$this->view();
+	}
 
  }
  
