@@ -270,14 +270,10 @@ class Settings extends FAB_Controller {
 
 		$data = array();
 		$data['yesNoOptions'] = array('1' => 'Yes', '0' => 'No');
-		$data['addressModeEth'] = array('static' => 'Static', 'dhcp' => 'Automatic (DHCP)');
-		$data['addressModeWiFi'] = array('static' => 'Static [Station] ', 'static-ap' => 'Static [Access point]', 'dhcp' => 'Automatic (DHCP) [Station]');
 		$data['current_hostname'] = getHostName();
 		$data['current_name'] = getAvahiServiceName();
 		
-		$data['iface'] = array(
-			'eth0' => getEthInfo()
-		);
+		$ifaces_data = getInterfaces();
 		
 		//main page widget
 		$widgetOptions = array(
@@ -285,12 +281,84 @@ class Settings extends FAB_Controller {
 			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
 		);
 		
-		$headerToolbar = '
-			<ul class="nav nav-tabs pull-right">
-				<li class="active"><a data-toggle="tab" href="#ethernet-tab"> Ethernet</a></li>
-				<li><a data-toggle="tab" href="#wireless-wlan0-tab"> Wireless</a></li>
-				<li><a data-toggle="tab" href="#dnssd-tab"> DNS-SD</a></li>
-			</ul>';;
+		$tabs_title = '';
+		$is_active = 'active';
+		$if_idx = array('eth' => 1, 'wlan' => 1);
+		$if_number = array('eth' => 0, 'wlan' => 0);
+		foreach($ifaces_data as $iface => $info)
+		{
+			if(array_key_exists('wireless', $info) )
+				$if_number['wlan'] += 1;
+			else
+				$if_number['eth'] += 1;
+			
+		}
+		
+		$tabs_content = '';
+		
+		foreach($ifaces_data as $iface => $info)
+		{
+			/* Convert <ip>/<prefix> format to <ip> & <netmask> */
+			if( $info['ipv4_address'] != '' )
+			{
+				$info['netmask_address'] = cidr2NetmaskAddr($info['ipv4_address']);
+				$tmp = explode('/', $info['ipv4_address'])[0];
+				$info['ipv4_address'] = $tmp;
+			}
+			else
+			{
+				$info['ipv4_address'] = '0.0.0.0';
+				$info['netmask_address'] = '255.255.255.0';
+				$info['gateway'] = '0.0.0.0';
+			}
+			
+			if(array_key_exists('wireless', $info) )
+			{
+				if($info['wireless']['can_be_ap'] == 'yes')
+					$wifiModes = array('static' => 'Static', 'dhcp' => 'Automatic (DHCP)', 'static-ap' => 'Access Point');
+				else
+					$wifiModes = array('static' => 'Static', 'dhcp' => 'Automatic (DHCP)');
+					
+				if($info['wireless']['mode'] == 'accesspoint' )
+				{
+					$info['address_mode'] = 'static-ap';
+				}
+					
+				$if_type = 'wlan';
+				$title = 'Wireless';
+				$tab_data = array(
+					'iface' => $iface,
+					'info' => $info,
+					'addressModeWiFi' => $wifiModes
+				);
+				$tabs_content .= $this->load->view('settings/wireless_tab', $tab_data, true );
+			}
+			else
+			{
+				$if_type = 'eth';
+				$title = 'Ethernet';
+				$tab_data = array(
+					'iface' => $iface,
+					'info' => $info,
+					'addressModeEth' => array('static' => 'Static', 'dhcp' => 'Automatic (DHCP)')
+				);
+				$tabs_content .= $this->load->view('settings/ethernet_tab', $tab_data, true );
+			}
+			
+			if( $if_number[$if_type] > 1)
+				$title .= ' ('.$if_idx[$if_type].')';
+			$if_idx[$if_type] += 1;
+			
+			$tabs_title .= '<li data-net-type="'.$if_type.'" data-attribute="'.$iface.'" class="tab '.$is_active.'"><a data-toggle="tab" href="'.$iface.'-tab"> '.$title.'</a></li>';
+			$is_active = '';
+			
+			
+		}
+		$data['iface_tabs'] = $tabs_content;
+		
+		$tabs_title .= '<li data-attribute="dnssd" class="tab"><a data-toggle="tab" href="#dnssd-tab"> DNS-SD</a></li>';
+		
+		$headerToolbar = '<ul class="nav nav-tabs pull-right">' . $tabs_title .'</ul>';
 		
 		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
@@ -300,12 +368,31 @@ class Settings extends FAB_Controller {
 		$widget->body   = array('content' => $this->load->view('settings/network_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 		
 		$this->addJsInLine($this->load->view('settings/network_js', $data, true));
-		$this->addJSFile('/assets/js/plugin/inputmask/jquery.inputmask.bundle.js');
-		$this->addCSSFile('/assets/css/bootstrap-toggle.min.css');
-		$this->addJSFile('/assets/js/bootstrap/bootstrap-toggle.min.js');
+		$this->addJSFile('/assets/js/plugin/inputmask/jquery.inputmask.bundle.js');	
 		//$this->addCSSInLine('<style type="text/css">.custom_settings{display:none !important;}</style>'); 
 		$this->content = $widget->print_html(true);
 		$this->view();
+	}
+	
+	public function saveNetworkSettings()
+	{
+		//get data from post
+		$postData = $this->input->post();
+		$result = true;
+		
+		switch($postData['active-type'])
+		{
+			case "eth":
+				break;
+			case "wlan":
+				break;
+			case "dnssd":
+				break;
+			default:
+				$result = false;
+		}
+		
+		$this->output->set_content_type('application/json')->set_output($result);
 	}
 
  }

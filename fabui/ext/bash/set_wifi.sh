@@ -22,7 +22,7 @@ set_wpa_supplicant_conf()
 	PASSWORD=${2}
 
 	cat <<EOF > $WPA_CONF
-# Automatically generated file, do not edit by hand. \n
+# Automatically generated file, do not edit by hand.
 ctrl_interface=DIR=/run/wpa_supplicant GROUP=netdev
 update_config=1
 
@@ -52,7 +52,7 @@ set_hostapd_conf()
 	PASS=${3}
 	CHANNEL=${4}
 cat <<EOF #> $HOSTAPD_CONF
-# Automatically generated, do not edit \n
+# Automatically generated, do not edit
 interface=$IFACE
 ssid=$SSID
 wpa=2

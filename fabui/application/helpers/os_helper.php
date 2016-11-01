@@ -3,11 +3,41 @@
 /**
  * 
  * @author Krios Mane
+ * @author Daniel Kesler
  * @version 0.1
  * @license https://opensource.org/licenses/GPL-3.0
  * 
  */
  
+ 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getInterfaces'))
+{
+	/**
+	 * Get network interfaces data
+	 */
+	function getInterfaces()
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$command = 'sudo sh '.$CI->config->item('ext_path').'bash/get_net_interfaces.sh';
+		$result = json_decode(shell_exec($command), true);
+		return $result;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('cidr2NetmaskAddr'))
+{
+	function cidr2NetmaskAddr($cidr)
+	{
+		$ta = substr($cidr, strpos($cidr, '/') + 1) * 1;
+		$netmask = str_split(str_pad(str_pad('', $ta, '1'), 32, '0'), 8);
+		foreach ($netmask as &$element) $element = bindec($element);
+		return join('.', $netmask);
+    }
+}
+
 if(!function_exists('getHostName'))
 {
 	/**

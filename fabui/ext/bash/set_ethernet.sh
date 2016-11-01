@@ -10,29 +10,118 @@
 ##                                                                       ##
 ###########################################################################
 
-usage() {
-  echo "usage: <IFACE> <static|dhcp> <args...>"
-  echo "  <IFACE> dhcp"
-  echo "  <IFACE> static <ip> <netmask> <gateway>"
-  exit 1
+INTERFACESD=/etc/network/interfaces.d
+
+set_static()
+{
+    IFACE=${1}
+    IP=${2}
+    NETMASK=${3}
+    GATEWAY=${4}
+cat <<EOF > $INTERFACESD/$IFACE
+# Automatically generated, do not edit
+
+allow-hotplug $IFACE
+auto $IFACE
+iface $IFACE inet static
+  address  $IP
+  netmask  $NETMASK
+  gateway  $GATEWAY
+EOF
 }
 
+set_dhcp()
+{
+    IFACE=${1}
+cat <<EOF > $INTERFACESD/$IFACE
+# Automatically generated, do not edit
 
-#~ IP=${1}
+allow-hotplug $IFACE
+auto $IFACE
+iface $IFACE inet dhcp
+EOF
+}
 
-#~ if [ -z "$IP" ] ; then
-    #~ echo "Missing ip address"
-    #~ exit
-#~ fi
+usage()
+{
+cat << EOF
+usage: $0 options
 
-#~ cat <<EOF> /etc/network/interfaces.d/eth0
+This script configures ethernet connection.
 
-#~ allow-hotplug eth0
-#~ auto eth0
-#~ iface eth0 inet static
-  #~ address $IP
-  #~ netmask 255.255.255.0
-  #~ gateway 169.254.1.1
+OPTIONS:
+   -h      Show this message
+   -i      Ethernet interface
+   -D      DHCP address mode
+   -S      STATIC address mode
+   -a      IP address   (ex: 192.168.0.15)
+   -n      Netmask      (ex: 255.255.255.0)
+   -g      Gateway      (ex: 192.168.0.1)
+EOF
+}
 
-#~ EOF
-#~ sudo /etc/init.d/network restart
+IFACE=
+MODE=
+IP=
+NETMASK=
+GATEWAY=
+while getopts “hDSAi:a:n:g:” OPTION
+do
+     case $OPTION in
+         h)
+             usage
+             exit 1
+             ;;
+         D)
+             MODE="dhcp"
+             ;;
+         S)
+             MODE="static"
+             ;;
+         a)
+             IP=$OPTARG
+             ;;
+         n)
+             NETMASK=$OPTARG
+             ;;
+         g)
+             GATEWAY=$OPTARG
+             ;;
+         i)
+             IFACE=$OPTARG
+             ;;
+         ?)
+             usage
+             exit
+             ;;
+     esac
+done
+
+if [[ -z $MODE ]] || [[ -z $IFACE ]]
+then
+     usage
+     exit 1
+fi
+
+if [[ $MODE == "static" ]]; then
+    if [[ -z $IP ]] || [[ -z $NETMASK ]] || [[ -z $GATEWAY ]]; then
+        echo "error: In STATIC mode you must provide ip, netmask and gateway"
+        usage
+        exit 1
+    fi
+fi
+
+case $MODE in
+    dhcp)
+        set_dhcp $IFACE
+        ;;
+    static)
+        set_static $IFACE $IP $NETMASK $GATEWAY
+        ;;
+    *)
+        echo "error: unknown mode \'$MODE\'"
+        usage
+        ;;
+esac
+
+sudo /etc/init.d/network restart
