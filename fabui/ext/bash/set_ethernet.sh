@@ -10,23 +10,29 @@
 ##                                                                       ##
 ###########################################################################
 
-# usage: <IP_ADDRESS>
+usage() {
+  echo "usage: <IFACE> <static|dhcp> <args...>"
+  echo "  <IFACE> dhcp"
+  echo "  <IFACE> static <ip> <netmask> <gateway>"
+  exit 1
+}
 
-IP=${1}
 
-if [ -z "$IP" ] ; then
-    echo "Missing ip address"
-    exit
-fi
+#~ IP=${1}
 
-cat <<EOF> /etc/network/interfaces.d/eth0
+#~ if [ -z "$IP" ] ; then
+    #~ echo "Missing ip address"
+    #~ exit
+#~ fi
 
-allow-hotplug eth0
-auto eth0
-iface eth0 inet static
-  address $IP
-  netmask 255.255.255.0
-  gateway 169.254.1.1
+#~ cat <<EOF> /etc/network/interfaces.d/eth0
 
-EOF
-sudo /etc/init.d/network restart
+#~ allow-hotplug eth0
+#~ auto eth0
+#~ iface eth0 inet static
+  #~ address $IP
+  #~ netmask 255.255.255.0
+  #~ gateway 169.254.1.1
+
+#~ EOF
+#~ sudo /etc/init.d/network restart

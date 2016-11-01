@@ -15,7 +15,7 @@
 				<section class="col col-6">
 					<label class="label">Address Mode</label>
 					<label class="select">
-						<?php echo form_dropdown('feeder-show', $addressMode, 'static', 'id="address-mode"'); ?> <i></i>
+						<?php echo form_dropdown('feeder-show', $addressModeEth, 'static', 'id="address-mode"'); ?> <i></i>
 					</label>
 				</section>
 			</fieldset>
@@ -38,7 +38,7 @@
 					<div class="form-group">
 						<label class="label">Gateway</label>
 						<div class="input-group">
-							<input type="text" id="eth-gateway" data-inputmask="'alias': 'ip'" class="form-control ip" value="0.0.0.0"/>
+							<input type="text" id="eth0-gateway" data-inputmask="'alias': 'ip'" class="form-control ip" value="0.0.0.0"/>
 							<span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
 						</div>
 					</div>
@@ -48,12 +48,70 @@
 	</div>
 	<div class="tab-pane fade in" id="wireless-wlan0-tab">
 		<div class="smart-form">
+			<input type="checkbox" checked data-toggle="toggle" data-on="Ready" data-off="Not Ready" data-onstyle="success" data-offstyle="danger">
 			<fieldset>
-				<section class="col col-3">
+				<section class="col col-6">
 					<label class="label">Address Mode</label>
 					<label class="select">
-						<?php echo form_dropdown('feeder-show', $addressMode, 'static', 'id="address-mode"'); ?> <i></i>
+						<?php echo form_dropdown('feeder-show', $addressModeWiFi, 'static', 'id="address-mode"'); ?> <i></i>
 					</label>
+				</section>
+			</fieldset>
+			<fieldset>
+				<section class="col col-6">
+					<div class="form-group">
+						<label class="label">Address</label>
+						<label class="input">
+						<div class="input-group">
+							<input type="text" id="wlan0-ip" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo $iface['eth0']['inet_address']; ?>"/>
+							<span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+						</div>
+						</label>
+					</div>
+					<div class="form-group">
+						<label class="label">Netmask</label>
+						<label class="input">
+						<div class="input-group">
+							<input type="text" id="wlan0-netmask" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo $iface['eth0']['netmask_address']; ?>"/>
+							<span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+						</div>
+						</label>
+					</div>
+					<div class="form-group">
+						<label class="label">Gateway</label>
+						<label class="input">
+						<div class="input-group">
+							<input type="text" id="wlan0-gateway" data-inputmask="'alias': 'ip'" class="form-control ip" value="0.0.0.0"/>
+							<span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
+						</div>
+						</label>
+					</div>
+				</section>
+			</fieldset>
+			<fieldset>
+				<section class="col col-6">
+					<div class="form-group">
+						<label class="label">SSID</label>
+						<label class="input">
+						<div class="input-group">
+							<input type="text" id="wlan0-ssid" placeholder="FABtotum" class="form-control" value="FABtotum"/>
+							<span class="input-group-addon"><i class="fa fa-wifi"></i></span>
+						</div>
+						</label>
+					</div>
+					<div class="form-group">
+						<label class="label">Password</label>
+						<label class="input">
+						<div class="input-group">
+							<input type="password" id="wlan0-password" class="form-control" value="fabtotumwifi"/>
+							<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+						</div>
+						</label>
+						<label class="checkbox">
+						<input type="checkbox" class="show-password"> <i></i> Show password
+						</label>
+					</div>
+
 				</section>
 			</fieldset>
 		</div>

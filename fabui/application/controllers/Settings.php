@@ -270,7 +270,8 @@ class Settings extends FAB_Controller {
 
 		$data = array();
 		$data['yesNoOptions'] = array('1' => 'Yes', '0' => 'No');
-		$data['addressMode'] = array('static' => 'Static', 'dhcp' => 'Automatic (DHCP)');
+		$data['addressModeEth'] = array('static' => 'Static', 'dhcp' => 'Automatic (DHCP)');
+		$data['addressModeWiFi'] = array('static' => 'Static [Station] ', 'static-ap' => 'Static [Access point]', 'dhcp' => 'Automatic (DHCP) [Station]');
 		$data['current_hostname'] = getHostName();
 		$data['current_name'] = getAvahiServiceName();
 		
@@ -300,6 +301,8 @@ class Settings extends FAB_Controller {
 		
 		$this->addJsInLine($this->load->view('settings/network_js', $data, true));
 		$this->addJSFile('/assets/js/plugin/inputmask/jquery.inputmask.bundle.js');
+		$this->addCSSFile('/assets/css/bootstrap-toggle.min.css');
+		$this->addJSFile('/assets/js/bootstrap/bootstrap-toggle.min.js');
 		//$this->addCSSInLine('<style type="text/css">.custom_settings{display:none !important;}</style>'); 
 		$this->content = $widget->print_html(true);
 		$this->view();
