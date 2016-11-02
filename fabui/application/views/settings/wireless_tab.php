@@ -8,43 +8,44 @@
 				</label>
 			</section>
 		</fieldset>
-		<form class="addressForm">
-			<fieldset id="address-container" style="<?php if($info['address_mode'] == 'dhcp') echo 'display:none;';?>">
-				<section class="col col-6">
-					<div class="form-group">
-						<label class="label">Address</label>
-						<label class="input">
-						<div class="input-group">
-							<input type="text" id="ipv4" name="ipv4" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo $info['ipv4_address']; ?>"/>
-							<span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
-						</div>
-						</label>
+		
+		<fieldset>
+			
+			<section id="address-container" style="<?php if($info['address_mode'] == 'dhcp') echo 'display:none;';?>" class="col col-6">
+				<form class="addressForm">
+				<div class="form-group">
+					<label class="label">Address</label>
+					<label class="input">
+					<div class="input-group">
+						<input type="text" id="ipv4" name="ipv4" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo $info['ipv4_address']; ?>"/>
+						<span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
 					</div>
-					<div class="form-group">
-						<label class="label">Netmask</label>
-						<label class="input">
-						<div class="input-group">
-							<input type="text" id="netmask" name="netmask" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo $info['netmask_address']; ?>"/>
-							<span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
-						</div>
-						</label>
+					</label>
+				</div>
+				<div class="form-group">
+					<label class="label">Netmask</label>
+					<label class="input">
+					<div class="input-group">
+						<input type="text" id="netmask" name="netmask" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo $info['netmask_address']; ?>"/>
+						<span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
 					</div>
-					<div class="form-group" id="gateway-container" style="<?php if($info['address_mode'] == 'static-ap') echo 'display:none;';?>">
-						<label class="label">Gateway</label>
-						<label class="input">
-						<div class="input-group">
-							<input type="text" id="gateway" name="gateway" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo $info['gateway']; ?>"/>
-							<span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
-						</div>
-						</label>
+					</label>
+				</div>
+				<div class="form-group" id="gateway-container" style="<?php if($info['address_mode'] == 'static-ap') echo 'display:none;';?>">
+					<label class="label">Gateway</label>
+					<label class="input">
+					<div class="input-group">
+						<input type="text" id="gateway" name="gateway" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo $info['gateway']; ?>"/>
+						<span class="input-group-addon"><i class="fa fa-asterisk"></i></span>
 					</div>
-				</section>
-			</fieldset>
-		</form>
-		<form id="apForm" class="apForm">
-			<fieldset id="ap-container" style="<?php if($info['address_mode'] != 'static-ap') echo 'display:none;';?>">
-				<section class="col col-6">
-					<div class="form-group">
+					</label>
+				</div>
+				</form>
+			</section>
+			
+			<section id="ap-container" style="<?php if($info['address_mode'] != 'static-ap') echo 'display:none;';?>" class="col col-6">
+				<form id="apForm" class="apForm">
+					<div  class="form-group">
 						<label class="label">SSID</label>
 						<label class="input">
 						<div class="input-group">
@@ -65,9 +66,10 @@
 						<input type="checkbox" class="show-password" data-attribute="<?php echo $iface;?>"> <i></i> Show password
 						</label>
 					</div>
+					</form>
 				</section>
-			</fieldset>
-		</form>
+		</fieldset>
+		
 	</div>
 	
 	<div class="row">
