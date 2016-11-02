@@ -26,7 +26,7 @@ import os
 # Import internal modules
 from fabtotum.utils.slicer.cura_utils import Parser as CuraParser
 from fabtotum.utils.slicer.slic3r_utils import Parser as Slic3rParser
-
+from fabtotum.utils.slicer.simplify_utils import Parser as SimplifyParser
 
 class GCodeFileIter:
     
@@ -83,6 +83,7 @@ class GCodeFile:
         self.info = GCodeInfo(filename)
         self.cura_p   = CuraParser()
         self.slic3r_p = Slic3rParser()
+        self.simplify_p = SimplifyParser()
         self.process_file(filename, lite_parsing)
         
     def __iter__(self):
@@ -96,6 +97,8 @@ class GCodeFile:
                 parser = self.cura_p
             elif slicer == 'SLIC3R':
                 parser = self.slic3r_p
+            elif slicer == 'SIMPLIFY3D':
+                parser = self.simplify_p
         return GCodeFileIter(self.info['filename'], parser)
 
     @staticmethod
@@ -134,15 +137,19 @@ class GCodeFile:
         
         # Check GCode profile (deduce slicer)
         for line in lines:
-            if self.cura_p.check_profile(line):
+            if self.cura_p.is_cura(line):
                 slicer = 'CURA'
                 break
             elif self.slic3r_p.check_profile(line):
                 slicer = 'SLIC3R'
                 break
-                
+            elif self.simplify_p.is_simplify(line):
+                slicer = 'SIMPLIFY3D'
+                break
         if slicer:
             self.info['slicer'] = slicer
+            
+        #print slicer
         
         with open(filename, 'r+') as file:
             for line in file:
@@ -167,6 +174,8 @@ class GCodeFile:
                         attrs = self.cura_p.process_line(line)
                     elif slicer == 'SLIC3R':
                         attrs = self.slic3r_p.process_line(line)
+                    elif slicer == 'SIMPLIFY3D':
+                        attrs = self.simplify_p.process_line(line)
                     
                     if attrs:
                         if 'type' in attrs:
@@ -180,10 +189,11 @@ class GCodeFile:
                             layer = int(attrs['layer'])
                             if layer > max_layer:
                                 max_layer = layer
+                            
         
                 if line[0] != ';':
                     gcode_count += 1
-        
+                        
         if not layer_count and gcode_type == GCodeInfo.PRINT and max_layer > 0:
             self.info['layer_count'] = max_layer
         
