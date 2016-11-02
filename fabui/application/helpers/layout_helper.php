@@ -122,7 +122,7 @@ function buildMenu($menu_array, $is_sub = FALSE, $parent = '') {
 			/*
 			 * Use the created variables to output HTML
 			 */
-			$menu .= '<li><a data-controller="'.$id.'" href="' . $url . '"><i class="fa fa-lg fa-fw ' . $icon . '"></i> <span ' . $attr . '>' . $title . '</span></a> ' . $sub . '</li>';
+			$menu .= '<li><a data-controller="'.$id.'" data-href="'.$url.'" href="' . $url . '"><i class="fa fa-lg fa-fw ' . $icon . '"></i> <span ' . $attr . '>' . $title . '</span></a> ' . $sub . '</li>';
 			/*
 			 * Destroy the variables to ensure they're reset
 			 * on each iteration

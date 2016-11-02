@@ -33,6 +33,7 @@
 		fabApp.webSocket();
 		fabApp.FabActions();
 		fabApp.domReadyMisc();
+		fabApp.getState();
 		//start intervals
 		temperatures_interval = setInterval(fabApp.getTemperatures, temperatures_interval_timer);
 	});

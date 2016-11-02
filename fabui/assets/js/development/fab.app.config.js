@@ -22,6 +22,7 @@ var stop_all_url_action         = base_url + '/control/emergency';
 var set_secure_url              = base_url + '/control/setSecure';
 var temperatures_file_url       = '/temp/temperature.json';
 var jog_response_file_url       = '/temp/jog_response.json';
+var task_monitor_file_url       = '/temp/task_monitor.json';
 var update_check_url            = '/fabui/updates/check';
 var check_notification_url      = '/fabui/application/modules/controller/ajax/check_notifications.php';
 var secure_url_action           = '/fabui/application/modules/controller/ajax/secure.php';

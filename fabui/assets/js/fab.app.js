@@ -294,27 +294,40 @@ fabApp = (function(app) {
 		
 		var a = $("nav li > a");
 		a.each(function() {
-			var controller = $(this).attr('data-controller');
+			var link = $(this);
+			var controller = link.attr('data-controller');
 			if(jQuery.inArray( controller, excepet_item_menu ) >= 0 ){
 				if(controller == except){
-					$(this).append('<span class="badge bg-color-red pull-right inbox-badge freeze-menu">!</span>');
+					//link.addClass('except-link');
+					app.unFreezeParent(link);
+					link.append('<span class="badge bg-color-red pull-right inbox-badge freeze-menu">!</span>');
 				}
 			}else{
-				$(this).addClass('menu-disabled');
-				$(this).removeAttr('href');
+				link.addClass('menu-disabled');
+				link.removeAttr('href');
 			}
 		});
+		$('.menu-disabled').click(function () {return false;});
 	};
 	/*
 	 * 
 	 */
 	app.unFreezeMenu = function () {
 		var a = $("nav li > a");
+		$('.menu-disabled').unbind('click');
 		a.each(function() {
-			$(this).removeClass('menu-disabled');
-			$(this).attr('href', $(this).attr('data-href'));
+			var link = $(this);
+			link.removeClass('menu-disabled');
+			link.attr('href', $(this).attr('data-href'));
 		});
 		$(".freeze-menu").remove();
+		
+	}
+	/**
+	*
+	*/
+	app.unFreezeParent = function(link){
+		//TODO
 	}
 	/*
 	 *  check for first setup wizard
@@ -958,6 +971,22 @@ fabApp = (function(app) {
 			temperaturesPlot = {extruder: {temp: [], target: []}, bed: {temp:[], target:[]}};
 		}
 		
+	}
+	/**
+	* check if there are running tasks, and more
+	*/
+	app.getState = function()
+	{
+		var freezing_status = ['running', 'aborting', 'completing'];
+		$.get(task_monitor_file_url + '?' + jQuery.now(), function(data, status){
+			if(data.task.hasOwnProperty('status')){
+				if(jQuery.inArray( data.task.status, freezing_status ) >= 0 ){
+					app.freezeMenu(data.task.type);
+				}else{
+					app.unFreezeMenu();
+				}
+			}
+		});
 	}
 	return app;
 })({});

@@ -189,6 +189,7 @@
 				showErrorAlert(response.message);
 			}else{
 				fabApp.resetTemperaturesPlot(50);
+				fabApp.freezeMenu('<?php echo $type ?>');
 				freezeUI();
 				/*timerInterval = setInterval(timer, 1000);*/
 				setInterval(jsonMonitor, 1000);
@@ -343,7 +344,7 @@
 				}
 				break;
 			case 'aborting':
-				break;
+				aborting();
 			case 'aborted':
 				aborted();
 				break;
@@ -920,6 +921,7 @@
 		setTimeout(function(){
 			closeWait();
 			$('.wizard').wizard('selectedItem', { step: 4 });
+			fabApp.unFreezeMenu();
 			unFreezeUI();
 			clearInterval(timerInterval);
 			elapsedTime = 0;			
@@ -1010,5 +1012,12 @@
 			showActionAlert("Z's Height saved");
 			enableButton('.save-z-height');
 		});
+	}
+	/**
+	*
+	*/
+	function aborting()
+	{
+		openWait('<i class="fa fa-spinner fa-spin "></i> Aborting print', 'Please wait..', false);
 	}
 </script>
