@@ -8,9 +8,9 @@
 				</label>
 			</section>
 		</fieldset>
-		<form class="addressForm">
-			<fieldset id="address-container" style="<?php if($info['address_mode'] == 'dhcp') echo 'display:none;';?>">
-				<section class="col col-6">
+		<fieldset>
+			<section class="col col-6" id="address-container" style="<?php if($info['address_mode'] == 'dhcp') echo 'display:none;';?>">
+				<form class="addressForm">
 					<div class="form-group">
 						<label class="label">Address</label>
 						<label class="input">
@@ -38,8 +38,8 @@
 						</div>
 						</label>
 					</div>
-				</section>
-			</fieldset>
-		</form>
+				</form>
+			</section>
+		</fieldset>
 	</div>
 </div>

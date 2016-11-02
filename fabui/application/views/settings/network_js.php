@@ -14,6 +14,7 @@
 		$(".show-password").on('change', show_password);
 		
 		scan('wlan0');
+		scan('wlan1');
 		$("#scanButton").on('click', scan);
 		$("#modalConnectButton").on('click', passwordModalConnect);
 		
@@ -213,7 +214,7 @@
 	function buildTable(iface, nets)
 	{
 		console.log(nets);
-		$(".nets-table").remove();
+		$("#"+iface+"-table-container .nets-table").remove();
 		var table = '<table class="table table-striped table-forum nets-table"><tbody>';
 		$.each(nets, function( index, net ) {
 			var protected = net.encryption_key == 'on' ? 'Protected <i class="fa fa-lock"></i>' : '';
@@ -237,7 +238,7 @@
 			table += '</tr>';
 		});
 		table += '</tbody></table>';
-		$("#wlan0-table-container").html(table);
+		$("#"+iface+"-table-container").html(table);
 		$('.progress-bar').progressbar({display_text : 'fill'
 			});
 		$('.connect').on('click', connectionManager);
@@ -307,7 +308,6 @@
 			sendActionRequest('connect', wifiIface, wifiSelected, $("#wifiPassword").val());
 		}
 	}
-
 	
 	function initFieldValidator()
 	{
@@ -352,6 +352,7 @@
 		$(".addressForm").each(function( index ) {
 		
 			$(this).validate({
+				onfocusout: function (element) {},
 				rules : {
 					ipv4 : {
 						isIPaddress : true
@@ -383,6 +384,7 @@
 		
 		$(".apForm").each(function( index ) {
 			$(this).validate({
+				onfocusout: function (element) {},
 				rules : {
 					ssid : {
 						required : true

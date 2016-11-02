@@ -322,10 +322,9 @@ class Settings extends FAB_Controller {
 				$wifiChannels = array('1' => 'Static', 
 									  '2' => 'Automatic (DHCP)');
 				
-				if($info['wireless']['mode'] == 'accesspoint' )
-				{
-					$info['address_mode'] = 'static-ap';
-				}
+				if(array_key_exists('mode', $info['wireless']) )
+					if($info['wireless']['mode'] == 'accesspoint' )
+						$info['address_mode'] = 'static-ap';
 				
 				if(!array_key_exists('passphrase', $info['wireless']) )
 				{
