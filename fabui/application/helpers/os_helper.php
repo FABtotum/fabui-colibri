@@ -193,6 +193,25 @@ if(!function_exists('scanWlan'))
 		return $nets;
 	}
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('scanWlan2'))
+{
+	/**
+	 * @param string $interface wlan interface name
+	 * @return array list of discovered wifi's nets 
+	 */
+	function scanWlan2($interface = 'wlan0')
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$scanCommand = 'sudo python '.$CI->config->item('ext_path').'py/scan_wifi.py '.$interface;
+		
+		$nets = json_decode(shell_exec($scanCommand), true);
+		
+		return $nets;
+	}
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('getFromRegEx'))
 {

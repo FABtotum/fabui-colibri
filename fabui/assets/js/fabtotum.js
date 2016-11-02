@@ -30,9 +30,6 @@ function transformLinks(container)
 {
 	container = container || $('#content');
 	$.each( container.find('a'), function() {
-		
-		console.log('another nuke!!!!');
-		
 		if(	$(this).attr('href') !== undefined 
 			&& $(this).attr('href') != "javascript:void(0);" 
 			&& $(this).attr('href').startsWith('#') == false ) 

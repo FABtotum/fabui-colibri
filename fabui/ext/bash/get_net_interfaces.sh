@@ -31,6 +31,7 @@ for iface in $(echo $IFACES); do
         
         if [ -e "/etc/network/interfaces.d/$iface" ]; then
             MODE=$(cat /etc/network/interfaces.d/$iface | grep "^iface $iface" | awk '{print $4}')
+            HOSTAPD=$(cat /etc/network/interfaces.d/$iface | grep "^[ \t]*hostapd" | awk '{print $2}')
             echo "    \"address_mode\" : \"$MODE\","
         else
             echo "    \"address_mode\" : \"unknown\","
@@ -54,6 +55,13 @@ for iface in $(echo $IFACES); do
                 echo ","
                 echo "      \"mode\" : \"accesspoint\","
                 #~ hostapd_cli -p /run/hostapd -i$iface get_config | sed -e 's@ *$@@g;s@=@\" : \"@;s@$@",@g;s@^@      "@'
+                if [ -n "$HOSTAPD" ]; then
+                    #if [ -e "$HOSTAPD" ]; then
+                        PASS=$(cat "$HOSTAPD" | grep wpa_passphrase| awk 'BEGIN{FS="="}{print $2;}')
+                        echo "      \"passphrase\" : \"$PASS\","
+                    #fi
+                fi
+                
                 a=$(hostapd_cli -p /run/hostapd -i$iface get_config | sed -e 's@^@"@g; s@$@",@g; s@=@" : "@'; echo -n ",")
                 echo $a | sed -e 's@, ,@@g'
             elif [ $MODE == "Mode:Managed" ]; then

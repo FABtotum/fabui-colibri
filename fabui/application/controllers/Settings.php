@@ -183,11 +183,11 @@ class Settings extends FAB_Controller {
 	 * scan wifi networks
 	 * @return json all scanned networks
 	 */
-	public function scanWifi()
+	public function scanWifi($interface = 'wlan0')
 	{
 		//load helpers
 		$this->load->helper('os_helper');
-		$nets = scanWlan();
+		$nets = scanWlan2($interface);
 		$this->output->set_content_type('application/json')->set_output(json_encode($nets));
 	}
 	
@@ -318,10 +318,18 @@ class Settings extends FAB_Controller {
 					$wifiModes = array('static' => 'Static', 'dhcp' => 'Automatic (DHCP)', 'static-ap' => 'Access Point');
 				else
 					$wifiModes = array('static' => 'Static', 'dhcp' => 'Automatic (DHCP)');
-					
+				
+				$wifiChannels = array('1' => 'Static', 
+									  '2' => 'Automatic (DHCP)');
+				
 				if($info['wireless']['mode'] == 'accesspoint' )
 				{
 					$info['address_mode'] = 'static-ap';
+				}
+				
+				if(!array_key_exists('passphrase', $info['wireless']) )
+				{
+					$info['wireless']['passphrase'] = '';
 				}
 					
 				$if_type = 'wlan';
@@ -368,6 +376,7 @@ class Settings extends FAB_Controller {
 		$widget->body   = array('content' => $this->load->view('settings/network_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 		
 		$this->addJsInLine($this->load->view('settings/network_js', $data, true));
+		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
 		$this->addJSFile('/assets/js/plugin/inputmask/jquery.inputmask.bundle.js');	
 		//$this->addCSSInLine('<style type="text/css">.custom_settings{display:none !important;}</style>'); 
 		$this->content = $widget->print_html(true);
