@@ -184,6 +184,9 @@ if(!function_exists('sendToXmlrpcServer'))
 		$CI->xmlrpc->server('127.0.0.1/FABUI', $CI->config->item('xmlrpc_port'));
 		$CI->xmlrpc->method($method);
 		$CI->xmlrpc->timeout(120*5);
+		
+		if(!is_array($data)) $data = array($data);
+		
 		$CI->xmlrpc->request( $data );
 		
 		$response = false;
@@ -251,61 +254,6 @@ if(!function_exists('doMacro'))
 		return $serverResponse;
 	}
 }
-/*
-if(!function_exists('doMacro'))
-{
-	function doMacro($macroName, $traceFile = '', $extrArgs = '')
-	{
-		$CI =& get_instance(); //init ci instance
-		$CI->config->load('fabtotum');
-		$CI->load->library('xmlrpc');
-		
-		$CI->xmlrpc->server('127.0.0.1/FABUI', $CI->config->item('xmlrpc_port'));
-		$CI->xmlrpc->method('do_macro');
-
-		if( !is_array($extrArgs) )
-		{
-			$extrArgs = array($extrArgs);
-		}
-		
-		$CI->xmlrpc->timeout(120);
-		
-		$data = array( array($macroName, 'string'),
-					   array($extrArgs, 'array'),
-					   array(true, 'boolean')
-				);
-		
-		$CI->xmlrpc->request( $data );
-		
-		if($traceFile == '' or $traceFile == null)
-			$traceFile = $CI->config->item('trace');
-
-		$_reply = '';
-		$_message = '';
-		$_response = False;
-		
-		if ( !$CI->xmlrpc->send_request())
-		{
-			$_reply = $CI->xmlrpc->display_error();
-			$_response = False;
-			$trace = 'request had an error: '.$CI->xmlrpc->display_error();
-		}
-		else
-		{
-			$tmp = json_decode( $CI->xmlrpc->display_response(), true );
-			if($tmp['response'] == 'success')
-			{
-				$_response = True;
-			}
-			$_reply   = $tmp['reply'];
-			$_message = $tmp['message'];
-			$trace	= file_get_contents($traceFile);
-		}
-		
-		return array('reply' => $_reply, 'response' => $_response, 'message' => $_message, 'trace' => $trace);
-	}
-}
-*/
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('doGCode'))
 {
@@ -465,7 +413,6 @@ if(!function_exists('abort'))
 	function abort()
 	{
 		return sendToXmlrpcServer('do_abort');
-		//writeToCommandFile('!abort');
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -477,7 +424,6 @@ if(!function_exists('pause'))
 	function pause()
 	{
 		return sendToXmlrpcServer('do_pause');
-		//writeToCommandFile('!pause');
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -489,7 +435,6 @@ if(!function_exists('resume'))
 	function resume()
 	{
 		return sendToXmlrpcServer('do_resume');
-		//writeToCommandFile('!resume');
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -500,7 +445,7 @@ if(!function_exists('flowRate'))
 	 */
 	function flowRate($value)
 	{
-		writeToCommandFile('!flow_rate:'.$value);
+		return sendToXmlrpcServer('set_flow_rate', $value);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -511,7 +456,7 @@ if(!function_exists('speed'))
 	 */
 	function speed($value)
 	{
-		writeToCommandFile('!speed:'.$value);
+		return sendToXmlrpcServer('set_speed', array($value));
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -525,7 +470,7 @@ if(!function_exists('zHeight'))
 		$sign = substr($value, 0,1);
 		$value = str_replace($sign, '' , $value);
 		$command = $sign == '-' ? '!z_minus' : '!z_plus';
-		writeToCommandFile($command.':'.$value);
+		return sendToXmlrpcServer('set_z_modify', $value);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -539,7 +484,7 @@ if(!function_exists('fan'))
 		if($percent){
 			$value = (($value/100)*255);
 		}
-		writeToCommandFile('!fan:'.$value);
+		return sendToXmlrpcServer('set_fan', $value);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -550,25 +495,9 @@ if(!function_exists('clearJogResponse'))
 	 */
 	function clearJogResponse()
 	{
-		writeToCommandFile('!jog_clear');
+		//writeToCommandFile('!jog_clear');
 	}
 }
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if(!function_exists('startScript'))
-{
-	/**
-	 * start python task
-	 */
-	function startScript($script, $params = '', $background = true)
-	{
-		$CI =& get_instance();
-		$CI->config->load('fabtotum');
-		$extPath = $CI->config->item('ext_path');
-		// TODO: check trailing /
-		return doCommandLine('python', $extPath.$script, $params, $background);
-	}
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('startPyScript'))
 {
