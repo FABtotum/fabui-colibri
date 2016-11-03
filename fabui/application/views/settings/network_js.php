@@ -5,17 +5,17 @@
 	var wifiIface;
 	var wifiPassword;
 
-	$(function () {
-		
-		$("#save").on('click', save);
+	$(function () 
+	{
+		$("#saveButton").on('click', do_save);
 		$(".ip").inputmask();
 		
 		$(".address-mode").on('change', address_mode_change);
 		$(".show-password").on('change', show_password);
 		
-		scan('wlan0');
-		scan('wlan1');
-		$("#scanButton").on('click', scan);
+		//~ scan('wlan0');
+		//~ scan('wlan1');
+		$("#scanButton").on('click', do_scan);
 		$("#modalConnectButton").on('click', passwordModalConnect);
 		
 		$('a[data-toggle="tab"]').on('shown.bs.tab', tab_change);
@@ -23,7 +23,7 @@
 		initFieldValidator();
 	});
 
-	function save()
+	function do_save()
 	{
 		var tab = $("li.tab.active").attr('data-attribute');
 		var net_type = $("li.tab.active").attr('data-net-type');
@@ -64,7 +64,6 @@
 		}
 		
 		console.log('save eth', iface);
-		console.log(data);
 		post_data(data);
 	}
 
@@ -74,21 +73,24 @@
 			return;
 		}
 		
-		console.log(data);
-		post_data(data);
+		if( data['address-mode'] == 'static-ap' )
+		{
+			post_data(data);
+		}
 	}
 
 	function save_dnssd(data)
 	{
-		console.log(data);
 		post_data(data);
 	}
 
 	function post_data(data)
 	{
-		var button = $("#save");
+		var button = $("#saveButton");
 		button.addClass('disabled');
 		button.html('<i class="fa fa-save"></i> Saving..');
+		
+		console.log('posting', data);
 		
 		$.ajax({
 			type: 'post',
@@ -98,6 +100,8 @@
 		}).done(function(response) {
 			button.html('<i class="fa fa-save"></i> Save');
 			button.removeClass('disabled');
+			
+			console.log('response', response);
 			
 			$.smallBox({
 				title : "Settings",
@@ -118,18 +122,18 @@
 		{
 			var mode = $(target + ' #address-mode').val();
 			if(mode != 'static-ap')
-				$("#scan").show();
+				$("#scanButton").show();
 			else
-				$("#scan").hide();
+				$("#scanButton").hide();
 		}
 		else if( target.startsWith("#eth") )
 		{
-			$("#scan").hide();
+			$("#scanButton").hide();
 		}
 		else if( target.startsWith("#dnssd") )
 		{
 			console.log('ddns', target);
-			$("#scan").hide();
+			$("#scanButton").hide();
 		}
 	}
 
@@ -146,9 +150,9 @@
 				$("#"+iface+"-tab #gateway-container").slideUp('slow');
 				$("#"+iface+"-table-container").slideDown('slow');
 				if(iface.startsWith('wlan'))
-					$("#scan").show();
+					$("#scanButton").show();
 				else
-					$("#scan").hide();
+					$("#scanButton").hide();
 				break;
 			case "static":
 				$("#"+iface+"-tab #address-container").slideDown('slow');
@@ -156,16 +160,16 @@
 				$("#"+iface+"-tab #gateway-container").slideDown('slow');
 				$("#"+iface+"-table-container").slideDown('slow');
 				if(iface.startsWith('wlan'))
-					$("#scan").show();
+					$("#scanButton").show();
 				else
-					$("#scan").hide();
+					$("#scanButton").hide();
 				break;
 			case "static-ap":
 				$("#"+iface+"-tab #address-container").slideDown('slow');
 				$("#"+iface+"-tab #ap-container").slideDown('slow');
 				$("#"+iface+"-tab #gateway-container").slideUp('slow');
 				$("#"+iface+"-table-container").slideUp('slow');
-				$("#scan").hide();
+				$("#scanButton").hide();
 				break;
 		}
 	}
@@ -178,6 +182,13 @@
 			obj.attr('type', 'text');
 		else
 			obj.attr('type', 'password');
+	}
+
+	function do_scan()
+	{
+		var iface = $("li.tab.active").attr('data-attribute');
+		console.log('do_scan', iface)
+		scan(iface);
 	}
 
 	/**
@@ -238,7 +249,7 @@
 	/**
 	 * 
 	 */
-	function showDetails()
+	/*function showDetails()
 	{
 		var button = $(this);
 		var iface = $(this).attr('data-attribute');
@@ -252,7 +263,7 @@
 				button.find('i').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
 			});
 		}
-	}
+	}*/
 	
 	function connectionManager()
 	{
@@ -415,14 +426,14 @@
 	{
 		$('#passwordModal').modal('hide');
 		console.log('sendActionRequest', iface, essid, password);
-		//~ var connectionLabel = action == 'connect' ? 'Connecting to ' : 'Disconnecting from ';
-		//~ openWait('<i class="fa fa-circle-o-notch fa-spin"></i> '+ connectionLabel + ' ' + essid);
-		//~ essid = essid || '';
-		//~ password = password || '';
+		var connectionLabel = action == 'connect' ? 'Connecting to ' : 'Disconnecting from ';
+		//openWait('<i class="fa fa-circle-o-notch fa-spin"></i> '+ connectionLabel + ' ' + essid);
+		essid = essid || '';
+		password = password || '';
 		
-		//~ $.ajax({
-			//~ type: 'post',
-			//~ url: '<?php echo site_url('settings/wifiAction'); ?>/' + action,
+		//$.ajax({
+			//type: 'post',
+			//url: 'settings/wifiAction/' + action,
 			//~ data: {essid:essid, password: password},
 			//~ dataType: 'json'
 		//~ }).done(function(response) {

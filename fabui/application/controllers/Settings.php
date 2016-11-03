@@ -371,8 +371,8 @@ class Settings extends FAB_Controller {
 		
 		$headerToolbar = '<ul class="nav nav-tabs pull-right">' . $tabs_title .'</ul>';
 		
-		$widgeFooterButtons = $this->smart->create_button('Scan', 'primary')->attr(array('id' => 'scan', 'style' => 'display:none'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true)
-						 .' '.$this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		$widgeFooterButtons = $this->smart->create_button('Scan', 'primary')->attr(array('id' => 'scanButton', 'style' => 'display:none'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true)
+						 .' '.$this->smart->create_button('Save', 'primary')->attr(array('id' => 'saveButton'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'network-settings-widget';
@@ -387,7 +387,7 @@ class Settings extends FAB_Controller {
 		$this->view();
 	}
 	
-	public function saveNetworkSettings()
+	public function saveNetworkSettings($action = 'connect')
 	{
 		//get data from post
 		$this->load->helper('os_helper');
@@ -402,35 +402,49 @@ class Settings extends FAB_Controller {
 				$gateway = $postData['gateway'];
 				$mode = $postData['address-mode'];
 				$iface = $postData['active'];
-				switch($mode)
-				{
-					case "static":
-						break;
-					case "dhcp":
-						break;
-					default:
-						$result = false;
-				}
+				configureEthernet($iface, $mode, $address, $netmask, $gateway);
 				break;
 			case "wlan":
-				$address = $postData['ipv4'];
-				$netmask = $postData['netmask'];
-				$gateway = $postData['gateway'];
-				$mode = $postData['address-mode'];
-				$iface = $postData['active'];
-				$ap_ssid = $postData['ap-ssid'];
-				$ap_pass = $postData['ap-password'];
-				switch($mode)
+				if($action == 'connect')
 				{
-					case "static-ap":
-						break;
-					case "static":
-						break;
-					case "dhcp":
-						break;
-					default:
-						$result = false;
+					$address = $postData['ipv4'];
+					$netmask = $postData['netmask'];
+					$gateway = $postData['gateway'];
+					$mode = $postData['address-mode'];
+					$iface = $postData['active'];
+					$ap_ssid = $postData['ap-ssid'];
+					$ap_pass = $postData['ap-password'];
+					$hidden_ssid = $postData['hidden-ssid'];
+					$hidden_pass = $postData['hidden-passphrase'];
+					
+					if($mode == 'static-ap')
+					{
+						$ssid = $ap_ssid;
+						$password = $ap_pass;
+					}
+					else
+					{
+						$ssid = $hidden_ssid;
+						$password = $hidden_pass;
+					}
+					configureWireless($iface, $ssid, $password, $mode, $address, $netmask, $gateway);
 				}
+				else if($action == 'disconnect')
+				{
+					$iface = $postData['active'];
+					
+				}
+				//~ switch($mode)
+				//~ {
+					//~ case "static-ap":
+						//~ break;
+					//~ case "static":
+						//~ break;
+					//~ case "dhcp":
+						//~ break;
+					//~ default:
+						//~ $result = false;
+				//~ }
 				break;
 			case "dnssd":
 				$hostname = $postData['dnssd-hostname'];

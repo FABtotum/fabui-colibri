@@ -10,7 +10,7 @@
 ?>
 <div class="tab-content padding-10">
 	<?php echo $iface_tabs ?>
-	<div class="tab-pane fade in" id="dnssd-tab">
+	<div class="tab-pane fade in" id="dnssd-tab"  data-attribute="dnssd">
 
 		<form class="smart-form" id="hostname-form">
 			

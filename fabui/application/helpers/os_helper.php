@@ -18,8 +18,9 @@ if(!function_exists('configureWireless'))
 	function configureWireless($iface, $ssid, $password, $mode = 'dhcp', $address = '', $netmask = '', $gateway = '')
 	{
 		$CI =& get_instance();
-		$CI->config->load('fabtotum');
-		$args = '-i'.$iface.' -s "'.$ssid.'" -p "'.$password.'"'
+		$CI->load->helper('fabtotum');
+		$args = '-i'.$iface.' -s "'.$ssid.'" -p "'.$password.'"';
+		
 		switch($mode)
 		{
 			case "dhcp":
@@ -34,7 +35,34 @@ if(!function_exists('configureWireless'))
 			default:
 				return false;
 		}
-		$result = json_decode( startBashScript('set_wifi.sh', $args), true);
+		$result = json_decode( startBashScript('set_wifi.sh', $args, false, true), true);
+		return $result;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('configureEthernet'))
+{
+	/**
+	 * Configure a wireless interface.
+	 */
+	function configureEthernet($iface, $mode = 'dhcp', $address = '', $netmask = '', $gateway = '')
+	{
+		$CI =& get_instance();
+		$CI->load->helper('fabtotum');
+		$args = '-i'.$iface;
+		switch($mode)
+		{
+			case "dhcp":
+				$args .= ' -D';
+				break;
+			case "static":
+				$args .= ' -S -a '.$address.' -n '.$netmask.' -g'.$gateway;
+				break;
+			default:
+				return false;
+		}
+		$result = json_decode( startBashScript('set_ethernet.sh', $args, false, true), true);
 		return $result;
 	}
 } 

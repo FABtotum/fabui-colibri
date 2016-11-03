@@ -111,6 +111,9 @@ if [[ $MODE == "static" ]]; then
     fi
 fi
 
+ifdown $IFACE
+ip addr flush dev $IFACE
+
 case $MODE in
     dhcp)
         set_dhcp $IFACE
@@ -124,4 +127,5 @@ case $MODE in
         ;;
 esac
 
-/etc/init.d/network restart
+#~ /etc/init.d/network restart
+ifup $IFACE

@@ -149,8 +149,8 @@ if(!function_exists('doCommandLine'))
 		
 		$command = $bin.' '.$scriptPath.' ';
 		
-		if(is_array($args) || $args != ''){
-			if(is_assoc($args)){
+		if(is_array($args) && $args != ''){
+			if(is_array($args)){
 				foreach($args as $key => $value){
 					// if key exists and is not an array's index	
 					if(array_key_exists($key, $args) && $key != '' && !is_int($key)){
@@ -166,6 +166,10 @@ if(!function_exists('doCommandLine'))
 					$command .= $arg.' ';
 				}
 			}
+		}
+		else
+		{
+			$command .= $args;
 		}
 		if($background) $command .= ' &> /tmp/fabui/doCommandLine.log &';
 		log_message('debug', $command);

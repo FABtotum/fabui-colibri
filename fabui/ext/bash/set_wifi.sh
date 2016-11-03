@@ -51,7 +51,7 @@ set_hostapd_conf()
 	SSID=${2}
 	PASS=${3}
 	CHANNEL=${4}
-cat <<EOF #> $HOSTAPD_CONF
+cat <<EOF > $HOSTAPD_CONF
 # Automatically generated, do not edit
 interface=$IFACE
 ssid=$SSID
@@ -244,6 +244,9 @@ if [[ $MODE == "static" ]]; then
     fi
 fi
 
+ifdown $IFACE
+ip addr flush dev $IFACE
+
 case $MODE in
     dhcp)
         set_wpa_supplicant_conf $SSID $PASS
@@ -263,4 +266,5 @@ case $MODE in
         ;;
 esac
 
-/etc/init.d/network restart
+ifup $IFACE
+#~ /etc/init.d/network restart

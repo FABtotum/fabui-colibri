@@ -1,4 +1,4 @@
-<div class="tab-pane fade in active" id="<?php echo $iface;?>-tab">
+<div class="tab-pane fade in active" id="<?php echo $iface;?>-tab" data-attribute="<?php echo $iface; ?>">
 	<div class="smart-form">
 		<fieldset>
 			<section class="col col-6">
