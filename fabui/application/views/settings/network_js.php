@@ -18,18 +18,19 @@
 		$("#scanButton").on('click', scan);
 		$("#modalConnectButton").on('click', passwordModalConnect);
 		
+		$('a[data-toggle="tab"]').on('shown.bs.tab', tab_change);
+		
 		initFieldValidator();
 	});
 
 	function save()
 	{
-		console.log('save');
 		var tab = $("li.tab.active").attr('data-attribute');
 		var net_type = $("li.tab.active").attr('data-net-type');
 		
 		var data = {};
 		$("#"+tab+"-tab :input").each(function (index, value) {
-			if($(this).is('input:text') || $(this).is('select') || $(this).is(':input[type="number"]') || ($(this).is('input:radio') && $(this).is(':checked')) ){
+			if($(this).is('input:text') || $(this).is('input:password') || $(this).is('select') || $(this).is(':input[type="number"]') || ($(this).is('input:radio') && $(this).is(':checked')) ){
 				data[$(this).attr('id')] = $(this).val();
 			}
 		});
@@ -40,7 +41,7 @@
 		}
 		
 		data['active'] = tab;
-		data['active-type'] = net_type;
+		data['net-type'] = net_type;
 		
 		switch(net_type)
 		{
@@ -73,14 +74,12 @@
 			return;
 		}
 		
-		console.log('save wifi', iface); 
 		console.log(data);
 		post_data(data);
 	}
 
 	function save_dnssd(data)
 	{
-		console.log('save dnssd');
 		console.log(data);
 		post_data(data);
 	}
@@ -91,7 +90,6 @@
 		button.addClass('disabled');
 		button.html('<i class="fa fa-save"></i> Saving..');
 		
-		console.log('trying to post done');
 		$.ajax({
 			type: 'post',
 			url: '<?php echo 'settings/saveNetworkSettings'; ?>',
@@ -100,7 +98,6 @@
 		}).done(function(response) {
 			button.html('<i class="fa fa-save"></i> Save');
 			button.removeClass('disabled');
-			console.log('post done!!!');
 			
 			$.smallBox({
 				title : "Settings",
@@ -113,51 +110,34 @@
 		});
 	}
 
-	function validate_ip(iface)
+	function tab_change(e)
 	{
-		var result = true;
-		var mode = $("#"+iface+"-address-mode option:selected").val();
+		var target = $(e.target).attr("href");
 		
-		$(".tab-content :input[id^="+iface+"-].ip").each(function (index, value) {
-			var id = $(this).attr('id');
-			console.log(id);
-			
-			if( !(mode == 'static-ap' && id == iface+"-gateway") && mode != 'dhcp')
-			{
-			
-				var ip = $(this).val();
-				ip = ip.split('.');
-				
-				$(this).removeClass('danger');
-				
-				for(i=0; i<4; i++)
-				{
-					if( !$.isNumeric(ip[i]) )
-					{
-						result = false;
-						$(this).addClass('error');
-							$.smallBox({
-								title : "Warning",
-								content : "Invalid IP address",
-								color : "#C46A69",
-								timeout: 10000,
-								icon : "fa fa-warning"
-							});
-							
-						return false;
-					}
-				}
-			}
-		});
-		
-		return result;
+		if( target.startsWith("#wlan") )
+		{
+			var mode = $(target + ' #address-mode').val();
+			if(mode != 'static-ap')
+				$("#scan").show();
+			else
+				$("#scan").hide();
+		}
+		else if( target.startsWith("#eth") )
+		{
+			$("#scan").hide();
+		}
+		else if( target.startsWith("#dnssd") )
+		{
+			console.log('ddns', target);
+			$("#scan").hide();
+		}
 	}
 
 	function address_mode_change()
 	{
 		var iface = $(this).attr('data-attribute');
-		var mode = $("#"+iface+"-address-mode option:selected").val();
-		console.log('address mode changed', iface, mode);
+		var mode = $("#"+iface+"-tab #address-mode option:selected").val();
+		
 		switch(mode)
 		{
 			case "dhcp":
@@ -165,18 +145,27 @@
 				$("#"+iface+"-tab #ap-container").slideUp('slow');
 				$("#"+iface+"-tab #gateway-container").slideUp('slow');
 				$("#"+iface+"-table-container").slideDown('slow');
+				if(iface.startsWith('wlan'))
+					$("#scan").show();
+				else
+					$("#scan").hide();
 				break;
 			case "static":
 				$("#"+iface+"-tab #address-container").slideDown('slow');
 				$("#"+iface+"-tab #ap-container").slideUp('slow');
 				$("#"+iface+"-tab #gateway-container").slideDown('slow');
 				$("#"+iface+"-table-container").slideDown('slow');
+				if(iface.startsWith('wlan'))
+					$("#scan").show();
+				else
+					$("#scan").hide();
 				break;
 			case "static-ap":
 				$("#"+iface+"-tab #address-container").slideDown('slow');
 				$("#"+iface+"-tab #ap-container").slideDown('slow');
 				$("#"+iface+"-tab #gateway-container").slideUp('slow');
 				$("#"+iface+"-table-container").slideUp('slow');
+				$("#scan").hide();
 				break;
 		}
 	}
@@ -184,7 +173,7 @@
 	function show_password()
 	{
 		var attr = $(this).attr('data-attribute');
-		var obj = (attr != "modal")?$('#'+attr+'-tab #password'):$('#passwordModal #wifiPassword');
+		var obj = (attr != "modal")?$('#'+attr+'-tab .password'):$('#passwordModal #wifiPassword');
 		if( $(this).is( ":checked" ) )
 			obj.attr('type', 'text');
 		else
@@ -202,10 +191,12 @@
 			url: 'settings/scanWifi/'+iface,
 			dataType: 'json'
 		}).done(function(response) {
-			buildTable(iface, response);
+			if(response)
+				buildTable(iface, response);
+			else
+				console.log('no scan results');
 			$("#"+iface+"-table-container").css('opacity', '1');
 		});
-		
 	}
 	
 	/**
@@ -215,17 +206,17 @@
 	{
 		console.log(nets);
 		$("#"+iface+"-table-container .nets-table").remove();
+		var bssid = $("#"+iface+"-tab #hidden-bssid").val().toLowerCase();
 		var table = '<table class="table table-striped table-forum nets-table"><tbody>';
 		$.each(nets, function( index, net ) {
 			var protected = net.encryption_key == 'on' ? 'Protected <i class="fa fa-lock"></i>' : '';
 			var frequency = net.frequency != '' ? net.frequency : '';
 			var buttonAttributeProtected = net.encryption_key == 'on' ? 'true' : 'false';
-			//~ var buttonAttributeAction = apMacAddress == net.address ? 'disconnect' : 'connect';
-			var buttonAttributeAction = 'connect';
-			//~ var buttonLabel =  apMacAddress == net.address ? 'Disconnect' : 'Connect';
-			var buttonLabel =  'Connect';
-			//~ var trClass = apMacAddress == net.address ? 'warning' : '';
-			var trClass = '';
+			var buttonAttributeAction = bssid == net.address ? 'disconnect' : 'connect';
+			var buttonLabel =  bssid == net.address ? 'Disconnect' : 'Connect';
+			var trClass = bssid == net.address ? 'warning' : '';
+			
+			console.log('bssid', bssid, net.address);
 			
 			table += '<tr class="'+ trClass+'">';
 			table += '<td class="text-center va-middle" style="width: 40px;"><i class="icon-communication-035 fa-2x text-muted"></i></td>';
@@ -272,7 +263,7 @@
 		var protected = eval(element.attr('data-attribute-protected'));
 		
 		if(action == 'connect') connectToWifi(wifiIface, wifiSelected, protected);
-		else disconnectFromWifi(iface);
+		else disconnectFromWifi(wifiIface);
 	}
 	
 	function connectToWifi(iface, essid, isProtected)
@@ -316,7 +307,6 @@
 				return true;
 			else
 			{
-				console.log('validate ip', element, value)
 				var ip = value;
 				ip = ip.split('.');
 				
@@ -424,6 +414,7 @@
 	function sendActionRequest(action, iface, essid, password)
 	{
 		$('#passwordModal').modal('hide');
+		console.log('sendActionRequest', iface, essid, password);
 		//~ var connectionLabel = action == 'connect' ? 'Connecting to ' : 'Disconnecting from ';
 		//~ openWait('<i class="fa fa-circle-o-notch fa-spin"></i> '+ connectionLabel + ' ' + essid);
 		//~ essid = essid || '';

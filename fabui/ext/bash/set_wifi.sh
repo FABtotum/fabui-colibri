@@ -172,11 +172,12 @@ IFACE=
 MODE=
 SSID=
 PASS=
+PSK=
 IP=
 NETMASK=
 GATEWAY=
 CHANNEL=1
-while getopts “hDSAi:s:p:a:n:g:r:” OPTION
+while getopts “hDSAi:s:p:k:a:n:g:r:” OPTION
 do
      case $OPTION in
          h)
@@ -197,6 +198,9 @@ do
              ;;
          p)
              PASS=$OPTARG
+             ;;
+         k)
+             PSK=$OPTARG
              ;;
          a)
              IP=$OPTARG
@@ -258,3 +262,4 @@ case $MODE in
         ;;
 esac
 
+/etc/init.d/network restart

@@ -124,4 +124,4 @@ case $MODE in
         ;;
 esac
 
-sudo /etc/init.d/network restart
+/etc/init.d/network restart

@@ -319,9 +319,6 @@ class Settings extends FAB_Controller {
 				else
 					$wifiModes = array('static' => 'Static', 'dhcp' => 'Automatic (DHCP)');
 				
-				$wifiChannels = array('1' => 'Static', 
-									  '2' => 'Automatic (DHCP)');
-				
 				if(array_key_exists('mode', $info['wireless']) )
 					if($info['wireless']['mode'] == 'accesspoint' )
 						$info['address_mode'] = 'static-ap';
@@ -330,7 +327,16 @@ class Settings extends FAB_Controller {
 				{
 					$info['wireless']['passphrase'] = '';
 				}
-					
+				
+				$info['wireless']['ssid'] = isset($info['wireless']['ssid']) ? $info['wireless']['ssid'] : "";
+				
+				if(!isset($info['wireless']['bssid']) && $info['address_mode'] == 'static')
+				{
+					$info['address_mode'] = 'dhcp';
+				}
+				
+				$info['wireless']['bssid'] = isset($info['wireless']['bssid']) ? $info['wireless']['bssid'] : "";
+				
 				$if_type = 'wlan';
 				$title = 'Wireless';
 				$tab_data = array(
@@ -358,8 +364,6 @@ class Settings extends FAB_Controller {
 			
 			$tabs_title .= '<li data-net-type="'.$if_type.'" data-attribute="'.$iface.'" class="tab '.$is_active.'"><a data-toggle="tab" href="'.$iface.'-tab"> '.$title.'</a></li>';
 			$is_active = '';
-			
-			
 		}
 		$data['iface_tabs'] = $tabs_content;
 		
@@ -367,7 +371,8 @@ class Settings extends FAB_Controller {
 		
 		$headerToolbar = '<ul class="nav nav-tabs pull-right">' . $tabs_title .'</ul>';
 		
-		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		$widgeFooterButtons = $this->smart->create_button('Scan', 'primary')->attr(array('id' => 'scan', 'style' => 'display:none'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true)
+						 .' '.$this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'network-settings-widget';
@@ -385,16 +390,53 @@ class Settings extends FAB_Controller {
 	public function saveNetworkSettings()
 	{
 		//get data from post
+		$this->load->helper('os_helper');
 		$postData = $this->input->post();
 		$result = true;
 		
-		switch($postData['active-type'])
+		switch($postData['net-type'])
 		{
 			case "eth":
+				$address = $postData['ipv4'];
+				$netmask = $postData['netmask'];
+				$gateway = $postData['gateway'];
+				$mode = $postData['address-mode'];
+				$iface = $postData['active'];
+				switch($mode)
+				{
+					case "static":
+						break;
+					case "dhcp":
+						break;
+					default:
+						$result = false;
+				}
 				break;
 			case "wlan":
+				$address = $postData['ipv4'];
+				$netmask = $postData['netmask'];
+				$gateway = $postData['gateway'];
+				$mode = $postData['address-mode'];
+				$iface = $postData['active'];
+				$ap_ssid = $postData['ap-ssid'];
+				$ap_pass = $postData['ap-password'];
+				switch($mode)
+				{
+					case "static-ap"
+						break;
+					case "static":
+						break;
+					case "dhcp":
+						break;
+					default:
+						$result = false;
+				}
 				break;
 			case "dnssd":
+				$hostname = $postData['dnssd-hostname'];
+				$name = $postData['dnssd-name'];
+				// TODO: error handling
+				setHostName($hostname, $name);
 				break;
 			default:
 				$result = false;

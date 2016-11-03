@@ -37,7 +37,7 @@ for line in raw_results:
     if line.startswith('Cell'):
         data = line.split()
         cell = results[data[1]] = {}
-        cell['address'] = data[4]
+        cell['address'] = data[4].lower()
         cell['encryption'] = ''
         
     if tags[0] in important:

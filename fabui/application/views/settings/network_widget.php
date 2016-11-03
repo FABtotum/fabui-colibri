@@ -60,7 +60,7 @@
 					<fieldset>
 						<section>
 							<label class="input"> <i class="icon-prepend fa fa-lock"></i>
-								<input type="password" class="input-password" placeholder="insert password" id="wifiPassword" name="wifiPassword">
+								<input type="password" class="input-password password" placeholder="insert password" id="wifiPassword" name="wifiPassword">
 							</label>
 						</section>
 						<section>
