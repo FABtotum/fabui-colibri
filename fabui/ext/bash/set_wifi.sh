@@ -20,7 +20,7 @@ set_wpa_supplicant_conf()
 {
 	SSID=${1}
 	PASSWORD=${2}
-
+    PSK=${3}
 	cat <<EOF > $WPA_CONF
 # Automatically generated file, do not edit by hand.
 ctrl_interface=DIR=/run/wpa_supplicant GROUP=netdev
@@ -39,8 +39,17 @@ network={
 }
 EOF
 		else
-			# Store password as psk instead of plain text
-			wpa_passphrase $1 $2 | sed -e '/#.*/d' >> $WPA_CONF
+			if [ x"$PASSWORD" == x"-" ]; then
+	cat <<EOF >> $WPA_CONF
+network={
+  ssid="$SSID"
+  psk=$PSK
+}
+EOF
+			else
+				# Store password as psk instead of plain text
+				wpa_passphrase $1 $2 | sed -e '/#.*/d' >> $WPA_CONF
+			fi
 		fi
 	fi
 }
@@ -249,7 +258,10 @@ ip addr flush dev $IFACE
 
 case $MODE in
     dhcp)
-        set_wpa_supplicant_conf $SSID $PASS
+        if [ -n "$PSK" ]; then
+            PASS="-"
+        fi
+        set_wpa_supplicant_conf $SSID $PASS $PSK
         set_dhcp $IFACE
         ;;
     static)

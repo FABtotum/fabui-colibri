@@ -67,11 +67,15 @@ for iface in $(echo $IFACES); do
                 a=$(hostapd_cli -p /run/hostapd -i$iface get_config | sed -e 's@^@"@g; s@$@",@g; s@=@" : "@'; echo -n ",")
                 echo $a | sed -e 's@, ,@@g'
             elif [ $MODE == "Mode:Managed" ]; then
-                echo ","
-                
                 if [ -n "$WPASUP" ]; then
+                    echo ","
+                    if [ -e "$WPASUP" ]; then
+                        PSK=$(cat $WPASUP | grep -E "[ \t]*(psk=[0-9a-z])" | awk 'BEGIN{FS="="}{print $2;}')
+                        echo "      \"psk\" : \"$PSK\","
+                    fi
                     a=$(wpa_cli -p /run/wpa_supplicant -i$iface status | sed -e 's@^@"@g; s@$@",@g; s@=@" : "@'; echo -n ",")
                     echo $a | sed -e 's@, ,@@g'
+                    #~ cat "$WPASUP" | grep "^[ \t]*wpa-conf" | awk '{print $2}')
                 fi
             elif [ $MODE == "Mode:Auto" ]; then
                 echo ","

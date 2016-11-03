@@ -73,9 +73,29 @@
 			return;
 		}
 		
+		console.log('save wlan', iface);
+		console.log(data);
+		
 		if( data['address-mode'] == 'static-ap' )
 		{
 			post_data(data);
+		}
+		else
+		{
+			if( (data['hidden-passphrase'] != '' || data['hidden-psk'] != '') && data['hidden-ssid'] != '')
+			{
+				post_data(data);
+			}
+			else
+			{
+				$.smallBox({
+					title : "Warning",
+					content : 'You need to connect to a network first',
+					color : "#5384AF",
+					timeout: 3000,
+					icon : "fa fa-check bounce animated"
+				});
+			}
 		}
 	}
 
@@ -202,6 +222,7 @@
 			url: 'settings/scanWifi/'+iface,
 			dataType: 'json'
 		}).done(function(response) {
+			console.log('scan results', response);
 			if(response)
 				buildTable(iface, response);
 			else
@@ -289,7 +310,12 @@
 	
 	function disconnectFromWifi(iface)
 	{
-		console.log('disconnect @', iface);
+		//~ $.ajax({
+			//~ type: 'get',
+			//~ url: 'settings/disconnectWifi/'+iface,
+			//~ dataType: 'json'
+		//~ }).done(function(response) {
+		//~ });
 	}
 	
 	/**
@@ -388,18 +414,26 @@
 				onfocusout: function (element) {},
 				rules : {
 					ssid : {
-						required : true
+						required : true,
+						minlength : 6,
+						maxlength : 63
 					},
 					password : {
-						required : true
+						required : true,
+						minlength : 8,
+						maxlength : 63
 					},
 				},
 				messages : {
 					ssid : {
-						required : 'Please specify an SSID'
+						required : 'Please specify an SSID',
+						minlength : 'Please specify an SSID that is between 8 and 63 characters',
+						maxlength : 'Please specify an SSID that is between 8 and 63 characters'
 					},
 					password : {
-						required : 'Please specify a password'
+						required : 'Please specify a password',
+						minlength : 'Please specify a password between 8 and 63 characters',
+						maxlength : 'Please specify a password between 8 and 63 characters'
 					},
 				},
 				errorPlacement : function(error, element) {
@@ -422,6 +456,7 @@
 	/**
 	 * 
 	 */
+	 /*
 	function sendActionRequest(action, iface, essid, password)
 	{
 		$('#passwordModal').modal('hide');
@@ -442,5 +477,5 @@
 				//~ location.reload();
 			//~ }, 3000);
 		//~ });
-	}
+	}*/
 </script>

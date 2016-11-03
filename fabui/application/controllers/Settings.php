@@ -92,93 +92,6 @@ class Settings extends FAB_Controller {
 		$this->output->set_content_type('application/json')->set_output(true);
 	}
 	
-	/***
-	 *  Settings - Network - Ethernet page
-	 */
-	public function ethernet($action = '')
-	{
-		$postData = $this->input->post();
-		
-		//load libraries, helpers, model, config
-		$this->load->library('smart');
-		$this->load->helper('fabtotum_helper');
-		$this->load->helper('os_helper');
-		$this->load->helper('form');
-		$this->config->load('fabtotum');
-
-		$data = array();
-		$data['info'] = getEthInfo();
-		$data['action'] = $action;
-		
-		//main page widget
-		$widgetOptions = array(
-			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
-			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
-		);
-		
-		$headerToolbar = '';
-		
-		$widgeFooterButtons = ''; //$this->smart->create_button('Save new address', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
-		
-		$widget         = $this->smart->create_widget($widgetOptions);
-		$widget->id     = 'ethernet-settings-widget';
-		$widget->header = array('icon' => 'fa-sitemap', "title" => "<h2>Ethernet</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('settings/ethernet_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
-		
-		$this->addJsInLine($this->load->view('settings/ethernet_js', $data, true));
-		$this->addJSFile('/assets/js/plugin/inputmask/jquery.inputmask.bundle.js');
-		//$this->addCSSInLine('<style type="text/css">.custom_settings{display:none !important;}</style>'); 
-		$this->content = $widget->print_html(true);
-		$this->view();
-	}
-	
-	public function ethernetSaveAddress()
-	{
-		$postData = $this->input->post();
-		
-		$this->load->helper('os_helper');
-		$result = setEthIPAddress( $postData['ip'] );
-		
-		$this->output->set_content_type('html')->set_output('ok');
-	}
-	
-	/***
-	 *  Settings - Network - WiFi page
-	 */
-	public function wifi()
-	{
-		//load libraries, helpers, model, config
-		$this->load->library('smart');
-		$this->load->helper('os_helper');
-		$this->load->helper('form');
-		$this->config->load('fabtotum');
-		
-		$data['wlanInfo'] = getWlanInfo();
-		
-		//page widget
-		$widgetOptions = array(
-			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
-			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
-		);
-		
-		$widgeFooterButtons = $this->smart->create_button('Hidden Wifi', 'default')->attr(array('id' => 'hiddenWifiButton'))->icon('fa-user-secret')->print_html(true).' '.
-							  $this->smart->create_button('Scan', 'primary')->attr(array('id' => 'scanButton'))->attr('data-action', 'exec')->icon('fa-search')->print_html(true);
-		$headerToolbar = '';
-		if(isset($data['wlanInfo']['ip_address']) && $data['wlanInfo']['ip_address'] != ''){
-			$headerToolbar = '<div class="widget-toolbar" role="menu"><button class="btn btn-default show-details"><i class="fa fa-angle-double-up"></i> Details </button></div>';
-		}
-		
-		$widget         = $this->smart->create_widget($widgetOptions);
-		$widget->id     = 'hardware-wifi-widget';
-		$widget->header = array('icon' => 'fa-wifi', "title" => "<h2>Wi-Fi </h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('settings/wifi_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
-		$this->addJsInLine($this->load->view('settings/wifi_js', $data, true));
-		$this->addJSFile('/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js'); // progressbar*/
-		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
-		$this->content = $widget->print_html(true);
-		$this->view();
-	}
-	
 	/**
 	 * scan wifi networks
 	 * @return json all scanned networks
@@ -187,74 +100,8 @@ class Settings extends FAB_Controller {
 	{
 		//load helpers
 		$this->load->helper('os_helper');
-		$nets = scanWlan2($interface);
+		$nets = scanWlan($interface);
 		$this->output->set_content_type('application/json')->set_output(json_encode($nets));
-	}
-	
-	/**
-	 * 
-	 */
-	public function wifiAction($action)
-	{
-		$data = $this->input->post();
-		$essid = $data['essid'];
-		$password = $data['password'];
-		//load helpers
-		$this->load->helper('os_helper');
-		if($action == 'connect') wifiConnect($essid, $password);
-		else wifiDisconnect();
-		$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
-	}
-	
-	/***
-	 * 
-	 */
-	public function dnssd()
-	{
-		$postData = $this->input->post();
-		
-		//load libraries, helpers, model, config
-		$this->load->library('smart');
-		$this->load->helper('fabtotum_helper');
-		$this->load->helper('os_helper');
-		$this->load->helper('form');
-		$this->config->load('fabtotum');
-
-		$data = array();
-		$data['current_hostname'] = getHostName();
-		$data['current_name'] = getAvahiServiceName();
-		
-		//main page widget
-		$widgetOptions = array(
-			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
-			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
-		);
-		
-		$headerToolbar = '';
-		
-		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
-		
-		$widget         = $this->smart->create_widget($widgetOptions);
-		$widget->id     = 'ethernet-settings-widget';
-		$widget->header = array('icon' => 'fa-binoculars', "title" => "<h2>Make the FABtotum Personal Fabricator easily disoverable on local network</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('settings/dnssd_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
-		
-		$this->addJsInLine($this->load->view('settings/dnssd_js', $data, true));
-		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
-		//$this->addCSSInLine('<style type="text/css">.custom_settings{display:none !important;}</style>'); 
-		$this->content = $widget->print_html(true);
-		$this->view();
-	}
-	
-	public function setHostname()
-	{
-		$postData = $this->input->post();
-		$hostname = $postData['hostname'];
-		$name = $postData['name'];
-		
-		$this->load->helper('os_helper');
-		$result = setHostName($hostname, $name);
-		echo $result;
 	}
 	
 	public function network()
@@ -323,19 +170,17 @@ class Settings extends FAB_Controller {
 					if($info['wireless']['mode'] == 'accesspoint' )
 						$info['address_mode'] = 'static-ap';
 				
-				if(!array_key_exists('passphrase', $info['wireless']) )
-				{
-					$info['wireless']['passphrase'] = '';
-				}
 				
-				$info['wireless']['ssid'] = isset($info['wireless']['ssid']) ? $info['wireless']['ssid'] : "";
 				
 				if(!isset($info['wireless']['bssid']) && $info['address_mode'] == 'static')
 				{
 					$info['address_mode'] = 'dhcp';
 				}
 				
+				$info['wireless']['ssid'] = isset($info['wireless']['ssid']) ? $info['wireless']['ssid'] : "";
 				$info['wireless']['bssid'] = isset($info['wireless']['bssid']) ? $info['wireless']['bssid'] : "";
+				$info['wireless']['psk'] = isset($info['wireless']['psk']) ? $info['wireless']['psk'] : "";
+				$info['wireless']['passphrase'] = isset($info['wireless']['passphrase']) ? $info['wireless']['passphrase'] : "";
 				
 				$if_type = 'wlan';
 				$title = 'Wireless';
@@ -416,6 +261,7 @@ class Settings extends FAB_Controller {
 					$ap_pass = $postData['ap-password'];
 					$hidden_ssid = $postData['hidden-ssid'];
 					$hidden_pass = $postData['hidden-passphrase'];
+					$psk = $postData['hidden-psk'];
 					
 					if($mode == 'static-ap')
 					{
@@ -427,24 +273,13 @@ class Settings extends FAB_Controller {
 						$ssid = $hidden_ssid;
 						$password = $hidden_pass;
 					}
-					configureWireless($iface, $ssid, $password, $mode, $address, $netmask, $gateway);
+					configureWireless($iface, $ssid, $password, $psk, $mode, $address, $netmask, $gateway);
 				}
 				else if($action == 'disconnect')
 				{
 					$iface = $postData['active'];
-					
+					disconnectFromWireless($iface);
 				}
-				//~ switch($mode)
-				//~ {
-					//~ case "static-ap":
-						//~ break;
-					//~ case "static":
-						//~ break;
-					//~ case "dhcp":
-						//~ break;
-					//~ default:
-						//~ $result = false;
-				//~ }
 				break;
 			case "dnssd":
 				$hostname = $postData['dnssd-hostname'];

@@ -74,6 +74,7 @@
 				<input type="text" id="hidden-ssid" name="hidden-ssid" value="<?php echo $info['wireless']['ssid']; ?>"/>
 				<input type="text" id="hidden-bssid" name="hidden-bssid" value="<?php echo $info['wireless']['bssid']; ?>"/>
 				<input type="text" id="hidden-passphrase" name="hidden-passphrase" value="<?php echo $info['wireless']['passphrase']; ?>"/>
+				<input type="text" id="hidden-psk" name="hidden-psk" value="<?php echo $info['wireless']['psk']; ?>"/>
 			</fieldset>
 		</form>
 		
