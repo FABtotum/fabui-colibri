@@ -38,6 +38,7 @@
 					</section>
 				</div>
 				<div class="row">
+				<!-- 
 					<section class="col col-6">
 						<label class="label">Extruder steps per unit <strong>(E mode)</strong></label>
 						<label class="input">
@@ -45,6 +46,7 @@
 							<b class="tooltip tooltip-top-right"><i class="fa fa-refresh txt-color-teal"></i> you must restart the FABtotum to apply these changes</b> </label>
 						</label>
 					</section>
+				 -->
 					<section class="col col-6">
 						<label class="label">Extruder steps per unit <strong>(A mode)</strong></label>
 						<label class="input">
@@ -52,6 +54,8 @@
 							<b class="tooltip tooltip-top-right"><i class="fa fa-refresh txt-color-teal"></i> you must restart the FABtotum to apply these changes</b> </label>
 						</label>
 					</section>
+				</div>
+				<div class="row">
 					<section class="col col-12">
 						<div class="note">
 							If you change values for Extruder steps you have to restart the FABtotum so that can values take effect

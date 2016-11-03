@@ -67,7 +67,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title" id="myModalLabel">Upload progress</h4>
+				<h4 class="modal-title" id="myModalLabel"><i class="fa fa-upload"></i> Upload progress</h4>
 			</div>
 			<div class="modal-body custom-scroll " id="progressModalBody">
 			</div>	

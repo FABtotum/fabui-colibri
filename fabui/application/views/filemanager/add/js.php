@@ -114,7 +114,7 @@
 	function submitForm()
 	{
 		$("#filesID").val(fileList);
-		openWait("Save Object");
+		openWait("<i class='fa fa-save'></i> Saving object", 'Please wait', false);
 		$("#object-form").submit();
 	}
 	
