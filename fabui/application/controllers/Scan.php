@@ -286,7 +286,7 @@
 		if($params['object_mode'] == 'new') $scanArgs['-N'] = $params['object'];
 		if($params['object_mode'] == 'add') $scanArgs['-O'] = $params['object'];
 		
-		startScript('py/r_scan.py', $scanArgs);
+		startPyScript('r_scan.py', $scanArgs);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'params'=>$scanArgs)));
 	}
 	
@@ -334,7 +334,7 @@
 		);
 		if($params['object_mode'] == 'new') $scanArgs['-N'] = $params['object'];
 		if($params['object_mode'] == 'add') $scanArgs['-O'] = $params['object'];
-		startScript('py/s_scan.py', $scanArgs);
+		startPyScript('s_scan.py', $scanArgs);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'params'=>$scanArgs)));
 	}
 	
@@ -392,7 +392,7 @@
 		if($params['object_mode'] == 'new') $scanArgs['-N'] = $params['object'];
 		if($params['object_mode'] == 'add') $scanArgs['-O'] = $params['object'];
 				
-		startScript('py/p_scan.py', $scanArgs);
+		startPyScript('p_scan.py', $scanArgs);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'params'=>$scanArgs)));
 	}
 	
@@ -449,7 +449,7 @@
 		
 		// "/var/www/temp/" is directly accessible from outside
 
-		startScript('py/pg_scan.py', $scanArgs);
+		startPyScript('pg_scan.py', $scanArgs);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'params'=>$scanArgs)));
 	}
 	

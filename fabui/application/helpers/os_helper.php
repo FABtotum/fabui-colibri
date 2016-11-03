@@ -8,7 +8,36 @@
  * @license https://opensource.org/licenses/GPL-3.0
  * 
  */
- 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('configureWireless'))
+{
+	/**
+	 * Configure a wireless interface.
+	 */
+	function configureWireless($iface, $ssid, $password, $mode = 'dhcp', $address = '', $netmask = '', $gateway = '')
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$args = '-i'.$iface.' -s "'.$ssid.'" -p "'.$password.'"'
+		switch($mode)
+		{
+			case "dhcp":
+				$args .= ' -D';
+				break;
+			case "static":
+				$args .= ' -S -a '.$address.' -n '.$netmask.' -g'.$gateway;
+				break;
+			case "static-ap":
+				$args .= ' -A -a '.$address.' -n '.$netmask;
+				break;
+			default:
+				return false;
+		}
+		$result = json_decode( startBashScript('set_wifi.sh', $args), true);
+		return $result;
+	}
+} 
  
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('getInterfaces'))

@@ -136,6 +136,7 @@ OPTIONS:
    -A      Access Point mode
    -s      WiFi SSID
    -p      WiFi Password
+   -k      WiFi PSK (optional, instead of password)
    -c      WiFi Channel,  only in AP mode (default: 1)
    -a      IP address   (ex: 192.168.8.1)
    -n      Netmask      (ex: 255.255.255.0)

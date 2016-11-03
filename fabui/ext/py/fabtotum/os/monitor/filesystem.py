@@ -33,7 +33,7 @@ from watchdog.events import FileSystemEventHandler
 
 # Import internal modules
 from fabtotum.fabui.config import ConfigService
-from fabtotum.fabui.command_parser import CommandParser
+#~ from fabtotum.fabui.command_parser import CommandParser
 
 # Set up message catalog access
 tr = gettext.translation('filesystem_monitor', 'locale', fallback=True)
@@ -68,7 +68,7 @@ class FolderTempMonitor(PatternMatchingEventHandler):
         # Erase the file(s)
         open(command_file, 'w').close()
         
-        self.parser = CommandParser(gcs, jog_response_file, logger = logger)
+        #~ self.parser = CommandParser(gcs, jog_response_file, logger = logger)
         
         self.patterns = [self.TRACE, self.COMMAND, self.TASK_MONITOR, self.MACRO_RESPONSE, self.JOG_RESPONSE]
         self.ignore_directories = None
@@ -92,8 +92,8 @@ class FolderTempMonitor(PatternMatchingEventHandler):
             #~ self.sendMessage(messageType, messageData)
             self.ns.notify(messageType, messageData)
             
-        elif event.src_path == self.COMMAND:
-            self.parser.parse_file(self.COMMAND)
+        #~ elif event.src_path == self.COMMAND:
+            #~ self.parser.parse_file(self.COMMAND)
         
         elif event.src_path == self.TASK_MONITOR:
             tmp = str(self.getFileContent(self.TASK_MONITOR))

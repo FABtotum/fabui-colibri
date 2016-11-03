@@ -42,7 +42,7 @@ class Bed extends FAB_Controller {
 		$this->load->helpers('fabtotum_helper');
 		$this->config->load('fabtotum');
 
-		startScript('py/manual_bed_leveling.py', array('-T' => '0'), false);
+		startPyScript('manual_bed_leveling.py', array('-T' => '0'), false);
 		
 		$task_monitor = $this->config->item('task_monitor');
 		$monitor = json_decode(file_get_contents($task_monitor), true);

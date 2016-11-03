@@ -422,7 +422,7 @@ class Settings extends FAB_Controller {
 				$ap_pass = $postData['ap-password'];
 				switch($mode)
 				{
-					case "static-ap"
+					case "static-ap":
 						break;
 					case "static":
 						break;

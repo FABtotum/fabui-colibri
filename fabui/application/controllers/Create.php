@@ -234,7 +234,7 @@
 						'-T' => $taskId, 
 						'-F' => $fileToCreate['full_path']
 						);
-		startScript('py/print.py', $printArgs);
+		startPyScript('print.py', $printArgs);
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId, 'temperatures' => $temperatures)));
 	}
