@@ -4,7 +4,7 @@
 			<section class="col col-6">
 				<label class="label">Address Mode</label>
 				<label class="select">
-					<?php echo form_dropdown('address-show', $addressModeEth, 'static', array('id' => $iface.'-address-mode', 'class' => "address-mode", 'data-attribute' => $iface)); ?> <i></i>
+					<?php echo form_dropdown('address-show', $addressModeEth, $info['address_mode'], array('id' => 'address-mode', 'class' => "address-mode", 'data-attribute' => $iface)); ?> <i></i>
 				</label>
 			</section>
 		</fieldset>

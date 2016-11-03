@@ -53,8 +53,11 @@ if(!function_exists('setHostName'))
 {
 	function setHostName($hostname, $name)
 	{
-		 $response = shell_exec('sudo sh /usr/share/fabui/ext/bash/set_hostname.sh "'.$hostname.'" "'.$name.'"');
-		 return $response;
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$command = 'sudo sh '.$CI->config->item('ext_path').'bash/set_hostname.sh "'.$hostname.'" "'.$name.'"';
+		$response = shell_exec($command);
+		return $response;
 	}
 }
 
