@@ -474,7 +474,7 @@ if(!function_exists('zHeight'))
 		$sign = substr($value, 0,1);
 		$value = str_replace($sign, '' , $value);
 		$command = $sign == '-' ? '!z_minus' : '!z_plus';
-		return sendToXmlrpcServer('set_z_modify', $value);
+		return sendToXmlrpcServer('set_z_modify', $sign.$value);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
