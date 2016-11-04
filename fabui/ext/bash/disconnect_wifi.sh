@@ -14,6 +14,6 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-ifdown $1
-ip addr flush dev $1
+IFACE="$1"
 
+wpa_cli -p /run/wpa_supplicant -i$IFACE disconnect

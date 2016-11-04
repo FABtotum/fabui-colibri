@@ -43,8 +43,12 @@ for line in raw_results:
     if tags[0] in important:
         tag = tags[0].lower().replace(' ', '_')
         cell[tag] = dequote(tags[1])
-        
-    if tags[0].startswith('Quality'):
+    
+    if tags[0] == 'Quality':
+        data = tags[1].split()
+        cell['quality'] = data[0]
+    
+    if tags[0].startswith('Quality='):
         tmp = line.split()[0].split('=')[1].split('/')
         q = float(tmp[0])*100.0 / float(tmp[1])
         cell['quality'] = q

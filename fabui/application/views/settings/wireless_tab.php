@@ -49,7 +49,7 @@
 						<label class="label">SSID</label>
 						<label class="input">
 						<div class="input-group">
-							<input type="text" id="ap-ssid" name="ssid" placeholder="FABtotum" class="form-control" value="FABtotum"/>
+							<input type="text" id="ap-ssid" name="ssid" placeholder="FABtotum" class="form-control" value="<?php echo ($info['address_mode'] == 'static-ap')?$info['wireless']['ssid']:"FABtotum"; ?>"/>
 							<span class="input-group-addon"><i class="fa fa-wifi"></i></span>
 						</div>
 						</label>
@@ -58,7 +58,7 @@
 						<label class="label">Password</label>
 						<label class="input">
 						<div class="input-group">
-							<input type="password" id="ap-password" placeholder="enter password" name="password" class="form-control password" value="<?php echo $info['wireless']['passphrase']; ?>"/>
+							<input type="password" id="ap-password" placeholder="enter password" name="password" class="form-control password" value="<?php echo ($info['address_mode'] == 'static-ap')?$info['wireless']['passphrase']:""; ?>"/>
 							<span class="input-group-addon"><i class="fa fa-lock"></i></span>
 						</div>
 						</label>
@@ -71,6 +71,7 @@
 		</fieldset>
 		<form id="hiddenWifiForm" style="display:none;">
 			<fieldset>
+				<input type="text" id="hidden-address-mode" name="hidden-address-mode" value="<?php echo $info['address_mode']; ?>"/>
 				<input type="text" id="hidden-ssid" name="hidden-ssid" value="<?php echo $info['wireless']['ssid']; ?>"/>
 				<input type="text" id="hidden-bssid" name="hidden-bssid" value="<?php echo $info['wireless']['bssid']; ?>"/>
 				<input type="text" id="hidden-passphrase" name="hidden-passphrase" value="<?php echo $info['wireless']['passphrase']; ?>"/>

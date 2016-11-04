@@ -11,8 +11,6 @@
 ##                                                                      ##
 ##########################################################################
 
-HOSTAPD_CONF=/etc/hostapd/fabtotum.conf
-WPA_CONF=/etc/wpa_supplicant.conf
 INTERFACESD=/etc/network/interfaces.d
 MAX_STATIONS=10
 
@@ -261,6 +259,9 @@ if [[ $MODE == "static" ]]; then
         exit 1
     fi
 fi
+
+HOSTAPD_CONF=/etc/hostapd/${IFACE}.conf
+WPA_CONF=/etc/wpa_supplicant/${IFACE}.conf
 
 ifdown --force $IFACE
 ip addr flush dev $IFACE

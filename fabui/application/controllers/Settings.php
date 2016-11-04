@@ -143,6 +143,8 @@ class Settings extends FAB_Controller {
 		
 		$tabs_content = '';
 		
+		$interfaces = array();
+		
 		foreach($ifaces_data as $iface => $info)
 		{
 			/* Convert <ip>/<prefix> format to <ip> & <netmask> */
@@ -159,28 +161,36 @@ class Settings extends FAB_Controller {
 				$info['gateway'] = '0.0.0.0';
 			}
 			
+			$interfaces[$iface] = array('do_scan' => false);
+			
 			if(array_key_exists('wireless', $info) )
 			{
+				$interfaces[$iface]['do_scan'] = true;
+				
 				if($info['wireless']['can_be_ap'] == 'yes')
 					$wifiModes = array('static' => 'Static', 'dhcp' => 'Automatic (DHCP)', 'static-ap' => 'Access Point');
 				else
 					$wifiModes = array('static' => 'Static', 'dhcp' => 'Automatic (DHCP)');
-				
-				if(array_key_exists('mode', $info['wireless']) )
-					if($info['wireless']['mode'] == 'accesspoint' )
-						$info['address_mode'] = 'static-ap';
-				
-				
 				
 				if(!isset($info['wireless']['bssid']) && $info['address_mode'] == 'static')
 				{
 					$info['address_mode'] = 'dhcp';
 				}
 				
-				$info['wireless']['ssid'] = isset($info['wireless']['ssid']) ? $info['wireless']['ssid'] : "";
 				$info['wireless']['bssid'] = isset($info['wireless']['bssid']) ? $info['wireless']['bssid'] : "";
 				$info['wireless']['psk'] = isset($info['wireless']['psk']) ? $info['wireless']['psk'] : "";
+				
+				$info['wireless']['ssid'] = isset($info['wireless']['ssid']) ? $info['wireless']['ssid'] : "";
 				$info['wireless']['passphrase'] = isset($info['wireless']['passphrase']) ? $info['wireless']['passphrase'] : "";
+				
+				if(isset($info['wireless']['mode']))
+				{
+					if( $info['wireless']['mode'] == 'accesspoint' )
+					{
+						$info['address_mode'] = 'static-ap';
+						$interfaces[$iface]['do_scan'] = false;
+					}
+				}
 				
 				$if_type = 'wlan';
 				$title = 'Wireless';
@@ -211,6 +221,7 @@ class Settings extends FAB_Controller {
 			$is_active = '';
 		}
 		$data['iface_tabs'] = $tabs_content;
+		$data['interfaces'] = $interfaces;
 		
 		$tabs_title .= '<li data-attribute="dnssd" class="tab"><a data-toggle="tab" href="#dnssd-tab"> DNS-SD</a></li>';
 		
@@ -239,7 +250,7 @@ class Settings extends FAB_Controller {
 		$postData = $this->input->post();
 		$result = true;
 		
-		switch($postData['net-type'])
+		switch($postData['net_type'])
 		{
 			case "eth":
 				$address = $postData['ipv4'];

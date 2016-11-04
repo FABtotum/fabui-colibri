@@ -177,13 +177,11 @@ if(!function_exists('disconnectFromWireless'))
 	/**
 	 * disconnect from wifi network
 	 */
-	function disconnectFromWireless()
+	function disconnectFromWireless($interface)
 	{
-		//~ $CI =& get_instance();
-		//~ $CI->config->load('fabtotum');
-		//~ $setWifiCommand = 'sudo sh '.$CI->config->item('ext_path').'bash/set_wifi.sh';
-		//~ log_message('debug', $setWifiCommand);
-		//~ $scriptResult = shell_exec($setWifiCommand);
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$result = startBashScript('disconnect_wifi.sh', $interface, false, true);
 		return true;
 	}
 }

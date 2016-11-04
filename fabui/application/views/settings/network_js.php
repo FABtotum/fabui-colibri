@@ -13,6 +13,16 @@
 		$(".address-mode").on('change', address_mode_change);
 		$(".show-password").on('change', show_password);
 		
+		<?php 
+			foreach($interfaces as $iface => $value)
+			{
+				if($value['do_scan'])
+				{
+					echo 'scan("'.$iface.'");'.PHP_EOL;
+				}
+			}
+		?>
+		
 		//~ scan('wlan0');
 		//~ scan('wlan1');
 		$("#scanButton").on('click', do_scan);
@@ -41,7 +51,7 @@
 		}
 		
 		data['active'] = tab;
-		data['net-type'] = net_type;
+		data['net_type'] = net_type;
 		
 		switch(net_type)
 		{
@@ -91,8 +101,8 @@
 				$.smallBox({
 					title : "Warning",
 					content : 'You need to connect to a network first',
-					color : "#5384AF",
-					timeout: 3000,
+					color : "#C46A69",
+					timeout: 10000,
 					icon : "fa fa-check bounce animated"
 				});
 			}
@@ -114,12 +124,14 @@
 		
 		$.ajax({
 			type: 'post',
-			url: '<?php echo 'settings/saveNetworkSettings'; ?>',
+			url: 'settings/saveNetworkSettings/connect',
 			data : data,
 			dataType: 'json'
 		}).done(function(response) {
 			button.html('<i class="fa fa-save"></i> Save');
 			button.removeClass('disabled');
+			
+			$("#"+data['active']+"-tab #hidden-address-mode").val(data['address-mode']);
 			
 			console.log('response', response);
 			
@@ -127,7 +139,7 @@
 				title : "Settings",
 				content : 'Network settings saved',
 				color : "#5384AF",
-				timeout: 3000,
+				timeout: 1000,
 				icon : "fa fa-check bounce animated"
 			});
 			
@@ -310,12 +322,18 @@
 	
 	function disconnectFromWifi(iface)
 	{
-		//~ $.ajax({
-			//~ type: 'get',
-			//~ url: 'settings/disconnectWifi/'+iface,
-			//~ dataType: 'json'
-		//~ }).done(function(response) {
-		//~ });
+		
+		$.ajax({
+			type: 'post',
+			url: 'settings/saveNetworkSettings/disconnect',
+			data : {
+				active : iface,
+				net_type : "wlan"
+			},
+			dataType: 'json'
+		}).done(function(response) {
+			console.log('disconnected from', iface);
+		});
 	}
 	
 	/**
@@ -333,9 +351,10 @@
 	function passwordModalConnect()
 	{
 		if($("#passwordModalForm").valid()){
-			
-			
-			
+			$("#"+wifiIface+"-tab #hidden-ssid").val(wifiSelected);
+			$("#"+wifiIface+"-tab #hidden-passphrase").val($("#wifiPassword").val());
+			do_save();
+			$('#passwordModal').modal('hide');
 			//sendActionRequest('connect', wifiIface, wifiSelected, $("#wifiPassword").val());
 		}
 	}
@@ -418,7 +437,7 @@
 				rules : {
 					ssid : {
 						required : true,
-						minlength : 6,
+						minlength : 4,
 						maxlength : 63
 					},
 					password : {
@@ -430,8 +449,8 @@
 				messages : {
 					ssid : {
 						required : 'Please specify an SSID',
-						minlength : 'Please specify an SSID that is between 8 and 63 characters',
-						maxlength : 'Please specify an SSID that is between 8 and 63 characters'
+						minlength : 'Please specify an SSID that is between 4 and 63 characters',
+						maxlength : 'Please specify an SSID that is between 4 and 63 characters'
 					},
 					password : {
 						required : 'Please specify a password',
