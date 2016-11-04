@@ -111,7 +111,7 @@ if [[ $MODE == "static" ]]; then
     fi
 fi
 
-ifdown $IFACE
+ifdown --force $IFACE
 ip addr flush dev $IFACE
 
 case $MODE in

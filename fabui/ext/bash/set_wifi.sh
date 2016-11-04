@@ -67,6 +67,7 @@ ssid=$SSID
 wpa=2
 wpa_passphrase=$PASS
 wpa_key_mgmt=WPA-PSK WPA-EAP
+wpa_pairwise=TKIP
 rsn_pairwise=CCMP
 channel=$CHANNEL
 max_num_sta=$MAX_STATIONS
@@ -253,7 +254,7 @@ if [[ $MODE == "static" ]]; then
     fi
 fi
 
-ifdown $IFACE
+ifdown --force $IFACE
 ip addr flush dev $IFACE
 
 case $MODE in

@@ -207,7 +207,7 @@
 	function do_scan()
 	{
 		var iface = $("li.tab.active").attr('data-attribute');
-		console.log('do_scan', iface)
+		console.log('do_scan', iface);
 		scan(iface);
 	}
 
@@ -333,7 +333,10 @@
 	function passwordModalConnect()
 	{
 		if($("#passwordModalForm").valid()){
-			sendActionRequest('connect', wifiIface, wifiSelected, $("#wifiPassword").val());
+			
+			
+			
+			//sendActionRequest('connect', wifiIface, wifiSelected, $("#wifiPassword").val());
 		}
 	}
 	
