@@ -63,17 +63,25 @@ set_hostapd_conf()
 cat <<EOF > $HOSTAPD_CONF
 # Automatically generated, do not edit
 interface=$IFACE
-ssid=$SSID
-wpa=2
-wpa_passphrase=$PASS
-wpa_key_mgmt=WPA-PSK WPA-EAP
-wpa_pairwise=TKIP
-rsn_pairwise=CCMP
-channel=$CHANNEL
-max_num_sta=$MAX_STATIONS
 driver=nl80211
 ctrl_interface=/run/hostapd
 ctrl_interface_group=0
+
+max_num_sta=$MAX_STATIONS
+ssid=$SSID
+wpa=2                   # WPA2 only
+auth_algs=1             # 1=wpa, 2=wep, 3=both
+wpa_passphrase=$PASS
+wpa_key_mgmt=WPA-PSK
+rsn_pairwise=CCMP
+channel=$CHANNEL
+
+ieee80211d=1            # limit the frequencies used to those allowed in the country
+country_code=IT         # the country code
+
+hw_mode=g
+ieee80211n=1            # 802.11n support
+wmm_enabled=1           # QoS support
 EOF
 }
 
