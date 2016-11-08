@@ -40,8 +40,6 @@
 	var soft_extruder_min  = 175;
 	
 	$(document).ready(function() {
-
-		
 		
 		initWizard();
 		<?php if($runningTask == false): ?>
@@ -55,6 +53,8 @@
 		$(".new-print").on('click', function(){$('.wizard').wizard('selectedItem', { step: 1 });});
 		$(".restart-print").on('click', function(){$('.wizard').wizard('selectedItem', { step: 1 });});
 		$(".save-z-height").on('click', saveZHeight);
+
+		
 		
 	});
 	
@@ -84,9 +84,6 @@
 	<?php if($runningTask == false): ?>
 	function initFilesTable()
 	{
-
-		var row_to_select = '';
-		
 		filesTable = $('#files_table').dataTable({
 			"sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+
 				"t"+
@@ -112,14 +109,23 @@
 				$('td', row).eq(2).addClass('hidden-xs');
 				$('td', row).eq(3).addClass('hidden');
 				$('td', row).eq(4).addClass('hidden');
-				<?php if($what_id != ''): ?>
-				if(parseInt(data[3]) == <?php echo $what_id; ?>){
-					selectFile(row, 'files_table');
-					setTimeout(function(){
-						jQuery(".btn-next").trigger('click');
-					}, 100);
-				}
-				<?php endif; ?>
+			},
+			"fnInitComplete": function(){
+				var rows = filesTable.fnGetNodes();
+				var data = filesTable.fnGetData();
+				$(data).each(function(index) {
+					<?php if($what_id != ''): ?>
+					if(parseInt(data[index][3]) == <?php echo $what_id; ?>){
+						selectFile(rows[index], 'files_table');
+						var settings = filesTable.fnSettings();
+						var displayLength = settings._iDisplayLength;
+						var pageNumber = Math.floor(index / displayLength);
+						filesTable.fnPageChange(pageNumber);
+						$(".btn-next").trigger("click");
+						return;
+					<?php endif; ?>						
+					}
+				});
 			}
 		});
 
@@ -144,6 +150,7 @@
 			"drawCallback" : function(oSettings) {
 				responsiveHelper_dt_basic.respond();
 				initRecentFilesTableEvents();
+				
 			},
 			"sAjaxSource": "<?php echo site_url('create/getRecentFiles/'.$type) ?>",
 			"fnRowCallback": function (row, data, index ){
@@ -162,6 +169,7 @@
 		$("#files_table tbody > tr").on("click", function(){
 			selectFile(this, 'files_table');
 		});
+
 	}
 	// recent files table event
 	function initRecentFilesTableEvents()
@@ -173,9 +181,7 @@
 	//select file by clicking on the row
 	function selectFile(tr, tableID)
 	{
-		console.log("selectFile");
-		console.log(tr);
-		console.log(tableID);
+		filesTable.select(tr);
 		$("table input[type='radio']").removeAttr('checked');
 		$("table tbody > tr").removeClass('bold-text txt-color-blueDark uppercase');
 		$(tr).find("input[type='radio']").prop('checked', true);
