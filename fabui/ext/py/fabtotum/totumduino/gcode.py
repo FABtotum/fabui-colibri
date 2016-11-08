@@ -789,10 +789,14 @@ class GCodeService:
                     
                 elif cmd.data[:4] == 'M303': # PID autotune
                     # [ok T:200.57 @:26]
+                    #if not line.startswith("PID Autotune failed"):
                     temps = line.split()
-                    if temps[0][:2] == 'ok':
-                        T = temps[1].replace("T:","").strip()
-                        self.__trigger_callback('temp_change:ext', [T])
+                    try:
+                        if temps[0][:2] == 'ok':
+                            T = temps[1].replace("T:","").strip()
+                            self.__trigger_callback('temp_change:ext', [T])
+                    except:
+                        pass
     
         #print "__handle_line: return"
     
