@@ -644,7 +644,7 @@ class Filemanager extends FAB_Controller {
 			$builtin_actions[] = array(
 				"title" => "Print",
 				"icon" => "fa-rotate-90 fa-play",
-				"url" => "make/print/file/".$fileID
+				"url" => "#make/print/file/".$fileID
 			);
 			$default_action = $builtin_actions[0];
 		}
@@ -653,7 +653,7 @@ class Filemanager extends FAB_Controller {
 			$builtin_actions[] = array(
 				"title" => "Mill",
 				"icon" => "fa-rotate-90 fa-play",
-				"url" => "make/mill/file/".$fileID
+				"url" => "#make/mill/file/".$fileID
 			);
 			$default_action = $builtin_actions[0];
 		}
