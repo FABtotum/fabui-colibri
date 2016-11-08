@@ -25,7 +25,7 @@
 	}
 	
 	//controller router
-	public function index($type = 'print'){
+	public function index($type = 'print', $what = '', $what_id = ''){
 		
 		if($this->runningTask){
 			$method = 'do'.ucfirst($this->runningTask['type']);
@@ -37,7 +37,7 @@
 					$this->doMill();
 					break;
 				case 'print':
-					$this->doPrint();
+					$this->doPrint($what, $what_id);
 					break;
 				default:
 					$this->doPrint();
@@ -46,7 +46,11 @@
 	}
 	
 	//print controller function
-	public function doPrint()
+	/**
+	 *  @param $what string {object | file}
+	 *  @param $what_id int 
+	 * */
+	public function doPrint($what = '', $what_id = '')
 	{
 		//load libraries, helpers, model
 		$this->load->library('smart');
@@ -57,6 +61,8 @@
 		$data['printType'] = 'additive';
 		$data['runningTask'] = $this->runningTask;
 		$data['zHeightOptions'] = array('0.1' => '0.1', '0.01' => '0.01');
+		$data['what'] = $what;
+		$data['what_id'] = $what_id;
 		//if there's no running task don't load all steps
 		if(!$this->runningTask){
 			$data['step1']  = $this->load->view('create/wizard/step1', $data, true );
@@ -110,6 +116,7 @@
 	
 	/**
 	 * @param type (additive, subtractive)
+	 * @param $selected_file int file to select
 	 * @return json object for dataTables plugin
 	 * get all files
 	 */

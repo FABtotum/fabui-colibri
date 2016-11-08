@@ -84,6 +84,9 @@
 	<?php if($runningTask == false): ?>
 	function initFilesTable()
 	{
+
+		var row_to_select = '';
+		
 		filesTable = $('#files_table').dataTable({
 			"sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+
 				"t"+
@@ -109,6 +112,14 @@
 				$('td', row).eq(2).addClass('hidden-xs');
 				$('td', row).eq(3).addClass('hidden');
 				$('td', row).eq(4).addClass('hidden');
+				<?php if($what_id != ''): ?>
+				if(parseInt(data[3]) == <?php echo $what_id; ?>){
+					selectFile(row, 'files_table');
+					setTimeout(function(){
+						jQuery(".btn-next").trigger('click');
+					}, 100);
+				}
+				<?php endif; ?>
 			}
 		});
 
@@ -162,6 +173,9 @@
 	//select file by clicking on the row
 	function selectFile(tr, tableID)
 	{
+		console.log("selectFile");
+		console.log(tr);
+		console.log(tableID);
 		$("table input[type='radio']").removeAttr('checked');
 		$("table tbody > tr").removeClass('bold-text txt-color-blueDark uppercase');
 		$(tr).find("input[type='radio']").prop('checked', true);
