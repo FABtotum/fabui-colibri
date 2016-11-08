@@ -648,7 +648,7 @@ class Filemanager extends FAB_Controller {
 			);
 			$default_action = $builtin_actions[0];
 		}
-		else if($file['print_type'] == 'substractive')
+		else if($file['print_type'] == 'subtractive')
 		{
 			$builtin_actions[] = array(
 				"title" => "Mill",
