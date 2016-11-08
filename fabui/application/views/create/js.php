@@ -111,10 +111,10 @@
 				$('td', row).eq(4).addClass('hidden');
 			},
 			"fnInitComplete": function(){
+			<?php if($what_id != ''): ?>
 				var rows = filesTable.fnGetNodes();
 				var data = filesTable.fnGetData();
 				$(data).each(function(index) {
-					<?php if($what_id != ''): ?>
 					if(parseInt(data[index][3]) == <?php echo $what_id; ?>){
 						selectFile(rows[index], 'files_table');
 						var settings = filesTable.fnSettings();
@@ -122,10 +122,10 @@
 						var pageNumber = Math.floor(index / displayLength);
 						filesTable.fnPageChange(pageNumber);
 						$(".btn-next").trigger("click");
-						return;
-					<?php endif; ?>						
+						return;					
 					}
 				});
+			<?php endif; ?>	
 			}
 		});
 
