@@ -36,11 +36,17 @@
 	var showExtTarget = false;
 	var showBedActual = true;
 	var showBedTarget = false;
+	//slider states
+	var isSpeedSliderBusy       = false;
+	var wasSpeedSliderMoved     = false;
+	var isFlowRateSliderBusy    = false;
+	var wasFlowRateSliderMoved  = false;
+	var isFanSliderBusy         = false;
+	var wasFanSliderMoved       = false;
 	//
 	var soft_extruder_min  = 175;
 	
 	$(document).ready(function() {
-		
 		initWizard();
 		<?php if($runningTask == false): ?>
 		initFilesTable();
@@ -54,8 +60,6 @@
 		$(".restart-print").on('click', function(){$('.wizard').wizard('selectedItem', { step: 1 });});
 		$(".save-z-height").on('click', saveZHeight);
 
-		
-		
 	});
 	
 	//init wizard flow
@@ -305,13 +309,11 @@
 		$.get('/temp/task_monitor.json'+ '?' + jQuery.now(), function(data, status){
 			manageMonitor(data);
 			if(firstCall) {
-				console.log("first call");
-				console.log(data);
 				handleTaskStatus(data.task.status, true);
 				setTemperaturesSlidersValue();
-				setSpeedSliderValue(data.override.speed);
-				setFlowRateSliderValue(data.override.flow_rate);
-				setFanSliderValue(data.override.fan);
+				updateSpeed(data.override.speed);
+				updateFlowRate(data.override.flow_rate);
+				updateFan(data.override.fan);
 				updateZOverride(data.override.z_override);
 				elapsedTime = parseInt(data.task.duration);
 				timerInterval = setInterval(timer, 1000);
@@ -381,36 +383,37 @@
 	 */
 	function updateProgress(value)
 	{
-		console.log("updateProgress");
 		$(".task-progress").html(parseInt(value) + " %");
 		$("#task-progress-bar").attr("style", "width:" +value +"%;");
-	}
-	/**
-	 * update speed infos
-	 */
-	function updateSpeed(value)
-	{	
-		console.log("updateSpeed");
-		$(".task-speed").html(parseInt(value));
-		$("#task-speed-bar").attr("style", "width:" + ((value/500)*100) +"%;");
 	}
 	/**
 	 * update flow rate infos
 	 */
 	function updateFlowRate(value)
 	{
-		console.log("updateFlowRate");
 		$(".task-flow-rate").html(parseInt(value));
 		$("#task-flow-rate-bar").attr("style", "width:" + ((value/500)*100) +"%;");
+		if(!isFlowRateSliderBusy && !wasFlowRateSliderMoved){
+			$('.slider-task-flow-rate').html(parseInt(value));
+			if(typeof flowRateSlider !== 'undefined'){
+				flowRateSlider.noUiSlider.set(value);
+			}
+		}
 	}
 	/**
 	 * update fan infos
 	 */
 	function updateFan(value)
 	{
-		console.log("update fan");
 		$(".task-fan").html(parseInt((value/255)*100));
 		$("#task-fan-bar").attr("style", "width:" +((value/255)*100) +"%;");
+		if(!isFanSliderBusy && !wasFanSliderMoved){
+			value = ((value/255)*100);
+			$('.slider-task-fan').html(parseInt(value));
+			if(typeof fanSlider !== 'undefined'){
+				fanSlider.noUiSlider.set(value);
+			}
+		}
 
 		
 	}
@@ -756,6 +759,14 @@
 		});
 		flowRateSlider.noUiSlider.on('slide', function(e){
 			onSlide('flow-rate', e);
+			wasFlowRateSliderMoved = true;
+		});
+		flowRateSlider.noUiSlider.on('end', function(e){
+			isFlowRateSliderBusy = false;
+		});
+		flowRateSlider.noUiSlider.on('start', function(e){
+			isFlowRateSliderBusy = true;
+			wasFlowRateSliderMoved = true;
 		});
 		//fan
 		fanSlider.noUiSlider.on('change', function(e){
@@ -763,6 +774,14 @@
 		});
 		fanSlider.noUiSlider.on('slide', function(e){
 			onSlide('fan', e);
+			wasFanSliderMoved = true;
+		});
+		fanSlider.noUiSlider.on('end', function(e){
+			isFanSliderBusy = false;
+		});
+		fanSlider.noUiSlider.on('start', function(e){
+			isFanSliderBusy = true;
+			wasFanSliderMoved = true;
 		});
 		<?php endif; ?>
 		//speed slider
@@ -785,6 +804,14 @@
 		});
 		speedSlider.noUiSlider.on('slide', function(e){
 			onSlide('speed', e);
+			wasSpeedSliderMoved = true;
+		});
+		speedSlider.noUiSlider.on('end', function(e){
+			isSpeedSliderBusy = false;
+		});
+		speedSlider.noUiSlider.on('start', function(e){
+			isSpeedSliderBusy = true;
+			wasSpeedSliderMoved = true;
 		});
 	}
 	
@@ -890,39 +917,6 @@
 				bedSlider.noUiSlider.set(bed_temp_target);
 			}
 		});
-	}
-	/**
-	 * set initial speed slider values
-	 */
-	function setSpeedSliderValue(value)
-	{
-		console.log("setSpeedSliderValue");
-		$('.slider-task-speed').html(parseInt(value));
-		if(typeof speedSlider !== 'undefined'){
-			speedSlider.noUiSlider.set(value);
-		}
-	}
-	/**
-	 * set initial flow rate slider values
-	 */
-	function setFlowRateSliderValue(value)
-	{
-		console.log("setFlowRateSliderValue");
-		$('.slider-task-flow-rate').html(parseInt(value));
-		if(typeof flowRateSlider !== 'undefined'){
-			flowRateSlider.noUiSlider.set(value);
-		}
-	}
-	/**
-	* set initial fan slider value
-	*/
-	function setFanSliderValue(value){
-		console.log("setFanSliderValue");
-		value = ((value/255)*100);
-		$('.slider-task-fan').html(parseInt(value));
-		if(typeof fanSlider !== 'undefined'){
-			fanSlider.noUiSlider.set(value);
-		}
 	}
 	/**
 	* handle "completing" status
@@ -1039,5 +1033,19 @@
 	function aborting()
 	{
 		openWait('<i class="fa fa-spinner fa-spin "></i> Aborting print', 'Please wait..', false);
+	}
+	/**
+	*
+	*/
+	function updateSpeed(value)
+	{
+		$(".task-speed").html(parseInt(value));
+		$("#task-speed-bar").attr("style", "width:" + ((value/500)*100) +"%;");
+		if(!isSpeedSliderBusy && !wasSpeedSliderMoved){
+			$('.slider-task-speed').html(parseInt(value));
+			if(typeof speedSlider !== 'undefined'){
+				speedSlider.noUiSlider.set(value);
+			}
+		}
 	}
 </script>
