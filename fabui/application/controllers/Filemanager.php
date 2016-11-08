@@ -664,7 +664,7 @@ class Filemanager extends FAB_Controller {
 				"url" => "filemanager/download/file/".$fileID
 			);
 			
-		if( $file['print_type'] == 'additive' or $file['print_type'] == 'substractive' )
+		if( $file['print_type'] == 'additive' or $file['print_type'] == 'subtractive' )
 		{
 			$builtin_actions[] = array(
 				"title" => "Preview",
