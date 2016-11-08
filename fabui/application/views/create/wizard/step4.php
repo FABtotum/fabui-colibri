@@ -29,7 +29,7 @@
 					</section>
 					<div class="row">
 						<section class="col col-9">
-							<label class="label">Do you want to save Z's height and override the value for the next prints? </label>
+							<label class="label">Z's height is <strong><span class="z-height"></span></strong> do you want to save it and override the value for the next prints? </label>
 						</section>
 						<section class="col col-3">
 							<a style="padding:6px 10px 5px" href="javascript:void(0);" class="btn btn-default btn-block save-z-height"><i class="fa fa-save"></i> Yes</a>
@@ -68,20 +68,4 @@
 			</div>
 		</div>
 	</div>
-	<!--  
-	<div class="text-center">
-		<h1 class="tada animated">
-			<span style="position: relative;">
-				<i class="fa fa-play fa-rotate-90 fa-border border-black fa-4x"></i>
-				<span><b style="position:absolute; right: -30px; top:-10" class="badge bg-color-green font-md"><i class="fa fa-check txt-color-black"></i> </b></span>
-			</span>
-		</h1>
-		<h2><strong><?php echo ucfirst($type) ?> completed! </strong></h2>
-		<p class="lead semi-bold">Duration: <span class="elapsed-time"></span></p>
-		<p class="lead semi-bold">
-			<a href="javascript:void(0);" class="btn btn-default restart">Restart Print</a>
-			<a href="javascript:void(0);" class="btn btn-default new-print">New Print</a>
-		</p>
-	</div>
-	-->
 </div>
