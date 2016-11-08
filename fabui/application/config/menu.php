@@ -34,7 +34,7 @@ $config['menu'] = array(
 			),
 			'history' => array(
 				'title' => 'History',
-				'icon' => 'icon-fab-scan',
+				'icon' => 'fa-history',
 				'url' => 'history'
 			)
 		)

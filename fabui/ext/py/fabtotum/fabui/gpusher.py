@@ -523,7 +523,7 @@ class GCodePusher(object):
 
             time.sleep(GCodePusher.UPDATE_PERIOD)
     
-    def prepare_task(self, task_id, task_type = 'unknown', task_controller = 'create', gcode_file = None, auto_shutdown = False, send_email = False):
+    def prepare_task(self, task_id, task_type = 'unknown', task_controller = 'make', gcode_file = None, auto_shutdown = False, send_email = False):
         
         self.task_stats['type']             = task_type
         self.task_stats['controller']       = task_controller

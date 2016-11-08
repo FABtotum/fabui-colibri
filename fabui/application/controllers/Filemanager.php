@@ -103,7 +103,7 @@ class Filemanager extends FAB_Controller {
 	/**
 	 * show file actions view
 	 */
-	public function file($fileId)
+	public function file($fileId, $what = '')
 	{
 		if($fileId == '') redirect('filemanager');
 		
