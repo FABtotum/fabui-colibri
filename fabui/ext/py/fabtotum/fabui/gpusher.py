@@ -89,6 +89,7 @@ class GCodePusher(object):
     TASK_COMPLETING     = 'completing'
     TASK_ABORTING       = 'aborting'
     TASK_ABORTED        = 'aborted'
+    TASK_TERMINATED     = 'terminated'
     
     TYPE_PRINT          = 'print'
     TYPE_MILL           = 'mill'

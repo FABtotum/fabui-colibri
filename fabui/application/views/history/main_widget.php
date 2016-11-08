@@ -36,6 +36,9 @@
 			<li>
 				<a  data-type="status" data-value="aborted" href="javascript:void(0);">Aborted</a>
 			</li>
+			<li>
+				<a  data-type="status" data-value="terminated" href="javascript:void(0);">Terminated</a>
+			</li>
 			<li class="divider"></li>
 			<li>
 				<a  data-type="status" data-value="" href="javascript:void(0);"> Status</a>

@@ -139,7 +139,7 @@
 			$this->db->where("finish_date <=", DateTime::createFromFormat('d/m/Y',$to_date)->format('Y-m-d')." 23:59:59");
 		}
 		
-		$result = $this->db->get($this->_table_name)->result_array();				   
+		$result = $this->db->get($this->tableName)->result_array();				   
 		return isset($result[0]['total']) ? $result[0]['total'] : 0;
 		
 	}

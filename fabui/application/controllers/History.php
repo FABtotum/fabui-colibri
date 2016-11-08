@@ -71,24 +71,26 @@ class History extends FAB_Controller {
 	
 	public function getStatsData()
 	{
+		$this->load->model('Tasks', 'tasks');
 		$this->load->helper('utility_helper');
+		
 		$params = $this->input->get();
 		
 		$filters['start_date'] = $params['start_date'] == '' ? date('d/m/Y', strtotime('today - 30 days')) : $params['start_date'];
 		$filters['end_date'] = $params['end_date'] == '' ? date('d/m/Y', strtotime('today')) : $params['end_date'];
-		$filters['type'] = $params['type'];
-		$filters['status'] = $params['status'];
+		$filters['type'] = ''; //$params['type'];
+		$filters['status'] = ''; //$params['status'];
 		
 		$tasks = $this->tasks->getMakeTasks($filters);
 		
 		$data['icons'] = array('print' => 'icon-fab-print', 'mill' => 'icon-fab-mill', 'scan' => 'icon-fab-scan');
 
-		$data['status_label'] = array('completed' => '<span class="label label-success">COMPLETED</span>', 'aborted' => '<span class="label label-warning">ABORTED</span>', 'deleted' => '<span class="label label-danger">STOPPED</span>');
-		$data['stats_label'] = array('total_time' => '<i class="fa fa-clock-o"></i> Total time', 'performed' => '<i class="fa fa-check"></i> Completed', 'stopped' => '<i class="fa fa-times"></i> Aborted', 'deleted' => '<i class="fa fa-ban"></i> Stopped');
+		$data['status_label'] = array('completed' => '<span class="label label-success">COMPLETED</span>', 'aborted' => '<span class="label label-warning">ABORTED</span>', 'terminated' => '<span class="label label-danger">TERMINATED</span>');
+		$data['stats_label'] = array('total_time' => '<i class="fa fa-clock-o"></i> Total time', 'completed' => '<i class="fa fa-check"></i> Completed', 'aborted' => '<i class="fa fa-times"></i> Aborted', 'terminated' => '<i class="fa fa-ban"></i> Terminated');
 		$data['type_options'] = array('print' => 'Print', 'mill' => 'Mill', 'scan' => 'Scan');
 
-		$data['status_options'] = array('performed' => 'Completed', 'stopped' => 'Aborted', 'deleted' => 'Stopped');
-		$data['status_colors']  = array('performed' => '#7e9d3a', 'stopped' => '#FF9F01', 'deleted' => '#a90329');
+		$data['status_options'] = array('completed' => 'Completed', 'aborted' => 'Aborted', 'terminated' => 'Terminated');
+		$data['status_colors']  = array('completed' => '#7e9d3a', 'aborted' => '#FF9F01', 'terminated' => '#a90329');
 		
 		$data['stats'] = array();
 		
@@ -96,7 +98,6 @@ class History extends FAB_Controller {
 		{
 			if ($filters['type'] == '')
 			{
-
 				foreach ($data['type_options'] as $type => $label)
 				{
 					if ($type != '')
@@ -114,7 +115,6 @@ class History extends FAB_Controller {
 					{
 						$data['stats'][$type][$filters['status']] = $this->tasks->getTotalTasks('make', $type, $filters['status'], $filters['start_date'], $filters['end_date']);
 					}
-
 				}
 
 			} 
@@ -137,10 +137,8 @@ class History extends FAB_Controller {
 			}
 		}
 		
-		
-		//echo $stats = $this -> load -> view('history/stats', $data, TRUE);
-		
-		$this->output->set_content_type('application/json')->set_output(json_encode(array()));
+		$content = $this->load->view('history/stats_tab', $data, true );
+		echo $content;
 	}
 	
 	public function getTableData()
@@ -159,7 +157,7 @@ class History extends FAB_Controller {
 		
 		$data['icons'] = array('print' => 'icon-fab-print', 'mill' => 'icon-fab-mill', 'scan' => 'icon-fab-scan');
 
-		$data['status_label'] = array('completed' => '<span class="label label-success">COMPLETED</span>', 'aborted' => '<span class="label label-warning">ABORTED</span>', 'deleted' => '<span class="label label-danger">STOPPED</span>');
+		$data['status_label'] = array('completed' => '<span class="label label-success">COMPLETED</span>', 'aborted' => '<span class="label label-warning">ABORTED</span>', 'terminated' => '<span class="label label-danger">TERMINATED</span>');
 		
 		$aaData = array();
 
@@ -197,81 +195,6 @@ class History extends FAB_Controller {
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('aaData' => $aaData)));
 	}
-/*
-
-
-	function history_stats_data() {
-
-		$params = $this -> input -> get();
-
-		$filters['start_date'] = $params['start_date'] == '' ? date('d/m/Y', strtotime('today - 30 days')) : $params['start_date'];
-		$filters['end_date'] = $params['end_date'] == '' ? date('d/m/Y', strtotime('today')) : $params['end_date'];
-		$filters['type'] = $params['type'];
-		$filters['status'] = $params['status'];
-
-		$tasks = $this -> _get_make_tasks($filters);
-		
-		$this -> load -> helper('ft_date_helper');
-		
-		
-		
-		$data['icons'] = array('print' => 'icon-fab-print', 'mill' => 'icon-fab-mill', 'scan' => 'icon-fab-scan');
-
-		$data['status_label'] = array('performed' => '<span class="label label-success">COMPLETED</span>', 'stopped' => '<span class="label label-warning">ABORTED</span>', 'deleted' => '<span class="label label-danger">STOPPED</span>');
-
-		$data['stats_label'] = array('total_time' => '<i class="fa fa-clock-o"></i> Total time', 'performed' => '<i class="fa fa-check"></i> Completed', 'stopped' => '<i class="fa fa-times"></i> Aborted', 'deleted' => '<i class="fa fa-ban"></i> Stopped');
-
-		$data['type_options'] = array('print' => 'Print', 'mill' => 'Mill', 'scan' => 'Scan');
-
-		$data['status_options'] = array('performed' => 'Completed', 'stopped' => 'Aborted', 'deleted' => 'Stopped');
-		$data['status_colors']  = array('performed' => '#7e9d3a', 'stopped' => '#FF9F01', 'deleted' => '#a90329');
-		
-
-		$data['stats'] = array();
-		
-		if(count($tasks) > 0 ){
-			
-		
-
-		if ($filters['type'] == '') {
-
-			foreach ($data['type_options'] as $type => $label) {
-				if ($type != '')
-					$data['stats'][$type]['total_time'] = $this -> tasks -> get_total_time('make', $type, $filters['status'], $filters['start_date'], $filters['end_date']);
-
-				if ($filters['status'] == '') {
-					foreach ($data['status_options'] as $status => $label) {
-						if ($status != '')
-							$data['stats'][$type][$status] = $this -> tasks -> get_total_tasks('make', $type, $status, $filters['start_date'], $filters['end_date']);
-					}
-				} else {
-					$data['stats'][$type][$filters['status']] = $this -> tasks -> get_total_tasks('make', $type, $filters['status'], $filters['start_date'], $filters['end_date']);
-				}
-
-			}
-
-		} else {
-			$data['stats'][$filters['type']]['total_time'] = $this -> tasks -> get_total_time('make', $filters['type'], $filters['status'], $filters['start_date'], $filters['end_date']);
-
-			if ($filters['status'] == '') {
-				foreach ($data['status_options'] as $status => $label) {
-					if ($status != '')
-						$data['stats'][$filters['type']][$status] = $this -> tasks -> get_total_tasks('make', $filters['type'], $status, $filters['start_date'], $filters['end_date']);
-				}
-			} else {
-				$data['stats'][$filters['type']][$filters['status']] = $this -> tasks -> get_total_tasks('make', $filters['type'], $filters['status'], $filters['start_date'], $filters['end_date']);
-			}
-		}
-		
-		}
-		
-		
-		echo $stats = $this -> load -> view('history/stats', $data, TRUE);
-		
-		
-
-	}
-	*/
 
 }
  
