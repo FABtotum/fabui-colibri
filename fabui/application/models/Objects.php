@@ -44,18 +44,24 @@
 			$result = array();
 			foreach($fileID as $file)
 			{
-				$data['id_obj']  = $objectID;
-				$data['id_file'] = $file;
-				$this->db->insert($this->objFilesTable, $data);
-				$result[] = $this->db->insert_id();
+				if(is_numeric($file))
+				{
+					$data['id_obj']  = $objectID;
+					$data['id_file'] = $file;
+					$this->db->insert($this->objFilesTable, $data);
+					$result[] = $this->db->insert_id();
+				}
 			}
 		}
 		else
 		{
-			$data['id_obj']  = $objectID;
-			$data['id_file'] = $fileID;
-			$this->db->insert($this->objFilesTable, $data);
-			$result = $this->db->insert_id();
+			if(is_numeric($fileID))
+			{
+				$data['id_obj']  = $objectID;
+				$data['id_file'] = $fileID;
+				$this->db->insert($this->objFilesTable, $data);
+				$result = $this->db->insert_id();
+			}
 		}
 		return $result;
 	}

@@ -7,26 +7,26 @@
  * 
  */
 
-if ( !function_exists('get_file_extension'))
+if ( !function_exists('getFileExtension'))
 {
 	/**
 	 * @param $fileName (string) - file name
 	 * @return file extension (string)
 	 */	
-	function get_file_extension($fileName) 
+	function getFileExtension($fileName) 
 	{
 		return substr(strrchr($fileName,'.'),1);
 	}
 }
 
-if(!function_exists('create_folder'))
+if(!function_exists('createFolder'))
 {
 	/**
 	 * @param $folder_path (string)
 	 * create folder
 	 * @return TRUE on success or FALSE on failure.
 	 */
-	function create_folder($folder_path)
+	function createFolder($folder_path)
 	{
 		return mkdir($folder_path, 0755);
 	}

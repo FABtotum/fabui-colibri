@@ -9,7 +9,8 @@
  
 ?>
 <form id="object-form" method="post" class="smart-form" action="<?php echo site_url('filemanager/saveObject') . '/' . $object_id; ?>">
-    <input type="hidden" name="filesID" id="filesID">
+	<input type="hidden" name="files" id="files">
+	<input type="hidden" name="usb_files" id="usb_files" >
 </form>
 <!-- uploads row -->
 <div class="row">
@@ -22,11 +23,17 @@
 				<a href="#usb-tab" data-toggle="tab">Usb Disk</a>
 			</li>
 		</ul>
-		<div id="myTabContent1" class="tab-content padding-10">
+		<div id="myTabContent1" class="tab-content padding-10 ">
 			<div class="tab-pane fade in active" id="dropzone-tab">
 				<div id="newObjectDropzone" class="dropzone"></div>
 			</div>
 			<div class="tab-pane fade in" id="usb-tab">
+				<!-- tree is populated in js -->
+				<div class="text-center">
+					<h1><span style="font-size: 50px;" class="icon-fab-usb"></span></h1>
+					<h1>Please insert USB disk</h1>
+					<a id="check-usb" class="btn btn-default" href="javascript:void(0);">Reload</a>
+				</div>
 			</div>
 		</div>
 	</div>

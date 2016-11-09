@@ -270,6 +270,70 @@ class Filemanager extends FAB_Controller {
 		$this->view();
 	}
 	
+	public function checkUSB()
+	{
+		$result = array('inserted' => false, 'content' => '');
+		
+		$this->load->helper('fabtotum_helper');
+		$tree = json_decode(startPyScript('usb_browser.py', '', false, true), true);
+		
+		if (sizeof($tree) > 0) {
+			$result['inserted'] = true;
+			
+			$content = '<div class="tree smart-form"><ul>';
+			
+			//folders
+			foreach ($tree as $folder) {
+				
+				if(substr($folder, -1) == '/' && $folder[0] != '.'){
+					$content .= '<li><span data-loaded="false" data-folder="' . $folder . '"><i class="fa fa-lg fa-folder-open"></i> ' . rtrim(str_replace("/media/", '', $folder), '/') . '</span><ul></ul></li>';
+				}
+			}
+
+			//files
+			foreach ($tree as $folder) {
+				
+				if(substr($folder, -1) != '/' && $folder[0] != '.'){
+					$content .= '<li><span><label class="checkbox inline-block"><input type="checkbox" name="checkbox-inline" value="'.$folder.'"><i></i> '.$folder.'</label></span></li>';
+				}
+			}
+			
+			
+			$content .= '</ul></div>';
+			$result['content'] = $content;
+		}
+		
+		
+		
+		$this->output->set_content_type('application/json')->set_output( json_encode($result) );
+	}
+	
+	public function getFileTree()
+	{
+		$folder = $this->input->post('folder');
+		$this->load->helper('fabtotum_helper');
+		$tree = json_decode(startPyScript('usb_browser.py', $folder, false, true), true);
+		$this->output->set_content_type('application/json')->set_output( json_encode(array('tree' => $tree)) );
+	}
+	
+	public function init_folder_tree()
+	{
+		$this->load->helper('fabtotum_helper');
+		$folder_tree = json_decode(startPyScript('usb_browser.py', '', false, true), true);
+		
+		echo "<ul>";
+			foreach($folder_tree as $folder) {
+			
+				echo '<li><span data-loaded="false" data-folder="'.$folder.'"><i class="fa fa-lg fa-folder-open"></i> '. rtrim(str_replace("/run/media/", '', $folder), '/'). '</span>';
+				echo "<ul></ul>";
+				echo "</li>";
+			}
+		echo "</ul>";
+		
+		
+		//$this->output->set_content_type('application/json')->set_output($result);
+	}
+	
 	/**
 	 * add new object and files page
 	 */
@@ -285,6 +349,8 @@ class Filemanager extends FAB_Controller {
 		//load configs
 		$this->config->load('upload');
 		$data['accepted_files'] = allowedTypesToDropzoneAcceptedFiles( $this->config->item('allowed_types') );
+		
+		$data['folder_tree'] = array();
 		
 		$widgetOptions = array(
 			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
@@ -306,6 +372,7 @@ class Filemanager extends FAB_Controller {
 		//add needed scripts
 		$this->addJSFile('/assets/js/plugin/dropzone/dropzone.min.js'); //dropzpone
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
+		$this->addJSFile('/assets/js/controllers/filemanager/usb.js');
 		$this->addJsInLine($this->load->view('filemanager/add/js',$data, true));
 		
 		$this->view();
@@ -325,6 +392,8 @@ class Filemanager extends FAB_Controller {
 		$this->load->helpers('upload_helper');
 		$data['accepted_files'] = allowedTypesToDropzoneAcceptedFiles( $this->config->item('allowed_types') );
 		//~ var_dump($data);
+		
+		$data['folder_tree'] = array();
 		
 		$widgetOptions = array(
 			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
@@ -346,6 +415,7 @@ class Filemanager extends FAB_Controller {
 		//add needed scripts
 		$this->addJSFile('/assets/js/plugin/dropzone/dropzone.min.js'); //dropzpone
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
+		$this->addJSFile('/assets/js/controllers/filemanager/usb.js');
 		$this->addJsInLine($this->load->view('filemanager/file/add/js', $data, true));
 		
 		$this->view();
@@ -378,6 +448,7 @@ class Filemanager extends FAB_Controller {
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('aaData' => $aaData)));
 	}
 	
+	
 	/**
 	 * 
 	 */
@@ -385,8 +456,12 @@ class Filemanager extends FAB_Controller {
 	{
 		//TODO
 		$data = $this->input->post();
-		$files = explode(',', $data['filesID']); //explode files id
-		unset($data['filesID']);
+		$files = explode(',', $data['files']); //explode files id
+		unset($data['files']);
+		
+		$usb_files = explode(',', $this->input->post('usb_files'));
+		unset($data['usb_files']);
+		
 		//load db model
 		$this->load->model('Objects', 'objects');
 		$data['user'] = $this->session->user['id'];
@@ -405,14 +480,32 @@ class Filemanager extends FAB_Controller {
 			$redirectTo = '#filemanager/object/' . $objectID;
 		}
 		
+		// if files are presents add them to the object
 		if(count($files) > 0)
-		{ //if files are presents add to object
+		{ 
 			$this->objects->addFiles($objectID, $files);
 		}
+		
+		// if usb files are present add them to the object
+		if(count($usb_files) > 0)
+		{
+			$usb_files_id = array();
+			foreach ($usb_files as $file)
+			{
+				if ($file != '')
+				{
+					array_push($usb_files_id, $this->uploadFromUSB($file) );
+				}
+			}
+			$this->objects->addFiles($objectID, $usb_files_id);
+		}
+		
+		
 		$this->session->set_flashdata('alert', array('type' => 'alert-success', 'message'=> '<i class="fa fa-fw fa-check"></i> Object has been added' ));
 		
 		redirect($redirectTo);
 	}
+	
 	
 	public function updateFile()
 	{
@@ -508,12 +601,13 @@ class Filemanager extends FAB_Controller {
 			{
 				$fileID = $file['id'];
 				$fileIDs[] = $fileID;
+				
+				$file = $this->files->get($fileID, True);
+				shell_exec('sudo rm '.$file['full_path']);
 				$this->files->delete( $fileID );
 			}
 			
 			$this->objects->deleteFiles($objectID, $fileIDs);
-			$file = $this->files->get($fileID, True);
-			shell_exec('sudo rm '.$file['full_path']);
 			$this->objects->delete( $objectID );
 		}
 		
@@ -545,22 +639,85 @@ class Filemanager extends FAB_Controller {
 	}
 	
 	/**
+	 * Upload files from USB
+	 */
+	private function uploadFromUSB($file)
+	{
+		$this->load->helper('file');
+		$this->load->helper('file_helper');
+		$this->load->helper('fabtotum_helper');
+		$this->load->helper('upload_helper');
+		$this->load->model('Files', 'files');
+		//load configs
+		$this->config->load('upload');
+		
+		//get file extension to save the file in the correct directory
+		$file_extension = getFileExtension($file);
+		
+		if( !file_exists($this->config->item('upload_path').$file_extension)) 
+			createFolder($this->config->item('upload_path').$file_extension);
+			
+		// preppend removable media path
+		$file = '/run/media/' . $file;
+		
+		$client_name = basename($file);
+		
+		$file_information = get_file_info($file);
+		$folder_destination = $this->config->item('upload_path') . $file_extension . '/';
+		
+		$file_name = md5(uniqid(mt_rand())) . '.' . $file_extension;
+		
+		/** MOVE TO FINALLY FOLDER */
+		$_command = 'sudo cp "' . $file . '" "' . $folder_destination . $file_name . '" ';
+		shell_exec($_command);
+
+		/** ADD PERMISSIONS */
+		$_command = 'sudo chmod 644 "' . $folder_destination . $file_name . '" ';
+		shell_exec($_command);
+		
+		$file_type = get_mime_by_extension($file_name);
+		if(!$file_type)
+			$file_type = 'application/octet-stream';
+		
+		/** INSERT RECORD TO DB */
+		$data['file_name'] = $file_name;
+		$data['file_path'] = $folder_destination;
+		$data['full_path'] = $folder_destination . $file_name;
+		$data['raw_name'] = str_replace('.'.$file_extension, '', $file_name);
+		$data['orig_name'] = $client_name;
+		$data['client_name'] = $client_name;
+		$data['file_ext'] = '.' . $file_extension;
+		$data['file_type'] = $file_type;
+		$data['file_size'] = $file_information['size'];
+		$data['insert_date'] = date('Y-m-d H:i:s');
+		$data['update_date'] = date('Y-m-d H:i:s');
+		$data['note'] = '';
+		$data['attributes'] = '{}';
+		$data['print_type'] = checkManufactoring($data['full_path']);
+
+		/** RETURN  */
+		return $this->files->add($data);
+	}
+	
+	/**
 	 * upload file
 	 */
 	public function uploadFile()
 	{
-		//TODO
-		//load helpers
+		// TODO
+		// load helpers
 		$this->load->helper('file');
+		$this->load->helper('file_helper');
 		$this->load->helper('fabtotum_helper');
-		//get file extension to save the file in the correct directory
-		$fileExtension = get_file_extension($_FILES['file']['name']);
+		// get file extension to save the file in the correct directory
+		$fileExtension = getFileExtension($_FILES['file']['name']);
 		//load configs
 		$this->config->load('upload');
-		//preaprea configs for upload library
-		//crate folder extension if doesn't exist
-		if(!file_exists($this->config->item('upload_path').$fileExtension)) create_folder($this->config->item('upload_path').$fileExtension);
-		//load upload library
+		// preaprea configs for upload library
+		// crate folder extension if doesn't exist
+		if(!file_exists($this->config->item('upload_path').$fileExtension))
+			createFolder($this->config->item('upload_path').$fileExtension);
+		// load upload library
 		$config['upload_path']      = $this->config->item('upload_path').$fileExtension;
 		$config['allowed_types']    = $this->config->item('allowed_types');
 		$config['file_ext_tolower'] = true ; 
