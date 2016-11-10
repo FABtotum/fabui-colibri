@@ -103,10 +103,40 @@ class Filemanager extends FAB_Controller {
 	/**
 	 * show file actions view
 	 */
-	public function file($fileId, $what = '')
+	public function file($fileID, $what = 'index')
 	{
-		if($fileId == '') redirect('filemanager');
+		if($fileID == '') redirect('filemanager');
 		
+		//load db model
+		$this->load->model('Files', 'files');
+		$file = $this->files->get($fileID, 1);
+		
+		if($file) // if file existss
+		{
+			switch($what)
+			{
+				case "index":
+					$this->fileView($fileID);
+					return;
+				case "stats":
+					$this->fileStats($fileID);
+					return;
+				case "preview":
+					// TODO: select appropriate viewer for additive/milling gcode
+					$this->fileGCodeViewer($fileID);
+					return;
+				default:
+					// just continue
+			}
+		}
+		else
+		{
+			redirect('filemanager');
+		}
+	}
+	
+	private function fileView($fileId)
+	{
 		//load libraries, helpers, model, config
 		$this->load->library('smart');
 		$this->load->helper('fabtotum_helper');
@@ -124,81 +154,267 @@ class Filemanager extends FAB_Controller {
 		$data['filament'] = '';
 		$data['estimated_time'] = '';
 		$data['number_of_layers'] = '';
+			
+		$data['object'] = $this->files->getObject($fileId);
+		$objectId = $data['object']['id'];
+	
+		$attributes = json_decode($data['file']['attributes'], true);
 		
-		if($data['file']) // if file existss
+		$data['dimesions'] = 'processing';
+		$data['filament'] = 'processing';
+		$data['number_of_layers'] = 'processing';
+		$data['estimated_time'] = 'processing';
+		
+		if(is_array($attributes) and $attributes)
 		{
-			$data['object'] = $this->files->getObject($fileId);
-			$objectId = $data['object']['id'];
-		
-			$attributes = json_decode($data['file']['attributes'], true);
-			
-			$data['dimesions'] = 'processing';
-			$data['filament'] = 'processing';
-			$data['number_of_layers'] = 'processing';
-			$data['estimated_time'] = 'processing';
-			
-			if(is_array($attributes) and $attributes)
-			{
-				$dimensions = $attributes['dimensions'];
+			$dimensions = $attributes['dimensions'];
 
-				$x = number_format($dimensions['x'], 2, '.', '');
-				$y = number_format($dimensions['y'], 2, '.', '');
-				$z = number_format($dimensions['z'], 2, '.', '');
+			$x = number_format($dimensions['x'], 2, '.', '');
+			$y = number_format($dimensions['y'], 2, '.', '');
+			$z = number_format($dimensions['z'], 2, '.', '');
 
-				$data['dimesions'] = $x . ' x ' . $y . ' x ' . $z . ' mm';
-				$data['filament'] = number_format($attributes['filament'], 2, '.', '') . ' mm';
-				$data['number_of_layers'] = $attributes['number_of_layers'];
-				$data['estimated_time'] = $attributes['estimated_time'];
-			}
-			else
-			{
-				if( $data['file']['print_type'] == 'additive' && $attributes != 'Processing' )
-				{
-					startPyScript('gcode_analyzer.py', array($fileId), true);
-				}
-			}
-			
-			$widgetOptions = array(
-				'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
-				'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
-			);
-			
-			$widgeFooterButtons = 	
-				'<label class="checkbox-inline" style="padding-top:0px;">
-					 <input type="checkbox" class="checkbox" disabled="disabled" id="also-content">
-					 <span>Save content also </span>
-				</label>' .
-				$this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
-			
-			$headerToolbar = '<div class="widget-toolbar" role="menu">
-			<a class="btn btn-default" href="filemanager/object/'.$objectId.'"><i class="fa fa-arrow-left"></i> Back </a>
-			<button class="btn btn-danger button-action" data-action="delete"><i class="fa fa-download"></i> Delete </a>
-			<button class="btn btn-info button-action" data-action="download"><i class="fa fa-download"></i> Download </a>
-			</div>';
-			
-			$widget = $this->smart->create_widget($widgetOptions);
-			$widget->id = 'file-manager-edit-object-widget';
-			$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>File view</h2>", 'toolbar'=>$headerToolbar);
-			$widget->body   = array('content' => $this->load->view('filemanager/file/view/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
-			$this->content  = $widget->print_html(true);
-			
-			//add css files
-			$this->addCssFile('/assets/css/filemanager/style.css');
-			//add needed scripts
-			$this->addJSFile('/assets/js/plugin/ace/src-min/ace.js'); // editor
-			$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
-			$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
-			$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
-			$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
-			$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
-			$this->addJsInLine($this->load->view('filemanager/file/view/js', $data, true));
-			
-			$this->view();
+			$data['dimesions'] = $x . ' x ' . $y . ' x ' . $z . ' mm';
+			$data['filament'] = number_format($attributes['filament'], 2, '.', '') . ' mm';
+			$data['number_of_layers'] = $attributes['number_of_layers'];
+			$data['estimated_time'] = $attributes['estimated_time'];
 		}
 		else
 		{
-			redirect('filemanager');
+			if( $data['file']['print_type'] == 'additive' && $attributes != 'Processing' )
+			{
+				startPyScript('gcode_analyzer.py', array($fileId), true);
+			}
 		}
+		
+		$widgetOptions = array(
+			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
+			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
+		);
+		
+		$widgeFooterButtons = 	
+			'<label class="checkbox-inline" style="padding-top:0px;">
+				 <input type="checkbox" class="checkbox" disabled="disabled" id="also-content">
+				 <span>Save content also </span>
+			</label>' .
+			$this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		
+		$headerToolbar = '<div class="widget-toolbar" role="menu">
+		<a class="btn btn-default" href="filemanager/object/'.$objectId.'"><i class="fa fa-arrow-left"></i> Back </a>
+		<a class="btn btn-info" href="filemanager/file/'.$fileId.'/stats"><i class="fa fa-area-chart"></i> Stats </a>
+		<button class="btn btn-danger button-action" data-action="delete"><i class="fa fa-download"></i> Delete </button>
+		<button class="btn btn-info button-action" data-action="download"><i class="fa fa-download"></i> Download </button>
+		</div>';
+		
+		$widget = $this->smart->create_widget($widgetOptions);
+		$widget->id = 'file-manager-edit-object-widget';
+		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>File view</h2>", 'toolbar'=>$headerToolbar);
+		$widget->body   = array('content' => $this->load->view('filemanager/file/view/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
+		$this->content  = $widget->print_html(true);
+		
+		//add css files
+		$this->addCssFile('/assets/css/filemanager/style.css');
+		//add needed scripts
+		$this->addJSFile('/assets/js/plugin/ace/src-min/ace.js'); // editor
+		$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
+		$this->addJsInLine($this->load->view('filemanager/file/view/js', $data, true));
+		
+		$this->view();
+	}
+	
+	private function getStatistics($file, $start_date, $end_date){
+		
+		$this -> load -> model('tasks');
+		$stats = $this->tasks->getFileStats($file, $start_date, $end_date);
+		
+		//print_r($stats); 
+		
+		$temp_stats = array();
+		$durations_stats = array();
+		//construct stats
+		foreach($stats as $stat){
+			
+			if(!isset($temp_stats[$stat['date']])) $temp_stats[$stat['date']] = array();
+			if(!isset($temp_stats[$stat['date']][$stat['status']])) $temp_stats[$stat['date']][$stat['status']] = 0;
+			
+			$temp_stats[$stat['date']][$stat['status']] += $stat['total']; 
+			
+			if(!isset($durations_stats[$stat['status']])) $durations_stats[$stat['status']] = array();
+			$durations_stats[$stat['status']][] = $stat['total_time'];
+		}
+
+		
+		
+		$statistics = array();
+		
+		foreach($temp_stats as $day => $content){
+			
+			$temp = array('period'=>$day);
+			
+			foreach($content as $status => $total){
+				
+				$temp[$status] = $total;
+				
+			}	
+			array_push($statistics, $temp);
+			
+		}
+		
+		return  array ('statistics' =>$statistics, 'durations' => $durations_stats);		
+		
+	}
+	
+	public function test($fileId)
+	{
+		$this->load->model('Files', 'files');
+		$data['file'] = $this->files->get($fileId, 1);
+		$this->output->set_content_type('application/json')->set_output(json_encode($data));
+		//~ print_r($data['file']);
+	}
+	
+	function getFileTasksForTable($fileId){
+		
+		$params = $this->input->get();
+		
+		$this->load->helper('date_helper');
+		
+		$tasks = $this->get_file_tasks($file, $params);
+		
+		$options = array(
+			'completed' => array('label' => 'Completed', 'color' => '#7e9d3a'),
+			'aborted'   => array('label' => 'Aborted',   'color' => '#FF9F01'),
+			'terminated'   => array('label' => 'Terminated',   'color' => '#a90329')
+		);
+		
+		$aaData = array();
+
+		foreach ($tasks as $task) {
+			
+			$td_0 = date('d/m/Y H:i:s', strtotime($task['finish_date']));
+			$td_1 = $options[$task['status']]['label'];
+			$td_2 = $task['duration'];
+			$td_3 = $task['status'];
+			
+			$aaData[] = array($td_0, $td_1, $td_2, $td_3);
+		}
+		
+		echo json_encode(array('aaData' => $aaData));
+		
+	}
+	
+	private function fileStats($fileId)
+	{
+		//load libraries, helpers, model, config
+		$this->load->library('smart');
+		$this->load->helper('fabtotum_helper');
+		$this->load->helper('utility_helper');
+		//load db model
+		$this->load->model('Files', 'files');
+		$data['file'] = $this->files->get($fileId, 1);
+		//$file = $this->files->get($fileId, 1);
+		//$data['file'] = $file;
+		
+		$data['object'] = $this->files->getObject($fileId);
+		$objectId = $data['object']['id'];
+		
+		$data['start_date'] = !isset($params['start_date']) ? date('d/m/Y',strtotime('today - 30 days')) : $params['start_date'];
+		$data['end_date']   = !isset($params['end_date'])  ? date('d/m/Y',strtotime('today')) : $params['end_date'];
+
+		$status = array();
+		
+		$stats = $this->getStatistics($fileId, $data['start_date'], $data['end_date']);
+		
+		$data['statistics'] = $stats['statistics'];
+		$data['durations'] = $stats['durations'];
+		
+		$data['totals'] = array();
+		
+		foreach($data['statistics'] as  $val){
+			
+			foreach($val as $key => $c){			
+				if($key != 'period'){
+
+					if(!isset($data['totals'][$key])) $data['totals'][$key] = 0;
+					$data['totals'][$key] += $c;
+				}
+			}
+		}
+
+		$data['options'] = array(
+			'performed' => array('label' => 'Completed', 'color' => '#7e9d3a'),
+			'stopped'   => array('label' => 'Aborted',   'color' => '#FF9F01'),
+			'deleted'   => array('label' => 'Stopped',   'color' => '#a90329')
+		);
+		
+		
+		$data['labels'] = array();
+		$data['line_colors'] = array();
+		$data['donut_data'] = array();
+		$data['status_keys'] = array();
+		$data['total_durations'] = array();
+		
+		
+		foreach($data['options'] as $status => $attributes){
+			
+			array_push($data['labels'], $data['options'][$status]['label']);
+			array_push($data['line_colors'], $data['options'][$status]['color']);
+			array_push($data['status_keys'], $status);
+			
+			//if(count($data['statistics'])>0){
+
+				$temp_tot = isset($data['totals'][$status]) ? $data['totals'][$status] : 0;
+				@$value = number_format(($temp_tot / array_sum($data['totals']))*100, 1, '.', ' ');
+				
+				$temp = array('value' => $value, 'label'=>$data['options'][$status]['label']);
+				array_push($data['donut_data'],  $temp);
+			
+			//}
+			
+			if(count($data['durations']) > 0 && isset($data['durations'][$status])){
+				$data['total_durations'][] = sumTimes($data['durations'][$status]);
+			}
+			
+		}
+		
+		
+		$data['total_durations'] = sumTimes($data['total_durations']);
+		
+		$widgetOptions = array(
+			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
+			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
+		);
+		
+		$widgeFooterButtons = '';
+		
+		$headerToolbar = '<div class="widget-toolbar" role="menu">
+		<a class="btn btn-default" href="filemanager/file/'.$fileId.'"><i class="fa fa-arrow-left"></i> Back </a>
+		</div>';
+		
+		$widget = $this->smart->create_widget($widgetOptions);
+		$widget->id = 'file-manager-edit-object-widget';
+		$widget->header = array('icon' => 'fa-area-chart', "title" => "<h2>File statistics</h2>", 'toolbar'=>$headerToolbar);
+		$widget->body   = array('content' => $this->load->view('filemanager/file/stats/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
+		$this->content  = $widget->print_html(true);
+		
+		//add css files
+		$this->addCssFile('/assets/css/filemanager/style.css');
+		//add needed scripts
+		$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
+		$this->addJsInLine($this->load->view('filemanager/file/stats/js', $data, true));
+		
+		$this->view();
+	}
+	
+	private function fileGCodeViewer($fileID)
+	{
+		
 	}
 	
 	public function gcodeviewer($fileId = '')
@@ -706,8 +922,8 @@ class Filemanager extends FAB_Controller {
 	{
 		// TODO
 		// load helpers
-		$this->load->helper('file');
 		$this->load->helper('file_helper');
+		$this->load->helper('file');
 		$this->load->helper('fabtotum_helper');
 		// get file extension to save the file in the correct directory
 		$fileExtension = getFileExtension($_FILES['file']['name']);
@@ -826,12 +1042,12 @@ class Filemanager extends FAB_Controller {
 			$builtin_actions[] = array(
 				"title" => "Preview",
 				"icon" => "fa-eye",
-				"url" => ""
+				"url" => "#filemanager/file/".$fileID."/preview"
 			);
 			$builtin_actions[] = array(
 				"title" => "Stats",
 				"icon" => "fa-area-chart",
-				"url" => ""
+				"url" => "#filemanager/file/".$fileID."/stats"
 			);
 		}
 		

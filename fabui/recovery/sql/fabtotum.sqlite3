@@ -4,7 +4,7 @@ BEGIN TRANSACTION;
 
 -- Table: sys_tasks
 DROP TABLE IF EXISTS sys_tasks;
-CREATE TABLE "sys_tasks" ( "id" INTEGER, "user" int(11) NOT NULL, "controller" varchar(255) NOT NULL, "type" varchar(255) DEFAULT NULL, "status" varchar(255) DEFAULT NULL, "attributes" text, "start_date" datetime NOT NULL, "finish_date" datetime, "id_object" INTEGER, "id_file" INTEGER, PRIMARY KEY ("id" ASC), attributes text NOT NULL DEFAULT '{}');
+CREATE TABLE "sys_tasks" ( "id" INTEGER, "user" int(11) NOT NULL, "controller" varchar(255) NOT NULL, "type" varchar(255) DEFAULT NULL, "status" varchar(255) DEFAULT NULL, "attributes" text NOT NULL DEFAULT '{}', "start_date" datetime NOT NULL, "finish_date" datetime, "id_object" INTEGER, "id_file" INTEGER, PRIMARY KEY ("id" ASC));
 
 -- Table: sys_files
 DROP TABLE IF EXISTS sys_files;

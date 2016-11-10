@@ -369,7 +369,7 @@ if(!function_exists('checkManufactoring'))
 	{
 		$CI =& get_instance();
 		$CI->load->helper('plugin_helper');
-		$CI->load->helper('FAB_file_helper');
+		$CI->load->helper('file_helper');
 		
 		$ext = strtolower(getFileExtension($filePath));
 		$supported_filetypes = array('gcode', 'gc', 'nc');
