@@ -69,6 +69,7 @@ function showErrorAlert(title, content)
 		icon : "fa fa-warning"
 	});
 }
+
 /**
 * converting file size in bytes to human readable
 * @bytes int
@@ -89,4 +90,31 @@ function humanFileSize(bytes, si) {
         ++u;
     } while(Math.abs(bytes) >= thresh && u < units.length - 1);
     return bytes.toFixed(1)+' '+units[u];
+}
+
+/**
+* Refresh datatable
+* @tableId Table ID
+* @urlData URL where to get the data from
+*/
+function RefreshTable(tableId, urlData)
+{
+    $(tableId + "_wrapper").css({ opacity: 0.3 });	
+    $.getJSON(urlData, null, function( json )
+    {
+        table = $(tableId).dataTable();
+        oSettings = table.fnSettings();
+        
+        table.fnClearTable(this);
+        
+        for (var i=0; i<json.aaData.length; i++)
+        {
+          table.oApi._fnAddData(oSettings, json.aaData[i]);
+        }
+        
+        oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+        table.fnDraw();
+        $(tableId + "_wrapper").css({ opacity: 1 });
+    
+    });
 }

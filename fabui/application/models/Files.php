@@ -11,7 +11,7 @@
  	
 	private $tableName = 'sys_files';
 	private $objFilesTable = 'sys_obj_files';
- 	
+	
 	//init class
 	public function __construct()
 	{
@@ -92,6 +92,7 @@
 		$query = $this->db->get($this->tableName.' as tf');
 		return $query->result_array();
 	}
- }
+	
+}
  
 ?>

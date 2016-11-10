@@ -280,8 +280,9 @@ class Filemanager extends FAB_Controller {
 		$params = $this->input->get();
 		
 		$this->load->helper('date_helper');
+		$this->load->model('Tasks', 'tasks');
 		
-		$tasks = $this->get_file_tasks($file, $params);
+		$tasks = $this->tasks->getFileTasks($fileId, $params);
 		
 		$options = array(
 			'completed' => array('label' => 'Completed', 'color' => '#7e9d3a'),
@@ -303,6 +304,80 @@ class Filemanager extends FAB_Controller {
 		
 		echo json_encode(array('aaData' => $aaData));
 		
+	}
+	
+	function getJsonStatsData($file, $start_date, $end_date)
+	{
+		$this->load->helper('utility_helper');
+				
+		$start_date = date('d/m/Y', ($start_date/1000));
+		$end_date   = date('d/m/Y', ($end_date/1000));
+		
+		$options = array(
+			'completed' => array('label' => 'Completed', 'color' => '#7e9d3a'),
+			'aborted'   => array('label' => 'Aborted',   'color' => '#FF9F01'),
+			'terminated'   => array('label' => 'Terminated',   'color' => '#a90329')
+		);
+		
+		$stats =  $this->getStatistics($file, $start_date, $end_date);
+		$statistics = $stats['statistics'];
+		$durations = $stats['durations'];
+		
+		
+		if(count($statistics)<=0){
+			echo json_encode(array('line'=>array(), 'donut'=>array(), 'tasks'=>array(), 'total_tasks'=>0, 'total_duration' => 0, 'durations' => array(), 'bars'=>''), JSON_NUMERIC_CHECK );
+			return;
+		}
+		
+		$totals = array();
+		$status_keys = array();
+		foreach($statistics as  $val){
+			
+			foreach($val as $key => $c){			
+				if($key != 'period'){
+					
+					if(!in_array($key, $status_keys)) array_push($status_keys, $key);
+							
+					if(!isset($totals[$key])) $totals[$key] = 0;
+					$totals[$key] += $c;
+				}
+			}
+		}
+		
+		$donut_data = array();
+		$total_duration_temp = array();
+		$total_durations = array();
+	
+		foreach($options as $status => $attributes){
+			
+			$temp_tot = isset($totals[$status]) ? $totals[$status] : 0;
+			@$value = number_format(($temp_tot / array_sum($totals))*100, 1, '.', ' ');
+			$temp = array('value' => $value, 'label'=>$options[$status]['label']);
+			array_push($donut_data,  $temp);
+			
+			//echo $status;
+			if(count($durations) > 0 && isset($durations[$status])){
+				$total_duration_temp[] = sumTimes($durations[$status]);
+				$total_durations[$status] = sumTimes($durations[$status]);
+			}
+			
+		}
+		
+		$total_duration = sumTimes($total_duration_temp);
+		
+		
+		$html_bars = '<div>';
+		foreach($options as $status => $attributes){
+			if(isset($totals[$status])){
+				$html_bars .= '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><span class="text">'.$attributes['label'].'<span class="pull-right">'.$totals[$status].'/ '.array_sum($totals).'</span></span></div>';
+				$html_bars .= '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><span class="text"><span class="pull-right">'.$total_durations[$status].'/ '.$total_duration.' </span></span></div>';
+				$html_bars .= '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><div class="progress"><div class="progress-bar" style="width:'.(($totals[$status]/array_sum($totals))*100).'%; background-color:'.$attributes['color'].' !important;"></div></div></div>';
+			}
+		}
+		$html_bars .= '</div>';
+		
+		
+		echo json_encode(array('line'=>$statistics, 'donut'=>$donut_data, 'tasks' => $totals, 'total_tasks' => array_sum($totals), 'total_duration' => $total_duration, 'durations'=>$total_durations, 'bars'=>$html_bars), JSON_NUMERIC_CHECK );
 	}
 	
 	private function fileStats($fileId)
@@ -344,9 +419,9 @@ class Filemanager extends FAB_Controller {
 		}
 
 		$data['options'] = array(
-			'performed' => array('label' => 'Completed', 'color' => '#7e9d3a'),
-			'stopped'   => array('label' => 'Aborted',   'color' => '#FF9F01'),
-			'deleted'   => array('label' => 'Stopped',   'color' => '#a90329')
+			'completed' => array('label' => 'Completed', 'color' => '#7e9d3a'),
+			'aborted'   => array('label' => 'Aborted',   'color' => '#FF9F01'),
+			'terminated'   => array('label' => 'Terminated',   'color' => '#a90329')
 		);
 		
 		
@@ -407,6 +482,16 @@ class Filemanager extends FAB_Controller {
 		$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
 		$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
 		$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
+		
+		// datepicker
+		$this->addJSFile('/assets/js/plugin/bootstrap-datepicker/moment.min.js');
+		$this->addJSFile('/assets/js/plugin/bootstrap-datepicker/daterangepicker.min.js');
+		$this->addCSSFile('/assets/js/plugin/bootstrap-datepicker/daterangepicker.css');
+		
+		// charts
+		$this->addJSFile('/assets/js/plugin/morris/raphael.min.js');
+		$this->addJSFile('/assets/js/plugin/morris/morris.min.js');
+		
 		$this->addJsInLine($this->load->view('filemanager/file/stats/js', $data, true));
 		
 		$this->view();

@@ -183,6 +183,24 @@
 		
 	}
 	
+	function getFileTasks($file_id, $filters)
+	{	
+		$this->db->select('*, time(cast(( strftime(\'%s\', sys_tasks.finish_date)-strftime(\'%s\', sys_tasks.start_date)) AS real ), \'unixepoch\') as duration', false);
+		$this->db->where('id_file', $file_id);
+		
+		if(is_array($filters)){	
+			if(isset($filters['start_date']) && $filters['start_date'] != ''){
+				$this->db->where("finish_date >=", DateTime::createFromFormat('d/m/Y',$filters['start_date'])->format('Y-m-d')." 00:00:00");
+			}
+			if(isset($filters['end_date']) && $filters['end_date'] != ''){
+				$this->db->where("finish_date <=", DateTime::createFromFormat('d/m/Y',$filters['end_date'])->format('Y-m-d')." 23:59:59");
+			}	
+		}
+		$this->db->order_by('finish_date', 'DESC');
+		$result = $this->db->get($this->tableName)->result_array();
+		return $result;
+	}
+	
  }
  
 ?>
