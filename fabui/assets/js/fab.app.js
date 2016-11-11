@@ -506,15 +506,16 @@ fabApp = (function(app) {
 		function onMessage(data){
 			try {
 				var obj = jQuery.parseJSON(data);
+				console.log(obj.type);
 				if(debugState)
 					root.console.log("✔ WebSocket received message: %c [" + obj.type + "]", debugStyle);
 				switch(obj.type){
 					case 'temperatures':
 						app.updateTemperatures(obj.data);
 						break;
-					case 'serial':
-						app.writeSerialResponseToConsole(obj.data);
-						break;
+					//case 'serial':
+					//	app.writeSerialResponseToConsole(obj.data);
+					//	break;
 					case 'macro':
 						app.manageMacro(obj.data);
 						break;
@@ -534,7 +535,8 @@ fabApp = (function(app) {
 						app.usb(obj.data.status, obj.data.alert);
 						break;
 					case 'jog':
-						app.writeJogResponse(obj.data.content);
+						//app.writeJogResponse(obj.data.content);
+						app.writeSerialResponseToConsole(obj.data);
 						break;
 					case 'trace':
 						app.handleTrace(obj.data.content);
@@ -659,27 +661,21 @@ fabApp = (function(app) {
 	 * write serial replys to jog console
 	 */
 	app.writeSerialResponseToConsole = function(data){
+		
 		if($(".jogResponseContainer").length > 0){
 			var html = '';
 			$.each(data.commands, function(i, item) {
-				html += '<span class="jog_response ">' + item + '</span><hr class="simple">';
+				console.log(item.reply);
+				html += '<span class="jog_response ">' + item.code + ' : <small>' + item.reply + '</small> </span><hr class="simple">';
+				
 			});
-			console.log(data.reply.constructor);
-			if(data.reply.constructor === Array){
-				html += '<span class="jog_response ">';
-				$.each(data.reply, function(i, item) {
-					html += '<b>' + item + '</b><br>';
-				});
-				html += '</span><hr class="simple">';
-			}else{
-				html += '<span class="jog_response "><b>' + data.reply + '</b></span><hr class="simple">';
-			}
+			
 			$(".consoleContainer").append(html);
 			$(".jogResponseContainer").animate({ scrollTop: $('.jogResponseContainer').prop("scrollHeight")}, 1000);
 		}
 	};
 	/*
-	 * manage macro response or trace
+	 * manage macro response or trace 
 	 */
 	app.manageMacro = function(data){
 		switch(data.type){

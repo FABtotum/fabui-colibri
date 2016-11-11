@@ -10,6 +10,7 @@
 .jog_response {
 	width:100%;
 	font-size:12px;
+	white-space: pre !important;
 }
 .jog_response p {
 	margin-bottom:0px !important;
