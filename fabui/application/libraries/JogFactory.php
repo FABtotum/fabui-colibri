@@ -12,16 +12,14 @@
 	
 	protected $CI; //code igniter instance
 	protected $serial; //serial class
-	protected $feedrate = array();
-	protected $step = array();
-	protected $responseType = 'serial'; //type of response (temperature, gcode, serial)
+	protected $feedrate     = array();
+	protected $step         = array();
+	protected $responseType = 'jog'; //type of response (temperature, gcode, serial)
 	protected $responseData;
-	protected $serialReply = array(); //serial reply
-	protected $useXmlrpc = true;
-	protected $xmlrpc = null;
-	protected $commands = array();
-	protected $result;
-	protected $xmlRpcResponse = array();
+	protected $temperatures = array();
+	protected $useXmlrpc    = true;
+	protected $xmlrpc       = null;
+	protected $commands     = array();
 	
 	/**
 	 * class constructor
@@ -38,12 +36,6 @@
 		if(!$this->useXmlrpc){
 			$this->CI->load->helper('file_helper');
 		}else{
-			/*
-			$this->CI->load->library('xmlrpc');
-			$this->CI->xmlrpc->server('127.0.0.1/FABUI', $this->CI->config->item('xmlrpc_port'));
-			$this->CI->xmlrpc->timeout(120*5);
-			$this->CI->xmlrpc->method('send');
-			*/
 			$this->CI->load->helper('fabtotum_helper');
 		}
 		
@@ -56,9 +48,11 @@
   	{	
   		if(!is_array($commands) && $commands != '')
   		{
-  			array_push($this->commands, $commands);
+  			$this->commands[time()] = array('code' =>  $commands);
   		}else{
-  			$this->commands = $commands;
+  			foreach ($commands as $index => $command){
+  				$this->commands[time().'_'.$index] = array('code' =>  $command);
+  			}
   		}
   	}
   	/**
@@ -92,28 +86,16 @@
 			}
 			write_file($this->CI->config->item('command'), $commandToWrite);
 		}else{
-			
-			$this->xmlRpcResponse =  sendToXmlrpcServer('send', array($this->getCommands('text')));
-			$this->serialReply = $this->xmlRpcResponse['reply'];
-			$this->result = $this->xmlRpcResponse['response'];
-			/*
-			$request = array($this->getCommands('text'));
-			$this->CI->xmlrpc->request($request);
-			
-			$this->result = False;
-			$this->serialReply = '';
-			 
-			if (!$this->CI->xmlrpc->send_request())
-			{
-				$this->serialReply .= $this->CI->xmlrpc->display_error();
+			foreach($this->commands as $timestamp => $data){
+				
+				$responseTemp = sendToXmlrpcServer('send', $data['code']);
+				//print_r($responseTemp);
+				
+				$data['response'] = $responseTemp['response'];
+				$data['message']  = $responseTemp['message'];
+				$data['reply']    = implode(PHP_EOL,$responseTemp['reply']);
+				$this->commands[$timestamp] = $data;
 			}
-			else
-			{
-				$this->serialReply .= implode('<br>', $this->CI->xmlrpc->display_response()) ;
-				$this->result = True;
-			}
-			*/
-			
 		}
 	}
 	/**
@@ -121,7 +103,11 @@
 	 */
 	function response()
 	{
-		return array('type'=> $this->responseType, 'commands' => $this->commands, 'reply' => $this->serialReply, 'result' => $this->result);
+		if ($this->responseType == 'jog')
+			return array('commands' => $this->commands);
+		
+		if($this->responseType == 'temperatures')
+			return array('temperatures' => $this->temperatures);
 	}
 	/**
 	 * @param $type (serial, temperature, etc..)
@@ -145,8 +131,8 @@
 	public function getTemperatures()
 	{
 		$this->setResponseType('temperatures');
-		$this->serialReply = json_decode(file_get_contents($this->CI->config->item('temperature')), true);
-		return $this->response();
+		$this->temperatures = json_decode(file_get_contents($this->CI->config->item('temperature')), true);
+		return $this->response('temperatures');
 	}
 	/***
 	 * @param int $temperature
