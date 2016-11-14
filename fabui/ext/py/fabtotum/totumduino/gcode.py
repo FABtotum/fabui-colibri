@@ -703,7 +703,7 @@ class GCodeService:
                 #self.__send_gcode_command("M999", group="*", modify=False)
                 #self.__send_gcode_command("M728", group="*", modify=False)
                 #xmlrpc_exe = os.path.join(PYTHON_PATH, 'xmlrpcserver.py')
-                #os.system('/etc/init.d/fabui emergency &')
+                os.system('/etc/init.d/fabui emergency &')
                 
                 
                 self.is_terminating = False

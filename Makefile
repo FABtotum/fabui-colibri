@@ -239,9 +239,13 @@ $(OS_COLIBRI_STAMP):
 		$(BDATA_DIR)/etc/init.d/fabtotum
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0644 $(OS_FILES_DIR)/colibri/fabtotum.default \
 		$(BDATA_DIR)/etc/default/fabtotum
+	$(FAKEROOT_ENV) $(INSTALL) -D -m 0644 $(OS_FILES_DIR)/colibri/fabui.default \
+		$(BDATA_DIR)/etc/default/fabui
 		
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fabui.init \
 		$(BDATA_DIR)/etc/init.d/fabui
+	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fabui-ws.init \
+		$(BDATA_DIR)/etc/init.d/fabui-ws
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0644 $(OS_FILES_DIR)/colibri/fabui.default \
 		$(BDATA_DIR)/etc/default/fabui
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fabui.first \
@@ -259,10 +263,14 @@ $(OS_COLIBRI_STAMP):
 		$(BDATA_DIR)/etc/rc.d/rc.startup.d/S30fabtotum
 	$(FAKEROOT_ENV) ln -fs ../../init.d/fabui \
 		$(BDATA_DIR)/etc/rc.d/rc.startup.d/S40fabui
+	$(FAKEROOT_ENV) ln -fs ../../init.d/fabui-ws \
+		$(BDATA_DIR)/etc/rc.d/rc.startup.d/S39fabui-ws
 	
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/rc.d/rc.shutdown.d
 	$(FAKEROOT_ENV) ln -fs ../../init.d/fabui \
 		$(BDATA_DIR)/etc/rc.d/rc.shutdown.d/S20fabui
+	$(FAKEROOT_ENV) ln -fs ../../init.d/fabui-ws \
+		$(BDATA_DIR)/etc/rc.d/rc.shutdown.d/S21fabui-ws
 	$(FAKEROOT_ENV) ln -fs ../../init.d/fabtotum \
 		$(BDATA_DIR)/etc/rc.d/rc.shutdown.d/S65fabtotum
 	$(FAKEROOT_ENV) ln -fs ../../init.d/fixes \

@@ -35,10 +35,6 @@ case "$1" in
     #python /var/www/fabui/python/baud.py
     python ${PYTHON_PATH}/setBaud.py &> /var/log/fabui/setBaud.log
     
-    ######## websocket server ########
-    php ${FABUI_PATH}/index.php Server webSocket &> /var/log/fabui/webSocket.log &
-    echo $! > /run/webSocket.pid
-    
     ######## fabtotum server ########
     #start-stop-daemon -b -S -q -m -p ${FABSERVICE_PID} --exec python ${PYTHON_PATH}/FabtotumServices.py -- -B -L /var/log/fabui/FabtotumServices.log
     ARGS="-B -p ${FABSERVICE_PID} -x ${XMLRPCS_PID}"
@@ -55,10 +51,6 @@ case "$1" in
     ;;
   stop)
     boot_msg "Stopping ${SERVICE_NAME}."
-    if [ -e "/run/webSocket.pid" ]; then
-        PID=$(cat /run/webSocket.pid)
-        kill -9 $PID &> /dev/null
-    fi
     
     start-stop-daemon -K -q -p ${FABSERVICE_PID}
     start-stop-daemon -K -q -p ${XMLRPCS_PID}
@@ -66,13 +58,10 @@ case "$1" in
     evaluate_retval
     ;;
   emergency)
-    # Forcefully stop python and php scripts
+    # Forcefully stop python scripts
     killall -9 python
-    killall -9 php
     rm -f ${FABSERVICE_PID}
     rm -f ${XMLRPCS_PID}
-    #${0} stop
-    #sleep 1
     # Start the services with totumduino hw reset
     ${0} start "forced"
     ;;

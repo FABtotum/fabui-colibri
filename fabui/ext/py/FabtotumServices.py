@@ -185,8 +185,8 @@ observer.schedule(ftm, TEMP_PATH, recursive=False)
 observer.start()
 
 ## Safety monitor
-#gpioMonitor = GPIOMonitor(ns, gcservice, logger, GPIO_PIN, EMERGENCY_FILE)
-#gpioMonitor.start()
+gpioMonitor = GPIOMonitor(ns, gcservice, logger, GPIO_PIN, EMERGENCY_FILE)
+gpioMonitor.start()
 
 ## Stats monitor
 statsMonitor = StatsMonitor(MONITOR_FILE, gcservice, config, logger=logger)

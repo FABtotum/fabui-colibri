@@ -83,7 +83,7 @@ class GPIOMonitor:
     def manageErrorNumber(self, error):
         alertErrors = [110]
         shutdownErrors = [120, 121]
-        terminateErrors = [100, 101, 102]
+        terminateErrors = [100, 101, 102, 106, 107, 108, 109]
         errorType = 'emergency'
         
         if error in shutdownErrors:

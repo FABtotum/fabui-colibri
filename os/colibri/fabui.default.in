@@ -9,3 +9,4 @@ PLUGINS_PATH=@LIB_PATH@plugins/
 
 FABSERVICE_PID=/run/fabtotumservices.pid
 XMLRPCS_PID=/run/xmlrpcserver.pid
+WEBSOCKET_PID=/run/webSocket.pid
