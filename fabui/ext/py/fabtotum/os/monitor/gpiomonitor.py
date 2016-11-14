@@ -26,6 +26,7 @@ __version__ = "1.0"
 import json
 import re
 import gettext
+import time
 
 # Import external modules
 import RPi.GPIO as GPIO
@@ -54,10 +55,16 @@ class GPIOMonitor:
         Triggered when a level change on a pin is detected.
         """
         self.log.debug("====== START ============")
-        self.log.debug('GPIO STATUS: %s', str(GPIO.input(self.ACTION_PIN)))
-        if GPIO.input(self.ACTION_PIN) == 0 :
-            reply = self.gcs.send("M730")
-            
+        GPIO_STATUS = GPIO.input(self.ACTION_PIN)
+        self.log.debug('GPIO STATUS: %s', str(GPIO_STATUS))
+
+        reply = self.gcs.send("M730", group='*')
+        print 'M730:', reply
+        
+        if GPIO_STATUS == 0:
+            #reply = self.gcs.send("M730", group='*')
+            #print 'M730:', reply
+            print "Checking"
             if reply:
                 if len(reply) > 1:
                     search = re.search('ERROR\s:\s(\d+)', reply[-2])
@@ -68,33 +75,28 @@ class GPIOMonitor:
                     else:
                         self.log.error("Totumduino unrecognized error: %s", reply[0])
 
-        GPIO_STATUS = GPIO.HIGH
-        self.log.debug('GPIO STATUS on EXIT: %s', str(GPIO.input(self.ACTION_PIN)))
+        #GPIO_STATUS = GPIO.HIGH
+        GPIO_STATUS = GPIO.input(self.ACTION_PIN)
+        self.log.debug('GPIO STATUS on EXIT: %s', str(GPIO_STATUS))
         self.log.debug("======= EXIT ============")
 
     def manageErrorNumber(self, error):
         alertErrors = [110]
-        shutdownErros = [120, 121]
+        shutdownErrors = [120, 121]
+        terminateErrors = [100, 101, 102]
         errorType = 'emergency'
         
-        if error in shutdownErros:
+        if error in shutdownErrors:
             self.log.info("shutdown")
             # TODO: trigger shutdown
             return None
         elif error in alertErrors:
             errorType = 'alert'
-            self.gcs.send('M999', block=False)
+            self.gcs.send('M999', block=False, group='*')
+        elif error in terminateErrors:
+            self.ns.notify(errorType, {'code': error} )
+            self.gcs.terminate()
         
-        #message = {'type': errorType, 'code': error}
-        #json_msg = json.dumps(message)
-        
-        # Send the emergency error via websocket
-        #self.ws.send(json_msg)
-        
-        # If the browser doesn't support websockets write emgency error to a file
-        # so the UI can check it via pulling
-        #with open(self.EMERGENCY_FILE, 'w+') as file:
-        #    file.write(json_msg)
         self.ns.notify(errorType, {'code': error} )
 
     def start(self):
@@ -105,7 +107,7 @@ class GPIOMonitor:
         # Set GPIO as input (button)
         GPIO.setup(self.ACTION_PIN, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
         # Register callback function for gpio event, callbacks are handled from a separate thread
-        GPIO.add_event_detect(self.ACTION_PIN, GPIO.BOTH, callback=self.gpioEventListener, bouncetime=100)
+        GPIO.add_event_detect(self.ACTION_PIN, GPIO.BOTH, callback=self.gpioEventListener, bouncetime=300)
         
     def stop(self):
         """ Place holder """

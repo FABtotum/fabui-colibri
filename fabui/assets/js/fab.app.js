@@ -372,6 +372,17 @@ fabApp = (function(app) {
 		});
 	}
 	/*
+	 * show a message and refresh the page after 3 seconds
+	 */
+	app.refreshPage = function(message) {
+		message = message || 'Aborting all operations ';
+		openWait(message, ' ', false);
+		waitContent("Refreshing page");
+		setTimeout(function(){ 
+			location.reload();
+		}, 3000);
+	}
+	/*
 	 * launch reboot command and refresh the page after 21 seconds
 	 */
 	app.reboot = function() {
@@ -705,7 +716,8 @@ fabApp = (function(app) {
 		if(is_emergency == true) return; //exit if is already on emergency status
 		var code = parseInt(data.code);
 		if(code == 102){ // if panel door is open force emergency button
-			app.stopAll('Front panel has been opened.<br> Aborting all operations');
+			//app.stopAll('Front panel has been opened.<br> Aborting all operations');
+			app.refreshPage('Front panel has been opened.<br> Aborting all operations');
 			return;
 		}
 		is_emergency = true;

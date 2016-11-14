@@ -440,7 +440,13 @@ class GCodePusher(object):
                 #~ self.trace( _("Task has been aborted") )
                 self.task_stats['status'] = GCodePusher.TASK_ABORTING
                 self.__update_task_db()
-                        
+                
+            elif data == 'terminated':
+                self.trace( _("Task has been terminated") )
+                self.task_stats['status'] = GCodePusher.TASK_TERMINATED
+                self.update_monitor_file()
+                self.__self_destruct()
+                
             self.update_monitor_file()
         
         self.state_change_callback(data)

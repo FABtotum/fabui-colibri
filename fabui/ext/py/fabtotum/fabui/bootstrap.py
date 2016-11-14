@@ -129,7 +129,7 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         switch = 0
     
     try:
-        collision_warning = config.get('settings', 'safety')['collision-warning']
+        collision_warning = config.get('settings', 'safety')['collision_warning']
     except KeyError:
         collision_warning = 0
 

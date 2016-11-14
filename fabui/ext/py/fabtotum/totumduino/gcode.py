@@ -22,6 +22,7 @@
 # Import standard python module
 import time
 import re
+import os
 import threading
 from threading import Event, Thread, RLock
 try:
@@ -38,7 +39,8 @@ from fabtotum.utils.gcodefile import GCodeFile
 from fabtotum.totumduino.hooks import action_hook
 from fabtotum.totumduino.hardware import reset as totumduino_reset
 from fabtotum.fabui.bootstrap import hardwareBootstrap
-
+from fabtotum.database import Database
+from fabtotum.database.task import Task
 #############################################
 
 ERROR_CODES = {
@@ -70,7 +72,7 @@ class Command(object):
     Command objects store individual commands sent to the ``GCodeService``. Along with the 
     command id they contain all the necesary data to execute and handle it.
     
-    :param id: Command id can be ``NONE``, ``GCODE``, ``FILE``, ``ABORT``, ``PAUSE``, ``RESUME``, ``ZMODIFY`` and ``RESET``
+    :param id: Command id can be ``NONE``, ``GCODE``, ``FILE``, ``ABORT``, ``TERMINATE``, ``PAUSE``, ``RESUME``, ``ZMODIFY`` and ``RESET``
     :param data: Any command data
     :param expected_reply: Expected command reply
     :param group: Aknowledge group. ``GCODE`` commands use `'gcode'` and ``FILE`` uses `'file'`
@@ -87,6 +89,7 @@ class Command(object):
     ZMODIFY = 'zmodify'
     KILL    = 'kill'
     RESET   = 'reset'
+    TERMINATE   = 'terminate'
     
     def __init__(self, id, data = None, expected_reply = 'ok', group = 'raw', timeout = None):
         self.id = id
@@ -141,7 +144,7 @@ class Command(object):
         """
         Check whether the command belongs to he provided group.
         """
-        return self.group == group
+        return (self.group == group) or (self.group == '*')
     
     def hasExpired(self):
         """ Check whether timeout has expired. """
@@ -180,6 +183,11 @@ class Command(object):
     def abort(cls):
         """ Constructor for ``ABORT`` command. """
         return cls(Command.ABORT, None)
+        
+    @classmethod
+    def terminate(cls):
+        """ Constructor for ``TERMINATE`` command. """
+        return cls(Command.TERMINATE, None)
 
     @classmethod
     def kill(cls):
@@ -308,6 +316,7 @@ class GCodeService:
     def __init__(self, serial_port, serial_baud, serial_timeout = 5, use_checksum = False, logger = None):
         self.running = False
         self.is_resetting = False
+        self.is_terminating = False
         self.SERIAL_PORT = serial_port
         self.SERIAL_BAUD = serial_baud
         self.SERIAL_TIMEOUT = serial_timeout
@@ -350,6 +359,18 @@ class GCodeService:
             self.log.addHandler(ch)
     
     """ Internal *private* functions """
+    
+    @staticmethod
+    def __terminate_all_running_tasks():
+        db = Database()
+        conn = db.get_connection()
+        cursor = conn.execute("SELECT * from sys_tasks where status!='completed' and status!='aborted' and status!='terminated' ")
+        for row in cursor:
+           id = row[0]
+           t = Task(db, id)
+           t['status'] = 'terminated'
+           t.write()
+    
     
     def __init_state(self):
         self.active_cmd = None
@@ -672,6 +693,20 @@ class GCodeService:
                     else:
                         self.file_state = GCodeService.FILE_NONE
                         self.__trigger_file_done(self.last_command)
+            
+            elif cmd == Command.TERMINATE:
+                
+                self.__trigger_callback('state_change', 'terminated')
+                self.__cleanup()
+                self.__terminate_all_running_tasks()
+                
+                #self.__send_gcode_command("M999", group="*", modify=False)
+                #self.__send_gcode_command("M728", group="*", modify=False)
+                #xmlrpc_exe = os.path.join(PYTHON_PATH, 'xmlrpcserver.py')
+                #os.system('/etc/init.d/fabui emergency &')
+                
+                
+                self.is_terminating = False
                 
             elif cmd == Command.KILL:
                 break
@@ -752,7 +787,8 @@ class GCodeService:
                         self.log.error("Communication error. Need to resend command [{0}]".format(cmd.data))
                         
                         if cmd.data[:4] != 'M999' and cmd.data[:4] != 'M998':
-                            cmd.reply = None
+                            pass
+                            #cmd.reply = None
                         
                # print "Notify:", cmd
                 cmd.notify()
@@ -773,30 +809,36 @@ class GCodeService:
                 
             # Line does not contain expected reply
             else:
+                if cmd.reply[-1].startswith('Error:Printer halted.') or cmd.reply[-1].startswith('Printer stopped due to errors.'):
+                    self.log.debug("Printer halted [%s]", cmd.data)
+                    cmd.notify(abort=True)
+                    self.terminate()
                 
-                if cmd.data[:4] == 'M109': # Extruder
-                    # [T:27.4 E:0 W:?]
-                    temps = line.split()
-                    T = temps[0].replace("T:","").strip()
-                    self.__trigger_callback('temp_change:ext', [T])
+                else:
+                
+                    if cmd.data[:4] == 'M109': # Extruder
+                        # [T:27.4 E:0 W:?]
+                        temps = line.split()
+                        T = temps[0].replace("T:","").strip()
+                        self.__trigger_callback('temp_change:ext', [T])
+                            
+                    elif cmd.data[:4] == 'M190': # Bed
+                        # [T:27.38 E:0 B:54.9]
+                        temps = line.split()
+                        T = temps[0].replace("T:","").strip()
+                        B = temps[2].replace("B:","").strip()
+                        self.__trigger_callback('temp_change:ext_bed', [T,B])
                         
-                elif cmd.data[:4] == 'M190': # Bed
-                    # [T:27.38 E:0 B:54.9]
-                    temps = line.split()
-                    T = temps[0].replace("T:","").strip()
-                    B = temps[2].replace("B:","").strip()
-                    self.__trigger_callback('temp_change:ext_bed', [T,B])
-                    
-                elif cmd.data[:4] == 'M303': # PID autotune
-                    # [ok T:200.57 @:26]
-                    #if not line.startswith("PID Autotune failed"):
-                    temps = line.split()
-                    try:
-                        if temps[0][:2] == 'ok':
-                            T = temps[1].replace("T:","").strip()
-                            self.__trigger_callback('temp_change:ext', [T])
-                    except:
-                        pass
+                    elif cmd.data[:4] == 'M303': # PID autotune
+                        # [ok T:200.57 @:26]
+                        #if not line.startswith("PID Autotune failed"):
+                        temps = line.split()
+                        try:
+                            if temps[0][:2] == 'ok':
+                                T = temps[1].replace("T:","").strip()
+                                self.__trigger_callback('temp_change:ext', [T])
+                        except:
+                            pass
     
         #print "__handle_line: return"
     
@@ -996,6 +1038,18 @@ class GCodeService:
             return
         
         self.cq.put( Command.abort() )
+        
+    def terminate(self):
+        """
+        Terminated current file push and it's parent script. In case no file is being pushed this command
+        has no effect.
+        """
+        if self.is_resetting:
+            return
+        
+        if not self.is_terminating:
+            self.is_terminating = True
+            self.cq.put( Command.terminate() )
     
     def z_modify(self, z):
         """

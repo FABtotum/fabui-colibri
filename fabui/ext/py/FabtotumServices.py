@@ -140,6 +140,20 @@ if do_reset:
     totumduino_reset()
     time.sleep(4)
 
+
+# Clear unfinished tasks
+from fabtotum.database import Database
+from fabtotum.database.task import Task
+
+db = Database()
+conn = db.get_connection()
+cursor = conn.execute("SELECT * from sys_tasks where status!='completed' and status!='aborted' and status!='terminated' ")
+for row in cursor:
+   id = row[0]
+   t = Task(db, id)
+   t['status'] = 'terminated'
+   t.write()
+
 # Start gcode service
 gcservice = GCodeService(SERIAL_PORT, SERIAL_BAUD, logger=logger)
 gcservice.start()
@@ -171,8 +185,8 @@ observer.schedule(ftm, TEMP_PATH, recursive=False)
 observer.start()
 
 ## Safety monitor
-gpioMonitor = GPIOMonitor(ns, gcservice, logger, GPIO_PIN, EMERGENCY_FILE)
-gpioMonitor.start()
+#gpioMonitor = GPIOMonitor(ns, gcservice, logger, GPIO_PIN, EMERGENCY_FILE)
+#gpioMonitor.start()
 
 ## Stats monitor
 statsMonitor = StatsMonitor(MONITOR_FILE, gcservice, config, logger=logger)

@@ -135,6 +135,9 @@ class TableItem(object):
             
         return self._exists
 
+    def query(self, query):
+        pass
+
     def read(self):
         """
         Get the full content from the database based on the `primary` key.

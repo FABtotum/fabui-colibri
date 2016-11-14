@@ -47,6 +47,9 @@
 				data[$(this).attr('id')] = $(this).val();
 			}
 		});
+		
+		console.log('data', data);
+		
 		$.ajax({
 			type: 'post',
 			url: '<?php echo site_url('settings/saveSettings'); ?>',

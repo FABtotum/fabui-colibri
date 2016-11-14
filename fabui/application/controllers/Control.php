@@ -40,8 +40,6 @@
 		$this->load->model('Tasks', 'tasks');
 		$this->load->helper('fabtotum_helper');
 		emergency();
-		
-		// TODO remove running and aborting tasks
 	}
 	
 	/**

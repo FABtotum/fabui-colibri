@@ -67,8 +67,14 @@ class NotifyService(object):
     def notify(self, event_type, event_data):
         
         with self.notify_lock:
+            print 'event_type:',event_type, 'event_data:',event_data
             self.__add_event(event_type, event_data)
             self.__send_message(event_type, event_data)
+    
+    def get_last(self):
+        if self.events:
+            return self.events[-1]
+        return None
     
     def __add_event(self, event_type, event_data):
         """
@@ -84,7 +90,8 @@ class NotifyService(object):
             self.events.append(event)
         
         wrapper = {
-            'events' : self.events
+            'events' : self.events,
+            'last_event' : event
         }
         
         with open(self.notify_file, 'w') as f:
