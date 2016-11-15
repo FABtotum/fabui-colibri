@@ -33,7 +33,7 @@
 <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon">
 <link rel="icon"          href="/assets/img/favicon/favicon.ico" type="image/x-icon">
 
-<link rel="stylesheet" type="text/css" media="screen" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700" >
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/third_party.css?v=<?php echo FABUI_VERSION;  ?>" >
 <!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
