@@ -576,7 +576,7 @@ fabApp = (function(app) {
 	 */
 	app.updateTemperatures = function(data){
 		//update temperatures
-		app.updateTemperaturesInfo(data.reply.ext_temp, data.reply.ext_temp_target, data.reply.bed_temp, data.reply.bed_temp_target);
+		app.updateTemperaturesInfo(data.temperatures.ext_temp, data.temperatures.ext_temp_target, data.temperatures.bed_temp, data.temperatures.bed_temp_target);
 	}
 	
 	/**
