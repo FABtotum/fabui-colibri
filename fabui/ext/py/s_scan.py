@@ -380,7 +380,7 @@ def main():
     parser.add_argument("-b", "--begin",    help=_("Begin scanning from X."),  default=0)
     parser.add_argument("-e", "--end",      help=_("End scanning at X."),      default=100)
     parser.add_argument("-y", "--y-offset", help=_("Y offset."),               default=117)
-    parser.add_argument("-z", "--z-offset", help=_("Z offset."),               default=180)
+    parser.add_argument("-z", "--z-offset", help=_("Z offset."),               default=145)
     parser.add_argument("-a", "--a-offset", help=_("A offset/rotation."),      default=0)
     parser.add_argument("-o", "--output",   help=_("Output point cloud file."),default=os.path.join(destination, 'cloud.asc'))
     

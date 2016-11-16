@@ -54,12 +54,15 @@ def check_pre_scan(app, args = None):
     # macro("M744","open",1,"Building plane control",0.1)
     app.macro("M742",       "TRIGGERED",1,      _("Spool panel control"), warning=True, verbose=False)
     app.macro("G90",        "ok", 2,            _("Setting absolute positioning mode"), verbose=False)
-    app.macro("G28 X Y",    "ok", 15,           _("Zeroing Z axis"), verbose=False)
-    app.macro("G27 Z",      "ok", 100,          _("Zeroing Z axis") )
+    #app.macro("G28 X Y",    "ok", 15,           _("Zeroing Z axis"), verbose=False)
+    app.macro("G27",      "ok", 120,          _("Zeroing Z axis") )
     # Disable feeder
+    app.macro("M120",               "ok", 1,    _("Disable Endstop checking") )
     app.macro("G91",                "ok", 2,    _("Setting rel position"), verbose=False)
-    app.macro("G0 X5 Y5 Z-"+str(feeder_disengage_offset)+" F400",   "ok", 5, _("Engaging 4th Axis Motion") )
+    app.macro("G0 Z-"+str(feeder_disengage_offset)+" F300",   "ok", 5, _("Engaging 4th Axis Motion") )
     app.macro("M400",                "ok", 100,   _("Wait for moves to finish"), verbose=False)
+    app.macro("M121",               "ok", 1,    _("Enable Endstop checking") )
+    
     app.macro("G90",                "ok", 2,    _("Setting Absolute position"), verbose=False)
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), verbose=True)
     # Move to collimation
@@ -131,33 +134,33 @@ def sweep_scan(app, args = None):
     app.macro("M703 S0",        "ok", 2,        _("Turning off lights"), verbose=False)
     # macro("M744","open",2,"Working plane absent/tilted",0.1)
     #~ app.macro("G28 X0 Y0",      "ok", 90,       _("Homing all axis"), 1)
-    app.macro("G27",            "ok", 90,       _("Homing all axis") )
+    #~ app.macro("G27",            "ok", 90,       _("Homing all axis") )
     app.macro("G90",            "ok", 2,        _("Setting Absolute position"), verbose=False)
     # macro("M92 E"+str(units['a']),"ok",1,"Setting 4th axis mode",0)
     app.macro("G0 Z145 F1000",  "ok", 90,       _("Lowering the plane"), verbose=False)
     app.macro("M400",            "ok", 55,      _("Wait for all moves to finish"), verbose=False)
     
-def sweep_scan_new(app, args = None):
-    try:
-        safety_door = app.config.get('settings', 'safety')['door']
-    except KeyError:
-        safety_door = 0
+#~ def sweep_scan_new(app, args = None):
+    #~ try:
+        #~ safety_door = app.config.get('settings', 'safety')['door']
+    #~ except KeyError:
+        #~ safety_door = 0
     
-    app.trace( _("Initializing Sweeping Laserscanner") )
-    app.trace( _("checking panel door status and bed inserted") )
-    if(safety_door == 1):
-        app.macro("M741",       "TRIGGERED", 2, _("Front panel door control") )
-    app.macro("M744",           "TRIGGERED", 2, _("Building plane removed!"), warning=True)
-    app.macro("M742",           "TRIGGERED", 1, _("Spool panel is not closed!"), warning=True, verbose=False)
-    app.macro("M701 S0",        "ok", 2,        _("Turning off lights") )
-    app.macro("M702 S0",        "ok", 2,        _("Turning off lights"), verbose=False)
-    app.macro("M703 S0",        "ok", 2,        _("Turning off lights"), verbose=False)
-    # macro("M744","open",2,"Working plane absent/tilted",0.1)
-    app.macro("G27",            "ok", 90,       _("Homing all axis") )
-    app.macro("G90",            "ok", 2,        _("Setting Absolute position"), verbose=False)
-    # macro("M92 E"+str(units['a']),"ok",1,"Setting 4th axis mode",0)
-    app.macro("G0 Z145 F1000",  "ok", 90,       _("Lowering the plane"), verbose=False)
-    app.macro("M400",            "ok", 55,      _("Wait for all moves to finish"), verbose=False)
+    #~ app.trace( _("Initializing Sweeping Laserscanner") )
+    #~ app.trace( _("checking panel door status and bed inserted") )
+    #~ if(safety_door == 1):
+        #~ app.macro("M741",       "TRIGGERED", 2, _("Front panel door control") )
+    #~ app.macro("M744",           "TRIGGERED", 2, _("Building plane removed!"), warning=True)
+    #~ app.macro("M742",           "TRIGGERED", 1, _("Spool panel is not closed!"), warning=True, verbose=False)
+    #~ app.macro("M701 S0",        "ok", 2,        _("Turning off lights") )
+    #~ app.macro("M702 S0",        "ok", 2,        _("Turning off lights"), verbose=False)
+    #~ app.macro("M703 S0",        "ok", 2,        _("Turning off lights"), verbose=False)
+    #~ # macro("M744","open",2,"Working plane absent/tilted",0.1)
+    #~ app.macro("G27",            "ok", 90,       _("Homing all axis") )
+    #~ app.macro("G90",            "ok", 2,        _("Setting Absolute position"), verbose=False)
+    #~ # macro("M92 E"+str(units['a']),"ok",1,"Setting 4th axis mode",0)
+    #~ app.macro("G0 Z145 F1000",  "ok", 90,       _("Lowering the plane"), verbose=False)
+    #~ app.macro("M400",            "ok", 55,      _("Wait for all moves to finish"), verbose=False)
 
 def probe_scan(app, args = None):
     units_a = app.config.get('settings', 'a')
