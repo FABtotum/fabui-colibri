@@ -14,8 +14,8 @@ var buildPlateDimensions = {
         height : 234
     },
     sweep : {
-        minX : 0,
-        maxX : 214,
+        minX : 20,
+        maxX : 200,
         minY : 0,
         maxY : 234,
         width : 214,
@@ -352,6 +352,52 @@ function initSweepCrop()
 	var realWidth = buildPlateDimensions.sweep.width + buildPlateImageOffsets.left + buildPlateImageOffsets.right;
 	var realHeight = buildPlateDimensions.sweep.height + buildPlateImageOffsets.top + buildPlateImageOffsets.bottom;
 
+	var sweepLeft = xCorrect + buildPlateDimensions.sweep.minX;
+	var sweepTop  = yCorrect + (buildPlateDimensions.sweep.height - buildPlateDimensions.sweep.maxY);
+	var sweepWidth = buildPlateDimensions.sweep.maxX - buildPlateDimensions.sweep.minX;
+	var sweepHeight = buildPlateDimensions.sweep.maxY - buildPlateDimensions.sweep.minY;
+
+	var options = {
+		responsive: true,
+		guides: false,
+		viewMode: 1,
+		toggleDragModeOnDblclick : false,
+		zoomable: false,
+		cropBoxResizable: true,
+		
+		// Bed mapping
+		useMappedDimensions : true,
+		mappedWidth : realWidth,
+		mappedHeight : realHeight,
+		
+		initCropBoxX : sweepLeft,
+		initCropBoxY : sweepTop,
+		initCropBoxWidth : sweepWidth, 
+		initCropBoxHeight : sweepHeight,
+		
+		minCropBoxLeft : sweepLeft,
+		minCropBoxTop : sweepTop,
+		
+		maxCropBoxWidth : sweepWidth,
+		maxCropBoxHeight : sweepHeight,
+		
+		minCropBoxHeight: 5,
+		minCropBoxWidth: 5,
+		
+		background: false,
+		crop: function (e) {}
+    };
+	
+	/*var xCorrect = buildPlateImageOffsets.left;
+	var yCorrect = buildPlateImageOffsets.top;   
+	var realWidth = buildPlateDimensions.sweep.width + buildPlateImageOffsets.left + buildPlateImageOffsets.right;
+	var realHeight = buildPlateDimensions.sweep.height + buildPlateImageOffsets.top + buildPlateImageOffsets.bottom;
+
+	var probeLeft = xCorrect + buildPlateDimensions.sweep.minX;
+	var probeTop  = yCorrect + (buildPlateDimensions.sweep.height - buildPlateDimensions.sweep.maxY);
+	var probeWidth = buildPlateDimensions.probe.maxX - buildPlateDimensions.sweep.minX;
+	var probeHeight = buildPlateDimensions.probe.maxY - buildPlateDimensions.sweep.minY;
+
 	var options = {
 		responsive: true,
 		guides: false,
@@ -370,6 +416,8 @@ function initSweepCrop()
 		initCropBoxWidth : buildPlateDimensions.sweep.width, 
 		initCropBoxHeight : buildPlateDimensions.sweep.height,
 		
+		
+		
 		minCropBoxLeft : xCorrect,
 		minCropBoxTop : yCorrect,
 		
@@ -381,7 +429,7 @@ function initSweepCrop()
 		
 		background: false,
         crop: function (e) {}
-    };
+    };*/
 	
 	$image.on({
     'crop.cropper': function (e) {
