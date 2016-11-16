@@ -246,7 +246,6 @@
 	{
 		//load helpers
 		$this->load->helpers('fabtotum_helper');
-		
 		//preparing printer
 		//~ $checkPreScanResult = doMacro('check_pre_scan');
 		//~ if($checkPreScanResult['response'] == false){
@@ -281,7 +280,7 @@
 			'-H' => $params['height'],
 			'-d' => '/tmp/fabui',
 			'-F' => $params['file_name'],
-			'-C' => 'v1'
+			'-C' => getCameraVersion()
 		);
 		if($params['object_mode'] == 'new') $scanArgs['-N'] = $params['object'];
 		if($params['object_mode'] == 'add') $scanArgs['-O'] = $params['object'];
@@ -330,7 +329,7 @@
 			'-H' => $params['height'],
 			'-d' => '/tmp/fabui',
 			'-F' => $params['file_name'],
-			'-C' => 'v1'
+			'-C' => getCameraVersion()
 		);
 		if($params['object_mode'] == 'new') $scanArgs['-N'] = $params['object'];
 		if($params['object_mode'] == 'add') $scanArgs['-O'] = $params['object'];

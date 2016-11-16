@@ -69,6 +69,7 @@
 	public function downloadPicture()
 	{
 		$this->load->library('Camera', '', 'camera');
+		$this->load->helper('download');
 		
 		$filename = $this->camera->getPermalink();
 		
@@ -81,8 +82,12 @@
 		$ext = pathinfo($filename, PATHINFO_EXTENSION);
 		$_file_name = 'raspicam.'.$ext;
 		$_data      = file_get_contents($filename);
+		
+		
+		force_download($filename, NULL);
+		
 		// Generate the server headers
-		if (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== FALSE)
+		/*if (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== FALSE)
 		{
 			header('Content-Disposition: attachment; filename="'.$_file_name.'"');
 			header('Expires: 0');
@@ -100,7 +105,7 @@
 			header("Content-Length: ".strlen($_data));
 		}
 
-		exit($_data);
+		exit($_data);*/
 	}
 	
 	public function getPicture($time = 0)

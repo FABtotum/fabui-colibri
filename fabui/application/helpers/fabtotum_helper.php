@@ -79,6 +79,23 @@ if(!function_exists('saveSettings'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getCameraVersion'))
+{
+	/**
+	 * 
+	 * 
+	 *  Get Camera version
+	 *  @return v1 or v2
+	 * 
+	 */
+	function getCameraVersion()
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		return $CI->config->item('camera_version');
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('loadHeads'))
 {
 	/**

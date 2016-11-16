@@ -60,16 +60,21 @@ class Extrinsic(GCodePusher):
 
     def take_a_picture(self, resolution = None):
         """ Camera control wrapper """
-        scanfile = os.path.join(self.scan_dir, "sample.png" )
+        scanfile = os.path.join(self.scan_dir, "sample_{0}x{1}.png".format(resolution[0], resolution[1]) )
         if resolution:
             self.camera.resolution = resolution
         self.camera.capture(scanfile, quality=100)
         
         return scanfile
     
-    def check_projection(self, point2d, point3d, M, R, t, error_margin2d = 4.0, error_margin3d = 1.0):
+    def check_projection(self, point2d, point3d, M, R, t, width, height, error_margin2d = 4.0, error_margin3d = 1.0):
         uvPoint3 = np.matrix( np.round( point2d + [1] ) )
         xyzPoint3 = np.matrix( point3d )
+        
+        ew = width / 300.0
+        eh = height / 300.0
+        
+        error_margin2d = max(ew, eh, 4.0)
         
         # 3D to 2D projection
         PP2d = M * ( R*xyzPoint3.T + t)
@@ -78,17 +83,22 @@ class Extrinsic(GCodePusher):
         
         err = False
         
-        ex = abs( PP2d[0] - uvPoint3.T[0] )
+        ex = abs( float(PP2d[0]) - float(uvPoint3.T[0]) )
+        
         if ex > error_margin2d:
             err = True
+            print "x: {0} - {1} = {2} [{3}]".format(float(PP2d[0]), float(uvPoint3.T[0]), ex, error_margin2d)
         
-        ey = abs( PP2d[1] - uvPoint3.T[1] )
+        ey = abs( float(PP2d[1]) - float(uvPoint3.T[1]) )
         if ey > error_margin2d:
             err = True
+            print "y: {0} - {1} = {2} [{3}]".format(float(PP2d[1]), float(uvPoint3.T[1]), ey, error_margin2d)
             
         if err:
             print "Warning: (2D->3D): {0} {1}".format(PP2d.T, uvPoint3)
             return False
+        
+        print "(2D->3D): error-margin (x,y): {0}, {1}".format(ex, ey)
         
         #~ PP2d = np.round(PP2d)
         
@@ -112,7 +122,9 @@ class Extrinsic(GCodePusher):
         ez = abs( PP[2] - xyzPoint3.T[2] )
         if ez > error_margin3d:
             err = True
-            
+        
+        print "(3D->2D): error-margin (x,y,z): {0}, {1}, {2}".format(ex, ey, ez)
+        
         if err:
             print "Warning: (3D->2D): {0} {1} [{2}/{3}]".format(PP.T, xyzPoint3, float(s1), float(s2))
             print "       * {0}".format(PP.T - xyzPoint3)
@@ -125,7 +137,8 @@ class Extrinsic(GCodePusher):
         z_offset = z # this one bas bed heigh correction
         
          # Chessboard size 
-        pattern_size = (6,8)
+        pattern_size = (8,6)
+        #~ pattern_size = (6,8)
         # Square size in mm
         square_size  = (10,10)
         
@@ -159,13 +172,15 @@ class Extrinsic(GCodePusher):
                 y2d = corners[i][0][1]
                 obj2d_points.append( [x2d, y2d] )
                 cv2.circle(img, (x2d,y2d), 3, (0,0,255), 1 )
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                cv2.putText(img, '{0}'.format(i),(x2d,y2d), font, 0.3,(0,0,255), 1)
                 cv2.imwrite('found_chess.jpg', img)
         else:
             self.trace( _('Find chessboard: FAILED.') )
             return False
 
         cx = x - (pattern_size[0]-1)*square_size[1]
-        cy = y
+        cy = y - square_size[1]
 
         # Create 3d points
         for j in xrange(0, pattern_size[1] ):
@@ -253,7 +268,7 @@ class Extrinsic(GCodePusher):
         
         # Check parameter validity
         for idx in xrange(0, len(obj2d_points)):
-            retval = self.check_projection(obj2d_points[idx], obj3d_points[idx], M33, R33, tvec)
+            retval = self.check_projection(obj2d_points[idx], obj3d_points[idx], M33, R33, tvec, w, h)
             if not retval:
                 self.trace( _('Parameter validation: FAILED.') )
                 return False
@@ -297,10 +312,13 @@ class Extrinsic(GCodePusher):
             
             fn = self.take_a_picture( resolution=(w,h) )
             
+            self.trace( _('{0} x {1}'.format(w,h) ) )
+            
             self.trace( _('Calculation started.') )
             # Because chessboard base raises the image for base_height, the real z_offset should be reduced by it 
             # as the Z axis decreses the higher you go
-            retval = self.calculate_extrinsic(fn, intrinsic_data[label], self.output_file, 130, 150, z_offset-base_height, x_offset, y_offset, z_offset)
+            # x=13cm, y=15cm is the reference point of the upper right corner
+            retval = self.calculate_extrinsic(fn, intrinsic_data[label], self.output_file, 110, 150, z_offset-base_height, x_offset, y_offset, z_offset)
             if not retval:
                 self.trace( _('Calculation for {0} failed.'.format(label) ) )
             else:

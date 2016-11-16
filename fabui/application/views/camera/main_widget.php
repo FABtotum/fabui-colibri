@@ -31,7 +31,7 @@
 
 			<div class="col-sm-4 ">
 				<div class="btn-group btn-group-justified">
-					<a  href="<?php echo site_url("cam/downloadPicture") ?>" class="btn btn-default btn-sm"><i class="fa fa-download"></i> <span class="hidden-mobile hidden-tablet"> Download </span></a>
+					<a  href="cam/downloadPicture" class="btn btn-default btn-sm"><i class="fa fa-download"></i> <span class="hidden-mobile hidden-tablet"> Download </span></a>
 				</div>
 			</div>
 		</div>
