@@ -198,20 +198,29 @@ def read_eeprom(app, args = None):
             return object
     
     reply = app.macro('M503', None, 1, _("Reading settings from eeprom"), verbose=False)
-    
-    #echo:Z Probe Length: -32.05
-    probe_length = reply[17].split('Probe Length:')[1].strip()
-    
-    eeprom = {
-        "steps_per_unit"        : serialize(reply[3], '(M92\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e']),
-        "maximum_feedrates"     : serialize(reply[5], '(M203\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e']),
-        "maximum_accelaration"  : serialize(reply[7], '(M201\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e']),
-        "acceleration"          : serialize(reply[9], '(M204\sS[0-9.]+\sT1[0-9.]+)', ['s', 't1']),
-        "advanced_variables"    : serialize(reply[11],'(M205\sS[0-9.]+\sT0[0-9.]+\sB[0-9.]+\sX[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['s', 't', 'b', 'x', 'z', 'e']),
-        "home_offset"           : serialize(reply[13],'(M206\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+)', ['x', 'y', 'z']),
-        "pid"                   : serialize(reply[15],'(M301\sP[0-9.]+\sI[0-9.]+\sD[0-9.]+)', ['p', 'i', 'd']),
-        "probe_length"          : probe_length,
-        "servo_endstop"         : getServoEndstopValues(reply[16])
-    }
+
+    eeprom = {}
+
+    for line in reply:
+        line = line.strip()
+        
+        if line.startswith('M92 '):
+            eeprom["steps_per_unit"] = serialize(line, '(M92\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e'])
+        elif line.startswith('M203'):
+            eeprom["maximum_feedrates"] = serialize(line, '(M203\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e'])
+        elif line.startswith('M201'):
+            eeprom["maximum_accelaration"] = serialize(line, '(M201\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e'])
+        elif line.startswith('M204'):
+            eeprom["acceleration"] = serialize(reply[9], '(M204\sS[0-9.]+\sT1[0-9.]+)', ['s', 't1'])
+        elif line.startswith('M205'):
+           eeprom["advanced_variables"] = serialize(line,'(M205\sS[0-9.]+\sT0[0-9.]+\sB[0-9.]+\sX[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['s', 't', 'b', 'x', 'z', 'e'])
+        elif line.startswith('M206'):
+            eeprom["home_offset"] = serialize(line,'(M206\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+)', ['x', 'y', 'z'])
+        elif line.startswith('M31'):
+            eeprom["pid"] = serialize(line,'(M301\sP[0-9.]+\sI[0-9.]+\sD[0-9.]+)', ['p', 'i', 'd'])
+        elif line.startswith('Z Probe Length') or line.startswith('Probe Length'):
+            eeprom["probe_length"] = line.split(':')[1].strip()
+        elif line.startswith('Servo Endstop'):
+            eeprom["servo_endstop"] = getServoEndstopValues(line)
     
     return eeprom

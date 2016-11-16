@@ -168,7 +168,7 @@ class StatsMonitor:
             # Timeout is to prevent waiting for too long when there is a long running
             # command like M109,M190,G29 or G28
             #~ reply = self.gcs.send('M105', group = 'monitor', timeout = 2) 
-            reply = self.gcs.send('M105', group = 'monitor')
+            reply = self.gcs.send('M105', group = 'monitor', block=False)
             if reply != None: # No timeout occured
                 try:
                     a, b, c, d = self.__parse_temperature(reply[0])

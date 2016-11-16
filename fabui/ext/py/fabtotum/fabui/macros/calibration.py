@@ -61,7 +61,8 @@ def probe_setup_calibrate(app, args = None):
     
     data = app.macro("M503", None, 2, _("Reading eeprom"), verbose=False )
     for line in data:
-        if line.startswith("echo:Z Probe Length:"):
+        line = line.strip()
+        if line.startswith("Z Probe Length:"):
             z_probe_old = float(line.split("Z Probe Length: ")[1])
     
     app.trace( _("Old Position : {0} mm").format(str(z_probe_old)) )
@@ -75,7 +76,7 @@ def probe_setup_calibrate(app, args = None):
     
     # write config to EEPROM
     z_probe_new = abs( z_probe_old + (z_touch - 0.1) )
-    app.macro("M710 S{0}".format(z_probe_new), "ok", 2, _("Write config to EEPROM"), vervose=False)
+    app.macro("M710 S{0}".format(z_probe_new), "ok", 2, _("Write config to EEPROM"), verbose=False)
     
     app.macro("G90","ok",2,"Abs_mode",1, verbose=False)
     app.macro("G0 Z50 F1000",   "ok", 3,    _("Moving the plane"), verbose=False)

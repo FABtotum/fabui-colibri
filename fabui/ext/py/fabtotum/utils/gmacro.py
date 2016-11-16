@@ -20,6 +20,7 @@
 
 
 # Import standard python module
+import sys, traceback
 import time
 import json
 import gettext
@@ -111,7 +112,7 @@ class GMacroHandler:
                 self.trace('Macro "{0}" not found.'.format(preset));
         except MacroException as err:
             response = MACRO_ERROR
-            error_message = str(err)
+            error_message = str(err) + traceback.format_exc()
             self.trace( str(err) )
             
         if atomic:

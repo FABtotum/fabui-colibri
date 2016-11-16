@@ -57,12 +57,9 @@ class GPIOMonitor:
         self.log.debug("====== START ============")
         GPIO_STATUS = GPIO.input(self.ACTION_PIN)
         self.log.debug('GPIO STATUS: %s', str(GPIO_STATUS))
-
-        reply = self.gcs.send("M730", group='*')
-        print 'M730:', reply
         
         if GPIO_STATUS == 0:
-            #reply = self.gcs.send("M730", group='*')
+            reply = self.gcs.send("M730", group='*')
             #print 'M730:', reply
             print "Checking"
             if reply:
@@ -83,7 +80,8 @@ class GPIOMonitor:
     def manageErrorNumber(self, error):
         alertErrors = [110]
         shutdownErrors = [120, 121]
-        terminateErrors = [100, 101, 102, 106, 107, 108, 109]
+        #~ terminateErrors = [100, 101, 102, 106, 107, 108, 109]
+        terminateErrors = [100, 101, 102]
         errorType = 'emergency'
         
         if error in shutdownErrors:
@@ -108,6 +106,10 @@ class GPIOMonitor:
         GPIO.setup(self.ACTION_PIN, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
         # Register callback function for gpio event, callbacks are handled from a separate thread
         GPIO.add_event_detect(self.ACTION_PIN, GPIO.BOTH, callback=self.gpioEventListener, bouncetime=300)
+        
+        self.log.debug("GPIOMonitor: Started")
+        GPIO_STATUS = GPIO.input(self.ACTION_PIN)
+        self.log.debug('GPIO STATUS on STARTUP: %s', str(GPIO_STATUS))
         
     def stop(self):
         """ Place holder """

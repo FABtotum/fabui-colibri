@@ -80,7 +80,7 @@ class XmlRPC extends FAB_Controller {
         
         //~ $command = $postData['macro'];
         //~ $args = $postData['args'];
-        $args = array('');
+        /*$args = array('');
         
         $this->load->library('xmlrpc');
         $this->xmlrpc->server($this->xmlrpc_uri, $this->xmlrpc_port);
@@ -104,7 +104,7 @@ class XmlRPC extends FAB_Controller {
             $tmp = $this->xmlrpc->display_response();
             var_dump( $tmp );
             $_result = True;
-        }
+        }*/
         
         //~ $this->output->set_content_type('application/json')->set_output( json_encode(array('reply' => $_reply['reply'], 'result' => $_reply['response'])) );
     }

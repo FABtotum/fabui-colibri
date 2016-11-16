@@ -185,7 +185,19 @@ observer.schedule(ftm, TEMP_PATH, recursive=False)
 observer.start()
 
 ## Safety monitor
-gpioMonitor = GPIOMonitor(ns, gcservice, logger, GPIO_PIN, EMERGENCY_FILE)
+
+# Setup logger
+logger2 = logging.getLogger('GPIOMonitor')
+logger2.setLevel(logging.DEBUG)
+fh = logging.FileHandler('/var/log/fabui/gpiomonitor.log', mode='w')
+
+#~ formatter = logging.Formatter("%(name)s - %(levelname)s : %(message)s")
+formatter = logging.Formatter("%(levelname)s : %(message)s")
+fh.setFormatter(formatter)
+fh.setLevel(logging.DEBUG)
+logger2.addHandler(fh)
+
+gpioMonitor = GPIOMonitor(ns, gcservice, logger2, GPIO_PIN, EMERGENCY_FILE)
 gpioMonitor.start()
 
 ## Stats monitor
