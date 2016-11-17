@@ -27,6 +27,9 @@
 	var bedSlider;
 	var flowRateSlider;
 	<?php endif; ?>
+	<?php if($type == "print"): ?>
+	var rpmSlider;
+	<?php endif; ?>
 	var speedSlider;
 	var fanSlider;
 	var zOverride = 0;
@@ -43,6 +46,8 @@
 	var wasFlowRateSliderMoved  = false;
 	var isFanSliderBusy         = false;
 	var wasFanSliderMoved       = false;
+	var isRpmSliderBusy         = false;
+	var wasRpmSliderMoved       = false;
 	//
 	var soft_extruder_min  = 175;
 	
@@ -215,15 +220,17 @@
 				$('.wizard').wizard('selectedItem', { step: 2 });
 				showErrorAlert(response.message);
 			}else{
-				fabApp.resetTemperaturesPlot(50);
 				fabApp.freezeMenu('<?php echo $type ?>');
 				freezeUI();
 				/*timerInterval = setInterval(timer, 1000);*/
 				setInterval(jsonMonitor, 1000);
 				idTask = response.id_task;
 				initSliders();
+				<?php if($type == 'print'): ?>
+				fabApp.resetTemperaturesPlot(50);
 				setTimeout(initGraph, 1000);
 				setTemperaturesSlidersValue(response.temperatures.extruder, response.temperatures.bed);
+				<?php endif; ?>
 				getTaskMonitor(true);
 				updateZOverride(0);
 			}
@@ -276,8 +283,13 @@
 			handleTaskStatus(data.task.status);
 			updateProgress(data.task.percent);
 			updateSpeed(data.override.speed);
+			<?php if($type == "print"): ?>
 			updateFlowRate(data.override.flow_rate);
 			updateFan(data.override.fan);
+			<?php endif; ?>
+			<?php if($type == "mill"): ?>
+			updateRPM(data.override.rpm);
+			<?php endif; ?>
 			updateTimers(data.task.started_time);
 		};
 	}
@@ -295,7 +307,9 @@
 		getTrace();
 		setTimeout(initSliders,  1000);
 		setInterval(jsonMonitor, 1000);
+		<?php if($type=="print"): ?>
 		setTimeout(initGraph,    1000);
+		<?php endif; ?>
 		setTimeout(traceMonitor, 1000);
 		setTimeout(function(){
 			getTaskMonitor(true);
@@ -787,6 +801,37 @@
 			wasFanSliderMoved = true;
 		});
 		<?php endif; ?>
+
+		<?php if($type == "mill"): ?>
+		if(typeof rpmSlider == "undefined")
+			noUiSlider.create(document.getElementById('create-rpm-slider'), {
+				start: 100,
+				connect: "lower",
+				range: {'min': 0, 'max' : 500},
+				pips: {
+					mode: 'positions',
+					values: [0,20,40,60,80,100],
+					density: 10,
+					format: wNumb({})
+				}
+		});
+		rpmSlider = document.getElementById('create-rpm-slider');
+		rpmSlider.noUiSlider.on('change', function(e){
+			onChange('rpm', e);
+		});
+		rpmSlider.noUiSlider.on('slide', function(e){
+			onSlide('rpm', e);
+			wasRpmSliderMoved = true;
+		});
+		rpmSlider.noUiSlider.on('end', function(e){
+			isRpmSliderBusy = false;
+		});
+		rpmSlider.noUiSlider.on('start', function(e){
+			isRpmSliderBusy = true;
+			wasRpmSliderMoved = true;
+		});
+		<?php endif; ?>
+		
 		//speed slider
 		if(typeof speedSlider == "undefined")
 			noUiSlider.create(document.getElementById('create-speed-slider'), {
@@ -799,7 +844,7 @@
 					density: 10,
 					format: wNumb({})
 				}
-			});
+		});
 		speedSlider = document.getElementById('create-speed-slider');
 		//speed slider
 		speedSlider.noUiSlider.on('change', function(e){
@@ -1064,6 +1109,20 @@
         	fabApp.jogAxisZ($(this).attr("data-attribute-function"), $(this).attr("data-attribute-value"));
         	event.preventDefault();
         });
+	}
+	/**
+	*
+	*/
+	function updateRPM(value)
+	{
+		$(".task-rpm").html(parseInt(value));
+		$("#task-rpm-bar").attr("style", "width:" + ((value/500)*100) +"%;");
+		if(!isRpmSliderBusy && !wasRpmSliderMoved){
+			$('.slider-task-rpm').html(parseInt(value));
+			if(typeof rpmSlider !== 'undefined'){
+				rpmSlider.noUiSlider.set(value);
+			}
+		}
 	}
 	<?php endif;?>
 </script>

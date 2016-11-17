@@ -19,7 +19,7 @@
 			//check if there's a running task
 			//load libraries, models, helpers
 			$this->load->model('Tasks', 'tasks');
-			$this->tasks->truncate();
+			//$this->tasks->truncate();
 			$this->runningTask = $this->tasks->getRunning();
 		}
 	}
@@ -122,6 +122,7 @@
 		$data['type']      = 'mill';
 		$data['printType'] = 'subtractive';
 		$data['runningTask'] = $this->runningTask;
+		$data['zHeightOptions'] = array('0.1' => '0.1', '0.01' => '0.01');
 		$data['what'] = $what;
 		$data['what_id'] = $what_id;
 		//wizard

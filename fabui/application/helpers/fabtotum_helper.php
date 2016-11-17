@@ -265,6 +265,7 @@ if(!function_exists('doMacro'))
 				array(true, 'boolean')
 		);
 		
+		log_message('debug', "do_macro: ".$macroName);
 		$serverResponse = sendToXmlrpcServer('do_macro', $data);
 		
 		if($serverResponse['response'] == false){

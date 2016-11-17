@@ -87,11 +87,17 @@
 							<div class="progress">
 								<div class="progress-bar" id="task-flow-rate-bar"></div>
 							</div> </div>
-						<?php endif; ?>
 						<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> Fan <span class="pull-right"><span class="task-fan"></span> %</span> </span>
 							<div class="progress">
 								<div class="progress-bar" id="task-fan-bar"></div>
 							</div> </div>
+						<?php endif; ?>
+						<?php if($type == 'mill'): ?>
+						<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> RPM <span class="pull-right"><span class="task-rpm"></span> </span> </span>
+							<div class="progress">
+								<div class="progress-bar" id="task-rpm-bar"></div>
+							</div> </div>
+						<?php endif; ?>
 						<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> Elapsed time <span class="pull-right"><span class="elapsed-time"></span> </span> </span>
 							<div class="fake-progress"></div>
 						</div>
@@ -157,10 +163,11 @@
 			<hr class="simple">
 			<?php endif; ?>
 			<div class="row padding-10">
-				<div class="col-sm-4 margin-bottom-50">
+				<div class="col-sm-<?php echo $type == 'print' ?  4 : 6 ?> margin-bottom-50">
 					<h4>Speed <span class="pull-right"><strong><span class="slider-task-speed"></span></strong>  %</span></h4>
 					<div id="create-speed-slider" class="noUiSlider sliders"></div>
 				</div>
+				<?php if($type == 'print'): ?>
 				<hr class="simple hidden-md hidden-sm hidden-lg">
 				<div class="col-sm-4 margin-bottom-50">
 					<h4>Flow rate <span class="pull-right"><strong><span class="slider-task-flow-rate"></span></strong> %</span></h4>
@@ -171,6 +178,14 @@
 					<h4>Fan <span class="pull-right"><strong><span class="slider-task-fan"></span></strong> %</span></h4>
 					<div id="create-fan-slider" class="noUiSlider sliders"></div>
 				</div>
+				<?php endif;?>
+				<?php if($type == 'mill'):?>
+				<hr class="simple hidden-md hidden-sm hidden-lg">
+				<div class="col-sm-6 margin-bottom-50">
+					<h4>RPM <span class="pull-right"><strong><span class="slider-task-rpm"></span></strong> %</span></h4>
+					<div id="create-rpm-slider" class="noUiSlider sliders"></div>
+				</div>
+				<?php endif;?>
 			</div>
 		</div>
 	</div>
