@@ -7,6 +7,24 @@
 					<?php echo form_dropdown('address-show', $addressModeEth, $info['address_mode'], array('id' => 'address-mode', 'class' => "address-mode", 'data-attribute' => $iface)); ?> <i></i>
 				</label>
 			</section>
+			
+			<section id="dhcp-address-container" style="<?php if($info['address_mode'] != 'dhcp') echo 'display:none;';?>" class="col col-6">
+
+				<table class="table ">
+					<tbody>
+						<tr>
+							<td style="border:0px;" width="200px">IP Address</td>
+							<td style="border:0px;"><a href="http://<?php echo $info['ipv4_address']; ?>" target="_blank"><?php echo $info['ipv4_address']; ?></a></td>
+						</tr>
+						<tr>
+							<td>MAC Address</td>
+							<td><strong><?php echo $info['mac_address']; ?></strong></td>
+						</tr>
+					</tbody>
+				</table>
+		
+			</section>
+			
 		</fieldset>
 		<fieldset>
 			<section class="col col-6" id="address-container" style="<?php if($info['address_mode'] == 'dhcp') echo 'display:none;';?>">

@@ -7,6 +7,26 @@
 					<?php echo form_dropdown('address-show', $addressModeWiFi, $info['address_mode'], array('id' => 'address-mode', 'class' => "address-mode", 'data-attribute' => $iface) ); ?> <i></i>
 				</label>
 			</section>
+			<section id="dhcp-address-container" style="<?php if($info['address_mode'] != 'dhcp') echo 'display:none;';?>" class="col col-6">
+
+				<table class="table ">
+					<tbody>
+						<tr>
+							<td style="border:0px;" width="200px">Connected to</td>
+							<td style="border:0px;"><strong><?php echo $info['wireless']['ssid']; ?></strong></td>
+						</tr>
+						<tr>
+							<td >IP Address</td>
+							<td><a href="http://<?php echo $info['ipv4_address']; ?>" target="_blank"><?php echo $info['ipv4_address']; ?></a></td>
+						</tr>
+						<tr>
+							<td>MAC Address</td>
+							<td><strong><?php echo $info['mac_address']; ?></strong></td>
+						</tr>
+					</tbody>
+				</table>
+		
+			</section>
 		</fieldset>
 		
 		<fieldset>
@@ -66,8 +86,8 @@
 						<input type="checkbox" class="show-password" data-attribute="<?php echo $iface;?>"> <i></i> Show password
 						</label>
 					</div>
-					</form>
-				</section>
+				</form>
+			</section>
 		</fieldset>
 		<form id="hiddenWifiForm" style="display:none;">
 			<fieldset>

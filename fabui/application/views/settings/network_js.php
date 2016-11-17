@@ -181,6 +181,7 @@
 				$("#"+iface+"-tab #ap-container").slideUp('slow');
 				$("#"+iface+"-tab #gateway-container").slideUp('slow');
 				$("#"+iface+"-table-container").slideDown('slow');
+				$("#"+iface+"-tab #dhcp-address-container").slideDown('slow');
 				if(iface.startsWith('wlan'))
 					$("#scanButton").show();
 				else
@@ -191,6 +192,7 @@
 				$("#"+iface+"-tab #ap-container").slideUp('slow');
 				$("#"+iface+"-tab #gateway-container").slideDown('slow');
 				$("#"+iface+"-table-container").slideDown('slow');
+				$("#"+iface+"-tab #dhcp-address-container").slideUp('slow');
 				if(iface.startsWith('wlan'))
 					$("#scanButton").show();
 				else
@@ -200,6 +202,7 @@
 				$("#"+iface+"-tab #address-container").slideDown('slow');
 				$("#"+iface+"-tab #ap-container").slideDown('slow');
 				$("#"+iface+"-tab #gateway-container").slideUp('slow');
+				$("#"+iface+"-tab #dhcp-address-container").slideUp('slow');
 				$("#"+iface+"-table-container").slideUp('slow');
 				$("#scanButton").hide();
 				break;
