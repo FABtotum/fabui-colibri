@@ -8,7 +8,7 @@
 			obj.next('ul').html('');
 			$.ajax({
 			   type: "POST",
-			   url: "filemanager/getFileTree",
+			   url: "projectsmanager/getFileTree",
 			   data: {folder: folder},
 			   dataType: 'json'
 			}).done(function(response) {
@@ -151,7 +151,7 @@
 		
 		$.ajax({
 			   type: "POST",
-			   url: "filemanager/checkUSB",
+			   url: "/fabui/projectsmanager/checkUSB",
 			   dataType: 'json'
 		}).done(function(response) {
 			
