@@ -103,7 +103,8 @@ class GPIOMonitor:
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         # Set GPIO as input (button)
-        GPIO.setup(self.ACTION_PIN, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+        #~ GPIO.setup(self.ACTION_PIN, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+        GPIO.setup(self.ACTION_PIN, GPIO.IN)
         # Register callback function for gpio event, callbacks are handled from a separate thread
         GPIO.add_event_detect(self.ACTION_PIN, GPIO.BOTH, callback=self.gpioEventListener, bouncetime=300)
         
@@ -111,6 +112,18 @@ class GPIOMonitor:
         GPIO_STATUS = GPIO.input(self.ACTION_PIN)
         self.log.debug('GPIO STATUS on STARTUP: %s', str(GPIO_STATUS))
         
+        if GPIO_STATUS == 0:
+            reply = self.gcs.send("M730", group='*')
+            if reply:
+                if len(reply) > 1:
+                    search = re.search('ERROR\s:\s(\d+)', reply[-2])
+                    if search != None:
+                        errorNumber = int(search.group(1))
+                        self.log.warning("Totumduino error no.: %s", errorNumber)
+                        self.manageErrorNumber(errorNumber)
+                    else:
+                        self.log.error("Totumduino unrecognized error: %s", reply[0])
+                        
     def stop(self):
         """ Place holder """
         pass

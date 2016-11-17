@@ -757,6 +757,7 @@ fabApp = (function(app) {
 	app.goToInstallNewHead = function(){
 		$.root_.addClass('animated fadeOutUp');
 		document.location.href = new_head_url_action;
+		location.reload();
 	};
 	/*
 	 * manage upcoming alerts from the printer

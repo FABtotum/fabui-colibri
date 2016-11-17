@@ -7,8 +7,8 @@
 					<?php echo form_dropdown('address-show', $addressModeWiFi, $info['address_mode'], array('id' => 'address-mode', 'class' => "address-mode", 'data-attribute' => $iface) ); ?> <i></i>
 				</label>
 			</section>
+			
 			<section id="dhcp-address-container" style="<?php if($info['address_mode'] != 'dhcp') echo 'display:none;';?>" class="col col-6">
-
 				<table class="table ">
 					<tbody>
 						<tr>
@@ -25,7 +25,6 @@
 						</tr>
 					</tbody>
 				</table>
-		
 			</section>
 		</fieldset>
 		

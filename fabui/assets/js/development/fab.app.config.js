@@ -26,10 +26,10 @@ var task_monitor_file_url       = '/temp/task_monitor.json';
 var update_check_url            = '/fabui/updates/check';
 var check_notification_url      = '/fabui/application/modules/controller/ajax/check_notifications.php';
 var secure_url_action           = '/fabui/application/modules/controller/ajax/secure.php';
-var new_head_url_action         = '/fabui/maintenance/head/install?warning=1';
+var new_head_url_action         = '#maintenance/head/install?warning=1';
 var emergency_json_url          = '/tmp/emergency.json';
 var serial_exec_url_action      = base_url + '/jog/exec';
-var first_setup_url_action      = '/fabui/controller/first_setup';
+var first_setup_url_action      = '/#controller/first_setup';
 var check_internet_url_action   = '/temp/internet';
 /*
 * xmlrpc
