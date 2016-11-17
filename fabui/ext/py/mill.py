@@ -114,9 +114,6 @@ def main():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-T", "--task-id",     help=_("Task ID."),              default=0)
     parser.add_argument("-F", "--file-name",   help=_("File name.") )
-    
-    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    subparsers = parser.add_subparsers(help='sub-command help', dest='type')
 
     # GET ARGUMENTS
     args = parser.parse_args()
