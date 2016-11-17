@@ -81,13 +81,13 @@
                                     </div>
                                     <div class="row">
                                         <section class="col col-3">
-                                            <button data-action="+" type="button" class="btn  btn-default btn-primary btn-sm btn-block z-action"><i class="fa fa-arrow-down"></i> </button>
+                                            <button data-action="+" type="button" title="Away from nozzle" class="btn  btn-default btn-primary btn-sm btn-block z-action"><i class="fa fa-arrow-down"></i> </button>
                                         </section>
                                         <section class="col col-6">
                                             <label class="input"><input id="z-value" type="text" style="text-align: center;" value="0.1"></label>
                                         </section>
                                         <section class="col col-3">
-                                            <button data-action="-" type="button" class="btn btn-primary  btn-default btn-sm btn-block z-action"><i class="fa fa-arrow-up"></i></button>
+                                            <button data-action="-" type="button" title="Close to nozzle" class="btn btn-primary  btn-default btn-sm btn-block z-action"><i class="fa fa-arrow-up"></i></button>
                                         </section>
                                     </div>
                                 </fieldset>  

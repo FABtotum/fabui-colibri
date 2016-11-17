@@ -755,7 +755,8 @@ class Projectsmanager extends FAB_Controller {
 	 */
 	public function saveObject($objectID = '')
 	{
-		//TODO
+		$this->load->helpers('upload_helper');
+		
 		$data = $this->input->post();
 		$files = explode(',', $data['files']); //explode files id
 		unset($data['files']);
@@ -795,7 +796,9 @@ class Projectsmanager extends FAB_Controller {
 			{
 				if ($file != '')
 				{
-					array_push($usb_files_id, $this->uploadFromUSB($file) );
+					// preppend removable media path
+					$file = '/run/media/' . $file;
+					array_push($usb_files_id, uploadFromFileSystem($file) );
 				}
 			}
 			$this->objects->addFiles($objectID, $usb_files_id);
@@ -937,67 +940,6 @@ class Projectsmanager extends FAB_Controller {
 			$this->files->delete($fileID);
 		}
 		$this->output->set_content_type('application/json')->set_output(json_encode( $response ));
-	}
-	
-	/**
-	 * Upload files from USB
-	 */
-	private function uploadFromUSB($file)
-	{
-		$this->load->helper('file');
-		$this->load->helper('file_helper');
-		$this->load->helper('fabtotum_helper');
-		$this->load->helper('upload_helper');
-		$this->load->model('Files', 'files');
-		//load configs
-		$this->config->load('upload');
-		
-		//get file extension to save the file in the correct directory
-		$file_extension = getFileExtension($file);
-		
-		if( !file_exists($this->config->item('upload_path').$file_extension)) 
-			createFolder($this->config->item('upload_path').$file_extension);
-			
-		// preppend removable media path
-		$file = '/run/media/' . $file;
-		
-		$client_name = basename($file);
-		
-		$file_information = get_file_info($file);
-		$folder_destination = $this->config->item('upload_path') . $file_extension . '/';
-		
-		$file_name = md5(uniqid(mt_rand())) . '.' . $file_extension;
-		
-		/** MOVE TO FINALLY FOLDER */
-		$_command = 'sudo cp "' . $file . '" "' . $folder_destination . $file_name . '" ';
-		shell_exec($_command);
-
-		/** ADD PERMISSIONS */
-		$_command = 'sudo chmod 644 "' . $folder_destination . $file_name . '" ';
-		shell_exec($_command);
-		
-		$file_type = get_mime_by_extension($file_name);
-		if(!$file_type)
-			$file_type = 'application/octet-stream';
-		
-		/** INSERT RECORD TO DB */
-		$data['file_name'] = $file_name;
-		$data['file_path'] = $folder_destination;
-		$data['full_path'] = $folder_destination . $file_name;
-		$data['raw_name'] = str_replace('.'.$file_extension, '', $file_name);
-		$data['orig_name'] = $client_name;
-		$data['client_name'] = $client_name;
-		$data['file_ext'] = '.' . $file_extension;
-		$data['file_type'] = $file_type;
-		$data['file_size'] = $file_information['size'];
-		$data['insert_date'] = date('Y-m-d H:i:s');
-		$data['update_date'] = date('Y-m-d H:i:s');
-		$data['note'] = '';
-		$data['attributes'] = '{}';
-		$data['print_type'] = checkManufactoring($data['full_path']);
-
-		/** RETURN  */
-		return $this->files->add($data);
 	}
 	
 	/**

@@ -78,7 +78,7 @@ def probe_setup_calibrate(app, args = None):
     z_probe_new = abs( z_probe_old + (z_touch - 0.1) )
     app.macro("M710 S{0}".format(z_probe_new), "ok", 2, _("Write config to EEPROM"), verbose=False)
     
-    app.macro("G90","ok",2,"Abs_mode",1, verbose=False)
+    app.macro("G90",            "ok", 2,    _("Abs_mode"),  verbose=False)
     app.macro("G0 Z50 F1000",   "ok", 3,    _("Moving the plane"), verbose=False)
     app.macro("G28 X0 Y0",      "ok", 90,   _("homing all axis"), verbose=False)
     app.trace( _("Probe calibrated : {0} mm").format(str(z_probe_new)) )
