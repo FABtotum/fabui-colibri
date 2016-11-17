@@ -51,6 +51,9 @@
 		<?php if($runningTask == false): ?>
 		initFilesTable();
 		initRecentFilesTable();
+		<?php if($type == "mill"): ?>
+		initJog();
+		<?php endif; ?>
 		<?php else: ?>
 		initRunningTaskPage();
 		<?php endif; ?>
@@ -1048,4 +1051,19 @@
 			}
 		}
 	}
+	<?php if($type == "mill"): ?>
+	/**
+	*
+	*/
+	function initJog()
+	{
+		$(".directions").on("click", function(){
+        	fabApp.jogMoveXY($(this).attr("data-attribute-direction"));
+        });
+		$(".jog-axisz").on("click", function(event){
+        	fabApp.jogAxisZ($(this).attr("data-attribute-function"), $(this).attr("data-attribute-value"));
+        	event.preventDefault();
+        });
+	}
+	<?php endif;?>
 </script>
