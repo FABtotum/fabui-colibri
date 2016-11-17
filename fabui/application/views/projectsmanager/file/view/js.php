@@ -20,7 +20,7 @@
 		if(!contentLoaded){
 			$(".btn").addClass('disabled');
 			
-			var download_url = "<?php echo 'http://'.$_SERVER['HTTP_HOST'].str_replace('/mnt/userdata', '', $file['file_path'].urlencode($file['file_name']))."?t=".time() ?>";
+			var download_url = "<?php echo 'http://'.$_SERVER['HTTP_HOST'].str_replace($upload_path, '/uploads/', $file['file_path'].urlencode($file['file_name']))."?t=".time() ?>";
 			
 			$.get( download_url, function( data ) {
 				$("#editor").html(data);

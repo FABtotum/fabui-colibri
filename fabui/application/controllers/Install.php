@@ -66,15 +66,36 @@ class Install extends FAB_Controller {
 	 */
 	public function installSamples($userID)
 	{
-		//TODO
-		//$this->config->load('fabtotum');
-		$samples = json_decode( file_get_contents('/usr/share/fabui/recovery/import.json'), true);
-		foreach($samples['objects'] as $object)
+		$this->load->model('Objects', 'objects');
+		$this->load->helpers('upload_helper');
+		
+		$samples_path = '/usr/share/fabui/recovery/';
+		$samples_import = '/usr/share/fabui/recovery/import.json';
+		
+		if(file_exists($samples_import))
 		{
-			echo $object['name'] . '<br>';
-			foreach($object['files'] as $file)
+			$samples = json_decode( file_get_contents($samples_import), true);
+			foreach($samples['objects'] as $object)
 			{
-				echo '* ' . $file['name'] . ' [' . $file['note'] . ']<br>';
+				$data = array();
+				$data['name'] = $object['name'];
+				$data['description'] = $object['description'];
+				$data['user'] = $userID;
+				$data['date_insert'] = date('Y-m-d H:i:s');
+				$data['date_update'] = date('Y-m-d H:i:s');
+				
+				$objectID = $this->objects->add($data);
+				$fileIDs = array();
+				
+				foreach($object['files'] as $file)
+				{
+					$file_note = $file['note'];
+					$file_fullpath = $samples_path . $file['path'];
+					$fileID = uploadFromFileSystem($file_fullpath, $file_note);
+					$fileIDs[] = $fileID;
+				}
+				
+				$this->objects->addFiles($objectID, $fileIDs);
 			}
 		}
 	}

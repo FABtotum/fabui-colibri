@@ -32,7 +32,7 @@ if ( ! function_exists('uploadFromFileSystem'))
 	/**
 	 * Upload files from FileSystem
 	 */
-	function uploadFromFileSystem($file)
+	function uploadFromFileSystem($file, $note = '')
 	{
 		$CI =& get_instance();
 		$CI->load->helper('file');
@@ -45,14 +45,14 @@ if ( ! function_exists('uploadFromFileSystem'))
 		
 		//get file extension to save the file in the correct directory
 		$file_extension = getFileExtension($file);
-		
-		if( !file_exists($CI->config->item('upload_path').$file_extension)) 
-			createFolder($CI->config->item('upload_path').$file_extension);
+		$upload_path = $CI->config->item('upload_path');
+		if( !file_exists($upload_path . $file_extension)) 
+			createFolder($upload_path . $file_extension);
 		
 		$client_name = basename($file);
 		
 		$file_information = get_file_info($file);
-		$folder_destination = $CI->config->item('upload_path') . $file_extension . '/';
+		$folder_destination = $upload_path . $file_extension . '/';
 		
 		$file_name = md5(uniqid(mt_rand())) . '.' . $file_extension;
 		
@@ -80,7 +80,7 @@ if ( ! function_exists('uploadFromFileSystem'))
 		$data['file_size'] = $file_information['size'];
 		$data['insert_date'] = date('Y-m-d H:i:s');
 		$data['update_date'] = date('Y-m-d H:i:s');
-		$data['note'] = '';
+		$data['note'] = $note;
 		$data['attributes'] = '{}';
 		$data['print_type'] = checkManufactoring($data['full_path']);
 

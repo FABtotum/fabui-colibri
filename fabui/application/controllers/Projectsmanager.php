@@ -140,10 +140,11 @@ class Projectsmanager extends FAB_Controller {
 		//load libraries, helpers, model, config
 		$this->load->library('smart');
 		$this->load->helper('fabtotum_helper');
+		$this->config->load('upload');
 		//load db model
 		$this->load->model('Files', 'files');
 		$data['file'] = $this->files->get($fileId, 1);
-		
+		$data['upload_path'] = $this->config->item('upload_path');
 		$data['is_editable'] = True;
 		
 		$data['printables_files'] = array('.gc', '.gcode', '.nc');
@@ -956,12 +957,15 @@ class Projectsmanager extends FAB_Controller {
 		$fileExtension = getFileExtension($_FILES['file']['name']);
 		//load configs
 		$this->config->load('upload');
+		$upload_path = $this->config->item('upload_path');
 		// preaprea configs for upload library
 		// crate folder extension if doesn't exist
-		if(!file_exists($this->config->item('upload_path').$fileExtension))
-			createFolder($this->config->item('upload_path').$fileExtension);
+		$folder_destination = $upload_path . $fileExtension . '/';
+		if(!file_exists($folder_destination))
+			createFolder($folder_destination);
+			
 		// load upload library
-		$config['upload_path']      = $this->config->item('upload_path').$fileExtension;
+		$config['upload_path']      = $upload_path.$fileExtension;
 		$config['allowed_types']    = $this->config->item('allowed_types');
 		$config['file_ext_tolower'] = true ; 
 		$config['remove_spaces']    = true ;
@@ -971,6 +975,10 @@ class Projectsmanager extends FAB_Controller {
 			//load db model
 			$this->load->model('Files', 'files');
 			$data = $this->upload->data();
+			$file_name = md5(uniqid(mt_rand())) . '.' . $fileExtension;
+			$data['file_path'] = $folder_destination;
+			$data['full_path'] = $folder_destination . $data['file_name'];
+			$data['raw_name'] = str_replace('.'.$fileExtension, '', $file_name);
 			$data['insert_date'] = date('Y-m-d H:i:s');
 			$data['update_date'] = date('Y-m-d H:i:s');
 			$data['note'] = '';
