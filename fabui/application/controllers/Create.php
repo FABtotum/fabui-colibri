@@ -19,7 +19,7 @@
 			//check if there's a running task
 			//load libraries, models, helpers
 			$this->load->model('Tasks', 'tasks');
-			//$this->tasks->truncate();
+			$this->tasks->truncate();
 			$this->runningTask = $this->tasks->getRunning();
 		}
 	}
@@ -40,7 +40,7 @@
 					$this->doPrint($what, $what_id);
 					break;
 				default:
-					$this->doPrint();
+					$this->doPrint($what, $what_id);
 			}
 		}
 	}
@@ -85,7 +85,6 @@
 		$widget->id     = 'main-widget-print';
 		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>Print</h2>");
 		$widget->body   = array('content' => $this->load->view('create/main_widget', $data, true ), 'class'=>'fuelux');
-		
 		//add css files
 		$this->addCssFile('/assets/css/create/style.css');
 		//add javascript dependencies
@@ -109,8 +108,59 @@
 	}
 	
 	//mill controller function()
-	public function doMill()
+	/**
+	 *  @param $what string {object | file}
+	 *  @param $what_id int
+	 * */
+	public function doMill($what = '', $what_id = '')
 	{
+		//load libraries, helpers, model
+		$this->load->library('smart');
+		$this->load->helper('form');
+		//data
+		$data = array();
+		$data['type']      = 'mill';
+		$data['printType'] = 'subtractive';
+		$data['runningTask'] = $this->runningTask;
+		$data['what'] = $what;
+		$data['what_id'] = $what_id;
+		//wizard
+		if(!$this->runningTask){
+			$data['step1']  = $this->load->view('create/wizard/step1', $data, true );
+			$data['step2']  = $this->load->view('create/wizard/subtractive_step', $data, true );
+		}
+		$data['step3']  = $this->load->view('create/wizard/step3', $data, true );
+		$data['step4']  = $this->load->view('create/wizard/step4', $data, true );
+		$data['wizard'] = $this->load->view('create/wizard/main',  $data, true );
+		
+		//main page widget
+		$widgetOptions = array(
+				'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
+				'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
+		);
+		$widget         = $this->smart->create_widget($widgetOptions);
+		$widget->id     = 'main-widget-mill';
+		$widget->header = array('icon' => 'icon-fab-mill', "title" => "<h2>Mill</h2>");
+		$widget->body   = array('content' => $this->load->view('create/main_widget', $data, true ), 'class'=>'fuelux');
+		//add css files
+		$this->addCssFile('/assets/css/create/style.css');
+		//add javascript dependencies
+		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
+		if(!$this->runningTask){ //if task is running these filee are not needed
+			$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
+			$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
+			$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
+			$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
+			$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
+		}
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.cust.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.resize.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.fillbetween.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.time.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js'); //datatable
+		
+		$this->addJsInLine($this->load->view('create/js', $data, true));
+		$this->content = $widget->print_html(true);
 		$this->view();
 	}
 	
@@ -201,10 +251,8 @@
 		$this->load->model('Files', 'files');
 		$fileToCreate = $this->files->get($data['idFile'], 1);
 		$temperatures = readInitialTemperatures($fileToCreate['full_path']);
-		
 		//reset task monitor file
 		resetTaskMonitor();
-		
 		if($temperatures == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => 'File not found')));
 			return;
@@ -252,6 +300,42 @@
 	private function startMill($data)
 	{
 		//TODO
+		//load helpers
+		$this->load->helpers('fabtotum_helper');
+		$this->load->model('Files', 'files');
+		$fileToCreate = $this->files->get($data['idFile'], 1);
+		//reset task monitor file
+		resetTaskMonitor();
+		$startSubtractive = doMacro('start_subtractive');
+		if($startSubtractive['response'] == false){
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $startSubtractive['message'])));
+			return;
+		}
+		//get object record
+		$object = $this->files->getObject($fileToCreate['id']);
+		//ready to print
+		//add record to DB
+		$this->load->model('Tasks', 'tasks');
+		$taskData = array(
+				'user'       => $this->session->user['id'],
+				'controller' => 'create',
+				'type'       => 'mill',
+				'status'     => 'running',
+				'id_file'    => $data['idFile'],
+				'id_object'  => $object['id'],
+				'start_date' => date('Y-m-d H:i:s')
+		);
+		$taskId   = $this->tasks->add($taskData);
+		$userID   = $this->session->user['id'];
+		
+		//start print
+		$printArgs = array(
+				'-T' => $taskId,
+				'-F' => $fileToCreate['full_path']
+		);
+		startPyScript('mill.py', $printArgs);
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
 	}
 	
 	/**
@@ -263,7 +347,6 @@
 		//abort
 		$response = abort();
 		$this->output->set_content_type('application/json')->set_output(json_encode($response));
-		//TODO 
 	}
 	
 	/**
