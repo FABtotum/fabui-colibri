@@ -135,26 +135,6 @@ def main():
     parser.add_argument("-T", "--task-id",     help=_("Task ID."),              default=0)
     parser.add_argument("-F", "--file-name",   help=_("File name.") )
     parser.add_argument("--autolevel",  action='store_true',  help=_("Auto bed leveling. Valid only when --standalone is used."), default=False)
-    #~ parser.add_argument("--ext_temp",   help=_("Pre-heat extruder temperature"),  default=180, nargs='?')
-    #~ parser.add_argument("--bed_temp",   help=_("Pre-heat bed temperature"),  default=50,  nargs='?')
-    #~ subparsers = parser.add_subparsers(help='sub-command help', dest='type')
-
-    # create the parser for the "standalone" command
-    #~ parser_s = subparsers.add_parser('standalone', help='standalone help')
-    #~ parser_s.add_argument('filename', help=_("Gcode file to execute."))
-    
-    # create the parser for the "managed" command
-    #~ parser_m = subparsers.add_parser('managed', help='managed help')
-    #~ parser_m.add_argument('task_id', type=int, help=_("Task ID."))
-    #~ parser_m.add_argument('object_id', type=int, help=_("Object ID."))
-    #~ parser_m.add_argument('file_id', type=int, help=_("File ID."))
-    #~ parser_m.add_argument('filename', help=_("Gcode file to execute."))
-    
-    #parser.add_argument("-U", "--user-id",     help=_("User ID. (future use)"), default=0)
-    #parser.add_argument("-O", "--object-id",   help=_("Object ID."),            default=0)
-    #parser.add_argument("-N", "--object-name", help=_("Object name."),          default='')
-    
-    
     
     # GET ARGUMENTS
     args = parser.parse_args()
@@ -163,14 +143,6 @@ def main():
     gcode_file      = args.file_name     # GCODE FILE
     task_id         = args.task_id
     autolevel       = args.autolevel
-    #~ if args.type == 'standalone':
-        #~ task_id     = 0
-        #~ standalone  = True
-        #~ autolevel   = args.autolevel
-    #~ else:
-        #~ task_id     = args.task_id      # TASK ID
-        #~ standalone  = False
-        #~ autolevel   = False
     if task_id == 0:
         standalone  = True
     else:

@@ -200,6 +200,44 @@
 	</div>
 	<!-- lighting-tab -->
 	<div class="tab-pane fade in" id="lighting-tab">
-		
+		<div class="row padding-10">
+			<div class="col-sm-6">
+				<div class="row margin-top-10">
+					<div class="col-sm-12">
+						<p>Standby</p>
+					</div>
+				</div>
+				<div class="row margin-top-10">
+					<div class="col-sm-12">
+						<div class="nouislider standby-color standby-red" id="red"></div>
+					</div>
+				</div>
+				<div class="row margin-top-10">
+					<div class="col-sm-12">
+						
+						<div class="nouislider standby-color standby-blue" id="blue"></div>
+					</div>
+				</div>
+				<div class="row margin-top-10">
+					<div class="col-sm-12">
+						<div class="nouislider standby-color standby-green" id="green"></div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-sm-6">
+				<div class="row margin-top-10">
+					<div class="col-sm-12">
+						<p>&nbsp;</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="result"></div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
 	</div>
 </div>

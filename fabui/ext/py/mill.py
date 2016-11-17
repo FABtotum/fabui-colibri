@@ -112,27 +112,21 @@ def main():
 
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("-T", "--task-id",     help=_("Task ID."),              default=0)
+    parser.add_argument("-F", "--file-name",   help=_("File name.") )
+    
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     subparsers = parser.add_subparsers(help='sub-command help', dest='type')
-
-    # create the parser for the "standalone" command
-    parser_s = subparsers.add_parser('standalone', help='standalone help')
-    parser_s.add_argument('filename', help=_("Gcode file to execute."))
-    # create the parser for the "managed" command
-    parser_m = subparsers.add_parser('managed', help='managed help')
-    parser_m.add_argument('task_id', type=int, help=_("Task ID."))
-    parser_m.add_argument('filename', help=_("Gcode file to execute."))
 
     # GET ARGUMENTS
     args = parser.parse_args()
 
     # INIT VARs
-    gcode_file      = args.filename     # GCODE FILE
-    if args.type == 'standalone':
-        task_id     = 0
+    gcode_file      = args.file_name     # GCODE FILE
+    task_id         = args.task_id
+    if task_id == 0:
         standalone  = True
-        
     else:
-        task_id     = args.task_id      # TASK ID
         standalone  = False
         
     autolevel       = False

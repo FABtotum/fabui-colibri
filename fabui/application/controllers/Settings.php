@@ -28,6 +28,13 @@ class Settings extends FAB_Controller {
 			copy($this->config->item('default_settings'), $this->config->item('custom_settings'));
 		}
 		$data['defaultSettings'] = json_decode(file_get_contents($this->config->item('default_settings')), true);
+		
+		if($data['defaultSettings']['settings_type'] == 'custom')
+		{
+			$data['defaultSettings']  = json_decode(file_get_contents($this->config->item('custom_settings')), true);
+			$data['defaultSettings']['settings_type'] = 'custom';
+		}
+		
 		$data['customSettings']  = json_decode(file_get_contents($this->config->item('custom_settings')), true);
 		$data['yesNoOptions'] = array('1' => 'Yes', '0' => 'No');
 		$data['customizeActionsOptions'] = array('none' => 'None', 'shutdown' => 'Shutdown');
