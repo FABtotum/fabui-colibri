@@ -44,6 +44,7 @@ PRESET_MAP = {
     "engage_4axis"                  : general_macros.engage_4axis,
     "4th_axis_mode"                 : general_macros.do_4th_axis_mode,  
     "read_eeprom"                   : general_macros.read_eeprom,  
+    "set_ambient_color"             : general_macros.set_ambient_color,  
     
     # Print
     "check_pre_print"               : print_macros.check_pre_print,

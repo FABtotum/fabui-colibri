@@ -60,10 +60,25 @@ class Settings extends FAB_Controller {
 		$widget->header = array('icon' => 'fa-cog', "title" => "<h2>Hardware</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('settings/hardware_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 		
-		$this->addJsInLine($this->load->view('settings/hardware_js', $data, true));
-		//$this->addCSSInLine('<style type="text/css">.custom_settings{display:none !important;}</style>'); 
+		$this->addJSInLine($this->load->view('settings/hardware_js', $data, true));
+		$this->addCSSInLine($this->load->view('settings/hardware_css', $data, true));
+		
 		$this->content = $widget->print_html(true);
 		$this->view();
+	}
+
+	public function setColor()
+	{
+		$postData = $this->input->post();
+		$this->load->helpers('fabtotum_helper');
+		
+		$red = $postData['red'];
+		$green = $postData['green'];
+		$blue = $postData['blue'];
+		
+		$result = doMacro('set_ambient_color', '', array($red, $green, $blue));
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode( array($result) ));
 	}
 
 	/**

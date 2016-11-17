@@ -176,6 +176,15 @@ def do_4th_axis_mode(app, args = None):
 def version(app, args = None):
     pass
 
+def set_ambient_color(app, args = None):
+    red = args[0]
+    green = args[1]
+    blue = args[2]
+    
+    app.macro("M701 S{0}".format(red),   "ok", 1,    _("Setting Red Color"))
+    app.macro("M702 S{0}".format(green),   "ok", 1,    _("Setting Green Color"))
+    app.macro("M703 S{0}".format(blue),   "ok", 1,    _("Setting Blue Color"))
+
 def read_eeprom(app, args = None):
         
     def serialize(string_source, regex_to_serach, keys):

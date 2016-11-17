@@ -17,7 +17,49 @@
 	
 	//
 	function initUI()
-	{	
+	{
+		
+		noUiSlider.create(document.getElementById('red'), {
+			start: <?php echo $defaultSettings['color']['r'] != '' ? $defaultSettings['color']['r'] : 0 ?>,
+			connect: "lower",
+			range: {'min': 0, 'max' : 255},
+			serialization: {
+				format: wNumb({
+					decimals: 0
+				})
+			}
+		});
+		
+		noUiSlider.create(document.getElementById('green'), {
+			start: <?php echo $defaultSettings['color']['g'] != '' ? $defaultSettings['color']['g'] : 0 ?>,
+			connect: "lower",
+			range: {'min': 0, 'max' : 255},
+			serialization: {
+				format: wNumb({
+					decimals: 0
+				})
+			}
+		});
+		
+		noUiSlider.create(document.getElementById('blue'), {
+			start: <?php echo $defaultSettings['color']['b'] != '' ? $defaultSettings['color']['b'] : 0 ?>,
+			connect: "lower",
+			range: {'min': 0, 'max' : 255},
+			serialization: {
+				format: wNumb({
+					decimals: 0
+				})
+			}
+		});
+		
+		var resultElement = document.getElementById('result'),
+			sliders = document.getElementsByClassName('standby-color');
+
+		for ( var i = 0; i < sliders.length; i++ ) {
+			sliders[i].noUiSlider.on('slide', showColor);
+			sliders[i].noUiSlider.on('change', setColor);
+		}
+		
 	}
 	
 	//
@@ -32,7 +74,46 @@
 			}
 		});
 		
-		$("#save").on('click', saveSettings);	
+		$("#save").on('click', saveSettings);
+	}
+	
+	function showColor()
+	{
+		var sliders = document.getElementsByClassName('standby-color');
+
+		var red = parseInt(sliders[0].noUiSlider.get()),
+			green = parseInt(sliders[1].noUiSlider.get()),
+			blue = parseInt(sliders[2].noUiSlider.get());
+
+		var color = 'rgb(' +
+			red + ',' +
+			green + ',' +
+			blue + ')';
+
+		$("#color-r").val(red);
+		$("#color-g").val(green);
+		$("#color-b").val(blue);
+
+		$(".result").css({
+			"background": color,
+			"color:": color
+		});
+	}
+	
+	function setColor()
+	{
+		var sliders = document.getElementsByClassName('standby-color');
+		
+		$.ajax({
+		url : 'settings/setColor',
+		  dataType : 'json',
+		  type: 'post',
+		  async : true,
+		  data: {red : parseInt(sliders[0].noUiSlider.get()), green: parseInt(sliders[1].noUiSlider.get()), blue: parseInt(sliders[2].noUiSlider.get())}
+		}).done(function(response) {
+		  
+		  
+		});
 	}
 	
 	//

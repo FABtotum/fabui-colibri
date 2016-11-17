@@ -198,8 +198,15 @@
 			</fieldset>
 		</div>
 	</div>
+	
 	<!-- lighting-tab -->
 	<div class="tab-pane fade in" id="lighting-tab">
+		<fieldset style="display:none;">
+			<input type="number" id="color-r" name="color-r" value="<?php echo $defaultSettings['color']['r']; ?>"/>
+			<input type="number" id="color-g" name="color-g" value="<?php echo $defaultSettings['color']['g']; ?>"/>
+			<input type="number" id="color-b" name="color-b" value="<?php echo $defaultSettings['color']['b']; ?>"/>
+		</fieldset>
+		
 		<div class="row padding-10">
 			<div class="col-sm-6">
 				<div class="row margin-top-10">
@@ -209,18 +216,17 @@
 				</div>
 				<div class="row margin-top-10">
 					<div class="col-sm-12">
-						<div class="nouislider standby-color standby-red" id="red"></div>
-					</div>
-				</div>
-				<div class="row margin-top-10">
-					<div class="col-sm-12">
-						
-						<div class="nouislider standby-color standby-blue" id="blue"></div>
+						<div class="nouislider standby-color" id="red"></div>
 					</div>
 				</div>
 				<div class="row margin-top-10">
 					<div class="col-sm-12">
 						<div class="nouislider standby-color standby-green" id="green"></div>
+					</div>
+				</div>
+				<div class="row margin-top-10">
+					<div class="col-sm-12">
+						<div class="nouislider standby-color standby-blue" id="blue"></div>
 					</div>
 				</div>
 			</div>
@@ -233,7 +239,7 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-12">
-						<div class="result"></div>
+						<div class="result" id="result"></div>
 					</div>
 				</div>
 			</div>

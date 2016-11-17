@@ -132,8 +132,8 @@ def main():
 
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-T", "--task-id",     help=_("Task ID."),              default=0)
-    parser.add_argument("-F", "--file-name",   help=_("File name.") )
+    parser.add_argument("-T", "--task-id",     help=_("Task ID."),      default=0)
+    parser.add_argument("-F", "--file-name",   help=_("File name."),    required=True)
     parser.add_argument("--autolevel",  action='store_true',  help=_("Auto bed leveling. Valid only when --standalone is used."), default=False)
     
     # GET ARGUMENTS
