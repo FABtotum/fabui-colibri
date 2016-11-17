@@ -500,16 +500,35 @@ class Projectsmanager extends FAB_Controller {
 	
 	private function fileGCodeViewer($fileID)
 	{
+		$this->load->model('Files', 'files');
+		$file = $this->files->get($fileID, 1);
 		
+		switch($file['print_type'])
+		{
+			case "additive":
+				$this->gcodeviewer($fileID);
+				break;
+			default:
+				echo "Not supported";
+		}
 	}
 	
-	public function gcodeviewer($fileId = '')
+	private function gcodeviewer($fileID = '')
 	{
 		//load libraries, helpers, model, config
 		$this->load->library('smart');
 		$this->load->helper('fabtotum_helper');
-		
+		$this->load->model('Files', 'files');
+
 		$data = array();
+		
+		$file = $this->files->get($fileID, 1);
+		$this->config->load('upload');
+		$upload_path = $this->config->item('upload_path');
+		
+		$url = 'http://'.$_SERVER['HTTP_HOST'].str_replace($upload_path, '/uploads/', $file['file_path'].urlencode($file['file_name']))."?t=".time();
+		
+		$data['gcode_url'] = $url;
 		
 		$widgetOptions = array(
 			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
@@ -525,31 +544,9 @@ class Projectsmanager extends FAB_Controller {
 		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>gCodeViewer</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('projectsmanager/file/gcodeviewer/index', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
-		
-    //~ <link rel="stylesheet" type="text/css" href="css/cupertino/jquery-ui-1.9.0.custom.css" media="screen" />
-    //~ <link rel="stylesheet" type="text/css" href="css/bootstrap.css" media="screen" />
-    //~ <link rel="stylesheet" type="text/css" href="lib/codemirror.css" media="screen" />
-    //~ <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
-		//~ $this->addCssFile('/assets/css/projectsmanager/gcodeviewer/cupertino/jquery-ui-1.9.0.custom.css');
-		//~ $this->addCssFile('/assets/css/projectsmanager/gcodeviewer/bootstrap.css');
+
 		$this->addCssFile('/assets/css/projectsmanager/gcodeviewer/lib/codemirror.css');
 		$this->addCssFile('/assets/css/projectsmanager/gcodeviewer/style.css');
-		
-    //~ <script type="text/javascript" src="assets/js/libs/jquery-2.1.1.min.js"></script>
-    //~ <script type="text/javascript" src="assets/js/libs/jquery-ui-1.10.3.min.js"></script>
-
-    //~ <script type="text/javascript" src="lib/codemirror.js"></script>
-    //~ <script type="text/javascript" src="lib/mode_gcode/gcode_mode.js"></script>
-    //~ <script type="text/javascript" src="lib/three.js"></script>
-    //~ <script type="text/javascript" src="lib/bootstrap.js"></script>
-    //~ <script type="text/javascript" src="lib/modernizr.custom.09684.js"></script>
-    //~ <script type="text/javascript" src="lib/TrackballControls.js"></script>
-    //~ <script type="text/javascript" src="lib/zlib.min.js"></script>
-    //~ <script type="text/javascript" src="js/ui.js"></script>
-    //~ <script type="text/javascript" src="js/gCodeReader.js"></script>
-    //~ <script type="text/javascript" src="js/renderer.js"></script>
-    //~ <script type="text/javascript" src="js/analyzer.js"></script>
-    //~ <script type="text/javascript" src="js/renderer3d.js"></script>
 		
 		$this->addJSFile('/assets/js/libs/jquery-2.1.1.min.js');
 		$this->addJSFile('/assets/js/libs/jquery-ui-1.10.3.min.js');

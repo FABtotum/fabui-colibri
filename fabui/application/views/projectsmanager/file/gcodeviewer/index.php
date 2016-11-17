@@ -17,22 +17,7 @@
 <div id="wrap" class="ui-widget ui-widget-content ui-corner-all">
     <div id="control">
         <div id="accordion2" class="accordion">
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#fileAccordionTab">
-                        Select GCode file
-                    </a>
-                </div>
-                <div id="fileAccordionTab" class="accordion-body collapse">
-                    <div class="accordion-inner">
-                        <input type="file" id="file" name="files" />
-                        <!--<form class="add-teacher" id="fAddTeacher" enctype="multipart/form-data" method="post" novalidate="novalidate">-->
-                        <!--<button id="selectFileButton">Select GCode File</button>-->
-                        <!--</form>-->
-                        <div id="drop_zone">Drop file here</div>
-                    </div>
-                </div>
-            </div>
+
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#progressAccordionTab">
@@ -111,7 +96,7 @@
                         These require re-analyzing file:<br />
                         <label for="sortLayersCheckbox"><input type="checkbox" id="sortLayersCheckbox" value="4" onclick="GCODE.ui.processOptions()" checked>Sort layers by Z</label>
                         <label for="purgeEmptyLayersCheckbox"><input type="checkbox" id="purgeEmptyLayersCheckbox" value="5"  onclick="GCODE.ui.processOptions()" checked>Hide empty layers</label>
-                        <label for="showGCodeCheckbox"><input type="checkbox" id="showGCodeCheckbox" value="6" onclick="GCODE.ui.processOptions()" checked>Show GCode in GCode tab (memory intensive!)</label>
+                        <!--label for="showGCodeCheckbox"><input type="checkbox" id="showGCodeCheckbox" value="6" onclick="GCODE.ui.processOptions()" checked>Show GCode in GCode tab (memory intensive!)</label-->
                     </div>
                 </div>
             </div>
@@ -162,7 +147,7 @@
             <ul id="myTab" class="nav nav-tabs">
                 <li class=""><a href="#tab2d" data-toggle="tab">2D</a></li>
                 <li class=""><a href="#tab3d" data-toggle="tab">3D</a></li>
-                <li class=""><a href="#tabGCode" data-toggle="tab">GCode</a></li>
+                <!--li class=""><a href="#tabGCode" data-toggle="tab">GCode</a></li-->
                 <li class="active"><a href="#tabAbout" data-toggle="tab">About</a></li>
             </ul>
             <div class="tab-content">

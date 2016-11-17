@@ -209,6 +209,30 @@ GCODE.gCodeReader = (function(){
 
 
         },
+        loadFromString: function(content){
+//            console.log("loadFile");
+            model = [];
+            z_heights = [];
+            detectSlicer(content);
+            lines = content.split(/\n/);
+            content = null;
+//            prepareGCode();
+
+            GCODE.ui.worker.postMessage({
+                    "cmd":"parseGCode",
+                    "msg":{
+                        gcode: lines,
+                        options: {
+                            firstReport: 5
+                        }
+                    }
+                }
+            );
+            delete lines;
+
+
+
+        },
         setOption: function(options){
             for(var opt in options){
                 gCodeOptions[opt] = options[opt];

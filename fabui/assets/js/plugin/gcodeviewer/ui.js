@@ -351,21 +351,27 @@ GCODE.ui = (function(){
 
     return {
         worker: undefined,
+        loadFromString: function(content) {
+            chooseAccordion('progressAccordionTab');
+            setProgress('loadProgress', 0);
+            setProgress('analyzeProgress', 0);
+            GCODE.gCodeReader.loadFromString(content);
+        },
         initHandlers: function(){
             var capabilitiesResult = checkCapabilities();
             if(!capabilitiesResult){
                 return;
             }
-            var dropZone = document.getElementById('drop_zone');
-            dropZone.addEventListener('dragover', handleDragOver, false);
-            dropZone.addEventListener('drop', handleFileSelect, false);
+            //var dropZone = document.getElementById('drop_zone');
+            //dropZone.addEventListener('dragover', handleDragOver, false);
+            //dropZone.addEventListener('drop', handleFileSelect, false);
 
-            document.getElementById('file').addEventListener('change', handleFileSelect, false);
+            //document.getElementById('file').addEventListener('change', handleFileSelect, false);
 
             setProgress('loadProgress', 0);
             setProgress('analyzeProgress', 0);
 
-            $(".collapse").collapse({parent: '#accordion2'});
+            //$(".collapse").collapse({parent: '#accordion2'});
 
             $('#myTab').find('a[href="#tab3d"]').click(function (e) {
                 e.preventDefault();
@@ -374,7 +380,7 @@ GCODE.ui = (function(){
                 GCODE.renderer3d.doRender();
             });
 
-            $('#myTab').find('a[href="#tabGCode"]').click(function (e) {
+            /*$('#myTab').find('a[href="#tabGCode"]').click(function (e) {
                 e.preventDefault();
                 console.log("Switching to GCode preview mode");
                 $(this).tab('show');
@@ -383,7 +389,7 @@ GCODE.ui = (function(){
                 myCodeMirror.setCursor(Number(gCodeLines.first),0);
 //                myCodeMirror.setSelection({line:Number(gCodeLines.first),ch:0},{line:Number(gCodeLines.last),ch:0});
                 myCodeMirror.focus();
-            });
+            });*/
 
             this.worker = new Worker('assets/js/plugin/gcodeviewer/Worker.js');
 
@@ -400,7 +406,7 @@ GCODE.ui = (function(){
             });
             myCodeMirror.setSize("680","640");
 //            console.log(myCodeMirror);
-            chooseAccordion('fileAccordionTab');
+            chooseAccordion('progressAccordionTab');
 
             (function() {
                 var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
@@ -421,7 +427,8 @@ GCODE.ui = (function(){
             if(document.getElementById('purgeEmptyLayersCheckbox').checked)GCODE.gCodeReader.setOption({purgeEmptyLayers: true});
             else GCODE.gCodeReader.setOption({purgeEmptyLayers: false});
 
-            showGCode = document.getElementById('showGCodeCheckbox').checked;
+            //showGCode = document.getElementById('showGCodeCheckbox').checked;
+            showGCode = false;
 
             if(document.getElementById('moveModelCheckbox').checked)GCODE.renderer.setOption({moveModel: true});
             else GCODE.renderer.setOption({moveModel: false});
