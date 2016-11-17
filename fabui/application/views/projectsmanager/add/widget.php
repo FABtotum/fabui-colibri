@@ -10,7 +10,7 @@
 ?>
 <div class="row">
 	<div class="col-sm-12">
-		<form id="object-form" method="post" class="smart-form" action="<?php echo site_url('filemanager/saveObject'); ?>">
+		<form id="object-form" method="post" class="smart-form" action="<?php echo site_url('projectsmanager/saveObject'); ?>">
 			<fieldset>
 				<div class="row">
 					<section class="col col-6">

@@ -50,7 +50,7 @@
 				transformLinks($('#files-table'));
 				$(".file-action").on('click', do_file_action);
 			},
-			"sAjaxSource": "<?php echo site_url("filemanager/getFiles/".$object['id']) ?>",
+			"sAjaxSource": "<?php echo site_url("projectsmanager/getFiles/".$object['id']) ?>",
 			"fnRowCallback": function (row, data, index ){
 			}
 		});
@@ -70,7 +70,7 @@
 		
 		$.ajax({
 			type: "POST",
-			url: "<?php echo site_url('filemanager/updateObject') ?>",
+			url: "<?php echo site_url('projectsmanager/updateObject') ?>",
 			data: object_data,
 			dataType: 'json'
 		}).done(function(response) {
@@ -147,7 +147,7 @@
 
 		$.ajax({
 				type: "POST",
-				url: "<?php echo site_url('filemanager/deleteFiles') ?>",
+				url: "<?php echo site_url('projectsmanager/deleteFiles') ?>",
 				dataType: 'json',
 				data: {ids: list}
 			}).done(function(response) {
@@ -254,7 +254,7 @@
 	}
 	
 	function download_files(list){
-		document.location.href = '<?php echo site_url('filemanager/download/file/') ?>/' + list.join('-');
+		document.location.href = '<?php echo site_url('projectsmanager/download/file/') ?>/' + list.join('-');
 	}
 	
 	function do_file_action(){

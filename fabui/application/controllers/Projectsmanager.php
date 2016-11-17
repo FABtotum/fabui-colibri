@@ -8,7 +8,7 @@
  */
  defined('BASEPATH') OR exit('No direct script access allowed');
  
-class Filemanager extends FAB_Controller {
+class Projectsmanager extends FAB_Controller {
 	
 	/**
 	 * show objects page
@@ -27,7 +27,7 @@ class Filemanager extends FAB_Controller {
 		);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-success" href="filemanager/add-object"><i class="fa fa-plus"></i> Add New Object </a>
+		<a class="btn btn-success" href="projectsmanager/add-object"><i class="fa fa-plus"></i> Add New Object </a>
 		<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> Delete </button>
 		<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> Download </button>
 		</div>';
@@ -35,7 +35,7 @@ class Filemanager extends FAB_Controller {
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-widget';
 		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>Objects</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('filemanager/index/widget', $data, true ), 'class'=>'no-padding');
+		$widget->body   = array('content' => $this->load->view('projectsmanager/index/widget', $data, true ), 'class'=>'no-padding');
 		$this->content  = $widget->print_html(true);
 		
 		
@@ -45,7 +45,7 @@ class Filemanager extends FAB_Controller {
 		$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
 		$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
 		$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
-		$this->addJsInLine($this->load->view('filemanager/index/js','', true));
+		$this->addJsInLine($this->load->view('projectsmanager/index/js','', true));
 		$this->view();
 	}
 	
@@ -54,7 +54,7 @@ class Filemanager extends FAB_Controller {
 	 */
 	public function object($objectId)
 	{
-		if($objectId == '') redirect('filemanager');
+		if($objectId == '') redirect('projectsmanager');
 		
 		//load libraries, helpers, model, config
 		$this->load->library('smart');
@@ -72,8 +72,8 @@ class Filemanager extends FAB_Controller {
 			$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save-object'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 			
 			$headerToolbar = '<div class="widget-toolbar" role="menu">
-			<a class="btn btn-default" href="filemanager"><i class="fa fa-arrow-left"></i> Back </a>
-			<a class="btn btn-success" href="filemanager/add-file/'.$objectId.'"><i class="fa fa-plus"></i> Add Files </a>
+			<a class="btn btn-default" href="projectsmanager"><i class="fa fa-arrow-left"></i> Back </a>
+			<a class="btn btn-success" href="projectsmanager/add-file/'.$objectId.'"><i class="fa fa-plus"></i> Add Files </a>
 			<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> Delete </button>
 			<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> Download </button>
 			</div>';
@@ -81,7 +81,7 @@ class Filemanager extends FAB_Controller {
 			$widget = $this->smart->create_widget($widgetOptions);
 			$widget->id = 'file-manager-edit-object-widget';
 			$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>Edit object</h2>", 'toolbar'=>$headerToolbar);
-			$widget->body   = array('content' => $this->load->view('filemanager/edit/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
+			$widget->body   = array('content' => $this->load->view('projectsmanager/edit/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 			$this->content  = $widget->print_html(true);
 			
 			//add needed scripts
@@ -90,13 +90,13 @@ class Filemanager extends FAB_Controller {
 			$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
 			$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
 			$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
-			$this->addJsInLine($this->load->view('filemanager/edit/js',$data['object'], true));
+			$this->addJsInLine($this->load->view('projectsmanager/edit/js',$data['object'], true));
 			
 			$this->view();
 		}
 		else
 		{
-			redirect('filemanager');
+			redirect('projectsmanager');
 		}
 	}
 	
@@ -105,7 +105,7 @@ class Filemanager extends FAB_Controller {
 	 */
 	public function file($fileID, $what = 'index')
 	{
-		if($fileID == '') redirect('filemanager');
+		if($fileID == '') redirect('projectsmanager');
 		
 		//load db model
 		$this->load->model('Files', 'files');
@@ -131,7 +131,7 @@ class Filemanager extends FAB_Controller {
 		}
 		else
 		{
-			redirect('filemanager');
+			redirect('projectsmanager');
 		}
 	}
 	
@@ -199,8 +199,8 @@ class Filemanager extends FAB_Controller {
 			$this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-default" href="filemanager/object/'.$objectId.'"><i class="fa fa-arrow-left"></i> Back </a>
-		<a class="btn btn-info" href="filemanager/file/'.$fileId.'/stats"><i class="fa fa-area-chart"></i> Stats </a>
+		<a class="btn btn-default" href="projectsmanager/object/'.$objectId.'"><i class="fa fa-arrow-left"></i> Back </a>
+		<a class="btn btn-info" href="projectsmanager/file/'.$fileId.'/stats"><i class="fa fa-area-chart"></i> Stats </a>
 		<button class="btn btn-danger button-action" data-action="delete"><i class="fa fa-download"></i> Delete </button>
 		<button class="btn btn-info button-action" data-action="download"><i class="fa fa-download"></i> Download </button>
 		</div>';
@@ -208,11 +208,11 @@ class Filemanager extends FAB_Controller {
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-edit-object-widget';
 		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>File view</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('filemanager/file/view/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
+		$widget->body   = array('content' => $this->load->view('projectsmanager/file/view/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
 		
 		//add css files
-		$this->addCssFile('/assets/css/filemanager/style.css');
+		$this->addCssFile('/assets/css/projectsmanager/style.css');
 		//add needed scripts
 		$this->addJSFile('/assets/js/plugin/ace/src-min/ace.js'); // editor
 		$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
@@ -220,7 +220,7 @@ class Filemanager extends FAB_Controller {
 		$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
 		$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
 		$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
-		$this->addJsInLine($this->load->view('filemanager/file/view/js', $data, true));
+		$this->addJsInLine($this->load->view('projectsmanager/file/view/js', $data, true));
 		
 		$this->view();
 	}
@@ -465,17 +465,17 @@ class Filemanager extends FAB_Controller {
 		$widgeFooterButtons = '';
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-default" href="filemanager/file/'.$fileId.'"><i class="fa fa-arrow-left"></i> Back </a>
+		<a class="btn btn-default" href="projectsmanager/file/'.$fileId.'"><i class="fa fa-arrow-left"></i> Back </a>
 		</div>';
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-edit-object-widget';
 		$widget->header = array('icon' => 'fa-area-chart', "title" => "<h2>File statistics</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('filemanager/file/stats/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
+		$widget->body   = array('content' => $this->load->view('projectsmanager/file/stats/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
 		
 		//add css files
-		$this->addCssFile('/assets/css/filemanager/style.css');
+		$this->addCssFile('/assets/css/projectsmanager/style.css');
 		//add needed scripts
 		$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
 		$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
@@ -492,7 +492,7 @@ class Filemanager extends FAB_Controller {
 		$this->addJSFile('/assets/js/plugin/morris/raphael.min.js');
 		$this->addJSFile('/assets/js/plugin/morris/morris.min.js');
 		
-		$this->addJsInLine($this->load->view('filemanager/file/stats/js', $data, true));
+		$this->addJsInLine($this->load->view('projectsmanager/file/stats/js', $data, true));
 		
 		$this->view();
 	}
@@ -522,17 +522,17 @@ class Filemanager extends FAB_Controller {
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-edit-object-widget';
 		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>gCodeViewer</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('filemanager/file/gcodeviewer/index', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
+		$widget->body   = array('content' => $this->load->view('projectsmanager/file/gcodeviewer/index', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
 		
     //~ <link rel="stylesheet" type="text/css" href="css/cupertino/jquery-ui-1.9.0.custom.css" media="screen" />
     //~ <link rel="stylesheet" type="text/css" href="css/bootstrap.css" media="screen" />
     //~ <link rel="stylesheet" type="text/css" href="lib/codemirror.css" media="screen" />
     //~ <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
-		//~ $this->addCssFile('/assets/css/filemanager/gcodeviewer/cupertino/jquery-ui-1.9.0.custom.css');
-		//~ $this->addCssFile('/assets/css/filemanager/gcodeviewer/bootstrap.css');
-		$this->addCssFile('/assets/css/filemanager/gcodeviewer/lib/codemirror.css');
-		$this->addCssFile('/assets/css/filemanager/gcodeviewer/style.css');
+		//~ $this->addCssFile('/assets/css/projectsmanager/gcodeviewer/cupertino/jquery-ui-1.9.0.custom.css');
+		//~ $this->addCssFile('/assets/css/projectsmanager/gcodeviewer/bootstrap.css');
+		$this->addCssFile('/assets/css/projectsmanager/gcodeviewer/lib/codemirror.css');
+		$this->addCssFile('/assets/css/projectsmanager/gcodeviewer/style.css');
 		
     //~ <script type="text/javascript" src="assets/js/libs/jquery-2.1.1.min.js"></script>
     //~ <script type="text/javascript" src="assets/js/libs/jquery-ui-1.10.3.min.js"></script>
@@ -566,7 +566,7 @@ class Filemanager extends FAB_Controller {
 		$this->addJSFile('/assets/js/plugin/gcodeviewer/analyzer.js');
 		$this->addJSFile('/assets/js/plugin/gcodeviewer/renderer3d.js');
 		
-		$this->addJsInLine($this->load->view('filemanager/file/gcodeviewer/js', $data, true));
+		$this->addJsInLine($this->load->view('projectsmanager/file/gcodeviewer/js', $data, true));
 		
 		$this->view();
 	}
@@ -661,20 +661,20 @@ class Filemanager extends FAB_Controller {
 		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-danger" href="filemanager"><i class="fa fa-arrow-left"></i> Cancel </a>
+		<a class="btn btn-danger" href="projectsmanager"><i class="fa fa-arrow-left"></i> Cancel </a>
 		</div>';
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-add-object-widget';
 		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>Add new object</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('filemanager/add/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
+		$widget->body   = array('content' => $this->load->view('projectsmanager/add/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
 		
 		//add needed scripts
 		$this->addJSFile('/assets/js/plugin/dropzone/dropzone.min.js'); //dropzpone
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
-		$this->addJSFile('/assets/js/controllers/filemanager/usb.js');
-		$this->addJsInLine($this->load->view('filemanager/add/js',$data, true));
+		$this->addJSFile('/assets/js/controllers/projectsmanager/usb.js');
+		$this->addJsInLine($this->load->view('projectsmanager/add/js',$data, true));
 		
 		$this->view();
 	}
@@ -704,20 +704,20 @@ class Filemanager extends FAB_Controller {
 		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-danger" href="filemanager/object/'.$objectID.'"><i class="fa fa-arrow-left"></i> Cancel </a>
+		<a class="btn btn-danger" href="projectsmanager/object/'.$objectID.'"><i class="fa fa-arrow-left"></i> Cancel </a>
 		</div>';
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-add-object-widget';
 		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>Add new file</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('filemanager/file/add/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
+		$widget->body   = array('content' => $this->load->view('projectsmanager/file/add/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
 		
 		//add needed scripts
 		$this->addJSFile('/assets/js/plugin/dropzone/dropzone.min.js'); //dropzpone
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
-		$this->addJSFile('/assets/js/controllers/filemanager/usb.js');
-		$this->addJsInLine($this->load->view('filemanager/file/add/js', $data, true));
+		$this->addJSFile('/assets/js/controllers/projectsmanager/usb.js');
+		$this->addJsInLine($this->load->view('projectsmanager/file/add/js', $data, true));
 		
 		$this->view();
 	}
@@ -737,7 +737,7 @@ class Filemanager extends FAB_Controller {
 		foreach($objects as $object){
 			$temp = array();
 			$temp[] = '<label class="checkbox-inline"><input type="checkbox" id="check_'.$object['id'].'" name="checkbox-inline" class="checkbox"><span></span> </label>';
-			$temp[] = '<i class="fa fa-folder-open"></i> <a href="filemanager/object/'.$object['id'].'">'.$object['name'].'</a>';
+			$temp[] = '<i class="fa fa-folder-open"></i> <a href="projectsmanager/object/'.$object['id'].'">'.$object['name'].'</a>';
 			$temp[] = $object['description'];
 			
 			$date_inserted = date('d/m/Y', strtotime($object['date_insert']));
@@ -769,7 +769,7 @@ class Filemanager extends FAB_Controller {
 		//~ $data['date_insert'] = date('Y-m-d H:i:s');
 		$data['date_update'] = date('Y-m-d H:i:s');
 		
-		$redirectTo = '#filemanager';
+		$redirectTo = '#projectsmanager';
 		//add object record
 		if(!$objectID)
 		{
@@ -778,7 +778,7 @@ class Filemanager extends FAB_Controller {
 		}
 		else
 		{
-			$redirectTo = '#filemanager/object/' . $objectID;
+			$redirectTo = '#projectsmanager/object/' . $objectID;
 		}
 		
 		// if files are presents add them to the object
@@ -1119,7 +1119,7 @@ class Filemanager extends FAB_Controller {
 		$builtin_actions[] = array(
 				"title" => "Download",
 				"icon" => "fa-download",
-				"url" => "filemanager/download/file/".$fileID
+				"url" => "projectsmanager/download/file/".$fileID
 			);
 			
 		if( $file['print_type'] == 'additive' or $file['print_type'] == 'subtractive' )
@@ -1127,12 +1127,12 @@ class Filemanager extends FAB_Controller {
 			$builtin_actions[] = array(
 				"title" => "Preview",
 				"icon" => "fa-eye",
-				"url" => "#filemanager/file/".$fileID."/preview"
+				"url" => "#projectsmanager/file/".$fileID."/preview"
 			);
 			$builtin_actions[] = array(
 				"title" => "Stats",
 				"icon" => "fa-area-chart",
-				"url" => "#filemanager/file/".$fileID."/stats"
+				"url" => "#projectsmanager/file/".$fileID."/stats"
 			);
 		}
 		
@@ -1188,7 +1188,7 @@ class Filemanager extends FAB_Controller {
 		foreach($files as $file){
 			$temp = array();
 			$temp[] = '<label class="checkbox-inline"><input type="checkbox" id="check_'.$file['id'].'" name="checkbox-inline" class="checkbox"><span></span> </label>';
-			$temp[] = '<a href="filemanager/file/'.$file['id'].'">'.str_replace($file['file_ext'], '', $file['client_name']).'</a>';
+			$temp[] = '<a href="projectsmanager/file/'.$file['id'].'">'.str_replace($file['file_ext'], '', $file['client_name']).'</a>';
 			$temp[] = $file['print_type'];
 			$temp[] = $file['note'];
 			

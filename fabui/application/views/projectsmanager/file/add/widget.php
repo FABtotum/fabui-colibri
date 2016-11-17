@@ -8,7 +8,7 @@
  */
  
 ?>
-<form id="object-form" method="post" class="smart-form" action="<?php echo site_url('filemanager/saveObject') . '/' . $object_id; ?>">
+<form id="object-form" method="post" class="smart-form" action="<?php echo site_url('projectsmanager/saveObject') . '/' . $object_id; ?>">
 	<input type="hidden" name="files" id="files">
 	<input type="hidden" name="usb_files" id="usb_files" >
 </form>

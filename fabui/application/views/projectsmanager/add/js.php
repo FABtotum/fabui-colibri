@@ -28,7 +28,7 @@
 		console.log("accepted_files", "<?php echo $accepted_files; ?>");
 		
 		$("div#newObjectDropzone").dropzone({ 
-			url: "<?php echo site_url('filemanager/uploadFile/') ?>",
+			url: "<?php echo site_url('projectsmanager/uploadFile/') ?>",
 			addRemoveLinks : true, 
 			dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-lg-block visible-md-block visible-sm-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i> Drops files <span class="font-xs">to upload</span></span><span>&nbsp&nbsp<h4 class="display-inline"> (or click)</h4></span>',
 			parallelUploads: 1,
@@ -105,9 +105,7 @@
 				});
 				$("#progressModal").modal("show");
 				filesDropzone.processQueue(); 
-			}
-			else
-			{
+			}else{
 				submitForm();
 			}
 		}
@@ -119,7 +117,7 @@
 	{
 		$("#files").val(fileList);
 		add_usb_files();
-		openWait("<i class='fa fa-save'></i> Adding files", 'Please wait', false);
+		openWait("<i class='fa fa-save'></i> Saving object", 'Please wait', false);
 		$("#object-form").submit();
 	}
 	
@@ -136,8 +134,6 @@
 		});
 		$("#progressModalBody").html(html);
 	}
-	
-	/* usb upload */
 	
 	
 </script>

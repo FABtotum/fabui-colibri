@@ -104,7 +104,7 @@
 			ReloadTable();
 			
 			$.ajax({
-			  url: "<?php echo site_url('filemanager/getJsonStatsData/'.$file['id']); ?>/" + start + '/' + end,
+			  url: "<?php echo site_url('projectsmanager/getJsonStatsData/'.$file['id']); ?>/" + start + '/' + end,
 			  dataType: 'json'
 			}).done(function( response ) {
 			    set_new_data(response);
@@ -136,7 +136,7 @@
 				responsiveHelper_dt_basic.respond();
 			},
             "bProcessing": true,
-            "sAjaxSource": '<?php echo site_url('filemanager/getFileTasksForTable/'.$file['id']) ?>/?start_date=' + start_date + '&end_date=' + end_date,
+            "sAjaxSource": '<?php echo site_url('projectsmanager/getFileTasksForTable/'.$file['id']) ?>/?start_date=' + start_date + '&end_date=' + end_date,
              "bDeferRender": true,
   			"fnRowCallback": function (row, data, index ){
   				
@@ -176,7 +176,7 @@
 	function ReloadTable()
 	{
 		var params = {start_date: start_date, end_date:end_date};
-		var url = '<?php echo site_url('filemanager/getFileTasksForTable/'.$file['id']) ?>/?' + jQuery.param(params);
+		var url = '<?php echo site_url('projectsmanager/getFileTasksForTable/'.$file['id']) ?>/?' + jQuery.param(params);
 		RefreshTable('#table-list', url);
 	}
 	

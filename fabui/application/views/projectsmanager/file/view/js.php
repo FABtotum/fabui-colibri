@@ -67,13 +67,13 @@
 		
 		$.ajax({
 				type: "POST",
-				url: "<?php echo site_url('filemanager/deleteFiles') ?>",
+				url: "<?php echo site_url('projectsmanager/deleteFiles') ?>",
 				dataType: 'json',
 				data: {ids: list}
 			}).done(function(response) {
 				if (response.success == true)
 				{
-					document.location.href = "<?php echo site_url('#filemanager/object/'. $object['id']); ?>";
+					document.location.href = "<?php echo site_url('#projectsmanager/object/'. $object['id']); ?>";
 					//~ location.reload();
 				}
 				else 
@@ -104,7 +104,7 @@
 
 	
 	function download_file(){
-		document.location.href = '<?php echo 'filemanager/download/file/' . $file['id'] ?>';
+		document.location.href = '<?php echo 'projectsmanager/download/file/' . $file['id'] ?>';
 	}
 
 	function save_file(){
@@ -129,7 +129,7 @@
 			
 		$.ajax({
 		  type: "POST",
-		  url: "<?php echo site_url("filemanager/updateFile"); ?>",
+		  url: "<?php echo site_url("projectsmanager/updateFile"); ?>",
 		  data: data,
 		  dataType: 'json'
 		}).done(function( response ) {

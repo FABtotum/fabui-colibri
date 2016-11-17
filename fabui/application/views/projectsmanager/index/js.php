@@ -48,7 +48,7 @@
 			"drawCallback" : function(oSettings) {
 				transformLinks($('#objects-table'));
 			},
-			"sAjaxSource": "<?php echo site_url('filemanager/getUserObjects/') ?>",
+			"sAjaxSource": "<?php echo site_url('projectsmanager/getUserObjects/') ?>",
 			"fnRowCallback": function (row, data, index ){
 				$('td', row).eq(0).addClass('center table-checkbox').attr('width', '20px');
 				$('td', row).eq(2).addClass('hidden-xs');
@@ -151,7 +151,7 @@
 		
 		$.ajax({
 				type: "POST",
-				url: "<?php echo site_url('filemanager/deleteObjects') ?>",
+				url: "<?php echo site_url('projectsmanager/deleteObjects') ?>",
 				dataType: 'json',
 				data: {ids: list}
 			}).done(function(response) {
@@ -188,7 +188,7 @@
 	}
 	
 	function download_objects(list){  	
-		document.location.href = '<?php echo site_url('filemanager/download/object/') ?>/' + list.join('-');
+		document.location.href = '<?php echo site_url('projectsmanager/download/object/') ?>/' + list.join('-');
 	}
     
 

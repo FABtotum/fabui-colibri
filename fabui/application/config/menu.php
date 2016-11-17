@@ -44,10 +44,10 @@ $config['menu'] = array(
 		'icon' => 'icon-fab-jog',
 		'url' => 'jog'
 	),
-	'objectmanager' => array(
-		'title' => 'File Manager',
+	'projectsmanager' => array(
+		'title' => 'Projects Manager',
 		'icon' => 'fa-folder-open',
-		'url' => 'filemanager'
+		'url' => 'projectsmanager'
 	),
 	'maintenance' => array(
 		'title' => 'Maintenance',
