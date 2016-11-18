@@ -386,18 +386,16 @@ fabApp = (function(app) {
 	 * launch reboot command and refresh the page after 21 seconds
 	 */
 	app.reboot = function() {
-		$.is_macro_on = true;
-		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> Restart in progress");
+		//$.is_macro_on = true;
+		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> Restart in progress", 'Please wait..', false);
 		$.ajax({
 			url: reboot_url_action,
 		}).done(function(data) {
-		
 		}).fail(function(jqXHR, textStatus){
-			setTimeout(function() {
-				waitContent("Restarting please wait...");
-				is_macro_on = false;
-				document.location.href = logout_url;
-			}, 21000);
+			//clear intervals
+			clearInterval(temperatures_interval);
+			waitContent("you will be redirect to login page");
+			app.redirectToUrlWhenisReady(base_url);
 		});
 	};
 	/*
@@ -996,6 +994,18 @@ fabApp = (function(app) {
 				}
 			}
 		});
+	}
+	/**
+	* redirect to a specific url only when the url responds 200
+	**/
+	app.redirectToUrlWhenisReady = function (url, timer)
+	{
+		timer = timer | 1000;
+		var checkInterval = setInterval(function(){
+			$.get(url)
+				.success(function(result) { clearInterval(checkInterval); document.location.href = url; })
+				.error(function(jqXHR, textStatus, errorThrown) { });
+		}, timer);
 	}
 	return app;
 })({});
