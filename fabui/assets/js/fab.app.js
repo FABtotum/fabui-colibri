@@ -386,14 +386,14 @@ fabApp = (function(app) {
 	 * launch reboot command and refresh the page after 21 seconds
 	 */
 	app.reboot = function() {
+		clearInterval(temperatures_interval);
 		//$.is_macro_on = true;
-		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> Restart in progress", 'Please wait..', false);
+		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> Restart in progress", 'Please wait...', false);
 		$.ajax({
 			url: reboot_url_action,
 		}).done(function(data) {
 		}).fail(function(jqXHR, textStatus){
 			//clear intervals
-			clearInterval(temperatures_interval);
 			waitContent("you will be redirect to login page");
 			app.redirectToUrlWhenisReady(base_url);
 		});
@@ -402,8 +402,9 @@ fabApp = (function(app) {
 	 * launch poweroff command and show popup with instructions after 5 seconds
 	 */
 	app.poweroff = function() {
-		is_macro_on = true;
-		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Shutdown in progress');
+		clearInterval(temperatures_interval);
+		//is_macro_on = true;
+		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Shutdown in progress', 'Please wait...', false);
 		$.ajax({
 			url: poweroff_url_action,
 		}).done(function(data) {
@@ -411,10 +412,9 @@ fabApp = (function(app) {
 		}).fail(function(jqXHR, textStatus){
 			setTimeout(function() {
 				waitTitle('Now you can switch off the power');
-				showShutdownImage(); //utility function stored in utilities.js
-				closeWait();
-				is_macro_on = false;
-			}, 5000);
+				waitContent('');
+				//is_macro_on = false;
+			}, 10000);
 		});
 	};
 	/*
