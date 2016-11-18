@@ -112,6 +112,7 @@ allow-hotplug $IFACE
 auto $IFACE
 iface $IFACE inet dhcp
   wpa-conf $WPA_CONF
+  wpa-timeout 30
 EOF
 }
 
