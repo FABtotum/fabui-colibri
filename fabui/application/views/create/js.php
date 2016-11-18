@@ -672,6 +672,9 @@
 					if(value.charAt(0) == '+') message="Z height increased";
 					else message="Z height decreased";
 					break;
+				case 'rpm':
+					message="RPM speed se to: " + value;
+					break;
 				default:
 					message="Unknown action: "+ action;
 			}
@@ -807,7 +810,7 @@
 			noUiSlider.create(document.getElementById('create-rpm-slider'), {
 				start: 100,
 				connect: "lower",
-				range: {'min': 0, 'max' : 500},
+				range: {'min': 6000, 'max' : 14000},
 				pips: {
 					mode: 'positions',
 					values: [0,20,40,60,80,100],
@@ -887,6 +890,9 @@
 			case 'speed':
 				$('.slider-task-speed').html(parseInt(value));
 				break;
+			case 'rpm':
+				$('.slider-task-rpm').html(parseInt(value));
+				break;
 			
 		}
 	} 
@@ -917,7 +923,10 @@
 				break;
 			case 'speed':
 				sendActionRequest('speed', parseInt(value[0]));
-				break;			
+				break;	
+			case 'rpm':
+				sendActionRequest('rpm', parseInt(value[0]));
+				break;		
 		}
 	}
 	/**
@@ -1116,13 +1125,13 @@
 	function updateRPM(value)
 	{
 		$(".task-rpm").html(parseInt(value));
-		$("#task-rpm-bar").attr("style", "width:" + ((value/500)*100) +"%;");
+		$("#task-rpm-bar").attr("style", "width:" + ((value/14000)*100) +"%;");
 		if(!isRpmSliderBusy && !wasRpmSliderMoved){
 			$('.slider-task-rpm').html(parseInt(value));
 			if(typeof rpmSlider !== 'undefined'){
 				rpmSlider.noUiSlider.set(value);
 			}
-		}
-	}
+		} 
+	} 
 	<?php endif;?>
 </script>

@@ -341,14 +341,17 @@ class GCodePusher(object):
                     """ .. todo: do something with it """
                     pass
                 elif data[0] == 'M3':
-                    self.trace( _("Milling motor RPM set to {0}%").format(value) )
+                    value = int( data[1] )
+                    self.trace( _("Milling motor RPM set to {0}").format(value) )
                     self.override_stats['rpm'] = float(data[1])
                     monitor_write = True
                 elif data[0] == 'M4':
-                    self.trace( _("Milling motor RPM set to {0}%").format(value) )
+                    value = int( data[1] )
+                    self.trace( _("Milling motor RPM set to {0}").format(value) )
                     self.override_stats['rpm'] = float(data[1])
                     monitor_write = True
                 elif data[0] == 'M6':
+                    value = float( data[1] )
                     """ .. todo: Check whether laser power should be scaled from 0-255 to 0.0-100.0 """
                     self.trace( _("Laser power set to {0}%").format(value) )
                     self.override_stats['laser'] = float(data[1])

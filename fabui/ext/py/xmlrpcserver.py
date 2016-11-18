@@ -136,6 +136,9 @@ class ExposeCommands:
     def set_auto_shutdown(self, value): # !shutdown:<on|off>
         self.gcs.push('config:shutdown', value)
         return 'ok'
+    
+    def set_rpm(self, value):
+        return self.gcs.send('M3 S{0}\r\n'.format(value))
 
 
 # Setup arguments
