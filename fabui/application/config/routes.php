@@ -65,7 +65,7 @@ $route['make/print'] = 'create/index/print';
 $route['make/mill']  = 'create/index/mill';
 $route['make/scan']  = 'scan';
 //file manager
-$route['projectsmanager/add-object']  = 'projectsmanager/newObject';
+$route['projectsmanager/add-project']  = 'projectsmanager/newProject';
 $route['projectsmanager/add-file/(:num)']  = 'projectsmanager/newFile/$1';
 //settings
 $route['settings/cam'] = 'cam';

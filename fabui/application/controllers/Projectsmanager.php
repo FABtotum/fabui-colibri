@@ -27,14 +27,14 @@ class Projectsmanager extends FAB_Controller {
 		);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-success" href="projectsmanager/add-object"><i class="fa fa-plus"></i> Add New Object </a>
+		<a class="btn btn-success" href="projectsmanager/add-project"><i class="fa fa-plus"></i> Add New Project </a>
 		<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> Delete </button>
 		<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> Download </button>
 		</div>';
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-widget';
-		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>Objects</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-cubes', "title" => "<h2>Projects</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('projectsmanager/index/widget', $data, true ), 'class'=>'no-padding');
 		$this->content  = $widget->print_html(true);
 		
@@ -50,9 +50,9 @@ class Projectsmanager extends FAB_Controller {
 	}
 	
 	/**
-	 * show object page with info and files
+	 * show project page with info and files
 	 */
-	public function object($objectId)
+	public function project($objectId)
 	{
 		if($objectId == '') redirect('projectsmanager');
 		
@@ -80,7 +80,7 @@ class Projectsmanager extends FAB_Controller {
 			
 			$widget = $this->smart->create_widget($widgetOptions);
 			$widget->id = 'file-manager-edit-object-widget';
-			$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>Edit object</h2>", 'toolbar'=>$headerToolbar);
+			$widget->header = array('icon' => 'fa-cubes', "title" => "<h2>Edit project</h2>", 'toolbar'=>$headerToolbar);
 			$widget->body   = array('content' => $this->load->view('projectsmanager/edit/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 			$this->content  = $widget->print_html(true);
 			
@@ -200,7 +200,7 @@ class Projectsmanager extends FAB_Controller {
 			$this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-default" href="projectsmanager/object/'.$objectId.'"><i class="fa fa-arrow-left"></i> Back </a>
+		<a class="btn btn-default" href="projectsmanager/project/'.$objectId.'"><i class="fa fa-arrow-left"></i> Back </a>
 		<a class="btn btn-info" href="projectsmanager/file/'.$fileId.'/stats"><i class="fa fa-area-chart"></i> Stats </a>
 		<button class="btn btn-danger button-action" data-action="delete"><i class="fa fa-download"></i> Delete </button>
 		<button class="btn btn-info button-action" data-action="download"><i class="fa fa-download"></i> Download </button>
@@ -208,7 +208,7 @@ class Projectsmanager extends FAB_Controller {
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-edit-object-widget';
-		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>File view</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-cube', "title" => "<h2>File view</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('projectsmanager/file/view/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
 		
@@ -541,7 +541,7 @@ class Projectsmanager extends FAB_Controller {
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-edit-object-widget';
-		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>gCodeViewer</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-cube', "title" => "<h2>gCodeViewer</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('projectsmanager/file/gcodeviewer/index', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
 
@@ -636,7 +636,7 @@ class Projectsmanager extends FAB_Controller {
 	/**
 	 * add new object and files page
 	 */
-	public function newObject()
+	public function newProject()
 	{
 		//TODO
 		//load libraries, helpers, model, config
@@ -664,7 +664,7 @@ class Projectsmanager extends FAB_Controller {
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-add-object-widget';
-		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>Add new object</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-cubes', "title" => "<h2>Add new project</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('projectsmanager/add/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
 		
@@ -702,12 +702,12 @@ class Projectsmanager extends FAB_Controller {
 		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-danger" href="projectsmanager/object/'.$objectID.'"><i class="fa fa-arrow-left"></i> Cancel </a>
+		<a class="btn btn-danger" href="projectsmanager/project/'.$objectID.'"><i class="fa fa-arrow-left"></i> Cancel </a>
 		</div>';
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-add-object-widget';
-		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>Add new file</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-cube', "title" => "<h2>Add new file</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('projectsmanager/file/add/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
 		
@@ -735,7 +735,7 @@ class Projectsmanager extends FAB_Controller {
 		foreach($objects as $object){
 			$temp = array();
 			$temp[] = '<label class="checkbox-inline"><input type="checkbox" id="check_'.$object['id'].'" name="checkbox-inline" class="checkbox"><span></span> </label>';
-			$temp[] = '<i class="fa fa-folder-open"></i> <a href="projectsmanager/object/'.$object['id'].'">'.$object['name'].'</a>';
+			$temp[] = '<i class="fa fa-cubes"></i> <a href="projectsmanager/project/'.$object['id'].'">'.$object['name'].'</a>';
 			$temp[] = $object['description'];
 			
 			$date_inserted = date('d/m/Y', strtotime($object['date_insert']));
@@ -777,7 +777,7 @@ class Projectsmanager extends FAB_Controller {
 		}
 		else
 		{
-			$redirectTo = '#projectsmanager/object/' . $objectID;
+			$redirectTo = '#projectsmanager/project/' . $objectID;
 		}
 		
 		// if files are presents add them to the object

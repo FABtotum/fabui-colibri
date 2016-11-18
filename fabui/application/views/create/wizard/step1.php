@@ -29,7 +29,7 @@
 						<tr>
 							<th width="20" class="text-center"></th>
 							<th>File</th>
-							<th class="hidden-xs">Object</th>
+							<th class="hidden-xs">Project</th>
 							<th class="hidden"></th>
 							<th class="hidden"></th>
 						</tr>
@@ -45,7 +45,7 @@
 						<tr>
 							<th width="20" class="text-center"></th>
 							<th>File</th>
-							<th class="hidden-xs">Object</th>
+							<th class="hidden-xs">Project</th>
 							<th class="hidden"></th>
 							<th class="hidden"></th>
 						</tr>

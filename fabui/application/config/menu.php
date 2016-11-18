@@ -46,7 +46,7 @@ $config['menu'] = array(
 	),
 	'projectsmanager' => array(
 		'title' => 'Projects Manager',
-		'icon' => 'fa-folder-open',
+		'icon' => 'fa-cubes',
 		'url' => 'projectsmanager'
 	),
 	'maintenance' => array(
