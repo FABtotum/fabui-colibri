@@ -11,7 +11,7 @@
  class JogFactory {
 	
 	protected $CI; //code igniter instance
-	protected $serial; //serial class
+	//protected $serial; //serial class
 	protected $feedrate     = array();
 	protected $step         = array();
 	protected $responseType = 'jog'; //type of response (temperature, gcode, serial)
@@ -158,6 +158,8 @@
 	 */
 	public function moveXY($direction)
 	{
+		if($direction == '') return;
+		
 		$directions['up']         = 'G0 Y+%.2f F%.2f';
 		$directions['up-right']   = 'GO Y+%1$.2f X+%1$.2f F%2$.2f';
 		$directions['up-left']    = 'G0 Y+%1$.2f X-%1$.2f F%2$.2f';
