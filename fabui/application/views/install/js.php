@@ -15,6 +15,7 @@
 	$(document).ready(function() {
 		initValidate();
 		initWizard();
+		initTimeZone();
 		$("#i-agree").click(function(){
 			$this=$("#terms");
 			if($this.checked) {
@@ -134,5 +135,14 @@
 		$(".next").find('a').html('Installing...');
 		$("#browser-date").val(moment().format('YYYY-MM-DD HH:mm:ss'));
 		$("#install-form").submit();
+	}
+	/**
+	* detect and select timezone
+	*/
+	function initTimeZone()
+	{
+		var tz = jstz.determine();
+		$("#timezone").val(tz.name());
+	    
 	}
 </script>
