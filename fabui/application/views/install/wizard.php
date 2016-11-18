@@ -10,9 +10,10 @@
 ?>
 <form class="lockscreen animated flipInY" method="POST" action="<?php echo site_url('install/do');?>" id="install-form">
 	<input type="hidden" name="browser-date" id="browser-date" />
-	<div class="logo">
-		<h1 class="semi-bold"> FABTOTUM</h1>
+	<div class="logo text-center">
+		<img src="/assets/img/fabtotum_logo.png">
 	</div>
+	
 	
 		<div id="bootstrap-wizard-1" class="col-sm-12">
 			<div class="form-bootstrapWizard">
