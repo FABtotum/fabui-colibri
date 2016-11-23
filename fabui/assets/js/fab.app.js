@@ -1007,6 +1007,32 @@ fabApp = (function(app) {
 				.error(function(jqXHR, textStatus, errorThrown) { });
 		}, timer);
 	}
+	/**
+	*
+	**/
+	app.forceRecovery = function (){
+		
+		setTimeout(function(){
+			openWait("<i class='fa fa-warning'></i> Oops.. An error occurred", 'you will be redirect to recovery page', false);
+			
+			$.get(set_recovery_url + '/activate', function(data){ 
+				console.log(data);
+				
+				$.ajax({
+					url: reboot_url_action,
+				}).done(function(data) {
+				}).fail(function(jqXHR, textStatus){
+					//clear intervals
+					app.redirectToUrlWhenisReady('http://'+ location.hostname);
+				});
+				
+				
+			});
+			
+		}, 5000);
+		
+		
+	}
 	return app;
 })({});
 

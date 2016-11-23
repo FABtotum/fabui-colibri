@@ -20,6 +20,7 @@ var logout_url                  = base_url + '/login/out';
 var reset_controller_url_action = base_url + '/control/resetController';
 var stop_all_url_action         = base_url + '/control/emergency';
 var set_secure_url              = base_url + '/control/setSecure';
+var set_recovery_url            = base_url + '/control/setRecovery';
 var temperatures_file_url       = '/temp/temperature.json';
 var jog_response_file_url       = '/temp/jog_response.json';
 var task_monitor_file_url       = '/temp/task_monitor.json';

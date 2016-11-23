@@ -609,4 +609,13 @@ if(!function_exists('resetTaskMonitor'))
 		write_file($CI->config->item('task_monitor'), json_encode($monitor));
 	} 
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('setRecovery'))
+{
+	function setRecovery($mode)
+	{
+		return startBashScript('recovery.sh', $mode, false, true);
+	}
+}
+
 ?>

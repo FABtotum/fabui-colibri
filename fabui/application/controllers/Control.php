@@ -53,6 +53,15 @@
 	}
 	
 	/**
+	 * @param string {activate | deactivate}
+	 */
+	function setRecovery($mode)
+	{
+		$this->load->helper('fabtotum_helper');
+		$this->output->set_content_type('application/json')->set_output(json_encode(setRecovery($mode)));
+	}
+	
+	/**
 	 * init hardware settings and configs
 	 */
 	public function hardwareBootstrap()
