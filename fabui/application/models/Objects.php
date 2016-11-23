@@ -20,14 +20,16 @@
 	
 	/**
 	 * @param (int) user id
+	 * @param (string) $date_order order by date ASC or DESC
 	 * @return all users's objects
 	 */
-	public function getUserObjects($userID)
+	public function getUserObjects($userID, $date_order = 'DESC')
 	{
 		$this->db->select('to.id as id, name, description, date_insert, count(id_file) as num_files');
 		$this->db->where('user', $userID);
 		$this->db->join($this->objFilesTable.' as tof', 'tof.id_obj = to.id', 'left');
 		$this->db->group_by('to.id');
+		$this->db->order_by('date_insert', $date_order);
 		$query = $this->db->get($this->tableName.' as to');
 		return $query->result_array();
 	}
