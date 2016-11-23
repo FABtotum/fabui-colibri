@@ -145,14 +145,14 @@ class StatsMonitor:
         """
         Thread to handle write_stats from a single location.
         """
-        self.log.debug("StatsMonitor write thread: started")
+        self.log.debug("StatsMonitor write thread: started [{0}]".format(self.update_period))
         while self.running:
             # Used both as a delay and event trigger
             if self.ev_update.wait(self.update_period):
                 # There was an update event, so write the new data
                 self.__write_stats()    
                 self.ev_update.clear()
-                
+
                 self.__write_stats()
                 
         self.log.debug("StatsMonitor write thread: stopped")
@@ -168,7 +168,7 @@ class StatsMonitor:
             # Timeout is to prevent waiting for too long when there is a long running
             # command like M109,M190,G29 or G28
             #~ reply = self.gcs.send('M105', group = 'monitor', timeout = 2) 
-            reply = self.gcs.send('M105', group = 'monitor', block=False)
+            reply = self.gcs.send('M105', group = 'monitor', block=True)
             if reply != None: # No timeout occured
                 try:
                     a, b, c, d = self.__parse_temperature(reply[0])

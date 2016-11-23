@@ -28,6 +28,7 @@ bigtemp_path = @BIGTEMP_PATH@
 database = @LIB_PATH@fabtotum.db
 autoinstall_file = @WWW_PATH@AUTOINSTALL
 uploads = @UPLOAD_PATH@
+userdata_path = @USERDATA_PATH@
 notify_file = @FABUI_TEMP_PATH@notify.json
 settings_path = @LIB_PATH@settings/
 plugins_path  = @LIB_PATH@plugins/
