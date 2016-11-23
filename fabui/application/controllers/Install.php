@@ -19,6 +19,7 @@ class Install extends FAB_Controller {
 		//add js file
 		$this->addJSFile('/assets/js/plugin/bootstrap-wizard/jquery.bootstrap.wizard.min.js'); //wizard
 		$this->addJSFile('/assets/js/plugin/moment/moment.min.js'); //moment
+		$this->addJSFile('/assets/js/plugin/tzdetection/jstz.min.js'); //timezonedetection
 		$this->addCSSInLine('<style> #main {margin-left:0px !important;}</style>');
 		//show page
 		$this->installLayout();
@@ -55,7 +56,7 @@ class Install extends FAB_Controller {
 		//ADD USER ACCOUNT
 		$newUserID = $this->user->add($userData);
 		//Install database
-		installDatabase($newUserID);
+		//$this->installDatabase($newUserID);
 		//Install samples
 		$this->installSamples($newUserID);
 		//delete AUTOINSTALL
@@ -94,7 +95,7 @@ class Install extends FAB_Controller {
 		{
 			shell_exec('sudo mv '.$database_file.' '.$database_final_path);
 			shell_exec('sudo ln -s '.$database_final_path.' '.$database_file);
-		}*/
+		}
 		
 		/* Move database to userdata partition */
 		//shell_exec('sudo mv '.$database_file.' '.$database_final_path);
