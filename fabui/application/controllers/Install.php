@@ -19,7 +19,6 @@ class Install extends FAB_Controller {
 		//add js file
 		$this->addJSFile('/assets/js/plugin/bootstrap-wizard/jquery.bootstrap.wizard.min.js'); //wizard
 		$this->addJSFile('/assets/js/plugin/moment/moment.min.js'); //moment
-		$this->addJSFile('/assets/js/plugin/tzdetection/jstz.min.js'); //moment
 		$this->addCSSInLine('<style> #main {margin-left:0px !important;}</style>');
 		//show page
 		$this->installLayout();
@@ -55,11 +54,64 @@ class Install extends FAB_Controller {
 		$userData['password'] = md5($userData['password']);		
 		//ADD USER ACCOUNT
 		$newUserID = $this->user->add($userData);
+		//Install database
+		installDatabase($newUserID);
 		//Install samples
 		$this->installSamples($newUserID);
 		//delete AUTOINSTALL
 		$this->deleteAutoInstallFile();
 		redirect('login');
+	}
+	
+	/**
+	 * Install database.
+	 */
+	public function installDatabase($userID)
+	{
+		$this->config->load('fabtotum');
+		
+		$restore = false;
+		$database_file = $this->config->item('database');
+		$database_filename = basename($database_file);
+		$userdata_path = $this->config->item('userdata_path');
+		
+		$database_final_path = $userdata_path . basename($database_file);
+		//var_dump($database_file);
+		//var_dump($userdata_path);
+		
+		if( file_exists($database_final_path) )
+		{
+			$restore = true;
+			//shell_exec('sudo cp '.$database_file.' /tmp');
+			
+			//~ shell_exec('sudo mv '.$database_file.' '.$database_final_path);
+			shell_exec('sudo mv '.$database_file.' /tmp');
+			shell_exec('sudo ln -s '.$database_final_path.' '.$database_file);
+			
+			shell_exec('sudo mv '.$database_file.' /tmp');
+		}
+		else
+		{
+			shell_exec('sudo mv '.$database_file.' '.$database_final_path);
+			shell_exec('sudo ln -s '.$database_final_path.' '.$database_file);
+		}*/
+		
+		/* Move database to userdata partition */
+		//shell_exec('sudo mv '.$database_file.' '.$database_final_path);
+		//shell_exec('sudo ln -s '.$database_final_path.' '.$database_file);
+		
+		//~ if($restore)
+		//~ {
+			//~ $this->restoreUserFiles($userID);
+		//~ }
+	}
+	
+	/**
+	 * Restore user files from existing database.
+	 */
+	private function restoreUserFiles($userID)
+	{
+		
 	}
 	
 	/**

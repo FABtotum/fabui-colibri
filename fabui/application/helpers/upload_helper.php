@@ -63,6 +63,8 @@ if ( ! function_exists('uploadFromFileSystem'))
 		/** ADD PERMISSIONS */
 		$_command = 'sudo chmod 644 "' . $folder_destination . $file_name . '" ';
 		shell_exec($_command);
+		$_command = 'sudo chown www-data.www-data "' . $folder_destination . $file_name . '" ';
+		shell_exec($_command);
 		
 		$file_type = get_mime_by_extension($file_name);
 		if(!$file_type)

@@ -1,1 +1,44 @@
-{"color":{"r":255,"g":255,"b":255},"safety":{"door":0,"collision_warning":1},"switch":0,"feeder":{"disengage-offset":2,"show":true},"milling":{"layer_offset":12},"e":3048.1593,"a":177.777778,"customized_actions":{"bothy":"none","bothz":"none"},"api":{"keys":[]},"zprobe":{"enable":0,"zmax":206},"settings_type":"default","hardware":{"head":"hybrid_head", "camera":"camera_v1"},"print":{"pre_heating":{"nozzle":150,"bed":50}},"invert_x_endstop_logic":false}
+{
+	"color": {
+		"r": 255,
+		"g": 255,
+		"b": 255
+	},
+	"safety": {
+		"door": 0,
+		"collision_warning": 1
+	},
+	"switch": 0,
+	"feeder": {
+		"disengage-offset": 2,
+		"show": true
+	},
+	"milling": {
+		"layer_offset": 12
+	},
+	"e": 3048.1593,
+	"a": 177.777778,
+	"customized_actions": {
+		"bothy": "none",
+		"bothz": "none"
+	},
+	"api": {
+		"keys": []
+	},
+	"zprobe": {
+		"enable": 0,
+		"zmax": 206
+	},
+	"settings_type": "default",
+	"hardware": {
+		"head": "hybrid_head",
+		"camera": "camera_v1"
+	},
+	"print": {
+		"pre_heating": {
+			"nozzle": 150,
+			"bed": 50
+		}
+	},
+	"invert_x_endstop_logic": false
+}

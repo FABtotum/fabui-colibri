@@ -36,7 +36,7 @@ from fabtotum.fabui.config import ConfigService
 tr = gettext.translation('gpusher', 'locale', fallback=True)
 _ = tr.ugettext
 
-def customHardware(gcodeSender,config,log):
+def customHardware(gcodeSender, config, log):
     """
     Revision for customs edits
     """
@@ -46,14 +46,14 @@ def customHardware(gcodeSender,config,log):
     gcodeSender.send("M500", group='bootstrap')
     log.debug("Custom Hardware")
 
-def hardware1(gcodeSender,log):
+def hardware1(gcodeSender, config, log):
     """
     Rev1: September 2014 - May 2015
     - Original FABtotum
     """
     log.debug("Rev1")
     
-def hardware2(gcodeSender,log):
+def hardware2(gcodeSender, config, log):
     """
     Rev2: June 2015 - August 2015
     - Simplified Feeder (Removed the disengagement and engagement procedure), if you want you can update it easily following this Tutorial: Feeder update.
@@ -68,7 +68,7 @@ def hardware2(gcodeSender,log):
     gcodeSender.send("M500", group='bootstrap')
     log.debug("Rev2")
     
-def hardware3(gcodeSender,log):
+def hardware3(gcodeSender, config, log):
     """
     Rev3: Aug 2015 - Jan 2016
     - Back panel modified to minimize bowden tube collisions
@@ -87,12 +87,31 @@ def hardware3(gcodeSender,log):
     log.debug("Rev3")
     
     
-def hardware4(log):
+def hardware4(gcodeSender, config, log):
     """
     Rev4(CORE): Jan 2016 - xxx
     - TBA
     """
+    #invert x endstop logic
+    gcodeSender.send("M747 X1", group='bootstrap')
+    #set maximum feedrate
+    gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00", group='bootstrap')
+    #save settings
+    gcodeSender.send("M500", group='bootstrap')
     log.debug("Rev4")
+    
+def hardware5(gcodeSender, config, log):
+    """
+    Rev5(CORE): Oct 2016 - xxx
+    - RPi3
+    """
+    #invert x endstop logic
+    gcodeSender.send("M747 X1", group='bootstrap')
+    #set maximum feedrate
+    gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00", group='bootstrap')
+    #save settings
+    gcodeSender.send("M500", group='bootstrap')
+    log.debug("Rev5")
 
 def hardwareBootstrap(gcs, config = None, logger = None):
     if not config:
@@ -180,12 +199,13 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         '1'      : hardware1,
         '2'      : hardware2,
         '3'      : hardware3,
-        '4'      : hardware4
+        '4'      : hardware4,
+        '5'      : hardware5
     }
     if config.get('settings', 'settings_type') == 'custom':
-        customHardware(gcs,config,log)
+        customHardware(gcs, config, log)
     elif hardwareID in HW_VERSION_CMDS:
-        HW_VERSION_CMDS[hardwareID](gcs,log)
+        HW_VERSION_CMDS[hardwareID](gcs, config, log)
     else:
         log.error("Unsupported hardware version: %s", hardwareID)
 
