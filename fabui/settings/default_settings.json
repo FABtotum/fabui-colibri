@@ -10,7 +10,7 @@
 	},
 	"switch": 0,
 	"feeder": {
-		"disengage-offset": 2,
+		"disengage_offset": 2,
 		"show": true
 	},
 	"milling": {

@@ -85,7 +85,63 @@ class ConfigService:
         
         for cb in self.reload_callback:
             cb()
-        
+    
+    def save(self, section):
+        if section == 'settings':
+            if 'settings_type' in self.settings and self.settings['settings_type'] == 'custom':
+                with open(self.HW_CUSTOM_SETTINGS, 'w') as outfile:
+                    json.dump(self.settings, outfile, sort_keys=True, indent=4)
+            else:
+                with open(self.HW_DEFAULT_SETTINGS, 'w') as outfile:
+                    json.dump(self.settings, outfile, sort_keys=True, indent=4)                
+            return True
+            
+        return False
+    
+    def __get_dict_value(self, data, key, default = None):
+        try:
+            kl = key.split('.')
+            if len(kl) == 1 and kl[0]:
+                return data[kl[0]]
+                
+            elif len(kl) == 2 and kl[0] and kl[1]:
+                return data[kl[0]][kl[1]]
+                
+            elif len(kl) == 3 and kl[0] and kl[1] and kl[2]:
+                return data[kl[0]][kl[1]][kl[2]]
+                
+            elif len(kl) == 4  and kl[0] and kl[1] and kl[2] and kl[3]:
+                return data[kl[0]][kl[1]][kl[2]][kl[3]]
+                
+            else:
+                return data
+        except:
+            return default
+            
+    def __set_dict_value(self, data, key, value):
+        try:
+            kl = key.split('.')
+            if len(kl) == 1 and kl[0]:
+                data[kl[0]] = value
+                return True
+                
+            elif len(kl) == 2 and kl[0] and kl[1]:
+                data[kl[0]][kl[1]] = value
+                return True
+                
+            elif len(kl) == 3 and kl[0] and kl[1] and kl[2]:
+                data[kl[0]][kl[1]][kl[2]] = value
+                return True
+                
+            elif len(kl) == 4  and kl[0] and kl[1] and kl[2] and kl[3]:
+                data[kl[0]][kl[1]][kl[2]][kl[3]] = value
+                return True
+                
+            else:
+                return False
+        except:
+            return False
+            
     def get(self, section, key, default = None):        
         value = ''
         
@@ -93,7 +149,7 @@ class ConfigService:
             if section == 'serial':
                 value = self.serialconfig.get('serial', key)
             elif section == 'settings':
-                value = self.settings[key]
+                value = self.__get_dict_value(self.settings, key, default)
             else:
                 value = self.config.get(section, key)
         except Exception:
@@ -103,3 +159,11 @@ class ConfigService:
                 raise KeyError
                 
         return value
+
+    def set(self, section, key, value):
+        """ Set settings value """
+        
+        if section == 'settings':
+            return self.__set_dict_value(self.settings, key, value)
+            
+        return False

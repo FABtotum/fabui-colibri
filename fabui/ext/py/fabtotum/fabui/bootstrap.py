@@ -40,8 +40,16 @@ def customHardware(gcodeSender, config, log):
     """
     Revision for customs edits
     """
+    custom_overrides_file = config.get('settings', 'custom_overrides')
+    if custom_overrides_file:
+        with open(custom_overrides_file, 'r') as f:
+            for line in f:
+                gcodeSender.send(line.strip())
+    
+    logic = 1 if int(config.get('settings', 'invert_x_endstop_logic')) else 0
+
     #set x endstop logic
-    gcodeSender.send("M747 X{0}".format(config.get('settings', 'invert_x_endstop_logic')), group='bootstrap')
+    gcodeSender.send("M747 X{0}".format(logic), group='bootstrap')
     #save settings
     gcodeSender.send("M500", group='bootstrap')
     log.debug("Custom Hardware")
@@ -51,6 +59,12 @@ def hardware1(gcodeSender, config, log):
     Rev1: September 2014 - May 2015
     - Original FABtotum
     """
+    
+    config.set('settings', 'hardware.id', 1)
+    config.set('settings', 'feeder.show', True)
+    config.set('settings', 'a', 177.777778)
+    config.save('settings')
+    
     log.debug("Rev1")
     
 def hardware2(gcodeSender, config, log):
@@ -66,6 +80,12 @@ def hardware2(gcodeSender, config, log):
     gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00", group='bootstrap')
     #save settings
     gcodeSender.send("M500", group='bootstrap')
+    
+    config.set('settings', 'hardware.id', 2)
+    config.set('settings', 'feeder.show', True)
+    config.set('settings', 'a', 177.777778)
+    config.save('settings')
+    
     log.debug("Rev2")
     
 def hardware3(gcodeSender, config, log):
@@ -84,6 +104,12 @@ def hardware3(gcodeSender, config, log):
     gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00", group='bootstrap')
     #save settings
     gcodeSender.send("M500", group='bootstrap')
+    
+    config.set('settings', 'hardware.id', 3)
+    config.set('settings', 'feeder.show', False)
+    config.set('settings', 'a', 177.777778)
+    config.save('settings')
+    
     log.debug("Rev3")
     
     
@@ -98,6 +124,12 @@ def hardware4(gcodeSender, config, log):
     gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00", group='bootstrap')
     #save settings
     gcodeSender.send("M500", group='bootstrap')
+    
+    config.set('settings', 'hardware.id', 4)
+    config.set('settings', 'feeder.show', False)
+    config.set('settings', 'a', 88.888889)
+    config.save('settings')
+    
     log.debug("Rev4")
     
 def hardware5(gcodeSender, config, log):
@@ -111,6 +143,12 @@ def hardware5(gcodeSender, config, log):
     gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00", group='bootstrap')
     #save settings
     gcodeSender.send("M500", group='bootstrap')
+    
+    config.set('settings', 'hardware.id', 5)
+    config.set('settings', 'feeder.show', False)
+    config.set('settings', 'a', 88.888889)
+    config.save('settings')
+    
     log.debug("Rev5")
 
 def hardwareBootstrap(gcs, config = None, logger = None):
@@ -138,7 +176,7 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         }
     
     try:
-        safety_door = config.get('settings', 'safety')['door']
+        safety_door = config.get('settings', 'safety.door')
     except KeyError:
         safety_door = 0
     
@@ -148,7 +186,7 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         switch = 0
     
     try:
-        collision_warning = config.get('settings', 'safety')['collision_warning']
+        collision_warning = config.get('settings', 'safety.collision_warning')
     except KeyError:
         collision_warning = 0
 
@@ -181,7 +219,7 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     
     # Load Head
     #~ try:
-    head_file = os.path.join( config.get('hardware', 'heads'), config.get('settings', 'hardware')['head'] + '.json');
+    head_file = os.path.join( config.get('hardware', 'heads'), config.get('settings', 'hardware.head') + '.json');
     with open(head_file) as json_f:
         head = json.load(json_f)
     # Set head PID

@@ -39,7 +39,7 @@ def check_pre_scan(app, args = None):
     units_a = app.config.get('settings', 'a')
     
     try:
-        feeder_disengage_offset = app.config.get('settings', 'feeder')['disengage-offset']
+        feeder_disengage_offset = app.config.get('settings', 'feeder')['disengage_offset']
     except KeyError:
         feeder_disengage_offset = 2
         
