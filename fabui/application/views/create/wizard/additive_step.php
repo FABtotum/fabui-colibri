@@ -63,7 +63,7 @@
 						<div class="description text-center">
 							<div class="radio margin-top-10">
 								<label>
-									<input type="radio" value="homing" class="radiobox style-0" checked="checked" name="calibration">
+									<input type="radio" value="home_all" class="radiobox style-0" checked="checked" name="calibration">
 									<span>Simple homing</span> 
 								</label>
 							</div>
@@ -85,7 +85,7 @@
 						<div class="description text-center">
 							<div class="radio margin-top-10">
 								<label>
-									<input value="abl" type="radio" class="radiobox style-0" name="calibration">
+									<input value="auto_bed_leveling" type="radio" class="radiobox style-0" name="calibration">
 									<span>Auto Bed Leveling</span> 
 								</label>
 							</div>

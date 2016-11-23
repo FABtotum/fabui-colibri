@@ -125,11 +125,22 @@ def raise_bed(app, args = None):
         app.macro("G28",            "ok", 100,  _("Homing all axes"), verbose=False)
 
 def auto_bed_leveling(app, args = None):
+    try:
+        ext_temp = args[0];
+        bed_temp = args[1];
+        set_temperatures = True
+    except IndexError:
+        set_temperatures = False
+    
+    if(set_temperatures == True):
+        app.macro("M104 S"+str(ext_temp),   "ok", 3,    _("Pre Heating Nozzle ({0}&deg;) (fast)").format(str(ext_temp)))
+        app.macro("M140 S"+str(bed_temp),   "ok", 3,    _("Pre Heating Bed ({0}&deg;) (fast)").format(str(bed_temp)))
+    
     app.trace( _("Auto Bed leveling Initialized") )
-    app.macro("G91",                "ok", 2,    _("Setting relative position"), verbose=False)
-    app.macro("G0 Z25 F1000",       "ok", 2,    _("Moving away from the plane"), verbose=False)
-    app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False)
-    app.macro("G28",                "ok", 90,   _("Homing all axis") )
+    #app.macro("G91",                "ok", 2,    _("Setting relative position"), verbose=False)
+    #app.macro("G0 Z25 F1000",       "ok", 2,    _("Moving away from the plane"), verbose=False)
+    #app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False)
+    app.macro("G28 X Y",                "ok", 90,   _("Homing all axis") )
     app.macro("G29",                "ok", 140,  _("Auto bed leveling procedure") )
     app.macro("G0 X5 Y5 Z60 F2000", "ok", 100,  _("Getting to idle position") )
 

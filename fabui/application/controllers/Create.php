@@ -258,9 +258,9 @@
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => 'File not found')));
 			return;
 		}
-		$homAllResult = doMacro('home_all');
-		if($homAllResult['response'] == false){
-			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $homAllResult['message'])));
+		$calibrationResult = doMacro($data['calibration'], '', [ $temperatures['extruder'], $temperatures['bed'] ]);
+		if($calibrationResult['response'] == false){
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $calibrationResult['message'])));
 			return;
 		}
 		$startPrintResult = doMacro('start_additive', '', [ $temperatures['extruder'], $temperatures['bed'] ] );
