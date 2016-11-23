@@ -300,6 +300,7 @@ class Settings extends FAB_Controller {
 					{
 						$ssid = $ap_ssid;
 						$password = $ap_pass;
+						$psk = '';
 					}
 					else
 					{
