@@ -7,7 +7,7 @@
  * 
  */
  
- class SysConfiguration extends FAB_Model {
+ class Configuration extends FAB_Model {
  	
 	private $tableName = 'sys_configuration';
  	
