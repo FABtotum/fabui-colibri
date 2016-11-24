@@ -54,6 +54,7 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 //install
 $route['install/do'] = 'install/doInstall';
+$route['install/restore'] = 'install/doRestore';
 //login
 $route['login/new-account']    = 'login/newAccount';
 $route['login/reset-password'] = 'login/resetPassword';

@@ -28,8 +28,13 @@ case "$1" in
     sudo -uwww-data touch ${WWW_PATH}/AUTOINSTALL ${WWW_PATH}/WIZARD
     # Create a link on userdata partition for upload
     mkdir -p /mnt/userdata/uploads
-    chown 33:33 /mnt/userdata/uploads
+    mkdir -p /mnt/userdata/settings
+    mkdir -p /mnt/userdata/heads
+    mkdir -p /mnt/userdata/plugins
+    chown -R 33:33 /mnt/userdata/*
     ln -sf /mnt/userdata/uploads ${UPLOAD_PATH}
+    rm ${PLUGINS_PATH}
+    sudo -uwww-data ln -sf /mnt/userdata/plugins ${PLUGINS_PATH}
     # Detect camera version
     python ${PYTHON_PATH}/setCamera.py &> /var/log/fabui/setCamera.log
     

@@ -175,12 +175,12 @@ INSERT INTO sys_codes (id, type, code, label, description) VALUES (155, 'M', 714
 
 -- Table: sys_configuration
 DROP TABLE IF EXISTS sys_configuration;
-CREATE TABLE sys_configuration (id INTEGER PRIMARY KEY AUTOINCREMENT, "key" varchar (255) DEFAULT NULL, value text);
+CREATE TABLE sys_configuration (id INTEGER PRIMARY KEY AUTOINCREMENT, "key" varchar (255) NOT NULL, value text DEFAULT '');
 INSERT INTO sys_configuration (id, "key", value) VALUES (1, 'filemanager_accepted_files', '.txt,.pdf,.stl,.asc,.gc,.nc,.rec,.jpg');
 INSERT INTO sys_configuration (id, "key", value) VALUES (2, 'languages', '{"english":{"code":"us","description":"English","name":"english"},"italian":{"code":"it","description":"Italiano","name":"italian"},"german":{"code":"de","description":"Deutsch","name":"german"}}');
 INSERT INTO sys_configuration (id, "key", value) VALUES (3, 'fw_version', NULL);
 INSERT INTO sys_configuration (id, "key", value) VALUES (4, 'fabui_version', '0.9');
-INSERT INTO sys_configuration (id, "key", value) VALUES (5, 'wifi', '{"ssid":"","password":"","ip":""}');
+INSERT INTO sys_configuration (id, "key", value) VALUES (5, 'network', '{}');
 
 -- Table: sys_objects
 DROP TABLE IF EXISTS sys_objects;

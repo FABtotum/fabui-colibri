@@ -14,6 +14,7 @@
 	protected $layoutLogin         = 'layout/login';
 	protected $layoutAjax          = 'layout/ajax';
 	protected $layoutInstall       = 'layout/install';
+	protected $layoutRestore       = 'layout/restore';
 	protected $layoutDebug         = 'layout/debug';
 	protected $template            = array();
 	protected $content             = ''; //
@@ -125,6 +126,23 @@
 		$this->template['scripts'] = $this->load-> view($this->layoutInstall.'/scripts', $data, true);
 		$this->template['content'] = $this->content;
 		$this->parser->parse($this->layoutInstall.'/structure', $this->template);
+	}
+	
+	/**
+	 * Restore layout page view
+	 */
+	public function restoreLayout()
+	{
+		$data = array();
+		$data['jsScripts'] = jScriptsInclusion($this->js);
+		$data['jsInLine'] = $this->jsInLine;
+		$data['cssInLine'] = $this->cssInline;
+		
+		$this->template['head']    = $this->load-> view($this->layoutRestore.'/head',    $data, true);
+		//$this->template['top']     = $this->load-> view($this->layoutRestore.'/top',     $data, true);
+		$this->template['scripts'] = $this->load-> view($this->layoutRestore.'/scripts', $data, true);
+		$this->template['content'] = $this->content;
+		$this->parser->parse($this->layoutRestore.'/structure', $this->template);
 	}
 	
 	/**
