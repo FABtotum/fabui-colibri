@@ -10,7 +10,7 @@
 <header id="header">
 	<div id="logo-group">
 		<!-- PLACE YOUR LOGO HERE -->
-		 <span id="logo"> <img src="/assets/img/logo-0.png"></span>
+		 <span id="logo"> <img src="/assets/img/fabui_v1.png"></span>
 		<!-- END LOGO PLACEHOLDER -->
 		<span id="activity" class="activity-dropdown"> <i class="fa fa-user"></i> <b class="badge"> 0 </b> </span>
 		<!-- AJAX-DROPDOWN : control this dropdown height, look and feel from the LESS variable file -->
