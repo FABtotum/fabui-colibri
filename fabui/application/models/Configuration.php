@@ -7,7 +7,7 @@
  * 
  */
  
- class Configuration extends FAB_Model {
+ class SysConfiguration extends FAB_Model {
  	
 	private $tableName = 'sys_configuration';
  	
@@ -28,12 +28,11 @@
 		$data['key'] = $key;
 		$data['value'] = $value;
 		
-		$this->db->where('key', $key);
+		$pair = $this->get(array('key', $key), 1);
 		
-		$query = $this->db->get($this->tableName);
-		if($query->num_rows() > 0)
+		if($pair)
 		{
-			$this->update($data);
+			$this->update($pair[0]['id'], $data);
 		}
 		else
 		{

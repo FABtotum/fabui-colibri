@@ -61,93 +61,44 @@ class Install extends FAB_Controller {
 		$this->restoreLayout();
 	}
 	
+	public function test()
+	{
+		$this->load->model('SysConfiguration', 'cfg');
+		$this->load->model('User', 'user');
+		//~ $this->configuration->store('timezone', 'Europe/Belgrade');
+		//~ $r = $this->user->get(1);
+		//$r = $this->cfg->get( array('key' => 'timezone') );
+		//print_r( $r[0]['id'] );
+		//$this->cfg->store('timezone2', 'Europe/Belgrade');
+		
+		$userData= array();
+		$userData['first_name'] = 'Daniel';
+		$userData['last_name'] = 'Daniel';
+		$userData['session_id'] = $this->session->session_id;
+		$userData['settings'] = '{}';
+		$userData['password'] = md5('bla');
+		//ADD USER ACCOUNT
+		$newUserID = $this->user->add($userData);
+	}
+	
 	public function doRestore()
 	{
 		// load libraries, models, helpers
-		$this->load->model('Configuration', 'configuration');
+		//$this->load->model('Configuration', 'configuration');
 		$this->load->helper('os_helper');
 		
 		// get data from post
 		$postData = $this->input->post();
 		
 		// Install database
-		$this->installDatabase(true);
+		//$this->installDatabase(true);
 		
-		/*
-		 * Restore timezone from sys_configuration
-		 * */
-		
-		print_r($postData);
-		//Array ( [browser-date] => 2016-11-23 16:46:04 [user_files] => on [hw_settings] => on [task_history] => on [head_settings] => on [network_settings] => on [plugins] => on )
-		if(!$postData['user_files'])
-		{
-			/*
-			 * Clear user files from filesystem and database
-			 * and install samples instead.
-			 **/
-			//~ echo "clear existing files from filesystem".PHP_EOL;
-			$this->db->truncate('sys_obj_files');
-			$this->db->truncate('sys_objects');
-			$this->db->truncate('sys_files');
-			
-			shell_exec('rm -rf /mnt/userdata/uploads/*');
-		}
-		
-		if(!$postData['hw_settings'])
-		{
-			/*
-			 * Remove previous hardware settings (default and custom) and copy fresh ones to userdata
-			 * */
-			shell_exec('rm -rf /mnt/userdata/settings/*');
-			
-			// Copy a fresh copy of default_settings
-			shell_exec('cp /var/lib/fabui/settings/default_settings.json /mnt/userdata/settings/default_settings.json');
-			shell_exec('rm /var/lib/fabui/settings/default_settings.json');
-			shell_exec('ln -s /mnt/userdata/settings/default_settings.json /var/lib/fabui/settings/default_settings.json');
-			
-			// Copy a fresh copy of custom_settings
-			shell_exec('cp /var/lib/fabui/settings/default_settings.json /mnt/userdata/settings/custom_settings.json');
-			shell_exec('rm /var/lib/fabui/settings/custom_settings.json');
-			shell_exec('ln -s /mnt/userdata/settings/custom_settings.json /var/lib/fabui/settings/default_settings.json');
-		}
-		
-		if(!$postData['task_history'])
-		{
-			/*
-			 * Flush task table
-			 * */
-			$this->db->truncate('sys_tasks');
-		}
-		
-		if(!$postData['network_settings'])
-		{
-			/*
-			 * Remove network settings from sys_configuration
-			 * */
-		}
-		
-		if(!$postData['head_settings'])
-		{
-			/*
-			 * Remove previous head settings and copy fresh ones to userdata
-			 * */
-			 shell_exec('rm -rf /mnt/userdata/heads/*');
-		}
-		
-		if(!$postData['plugins'])
-		{
-			/*
-			 * Remove installed plugins and flush sys_plugins
-			 * */
-			$this->db->truncate('sys_plugins');
-			shell_exec('rm -rf /mnt/userdata/plugins/*');
-		}
-		
+		//$this->configuration->store('timezone', 'Europe/Belgrade');
 		//set system date (first time internet is not available)
-		//setSystemDate($postData['browser-date']);
+		setSystemDate($postData['browser-date']);
 		//delete AUTOINSTALL
-		//$this->deleteAutoInstallFile();
-		//redirect('login');
+		$this->deleteAutoInstallFile();
+		redirect('login');
 	}
 	
 	/**
@@ -170,7 +121,7 @@ class Install extends FAB_Controller {
 		unset($postData['browser-date']);
 		//set time zone
 		setTimeZone($postData['timezone']);
-		$this->configuration->store('timezone', $postData['timezone']);
+		//$this->configuration->store('timezone', $postData['timezone']);
 		
 		unset($postData['timezone']);
 		unset($postData['passwordConfirm']);
@@ -199,21 +150,19 @@ class Install extends FAB_Controller {
 	{
 		$this->config->load('fabtotum');
 		
-		$restore = false;
 		$database_file = $this->config->item('database');
 		$database_filename = basename($database_file);
 		$userdata_path = $this->config->item('userdata_path');
 		
 		$database_final_path = $userdata_path . basename($database_file);
 		
-		if( $restore )
+		if( $restore == true)
 		{
 			/*
 			 * Database exists on the userdata partition.
 			 * Remove the fresh database from /var/lib/fabui and make
 			 * a soft-link to the one on userdata.
 			 * */
-			
 			shell_exec('sudo rm '.$database_file);
 			shell_exec('ln -s '.$database_final_path.' '.$database_file);
 		}
