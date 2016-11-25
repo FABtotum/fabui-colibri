@@ -22,8 +22,10 @@ case "$1" in
 	#~ evaluate_retval
 	;;
   stop)
-	boot_msg "Unloading 819acu module."
+	boot_msg "Unloading wifi modules."
 	rmmod 8192cu &> /dev/null
+	rmmod r8188eu &> /dev/null
+	true
 	evaluate_retval
 	;;
   restart|reload)

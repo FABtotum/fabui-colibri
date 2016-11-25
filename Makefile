@@ -208,7 +208,7 @@ endif
 	$(FAKEROOT_ENV) touch $(BDATA_DIR)/$(WWW_PATH)/AUTOINSTALL
 #	Public runtime directories
 #~ 	$(FAKEROOT_ENV) $(INSTALL) -d -g $(WWW_DATA_GID) -m 0775 $(BDATA_DIR)/$(TEMP_PATH)
-	$(FAKEROOT_ENV) $(INSTALL) -d -g $(WWW_DATA_GID) -m 0775 $(BDATA_DIR)$(LIB_PATH)/plugins
+#	$(FAKEROOT_ENV) $(INSTALL) -d -g $(WWW_DATA_GID) -m 0775 $(BDATA_DIR)$(LIB_PATH)/plugins
 ########################################################################
 # 	Fix permissions
 	$(FAKEROOT_ENV) chown -R $(WWW_DATA_UID):$(WWW_DATA_GID) $(BDATA_DIR)$(WWW_PATH)

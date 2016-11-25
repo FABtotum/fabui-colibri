@@ -19,16 +19,18 @@ class Install extends FAB_Controller {
 		
 		$database_final_path = $userdata_path . basename($database_file);
 		
-		if( file_exists($database_final_path) )
+		/*if( file_exists($database_final_path) )
 		{
 			$this->restoreView();
 		}
 		else
 		{
 			$this->installView();
-		}
+		}*/
 		
 		//$this->restoreView();
+		
+		$this->installView();
 	}
 	
 	private function installView()
@@ -137,7 +139,7 @@ class Install extends FAB_Controller {
 		//Install samples
 		$this->installSamples($newUserID);
 		//Install database
-		$this->installDatabase();
+		//$this->installDatabase();
 		//delete AUTOINSTALL
 		$this->deleteAutoInstallFile();
 		redirect('login');

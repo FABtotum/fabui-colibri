@@ -33,8 +33,8 @@ case "$1" in
     mkdir -p /mnt/userdata/plugins
     chown -R 33:33 /mnt/userdata/*
     ln -sf /mnt/userdata/uploads ${UPLOAD_PATH}
-    rm ${PLUGINS_PATH}
-    sudo -uwww-data ln -sf /mnt/userdata/plugins ${PLUGINS_PATH}
+    rm -f ${PLUGINS_PATH}
+    sudo -uwww-data ln -sf /mnt/userdata/plugins ${LIB_PATH}
     # Detect camera version
     python ${PYTHON_PATH}/setCamera.py &> /var/log/fabui/setCamera.log
     
