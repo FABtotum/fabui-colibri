@@ -36,6 +36,13 @@ tr = gettext.translation('gmacro', 'locale', fallback=True)
 _ = tr.ugettext
 
 def home_all(app, args = None):
+
+    try:
+        ext_temp = args[0]
+        bed_temp = args[1]
+        set_temperatures = True
+    except IndexError:
+        set_temperatures = False
     
     try:
         zprobe = app.config.get('settings', 'zprobe')
@@ -44,6 +51,10 @@ def home_all(app, args = None):
     except KeyError:
         zmax_home_pos = 206.0
         zprobe_disabled = False
+		
+    if(set_temperatures == True):
+        app.macro("M104 S"+str(ext_temp),   "ok", 3,    _("Pre Heating Nozzle ({0}&deg;) (fast)").format(str(ext_temp)),verbose=False)
+        app.macro("M140 S"+str(bed_temp),   "ok", 3,    _("Pre Heating Bed ({0}&deg;) (fast)").format(str(bed_temp)), verbose=False)
     
     app.trace( _("Homing all axes") )
     app.macro("G90", "ok", 2, _("Set abs position"), verbose=False)
@@ -126,8 +137,8 @@ def raise_bed(app, args = None):
 
 def auto_bed_leveling(app, args = None):
     try:
-        ext_temp = args[0];
-        bed_temp = args[1];
+        ext_temp = args[0]
+        bed_temp = args[1]
         set_temperatures = True
     except IndexError:
         set_temperatures = False
