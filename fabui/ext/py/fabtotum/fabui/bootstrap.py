@@ -36,6 +36,56 @@ from fabtotum.fabui.config import ConfigService
 tr = gettext.translation('gpusher', 'locale', fallback=True)
 _ = tr.ugettext
 
+def read_eeprom(gcodeSender):
+        
+    def serialize(string_source, regex_to_serach, keys):
+        match = re.search(regex_to_serach, string_source, re.IGNORECASE)
+        if match != None:
+            string = match.group(1)
+            object = {}
+            object.update({'string':string})
+            for index in keys:
+                match_temp = re.search(index+'([0-9.]+)', string, re.IGNORECASE)
+                if match_temp != None:
+                    val = match_temp.group(1)
+                    object.update({index:val})
+            return object
+            
+    def getServoEndstopValues(string_source):
+        match = re.search('Servo\sEndstop\ssettings:\sR:\s([0-9.]+)\sE:\s([0-9.]+)', string_source, re.IGNORECASE)
+        if match != None:
+            object = {'r': match.group(1), 'e': match.group(2)}
+            return object
+    
+    #reply = app.macro('M503', None, 1, _("Reading settings from eeprom"), verbose=False)
+    gcodeSender.send('M503', group='bootstrap')
+
+    eeprom = {}
+
+    for line in reply:
+        line = line.strip()
+        
+        if line.startswith('M92 '):
+            eeprom["steps_per_unit"] = serialize(line, '(M92\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e'])
+        elif line.startswith('M203'):
+            eeprom["maximum_feedrates"] = serialize(line, '(M203\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e'])
+        elif line.startswith('M201'):
+            eeprom["maximum_accelaration"] = serialize(line, '(M201\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e'])
+        elif line.startswith('M204'):
+            eeprom["acceleration"] = serialize(reply[9], '(M204\sS[0-9.]+\sT1[0-9.]+)', ['s', 't1'])
+        elif line.startswith('M205'):
+           eeprom["advanced_variables"] = serialize(line,'(M205\sS[0-9.]+\sT0[0-9.]+\sB[0-9.]+\sX[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['s', 't', 'b', 'x', 'z', 'e'])
+        elif line.startswith('M206'):
+            eeprom["home_offset"] = serialize(line,'(M206\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+)', ['x', 'y', 'z'])
+        elif line.startswith('M31'):
+            eeprom["pid"] = serialize(line,'(M301\sP[0-9.]+\sI[0-9.]+\sD[0-9.]+)', ['p', 'i', 'd'])
+        elif line.startswith('Z Probe Length') or line.startswith('Probe Length'):
+            eeprom["probe_length"] = line.split(':')[1].strip()
+        elif line.startswith('Servo Endstop'):
+            eeprom["servo_endstop"] = getServoEndstopValues(line)
+    
+    return eeprom
+
 def customHardware(gcodeSender, config, log):
     """
     Revision for customs edits
@@ -125,9 +175,12 @@ def hardware4(gcodeSender, config, log):
     #save settings
     gcodeSender.send("M500", group='bootstrap')
     
+    eeprom = read_eeprom(gcodeSender)
+    
     config.set('settings', 'hardware.id', 4)
     config.set('settings', 'feeder.show', False)
     config.set('settings', 'a', 88.888889)
+    config.set('settings', 'e', eeprom['steps_per_unit']['e'])
     config.save('settings')
     
     log.debug("Rev4")
@@ -144,9 +197,12 @@ def hardware5(gcodeSender, config, log):
     #save settings
     gcodeSender.send("M500", group='bootstrap')
     
+    eeprom = read_eeprom(gcodeSender)
+    
     config.set('settings', 'hardware.id', 5)
     config.set('settings', 'feeder.show', False)
     config.set('settings', 'a', 88.888889)
+    config.set('settings', 'e', eeprom['steps_per_unit']['e'])
     config.save('settings')
     
     log.debug("Rev5")
