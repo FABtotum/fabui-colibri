@@ -33,7 +33,7 @@ if ( !function_exists('createDefaultSettings'))
 			'api'                => array('keys' => array()),
 			'zprobe'        	 => array('enable'=>0, 'zmax'=>206),
 			'settings_type' 	 => 'default',
-			'hardware'     	 	 => array('head' => $CI->config->item('heads').'/hybrid_head.json', 'camera' => $CI->config->item('cameras').'/camera_v1.json'),
+			'hardware'     	 	 => array('head' => $CI->config->item('heads').'/print_v2.json', 'camera' => $CI->config->item('cameras').'/camera_v1.json'),
 			'print'         	 => array('pre_heating' => array('nozzle' => 150, 'bed'=>50)),
 			'invert_x_endstop_logic' => false
 		);
