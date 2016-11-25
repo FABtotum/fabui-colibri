@@ -25,7 +25,7 @@ __version__ = "1.0"
 # Import standard python module
 import gettext
 import json
-import os
+import os, re
 
 # Import external modules
 
@@ -58,7 +58,7 @@ def read_eeprom(gcodeSender):
             return object
     
     #reply = app.macro('M503', None, 1, _("Reading settings from eeprom"), verbose=False)
-    gcodeSender.send('M503', group='bootstrap')
+    reply = gcodeSender.send('M503', group='bootstrap')
 
     eeprom = {}
 
