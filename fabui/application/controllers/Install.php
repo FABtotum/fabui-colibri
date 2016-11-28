@@ -13,24 +13,16 @@ class Install extends FAB_Controller {
 	public function index()
 	{
 		$this->config->load('fabtotum');
-		$database_file = $this->config->item('database');
-		$database_filename = basename($database_file);
-		$userdata_path = $this->config->item('userdata_path');
-		
-		$database_final_path = $userdata_path . basename($database_file);
-		
-		/*if( file_exists($database_final_path) )
+		$restore_file = $this->config->item('restore_file');
+
+		if( file_exists($restore_file) )
 		{
 			$this->restoreView();
 		}
 		else
 		{
 			$this->installView();
-		}*/
-		
-		//$this->restoreView();
-		
-		$this->installView();
+		}
 	}
 	
 	private function installView()
@@ -86,21 +78,95 @@ class Install extends FAB_Controller {
 	public function doRestore()
 	{
 		// load libraries, models, helpers
-		//$this->load->model('Configuration', 'configuration');
+		$this->load->model('Configuration', 'configuration');
 		$this->load->helper('os_helper');
-		
-		// get data from post
 		$postData = $this->input->post();
 		
-		// Install database
-		//$this->installDatabase(true);
+		// Restore timezone
+		$query = $this->configuration->get( array('key' => 'timezone') );
+		if($query)
+		{
+			setTimeZone($query[0]['value']);
+		}
+		
+		if(!$this->input->post('user_files'))
+		{
+			/*
+			 * Clear user files from filesystem and database
+			 * and install samples instead.
+			 **/
+			$this->db->truncate('sys_obj_files');
+			$this->db->truncate('sys_objects');
+			$this->db->truncate('sys_files');
+			
+			shell_exec('rm -rf /mnt/userdata/uploads/*');
+		}
+		
+		if(!$this->input->post('hardware_settings'))
+		{
+			/*
+			 * Remove previous hardware settings (default and custom) and copy fresh ones to userdata
+			 * */
+			shell_exec('rm -rf /mnt/userdata/settings/default_settings.json /mnt/userdata/settings/custom_settings.json');
+			
+			// Copy a fresh copy of default_settings
+			shell_exec('cp /var/lib/fabui/settings/default_settings.json /mnt/userdata/settings/default_settings.json');
+			shell_exec('rm -f /var/lib/fabui/settings/default_settings.json');
+			shell_exec('ln -s /mnt/userdata/settings/default_settings.json /var/lib/fabui/settings/default_settings.json');
+			
+			// Copy a fresh copy of custom_settings
+			shell_exec('cp /var/lib/fabui/settings/default_settings.json /mnt/userdata/settings/custom_settings.json');
+			shell_exec('rm -f /var/lib/fabui/settings/custom_settings.json');
+			shell_exec('ln -s /mnt/userdata/settings/custom_settings.json /var/lib/fabui/settings/custom_settings.json');
+		}
+		else
+		{
+			// TODO: create links to previous settings
+		}
+		
+		if(!$this->input->post('task_history'))
+		{
+			/*
+			 * Flush task table
+			 * */
+			$this->db->truncate('sys_tasks');
+		}
+		
+		if(!$this->input->post('network_settings'))
+		{
+			// TODO: Remove network settings from sys_configuration
+		}
+		else
+		{
+			 // TODO: Restore network settings from sys_configuration
+		}
+		
+		if(!$this->input->post('head_settings'))
+		{
+			/*
+			 * Remove previous head settings and copy fresh ones to userdata
+			 * */
+			 shell_exec('rm -rf /mnt/userdata/heads/*');
+			 // TODO: copy fresh ones
+		}
+		
+		if(!$this->input->post('plugins'))
+		{
+			/*
+			 * Remove installed plugins and flush sys_plugins
+			 * */
+			$this->db->truncate('sys_plugins');
+			shell_exec('rm -rf /mnt/userdata/plugins/*');
+		}
 		
 		//$this->configuration->store('timezone', 'Europe/Belgrade');
 		//set system date (first time internet is not available)
 		setSystemDate($postData['browser-date']);
 		//delete AUTOINSTALL
-		$this->deleteAutoInstallFile();
-		redirect('login');
+		//delete RESTORE
+		//$this->deleteAutoInstallFile();
+		//$this->deleteRestoreFile();
+		//redirect('login');
 	}
 	
 	/**
@@ -123,7 +189,7 @@ class Install extends FAB_Controller {
 		unset($postData['browser-date']);
 		//set time zone
 		setTimeZone($postData['timezone']);
-		//$this->configuration->store('timezone', $postData['timezone']);
+		$this->configuration->store('timezone', $postData['timezone']);
 		
 		unset($postData['timezone']);
 		unset($postData['passwordConfirm']);
@@ -138,47 +204,9 @@ class Install extends FAB_Controller {
 		$newUserID = $this->user->add($userData);
 		//Install samples
 		$this->installSamples($newUserID);
-		//Install database
-		//$this->installDatabase();
 		//delete AUTOINSTALL
 		$this->deleteAutoInstallFile();
 		redirect('login');
-	}
-	
-	/**
-	 * Install database.
-	 */
-	public function installDatabase($restore = false)
-	{
-		$this->config->load('fabtotum');
-		
-		$database_file = $this->config->item('database');
-		$database_filename = basename($database_file);
-		$userdata_path = $this->config->item('userdata_path');
-		
-		$database_final_path = $userdata_path . basename($database_file);
-		
-		if( $restore == true)
-		{
-			/*
-			 * Database exists on the userdata partition.
-			 * Remove the fresh database from /var/lib/fabui and make
-			 * a soft-link to the one on userdata.
-			 * */
-			shell_exec('sudo rm '.$database_file);
-			shell_exec('ln -s '.$database_final_path.' '.$database_file);
-		}
-		else
-		{
-			/* 
-			 * Database does not exist on userdata partition
-			 * move the one in /var/lib/fabui to /mnt/userdata
-			 * and create a soft-link so that it looks as if it's still there
-			 */
-			shell_exec('sudo mv '.$database_file.' '.$database_final_path);
-			shell_exec('ln -s '.$database_final_path.' '.$database_file);
-			shell_exec('sudo chown www-data.www-data '.$database_final_path);
-		}
 	}
 	
 	/**
@@ -224,9 +252,21 @@ class Install extends FAB_Controller {
 	{
 		//load configs
 		$this->config->load('fabtotum');
+		$autoinstall_file = $this->config->item('autoinstall_file');
 		//delete file if exists
-		if(file_exists(unlink($this->config->item('autoinstall_file')))){
-			unlink($this->config->item('autoinstall_file'));
+		if(file_exists($autoinstall_file)){
+			unlink($autoinstall_file);
+		}
+	}
+	
+	public function deleteAutoInstallFile()
+	{
+		//load configs
+		$this->config->load('fabtotum');
+		$restore_file = $this->config->item('restore_file');
+		//delete file if exists
+		if(file_exists($restore_file)){
+			unlink($restore_file);
 		}
 	}
 	

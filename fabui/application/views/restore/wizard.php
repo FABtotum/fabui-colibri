@@ -57,7 +57,7 @@
 						<div class="col-sm-6">
 							<div class="form-group">			
 								<label class="checkbox-inline" title="Restore all previously uploaded and created objects and files.">
-									 <input type="checkbox" class="checkbox" name="hw_settings" id="hw_settings" checked>
+									 <input type="checkbox" class="checkbox" name="hardware_settings" id="hardware_settings" checked>
 									 <span>Hardware Settings</span>
 								</label>
 							</div>

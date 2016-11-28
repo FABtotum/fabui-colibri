@@ -35,6 +35,21 @@ case "$1" in
     ln -sf /mnt/userdata/uploads ${UPLOAD_PATH}
     rm -f ${PLUGINS_PATH}
     sudo -uwww-data ln -sf /mnt/userdata/plugins ${LIB_PATH}
+    
+    # Detect previous database
+    if [ -f "/mnt/userdata/settings/fabtotum.db" ]; then
+        # Remove the fresh database and create a link to the existing one
+        rm ${LIB_PATH}fabtotum.db
+        sudo -uwww-data ln -s /mnt/userdata/settings/fabtotum.db ${LIB_PATH}fabtotum.db
+        sudo -uwww-data touch ${WWW_PATH}/RESTORE
+    else
+        # Move the fresh database to userdata and create a link to it
+        mv ${LIB_PATH}fabtotum.db /mnt/userdata/settings
+        chown 33.33 /mnt/userdata/settings/fabtotum.db
+        sudo -uwww-data ln -s /mnt/userdata/settings/fabtotum.db ${LIB_PATH}fabtotum.db
+    fi
+    
+    
     # Detect camera version
     python ${PYTHON_PATH}/setCamera.py &> /var/log/fabui/setCamera.log
     
