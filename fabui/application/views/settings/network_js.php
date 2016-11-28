@@ -143,6 +143,11 @@
 				icon : "fa fa-check bounce animated"
 			});
 			
+			setTimeout(function(){
+					location.reload();
+				}, 2000
+			);
+			
 		});
 	}
 

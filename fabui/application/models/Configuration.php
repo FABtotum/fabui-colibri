@@ -28,15 +28,28 @@
 		$data['key'] = $key;
 		$data['value'] = $value;
 		
-		$pair = $this->get(array('key', $key), 1);
+		$pair = $this->get(array('key' => $key), 1);
 		
 		if($pair)
 		{
-			$this->update($pair[0]['id'], $data);
+			$this->update($pair['id'], $data);
 		}
 		else
 		{
 			$this->add($data);
+		}
+	}
+	
+	public function load($key, $default = '')
+	{
+		$pair = $this->get(array('key' => $key), 1);
+		if($pair)
+		{
+			return $pair['value'];
+		}
+		else
+		{
+			return $default;
 		}
 	}
 	

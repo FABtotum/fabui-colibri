@@ -47,8 +47,23 @@ case "$1" in
         mv ${LIB_PATH}fabtotum.db /mnt/userdata/settings
         chown 33.33 /mnt/userdata/settings/fabtotum.db
         sudo -uwww-data ln -s /mnt/userdata/settings/fabtotum.db ${LIB_PATH}fabtotum.db
+        
+        # Move data to userdata partition
+        # Heads
+        cp ${LIB_PATH}heads/* /mnt/userdata/heads
+        rm -rf ${LIB_PATH}heads
+        sudo -uwww-data ln -s /mnt/userdata/heads ${LIB_PATH}
+        
+        # Hardware Settings
+        cp ${LIB_PATH}settings/default_settings.json /mnt/userdata/settings
+        rm ${LIB_PATH}settings/default_settings.json
+        sudo -uwww-data ln -s /mnt/userdata/settings/default_settings.json ${LIB_PATH}settings
+        
+        cp ${LIB_PATH}settings/default_settings.json /mnt/userdata/settings/custom_settings.json
+        #rm ${LIB_PATH}settings/custom_settings.json
+        sudo -uwww-data ln -s /mnt/userdata/settings/custom_settings.json ${LIB_PATH}settings
+        
     fi
-    
     
     # Detect camera version
     python ${PYTHON_PATH}/setCamera.py &> /var/log/fabui/setCamera.log

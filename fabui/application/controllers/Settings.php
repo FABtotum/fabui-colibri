@@ -271,8 +271,8 @@ class Settings extends FAB_Controller {
 		$this->load->helper('os_helper');
 		$postData = $this->input->post();
 		$result = true;
-		
-		switch($postData['net_type'])
+		$net_type = $postData['net_type'];
+		switch($net_type)
 		{
 			case "eth":
 				$address = $postData['ipv4'];
@@ -281,6 +281,7 @@ class Settings extends FAB_Controller {
 				$mode = $postData['address-mode'];
 				$iface = $postData['active'];
 				configureEthernet($iface, $mode, $address, $netmask, $gateway);
+				storeNetworkSettings($net_type, $iface, $mode, $address, $netmask, $gateway);
 				break;
 			case "wlan":
 				if($action == 'connect')
@@ -308,6 +309,7 @@ class Settings extends FAB_Controller {
 						$password = $hidden_pass;
 					}
 					configureWireless($iface, $ssid, $password, $psk, $mode, $address, $netmask, $gateway);
+					storeNetworkSettings($net_type, $iface, $mode, $address, $netmask, $gateway, $ssid, $password, $psk);
 				}
 				else if($action == 'disconnect')
 				{
@@ -320,6 +322,7 @@ class Settings extends FAB_Controller {
 				$name = $postData['dnssd-name'];
 				// TODO: error handling
 				setHostName($hostname, $name);
+				storeNetworkSettings($net_type, '', '', '', '', '', '', '', '', $hostname, $name);
 				break;
 			default:
 				$result = false;

@@ -180,7 +180,7 @@ INSERT INTO sys_configuration (id, "key", value) VALUES (1, 'filemanager_accepte
 INSERT INTO sys_configuration (id, "key", value) VALUES (2, 'languages', '{"english":{"code":"us","description":"English","name":"english"},"italian":{"code":"it","description":"Italiano","name":"italian"},"german":{"code":"de","description":"Deutsch","name":"german"}}');
 INSERT INTO sys_configuration (id, "key", value) VALUES (3, 'fw_version', NULL);
 INSERT INTO sys_configuration (id, "key", value) VALUES (4, 'fabui_version', '0.9');
-INSERT INTO sys_configuration (id, "key", value) VALUES (5, 'network', '{}');
+INSERT INTO sys_configuration (id, "key", value) VALUES (5, 'network', '{"interfaces" : {}, "hostname" : "fabtotum", "description" : "Fabtotum Personal Fabricator 3D Printer" }');
 
 -- Table: sys_objects
 DROP TABLE IF EXISTS sys_objects;

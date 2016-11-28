@@ -9,6 +9,49 @@
  * 
  */
 
+if(!function_exists('storeNetworkSettings'))
+{
+	function storeNetworkSettings($net_type, $iface, $mode, $address, $netmask, $gateway, $ssid = '', $password = '', $psk = '', $hostname = '', $description = '')
+	{
+		$CI =& get_instance();
+		$CI->load->model('Configuration', 'configuration');
+		
+		$raw = $CI->configuration->load('network', '{}');
+		
+		$network_settings = json_decode($raw, true);
+		$data = array();
+		
+		switch($net_type)
+		{
+			case "eth":
+				$data['net_type'] = $net_type;
+				$data['mode'] = $mode;
+				$data['address'] = $address;
+				$data['netmask'] = $netmask;
+				$data['gateway'] = $gateway;
+				$network_settings['interfaces'][$iface] = $data;
+				break;
+			case "wlan":
+				$data['net_type'] = $net_type;
+				$data['mode'] = $mode;
+				$data['address'] = $address;
+				$data['netmask'] = $netmask;
+				$data['gateway'] = $gateway;
+				$data['ssid'] = $ssid;
+				$data['password'] = $password;
+				$data['psk'] = $psk;
+				$network_settings['interfaces'][$iface] = $data;
+				break;
+			case "dnssd":
+				$network_settings['hostname'] = $hostname;
+				$network_settings['description'] = $description;
+				break;
+		}
+		
+		$CI->configuration->store('network', json_encode($network_settings) );
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('configureWireless'))
 {

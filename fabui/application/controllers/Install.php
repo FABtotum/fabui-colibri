@@ -57,22 +57,35 @@ class Install extends FAB_Controller {
 	
 	public function test()
 	{
-		$this->load->model('SysConfiguration', 'cfg');
-		$this->load->model('User', 'user');
-		//~ $this->configuration->store('timezone', 'Europe/Belgrade');
-		//~ $r = $this->user->get(1);
-		//$r = $this->cfg->get( array('key' => 'timezone') );
-		//print_r( $r[0]['id'] );
-		//$this->cfg->store('timezone2', 'Europe/Belgrade');
+		$this->load->model('Configuration', 'configuration');
 		
-		$userData= array();
-		$userData['first_name'] = 'Daniel';
-		$userData['last_name'] = 'Daniel';
-		$userData['session_id'] = $this->session->session_id;
-		$userData['settings'] = '{}';
-		$userData['password'] = md5('bla');
-		//ADD USER ACCOUNT
-		$newUserID = $this->user->add($userData);
+		$raw = $this->configuration->load('network', '{}');
+		$network_settings = json_decode($raw, true);
+		 
+		if( array_key_exists('interfaces', $network_settings) )
+		{
+			foreach($network_settings['interfaces'] as $iface => $data)
+			{
+				switch($data['net_type'])
+				{
+					case "eth":
+						print_r($data);
+						//~ configureEthernet($data['iface'], $data['mode'], $data['address'], $data['netmask'], $data['gateway']);
+						//echo $iface .", ". $data['mode'].", ". $data['address'].", ". $data['netmask'].", ". $data['gateway'];
+						break;
+					case "wlan":
+						//~ configureWireless($data['iface'], $data['ssid'], $data['password'], $data['psk'], $data['mode'], $data['address'], $data['netmask'], $data['gateway']);
+						//echo $iface.", ". $data['ssid'].", ". $data['password'].", ". $data['psk'].", ". $data['mode'].", ". $data['address'].", ". $data['netmask'].", ". $data['gateway'];
+						print_r($data);
+						break;
+				}
+			}
+			
+			//~ if( array_key_exists('hostname', $network_settings) && array_key_exists('description', $network_settings))
+			//~ {
+				//~ setHostName($network_settings['hostname'], $network_settings['description']);
+			//~ }
+		}
 	}
 	
 	public function doRestore()
@@ -111,18 +124,18 @@ class Install extends FAB_Controller {
 			
 			// Copy a fresh copy of default_settings
 			shell_exec('cp /var/lib/fabui/settings/default_settings.json /mnt/userdata/settings/default_settings.json');
-			shell_exec('rm -f /var/lib/fabui/settings/default_settings.json');
-			shell_exec('ln -s /mnt/userdata/settings/default_settings.json /var/lib/fabui/settings/default_settings.json');
 			
 			// Copy a fresh copy of custom_settings
 			shell_exec('cp /var/lib/fabui/settings/default_settings.json /mnt/userdata/settings/custom_settings.json');
-			shell_exec('rm -f /var/lib/fabui/settings/custom_settings.json');
-			shell_exec('ln -s /mnt/userdata/settings/custom_settings.json /var/lib/fabui/settings/custom_settings.json');
 		}
-		else
-		{
-			// TODO: create links to previous settings
-		}
+		// else keep the previous settings
+		
+		// Create links to settings on userdata partition
+		shell_exec('rm -f /var/lib/fabui/settings/default_settings.json');
+		shell_exec('ln -s /mnt/userdata/settings/default_settings.json /var/lib/fabui/settings/default_settings.json');
+		
+		shell_exec('rm -f /var/lib/fabui/settings/custom_settings.json');
+		shell_exec('ln -s /mnt/userdata/settings/custom_settings.json /var/lib/fabui/settings/custom_settings.json');
 		
 		if(!$this->input->post('task_history'))
 		{
@@ -134,11 +147,33 @@ class Install extends FAB_Controller {
 		
 		if(!$this->input->post('network_settings'))
 		{
-			// TODO: Remove network settings from sys_configuration
+			$this->configuration->store('network', '{"interfaces" : {}, "hostname" : "fabtotum", "description" : "Fabtotum Personal Fabricator 3D Printer" }');
 		}
 		else
 		{
-			 // TODO: Restore network settings from sys_configuration
+			$raw = $this->configuration->load('network', '{}');
+			$network_settings = json_decode($raw, true);
+			 
+			if( array_key_exists('interfaces', $network_settings) )
+			{
+				foreach($network_settings['interfaces'] as $iface => $data)
+				{
+					switch($data['net_type'])
+					{
+						case "eth":
+							configureEthernet($iface, $data['mode'], $data['address'], $data['netmask'], $data['gateway']);
+							break;
+						case "wlan":
+							configureWireless($iface, $data['ssid'], $data['password'], $data['psk'], $data['mode'], $data['address'], $data['netmask'], $data['gateway']);
+							break;
+					}
+				}
+				
+				if( array_key_exists('hostname', $network_settings) && array_key_exists('description', $network_settings))
+				{
+					setHostName($network_settings['hostname'], $network_settings['description']);
+				}
+			}
 		}
 		
 		if(!$this->input->post('head_settings'))
@@ -146,9 +181,15 @@ class Install extends FAB_Controller {
 			/*
 			 * Remove previous head settings and copy fresh ones to userdata
 			 * */
-			 shell_exec('rm -rf /mnt/userdata/heads/*');
-			 // TODO: copy fresh ones
+			shell_exec('rm -rf /mnt/userdata/heads/*');
+			shell_exec('cp /var/lib/fabui/heads/* /mnt/userdata/heads');
 		}
+		else
+		{
+			shell_exec('rm -rf /var/lib/fabui/heads');
+			shell_exec('ln -s /mnt/userdata/heads /var/lib/fabui');
+		}
+		
 		
 		if(!$this->input->post('plugins'))
 		{
@@ -159,14 +200,13 @@ class Install extends FAB_Controller {
 			shell_exec('rm -rf /mnt/userdata/plugins/*');
 		}
 		
-		//$this->configuration->store('timezone', 'Europe/Belgrade');
 		//set system date (first time internet is not available)
 		setSystemDate($postData['browser-date']);
 		//delete AUTOINSTALL
+		$this->deleteAutoInstallFile();
 		//delete RESTORE
-		//$this->deleteAutoInstallFile();
-		//$this->deleteRestoreFile();
-		//redirect('login');
+		$this->deleteRestoreFile();
+		redirect('login');
 	}
 	
 	/**
@@ -256,6 +296,17 @@ class Install extends FAB_Controller {
 		//delete file if exists
 		if(file_exists($autoinstall_file)){
 			unlink($autoinstall_file);
+		}
+	}
+	
+	public function deleteRestoreFile()
+	{
+		//load configs
+		$this->config->load('fabtotum');
+		$restore_file = $this->config->item('restore_file');
+		//delete file if exists
+		if(file_exists($restore_file)){
+			unlink($restore_file);
 		}
 	}
 	
