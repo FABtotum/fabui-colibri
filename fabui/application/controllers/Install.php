@@ -259,17 +259,6 @@ class Install extends FAB_Controller {
 		}
 	}
 	
-	public function deleteAutoInstallFile()
-	{
-		//load configs
-		$this->config->load('fabtotum');
-		$restore_file = $this->config->item('restore_file');
-		//delete file if exists
-		if(file_exists($restore_file)){
-			unlink($restore_file);
-		}
-	}
-	
  }
  
 ?>
