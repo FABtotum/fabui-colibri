@@ -286,13 +286,13 @@ class Settings extends FAB_Controller {
 			case "wlan":
 				if($action == 'connect')
 				{
-					$address = $postData['ipv4'];
-					$netmask = $postData['netmask'];
-					$gateway = $postData['gateway'];
-					$mode = $postData['address-mode'];
-					$iface = $postData['active'];
-					$ap_ssid = $postData['ap-ssid'];
-					$ap_pass = $postData['ap-password'];
+					$address     = $postData['ipv4'];
+					$netmask     = $postData['netmask'];
+					$gateway     = $postData['gateway'];
+					$mode        = $postData['address-mode'];
+					$iface       = $postData['active'];
+					$ap_ssid     = $postData['ap-ssid'];
+					$ap_pass     = $postData['ap-password'];
 					$hidden_ssid = $postData['hidden-ssid'];
 					$hidden_pass = $postData['hidden-passphrase'];
 					$psk = $postData['hidden-psk'];
@@ -310,6 +310,10 @@ class Settings extends FAB_Controller {
 					}
 					configureWireless($iface, $ssid, $password, $psk, $mode, $address, $netmask, $gateway);
 					storeNetworkSettings($net_type, $iface, $mode, $address, $netmask, $gateway, $ssid, $password, $psk);
+					//update social feeds
+					downloadBlogFeeds();
+					downloadTwitterFeeds();
+					downloadInstagramFeeds();
 				}
 				else if($action == 'disconnect')
 				{
