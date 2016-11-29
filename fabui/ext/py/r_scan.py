@@ -93,7 +93,7 @@ class RotaryScan(GCodePusher):
         }
         
         self.add_monitor_group('scan', self.scan_stats)
-        
+        self.ev_resume = Event()
         self.imq = queue.Queue(self.QUEUE_SIZE)
             
     def get_progress(self):
@@ -180,6 +180,12 @@ class RotaryScan(GCodePusher):
             os.remove(img_fn)
             os.remove(img_l_fn)
             
+            if self.is_paused():
+                self.trace("Paused")
+                self.ev_resume.wait()
+                self.ev_resume.clear()
+                self.trace("Resuming")
+            
             if self.is_aborted():
                 break
             
@@ -242,6 +248,10 @@ class RotaryScan(GCodePusher):
             task['id_object'] = obj['id']
             task['id_file'] = f['id']
             task.write()
+    
+    def state_change_callback(self, state):
+        if state == 'resumed' or state == 'aborted':
+            self.ev_resume.set()
     
     def run(self, task_id, object_id, object_name, file_name, camera_path, camera_version, start_a, end_a, y_offset, slices, cloud_file):
         """

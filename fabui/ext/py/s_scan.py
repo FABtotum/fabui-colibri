@@ -96,6 +96,7 @@ class SweepScan(GCodePusher):
         self.add_monitor_group('scan', self.scan_stats)
         
         self.imq = queue.Queue(self.QUEUE_SIZE)
+        self.ev_resume = Event()
         
         print "__init__: done"
 
@@ -253,6 +254,10 @@ class SweepScan(GCodePusher):
             task['id_file'] = f['id']
             task.write()
     
+    def state_change_callback(self, state):
+        if state == 'resumed' or state == 'aborted':
+            self.ev_resume.set()
+    
     def run(self, task_id, object_id, object_name, file_name, camera_path, camera_version, start_x, end_x, a_offset, y_offset, z_offset, slices, cloud_file):
         """
         Run the sweep scan.
@@ -320,6 +325,12 @@ class SweepScan(GCodePusher):
             
             with self.monitor_lock:
                 self.update_monitor_file()
+                
+            if self.is_paused():
+                self.trace("Paused")
+                self.ev_resume.wait()
+                self.ev_resume.clear()
+                self.trace("Resuming")
                 
             if self.is_aborted():
                 break

@@ -452,17 +452,6 @@
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'params'=>$scanArgs)));
 	}
 	
-	
-	/**
-	 * 
-	 */
-	public function action($action)
-	{
-		$this->load->helper('fabtotum_helper');
-		$action($value);
-		$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
-	}
-	
 	/**
 	 * 
 	 */

@@ -781,6 +781,7 @@ function initScanPage(running)
 {
 	initWizard();
 	$(".abort").on('click', abortScan);
+	$(".pause").on('click', pauseScan);
 	if(running){
 		console.log("running");
 		initRunningTaskPage();
@@ -820,6 +821,11 @@ if(typeof manageMonitor != 'function'){
 		{
 			$(".pointcloudinfo").show();
 			updateClouds(data.scan.point_count, data.scan.cloud_size);
+		}
+		
+		if(data.scan.type != 'probe')
+		{
+			$(".imageinfo").show();
 		}
 		
 		updateResolution(data.scan.width, data.scan.height);
@@ -942,25 +948,47 @@ function updateIso(value)
 function abortScan()
 {	
 	disableButton('.abort');
-	doAction('do_abort', abortCallback);
+	openWait('<i class="fa fa-spinner fa-spin "></i> Aborting scan', 'Please wait..', false);
+	doAction('abort');
 }
 /**
 *
 **/
-function abortCallback(data)
-{
-	console.log(data);
+function pauseScan()
+{	
+	//disableButton('.pause');
+	var action = $(".pause").attr('data-action');
+	if(action == 'pause')
+	{
+		$(".pause").attr('data-action', 'resume');
+		$(".pause").html('<i class="fa fa-play"></i> Resume scan');
+	}
+	else
+	{
+		$(".pause").attr('data-action', 'pause');
+		$(".pause").html('<i class="fa fa-pause"></i> Pause scan');
+	}
+	//
+	
+	doAction(action);
 }
 /**
 *
 **/
-function doAction(action, callback)
+//~ function resumeScan()
+//~ {	
+	//~ //disableButton('.abort');
+	//~ doAction('resume');
+//~ }
+/**
+*
+**/
+function doAction(action)
 {
 	$.ajax({
-		type: 'get',
-		url: '/fabui/xmlrpc/method/' + action,
+		type: 'post',
+		url: "control/taskAction/" + action,
 		dataType: 'json'
 	}).done(function(response) {
-		callback(response);
 	});
 }

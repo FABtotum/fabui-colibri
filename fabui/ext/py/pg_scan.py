@@ -92,6 +92,7 @@ class PhotogrammetryScan(GCodePusher):
         self.host_address = host_address
         self.host_port = host_port
         self.skipped_images = []
+        self.ev_resume = Event()
             
     def get_progress(self):
         """ Custom progress implementation """
@@ -151,6 +152,10 @@ class PhotogrammetryScan(GCodePusher):
     def finish_transfer(self):
         self.manage(self.FINISH)
     
+    def state_change_callback(self, state):
+        if state == 'resumed' or state == 'aborted':
+            self.ev_resume.set()
+    
     def run(self, task_id, start_a, end_a, y_offset, slices):
         """
         Run the photogrammetry scan.
@@ -198,6 +203,12 @@ class PhotogrammetryScan(GCodePusher):
             
             with self.monitor_lock:
                 self.update_monitor_file()
+                
+            if self.is_paused():
+                self.trace("Paused")
+                self.ev_resume.wait()
+                self.ev_resume.clear()
+                self.trace("Resuming")
                 
             if self.is_aborted():
                 break

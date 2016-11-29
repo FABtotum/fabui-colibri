@@ -69,6 +69,7 @@ class ProbeScan(GCodePusher):
         }
         
         self.add_monitor_group('scan', self.scan_stats)
+        self.ev_resume = Event()
             
     def get_progress(self):
         """ Custom progress implementation """
@@ -170,6 +171,10 @@ class ProbeScan(GCodePusher):
             task['id_file'] = f['id']
             task.write()
     
+    def state_change_callback(self, state):
+        if state == 'resumed' or state == 'aborted':
+            self.ev_resume.set()
+    
     def run(self, task_id, object_id, object_name, file_name, x1, y1, x2, y2, probe_density, orig_safe_z, threshold, max_skip, cloud_file):
         """
         Run the probe scan.
@@ -181,10 +186,11 @@ class ProbeScan(GCodePusher):
         if self.standalone:
             self.exec_macro("start_probe_scan")
 
-        self.send('G27')        
-        self.send('M401')
+        #~ self.send('G27')        
+        #~ self.send('M401')
         
         points = None
+        point_count = 0
         
         if orig_safe_z < 1.0:
             orig_safe_z = 1.0
@@ -216,7 +222,13 @@ class ProbeScan(GCodePusher):
             
             for y_idx in xrange(0, y_num):
                 y_pos = y1 + step*y_idx
-            
+                
+                if self.is_paused():
+                    self.trace("Paused")
+                    self.ev_resume.wait()
+                    self.ev_resume.clear()
+                    self.trace("Resuming")
+                
                 if self.is_aborted():
                     break
                 
@@ -226,7 +238,7 @@ class ProbeScan(GCodePusher):
                     
                     new_point = self.probe(x_pos, y_pos)
                                         
-                    print "probed point: ", new_point
+                    #print "probed point: ", new_point
                     
                     if new_point != None:
                         # No old_z stored
@@ -243,7 +255,7 @@ class ProbeScan(GCodePusher):
                                 slope = 0.0
                                 
                             if dz < threshold:
-                                print "** dz < threshold ", dz, threshold
+                                #print "** dz < threshold ", dz, threshold
                                 if skipping < max_skip:
                                     skipping += 1
                                 to_skip = skipping
@@ -257,7 +269,9 @@ class ProbeScan(GCodePusher):
                         else:
                             points = np.vstack([points, new_point])
                         
-                        print "-- slope", slope
+                        point_count += 1
+                        
+                        #print "-- slope", slope
                         
                         safe_z = new_point[2] + (to_skip)*step * slope
                         
@@ -269,13 +283,16 @@ class ProbeScan(GCodePusher):
                         self.send('M400')
                 else:
                     # Reduce the counter of points to be skipped
-                    print "skipping a point: to_skip = ", to_skip
+                    #print "skipping a point: to_skip = ", to_skip
                     to_skip -= 1
                     
                 probe_num += 1
                 if to_skip == 0:
                     self.scan_stats['scan_current'] = probe_num
+                    self.scan_stats['point_count'] = point_count
                     self.progress = ( float(probe_num) / float(total_num) ) * 100.0
+                    with self.monitor_lock:
+                        self.update_monitor_file()
         
         self.progress = ( float(probe_num) / float(total_num) ) * 100.0
         

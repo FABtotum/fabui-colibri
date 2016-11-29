@@ -62,9 +62,9 @@
 	}
 	
 	/**
-	 * init hardware settings and configs
+	 * init hardware settings and configs (OBSOLETE)
 	 */
-	public function hardwareBootstrap()
+	/*public function hardwareBootstrap()
 	{
 		log_message('debug', __METHOD__.' - Start');
 		//load config, libraries, helpers
@@ -133,7 +133,7 @@
 		//remove lock file
 		if(file_exists($this->config->item('lock'))) unlink($this->config->item('lock'));
 		log_message('debug', __METHOD__.' - End');
-	}
+	}*/
 	
 	/**
 	 *  set secure from error alert
@@ -166,7 +166,35 @@
 		if($this->input->is_ajax_request()){
 			$this->output->set_content_type('application/json')->set_output(json_encode(true));
 		}
-	}		
+	}
+	
+	/**
+	 * Task flow control used by javascript ajax calls.
+	 * @param $action {abort | pause | resume...}
+	 * @param $value action related value 
+	 */
+	public function taskAction($action, $value = '')
+	{
+		$this->load->helper('fabtotum_helper');
+		
+		/*switch($action)
+		{
+			case "abort":
+				$response = abort();
+				break;
+			case "pause":
+				$response = pause();
+				break;
+			case "resume":
+				$response = resume();
+				break;
+			default:
+			
+		}*/
+		$response = $action($value);
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($response));
+	}
  }
  
 ?>

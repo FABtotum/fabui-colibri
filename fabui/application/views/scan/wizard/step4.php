@@ -44,11 +44,13 @@
 						<div class="col-sm-12"> <span class="text"> Slice <span class="pull-right"> <span class="current-scan"></span> of <span class="total-scan"></span> </span> </span>
 							<div class="fake-progress"></div>
 						</div>
-						<div class="col-sm-12"> <span class="text"> Image resolution <span class="pull-right"> <span class="resolution-width"></span> x <span class="resolution-height"></span> </span> </span>
-							<div class="fake-progress"></div>
-						</div>
-						<div class="col-sm-12"> <span class="text"> Iso <span class="pull-right"> <span class="iso"></span>  </span> </span>
-							<div class="fake-progress"></div>
+						<div class="imageinfo" style="display:none">
+							<div class="col-sm-12"> <span class="text"> Image resolution <span class="pull-right"> <span class="resolution-width"></span> x <span class="resolution-height"></span> </span> </span>
+								<div class="fake-progress"></div>
+							</div>
+							<div class="col-sm-12"> <span class="text"> Iso <span class="pull-right"> <span class="iso"></span>  </span> </span>
+								<div class="fake-progress"></div>
+							</div>
 						</div>
 						<hr class="simple">
 						<div class="pointcloudinfo" style="display:none">
@@ -66,6 +68,9 @@
 					</div>
 					<hr class="simple">
 					<div class="row">
+						<div class="col-sm-6">
+							<button type="button" data-action="pause" class="btn btn-default btn-sm btn-block pause"><i class="fa fa-pause"></i> Pause scan</button>
+						</div>
 						<div class="col-sm-6">
 							<button type="button" class="btn btn-default btn-sm btn-block abort"><i class="fa fa-stop"></i> Abort scan</button>
 						</div>

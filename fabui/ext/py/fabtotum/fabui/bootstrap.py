@@ -210,7 +210,9 @@ def hardware5(gcodeSender, config, log):
 def hardwareBootstrap(gcs, config = None, logger = None):
     if not config:
         config = ConfigService()
-        
+    
+    config.reload()
+    
     if logger:
        log = logger
     else:
