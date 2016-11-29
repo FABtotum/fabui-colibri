@@ -17,7 +17,7 @@
 						</tr>
 						<tr>
 							<td >IP Address</td>
-							<td><a href="http://<?php echo $info['ipv4_address']; ?>" target="_blank"><?php echo $info['ipv4_address']; ?></a></td>
+							<td><a class="no-ajax" href="http://<?php echo $info['ipv4_address']; ?>" target="_blank"><?php echo $info['ipv4_address']; ?></a></td>
 						</tr>
 						<tr>
 							<td>MAC Address</td>
