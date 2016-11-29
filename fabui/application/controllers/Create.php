@@ -338,33 +338,12 @@
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
 	}
-	
-	/**
-	 *  abort task
-	 */
-	public function abort($taskId)
-	{
-		$this->load->helper('fabtotum_helper');
-		//abort
-		$response = abort();
-		$this->output->set_content_type('application/json')->set_output(json_encode($response));
-	}
-	
 	/**
 	 * complete task
 	 */
 	public function complete($taskID)
 	{
 		//DEPRECATED
-	}
-	
-	/**
-	 *  exec action from print/mill control panel
-	 */
-	public function action($action, $value = '')
-	{
-		$this->load->helper('fabtotum_helper');
-		$this->output->set_content_type('application/json')->set_output(json_encode($action($value)));
 	}
  }
  

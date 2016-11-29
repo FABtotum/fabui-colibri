@@ -610,7 +610,7 @@
 		openWait('<i class="fa fa-spinner fa-spin "></i> Aborting print', 'Please wait..', false);
 		$.ajax({
 			type: 'post',
-			url: '<?php echo site_url('create/abort/'); ?>/' + idTask,
+			url: '<?php echo site_url('control/taskAction/abort') ?>',
 			dataType: 'json'
 		}).done(function(response) {
 		});
@@ -649,7 +649,7 @@
 		var message;
 		$.ajax({
 			type: 'post',
-			url: '<?php echo site_url('create/action/'); ?>/' + action + '/' + value,
+			url: '<?php echo site_url('control/taskAction/') ?>/' + action + '/' + value,
 			dataType: 'json'
 		}).done(function(response) {
 			switch(action){

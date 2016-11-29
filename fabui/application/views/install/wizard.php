@@ -11,7 +11,7 @@
 <form class="lockscreen animated flipInY" method="POST" action="<?php echo site_url('install/do');?>" id="install-form">
 	<input type="hidden" name="browser-date" id="browser-date" />
 	<div class="logo text-center">
-		<img src="/assets/img/fabtotum_logo.png">
+		<img src="/assets/img/fabui_v1.png">
 	</div>
 	
 	
