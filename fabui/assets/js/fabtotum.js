@@ -32,7 +32,8 @@ function transformLinks(container)
 	$.each( container.find('a'), function() {
 		if(	$(this).attr('href') !== undefined 
 			&& $(this).attr('href') != "javascript:void(0);" 
-			&& $(this).attr('href').startsWith('#') == false ) 
+			&& $(this).attr('href').startsWith('#') == false 
+			&& $(this).hasClass('no-ajax') == false ) 
 		{
     			$(this).attr('href', '#' + $(this).attr('href'));
 		}
