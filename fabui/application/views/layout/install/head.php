@@ -21,6 +21,7 @@
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-skins.min.css">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/demo.min.css">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/lockscreen.min.css">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/third_party.css?v=<?php echo FABUI_VERSION;  ?>" >
 <!-- FAVICONS -->
 <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon">
 <link rel="icon"          href="/assets/img/favicon/favicon.ico" type="image/x-icon">
@@ -30,4 +31,5 @@
 <!-- HEADERD JAVASCRIPTS -->
 <script src="/assets/js/libs/jquery-2.1.1.min.js"></script>
 <script src="/assets/js/libs/jquery-ui-1.10.3.min.js"></script>
+<?php echo $cssFiles; ?>
 <?php echo $cssInLine; ?>

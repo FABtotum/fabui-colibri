@@ -35,7 +35,7 @@ class Install extends FAB_Controller {
 		$this->addJSFile('/assets/js/plugin/bootstrap-wizard/jquery.bootstrap.wizard.min.js'); //wizard
 		$this->addJSFile('/assets/js/plugin/moment/moment.min.js'); //moment
 		$this->addJSFile('/assets/js/plugin/tzdetection/jstz.min.js'); //timezonedetection
-		$this->addCSSInLine('<style> #main {margin-left:0px !important;}</style>');
+		$this->addCSSFile('/assets/css/install/custom.css');
 		//show page
 		$this->installLayout();
 	}
