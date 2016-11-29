@@ -1168,7 +1168,7 @@ class Projectsmanager extends FAB_Controller {
 					
 					$file = $this->files->get($files[0], 1);
 					$data = file_get_contents($file['full_path']);
-					force_download($file['orig_name'], $data);
+					force_download($file['client_name'], $data);
 				} 
 				else
 				{

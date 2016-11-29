@@ -9,7 +9,7 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label">Name</label>
 								<div class="col-md-10">
-									<input type="text" id="name" name="name" class="form-control" value="<?php echo $file['orig_name']; ?>" />
+									<input type="text" id="name" name="name" class="form-control" value="<?php echo $file['client_name']; ?>" />
 								</div>
 							</div>
 							<div class="form-group">

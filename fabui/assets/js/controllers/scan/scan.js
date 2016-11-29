@@ -11,7 +11,9 @@ var buildPlateDimensions = {
         minY : 60,
         maxY : 230,
         width : 214,
-        height : 234
+        height : 234,
+        offsetX : -17.5,
+        offsetY : -59
     },
     sweep : {
         minX : 20,
@@ -689,15 +691,17 @@ function handleProbingScan()
 		
 		var $radio = $(':radio[name="object_type"]:checked');
 		var object_mode = $radio.val();
+		var offsetX = buildPlateDimensions.probe.offsetX;
+		var offsetY = buildPlateDimensions.probe.offsetY;
 		
 		var data = {
 			'safe_z': $(".probing-z-hop").val(), 
 			'threshold': $(".probing-probe-skip").val(), 
 			'density' : $(".scan-probing-sqmm").html(),
-			'x1' : $(".probing-x1").val(), 
-			'y1' : $(".probing-y1").val(), 
-			'x2' : $(".probing-x2").val(), 
-			'y2' : $(".probing-y2").val(),
+			'x1' : ( parseInt($(".probing-x1").val()) + offsetX), 
+			'y1' : ( parseInt($(".probing-y1").val()) + offsetY), 
+			'x2' : ( parseInt($(".probing-x2").val()) + offsetX), 
+			'y2' : ( parseInt($(".probing-y2").val()) + offsetY),
 			'object_mode' : object_mode,
 			'object'      : object_mode == 'new' ? $("#scan-object-name").val() : $("#scan-objects-list option:selected").val(),
 			'file_name'   : $("#scan-file-name").val()

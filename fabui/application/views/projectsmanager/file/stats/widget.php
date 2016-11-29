@@ -33,7 +33,7 @@
 	<div class="col-sm-4 ">
 		<div class="row">
 			<div class="col-sm-12">
-				<h5><?php echo $file['print_type'] == 'additive' ? 'Prints' : 'Milling'; ?> attempts <span class="pull-right total-tasks"><?php echo array_sum($totals) ?></span></h5>
+				<h5><?php echo $file['print_type'] == 'additive' ? 'Prints' : ($file['print_type'] == 'substractive' ? 'Milling' : 'Scanning'); ?> attempts <span class="pull-right total-tasks"><?php echo array_sum($totals) ?></span></h5>
 				<h5>Duration <span class="pull-right total-duration"><?php echo $total_durations; ?></span></h5>
 				<hr class="simple">
 			</div>

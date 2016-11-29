@@ -52,41 +52,47 @@ install_plugin()  {
         HAVE_META=yes
         
         PLUGIN_DIR=${PLUGINS_PATH}${PLUGIN}
-        echo $PLUGIN_DIR
+        #echo $PLUGIN_DIR
         mkdir -p $PLUGIN_DIR
         
         cp -aR $TOP/* $PLUGIN_DIR
         
         rm -rf $TMP
         rm $FN
+        
+        echo "ok"
     else
         echo "Not a plugin .zip file."
+        rm -rf $TMP
         exit 1
     fi
 }
 
 case $CMD in
     activate)
-        echo "Activating $2"
+        #echo "Activating $2"
         ln -sf ${PLUGINS_PATH}/${PLUGIN}/controller.php  ${FABUI_PATH}application/controllers/Plugin_${PLUGIN}.php
         mkdir -p ${FABUI_PATH}application/views/plugin
         ln -sf ${PLUGINS_PATH}/${PLUGIN}/views           ${FABUI_PATH}application/views/plugin/${PLUGIN}
         mkdir -p ${FABUI_PATH}assets/plugin
         ln -sf ${PLUGINS_PATH}/${PLUGIN}/assets          ${FABUI_PATH}assets/plugin/${PLUGIN}
+        echo "ok"
         ;;
     deactivate)
-        echo "Deactivating $2"
+        #echo "Deactivating $2"
         rm -f ${FABUI_PATH}application/controllers/Plugin_${PLUGIN}.php
         rm -f ${FABUI_PATH}application/views/plugin/${PLUGIN}
         rm -f ${FABUI_PATH}assets/plugin/${PLUGIN}
+        echo "ok"
         ;;
     remove)
-        echo "Removing $2"
+        #echo "Removing $2"
         ${0} deactivate $PLUGIN
         rm -rf ${PLUGINS_PATH}/${PLUGIN}
+        echo "ok"
         ;;
     install)
-        echo "Installing from '$2' file"
+        #echo "Installing from '$2' file"
         install_plugin $PLUGIN
         ;;
     *)

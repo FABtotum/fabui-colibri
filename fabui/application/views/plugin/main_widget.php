@@ -29,7 +29,7 @@
 								<button class="btn btn-xs btn-warning action-button" data-action="deactivate" data-title="<?php echo $plugin ?>" title="Deactivate">Deactivate</button>	
 							<?php else: ?>
 								<button class="btn btn-xs btn-success action-button" data-action="activate" data-title="<?php echo $plugin ?>" " title="Activate">Activate</button>&nbsp;
-								<button class="btn btn-xs btn-danger remove action-button" data-action="remove" data-title="<?php echo $plugin ?>" title="Remove">Remove</button>
+								<button class="btn btn-xs btn-danger remove action-button" data-name="<?php echo $plugin_info['name'] ?>" data-action="remove" data-title="<?php echo $plugin ?>" title="Remove">Remove</button>
 							<?php endif; ?>
 							</p>
 						</td>

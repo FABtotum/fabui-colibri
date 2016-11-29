@@ -100,12 +100,10 @@
 				$upload_data['raw_name']    = str_replace('-master', '', $upload_data['raw_name']);
 				$upload_data['client_name'] = str_replace('-master', '', $upload_data['client_name']);
 			}
-			managePlugin('install', $upload_data['full_path']);
-			$data['installed'] = true;
+			$result = managePlugin('install', $upload_data['full_path']);
+			$data['result'] = $result;
+			$data['installed'] = ( strncmp($result, 'ok', 2) == 0 );
 			$data['file_name'] = $upload_data['file_name'];
-		
-			//shell_exec('sudo rm -rvf '.$upload_data['full_path']);
-			//shell_exec('sudo rm -rvf '.$upload_data['file_path'].$upload_data['raw_name']);
 		}else{
 			$data['error'] = strip_tags($this->upload->display_errors());
 		}
