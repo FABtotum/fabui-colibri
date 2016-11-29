@@ -29,12 +29,7 @@ class Cron extends CI_Controller {
 	{	
 		//load helpers, config
 		$this->load->helper('os_helper');
-		$this->config->load('fabtotum');
-		if(downloadRemoteFile(str_replace('%3D', '=', $this->config->item('blog_feed_url')), $this->config->item('blog_feed_file'))){
-			log_message('debug', 'Blog feeds updated');
-		}else{
-			log_message('debug', 'Blog feeds unavailable');
-		}
+		downloadBlogFeeds();
 	}
 	/** 
 	 * retrieve fabtotum last tweets
@@ -43,13 +38,7 @@ class Cron extends CI_Controller {
 	{
 		//load helpers, config
 		$this->load->helper('os_helper');
-		$this->config->load('fabtotum');
-		
-		if(downloadRemoteFile($this->config->item('twitter_feed_url'), $this->config->item('twitter_feed_file'))){
-			log_message('debug', 'Twitter feeds updated');
-		}else{
-			log_message('debug', 'Twitter feeds unavailable');
-		}
+		downloadTwitterFeeds();
 	}
 	/**
 	 * retrieve fabtotum last instagram photos
@@ -58,13 +47,7 @@ class Cron extends CI_Controller {
 	{
 		//load helpers, config
 		$this->load->helper('os_helper');
-		$this->config->load('fabtotum');
-	
-		if(downloadRemoteFile($this->config->item('instagram_feed_url'), $this->config->item('instagram_feed_file'))){
-			log_message('debug', 'Instagram feeds updated');
-		}else{
-			log_message('debug', 'Instagram feeds unavailable');
-		}
+		downloadInstagramFeeds();
 	}
 	/**
 	 * retrieve fabtotum last instagram hash

@@ -23,10 +23,11 @@
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/font-fabtotum.css?v=<?php echo FABUI_VERSION ?>">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/fonts.css?v=<?php echo FABUI_VERSION ?>">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/demo.min.css?v=<?php echo FABUI_VERSION ?>">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/fabtotum_style.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/fabtotum.css?v=<?php echo FABUI_VERSION ?>">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/js/plugin/noUiSlider.8.2.1/nouislider.min.css?v=<?php echo FABUI_VERSION ?>">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/js/plugin/noUiSlider.8.2.1/nouislider.pips.css?v=<?php echo FABUI_VERSION ?>">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/js/plugin/fancybox/jquery.fancybox.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/third_party.css?v=<?php echo FABUI_VERSION;  ?>" >
 <!-- PAGE RELATED CSS FILES -->
 <?php echo $cssFiles; ?>
 <!-- FAVICONS -->

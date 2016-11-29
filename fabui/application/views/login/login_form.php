@@ -21,7 +21,7 @@
 <?php endif; ?>
 <div class="row">
 	<div class="col-sm-3 hidden-xs hidden-sm"></div>
-	<div class="col-sm-6">
+	<div class="col-sm-6 col-xs-12">
 		<div class="well no-padding">
 			<form action="<?php echo site_url('login/do'); ?>" method="POST" id="login-form" class="smart-form client-form">
 				<header><i class="fa fa-play fa-rotate-90"></i> Sign In</header>

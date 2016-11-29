@@ -1,0 +1,10 @@
+#main {margin-left:0px !important;}
+.lockscreen { top: 40% !important; }
+.lockscreen .logo img {
+	width:50%;
+}
+
+@media (max-width: 767px)
+{
+	.lockscreen { top: 0 !important; }
+}

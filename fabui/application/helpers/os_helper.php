@@ -223,7 +223,7 @@ if(!function_exists('disconnectFromWireless'))
 	function disconnectFromWireless($interface)
 	{
 		$CI =& get_instance();
-		$CI->config->load('fabtotum');
+		$CI->load->helper('fabtotum');
 		$result = startBashScript('disconnect_wifi.sh', $interface, false, true);
 		return true;
 	}
@@ -307,7 +307,6 @@ if(!function_exists('transformSeconds'))
 		return $hours . ':' . $minutes . ':' . $seconds;
 	}
 }
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('humanFileSize'))
 {
@@ -331,5 +330,64 @@ if(!function_exists('humanFileSize'))
 		return $ret;
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('downloadBlogFeeds'))
+{
+	/**
+	 * 
+	 */
+	function downloadBlogFeeds()
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		
+		if(downloadRemoteFile(str_replace('%3D', '=', $CI->config->item('blog_feed_url')), $CI->config->item('blog_feed_file'))){
+			log_message('debug', 'Blog feeds updated');
+			return true;
+		}else{
+			log_message('debug', 'Blog feeds unavailable');
+			return true;
+		}
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('downloadTwitterFeeds'))
+{
+	/**
+	 *
+	 */
+	function downloadTwitterFeeds()
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
 
+		if(downloadRemoteFile($CI->config->item('twitter_feed_url'), $CI->config->item('twitter_feed_file'))){
+			log_message('debug', 'Twitter feeds updated');
+			return true;
+		}else{
+			log_message('debug', 'Twitter feeds unavailable');
+			return false;
+		}
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('downloadInstagramFeeds'))
+{
+	/**
+	 *
+	 */
+	function downloadInstagramFeeds()
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+
+		if(downloadRemoteFile($CI->config->item('instagram_feed_url'), $CI->config->item('instagram_feed_file'))){
+			log_message('debug', 'Instagram feeds updated');
+			return true;
+		}else{
+			log_message('debug', 'Instagram feeds unavailable');
+			return false;
+		}
+	}
+}
 ?>
