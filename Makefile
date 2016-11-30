@@ -97,7 +97,7 @@ BDATA_STAMP		= $(TEMP_DIR)/.bdata_stamp
 #FABUI_BUNDLE	= $(DESTDIR)/$(PRIORITY)-$(NAME)-$(VERSION)-bundle-v$(shell date +%Y%m%d).cb
 ifeq ($(VERSION),)
 #~ VERSION = 0.9999
-VERSION = $(shell date +%Y%m%d.%H%M)
+VERSION = 0.99.$(shell date +%Y%m%d.%H%M)
 endif
 FABUI_BUNDLE	= $(DESTDIR)/$(PRIORITY)-$(NAME)-v$(VERSION).cb
 
