@@ -275,6 +275,26 @@ if(!function_exists('downloadRemoteFile'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getRemoteFile'))
+{
+	/**
+	 * 
+	 */
+	function getRemoteFile($url)
+	{
+		$curl = curl_init($url);
+		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 3);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		$content = curl_exec($curl); //make call
+		$info = curl_getinfo($curl);
+		if(isset($info['http_code']) && $info['http_code'] == 200){ //if response is OK
+			return $content;
+		}else{
+			return false;
+		}
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('setTimeZone'))
 {
 	/**
@@ -390,4 +410,5 @@ if(!function_exists('downloadInstagramFeeds'))
 		}
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?>
