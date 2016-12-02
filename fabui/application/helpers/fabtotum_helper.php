@@ -188,7 +188,12 @@ if(!function_exists('doCommandLine'))
 		{
 			$command .= $args;
 		}
-		if($background) $command .= ' &> /tmp/fabui/doCommandLine.log &';
+		
+		shell_exec('echo '.$command.' > /tmp/fabui/doCommandLine');
+		
+		$command .= ' &> /tmp/fabui/doCommandLine.log';
+		if($background) $command .= ' &';
+		
 		log_message('debug', $command);
 		return shell_exec($command);
 	}
@@ -323,6 +328,30 @@ if(!function_exists('restart'))
 	 */
 	function restart()
 	{
+		doCommandLine('sudo /etc/init.d/fabui', 'restart');
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('stopServices'))
+{
+	/**
+	 * Stop main daemons
+	 */
+	function stopServices()
+	{
+		doCommandLine('sudo /etc/init.d/fabui', 'stop');
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('startServices'))
+{
+	/**
+	 * Start main daemons
+	 */
+	function startServices()
+	{
+		doCommandLine('sudo /etc/init.d/fabui', 'start');
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

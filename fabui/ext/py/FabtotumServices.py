@@ -58,7 +58,6 @@ def signal_handler(signal, frame):
     gcserver.stop()
     gcservice.stop()
     observer.stop()
-    ftm.parser.stop()
     gpioMonitor.stop()
     statsMonitor.stop()
 
@@ -138,8 +137,7 @@ logger.addHandler(ch)
 
 if do_reset:
     totumduino_reset()
-    time.sleep(4)
-
+    time.sleep(1)
 
 # Clear unfinished tasks
 from fabtotum.database import Database
@@ -157,9 +155,6 @@ for row in cursor:
 # Start gcode service
 gcservice = GCodeService(SERIAL_PORT, SERIAL_BAUD, logger=logger)
 gcservice.start()
-
-if do_bootstrap:
-    hardwareBootstrap(gcservice, config, logger=logger)
 
 # Pyro GCodeService wrapper
 gcserver = GCodeServiceServer(gcservice)
@@ -183,6 +178,10 @@ observer.schedule(um, '/dev/', recursive=False)
 observer.schedule(cm, '/var/lib/fabui', recursive=True)
 observer.schedule(ftm, TEMP_PATH, recursive=False)
 observer.start()
+
+if do_bootstrap:
+    time.sleep(1)
+    hardwareBootstrap(gcservice, config, logger=logger)
 
 ## Safety monitor
 

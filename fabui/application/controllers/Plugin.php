@@ -17,8 +17,7 @@
 		$this->load->library('smart');
 		$this->load->helper('form');
 		$this->load->helper('plugin_helper');
-		
-		//~ //data
+
 		$data = array();
 		$data['installed_plugins'] = getInstalledPlugins();
 		

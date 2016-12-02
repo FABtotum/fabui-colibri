@@ -120,4 +120,34 @@ if(!function_exists('getBundlesStatus'))
 		return $status;
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('flashFirmware'))
+{
+	/**
+	 *  Flash Firmware
+	 */
+	function flashFirmware($type, $argument = '')
+	{
+		$CI =& get_instance();
+		$CI->load->helper('fabtotum');
+		$args = '';
+		
+		switch($type)
+		{
+			case "factory":
+				$args = 'factory';
+				break;
+			case "custom":
+				$args = 'update '.$argument;
+				break;
+			case "remote": // remote update
+				$args = 'remote-update '.$argument;
+				break;
+			default:
+				return false;
+		}
+		
+		return startBashScript('totumduino_manager.sh', $args, false, true);
+	}
+}
 ?>

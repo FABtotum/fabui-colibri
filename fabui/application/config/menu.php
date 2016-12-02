@@ -110,6 +110,11 @@ $config['menu'] = array(
 				'icon' => 'fa-magic',
 				'url' => 'maintenance/first-setup'
 			),
+			'firmware' => array(
+				'title' => 'Firmware',
+				'icon' => 'fa-microchip',
+				'url' => 'maintenance/firmware'
+			),
 			'systeminfo' => array(
 				'title' => 'System Info',
 				'icon' => 'fa-info-circle',

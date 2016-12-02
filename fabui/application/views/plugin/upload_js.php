@@ -26,7 +26,6 @@
 				$("#install-button").addClass("disabled");
 			}
 			
-			
 		});
 		
 	});

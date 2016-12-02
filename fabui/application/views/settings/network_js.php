@@ -1,6 +1,5 @@
 <script type="text/javascript">
 
-	//~ var apMacAddress = '<?php echo isset($wlanInfo['ap_mac_address']) ? $wlanInfo['ap_mac_address'] : '' ?>';
 	var wifiSelected;
 	var wifiIface;
 	var wifiPassword;
@@ -22,9 +21,7 @@
 				}
 			}
 		?>
-		
-		//~ scan('wlan0');
-		//~ scan('wlan1');
+
 		$("#scanButton").on('click', do_scan);
 		$("#modalConnectButton").on('click', passwordModalConnect);
 		
@@ -124,7 +121,7 @@
 		
 		$.ajax({
 			type: 'post',
-			url: 'settings/saveNetworkSettings/connect',
+			url: "<?php echo site_url('settings/saveNetworkSettings/connect'); ?>",
 			data : data,
 			dataType: 'json'
 		}).done(function(response) {
@@ -239,7 +236,7 @@
 		$("#"+iface+"-table-container").css('opacity', '0.1');
 		$.ajax({
 			type: 'get',
-			url: 'settings/scanWifi/'+iface,
+			url: "<?php echo site_url('settings/scanWifi'); ?>/"+iface,
 			dataType: 'json'
 		}).done(function(response) {
 			console.log('scan results', response);
@@ -287,25 +284,6 @@
 		$('.connect').on('click', connectionManager);
 	}
 	
-	/**
-	 * 
-	 */
-	/*function showDetails()
-	{
-		var button = $(this);
-		var iface = $(this).attr('data-attribute');
-		var isVisible = $('.wifi-details').is(":visible");
-		if(isVisible){
-			$('.wifi-details').slideUp(function(){
-				button.find('i').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
-			});
-		}else{
-			$('.wifi-details').slideDown(function(){
-				button.find('i').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
-			});
-		}
-	}*/
-	
 	function connectionManager()
 	{
 		var element   = $(this);
@@ -333,7 +311,7 @@
 		
 		$.ajax({
 			type: 'post',
-			url: 'settings/saveNetworkSettings/disconnect',
+			url: "<?php echo site_url('settings/saveNetworkSettings/disconnect'); ?>",
 			data : {
 				active : iface,
 				net_type : "wlan"
@@ -483,29 +461,4 @@
 		$(".input-password").attr('type', 'password');
 	}
 	
-	/**
-	 * 
-	 */
-	 /*
-	function sendActionRequest(action, iface, essid, password)
-	{
-		$('#passwordModal').modal('hide');
-		console.log('sendActionRequest', iface, essid, password);
-		var connectionLabel = action == 'connect' ? 'Connecting to ' : 'Disconnecting from ';
-		//openWait('<i class="fa fa-circle-o-notch fa-spin"></i> '+ connectionLabel + ' ' + essid);
-		essid = essid || '';
-		password = password || '';
-		
-		//$.ajax({
-			//type: 'post',
-			//url: 'settings/wifiAction/' + action,
-			//~ data: {essid:essid, password: password},
-			//~ dataType: 'json'
-		//~ }).done(function(response) {
-			//~ waitContent('Refreshing page');
-			//~ setTimeout(function() {
-				//~ location.reload();
-			//~ }, 3000);
-		//~ });
-	}*/
 </script>

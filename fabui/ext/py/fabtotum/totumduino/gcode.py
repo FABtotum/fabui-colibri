@@ -721,6 +721,7 @@ class GCodeService:
         #print "__handle_line", line_raw, "[", self.active_cmd, self.rq.qsize(),  "]"
         
         if self.is_resetting:
+            print "during reset:", line_raw
             return
         
         try:
@@ -870,7 +871,7 @@ class GCodeService:
             else:
                 if data:
                     self.buffer.extend(data)
-                    #print 'R: [', data, ']'
+                    print 'R: [', data, ']'
                     while self.READ_TERM in self.buffer:
                         line_raw, self.buffer = self.buffer.split(self.READ_TERM, 1)
                         self.__handle_line(line_raw)
@@ -890,18 +891,22 @@ class GCodeService:
         
         totumduino_reset()
         
+        time.sleep(5)
+        self.__cleanup()
+        
         self.atomic_begin('bootstrap')
         
-        time.sleep(1)
-        self.__cleanup()
-        time.sleep(1)
+        #time.sleep(1)
+        #self.__cleanup()
+        #time.sleep(3)
+        
     
         self.is_resetting = False
         
         self.log.debug("__reset_totumduino: finished")
         
         
-        
+        time.sleep(10)
         self.log.debug("__reset_totumduino: bootstrap")
         hardwareBootstrap(self, logger=self.log)
         self.log.debug("__reset_totumduino: bootstrap-finished")
@@ -958,6 +963,8 @@ class GCodeService:
         """
         
         self.running = True
+        
+        self.serial.flushInput()
         
         # Sender Thread
         self.sender = Thread( name="GCodeService-sender", target = self.__sender_thread )

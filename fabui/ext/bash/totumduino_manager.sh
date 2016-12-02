@@ -56,6 +56,40 @@ case $CMD in
         log_footer ${RETR}
         exit $RETR
         ;;
+    factory)
+        if [ -f "/mnt/live/mnt/boot/firmware.hex" ]; then
+            echo "TODO: factory reset"
+        fi
+        ;;
+    remote-update)
+        FW_REPO_URL=$(cat /var/lib/fabui/config.ini | grep firmware_endpoint | awk 'BEGIN{FS="="}{print $2}')
+        FILE_URL="${FW_REPO_URL}fablin/atmega1280/$2/firmware.zip"
+        TMP_DIR="/tmp/fabui/firmware"
+        mkdir -p $TMP_DIR
+
+        wget -P $TMP_DIR $FILE_URL
+        wget -P $TMP_DIR ${FILE_URL}.md5sum
+        
+        cd $TMP_DIR
+        
+        md5sum -c firmware.zip.md5sum
+        RETR="$?"
+        if [ "$RETR" == "0" ]; then
+            unzip firmware.zip
+            HEXFILE=$(find -name "*.hex")
+            echo $HEXFILE
+            
+            log_header "${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i"
+            ${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i >> /var/log/fabui/avrdude.log 
+            RETR=$?
+            log_footer ${RETR}
+        fi
+        
+        cd /tmp
+        rm -rf $TMP_DIR
+        
+        exit $RETR
+        ;;
     test)
         log_header "${AVRDUDE} ${AVRDUDE_ARGS}"
         ${AVRDUDE} ${AVRDUDE_ARGS} >> /var/log/fabui/avrdude.log 2>&1

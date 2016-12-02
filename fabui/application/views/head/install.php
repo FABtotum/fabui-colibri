@@ -41,7 +41,7 @@
 											<div class="jumbotron">
 											<p class="margin-bottom-10 "><?php echo $heads[$head]['description'] ?></p>
 											<?php if($heads[$head]['link'] != ''): ?>
-											<a style="padding: 6px 12px;" target="_blank" href="<?php echo $heads[$head]['link']; ?>" class="btn btn-default ">More details</a>
+											<a style="padding: 6px 12px;" target="_blank" href="<?php echo $heads[$head]['link']; ?>" class="btn btn-default no-ajax">More details</a>
 											</div>
 											<?php endif; ?>
 										<?php endif; ?>
