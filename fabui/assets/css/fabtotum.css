@@ -508,4 +508,11 @@ body.smart-style-6 .top-bed-target-temp, body.smart-style-6 .top-ext-target-temp
 .error {
 	color:red;
 }
+.border-black {
+	border-color: #333 !important;
+}
+.fabtotum-badge {
+	position:absolute;
+	right: -30px; top:-10;
+}
 

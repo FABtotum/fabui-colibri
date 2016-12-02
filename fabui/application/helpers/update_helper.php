@@ -97,23 +97,43 @@ if(!function_exists('getArchitecture'))
 if(!function_exists('getBundlesStatus'))
 {
 	/**
-	 *  check wich bundle needs an update
+	 *  check wich bundle needs an update 
 	 */
 	function getBundlesStatus()
 	{
 		$localBundles  = getLocalBundles();
 		$remoteBundles = getRemoteBundles();
 		
-		$status = array();
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		
+		$endpoint = $CI->config->item('colibri_endpoint').getArchitecture();
+			
+		$status = array(
+				'bundles' => array(),
+				'update' => false,
+				'endpoint' => $endpoint
+		);
 		
 		foreach($localBundles as $bundleName => $localBundleData)
 		{
 			$remoteBundle = $remoteBundles[$bundleName];
 			$latestVersion = str_replace('v', '', $remoteBundle['latest']);
-			$status[$bundleName] = array(
+			$needUpdate = version_compare($localBundleData['version'], $latestVersion) == -1 ? true : false;
+			$changelog = '';
+			if($needUpdate) {
+				$status['update'] = true;
+				$remoteContent = getRemoteFile($endpoint.'/bundles/'.$bundleName.'/changelog.json');
+				if($remoteContent != false){
+					$temp = json_decode($remoteContent, true);
+					$changelog = ($temp[$remoteBundle['latest']]);
+				}
+			}
+ 			$status['bundles'][$bundleName] = array(
 					'latest' => $latestVersion,
 					'local' => $localBundleData['version'],
-					'update' => version_compare($localBundleData['version'], $latestVersion) == -1 ? true : false
+					'update' => $needUpdate,
+ 					'changelog' => $changelog
 			); 
 			
 		}
@@ -131,7 +151,7 @@ if(!function_exists('flashFirmware'))
 		$CI =& get_instance();
 		$CI->load->helper('fabtotum');
 		$args = '';
-		
+
 		switch($type)
 		{
 			case "factory":
@@ -146,7 +166,7 @@ if(!function_exists('flashFirmware'))
 			default:
 				return false;
 		}
-		
+
 		return startBashScript('totumduino_manager.sh', $args, false, true);
 	}
 }
