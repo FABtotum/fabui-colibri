@@ -35,7 +35,7 @@ USB_MEDIA_PATH	?= /run/media/
 
 # FAB-UI parameters
 SERIAL_PORT 	?= /dev/ttyAMA0
-
+SERIAL_BAUD		?= 250000
 # OS paths
 PHP_CONFIG_FILE_SCANDIR ?= /etc/php/conf.d/
 CRON_FOLDER ?= /var/spool/cron/crontabs/
@@ -164,7 +164,8 @@ bundle: $(FABUI_BUNDLE)
 		BIGTEMP_PATH=$(BIGTEMP_PATH) \
 		USERDATA_PATH=$(USERDATA_PATH) \
 		USB_MEDIA_PATH=$(USB_MEDIA_PATH) \
-		SERIAL_PORT=$(SERIAL_PORT)
+		SERIAL_PORT=$(SERIAL_PORT) \
+		SERIAL_BAUD=$(SERIAL_BAUD)
 
 $(TEMP_DIR):
 	mkdir -p $@

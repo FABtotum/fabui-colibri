@@ -32,8 +32,9 @@ case "$1" in
     
     boot_msg "Starting ${SERVICE_NAME}."
 
+    # (obsolete)
     #python /var/www/fabui/python/baud.py
-    python ${PYTHON_PATH}/setBaud.py &> /var/log/fabui/setBaud.log
+    #python ${PYTHON_PATH}/setBaud.py &> /var/log/fabui/setBaud.log
     
     ######## fabtotum server ########
     #start-stop-daemon -b -S -q -m -p ${FABSERVICE_PID} --exec python ${PYTHON_PATH}/FabtotumServices.py -- -B -L /var/log/fabui/FabtotumServices.log
