@@ -22,9 +22,15 @@
 	</div>
 	<div class="col-sm-9">
 		<h3 id="response"></h3>
-		<a class="btn btn-default" href="javascript:void(0);" id="check-again">Check again</a>
-		<a class="btn btn-default" href="javascript:void(0);">Update</a>
-		<a class="btn btn-default" href="javascript:void(0);" id="details-button">show details <i class="fa fa-angle-double-down"></i></a>
+		<div id="pre-update-button-container">
+			<a class="btn btn-default" href="javascript:void(0);" id="check-again">Check again</a>
+			<a class="btn btn-default" href="javascript:void(0);" id="update">Update</a>
+			<a class="btn btn-default" href="javascript:void(0);" id="details-button">show details <i class="fa fa-angle-double-down"></i></a>
+		</div>
+		<div id="update-button-container" style="display:none;">
+			<a class="btn btn-default" href="javascript:void(0);" id="abort-update">Cancel</a>
+			<a class="btn btn-default" href="javascript:void(0);" id="update-button">show details <i class="fa fa-angle-double-down"></i></a>
+		</div>
 		<div class="details margin-top-10" style="display:none;">
 		</div>
 	</div>

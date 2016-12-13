@@ -10,6 +10,14 @@
  
  class Updates extends FAB_Controller {
  	
+ 	
+ 	function __construct(){
+ 		
+ 		parent::__construct();
+ 		$this->load->model('Tasks', 'tasks');
+ 		$this->tasks->truncate();
+ 	}
+ 	
 	public function index()
 	{
 		//load libraries, helpers, model, config
@@ -45,6 +53,39 @@
 		$bundlesStatus = getBundlesStatus();
 		
 		echo json_encode($bundlesStatus);
+	}
+	/**
+	 * start update
+	 */
+	function startUpdate()
+	{
+		//load helpers
+		$this->load->helpers('fabtotum_helper');
+		//load model
+		$this->load->model('Tasks', 'tasks');
+		//get data from post
+		$data = $this->input->post();
+		$bundles = $data['bundles'];
+		
+		//add task record to db
+		$taskData = array(
+			'user'       => $this->session->user['id'],
+			'controller' => 'updates',
+			'type'       => 'update',
+			'status'     => 'running',
+			'start_date' => date('Y-m-d H:i:s')
+		);
+		$taskId   = $this->tasks->add($taskData);
+		
+		$updateArgs = array(
+				'-T' => $taskId,
+				'-b' => implode(',', $bundles)
+		);
+		startPyScript('update.py', $updateArgs, true, true);
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
+		
+		
 	}
 			
  }

@@ -1,138 +1,171 @@
-import argparse
-import gettext
+import argparse, gettext, os,time, json,pycurl
+import commands
+import threading
 from fabtotum.fabui.config  import ConfigService
-from threading import Event, Thread
-import pycurl, os, json
 
-# Set up message catalog access
-tr = gettext.translation('print', 'locale', fallback=True)
+from fabtotum.update.factory import Factory
+from fabtotum.update.bundle  import Bundle
+from fabtotum.update.version import RemoteVersion
+
+tr = gettext.translation('update', 'locale', fallback=True)
 _ = tr.ugettext
 
+factory = Factory()
 
-class UpdateApplication():
-    
-    def __init__(self, task_id, endpoint, bundles, monitor_file):
-        
-        self.task_id      = task_id
+''' ==================================================================================================== '''
+''' '''
+class Update(threading.Thread):
+    def __init__(self, bundles_list, endpoint, temp_folder):
+        super(Update, self).__init__()
+        self.bundles_list = bundles_list
         self.endpoint     = endpoint
-        self.bundles      = bundles
-        self.monitor_file = monitor_file
-        self.monitor_data = {}
+        self.temp_folder  = temp_folder
+        self.remote_data  = RemoteVersion(endpoint)
+        self.loaded_bundles = {}
         
-        self.initMonitorData()
+    def run(self):
         
-    def initMonitorData(self):
-        self.monitor_data = {
-            "task" : {
-                "id" : self.task_id
-            },
-            "gpusher": {},
-            "override": {},
-            "update": {
-                "bundles": {},
-                "current": '',
-                "number": len(self.bundles)
-            }
-        }
-        for bundle in self.bundles:
-            self.monitor_data['update']['bundles'][bundle] = {
-                "status" : '',
-                'download_progress': 0,
-                'file_size': 0,
-                'speed': 0
-            }
+        remote_bundles = self.remote_data.getData('bundles')
+        ''' === loading bundles '''
+        for bundle_name in self.bundles_list:
+            bundle = Bundle(bundle_name, remote_bundles[bundle_name])
+            factory.addBundle(bundle)
+            self.addBundle(bundle)
         
+        factory.setStatus('running')
         
-    def writeMonitorFile(self):
-        print self.monitor_data
-        monitor_file = open(self.monitor_file,'w+')
-        monitor_file.write(json.dumps(self.monitor_data))
-        monitor_file.close()
+        for bundle_name in self.loaded_bundles:
+            self.do_download(self.loaded_bundles[bundle_name])
+        
+        for bundle_name in self.loaded_bundles:
+            self.do_install(self.loaded_bundles[bundle_name])
+        
+        factory.setStatus('completed')
+        factory.do_stop()
+            
+    def addBundle(self, bundle):
+        self.loaded_bundles[bundle.getName()] = bundle
+        
+    def do_download(self, bundle):
+        print "do download: ", bundle.getName()
+        factory.setCurrentBundle(bundle.getName())
+        factory.setCurrentStatus('downloading')
+        self.download(bundle, 'bundle')
+        self.download(bundle, 'md5')
+        factory.setCurrentStatus('downloaded')
+        bundle.setStatus('downloaded')
+        factory.updateBundle(bundle)
+        
+    def do_install(self, bundle):
+        print "installing: " , bundle.getName()
+        bundle.setStatus('installing')
+        factory.updateBundle(bundle)
+        #print commands.getstatusoutput('colibrimngr install -postpone ' + self.temp_folder +  'fabui/' + bundle.getBundleFile().getName())
     
-    def updateMonitorFile(self):
-        print "update monitor file"
+    def download(self, bundle, type):
         
-    def download(self, bundle_name):
-        #print "download: ", bundle_name
-        self.monitor_data['update']['bundles'][bundle_name]['status'] = 'downloading'
+        bundle.setStatus('downloading')
+        factory.updateBundle(bundle)
+        factory.setCurrentFileType(type)
+        
+        file_endpoint = bundle.getFile(type).getEndpoint()
+        file_name = bundle.getFile(type).getName()
+        
         curl = pycurl.Curl()
-        curl.setopt(pycurl.URL, self.endpoint + 'armhf/bundles/' + bundle_name + '/latest' )
+        curl.setopt(pycurl.URL, self.endpoint + 'armhf/' + file_endpoint)
         curl.setopt(pycurl.FOLLOWLOCATION, 1)
         curl.setopt(pycurl.MAXREDIRS, 5)
-        filename = bundle_name
-        if os.path.exists(filename):
-            f = open(filename, "ab")
-            curl.setopt(pycurl.RESUME_FROM, os.path.getsize(filename))
-        else:
-            f = open(filename, "wb")
         
-        curl.setopt(pycurl.WRITEDATA, f)
+        file_to_write = open(self.temp_folder + 'fabui/' + file_name, "wb")
+        
+        curl.setopt(pycurl.WRITEDATA, file_to_write)
         curl.setopt(pycurl.NOPROGRESS, 0)
-        curl.setopt(pycurl.PROGRESSFUNCTION, self.progress)
-        try:
-            curl.perform()
-            self.monitor_data['update']['bundles'][bundle_name]['status'] = 'downloaded'
-        except:
-            print "ERROR"
-            return False
-            pass
-        return True
+        curl.setopt(pycurl.PROGRESSFUNCTION, self.download_progress)
         
-    def progress(self, download_t, download_d, upload_t, upload_d):
+        curl.perform()
+        
+        bundle.getFile(type).setStatus('downloaded')
+        factory.updateBundle(bundle)
+        
+        
+    def download_progress(self, file_size, downloaded, upload_t, upload_d):
         
         try:
-            #print "Total to download", download_t
-            #print "Total downloaded", download_d
-            self.monitor_data['update']['bundles'][self.monitor_data['update']['current']]['file_size'] = download_t
-            #self.monitor_data['update']['bundles'][self.monitor_data['update']['current']]['speed'] = download_d
-            self.monitor_data['update']['bundles'][self.monitor_data['update']['current']]['download_progress'] = ( download_d / download_t ) * 100
-            #print "Total to upload", upload_t
-            #print "Total uploaded", upload_d
-            self.writeMonitorFile()
+            current_file_type = factory.getCurrentFileType()
+            bundle = factory.getBundle(factory.getCurrentBundle())
+            file = bundle.getFile(current_file_type)
+            
+            file.setSize(file_size)
+            file.setProgress(( downloaded / file_size ) * 100)
+            file.setStatus('downloading')
+            
+            bundle.updateFile(file, current_file_type)
+            factory.updateBundle(bundle)
+        
         except:
             pass
         
+''' ==================================================================================================== '''
+''' '''
+class MonitorWriter(threading.Thread):
+    def __init__(self, monitor_file):
+        super(MonitorWriter, self).__init__()
+        self.file = monitor_file
+        self.stop = False
+        self.every = 1
+        self.write()
         
-    def update(self, bundle):
-        print "update"
-        self.monitor_data['update']['current'] = bundle
-        self.writeMonitorFile()
-        self.download(bundle)
+    def write(self):
+        monitor_file = open(self.file,'w+')
+        monitor_file.write(json.dumps(factory.serialize()))
+        monitor_file.close()
+        #print json.dumps(factory.serialize())
+        #print "write"
         
-    def install(self):
-        print "install"
-        
-    
     def run(self):
-        #print self.monitor_data
-        print self.endpoint
-        #print len(self.bundles)
-        #print self.monitor_data['update']
-        self.writeMonitorFile()
-        for bundle in self.bundles:
-            self.update(bundle)
-        self.writeMonitorFile()
-        
-        
-
+        while factory.getStop() == False :
+            self.write()
+            time.sleep(self.every)
+        self.write()
+''' ==================================================================================================== '''
 
 def main():
     config = ConfigService()
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-T", "--task-id",     help=_("Task ID."),      default=0)
-    parser.add_argument('-b','--bundles', nargs='+', help='<Required> Set flag', required=True)
+    parser.add_argument('-b','--bundles', help='<Required> Set flag', required=True)
     
     args = parser.parse_args()
-    
-    bundles      = args.bundles
+        
+    bundles      = args.bundles.split(',')
     task_id      = args.task_id
-    endpoint     = config.get('updates', 'colibri_endpoint')
-    monitor_file = config.get('general', 'task_monitor')
     
-    app = UpdateApplication(task_id, endpoint, bundles, monitor_file)
-    app_thread = Thread(target = app.run)
-    app_thread.start()
-    app_thread.join()
-
+    monitor_file = config.get('general', 'task_monitor')
+    endpoint     = config.get('updates', 'colibri_endpoint')
+    temp_folder  = config.get('general', 'bigtemp_path')
+    
+    factory.setTaskId(task_id)
+    factory.setPid(os.getpid())
+    factory.setStatus('preparing')
+    
+    threads = [
+        MonitorWriter(monitor_file),
+        Update(bundles, endpoint, temp_folder)
+    ]
+    
+    for thr in threads:
+         thr.start()
+    
+    while True:
+        alives = []
+        for thr in threads:
+            alives.append(thr.isAlive())
+            thr.join(0.05)
+            time.sleep(0.2)
+        if not all(alives):
+            break
+    
+    
+    
 if __name__ == "__main__":
     main()
