@@ -14,7 +14,7 @@
 			<h6 id="status"></h6>
 			<h1 class=" animated">
 				<span style="position: relative;">
-					<i class="fa fa-play fa-rotate-90 fa-border border-black fa-4x"></i>
+					<i id="fabtotum-icon" class="fa fa-play fa-rotate-90 fa-border border-black fa-4x"></i>
 					<span><b class="badge fabtotum-badge font-md"><span id="badge-icon"></span> </b></span>
 				</span>
 			</h1>
@@ -22,12 +22,12 @@
 	</div>
 	<div class="col-sm-9">
 		<h3 id="response"></h3>
-		<div id="pre-update-button-container">
+		<div id="pre-update-button-container" style="<?php echo $runningTask ? 'display:none' : '' ?>">
 			<a class="btn btn-default" href="javascript:void(0);" id="check-again">Check again</a>
 			<a class="btn btn-default" href="javascript:void(0);" id="update">Update</a>
 			<a class="btn btn-default" href="javascript:void(0);" id="details-button">show details <i class="fa fa-angle-double-down"></i></a>
 		</div>
-		<div id="update-button-container" style="display:none;">
+		<div id="update-button-container" style="<?php echo !$runningTask ? 'display:none' : '' ?>">
 			<a class="btn btn-default" href="javascript:void(0);" id="abort-update">Cancel</a>
 			<a class="btn btn-default" href="javascript:void(0);" id="update-button">show details <i class="fa fa-angle-double-down"></i></a>
 		</div>

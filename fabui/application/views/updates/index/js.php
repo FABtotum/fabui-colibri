@@ -12,9 +12,15 @@
 
 	var bandleStatus;
 	var bundlesToUpdate = new Array();
+	var blinkInterval;
+	var taskMonitor;
 	
 	$(document).ready(function() {
+		<?php if(!$runningTask): ?>
 		checkBundleStatus();
+		<?php else: ?>
+		initRunningTask();
+		<?php endif; ?>
 		$("#details-button").on('click', showHideDetails);
 		$("#update-button").on('click', showHideDetails);
 		$("#check-again").on('click', checkBundleStatus);
@@ -55,18 +61,20 @@
 
 			var html = '<table class="table table-striped table-forum">';
 			$.each(response.bundles, function(i, item) {
-				
-				var sign = item.update == true ? 'fa-times' : 'fa-check';
-				var text_color = item.update == true ? 'text-danger' : 'text-success';
-				html += '<tr>';
-				html += '<td width="20"><i class="fa '+ sign +' '+ text_color +'"></i></td>';
-				html += '<td><h4><a href="javascript:void(0)">' + i + '</a>' ;
-				if(item.update == true){
-					html += ' <small>You have version <b>'+ item.local +'</b> installed. Update to <b>' + item.latest + '</b>. <a class="changelog" data-attribute="' + i + '" href="javascript:void(0)">View details</a> </small>';
+
+				if(item.update){
+					var sign = item.update == true ? 'fa-times' : 'fa-check';
+					var text_color = item.update == true ? 'text-danger' : 'text-success';
+					html += '<tr>';
+					html += '<td width="20" class="text-center"><i class="fa '+ sign +' '+ text_color +' fa-2x fa-fw"></i></td>';
+					html += '<td><h4><a href="javascript:void(0)">' + i.capitalize() + '</a>' ;
+					if(item.update == true){
+						html += ' <small>You have version <b>'+ item.local +'</b> installed. Update to <b>' + item.latest + '</b>. <a class="changelog" data-attribute="' + i + '" href="javascript:void(0)">View details</a> </small>';
+					}
+					html += ' </td>';
+					
+					html += '</tr>';
 				}
-				html += ' </td>';
-				
-				html += '</tr>';
 				
 			    
 			});
@@ -160,8 +168,12 @@
 				$("#response").html('Please don\'t turn off the printer until the operation is completed');
 				fabApp.freezeMenu('updates');
 				$(".fabtotum-badge").removeClass('bg-color-green').removeClass('bg-color-orange').addClass('bg-color-blue');
-				$("#badge-icon").html('<i class="fa  fa-spin fa-spinner txt-color-black"></i>');
+				$("#badge-icon").html('<i class="fa  fa-spin fa-refresh txt-color-black"></i>');
 				$("#status").html("Updating");
+
+
+				
+				
 			});
 		});
 		
@@ -171,6 +183,11 @@
 	*/
 	function completeTask()
 	{	
+
+		console.log("TASK COMPLETED");
+		console.log(taskMonitor);
+
+		
 		$(".fabtotum-badge").removeClass('bg-color-blue').addClass('bg-color-green');
 		$("#badge-icon").html('<i class="fa  fa fa-check txt-color-black"></i>');
 		$("#status").html("Update complete!");
@@ -183,8 +200,9 @@
 	*/
 	if(typeof manageMonitor != 'function'){
 		window.manageMonitor = function(data){
+			taskMonitor = data;
 			handleStatuses(data.task.status, data.update.current.status)
-			handleUpdate(data.update)
+			handleUpdate(data.task.status, data.update)
 		};
 	}
 	/**
@@ -208,8 +226,10 @@
 	*/
 	function handleStatuses(task_status, update_status)
 	{
+		console.log(task_status);
 		switch(task_status){
 			case 'preparing':
+				$("#response").html('Please don\'t turn off the printer until the operation is completed');
 				$("#status").html('Connecting to update server...');
 				break;
 			case 'running':
@@ -222,8 +242,11 @@
 						label = 'Installing bundles..'
 						break;	
 				}
+				$(".fabtotum-badge").removeClass('bg-color-green').removeClass('bg-color-orange').addClass('bg-color-blue');
+				$("#badge-icon").html('<i class="fa  fa-spin fa-refresh txt-color-black"></i>');
+				$("#response").html('Please don\'t turn off the printer until the operation is completed');
 				$("#status").html(label);
-				
+				 
 				break;
 			case 'completed':
 				completeTask();
@@ -233,23 +256,36 @@
 	/**
 	*
 	*/
-	function handleUpdate(update)
+	function handleUpdate(task, update)
 	{
 		var current_bundle = update.current.bundle;
 		var current_file_type = update.current.file_type;
-
-
-		var html = '<div class="well"><ul class="list-unstyled">';
+		var current_status = update.current.status;
+		
+		var completed = task.status == 'completed';
+		
+		var html = '<table class="table table-striped table-forum">';
 		
 		
 		$.each(update.bundles, function(i, item) {
 
-			var icon = current_bundle == i ? 'fa fa-cog fa-spin fa-fw' : 'fa fa-puzzle-piece fa-fw';
+			console.log(">>>>>>> ", completed)
+			
+			var icon = 'fa fa-puzzle-piece fa-fw';
+			var tr_class = '';
 
-			html += '<li><p> <i class="' + icon +'"></i> <strong>' + i + '</strong> <span class="pull-right">';
+			if(current_bundle == i && current_status != 'completed'){
+				var icon = 'fa fa-cog fa-spin fa-fw';
+				var tr_class = 'warning';
+					
+			}
 
+			html += '<tr class="' + tr_class + ' ">';
+			html += '<td width="20" class="text-center"><i class="'+icon +' fa-2x text-muted"></i></td>';
+			html += '<td><h4><a href="javascript:(0)">' + i.capitalize() + '</a>';
+			html += '<small>';
 			if(item.status == 'downloading'){
-				html += ' downloading (' + parseInt(item.files.bundle.progress) + ' %) ';
+				html += ' <i class="fa fa-download"></i> downloading (' + parseInt(item.files.bundle.progress) + ' %) ';
 			}
 			if(item.status == 'downloaded'){
 				html += ' downloaded ';
@@ -258,15 +294,46 @@
 			if(item.status == 'installing'){
 				html += ' installing ';
 			}
-			
-			html += '</span></p></li>';
 
+			if(item.status == 'installed'){
+				html += '<i class="fa fa-check"></i> installed';
+			}
+
+			if(item.status == 'error'){
+				html += '<i class="fa fa-times text-danger"></i> Error: <br> <span style="white-space: pre;">' + item.message + '</span>';
+			}
 			
-			/*$("#" + i + "-progress-bar").attr("style", "width:" +item.files.bundle.progress +"%;");*/
+			html += '<small></h4></td></tr>';
+
 		});
 
-		html += '</ul></div>';
+		html += '</table>';
 		$(".details").html(html);
 	}
-	
+	/**
+	*
+	*/
+	function startBlinkInterval()
+	{
+		blinkInterval = setInterval(function () {
+		    $("#fabtotum-icon").css("color", function () {
+		        this.switch = !this.switch
+		        return this.switch ? "#0091d9 !important" : ""
+		    });
+		}, 500)
+	}
+	/**
+	*
+	*/
+	function stopBlinkInterval()
+	{
+		clearInterval(blinkInterval);
+	}
+	/**
+	*
+	*/
+	function initRunningTask()
+	{
+		
+	}
 </script>

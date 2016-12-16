@@ -23,6 +23,7 @@ class Bundle:
     def __init__(self, name, data):
         self.name          = name
         self.status        = ''
+        self.message       = ''
         self.latest        = data['latest']
         self.date_uploaded = data[self.latest]['date-uploaded']
         self.priority      = data[self.latest]['priority']
@@ -71,10 +72,17 @@ class Bundle:
             self.bundleFile = file
         else:
             self.md5File = file
+            
+    def setMessage(self, message):
+        self.message = message
+    
+    def getMessage(self):
+        return self.message
         
     def serialize(self):
         data = {
             'status'   : self.getStatus(),
+            'message'  : self.getMessage(),
             'latest'   : self.getLatest(),
             'version'  : self.getVersion(),
             'priority' : self.getPriority(),

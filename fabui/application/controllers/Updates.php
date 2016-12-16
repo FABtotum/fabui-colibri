@@ -4,28 +4,31 @@
  * @author Krios Mane
  * @version 0.1
  * @license https://opensource.org/licenses/GPL-3.0
- * 
+ *  
  */
  defined('BASEPATH') OR exit('No direct script access allowed');
  
  class Updates extends FAB_Controller {
  	
+ 	protected $runningTask = false;
  	
  	function __construct(){
- 		
  		parent::__construct();
- 		$this->load->model('Tasks', 'tasks');
- 		$this->tasks->truncate();
  	}
  	
 	public function index()
 	{
+		if(!$this->input->is_cli_request()){
+			$this->load->model('Tasks', 'tasks');
+			//$this->tasks->truncate();
+			$this->runningTask = $this->tasks->getRunning('updates');
+		}
+		
 		//load libraries, helpers, model, config
 		$this->load->library('smart');
 		$this->load->helper('layout');
-		
 		$data = array();
-		//$data['bundlesStatus'] = getBundlesStatus();
+		$data['runningTask'] = $this->runningTask;
 		
 		//main page widget
 		$widgetOptions = array(
@@ -39,6 +42,7 @@
 		$widget->body   = array('content' => $this->load->view('updates/index/widget', $data, true ));
 		$this->content  = $widget->print_html(true);
 		
+		$this->addCSSInLine('<style>.table-forum tr td>i {padding-left:0px};</style>');
 		$this->addJsInLine($this->load->view('updates/index/js','', true));
 		
 		$this->view();
@@ -49,9 +53,10 @@
 	 */
 	function bundleStatus()
 	{
+		//load helpers
 		$this->load->helper('update_helper');
+		//get remote bundles status
 		$bundlesStatus = getBundlesStatus();
-		
 		echo json_encode($bundlesStatus);
 	}
 	/**

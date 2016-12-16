@@ -24,8 +24,11 @@
 	 * get running task
 	 * @return row or false
 	 */
-	public function getRunning()
+	public function getRunning($controller = '')
 	{
+		if($controller != ''){
+			$this->db->where('controller', $controller);
+		}
 		$this->db->where('status', self::STATUS_RUNNING);
 		$this->db->order_by('start_date', 'DESC');
 		$query = $this->db->get($this->tableName,1,0);

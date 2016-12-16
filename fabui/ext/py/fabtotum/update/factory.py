@@ -14,21 +14,28 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-#
+# 
 # You should have received a copy of the GNU General Public License
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
+import time
 
+from fabtotum.database      import Database, timestamp2datetime, TableItem
+from fabtotum.database.task import Task
 
-class Factory():
-    def __init__(self):
+class UpdateFactory():
+    def __init__(self, config):
         self.task_id = 0
         self.pid = 0
         self.type = 'update'
         self.controller = 'update'
         self.status = ''
+        self.error = False
+        self.message = ''
         self.bundles = {}
         self.current = Current()
         self.stop = False
+        self.updated_count = 0
+        self.db = Database(config)
     
     def setTaskId(self, id):
         self.task_id = id
@@ -38,6 +45,9 @@ class Factory():
     
     def setStatus(self, status):
         self.status = status
+        
+    def getStatus(self):
+        return self.status
     
     def setCurrentBundle(self, currentBundle):
         self.current.setBundle(currentBundle)
@@ -59,6 +69,24 @@ class Factory():
         
     def getBundle(self, bundle_name):
         return self.bundles[bundle_name]
+    
+    def incraeseUpdatedCount(self):
+        self.updated_count += 1
+    
+    def getUpdatedCount(self):
+        return self.updated_count
+    
+    def setMessage(self, message):
+        self.message = message
+        
+    def getMessage(self):
+        return self.message
+    
+    def setError(self, bool):
+        self.error = bool
+    
+    def getError(self):
+        return self.error
         
     def serialize(self):
         task_data = {
@@ -66,7 +94,9 @@ class Factory():
             'pid' : self.pid,
             'status' : self.status,
             'type' : self.type,
-            'controller' : self.controller
+            'controller' : self.controller,
+            'message' : self.message,
+            'error' : self.error
         }
         return {'task' : task_data, 'update' : self.serializeBundles()}
     
@@ -77,7 +107,9 @@ class Factory():
             data[bundle_name] = bundle.serialize()
         return {
             'bundles': data,
-            'current': self.current.serialize()
+            'current': self.current.serialize(),
+            'to_update' : len(data),
+            'updated' :  self.getUpdatedCount()
         }
     
     def updateBundle(self, bundle):
@@ -88,6 +120,18 @@ class Factory():
     
     def do_stop(self):
         self.stop = True
+    
+    def update_task_db(self):
+        if self.task_id == 0:
+            return
+        task_db = Task(self.db, self.task_id)
+        
+        if(self.getStatus() == 'running'):
+            task_db['status'] = 'running'
+        elif(self.getStatus() == 'completed' or self.getStatus() == 'aborted' ):
+            task_db['status'] = self.getStatus()
+            task_db['finish_date'] = timestamp2datetime( time.time() )
+        tid = task_db.write()
         
 
 

@@ -33,6 +33,7 @@ class RemoteVersion:
         curl = pycurl.Curl()
         buffer = BytesIO()
         curl.setopt(pycurl.URL, self.endpoint + 'armhf/version.json' )
+        curl.setopt(pycurl.TIMEOUT, 10)
         curl.setopt(pycurl.FOLLOWLOCATION, 1)
         curl.setopt(pycurl.MAXREDIRS, 5)
         curl.setopt(curl.WRITEDATA, buffer)
