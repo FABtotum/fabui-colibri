@@ -166,7 +166,11 @@ class GCodeFile:
                         gcode_type = self.info['type'] = GCodeInfo.MILL
                         if lite_parsing:
                             break
-                
+                    elif head == 'M450':
+                        gcode_type = self.info['type'] = GCodeInfo.LASER
+                        if lite_parsing:
+                            break
+                            
                 if not stop_parsing and not lite_parsing:
                     attrs = {}
                     

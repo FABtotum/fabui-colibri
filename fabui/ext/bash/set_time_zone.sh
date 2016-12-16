@@ -24,3 +24,5 @@ sudo cp /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 sudo cat <<EOF> /etc/timezone
 $TIMEZONE
 EOF
+
+sed -i /etc/php.ini -e "s@date.timezone =.*@date.timezone = ${TIMEZONE}@"

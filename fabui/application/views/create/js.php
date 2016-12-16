@@ -21,6 +21,7 @@
 	var monitorInterval;
 	var timerInterval;
 	var elapsedTime = 0;
+	var estimatedTime = 0;
 	//sliders
 	<?php if($type == "print"): ?>
 	var extruderSlider;
@@ -290,7 +291,7 @@
 			<?php if($type == "mill"): ?>
 			updateRPM(data.override.rpm);
 			<?php endif; ?>
-			updateTimers(data.task.started_time);
+			updateTimers(data.task.started_time, data.task.estimated_time);
 		};
 	}
 	/**
@@ -333,6 +334,7 @@
 				updateFan(data.override.fan);
 				updateZOverride(data.override.z_override);
 				elapsedTime = parseInt(data.task.duration);
+				estimatedTime = parseInt(data.task.estimated_time);
 				timerInterval = setInterval(timer, 1000);
 			}
 		});
@@ -446,9 +448,9 @@
 	/**
 	 * update timers
 	 */
-	function updateTimers(started)
+	function updateTimers(started, estimated)
 	{
-		
+		estimatedTime = parseInt(estimated);
 	}
 	
 	/**
@@ -688,7 +690,12 @@
 	function timer()
 	{
 		elapsedTime++;
+		remainingTime = estimatedTime - elapsedTime;
 		$(".elapsed-time").html(transformSeconds(elapsedTime));
+		if(estimatedTime == 0)
+			$(".estimated-time-left").html('Waiting for first move...');
+		else
+			$(".estimated-time-left").html(transformSeconds(remainingTime));
 	}
 	/**
 	 * init sliders

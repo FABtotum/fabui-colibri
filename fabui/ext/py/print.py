@@ -109,17 +109,17 @@ class PrintApplication(GCodePusher):
         self.prepare_task(task_id, task_type='print', gcode_file=gcode_file)
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
-        if self.standalone:
-            self.exec_macro("check_pre_print")
+        #~ if self.standalone:
+            #~ self.exec_macro("check_pre_print")
             
-            if self.autolevel:
-                self.exec_macro("raise_bed")
-                self.exec_macro("auto_bed_leveling")
-            else:
-                self.exec_macro("home_all")
-                #general_macros.home_all(self, [ext_temp_target, bed_temp_target])
+            #~ if self.autolevel:
+                #~ self.exec_macro("raise_bed")
+                #~ self.exec_macro("auto_bed_leveling")
+            #~ else:
+                #~ self.exec_macro("home_all")
+                #~ #general_macros.home_all(self, [ext_temp_target, bed_temp_target])
             
-            self.exec_macro("start_print")
+            #~ self.exec_macro("start_print")
         
         self.send_file(gcode_file)
         #self.push_file()

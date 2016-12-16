@@ -523,6 +523,14 @@ class GCodePusher(object):
                 
             if old_progress != progress:
                 old_progress = progress
+                dur = float(self.task_stats['duration'])
+                if progress == 0.0 or self.standardized_stats['print']['first_move'] == False:
+                    self.task_stats['estimated_time'] = 0
+                else:
+                    self.task_stats['estimated_time'] = (( dur / float(progress)) * 100.0)
+                
+                print self.task_stats['estimated_time'], progress
+                
                 self.progress_callback(progress)
             
             # Write progress even if it did not change because duration is update
@@ -541,6 +549,7 @@ class GCodePusher(object):
         self.task_stats['status']           = GCodePusher.TASK_PREPARING
         self.task_stats['started_time']     = time.time()
         self.task_stats['completed_time']   = 0
+        self.task_stats['estimated_time']   = 0
         self.task_stats['duration']         = 0
         self.task_stats['percent']          = 0.0
         self.task_stats['auto_shutdown']    = auto_shutdown
@@ -574,13 +583,15 @@ class GCodePusher(object):
                     self.print_stats = {
                         'layer_total'   : layer_total,
                         'layer_current' : 0,
-                        'engine'        : engine
+                        'engine'        : engine,
+                        'first_move'    : False,
                     }
                     self.add_monitor_group('print', self.print_stats)
                 else:
                     self.standardized_stats['print']['engine'] = engine
                     self.standardized_stats['print']['layer_current'] = 0
                     self.standardized_stats['print']['layer_total'] = layer_total
+                    self.standardized_stats['print']['first_move'] = False
                     
             elif gfile.info['type'] == GCodeInfo.MILL or gfile.info['type'] == GCodeInfo.DRILL:
                     self.mill_stats = {
@@ -662,88 +673,6 @@ class GCodePusher(object):
         Execute macro command.
         """
         return self.gmacro.run(preset, args, atomic)
-        #~ self.reset_macro_status()
-        #~ if atomic:
-            #~ self.macro_start()
-        
-        #~ if preset in PRESET_MAP:
-            #~ PRESET_MAP[preset](self, args)
-        #~ else:
-            #~ print _("Preset '{0}' not found").format(preset)
-        
-        #~ if atomic:
-            #~ self.macro_end()
-        
-        #~ if self.macro_error > 0:
-            #~ return False
-            
-        #~ return True
-    
-    #~ def reset_macro_status(self):
-        #~ """
-        #~ Reset macro status counters to zero.
-        #~ """
-        #~ self.macro_warning = 0
-        #~ self.macro_error = 0
-        #~ self.macro_skipped = 0
-    
-    #~ def macro_start(self):
-        #~ """ 
-        #~ Start macro execution block. This will activate atomic execution and 
-        #~ only commands marked as `macro` will be executed. Others will be aborted.
-        #~ """
-        #~ self.gcs.atomic_begin(group = 'macro')
-        
-    #~ def macro_end(self):
-        #~ """ End macro execution block and atomic execution. """
-        #~ self.gcs.atomic_end()
-    
-    #~ def macro(self, code, expected_reply, timeout, error_msg, delay_after, warning=False, verbose=True):
-        #~ """
-        #~ Send a command and check it's reply.
-        
-        #~ :param code: gcode
-        #~ :param expected_reply: Expected reply
-        #~ :param error_msg: Error message to display
-        #~ :param timeout: Reply timeout in seconds
-        #~ :param delay_after: Time in seconds to wait after receiving the rely
-        #~ :param warning: Treat wrong reply as warning not as error
-        #~ :param verbose: Whether initial message should be displayed or not.
-        #~ :type code: string
-        #~ :type expected_reply: string
-        #~ :type timeout: float
-        #~ :type error_msg: string
-        #~ :type delay_after: float
-        #~ :type warning: bool
-        #~ :type verbose: bool
-        #~ """
-        #~ reply = None
-        
-        #~ if self.macro_error == 0:
-            #~ if verbose:
-                #~ self.trace(error_msg)
-            
-            #~ reply = self.gcs.send(code, timeout=timeout, group = 'macro')
-            #~ if expected_reply:
-                #~ # Check if the reply is as expected
-                #~ if reply:
-                    #~ if reply[0] != expected_reply:
-                        #~ if warning:
-                            #~ self.trace(error_msg + _(": Warning!"))
-                            #~ self.macro_warning += 1
-                        #~ else:
-                            #~ self.trace(error_msg + _(": Failed ({0})".format(reply[0]) ))
-                            #~ self.macro_error += 1
-                #~ else:
-                    #~ self.trace(error_msg + _(": Failed ({0})".format('<aborted>') ))
-                    #~ self.macro_error += 1
-        #~ else:
-            #~ self.trace(error_msg + _(": Skipped"))
-            #~ self.macro_skipped += 1
-                
-        #~ time.sleep(delay_after) #wait the desired amount
-        
-        #~ return reply
         
     def send(self, code, block = True, timeout = None, trace = None, group = 'gcode', expected_reply = 'ok'):
         """
