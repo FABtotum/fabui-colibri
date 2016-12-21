@@ -49,6 +49,8 @@
 				$this->menu = $this->config->item('menu');
 			}
 		}
+		//Prevent Blocking Requests
+		session_write_close();
     }
 	
 	/*
