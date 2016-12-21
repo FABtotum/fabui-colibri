@@ -42,7 +42,7 @@
 		$widget->body   = array('content' => $this->load->view('updates/index/widget', $data, true ));
 		$this->content  = $widget->print_html(true);
 		
-		$this->addCSSInLine('<style>.table-forum tr td>i {padding-left:0px};</style>');
+		$this->addCSSInLine('<style>.table-forum tr td>i {padding-left:0px};.checkbox{margin-top:0px !important;}</style>');
 		$this->addJsInLine($this->load->view('updates/index/js','', true));
 		
 		$this->view();

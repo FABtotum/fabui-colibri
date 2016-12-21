@@ -6,50 +6,35 @@
  * @license https://opensource.org/licenses/GPL-3.0
  * 
  */
- 
 ?>
-<div class="row" id="first-row">
-	<div class="col-sm-3">
-		<div class="text-center">
-			<h6 id="status"></h6>
-			<h1 class=" animated">
-				<span style="position: relative;">
-					<i id="fabtotum-icon" class="fa fa-play fa-rotate-90 fa-border border-black fa-4x"></i>
-					<span><b class="badge fabtotum-badge font-md"><span id="badge-icon"></span> </b></span>
-				</span>
-			</h1>
-		</div>
-	</div>
-	<div class="col-sm-9">
-		<h3 id="response"></h3>
-		<div id="pre-update-button-container" style="<?php echo $runningTask ? 'display:none' : '' ?>">
-			<a class="btn btn-default" href="javascript:void(0);" id="check-again">Check again</a>
-			<a class="btn btn-default" href="javascript:void(0);" id="update">Update</a>
-			<a class="btn btn-default" href="javascript:void(0);" id="details-button">show details <i class="fa fa-angle-double-down"></i></a>
-		</div>
-		<div id="update-button-container" style="<?php echo !$runningTask ? 'display:none' : '' ?>">
-			<a class="btn btn-default" href="javascript:void(0);" id="abort-update">Cancel</a>
-			<a class="btn btn-default" href="javascript:void(0);" id="update-button">show details <i class="fa fa-angle-double-down"></i></a>
-		</div>
-		<div class="details margin-top-10" style="display:none;">
-		</div>
+<div class="row margin-bottom-10">
+	<div class="col-sm-12">
+		<div class="status"></div>
 	</div>
 </div>
-<!-- changelog modal -->
-<div class="modal fade" id="changelog-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					&times;
-				</button>
-				<h4 class="modal-title" id="changelog-modal-title"></h4>
-			</div>
-			<div class="modal-body" id="changelog-modal-body" style="white-space: pre;">
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
+<div class="row">
+	<div class="col-sm-12 col-sx-12">
+		<ul class="demo-btns">
+			<li><button class="btn btn-default  action-buttons" id="check-again"> Check again</button></li>
+			<li><button class="btn btn-default  action-buttons" id="do-update"><i class="fa fa-refresh"></i> Update</button></li>
+			<li><button class="btn btn-default  action-buttons" id="do-abort"><i class="fa fa-times"></i> Cancel</button></li>
+		</ul>
+	</div>
+</div>
+<hr class="simple">
+<div class="row">
+	<div class="col-sm-12">
+		<!-- TAB -->
+		<ul id="updateTab" class="nav nav-tabs bordered">
+			<li class="active"><a href="#bundles_tab" data-toggle="tab"><i class="fa fa-lg fa-puzzle-piece"></i> Bundles <span id="bundles-badge" class="badge bg-color-red txt-color-white inbox-badge"></span></a></li>
+			<li><a href="#boot_tab" data-toggle="tab"><i class="fa fa-lg fa-rocket"></i> Boot</a></li>
+			<li><a href="#firwmare_tab" data-toggle="tab"><i class="fa fa-lg fa-microchip"></i> Firmware</a></li>
+		</ul>
+		<div id="updateTabContent" class="tab-content padding-10">
+			<div class="tab-pane fade in active" id="bundles_tab"></div>
+			<div class="tab-pane fade in" id="boot_tab"></div>
+			<div class="tab-pane fade in" id="firwmare_tab"></div>
+		</div>
+		<!-- ENDTAB -->
+	</div>
 </div>

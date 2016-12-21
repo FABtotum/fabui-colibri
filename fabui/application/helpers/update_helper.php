@@ -23,6 +23,7 @@ if(!function_exists('getLocalBundles')){
 	 */
 	function getLocalBundles()
 	{
+		
 		$list = explode(PHP_EOL, trim(shell_exec('colibrimngr list')));
 		unset($list[0]); //remove comand argument
 		
@@ -40,6 +41,9 @@ if(!function_exists('getLocalBundles')){
 					'state'    => isset($matches[2]) ? $states[$matches[2][0]] : '',
 					'priority' => isset($matches[3]) ? $matches[3][0] : '',
 					'invalid'  => isset($matches[1]) && $matches[1][0] == '!' ? true : false,
+					'info'     => getBundleInfo($bundle_name, 'info'),
+					'licenses' => getBundleInfo($bundle_name, 'licenses'),
+					'packages' => getBundleInfo($bundle_name, 'packages')		
 			);
 			$bundles[$bundle_name] = $temp;
 		}
@@ -110,32 +114,43 @@ if(!function_exists('getBundlesStatus'))
 		$endpoint = $CI->config->item('colibri_endpoint').getArchitecture();
 			
 		$status = array(
-				'bundles' => array(),
-				'update' => false,
-				'endpoint' => $endpoint
+			'bundles'    => array(),
+			'update' => array(
+				'available' => false,
+				'number' => 0,
+				'endpoint'   => $endpoint
+			),
+			'remote_connection' =>  $remoteBundles ? true : false,
 		);
-		
 		foreach($localBundles as $bundleName => $localBundleData)
 		{
-			$remoteBundle = $remoteBundles[$bundleName];
-			$latestVersion = str_replace('v', '', $remoteBundle['latest']);
-			$needUpdate = version_compare($localBundleData['version'], $latestVersion) == -1 ? true : false;
-			$changelog = '';
-			if($needUpdate) {
-				$status['update'] = true;
-				$remoteContent = getRemoteFile($endpoint.'/bundles/'.$bundleName.'/changelog.json');
-				if($remoteContent != false){
-					$temp = json_decode($remoteContent, true);
-					$changelog = ($temp[$remoteBundle['latest']]);
+			if($remoteBundles){
+				$remoteBundle = $remoteBundles[$bundleName];
+				$latestVersion = str_replace('v', '', $remoteBundle['latest']);
+				$needUpdate = version_compare($localBundleData['version'], $latestVersion) == -1 ? true : false;
+				$changelog = '';
+				if($needUpdate) {
+					$status['update']['available'] = true;
+					$remoteContent = getRemoteFile($endpoint.'/bundles/'.$bundleName.'/changelog.json');
+					if($remoteContent != false){
+						$temp = json_decode($remoteContent, true);
+						$changelog = ($temp[$remoteBundle['latest']]);
+						$status['update']['number'] += 1;
+					}
 				}
+			}else{
+				$latestVersion = $changelog =  'unknown';
+				$needUpdate = false;
 			}
  			$status['bundles'][$bundleName] = array(
-					'latest' => $latestVersion,
-					'local' => $localBundleData['version'],
-					'update' => $needUpdate,
- 					'changelog' => $changelog
-			); 
-			
+				'latest'      => $latestVersion,
+				'local'       => $localBundleData['version'],
+				'need_update' => $needUpdate,
+ 				'changelog'   => $changelog,
+ 				'info'        => $localBundleData['info'],
+ 				'licenses'    => $localBundleData['licenses'],
+ 				'packages'    => $localBundleData['packages'],
+			);
 		}
 		return $status;
 	}
@@ -168,6 +183,31 @@ if(!function_exists('flashFirmware'))
 		}
 
 		return startBashScript('totumduino_manager.sh', $args, false, true);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getBundleInfo'))
+{
+	/**
+	 *  read and return specific bundle info
+	 */
+	function getBundleInfo($bundle, $type)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		
+		$content = explode(PHP_EOL, trim(file_get_contents($CI->config->item('bundles_path').$bundle.'/'.$type)));
+		$infos = array();
+		
+		foreach($content as $row)
+		{
+			if($row != ''){
+				$temp = explode(':', trim($row));
+				$key = str_replace('-', '_', trim($temp[0]));
+				$infos[$key] = trim($temp[1]);
+			}
+		}
+		return $infos;
 	}
 }
 ?>
