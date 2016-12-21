@@ -68,8 +68,26 @@
 		$(".new-print").on('click', function(){$('.wizard').wizard('selectedItem', { step: 1 });});
 		$(".restart-print").on('click', function(){$('.wizard').wizard('selectedItem', { step: 1 });});
 		$(".save-z-height").on('click', saveZHeight);
-
+		$("input[name='quality']").on('click', qualityRating);
 	});
+	
+	function qualityRating(e)
+	{
+		var element = $(this);
+		id = element.attr('id');
+		var rating = id.split('-')[1];
+		
+		var data = {};
+		$.ajax({
+			type: 'post',
+			data: data,
+			url: '<?php echo site_url('create/saveQualityRating'); ?>/' + idTask + '/' + rating,
+			dataType: 'json'
+		}).done(function(response) {
+			// do nothing
+			console.log('save quality rating', response);
+		});
+	}
 	
 	//init wizard flow
 	function initWizard()

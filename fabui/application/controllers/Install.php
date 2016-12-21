@@ -124,9 +124,11 @@ class Install extends FAB_Controller {
 			
 			// Copy a fresh copy of default_settings
 			shell_exec('cp /var/lib/fabui/settings/default_settings.json /mnt/userdata/settings/default_settings.json');
+			shell_exec('sudo chown 33.33 /mnt/userdata/settings/default_settings.json');
 			
 			// Copy a fresh copy of custom_settings
 			shell_exec('cp /var/lib/fabui/settings/default_settings.json /mnt/userdata/settings/custom_settings.json');
+			shell_exec('sudo chown 33.33 /mnt/userdata/settings/custom_settings.json');
 		}
 		// else keep the previous settings
 		

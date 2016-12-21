@@ -168,7 +168,7 @@ class History extends FAB_Controller {
 			$when = strtotime($task['finish_date']) > strtotime("-1 day") ? getTimePast($task['finish_date']) . ' ago' : date('d M, Y', strtotime($task['finish_date']));
 			$info = '<h4>';
 			if ($task['file_name'] != '')
-				$info .= '<a href="#filemanager/file/' . $task['id_file'] . '"><i class="fa fa fa-file-o"></i> ' . $task['client_name'] . '</a>';
+				$info .= '<a href="#projectsmanager/file/' . $task['id_file'] . '"><i class="fa fa fa-file-o"></i> ' . $task['client_name'] . '</a>';
 			if ($task['object_name'] != '')
 				$info .= ' <small>> <i class="fa fa fa-folder-open-o"></i> ' . $task['object_name'] . '</small>';
 			/*if (isset($attributes['mode_name']) && $attributes['mode_name'] != '')
@@ -188,8 +188,13 @@ class History extends FAB_Controller {
 			$td_9 = $task['type'];
 			$td_10 = $task['id_file'];
 			$td_11 = $task['id_object'];
+			
+			if( array_key_exists("rating", $attributes) )
+				$td_12 = $attributes['rating'];
+			else
+				$td_12 = 0;
 
-			$aaData[] = array($td_0, $td_1, $td_2, $td_3, $td_4, $td_5, $td_6, $td_7, $td_8, $td_9, $td_10, $td_11);
+			$aaData[] = array($td_0, $td_1, $td_2, $td_3, $td_4, $td_5, $td_6, $td_7, $td_8, $td_9, $td_10, $td_11, $td_12);
 
 		}
 		

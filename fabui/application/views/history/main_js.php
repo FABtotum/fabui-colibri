@@ -116,6 +116,7 @@
 			
 			var start_date = aData[6];
 			var finish_date = aData[7];
+			var rating = (aData[12] > 0)?'<i class="fa fa-star"></i>'.repeat(aData[12]):'Not rated';
 			var note =aData[8];
 			var type =aData[9];
 			var id_file = aData[10];
@@ -125,6 +126,7 @@
 			
 			table += '<tr><td width="100px">Started </td><td>'+start_date +'</td></tr>';
 			table += '<tr><td width="100px">Finished </td><td>'+finish_date +'</td></tr>';
+			table += '<tr><td width="100px">Rating </td><td>'+rating +'</td></tr>';
 			
 			if(note != '')
 			{
@@ -135,7 +137,7 @@
 			{
 				var action_url = '#make/'+type+'/file/' + id_file;
 				var action_button = '<a class="btn btn-xs btn-default" href="'+action_url+'"><i class="fa fa-play fa-rotate-90"></i> ' + type[0].toUpperCase() + type.slice(1) +' it again</a>';
-				var stats_button = '<a style="margin-left:5px;" class="btn btn-xs btn-default" href="#filemanager/file/'+id_file+'/stats"><i class="fa fa-area-chart"></i> Stats</a>';
+				var stats_button = '<a style="margin-left:5px;" class="btn btn-xs btn-default" href="#projectsmanager/file/'+id_file+'/stats"><i class="fa fa-area-chart"></i> Stats</a>';
 				
 				table += '<tr style="border:0px;">';
 				table += '<td width="100px"></td><td>' + action_button + stats_button + '</td>';
