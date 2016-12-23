@@ -1085,7 +1085,7 @@ class Projectsmanager extends FAB_Controller {
 		
 		$plugin_actions = array();
 		
-		$actions = getFileActionList($file_ext);
+		$actions = getFileActionList($file_ext, $file['print_type']);
 		foreach($actions as $action)
 		{
 			$plugin_actions[] = array(

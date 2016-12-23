@@ -22,7 +22,7 @@
 						<td>
 							<h4>
 								<a href="javascript:void(0)"><?php echo $plugin_info['name'] ?></a>
-								<small><?php echo $plugin_info['description'] ?> | <a  target="_blank" href="<?php echo $plugin_info['plugin_uri'] ?>"> visit plugin site</a></small>
+								<small><?php echo $plugin_info['description'] ?> | <a class="no-ajax" target="_blank" href="<?php echo $plugin_info['plugin_uri'] ?>"> visit plugin site</a></small>
 							</h4>
 							<p class="margin-top-10">
 								<?php if(isPluginActive($plugin)):  ?>

@@ -6,5 +6,6 @@
   "pid": "",
   "max_temp": "",
   "max_rpm": "",
+  "max_pwm": "255",
   "fw_id": "4"
 }

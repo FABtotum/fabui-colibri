@@ -92,7 +92,10 @@ if ( ! function_exists('getInstalledPlugins'))
 			if(is_dir($plugins_path.$_key))
 			{
 				$slug = trim($_key,'/');
-				$_installed_plugins[$slug] = getPluginInfo($slug);
+				if(file_exists($plugins_path.$_key.'meta.json'))
+				{
+					$_installed_plugins[$slug] = getPluginInfo($slug);
+				}
 			}
 		}
 		
@@ -224,9 +227,10 @@ if ( ! function_exists('getFileActionList'))
 	/**
 	 * Return a list of file actions provided by active plugins
 	 * @param ext File extension
+	 * @param type File print type
 	 * @return array of file-action hooks
 	 */
-	function getFileActionList($ext)
+	function getFileActionList($ext, $type = '')
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
@@ -243,8 +247,19 @@ if ( ! function_exists('getFileActionList'))
 				// safety check if "action" is defined
 				if( array_key_exists("action",$hook) && array_key_exists("filetypes", $hook) )
 				{
+					$type_match = false;
+					if(array_key_exists('printtypes', $hook))
+					{
+						$type_match = in_array($type, $hook['printtypes']);
+					}
+					
+					$ext_match = false;
+					if(array_key_exists('filetypes', $hook))
+					{
+						$ext_match = in_array($ext, $hook['filetypes']);
+					}
 					// check if the actions is what we are looking for
-					if( $hook['action'] == $action_type && in_array($ext, $hook['filetypes']) )
+					if( $hook['action'] == $action_type && ($ext_match || $type_match) )
 					{
 						$actions[] = $hook;
 					}
@@ -313,6 +328,17 @@ if ( ! function_exists('plugin_assets_url'))
 	}
 }
 
+if ( ! function_exists('plugin_path'))
+{
+	function plugin_path()
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$plugin_name = str_replace('plugin_', '', $CI->router->class);
+		$plugins_path = $CI->config->item('plugins_path');
+		return $plugins_path . '/' . $plugin_name;
+	}
+}
 
 //~ if ( ! function_exists('getManufactoringMapping'))
 //~ {

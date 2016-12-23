@@ -11,6 +11,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 class Plugin_{{plugin_slug}} extends FAB_Controller {
 
+	function __construct()
+	{
+		parent::__construct();
+		if(!$this->input->is_cli_request()){ //avoid this form command line
+			//check if there's a running task
+			//load libraries, models, helpers
+			$this->load->model('Tasks', 'tasks');
+			$this->runningTask = $this->tasks->getRunning();
+		}
+	}
+
 	public function index()
 	{
 		$this->load->library('smart');

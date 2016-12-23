@@ -428,8 +428,20 @@ if(!function_exists('checkManufactoring'))
 			return strtoupper($ext);
 		}
 		
-		$subtractiveRe = "/(M3\\s)|(M5\\s)|(M4\\s)|(M03\\s)/"; 
+		$subtractiveRe = "/(M450\\s)/"; 
 		$lines = explode(PHP_EOL, doCommandLine('head', '"'.$filePath.'"', array('-n' => $numLines)));
+		
+		foreach($lines as $line){
+			if(substr( $line, 0, 1 ) !== ';'){
+				preg_match($subtractiveRe, $line, $matches);
+				if(count($matches) > 0){
+					return 'laser';
+				}
+			}
+		}
+		
+		$subtractiveRe = "/(M3\\s)|(M5\\s)|(M4\\s)|(M03\\s)/"; 
+
 		foreach($lines as $line){
 			if(substr( $line, 0, 1 ) !== ';'){
 				preg_match($subtractiveRe, $line, $matches);
@@ -438,6 +450,7 @@ if(!function_exists('checkManufactoring'))
 				}
 			}
 		}
+		
 		return 'additive';
 	}
 }

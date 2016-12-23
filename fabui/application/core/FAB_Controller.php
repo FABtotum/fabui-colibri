@@ -50,7 +50,7 @@
 			}
 		}
 		//Prevent Blocking Requests
-		session_write_close();
+		//~ session_write_close();
     }
 	
 	/*
