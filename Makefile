@@ -14,24 +14,25 @@ LICENSE		?= GPLv2
 OS_FLAVOUR	?= colibri
 
 # FAB-UI system paths
-LIB_PATH		?= /var/lib/$(NAME)/
-SHARED_PATH		?= /usr/share/$(NAME)/
-METADATA_PATH	?= /var/lib/colibri/bundle/$(NAME)
-WWW_PATH		?= /var/www/
-MOUNT_BASE_PATH	?= /mnt/
-FABUI_PATH		?= $(SHARED_PATH)
-RECOVERY_PATH	?= $(WWW_PATH)recovery/
-UPLOAD_PATH_LNS ?= $(WWW_PATH)uploads
-UPLOAD_PATH		?= $(UPLOAD_PATH_LNS)/
-FABUI_TEMP_PATH	?= $(WWW_PATH)temp/
-PYTHON_PATH		?= $(FABUI_PATH)ext/py/
-BASH_PATH		?= $(FABUI_PATH)ext/bash/
-TEMP_PATH		?= /tmp/
-RUN_PATH		?= /run/$(NAME)/
-BIGTEMP_PATH	?= $(MOUNT_BASE_PATH)bigtemp/
-USERDATA_PATH	?= $(MOUNT_BASE_PATH)userdata/
-DB_PATH			?= $(LIB_PATH)/
-USB_MEDIA_PATH	?= /run/media/
+LIB_PATH		 ?= /var/lib/$(NAME)/
+SHARED_PATH		 ?= /usr/share/$(NAME)/
+COLIBRI_LIB_PATH ?= /var/lib/colibri/
+METADATA_PATH	 ?= $(COLIBRI_LIB_PATH)bundle/$(NAME)
+WWW_PATH		 ?= /var/www/
+MOUNT_BASE_PATH	 ?= /mnt/
+FABUI_PATH		 ?= $(SHARED_PATH)
+RECOVERY_PATH	 ?= $(WWW_PATH)recovery/
+UPLOAD_PATH_LNS  ?= $(WWW_PATH)uploads
+UPLOAD_PATH		 ?= $(UPLOAD_PATH_LNS)/
+FABUI_TEMP_PATH	 ?= $(WWW_PATH)temp/
+PYTHON_PATH		 ?= $(FABUI_PATH)ext/py/
+BASH_PATH		 ?= $(FABUI_PATH)ext/bash/
+TEMP_PATH	 	 ?= /tmp/
+RUN_PATH		 ?= /run/$(NAME)/
+BIGTEMP_PATH	 ?= $(MOUNT_BASE_PATH)bigtemp/
+USERDATA_PATH	 ?= $(MOUNT_BASE_PATH)userdata/
+DB_PATH			 ?= $(LIB_PATH)/
+USB_MEDIA_PATH	 ?= /run/media/
 
 # FAB-UI parameters
 SERIAL_PORT 	?= /dev/ttyAMA0
