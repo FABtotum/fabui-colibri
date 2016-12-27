@@ -30,7 +30,28 @@ if ( !function_exists('arrayFromPost'))
 			}else{
 				$stringToEval .= '$stringArray["'.$key.'"]';
 			}
-			$stringToEval .= ' = "'.$value.'";';
+			
+			if( is_array($value) )
+			{
+				$partial = arrayFromPost($value);
+				$stringToEval .= ' = array(';
+				$first = True;
+				foreach($partial as $val)
+				{
+					if($first)
+					{
+						$first = False;
+					}
+					else
+						$stringToEval .= ', ';
+					$stringToEval .= '"'.$val.'"';
+				}
+				$stringToEval .= ' );';
+			}
+			else
+			{
+				$stringToEval .= ' = "'.$value.'";';
+			}
 		}
 		return eval($stringToEval.' return $stringArray;');
 	}	
