@@ -16,6 +16,7 @@
  		parent::__construct();
  	}
  	
+ 	/*
 	public function index()
 	{
 		if(!$this->input->is_cli_request()){
@@ -46,7 +47,42 @@
 		$this->addJsInLine($this->load->view('updates/index/js','', true));
 		
 		$this->view();
-	}
+	}*/
+ 	
+ 	public function index()
+ 	{
+ 		if(!$this->input->is_cli_request()){
+ 			$this->load->model('Tasks', 'tasks');
+ 			//$this->tasks->truncate();
+ 			$this->runningTask = $this->tasks->getRunning('updates');
+ 		}
+
+ 		//load helpers
+ 		$this->load->helper('layout');
+ 		$this->load->library('smart');
+ 		
+ 		$data = array();
+ 		$data['runningTask'] = $this->runningTask;
+ 		
+ 		$widgetOptions = array(
+ 				'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
+ 				'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
+ 		);
+ 		
+ 		$widget = $this->smart->create_widget($widgetOptions);
+ 		$widget->id = 'updates-widget';
+ 		$widget->class = 'well';
+ 		
+ 		$widget->body   = array('content' => $this->load->view('updates/index/widget', $data, true ));
+ 		
+ 		//$this->content = $this->load->view('updates/index/widget', $data, true );
+ 		$this->content  = $widget->print_html(true);
+ 		$this->addCSSInLine('<style>.table-forum tr td>i {padding-left:0px};.checkbox{margin-top:0px !important;}</style>');
+ 		$this->addJsInLine($this->load->view('updates/index/js','', true));
+ 		$this->addCssFile('/assets/css/updates/style.css');
+ 		$this->addJSFile('/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js'); //datatable
+ 		$this->view();
+ 	}
 	
 	/**
 	 * get bundles status
@@ -87,10 +123,7 @@
 				'-b' => implode(',', $bundles)
 		);
 		startPyScript('update.py', $updateArgs, true, true);
-		
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
-		
-		
 	}
 			
  }

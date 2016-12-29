@@ -28,22 +28,22 @@ if(!function_exists('getLocalBundles')){
 		unset($list[0]); //remove comand argument
 		
 		$bundles = array();
-		$states = array('A'=> 'active', 'D'=>'disabled');
+		$states = array('A'=> 'active', 'D'=>'disabled', '-' => 'unknown');
 		
-		$re = '/\[(\!*)(A|D|)\]\s(\d+)\s:(\s.*?\s):\s([0-9.]+)/';
+		$re = '/\[(\!*)(A|D|-|)\]\s(\d+)\s:(\s.*?\s):\s([0-9.]+)/';
 		
 		foreach($list as $line){
 			preg_match_all($re, $line, $matches);
 			$bundle_name = isset($matches[4]) ? trim($matches[4][0]) : '';
 			$temp = array(
-					'name'     => $bundle_name, 
-					'version'  => isset($matches[5]) ? $matches[5][0] : '',
-					'state'    => isset($matches[2]) ? $states[$matches[2][0]] : '',
-					'priority' => isset($matches[3]) ? $matches[3][0] : '',
-					'invalid'  => isset($matches[1]) && $matches[1][0] == '!' ? true : false,
-					'info'     => getBundleInfo($bundle_name, 'info'),
-					'licenses' => getBundleInfo($bundle_name, 'licenses'),
-					'packages' => getBundleInfo($bundle_name, 'packages')		
+				'name'     => $bundle_name, 
+				'version'  => isset($matches[5]) ? $matches[5][0] : '',
+				'state'    => isset($matches[2]) ? $states[$matches[2][0]] : '',
+				'priority' => isset($matches[3]) ? $matches[3][0] : '',
+				'invalid'  => isset($matches[1]) && $matches[1][0] == '!' ? true : false,
+				'info'     => getBundleInfo($bundle_name, 'info'),
+				'licenses' => getBundleInfo($bundle_name, 'licenses'),
+				'packages' => getBundleInfo($bundle_name, 'packages')		
 			);
 			$bundles[$bundle_name] = $temp;
 		}
@@ -196,15 +196,17 @@ if(!function_exists('getBundleInfo'))
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		
-		$content = explode(PHP_EOL, trim(file_get_contents($CI->config->item('bundles_path').$bundle.'/'.$type)));
 		$infos = array();
 		
-		foreach($content as $row)
-		{
-			if($row != ''){
-				$temp = explode(':', trim($row));
-				$key = str_replace('-', '_', trim($temp[0]));
-				$infos[$key] = trim($temp[1]);
+		if(file_exists($CI->config->item('bundles_path').$bundle.'/'.$type)){
+			$content = explode(PHP_EOL, trim(file_get_contents($CI->config->item('bundles_path').$bundle.'/'.$type)));
+			foreach($content as $row)
+			{
+				if($row != ''){
+					$temp = explode(':', trim($row));
+					$key = str_replace('-', '_', trim($temp[0]));
+					$infos[$key] = trim($temp[1]);
+				}
 			}
 		}
 		return $infos;

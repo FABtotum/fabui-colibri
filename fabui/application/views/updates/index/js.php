@@ -6,62 +6,72 @@
  * @license https://opensource.org/licenses/GPL-3.0
  * 
  */
- 
 ?>
 <script type="text/javascript">
 	$(document).ready(function() {
-		<?php if(!$runningTask): ?>
-		checkBundleStatus();
+		<?php if($runningTask): ?>
+		resumeTask();
 		<?php else: ?>
-		initRunningTask();
+		checkBundleStatus();
 		<?php endif; ?>
-		$("#check-again").on('click', checkBundleStatus);
-		$("#do-update").on('click', doUpdate);
 	});
-	/***
+	/**
+	* ============================================================
+	**/
+	/**
 	*
 	**/
 	function checkBundleStatus()
 	{
-		$(".status").html('<h5><i class="fa  fa-spin fa-spinner txt-color-black"></i> Check for updates</h5>');
-		disableButton('.action-buttons');
+		$(".status").html('<i class="fa fa-spinner fa-spin"></i> checking for updates');
 		$.ajax({
 			type: "POST",
 			url: "<?php echo site_url('updates/bundleStatus') ?>",
 			dataType: 'json'
 		}).done(function(response) {
-			enableButton('.action-buttons');
 			if(response.remote_connection == false){
-				showNoConnectionAvailable();
+				noInternetAvailable();
 			}else{
-				showUpdateAvailable(response.update);
+				handleAvailableUpdates(response);
 			}
-			disableButton("#do-abort");
-			crateBundlesTable(response);
 		});
 	}
-	/***
-	*
+	/**
+	* 
 	**/
-	function initRunningTask()
+	function noInternetAvailable()
 	{
 	}
-	/***
+	/**
 	*
 	**/
-	function showNoConnectionAvailable()
-	{
-		var html = '<h5>No connection available</h5>';
-		disableButton("#do-update");
-		disableButton("#do-abort");
-		$('.status').html(html);
+	function handleAvailableUpdates(object) {
+
+		$('.fabtotum-icon').parent().addClass('tada animated');
+		
+		if(object.update.available){
+			$(".status").html('<i class="fa fa-exclamation-circle"></i> New important software updates are now available');
+			$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-exclamation-circle');
+			
+			var buttons = '';
+			buttons += '<button class="btn btn-default  action-buttons" id="do-update"><i class="fa fa-refresh"></i> Update</button> ';
+			buttons += '<button class="btn btn-default  action-buttons" id="bundle-details"><i class="fa fa-reorder"></i> View details</button> ';
+
+			$(".button-container").html(buttons);
+			crateBundlesTable(object);
+
+			$("#bundle-details").on('click', showHideBundlesDetails);
+			$("#do-update").on('click', doUpdate);
+
+		}else{
+			$(".status").html('Great! Your FABtotum Personal Fabricator is up to date');
+		}
 	}
-	/***
-	*
-	**/
+
+
 	function crateBundlesTable(data)
 	{
-		var html = '<table id="bundles-table" class="table table-striped table-forum">' + 
+		var html = '<table id="bundles-table" class="table  table-forum">' + 
 		 				'<thead>' +
 							'<tr>' +
 								'<th colspan="2">Bundle</th>' +
@@ -73,27 +83,41 @@
 						'<tbody>';
 
 		$.each(data.bundles, function(bundle_name, object) {
+			if(object.need_update){
+				var tr_class = 'warning';
+				var icon = 'fa fa-exclamation-circle text-muted';
+				var checked = 'checked="checked"';
 
-			var tr_class = '';
-			var icon = '';
-			var checked = '';
-
-			if(data.remote_connection){
-				tr_class = object.need_update ? 'warning' : '';
-				icon = object.need_update ? 'fa fa-times text-muted' : 'fa fa-check text-muted';
-				checked = object.need_update ? 'checked="checked"' : '';
+				html += '<tr id="tr-' + bundle_name + '" class="' + tr_class + '">' +
+		        	'<td  class="text-center" style="width:40px;"><i id="icon-'+ bundle_name +'" class="'+ icon + '"></i></td>' +
+		        	'<td><h4><a href="javascript:void(0)">' + bundle_name.capitalize() + '</a> <small></small>' + 
+		        	'<small id="small-'+ bundle_name +'">Installed version: ' + object.local +' | Build date: ' + object.info.build_date + '</small>' +
+		        	'</h4></td>' + 
+		        	/*'<td class="text-center">' + object.local + '</td>'+*/
+		        	'<td class="text-center">' + object.latest + ' </td>' +
+		        	'<td class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px;"><label><input value="'+bundle_name +'" type="checkbox" '+checked +' class="checkbox"><span></span></label></div></td>' + 
+		        '</tr>';
 			}
-			
-			html += '<tr id="tr-' + bundle_name + '" class="' + tr_class + '">' +
-			        	'<td  class="text-center" style="width:40px;"><i id="icon-'+ bundle_name +'" class="'+ icon + '"></i></td>' +
-			        	'<td><h4><a href="javascript:void(0)">' + bundle_name.capitalize() + '</a> <small></small>' + 
-			        	'<small id="small-'+ bundle_name +'">Installed version: ' + object.local +' | Build date: ' + object.info.build_date + '</small>' +
-			        	'</h4></td>' + 
-			        	/*'<td class="text-center">' + object.local + '</td>'+*/
-			        	'<td class="text-center">' + object.latest + ' </td>' +
-			        	'<td class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px;"><label><input value="'+bundle_name +'" type="checkbox" '+checked +' class="checkbox"><span></span></label></div></td>' + 
-			        '</tr>';
 		});
+
+		$.each(data.bundles, function(bundle_name, object) {
+			if(!object.need_update){
+				var tr_class = '';
+				var icon = 'fa fa-check text-muted';
+				var checked = '';
+
+				html += '<tr id="tr-' + bundle_name + '" class="' + tr_class + '">' +
+		        	'<td  class="text-center" style="width:40px;"><i id="icon-'+ bundle_name +'" class="'+ icon + '"></i></td>' +
+		        	'<td><h4><a href="javascript:void(0)">' + bundle_name.capitalize() + '</a> <small></small>' + 
+		        	'<small id="small-'+ bundle_name +'">Installed version: ' + object.local +' | Build date: ' + object.info.build_date + '</small>' +
+		        	'</h4></td>' + 
+		        	/*'<td class="text-center">' + object.local + '</td>'+*/
+		        	'<td class="text-center">' + object.latest + ' </td>' +
+		        	'<td class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px;"><label><input value="'+bundle_name +'" type="checkbox" '+checked +' class="checkbox"><span></span></label></div></td>' + 
+		        '</tr>';
+			}
+		});
+		
 		html +=    		'<tbdoy>' + 
 					'</table>';
 		if(data.update.number > 0) {
@@ -107,33 +131,42 @@
 			});
 		});
 	}
-	/***
+	/**
 	*
 	**/
-	function showUpdateAvailable(update)
+	function showHideBundlesDetails()
 	{
-		var label = 'Great! Your FABtotum Personal Fabricator is up to date';
-		if(update.available){
-			label = '<i class="fa fa-refresh"></i> New important software updates are now available';
+		var button = $(this);
+		
+		if($('.fabtotum-icon').is(":visible")){
+			
+			$(".fabtotum-icon").slideUp(function(){
+				$(".tabs-container").slideDown(function(){
+					button.html("<i class='fa fa-reorder'></i> Hide details");
+				});
+			});
+		}else{
+			$(".tabs-container").slideUp(function(){
+				$(".fabtotum-icon").slideDown(function(){
+					$(".fabtotum-icon").css( "display", "inline" );
+					button.html("<i class='fa fa-reorder'></i> View details");
+				});
+				
+			});
 		}
-		$('.status').html('<h5>' + label + '</h5>');
 	}
-	/***
+	/**
 	*
 	**/
 	function doUpdate()
 	{
+		disableButton('.action-buttons');
 		var bundles_to_update = [];
 		$("#bundles-table").find("tr > td input:checkbox").each(function () {
 			if($(this).is(':checked')){
 				bundles_to_update.push($(this).val());
 			}
 		});
-		$("#bundles-table > tbody > tr").each(function(){
-			$(this).removeClass('warning');
-		});
-		
-		
 		startUpdate(bundles_to_update);
 	}
 	/**
@@ -147,7 +180,25 @@
 			url: "<?php echo site_url('updates/startUpdate') ?>",
 			dataType: 'json'
 		}).done(function(response) {
+			initTask();
 		});
+	}
+	/*
+	*
+	**/
+	function showHideUpdateDetails()
+	{
+		var button = $(this);
+
+		if($(".update-details").is(":visible")){
+			$(".update-details").slideUp(function(){
+				button.html("<i class='fa fa-reorder'></i> View details");
+			});
+		}else{
+			$(".update-details").slideDown(function(){
+				button.html("<i class='fa fa-reorder'></i> Hide details");
+			});
+		}
 	}
 	/**
 	*
@@ -162,43 +213,131 @@
 	**/
 	function handleTask(data)
 	{
-		console.log("HANDLE TASK");
 		var task    = data.task;
 		var bundles = data.update.bundles;
 		var current = data.update.current;
+	
+		handleTaskStatus(task.status);
+		handleCurrent(data.update.current);
+		handleUpdate(data.update);
 
-		var status_label = '';
-
-		
-		
-		$('.status').html('<h5><i class="fa fa-refresh fa-spin"></i> ' + current.status.capitalize() + ' : '+ current.bundle.capitalize() +'</h5>');
-		
-		$.each(bundles, function(i, item) {
-
-			if(current.bundle == i){
-				$("#icon-" + i).removeClass().addClass('fa fa-cog fa-spin fa-fw');
-				$("#tr-" + i).removeClass().addClass('warning');
-
-				if(item.status == 'downloading'){
-					$("#small-"+i).html('<i class="fa fa-download"></i> Downloading (' +  parseInt(item.files.bundle.progress) + ' %)');
-				}else if(item.status == 'intsalling'){
-					$("#small-"+i).html('<i class="fa fa-check"></i> Installing');
-				}
-			}else{
-				$("#icon-" + i).removeClass();
-				$("#tr-" + i).removeClass();
-				if(item.status == 'downloaded'){
-					$("#small-"+i).html('<i class="fa fa-check"></i> Downloaded');
-				}else if(item.status == 'installed'){
-					$("#small-"+i).html('<i class="fa fa-check"></i> installed');
-				}else {
-					$("#small-"+i).html(item.status);
-				}
-				
-				
+	}
+	/**
+	*
+	**/
+	function handleTaskStatus(status)
+	{
+		switch(status){ 
+			case 'preparing':
+				$(".status").html('Connecting to update server...');
+				break;
+			case 'runnning':
+				break;
+			case 'completed':
+				$(".status").html('<i class="fa fa-check"></i> Update completed');
+				$('.fabtotum-icon .badge').addClass('check').find('i').removeClass('fa-spin fa-refresh').addClass('fa-check');
+				$("#do-abort").remove();
+				fabApp.unFreezeMenu();
+				$(".small").html('A reboot is needed to apply new features');
+				if($("#do-reboot").length == 0) $(".button-container").append('<button class="btn btn-default  action-buttons" id="do-reboot"> Reboot now</button>')
+				$('.fabtotum-icon').parent().removeClass().addClass('tada animated');
+				$("#do-reboot").on('click', fabApp.reboot);
+				break;
+		}
+	}
+	/**
+	*
+	**/
+	function handleCurrent(current)
+	{
+		if(current.status != ''){
+			switch(current.status){
+				case 'downloading' :
+					$(".status").html('<i class="fa fa-download"></i> Downloading bundle (' + current.bundle.capitalize() +')');
+					break;
+				case 'installing' :
+					$(".status").html('<i class="fa fa-gear fa-spin"></i> Installing bundle  (' + current.bundle.capitalize() +')');
+					break;
 			}
+		}
+	}
+	/**
+	*
+	**/
+	function handleUpdate(object)
+	{
+		var table = '<table class="table  table-forum"><thead><tr></tr></thead><tbody>';
+		
+		$.each(object.bundles, function(bundle_name, bundle) {
 			
+			var tr_class = bundle.status == 'error' ? 'warning' : '';
+			
+			table += '<tr class="'+ tr_class +'">';
+			table += '<td width="20" class="text-center"></td>';
+			table += '<td><h4><a href="javascript:void(0);">' + bundle_name.capitalize() + '</a>';
+			
+			switch(bundle.status){
+				case 'downloading':
+					label = '<p><i class="fa fa-download"></i> Downloading (' + humanFileSize(bundle.files.bundle.size)  + ') <span class="pull-right">'+ parseInt(bundle.files.bundle.progress)  +'%</span></p>'+
+						'<div class="progress progress-xs"> '+
+							'<div class="progress-bar bg-color-blue" style="width: '+ parseInt(bundle.files.bundle.progress) +'%;"></div> '+
+						'</div>';
+					break;
+				case 'downloaded':
+					label = '<i class="fa fa-check"></i> Downloaded';
+					break;
+				case 'installing':
+					label = '<i class="fa fa-gear fa-spin"></i> Installing ';
+					break;
+				case 'installed':
+					label = '<i class="fa fa-check"></i> Installed';
+					break;
+				case 'error':
+					label = '<p><i class="fa fa-times"></i> Error</p>' +
+							'<p>' + bundle.message.replaceAll('\n', '<br>') + '</p>';
+					console.log(label);
+					break;
+				default:
+					label = bundle.status;
+					break;
+			}
+			table += '<small>' + label + '</small>';
+			table += '</h4></td>';
+			table += '</tr>';
 		});
 		
+		table += '</tbody></table>';
+		
+		$(".update-details").html(table);
+	}
+	/**
+	*
+	**/
+	function resumeTask()
+	{
+		initTask();
+	}
+	/**
+	*
+	**/
+	function initTask()
+	{
+		fabApp.freezeMenu('updates');
+		$(".small").html('Please don\'t turn off the printer until the operation is completed');
+		
+		$(".tabs-container").slideUp(function() {
+			$(".fabtotum-icon").slideDown(function(){
+				$(".fabtotum-icon").css( "display", "inline" );
+				$('.fabtotum-icon .badge').find('i').removeClass('fa-exclamation-circle').addClass('fa-spin fa-refresh');
+
+				var buttons = '';
+				buttons += '<button class="btn btn-default  action-buttons" id="do-abort"><i class="fa fa-times"></i> Abort</button> ';
+				buttons += '<button class="btn btn-default  action-buttons" id="update-details"><i class="fa fa-reorder"></i> View details</button> ';
+
+				$(".button-container").html(buttons);
+				$("#update-details").on('click', showHideUpdateDetails);
+				
+			});
+		});
 	}
 </script>
