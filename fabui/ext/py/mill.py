@@ -99,9 +99,9 @@ class MillApplication(GCodePusher):
         self.prepare_task(task_id, task_type='mill', gcode_file=gcode_file)
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
-        if self.standalone:
+        #if self.standalone:
             #~ self.exec_macro("check_pre_print")
-            self.exec_macro("start_subtractive")
+            #self.exec_macro("start_subtractive")
         
         self.send_file(gcode_file)
         

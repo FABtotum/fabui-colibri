@@ -151,6 +151,7 @@ def auto_bed_leveling(app, args = None):
     #app.macro("G91",                "ok", 2,    _("Setting relative position"), verbose=False)
     #app.macro("G0 Z25 F1000",       "ok", 2,    _("Moving away from the plane"), verbose=False)
     #app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False)
+    app.macro("G28",                "ok", 90,   _("Homing all axis") )
     app.macro("G28 X Y",                "ok", 90,   _("Homing all axis") )
     app.macro("G29",                "ok", 140,  _("Auto bed leveling procedure") )
     app.macro("G0 X5 Y5 Z60 F2000", "ok", 100,  _("Getting to idle position") )

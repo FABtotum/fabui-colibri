@@ -336,7 +336,28 @@ if ( ! function_exists('plugin_path'))
 		$CI->config->load('fabtotum');
 		$plugin_name = str_replace('plugin_', '', $CI->router->class);
 		$plugins_path = $CI->config->item('plugins_path');
-		return $plugins_path . '/' . $plugin_name;
+		return $plugins_path . $plugin_name;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('startPluginPyScript'))
+{
+	/**
+	 * start python task
+	 */
+	function startPluginPyScript($script, $params = '', $background = true, $sudo = false)
+	{
+		$CI =& get_instance();
+		$CI->load->helper('fabtotum_helper');
+		$CI->config->load('fabtotum');
+		//~ $extPath = $CI->config->item('ext_path');
+		$extPath = plugin_path() . '/scripts/';
+		// TODO: check trailing /
+		$cmd = 'python';
+		if($sudo)
+			$cmd = 'sudo ' . $cmd;
+		return doCommandLine($cmd, $extPath.'py/'.$script, $params, $background);
 	}
 }
 

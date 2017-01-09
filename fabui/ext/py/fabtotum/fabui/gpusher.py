@@ -524,7 +524,14 @@ class GCodePusher(object):
             if old_progress != progress:
                 old_progress = progress
                 dur = float(self.task_stats['duration'])
-                if progress == 0.0 or self.standardized_stats['print']['first_move'] == False:
+                
+                first_move = False
+                if 'print' in self.standardized_stats:
+                    first_move = self.standardized_stats['print']['first_move']
+                elif 'mill' in self.standardized_stats:
+                    first_move = self.standardized_stats['mill']['first_move']
+                
+                if progress == 0.0 or first_move == False:
                     self.task_stats['estimated_time'] = 0
                 else:
                     self.task_stats['estimated_time'] = (( dur / float(progress)) * 100.0)
@@ -595,7 +602,7 @@ class GCodePusher(object):
                     
             elif gfile.info['type'] == GCodeInfo.MILL or gfile.info['type'] == GCodeInfo.DRILL:
                     self.mill_stats = {
-                        # Place holder
+                        'first_move'    : False
                     }
                     self.add_monitor_group('mill', self.mill_stats)
                     
