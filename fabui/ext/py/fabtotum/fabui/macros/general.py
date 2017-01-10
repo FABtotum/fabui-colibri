@@ -225,6 +225,9 @@ def set_ambient_color(app, args = None):
     app.macro("M702 S{0}".format(green),   "ok", 1,    _("Setting Green Color"))
     app.macro("M703 S{0}".format(blue),   "ok", 1,    _("Setting Blue Color"))
 
+def install_head(app, args = None):
+    pass
+
 def read_eeprom(app, args = None):
         
     def serialize(string_source, regex_to_serach, keys):

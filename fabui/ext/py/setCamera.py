@@ -11,7 +11,10 @@ import ConfigParser
 import gettext
 
 # Import external modules
-from picamera import PiCamera
+try:
+    from picamera import PiCamera
+except:
+    pass
 
 # Import internal modules
 from fabtotum.os.paths  import CAMERA_INI
@@ -26,11 +29,11 @@ if os.path.exists(CAMERA_INI) == False:
     file.write("[camera]\n")
     file.close()
 
-camera = PiCamera()
 camera_version = "v1"
 
 try:
     # Try to set max resolution for v2 camera
+    camera = PiCamera()
     camera.resolution = (3280, 2464)
     camera_version = "v2"
 except:

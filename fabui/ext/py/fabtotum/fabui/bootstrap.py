@@ -278,16 +278,44 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     # Load Head
     #~ try:
     head_file = os.path.join( config.get('hardware', 'heads'), config.get('settings', 'hardware.head') + '.json');
-    with open(head_file) as json_f:
-        head = json.load(json_f)
-    # Set head PID
-    gcs.send( head['pid'] )
-    # Set installed head
-    gcs.send( "M793 S{0}".format( head['fw_id'] ), group='bootstrap' )
-    # Save settings
-    gcs.send( "M500", group='bootstrap' )
-    #~ except Exception as e:
-        #~ print "ERROR", e
+    
+    try:
+        with open(head_file) as json_f:
+            head = json.load(json_f)
+            
+        pid     = head.get('pid')
+        th_idx  = int(head.get('thermistor_index', 0))
+        mode    = int(head.get('working_mode', 0))
+        offset  = float(head.get('probe_offset', 0))
+        fw_id   = int(head.get('fw_id',0))
+        max_temp= int(head.get('max_temp',0))
+        
+        # Set head PID
+        if pid is not None:
+            gcs.send( head['pid'], group='bootstrap' )
+        
+        # Set Thermistor index
+        gcs.send( "M800 S{0}".format( th_idx ), group='bootstrap' )
+        
+        # Set max_temp
+        if max_temp > 25:
+            gcs.send( "M801 S{0}".format( max_temp ), group='bootstrap' )
+        
+        # Working mode
+        gcs.send( "M450 S{0}".format( mode ), group='bootstrap' )
+        
+        # Set installed head
+        if fw_id is not None:
+            gcs.send( "M793 S{0}".format( fw_id ), group='bootstrap' )
+        
+        # Set probe offset
+        if offset:
+            gcs.send( "M710 S{0}".format( offset ), group='bootstrap' )
+        
+        # Save settings
+        gcs.send( "M500", group='bootstrap' )
+    except Exception as e:
+        print "ERROR (head install)", e
         
     # Execute version specific intructions
     HW_VERSION_CMDS = {

@@ -23,6 +23,8 @@ __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
 # Import standard python module
+import os
+import json
 import gettext
 
 # Import external modules
@@ -77,6 +79,17 @@ def probe_setup_calibrate(app, args = None):
     # write config to EEPROM
     z_probe_new = abs( z_probe_old + (z_touch - 0.1) )
     app.macro("M710 S{0}".format(z_probe_new), "ok", 2, _("Write config to EEPROM"), verbose=False)
+    
+    # Store offset to head config
+    head_file = os.path.join( app.config.get('hardware', 'heads'), app.config.get('settings', 'hardware.head') + '.json');
+    with open(head_file) as json_f:
+        head_info = json.load(json_f)
+        
+    head_info['probe_offset'] = str(round(z_probe_new,2))
+    
+    with open(head_file, 'w') as outfile:
+        json.dump(head_info, outfile, sort_keys=True, indent=4)
+    #############################
     
     app.macro("G90",            "ok", 2,    _("Abs_mode"),  verbose=False)
     app.macro("G0 Z50 F1000",   "ok", 3,    _("Moving the plane"), verbose=False)

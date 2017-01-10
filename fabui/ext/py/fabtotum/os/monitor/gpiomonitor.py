@@ -29,7 +29,10 @@ import gettext
 import time
 
 # Import external modules
-import RPi.GPIO as GPIO
+try:
+    import RPi.GPIO as GPIO
+except:
+    pass
 
 # Import internal modules
 from fabtotum.fabui.config import ConfigService
@@ -54,28 +57,31 @@ class GPIOMonitor:
         """
         Triggered when a level change on a pin is detected.
         """
-        self.log.debug("====== START ============")
-        GPIO_STATUS = GPIO.input(self.ACTION_PIN)
-        self.log.debug('GPIO STATUS: %s', str(GPIO_STATUS))
-        
-        if GPIO_STATUS == 0:
-            reply = self.gcs.send("M730", group='*')
-            #print 'M730:', reply
-            print "Checking"
-            if reply:
-                if len(reply) > 1:
-                    search = re.search('ERROR\s:\s(\d+)', reply[-2])
-                    if search != None:
-                        errorNumber = int(search.group(1))
-                        self.log.warning("Totumduino error no.: %s", errorNumber)
-                        self.manageErrorNumber(errorNumber)
-                    else:
-                        self.log.error("Totumduino unrecognized error: %s", reply[0])
+        try:
+            self.log.debug("====== START ============")
+            GPIO_STATUS = GPIO.input(self.ACTION_PIN)
+            self.log.debug('GPIO STATUS: %s', str(GPIO_STATUS))
+            
+            if GPIO_STATUS == 0:
+                reply = self.gcs.send("M730", group='*')
+                #print 'M730:', reply
+                print "Checking"
+                if reply:
+                    if len(reply) > 1:
+                        search = re.search('ERROR\s:\s(\d+)', reply[-2])
+                        if search != None:
+                            errorNumber = int(search.group(1))
+                            self.log.warning("Totumduino error no.: %s", errorNumber)
+                            self.manageErrorNumber(errorNumber)
+                        else:
+                            self.log.error("Totumduino unrecognized error: %s", reply[0])
 
-        #GPIO_STATUS = GPIO.HIGH
-        GPIO_STATUS = GPIO.input(self.ACTION_PIN)
-        self.log.debug('GPIO STATUS on EXIT: %s', str(GPIO_STATUS))
-        self.log.debug("======= EXIT ============")
+            #GPIO_STATUS = GPIO.HIGH
+            GPIO_STATUS = GPIO.input(self.ACTION_PIN)
+            self.log.debug('GPIO STATUS on EXIT: %s', str(GPIO_STATUS))
+            self.log.debug("======= EXIT ============")
+        except:
+            pass
 
     def manageErrorNumber(self, error):
         alertErrors = [110]
@@ -99,31 +105,34 @@ class GPIOMonitor:
 
     def start(self):
         """ Start gpio event detection """
-        # Setup BCM GPIO numbering
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setwarnings(False)
-        # Set GPIO as input (button)
-        #~ GPIO.setup(self.ACTION_PIN, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-        GPIO.setup(self.ACTION_PIN, GPIO.IN)
-        # Register callback function for gpio event, callbacks are handled from a separate thread
-        GPIO.add_event_detect(self.ACTION_PIN, GPIO.BOTH, callback=self.gpioEventListener, bouncetime=300)
-        
-        self.log.debug("GPIOMonitor: Started")
-        GPIO_STATUS = GPIO.input(self.ACTION_PIN)
-        self.log.debug('GPIO STATUS on STARTUP: %s', str(GPIO_STATUS))
-        
-        if GPIO_STATUS == 0:
-            reply = self.gcs.send("M730", group='*')
-            if reply:
-                if len(reply) > 1:
-                    search = re.search('ERROR\s:\s(\d+)', reply[-2])
-                    if search != None:
-                        errorNumber = int(search.group(1))
-                        self.log.warning("Totumduino error no.: %s", errorNumber)
-                        self.manageErrorNumber(errorNumber)
-                    else:
-                        self.log.error("Totumduino unrecognized error: %s", reply[0])
-                        
+        try:
+            # Setup BCM GPIO numbering
+            GPIO.setmode(GPIO.BCM)
+            GPIO.setwarnings(False)
+            # Set GPIO as input (button)
+            #~ GPIO.setup(self.ACTION_PIN, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+            GPIO.setup(self.ACTION_PIN, GPIO.IN)
+            # Register callback function for gpio event, callbacks are handled from a separate thread
+            GPIO.add_event_detect(self.ACTION_PIN, GPIO.BOTH, callback=self.gpioEventListener, bouncetime=300)
+            
+            self.log.debug("GPIOMonitor: Started")
+            GPIO_STATUS = GPIO.input(self.ACTION_PIN)
+            self.log.debug('GPIO STATUS on STARTUP: %s', str(GPIO_STATUS))
+            
+            if GPIO_STATUS == 0:
+                reply = self.gcs.send("M730", group='*')
+                if reply:
+                    if len(reply) > 1:
+                        search = re.search('ERROR\s:\s(\d+)', reply[-2])
+                        if search != None:
+                            errorNumber = int(search.group(1))
+                            self.log.warning("Totumduino error no.: %s", errorNumber)
+                            self.manageErrorNumber(errorNumber)
+                        else:
+                            self.log.error("Totumduino unrecognized error: %s", reply[0])
+        except:
+            pass
+            
     def stop(self):
         """ Place holder """
         pass

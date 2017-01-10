@@ -4,8 +4,10 @@
   "description": "The <strong>Laser head V1</strong> features a 500mW laser.",
   "link": "https://store.fabtotum.com/eu/store/laser-head-v1.html",
   "pid": "",
-  "max_temp": "",
-  "max_rpm": "",
-  "max_pwm": "255",
+  "probe_offset": "0",
+  "max_temp": "0",
+  "max_rpm": "0",
+  "thermistor_index" : "0",
+  "working_mode" : "2",
   "fw_id": "4"
 }

@@ -46,6 +46,7 @@ PRESET_MAP = {
     "read_eeprom"                   : general_macros.read_eeprom,  
     "set_ambient_color"             : general_macros.set_ambient_color,  
     "version"                       : general_macros.version,  
+    "install_head"                  : general_macros.install_head,
     
     # Print
     "check_pre_print"               : print_macros.check_pre_print,

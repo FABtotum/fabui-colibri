@@ -97,10 +97,25 @@ class Head extends FAB_Controller {
 		$head_info = $heads[$new_head];
 		$pid	   = $head_info['pid'];
 		$fw_id	   = $head_info['fw_id'];
+		$mode	   = $head_info['working_mode'];
+		$th_idx	   = $head_info['thermistor_index'];
+		$max_temp  = $head_info['max_temp'];
+		$offset    = $head_info['probe_offset'];
 
 		if ($pid != '') {
 			doGCode( array($pid, 'M500') );
 		}
+		
+		if( intval($max_temp) > 25 ) {
+			doGCode( array('M801 S'.$max_temp) );
+		}
+		
+		doGCode( array('M800 S'.$th_idx, 'M450 S'.$mode) );
+		
+		if($offset != "0") {
+			doGCode( array('M710 S'.$offset) );
+		}
+		
 		doGCode( array('M793 S'.$fw_id, 'M500', 'M999', 'G4 P500', 'M728') );
 
 		$_data['hardware']['head'] = $new_head;

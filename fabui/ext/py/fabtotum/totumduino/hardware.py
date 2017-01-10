@@ -24,7 +24,10 @@ import time
     
 # Import external modules
 import serial
-import RPi.GPIO as GPIO
+try:
+    import RPi.GPIO as GPIO
+except:
+    pass
 
 # Import internal modules
 from fabtotum.fabui.config import ConfigService
@@ -33,19 +36,22 @@ def reset():
     
     print "TOTUMDUINO: reset"
     
-    #GPIO.setmode(GPIO.BOARD)
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setwarnings(False)
+    try:
+        #GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
 
-    #~ pin = 11
-    pin = 17
-    GPIO.setup(pin, GPIO.OUT)
-    GPIO.output(pin, GPIO.HIGH)
-    time.sleep(0.5)
-    GPIO.output(pin, GPIO.LOW)
-    time.sleep(0.5)
-    GPIO.output(pin, GPIO.HIGH)
+        #~ pin = 11
+        pin = 17
+        GPIO.setup(pin, GPIO.OUT)
+        GPIO.output(pin, GPIO.HIGH)
+        time.sleep(0.5)
+        GPIO.output(pin, GPIO.LOW)
+        time.sleep(0.5)
+        GPIO.output(pin, GPIO.HIGH)
 
-    GPIO.cleanup()
-    
+        GPIO.cleanup()
+    except:
+        print "No GPIO support in QEMU simulation"
+        
     time.sleep(1)
