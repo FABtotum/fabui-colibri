@@ -267,7 +267,7 @@
 		$this->load->model('Tasks', 'tasks');
 		$taskData = array(
 			'user'       => $this->session->user['id'],
-			'controller' => 'create',
+			'controller' => 'make',
 			'type'       => 'print',
 			'status'     => 'running',
 			'id_file'    => $data['idFile'],
@@ -311,7 +311,7 @@
 		$this->load->model('Tasks', 'tasks');
 		$taskData = array(
 				'user'       => $this->session->user['id'],
-				'controller' => 'create',
+				'controller' => 'make',
 				'type'       => 'mill',
 				'status'     => 'running',
 				'id_file'    => $data['idFile'],

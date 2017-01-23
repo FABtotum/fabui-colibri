@@ -565,6 +565,28 @@ if(!function_exists('rpm'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('pwm_laser'))
+{
+	/**
+	 * set pwm override
+	 */
+	function pwm_laser($value)
+	{
+		return sendToXmlrpcServer('set_laser', array($value));
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('pwm'))
+{
+	/**
+	 * set pwm override
+	 */
+	function pwm($value)
+	{
+		return sendToXmlrpcServer('set_pwm', array($value));
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('clearJogResponse'))
 {
 	/**
@@ -641,6 +663,7 @@ if(!function_exists('resetTaskMonitor'))
 		$default_monitor['task']['status']         = '';
 		$default_monitor['task']['pid']            = '';
 		$default_monitor['task']['completed_time'] = 0;
+		$default_monitor['task']['estimated_time'] = 0;
 		$default_monitor['task']['started_time']   = 0;
 		$default_monitor['task']['duration']       = 0;
 		$default_monitor['task']['controller']     = '';
@@ -650,6 +673,21 @@ if(!function_exists('resetTaskMonitor'))
 		
 		$monitor = array_replace_recursive ($monitor, $default_monitor, $resetArray);
 		write_file($CI->config->item('task_monitor'), json_encode($monitor));
+	} 
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('resetTrace'))
+{
+	/**
+	 * reset trace file
+	 */
+	function resetTrace($content = '')
+	{
+		$CI =& get_instance();
+		$CI->load->helper('file');
+		$CI->config->load('fabtotum');
+		
+		write_file($CI->config->item('trace'), $content);
 	} 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

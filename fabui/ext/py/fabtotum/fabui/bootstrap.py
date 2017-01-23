@@ -223,7 +223,6 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         ch.setFormatter(formatter)
         log.addHandler(ch)
         
-        
     try:
         color = config.get('settings', 'color')
     except KeyError:

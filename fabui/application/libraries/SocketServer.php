@@ -100,13 +100,15 @@
 		
 		$method      = $data['method'];
 		$methodParam = $data['value'];
+		$methodStamp = $data['stamp'];
 		
 		unset($data['method']);
 		unset($data['value']);
+		unset($data['stamp']);
 		
 		$jogFactory = new JogFactory($data);
 		if(method_exists($jogFactory, $method)){ //if method exists than do it
-			$this->messageData = $jogFactory->$method($methodParam);
+			$this->messageData = $jogFactory->$method($methodParam, $methodStamp);
 			$this->messageType = $jogFactory->getResponseType();
 			unset($jogFactory);
 			return $this->buildResponse();

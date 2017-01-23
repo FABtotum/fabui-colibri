@@ -1,7 +1,17 @@
 fabApp = (function(app) {
 	
+	app.mytemp = 0;
+	
+	app.setMytest = function(value) {
+		app.mytemp = value;
+	};
+	
+	app.getMytest = function() {
+		return app.mytemp;
+	};
+	
 	app.FabActions = function(){
-		
+	
 		var fabActions = {
 			userLogout: function($this){
 				$.SmartMessageBox({
@@ -69,6 +79,8 @@ fabApp = (function(app) {
 		});
 		
 	};
+	
+		
 	app.domReadyMisc = function() {
 		
 		if (typeof(Storage) !== "undefined"){
@@ -268,7 +280,7 @@ fabApp = (function(app) {
 	/*
 	 * 
 	 */
-	app.jogMdi = function(value){
+	app.jogMdi = function(value, callback){
 		console.log(value);
 		app.serial('manualDataInput', value);
 	}
@@ -544,6 +556,8 @@ fabApp = (function(app) {
 						app.usb(obj.data.status, obj.data.alert);
 						break;
 					case 'jog':
+						if(debugState)
+							root.console.log("✔ Jog: [" + obj.type + "]", obj.data);
 						//app.writeJogResponse(obj.data.content);
 						app.writeSerialResponseToConsole(obj.data);
 						break;
@@ -833,7 +847,7 @@ fabApp = (function(app) {
 	/*
 	 * send command to the serial port
 	 */
-	app.serial = function(func, val) {
+	app.serial = function(func, val, callback) {
 		
 		if(debugState)
 			root.console.log("✔ app.serial: " + func + ', ' + val);
@@ -857,7 +871,7 @@ fabApp = (function(app) {
 				'function' : 'serial',
 				'params' : data
 			};
-			socket.send('message', JSON.stringify(messageToSend));
+			result = socket.send('message', JSON.stringify(messageToSend));
 		}else{
 			$.ajax({
 				type: "POST",
@@ -866,6 +880,8 @@ fabApp = (function(app) {
 				dataType: 'json'
 			}).done(function( data ) {
 				//app.writeSerialResponseToConsole(data.data);
+				
+				console.log("app.serial response", data);
 			});
 		}
 	};

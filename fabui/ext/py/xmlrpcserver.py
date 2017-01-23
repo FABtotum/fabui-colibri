@@ -139,8 +139,7 @@ class ExposeCommands:
     
     def set_rpm(self, value):
         return self.gcs.send('M3 S{0}\r\n'.format(value))
-
-
+        
 # Setup arguments
 parser = argparse.ArgumentParser()
 parser.add_argument("-L", "--log", help="Use logfile to store log messages.",   default='<stdout>')

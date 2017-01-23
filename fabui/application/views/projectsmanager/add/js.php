@@ -44,12 +44,12 @@
 					if(response.upload == true){
 						fileList.push(response.fileId);
 					}
-					$(".result-" + file.name.replace(/[\s+|\,|\(|\)|\.]/g, '')).html('<i class="fa fa-check"></i>');
-					if(this.getQueuedFiles().length > 0){
+					//$(".result-" + file.name.replace(/[\s+|\,|\(|\)|\.]/g, '')).html('<i class="fa fa-check"></i>');
+					/*if(this.getQueuedFiles().length > 0){
 						this.processQueue(); 
 					}else{
 						submitForm();
-					}
+					}*/
 				}); 
 				this.on("addedfile", function(file){
 					if(numFiles == 0 && $("#name").val() == ''){

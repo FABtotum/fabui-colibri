@@ -34,7 +34,7 @@
 				<div class="row">
 					<div class="col-sm-4 col-sx-4  hidden-xs">
 						<div class="product-image medium  text-center">
-							<img class="img-responsive" style="max-width: 100%; margin-top:10px;" src="/assets/img/controllers/create/subtractive/2.png">
+							<img class="img-responsive" style="max-width: 100%; margin-top:10px;" src="/assets/img/controllers/create/subtractive/1.png">
 						</div>
 					</div>
 					<div class="col-sm-8">

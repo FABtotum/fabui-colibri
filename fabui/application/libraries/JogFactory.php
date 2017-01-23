@@ -44,14 +44,19 @@
   	 * build list commands
   	 * @param array commands or string
   	 */
-  	function buildCommands($commands)
+  	function buildCommands($commands, $id_stamp='')
   	{	
+		if($id_stamp == '')
+		{
+			$id_stamp = time();
+		}
+		
   		if(!is_array($commands) && $commands != '')
   		{
-  			$this->commands[time()] = array('code' =>  $commands);
+  			$this->commands[$id_stamp] = array('code' =>  $commands);
   		}else{
   			foreach ($commands as $index => $command){
-  				$this->commands[time().'_'.$index] = array('code' =>  $command);
+  				$this->commands[$id_stamp.'_'.$index] = array('code' =>  $command);
   			}
   		}
   	}
@@ -75,9 +80,9 @@
 	 * send gcode
 	 * @param array|string $commands
 	 */
-	function sendCommands($commands)
+	function sendCommands($commands, $id_stamp='')
 	{	
-		$this->buildCommands($commands);
+		$this->buildCommands($commands, $id_stamp);
 		
 		if(!$this->useXmlrpc){
 			$commandToWrite = '';
@@ -216,7 +221,7 @@
 	/**
 	 * Manual Data Input (MDI)
 	 */
-	function manualDataInput($inputCommands)
+	function manualDataInput($inputCommands, $id_stamp)
 	{
 		//TODO
 		$commandsToSend = array();
@@ -226,7 +231,7 @@
 			if($cleanCommand != '') $commandsToSend[] = $cleanCommand;
 			
 		}
-		$this->sendCommands($commandsToSend);
+		$this->sendCommands($commandsToSend, $id_stamp);
 		return $this->response();
 	}
 }

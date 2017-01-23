@@ -112,6 +112,7 @@ class GCodePusher(object):
             'pid'                   : os.getpid(),
             'status'                : GCodePusher.TASK_PREPARING,
             'started_time'          : time.time(),
+            'estimated_time'        : 0,
             'completed_time'        : 0,
             'duration'              : 0,
             'percent'               : 0.0,
@@ -125,7 +126,8 @@ class GCodePusher(object):
             'filename'              : '',
             'line_total'            : 0,
             'line_current'          : 0,
-            'type'                  : GCodeInfo.RAW
+            'type'                  : GCodeInfo.RAW,
+            'first_move'            : False
         }
         
         # Pusher/File specific attributes
@@ -255,7 +257,8 @@ class GCodePusher(object):
     def __first_move_callback(self):
         """
         Triggered when first move command in file executed
-        """        
+        """
+        self.pusher_stats['first_move'] = True
         self.first_move_callback()
     
     def gcode_comment_callback(self, data):
@@ -525,11 +528,7 @@ class GCodePusher(object):
                 old_progress = progress
                 dur = float(self.task_stats['duration'])
                 
-                first_move = False
-                if 'print' in self.standardized_stats:
-                    first_move = self.standardized_stats['print']['first_move']
-                elif 'mill' in self.standardized_stats:
-                    first_move = self.standardized_stats['mill']['first_move']
+                first_move = self.pusher_stats['first_move']
                 
                 if progress == 0.0 or first_move == False:
                     self.task_stats['estimated_time'] = 0
@@ -576,6 +575,7 @@ class GCodePusher(object):
             self.pusher_stats['line_total']     = gfile.info['line_count']
             self.pusher_stats['line_current']   = 0
             self.pusher_stats['type']           = gfile.info['type']
+            self.pusher_stats['first_move']     = False
             
             if gfile.info['type'] == GCodeInfo.PRINT:
                 engine = 'unknown'
@@ -590,27 +590,25 @@ class GCodePusher(object):
                     self.print_stats = {
                         'layer_total'   : layer_total,
                         'layer_current' : 0,
-                        'engine'        : engine,
-                        'first_move'    : False,
+                        'engine'        : engine
                     }
                     self.add_monitor_group('print', self.print_stats)
                 else:
                     self.standardized_stats['print']['engine'] = engine
                     self.standardized_stats['print']['layer_current'] = 0
                     self.standardized_stats['print']['layer_total'] = layer_total
-                    self.standardized_stats['print']['first_move'] = False
                     
             elif gfile.info['type'] == GCodeInfo.MILL or gfile.info['type'] == GCodeInfo.DRILL:
                     self.mill_stats = {
-                        'first_move'    : False
+                        # Place holder
                     }
                     self.add_monitor_group('mill', self.mill_stats)
                     
-            elif gfile.info['type'] == GCodeInfo.LASER:
-                    self.laser_stats = {
-                        # Place holder
-                    }
-                    self.add_monitor_group('laser', self.laser_stats)
+            #~ elif gfile.info['type'] == GCodeInfo.LASER:
+                    #~ self.laser_stats = {
+                        #~ # Place holder
+                    #~ }
+                    #~ self.add_monitor_group('laser', self.laser_stats)
                     
         self.resetTrace()
         
