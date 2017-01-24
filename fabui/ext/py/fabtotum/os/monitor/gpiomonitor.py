@@ -46,12 +46,11 @@ class GPIOMonitor:
     ACTION_PIN = None
     EMERGENCY_FILE = None
     
-    def __init__(self, notifyservice, gcs, logger, action_pin, emergency_file):
+    def __init__(self, notifyservice, gcs, logger, action_pin):
         self.ns = notifyservice
         self.gcs = gcs
         self.log = logger
         self.ACTION_PIN = int(action_pin)
-        self.EMERGENCY_FILE = emergency_file
         
     def gpioEventListener(self, chanel):
         """

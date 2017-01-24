@@ -15,6 +15,7 @@ $.console = $(".console"); //where display trace content
  */
 $.reboot_url_action           = '/fabui/controller/reboot';
 $.poweroff_url_action         = '/fabui/controller/poweroff';
+$.websocket_fallback_url      = '/fabui/control/ws_fallback';
 $.logout_url                  = '/fabui/login/out';
 $.reset_controller_url_action = '/fabui/application/modules/controller/ajax/reset_controller.php';
 $.stop_all_url_action         = '/fabui/application/modules/controller/ajax/stop_all.php';

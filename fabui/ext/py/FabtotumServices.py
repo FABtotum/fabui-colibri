@@ -45,8 +45,9 @@ from fabtotum.os.monitor.usbdrive       import UsbMonitor
 from fabtotum.os.monitor.gpiomonitor    import GPIOMonitor
 from fabtotum.os.monitor.configmonitor  import ConfigMonitor
 
-def create_file(filename):
-    open(filename,'w').close()
+def create_file(filename, content=''):
+    with open(filename,'w') as f:
+        f.write(content)
     os.chmod(filename, 0o660)
     # www-data uid/gid are 33/33
     os.chown(filename, 33, 33)
@@ -86,11 +87,9 @@ config = ConfigService()
 # Load configuration
 LOCK_FILE           = config.get('general', 'lock')
 TRACE               = config.get('general', 'trace')
-COMMAND             = config.get('general', 'command')
-MACRO_RESPONSE      = config.get('general', 'macro_response')
-JOG_RESPONSE        = config.get('general', 'jog_response')
 TASK_MONITOR        = config.get('general', 'task_monitor')
-EMERGENCY_FILE      = config.get('general', 'emergency_file')
+TEMP_MONITOR_FILE   = config.get('general', 'temperature')
+NOTIFY_FILE         = config.get('general', 'notify_file')
 ##################################################################
 SOCKET_HOST         = config.get('socket', 'host')
 SOCKET_PORT         = config.get('socket', 'port')
@@ -105,17 +104,12 @@ SERIAL_PORT = config.get('serial', 'PORT')
 SERIAL_BAUD = config.get('serial', 'BAUD')
 GPIO_PIN    = config.get('gpio', 'pin')
 
-MONITOR_FILE        = config.get('general', 'temperature')
-NOTIFY_FILE         = config.get('general', 'notify_file')
 
 # Prepare files with correct permissions
 create_file(TRACE)
-create_file(COMMAND)
-create_file(MACRO_RESPONSE)
-create_file(JOG_RESPONSE)
-create_file(TASK_MONITOR)
-create_file(EMERGENCY_FILE)
-create_file(MONITOR_FILE)
+create_file(TASK_MONITOR, '{"task":{"status":"completed"}}')
+create_file(TEMP_MONITOR_FILE, '{}')
+create_file(NOTIFY_FILE, '{}')
 
 # Setup logger
 logger = logging.getLogger('FabtotumService')
@@ -166,7 +160,7 @@ ws.connect();
 ns = NotifyService(ws, NOTIFY_FILE, config)
 
 ## Folder temp monitor
-ftm = FolderTempMonitor(ns, gcservice, logger, TRACE, TASK_MONITOR, MACRO_RESPONSE, JOG_RESPONSE, COMMAND)
+ftm = FolderTempMonitor(ns, gcservice, logger, TRACE, TASK_MONITOR)
 ## usb disk monitor
 um = UsbMonitor(ns, logger, USB_FILE)
 ## Configuration monitor
@@ -196,11 +190,11 @@ fh.setFormatter(formatter)
 fh.setLevel(logging.DEBUG)
 logger2.addHandler(fh)
 
-gpioMonitor = GPIOMonitor(ns, gcservice, logger2, GPIO_PIN, EMERGENCY_FILE)
+gpioMonitor = GPIOMonitor(ns, gcservice, logger2, GPIO_PIN)
 gpioMonitor.start()
 
 ## Stats monitor
-statsMonitor = StatsMonitor(MONITOR_FILE, gcservice, config, logger=logger)
+statsMonitor = StatsMonitor(TEMP_MONITOR_FILE, gcservice, config, logger=logger)
 statsMonitor.start()
 
 # Ensure CTRL+C detection to gracefully stop the server.

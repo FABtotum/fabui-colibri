@@ -153,7 +153,7 @@ class StatsMonitor:
                 self.__write_stats()    
                 self.ev_update.clear()
 
-                self.__write_stats()
+                #self.__write_stats()
                 
         self.log.debug("StatsMonitor write thread: stopped")
     

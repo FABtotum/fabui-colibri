@@ -133,7 +133,7 @@
 	 * @return array status of the printer (temperatures)
 	 * get Nozzle and Bed temperatures
 	 */
-	public function getTemperatures()
+	public function getTemperatures($id_stamp)
 	{
 		$this->setResponseType('temperatures');
 		$this->temperatures = json_decode(file_get_contents($this->CI->config->item('temperature')), true);
@@ -143,16 +143,16 @@
 	 * @param int $temperature
 	 * set heated bed temperature
 	 */
-	public function setBedTemp($temperature)
+	public function setBedTemp($temperature, $id_stamp)
 	{
-		$this->sendCommands('M140 S'.$temperature);
+		$this->sendCommands('M140 S'.$temperature, $id_stamp);
 		return $this->response();
 	}
 	/**
 	 * @param int $temperature
 	 * set nozzle temperature
 	 */
-	public function setExtruderTemp($temperature)
+	public function setExtruderTemp($temperature, $id_stamp)
 	{
 		$this->sendCommands('M104 S'.$temperature);
 		return $this->response();
@@ -161,7 +161,7 @@
 	 * @param string $direction 
 	 * move head on X Y axis
 	 */
-	public function moveXY($direction)
+	public function moveXY($direction, $id_stamp)
 	{
 		if($direction == '') return;
 		
@@ -182,7 +182,7 @@
 	 * @param string $direction
 	 * move Z axis
 	 */
-	public function moveZ($direction)
+	public function moveZ($direction, $id_stamp)
 	{
 		$sign = $direction == 'up' ? '-' : '+';
 		$this->sendCommands(array('G91', 'GO Z'.$sign.$this->step['z'].' F'.$this->feedrate['xyz']));
@@ -191,7 +191,7 @@
 	/**
 	 * zero all 
 	 */
-	public function zeroAll()
+	public function zeroAll($id_stamp)
 	{
 		$this->sendCommands('G92 X0 Y0 Z0 E0');
 		return $this->response();
@@ -199,7 +199,7 @@
 	/***
 	 * 
 	 */
-	public function emergency($mode)
+	public function emergency($mode, $id_stamp)
 	{
 		//$commands[] = 'M730';
 		//if($mode == 'false') $commands[] = 'M731';
@@ -212,7 +212,7 @@
 	/**
 	 * 
 	 */
-	function extrude($sign)
+	function extrude($sign, $id_stamp)
 	{
 		//TODO
 		$this->sendCommands(array('G91', 'G0 E'.$sign.$this->step['extruder'].' F'.$this->feedrate['extruder']));

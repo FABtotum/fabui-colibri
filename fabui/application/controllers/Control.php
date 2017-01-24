@@ -104,6 +104,93 @@
 		$this->load->helper('fabtotum_helper');
 		$this->output->set_content_type('application/json')->set_output(json_encode($action($value)));
 	}
+	
+	
+	public function ws_fallback()
+	{
+		$method = $this->input->method(true);
+		
+		$response = array("type" => "unknown", "data" => "");
+
+		if($method == "GET")
+		{
+			$request = $this->input->get("data");
+			$requestData = json_decode($request, true);
+			
+			$this->load->config('fabtotum');
+			
+			// temperatures.json - read by serial.getTemperatures
+			/*$multi['type'] = 'temperatures';
+			$content = json_decode( file_get_contents( $this->config->item('temperature') ), true);
+			$multi['data'] = $content;*/
+			
+			
+			$response['type'] = 'poll';
+			$response['data'] = array();
+
+			
+			//$response = $multi;
+			
+			// notify.json
+			// task_monitor.json
+			// trace
+			// read usb status
+			//$response['data'] = array('status' => getUsbStatus(), 'alert' => false);
+			//$response['type'] = 'usb';
+			
+		} 
+		else if($method == "POST")
+		{
+			$request = $this->input->post("data");
+			$requestData = json_decode($request, true);
+
+			if(isset($requestData['function'])){
+				$function       = $requestData['function'];
+				$functionParams = isset($requestData['params']) ? $requestData['params'] : '';
+				
+				switch($function)
+				{
+					case "serial": {
+						
+						$method      = $functionParams['method'];
+						$methodParam = $functionParams['value'];
+						$methodStamp = $functionParams['stamp'];
+						
+						unset($functionParams['method']);
+						unset($functionParams['value']);
+						unset($functionParams['stamp']);
+						
+						$this->load->library('JogFactory', $functionParams, 'jogFactory');
+						$jogFactory = $this->jogFactory;
+						
+						if(method_exists($jogFactory, $method)){ //if method exists than do it
+							$response['data'] = $jogFactory->$method($methodParam, $methodStamp);
+							$response['type'] = $jogFactory->getResponseType();
+						}
+					}
+					break;
+					
+					case "fabBusy": {
+						$response['data'] = array('message' => 'FABtotum is busy');
+						$response['type'] = 'alert';
+					}
+					break;
+					
+					case "usbInserted": {
+						$response['type'] = 'usb';
+						//set true if usb file exists
+						$this->config->load('fabtotum');
+						$response['data'] = array('status' => file_exists($this->config->item('usb_file')), 'alert' => false);
+					}
+					
+				}
+			}
+			
+		}
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($response));
+	}
+	
  }
  
 ?>

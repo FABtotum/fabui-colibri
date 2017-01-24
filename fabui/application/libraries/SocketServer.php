@@ -83,10 +83,12 @@
 	{
 		//load CI instance for configs and helpers
 		$CI =& get_instance();
-		$CI->config->load('fabtotum');
-		$this->messageType = 'usb';
+		$CI->load->helper('fabtotum');
+		
 		//set true if usb file exists
-		$this->messageData = array('status' => file_exists($CI->config->item('usb_file')), 'alert' => false);
+		$this->messageData = array('status' => getUsbStatus(), 'alert' => false);
+		$this->messageType = 'usb';
+		
 		return $this->buildResponse();
 	}
 	

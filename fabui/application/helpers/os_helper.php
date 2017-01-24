@@ -9,6 +9,16 @@
  * 
  */
 
+if(!function_exists('getUsbStatus'))
+{
+	function getUsbStatus()
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		return file_exists($CI->config->item('usb_file'))
+	}
+}
+
 if(!function_exists('storeNetworkSettings'))
 {
 	function storeNetworkSettings($net_type, $iface, $mode, $address, $netmask, $gateway, $ssid = '', $password = '', $psk = '', $hostname = '', $description = '')

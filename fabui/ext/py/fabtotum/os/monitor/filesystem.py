@@ -54,23 +54,15 @@ class FolderTempMonitor(PatternMatchingEventHandler):
     TASK_MONITOR = None
     COMMAND = None
     
-    def __init__(self, notifyservice, gcs, logger, trace_file, monitor_file, response_file, jog_response_file, command_file):
+    def __init__(self, notifyservice, gcs, logger, trace_file, monitor_file):
         
         self.TRACE = trace_file
-        self.COMMAND = command_file
         self.TASK_MONITOR = monitor_file
-        self.MACRO_RESPONSE = response_file
-        self.JOG_RESPONSE = jog_response_file
         self.gcs = gcs
         
         self.log = logger
         
-        # Erase the file(s)
-        open(command_file, 'w').close()
-        
-        #~ self.parser = CommandParser(gcs, jog_response_file, logger = logger)
-        
-        self.patterns = [self.TRACE, self.COMMAND, self.TASK_MONITOR, self.MACRO_RESPONSE, self.JOG_RESPONSE]
+        self.patterns = [self.TRACE, self.TASK_MONITOR]
         self.ignore_directories = None
         self._ignore_patterns = None
         self.case_sensitive = None
@@ -89,11 +81,7 @@ class FolderTempMonitor(PatternMatchingEventHandler):
         if event.src_path == self.TRACE:
             messageData = {'content': str(self.getFileContent(self.TRACE))}
             messageType = "trace"
-            #~ self.sendMessage(messageType, messageData)
             self.ns.notify(messageType, messageData)
-            
-        #~ elif event.src_path == self.COMMAND:
-            #~ self.parser.parse_file(self.COMMAND)
         
         elif event.src_path == self.TASK_MONITOR:
             tmp = str(self.getFileContent(self.TASK_MONITOR))
@@ -101,24 +89,6 @@ class FolderTempMonitor(PatternMatchingEventHandler):
                 messageData = {'type': 'monitor', 'content': json.loads(tmp)}
                 messageType = 'task'
                 self.ns.notify(messageType, messageData)
-            
-        elif event.src_path == self.JOG_RESPONSE:
-            #time.sleep(0.5)
-            
-            retry = 5
-            
-            while retry:
-                tmp = str(self.getFileContent(self.JOG_RESPONSE))
-                if tmp:
-                    messageData = {'content': json.loads(tmp)}
-                    messageType = 'jog'
-                    #self.sendMessage(messageType, messageData)
-                    self.ns.notify(messageType, messageData)
-                    break
-                else:
-                    print "---------------- EMPTY FILE -----------------", retry
-                    retry -= 1
-   
         
     def on_created(self, event):
         #self.process(event)
@@ -128,7 +98,7 @@ class FolderTempMonitor(PatternMatchingEventHandler):
     def on_deleted(self, event):
         #self.process(event)
         self.log.debug("DELETED: " + event.src_path)
-        #self.ws.send("CRAETED")
+        #self.ws.send("DELETED")
                 
     def getFileContent(self, file_path):
         file = open(file_path, 'r')

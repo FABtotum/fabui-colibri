@@ -1,15 +1,5 @@
 fabApp = (function(app) {
 	
-	app.mytemp = 0;
-	
-	app.setMytest = function(value) {
-		app.mytemp = value;
-	};
-	
-	app.getMytest = function() {
-		return app.mytemp;
-	};
-	
 	app.FabActions = function(){
 	
 		var fabActions = {
@@ -256,34 +246,35 @@ fabApp = (function(app) {
 	/*
 	 * 
 	 */
-	app.jogMoveXY = function (value) {
-		app.serial("moveXY", value);
+	app.jogMoveXY = function (value, callback) {
+		return app.serial("moveXY", value, callback);
 	}
 	/*
 	 * 
 	 */
-	app.jogAxisZ = function (func, direction){
-		app.serial('moveZ', direction); 
+	app.jogAxisZ = function (func, direction, callback){
+		return app.serial('moveZ', direction, callback); 
 	}
 	/*
 	 * 
 	 */
-	app.jogZeroAll = function () {
-		app.serial("zeroAll", true);
+	app.jogZeroAll = function (callback) {
+		app.serial("zeroAll", true, callback);
 	}
 	/*
 	 * 
 	 */
-	app.jogExtrude = function(sign) {
-		app.serial('extrude', sign);
+	app.jogExtrude = function(sign, callback) {
+		app.serial('extrude', sign, callback);
 	}
-	/*
-	 * 
+	/**
+	 * Send gcode commands to jog handler.
+	 * @callback Callback function on execution finish
 	 */
-	app.jogMdi = function(value, callback){
+	app.jogMdi = function(value, callback) {
 		console.log(value);
-		app.serial('manualDataInput', value);
-	}
+		return app.serial('manualDataInput', value, callback);
+	};
 	/*
 	 * 
 	 */
@@ -506,39 +497,68 @@ fabApp = (function(app) {
 			});
 		}
 	}
+	
 	/*
-	 * 
+	 * Manage jog response and jog callbacks
 	 */
-	app.webSocket = function () {
-		function isWebSocketAvailable(){
-			return ("WebSocket" in window);
+	app.manageJogResponse = function(data) {
+		var stamp = null;
+		var response = [];
+		
+		for(i in data.commands)
+		{
+			if(stamp != null)
+			{
+				response.push(data.commands[i]);
+			}
+			else
+			{
+				stamp = i.split('_')[0];
+				response.push(data.commands[i]);
+			}
 		}
-		function onOpen(){
+		
+		if(app.ws_callbacks.hasOwnProperty(stamp))
+		{
+			app.ws_callbacks[stamp](response);
+			delete app.ws_callbacks[stamp];
+		}
+		
+		app.writeSerialResponseToConsole(data);
+	};
+	 
+	app.ws_callbacks = {};
+	app.webSocket = function()
+	{
+		options = {
+			http: websocket_fallback_url,
+		};
+		
+		socket = ws = $.WebSocket ('ws://'+socket_host+':'+socket_port, null, options);
+
+		// WebSocket onerror event triggered also in fallback
+		ws.onerror = function (e) {
+			console.log ('Error with WebSocket uid: ' + e.target.uid);
+		};
+
+		// if connection is opened => start opening a pipe (multiplexing)
+		ws.onopen = function () {
 			socket_connected = true;
+			if(debugState)
+				root.console.log("WebSocket opened as" , socket.fallback?"fallback":"native" );
+			
 			app.afterSocketConnect();
-			if(debugState)
-				root.console.log("✔ WebSocket: %c connected",debugStyle_green);
-		}
-		function onClose(){
-			socket_connected = false;
-			if(debugState)
-				root.console.log("%c WebSocket: disconnected", debugStyle_warning);
-		}
-		function onMessage(data){
+		};  
+		
+		ws.onmessage = function (e) {
 			try {
-				var obj = jQuery.parseJSON(data);
-				console.log(obj.type);
+				var obj = jQuery.parseJSON(e.data);
 				if(debugState)
-					root.console.log("✔ WebSocket received message: %c [" + obj.type + "]", debugStyle);
+					console.log("✔ WebSocket received message: %c [" + obj.type + "]", debugStyle);
+				
 				switch(obj.type){
 					case 'temperatures':
-						app.updateTemperatures(obj.data);
-						break;
-					//case 'serial':
-					//	app.writeSerialResponseToConsole(obj.data);
-					//	break;
-					case 'macro':
-						app.manageMacro(obj.data);
+						fabApp.updateTemperatures(obj.data);
 						break;
 					case 'emergency':
 						app.manageEmergency(obj.data);
@@ -549,17 +569,14 @@ fabApp = (function(app) {
 					case 'task':
 						app.manageTask(obj.data);
 						break;
-					case 'system':
-						app.manageSystem(obj.data);
-						break;
+					//case 'system':
+						//app.manageSystem(obj.data);
+						//break;
 					case 'usb':
 						app.usb(obj.data.status, obj.data.alert);
 						break;
 					case 'jog':
-						if(debugState)
-							root.console.log("✔ Jog: [" + obj.type + "]", obj.data);
-						//app.writeJogResponse(obj.data.content);
-						app.writeSerialResponseToConsole(obj.data);
+						app.manageJogResponse(obj.data);
 						break;
 					case 'trace':
 						app.handleTrace(obj.data.content);
@@ -571,18 +588,7 @@ fabApp = (function(app) {
 				return;
 			}
 		}
-		if(isWebSocketAvailable()){
-			socket = new FabWebSocket(socket_host, socket_port);
-			socket.bind('message', onMessage);
-			socket.bind('open', onOpen);
-			socket.bind('close', onClose);
-			socket.connect();
-		}else{
-			if(debugState)
-				root.console.log("%c WebSocket not available", debugStyle_warning);
-		}
 	};
-	
 	/*
 	 * update printer status 
 	 */
@@ -697,18 +703,7 @@ fabApp = (function(app) {
 			$(".jogResponseContainer").animate({ scrollTop: $('.jogResponseContainer').prop("scrollHeight")}, 1000);
 		}
 	};
-	/*
-	 * manage macro response or trace 
-	 */
-	app.manageMacro = function(data){
-		switch(data.type){
-			case 'response':
-				if(data.content == true) $.is_macro_on = false;
-				break;
-			case 'status':
-				break;
-		}
-	};
+
 	/*
 	 * check if are some operations before leaving the page
 	 */
@@ -844,8 +839,10 @@ fabApp = (function(app) {
 			});
 		}
 	}
-	/*
-	 * send command to the serial port
+	
+	/**
+	 * Jog serial function
+	 * Used to send individual gcode commands, move the jog or get temperature values
 	 */
 	app.serial = function(func, val, callback) {
 		
@@ -858,34 +855,32 @@ fabApp = (function(app) {
 		var xyzFeed      = $("#xyzFeed").length           > 0 ? $("#xyzFeed").val()           : 1000;
 		var extruderFeed = $("#extruder-feedrate").length > 0 ? $("#extruder-feedrate").val() : 300;
 		
+		var stamp = Date.now();
+		
 		var data = {
 			'method'           : func,
 			'value'            : val,
+			'stamp'            : stamp,
 			'useXmlrpc'        : xmlrpc,
 			'step'             : {'xy':  xyStep, 'z':zStep, 'extruder': extruderStep},
 			'feedrate'         : {'xyz': xyzFeed, 'extruder':extruderFeed}
 		};
-			
-		if(socket_connected == true){
-			var messageToSend = {
-				'function' : 'serial',
-				'params' : data
-			};
-			result = socket.send('message', JSON.stringify(messageToSend));
-		}else{
-			$.ajax({
-				type: "POST",
-				url: serial_exec_url_action,
-				data: data,
-				dataType: 'json'
-			}).done(function( data ) {
-				//app.writeSerialResponseToConsole(data.data);
-				
-				console.log("app.serial response", data);
-			});
+		
+		var messageToSend = {
+			'function' : 'serial',
+			'params' : data
+		};
+		
+		if($.isFunction(callback))
+		{
+			app.ws_callbacks[stamp] = callback;
 		}
+		
+		socket.send( JSON.stringify(messageToSend) );
+		
+		return stamp;
 	};
-	/*
+	/**
 	 * check if internet connection is available
 	 */
 	app.isInternetAvailable = function(){
@@ -895,7 +890,7 @@ fabApp = (function(app) {
 			app.showConnected(data == 1);
 		});
 	};
-	/*
+	/**
 	 * show or hide connected icon
 	 */
 	app.showConnected = function(available) {
@@ -903,7 +898,7 @@ fabApp = (function(app) {
 		else $(".internet").remove();
 		$("[rel=tooltip], [data-rel=tooltip]").tooltip();
 	};
-	/*
+	/**
 	 * manage sockets messages having system type
 	 */
 	app.manageSystem = function(data){
@@ -915,7 +910,7 @@ fabApp = (function(app) {
 				break;
 		}
 	};
-	/*
+	/**
 	 * notify when usb disk is inserted or removed
 	 */
 	app.usb = function (status, notify){
@@ -934,22 +929,14 @@ fabApp = (function(app) {
 			});
 		}
 	};
-	/*
+	/**
 	 * things to do when socket is connected
 	 */
 	app.afterSocketConnect = function(){
 		if(socket_connected == true){
-			socket.send('message', '{"function": "getTasks"}'); //check for tasks
-			socket.send('message', '{"function": "usbInserted"}');   //check for if usb disk is connected
+			//socket.send('{"function": "getTasks"}'); //check for tasks, @tag:remove
+			socket.send('{"function": "usbInserted"}');   //check for if usb disk is connected
 		}
-	}
-	/*
-	 * get jog response
-	 */
-	app.getJogResponse = function(){
-		$.get(jog_response_file_url + '?' + jQuery.now(), function(data){
-			app.writeJogResponse(data);
-		});
 	}
 	/**
 	 * handle trace content from task/macro
@@ -967,7 +954,6 @@ fabApp = (function(app) {
 			$(".trace-console").parent().scrollTop(1E10);
 		}
 		waitContent(content);
-		
 	}
 	/**
 	 * reset temperatures plot
