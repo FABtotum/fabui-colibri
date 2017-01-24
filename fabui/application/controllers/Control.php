@@ -119,25 +119,37 @@
 			
 			$this->load->config('fabtotum');
 			
-			// temperatures.json - read by serial.getTemperatures
-			/*$multi['type'] = 'temperatures';
-			$content = json_decode( file_get_contents( $this->config->item('temperature') ), true);
-			$multi['data'] = $content;*/
+			// notify.json
+			$notify = array(
+				'data' => file_get_contents( $this->config->item('trace') ),
+				'type' => 'trace'
+			);
 			
+			// task_monitor.json
+			$task = array(
+				'data' => json_decode( file_get_contents( $this->config->item('task_monitor') ), true),
+				'type' => 'trace'
+			);
+			
+			// trace
+			$trace = array(
+				'data' => file_get_contents( $this->config->item('trace') ),
+				'type' => 'trace'
+			);
+			
+			// read usb status
+			$usb = array(
+				'data' => array('status' => getUsbStatus(), 'alert' => false)
+				'type' => 'usb'
+				);
 			
 			$response['type'] = 'poll';
-			$response['data'] = array();
-
-			
-			//$response = $multi;
-			
-			// notify.json
-			// task_monitor.json
-			// trace
-			// read usb status
-			//$response['data'] = array('status' => getUsbStatus(), 'alert' => false);
-			//$response['type'] = 'usb';
-			
+			$response['data'] = array(
+				'notify' => $notify,
+				'trace' => $trace,
+				'task' => $task,
+				'usb' => $usb
+			);
 		} 
 		else if($method == "POST")
 		{

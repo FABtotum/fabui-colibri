@@ -83,7 +83,7 @@
 	{
 		//load CI instance for configs and helpers
 		$CI =& get_instance();
-		$CI->load->helper('fabtotum');
+		$CI->load->helper('os_helper');
 		
 		//set true if usb file exists
 		$this->messageData = array('status' => getUsbStatus(), 'alert' => false);

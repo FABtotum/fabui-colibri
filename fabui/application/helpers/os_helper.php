@@ -15,7 +15,7 @@ if(!function_exists('getUsbStatus'))
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
-		return file_exists($CI->config->item('usb_file'))
+		return file_exists($CI->config->item('usb_file'));
 	}
 }
 

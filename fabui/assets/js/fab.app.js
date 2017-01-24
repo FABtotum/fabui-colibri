@@ -569,9 +569,6 @@ fabApp = (function(app) {
 					case 'task':
 						app.manageTask(obj.data);
 						break;
-					//case 'system':
-						//app.manageSystem(obj.data);
-						//break;
 					case 'usb':
 						app.usb(obj.data.status, obj.data.alert);
 						break;
@@ -897,18 +894,6 @@ fabApp = (function(app) {
 		if(available)$(".lock-ribbon").before('<span class="ribbon-button-alignment internet animated bounceIn" ><span class="btn btn-ribbon "  rel="tooltip" data-placement="right" data-original-title="Connected to internet" data-html="true"><i class="fa fa-globe "></i></span></span>');
 		else $(".internet").remove();
 		$("[rel=tooltip], [data-rel=tooltip]").tooltip();
-	};
-	/**
-	 * manage sockets messages having system type
-	 */
-	app.manageSystem = function(data){
-		switch(data.type){
-			case 'usb':
-				app.usb(data.status, data.alert);
-				break;
-			case 'lock':
-				break;
-		}
 	};
 	/**
 	 * notify when usb disk is inserted or removed

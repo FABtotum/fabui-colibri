@@ -1,0 +1,191 @@
+.jogtouch-container {
+  font-size: 0;
+  line-height: 0;
+
+  float: left;
+  position: absolute;
+
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+
+  direction: ltr !important;
+  
+  transform: translate(0%, -100%);
+  
+  /*background-color: #92AD40;
+  opacity: .8;
+  filter: alpha(opacity=80);*/
+}
+
+.jogtouch-container img {
+  display: block;
+
+  width: 100%;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 100%;
+  min-height: 0 !important;
+  max-height: none !important;
+
+  image-orientation: 0deg !important;
+}
+
+.jogtouch-cross{
+  cursor: crosshair;
+  float: left;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 17px;
+  height: 17px;
+  background-repeat: no-repeat;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QEMCgQQEjakOQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAA4SURBVDjLY2AgAP4zMPwnpIaJgQqAKoYwkup0JI2MRPufGLHBEybUCVhSApMoMBqwNEqxQz8XAwDx2xYGOGJvCgAAAABJRU5ErkJggg==');
+}
+
+.jogtouch-canvas,
+.jogtouch-modal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.jogtouch-canvas {
+  /*background-color: #fff;
+  opacity: .3;
+  filter: alpha(opacity=30);*/
+  cursor: crosshair;
+}
+
+.jogtouch-wrap-box {
+  position: absolute;
+  top: 5.5%;
+  right: 5%;
+  bottom: 5%;
+  left: 5%;
+}
+
+.jogtouch-dashed {
+  position: absolute;
+
+  display: block;
+
+  opacity: .5;
+  border: 0 dashed #eee;
+
+  filter: alpha(opacity=50);
+}
+
+.jogtouch-dashed.dashed-h {
+  top: 33.33333%;
+  left: 0;
+
+  width: 100%;
+  height: 33.33333%;
+
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+
+.jogtouch-dashed.dashed-v {
+  top: 0;
+  left: 33.33333%;
+
+  width: 33.33333%;
+  height: 100%;
+
+  border-right-width: 1px;
+  border-left-width: 1px;
+}
+
+.jogtouch-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  display: block;
+
+  width: 0;
+  height: 0;
+
+  opacity: .75;
+
+  filter: alpha(opacity=75);
+}
+
+.jogtouch-center:before,
+.jogtouch-center:after {
+  position: absolute;
+
+  display: block;
+
+  content: ' ';
+
+  background-color: #eee;
+}
+
+.jogtouch-center:before {
+  top: 0;
+  left: -3px;
+
+  width: 7px;
+  height: 1px;
+}
+
+.jogtouch-center:after {
+  top: -3px;
+  left: 0;
+
+  width: 1px;
+  height: 7px;
+}
+
+.jogtouch-face,
+.jogtouch-line,
+.jogtouch-point {
+  position: absolute;
+
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  opacity: .3;
+
+  filter: alpha(opacity=30);
+}
+
+.jogtouch-face {
+  top: 0;
+  left: 0;
+
+  background-color: #fff;
+  
+  cursor: crosshair;
+}
+
+.jogtouch-invisible {
+  opacity: 0;
+
+  filter: alpha(opacity=0);
+}
+
+.jogtouch-bg {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC');
+}
+
+.jogtouch-hide {
+  position: absolute;
+
+  display: block;
+
+  width: 0;
+  height: 0;
+}
+
+.jogtouch-hidden {
+  display: none !important;
+}
