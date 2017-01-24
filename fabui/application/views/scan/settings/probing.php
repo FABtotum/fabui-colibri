@@ -13,7 +13,7 @@
 <div class="row">
 	<div class="col-sm-3 text-center">
 		<div>
-			<img style="max-width: 100%;" id="image" class="" src="/assets/img/scan/working_plane_v2.jpg">
+			<img style="max-width: 100%;" id="image" class="" src="/assets/img/controllers/scan/working_plane_v2.jpg">
 		</div>
 	</div>
 	<div class="col-sm-9">

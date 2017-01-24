@@ -2,7 +2,7 @@
 	<div class="col-sm-12">
 		<div class="row margin-top-10 padding-10 step-1">
 			<div class="col-sm-6 text-center">
-				<img style="max-width: 50%; display: inline;" class="img-responsive" src="/assets/img/bed/1.png" />
+				<img style="max-width: 50%; display: inline;" class="img-responsive" src="/assets/img/controllers/bed/1.png" />
 			</div>
 			<div class="col-sm-6 text-center">
 				<h1><span class="badge bg-color-blue txt-color-white">1</span></h1>
@@ -22,7 +22,7 @@
 
 		<div class="row margin-top-10 padding-10 step-2" style="display:none;">		
 			<div class="col-sm-6 text-center margin-bottom-10">
-				<img style="max-width: 50%; display: inline;" class="img-responsive" src="/assets/img/bed/2.png" />
+				<img style="max-width: 50%; display: inline;" class="img-responsive" src="/assets/img/controllers/bed/2.png" />
 			</div>
 			<div class="col-sm-6 ">
 				<h1 class="text-center" ><span class="badge bg-color-blue txt-color-white">2</span></h1>

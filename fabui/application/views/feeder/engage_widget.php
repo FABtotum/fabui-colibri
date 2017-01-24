@@ -21,7 +21,7 @@
 				<div class="col-sm-12">
 					<div class="row">
 						<div class="col-sm-6 text-center">
-							<img style="max-width: 50%; display: inline;" class="img-responsive" src="/assets/img/feeder/feeder.png" />
+							<img style="max-width: 50%; display: inline;" class="img-responsive" src="/assets/img/controllers/feeder/feeder.png" />
 						</div>
 						<div class="col-sm-6 text-center">
 							<h1><span class="badge bg-color-blue txt-color-white">2</span></h1>

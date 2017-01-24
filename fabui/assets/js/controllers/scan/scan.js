@@ -329,7 +329,7 @@ function setScanQuality(mode, object, index)
 {
 	$(".scan-quality-name").html(object.info.name);
 	$(".scan-quality-description").html(object.info.description);
-	$(".duck_container").html('<img src="/assets/img/scan/duck_'+ index +'.png"  class="img_responsive" />');
+	$(".duck_container").html('<img src="/assets/img/controllers/scan/duck_'+ index +'.png"  class="img_responsive" />');
 	
 	$(".quality-slices").val(object.values.slices);
 	$(".quality-iso").val(object.values.iso);

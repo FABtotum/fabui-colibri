@@ -33,7 +33,7 @@
                 <div class="row">
                     
                     <div class="col-sm-6 text-center">
-                        <img style="max-width: 50%; display: inline;" class="img-responsive" src="/assets/img/probe/nozzle.png" />
+                        <img style="max-width: 50%; display: inline;" class="img-responsive" src="/assets/img/controllers/probe/nozzle.png" />
                     </div>
                     
                      <div class="col-sm-6 text-center">
@@ -49,7 +49,7 @@
             <div class="well">
                 <div class="row">
                     <div class="col-sm-6 text-center">
-                        <img style="max-width: 50%; display: inline;" class="img-responsive" src="/assets/img/probe/head_calibration.png" />
+                        <img style="max-width: 50%; display: inline;" class="img-responsive" src="/assets/img/controllers/probe/head_calibration.png" />
                     </div>
                     <div class="col-sm-6">
                         <div class="row margin-bottom-20">

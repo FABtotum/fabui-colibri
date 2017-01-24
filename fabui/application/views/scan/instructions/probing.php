@@ -19,7 +19,7 @@
 				<div class="row">
 					<div class="col-sm-6 hidden-xs text-center">
 						<div class="image">
-							<img style="width: 50%" class="responsive" src="/assets/img/scan/probing/1.png">
+							<img style="width: 50%" class="responsive" src="/assets/img/controllers/scan/probing/1.png">
 						</div>
 					</div>
 					<div class="col-sm-6">

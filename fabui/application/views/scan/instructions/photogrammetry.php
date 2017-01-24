@@ -21,7 +21,7 @@
 					<div class="col-sm-6">
 						<div class="col-sm-6 hidden-xs">
 							<div class="image text-center">
-								<img class="img-resposonsive" style="width: 50%" src="/assets/img/scan/rotating/1.png">
+								<img class="img-resposonsive" style="width: 50%" src="/assets/img/controllers/scan/rotating/1.png">
 							</div>
 						</div>
 						<div class="col-sm-6 col-xs-12">
@@ -42,7 +42,7 @@
 						<div class="row">
 							<div class="col-sm-6 hidden-xs">
 								<div class="image text-center">
-									<img class="img-resposonsive" style="width: 50%" src="/assets/img/scan/rotating/2.png">
+									<img class="img-resposonsive" style="width: 50%" src="/assets/img/controllers/scan/rotating/2.png">
 								</div>
 							</div>
 							<div class="col-sm-6">
@@ -58,7 +58,7 @@
 						<div class="row">
 							<div class="col-sm-6 hidden-xs">
 								<div class="image text-center">
-									<img class="img-resposonsive" style="width: 50%" src="/assets/img/scan/rotating/3.png">
+									<img class="img-resposonsive" style="width: 50%" src="/assets/img/controllers/scan/rotating/3.png">
 								</div>
 							</div>
 							<div class="col-sm-6">

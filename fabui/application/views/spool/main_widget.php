@@ -44,7 +44,7 @@
 						<div class="row">
 
 							<div class="col-sm-6 text-center">
-								<img style="max-width: 25%; display: inline;" class="img-responsive" src="/assets/img/spool/open-cover.png" />
+								<img style="max-width: 25%; display: inline;" class="img-responsive" src="/assets/img/controllers/spool/open-cover.png" />
 							</div>
 
 							<div class="col-sm-6 text-center">
@@ -63,7 +63,7 @@
 					<div class="well">
 						<div class="row">
 							<div class="col-sm-6 text-center">
-								<img style="max-width: 25%; display: inline;" class="img-responsive" src="/assets/img/spool/filament_cut_spool.png" />
+								<img style="max-width: 25%; display: inline;" class="img-responsive" src="/assets/img/controllers/spool/filament_cut_spool.png" />
 							</div>
 							<div class="col-sm-6 text-center">
 								<h1><span class="badge bg-color-blue txt-color-white">2</span></h1>
@@ -83,7 +83,7 @@
 						<div class="row">
 
 							<div class="col-sm-6 text-center">
-								<img style="max-width: 25%; display: inline;" class="img-responsive" src="/assets/img/spool/insert-filament.png" />
+								<img style="max-width: 25%; display: inline;" class="img-responsive" src="/assets/img/controllers/spool/insert-filament.png" />
 							</div>
 
 							<div class="col-sm-6 text-center">
@@ -125,7 +125,7 @@
 						<div class="row">
 
 							<div class="col-sm-6 text-center">
-								<img style="max-width: 25%; display: inline;" class="img-responsive" src="/assets/img/spool/filament_cut.png" />
+								<img style="max-width: 25%; display: inline;" class="img-responsive" src="/assets/img/controllers/spool/filament_cut.png" />
 							</div>
 
 							<div class="col-sm-6 text-center">
@@ -147,7 +147,7 @@
 						<div class="row">
 
 							<div class="col-sm-6 text-center">
-								<img style="max-width: 25%; display: inline;" class="img-responsive" src="/assets/img/spool/open-cover.png" />
+								<img style="max-width: 25%; display: inline;" class="img-responsive" src="/assets/img/controllers/spool/open-cover.png" />
 							</div>
 
 							<div class="col-sm-6 text-center">
@@ -169,7 +169,7 @@
 						<div class="row">
 
 							<div class="col-sm-6 text-center">
-								<img style="max-width: 25%; display: inline;" class="img-responsive" src="/assets/img/spool/unload-filament.png" />
+								<img style="max-width: 25%; display: inline;" class="img-responsive" src="/assets/img/controllers/spool/unload-filament.png" />
 							</div>
 
 							<div class="col-sm-6 text-center">
