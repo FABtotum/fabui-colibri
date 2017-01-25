@@ -698,5 +698,18 @@ if(!function_exists('setRecovery'))
 		return startBashScript('recovery.sh', $mode, false, true);
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('firmwareInfo'))
+{
+	function firmwareInfo()
+	{
+		$tmp = doMacro('version');
+		$reply = $tmp['reply'];
+		return array(
+			'version'  => trim(str_replace('V', '', $reply[5])),
+			'author'   => $reply[7],
+			'buildate' => $reply[6]
+		);
+	}
+}
 ?>

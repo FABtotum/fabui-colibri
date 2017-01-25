@@ -20,30 +20,48 @@
 
 from StringIO import StringIO as BytesIO
 import pycurl, json
+from fabtotum.fabui.config  import ConfigService
 
+config = ConfigService()
 
 class RemoteVersion:
     
-    def __init__(self, endpoint):
-        self.endpoint = endpoint
-        self.data = None
-        self.setData()
-        
-    def setData(self):
+    def __init__(self):
+        self.colibri_endpoint = config.get('updates', 'colibri_endpoint')
+        self.firmware_endpoint = config.get('updates', 'firmware_endpoint')
+        self.colibri = None
+        self.firmware = None
+        self.setColibri()
+        self.setFirmware()
+    
+    def getRemoteData(self, endpoint):
         curl = pycurl.Curl()
         buffer = BytesIO()
-        curl.setopt(pycurl.URL, self.endpoint + 'armhf/version.json' )
+        curl.setopt(pycurl.URL, endpoint)
         curl.setopt(pycurl.TIMEOUT, 10)
         curl.setopt(pycurl.FOLLOWLOCATION, 1)
         curl.setopt(pycurl.MAXREDIRS, 5)
         curl.setopt(curl.WRITEDATA, buffer)
         curl.perform()
-        self.data = json.loads(buffer.getvalue())
+        
+        return buffer.getvalue()
+        
+    def setColibri(self):
+        self.colibri = json.loads(self.getRemoteData(self.colibri_endpoint + 'armhf/version.json'))
+        
+    def setFirmware(self):
+        self.firmware = json.loads(self.getRemoteData(self.firmware_endpoint + 'fablin/atmega1280/version.json'))
     
-    def getData(self, key = ''):
-        if(key == ''):
-            return self.data
-        else:
-            return self.data[key]
+    def getColibri(self):
+        return self.colibri
+    
+    def getBundles(self):
+        return self.colibri['bundles']
+    
+    def getFirmware(self):
+        return self.firmware
+    
+    def getColibriEndpoint(self):
+        return self.colibri_endpoint
         
         
