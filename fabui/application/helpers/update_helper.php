@@ -103,25 +103,42 @@ if(!function_exists('getBundlesStatus'))
 	/**
 	 *  check wich bundle needs an update 
 	 */
-	function getBundlesStatus()
+	function getUpdateStatus()
 	{
-		$localBundles  = getLocalBundles();
-		$remoteBundles = getRemoteBundles();
-		
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
+		$CI->load->helper('fabtotum_helper');
 		
-		$endpoint = $CI->config->item('colibri_endpoint').getArchitecture();
-			
+		$localBundles      = getLocalBundles();
+		$remoteBundles     = getRemoteBundles();
+		$firmwareRemote    = getRemoteFwVersions();
+		$installedFirmware = firmwareInfo();
+		
+		$bundlesEndpoint = $CI->config->item('colibri_endpoint').getArchitecture();
+		$fwEndpoint      = $CI->config->item('firmware_endpoint').'fablin/atmega1280/';
+		
+		$latestFirmwareRemote = $firmwareRemote['firmware']['latest'];
+		
+		$firmware['installed']   = $installedFirmware['version'];
+		$firmware['need_update'] = version_compare($installedFirmware['version'], $firmwareRemote['firmware']['latest']) == -1 ? true : false;
+		$firmware['remote']      = $firmwareRemote['firmware'][$firmwareRemote['firmware']['latest']];
+		$firmware['remote']['changelog'] = getRemoteFile($fwEndpoint.'/latest/changelog.txt');
+		
 		$status = array(
 			'bundles'    => array(),
+			'firmware'   => $firmware,
 			'update' => array(
 				'available' => false,
-				'number' => 0,
-				'endpoint'   => $endpoint
+				'bundles'   => 0,
+				'firwmare'  => false,
+				'endpoint'  => array(
+							'bundles' =>$bundlesEndpoint,
+							'fimware' => $fwEndpoint
+							)
 			),
 			'remote_connection' =>  $remoteBundles ? true : false,
 		);
+		
 		foreach($localBundles as $bundleName => $localBundleData)
 		{
 			if($remoteBundles){
@@ -130,12 +147,11 @@ if(!function_exists('getBundlesStatus'))
 				$needUpdate = version_compare($localBundleData['version'], $latestVersion) == -1 ? true : false;
 				$changelog = '';
 				if($needUpdate) {
-					$status['update']['available'] = true;
-					$remoteContent = getRemoteFile($endpoint.'/bundles/'.$bundleName.'/changelog.json');
+					$remoteContent = getRemoteFile($bundlesEndpoint.'/bundles/'.$bundleName.'/changelog.json');
 					if($remoteContent != false){
 						$temp = json_decode($remoteContent, true);
 						$changelog = ($temp[$remoteBundle['latest']]);
-						$status['update']['number'] += 1;
+						$status['update']['bundles'] += 1;
 					}
 				}
 			}else{
@@ -152,6 +168,7 @@ if(!function_exists('getBundlesStatus'))
  				'packages'    => $localBundleData['packages'],
 			);
 		}
+		$status['update']['available'] = $status['update']['bundles'] > 0 || $firmware['need_update'] ? true : false;
 		return $status;
 	}
 }
@@ -210,6 +227,23 @@ if(!function_exists('getBundleInfo'))
 			}
 		}
 		return $infos;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getRemoteFwVersions'))
+{
+	/**
+	 *  return remote fw versions
+	 */
+	function getRemoteFwVersions()
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$CI->load->helper('os_helper');
+		$endpoint = $CI->config->item('firmware_endpoint').'fablin/atmega1280/version.json';
+		$remoteContent = getRemoteFile($endpoint);
+		if($remoteContent != false) return json_decode($remoteContent, true);
+		else false;
 	}
 }
 ?>

@@ -10,9 +10,10 @@ from fabtotum.fabui.gpusher import GCodePusher
 
 from fabtotum.utils.blink    import Blink
 
-from fabtotum.update.factory import UpdateFactory
-from fabtotum.update.bundle  import Bundle
-from fabtotum.update.version import RemoteVersion
+from fabtotum.update.factory   import UpdateFactory
+from fabtotum.update.bundle    import Bundle
+from fabtotum.update.firmware  import Firmware
+from fabtotum.update.version   import RemoteVersion
 
 tr = gettext.translation('update', 'locale', fallback=True)
 _ = tr.ugettext
@@ -23,16 +24,16 @@ factory = UpdateFactory(config)
 ''' ==================================================================================================== '''
 ''' '''
 class Update(GCodePusher):
-    def __init__(self, task_id, bundles_list, endpoint, temp_folder,  config):
+    def __init__(self, task_id, bundles_list, firmware, temp_folder,  config):
         super(Update, self).__init__(config.get('general', 'trace'), config.get('general', 'task_monitor'), use_stdout=False)
         
         self.task_id      = task_id
         self.bundles_list = bundles_list
-        self.endpoint     = endpoint
+        self.firmware     = firmware 
         self.temp_folder  = temp_folder
         self.config       = config
         
-        self.remote_data  = RemoteVersion(endpoint)
+        self.remote_data  = RemoteVersion()
         self.loaded_bundles = {}
         
         self.blink = Blink(self.config.get('general', 'trace'), self.config.get('general', 'task_monitor'))
@@ -50,18 +51,29 @@ class Update(GCodePusher):
         )
         
         blink_thread.start()
+        remote_bundles = self.remote_data.getBundles()
         
-        remote_bundles = self.remote_data.getData('bundles')
         ''' === loading bundles '''
         for bundle_name in self.bundles_list:
             bundle = Bundle(bundle_name, remote_bundles[bundle_name])
             factory.addBundle(bundle)
             self.addBundle(bundle)
         
+        ''' === loading firmware === '''
+        if(self.firmware):
+            firmware = self.remote_data.getFirmware()
+            latest_firmware = firmware['firmware']['latest']
+            firmware = Firmware(firmware['firmware'][latest_firmware])
+            factory.addFirmware(firmware)
+        
         factory.setStatus('running')
         
         for bundle_name in self.loaded_bundles:
             self.do_download(self.loaded_bundles[bundle_name])
+            
+        if(self.firmware):
+            print "download firmware"
+            self.do_download_firmware(factory.getFirmware())
         
         for bundle_name in self.loaded_bundles:
             self.do_install(self.loaded_bundles[bundle_name])
@@ -80,11 +92,16 @@ class Update(GCodePusher):
         print "do download: ", bundle.getName()
         factory.setCurrentBundle(bundle.getName())
         factory.setCurrentStatus('downloading')
-        self.download(bundle, 'bundle')
+        self.download(bundle, 'bundle') 
         self.download(bundle, 'md5')
         factory.setCurrentStatus('downloaded')
         bundle.setStatus('downloaded')
         factory.updateBundle(bundle)
+    
+    def do_download_firmware(self, firmware):
+        print "do download firmware"
+        
+        
         
     def do_install(self, bundle):
         print "installing: " , bundle.getName()
@@ -119,7 +136,7 @@ class Update(GCodePusher):
         file_name = bundle.getFile(type).getName()
         
         curl = pycurl.Curl()
-        curl.setopt(pycurl.URL, self.endpoint + 'armhf/' + file_endpoint)
+        curl.setopt(pycurl.URL, self.remote_data.getColibriEndpoint() + 'armhf/' + file_endpoint)
         curl.setopt(pycurl.FOLLOWLOCATION, 1)
         curl.setopt(pycurl.MAXREDIRS, 5)
         
@@ -181,12 +198,19 @@ def main():
     
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-T", "--task-id",     help=_("Task ID."),      default=0)
-    parser.add_argument('-b','--bundles', help='<Required> Set flag', required=True)
+    parser.add_argument('-b','--bundles',      help='<Required> Set flag')
+    parser.add_argument("-f", "--firmware",    action="store_true")
     
     args = parser.parse_args()
         
-    bundles      = args.bundles.split(',')
+    bundles      = args.bundles
     task_id      = args.task_id
+    firmware     = args.firmware
+    
+    if( bundles != None):
+        bundles = bundles.split(',')
+    else:
+        bundles = {}
     
     monitor_file = config.get('general', 'task_monitor')
     endpoint     = config.get('updates', 'colibri_endpoint')
@@ -196,9 +220,10 @@ def main():
     factory.setPid(os.getpid())
     factory.setStatus('preparing')
     
+    appMonitor = None
     try:
         appMonitor = MonitorWriter(monitor_file)
-        appUpdate  = Update(task_id, bundles, endpoint, temp_folder, config)
+        appUpdate  = Update(task_id, bundles, firmware, temp_folder, config)
         
         #threads = [
         monitorAppThread = threading.Thread(target = appMonitor.run)
@@ -216,13 +241,15 @@ def main():
         updateAppThread.join()
         
     except pycurl.error, e:
+        
         factory.setStatus('aborted')
         factory.setError(True)
         factory.setMessage(e[1])
-    except:
+    except Exception as e:
+        print e
         factory.setStatus('aborted')
         factory.setError(True)
-        factory.setMessage(sys.exc_info()[0])
+        factory.setMessage(str(e))
         
     finally:
         appMonitor.write()

@@ -16,38 +16,6 @@
  		parent::__construct();
  	}
  	
- 	/*
-	public function index()
-	{
-		if(!$this->input->is_cli_request()){
-			$this->load->model('Tasks', 'tasks');
-			//$this->tasks->truncate();
-			$this->runningTask = $this->tasks->getRunning('updates');
-		}
-		
-		//load libraries, helpers, model, config
-		$this->load->library('smart');
-		$this->load->helper('layout');
-		$data = array();
-		$data['runningTask'] = $this->runningTask;
-		
-		//main page widget
-		$widgetOptions = array(
-				'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
-				'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
-		);
-		
-		$widget = $this->smart->create_widget($widgetOptions);
-		$widget->id = 'updates-widget';
-		$widget->header = array('icon' => 'fa-refresh', "title" => "<h2>Updates</h2>");
-		$widget->body   = array('content' => $this->load->view('updates/index/widget', $data, true ));
-		$this->content  = $widget->print_html(true);
-		
-		$this->addCSSInLine('<style>.table-forum tr td>i {padding-left:0px};.checkbox{margin-top:0px !important;}</style>');
-		$this->addJsInLine($this->load->view('updates/index/js','', true));
-		
-		$this->view();
-	}*/
  	
  	public function index()
  	{
@@ -85,14 +53,14 @@
  	}
 	
 	/**
-	 * get bundles status
+	 * get update status (local and remote)
 	 */
-	function bundleStatus()
+	function updateStatus()
 	{
 		//load helpers
 		$this->load->helper('update_helper');
 		//get remote bundles status
-		$bundlesStatus = getBundlesStatus();
+		$bundlesStatus = getUpdateStatus();
 		echo json_encode($bundlesStatus);
 	}
 	/**
@@ -107,6 +75,8 @@
 		//get data from post
 		$data = $this->input->post();
 		$bundles = $data['bundles'];
+		$firmware = $data['firmware'];
+		
 		
 		//add task record to db
 		$taskData = array(
@@ -122,8 +92,19 @@
 				'-T' => $taskId,
 				'-b' => implode(',', $bundles)
 		);
+		if($firmware) $updateArgs['-f'] = '';
+		
 		startPyScript('update.py', $updateArgs, true, true);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
+	}
+	
+	function test()
+	{
+		//load helpers
+		$this->load->helper('update_helper');
+		//get remote bundles status
+		$bundlesStatus = getUpdateStatus();
+		echo json_encode(getUpdateStatus());
 	}
 			
  }

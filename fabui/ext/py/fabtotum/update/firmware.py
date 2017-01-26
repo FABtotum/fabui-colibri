@@ -20,21 +20,19 @@
 
 from fabtotum.update.file  import File
 
-class Bundle:
+class Firmware:
     
-    def __init__(self, name, data):
-        self.name          = name
+    def __init__(self, data):
+        self.name          = 'firmware'
         self.status        = ''
-        self.message       = ''
-        self.latest        = data['latest']
-        self.date_uploaded = data[self.latest]['date-uploaded']
-        self.priority      = data[self.latest]['priority']
-        self.version       = data[self.latest]['version']
-        self.optional      = data[self.latest]['optional']
-        self.md5File       = File(data[self.latest]['files']['md5sum'])
-        self.bundleFile    = File(data[self.latest]['files']['bundle'])
+        self.message       = '' 
+        self.date_uploaded = data['date-uploaded']
+        self.version       = data['version']
+        self.md5File       = File(data['files']['md5sum'])
+        self.hex           = File(data['files']['firmware'])
+        self.gcodes        = File(data['files']['gcodes'])
         
-        print "init: ", name
+        print "init: ", self.name
         
     def getName(self):
         return self.name
@@ -51,8 +49,8 @@ class Bundle:
     def getMd5File(self):
         return self.md5File
     
-    def getBundleFile(self):
-        return self.bundleFile
+    def getHexFile(self):
+        return self.hex
     
     def getStatus(self):
         return self.status
@@ -85,12 +83,51 @@ class Bundle:
         data = {
             'status'   : self.getStatus(),
             'message'  : self.getMessage(),
-            'latest'   : self.getLatest(),
             'version'  : self.getVersion(),
-            'priority' : self.getPriority(),
             'files'    : {
-                'bundle' : self.getBundleFile().serialize(),
+                'hex' : self.getHexFile().serialize(),
                 'md5' : self.getMd5File().serialize()
             }
+        }
+        return data
+        
+        
+class File:
+    def __init__(self, file_url):
+        self.name = self.setFileName(file_url)
+        self.endpoint = file_url
+        self.size = 0
+        self.progress = 0
+        self.status = ''
+        
+    def setFileName(self, url):
+        filename = url.split('/')
+        return filename[-1]
+    
+    def getName(self):
+        return self.name
+    
+    def setProgress(self, progress):
+        self.progress = progress
+        
+    def getEndpoint(self):
+        return self.endpoint
+    
+    def setSize(self, size):
+        self.size = size
+    
+    def setStatus(self, status):
+        self.status = status
+    
+    def getStatus(self):
+        return self.status
+    
+    def serialize(self):
+        data = {
+            'name' : self.name,
+            'endpoint' : self.endpoint,
+            'size' : self.size,
+            'progress' : self.progress,
+            'status' : self.status
         }
         return data

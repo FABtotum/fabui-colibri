@@ -32,8 +32,9 @@ class UpdateFactory():
         self.error = False
         self.message = ''
         self.bundles = {}
+        self.firmware = None
         self.current = Current()
-        self.stop = False
+        self.stop = False  
         self.updated_count = 0
         self.db = Database(config)
     
@@ -67,8 +68,14 @@ class UpdateFactory():
     def addBundle(self, bundle):
         self.bundles[bundle.getName()] = bundle
         
+    def addFirmware(self, firmware):
+        self.firmware = firmware 
+        
     def getBundle(self, bundle_name):
         return self.bundles[bundle_name]
+    
+    def getFirmware(self):
+        return self.firmware
     
     def incraeseUpdatedCount(self):
         self.updated_count += 1
@@ -89,6 +96,7 @@ class UpdateFactory():
         return self.error
         
     def serialize(self):
+        
         task_data = {
             'id' : self.task_id,
             'pid' : self.pid,
@@ -102,15 +110,23 @@ class UpdateFactory():
     
     def serializeBundles(self):
         data = {}
+        
         for bundle_name in self.bundles:
             bundle = self.getBundle(bundle_name)
             data[bundle_name] = bundle.serialize()
         return {
             'bundles': data,
+            'firmware' : self.serializeFirmware(),
             'current': self.current.serialize(),
             'to_update' : len(data),
             'updated' :  self.getUpdatedCount()
         }
+    
+    def serializeFirmware(self):
+        if(self.firmware != None):
+            return self.firmware.serialize()
+        else:
+            return {}
     
     def updateBundle(self, bundle):
         self.bundles[bundle.getName()] = bundle
