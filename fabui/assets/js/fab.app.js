@@ -69,9 +69,83 @@ fabApp = (function(app) {
 		});
 		
 	};
-	
 		
 	app.domReadyMisc = function() {
+		
+		var controls_options = {
+			hasZero:false,
+			hasRestore:false,
+			compact:true,
+			percentage:0.95
+		};
+		
+		var jog_controls = $('.top-ajax-jog-controls-holder').jogcontrols(controls_options);
+		
+		jog_controls.on('click', function(e){
+			
+			var mul = jog_controls.jogcontrols('getMultiplier');
+			
+			var zstep = mul * 0.5;
+			var xystep = mul * 1;
+			var feedrate = 1000;
+			
+			console.log("ajax-jog", e.action);
+				switch(e.action)
+				{
+					case "zero":
+						break;
+					case "z-down":
+						cmd = 'G91\nG0 Z+'+zstep+' F'+feedrate;
+						break;
+					case "z-up":
+						cmd = 'G91\nG0 Z-'+zstep+' F'+feedrate;
+						break;
+					case "right":
+						cmd = 'G91\nG0 X+'+xystep+' F'+feedrate;
+						break;
+					case "left":
+						cmd = 'G91\nG0 X-'+xystep+' F'+feedrate;
+						break;
+					case "up":
+						cmd = 'G91\nG0 Y+'+xystep+' F'+feedrate;
+						break;
+					case "down":
+						cmd = 'G91\nG0 Y-'+xystep+' F'+feedrate;
+						break;
+					case "down-right":
+						cmd = 'G91\nG0 X+'+xystep+' Y-'+xystep+' F'+feedrate;
+						break;
+					case "up-right":
+						cmd = 'G91\nG0 X+'+xystep+' Y+'+xystep+' F'+feedrate;
+						break;
+					case "down-left":
+						cmd = 'G91\nG0 X-'+xystep+' Y-'+xystep+' F'+feedrate;
+						break;
+					case "up-left":
+						cmd = 'G91\nG0 X-'+xystep+' Y+'+xystep+' F'+feedrate;
+						break;
+					case "home-xy":
+						cmd = 'G28 X Y';
+						break;
+					case "home-z":
+						cmd = 'G27 Z';
+						break;
+					case "home-xyz":
+						cmd = 'G27';
+						break;
+				}
+				
+				if(cmd != '')
+				{
+					//cmd += '\nM400';
+					
+					//jog_busy = true;
+					fabApp.jogMdi(cmd, function(e) {
+						//jog_busy = false;
+					});
+				}
+				
+			});
 		
 		if (typeof(Storage) !== "undefined"){
 			if(localStorage.getItem("temperaturesPlot") !== null){			
@@ -120,19 +194,6 @@ fabApp = (function(app) {
             $(".top-ajax-temperatures-dropdown").is(a.target) || 0 !== $(".top-ajax-temperatures-dropdown").has(a.target).length || ($(".top-ajax-temperatures-dropdown").fadeOut(150), $(".top-ajax-temperatures-dropdown").prev().removeClass("active"))
             $(".top-ajax-jog-dropdown").is(a.target) || 0 !== $(".top-ajax-jog-dropdown").has(a.target).length || ($(".top-ajax-jog-dropdown").fadeOut(150), $(".top-ajax-jog-dropdown").prev().removeClass("active"))
         });
-        
-        $(".top-directions").on("click", function(){
-        	app.jogMoveXY($(this).attr("data-attribute-direction"));
-        });
-        
-        $(".top-axisz").on("click", function(event){
-        	app.jogAxisZ($(this).attr("data-attribute-function"), $(this).attr("data-attribute-value"));
-        	event.preventDefault();
-        });
-        
-		$(".zero_all").on("click", function(){
-			app.jogZeroAll();
-		});
 		
 		//init temperatures sliders on top
 		if (typeof(Storage) !== "undefined") {
@@ -237,44 +298,49 @@ fabApp = (function(app) {
 	    	document.getElementById('ext-target-temp').noUiSlider.set([parseInt(e[0])]);
 	    }
 	}
-	/*
+	
+	/**
 	 * 
 	 */
 	app.topExtTempChange = function(e){
 		app.serial("setExtruderTemp", parseInt(e[0]));
 	}
-	/*
+	
+	/**
 	 * 
 	 */
-	app.jogMoveXY = function (value, callback) {
-		return app.serial("moveXY", value, callback);
+	app.jogMove = function (action, step, feedrate, waitforfinish, callback) {
+		return app.serial("move", action, callback, step, feedrate, waitforfinish);
 	}
-	/*
-	 * 
-	 */
-	app.jogAxisZ = function (func, direction, callback){
-		return app.serial('moveZ', direction, callback); 
-	}
-	/*
+	/**
 	 * 
 	 */
 	app.jogZeroAll = function (callback) {
-		app.serial("zeroAll", true, callback);
-	}
-	/*
-	 * 
-	 */
-	app.jogExtrude = function(sign, callback) {
-		app.serial('extrude', sign, callback);
+		return app.serial("zeroAll", true, callback);
 	}
 	/**
-	 * Send gcode commands to jog handler.
-	 * @callback Callback function on execution finish
+	 *
 	 */
 	app.jogMdi = function(value, callback) {
 		console.log(value);
 		return app.serial('manualDataInput', value, callback);
 	};
+	/*
+	 * @tag: to_be_removed
+	 * app.jogMoveXY = function (value, callback) {
+		return app.serial("moveXY", value, callback);
+	}
+	app.jogAxisZ = function (direction, callback) {
+		return app.serial('moveZ', direction, callback); 
+	}
+
+	app.jogExtrude = function(sign, callback) {
+		app.serial('extrude', sign, callback);
+	}*/
+	/**
+	 * Send gcode commands to jog handler.
+	 * @callback Callback function on execution finish
+	 */
 	/*
 	 * 
 	 */
@@ -291,7 +357,7 @@ fabApp = (function(app) {
 	app.freezeMenu = function(except){
 		var excepet_item_menu = new Array();
 		excepet_item_menu[0] = 'dashboard';
-		excepet_item_menu[1] = 'objectmanager';
+		excepet_item_menu[1] = 'projectsmanager';
 		excepet_item_menu[2] = 'make/history';
 		excepet_item_menu[3] = except;
 		
@@ -663,7 +729,9 @@ fabApp = (function(app) {
 	/*
 	 * display jog response
 	 */
-	app.writeJogResponse = function(data){
+	/*
+	 * @tag: to_be_removed
+	 * app.writeJogResponse = function(data){
 		var added = false;
 		if($(".jogResponseContainer").length > 0){
 			$.each(data, function(i, item) {
@@ -682,7 +750,7 @@ fabApp = (function(app) {
 			});
 			if(added) $(".jogResponseContainer").animate({ scrollTop: $('.jogResponseContainer').prop("scrollHeight")}, 1000);
 		}
-	}
+	}*/
 	/*
 	 * write serial replys to jog console
 	 */
@@ -841,16 +909,10 @@ fabApp = (function(app) {
 	 * Jog serial function
 	 * Used to send individual gcode commands, move the jog or get temperature values
 	 */
-	app.serial = function(func, val, callback) {
+	app.serial = function(func, val, callback, step=0, feedrate=0, waitforfinish=false) {
 		
 		if(debugState)
 			root.console.log("✔ app.serial: " + func + ', ' + val);
-		
-		var xyStep       = $("#xyStep").length            > 0 ? $("#xyStep").val()            : 10;
-		var zStep        = $("#zStep").length             > 0 ? $("#zStep").val()             : 5;
-		var extruderStep = $("#extruderStep").length      > 0 ? $("#extruderStep").val()      : 10;
-		var xyzFeed      = $("#xyzFeed").length           > 0 ? $("#xyzFeed").val()           : 1000;
-		var extruderFeed = $("#extruder-feedrate").length > 0 ? $("#extruder-feedrate").val() : 300;
 		
 		var stamp = Date.now();
 		
@@ -858,9 +920,9 @@ fabApp = (function(app) {
 			'method'           : func,
 			'value'            : val,
 			'stamp'            : stamp,
-			'useXmlrpc'        : xmlrpc,
-			'step'             : {'xy':  xyStep, 'z':zStep, 'extruder': extruderStep},
-			'feedrate'         : {'xyz': xyzFeed, 'extruder':extruderFeed}
+			'step'             : step,
+			'feedrate'         : feedrate,
+			'waitforfinish'    : waitforfinish
 		};
 		
 		var messageToSend = {

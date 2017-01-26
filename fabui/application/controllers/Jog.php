@@ -29,6 +29,9 @@
 		$this->addJsInLine($this->load->view('jog/js', $data, true));
 		//css
 		$this->addCssFile('/assets/css/jog/style.css');
+		$this->addCssFile('/assets/css/std/jogcontrols.css');
+		$this->addCssFile('/assets/css/std/jogtouch.css');
+		$this->addJsFile('/assets/js/std/jogtouch.js');
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}

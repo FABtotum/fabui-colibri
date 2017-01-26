@@ -88,11 +88,11 @@ class ExposeCommands:
         else:
             self.trace_logger.info(log_msg)
     
-    def send(self, code, block = True, timeout = None):
+    def send(self, code, block = True, timeout = None, async = False):
         """
         Send GCode and receive it's reply.
         """
-        return self.gcs.send(code, block=block, timeout=timeout)
+        return self.gcs.send(code, block=block, timeout=timeout, async=async)
     
     def do_macro(self, preset, args = None, atomic = True):
         """

@@ -32,7 +32,7 @@
   image-orientation: 0deg !important;
 }
 
-.jogtouch-cross{
+.jogtouch-container .jogtouch-cross{
   cursor: crosshair;
   float: left;
   position: absolute;

@@ -17,11 +17,7 @@
 
 	$(document).ready(function() {
 		
-		//~ $(".axisxy").on('click', moveXYZ);
-		//~ $(".axisz").on('click', moveXYZ);
-		$(".setzero").on('click', jogSetAsZero);
-		
-		$('.knob').knob({
+		/*$('.knob').knob({
 			change: function (value) {
 			},
 			release: function (value) {
@@ -30,15 +26,15 @@
 			cancel: function () {
 				console.log("cancel : ", this);
 			}
-		});
+		});*/
 		
-		$('.knob').keypress(function(e) {
+		/*$('.knob').keypress(function(e) {
 			if(e.which == 13) {
 				rotation($(this).val());
 			}
-		 });
+		 });*/
 		 
-		 var touch_options = {
+		var touch_options = {
 			guides: false,
 			center: false,
 			highlight: false,
@@ -126,6 +122,9 @@
 		
 		switch(action)
 		{
+			case "zero":
+				jogSetAsZero();
+				break;
 			case "z-down":
 				cmd = 'G91\nG0 Z+'+zstep+' F'+feedrate;
 				break;

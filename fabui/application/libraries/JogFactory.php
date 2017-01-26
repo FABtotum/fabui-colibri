@@ -12,12 +12,12 @@
 	
 	protected $CI; //code igniter instance
 	//protected $serial; //serial class
-	protected $feedrate     = array();
-	protected $step         = array();
+	protected $feedrate     = 0;
+	protected $step         = 0;
+	protected $waitforfinish = false;
 	protected $responseType = 'jog'; //type of response (temperature, gcode, serial)
 	protected $responseData;
 	protected $temperatures = array();
-	protected $useXmlrpc    = true;
 	protected $xmlrpc       = null;
 	protected $commands     = array();
 	
@@ -33,11 +33,7 @@
 		$this->CI =& get_instance(); //init ci instance
 		$this->CI->config->load('fabtotum');
 		
-		if(!$this->useXmlrpc){
-			$this->CI->load->helper('file_helper');
-		}else{
-			$this->CI->load->helper('fabtotum_helper');
-		}
+		$this->CI->load->helper('fabtotum_helper');
 		
   	}
   	/**
@@ -84,23 +80,15 @@
 	{	
 		$this->buildCommands($commands, $id_stamp);
 		
-		if(!$this->useXmlrpc){
-			$commandToWrite = '';
-			foreach($this->commands as $key => $command){
-				$commandToWrite .= '!jog:'.time().$key.','.$command.PHP_EOL;
-			}
-			write_file($this->CI->config->item('command'), $commandToWrite);
-		}else{
-			foreach($this->commands as $timestamp => $data){
-				
-				$responseTemp = sendToXmlrpcServer('send', $data['code']);
-				//print_r($responseTemp);
-				
-				$data['response'] = $responseTemp['response'];
-				$data['message']  = $responseTemp['message'];
-				$data['reply']    = implode(PHP_EOL,$responseTemp['reply']);
-				$this->commands[$timestamp] = $data;
-			}
+		foreach($this->commands as $timestamp => $data){
+			
+			$responseTemp = sendToXmlrpcServer('send', $data['code']);
+			//print_r($responseTemp);
+			
+			$data['response'] = $responseTemp['response'];
+			$data['message']  = $responseTemp['message'];
+			$data['reply']    = implode(PHP_EOL,$responseTemp['reply']);
+			$this->commands[$timestamp] = $data;
 		}
 	}
 	/**
@@ -158,36 +146,45 @@
 		return $this->response();
 	}
 	/**
-	 * @param string $direction 
-	 * move head on X Y axis
+	 * @param string $action 
+	 * execute movement command
 	 */
-	public function moveXY($direction, $id_stamp)
+	public function move($action, $id_stamp)
 	{
-		if($direction == '') return;
+		if($action == '')
+			return array();
 		
-		$directions['up']         = 'G0 Y+%.2f F%.2f';
-		$directions['up-right']   = 'GO Y+%1$.2f X+%1$.2f F%2$.2f';
-		$directions['up-left']    = 'G0 Y+%1$.2f X-%1$.2f F%2$.2f';
-		$directions['down']       = 'G0 Y-%.2f F%.2f';
-		$directions['down-right'] = 'G0 Y-%1$.2f X+%1$.2f F%2$.2f';
-		$directions['down-left']  = 'GO Y-%1$.2f X-%1$.2f F%2$.2f';
-		$directions['left']       = 'GO X-%.2f F%.2f';
-		$directions['right']      = 'GO X+%.2f F%.2f';
+		$actions['up']         = 'G0 Y+%.2f F%.2f';
+		$actions['up-right']   = 'GO Y+%1$.2f X+%1$.2f F%2$.2f';
+		$actions['up-left']    = 'G0 Y+%1$.2f X-%1$.2f F%2$.2f';
+		$actions['down']       = 'G0 Y-%.2f F%.2f';
+		$actions['down-right'] = 'G0 Y-%1$.2f X+%1$.2f F%2$.2f';
+		$actions['down-left']  = 'GO Y-%1$.2f X-%1$.2f F%2$.2f';
+		$actions['left']       = 'GO X-%.2f F%.2f';
+		$actions['right']      = 'GO X+%.2f F%.2f';
 		
-		$this->sendCommands(array('G91', sprintf($directions[$direction], $this->step['xy'], $this->feedrate['xyz']),'G90'));
+		$actions['z-up']      = 'GO Z-%.2f F%.2f';
+		$actions['z-down']      = 'GO Z+%.2f F%.2f';
+		
+		if( !array_key_exists($action, $actions) )
+			return array();
+		
+		if($this->waitforfinish)
+			$this->sendCommands(array('G91', sprintf($actions[$action], $this->step, $this->feedrate), 'M400', 'G90'), $id_stamp);
+		else
+			$this->sendCommands(array('G91', sprintf($actions[$action], $this->step, $this->feedrate), 'G90'), $id_stamp);
 		return $this->response();
-		
 	}
-	/**
-	 * @param string $direction
-	 * move Z axis
-	 */
-	public function moveZ($direction, $id_stamp)
+	
+	public function home($action, $id_stamp)
 	{
-		$sign = $direction == 'up' ? '-' : '+';
-		$this->sendCommands(array('G91', 'GO Z'.$sign.$this->step['z'].' F'.$this->feedrate['xyz']));
-		return $this->response();
+		$actions['home-xy']      = 'G28 X Y';
+		$actions['home-xyz']     = 'G28';
+		$actions['home-xyz-min'] = 'G27';
+		$actions['home-z']       = 'G28 Z';
+		$actions['home-z-min']   = 'G27 Z';
 	}
+	
 	/**
 	 * zero all 
 	 */

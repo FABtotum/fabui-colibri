@@ -101,12 +101,20 @@
 		$CI->config->load('fabtotum');
 		
 		$method      = $data['method'];
-		$methodParam = $data['value'];
 		$methodStamp = $data['stamp'];
+		$methodParam = $data['value'];
+		
+		/*$methodParam = $data['step'];
+		$methodParam = $data['feedrate'];
+		$methodParam = $data['waitforfinish'];*/
 		
 		unset($data['method']);
 		unset($data['value']);
 		unset($data['stamp']);
+		unset($data['action']);
+		
+		//unset($data['step']);
+		//unset($data['feedrate']);
 		
 		$jogFactory = new JogFactory($data);
 		if(method_exists($jogFactory, $method)){ //if method exists than do it

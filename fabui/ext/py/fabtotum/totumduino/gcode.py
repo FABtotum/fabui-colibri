@@ -91,9 +91,10 @@ class Command(object):
     RESET   = 'reset'
     TERMINATE   = 'terminate'
     
-    def __init__(self, id, data = None, expected_reply = 'ok', group = 'raw', timeout = None):
+    def __init__(self, id, data = None, expected_reply = 'ok', group = 'raw', timeout = None, async = False):
         self.id = id
         self.aborted = False
+        self.async = async
         self.data = data
         self.reply = []
         self.__ev = Event()
@@ -205,18 +206,19 @@ class Command(object):
         return cls(Command.RESUME, None)
 
     @classmethod
-    def gcode(cls, code, expected_reply = 'ok', group = 'gcode', timeout = None):
+    def gcode(cls, code, expected_reply = 'ok', group = 'gcode', timeout = None, async = False):
         """
         Constructor for ``GCODE`` command.
         
         :param code: GCode
         :param expected_reply: Expected reply
         :param group: Acknowledge group. **Used internally**
+        :param async: Command reply should be send asynchronously as well
         :type code: string
         :type expected_reply: string
         :type group: string
         """
-        return cls(Command.GCODE, code, expected_reply, group, timeout)
+        return cls(Command.GCODE, code, expected_reply, group, timeout, async)
 
     @classmethod
     def zmodify(cls, z):
@@ -737,7 +739,7 @@ class GCodeService:
         if not line:
             #print "__handle_line: return line_empty"
             return
-            
+        
         # Update idle time start
         self.idle_time_started = time.time()
         
@@ -768,6 +770,10 @@ class GCodeService:
         if self.active_cmd:
             # Get the active command as this is the on waiting for the reply.
             cmd = self.active_cmd
+            
+            if cmd.async:
+                # TODO: async mode
+                pass
             
             if cmd.data[:4] == 'M303':
                 if line[:2] != 'ok':
@@ -871,7 +877,7 @@ class GCodeService:
             else:
                 if data:
                     self.buffer.extend(data)
-                    print 'R: [', data, ']'
+                    #print 'R: [', data, ']'
                     while self.READ_TERM in self.buffer:
                         line_raw, self.buffer = self.buffer.split(self.READ_TERM, 1)
                         self.__handle_line(line_raw)
@@ -1114,7 +1120,7 @@ class GCodeService:
         self.atomic_group = None
         self.atomic_sync_lock.release()
     
-    def send(self, code, block = True, timeout = None, group = 'gcode', expected_reply = 'ok'):
+    def send(self, code, block = True, timeout = None, group = 'gcode', expected_reply = 'ok', async = False):
         """
         Send GCode and return reply.
         """
@@ -1135,7 +1141,7 @@ class GCodeService:
             
             self.log.debug("put on command queue: %s,%s", code, group)
             
-            cmd = Command.gcode(code, expected_reply, group = group, timeout = timeout)
+            cmd = Command.gcode(code, expected_reply, group = group, timeout = timeout, async = async)
             self.cq.put(cmd)
             
             # Don't block, return immediately 

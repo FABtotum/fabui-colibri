@@ -51,7 +51,7 @@
 								<div class="row">
 									<div class="tab-content padding-10 well">
 										<div class="tab-pane fade in active" id="jog-tab">
-										<!-- jog step and feedrate inputs -->
+											<!-- jog step and feedrate inputs -->
 											<div class="smart-form">
 												<fieldset style="background: none !important;">
 													<div class="row">

@@ -160,7 +160,8 @@
       
       this.$container = $container = $('<div id="'+id+'" class="jogcontrol-container"></div>');
       
-      $this.addClass(CLASS_HIDDEN).after($container);
+      //$this.addClass(CLASS_HIDDEN).after($container);
+      $this.html($container);
       
       this.paper = paper = Raphael(id, $container.width(), $container.width() );
       this.ui = ui = paper.set();
@@ -251,7 +252,7 @@
       var paper = this.paper;
       var ui = this.ui;
       
-      var r = (paper.width / 2) * 0.8;
+      var r = (paper.width / 2) * options.percentage;
       var cx = paper.width / 2;
       var cy = paper.height / 2;
       
@@ -735,7 +736,9 @@
     //
     hasZero: true,
     //
-    compact: false
+    compact: false,
+    //
+    percentage: 0.8
   };
 
   JogControls.setDefaults = function (options) {

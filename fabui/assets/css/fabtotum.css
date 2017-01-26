@@ -253,8 +253,8 @@
 }
 
 .top-ajax-jog-dropdown {
-	left: -150px;
-	width: 340px;
+	left: -132px;
+	width: 250px;
 	height: 250px;
 }
 
@@ -336,6 +336,74 @@
 	margin-top: 3px;
 } 
 
+.top-ajax-jog-dropdown .jogcontrols-hidden {
+  display: none !important;
+}
+
+.top-ajax-jog-dropdown svg text {
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.top-ajax-jog-dropdown .jogcontrol-container {
+    width:200px;
+    height:208px;
+    min-width: 208px;
+    min-height: 208px;
+    max-width: 208px;
+    max-height: 208px;
+    margin: 0 0 0 0;
+    /*background-color: yellow;*/
+
+    display: inline-block;
+    text-align: center;
+
+    /* if you need ie6/7 support */
+    *display: inline;
+}
+
+.top-ajax-jog-dropdown .jog-btn {
+	fill: white;
+	stroke: #d1d1d1;
+	stroke-width: 2;
+}
+
+.top-ajax-jog-dropdown .jog-btn.hover {
+	fill: #dddddd;
+	stroke: #acacac;
+}
+
+.top-ajax-jog-dropdown .jog-btn.active {
+	fill: #1f4a6f;
+	stroke: #173955;
+}
+
+.top-ajax-jog-dropdown .jog-btn-text, .jog-btn-symbol {
+	fill: black;
+	stroke: none;
+	font-size: 20;
+	
+	cursor: default;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.top-ajax-jog-dropdown .jog-btn-text.active, .jog-btn-symbol.active {
+	fill: white;
+	stroke: none;
+	font-size: 20;
+	
+	cursor: default;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
 
 .margin-bottom-20 {
 	margin-bottom: 20px !important;
