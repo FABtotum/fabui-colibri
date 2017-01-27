@@ -12,7 +12,7 @@
 		<?php if($runningTask): ?>
 		resumeTask();
 		<?php else: ?>
-		checkBundleStatus();
+		checkUpdateStatus();
 		<?php endif; ?>
 	});
 	/**
@@ -21,12 +21,12 @@
 	/**
 	*
 	**/
-	function checkBundleStatus()
+	function checkUpdateStatus()
 	{
 		$(".status").html('<i class="fa fa-spinner fa-spin"></i> checking for updates');
 		$.ajax({
 			type: "POST",
-			url: "<?php echo site_url('updates/bundleStatus') ?>",
+			url: "<?php echo site_url('updates/updateStatus') ?>",
 			dataType: 'json'
 		}).done(function(response) {
 			if(response.remote_connection == false){
@@ -41,12 +41,13 @@
 	**/
 	function noInternetAvailable()
 	{
+		
 	}
 	/**
 	*
 	**/
 	function handleAvailableUpdates(object) {
-
+		
 		$('.fabtotum-icon').parent().addClass('tada animated');
 		
 		if(object.update.available){
@@ -58,7 +59,8 @@
 			buttons += '<button class="btn btn-default  action-buttons" id="bundle-details"><i class="fa fa-reorder"></i> View details</button> ';
 
 			$(".button-container").html(buttons);
-			crateBundlesTable(object);
+			createBundlesTable(object);
+			createFirmwareTable(object);
 
 			$("#bundle-details").on('click', showHideBundlesDetails);
 			$("#do-update").on('click', doUpdate);
@@ -69,8 +71,9 @@
 	}
 
 
-	function crateBundlesTable(data)
+	function createBundlesTable(data)
 	{
+		
 		var html = '<table id="bundles-table" class="table  table-forum">' + 
 		 				'<thead>' +
 							'<tr>' +
@@ -120,8 +123,8 @@
 		
 		html +=    		'<tbdoy>' + 
 					'</table>';
-		if(data.update.number > 0) {
-			$("#bundles-badge").html(data.update.number).addClass('animated fadeIn');
+		if(data.update.bundles > 0) {
+			$("#bundles-badge").html(data.update.bundles).addClass('animated fadeIn');
 		}
 		$("#bundles_tab").html(html);
 		$("#select-all-bundles").on('click', function(){
@@ -130,6 +133,48 @@
 				this.checked = that.checked;
 			});
 		});
+	}
+	/**
+	*
+	**/
+	function createFirmwareTable(object)
+	{
+		var icon = "fa fa-check text-muted";
+		var tr_class = "";
+		var checked = '';
+		if(object.firmware.need_update){
+			$("#firmware-badge").html('!');
+			icon = "fa fa-exclamation-circle text-muted";
+			tr_class = "warning";
+			checked = 'checked="checked"';
+		}
+		var html = '<table id="firmware-table" class="table  table-forum">' +
+					'<thead>'+
+						'<tr>'+
+							'<th colspan="2"></th>' +
+							'<th class="text-center" style="width:150px">Remote version</th>' +
+							'<th class="text-center" style="width:40px;"></th>' +
+						'</tr>' +
+					'</thead>';
+		html += '<tbody>' +
+					'<tr class="' + tr_class + '">' +
+						'<td style="width:40px;"><i class="' + icon + '"></i></td>'+
+						'<td>'+
+							'<h4>'+
+								'<a href="javascript:void(0);"> Fablin </a>' + 
+								'<small>Installed version: ' + object.firmware.installed  + '</small>' +
+							'</h4>'+
+						'</td>'+
+						'<td class="text-center">'+ object.firmware.remote.version  +'</td>'+
+						'<td class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px;"><label><input value="firmware" type="checkbox" '+checked +' class="checkbox"><span></span></label></div></td>' + 
+					'</tr>' + 
+					'<tr><td></td><td></td><td></td><td></td></tr>' +
+				'</tbody>';	
+		html += '</table>';
+
+
+		$("#firwmare_tab").html(html);
+		
 	}
 	/**
 	*
@@ -162,21 +207,27 @@
 	{
 		disableButton('.action-buttons');
 		var bundles_to_update = [];
+		var firmware = false;
 		$("#bundles-table").find("tr > td input:checkbox").each(function () {
 			if($(this).is(':checked')){
 				bundles_to_update.push($(this).val());
 			}
 		});
-		startUpdate(bundles_to_update);
+		$("#firmware-table").find("tr > td input:checkbox").each(function () {
+			if($(this).is(':checked')){
+				firmware = true;
+			}
+		});
+		startUpdate(bundles_to_update, firmware);
 	}
 	/**
 	*
 	**/
-	function startUpdate(bundles)
+	function startUpdate(bundles, firmware)
 	{
 		$.ajax({
 			type: "POST",
-			data: {'bundles': bundles},
+			data: {'bundles': bundles, 'firmware' : firmware},
 			url: "<?php echo site_url('updates/startUpdate') ?>",
 			dataType: 'json'
 		}).done(function(response) {
@@ -205,7 +256,11 @@
 	**/
 	if(typeof manageMonitor != 'function'){
 		window.manageMonitor = function(data){
+			console.log("=======================");
+			console.log("UPDATE - MANAGEMONITOR");
+			console.log(data.update.bundles);
 			handleTask(data);
+			
 		}
 	}
 	/**
@@ -213,13 +268,33 @@
 	**/
 	function handleTask(data)
 	{
-		var task    = data.task;
-		var bundles = data.update.bundles;
-		var current = data.update.current;
-	
-		handleTaskStatus(task.status);
-		handleCurrent(data.update.current);
+		console.log("UPDATE - HANDLETASK");
+
 		handleUpdate(data.update);
+		handleCurrent(data.update.current);
+		handleTaskStatus(data.task.status);
+
+		console.log(data);
+		/** TASK STATUS 
+		switch(data.task.status)
+		{
+			case 'preparing':
+				$(".status").html('Connecting to update server...');
+				break;
+			case 'runnning':
+				break;
+			case 'completed':
+				$(".status").html('<i class="fa fa-check"></i> Update completed');
+				$('.fabtotum-icon .badge').addClass('check').find('i').removeClass('fa-spin fa-refresh').addClass('fa-check');
+				$("#do-abort").remove();
+				fabApp.unFreezeMenu();
+				$(".small").html('A reboot is needed to apply new features');
+				if($("#do-reboot").length == 0) $(".button-container").append('<button class="btn btn-default  action-buttons" id="do-reboot"> Reboot now</button>')
+				$('.fabtotum-icon').parent().removeClass().addClass('tada animated');
+				$("#do-reboot").on('click', fabApp.reboot);
+				break;
+		}
+		*/
 
 	}
 	/**
@@ -250,13 +325,17 @@
 	**/
 	function handleCurrent(current)
 	{
+		console.log('handleCurrent');
+		console.log(current.status);
 		if(current.status != ''){
+			console.log(current.status);
 			switch(current.status){
 				case 'downloading' :
-					$(".status").html('<i class="fa fa-download"></i> Downloading bundle (' + current.bundle.capitalize() +')');
+					console.log("CIAO");
+					$(".status").html('<i class="fa fa-download"></i> Downloading ' + current.type + ' (' + current.name.capitalize() +')');
 					break;
 				case 'installing' :
-					$(".status").html('<i class="fa fa-gear fa-spin"></i> Installing bundle  (' + current.bundle.capitalize() +')');
+					$(".status").html('<i class="fa fa-gear fa-spin"></i> Installing ' + current.type + '  (' + current.name.capitalize() +')');
 					break;
 			}
 		}
@@ -266,8 +345,9 @@
 	**/
 	function handleUpdate(object)
 	{
-		var table = '<table class="table  table-forum"><thead><tr></tr></thead><tbody>';
 		
+		
+		var table = '<table class="table  table-forum"><thead><tr></tr></thead><tbody>';		
 		$.each(object.bundles, function(bundle_name, bundle) {
 			
 			var tr_class = bundle.status == 'error' ? 'warning' : '';
