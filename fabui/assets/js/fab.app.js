@@ -82,6 +82,7 @@ fabApp = (function(app) {
 		var jog_controls = $('.top-ajax-jog-controls-holder').jogcontrols(controls_options);
 		
 		jog_controls.on('click', function(e){
+			console.log(e);
 			
 			var mul = jog_controls.jogcontrols('getMultiplier');
 			

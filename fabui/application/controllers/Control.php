@@ -139,7 +139,7 @@
 			
 			// read usb status
 			$usb = array(
-				'data' => array('status' => getUsbStatus(), 'alert' => false)
+				'data' => array('status' => getUsbStatus(), 'alert' => false),
 				'type' => 'usb'
 				);
 			

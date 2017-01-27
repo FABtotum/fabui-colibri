@@ -48,10 +48,14 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		
 		
 		var controls_options = {
-			hasZero:true,
-			hasRestore:true,
-			compact:false,
-			percentage: 0.85
+			//~ hasZero:true,
+			//~ hasRestore:true,
+			//~ compact:false,
+			//~ percentage: 0.85
+			hasZero:false,
+			hasRestore:false,
+			compact:true,
+			percentage:0.95
 		};
 		
 		jog_controls = $('.jog-container').jogcontrols(controls_options);
@@ -239,8 +243,8 @@ if(!isset($bed_max)) 		$bed_max = 100;
 
 	function jogAction(e)
 	{
-		if(jog_busy)
-			return false;
+		//if(jog_busy)
+		//	return false;
 		
 		var mul          = jog_controls.jogcontrols('getMultiplier');
 		var xyStep       = $("#xyStep").length            > 0 ? $("#xyStep").val()            : 1;

@@ -349,7 +349,7 @@
           
           txt = paper.text(x1, y1, button.TXT).attr({fill: text, stroke: "none", "font-size": 20});
           txt.node.setAttribute("class","jog-btn-text");
-          txt.scale(global_scale*txt_scale);
+          //~ txt.scale(global_scale);
           st.push(txt);
       }
             
@@ -383,8 +383,8 @@
               txt.node.setAttribute("class","jog-btn-text");
       }
       
-      function clicked() {
-                
+      function clicked(button) {
+          console.log(button);
           var action = button.name;
           
           if( button.name == "mul")
@@ -424,7 +424,7 @@
           st.mouseover  (set_hover);
           st.mousedown  (function() {
               set_active();
-              clicked();
+              clicked(button);
             });
           st.mouseup    (set_hover);
           st.mouseout   (set_normal);
