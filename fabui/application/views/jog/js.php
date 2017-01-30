@@ -26,41 +26,50 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	var jog_controls;
 	var jog_busy = false;
 	var touch_busy = false;
+	var home = {x:0, y:0}
+	
+	var search_filter = 'gcode';
 
 	$(document).ready(function() {
-		/*$(".directions").on("click", function(){
-			fabApp.jogMoveXY($(this).attr("data-attribute-direction"));
-		});*/
-		
-		/*$(".jog-axisz").on("click", function(event){
-			fabApp.jogAxisZ($(this).attr("data-attribute-function"), $(this).attr("data-attribute-value"));
-			event.preventDefault();
-		});*/
+
 		/*$(".extruder").on("click", function(event){
 			fabApp.jogExtrude($(this).attr('data-attribute-type'));
 		});*/
 		
+		$('.knob').knob({
+			//draw: draw_knob,
+			change: function (value) {
+			},
+			release: function (value) {
+				rotation(value);
+			},
+			cancel: function () {
+				console.log("cancel : ", this);
+			}
+		});
+		
+		$('.knob').keypress(function(e) {
+			if(e.which == 13) {
+				rotation($(this).val());
+			}
+		 });
+		
 		$("#mdiButton").on("click", sendMdiCommands);
-
 		$("#clearButton").on('click', clearJogResponse);
-		//~ $("#mdiCommands").on('keyup', handleMdiInputs);
 		$("#mdiCommands").on('keydown', handleMdiInputs);
 		
 		
 		var controls_options = {
-			//~ hasZero:true,
-			//~ hasRestore:true,
-			//~ compact:false,
-			//~ percentage: 0.85
-			hasZero:false,
-			hasRestore:false,
-			compact:true,
-			percentage:0.95
+			hasZero:true,
+			hasRestore:true,
+			compact:false,
+			percentage:0.85,
+			onaction:jogAction
 		};
 		
 		jog_controls = $('.jog-container').jogcontrols(controls_options);
 		
-		jog_controls.on('click', jogAction);
+		jog_controls.on('action', jogAction);
 		
 		
 		var touch_options = {
@@ -110,7 +119,66 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		 });
 		
 		initSliders();
+		initHelpSearch();
 	});
+	
+	function selectFilter()
+	{
+		search_filter = $(this).attr('data-attr');
+		
+		var new_text = search_filter=='gcode'?"Search for a code ...":"Search in the description ...";
+		
+		$("#fa-icon-search").attr("placeholder", new_text);
+	}
+	
+	function initHelpSearch()
+	{
+		$("#fa-icon-search").keyup(function() {
+			var search = $.trim(this.value);
+			
+			if (search === "") {
+				$(".code").show();
+			}
+			else {
+				hide_divs(search.toUpperCase());
+			}
+		});
+		
+		$(".filter-select").on('click', selectFilter);
+	}
+
+	function hide_divs(search) {
+		
+		$(".code").hide(); 
+		$(".collapse").collapse('hide'); 
+
+		$(".code").each(function(index, value) {
+			
+			if( (typeof $(this).attr('data-attr') !== typeof undefined) && ( $(this).attr('data-attr') != false) )
+			{
+				var search_content = $(this).attr('data-attr');
+				
+				if(search_filter == 'desc')
+				{
+					var desc_query = "#" + $(this).attr('data-attr') + "-desc";
+					search_content = $(desc_query).html();
+				}
+				
+				if(search_content)
+				{
+					if( search_content.toUpperCase().indexOf(search) > -1 )
+						$(this).show();
+				}
+			}
+			
+		});
+	}
+
+	
+	function rotation(e)
+	{
+		console.log('rotation', e);
+	}
 
 	function initSliders()
 	{
@@ -241,12 +309,17 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		jog_busy = false;
 	}
 
+	function zeroAll()
+	{
+		
+	}
+
 	function jogAction(e)
 	{
-		//if(jog_busy)
-		//	return false;
-		
-		var mul          = jog_controls.jogcontrols('getMultiplier');
+		if(jog_busy)
+			return false;
+			
+		var mul          = e.multiplier;
 		var xyStep       = $("#xyStep").length            > 0 ? $("#xyStep").val()            : 1;
 		var zStep        = $("#zStep").length             > 0 ? $("#zStep").val()             : 0.5;
 		var extruderStep = $("#extruderStep").length      > 0 ? $("#extruderStep").val()      : 10;
@@ -257,7 +330,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		switch(e.action)
 		{
 			case "zero":
-				//fabApp.jogSetAsZero();
+				fabApp.jogZeroAll(writeJogResponse);
 				break;
 			case "right":
 			case "left":
@@ -276,13 +349,13 @@ if(!isset($bed_max)) 		$bed_max = 100;
 				fabApp.jogMove(e.action, zStep*mul, xyzFeed, waitForFinish, writeJogResponse);
 				break;
 			case "home-xy":
-				cmd = 'G28 X Y';
+				fabApp.jogHomeXY(writeJogResponse);
 				break;
 			case "home-z":
-				cmd = 'G27 Z';
+				fabApp.jogHomeZ(writeJogResponse);
 				break;
 			case "home-xyz":
-				cmd = 'G27';
+				fabApp.jogHomeXYZ(writeJogResponse);
 				break;
 		}
 		

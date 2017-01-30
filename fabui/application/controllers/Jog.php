@@ -14,6 +14,7 @@
 			
 		//load libraries, helpers, model, config
 		$this->load->library('smart');
+		$this->load->helper('fabtotum_helper');
 		
 		$widgetOptions = array(
 			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
@@ -21,6 +22,8 @@
 		); 
 		
 		$data = array();
+		$data['gcodes'] = loadGCodeInfo();
+		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'jog-widget';
 		$widget->header = array('icon' => 'icon-fab-jog', "title" => "<h2>Jog Panel</h2>");
@@ -32,6 +35,9 @@
 		$this->addCssFile('/assets/css/std/jogcontrols.css');
 		$this->addCssFile('/assets/css/std/jogtouch.css');
 		$this->addJsFile('/assets/js/std/jogtouch.js');
+		
+		//~ $this->addJsFile('/assets/js/plugin/knob/jquery.knob.min.js');
+		$this->addJsFile('/assets/js/std/jquery.knob.js');
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
@@ -71,9 +77,9 @@
 	
 	public function test()
 	{
-		$this->load->library('JogFactory', '', 'jogFactory');
-		$messageData = $this->jogFactory->manualDataInput('M402');
-		$this->output->set_content_type('application/json')->set_output(json_encode(array('type' => $this->jogFactory->getResponseType(), 'data' =>$messageData)));
+		$this->load->helper('fabtotum_helper');
+		$info = loadGCodeInfo();
+		$this->output->set_content_type('application/json')->set_output(json_encode($info));
 	}	
  }
  

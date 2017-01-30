@@ -1,0 +1,386 @@
+{
+	"G0": {
+		"ref": "G1",
+		"desc": "Travel movement"
+	},
+	"G1": {
+		"desc": "Active Movement X Y Z E",
+		"params": {
+			"X": {
+				"desc": "X axis position",
+				"type": "float",
+				"range": [-214, 214],
+				"unit": "mm",
+				"opt": true
+			},
+			"Y": {
+				"desc": "Y axis position",
+				"type": "float",
+				"range": [-234, 234],
+				"unit": "mm",
+				"opt": true
+			},
+			"Z": {
+				"desc": "Z axis position",
+				"type": "float",
+				"range": [-234, 234],
+				"unit": "mm",
+				"opt": true
+			},
+			"E": {
+				"desc": "The amount to extrude between starting and ending point",
+				"type": "float",
+				"unit": "mm",
+				"opt": true
+			},
+			"F": {
+				"desc": "Feedrate",
+				"type": "number",
+				"range": [0, 10000],
+				"unit": "mm/min",
+				"opt": true
+			}
+		},
+		"example": "G0 X12 F1500; Move to 12mm on the X axis at feedrate of 1500mm/min"
+	},
+	"G2": {
+		"desc": "Clockwise arc movement",
+		"params": {
+			"X": {
+				"desc": "X axis position",
+				"type": "float",
+				"range": [-214, 214],
+				"unit": "mm"
+			},
+			"Y": {
+				"desc": "Y axis position",
+				"type": "float",
+				"range": [-234, 234],
+				"unit": "mm"
+			},
+			"I": {
+				"desc": "The point in X space from the current X position to maintain a constant distance from",
+				"type": "float",
+				"range": [-214, 214],
+				"unit": "mm"
+			},
+			"J": {
+				"desc": "The point in Y space from the current Y position to maintain a constant distance from",
+				"type": "float",
+				"range": [-234, 234],
+				"unit": "mm"
+			},
+			"E": {
+				"desc": "The amount to extrude between starting and ending point",
+				"type": "float",
+				"opt": true,
+				"unit": "mm"
+			},
+			"F": {
+				"desc": "Feedrate",
+				"type": "number",
+				"range": [0, 10000],
+				"opt": true,
+				"unit": "mm/min"
+			}
+		}
+	},
+	"G3": {
+		"desc": "Counter-Clockwise arc movement",
+		"ref": "G2"
+	},
+	"G4": {
+		"desc": "Delay further execution by P or S time. Only P or S can be used, not both at the same time.",
+		"params": {
+			"P": {
+				"desc": "Time to wait, in milliseconds",
+				"range": [0, 10000],
+				"type": "number",
+				"opt": true,
+				"unit": "mses"
+			},
+			"S": {
+				"desc": "Time to wait, in seconds",
+				"type": "number",
+				"range": [0, 10000],
+				"opt": true,
+				"unit": "sec"
+			}
+		}
+	},
+	"G10": {
+		"desc": "Retract filament according to settings of M207",
+		"unused": true
+	},
+	"G11": {
+		"desc": "Retract filament according to settings of M208",
+		"unused": true
+	},
+	"G27": {
+		"desc": "Home all Axis using z-axis MINZ endstop",
+		"params":{
+			"X": {
+				"desc": "Home X axis if flag present",
+				"type": "none"
+			},
+			"Y": {
+				"desc": "Home Y axis if flag present",
+				"type": "none"
+			},
+			"Z": {
+				"desc": "Home Z axis if flag present",
+				"type": "none"
+			}
+		}
+	},
+	"G28": {
+		"desc": "Home all axis using z-probe",
+		"ref": "G27"
+	},
+	"G29": {
+		"desc": "Auto Bed Leveling"
+	},
+	"G30": {
+		"desc": "Single Z probe at current XY location",
+		"params": {
+			"U": {
+				"desc": "UP movement feedrate",
+				"type": "number",
+				"range": [0, 10000],
+				"opt": true,
+				"unit": "mm/min"
+			},
+			"D": {
+				"desc": "UP movement feedrate",
+				"type": "number",
+				"range": [0, 10000],
+				"opt": true,
+				"unit": "mm/min"
+			}
+		}
+	},
+	"G38": {
+		"desc": "Single Z probe at current XY location using external probe",
+		"params": {
+			"S": {
+				"desc": "Probe feedrate",
+				"type": "number",
+				"range": [0, 200],
+				"opt": true,
+				"unit": "mm/min"
+			}
+		}
+	},
+	"G90": {
+		"desc": "Use absolute positioning",
+		"example": "G90\nG0 X12; move to 12mm on x-axis"
+	},
+	"G91": {
+		"desc": "Use relative positioning",
+		"example": "G91\nG0 X12; move by 12mm on x-axis"
+	},
+	"G92": {
+		"desc": "Set position. 'If no parameters are provided, position is set to zero",
+		"params": {
+			"X": {
+				"desc": "X axis position",
+				"type": "float",
+				"range": [-214, 214],
+				"unit": "mm",
+				"opt": true
+			},
+			"Y": {
+				"desc": "Y axis position",
+				"type": "float",
+				"range": [-234, 234],
+				"unit": "mm",
+				"opt": true
+			},
+			"Z": {
+				"desc": "Z axis position",
+				"type": "float",
+				"range": [-234, 234],
+				"unit": "mm",
+				"opt": true
+			},
+			"E": {
+				"desc": "E axis position",
+				"type": "float",
+				"unit": "mm",
+				"opt": true
+			}
+		}
+	},
+	"M0": {
+		"desc": "Unconditional stop",
+		"unused": true
+	},
+	"M1": {
+		"desc": "Same as M0",
+		"ref": "M0",
+		"unused": true
+	},
+	"M3": {
+		"desc": "Spindle on, CW",
+		"params": {
+			"S": {
+				"desc": "Spind RPM",
+				"range": [0, 14000],
+				"unit": "rpm",
+				"type": "number"
+			}
+		}
+	},
+	"M4": {
+		"ref": "M3",
+		"desc": "Spindle on, CCW"
+	},
+	"M5": {
+		"desc": "Spindle off"
+	},
+	"M6": {
+		"desc": "Laser head on",
+		"unused": true
+	},
+	"M7": {
+		"desc": "Laser head off",
+		"unused": true
+	},
+	"M17": {
+		"desc": "Enable power to all stepper motors"
+	},
+	"M18": {
+		"desc": "Disable power to all stepper motors"
+	},
+	"M31": {
+		"desc": "Time since last M109"
+	},
+	"M42": {
+		"desc": "Change pin value. If P is ommited, led pin will be used.",
+		"params": {
+			"P": {
+				"desc": "Pin number",
+				"type": "number"
+			},
+			"S": {
+				"desc": "Pin value",
+				"type": "bool",
+				"range": [0, 1]
+			}
+		}
+	},
+	"M82": {
+		"desc": "Set extruder to absolute mode"
+	},
+	"M83": {
+		"desc": "Set extruder to relative mode"
+	},
+	"M104": {
+		"desc": "Set extruder target temp",
+		"params": {
+			"S": {
+				"desc": "Target temperature",
+				"type": "float",
+				"unit": "&#8451;",
+				"range": [0, 250]
+			}
+		}
+	},
+	"M105": {
+		"desc": "Read current temperatures",
+		"reply" : "ok T:0.0 /0.0 B:0.0 /0.0 T0:0.0 /0.0 @:0 B@:0"
+	},
+	"M106": {
+		"desc": "Turn fan on",
+		"params": {
+			"S": {
+				"desc": "Fan PWM value",
+				"type": "number",
+				"unit": "PWM",
+				"range": [0, 255]
+			}
+		}
+	},
+	"M107": {
+		"desc": "Turn fan off"
+	},
+	"M109": {
+		"desc": "Wait for extrucer temperature to reach target. If S flag is used, waits only when heating. When R flag is used waits both for heating and cooling.",
+		"params": {
+			"S": {
+				"desc": "Wait only when heating",
+				"range": [0, 250],
+				"type": "float",
+				"unit": "&#8451;"
+			},
+			"R": {
+				"desc": "Wait when heating and cooling",
+				"range": [0, 250],
+				"type": "float",
+				"unit": "&#8451;"
+			},
+			"T": {
+				"desc": "Extruder number. Default is 0",
+				"type": "number",
+				"range": [0, 0]
+			}
+		}
+	},
+	"M114": {
+		"desc": "Output current position"
+	},
+	"M115": {
+		"desc": "Capabilities string"
+	},
+	"M117": {
+		"desc": "Display message in the log",
+		"params": {
+			"*": {
+				"desc": "Message",
+				"type": "string"
+			}
+		}
+	},
+	"M119": {
+		"desc": "Output endstop status",
+		"reply":"Reporting endstop status<br>x_min: open<br>x_max: open<br>y_min: open<br>y_max: open<br>z_min: open<br>z_max: open<br>ok"
+	},
+	"M120": {
+		"desc": "Enable endstop detection"
+	},
+	"M121": {
+		"desc": "Disable endstop detection"
+	},
+	"M140": {
+		"desc": "Set bed target temperature",
+		"params": {
+			"S": {
+				"desc": "Target temperature",
+				"type": "float",
+				"unit": "C",
+				"range": [0, 110]
+			}
+		}
+	},
+	"M190": {
+		"desc": "Wait for bed temperature to reach target. If S flag is used, waits only when heating. When R flag is used waits both for heating and cooling.",
+		"params": {
+			"S": {
+				"desc": "Wait only when heating",
+				"range": [0, 250],
+				"type": "float",
+				"unit": "&#8451;"
+			},
+			"R": {
+				"desc": "Wait when heating and cooling",
+				"range": [0, 250],
+				"type": "float",
+				"unit": "&#8451;"
+			}
+		}
+	},
+	"M200": {
+		"desc": "Set filament diameter",
+		"unused": true
+	}
+}

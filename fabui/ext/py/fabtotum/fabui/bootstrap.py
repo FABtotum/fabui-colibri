@@ -211,8 +211,6 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     if not config:
         config = ConfigService()
     
-    config.reload()
-    
     if logger:
        log = logger
     else:
@@ -222,6 +220,9 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         formatter = logging.Formatter("%(levelname)s : %(message)s")
         ch.setFormatter(formatter)
         log.addHandler(ch)
+
+    config.reload()
+    
         
     try:
         color = config.get('settings', 'color')

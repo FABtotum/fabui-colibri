@@ -50,8 +50,11 @@
   		if(!is_array($commands) && $commands != '')
   		{
   			$this->commands[$id_stamp] = array('code' =>  $commands);
-  		}else{
-  			foreach ($commands as $index => $command){
+  		}
+  		else
+  		{
+  			foreach ($commands as $index => $command)
+  			{
   				$this->commands[$id_stamp.'_'.$index] = array('code' =>  $command);
   			}
   		}
@@ -183,18 +186,26 @@
 		$actions['home-xyz-min'] = 'G27';
 		$actions['home-z']       = 'G28 Z';
 		$actions['home-z-min']   = 'G27 Z';
+		
+		if( !array_key_exists($action, $actions) )
+			return array();
+			
+		$this->sendCommands(array($actions[$action]), $id_stamp);
+		
+		return $this->response();
 	}
 	
 	/**
 	 * zero all 
 	 */
-	public function zeroAll($id_stamp)
+	public function zeroAll($empty, $id_stamp)
 	{
-		$this->sendCommands('G92 X0 Y0 Z0 E0');
+		$this->sendCommands(array('G92 X0 Y0 Z0 E0'), $id_stamp);
 		return $this->response();
 	}
+	
 	/***
-	 * 
+	 * @tag: to_be_removed
 	 */
 	public function emergency($mode, $id_stamp)
 	{
@@ -212,7 +223,7 @@
 	function extrude($sign, $id_stamp)
 	{
 		//TODO
-		$this->sendCommands(array('G91', 'G0 E'.$sign.$this->step['extruder'].' F'.$this->feedrate['extruder']));
+		$this->sendCommands(array('G91', 'G0 E'.$sign.$this->step.' F'.$this->feedrate), $id_stamp);
 		return $this->response();
 	}
 	/**

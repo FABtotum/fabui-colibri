@@ -23,6 +23,10 @@
 	white-space: pre !important;
 }
 
+.knobs-container {
+	margin: 20px !important;
+}
+
 span.ok {
 	color: green;
 }
@@ -67,6 +71,8 @@ hr.simple {
 
 	/* if you need ie6/7 support */
 	*display: inline;
+	
+	margin: 0 0 20px 0 !important;
 }
 
 .jog-container {
@@ -77,4 +83,16 @@ hr.simple {
 	text-align: center;
 	/* if you need ie6/7 support */
 	*display: inline;
+}
+
+.help-param-header {
+	font-weight: bold;
+}
+
+.code-extra {
+	padding: 20px !important;
+}
+
+.code-extra-content {
+	padding-left: 20px !important;
 }

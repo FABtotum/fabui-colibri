@@ -60,6 +60,26 @@ if(!function_exists('loadSettings'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('loadGCodeInfo'))
+{
+	/**
+	 * 
+	 * 
+	 *  Load GCode descriptions
+	 *  @return GCode info
+	 * 
+	 */
+	function loadGCodeInfo()
+	{
+		$CI =& get_instance();
+		$CI->load->helper('file');
+		$CI->config->load('fabtotum');
+		//~ $info = json_decode(file_get_contents($CI->config->item('settings_path') . 'gcodes.json'), true);
+		$info = json_decode(file_get_contents('/usr/share/fabui/settings/gcodes.json'), true);
+		return $info;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('saveSettings'))
 {
 	/**

@@ -53,7 +53,8 @@
   var EVENT_RESIZE = 'resize.' + NAMESPACE; // Bind to window with namespace
   var EVENT_BUILD = 'build.' + NAMESPACE;
   var EVENT_BUILT = 'built.' + NAMESPACE;
-  var EVENT_CLICK = 'click';
+  var EVENT_CLICK = 'click.' + NAMESPACE;
+  var EVENT_ACTION = 'action';
   
   // Maths
   var num = Number;
@@ -344,13 +345,24 @@
           var crx = (button.tcrx == undefined)?0:button.tcrx;
           var cry = (button.tcry == undefined)?0:button.tcry;
           
-          x1 += crx * global_scale;
-          y1 += cry * global_scale;
+          x1 += crx * global_scale ;
+          y1 += cry * global_scale ;
           
-          txt = paper.text(x1, y1, button.TXT).attr({fill: text, stroke: "none", "font-size": 20});
+          
+          txt = paper.text(x1, y1, button.TXT).attr({fill: text, stroke: "none", "font-size": 20*global_scale});
           txt.node.setAttribute("class","jog-btn-text");
-          //~ txt.scale(global_scale);
+          //txt.scale(global_scale);
+          //~ $('tspan', txt.node).attr('dy', 5*global_scale);
+          
           st.push(txt);
+          
+          //~ txt.node.setAttribute("class","jog-btn-text active");
+          //~ var attr = txt.attr();    
+          //~ attr.text = button.TXT;
+          //~ txt.attr(attr);
+          
+          //~ 
+          
       }
             
       function set_hover()
@@ -383,11 +395,11 @@
               txt.node.setAttribute("class","jog-btn-text");
       }
       
-      function clicked(button) {
-          console.log(button);
-          var action = button.name;
+      function clicked(btn) {
+
+          var action = btn.name;
           
-          if( button.name == "mul")
+          if( btn.name == "mul")
           {
               
               $this.multiplier++;
@@ -404,25 +416,26 @@
           else
           {
             var e = {
-              action: action
+              action: action,
+              multiplier: options.multipliers[$this.multiplier]
             };
             
-            $this.trigger(EVENT_CLICK, e);
+            $this.trigger(EVENT_ACTION, e);
           }
       }
       
       if (Modernizr.touchevents) {
           // supported
-          st.touchstart ( function() {
+          st.touchstart ( function(e) {
             set_active();
-            clicked();
+            clicked(button);
             });
           st.touchend   (set_normal);
       } else {
           // not-supported
           
           st.mouseover  (set_hover);
-          st.mousedown  (function() {
+          st.mousedown  (function(e) {
               set_active();
               clicked(button);
             });

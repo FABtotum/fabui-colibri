@@ -70,6 +70,41 @@ fabApp = (function(app) {
 		
 	};
 		
+	app.jogActionHandler = function(e) {
+		
+		var mul          = e.multiplier;
+		var zstep        = mul * 0.5;
+		var xystep       = mul * 1;
+		var feedrate     = 1000;
+		var waitForFinish= false;
+		
+		switch(e.action)
+		{
+			case "right":
+			case "left":
+			case "up":
+			case "down":
+			case "down-right":
+			case "up-right":
+			case "down-left":
+			case "up-left":
+				app.jogMove(e.action, xystep, feedrate, waitForFinish );
+				break;
+			case "z-down":
+			case "z-up":
+				app.jogMove(e.action, zstep, feedrate, waitForFinish);
+				break;
+			case "home-xy":
+			case "home-z":
+			case "home-xyz":
+				break;
+		}
+		
+		console.log("send jog.top command", e.multiplier);
+		
+		return false;
+	};
+		
 	app.domReadyMisc = function() {
 		
 		var controls_options = {
@@ -79,74 +114,7 @@ fabApp = (function(app) {
 			percentage:0.95
 		};
 		
-		var jog_controls = $('.top-ajax-jog-controls-holder').jogcontrols(controls_options);
-		
-		jog_controls.on('click', function(e){
-			console.log(e);
-			
-			var mul = jog_controls.jogcontrols('getMultiplier');
-			
-			var zstep = mul * 0.5;
-			var xystep = mul * 1;
-			var feedrate = 1000;
-			
-			console.log("ajax-jog", e.action);
-				switch(e.action)
-				{
-					case "zero":
-						break;
-					case "z-down":
-						cmd = 'G91\nG0 Z+'+zstep+' F'+feedrate;
-						break;
-					case "z-up":
-						cmd = 'G91\nG0 Z-'+zstep+' F'+feedrate;
-						break;
-					case "right":
-						cmd = 'G91\nG0 X+'+xystep+' F'+feedrate;
-						break;
-					case "left":
-						cmd = 'G91\nG0 X-'+xystep+' F'+feedrate;
-						break;
-					case "up":
-						cmd = 'G91\nG0 Y+'+xystep+' F'+feedrate;
-						break;
-					case "down":
-						cmd = 'G91\nG0 Y-'+xystep+' F'+feedrate;
-						break;
-					case "down-right":
-						cmd = 'G91\nG0 X+'+xystep+' Y-'+xystep+' F'+feedrate;
-						break;
-					case "up-right":
-						cmd = 'G91\nG0 X+'+xystep+' Y+'+xystep+' F'+feedrate;
-						break;
-					case "down-left":
-						cmd = 'G91\nG0 X-'+xystep+' Y-'+xystep+' F'+feedrate;
-						break;
-					case "up-left":
-						cmd = 'G91\nG0 X-'+xystep+' Y+'+xystep+' F'+feedrate;
-						break;
-					case "home-xy":
-						cmd = 'G28 X Y';
-						break;
-					case "home-z":
-						cmd = 'G27 Z';
-						break;
-					case "home-xyz":
-						cmd = 'G27';
-						break;
-				}
-				
-				if(cmd != '')
-				{
-					//cmd += '\nM400';
-					
-					//jog_busy = true;
-					fabApp.jogMdi(cmd, function(e) {
-						//jog_busy = false;
-					});
-				}
-				
-			});
+		var $jog_controls_top = $('.top-ajax-jog-controls-holder').jogcontrols(controls_options).on('action', app.jogActionHandler);
 		
 		if (typeof(Storage) !== "undefined"){
 			if(localStorage.getItem("temperaturesPlot") !== null){			
@@ -308,40 +276,52 @@ fabApp = (function(app) {
 	}
 	
 	/**
-	 * 
+	 * Move the head or bead
+	 * @action   Movement directio (right,left,up,down,z-up,z-down...)
+	 * @step     Movement step in mm
+	 * @feedrate Movement feedrate in mm/min
+	 * @waitforfinish Add M400 to sync the finish callback to end of movement
+	 * @callback Callback function on execution finish
 	 */
 	app.jogMove = function (action, step, feedrate, waitforfinish, callback) {
 		return app.serial("move", action, callback, step, feedrate, waitforfinish);
 	}
 	/**
-	 * 
+	 * Set current position of all axis to zero
+	 * @callback Callback function on execution finish
 	 */
 	app.jogZeroAll = function (callback) {
 		return app.serial("zeroAll", true, callback);
 	}
 	/**
-	 *
+	 * Home XY axis
+	 * @callback Callback function on execution finish
+	 */
+	app.jogHomeXY = function (callback) {
+		return app.serial("home", "home-xy", callback);
+	}
+	/**
+	 * Home all axis and Z using z-min endstop
+	 * @callback Callback function on execution finish
+	 */
+	app.jogHomeXYZ = function (callback) {
+		return app.serial("home", "home-xyz-min", callback);
+	}
+	/**
+	 * Home Z axis using z-min endstop
+	 * @callback Callback function on execution finish
+	 */
+	app.jogHomeZ = function (callback) {
+		return app.serial("home", "home-z-min", callback);
+	}
+	/**
+	 * Send gcode commands to jog handler.
+	 * @callback Callback function on execution finish
 	 */
 	app.jogMdi = function(value, callback) {
 		console.log(value);
 		return app.serial('manualDataInput', value, callback);
 	};
-	/*
-	 * @tag: to_be_removed
-	 * app.jogMoveXY = function (value, callback) {
-		return app.serial("moveXY", value, callback);
-	}
-	app.jogAxisZ = function (direction, callback) {
-		return app.serial('moveZ', direction, callback); 
-	}
-
-	app.jogExtrude = function(sign, callback) {
-		app.serial('extrude', sign, callback);
-	}*/
-	/**
-	 * Send gcode commands to jog handler.
-	 * @callback Callback function on execution finish
-	 */
 	/*
 	 * 
 	 */
@@ -571,6 +551,8 @@ fabApp = (function(app) {
 	app.manageJogResponse = function(data) {
 		var stamp = null;
 		var response = [];
+		
+		console.log('jog-data', data);
 		
 		for(i in data.commands)
 		{
@@ -933,7 +915,12 @@ fabApp = (function(app) {
 		
 		if($.isFunction(callback))
 		{
+			console.log('register callback', stamp, messageToSend);
 			app.ws_callbacks[stamp] = callback;
+		}
+		else
+		{
+			console.log("no callback");
 		}
 		
 		socket.send( JSON.stringify(messageToSend) );
