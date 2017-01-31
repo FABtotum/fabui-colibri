@@ -24,17 +24,16 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	/* jog */
 	var jog_touch;
 	var jog_controls;
+	var jog_is_xy_homed = false;
+	var cold_extrustion_enabled = false;
 	var jog_busy = false;
 	var touch_busy = false;
-	var home = {x:0, y:0}
-	
 	var search_filter = 'gcode';
+	var extruder_mode = 'none';
 
 	$(document).ready(function() {
-
-		/*$(".extruder").on("click", function(event){
-			fabApp.jogExtrude($(this).attr('data-attribute-type'));
-		});*/
+		$(".cold-extrusion").on("click", changeColdExtrusion);
+		$(".extrude").on("click", extrude);
 		
 		$('.knob').knob({
 			//draw: draw_knob,
@@ -58,7 +57,6 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		$("#clearButton").on('click', clearJogResponse);
 		$("#mdiCommands").on('keydown', handleMdiInputs);
 		
-		
 		var controls_options = {
 			hasZero:true,
 			hasRestore:true,
@@ -68,9 +66,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		};
 		
 		jog_controls = $('.jog-container').jogcontrols(controls_options);
-		
 		jog_controls.on('action', jogAction);
-		
 		
 		var touch_options = {
 			guides: false,
@@ -111,10 +107,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		 $('.touch-home-xy').on('click', function(e) {
 			
 			$('.touch-home-xy').addClass('disabled');
-			fabApp.jogMdi('G28 X Y', function(e){
-				writeJogResponse(e);
-				unlock_touch();
-				});
+			fabApp.jogHomeXY(jogHomeXYCallback);
 			return false;
 		 });
 		
@@ -173,11 +166,63 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			
 		});
 	}
-
+	
+	function changeColdExtrusion(e)
+	{
+		var action = $(this).attr('data-attribute');
+		if(action == "off")
+		{
+			$.SmartMessageBox({
+				title: "<h4><span class='txt-color-orangeDark'><i class='fa fa-warning fa-2x'></i></span>&nbsp;&nbsp; Turning the cold extrusion protection might be dangerous if the fillament has not been removed from the head already.<br>Do you want to disable cold extrusion?</h4>",
+				buttons: '[No][Yes]'
+			}, function(ButtonPressed) {
+			   
+				if (ButtonPressed === "Yes")
+				{
+					fabApp.jogMdi("M302", writeJogResponse);
+					cold_extrustion_enabled = true;
+				}
+				if (ButtonPressed === "No")
+				{
+					/* do nothing */
+				}
+			});
+		}
+		else
+		{
+			fabApp.jogMdi("M302 S175", writeJogResponse);
+		}
+	}
 	
 	function rotation(e)
 	{
-		console.log('rotation', e);
+		var extruderFeed = $("#4thaxis-feedratee").length > 0 ? $("#4thaxis-feedrate").val() : 800;
+		if(extruder_mode != '4thaxis')
+		{
+			// init 4th axis
+			fabApp.jogSetExtruderMode('4thaxis', writeJogResponse);
+			extruder_mode = '4thaxis';
+		}
+
+		fabApp.jogMdi("M82\nG0 E"+e+" F"+extruderFeed, writeJogResponse);
+	}
+
+	function extrude(e)
+	{
+		var sign = $(this).attr('data-attribute-type');
+		var extruderStep = $("#extruderStep").length      > 0 ? $("#extruderStep").val()      : 10;
+		var extruderFeed = $("#extruder-feedrate").length > 0 ? $("#extruder-feedrate").val() : 300;
+		
+		if(extruder_mode != 'extruder')
+		{
+			// init extruder
+			fabApp.jogSetExtruderMode('extruder', writeJogResponse);
+			extruder_mode = 'extruder';
+		}
+		
+		console.log('Extrude', sign, extruderStep, extruderFeed);
+		
+		fabApp.jogMdi("M83\nG0 E"+sign+""+extruderStep+" F"+extruderFeed, writeJogResponse);
 	}
 
 	function initSliders()
@@ -274,9 +319,12 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	
 	function unlock_touch()
 	{
+		jog_is_xy_homed = true;
 		jog_touch.jogtouch('enable');
 		$('.button_container').slideUp();
 		$('[data-toggle="tooltip"], .tooltip').tooltip("hide");
+		
+		jog_touch.jogtouch('cursor',2,2);
 	}
 	
 	function writeJogResponse(e)
@@ -309,9 +357,25 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		jog_busy = false;
 	}
 
-	function zeroAll()
+	function jogZeroAllCallback(e)
 	{
+		writeJogResponse(e);
 		
+		if(jog_is_xy_homed)
+		{
+			jog_touch.jogtouch('zero');
+		}
+	}
+	
+	function jogHomeXYCallback(e)
+	{
+		writeJogResponse(e);
+		unlock_touch();
+	}
+	
+	function jogMoveCallback(e)
+	{
+		writeJogResponse(e);
 	}
 
 	function jogAction(e)
@@ -330,7 +394,15 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		switch(e.action)
 		{
 			case "zero":
-				fabApp.jogZeroAll(writeJogResponse);
+				fabApp.jogGetPosition( function(e) {
+					var tmp = e[0].reply.split(" ");
+					var x = tmp[0].replace("X:","");
+					var y = tmp[1].replace("Y:","");
+					console.log('jog_position', x, y);
+				});
+				
+				fabApp.jogZeroAll(jogZeroAllCallback);
+				
 				break;
 			case "right":
 			case "left":
@@ -341,7 +413,9 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			case "down-left":
 			case "up-left":
 				jog_busy = true;
-				fabApp.jogMove(e.action, xyStep*mul, xyzFeed, waitForFinish, writeJogResponse);
+				if(jog_is_xy_homed)
+					jog_touch.jogtouch('jogmove', e.action, xyStep*mul);
+				fabApp.jogMove(e.action, xyStep*mul, xyzFeed, waitForFinish, jogMoveCallback);
 				break;
 			case "z-down":
 			case "z-up":
@@ -349,13 +423,13 @@ if(!isset($bed_max)) 		$bed_max = 100;
 				fabApp.jogMove(e.action, zStep*mul, xyzFeed, waitForFinish, writeJogResponse);
 				break;
 			case "home-xy":
-				fabApp.jogHomeXY(writeJogResponse);
+				fabApp.jogHomeXY(jogHomeXYCallback);
 				break;
 			case "home-z":
 				fabApp.jogHomeZ(writeJogResponse);
 				break;
 			case "home-xyz":
-				fabApp.jogHomeXYZ(writeJogResponse);
+				fabApp.jogHomeXYZ(jogHomeXYCallback);
 				break;
 		}
 		

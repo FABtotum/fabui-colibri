@@ -226,7 +226,7 @@
       }
       
     },
-    
+
     // Enable (unfreeze) the jogcontrols
     enable: function () {
       if (this.isBuilt) {

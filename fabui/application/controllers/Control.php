@@ -66,7 +66,7 @@
 	 */
 	public function setSecure($mode)
 	{
-		//load fabtotum config
+		/*//load fabtotum config
 		$this->config->load('fabtotum');
 		//load serial class
 		$this->load->library('serial');
@@ -86,7 +86,7 @@
 		//$this->serial->sendMessage('M728'.PHP_EOL);
 		
 		$this->serial->serialflush();
-		$this->serial->deviceClose();
+		$this->serial->deviceClose();*/
 		
 		//if is called from fabui
 		if($this->input->is_ajax_request()){

@@ -204,6 +204,12 @@
 		return $this->response();
 	}
 	
+	public function getPosition($empty, $id_stamp)
+	{
+		$this->sendCommands(array('M114'), $id_stamp);
+		return $this->response();
+	}
+	
 	/***
 	 * @tag: to_be_removed
 	 */
@@ -224,6 +230,30 @@
 	{
 		//TODO
 		$this->sendCommands(array('G91', 'G0 E'.$sign.$this->step.' F'.$this->feedrate), $id_stamp);
+		return $this->response();
+	}
+	/**
+	 * set extruder mode
+	 * @mode extruder|4thaxis
+	 */
+	function setExtruderMode($mode, $id_stamp)
+	{
+		
+		$settings = loadSettings();
+		if($settings['settings_type'] == 'custom')
+		{
+			$settings = loadSettings('custom');
+		}
+		
+		if($mode == "extruder")
+		{
+			
+			$this->sendCommands(array('M92 E'.$settings['e'], 'G92 E0'), $id_stamp);
+		}
+		else if($mode == "4thaxis")
+		{
+			$this->sendCommands(array('M92 E'.$settings['a'], 'G92 E0'), $id_stamp);
+		}
 		return $this->response();
 	}
 	/**

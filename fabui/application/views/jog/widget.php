@@ -68,7 +68,7 @@
 				<a href="#extruder-tab" data-toggle="tab">Extruder</a>
 			</li>
 			<li class="active pull-right">
-				<a href="#functions-tab" data-toggle="tab">Head Functions</a>
+				<a href="#functions-tab" data-toggle="tab">Head/Bed</a>
 			</li>
 		</ul>
 		
@@ -78,10 +78,10 @@
 					<fieldset>
 						<div class="row">
 							<section class="col col-6">
-								<button class="btn btn-default btn-block extruder" data-attribute-type="+" style="padding:6px 10px 5px"><i class="fa fa-plus"></i></button>
+								<button class="btn btn-default btn-block extrude" data-attribute-type="+" style="padding:6px 10px 5px"><i class="fa fa-plus"></i></button>
 							</section>
 							<section class="col col-6">
-								<button class="btn btn-default btn-block extruder" data-attribute-type="-" style="padding:6px 10px 5px"><i class="fa fa-minus"></i></button>
+								<button class="btn btn-default btn-block extrude" data-attribute-type="-" style="padding:6px 10px 5px"><i class="fa fa-minus"></i></button>
 							</section>
 						</div>
 						<div class="row">
@@ -102,11 +102,11 @@
 						<div class="row">
 							<section class="col col-6">
 								<label class="label">Cold Extrusion</label>
-								<button class="btn btn-default btn-block extruder" data-attribute-type="+" style="padding:6px 10px 5px">Turn ON</button>
+								<button class="btn btn-primary btn-block cold-extrusion" data-attribute="on" style="padding:6px 10px 5px">Turn ON</button>
 							</section>
 							<section class="col col-6">
 								<label class="label">&nbsp;</label>
-								<button class="btn btn-default btn-block extruder" data-attribute-type="-" style="padding:6px 10px 5px">Turn OFF</button>
+								<button class="btn btn-primary btn-block cold-extrusion" data-attribute="off" style="padding:6px 10px 5px">Turn OFF</button>
 							</section>
 						</div>
 					</fieldset>
@@ -116,6 +116,16 @@
 			<div class="tab-pane fade in" id="fourthaxis-tab">
 				<div class="knobs-container text-center" id="mode-a">
 					<input value="0" class="knob" data-displayPrevious="true" data-width="230" data-height="230" data-cursor="true" data-step="0.5" data-min="0" data-max="360" data-thickness=".3" data-fgColor="#A0CFEC" data-displayInput="true">
+				</div>
+				<div class="smart-form">
+					<fieldset>
+						<section>
+							<label class="label">4th axis Feedrate</label>
+							<label class="input">
+								<input type="number" min="1" value="800" id="4thaxis-feedrate">
+							</label>
+						</section>
+					</fieldset>
 				</div>
 			</div>
 			
@@ -254,7 +264,7 @@
 												<?php if(isset($info['unit'])): ?>
 													<div class="col-sm-1"><?php echo $info['unit'];?></div>
 												<?php else: ?>
-													<div class="col-sm-1">/</div>
+													<div class="col-sm-1">&nbsp;</div>
 												<?php endif; ?>
 												
 												<?php if( isset($info['range']) ): ?>
@@ -266,6 +276,7 @@
 										<?php else: ?>
 											<span class="description">No parameters.</span>
 										<?php endif; ?>
+										<!--
 										<div class="row">
 											<div class="col-sm-12 help-param-header">Reply</div>
 										</div>
@@ -276,6 +287,7 @@
 											<div class="col-sm-12 code-extra-content">ok</div>
 											<?php endif;?>
 										</div>
+										-->
 									</td>
 								</tr>
 

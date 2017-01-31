@@ -11,6 +11,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 class Firmware extends FAB_Controller {
 
+	public function test()
+	{
+		$this->load->helper('fabtotum_helper');
+		$this->load->helper('os_helper');
+		$tmp = doMacro('version');
+		$reply = $tmp['reply'];
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($reply));
+	}
+
 	public function index()
 	{
 		$this->load->library('smart');

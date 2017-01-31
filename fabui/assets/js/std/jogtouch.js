@@ -150,6 +150,8 @@
     this.isBuilt = false;
     this.cursorX = 0;
     this.cursorY = 0;
+    this.zeroX = 0;
+    this.zeroY = 0;
     this.isLoaded = false;
     this.isDisabled = false;
     this.isImg = false;
@@ -330,7 +332,12 @@
       var execute = true;
       if(options.touch)
       {
-        execute = options.touch(data);
+        var data_abs = {
+          x: data.x - this.zeroX,
+          y: data.y - this.zeroY
+        };
+        
+        execute = options.touch(data_abs);
       }
       
       if(execute)
@@ -338,6 +345,54 @@
         this.cursor(data.x, data.y);
         this.trigger(EVENT_TOUCH, data);
       }
+    },
+    
+    zero: function () {
+      this.zeroX = this.cursorX;
+      this.zeroY = this.cursorY;
+    },
+    
+    jogmove: function (direction, step) {
+      if (this.isDisabled || !container) {
+        return;
+      }
+      
+      var dx = this.cursorX;
+      var dy = this.cursorY;
+      
+      switch(direction)
+      {
+        case "right":
+          dx += step;
+          break;
+        case "left":
+          dx -= step;
+          break;
+        case "up":
+          dy += step;
+          break;
+        case "down":
+          dy -= step;
+          break;
+        case "down-right":
+          dx += step;
+          dy -= step;
+          break;
+        case "up-right":
+          dx += step;
+          dy += step;
+          break;
+        case "down-left":
+          dx -= step;
+          dy -= step;
+          break;
+        case "up-left":
+          dx -= step;
+          dy += step;
+          break;
+      }
+      
+      this.cursor(dx, dy);
     },
         
     build: function () {

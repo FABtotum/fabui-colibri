@@ -286,6 +286,19 @@ fabApp = (function(app) {
 	app.jogMove = function (action, step, feedrate, waitforfinish, callback) {
 		return app.serial("move", action, callback, step, feedrate, waitforfinish);
 	}
+	
+	/**
+	 * Set current position of all axis to zero
+	 * @callback Callback function on execution finish
+	 */
+	app.jogExtrude = function (action, step, feedrate, waitforfinish, callback) {
+		//return app.serial("zeroAll", true, callback);
+	}
+	
+	app.jogSetExtruderMode = function (mode, callback) {
+		return app.serial("setExtruderMode", mode, callback);
+	}
+	
 	/**
 	 * Set current position of all axis to zero
 	 * @callback Callback function on execution finish
@@ -313,6 +326,13 @@ fabApp = (function(app) {
 	 */
 	app.jogHomeZ = function (callback) {
 		return app.serial("home", "home-z-min", callback);
+	}
+	/**
+	 * Get current jog position
+	 * @callback Callback function on execution finish
+	 */
+	app.jogGetPosition = function (callback) {
+		return app.serial("getPosition", true, callback);
 	}
 	/**
 	 * Send gcode commands to jog handler.
