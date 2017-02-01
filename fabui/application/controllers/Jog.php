@@ -23,6 +23,12 @@
 		
 		$data = array();
 		$data['gcodes'] = loadGCodeInfo();
+		$data['haveHead'] = isHeadInPlace();
+		$data['haveBed'] = isBedInPlace();
+		$data['headPrintSupport'] = canHeadSupport("print");
+		$data['headFanSupport'] = canHeadSupport("fan");
+		$data['headMillSupport'] = canHeadSupport("mill");
+		$data['headLaserSupport'] = canHeadSupport("laser");
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'jog-widget';
@@ -78,7 +84,7 @@
 	public function test()
 	{
 		$this->load->helper('fabtotum_helper');
-		$info = loadGCodeInfo();
+		$info = isBedinPlace();
 		$this->output->set_content_type('application/json')->set_output(json_encode($info));
 	}	
  }

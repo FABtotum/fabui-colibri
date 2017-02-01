@@ -824,22 +824,28 @@
 		}
 	},
 	"M740": {
-		"desc": "Read WIRE_END sensor"
+		"desc": "Read WIRE_END sensor",
+		"reply": "<strong>True</strong> -> TRIGGERED, <strong>False</strong> -> open"
 	},
 	"M741": {
-		"desc": "Read DOOR_OPEN sensor"
+		"desc": "Read DOOR_OPEN sensor",
+		"reply": "<strong>True</strong> -> TRIGGERED, <strong>False</strong> -> open"
 	},
 	"M742": {
-		"desc": "Read REEL_LENS_OPEN sensor"
+		"desc": "Read REEL_LENS_OPEN sensor",
+		"reply": "<strong>True</strong> -> TRIGGERED, <strong>False</strong> -> open"
 	},
 	"M743": {
-		"desc": "Read SECURE_SWITCH sensor"
+		"desc": "Read SECURE_SWITCH sensor",
+		"reply": "<strong>True</strong> -> TRIGGERED, <strong>False</strong> -> open"
 	},
 	"M744": {
-		"desc": "Read HOT_BED in place"
+		"desc": "Read HOT_BED in place",
+		"reply": "<strong>True</strong> -> TRIGGERED, <strong>False</strong> -> open"
 	},
 	"M745": {
-		"desc": "Read HEAD in place"
+		"desc": "Read HEAD in place",
+		"reply": "<strong>True</strong> -> TRIGGERED, <strong>False</strong> -> open"
 	},
 
 	"M750": {

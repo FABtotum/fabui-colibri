@@ -136,7 +136,7 @@
 	 */
 	public function setBedTemp($temperature, $id_stamp)
 	{
-		$this->sendCommands('M140 S'.$temperature, $id_stamp);
+		$this->sendCommands(array('M140 S'.$temperature), $id_stamp);
 		return $this->response();
 	}
 	/**
@@ -145,7 +145,7 @@
 	 */
 	public function setExtruderTemp($temperature, $id_stamp)
 	{
-		$this->sendCommands('M104 S'.$temperature);
+		$this->sendCommands(array('M104 S'.$temperature), $id_stamp );
 		return $this->response();
 	}
 	/**

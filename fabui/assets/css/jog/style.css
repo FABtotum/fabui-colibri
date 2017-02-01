@@ -96,3 +96,7 @@ hr.simple {
 .code-extra-content {
 	padding-left: 20px !important;
 }
+
+.feature-warning {
+	text-align: center;
+}

@@ -158,25 +158,91 @@ if(!function_exists('loadHeads'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if(!function_exists('loadHead'))
+if(!function_exists('getInstalledHeadInfo'))
 {
 	/**
-	 * Load installed head
+	 * Load installed head information
 	 */	
-	function loadHead($type = 'default')
+	function getInstalledHeadInfo()
 	{
-		$settings = loadSettings();
-		return json_decode(file_get_contents($settings['hardware']['head']), true);
+		$CI =& get_instance();
+		$CI->load->helper('file');
+		$CI->config->load('fabtotum');
+		$heads_dir = $CI->config->item('heads');
+		
+		$_data = loadSettings();
+		$settings_type = $_data['settings_type'];
+		if (isset($_data['settings_type']) && $_data['settings_type'] == 'custom') {
+			$_data = loadSettings( $_data['settings_type'] );
+		}
+		$head_filename =  $heads_dir .'/'. $_data['hardware']['head'] . '.json';
+		return json_decode(file_get_contents($head_filename), true);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('canHeadSupport'))
+{
+	/**
+	 * Check whether the installed head supports a specific feature
+	 * @param feature Feature to look for (print, mill, laser...)
+	 */
+	function canHeadSupport($feature)
+	{
+		$data = getInstalledHeadInfo();
+		
+		if(isset($data['capabilities']))
+		{
+			foreach($data['capabilities'] as $_feature)
+			{
+				if($feature == $_feature)
+					return true;
+			}
+		}
+		
+		return false;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('isHeadinPlace'))
+{
+	function isHeadInPlace()
+	{
+		$reply = doGCode(array('M745'));
+		if( isset($reply['commands']))
+		{
+			foreach($reply['commands'] as $value)
+			{
+				return $value['reply'] == "TRIGGERED\nok";
+			}
+		}
+		return false;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('isBedinPlace'))
+{
+	function isBedInPlace()
+	{
+		$reply = doGCode(array('M744'));
+		if( isset($reply['commands']))
+		{
+			foreach($reply['commands'] as $value)
+			{
+				return $value['reply'] == "TRIGGERED\nok";
+			}
+		}
+		return false;
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('doCommandLine'))
 {
 	/**
-	 * @param $script name
-	 * @param args
-	 * doCL => do Command Line
-	 * exec script from command line
+	 * Execute script from command line
+	 * @param bin Script filename
+	 * @param scriptPath Directory the script is located in
+	 * @param args Arguments
+	 * @param background Run script in the background an return control
 	 */
 	function doCommandLine($bin, $scriptPath, $args = '', $background = false)
 	{

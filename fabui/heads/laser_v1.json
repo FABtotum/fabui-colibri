@@ -1,6 +1,6 @@
 {
   "name": "Laser Head V1",
-  "capabilities" : ["laser"],
+  "capabilities" : ["laser", "fan"],
   "description": "The <strong>Laser head V1</strong> features a 500mW laser.",
   "link": "https://store.fabtotum.com/eu/store/laser-head-v1.html",
   "pid": "",

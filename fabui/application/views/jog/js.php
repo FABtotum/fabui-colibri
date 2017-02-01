@@ -12,7 +12,7 @@
 
 if(!isset($extruder_min)) 	$extruder_min = 0;
 if(!isset($extruder_max)) 	$extruder_max = 250;
-if(!isset($bed_min)) 		$bed_min = 10;
+if(!isset($bed_min)) 		$bed_min = 0;
 if(!isset($bed_max)) 		$bed_max = 100;
 
 ?>
@@ -20,6 +20,15 @@ if(!isset($bed_max)) 		$bed_max = 100;
 
 	/* sliders */
 	var fanSlider;
+	var isFanSliderBusy = false;
+	var wasFanSliderMoved = false;
+	
+	var rpmSlider;
+	var isRpmSliderBusy = false;
+	var wasRpmSliderMoved = false;
+	
+	var bedSlider;
+	var extruderSlider;
 	
 	/* jog */
 	var jog_touch;
@@ -27,7 +36,6 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	var jog_is_xy_homed = false;
 	var cold_extrustion_enabled = false;
 	var jog_busy = false;
-	var touch_busy = false;
 	var search_filter = 'gcode';
 	var extruder_mode = 'none';
 
@@ -84,18 +92,16 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			cursorY:2,
 			
 			touch: function(e) {
-				console.log(e.x, e.y);
-				
 				var x = Math.round(e.x, 3);
 				var y = Math.round(e.y, 3);
 				
-				if(touch_busy)
+				if(jog_busy)
 					return false;
 					
-				touch_busy = true;
+				jog_busy = true;
 				fabApp.jogMdi('G90\nG0 X'+x+' Y'+y+' F5000\nM400', function(e){
 					writeJogResponse(e);
-					touch_busy = false;
+					jog_busy = false;
 				});
 					
 				return true;
@@ -140,6 +146,210 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		$(".filter-select").on('click', selectFilter);
 	}
 
+	function initSliders()
+	{
+		<?php if($headPrintSupport): ?>
+		//extruder target
+		if(typeof extruderSlider == "undefined")
+		{
+			noUiSlider.create(document.getElementById('create-ext-target-slider'), {
+				start: <?php echo $extruder_min; ?>,
+				connect: "lower",
+				range: {'min': <?php echo isset($extruder_min) ? $extruder_min : 0; ?>, 'max' : <?php echo $extruder_max; ?>},
+				pips: {
+					mode: 'values',
+					values: [0, 175, 250],
+					density: 4,
+					format: wNumb({
+						postfix: '&deg;'
+					})
+				}
+			});
+			extruderSlider = document.getElementById('create-ext-target-slider');
+			extruderSlider.noUiSlider.on('slide',  function(e){
+				onSlide('extruder-target', e);
+			});
+			extruderSlider.noUiSlider.on('change', function(e){
+				onChange('extruder-target', e);
+			});
+		}
+		<?php endif; ?>
+		
+		<?php if($haveBed): ?>
+		//bed target slider
+		if(typeof bedSlider == "undefined")
+		{
+			noUiSlider.create(document.getElementById('create-bed-target-slider'), {
+				start: 0,
+				connect: "lower",
+				range: {'min': <?php echo $bed_min; ?>, 'max' : <?php echo $bed_max; ?>},
+				pips: {
+					mode: 'positions',
+					values: [0,25,50,75,100],
+					density: 5,
+					format: wNumb({
+						postfix: '&deg;'
+					})
+				}
+			});
+			bedSlider      = document.getElementById('create-bed-target-slider');
+			bedSlider.noUiSlider.on('slide',  function(e){
+				onSlide('bed-target', e);
+			});
+			bedSlider.noUiSlider.on('change', function(e){
+				onChange('bed-target', e);
+			});
+		}
+		<?php endif; ?>
+		
+		<?php if($headFanSupport): ?>
+		//fan slider
+		if(typeof fanSlider == "undefined")
+		{
+			noUiSlider.create(document.getElementById('create-fan-slider'), {
+				start: 0,
+				step: 5,
+				connect: "lower",
+				range: {'min': 0, 'max' : 100},
+				pips: {
+					mode: 'positions',
+					values: [0,50,100],
+					density: 10,
+					format: wNumb({
+						postfix: '%'
+					})
+				}
+			});
+			fanSlider      = document.getElementById('create-fan-slider');
+			
+			fanSlider.noUiSlider.on('change', function(e){
+				onChange('fan', e);
+			});
+			fanSlider.noUiSlider.on('slide', function(e){
+				onSlide('fan', e);
+				wasFanSliderMoved = true;
+			});
+			fanSlider.noUiSlider.on('end', function(e){
+				isFanSliderBusy = false;
+			});
+			fanSlider.noUiSlider.on('start', function(e){
+				isFanSliderBusy = true;
+				wasFanSliderMoved = true;
+			});
+		}
+		<?php endif; ?>
+		
+		<?php if($headMillSupport): ?>
+		//rpm slider
+		if(typeof rpmSlider == "undefined")
+		{
+			noUiSlider.create(document.getElementById('create-rpm-slider'), {
+				start: 0,
+				connect: "lower",
+				step: 100,
+				range: {'min': 0, 'max' : <?php echo isset($rpm_max) ? $rpm_max : 14000; ?>},
+				pips: {
+					mode: 'values',
+					values: [6000,8000,10000,12000,14000],
+					density: 10,
+					format: wNumb({})
+				}
+			});
+			rpmSlider = document.getElementById('create-rpm-slider');
+			
+			rpmSlider.noUiSlider.on('change', function(e){
+				onChange('rpm', e);
+			});
+			rpmSlider.noUiSlider.on('slide', function(e){
+				onSlide('rpm', e);
+				wasRpmSliderMoved = true;
+			});
+			rpmSlider.noUiSlider.on('end', function(e){
+				isRpmSliderBusy = false;
+			});
+			rpmSlider.noUiSlider.on('start', function(e){
+				isRpmSliderBusy = true;
+				wasRpmSliderMoved = true;
+			});
+		}
+		<?php endif; ?>
+
+	}
+	
+		/**
+	 * event on slider slide
+	 */
+	function onSlide(element, value)
+	{
+		
+		switch(element){
+			case 'extruder-target':
+				var extruder_target = parseInt(value);
+				$(".slider-extruder-target").html(extruder_target);
+				break;
+			case 'bed-target':
+				$(".slider-bed-target").html(parseInt(value));
+				break;
+			case 'fan':
+				$('.slider-task-fan').html(parseInt(value));
+				break;
+			case 'rpm':
+				if(parseInt(value) < <?php echo isset($rpm_min) ? $rpm_min : 6000; ?>)
+					$('.slider-task-rpm').html("Off");
+				else
+					$('.slider-task-rpm').html(parseInt(value));
+				break;
+			
+		}
+	} 
+	/**
+	 * event on slider set
+	 */
+	function onChange(element, value)
+	{
+		console.log(element);
+		switch(element){
+			case 'extruder-target':
+				fabApp.serial("setExtruderTemp", parseInt(value[0]), writeJogResponse);
+				break;
+			case 'bed-target':
+				fabApp.serial("setBedTemp", parseInt(value[0]), writeJogResponse);
+				break;
+			case 'fan':
+				//sendActionRequest('fan', parseInt(value[0]) );
+				var pwm = Math.round( (parseInt(value[0]) * 255)/100);
+				console.log("pwm", pwm);
+				if(pwm == 0)
+					fabApp.jogMdi("M107", writeJogResponse);
+				else
+					fabApp.jogMdi("M106 S"+pwm, writeJogResponse);
+					
+				break;
+			case 'rpm':
+				var rpm = parseInt(value[0]);
+				if(rpm < <?php echo isset($rpm_min) ? $rpm_min : 6000; ?>)
+					fabApp.jogMdi("M5", writeJogResponse);
+				else
+					fabApp.jogMdi("M3 S"+rpm, writeJogResponse);
+					
+				break;
+		}
+	}
+	
+	/**
+	*
+	*/
+	function showActionAlert(message)
+	{
+		$.smallBox({
+			title : "Info",
+			content : message,
+			color : "#5384AF",
+			timeout: 3000,
+			icon : "fa fa-check bounce animated"
+		});
+	}
+		
 	function hide_divs(search) {
 		
 		$(".code").hide(); 
@@ -220,101 +430,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			extruder_mode = 'extruder';
 		}
 		
-		console.log('Extrude', sign, extruderStep, extruderFeed);
-		
 		fabApp.jogMdi("M83\nG0 E"+sign+""+extruderStep+" F"+extruderFeed, writeJogResponse);
-	}
-
-	function initSliders()
-	{
-		//extruder target
-		if(typeof extruderSlider == "undefined")
-		{
-			noUiSlider.create(document.getElementById('create-ext-target-slider'), {
-				start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp_target") : <?php echo $extruder_min; ?>,
-				connect: "lower",
-				range: {'min': <?php echo isset($extruder_min) ? $extruder_min : 0; ?>, 'max' : <?php echo $extruder_max; ?>},
-				pips: {
-					mode: 'values',
-					values: [0, 175, 250],
-					density: 4,
-					format: wNumb({
-						postfix: '&deg;'
-					})
-				}
-			});
-		}
-		//bed target slider
-		if(typeof bedSlider == "undefined")
-		{
-			noUiSlider.create(document.getElementById('create-bed-target-slider'), {
-				start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp_target") : 0,
-				connect: "lower",
-				range: {'min': <?php echo $bed_min; ?>, 'max' : <?php echo $bed_max; ?>},
-				pips: {
-					mode: 'positions',
-					values: [0,25,50,75,100],
-					density: 5,
-					format: wNumb({
-						postfix: '&deg;'
-					})
-				}
-			});
-		}
-		//fan slider
-		if(typeof fanSlider == "undefined")
-		{
-			noUiSlider.create(document.getElementById('create-fan-slider'), {
-				start: 0,
-				connect: "lower",
-				range: {'min': 0, 'max' : 100},
-				pips: {
-					mode: 'positions',
-					values: [0,50,100],
-					density: 10,
-					format: wNumb({})
-				}
-			});
-		}
-		//rpm slider
-		if(typeof rpmSlider == "undefined")
-		{
-			noUiSlider.create(document.getElementById('create-rpm-slider'), {
-				start: <?php echo isset($rpm_min) ? $rpm_min : 6000; ?>,
-				connect: "lower",
-				range: {'min': <?php echo isset($rpm_min) ? $rpm_min : 6000; ?>, 'max' : <?php echo isset($rpm_max) ? $rpm_max : 14000; ?>},
-				pips: {
-					mode: 'positions',
-					values: [0,20,40,60,80,100],
-					density: 10,
-					format: wNumb({})
-				}
-			});
-			rpmSlider = document.getElementById('create-rpm-slider');
-		}
-		
-		fanSlider      = document.getElementById('create-fan-slider');
-		
-		extruderSlider = document.getElementById('create-ext-target-slider');
-		bedSlider      = document.getElementById('create-bed-target-slider');
-		//~ flowRateSlider = document.getElementById('create-flow-rate-slider');
-		fanSlider      = document.getElementById('create-fan-slider');
-		
-		//fan
-		/*fanSlider.noUiSlider.on('change', function(e){
-			onChange('fan', e);
-		});
-		fanSlider.noUiSlider.on('slide', function(e){
-			onSlide('fan', e);
-			wasFanSliderMoved = true;
-		});*/
-		/*fanSlider.noUiSlider.on('end', function(e){
-			isFanSliderBusy = false;
-		});
-		fanSlider.noUiSlider.on('start', function(e){
-			isFanSliderBusy = true;
-			wasFanSliderMoved = true;
-		});*/
 	}
 	
 	function unlock_touch()
@@ -326,14 +442,12 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		
 		jog_touch.jogtouch('cursor',2,2);
 	}
-	
+		
 	function writeJogResponse(e)
 	{
 		if($(".jogResponseContainer2").length > 0){
 			var html = '';
 			$.each(e, function(i, item) {
-				console.log(item.reply);
-				//~ html += '<span class="jog_response ">' + item.code + ' : <small>' + item.reply + '</small> </span><hr class="simple">';
 				html += '<span class="jog_response code">' + item.code + '</span>';
 				
 				$.each( item.reply.split('\n'), function(ii, line) {
@@ -373,11 +487,6 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		unlock_touch();
 	}
 	
-	function jogMoveCallback(e)
-	{
-		writeJogResponse(e);
-	}
-
 	function jogAction(e)
 	{
 		if(jog_busy)
@@ -398,7 +507,6 @@ if(!isset($bed_max)) 		$bed_max = 100;
 					var tmp = e[0].reply.split(" ");
 					var x = tmp[0].replace("X:","");
 					var y = tmp[1].replace("Y:","");
-					console.log('jog_position', x, y);
 				});
 				
 				fabApp.jogZeroAll(jogZeroAllCallback);
@@ -415,7 +523,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 				jog_busy = true;
 				if(jog_is_xy_homed)
 					jog_touch.jogtouch('jogmove', e.action, xyStep*mul);
-				fabApp.jogMove(e.action, xyStep*mul, xyzFeed, waitForFinish, jogMoveCallback);
+				fabApp.jogMove(e.action, xyStep*mul, xyzFeed, waitForFinish, writeJogResponse);
 				break;
 			case "z-down":
 			case "z-up":

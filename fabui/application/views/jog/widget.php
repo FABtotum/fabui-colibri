@@ -120,7 +120,7 @@
 				<div class="smart-form">
 					<fieldset>
 						<section>
-							<label class="label">4th axis Feedrate</label>
+							<label class="label">Feedrate</label>
 							<label class="input">
 								<input type="number" min="1" value="800" id="4thaxis-feedrate">
 							</label>
@@ -131,24 +131,41 @@
 			
 			<div class="tab-pane fade in active" id="functions-tab">
 				<div class="padding-10"></div>
+				
 				<div class="col-sm-12 margin-bottom-50">
-					<h4><i class="icon-fab-term"></i> <span>Nozzle</span> <span class="pull-right"><span rel="tooltip" data-placement="top" data-original-title="Extruder current temperature"  class="extruder-temp"></span> / <strong><span rel="tooltip" data-placement="top" data-original-title="Extruder target temperature" class="slider-extruder-target"></span></strong> &deg;C</span></h4>
+					<?php if($headPrintSupport): ?>
+					<h4><i class="icon-fab-term"></i> <span>Nozzle</span> <span class="pull-right"><span rel="tooltip" data-placement="top" data-original-title="Extruder current temperature"  class="extruder-temp"></span> / <strong><span rel="tooltip" data-placement="top" data-original-title="Extruder target temperature" class="slider-extruder-target">0</span></strong> &deg;C</span></h4>
 					<div id="create-ext-target-slider" class="noUiSlider sliders"></div>
+					<?php else: ?>
+					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> Head does not have a heater</h4></div>
+					<?php endif; ?>
 				</div>
 				
 				<div class="col-sm-12 margin-bottom-50">
-					<h4><i class="icon-fab-term"></i> Bed <span class="pull-right"><span rel="tooltip" data-placement="top" data-original-title="Bed current temperature" class="bed-temp"></span> / <strong><span rel="tooltip" data-placement="top" data-original-title="Bed target temperature" class="slider-bed-target"></span></strong> &deg;C</span></h4>
-					<div id="create-bed-target-slider" class="noUiSlider sliders"></div>
-				</div>
-					
-				<div class="col-sm-12 margin-bottom-50">
-					<h4>Fan <span class="pull-right"><strong><span class="slider-task-fan"></span></strong> %</span></h4>
+					<?php if($headFanSupport): ?>
+					<h4>Fan <span class="pull-right"><strong><span class="slider-task-fan">0</span></strong>%</span></h4>
 					<div id="create-fan-slider" class="noUiSlider sliders"></div>
+					<?php else: ?>
+					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> Head does not have a fan</h4></div>
+					<?php endif; ?>
 				</div>
 				
 				<div class="col-sm-12 margin-bottom-50">
-					<h4>RPM <span class="pull-right"><strong><span class="slider-task-fan"></span></strong> %</span></h4>
+					<?php if($headMillSupport): ?>
+					<h4>RPM <span class="pull-right"><strong><span class="slider-task-rpm">Off</span></strong></span></h4>
 					<div id="create-rpm-slider" class="noUiSlider sliders"></div>
+					<?php else: ?>
+					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> Head does not have a milling motor</h4></div>
+					<?php endif; ?>
+				</div>
+				
+				<div class="col-sm-12 margin-bottom-50">
+					<?php if($haveBed): ?>
+					<h4><i class="icon-fab-term"></i> Bed <span class="pull-right"><span rel="tooltip" data-placement="top" data-original-title="Bed current temperature" class="bed-temp"></span> / <strong><span rel="tooltip" data-placement="top" data-original-title="Bed target temperature" class="slider-bed-target">0</span></strong> &deg;C</span></h4>
+					<div id="create-bed-target-slider" class="noUiSlider sliders"></div>
+					<?php else: ?>
+					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> Bed is not installed</h4></div>
+					<?php endif; ?>
 				</div>
 			</div>
 			
@@ -276,18 +293,16 @@
 										<?php else: ?>
 											<span class="description">No parameters.</span>
 										<?php endif; ?>
-										<!--
-										<div class="row">
-											<div class="col-sm-12 help-param-header">Reply</div>
-										</div>
-										<div class="row">
+
 											<?php if( isset($info['reply']) ): ?>
-											<div class="col-sm-12 code-extra-content"><?php echo $info['reply'];?> </div>
-											<?php else:?>
-											<div class="col-sm-12 code-extra-content">ok</div>
+											<div class="row">
+												<div class="col-sm-12 help-param-header">Reply</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-12 code-extra-content"><?php echo $info['reply'];?> </div>
+											</div>
 											<?php endif;?>
 										</div>
-										-->
 									</td>
 								</tr>
 
