@@ -14,17 +14,15 @@
  	
  	function __construct(){
  		parent::__construct();
- 	}
- 	
- 	
- 	public function index()
- 	{
  		if(!$this->input->is_cli_request()){
  			$this->load->model('Tasks', 'tasks');
  			//$this->tasks->truncate();
- 			$this->runningTask = $this->tasks->getRunning('updates');
+ 			$this->runningTask = $this->tasks->getRunning('update');
  		}
-
+ 	}
+ 	
+ 	public function index()
+ 	{
  		//load helpers
  		$this->load->helper('layout');
  		$this->load->library('smart');
@@ -90,11 +88,11 @@
 		
 		$updateArgs = array(
 				'-T' => $taskId,
-				'-b' => implode(',', $bundles)
 		);
-		if($firmware) $updateArgs['-f'] = '';
+		if($bundles)  $updateArgs['-b'] = implode(',', $bundles);
+		if($firmware) $updateArgs['--firmware'] = '';
 		
-		startPyScript('update.py', $updateArgs, true, true);
+		startPyScript('update2.py', $updateArgs, true, true);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
 	}
 	

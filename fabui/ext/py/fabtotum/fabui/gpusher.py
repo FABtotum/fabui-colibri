@@ -98,10 +98,11 @@ class GCodePusher(object):
     
     UPDATE_PERIOD       = 2 # seconds
     
-    def __init__(self, log_trace, monitor_file = None, gcs = None, config = None, use_callback = True, use_stdout = False):
+    def __init__(self, log_trace = None, monitor_file = None, gcs = None, config = None, use_callback = True, use_stdout = False, update_period = 2):
                         
         self.monitor_lock = RLock()
         
+        self.UPDATE_PERIOD = update_period
         self.gcode_info = None
         self.use_stdout = use_stdout
         # Task specific attributes
@@ -145,6 +146,22 @@ class GCodePusher(object):
             'gpusher'   : self.pusher_stats,
             'override'  : self.override_stats
         }
+                
+        if not config:
+            self.config = ConfigService()
+        else:
+            self.config = config
+        
+        if not gcs:
+            self.gcs = GCodeServiceClient()
+        else:
+            self.gcs = gcs
+        
+        if not monitor_file:
+            monitor_file = self.config.get('general', 'task_monitor')
+            
+        if not log_trace:
+            log_trace = self.config.get('general', 'trace')
         
         self.monitor_file = monitor_file
         self.trace_file = log_trace
@@ -158,15 +175,6 @@ class GCodePusher(object):
         ch.setLevel(logging.INFO)
         self.trace_logger.addHandler(ch)
         
-        if not config:
-            self.config = ConfigService()
-        else:
-            self.config = config
-        
-        if not gcs:
-            self.gcs = GCodeServiceClient()
-        else:
-            self.gcs = gcs
         
         if use_callback:
             self.gcs.register_callback(self.callback_handler)
@@ -385,6 +393,9 @@ class GCodePusher(object):
             self.update_monitor_file()
         
         self.file_done_callback()
+    
+    def finish_task(self):
+        self.gcs.finish()
     
     def set_task_status(self, status):
         """

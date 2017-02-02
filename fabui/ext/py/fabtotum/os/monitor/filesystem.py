@@ -86,9 +86,12 @@ class FolderTempMonitor(PatternMatchingEventHandler):
         elif event.src_path == self.TASK_MONITOR:
             tmp = str(self.getFileContent(self.TASK_MONITOR))
             if tmp:
-                messageData = {'type': 'monitor', 'content': json.loads(tmp)}
-                messageType = 'task'
-                self.ns.notify(messageType, messageData)
+                try:
+                    messageData = {'type': 'monitor', 'content': json.loads(tmp)}
+                    messageType = 'task'
+                    self.ns.notify(messageType, messageData)
+                except:
+                    pass
         
     def on_created(self, event):
         #self.process(event)

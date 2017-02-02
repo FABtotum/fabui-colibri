@@ -10,8 +10,10 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		<?php if($runningTask): ?>
+		console.log('resumeTask');
 		resumeTask();
 		<?php else: ?>
+		console.log('checkforUpdates');
 		checkUpdateStatus();
 		<?php endif; ?>
 	});
@@ -208,6 +210,8 @@
 		disableButton('.action-buttons');
 		var bundles_to_update = [];
 		var firmware = false;
+		var boot = false;
+		
 		$("#bundles-table").find("tr > td input:checkbox").each(function () {
 			if($(this).is(':checked')){
 				bundles_to_update.push($(this).val());
@@ -218,16 +222,24 @@
 				firmware = true;
 			}
 		});
-		startUpdate(bundles_to_update, firmware);
+		/*$("#firmware-table").find("tr > td input:checkbox").each(function () {
+			if($(this).is(':checked')){
+				firmware = true;
+			}
+		});*/
+		
+		console.log(bundles_to_update, firmware, boot);
+		
+		startUpdate(bundles_to_update, firmware, boot);
 	}
 	/**
 	*
 	**/
-	function startUpdate(bundles, firmware)
+	function startUpdate(bundles, firmware, boot)
 	{
 		$.ajax({
 			type: "POST",
-			data: {'bundles': bundles, 'firmware' : firmware},
+			data: {'bundles': bundles, 'firmware' : firmware, 'boot' : boot},
 			url: "<?php echo site_url('updates/startUpdate') ?>",
 			dataType: 'json'
 		}).done(function(response) {
@@ -258,7 +270,8 @@
 		window.manageMonitor = function(data){
 			console.log("=======================");
 			console.log("UPDATE - MANAGEMONITOR");
-			console.log(data.update.bundles);
+			console.log(data.update.tasks);
+			console.log(data.task);
 			handleTask(data);
 			
 		}
@@ -272,9 +285,8 @@
 
 		handleUpdate(data.update);
 		handleCurrent(data.update.current);
+		
 		handleTaskStatus(data.task.status);
-
-		console.log(data);
 		/** TASK STATUS 
 		switch(data.task.status)
 		{
@@ -302,6 +314,7 @@
 	**/
 	function handleTaskStatus(status)
 	{
+		
 		switch(status){ 
 			case 'preparing':
 				$(".status").html('Connecting to update server...');
@@ -319,6 +332,8 @@
 				$("#do-reboot").on('click', fabApp.reboot);
 				break;
 		}
+		
+		console.log("handle task status", status);
 	}
 	/**
 	*
@@ -331,11 +346,16 @@
 			console.log(current.status);
 			switch(current.status){
 				case 'downloading' :
-					console.log("CIAO");
-					$(".status").html('<i class="fa fa-download"></i> Downloading ' + current.type + ' (' + current.name.capitalize() +')');
+					if( current.type == 'bundle' )
+						$(".status").html('<i class="fa fa-download"></i> Downloading ' + current.type + ' (' + current.name.capitalize() +')');
+					else
+						$(".status").html('<i class="fa fa-download"></i> Downloading ' + current.name.capitalize() );
 					break;
 				case 'installing' :
-					$(".status").html('<i class="fa fa-gear fa-spin"></i> Installing ' + current.type + '  (' + current.name.capitalize() +')');
+					if( current.type == 'bundle' )
+						$(".status").html('<i class="fa fa-gear fa-spin"></i> Installing ' + current.type + '  (' + current.name.capitalize() +')');
+					else
+						$(".status").html('<i class="fa fa-gear fa-spin"></i> Installing ' + current.name.capitalize() );
 					break;
 			}
 		}
@@ -348,19 +368,19 @@
 		
 		
 		var table = '<table class="table  table-forum"><thead><tr></tr></thead><tbody>';		
-		$.each(object.bundles, function(bundle_name, bundle) {
+		$.each(object.tasks, function(i, task) {
 			
-			var tr_class = bundle.status == 'error' ? 'warning' : '';
+			var tr_class = task.status == 'error' ? 'warning' : '';
 			
 			table += '<tr class="'+ tr_class +'">';
 			table += '<td width="20" class="text-center"></td>';
-			table += '<td><h4><a href="javascript:void(0);">' + bundle_name.capitalize() + '</a>';
+			table += '<td><h4><a href="javascript:void(0);">' + task.name.capitalize() + '</a>';
 			
-			switch(bundle.status){
+			switch(task.status){
 				case 'downloading':
-					label = '<p><i class="fa fa-download"></i> Downloading (' + humanFileSize(bundle.files.bundle.size)  + ') <span class="pull-right">'+ parseInt(bundle.files.bundle.progress)  +'%</span></p>'+
+					label = '<p><i class="fa fa-download"></i> Downloading (' + humanFileSize(task.files.main_file.size)  + ') <span class="pull-right">'+ parseInt(task.files.main_file.progress)  +'%</span></p>'+
 						'<div class="progress progress-xs"> '+
-							'<div class="progress-bar bg-color-blue" style="width: '+ parseInt(bundle.files.bundle.progress) +'%;"></div> '+
+							'<div class="progress-bar bg-color-blue" style="width: '+ parseInt(task.files.main_file.progress) +'%;"></div> '+
 						'</div>';
 					break;
 				case 'downloaded':
@@ -374,11 +394,11 @@
 					break;
 				case 'error':
 					label = '<p><i class="fa fa-times"></i> Error</p>' +
-							'<p>' + bundle.message.replaceAll('\n', '<br>') + '</p>';
+							'<p>' + task.message.replaceAll('\n', '<br>') + '</p>';
 					console.log(label);
 					break;
 				default:
-					label = bundle.status;
+					label = task.status;
 					break;
 			}
 			table += '<small>' + label + '</small>';

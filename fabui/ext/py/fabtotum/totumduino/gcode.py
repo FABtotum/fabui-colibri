@@ -84,6 +84,7 @@ class Command(object):
     GCODE   = 'gcode'
     FILE    = 'file'
     ABORT   = 'abort'
+    FINISH  = 'finish'
     PAUSE   = 'pause'
     RESUME  = 'resume'
     ZMODIFY = 'zmodify'
@@ -184,6 +185,11 @@ class Command(object):
     def abort(cls):
         """ Constructor for ``ABORT`` command. """
         return cls(Command.ABORT, None)
+        
+    @classmethod
+    def finish(cls):
+        """ Constructor for ``ABORT`` command. """
+        return cls(Command.FINISH, None)
         
     @classmethod
     def terminate(cls):
@@ -680,7 +686,22 @@ class GCodeService:
                     
                 elif self.file_state == GCodeService.FILE_PAUSED:
                     self.file_state = GCodeService.FILE_PUSH
+            
+            elif cmd == Command.FINISH:
+                self.__trigger_callback('state_change', 'finished')
                 
+                if self.file_state > GCodeService.FILE_NONE:                
+                    if ( self.file_state == GCodeService.FILE_WAIT or
+                         self.file_state == GCodeService.FILE_PAUSED_WAIT):
+                        # There is a long command being executed, we need to
+                        # restart the totumduino to abort it.
+                        self.__trigger_reset(True, False);
+                        self.file_state = GCodeService.FILE_NONE
+                        # self.__trigger_file_done(self.last_command), True above means it will be triggered after reset
+                    else:
+                        self.file_state = GCodeService.FILE_NONE
+                        self.__trigger_file_done(self.last_command)
+                                    
             elif cmd == Command.ABORT:
                 self.__trigger_callback('state_change', 'aborted')
                 
@@ -706,8 +727,6 @@ class GCodeService:
                 #self.__send_gcode_command("M728", group="*", modify=False)
                 #xmlrpc_exe = os.path.join(PYTHON_PATH, 'xmlrpcserver.py')
                 os.system('/etc/init.d/fabui emergency &')
-                
-                
                 self.is_terminating = False
                 
             elif cmd == Command.KILL:
@@ -864,6 +883,10 @@ class GCodeService:
         # Run this thread while the service is active        
         while self.running:
             
+            
+            while self.is_resetting:
+                time.sleep(1)
+                
             #while self.serial.is_open:
             try:
                 # read all that is there or wait for one byte (blocking)
@@ -873,7 +896,10 @@ class GCodeService:
                 # adapters -> exit
                 error = e
                 print e
-                break
+                if self.is_resetting:
+                    time.sleep(1)
+                else:
+                    break
             else:
                 if data:
                     self.buffer.extend(data)
@@ -1022,6 +1048,39 @@ class GCodeService:
             return
         self.__reset_totumduino()
     
+    def release_serial(self):
+        if self.is_resetting:
+            return
+        
+        self.is_resetting = True    
+        if hasattr(self.serial, 'cancel_read'):
+            self.cancel_read()
+        self.__cleanup()
+        self.serial.close()
+        
+    def acquire_serial(self):
+        if not self.is_resetting:
+            return
+        
+        
+        self.atomic_begin('bootstrap')
+        self.is_resetting = False
+
+        self.serial = serial.serial_for_url(
+                                self.SERIAL_PORT,
+                                baudrate = self.SERIAL_BAUD,
+                                timeout = self.SERIAL_TIMEOUT
+                                )
+        self.serial.flushInput()
+        self.buffer = bytearray()
+        self.__init_state()
+        
+        time.sleep(10)
+        
+        hardwareBootstrap(self, logger=self.log)
+        
+        self.atomic_end()
+    
     def pause(self):
         """
         Pause current file push. In case no file is being pushed this command
@@ -1051,6 +1110,15 @@ class GCodeService:
             return
         
         self.cq.put( Command.abort() )
+        
+    def finish(self):
+        """
+        Send finish request.
+        """
+        if self.is_resetting:
+            return
+        
+        self.cq.put( Command.finish() )
         
     def terminate(self):
         """

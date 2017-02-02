@@ -1,260 +1,169 @@
-import argparse, gettext, os,time, json,pycurl, re,sys
+#!/bin/env python
+# -*- coding: utf-8; -*-
+#
+# (c) 2016 FABtotum, http://www.fabtotum.com
+#
+# This file is part of FABUI.
+#
+# FABUI is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# FABUI is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
+
+# Import standard python module
+import os
+import re
+import argparse
+import time
+import gettext
 import commands
-import threading
 
-from fabtotum.fabui.config  import ConfigService
-from fabtotum.database      import Database, timestamp2datetime, TableItem
-from fabtotum.database.task import Task
+# Import external modules
+from watchdog.observers import Observer
+from watchdog.events import PatternMatchingEventHandler
+import pycurl
 
+# Import internal modules
 from fabtotum.fabui.gpusher import GCodePusher
+from fabtotum.update.factory  import UpdateFactory
+from fabtotum.update import BundleTask, FirmwareTask, BootTask
 
-from fabtotum.utils.blink    import Blink
-
-from fabtotum.update.factory   import UpdateFactory
-from fabtotum.update.bundle    import Bundle
-from fabtotum.update.firmware  import Firmware
-from fabtotum.update.version   import RemoteVersion
-
+# Set up message catalog access
 tr = gettext.translation('update', 'locale', fallback=True)
 _ = tr.ugettext
 
-config = ConfigService()
-factory = UpdateFactory(config)
+################################################################################
 
-''' ==================================================================================================== '''
-''' '''
-class Update(GCodePusher):
-    def __init__(self, task_id, bundles_list, firmware, temp_folder,  config):
-        super(Update, self).__init__(config.get('general', 'trace'), config.get('general', 'task_monitor'), use_stdout=False)
+class UpdateApplication(GCodePusher):
+    """
+    Update application.
+    """
+    
+    def __init__(self, arch='armhf', mcu='atmega1280'):
+        super(UpdateApplication, self).__init__()
         
-        self.task_id      = task_id
-        self.bundles_list = bundles_list
-        self.firmware     = firmware 
-        self.temp_folder  = temp_folder
-        self.config       = config
+        self.factory = UpdateFactory(arch=arch, mcu=mcu, config=self.config, gcs=self.gcs, notify_update=self.update_monitor)
+        self.update_stats = {}
         
-        self.remote_data  = RemoteVersion()
-        self.loaded_bundles = {}
-        
-        self.blink = Blink(self.config.get('general', 'trace'), self.config.get('general', 'task_monitor'))
+        self.add_monitor_group('update', self.update_stats)      
         
     def playBeep(self):
         self.send('M300')
-        
-    def run(self):
-        
-        self.playBeep()
-        
-        blink_thread = threading.Thread( 
-            target = self.blink.run, 
-            args=( ['blue'] ) 
-        )
-        
-        blink_thread.start()
-        remote_bundles = self.remote_data.getBundles()
-        
-        ''' === loading bundles '''
-        for bundle_name in self.bundles_list:
-            bundle = Bundle(bundle_name, remote_bundles[bundle_name])
-            factory.addBundle(bundle)
-            self.addBundle(bundle)
-        
-        ''' === loading firmware === '''
-        if(self.firmware):
-            firmware = self.remote_data.getFirmware()
-            latest_firmware = firmware['firmware']['latest']
-            firmware = Firmware(firmware['firmware'][latest_firmware])
-            factory.addFirmware(firmware)
-        
-        factory.setStatus('running')
-        
-        for bundle_name in self.loaded_bundles:
-            self.do_download(self.loaded_bundles[bundle_name])
-            
-        if(self.firmware):
-            print "download firmware"
-            self.do_download_firmware(factory.getFirmware())
-        
-        for bundle_name in self.loaded_bundles:
-            self.do_install(self.loaded_bundles[bundle_name])
-        
-        factory.setCurrentStatus('completed')
-        factory.setStatus('completed')
-        factory.do_stop()
-        factory.update_task_db()
-        self.blink.stopBlinking()
-        self.playBeep()
-            
-    def addBundle(self, bundle):
-        self.loaded_bundles[bundle.getName()] = bundle
-        
-    def do_download(self, bundle):
-        print "do download: ", bundle.getName()
-        factory.setCurrentBundle(bundle.getName())
-        factory.setCurrentStatus('downloading')
-        self.download(bundle, 'bundle') 
-        self.download(bundle, 'md5')
-        factory.setCurrentStatus('downloaded')
-        bundle.setStatus('downloaded')
-        factory.updateBundle(bundle)
-    
-    def do_download_firmware(self, firmware):
-        print "do download firmware"
-        
-        
-        
-    def do_install(self, bundle):
-        print "installing: " , bundle.getName()
-        bundle.setStatus('installing')
-        factory.setCurrentStatus('installing')
-        factory.setCurrentBundle(bundle.getName())
-        factory.updateBundle(bundle)
-        #print 'colibrimngr install -postpone ' + self.temp_folder +  'fabui/' + bundle.getBundleFile().getName()
-        install_output =  commands.getstatusoutput('colibrimngr install -postpone ' + self.temp_folder +  'fabui/' + bundle.getBundleFile().getName())
-        
-        matches = re.search(r"Bundle\sis\sinstalled", install_output[1], re.IGNORECASE)
-        
-        if(matches):
-            print "Bundle installed"
-            bundle.setStatus('installed')
-            factory.incraeseUpdatedCount()
+
+    def finalize_task(self):
+        if self.is_aborted():
+            self.set_task_status(GCodePusher.TASK_ABORTING)
         else:
-            print "Bundle not installed"
-            bundle.setStatus('error')
-            bundle.setMessage(install_output[1])
+            self.set_task_status(GCodePusher.TASK_COMPLETING)
+        
+        # do some final stuff
+        
+        if self.is_aborted():
+            self.set_task_status(GCodePusher.TASK_ABORTED)
+        else:
+            self.set_task_status(GCodePusher.TASK_COMPLETED)
+                
+        self.stop()
+    
+    # Only for development
+    def trace(self, msg):
+        print msg
+         
+    def state_change_callback(self, state):
+        if state == 'aborted' or state == 'finished':
+            self.trace( _("Print STOPPED") )
+            self.finalize_task()
+
+    def update_monitor(self, factory=None):
+        with self.monitor_lock:
+            self.update_stats.update( self.factory.serialize() )
+            self.update_monitor_file()
+
+    def run(self, task_id, bundles, firmware_switch, boot_switch):
+        """
+        """
+
+        self.prepare_task(task_id, task_type='update', task_controller='update')
+        self.set_task_status(GCodePusher.TASK_RUNNING)
+        
+        self.trace( _("Update initialized.") )
+
+        if bundles:
+            remote_bundles = self.factory.getBundles()
+            if remote_bundles:
+                print "remote_bundles", remote_bundles.keys()
             
-        factory.updateBundle(bundle)
-        print "installed"
-        
-    def download(self, bundle, type):
-        
-        bundle.setStatus('downloading')
-        factory.updateBundle(bundle)
-        factory.setCurrentFileType(type)
-        
-        file_endpoint = bundle.getFile(type).getEndpoint()
-        file_name = bundle.getFile(type).getName()
-        
-        curl = pycurl.Curl()
-        curl.setopt(pycurl.URL, self.remote_data.getColibriEndpoint() + 'armhf/' + file_endpoint)
-        curl.setopt(pycurl.FOLLOWLOCATION, 1)
-        curl.setopt(pycurl.MAXREDIRS, 5)
-        
-        file_to_write = open(self.temp_folder + 'fabui/' + file_name, "wb")
-        
-        curl.setopt(pycurl.WRITEDATA, file_to_write)
-        curl.setopt(pycurl.NOPROGRESS, 0)
-        curl.setopt(pycurl.PROGRESSFUNCTION, self.download_progress)
-        
-        curl.perform()
-        
-        bundle.getFile(type).setStatus('downloaded')
-        factory.updateBundle(bundle)
-        
-        
-    def download_progress(self, file_size, downloaded, upload_t, upload_d):
-        
-        try:
-            current_file_type = factory.getCurrentFileType()
-            bundle = factory.getBundle(factory.getCurrentBundle())
-            file = bundle.getFile(current_file_type)
+                for bundle_name in bundles:                
+                    print "+", bundle_name
+                    
+                    bundle = BundleTask(bundle_name, remote_bundles[bundle_name])
+                    self.factory.addTask(bundle)
             
-            file.setSize(file_size)
-            file.setProgress(( downloaded / file_size ) * 100)
-            file.setStatus('downloading')
-            
-            bundle.updateFile(file, current_file_type)
-            factory.updateBundle(bundle)
+        if firmware_switch:
+            remote_firmware = self.factory.getFirmware()
+            if remote_firmware:
+                print "+ firmware"
+                firmware = FirmwareTask("firmware", remote_firmware)
+                self.factory.addTask(firmware)
         
-        except:
-            pass
+        if boot_switch:
+            remote_boot = self.factory.getBoot()
+            if remote_boot:
+                print "+ boot"
+                boot = BootTask("boot", remote_boot)
+                self.factory.addTask(boot)
+
+        self.factory.setStatus('downloading')
+        for task in self.factory.getTasks():
+            self.factory.setCurrentTask( task.getName() )
+            self.factory.update()
+            task.download()
         
-''' ==================================================================================================== '''
-''' '''
-class MonitorWriter():
-    def __init__(self, monitor_file):
-        #super(MonitorWriter, self).__init__()
-        self.file = monitor_file
-        self.stop = False
-        self.every = 1
-        self.write()
-        
-    def write(self):
-        monitor_file = open(self.file,'w+')
-        monitor_file.write(json.dumps(factory.serialize()))
-        monitor_file.close()
-        print json.dumps(factory.serialize())
-        
-        
-    def run(self):
-        while factory.getStop() == False :
-            self.write()
-            time.sleep(self.every)
-        self.write()
-''' ==================================================================================================== '''
+        self.factory.setStatus('installing')    
+        for task in self.factory.getTasks():
+            self.factory.setCurrentTask( task.getName() )
+            self.factory.update()
+            task.install()
+
+        print "finishing task"
+        self.finish_task()
+
 
 def main():
-    
-    
+    # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-T", "--task-id",     help=_("Task ID."),      default=0)
-    parser.add_argument('-b','--bundles',      help='<Required> Set flag')
-    parser.add_argument("-f", "--firmware",    action="store_true")
+    parser.add_argument("-T", "--task-id",     help=_("Task ID."),                      default=0)
+    #~ parser.add_argument("-B", "--bundle", action='append', help=_("Bundle name to be updated") )
+    parser.add_argument("-b", "--bundles", help=_("Bundle name to be updated") )
+    parser.add_argument("--boot", action="store_true", help=_("Update boot files") )
+    parser.add_argument("-f", "--firmware", action="store_true", help=_("Update firmware") )
     
+    # GET ARGUMENTS
     args = parser.parse_args()
-        
-    bundles      = args.bundles
-    task_id      = args.task_id
-    firmware     = args.firmware
-    
-    if( bundles != None):
-        bundles = bundles.split(',')
+
+    # INIT VARs
+    task_id     = args.task_id
+    #~ bundle      = args.bundle
+    if args.bundles:
+        bundles     = args.bundles.split(',')
     else:
-        bundles = {}
+        bundles     = []
+    firmware    = args.firmware
+    boot        = args.boot
     
-    monitor_file = config.get('general', 'task_monitor')
-    endpoint     = config.get('updates', 'colibri_endpoint')
-    temp_folder  = config.get('general', 'bigtemp_path')
-    
-    factory.setTaskId(task_id)
-    factory.setPid(os.getpid())
-    factory.setStatus('preparing')
-    
-    appMonitor = None
-    try:
-        appMonitor = MonitorWriter(monitor_file)
-        appUpdate  = Update(task_id, bundles, firmware, temp_folder, config)
-        
-        #threads = [
-        monitorAppThread = threading.Thread(target = appMonitor.run)
-        updateAppThread  = threading.Thread(target = appUpdate.run)
-        #]
-        
-        
-        monitorAppThread.start()
-        updateAppThread.start()
-    
-        #monitorAppThread.loop()          # app.loop() must be started to allow callbacks
-        #updateAppThread.loop()
-        
-        monitorAppThread.join()
-        updateAppThread.join()
-        
-    except pycurl.error, e:
-        
-        factory.setStatus('aborted')
-        factory.setError(True)
-        factory.setMessage(e[1])
-    except Exception as e:
-        print e
-        factory.setStatus('aborted')
-        factory.setError(True)
-        factory.setMessage(str(e))
-        
-    finally:
-        appMonitor.write()
-        factory.update_task_db()
-        
-    
+    app = UpdateApplication()
+
+    app.run(task_id, bundles, firmware, boot)
+    app.loop()
+
 if __name__ == "__main__":
     main()
+

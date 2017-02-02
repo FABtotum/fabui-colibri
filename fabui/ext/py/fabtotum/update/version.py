@@ -19,16 +19,20 @@
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
 
 from StringIO import StringIO as BytesIO
-import pycurl, json
+import pycurl, json, os
 from fabtotum.fabui.config  import ConfigService
-
-config = ConfigService()
 
 class RemoteVersion:
     
-    def __init__(self):
-        self.colibri_endpoint = config.get('updates', 'colibri_endpoint')
-        self.firmware_endpoint = config.get('updates', 'firmware_endpoint')
+    def __init__(self, arch='armhf', mcu='atmega1280', config=None):
+        self.config = config
+        if not config:
+            self.config = ConfigService()
+        
+        self.colibri_endpoint = self.config.get('updates', 'colibri_endpoint')
+        self.firmware_endpoint = self.config.get('updates', 'firmware_endpoint')
+        self.arch = arch
+        self.mcu = mcu
         self.colibri = None
         self.firmware = None
         self.setColibri()
@@ -47,21 +51,32 @@ class RemoteVersion:
         return buffer.getvalue()
         
     def setColibri(self):
-        self.colibri = json.loads(self.getRemoteData(self.colibri_endpoint + 'armhf/version.json'))
+        self.colibri = json.loads(self.getRemoteData("{0}/{1}/version.json".format(self.colibri_endpoint, self.arch)))
         
     def setFirmware(self):
-        self.firmware = json.loads(self.getRemoteData(self.firmware_endpoint + 'fablin/atmega1280/version.json'))
+        self.firmware = json.loads(self.getRemoteData("{0}/fablin/{1}/version.json".format(self.firmware_endpoint, self.mcu)))
     
     def getColibri(self):
         return self.colibri
     
     def getBundles(self):
         return self.colibri['bundles']
+        
+    def getBoot(self):
+        return self.colibri['boot']
+        
+    def getImages(self):
+        return self.colibri['images']
     
     def getFirmware(self):
-        return self.firmware
+        if 'firmware' in self.firmware:
+            return self.firmware['firmware']
+        return {}
     
     def getColibriEndpoint(self):
-        return self.colibri_endpoint
+        return os.path.join(self.colibri_endpoint, self.arch)
+        
+    def getFirmwareEndpoint(self):
+        return os.path.join(self.firmware_endpoint, 'fablin', self.mcu)
         
         

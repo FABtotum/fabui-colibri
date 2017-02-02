@@ -43,6 +43,9 @@ class GCodeServiceServerPyroWrapper(object):
     
     def terminate(self):
         self.gcs.abort()
+    
+    def finish(self):
+        self.gcs.finish()
         
     def abort(self):
         self.gcs.abort()
@@ -55,6 +58,12 @@ class GCodeServiceServerPyroWrapper(object):
     
     def reset(self):
         self.gcs.reset()
+        
+    def release_serial(self):
+        self.gcs.release_serial()
+        
+    def acquire_serial(self):
+        self.gcs.acquire_serial()
     
     def z_modify(self, value):
         return self.gcs.z_modify(value)

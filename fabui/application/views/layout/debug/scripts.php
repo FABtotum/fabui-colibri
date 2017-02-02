@@ -19,11 +19,14 @@
 <script type="text/javascript" src="/assets/js/plugin/fastclick/fastclick.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script type="text/javascript" src="/assets/js/plugin/noUiSlider.8.2.1/nouislider.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script type="text/javascript" src="/assets/js/plugin/wNumb/wNumb.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/fabwebsocket.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script type="text/javascript" src="/assets/js/plugin/jquery-websocket/jquery.WebSocket.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script type="text/javascript" src="/assets/js/std/raphael.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script type="text/javascript" src="/assets/js/std/modernizr-touch.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script type="text/javascript" src="/assets/js/std/jogcontrols.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script type="text/javascript" src="/assets/js/app.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script type="text/javascript" src="/assets/js/fab.app.js?v=<?php echo FABUI_VERSION ?>"></script>
 <?php if(ENVIRONMENT == 'development'): //only for development purpose ?>
-	<script type="text/javascript" src="/assets/js/demo.min.js?v=<?php echo FABUI_VERSION ?>"></script>
+	<!--script type="text/javascript" src="/assets/js/demo.min.js?v=<?php echo FABUI_VERSION ?>"></script-->
 <?php endif; ?>
 <script type="text/javascript" src="/assets/js/fabtotum.js?v=<?php echo FABUI_VERSION ?>"></script>
 <?php echo $jsScripts; ?>

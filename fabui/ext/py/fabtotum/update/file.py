@@ -18,17 +18,22 @@
 # You should have received a copy of the GNU General Public License
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
+
 class File:
     def __init__(self, file_url):
-        self.name = self.setFileName(file_url)
+        self.name = os.path.basename(file_url)
         self.endpoint = file_url
         self.size = 0
         self.progress = 0
         self.status = ''
+        self.local = ''
+    
+    def getLocal(self):
+        return self.local
         
-    def setFileName(self, url):
-        filename = url.split('/')
-        return filename[-1]
+    def setLocal(self, local):
+        self.local = local
     
     def getName(self):
         return self.name

@@ -8,6 +8,7 @@ source /etc/default/fabui
 
 CMD=$1
 HEXFILE=$2
+EXT=${HEXFILE##*.}
 
 # Settings
 AVRDUDE="/usr/bin/avrdude"
@@ -50,6 +51,12 @@ case $CMD in
     update)
         [ "x${HEXFILE}" == "x" ] && usage
         
+        if [ x"$EXT" == x"zip" ]; then
+            unzip -o ${HEXFILE}
+            HEXFILE=$(find -name "*.hex")
+            echo $HEXFILE
+        fi
+        
         log_header "${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i"
         ${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i >> /var/log/fabui/avrdude.log 
         RETR=$?
@@ -75,7 +82,7 @@ case $CMD in
         md5sum -c firmware.zip.md5sum
         RETR="$?"
         if [ "$RETR" == "0" ]; then
-            unzip firmware.zip
+            unzip -o firmware.zip
             HEXFILE=$(find -name "*.hex")
             echo $HEXFILE
             
