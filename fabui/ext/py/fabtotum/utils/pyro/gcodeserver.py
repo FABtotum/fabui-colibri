@@ -59,11 +59,11 @@ class GCodeServiceServerPyroWrapper(object):
     def reset(self):
         self.gcs.reset()
         
-    def release_serial(self):
-        self.gcs.release_serial()
+    def close_serial(self):
+        self.gcs.close_serial()
         
-    def acquire_serial(self):
-        self.gcs.acquire_serial()
+    def open_serial(self):
+        self.gcs.open_serial()
     
     def z_modify(self, value):
         return self.gcs.z_modify(value)

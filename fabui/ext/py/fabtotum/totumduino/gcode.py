@@ -323,6 +323,7 @@ class GCodeService:
         
     def __init__(self, serial_port, serial_baud, serial_timeout = 5, use_checksum = False, logger = None):
         self.running = False
+        self.released = False
         self.is_resetting = False
         self.is_terminating = False
         self.SERIAL_PORT = serial_port
@@ -330,13 +331,13 @@ class GCodeService:
         self.SERIAL_TIMEOUT = serial_timeout
         
         # Serial
-        self.serial = serial.serial_for_url(
-                                serial_port,
-                                baudrate = serial_baud,
-                                timeout = serial_timeout
-                                )
-        self.serial.flushInput()
-        self.buffer = bytearray()
+        #~ self.serial = serial.serial_for_url(
+                                #~ serial_port,
+                                #~ baudrate = serial_baud,
+                                #~ timeout = serial_timeout
+                                #~ )
+        #~ self.serial.flushInput()
+        #~ self.buffer = bytearray()
         
         # Inter-thread communication
         # Must be defined before any thread is created
@@ -602,7 +603,7 @@ class GCodeService:
         
         self.ev_tx_started.set()
         
-        while self.running:
+        while self.running and not self.released:
             
             if self.is_resetting:
                 time.sleep(1)
@@ -881,7 +882,7 @@ class GCodeService:
         self.ev_rx_started.set()
 
         # Run this thread while the service is active        
-        while self.running:
+        while self.running and not self.released:
             
             
             while self.is_resetting:
@@ -994,9 +995,17 @@ class GCodeService:
         Start GCodeService threads.
         """
         
-        self.running = True
-        
+        self.serial = serial.serial_for_url(
+                                self.SERIAL_PORT,
+                                baudrate = self.SERIAL_BAUD,
+                                timeout = self.SERIAL_TIMEOUT
+                                )
         self.serial.flushInput()
+        self.buffer = bytearray()
+        self.__init_state()
+        self.serial.flushInput()
+        
+        self.running = True
         
         # Sender Thread
         self.sender = Thread( name="GCodeService-sender", target = self.__sender_thread )
@@ -1008,6 +1017,8 @@ class GCodeService:
         # Wait for both threads to start before continuing
         self.ev_tx_started.wait()
         self.ev_rx_started.wait()
+        
+        self.log.info("All threads started")
     
     def loop(self):
         """
@@ -1015,19 +1026,42 @@ class GCodeService:
         """
         self.sender.join()
         self.receiver.join()
+    
+    def close_serial(self):
+        self.stop(release_only=True)
         
-    def stop(self, wait_for_reply = False):
+    def open_serial(self):
+        self.released = False
+        self.start()
+        
+        self.atomic_begin('bootstrap')
+        
+        self.__cleanup()
+                
+        time.sleep(5)
+        
+        hardwareBootstrap(self, logger=self.log)
+        
+        self.atomic_end()
+        
+    
+    def stop(self, wait_for_reply = False, release_only=False):
         """
         Stop the service by stopping all running threads.
         """
         self.wait_for_reply = wait_for_reply
-        self.running = False
+        if release_only:
+            self.released = True
+        else:
+            self.running = False
         if hasattr(self.serial, 'cancel_read'):
             self.cancel_read()
         self.cq.put( Command.kill() )
         
         # Wait for both threads to be stopped and then clean up the queues.
+        self.log.info("Witing for sender...")
         self.sender.join()
+        self.log.info("Witing for receiver...")
         self.receiver.join()
         
         # stop() is called from another thread of execution so try to suspend it
@@ -1047,40 +1081,7 @@ class GCodeService:
         if self.is_resetting:
             return
         self.__reset_totumduino()
-    
-    def release_serial(self):
-        if self.is_resetting:
-            return
         
-        self.is_resetting = True    
-        if hasattr(self.serial, 'cancel_read'):
-            self.cancel_read()
-        self.__cleanup()
-        self.serial.close()
-        
-    def acquire_serial(self):
-        if not self.is_resetting:
-            return
-        
-        
-        self.atomic_begin('bootstrap')
-        self.is_resetting = False
-
-        self.serial = serial.serial_for_url(
-                                self.SERIAL_PORT,
-                                baudrate = self.SERIAL_BAUD,
-                                timeout = self.SERIAL_TIMEOUT
-                                )
-        self.serial.flushInput()
-        self.buffer = bytearray()
-        self.__init_state()
-        
-        time.sleep(10)
-        
-        hardwareBootstrap(self, logger=self.log)
-        
-        self.atomic_end()
-    
     def pause(self):
         """
         Pause current file push. In case no file is being pushed this command
@@ -1192,7 +1193,7 @@ class GCodeService:
         """
         Send GCode and return reply.
         """
-        if self.is_resetting:
+        if self.is_resetting or self.released:
             time.sleep(1)
             return None
         
@@ -1217,7 +1218,7 @@ class GCodeService:
                 return None
             
             # Protection #1 in case the service is stopped
-            if not self.running:
+            if not self.running or self.released:
                 return None
             # Last resort protection #2 if service is stopped
             # As this function is called from a separate thread from 'sender'
@@ -1227,12 +1228,12 @@ class GCodeService:
             while not cmd.wait(3):
                 self.log.debug("Waiting (3) for [%s,%s] aborted: %s", code, group, str(cmd.aborted))
                 
-                if self.is_resetting:
+                if self.is_resetting or self.released:
                     cmd.notify(abort=True)
                     time.sleep(1)
                     return None
                 
-                if not self.running:
+                if not self.running or self.released:
                     # Aborting because the service has been stopped
                     self.log.info('Aborting reply due to stop. [%s]', code)
                     return None

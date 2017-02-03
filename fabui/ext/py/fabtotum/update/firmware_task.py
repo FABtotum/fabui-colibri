@@ -50,8 +50,11 @@ class FirmwareTask(SubTask):
 		
 		errorcode = 0
 		success = [0]
+		install_output = ""
 		
-		self.factory.gcs.release_serial()
+		self.factory.gcs.close_serial()
+		
+		#~ time.sleep(2)
 		
 		try:
 			install_output = subprocess.check_output( shlex.split(cmd) )
@@ -59,7 +62,7 @@ class FirmwareTask(SubTask):
 			install_output = e.output
 			errorcode = e.returncode
 		
-		self.factory.gcs.acquire_serial()
+		self.factory.gcs.open_serial()
 		
 		print cmd
 		print install_output

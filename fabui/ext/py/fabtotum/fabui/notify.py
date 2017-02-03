@@ -67,7 +67,8 @@ class NotifyService(object):
     def notify(self, event_type, event_data):
         
         with self.notify_lock:
-            print 'event_type:',event_type, 'event_data:',event_data
+            #~ print 'event_type:',event_type, 'event_data:',event_data
+            print 'event_type:',event_type
             self.__add_event(event_type, event_data)
             self.__send_message(event_type, event_data)
     

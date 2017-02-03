@@ -92,7 +92,7 @@
 		if($bundles)  $updateArgs['-b'] = implode(',', $bundles);
 		if($firmware) $updateArgs['--firmware'] = '';
 		
-		startPyScript('update2.py', $updateArgs, true, true);
+		startPyScript('update.py', $updateArgs, true, true);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
 	}
 	
