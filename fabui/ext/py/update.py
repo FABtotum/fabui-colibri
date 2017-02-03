@@ -111,7 +111,7 @@ class UpdateApplication(GCodePusher):
             remote_firmware = self.factory.getFirmware()
             if remote_firmware:
                 print "+ firmware"
-                firmware = FirmwareTask("firmware", remote_firmware)
+                firmware = FirmwareTask("fablin", remote_firmware)
                 self.factory.addTask(firmware)
         
         if boot_switch:

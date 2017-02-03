@@ -25,7 +25,7 @@ from fabtotum.update.subtask  import SubTask
 
 class BootTask(SubTask):
 	def __init__(self, name, data, factory=None):
-		super(BootTask, self).__init__(name, "boot", factory)
+		super(BootTask, self).__init__(name, "system", factory)
 		
 		self.latest        = data["latest"]
 		self.date_uploaded = data[self.latest]['date-uploaded']

@@ -72,9 +72,9 @@
 		$this->load->model('Tasks', 'tasks');
 		//get data from post
 		$data = $this->input->post();
-		$bundles = $data['bundles'];
+		$bundles = $this->input->post('bundles');
 		$firmware = $data['firmware'];
-		
+		$boot = $data['boot'];
 		
 		//add task record to db
 		$taskData = array(
@@ -90,21 +90,13 @@
 				'-T' => $taskId,
 		);
 		if($bundles)  $updateArgs['-b'] = implode(',', $bundles);
-		if($firmware) $updateArgs['--firmware'] = '';
-		
+		if($firmware == "true") $updateArgs['--firmware'] = '';
+		if($boot == "true") $updateArgs['--boot'] = '';
+
 		startPyScript('update.py', $updateArgs, true, true);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
 	}
-	
-	function test()
-	{
-		//load helpers
-		$this->load->helper('update_helper');
-		//get remote bundles status
-		$bundlesStatus = getUpdateStatus();
-		echo json_encode(getUpdateStatus());
-	}
-			
+
  }
  
 ?>

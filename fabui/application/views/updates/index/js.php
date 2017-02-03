@@ -10,10 +10,8 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		<?php if($runningTask): ?>
-		console.log('resumeTask');
 		resumeTask();
 		<?php else: ?>
-		console.log('checkforUpdates');
 		checkUpdateStatus();
 		<?php endif; ?>
 	});
@@ -86,6 +84,8 @@
 							'</tr>' + 
 						'</thead>' + 
 						'<tbody>';
+
+		console.log("BUNDLES", data.bundles);
 
 		$.each(data.bundles, function(bundle_name, object) {
 			if(object.need_update){
@@ -270,8 +270,6 @@
 		window.manageMonitor = function(data){
 			console.log("=======================");
 			console.log("UPDATE - MANAGEMONITOR");
-			console.log(data.update.tasks);
-			console.log(data.task);
 			handleTask(data);
 			
 		}
@@ -281,33 +279,9 @@
 	**/
 	function handleTask(data)
 	{
-		console.log("UPDATE - HANDLETASK");
-
 		handleUpdate(data.update);
 		handleCurrent(data.update.current);
-		
 		handleTaskStatus(data.task.status);
-		/** TASK STATUS 
-		switch(data.task.status)
-		{
-			case 'preparing':
-				$(".status").html('Connecting to update server...');
-				break;
-			case 'runnning':
-				break;
-			case 'completed':
-				$(".status").html('<i class="fa fa-check"></i> Update completed');
-				$('.fabtotum-icon .badge').addClass('check').find('i').removeClass('fa-spin fa-refresh').addClass('fa-check');
-				$("#do-abort").remove();
-				fabApp.unFreezeMenu();
-				$(".small").html('A reboot is needed to apply new features');
-				if($("#do-reboot").length == 0) $(".button-container").append('<button class="btn btn-default  action-buttons" id="do-reboot"> Reboot now</button>')
-				$('.fabtotum-icon').parent().removeClass().addClass('tada animated');
-				$("#do-reboot").on('click', fabApp.reboot);
-				break;
-		}
-		*/
-
 	}
 	/**
 	*
@@ -332,30 +306,20 @@
 				$("#do-reboot").on('click', fabApp.reboot);
 				break;
 		}
-		
-		console.log("handle task status", status);
+
 	}
 	/**
 	*
 	**/
 	function handleCurrent(current)
 	{
-		console.log('handleCurrent');
-		console.log(current.status);
 		if(current.status != ''){
-			console.log(current.status);
 			switch(current.status){
 				case 'downloading' :
-					if( current.type == 'bundle' )
-						$(".status").html('<i class="fa fa-download"></i> Downloading ' + current.type + ' (' + current.name.capitalize() +')');
-					else
-						$(".status").html('<i class="fa fa-download"></i> Downloading ' + current.name.capitalize() );
+					$(".status").html('<i class="fa fa-download"></i> Downloading ' + current.type + ' (' + current.name.capitalize() +')');
 					break;
 				case 'installing' :
-					if( current.type == 'bundle' )
-						$(".status").html('<i class="fa fa-gear fa-spin"></i> Installing ' + current.type + '  (' + current.name.capitalize() +')');
-					else
-						$(".status").html('<i class="fa fa-gear fa-spin"></i> Installing ' + current.name.capitalize() );
+					$(".status").html('<i class="fa fa-gear fa-spin"></i> Installing ' + current.type + '  (' + current.name.capitalize() +')');
 					break;
 			}
 		}
@@ -395,7 +359,6 @@
 				case 'error':
 					label = '<p><i class="fa fa-times"></i> Error</p>' +
 							'<p>' + task.message.replaceAll('\n', '<br>') + '</p>';
-					console.log(label);
 					break;
 				default:
 					label = task.status;
