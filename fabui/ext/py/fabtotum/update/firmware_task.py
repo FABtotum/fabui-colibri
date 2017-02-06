@@ -54,8 +54,6 @@ class FirmwareTask(SubTask):
 		
 		self.factory.gcs.close_serial()
 		
-		#~ time.sleep(2)
-		
 		try:
 			install_output = subprocess.check_output( shlex.split(cmd) )
 		except subprocess.CalledProcessError as e:
@@ -68,6 +66,12 @@ class FirmwareTask(SubTask):
 		print install_output
 		
 		time.sleep(2)
+		
+		cmd = 'cp ' + self.getFile("gcodes").getLocal() + ' /var/lib/fabui/settings/gcodes.json';
+		try:
+			subprocess.check_output( shlex.split(cmd) )
+		except subprocess.CalledProcessError as e:
+			pass
 		
 		if errorcode in success:
 			print "Firmware installed"

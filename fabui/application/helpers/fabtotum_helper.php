@@ -173,7 +173,7 @@ if(!function_exists('getInstalledHeadInfo'))
 		$_data = loadSettings();
 		$settings_type = $_data['settings_type'];
 		if (isset($_data['settings_type']) && $_data['settings_type'] == 'custom') {
-			$_data = loadSettings( $_data['settings_type'] );
+			$_data = loadSettings( "custom" );
 		}
 		$head_filename =  $heads_dir .'/'. $_data['hardware']['head'] . '.json';
 		return json_decode(file_get_contents($head_filename), true);
@@ -192,11 +192,7 @@ if(!function_exists('canHeadSupport'))
 		
 		if(isset($data['capabilities']))
 		{
-			foreach($data['capabilities'] as $_feature)
-			{
-				if($feature == $_feature)
-					return true;
-			}
+			return in_array($feature, $data['capabilities']);
 		}
 		
 		return false;
@@ -232,6 +228,19 @@ if(!function_exists('isBedinPlace'))
 			}
 		}
 		return false;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('canFeederBeEngaged'))
+{
+	function canFeederBeEngaged()
+	{
+		$_data = loadSettings();
+		$settings_type = $_data['settings_type'];
+		if (isset($_data['settings_type']) && $_data['settings_type'] == 'custom') {
+			$_data = loadSettings( "custom" );
+		}
+		return $_data['feeder']['show'];
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

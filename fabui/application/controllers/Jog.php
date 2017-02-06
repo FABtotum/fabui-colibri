@@ -42,8 +42,8 @@
 		$this->addCssFile('/assets/css/std/jogtouch.css');
 		$this->addJsFile('/assets/js/std/jogtouch.js');
 		
-		//~ $this->addJsFile('/assets/js/plugin/knob/jquery.knob.min.js');
-		$this->addJsFile('/assets/js/std/jquery.knob.js');
+		$this->addJsFile('/assets/js/plugin/knob/jquery.knob.min.js');
+		//$this->addJsFile('/assets/js/std/jquery.knob.js');
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
@@ -84,8 +84,19 @@
 	public function test()
 	{
 		$this->load->helper('fabtotum_helper');
-		$info = isBedinPlace();
-		$this->output->set_content_type('application/json')->set_output(json_encode($info));
+		
+		$data = array();
+		
+		$data['bedInPlace'] = isBedinPlace();
+		
+		$data['headPrintSupport'] = canHeadSupport("print");
+		$data['headFanSupport'] = canHeadSupport("fan");
+		$data['headMillSupport'] = canHeadSupport("mill");
+		$data['headLaserSupport'] = canHeadSupport("laser");
+		
+		$data['info'] = getInstalledHeadInfo();
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}	
  }
  

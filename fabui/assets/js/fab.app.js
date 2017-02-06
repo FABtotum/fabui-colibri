@@ -340,7 +340,15 @@ fabApp = (function(app) {
 	 */
 	app.jogMdi = function(value, callback) {
 		console.log(value);
-		return app.serial('manualDataInput', value, callback);
+		
+		var commands = value.split("\n");
+		var fixed = []
+		for(var i=0; i<commands.length; i++)
+		{
+			fixed.push( commands[i].split(";")[0] );
+		}
+		
+		return app.serial('manualDataInput', fixed.join("\n"), callback);
 	};
 	/*
 	 * 

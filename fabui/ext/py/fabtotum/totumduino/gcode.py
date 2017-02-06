@@ -1078,7 +1078,7 @@ class GCodeService:
         """
         Force Totumduino hardware reset.
         """
-        if self.is_resetting:
+        if self.is_resetting or self.released:
             return
         self.__reset_totumduino()
         
@@ -1087,7 +1087,7 @@ class GCodeService:
         Pause current file push. In case no file is being pushed this command
         has no effect.
         """
-        if self.is_resetting:
+        if self.is_resetting or self.released:
             return
             
         self.cq.put( Command.pause() )
@@ -1097,7 +1097,7 @@ class GCodeService:
         Resume current file push. In case no file is being pushed this command
         has no effect.
         """
-        if self.is_resetting:
+        if self.is_resetting or self.released:
             return
         
         self.cq.put( Command.resume() )
@@ -1107,7 +1107,7 @@ class GCodeService:
         Abort current file push. In case no file is being pushed this command
         has no effect.
         """
-        if self.is_resetting:
+        if self.is_resetting or self.released:
             return
         
         self.cq.put( Command.abort() )
@@ -1116,7 +1116,7 @@ class GCodeService:
         """
         Send finish request.
         """
-        if self.is_resetting:
+        if self.is_resetting or self.released:
             return
         
         self.cq.put( Command.finish() )
@@ -1126,7 +1126,7 @@ class GCodeService:
         Terminated current file push and it's parent script. In case no file is being pushed this command
         has no effect.
         """
-        if self.is_resetting:
+        if self.is_resetting or self.released:
             return
         
         if not self.is_terminating:
@@ -1137,7 +1137,7 @@ class GCodeService:
         """
         Modify the Z axis by amount z
         """
-        if self.is_resetting:
+        if self.is_resetting or self.released:
             return
         
         self.cq.put( Command.zmodify(z) )
@@ -1264,7 +1264,7 @@ class GCodeService:
         
         :rtype: bool
         """
-        if self.is_resetting:
+        if self.is_resetting or self.released:
             return False
         
         if self.running:
