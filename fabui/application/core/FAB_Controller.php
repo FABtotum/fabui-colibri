@@ -164,7 +164,7 @@
 		$this->template['scripts'] = $this->load-> view($this->layoutDebug.'/scripts', $data, true);
 		$this->template['footer']  = $this->load->view($this->layoutDebug.'/footer', $data, true);
 		$this->template['content'] = $this->content;
-		$this->parser->parse($this->layoutLock.'/structure', $this->template);
+		$this->parser->parse($this->layoutDebug.'/structure', $this->template);
 	}
 	
 	/**
