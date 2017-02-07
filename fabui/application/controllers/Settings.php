@@ -21,23 +21,26 @@ class Settings extends FAB_Controller {
 		$this->load->helper('form');
 		$this->config->load('fabtotum');
 		//load settings (default or customs)
-		if(!file_exists($this->config->item('default_settings'))){ // if default settings file doesn't exits, create it
+		if(!file_exists($this->config->item('settings'))){ // if default settings file doesn't exits, create it
 			createDefaultSettings();
  		}
+ 		/*
 		if(!file_exists($this->config->item('custom_settings'))){
 			copy($this->config->item('default_settings'), $this->config->item('custom_settings'));
-		}
-		$data['defaultSettings'] = json_decode(file_get_contents($this->config->item('default_settings')), true);
-		
+		}*/
+		$data['defaultSettings'] = json_decode(file_get_contents($this->config->item('settings')), true);
+		/*
 		if($data['defaultSettings']['settings_type'] == 'custom')
 		{
 			$data['defaultSettings']  = json_decode(file_get_contents($this->config->item('custom_settings')), true);
 			$data['defaultSettings']['settings_type'] = 'custom';
 		}
+		*/
+		/*$data['customSettings']  = json_decode(file_get_contents($this->config->item('custom_settings')), true); */
 		
-		$data['customSettings']  = json_decode(file_get_contents($this->config->item('custom_settings')), true);
 		$data['yesNoOptions'] = array('1' => 'Yes', '0' => 'No');
 		$data['customizeActionsOptions'] = array('none' => 'None', 'shutdown' => 'Shutdown');
+		$data['printCalibrationPreferenceOptions'] = array('homing' => 'Simple Homing', 'auto_bed_leveling' => 'Auto Bed Leveling');
 		//main page widget
 		$widgetOptions = array(
 			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
@@ -66,15 +69,18 @@ class Settings extends FAB_Controller {
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
-
+	
+	/**
+	 * set ambient color
+	 */
 	public function setColor()
 	{
 		$postData = $this->input->post();
 		$this->load->helpers('fabtotum_helper');
 		
-		$red = $postData['red'];
+		$red   = $postData['red'];
 		$green = $postData['green'];
-		$blue = $postData['blue'];
+		$blue  = $postData['blue'];
 		
 		$result = doMacro('set_ambient_color', '', array($red, $green, $blue));
 		
@@ -93,20 +99,23 @@ class Settings extends FAB_Controller {
 		$this->load->helpers('fabtotum_helper');
 		//create settings array
 		$settingsToSave = arrayFromPost($postData);
+		
 		if($postData['settings_type'] == 'default'){ //don't override those vaules for default settings
 			unset($settingsToSave['e']);
 			unset($settingsToSave['a']);
 			unset($settingsToSave['feeder']); 
-			unset($settingsToSave['invert_x_endstop_logic']);
+			unset($settingsToSave['custom-invert_x_endstop_logic']);
 		}
 		//load settings
-		$loadedSettings = loadSettings($postData['settings_type']);
+		$loadedSettings = loadSettings();
 		$newSettings = array_replace ($loadedSettings, $settingsToSave);
-		saveSettings($newSettings, $postData['settings_type']);
+		saveSettings($newSettings);
+		/*
 		if($postData['settings_type'] == 'custom'){
 			$defaultSettings = loadSettings('default');
 			saveSettings(array_replace($defaultSettings, array('settings_type' => 'custom')), 'default');
-		}
+		}*/
+		
 		//update settings on session
 		$this->session->settings = $newSettings;
 		//reload configuration settings

@@ -27,30 +27,21 @@
 					<section class="col col-6">
 						<label class="label">Engage/Disengage Feeder option</label>
 						<label class="select">
-							<?php echo form_dropdown('feeder-show', $yesNoOptions, $customSettings['feeder']['show'], 'id="feeder-show"'); ?> <i></i>
+							<?php echo form_dropdown('feeder-show', $yesNoOptions, $defaultSettings['feeder']['show'], 'id="feeder-show"'); ?> <i></i>
 						</label>
 					</section>
 					<section class="col col-6">
 						<label class="label">Invert X Endstop Logic</label>
 						<label class="select">
-							<?php echo form_dropdown('invert_x_endstop_logic', $yesNoOptions, $customSettings['invert_x_endstop_logic'], 'id="invert_x_endstop_logic"'); ?> <i></i>
+							<?php echo form_dropdown('custom-invert_x_endstop_logic', $yesNoOptions, $defaultSettings['custom']['invert_x_endstop_logic'], 'id="custom-invert_x_endstop_logic"'); ?> <i></i>
 						</label>
 					</section>
 				</div>
 				<div class="row">
-				<!-- 
-					<section class="col col-6">
-						<label class="label">Extruder steps per unit <strong>(E mode)</strong></label>
-						<label class="input">
-							<input type="text" id="e" name="e" value="<?php echo $customSettings['e'] ?>">
-							<b class="tooltip tooltip-top-right"><i class="fa fa-refresh txt-color-teal"></i> you must restart the FABtotum to apply these changes</b> </label>
-						</label>
-					</section>
-				 -->
 					<section class="col col-6">
 						<label class="label">Extruder steps per unit <strong>(A mode)</strong></label>
 						<label class="input">
-							<input type="text" id="a" name="a" value="<?php echo $customSettings['a'] ?>">
+							<input type="text" id="a" name="a" value="<?php echo $defaultSettings['a'] ?>">
 							<b class="tooltip tooltip-top-right"><i class="fa fa-refresh txt-color-teal"></i> you must restart the FABtotum to apply these changes</b> </label>
 						</label>
 					</section>
@@ -65,7 +56,7 @@
 				<section>
 					<label class="label">Custom overrides</label>
 					<label class="textarea">
-						<textarea id="custom_overrides" rows="5"></textarea>
+						<textarea id="custom-overrides" name="cutom-overrides" rows="5"><?php echo $defaultSettings['custom']['overrides']; ?></textarea>
 					</label>
 				</section>
 			</fieldset>
@@ -177,6 +168,14 @@
 						<label class="label">Pre-heating Bed temperature</label>
 						<label class="input">
 							<input type="number" id="print-pre_heating-bed" name="print-pre_heating-bed" value="<?php echo $defaultSettings['print']['pre_heating']['bed'] ?>">
+						</label>
+					</section>
+				</div>
+				<div class="row">
+					<section class="col col-6">
+						<label class="label">Calibration preference</label>
+						<label class="select">
+							<?php echo form_dropdown('print-calibration', $printCalibrationPreferenceOptions, $defaultSettings['print']['calibration'], 'id="print-calibration"'); ?> <i></i>
 						</label>
 					</section>
 				</div>

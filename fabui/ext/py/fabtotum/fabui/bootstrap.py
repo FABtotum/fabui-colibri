@@ -90,13 +90,12 @@ def customHardware(gcodeSender, config, log):
     """
     Revision for customs edits
     """
-    custom_overrides_file = config.get('settings', 'custom_overrides')
-    if custom_overrides_file:
-        with open(custom_overrides_file, 'r') as f:
-            for line in f:
-                gcodeSender.send(line.strip())
+    custom_overrides = config.get('settings', 'custom.overrides')
+    if custom_overrides:
+        for line in custom_overrides:
+            gcodeSender.send(line.strip())
     
-    logic = 1 if int(config.get('settings', 'invert_x_endstop_logic')) else 0
+    logic = 1 if int(config.get('settings', 'custom.invert_x_endstop_logic')) else 0
 
     #set x endstop logic
     gcodeSender.send("M747 X{0}".format(logic), group='bootstrap')

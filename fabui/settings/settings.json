@@ -1,0 +1,47 @@
+{
+  "color": {
+    "r": 255,
+    "g": 255,
+    "b": 255
+  },
+  "safety": {
+    "door": 0,
+    "collision_warning": 1
+  },
+  "switch": 0,
+  "feeder": {
+    "disengage_offset": 2,
+    "show": true
+  },
+  "milling": {
+    "layer_offset": 12
+  },
+  "a": 177.777778,
+  "customized_actions": {
+    "bothy": "none",
+    "bothz": "none"
+  },
+  "api": {
+    "keys": []
+  },
+  "zprobe": {
+    "enable": 0,
+    "zmax": 206
+  },
+  "settings_type": "default",
+  "hardware": {
+    "head": "hybrid_head",
+    "camera": "camera_v1"
+  },
+  "print": {
+    "calibration": "homing",
+    "pre_heating": {
+      "nozzle": 150,
+      "bed": 50
+    }
+  },
+  "custom": {
+    "overrides": "'/var/lib/fabui/settings/custom_overrides.txt'",
+    "invert_x_endstop_logic": false
+  }
+}

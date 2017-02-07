@@ -94,8 +94,8 @@ NOTIFY_FILE         = config.get('general', 'notify_file')
 SOCKET_HOST         = config.get('socket', 'host')
 SOCKET_PORT         = config.get('socket', 'port')
 ##################################################################
-HW_DEFAULT_SETTINGS = config.get('hardware', 'default_settings')
-HW_CUSTOM_SETTINGS  = config.get('hardware', 'custom_settings')
+HW_DEFAULT_SETTINGS = config.get('hardware', 'settings')
+#HW_CUSTOM_SETTINGS  = config.get('hardware', 'custom_settings')
 ##################################################################
 USB_DISK_FOLDER     = config.get('usb', 'usb_disk_folder')
 USB_FILE            = config.get('usb', 'usb_file')

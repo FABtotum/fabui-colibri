@@ -55,10 +55,10 @@ class ConfigMonitor(PatternMatchingEventHandler):
         self.gcs = gcs
         self.log = logger
         self.config = config
-        self.HW_DEFAULT_SETTINGS = self.config.get('hardware', 'default_settings')
-        self.HW_CUSTOM_SETTINGS  = self.config.get('hardware', 'custom_settings')
+        self.HW_DEFAULT_SETTINGS = self.config.get('hardware', 'settings')
+        #self.HW_CUSTOM_SETTINGS  = self.config.get('hardware', 'custom_settings')
         
-        self.patterns = [CONFIG_INI, SERIAL_INI, self.HW_DEFAULT_SETTINGS, self.HW_CUSTOM_SETTINGS]
+        self.patterns = [CONFIG_INI, SERIAL_INI, self.HW_DEFAULT_SETTINGS]
         self.ignore_directories = None
         self._ignore_patterns = None
         self.case_sensitive = None
@@ -71,13 +71,12 @@ class ConfigMonitor(PatternMatchingEventHandler):
         if (  event.src_path == CONFIG_INI 
            or event.src_path == SERIAL_INI
            or event.src_path == self.HW_DEFAULT_SETTINGS
-           or event.src_path == self.HW_CUSTOM_SETTINGS
            ):
 
-            self.HW_DEFAULT_SETTINGS = self.config.get('hardware', 'default_settings')
-            self.HW_CUSTOM_SETTINGS  = self.config.get('hardware', 'custom_settings')
+            self.HW_DEFAULT_SETTINGS = self.config.get('hardware', 'settings')
+            #self.HW_CUSTOM_SETTINGS  = self.config.get('hardware', 'custom_settings')
             
-            self.patterns = [CONFIG_INI, SERIAL_INI, self.HW_DEFAULT_SETTINGS, self.HW_CUSTOM_SETTINGS]
+            self.patterns = [CONFIG_INI, SERIAL_INI, self.HW_DEFAULT_SETTINGS]
             
             self.log.debug('Reloading config files')
             self.config.reload()

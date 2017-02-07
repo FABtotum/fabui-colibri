@@ -21,23 +21,25 @@ if ( !function_exists('createDefaultSettings'))
 		$CI->load->helper('file');
 		$CI->config->load('fabtotum');
 		
-		$dafault_settings = array(
+		$settings = array(
 			'color'         	 => array('r'=>255, 'g'=>255, 'b'=>255),
 			'safety'        	 => array('door'=>1, 'collision_warning'=>1),
 			'switch'        	 => 0,
 			'feeder'        	 => array('disengage_offset'=> 2, 'show' => true),
 			'milling'       	 => array('layer_offset' => 12),
-			'e'             	 => 3048.1593,
 			'a'             	 => 177.777778,
 			'customized_actions' => array('bothy' => 'none', 'bothz' => 'none'),
 			'api'                => array('keys' => array()),
 			'zprobe'        	 => array('enable'=>0, 'zmax'=>206),
 			'settings_type' 	 => 'default',
 			'hardware'     	 	 => array('head' => $CI->config->item('heads').'/print_v2.json', 'camera' => $CI->config->item('cameras').'/camera_v1.json'),
-			'print'         	 => array('pre_heating' => array('nozzle' => 150, 'bed'=>50)),
-			'invert_x_endstop_logic' => false
+			'print'         	 => array('pre_heating' => array('nozzle' => 150, 'bed'=>50), 'calibration' => 'homing'),
+			'custom'             => array(
+				'overrides' => '',
+				'invert_x_endstop_logic' =>false
+			)
 		);
-		write_file($CI->config->item('default_settings'), json_encode($dafault_settings));
+		write_file($CI->config->item('settings'), json_encode($settings));
 	}	
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,12 +52,12 @@ if(!function_exists('loadSettings'))
 	 *  @return settings configuration
 	 * 
 	 */
-	function loadSettings($type = 'default')
+	function loadSettings()
 	{
 		$CI =& get_instance();
 		$CI->load->helper('file');
 		$CI->config->load('fabtotum');
-		$settings = json_decode(file_get_contents($CI->config->item($type.'_settings')), true);
+		$settings = json_decode(file_get_contents($CI->config->item('settings')), true);
 		return $settings;
 	}
 }
@@ -89,13 +91,12 @@ if(!function_exists('saveSettings'))
 	 * 
 	 * 
 	 */
-	function saveSettings($data, $type = 'default')
+	function saveSettings($data)
 	{
 		$CI =& get_instance();
 		$CI->load->helper('file');
 		$CI->config->load('fabtotum');
-		
-		return write_file($CI->config->item($type.'_settings'), json_encode($data));
+		return write_file($CI->config->item('settings'), json_encode($data));
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -172,10 +173,8 @@ if(!function_exists('getInstalledHeadInfo'))
 		
 		$_data = loadSettings();
 		$settings_type = $_data['settings_type'];
-		if (isset($_data['settings_type']) && $_data['settings_type'] == 'custom') {
-			$_data = loadSettings( "custom" );
-		}
-		$head_filename =  $heads_dir .'/'. $_data['hardware']['head'] . '.json';
+		
+		$head_filename =   $_data['hardware']['head'] ;
 		return json_decode(file_get_contents($head_filename), true);
 	}
 }

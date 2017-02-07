@@ -1,6 +1,5 @@
 [hardware]
-default_settings = @LIB_PATH@settings/default_settings.json
-custom_settings = @LIB_PATH@settings/custom_settings.json
+settings = @LIB_PATH@settings/settings.json
 heads = @LIB_PATH@heads
 cameras = @LIB_PATH@cameras
 

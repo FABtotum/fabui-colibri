@@ -48,15 +48,15 @@ class ConfigService:
         self.serialconfig = ConfigParser.ConfigParser()
         self.serialconfig.read(SERIAL_INI)
         
-        self.HW_DEFAULT_SETTINGS = self.config.get('hardware', 'default_settings')
-        self.HW_CUSTOM_SETTINGS  = self.config.get('hardware', 'custom_settings')
+        self.HW_DEFAULT_SETTINGS = self.config.get('hardware', 'settings')
+        #self.HW_CUSTOM_SETTINGS  = self.config.get('hardware', 'custom_settings')
         
         json_f = open(self.HW_DEFAULT_SETTINGS)
         self.settings = json.load(json_f)
         
-        if 'settings_type' in self.settings and self.settings['settings_type'] == 'custom':
-            json_f = open(self.HW_CUSTOM_SETTINGS)
-            self.settings = json.load(json_f)
+        #if 'settings_type' in self.settings and self.settings['settings_type'] == 'custom':
+        #    json_f = open(self.HW_CUSTOM_SETTINGS)
+        #    self.settings = json.load(json_f)
             
         self.reload_callback = []
     
@@ -73,21 +73,26 @@ class ConfigService:
         self.config.read(CONFIG_INI)
         self.serialconfig.read(SERIAL_INI)
 
-        self.HW_DEFAULT_SETTINGS = self.config.get('hardware', 'default_settings')
-        self.HW_CUSTOM_SETTINGS  = self.config.get('hardware', 'custom_settings')
+        self.HW_DEFAULT_SETTINGS = self.config.get('hardware', 'settings')
+        #self.HW_CUSTOM_SETTINGS  = self.config.get('hardware', 'custom_settings')
         
         json_f = open(self.HW_DEFAULT_SETTINGS)
         self.settings = json.load(json_f)
         
-        if 'settings_type' in self.settings and self.settings['settings_type'] == 'custom':
-            json_f = open(self.HW_CUSTOM_SETTINGS)
-            self.settings = json.load(json_f)
+        #if 'settings_type' in self.settings and self.settings['settings_type'] == 'custom':
+        #    json_f = open(self.HW_CUSTOM_SETTINGS)
+        #    self.settings = json.load(json_f)
         
         for cb in self.reload_callback:
             cb()
     
     def save(self, section):
         if section == 'settings':
+            
+            with open(self.HW_DEFAULT_SETTINGS, 'w') as outfile:
+                json.dump(self.settings, outfile, sort_keys=True, indent=4)
+            return True
+            '''
             if 'settings_type' in self.settings and self.settings['settings_type'] == 'custom':
                 with open(self.HW_CUSTOM_SETTINGS, 'w') as outfile:
                     json.dump(self.settings, outfile, sort_keys=True, indent=4)
@@ -95,7 +100,7 @@ class ConfigService:
                 with open(self.HW_DEFAULT_SETTINGS, 'w') as outfile:
                     json.dump(self.settings, outfile, sort_keys=True, indent=4)                
             return True
-            
+            '''
         return False
     
     def __get_dict_value(self, data, key, default = None):
