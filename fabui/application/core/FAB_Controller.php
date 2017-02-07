@@ -16,6 +16,7 @@
 	protected $layoutInstall       = 'layout/install';
 	protected $layoutRestore       = 'layout/restore';
 	protected $layoutDebug         = 'layout/debug';
+	protected $layoutLock          = 'layout/lock';
 	protected $template            = array();
 	protected $content             = ''; //
 	protected $js                  = array();  //js scripts
@@ -158,12 +159,30 @@
 		$data['cssFiles']  = cssFilesInclusion($this->css);
 		$data['jsInLine']  = $this->jsInLine;
 		$data['cssInLine'] = $this->cssInline;
-		$this->template['head'] = $this->load-> view($this->layoutDebug.'/head', $data, true);
+		$this->template['head']     = $this->load-> view($this->layoutDebug.'/head', $data, true);
 		$this->template['top']     = $this->load-> view($this->layoutDebug.'/top', $data, true);
 		$this->template['scripts'] = $this->load-> view($this->layoutDebug.'/scripts', $data, true);
 		$this->template['footer']  = $this->load->view($this->layoutDebug.'/footer', $data, true);
 		$this->template['content'] = $this->content;
-		$this->parser->parse($this->layoutDebug.'/structure', $this->template);
+		$this->parser->parse($this->layoutLock.'/structure', $this->template);
+	}
+	
+	/**
+	 * 
+	 */
+	public function lockLayout()
+	{
+		$data = array();
+		$data['jsScripts'] = jScriptsInclusion($this->js);
+		$data['cssFiles']  = cssFilesInclusion($this->css);
+		$data['jsInLine']  = $this->jsInLine;
+		$data['cssInLine'] = $this->cssInline;
+		$this->template['head'] = $this->load-> view($this->layoutLock.'/head', $data, true);
+		$this->template['top']     = $this->load-> view($this->layoutLock.'/top', $data, true);
+		$this->template['scripts'] = $this->load-> view($this->layoutLock.'/scripts', $data, true);
+		$this->template['footer']  = $this->load->view($this->layoutLock.'/footer', $data, true);
+		$this->template['content'] = $this->content;
+		$this->parser->parse($this->layoutLock.'/structure', $this->template);
 	}
 	
 	/*

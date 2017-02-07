@@ -10,13 +10,9 @@
 <!DOCTYPE html>
 <html lang="it">
 	<head>{head}</head>
-	<body class="fixed-page-footer">
-		{top}
-		{sidebar}
+	<body>
 		<div id="main" role="main">
-			{ribbon}
-			<div id="content">{content}</div>
-			<form id="lock-screen-form" action="<?php echo site_url('lock') ?>" method="POST"> </form>
+			{content}
 		</div>
 		{footer}
 		{scripts}

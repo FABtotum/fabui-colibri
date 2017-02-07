@@ -151,7 +151,7 @@ fabApp = (function(app) {
 		
 		});
 		
-		$(".lock-ribbon").click(function() {
+		$("#lock").click(function() {
 			app.lockScreen();
 		});
 		
@@ -509,7 +509,10 @@ fabApp = (function(app) {
 	 */
 	app.lockScreen = function(){
 		$.root_.addClass('animated fadeOutUp');
-		$("#lock-screen-form").submit();
+		setTimeout(function(){
+			$("#lock-screen-form").submit();
+		}, 1000);
+		
 	};
 	/*
 	 * check if there are updates avaialabe 
