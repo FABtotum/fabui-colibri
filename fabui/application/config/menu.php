@@ -144,7 +144,7 @@ $config['menu'] = array(
 			),
 			'raspicam' => array(
 				'title' => 'Raspicam',
-				'icon' => '',
+				'icon' => 'fa-video-camera',
 				'url' => 'settings/cam'
 			)
 		)
