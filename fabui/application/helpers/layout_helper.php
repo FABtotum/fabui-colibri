@@ -162,7 +162,7 @@ if(!function_exists('displayBlogFeedItem'))
 				<div class="who clearfix">
 					<img src="{$feed['img_src']}" />
 					<span class="name font-sm">
-						<a href="#">{$feed['title']}</a>
+						<a target="_blank" href="{$feed['link']}">{$feed['title']}</a>
 						<br>
 						<span class="text-muted">{$feed['date']}</span>
 					</span>
