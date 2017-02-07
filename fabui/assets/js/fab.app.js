@@ -1098,6 +1098,31 @@ fabApp = (function(app) {
 		
 		
 	}
+	/**
+	* get hardware settings
+	**/
+	app.getSettings = function() {
+		$.get(control_url + '/getSettings', function(data, status){
+			app.analizeMenu(data.feeder.show);
+		});
+	}
+	/**
+	* analize menu to check if something must be hided
+	**/
+	app.analizeMenu = function (show_feeder)
+	{
+		var item_to_hide = ['maintenance/feeder-engage', 'maintenance/4th-axis'];
+		var a = $("nav li > a");
+		a.each(function() {
+			var link = $(this);
+			var href = link.attr('data-href');
+			if(jQuery.inArray( href, item_to_hide ) >= 0 && show_feeder == false){
+				link.parent().addClass('hidden');
+			}else{
+				link.parent().removeClass('hidden');
+			}
+		});
+	}
 	return app;
 })({});
 

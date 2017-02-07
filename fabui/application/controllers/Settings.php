@@ -110,17 +110,12 @@ class Settings extends FAB_Controller {
 		$loadedSettings = loadSettings();
 		$newSettings = array_replace ($loadedSettings, $settingsToSave);
 		saveSettings($newSettings);
-		/*
-		if($postData['settings_type'] == 'custom'){
-			$defaultSettings = loadSettings('default');
-			saveSettings(array_replace($defaultSettings, array('settings_type' => 'custom')), 'default');
-		}*/
 		
 		//update settings on session
 		$this->session->settings = $newSettings;
 		//reload configuration settings
 		resetController();
-		$this->output->set_content_type('application/json')->set_output(true);
+		$this->output->set_content_type('application/json')->set_output(json_encode(loadSettings()));
 	}
 	
 	/**

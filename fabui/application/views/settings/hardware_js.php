@@ -137,6 +137,7 @@
 		}).done(function(response) {
 			button.html('<i class="fa fa-save"></i> Save');
 			button.removeClass('disabled');
+			fabApp.analizeMenu(response.feeder.show);
 
 			$.smallBox({
 				title : "Settings",

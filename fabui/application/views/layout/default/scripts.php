@@ -37,6 +37,7 @@
 		fabApp.FabActions();
 		fabApp.domReadyMisc();
 		fabApp.getState();
+		fabApp.getSettings();
 		//start intervals
 		temperatures_interval = setInterval(fabApp.getTemperatures, temperatures_interval_timer);
 	});

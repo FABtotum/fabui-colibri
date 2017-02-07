@@ -365,6 +365,10 @@
     *display: inline;
 }
 
+.jog-btn {
+	cursor:pointer !important;
+}
+
 .top-ajax-jog-dropdown .jog-btn {
 	fill: white;
 	stroke: #d1d1d1;

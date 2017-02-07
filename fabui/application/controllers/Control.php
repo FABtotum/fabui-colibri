@@ -202,6 +202,15 @@
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
+	/**
+	 * get settings
+	 */
+	public function getSettings()
+	{
+		$this->load->helpers('fabtotum_helper');
+		$settings = loadSettings();
+		$this->output->set_content_type('application/json')->set_output(json_encode($settings));
+	}
 	
  }
  
