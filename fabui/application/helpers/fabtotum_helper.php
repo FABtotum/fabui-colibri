@@ -32,7 +32,7 @@ if ( !function_exists('createDefaultSettings'))
 			'api'                => array('keys' => array()),
 			'zprobe'        	 => array('enable'=>0, 'zmax'=>206),
 			'settings_type' 	 => 'default',
-			'hardware'     	 	 => array('head' => $CI->config->item('heads').'/print_v2.json', 'camera' => $CI->config->item('cameras').'/camera_v1.json'),
+			'hardware'     	 	 => array('head' => 'print_v2', 'camera' => 'camera_v1'),
 			'print'         	 => array('pre_heating' => array('nozzle' => 150, 'bed'=>50), 'calibration' => 'homing'),
 			'custom'             => array(
 				'overrides' => '',
@@ -174,7 +174,7 @@ if(!function_exists('getInstalledHeadInfo'))
 		$_data = loadSettings();
 		$settings_type = $_data['settings_type'];
 		
-		$head_filename =   $_data['hardware']['head'] ;
+		$head_filename =  $heads_dir .'/'. $_data['hardware']['head'] . '.json';
 		return json_decode(file_get_contents($head_filename), true);
 	}
 }

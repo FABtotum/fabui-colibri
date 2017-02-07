@@ -34,9 +34,7 @@ class Head extends FAB_Controller {
 		$data = array();
 
 		$_units = loadSettings();
-		if (isset($_units['settings_type']) && $_units['settings_type'] == 'custom') {
-			$_units = loadSettings( $_units['settings_type'] );
-		}
+		
 		
 		$heads  = loadHeads();
 		
