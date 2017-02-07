@@ -267,11 +267,12 @@ if(!function_exists('downloadRemoteFile'))
 	/**
 	 * download remote file 
 	 */
-	function downloadRemoteFile($remoteUrl, $path)
+	function downloadRemoteFile($remoteUrl, $path, $timeout=3)
 	{
 		$curl = curl_init($remoteUrl);
-		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 3);
+		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $timeout);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
 		$downloadedFile = curl_exec($curl); //make call
 		$info = curl_getinfo($curl);
 		if(isset($info['http_code']) && $info['http_code'] == 200){ //if response is OK
@@ -371,7 +372,9 @@ if(!function_exists('downloadBlogFeeds'))
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		
-		if(downloadRemoteFile(str_replace('%3D', '=', $CI->config->item('blog_feed_url')), $CI->config->item('blog_feed_file'))){
+		$xmlEndPoint = $CI->config->item('blog_feed_url').'?cat='.$CI->config->item('blog_post_categories');
+		
+		if(downloadRemoteFile($xmlEndPoint, $CI->config->item('blog_feed_file'), 5)){
 			log_message('debug', 'Blog feeds updated');
 			return true;
 		}else{

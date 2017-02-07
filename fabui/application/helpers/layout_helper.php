@@ -193,6 +193,7 @@ if(!function_exists('displayTwitterFeedItem'))
 		$images    = '';
 		$retweet   = '';
 		$favourite = '';
+		$post_url  = 'http://www.twitter.com/statuses/'.$feed['id_str'];
 		if(is_array($feed['place']))
 			$place .= '<br><i class="fa fa-map-marker"></i> '.$feed['place']['full_name'];
 		if(isset($feed['entities']['media'])){
@@ -211,7 +212,8 @@ if(!function_exists('displayTwitterFeedItem'))
 			<div class="panel-body status">
 				<div class="who clearfix">
 					<img src="{$feed['user']['profile_image_url']}" />
-					<span class="name"><b>{$feed['user']['screen_name']}</b><span class="pull-right"><i class="fa fa-twitter"></i></span></span>
+					<span class="name"><b>{$feed['user']['screen_name']}</b>
+					<span class="pull-right"><a href="{$post_url}" target="_blank" title="View on Twitter"><i class="fa fa-twitter"></i></a></span></span>
 					<span class="from">{$date}
 						{$place}
 					</span>
@@ -242,6 +244,7 @@ if(!function_exists('displayInstagramFeedItem'))
 		$location = '';
 		$likes    = '';
 		$comments = '';
+		$post_url = 'http://www.instagram.com/p/'.$feed['code'];
 		if(is_array($feed['likes']))
 			$likes .= '<li class="txt-color-red"><i class="fa fa-heart"></i> ('.$feed['likes']['count'].')</li>';
 		if(is_array($feed['comments']))
@@ -251,6 +254,9 @@ if(!function_exists('displayInstagramFeedItem'))
 				<div class="panel-body status">
 					<div class="who clearfix padding-10">
 						<span class="from">{$date} </span>
+						<span class="pull-right">
+							<a href="{$post_url}" target="_blank" title="View on instagram"><i class="fa fa-instagram"></i></a>
+						</span>
 					</div>
 					<div class="image padding-10"><img src="{$feed['display_src']}" /></div>
 					<div class="text padding-top-0 hidden-xs"><p>{$feed['caption']}</p></div>
