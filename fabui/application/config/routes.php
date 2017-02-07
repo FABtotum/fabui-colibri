@@ -82,6 +82,7 @@ $route['maintenance/4th-axis']                  = 'fourthaxis';
 $route['maintenance/first-setup']               = 'firstsetup';
 $route['maintenance/firmware']                  = 'firmware';
 $route['maintenance/system-info']               = 'systeminfo';
+$route['maintenance/nozzle-height-calibration'] = 'nozzle';
 
 $route['plugin/add'] = 'plugin/add';
 $route['plugin/upload'] = 'plugin/upload';

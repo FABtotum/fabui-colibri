@@ -68,15 +68,21 @@ $config['menu'] = array(
 				'icon' => 'fa-arrows-h',
 				'url' => 'maintenance/bed-calibration'
 			),
+			'nozzle' => array (
+				'title' => 'Nozzle',
+				'icon' => 'fa-thumb-tack',
+				'sub' => array(
+					'height' => array(
+						'title' => 'Height Calibration',
+						'icon' => 'fa-arrows-v',
+						'url' => 'maintenance/nozzle-height-calibration'
+					)
+				)
+			),
 			'probecalibration' => array(
 				'title' => 'Probe Calibration',
 				'icon' => 'fa-level-down',
 				'sub'  => array(
-					'length' => array(
-						'title' => 'Length Calibration',
-						'icon' => 'fa-arrows-v',
-						'url' => 'maintenance/probe-length-calibration'
-					),
 					'angle' => array(
 						'title' => 'Angle Calibration',
 						'icon' => 'fa-angle-left',
