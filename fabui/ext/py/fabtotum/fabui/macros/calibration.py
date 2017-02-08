@@ -27,6 +27,9 @@ import os
 import json
 import gettext
 
+from fabtotum.fabui.macros.common import getPosition
+from fabtotum.fabui.macros.common import doG30
+
 # Import external modules
 
 # Import internal modules
@@ -42,21 +45,47 @@ def probe_setup_prepare(app, args = None):
     #~ app.trace( _("This may take a wile") )
     app.macro("M104 S200",          "ok", 90,   _("Heating Extruder") )
     app.macro("M140 S45",           "ok", 90,   _("Heating Bed (fast)") )
-    app.macro("G28",                "ok", 100,  _("Homing all axes") )
-    app.macro("G91",                "ok", 2,    _("Relative mode"), verbose=False)
-    app.macro("G0 X17 Y61.5 F6000", "ok", 2,    _("Offset"), verbose=False)
     app.macro("G90",                "ok", 2,    _("Setting rel position"), verbose=False)
-    app.macro("G0 Z5 F1000",        "ok", 2,    _("Moving to calibration position") )
+    app.macro("G27",                "ok", 100,  _("Homing all axes") )
+    app.macro("G0 Z50 F10000",      "ok", 100,    _("G0 Z50 F10000"), verbose=False)
+    app.macro("G28",                "ok", 100,  _("Homing all axes") )
+    app.macro("G90",                "ok", 2,    _("Setting rel position"), verbose=False)
+    app.macro("G0 X86 Y58 Z50 F10000",                "ok", 2,    _("Setting rel position"), verbose=False)
+    app.macro("G91",                "ok", 2,    _("Relative mode"), verbose=False)
+    app.macro("G0 X17 Y61.5 F6000", "ok", 100,    _("Offset"), verbose=False)
+    app.macro("G90",                "ok", 2,    _("Setting rel position"), verbose=False)
+    app.macro("G0 Z5 F1000",        "ok", 100,    _("Moving to calibration position") )
     app.macro("G91",                "ok", 2,    _("Setting abs position"), verbose=False)
-    app.macro("M109",               None, 300,  _("Witing for extruder temperature"), warning=False)
+    #app.macro("M109",               None, 300,  _("Witing for extruder temperature"), warning=False) 
     
 def probe_setup_calibrate(app, args = None):
     
-    app.trace( _("Calibrating probe") )
-    app.macro("M104 S0",    "ok", 90,   _("Extruder heating off") )
-    app.macro("M140 S0",    "ok", 90,   _("Bed heating off") )
+    
+    app.macro("M104 S0",    "ok", 2,   _("Extruder heating off") )
+    app.macro("M140 S0",    "ok", 2,   _("Bed heating off") )
+    
+    app.trace( _("Calculating Z Max Height") )
+    
+    app.macro("G90",    "ok", 2,   _("Set Absolute Mode"), verbose=True )
+    app.macro("G92 Z0.08",    "ok", 2,   _("Setting paper heigth"), verbose=True )
+    app.macro("G0 Z300 F1000",    "ok", 90,   _("Lowering bed"), verbose=True )
+    app.trace( _("Bed is down") )
+    
+    current_position = getPosition(app)
+    z_offset_max = current_position['count']['z']
+    app.macro('G92 Z{0}'.format(z_offset_max),    "ok", 2,   _("setting position"), verbose=True )
     
     # Get old probe-nozzle height difference
+    app.trace( _("Calibrating probe") )
+    
+    
+    app.macro('G0 X86 Y58 Z40 F1000',  "ok", 90,   _("calibration point"), verbose=True )
+    app.macro('M401',  "ok", 2,   _("open probe"), verbose=True )
+    
+    doG30(app)
+    
+    #app.macro("G0 X86 Y58 Z50 F1000",    "ok", 90,   _("calibration point"), verbose=True )
+    #app.macro("M401",    "ok", 90,   _("Open probe"), verbose=True )
     
     # TODO: handle error cases
     z_probe_old = None

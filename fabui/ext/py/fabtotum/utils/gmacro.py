@@ -61,11 +61,14 @@ class GMacroHandler:
     def trace(self, message):
         self.__trace(message)
     
-    def macro(self, command, expected_reply, timeout, message, verbose=True, warning=False):
+    def macro(self, command, expected_reply, timeout, message, final_reply = 'ok', verbose=True, warning=False):
         if verbose:
             self.trace(message)
         
-        reply = self.gcs.send(command, block=True, timeout=timeout, group='macro')
+        reply = self.gcs.send(command, expected_reply=final_reply, block=True, timeout=timeout, group='macro')
+        
+        if('G0 ' in command):
+            reply = self.gcs.send('M400', block=True, timeout=timeout, group='macro')
         
         if reply is None:
             if warning:
@@ -114,7 +117,10 @@ class GMacroHandler:
             response = MACRO_ERROR
             error_message = str(err) + traceback.format_exc()
             self.trace( str(err) )
-            
+        except Exception as e:
+            response = MACRO_ERROR
+            error_message = str(e) + traceback.format_exc()
+            self.trace( str(e) )
         if atomic:
             """ End macro execution block and atomic execution. """
             self.gcs.atomic_end()
