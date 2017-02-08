@@ -741,6 +741,7 @@ class GCodeService:
         """
         
         #print "__handle_line", line_raw, "[", self.active_cmd, self.rq.qsize(),  "]"
+        self.log.debug("__handle_line %s [%s]", line_raw, self.active_cmd)
         
         if self.is_resetting:
             print "during reset:", line_raw
