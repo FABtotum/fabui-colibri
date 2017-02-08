@@ -64,7 +64,7 @@
 		<div id="<?php echo $name ?>_description">
 			<p class="margin-bottom-10"><?php echo $val['description']; ?></p>
 			<?php if($val['link'] != ''): ?>
-			<a style="padding: 6px 12px;" target="_blank" href="<?php echo $val['link']; ?>" class="btn btn-default ">More details</a>
+			<a style="padding: 6px 12px;" target="_blank" href="<?php echo $val['link']; ?>" class="btn btn-default no-ajax">More details</a>
 			<?php endif; ?>
 		</div>
 	<?php endforeach; ?>

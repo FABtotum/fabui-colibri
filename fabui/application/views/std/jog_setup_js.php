@@ -10,10 +10,14 @@
 ?>
 <script type="text/javascript">
 
+	/* jog */
 	var jog_touch;
 	var jog_controls;
-	var jog_busy = false;
+	var jog_is_xy_homed = false;
+	var cold_extrustion_enabled = false;
 	var touch_busy = false;
+	var jog_busy = false;
+	var extruder_mode = 'none';
 
 	$(document).ready(function() {
 		
@@ -50,17 +54,15 @@
 			cursorY:2,
 			
 			touch: function(e) {
-				console.log(e.x, e.y);
-				
 				var x = Math.round(e.x, 3);
 				var y = Math.round(e.y, 3);
 				
-				if(touch_busy)
+				if(jog_busy)
 					return false;
 					
-				touch_busy = true;
+				jog_busy = true;
 				fabApp.jogMdi('G90\nG0 X'+x+' Y'+y+' F5000\nM400', function(e){
-					touch_busy = false;
+					jog_busy = false;
 				});
 					
 				return true;
@@ -85,15 +87,16 @@
 		};
 		
 		jog_controls = $('.jog-controls-holder').jogcontrols(controls_options);
-		
-		jog_controls.on('click', jogAction);
+		jog_controls.on('action', jogAction);
 	});
 	
 	function unlock_touch()
 	{
+		jog_is_xy_homed = true;
 		jog_touch.jogtouch('enable');
 		$('.button_container').slideUp();
 		$('[data-toggle="tooltip"], .tooltip').tooltip("hide");
+		jog_touch.jogtouch('cursor',2,2);
 	}
 	
 	function rotation(value)
@@ -101,84 +104,83 @@
 		
 	}
 	
+	/*function jogZeroAllCallback(e)
+	{
+		writeJogResponse(e);
+		
+		if(jog_is_xy_homed)
+		{
+			jog_touch.jogtouch('zero');
+		}
+	}*/
+	
+	function jogHomeXYCallback(e)
+	{
+		unlock_touch();
+		jogFinishAction();
+	}
+	
+	function jogFinishAction(e)
+	{
+		jog_busy = false;
+	}
+	
 	function jogAction(e)
 	{
-		console.log("== jog_busy", jog_busy);
 		if(jog_busy)
 			return false;
+			
+		var mul          = e.multiplier;
+		var xyStep       = $("#xyStep").length            > 0 ? $("#xyStep").val()            : 1;
+		var zStep        = $("#zStep").length             > 0 ? $("#zStep").val()             : 0.5;
+		var extruderStep = $("#extruderStep").length      > 0 ? $("#extruderStep").val()      : 10;
+		var xyzFeed      = $("#xyzFeed").length           > 0 ? $("#xyzFeed").val()           : 1000;
+		var extruderFeed = $("#extruder-feedrate").length > 0 ? $("#extruder-feedrate").val() : 300;
+		var waitForFinish= true;
 		
-		var xystep   = $("#xy-step").val();
-		var zstep    = $("#z-step").val();
-		var feedrate = $("#feedrate").val();
-		var cmd      = '';
-		var action = e.action;
-		
-		var mul = jog_controls.jogcontrols('getMultiplier');
-		
-		zstep *= mul;
-		xystep *= mul;
-		
-		console.log('jog action', action, mul);
-		
-		switch(action)
+		switch(e.action)
 		{
 			case "zero":
-				jogSetAsZero();
-				break;
-			case "z-down":
-				cmd = 'G91\nG0 Z+'+zstep+' F'+feedrate;
-				break;
-			case "z-up":
-				cmd = 'G91\nG0 Z-'+zstep+' F'+feedrate;
+				/*fabApp.jogGetPosition( function(e) {
+					var tmp = e[0].reply.split(" ");
+					var x = tmp[0].replace("X:","");
+					var y = tmp[1].replace("Y:","");
+				});
+				
+				fabApp.jogZeroAll(jogZeroAllCallback);*/
+				
 				break;
 			case "right":
-				cmd = 'G91\nG0 X+'+xystep+' F'+feedrate;
-				break;
 			case "left":
-				cmd = 'G91\nG0 X-'+xystep+' F'+feedrate;
-				break;
 			case "up":
-				cmd = 'G91\nG0 Y+'+xystep+' F'+feedrate;
-				break;
 			case "down":
-				cmd = 'G91\nG0 Y-'+xystep+' F'+feedrate;
-				break;
 			case "down-right":
-				cmd = 'G91\nG0 X+'+xystep+' Y-'+xystep+' F'+feedrate;
-				break;
 			case "up-right":
-				cmd = 'G91\nG0 X+'+xystep+' Y+'+xystep+' F'+feedrate;
-				break;
 			case "down-left":
-				cmd = 'G91\nG0 X-'+xystep+' Y-'+xystep+' F'+feedrate;
-				break;
 			case "up-left":
-				cmd = 'G91\nG0 X-'+xystep+' Y+'+xystep+' F'+feedrate;
+				jog_busy = true;
+				if(jog_is_xy_homed)
+					jog_touch.jogtouch('jogmove', e.action, xyStep*mul);
+				fabApp.jogMove(e.action, xyStep*mul, xyzFeed, waitForFinish, jogFinishAction);
+				break;
+			case "z-down":
+			case "z-up":
+				jog_busy = true;
+				fabApp.jogMove(e.action, zStep*mul, xyzFeed, waitForFinish, jogFinishAction);
 				break;
 			case "home-xy":
-				cmd = 'G28 X Y';
-				unlock_touch();
+				fabApp.jogHomeXY(jogHomeXYCallback);
 				break;
 			case "home-z":
-				cmd = 'G27 Z';
+				fabApp.jogHomeZ();
 				break;
 			case "home-xyz":
-				cmd = 'G27';
-				unlock_touch();
+				fabApp.jogHomeXYZ(jogHomeXYCallback);
 				break;
-		}
-		
-		if(cmd != '')
-		{
-			cmd += '\nM400';
-			
-			jog_busy = true;
-			fabApp.jogMdi(cmd, function(e) {
-				jog_busy = false;
-			});
 		}
 		
 		return false;
 	}
+	
 
 </script>

@@ -8,6 +8,7 @@ source /etc/default/fabui
 
 CMD=$1
 PLUGIN=$2
+URL=$3
 
 extract_plugin() {
     FN=$1
@@ -22,8 +23,6 @@ extract_plugin() {
         #~ bz2)
             #~ ;;
         #~ xz)
-            #~ ;;
-        #~ tgz)
             #~ ;;
     esac
 }
@@ -41,6 +40,8 @@ install_plugin()  {
     TOP=$(ls $TMP)
     PLUGIN=$(basename $FN | tr '[:upper:]' '[:lower:]')
     PLUGIN=${PLUGIN%.*}
+
+    echo $TOP
     
     if [ -d "$TMP/$TOP" ]; then
         TOP=$TMP/$TOP
@@ -66,6 +67,10 @@ install_plugin()  {
         rm -rf $TMP
         exit 1
     fi
+}
+
+update_plugin() {
+    true
 }
 
 case $CMD in
@@ -94,6 +99,9 @@ case $CMD in
     install)
         #echo "Installing from '$2' file"
         install_plugin $PLUGIN
+        ;;
+    update)
+        update_plugin $PLUGIN $URL
         ;;
     *)
         echo "Unknown command"

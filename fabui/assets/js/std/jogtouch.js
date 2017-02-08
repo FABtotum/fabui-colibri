@@ -246,6 +246,8 @@
       this.cursorX = mx;
       this.cursorY = my;
       
+      console.log("cursor set:", x, y, "mapped:", mx, my);
+      
       var mappedWidth = options.right - options.left;
       var mappedX1 = options.left;
       var mappedX2 = options.right;
