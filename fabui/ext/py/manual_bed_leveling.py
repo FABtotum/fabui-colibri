@@ -65,6 +65,7 @@ class ManualBedLeveling(GCodePusher):
     XY_FEEDRATE         = 5000
     Z_FEEDRATE          = 1500
     E_FEEDRATE          = 800
+    MAX_NUM_PROBES      = 4
     
     def __init__(self, log_trace, monitor_file, config):
         super(ManualBedLeveling, self).__init__(log_trace, monitor_file, config=config, use_stdout=False)
@@ -134,6 +135,9 @@ class ManualBedLeveling(GCodePusher):
     def run(self, task_id, num_probes, skip_homing):
         """
         """
+        
+        if(num_probes > self.MAX_NUM_PROBES):
+            num_probes = self.MAX_NUM_PROBES
 
         probe_height    = 50.0
         milling_offset  = self.MILLING_OFFSET
@@ -145,7 +149,8 @@ class ManualBedLeveling(GCodePusher):
                 #~ probe_length = abs(float(line.split("Z Probe Length: ")[1]))
                 #~ probe_height = (probe_length + 1) + self.PROBE_SECURE_OFFSET
         
-        result = self.exec_macro('manual_bed_leveling');
+        
+        result = self.exec_macro('manual_bed_leveling', [skip_homing]);
         
         if result['response'] != 'success':
             self.update_monitor_file()
@@ -176,7 +181,7 @@ class ManualBedLeveling(GCodePusher):
             probed_points[p,2] = 0.0
             probes = 0
             
-            for i in xrange(0, num_probes):
+            for i in range(0, num_probes):
                 #self.trace("x: {0}, y: {1} / {2}".format(x,y, i))
                 new_point = self.probe(x, y, timeout = 20)
                 if new_point:
@@ -247,8 +252,8 @@ def main():
 
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-T", "--task-id",                          help=_("Task ID."),              default=0)
-    parser.add_argument("-n", "--num_probes",                       help=_("Number of probings per screw."),     default=4)
+    parser.add_argument("-T", "--task-id",                          help=_("Task ID."),default=0)
+    parser.add_argument("-n", "--num_probes",                       help=_("Number of probings per screw."),     default=1, type=int)
     parser.add_argument("-s", "--skip_homing", action='store_true', help=_("Skip homing.") )
 
     # GET ARGUMENTS
@@ -260,6 +265,8 @@ def main():
     log_trace       = config.get('general', 'trace') 
     num_probes      = args.num_probes
     skip_homing     = args.skip_homing
+    
+    print "num_probes: ", num_probes
 
     app = ManualBedLeveling(log_trace, monitor_file, config=config)
 

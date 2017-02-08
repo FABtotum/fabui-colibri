@@ -101,11 +101,11 @@ def load_spool(app, args = None):
     app.macro("M104 S0",            "ok", 1,    _("Turning off heater") )
     app.macro("M302 S170",          "ok", 1,    _("Disabling Cold Extrusion Prevention"), verbose=False)
 
-def manual_bed_leveling(app, apps = None):
+def manual_bed_leveling(app, args = None):
     
     app.trace( _("Manual bed leveling started.") )
     
-    skip_homing = False
+    skip_homing = args[0]
     PROBE_SECURE_OFFSET = 15.0
     probe_height    = 50.0
     

@@ -120,13 +120,13 @@ function get_results($data){
 function get_row_color($value){
 	switch($value){
 		case 'red':
-			return 'danger';
+			return 'result-danger';
 			break;
 		case 'orange':
-			return 'warning';
+			return 'result-warning';
 			break;
 		case 'green':
-			return 'success';
+			return 'result-success';
 			break;
 	}
 }
@@ -138,7 +138,10 @@ function get_instructions($screw){
 	}
 	
 	
-	$rotation_section = 'following this rotation sense <i class="fa fa-rotate-'.$screw['direction'].'"></i>';
+	$badge_background_color['right'] = ' #0084ff!important;';
+	$badge_background_color['left'] = ' #ff0000!important; ';
+	
+	$rotation_section = 'following this rotation sense <span class="badge" style="background-color: '.$badge_background_color[$screw['direction']].'"><i class="fa fa-rotate-'.$screw['direction'].'"></i></span>';
 	
 	if($screw['turns']['times'] < 1 ){
 		return 'Turn for '.$screw['turns']['degrees'].' degrees, '.$rotation_section;

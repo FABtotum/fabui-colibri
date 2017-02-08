@@ -22,7 +22,7 @@
 
 		<div class="row margin-top-10 padding-10 step-2" style="display:none;">		
 			<div class="col-sm-6 text-center margin-bottom-10">
-				<img style="max-width: 50%; display: inline;" class="img-responsive" src="/assets/img/controllers/bed/2.png" />
+				<img style="" class="img-responsive" src="/assets/img/controllers/bed/hybrid_bed.png" />
 			</div>
 			<div class="col-sm-6 ">
 				<h1 class="text-center" ><span class="badge bg-color-blue txt-color-white">2</span></h1>
