@@ -21,24 +21,29 @@ def create_dir(f):
                 pass
             else:
                 raise
-        print( 'mkdir {:s}'.format(f) )
 
 def create_link(src, dst, overwrite = True):
     if os.path.lexists(dst):
         if overwrite:
             os.remove(dst)
             os.symlink(src, dst)
-            print( 'softlink {:s} -> {:s}'.format(dst,src) )
     else:
         os.symlink(src, dst)
-        print( 'softlink {:s} -> {:s}'.format(dst,src) )
 
 def build_path(*args):
     return os.path.join(*args)
 
 def remove_dir(dirname):
     shutil.rmtree(dirname)
+    return True
 
+def remove_file(fn):
+    try:
+        os.unlink(fn)
+    except:
+        return False
+    return True
+    
 def copy_files(src, dst):
     cmd = 'cp -aR {0} {1}'.format(src, dst)
     try:
@@ -57,7 +62,5 @@ def find_file(filename, in_path):
         output = subprocess.check_output( shlex.split(cmd) )
     except subprocess.CalledProcessError as e:
         pass
-        
-    print ">>", cmd, output
         
     return output.split('\n')

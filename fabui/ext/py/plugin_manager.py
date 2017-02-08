@@ -37,7 +37,7 @@ from fabtotum.fabui.gpusher import GCodePusher
 from fabtotum.update.factory  import UpdateFactory
 from fabtotum.update import BundleTask, FirmwareTask, BootTask
 from fabtotum.utils import create_dir, create_link, build_path, \
-                            find_file, copy_files, remove_dir
+                            find_file, copy_files, remove_dir, remove_file
 
 # Set up message catalog access
 tr = gettext.translation('update', 'locale', fallback=True)
@@ -77,12 +77,12 @@ class PluginManagerApplication(GCodePusher):
         self.stop()
     
     # Only for development
-    def trace(self, msg):
-        print msg
+    #~ def trace(self, msg):
+        #~ print msg
          
     def state_change_callback(self, state):
         if state == 'aborted' or state == 'finished':
-            self.trace( _("Print STOPPED") )
+            #~ self.trace( _("Print STOPPED") )
             self.finalize_task()
 
     #~ def update_monitor(self):
@@ -100,6 +100,8 @@ class PluginManagerApplication(GCodePusher):
         temp_dir = build_path( self.config.get('general', 'temp_path'), 'new_plugin' )
         create_dir(temp_dir)
         
+        self.trace(_("Extracting plugin..."))
+        
         cmd = "unzip {0} -d {1} -o".format(plugin_filename, temp_dir)
         try:
             subprocess.check_output( shlex.split(cmd) )
@@ -107,7 +109,7 @@ class PluginManagerApplication(GCodePusher):
             pass
         
         fn = find_file("meta.json", temp_dir)
-        print "FN", fn
+
         try:
             fn = fn[0]
             f = open(fn)
@@ -131,10 +133,12 @@ class PluginManagerApplication(GCodePusher):
                 plugin_slug = meta['plugin_slug']
                 plugin_dir  = os.path.join(plugins_path, plugin_slug)
                 create_dir(plugin_dir)
-                
+                self.trace(_("Installing plugin..."))
                 copy_files( os.path.join(top, '*'), plugin_dir)
                 
                 remove_dir(top)
+                
+                print "ok"
             else:
                 print "ERROR: File '{0}' is not a plugin archive".format(plugin)
                 
@@ -149,8 +153,12 @@ class PluginManagerApplication(GCodePusher):
         for plugin in plugins:
             plugin_dir = os.path.join( plugins_path, plugin )
             
+            self.trace(_("Removing plugin..."))
+            
             if os.path.exists(plugin_dir):
                 remove_dir(plugin_dir)
+            
+            print "ok"
         
     def run_activate(self, plugins):
         """
@@ -165,6 +173,7 @@ class PluginManagerApplication(GCodePusher):
             if not os.path.exists(plugin_dir):
                 continue
 
+            self.trace(_("Activating plugin..."))
             # Link controller
             create_link( os.path.join(plugin_dir, 'controller.php'), os.path.join(fabui_path, 'application/controllers/Plugin_{0}.php'.format(plugin) ) ) 
             # Link views
@@ -173,6 +182,8 @@ class PluginManagerApplication(GCodePusher):
             # Link assets
             create_dir( os.path.join( fabui_path, 'assets/plugin' ) )
             create_link( os.path.join(plugin_dir, 'assets'), os.path.join(fabui_path, 'assets/plugin/{0}'.format(plugin)) ) 
+            
+            print "ok"
         
     def run_deactivate(self, plugins):
         """
@@ -181,9 +192,12 @@ class PluginManagerApplication(GCodePusher):
         fabui_path = self.config.get('general', 'fabui_path')
         
         for plugin in plugins:
-            os.unlink( os.path.join(fabui_path, 'application/controllers/Plugin_{0}.php'.format(plugin) ) )
-            os.unlink( os.path.join(fabui_path, 'application/views/plugin/{0}'.format(plugin)) )
-            os.unlink( os.path.join(fabui_path, 'assets/plugin/{0}'.format(plugin)) )
+            self.trace(_("Deactivating plugin..."))
+            remove_file( os.path.join(fabui_path, 'application/controllers/Plugin_{0}.php'.format(plugin) ) )
+            remove_file( os.path.join(fabui_path, 'application/views/plugin/{0}'.format(plugin)) )
+            remove_file( os.path.join(fabui_path, 'assets/plugin/{0}'.format(plugin)) )
+            
+            print "ok"
         
     def run_update(self, task_id, plugins):
         """
@@ -192,6 +206,8 @@ class PluginManagerApplication(GCodePusher):
         self.prepare_task(task_id, task_type='plugin', task_controller='update')
         self.set_task_status(GCodePusher.TASK_RUNNING)
     
+        for plugin in plugins:
+            self.trace(_("Updating plugin {0}...").format(plugin) )
         # TODO
 
         print "finishing task"

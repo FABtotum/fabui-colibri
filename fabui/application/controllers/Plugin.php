@@ -78,6 +78,7 @@
 		$this->load->helper('file');
 		$this->load->helper('fabtotum');
 		$this->load->helper('plugin_helper');
+		$this->load->helper('utility_helper');
 		
 		$upload_config['upload_path']   = '/tmp/fabui/';
 		$upload_config['allowed_types'] = 'zip';
@@ -101,7 +102,7 @@
 			}
 			$result = managePlugin('install', $upload_data['full_path']);
 			$data['result'] = $result;
-			$data['installed'] = ( strncmp($result, 'ok', 2) == 0 );
+			$data['installed'] = endsWith($result, "ok\n") == 1;
 			$data['file_name'] = $upload_data['file_name'];
 		}else{
 			$data['error'] = strip_tags($this->upload->display_errors());

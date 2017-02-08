@@ -191,7 +191,8 @@ if ( ! function_exists('managePlugin'))
 		$CI =& get_instance();
 		$CI->load->helper('fabtotum');
 		
-		return startBashScript('plugin_manager.sh', array($action, $plugin), false, true);
+		//~ return startBashScript('plugin_manager.sh', array($action, $plugin), false, true);
+		return startPyScript('plugin_manager.py', $action.' -p '.$plugin, false, true);
 	}
 	 
 }
