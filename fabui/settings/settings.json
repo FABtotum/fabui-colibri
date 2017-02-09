@@ -5,7 +5,7 @@
     "b": 255
   },
   "safety": {
-    "door": 0,
+    "door": 1,
     "collision_warning": 1
   },
   "switch": 0,
@@ -25,8 +25,7 @@
     "keys": []
   },
   "zprobe": {
-    "enable": 0,
-    "zmax": 206
+    "enable": true
   },
   "settings_type": "default",
   "hardware": {
@@ -41,7 +40,8 @@
     }
   },
   "custom": {
-    "overrides": "'/var/lib/fabui/settings/custom_overrides.txt'",
+    "overrides": "''",
     "invert_x_endstop_logic": false
-  }
+  },
+  "z_max_offset": 206
 }

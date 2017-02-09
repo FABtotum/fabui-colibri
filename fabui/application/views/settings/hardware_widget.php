@@ -125,7 +125,7 @@
 					<section class="col col-6">
 						<label class="label">Z Max Home Pos (mm)</label>
 						<label class="input">
-							<input type="number" id="zprobe-zmax" name="zprobe-zmax" value="<?php echo $defaultSettings['zprobe']['zmax']; ?>">
+							<input type="number" id="zprobe-zmax" name="zprobe-zmax" value="<?php echo $defaultSettings['z_max_offset']; ?>">
 						</label>
 					</section> 
 				</div>
