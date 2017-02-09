@@ -91,8 +91,8 @@ def load_spool(app, args = None):
     app.macro("M104 S190",          "ok", 5,    _("Pre-Heating Nozzle. Get ready to push...") ) #heating and waiting.
     app.macro("M300",               "ok", 5,    _("<b>Start pushing!</b>") )
 
-    app.macro("G0 E110 F500",       "ok", 1,    _("Loading filament") )
-    app.macro("G0 E660 F700",       "ok", 1,    _("Loading filament (fast)") )
+    app.macro("G0 E110 F500",       "ok", 150,    _("Loading filament") )
+    app.macro("G0 E660 F700",       "ok", 150,    _("Loading filament (fast)") )
     app.macro("M109 S210",          None, 400,  _("Waiting to get to temperature...") ) #heating and waiting.
     app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
     app.macro("G0 E100 F200",       "ok", 1,    _("Entering the hotend (slow)") )
@@ -148,7 +148,7 @@ def manual_bed_leveling(app, args = None):
         app.macro("G92 Z241.2",    "ok",   5,      _("Setting correct Z"), verbose=False)
         app.macro("M402",          "ok",   2,      _("Retracting Probe (safety)"), verbose=False)
 
-    app.macro("G0 Z{0} F5000".format(probe_height),    "ok",   5,  _("Moving to start Z height")) #mandatory!
+    app.macro("G0 Z{0} F5000".format(probe_height),    "ok",   99,  _("Moving to start Z height")) #mandatory!
     app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), verbose=False )
 
     app.macro("M401",          "ok",   2,      _("Extend Probe"), verbose=False)

@@ -28,6 +28,8 @@ import gettext
 
 # Import external modules
 
+from fabtotum.fabui.macros.common import getEeprom
+
 # Import internal modules
 
 
@@ -45,23 +47,23 @@ def home_all(app, args = None):
         set_temperatures = False
     
     try:
-        zprobe = app.config.get('settings', 'zprobe')
-        zprobe_disabled = (zprobe['disable'] == 1)
-        zmax_home_pos   = float(zprobe['zmax'])
+        zprobe_disabled = int(app.config.get('settings', 'zprobe.enable')) == 0
+        z_max_offset    = app.config.get('settings', 'z_max_offset')
     except KeyError:
-        zmax_home_pos = 206.0
+        z_max_offset = 206.0
         zprobe_disabled = False
-		
+    
     if(set_temperatures == True):
-        app.macro("M104 S"+str(ext_temp),   "ok", 3,    _("Pre Heating Nozzle ({0}&deg;) (fast)").format(str(ext_temp)),verbose=False)
-        app.macro("M140 S"+str(bed_temp),   "ok", 3,    _("Pre Heating Bed ({0}&deg;) (fast)").format(str(bed_temp)), verbose=False)
+        app.macro("M104 S"+str(ext_temp),   "ok", 90,    _("Pre Heating Nozzle ({0}&deg;) (fast)").format(str(ext_temp)),verbose=False)
+        app.macro("M140 S"+str(bed_temp),   "ok", 90,    _("Pre Heating Bed ({0}&deg;) (fast)").format(str(bed_temp)), verbose=False)
     
     app.trace( _("Homing all axes") )
     app.macro("G90", "ok", 2, _("Set abs position"), verbose=False)
     
-    if zprobe_disabled:
-        app.macro("G27 X0 Y0 Z" + str(zmax_home_pos),   "ok", 100,  _("Homing all axes"), verbose=False)
-        app.macro("G0 Z50 F10000",                      "ok", 15,   _("Raising"), verbose=False)
+    if zprobe_disabled :
+        app.macro("G27",   "ok", 100,  _("Homing all axes"), verbose=False)
+        app.macro('G92 Z{0}'.format(z_max_offset), "ok", 99,    _("Set Z Max"), verbose=False)
+        app.macro("G0 Z50 F10000", "ok", 15,   _("Raising"), verbose=False)
     else:
         app.macro("G28",                                "ok", 100,  _("Homing all axes"), verbose=False)
 
@@ -229,50 +231,4 @@ def install_head(app, args = None):
     pass
 
 def read_eeprom(app, args = None):
-        
-    def serialize(string_source, regex_to_serach, keys):
-        match = re.search(regex_to_serach, string_source, re.IGNORECASE)
-        if match != None:
-            string = match.group(1)
-            object = {}
-            object.update({'string':string})
-            for index in keys:
-                match_temp = re.search(index+'([0-9.]+)', string, re.IGNORECASE)
-                if match_temp != None:
-                    val = match_temp.group(1)
-                    object.update({index:val})
-            return object
-            
-    def getServoEndstopValues(string_source):
-        match = re.search('Servo\sEndstop\ssettings:\sR:\s([0-9.]+)\sE:\s([0-9.]+)', string_source, re.IGNORECASE)
-        if match != None:
-            object = {'r': match.group(1), 'e': match.group(2)}
-            return object
-    
-    reply = app.macro('M503', None, 1, _("Reading settings from eeprom"), verbose=False)
-
-    eeprom = {}
-
-    for line in reply:
-        line = line.strip()
-        
-        if line.startswith('M92 '):
-            eeprom["steps_per_unit"] = serialize(line, '(M92\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e'])
-        elif line.startswith('M203'):
-            eeprom["maximum_feedrates"] = serialize(line, '(M203\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e'])
-        elif line.startswith('M201'):
-            eeprom["maximum_accelaration"] = serialize(line, '(M201\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e'])
-        elif line.startswith('M204'):
-            eeprom["acceleration"] = serialize(reply[9], '(M204\sS[0-9.]+\sT1[0-9.]+)', ['s', 't1'])
-        elif line.startswith('M205'):
-           eeprom["advanced_variables"] = serialize(line,'(M205\sS[0-9.]+\sT0[0-9.]+\sB[0-9.]+\sX[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['s', 't', 'b', 'x', 'z', 'e'])
-        elif line.startswith('M206'):
-            eeprom["home_offset"] = serialize(line,'(M206\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+)', ['x', 'y', 'z'])
-        elif line.startswith('M31'):
-            eeprom["pid"] = serialize(line,'(M301\sP[0-9.]+\sI[0-9.]+\sD[0-9.]+)', ['p', 'i', 'd'])
-        elif line.startswith('Z Probe Length') or line.startswith('Probe Length'):
-            eeprom["probe_length"] = line.split(':')[1].strip()
-        elif line.startswith('Servo Endstop'):
-            eeprom["servo_endstop"] = getServoEndstopValues(line)
-    
-    return eeprom
+    return getEeprom(app)

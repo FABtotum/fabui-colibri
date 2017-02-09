@@ -158,10 +158,10 @@
                 
                 closeWait();
                 
-                var html = 'Calibrating probe\n';
+                var html = 'Nozzle Height Calibration\n';
                 html += '====================================\n';
-                html += 'Old Probe Length: ' + Math.abs(data.old_probe_lenght) + '\n';
-                html += 'New Probe Length: ' + data.probe_length;
+                html += 'New Probe Length: ' + Math.abs(data.probe_length) + '\n';
+                html += 'New Z Max offset: ' + data.z_max;
                 
                 $("#calibrate-trace").html(html);
             });
@@ -181,7 +181,7 @@
     {
         var sign = $(this).attr('data-action');
         var value = $("#z-value").val();
-        var gcode = 'G0 Z' + sign + value;
+        var gcode = 'G91\nG0 Z' + sign + value;
         fabApp.jogMdi(gcode);
     }
     

@@ -34,6 +34,26 @@ import gettext
 tr = gettext.translation('gmacro', 'locale', fallback=True)
 _ = tr.ugettext
 
+
+def prepare_additive(app, args=None):
+    
+    zprobe_disabled = int(app.config.get('settings', 'zprobe.enable')) == 0
+    z_max_offset    = app.config.get('settings', 'z_max_offset')
+    
+    app.macro("M402", "ok", 2,    _("Retract Probe"), verbose=False)
+    app.macro("G90", "ok", 2,    _("Set Absolute"), verbose=False)
+    
+    app.macro("G27", "ok", 99,    _("Lowering bed"), verbose=False)
+    
+    if(zprobe_disabled):
+        app.macro('G92 Z{0}'.format(z_max_offset), "ok", 99,    _("Set Z Max"), verbose=True)
+        app.macro('G0 X10 Y10 Z70 F1000', "ok", 99,    _("Raising bed"))
+    else:
+        app.macro('G0 Z50 F10000', "ok", 99,    _("Raising bed"))
+        app.macro('G28', "ok", 99,    _("Homing all axes"))
+    
+    
+
 def start_additive(app, args = None):
     units_e = app.config.get('settings', 'e')
     
@@ -42,7 +62,7 @@ def start_additive(app, args = None):
     
     app.trace( _("Preparing the FABtotum Personal Fabricator") )
     app.macro("G90",                    "ok", 2,    _("Setting absolute position"), verbose=False)
-    app.macro("G0 X5 Y5 Z60 F1500",     "ok", 3,    _("Moving to oozing point") )
+    app.macro("G0 X5 Y5 Z60 F1500",     "ok", 10,    _("Moving to oozing point") )
     #~ # Pre-heating (dismissed)
     app.macro("M104 S"+str(ext_temp),   "ok", 3,    _("Pre Heating Nozzle ({0}&deg;) (fast)").format(str(ext_temp)))
     app.macro("M140 S"+str(bed_temp),   "ok", 3,    _("Pre Heating Bed ({0}&deg;) (fast)").format(str(bed_temp)))
@@ -71,8 +91,8 @@ def end_additive(app, args = None):
     app.macro("M140 S0",    "ok", 50,   _("Shutting down Heated Bed") )
     app.macro("M220 S100",  "ok", 20,   _("Reset Speed factor override") )
     app.macro("M221 S100",  "ok", 20,   _("Reset Extruder factor override"), verbose=False)
-    app.macro("M107",       "ok", 50,   _("Turning Fan off"), 0)       #should be moved to firmware
-    app.macro("M18",        "ok", 10,   _("Motor Off"), 0)             #should be moved to firmware
+    app.macro("M107",       "ok", 50,   _("Turning Fan off"))       #should be moved to firmware
+    app.macro("M18",        "ok", 10,   _("Motor Off"))             #should be moved to firmware
     #go back to user-defined colors
     app.macro("M701 S"+str(color['r']), "ok", 2,    _("Turning on lights"), verbose=False)
     app.macro("M702 S"+str(color['g']), "ok", 2,    _("Turning on lights"), verbose=False)

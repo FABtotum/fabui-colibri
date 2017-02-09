@@ -49,6 +49,7 @@ PRESET_MAP = {
     "install_head"                  : general_macros.install_head,
     
     # Print
+    "prepare_additive"              : print_macros.prepare_additive,
     "check_pre_print"               : print_macros.check_pre_print,
     "engage_feeder"                 : print_macros.engage_feeder,
     "start_additive"                : print_macros.start_additive,

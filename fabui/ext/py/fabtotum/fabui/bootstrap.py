@@ -101,6 +101,11 @@ def customHardware(gcodeSender, config, log):
     gcodeSender.send("M747 X{0}".format(logic), group='bootstrap')
     #save settings
     gcodeSender.send("M500", group='bootstrap')
+    
+    eeprom = read_eeprom(gcodeSender)
+    
+    config.set('settings', 'e', eeprom['steps_per_unit']['e'])
+    config.save('settings')
     log.debug("Custom Hardware")
 
 def hardware1(gcodeSender, config, log):
@@ -109,9 +114,12 @@ def hardware1(gcodeSender, config, log):
     - Original FABtotum
     """
     
+    eeprom = read_eeprom(gcodeSender)
+    
     config.set('settings', 'hardware.id', 1)
     config.set('settings', 'feeder.show', True)
     config.set('settings', 'a', 177.777778)
+    config.set('settings', 'e', eeprom['steps_per_unit']['e'])
     config.save('settings')
     
     log.debug("Rev1")
@@ -130,9 +138,12 @@ def hardware2(gcodeSender, config, log):
     #save settings
     gcodeSender.send("M500", group='bootstrap')
     
+    eeprom = read_eeprom(gcodeSender)
+    
     config.set('settings', 'hardware.id', 2)
     config.set('settings', 'feeder.show', True)
     config.set('settings', 'a', 177.777778)
+    config.set('settings', 'e', eeprom['steps_per_unit']['e'])
     config.save('settings')
     
     log.debug("Rev2")
@@ -154,9 +165,12 @@ def hardware3(gcodeSender, config, log):
     #save settings
     gcodeSender.send("M500", group='bootstrap')
     
+    eeprom = read_eeprom(gcodeSender)
+    
     config.set('settings', 'hardware.id', 3)
     config.set('settings', 'feeder.show', False)
     config.set('settings', 'a', 177.777778)
+    config.set('settings', 'e', eeprom['steps_per_unit']['e'])
     config.save('settings')
     
     log.debug("Rev3")
@@ -192,7 +206,7 @@ def hardware5(gcodeSender, config, log):
     #invert x endstop logic
     gcodeSender.send("M747 X1", group='bootstrap')
     #set maximum feedrate
-    gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00", group='bootstrap')
+    gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E23.00", group='bootstrap')
     #save settings
     gcodeSender.send("M500", group='bootstrap')
     

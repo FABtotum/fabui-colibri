@@ -87,7 +87,8 @@ class Nozzle extends FAB_Controller {
 		$this->output->set_content_type('application/json')->set_output(
 			json_encode( array(
 				'old_probe_lenght' => $_result['reply']['old_probe_lenght'],
-				'probe_length'     => $_result['reply']['new_probe_length']
+				'probe_length'     => $_result['reply']['new_probe_length'],
+				'z_max'            => $_result['reply']['z_max']
 				) )
 			);
 	}

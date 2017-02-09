@@ -114,13 +114,15 @@
 					<label class="label">Use the Z Touch Probe during homing</label>
 					<div class="inline-group">
 						<label class="radio">
-							<input type="radio" id="zprobe-enable" name="zprobe-enable" value="l" <?php if($defaultSettings['zprobe']['enable'] == 1) echo 'checked="checked"'; ?>><i></i>Enable
+							<input type="radio" id="zprobe-enable" name="zprobe-enable" value="1" <?php if($defaultSettings['zprobe']['enable'] == 1) echo 'checked="checked"'; ?>><i></i>Enable
 						</label>
 						<label class="radio">
 							<input type="radio" id="zprobe-enable" name="zprobe-enable" value="0" <?php if($defaultSettings['zprobe']['enable'] == 0) echo 'checked="checked"'; ?>><i></i>Disable
 						</label>
 					</div>
 				</section>
+			</fieldset>
+			<fieldset>
 				<div class="row">
 					<section class="col col-6">
 						<label class="label">Z Max Home Pos (mm)</label>
