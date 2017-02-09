@@ -28,9 +28,15 @@
 		
 		$widgeFooterButtons = '';
 		
-		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-success" href="plugin/upload"><i class="fa fa-plus"></i> Add New Plugin </a>
-		</div>';
+		$headerToolbar = '
+			<ul class="nav nav-tabs pull-right">
+				<li class="active"><a data-toggle="tab" href="#installed-tab"> Installed</a></li>
+				<li><a data-toggle="tab" href="#online-tab"> Online</a></li>
+				<li><a data-toggle="tab" href="#add-new-tab"><i class="fa fa-upload""></i> Upload</a></li>
+				<li><a data-toggle="tab" href="#create-new-tab"><i class="fa fa-file-code-o" aria-hidden="true"></i> Create New</a></li>
+			</ul>
+			
+			';
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';
@@ -38,36 +44,6 @@
 		$widget->body   = array('content' => $this->load->view('plugin/main_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 
 		$this->addJsInLine($this->load->view('plugin/js', $data, true));
-		$this->content = $widget->print_html(true);
-		$this->view();
-	}
-	
-	public function upload()
-	{
-		$this->load->library('smart');
-		$this->load->helper('form');
-		$this->load->helper('plugin_helper');
-		
-		$data = array();
-		
-		//main page widget
-		$widgetOptions = array(
-			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
-			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
-		);
-		
-		$widgeFooterButtons = '';
-		
-		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-default" href="plugin"><i class="fa fa-arrow-left"></i> Back </a>
-		</div>';
-		
-		$widget         = $this->smart->create_widget($widgetOptions);
-		$widget->id     = 'plugin-upload-widget';
-		$widget->header = array('icon' => 'fa-toggle-down', "title" => "<h2>Upload plugin</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('plugin/upload_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
-		
-		$this->addJsInLine($this->load->view('plugin/upload_js', $data, true));
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
@@ -140,6 +116,12 @@
 		}
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode(true));
+	}
+
+	public function online()
+	{
+		$this->load->helper('plugin_helper');
+		$this->output->set_content_type('application/json')->set_output( json_encode( getOnlinePlugins() ) );
 	}
 
  }

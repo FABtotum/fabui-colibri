@@ -31,12 +31,15 @@ class RemoteVersion:
         
         self.colibri_endpoint = self.config.get('updates', 'colibri_endpoint')
         self.firmware_endpoint = self.config.get('updates', 'firmware_endpoint')
+        self.plugin_endpoint = self.config.get('updates', 'plugins_endpoint')
         self.arch = arch
         self.mcu = mcu
         self.colibri = None
         self.firmware = None
+        self.plugins = None
         self.setColibri()
         self.setFirmware()
+        self.setPlugins()
     
     def getRemoteData(self, endpoint):
         curl = pycurl.Curl()
@@ -51,10 +54,13 @@ class RemoteVersion:
         return buffer.getvalue()
         
     def setColibri(self):
-        self.colibri = json.loads(self.getRemoteData("{0}/{1}/version.json".format(self.colibri_endpoint, self.arch)))
+        self.colibri = json.loads(self.getRemoteData( os.path.join( self.colibri_endpoint, self.arch, "version.json") ) )
         
     def setFirmware(self):
-        self.firmware = json.loads(self.getRemoteData("{0}/fablin/{1}/version.json".format(self.firmware_endpoint, self.mcu)))
+        self.firmware = json.loads(self.getRemoteData( os.path.join(self.firmware_endpoint, "fablin", self.mcu, "version.json") ) )
+        
+    def setPlugins(self):
+        self.plugins = json.loads(self.getRemoteData( os.path.join( self.plugin_endpoint, "online.json") ) )
     
     def getColibri(self):
         return self.colibri
@@ -72,11 +78,19 @@ class RemoteVersion:
         if 'firmware' in self.firmware:
             return self.firmware['firmware']
         return {}
+        
+    def getPlugins(self):
+        if 'plugins' in self.plugins:
+            return self.plugins['plugins']
+        return {}
     
     def getColibriEndpoint(self):
         return os.path.join(self.colibri_endpoint, self.arch)
         
     def getFirmwareEndpoint(self):
         return os.path.join(self.firmware_endpoint, 'fablin', self.mcu)
+        
+    def getPluginsEndpoint(self):
+        return self.firmware_endpoint
         
         

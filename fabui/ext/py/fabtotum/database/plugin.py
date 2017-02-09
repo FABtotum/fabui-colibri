@@ -25,6 +25,7 @@ __version__ = "1.0"
 # Import standard python module
 from collections import OrderedDict
 from datetime import datetime
+import os
 import time
 # Import external modules
 
@@ -52,4 +53,12 @@ class Plugin(TableItem):
         
         super(Plugin, self).__init__(database, table='sys_plugins', primary='id', primary_autoincrement=True, attribs=attribs)
 
-
+    def get_installed_plugins(self):
+        result = []
+        #~ with self._db.lock:
+            #~ conn = self._db.get_connection()
+            
+            #~ cursor = conn.execute("SELECT {2} from {0} where {1}=?".format(self._table, 'id_obj', 'id_file'), (object_id,) )
+            #~ for row in cursor:
+                #~ result.append(row[0])
+        return result

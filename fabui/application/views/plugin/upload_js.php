@@ -50,7 +50,10 @@ function doUpload()
 			if(response.installed == true){
 				waitContent('Plugin installed successfully<br>Redirecting to plugins page...');
 				setTimeout(function(){
-						window.location = '<?php echo site_url("#plugin");?>';
+					var new_url = "<?php echo site_url('#plugin?uploaded');?>";
+					console.log(new_url);
+						window.location = new_url;
+						//location.reload();
 				}, 3000);
 			}
 			else

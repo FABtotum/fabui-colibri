@@ -31,6 +31,7 @@ import shlex, subprocess
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 import pycurl
+from github import Github
 
 # Import internal modules
 from fabtotum.fabui.gpusher import GCodePusher
@@ -38,6 +39,9 @@ from fabtotum.update.factory  import UpdateFactory
 from fabtotum.update import BundleTask, FirmwareTask, BootTask
 from fabtotum.utils import create_dir, create_link, build_path, \
                             find_file, copy_files, remove_dir, remove_file
+
+from fabtotum.database.plugin import Plugin
+from fabtotum.update import UpdateFactory, PluginTask
 
 # Set up message catalog access
 tr = gettext.translation('update', 'locale', fallback=True)
@@ -53,7 +57,7 @@ class PluginManagerApplication(GCodePusher):
     def __init__(self, arch='armhf', mcu='atmega1280'):
         super(PluginManagerApplication, self).__init__()
         
-        #~ self.factory = UpdateFactory(arch=arch, mcu=mcu, config=self.config, gcs=self.gcs, notify_update=self.update_monitor)
+        self.factory = UpdateFactory(config=self.config, gcs=self.gcs, notify_update=self.update_monitor)
         self.update_stats = {}
         
         self.add_monitor_group('update', self.update_stats)      
@@ -75,20 +79,16 @@ class PluginManagerApplication(GCodePusher):
             self.set_task_status(GCodePusher.TASK_COMPLETED)
                 
         self.stop()
-    
-    # Only for development
-    #~ def trace(self, msg):
-        #~ print msg
          
     def state_change_callback(self, state):
         if state == 'aborted' or state == 'finished':
             #~ self.trace( _("Print STOPPED") )
             self.finalize_task()
 
-    #~ def update_monitor(self):
-        #~ with self.monitor_lock:
-            #~ self.update_stats.update( self.factory.serialize() )
-            #~ self.update_monitor_file()
+    def update_monitor(self):
+        with self.monitor_lock:
+            self.update_stats.update( self.factory.serialize() )
+            self.update_monitor_file()
     
     def extract_plugin(self, plugin_filename):
         """
@@ -198,7 +198,65 @@ class PluginManagerApplication(GCodePusher):
             remove_file( os.path.join(fabui_path, 'assets/plugin/{0}'.format(plugin)) )
             
             print "ok"
+    
+    def get_release(self, repo_name):
+        try:
+            g = Github()
+            repo = g.get_repo(repo_name)
+            return repo.get_releases()
+        except Exception as e:
+            print "GIT-ERROR:", e
+            return []
+    
+    def run_check_updates(self):
+        #repo = g.get_repo(repo_name)
+      
+        #~ plugins = Plugin(self.db).get_plugins()
+        plugins_path = self.config.get('general', 'plugins_path')
         
+        for dirname in os.listdir(plugins_path):
+            plugin_dir = os.path.join( plugins_path, dirname)
+            plugin_meta = os.path.join(plugin_dir, "meta.json")
+            if os.path.exists(plugin_meta):
+                print dirname, plugin_meta
+                with open(plugin_meta) as f:
+                    meta = json.loads( f.read() )
+                    
+                if 'plugin_uri' in meta:
+                    url = meta['plugin_uri']
+                    if not url:
+                        continue
+                        
+                    repo_name = url.split('https://github.com/')
+                    if len(repo_name) < 2:
+                        continue
+                    
+                    releases = self.get_release(repo_name[1])
+                    for rel in releases:
+                        print "REL", rel.tag_name, rel.zipball_url
+    
+    def run_check_repo(self):
+        result = []
+        
+        plugins = self.factory.getPlugins()
+        for slug in plugins:
+            plugin = plugins[slug]
+            url    = plugin['url']
+            repo_name = url.split('https://github.com/')
+            if len(repo_name) < 2:
+                continue
+                
+            
+            releases = self.get_release(repo_name[1])
+            if releases:
+                
+                result.append( plugin )
+                
+                #~ for rel in releases:
+                    #~ print "REL", rel.tag_name, rel.zipball_url
+                
+        print json.dumps(result)
+    
     def run_update(self, task_id, plugins):
         """
         Plugin update procedure
@@ -240,6 +298,10 @@ def main():
         app.run_install(plugins)
     elif command == 'remove':
         app.run_remove(plugins)
+    elif command == 'check-updates':
+        app.run_check_updates()
+    elif command == 'check-repo':
+        app.run_check_repo()
     elif command == 'update':
         app.run_update(task_id, plugins)
     

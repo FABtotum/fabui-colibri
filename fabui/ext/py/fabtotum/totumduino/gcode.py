@@ -906,6 +906,9 @@ class GCodeService:
                 if data:
                     self.buffer.extend(data)
                     #print 'R: [', data, ']'
+                    
+                    
+                    
                     while self.READ_TERM in self.buffer:
                         line_raw, self.buffer = self.buffer.split(self.READ_TERM, 1)
                         self.__handle_line(line_raw)

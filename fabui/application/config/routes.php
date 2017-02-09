@@ -85,7 +85,7 @@ $route['maintenance/system-info']               = 'systeminfo';
 $route['maintenance/nozzle-height-calibration'] = 'nozzle';
 
 $route['plugin/add'] = 'plugin/add';
-$route['plugin/upload'] = 'plugin/upload';
+$route['plugin/online'] = 'plugin/online';
 $route['plugin/doUpload'] = 'plugin/doUpload';
 $route['plugin/remove/(:any)'] = 'plugin/manage/remove/$1';
 $route['plugin/activate/(:any)'] = 'plugin/manage/activate/$1';

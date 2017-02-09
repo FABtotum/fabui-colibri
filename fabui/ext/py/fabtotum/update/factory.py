@@ -35,6 +35,9 @@ class UpdateFactory:
 		
 	def getBoot(self):
 		return self.remote.getBoot()
+		
+	def getPlugins(self):
+		return self.remote.getPlugins()
 	
 	def getEndpoint(self, name):
 		if name == "bundle":
@@ -43,6 +46,8 @@ class UpdateFactory:
 			return self.remote.getFirmwareEndpoint()
 		elif name == "boot":
 			return self.remote.getColibriEndpoint()
+		elif name == "plugins":
+			return self.remote.getPluginsEndpoint()
 		
 	def getTempFolder(self):
 		return self.config.get('general', 'bigtemp_path')

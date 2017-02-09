@@ -60,3 +60,4 @@ instagram_feed_file = @FABUI_TEMP_PATH@instagram.json
 [updates]
 colibri_endpoint = http://update.fabtotum.com/colibri/
 firmware_endpoint = http://update.fabtotum.com/firmware/
+plugins_endpoint = http://update.fabtotum.com/plugins/
