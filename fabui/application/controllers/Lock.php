@@ -12,8 +12,7 @@
  	
 	public function index()
 	{	
-		$data['user'] = $this->session->user;
-		$this->content = $this->load->view('lock/index', $data, true );
+		$this->content = $this->load->view('lock/index', null, true );
 		$this->lockLayout();
 	}
  }

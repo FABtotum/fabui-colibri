@@ -7,7 +7,7 @@
  * 
  */
 ?>
-<title> .: FABUI - Debug page :. </title>
+<title> .: FABUI - Locked Screen :. </title>
 <meta name="description" content="FABtotum User Web Interface">
 <meta name="author"      content="Krios Mane - FABteam">
 <meta name="viewport"    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
