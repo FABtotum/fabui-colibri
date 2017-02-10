@@ -1046,16 +1046,14 @@
 	{
 		disableButton('.btn-prev');
 		disableButton('.btn-next');
-		disableButton('.top-directions');
-		disableButton('.top-axisz');
+		fabApp.disableTopBarControls();
 	}
 	/**
 	*
 	*/
 	function unFreezeUI()
 	{
-		enableButton('.top-directions');
-		enableButton('.top-axisz');
+		fabApp.enableTopBarControls();
 	}
 	/**
 	*

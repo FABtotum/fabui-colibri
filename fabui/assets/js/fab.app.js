@@ -104,23 +104,10 @@ fabApp = (function(app) {
 		
 		return false;
 	};
-		
-	app.domReadyMisc = function() {
-		
-		var controls_options = {
-			hasZero:false,
-			hasRestore:false,
-			compact:true,
-			percentage:0.95
-		};
-		
-		var $jog_controls_top = $('.top-ajax-jog-controls-holder').jogcontrols(controls_options).on('action', app.jogActionHandler);
-		
-		if (typeof(Storage) !== "undefined"){
-			if(localStorage.getItem("temperaturesPlot") !== null){			
-				temperaturesPlot =  JSON.parse(localStorage.getItem("temperaturesPlot"));
-			}
-		}
+	/**
+	* init temperatures and jog control on top bar
+	**/
+	app.initTopBarControls = function () {
 		
 		$("#top-temperatures").click(function(a) {
 			var b = $(this);
@@ -128,41 +115,6 @@ fabApp = (function(app) {
 		   	var c = b.next(".top-ajax-temperatures-dropdown").find(".btn-group > .active > input").attr("id");
 		   	b = null, c = null, a.preventDefault()
        	});
-       
-       
-       	$("#jog-shortcut").click(function(a) {
-        	var b = $(this);
-            b.next(".top-ajax-jog-dropdown").is(":visible") ? (b.next(".top-ajax-jog-dropdown").fadeOut(150), b.removeClass("active")) : (b.next(".top-ajax-jog-dropdown").fadeIn(150), b.addClass("active"));
-            var c = b.next(".top-ajax-jog-dropdown").find(".btn-group > .active > input").attr("id");
-            b = null, c = null, a.preventDefault()
-        });
-        
-        
-        $(".language").click(function() {
-
-			var actual_lang = $("#actual_lang").val();
-			var new_lang = $(this).attr("data-value");
-		
-			if (actual_lang != new_lang) {
-				$("#lang").val(new_lang);
-				openWait('<i class="fa fa-flag"></i><br> Loading language ');
-				$("#lang_form").submit();
-			}
-		
-		});
-		
-		$("#lock").click(function() {
-			app.lockScreen();
-		});
-		
-		$("#refresh-notifications").click(function() {
-			app.refreshNotificationsContent();
-		});
-        
-        $(document).mouseup(function(a) {
-            $(".top-ajax-temperatures-dropdown").is(a.target) || 0 !== $(".top-ajax-temperatures-dropdown").has(a.target).length || ($(".top-ajax-temperatures-dropdown").fadeOut(150), $(".top-ajax-temperatures-dropdown").prev().removeClass("active"))
-            $(".top-ajax-jog-dropdown").is(a.target) || 0 !== $(".top-ajax-jog-dropdown").has(a.target).length || ($(".top-ajax-jog-dropdown").fadeOut(150), $(".top-ajax-jog-dropdown").prev().removeClass("active"))
-        });
 		
 		//init temperatures sliders on top
 		if (typeof(Storage) !== "undefined") {
@@ -171,6 +123,7 @@ fabApp = (function(app) {
 			$("#top-bar-bed-actual").html(parseInt(localStorage.getItem("bed_temp")));
 			$("#top-bar-bed-target").html(parseInt(localStorage.getItem("bed_temp_target")));
 		}
+		
 		//bed target
 		noUiSlider.create(document.getElementById('top-bed-target-temp'), {
 			start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp_target") : 0,
@@ -185,7 +138,6 @@ fabApp = (function(app) {
 				})
 			}
 		});
-		
 		//bet actual
 		noUiSlider.create(document.getElementById('top-act-bed-temp'), {
 			start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp") : 0,
@@ -218,16 +170,101 @@ fabApp = (function(app) {
 		});
 		$("#top-act-ext-temp .noUi-handle").remove();
 		//bed events
-		document.getElementById("top-bed-target-temp").noUiSlider.on('slide', app.topBedTempSlide);
+		document.getElementById("top-bed-target-temp").noUiSlider.on('slide',  app.topBedTempSlide);
 		document.getElementById("top-bed-target-temp").noUiSlider.on('change', app.topBedTempChange);
-		document.getElementById("top-bed-target-temp").noUiSlider.on('start', app.blockSliders);
-		document.getElementById("top-bed-target-temp").noUiSlider.on('end', app.enableSliders);
+		document.getElementById("top-bed-target-temp").noUiSlider.on('start',  app.blockSliders);
+		document.getElementById("top-bed-target-temp").noUiSlider.on('end',    app.enableSliders);
 		//nozzle events
-		document.getElementById("top-ext-target-temp").noUiSlider.on('slide', app.topExtTempSlide);
+		document.getElementById("top-ext-target-temp").noUiSlider.on('slide',  app.topExtTempSlide);
 		document.getElementById("top-ext-target-temp").noUiSlider.on('change', app.topExtTempChange);
-		document.getElementById("top-ext-target-temp").noUiSlider.on('start', app.blockSliders);
-		document.getElementById("top-ext-target-temp").noUiSlider.on('end', app.enableSliders);
+		document.getElementById("top-ext-target-temp").noUiSlider.on('start',  app.blockSliders);
+		document.getElementById("top-ext-target-temp").noUiSlider.on('end',    app.enableSliders);
 		
+		
+		//jog 
+		$("#jog-shortcut").click(function(a) {
+        	var b = $(this);
+            b.next(".top-ajax-jog-dropdown").is(":visible") ? (b.next(".top-ajax-jog-dropdown").fadeOut(150), b.removeClass("active")) : (b.next(".top-ajax-jog-dropdown").fadeIn(150), b.addClass("active"));
+            var c = b.next(".top-ajax-jog-dropdown").find(".btn-group > .active > input").attr("id");
+            b = null, c = null, a.preventDefault()
+        });
+		
+		var controls_options = {
+			hasZero:false,
+			hasRestore:false,
+			compact:true,
+			percentage:0.95
+		};
+		
+		var $jog_controls_top = $('.top-ajax-jog-controls-holder').jogcontrols(controls_options).on('action', app.jogActionHandler);
+		
+		
+		$(document).mouseup(function(a) {
+            $(".top-ajax-temperatures-dropdown").is(a.target) || 0 !== $(".top-ajax-temperatures-dropdown").has(a.target).length || ($(".top-ajax-temperatures-dropdown").fadeOut(150), $(".top-ajax-temperatures-dropdown").prev().removeClass("active"))
+            $(".top-ajax-jog-dropdown").is(a.target) || 0 !== $(".top-ajax-jog-dropdown").has(a.target).length || ($(".top-ajax-jog-dropdown").fadeOut(150), $(".top-ajax-jog-dropdown").prev().removeClass("active"))
+        });
+		
+		
+	}
+	/**
+	*
+	**/
+	app.disableTopBarControls = function () {
+		$("#top-temperatures").off();
+		$("#jog-shortcut").off();
+	}
+	/**
+	*
+	**/
+	app.enableTopBarControls = function ()
+	{
+		$("#top-temperatures").click(function(a) {
+			var b = $(this);
+		   	b.next(".top-ajax-temperatures-dropdown").is(":visible") ? (b.next(".top-ajax-temperatures-dropdown").fadeOut(150), b.removeClass("active")) : (b.next(".top-ajax-temperatures-dropdown").fadeIn(150), b.addClass("active"));
+		   	var c = b.next(".top-ajax-temperatures-dropdown").find(".btn-group > .active > input").attr("id");
+		   	b = null, c = null, a.preventDefault()
+       	});
+		
+		$("#jog-shortcut").click(function(a) {
+        	var b = $(this);
+            b.next(".top-ajax-jog-dropdown").is(":visible") ? (b.next(".top-ajax-jog-dropdown").fadeOut(150), b.removeClass("active")) : (b.next(".top-ajax-jog-dropdown").fadeIn(150), b.addClass("active"));
+            var c = b.next(".top-ajax-jog-dropdown").find(".btn-group > .active > input").attr("id");
+            b = null, c = null, a.preventDefault()
+        });
+	}
+	/**
+	*
+	**/
+	app.domReadyMisc = function() {
+		
+		if (typeof(Storage) !== "undefined"){
+			if(localStorage.getItem("temperaturesPlot") !== null){			
+				temperaturesPlot =  JSON.parse(localStorage.getItem("temperaturesPlot"));
+			}
+		}
+		
+        $(".language").click(function() {
+
+			var actual_lang = $("#actual_lang").val();
+			var new_lang = $(this).attr("data-value");
+		
+			if (actual_lang != new_lang) {
+				$("#lang").val(new_lang);
+				openWait('<i class="fa fa-flag"></i><br> Loading language ');
+				$("#lang_form").submit();
+			}
+		
+		});
+		
+		$("#lock").click(function() {
+			app.lockScreen();
+		});
+		
+		$("#refresh-notifications").click(function() {
+			app.refreshNotificationsContent();
+		});
+		
+		app.initTopBarControls();
 	};
 	/*
 	 * 
