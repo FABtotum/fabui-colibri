@@ -100,4 +100,48 @@ def getEeprom(app):
             eeprom["servo_endstop"] = getServoEndstopValues(line)
     
     return eeprom
+
+def version(app):
+    ### controller serail ID
+    retr = app.macro("M760",   "ok", 1, _("Controller serial ID"), verbose=False)
+    controller_serial_id = retr[0]
+    ### controller control code
+    retr = app.macro("M761",   "ok", 1, _("Controller control code"), verbose=False)
+    controller_control_code = retr[0]
+    ### board version
+    retr = app.macro("M762",   "ok", 1, _("Board version"), verbose=False)
+    board_version = retr[0]
+    ### Production batch (hardware version)
+    retr = app.macro("M763",   "ok", 1, _("Production batch"), verbose=False)
+    production_batch = retr[0]
+    ### Production batch control code
+    retr = app.macro("M764",   "ok", 1, _("Production batch control code"), verbose=False)
+    production_batch_control_code = retr[0]
+    ### firmware version
+    retr = app.macro("M765",   "ok", 1, _("Firmware version"), verbose=False)
+    firmware_version = retr[0]
+    ### Firmware build date
+    retr = app.macro("M766",   "ok", 1, _("Firmware build date"), verbose=False)
+    firmware_build_date = retr[0]
+    ### firmware author
+    retr = app.macro("M767",   "ok", 1, _("Firmware author"), verbose=False)
+    firmware_author = retr[0]
     
+    return {
+        'firmware' : {
+            'version' : firmware_version,
+            'build_date' : firmware_build_date,
+            'author' : firmware_author
+        },
+        'production' : {
+            'batch': production_batch,
+            'control_code' : production_batch_control_code
+        },
+        'controller' : {
+            'serial_id' : controller_serial_id,
+            'control_code' : controller_control_code
+        },
+        'board' : {
+            'version' : board_version
+        }
+    }
