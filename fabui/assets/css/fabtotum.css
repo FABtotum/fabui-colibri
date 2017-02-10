@@ -36,23 +36,37 @@
 	position: relative;
 }
 
+@media only screen and (max-width: 980px) {
+    #top-temperatures-info {
+		display:none !important;
+	}
+}
+
 @media only screen and (min-width: 320px) {
 	.scan-preview {
 		/*width: 50%*/;
 		width: 10%;
 	}
+	
+	
 }
 @media only screen and (min-width: 486px) {
 	.scan-preview {
 		/*width: 25%;*/
 		width: 10%;
 	}
+	
+	
+	
+	
 }
 @media only screen and (min-width: 768px) {
 	.scan-preview {
 		/*width: 16.66666667%;*/
 		width: 10%;
 	}
+	
+	
 }
 @media only screen and (min-width: 1025px) {
 	.scan-preview {
@@ -237,10 +251,10 @@
     display: none;
     z-index: 905;
     top: 48px;
-    left: -42px;
+    left: -70px;
     width: 344px;
     min-height: 170px;
-    height: 250px;
+    height: 230px;
     border-radius: 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -588,3 +602,7 @@ body.smart-style-6 .top-bed-target-temp, body.smart-style-6 .top-ext-target-temp
 	right: -30px; top:-10;
 }
 
+#top-bar-nozzle-actual, #top-bar-bed-actual {
+	font-size: 15px !important;
+	color: #a65858 !important;
+}

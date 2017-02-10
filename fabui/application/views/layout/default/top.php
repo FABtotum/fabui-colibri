@@ -87,16 +87,15 @@
 		<div class="btn-header transparent">
 			<span id="top-temperatures">
 				<a href="javascript:void(0)" style="cursor: pointer !important;" rel="tooltip" data-placement="left" data-html="true" data-original-title="Temperatures<br> controls">
-					<i class="icon-fab-term"></i> N: <span id="top-bar-nozzle-actual"></span>/<span id="top-bar-nozzle-target"></span> - B: <span id="top-bar-bed-actual"></span>/<span id="top-bar-bed-target"></span>&nbsp;
+					<i class="icon-fab-term"></i>  
+					<span class="hidden-xs" id="top-temperatures-info"><strong>N</strong>: <span id="top-bar-nozzle-actual" class="hidden-xs"></span>/<span id="top-bar-nozzle-target" class="hidden-xs"></span> - <strong>B</strong>: <span id="top-bar-bed-actual" class="hidden-xs"></span>/<span id="top-bar-bed-target" class="hidden-xs"></span>&nbsp;</span>
 				</a>
 			</span>
 			<div class="top-ajax-temperatures-dropdown">
 					<h4><i class=" icon-fab-term"></i> Nozzle</h4>
 					<div id="top-act-ext-temp"  class="noUiSlider top-act-ext-temp"></div>
 					<div id="top-ext-target-temp" class="noUiSlider top-ext-target-temp top-extruder-range"></div>
-					<hr class="simple margin-top-60">
-					
-					<h4 class="margin-top-10"><i class=" icon-fab-term"></i> Bed</h4>
+					<h4 class="margin-top-50"><i class=" icon-fab-term"></i> Bed</h4>
 					<div id="top-act-bed-temp" class="noUiSlider top-act-bed-temp"></div>
 					<div id="top-bed-target-temp" class="noUiSlider top-bed-target-temp top-bed-range"></div>
 				</div>
