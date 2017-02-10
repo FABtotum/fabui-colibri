@@ -283,4 +283,27 @@ if(!function_exists('instaSort')){
 		return ($feedA['date'] > $feedB['date']) ? -1 : 1;
 	}
 }
+//////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('highlightInstagramHashTags')){
+	
+	/**
+	 * 
+	 */
+	function highlightInstagramHashTags($feeds)
+	{
+		$re = '/(#\w+)/';
+		$new_feeds = array();
+		foreach($feeds as $feed){
+			$caption = $feed['caption'];
+			preg_match_all($re, $feed['caption'], $matches);
+			foreach($matches[0] as $match){
+				$caption =  highlight_phrase($caption, $match, '<a target="_blank" href="https://www.instagram.com/explore/tags/'.str_replace('#', '', $match).'">', '</a>').PHP_EOL;
+			}
+			$temp = $feed;
+			$temp['caption'] = $caption;
+			$new_feeds[] = $temp;
+		}
+		return $new_feeds;
+	}
+}
 ?>

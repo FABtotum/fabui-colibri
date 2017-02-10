@@ -152,7 +152,7 @@
 		if(file_exists($this->config->item('instagram_feed_file'))){
 			$feeds = json_decode(file_get_contents($this->config->item('instagram_feed_file')), true);
 			$feeds = $feeds['data'];
-			//print_r($feeds); exit();
+			$feeds = highlightInstagramHashTags($feeds);
 			$feeds = array_unique($feeds, SORT_REGULAR);
 			/**
 			 * sort by date and order columns to have the most recent on top
@@ -169,6 +169,7 @@
 			$data['feedsA'] = $a;
 			$data['feedsB'] = $b;
 		}
+		
 		$this->load->view('dashboard/instagram', $data);
 	}
 			
