@@ -807,6 +807,8 @@ function startTask()
 	$('#myWizard').wizard('next');
 	disableButton('.button-prev');
 	disableButton('.button-next');
+	fabApp.freezeMenu('scan');
+	fabApp.disableTopBarControls();
 	setInterval(timer, 1000);
 }  
 /**
@@ -842,6 +844,8 @@ if(typeof manageMonitor != 'function'){
 **/
 function initRunningTaskPage()
 {
+	console.log("init running task");
+	fabApp.disableTopBarControls();
 	getTaskMonitor(true);
 }
 /**

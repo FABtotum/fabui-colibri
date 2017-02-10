@@ -124,7 +124,7 @@
 			</fieldset>
 			<fieldset>
 				<div class="row">
-					<section class="col col-6">
+					<section class="col col-sm-12">
 						<label class="label">Z Max Home Pos (mm)</label>
 						<label class="input">
 							<input type="number" id="zprobe-zmax" name="zprobe-zmax" value="<?php echo $defaultSettings['z_max_offset']; ?>">
@@ -158,7 +158,7 @@
 		<div class="smart-form">
 			<fieldset>
 				<div class="row">
-					<section class="col col-6">
+					<section class="col col-sm-12">
 						<label class="label">Pre-heating Nozzle temperature</label>
 						<label class="input">
 							<input type="number" id="print-pre_heating-nozzle" name="print-pre_heating-nozzle" value="<?php echo $defaultSettings['print']['pre_heating']['nozzle'] ?>">
@@ -166,7 +166,7 @@
 					</section>
 				</div>
 				<div class="row">
-					<section class="col col-6">
+					<section class="col col-sm-12">
 						<label class="label">Pre-heating Bed temperature</label>
 						<label class="input">
 							<input type="number" id="print-pre_heating-bed" name="print-pre_heating-bed" value="<?php echo $defaultSettings['print']['pre_heating']['bed'] ?>">
@@ -174,7 +174,7 @@
 					</section>
 				</div>
 				<div class="row">
-					<section class="col col-6">
+					<section class="col col-sm-12">
 						<label class="label">Calibration preference</label>
 						<label class="select">
 							<?php echo form_dropdown('print-calibration', $printCalibrationPreferenceOptions, $defaultSettings['print']['calibration'], 'id="print-calibration"'); ?> <i></i>
@@ -188,14 +188,14 @@
 	<div class="tab-pane fade in" id="milling-tab">
 		<div class="smart-form">
 			<fieldset>
-				<div class="row">
-					<section class="col col-6">
+				
+					<section >
 						<label class="label">Sacrificial Layer Thickness (mm)</label>
 						<label class="input">
 							<input type="number" id="milling-layer_offset" name="milling-layer_offset" value="<?php echo $defaultSettings['milling']['layer_offset'] ?>">
 						</label>
 					</section>
-				</div>
+				
 			</fieldset>
 		</div>
 	</div>

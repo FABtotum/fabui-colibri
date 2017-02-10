@@ -25,12 +25,17 @@
 		);
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
-		$widget->id     = 'main-widget-4th-axis';
+		$widget->id     = 'support-widget';
+		$widget->class  = 'well transparent ';
 		$widget->header = array('icon' => 'fa-support ', "title" => "<h2>Support</h2>");
-		$widget->body   = array('content' => $this->load->view('support/widget', $data, true ), 'class'=>'fuelux');
+		$widget->body   = array('content' => $this->load->view('support/widget', $data, true ), 'class'=>'');
 		
+		$data['supportWidget'] = $widget->print_html(true);
+		
+		$this->addCssFile('/assets/css/support/style.css');
 		$this->addJsInLine($this->load->view('support/js', $data, true));
-		$this->content = $widget->print_html(true);
+		
+		$this->content = $this->load->view('support/index', $data, true );
 		$this->view();
 	}
 

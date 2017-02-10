@@ -59,15 +59,14 @@ def check_pre_scan(app, args = None):
     # Disable feeder
     app.macro("M120",               "ok", 1,    _("Disable Endstop checking") )
     app.macro("G91",                "ok", 2,    _("Setting rel position"), verbose=False)
-    app.macro("G0 Z-"+str(feeder_disengage_offset)+" F300",   "ok", 5, _("Engaging 4th Axis Motion") )
-    app.macro("M400",                "ok", 100,   _("Wait for moves to finish"), verbose=False)
+    app.macro("G0 Z-"+str(feeder_disengage_offset)+" F300",   "ok", 100, _("Engaging 4th Axis Motion") )
+    #app.macro("M400",                "ok", 100,   _("Wait for moves to finish"), verbose=False)
     app.macro("M121",               "ok", 1,    _("Enable Endstop checking") )
-    
     app.macro("G90",                "ok", 2,    _("Setting Absolute position"), verbose=False)
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), verbose=True)
     # Move to collimation
-    app.macro("G0 Z135 F1000",  "ok", 5,        _("Moving to pre-scan position") )
-    app.macro("M400",           "ok", 55,       _("Wait for all moves to finish"), verbose=False)
+    app.macro("G0 Z135 F1000",  "ok", 100,        _("Moving to pre-scan position") )
+    #app.macro("M400",           "ok", 55,       _("Wait for all moves to finish"), verbose=False)
     # macro("M18","ok",1,"Motor Off",1) #should be moved to firmware
     
 def rotary_scan(app, args = None):
@@ -88,10 +87,10 @@ def rotary_scan(app, args = None):
     app.macro("M702 S0",  "ok", 2,            _("Turning off lights"), verbose=False)
     app.macro("M703 S0",  "ok", 2,            _("Turning off lights"), verbose=False)
     app.macro("G90",        "ok", 2,            _("Setting Absolute position"), verbose=False)
-    app.macro("G0 X96 Y175 Z135 E0 F10000", "ok", 90,   _("Moving to collimation position") )
+    app.macro("G0 X96 Y175 Z135 E0 F10000", "ok", 100,   _("Moving to collimation position") )
     app.macro("M302 S0",    "ok", 2,            _("Enabling cold extrusion"), verbose=False)
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), verbose=True)
-    app.macro("M400",        "ok", 55,          _("Wait for all moves to finish"), verbose=False)
+    #app.macro("M400",        "ok", 55,          _("Wait for all moves to finish"), verbose=False)
     #macro("M92 E"+str(units['a']),"ok",1,"Setting 4th axis mode",0)
     
 def photogrammetry_scan(app, args = None):
@@ -112,10 +111,10 @@ def photogrammetry_scan(app, args = None):
     app.macro("M702 S255",  "ok", 2,            _("Turning on lights"), verbose=False)
     app.macro("M703 S255",  "ok", 2,            _("Turning on lights"), verbose=False)
     app.macro("G90",        "ok", 2,            _("Setting Absloute position"), verbose=False)
-    app.macro("G0 X96 Y175 Z135 E0 F10000", "ok", 90,   _("Moving to collimation position") )
+    app.macro("G0 X96 Y175 Z135 E0 F10000", "ok", 100,   _("Moving to collimation position") )
     app.macro("M302 S0",    "ok",2,             _("Enabling cold extrusion"), verbose=False)
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), verbose=True)
-    app.macro("M400",       "ok", 55,           _("Wait for all moves to finish"), verbose=False)
+    #app.macro("M400",       "ok", 55,           _("Wait for all moves to finish"), verbose=False)
 
 def sweep_scan(app, args = None):
     try:
@@ -137,8 +136,8 @@ def sweep_scan(app, args = None):
     #~ app.macro("G27",            "ok", 90,       _("Homing all axis") )
     app.macro("G90",            "ok", 2,        _("Setting Absolute position"), verbose=False)
     # macro("M92 E"+str(units['a']),"ok",1,"Setting 4th axis mode",0)
-    app.macro("G0 Z145 F1000",  "ok", 90,       _("Lowering the plane"), verbose=False)
-    app.macro("M400",            "ok", 55,      _("Wait for all moves to finish"), verbose=False)
+    app.macro("G0 Z145 F1000",  "ok", 100,       _("Lowering the plane"), verbose=False)
+    #app.macro("M400",            "ok", 55,      _("Wait for all moves to finish"), verbose=False)
     
 #~ def sweep_scan_new(app, args = None):
     #~ try:
@@ -193,11 +192,11 @@ def end_scan(app, args = None):
     app.macro("M402",                   "ok", 10,   _("Retracting Probe") )
     app.macro("M700 S0",                "ok", 3,    _("Shutting Down Laser") )
     app.macro("G90",                    "ok", 10,   _("Setting Absolute position"), verbose=False)
-    app.macro("G0 E0 F5000",            "ok", 55,   _("Rasing Probe"), verbose=False)
-    app.macro("G0 Z140 F5000",          "ok", 55,   _("Rasing Probe"), verbose=False)
+    app.macro("G0 E0 F5000",            "ok", 100,   _("Rasing Probe"), verbose=False)
+    app.macro("G0 Z140 F5000",          "ok", 100,   _("Rasing Probe"), verbose=False)
     #go back to user-defined colors
     app.macro("M701 S"+str(color['r']), "ok", 2,    _("Turning on lights"), verbose=False)
     app.macro("M702 S"+str(color['g']), "ok", 2,    _("Turning on lights"), verbose=False)
     app.macro("M703 S"+str(color['b']), "ok", 2,    _("Turning on lights"), verbose=False)
-    app.macro("M400",                   "ok", 55,   _("Wait for all moves to finish"), verbose=False)
+    #app.macro("M400",                   "ok", 55,   _("Wait for all moves to finish"), verbose=False)
     app.macro("M300",                   "ok", 1,    _("Scan completed!"), verbose=False)

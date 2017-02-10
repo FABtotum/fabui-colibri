@@ -41,8 +41,8 @@ def extrude(app, args):
     app.macro("M92 E{0}".format(units_e), "ok", 2, _("Setting extruder mode") )
     app.macro("M302",  "ok", 1,    _("Allowing cold extrusion") )
     app.macro("G91",   "ok", 1,    _("Set rel position") )
-    app.macro("G0 E{0} F400".format(filamentToExtrude),    "ok", 100,    _("Extruding...") )
-    app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), verbose=False)
+    app.macro("G0 E{0} F400".format(filamentToExtrude),    "ok", 300,    _("Extruding...") )
+    #app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), verbose=False)
     
 def change_step(app, args):
     new_step = float(args[0])
@@ -60,20 +60,17 @@ def unload_spool(app, args = None):
     app.macro("G90",                "ok", 10,   _("Set abs position"), verbose=False)
     app.macro("M302 S0",            "ok", 10,   _("Extrusion prevention disabled"), verbose=False)
     app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), verbose=False)
-    app.macro("G0 Z150 F10000",     "ok", 10,   _("Moving to safe zone"), verbose=False) #right top corner Z=150mm
+    app.macro("G0 Z150 F10000",     "ok", 100,   _("Moving to safe zone"), verbose=False) #right top corner Z=150mm
     app.macro("G91",                "ok", 2,    _("Set rel position"), verbose=False)
     app.macro("G92 E0",             "ok", 5,    _("Set extruder to zero"), verbose=False)
     app.macro("M92 E{0}".format(units_e), "ok", 30,   _("Setting extruder mode"), verbose=False)
-
-    
     app.macro("M300",               "ok", 2,    _("<b>Start Pulling!</b>"), verbose=False)
-    app.macro("M400",               "ok", 100,  _("Wait for move to finish"), verbose=False)
+    #app.macro("M400",               "ok", 100,  _("Wait for move to finish"), verbose=False)
     app.trace( _("<b>Start Pulling!</b>") )
-    app.macro("G0 E-800 F550",      "ok", 10,   _("Expelling filament") )
-    app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
-    app.macro("G0 E-200 F550",      "ok", 10,   _("Expelling filament"), verbose=False)
-    app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
-    
+    app.macro("G0 E-800 F550",      "ok", 300,   _("Expelling filament") )
+    #app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
+    app.macro("G0 E-200 F550",      "ok", 300,   _("Expelling filament"), verbose=False)
+    #app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
     app.macro("M104 S0",            "ok", 1,    _("Turning off heater") )
     app.macro("M302 S170",          "ok", 10,   _("Extrusion prevention enabled"), verbose=False)
     
@@ -83,21 +80,19 @@ def load_spool(app, args = None):
     app.trace( _("Loading Spool : Procedure Started.") )
     app.macro("G90",                "ok", 2,    _("Set abs position"), verbose=False)
     app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), verbose=False)
-    app.macro("G0 Z150 F10000",     "ok", 10,   _("Moving to Safe Zone"), verbose=False)
+    app.macro("G0 Z150 F10000",     "ok", 100,   _("Moving to Safe Zone"), verbose=False)
     app.macro("M302 S0",            "ok", 5,    _("Enabling Cold extrusion"), verbose=False)
     app.macro("G91",                "ok", 2,    _("Set relative position"), verbose=False)
     app.macro("G92 E0",             "ok", 5,    _("Setting extruder position to 0"), verbose=False)
     app.macro("M92 E{0}".format(units_e), "ok", 5,    _("Setting extruder mode"), verbose=False)
     app.macro("M104 S190",          "ok", 5,    _("Pre-Heating Nozzle. Get ready to push...") ) #heating and waiting.
     app.macro("M300",               "ok", 5,    _("<b>Start pushing!</b>") )
-
-    app.macro("G0 E110 F500",       "ok", 150,    _("Loading filament") )
-    app.macro("G0 E660 F700",       "ok", 150,    _("Loading filament (fast)") )
+    app.macro("G0 E110 F500",       "ok", 300,    _("Loading filament") )
+    app.macro("G0 E660 F700",       "ok", 300,    _("Loading filament (fast)") )
     app.macro("M109 S210",          None, 400,  _("Waiting to get to temperature...") ) #heating and waiting.
-    app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
-    app.macro("G0 E100 F200",       "ok", 1,    _("Entering the hotend (slow)") )
-    app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
-
+    #app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
+    app.macro("G0 E100 F200",       "ok", 100,    _("Entering the hotend (slow)") )
+    #app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
     app.macro("M104 S0",            "ok", 1,    _("Turning off heater") )
     app.macro("M302 S170",          "ok", 1,    _("Disabling Cold Extrusion Prevention"), verbose=False)
 
@@ -149,7 +144,7 @@ def manual_bed_leveling(app, args = None):
         app.macro("M402",          "ok",   2,      _("Retracting Probe (safety)"), verbose=False)
 
     app.macro("G0 Z{0} F5000".format(probe_height),    "ok",   99,  _("Moving to start Z height")) #mandatory!
-    app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), verbose=False )
+    #app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), verbose=False )
 
     app.macro("M401",          "ok",   2,      _("Extend Probe"), verbose=False)
 
