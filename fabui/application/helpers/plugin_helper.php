@@ -114,29 +114,8 @@ if ( !function_exists('getOnlinePlugins'))
 		$CI->config->load('fabtotum');
 		$url_base = $CI->config->item('plugins_endpoint');
 		
-		$repo = json_decode( file_get_contents( $url_base . 'online.json' ), true);
+		$repo = json_decode( file_get_contents( $url_base . 'cached.json' ), true);
 		
-		foreach($repo['plugins'] as $slug => $info)
-		{
-			$frags = explode("github.com/", $info['url']);
-			
-			$repo_name = $frags[1];
-			
-			$releases_api_url = 'https://api.github.com/repos/'.$repo_name.'/releases';
-			ini_set('user_agent','Mozilla/4.0 (compatible; MSIE 6.0)');
-			$git_releases = json_decode(file_get_contents($releases_api_url), true);
-			
-			$latest_version = 'unknown';
-			
-			foreach($git_releases as $release)
-			{
-				$latest_version = $release['tag_name'];
-				break;
-			}
-			
-			$repo['plugins'][$slug]['version'] = $latest_version;
-		}
-			
 		return $repo;
 	}
 }
@@ -228,7 +207,6 @@ if ( ! function_exists('managePlugin'))
 		$CI =& get_instance();
 		$CI->load->helper('fabtotum');
 		
-		//~ return startBashScript('plugin_manager.sh', array($action, $plugin), false, true);
 		return startPyScript('plugin_manager.py', $action.' -p '.$plugin, false, true);
 	}
 	 

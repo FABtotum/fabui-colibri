@@ -21,9 +21,12 @@
 import os
 
 class File:
-    def __init__(self, file_url):
+    def __init__(self, file_url, filename='', use_endpoint=True):
         self.name = os.path.basename(file_url)
         self.endpoint = file_url
+        self.use_endpoint = use_endpoint
+        if filename:
+            self.name = filename
         self.size = 0
         self.progress = 0
         self.status = ''
@@ -40,7 +43,10 @@ class File:
     
     def setProgress(self, progress):
         self.progress = progress
-        
+    
+    def getUseDirectURL(self):
+        return not self.use_endpoint
+    
     def getEndpoint(self):
         return self.endpoint
     

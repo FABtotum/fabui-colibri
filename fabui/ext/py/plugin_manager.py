@@ -39,7 +39,8 @@ from fabtotum.update.factory  import UpdateFactory
 from fabtotum.update import BundleTask, FirmwareTask, BootTask
 from fabtotum.utils import create_dir, create_link, build_path, \
                             find_file, copy_files, remove_dir, remove_file
-
+from fabtotum.utils.plugin import activate_plugin, deactivate_plugin, \
+                            remove_plugin, install_plugin, get_installed_plugins
 from fabtotum.database.plugin import Plugin
 from fabtotum.update import UpdateFactory, PluginTask
 
@@ -82,43 +83,13 @@ class PluginManagerApplication(GCodePusher):
          
     def state_change_callback(self, state):
         if state == 'aborted' or state == 'finished':
-            #~ self.trace( _("Print STOPPED") )
+            print "Task STOPPED"
             self.finalize_task()
 
-    def update_monitor(self):
+    def update_monitor(self, factory=None):
         with self.monitor_lock:
             self.update_stats.update( self.factory.serialize() )
             self.update_monitor_file()
-    
-    def extract_plugin(self, plugin_filename):
-        """
-        Extract plugin file and verify that it IS a plugin archive
-        """
-        top = ""
-        meta = {}
-        
-        temp_dir = build_path( self.config.get('general', 'temp_path'), 'new_plugin' )
-        create_dir(temp_dir)
-        
-        self.trace(_("Extracting plugin..."))
-        
-        cmd = "unzip {0} -d {1} -o".format(plugin_filename, temp_dir)
-        try:
-            subprocess.check_output( shlex.split(cmd) )
-        except subprocess.CalledProcessError as e:
-            pass
-        
-        fn = find_file("meta.json", temp_dir)
-
-        try:
-            fn = fn[0]
-            f = open(fn)
-            meta =  json.loads( f.read() )
-            top = os.path.dirname(fn)
-        except Exception as e:
-            remove_dir(temp_dir)
-        
-        return top, meta
     
     def run_install(self, plugins):
         """
@@ -127,17 +98,7 @@ class PluginManagerApplication(GCodePusher):
         plugins_path = self.config.get('general', 'plugins_path')
         
         for plugin in plugins:
-            top, meta = self.extract_plugin(plugin)
-            
-            if meta:
-                plugin_slug = meta['plugin_slug']
-                plugin_dir  = os.path.join(plugins_path, plugin_slug)
-                create_dir(plugin_dir)
-                self.trace(_("Installing plugin..."))
-                copy_files( os.path.join(top, '*'), plugin_dir)
-                
-                remove_dir(top)
-                
+            if install_plugin(plugin):
                 print "ok"
             else:
                 print "ERROR: File '{0}' is not a plugin archive".format(plugin)
@@ -151,55 +112,28 @@ class PluginManagerApplication(GCodePusher):
         plugins_path = self.config.get('general', 'plugins_path')
         
         for plugin in plugins:
-            plugin_dir = os.path.join( plugins_path, plugin )
-            
-            self.trace(_("Removing plugin..."))
-            
-            if os.path.exists(plugin_dir):
-                remove_dir(plugin_dir)
-            
+            remove_plugin(plugin, self.config)
             print "ok"
         
     def run_activate(self, plugins):
         """
         Activate plugins by creating links in the system to plugin resources
-        """
-        plugins_path = self.config.get('general', 'plugins_path')
-        fabui_path = self.config.get('general', 'fabui_path')
-        
+        """        
         for plugin in plugins:
-            plugin_dir = os.path.join(plugins_path, plugin)
-            
-            if not os.path.exists(plugin_dir):
-                continue
-
             self.trace(_("Activating plugin..."))
-            # Link controller
-            create_link( os.path.join(plugin_dir, 'controller.php'), os.path.join(fabui_path, 'application/controllers/Plugin_{0}.php'.format(plugin) ) ) 
-            # Link views
-            create_dir(os.path.join( fabui_path, 'application/view/plugin' ) )
-            create_link( os.path.join(plugin_dir, 'views'), os.path.join(fabui_path, 'application/views/plugin/{0}'.format(plugin)) ) 
-            # Link assets
-            create_dir( os.path.join( fabui_path, 'assets/plugin' ) )
-            create_link( os.path.join(plugin_dir, 'assets'), os.path.join(fabui_path, 'assets/plugin/{0}'.format(plugin)) ) 
-            
+            activate_plugin(plugin, self.config)
             print "ok"
         
     def run_deactivate(self, plugins):
         """
         Deactivate plugins by removing their links to the system
         """
-        fabui_path = self.config.get('general', 'fabui_path')
-        
         for plugin in plugins:
             self.trace(_("Deactivating plugin..."))
-            remove_file( os.path.join(fabui_path, 'application/controllers/Plugin_{0}.php'.format(plugin) ) )
-            remove_file( os.path.join(fabui_path, 'application/views/plugin/{0}'.format(plugin)) )
-            remove_file( os.path.join(fabui_path, 'assets/plugin/{0}'.format(plugin)) )
-            
+            deactivate_plugin(plugin, self.config)
             print "ok"
     
-    def get_release(self, repo_name):
+    def __get_release(self, repo_name):
         try:
             g = Github()
             repo = g.get_repo(repo_name)
@@ -209,9 +143,6 @@ class PluginManagerApplication(GCodePusher):
             return []
     
     def run_check_updates(self):
-        #repo = g.get_repo(repo_name)
-      
-        #~ plugins = Plugin(self.db).get_plugins()
         plugins_path = self.config.get('general', 'plugins_path')
         
         for dirname in os.listdir(plugins_path):
@@ -231,12 +162,12 @@ class PluginManagerApplication(GCodePusher):
                     if len(repo_name) < 2:
                         continue
                     
-                    releases = self.get_release(repo_name[1])
+                    releases = self.__get_release(repo_name[1])
                     for rel in releases:
                         print "REL", rel.tag_name, rel.zipball_url
     
-    def run_check_repo(self):
-        result = []
+    def __check_repo(self):
+        result = {}
         
         plugins = self.factory.getPlugins()
         for slug in plugins:
@@ -247,29 +178,73 @@ class PluginManagerApplication(GCodePusher):
                 continue
                 
             
-            releases = self.get_release(repo_name[1])
+            releases = self.__get_release(repo_name[1])
+            latest = ''
             if releases:
+                for rel in releases:
+                    if 'releases' not in plugin:
+                        plugin['releases'] = {}
+                    plugin['releases'][rel.tag_name] = {'version':rel.tag_name, 'url_zip':rel.zipball_url, 'url_tar':rel.tarball_url}
+                    if not latest:
+                        latest = rel.tag_name
+                        plugin['latest'] = latest
+                result[slug] = plugin
                 
-                result.append( plugin )
-                
-                #~ for rel in releases:
-                    #~ print "REL", rel.tag_name, rel.zipball_url
-                
+        return result
+        
+    def run_check_repo(self):
+        result = self.__check_repo()
         print json.dumps(result)
     
     def run_update(self, task_id, plugins):
         """
         Plugin update procedure
         """
+        #~ task_id = -1
+        print "task started"
+        
         self.prepare_task(task_id, task_type='plugin', task_controller='update')
         self.set_task_status(GCodePusher.TASK_RUNNING)
     
-        for plugin in plugins:
-            self.trace(_("Updating plugin {0}...").format(plugin) )
-        # TODO
+        print "getting online repo"
+        repo_plugins = self.factory.getPlugins()
+        
+        for slug in plugins: 
+            print "check", slug
+            if slug in repo_plugins:
+                repo_plugin = repo_plugins[slug]
+                latest = repo_plugin['latest']
+                print "Name:", repo_plugin['name']
+                print "Latest:", latest
+                print "Rels:", repo_plugin['releases']
+                
+                task = PluginTask(slug, repo_plugin)
+                self.factory.addTask(task)
+        
+        print "downloading"
+        
+        self.factory.setStatus('downloading')
+        for task in self.factory.getTasks():
+            self.factory.setCurrentTask( task.getName() )
+            self.factory.update()
+            self.trace(_("Downloading plugin {0}...").format(task.getName()) )
+            task.download()
 
+        active_plugins = Plugin(self.db).get_active_plugins()
+        installed_plugins = get_installed_plugins()
+
+        print "installing"
+        self.factory.setStatus('installing')    
+        for task in self.factory.getTasks():
+            self.factory.setCurrentTask( task.getName() )
+            self.factory.update()
+            self.trace(_("Installing plugin {0}...").format(task.getName()) )
+            task.install()
+            self.trace(_("Installed plugin {0}").format(task.getName()) )
+        
+        self.trace(_("Finishing task"))
         print "finishing task"
-        self.finish_task()
+        self.finalize_task()
 
 def main():
     # SETTING EXPECTED ARGUMENTS

@@ -92,9 +92,13 @@ class TableItem(object):
         return key in self._attribs
         
     def __setitem__(self, key, value):
+        if key not in self._attribs:
+            raise KeyError
         self._attribs[key] = value
         
     def __getitem__(self, key):
+        if key not in self._attribs:
+            raise KeyError
         return self._attribs[key]
     
     def query_by(self, key, value):
@@ -113,8 +117,10 @@ class TableItem(object):
                     self._attribs[k] = raw[idx]
                     idx += 1
                     result = True
-                    
-        return result
+        if result:
+            return self
+        else:
+            return None
         
     def exists(self):
         """
@@ -219,6 +225,9 @@ class TableItem(object):
         return lastrowid
             
     def delete(self, multiple = None):
+        '''
+        
+        '''
         with self._db.lock:
             conn = self._db.get_connection()
             

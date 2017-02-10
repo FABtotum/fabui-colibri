@@ -60,7 +60,7 @@ class RemoteVersion:
         self.firmware = json.loads(self.getRemoteData( os.path.join(self.firmware_endpoint, "fablin", self.mcu, "version.json") ) )
         
     def setPlugins(self):
-        self.plugins = json.loads(self.getRemoteData( os.path.join( self.plugin_endpoint, "online.json") ) )
+        self.plugins = json.loads(self.getRemoteData( os.path.join( self.plugin_endpoint, "cached.json") ) )
     
     def getColibri(self):
         return self.colibri
@@ -80,9 +80,7 @@ class RemoteVersion:
         return {}
         
     def getPlugins(self):
-        if 'plugins' in self.plugins:
-            return self.plugins['plugins']
-        return {}
+        return self.plugins
     
     def getColibriEndpoint(self):
         return os.path.join(self.colibri_endpoint, self.arch)

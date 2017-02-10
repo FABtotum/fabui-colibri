@@ -87,6 +87,7 @@ $route['maintenance/nozzle-height-calibration'] = 'nozzle';
 $route['plugin/add'] = 'plugin/add';
 $route['plugin/online'] = 'plugin/online';
 $route['plugin/doUpload'] = 'plugin/doUpload';
+$route['plugin/update/(:any)'] = 'plugin/manage/update/$1';
 $route['plugin/remove/(:any)'] = 'plugin/manage/remove/$1';
 $route['plugin/activate/(:any)'] = 'plugin/manage/activate/$1';
 $route['plugin/deactivate/(:any)'] = 'plugin/manage/deactivate/$1';

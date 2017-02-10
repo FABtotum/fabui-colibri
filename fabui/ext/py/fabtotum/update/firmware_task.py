@@ -80,5 +80,3 @@ class FirmwareTask(SubTask):
 			print "Firmware not installed"
 			self.setStatus('error')
 			self.setMessage(install_output)
-		
-		self.setStatus('installed')

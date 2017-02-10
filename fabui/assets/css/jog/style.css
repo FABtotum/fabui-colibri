@@ -89,6 +89,10 @@ hr.simple {
 	font-weight: bold;
 }
 
+.code {
+	cursor:pointer;
+}
+
 .code-extra {
 	padding: 20px !important;
 }

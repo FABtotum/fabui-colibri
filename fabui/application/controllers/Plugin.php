@@ -93,29 +93,20 @@
 		$this->load->helper('plugin_helper');
 		
 		$installed_plugins = getInstalledPlugins();
-		$allowed_actions = array('remove', 'activate', 'deactivate');
+		$allowed_actions = array('remove', 'activate', 'deactivate', 'update');
+		$result = false;
 		
-		if( array_key_exists($plugin, $installed_plugins) )
+		if( array_key_exists($plugin, $installed_plugins) || ($action == 'update')  )
 		{
 			$this->content  = json_encode($action);
 			if( in_array($action, $allowed_actions) )
 			{
 				managePlugin($action, $plugin);
-				
-				switch($action)
-				{
-					case 'activate':
-						$this->plugins->activate($plugin);
-						break;
-					case 'remove':
-					case 'deactivate':
-						$this->plugins->deactivate($plugin);
-						break;
-				}
+				$result = true;
 			}
 		}
 		
-		$this->output->set_content_type('application/json')->set_output(json_encode(true));
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
 
 	public function online()

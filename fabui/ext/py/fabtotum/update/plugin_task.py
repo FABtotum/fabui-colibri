@@ -22,63 +22,42 @@ import shlex, subprocess
 import time
 
 from fabtotum.update.subtask  import SubTask
+from fabtotum.utils.plugin import install_plugin
 
 class PluginTask(SubTask):
 
 	def __init__(self, name, data, factory=None):
 		super(PluginTask, self).__init__(name, "plugin", factory)
 		
-		#~ self.latest        = data["latest"]
-		#~ self.date_uploaded = data[self.latest]['date-uploaded']
-		#~ self.version       = data[self.latest]['version']
+		self.latest        = data["latest"]
+		rel                = data['releases'][self.latest]
+		self.version       = rel['version']
+		self.slug          = data['slug']
 		
-		#~ for tag in data[self.latest]['files']:
-			#~ self.addFile(tag, data[self.latest]['files'][tag])
-	
-		#~ self.setMainFile("firmware")
+		download_url = rel['url_zip']
+		self.addFile('plugin', download_url, self.slug + '.zip', use_endpoint=False)
+		self.setMainFile("plugin")
 	
 	def serialize(self):
 		data = super(PluginTask, self).serialize()
-		#~ data["latest"] = self.latest
+		data["latest"] = self.latest
+		data["slug"] = self.slug
 		return data
 
 	def install(self):
 		self.setStatus('installing')
-		print "TODO: firmware install"
-		
-		#~ cmd = 'sh /usr/share/fabui/ext/bash/totumduino_manager.sh update ' + self.getFile("firmware").getLocal()
 		
 		errorcode = 0
 		success = [0]
 		install_output = ""
 		
-		#~ self.factory.gcs.close_serial()
+		plugin_name = self.getName()
+		plugin_file = self.getFile("plugin").getLocal()
 		
-		#~ try:
-			#~ install_output = subprocess.check_output( shlex.split(cmd) )
-		#~ except subprocess.CalledProcessError as e:
-			#~ install_output = e.output
-			#~ errorcode = e.returncode
-		
-		#~ self.factory.gcs.open_serial()
-		
-		#~ print cmd
-		#~ print install_output
-		
-		time.sleep(2)
-		
-		#~ cmd = 'cp ' + self.getFile("gcodes").getLocal() + ' /var/lib/fabui/settings/gcodes.json';
-		#~ try:
-			#~ subprocess.check_output( shlex.split(cmd) )
-		#~ except subprocess.CalledProcessError as e:
-			#~ pass
-		
-		if errorcode in success:
+		if install_plugin( plugin_file, config=self.factory.config):
 			print "Plugin installed"
 			self.setStatus('installed')
 		else:
 			print "Plugin not installed"
 			self.setStatus('error')
-			self.setMessage(install_output)
-		
-		self.setStatus('installed')
+			self.setMessage('Failed to install plugin "{0}"'.format(plugin_name))

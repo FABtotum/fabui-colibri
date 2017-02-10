@@ -87,8 +87,8 @@ class SubTask(object):
     def getMessage(self):
         return self.message
         
-    def addFile(self, tag, file_url):
-        self.files[tag] = File(file_url)
+    def addFile(self, tag, file_url, filename='', use_endpoint=True):
+        self.files[tag] = File(file_url, filename, use_endpoint)
         
     def getFile(self, tag):
         return self.files[tag]
@@ -115,7 +115,10 @@ class SubTask(object):
         file_endpoint = file.getEndpoint()
         file_name = file.getName()
         
-        url = os.path.join(self.factory.getEndpoint(self.getType()), file_endpoint)
+        if file.getUseDirectURL():
+            url = file_endpoint
+        else:
+            url = os.path.join(self.factory.getEndpoint(self.getType()), file_endpoint)
         
         print "URL: ", url
         
