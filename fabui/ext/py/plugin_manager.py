@@ -30,8 +30,6 @@ import shlex, subprocess
 # Import external modules
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
-import pycurl
-from github import Github
 
 # Import internal modules
 from fabtotum.fabui.gpusher import GCodePusher
@@ -132,69 +130,6 @@ class PluginManagerApplication(GCodePusher):
             self.trace(_("Deactivating plugin..."))
             deactivate_plugin(plugin, self.config)
             print "ok"
-    
-    def __get_release(self, repo_name):
-        try:
-            g = Github()
-            repo = g.get_repo(repo_name)
-            return repo.get_releases()
-        except Exception as e:
-            print "GIT-ERROR:", e
-            return []
-    
-    def run_check_updates(self):
-        plugins_path = self.config.get('general', 'plugins_path')
-        
-        for dirname in os.listdir(plugins_path):
-            plugin_dir = os.path.join( plugins_path, dirname)
-            plugin_meta = os.path.join(plugin_dir, "meta.json")
-            if os.path.exists(plugin_meta):
-                print dirname, plugin_meta
-                with open(plugin_meta) as f:
-                    meta = json.loads( f.read() )
-                    
-                if 'plugin_uri' in meta:
-                    url = meta['plugin_uri']
-                    if not url:
-                        continue
-                        
-                    repo_name = url.split('https://github.com/')
-                    if len(repo_name) < 2:
-                        continue
-                    
-                    releases = self.__get_release(repo_name[1])
-                    for rel in releases:
-                        print "REL", rel.tag_name, rel.zipball_url
-    
-    def __check_repo(self):
-        result = {}
-        
-        plugins = self.factory.getPlugins()
-        for slug in plugins:
-            plugin = plugins[slug]
-            url    = plugin['url']
-            repo_name = url.split('https://github.com/')
-            if len(repo_name) < 2:
-                continue
-                
-            
-            releases = self.__get_release(repo_name[1])
-            latest = ''
-            if releases:
-                for rel in releases:
-                    if 'releases' not in plugin:
-                        plugin['releases'] = {}
-                    plugin['releases'][rel.tag_name] = {'version':rel.tag_name, 'url_zip':rel.zipball_url, 'url_tar':rel.tarball_url}
-                    if not latest:
-                        latest = rel.tag_name
-                        plugin['latest'] = latest
-                result[slug] = plugin
-                
-        return result
-        
-    def run_check_repo(self):
-        result = self.__check_repo()
-        print json.dumps(result)
     
     def run_update(self, task_id, plugins):
         """

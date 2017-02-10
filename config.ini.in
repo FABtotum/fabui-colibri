@@ -16,6 +16,7 @@ lock = @FABUI_TEMP_PATH@LOCK
 temperature = @FABUI_TEMP_PATH@temperature.json
 trace = @FABUI_TEMP_PATH@trace
 temp_path = @FABUI_TEMP_PATH@
+fabui_path = @FABUI_PATH@
 task_monitor = @FABUI_TEMP_PATH@task_monitor.json
 ext_path = @SHARED_PATH@ext/
 python_scripts = @PYTHON_PATH@

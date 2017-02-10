@@ -100,6 +100,86 @@
 	</div>
 	
 	<div class="tab-pane fade in" id="create-new-tab">
+		<div class="smart-form">
+			<header>New Plugin Creator</header>
+			<fieldset>
+				<div class="row">
+					<section class="col col-6">
+						<label class="label">Name</label>
+						<label class="input">
+							<input type="text" id="plugin-name" placeholder="My New Plugin">
+						</label>
+					</section>
+					
+					<section class="col col-6">
+						<label class="label">Short name</label>
+						<label class="input">
+							<input type="text" id="plugin-slug" placeholder="my_new_plugin">
+						</label>
+					</section>
+					
+					
+				</div>
+				<div class="row">
+					<section class="col col-6">
+						<label class="label">Description</label>
+						<label class="input">
+							<input type="text" id="plugin-description" placeholder="Some description">
+						</label>
+					</section>
+					
+					<section class="col col-6">
+						<label class="label">Version</label>
+						<label class="input">
+							<input type="text" id="plugin-version" placeholder="0.10.0">
+						</label>
+					</section>
+				</div>
+				
+				<div class="row">
+					<section class="col col-6">
+						<label class="label">Author name</label>
+						<label class="input">
+							<input type="text" id="author-name" placeholder="Name Surname">
+						</label>
+					</section>
+					
+					<section class="col col-6">
+						<label class="label">Author URL</label>
+						<label class="input">
+							<input type="text" id="author-url" placeholder="http://your.contact.url/">
+						</label>
+					</section>
+				</div>
+				
+				<div class="row">
+					<section class="col col-6">
+						<label class="label">Menu Title</label>
+						<label class="input">
+							<input type="text" id="menu-title" placeholder="My New plugin">
+						</label>
+					</section>
+					
+					<section class="col col-6">
+						<label class="label">Menu Location</label>
+						<label class="input">
+							<input type="text" id="menu-location" placeholder="/my_new_plugin">
+						</label>
+					</section>
+				</div>
+				
+				<div class="row">
+					<section class="col col-6">
+						<label class="label">Github Repository</label>
+						<label class="input">
+							<input type="text" id="github-repo" placeholder="https://github.com/MyUserName/my_new_plugin">
+						</label>
+					</section>
+				</div>
+				
+
+			</fieldset>
+		</div>
 	</div>
 		
 </div>
