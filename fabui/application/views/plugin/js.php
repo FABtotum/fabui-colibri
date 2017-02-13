@@ -226,11 +226,23 @@
 			rules:{
 				plugin_slug:{
 					slugChecker: true
+				},
+				author_name:{
+					required:true
+				},
+				plugin_description:{
+					required:true
 				}
 			},
 			messages: {
 				plugin_slug: {
-					slugChecker: '"plugin_" and "fab_" prefixes are not allowed'
+					slugChecker: '<?php echo ('"plugin_" and "fab_" prefixes are not allowed');?>'
+				},
+				author_name:{
+					required: "<?php echo ('Please enter your name here');?>"
+				},
+				plugin_description:{
+					required: "<?php echo ('Please write a short description');?>"
 				}
 			},
 			  submitHandler: function(form) {
@@ -254,8 +266,10 @@
 		{
 			var slug="my_new_plugin";
 			if(value)
-				slug = value.replace(/ /g, "_"); //.replace('.'. '_');
+				slug = value.replace(/ /g, "_").toLowerCase();
 			$("#plugin-slug").val(slug);
+			$("#plugin-menu-0-title").val(value);
+			$("#plugin-menu-0-url").val('/'+slug);
 		}
 	}
 	

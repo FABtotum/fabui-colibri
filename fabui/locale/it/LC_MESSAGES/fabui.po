@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-13 16:40+0100\n"
+"POT-Creation-Date: 2017-02-13 17:26+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -11,6 +11,127 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.7.1\n"
+
+#: fabui/application/config/menu.php:12
+msgid "Dashboard"
+msgstr ""
+
+#: fabui/application/config/menu.php:17
+msgid "Make"
+msgstr ""
+
+#: fabui/application/config/menu.php:21
+msgid "Print"
+msgstr ""
+
+#: fabui/application/config/menu.php:26
+msgid "Mill"
+msgstr ""
+
+#: fabui/application/config/menu.php:31
+msgid "Scan"
+msgstr ""
+
+#: fabui/application/config/menu.php:36
+msgid "History"
+msgstr ""
+
+#: fabui/application/config/menu.php:43
+msgid "Jog"
+msgstr ""
+
+#: fabui/application/config/menu.php:48
+msgid "Project manager"
+msgstr ""
+
+#: fabui/application/config/menu.php:53
+msgid "Maintenance"
+msgstr ""
+
+#: fabui/application/config/menu.php:57
+msgid "Head installation"
+msgstr ""
+
+#: fabui/application/config/menu.php:62
+msgid "Spool managment"
+msgstr ""
+
+#: fabui/application/config/menu.php:67
+msgid "Bed calibration"
+msgstr ""
+
+#: fabui/application/config/menu.php:72
+msgid "Nozzle"
+msgstr ""
+
+#: fabui/application/config/menu.php:76
+msgid "Height calibration"
+msgstr ""
+
+#: fabui/application/config/menu.php:83
+msgid "Probe calibration"
+msgstr ""
+
+#: fabui/application/config/menu.php:87
+msgid "Angle calibration"
+msgstr ""
+
+#: fabui/application/config/menu.php:94
+msgid "Feeder"
+msgstr ""
+
+#: fabui/application/config/menu.php:98
+msgid "Step calibration"
+msgstr ""
+
+#: fabui/application/config/menu.php:103
+msgid "Engage"
+msgstr ""
+
+#: fabui/application/config/menu.php:110
+msgid "4th axis"
+msgstr ""
+
+#: fabui/application/config/menu.php:115
+msgid "First setup"
+msgstr ""
+
+#: fabui/application/config/menu.php:120
+msgid "Firmware"
+msgstr ""
+
+#: fabui/application/config/menu.php:125
+msgid "system info"
+msgstr ""
+
+#: fabui/application/config/menu.php:132
+msgid "Settings"
+msgstr ""
+
+#: fabui/application/config/menu.php:136
+msgid "Hardware"
+msgstr ""
+
+#: fabui/application/config/menu.php:141
+msgid "Network"
+msgstr ""
+
+#: fabui/application/config/menu.php:146
+msgid "Raspicam"
+msgstr ""
+
+#: fabui/application/config/menu.php:153
+msgid "Updates"
+msgstr ""
+
+#: fabui/application/config/menu.php:158
+msgid "Support"
+msgstr ""
+
+#: fabui/application/config/menu.php:163
+#: fabui/application/controllers/Plugin.php:43
+msgid "Plugins"
+msgstr "Plugins"
 
 #: fabui/application/controllers/Plugin.php:33
 msgid "Installed"
@@ -28,49 +149,126 @@ msgstr "Caricare"
 msgid "Create New"
 msgstr "Creare nuovo"
 
-#: fabui/application/controllers/Plugin.php:43
-msgid "Plugins"
-msgstr "Plugins"
-
 #: fabui/application/views/plugin/js.php:51
 #: fabui/application/views/plugin/main_widget.php:10
+#: fabui/application/views/plugin/main_widget.bak.php:10
 msgid "Plugin"
 msgstr "Plugin"
 
 #: fabui/application/views/plugin/main_widget.php:11
+#: fabui/application/views/plugin/main_widget.php:127
+#: fabui/application/views/plugin/main_widget.bak.php:11
+#: fabui/application/views/plugin/main_widget.bak.php:128
 msgid "Version"
 msgstr "Versione"
 
 #: fabui/application/views/plugin/main_widget.php:12
+#: fabui/application/views/plugin/main_widget.bak.php:12
 msgid "Author"
 msgstr "Autore"
 
 #: fabui/application/views/plugin/main_widget.php:24
+#: fabui/application/views/plugin/main_widget.bak.php:24
 msgid "visit plugin site"
 msgstr ""
 
 #: fabui/application/views/plugin/main_widget.php:28
+#: fabui/application/views/plugin/main_widget.bak.php:28
 msgid "Deactivate"
 msgstr "Disattivare"
 
 #: fabui/application/views/plugin/main_widget.php:30
+#: fabui/application/views/plugin/main_widget.bak.php:30
 msgid "Activate"
 msgstr "Attivare"
 
 #: fabui/application/views/plugin/main_widget.php:31
+#: fabui/application/views/plugin/main_widget.bak.php:31
 msgid "Remove"
 msgstr "Rimuovere"
 
 #: fabui/application/views/plugin/main_widget.php:48
+#: fabui/application/views/plugin/main_widget.bak.php:48
 msgid "No plugin installed"
 msgstr ""
 
 #: fabui/application/views/plugin/main_widget.php:49
+#: fabui/application/views/plugin/main_widget.bak.php:49
 msgid "Click \"Upload\" button to upload a new plugin"
 msgstr ""
 
 #: fabui/application/views/plugin/main_widget.php:50
+#: fabui/application/views/plugin/main_widget.bak.php:50
 msgid "Or check the \"Online\" plugin repository"
+msgstr ""
+
+#: fabui/application/views/plugin/main_widget.php:59
+#: fabui/application/views/plugin/main_widget.bak.php:59
+msgid "Checking online repository"
+msgstr ""
+
+#: fabui/application/views/plugin/main_widget.php:80
+#: fabui/application/views/plugin/main_widget.bak.php:80
+msgid ""
+"If you have a plugin in .zip format, you may install it by uploading it here"
+msgstr ""
+
+#: fabui/application/views/plugin/main_widget.php:85
+#: fabui/application/views/plugin/main_widget.bak.php:85
+#, fuzzy
+msgid "Install now"
+msgstr "Installato"
+
+#: fabui/application/views/plugin/main_widget.php:99
+#: fabui/application/views/plugin/main_widget.bak.php:100
+msgid "New Plugin Creator"
+msgstr ""
+
+#: fabui/application/views/plugin/main_widget.php:103
+#: fabui/application/views/plugin/main_widget.bak.php:104
+msgid "Name"
+msgstr ""
+
+#: fabui/application/views/plugin/main_widget.php:110
+#: fabui/application/views/plugin/main_widget.bak.php:111
+msgid "Short name"
+msgstr ""
+
+#: fabui/application/views/plugin/main_widget.php:120
+#: fabui/application/views/plugin/main_widget.bak.php:121
+msgid "Description"
+msgstr ""
+
+#: fabui/application/views/plugin/main_widget.php:136
+#: fabui/application/views/plugin/main_widget.bak.php:137
+#, fuzzy
+msgid "Author name"
+msgstr "Autore"
+
+#: fabui/application/views/plugin/main_widget.php:143
+#: fabui/application/views/plugin/main_widget.bak.php:144
+#, fuzzy
+msgid "Author URL"
+msgstr "Autore"
+
+#: fabui/application/views/plugin/main_widget.php:152
+#: fabui/application/views/plugin/main_widget.bak.php:153
+msgid "Menu title"
+msgstr ""
+
+#: fabui/application/views/plugin/main_widget.php:159
+#: fabui/application/views/plugin/main_widget.bak.php:160
+msgid "Menu location"
+msgstr ""
+
+#: fabui/application/views/plugin/main_widget.php:168
+#: fabui/application/views/plugin/main_widget.bak.php:169
+msgid "Github Repository"
+msgstr ""
+
+#: fabui/application/views/plugin/main_widget.php:181
+#: fabui/application/views/plugin/main_widget.bak.php:182
+msgid "Generate Plugin"
 msgstr ""
 
 #: fabui/ext/py/calculate_extrinsic.py:169
