@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR FABtotum
-# This file is distributed under the same license as the FABUI package.
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
@@ -8,7 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2017-02-13 16:40+0100\n"
+=======
+"POT-Creation-Date: 2017-02-13 15:33+0100\n"
+>>>>>>> a5a6b37a9ea8e137807f532c6cadae80a37335d9
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -103,17 +107,14 @@ msgid "Parameter validation: PASSED."
 msgstr ""
 
 #: fabui/ext/py/calculate_extrinsic.py:280
-#, python-brace-format
 msgid "Parameter saved to \"{0}\"."
 msgstr ""
 
 #: fabui/ext/py/calculate_extrinsic.py:307
-#, python-brace-format
 msgid "Loaded intrinsic parameters from \"{0}\"."
 msgstr ""
 
 #: fabui/ext/py/calculate_extrinsic.py:315
-#, python-brace-format
 msgid "{0} x {1}"
 msgstr ""
 
@@ -122,27 +123,25 @@ msgid "Calculation started."
 msgstr ""
 
 #: fabui/ext/py/calculate_extrinsic.py:323
-#, python-brace-format
 msgid "Calculation for {0} failed."
 msgstr ""
 
 #: fabui/ext/py/calculate_extrinsic.py:325
-#, python-brace-format
 msgid "Calculation for {0} successful."
 msgstr ""
 
 #: fabui/ext/py/calculate_extrinsic.py:346 fabui/ext/py/update.py:143
-#: fabui/ext/py/r_scan.py:361 fabui/ext/py/capture_samples.py:108
-#: fabui/ext/py/p_scan.py:339 fabui/ext/py/plugin_manager.py:188
+#: fabui/ext/py/s_scan.py:378 fabui/ext/py/capture_samples.py:108
+#: fabui/ext/py/r_scan.py:361 fabui/ext/py/plugin_manager.py:188
 #: fabui/ext/py/autotune.py:101 fabui/ext/py/pg_scan.py:255
 #: fabui/ext/py/manual_bed_leveling.py:255 fabui/ext/py/mill.py:115
-#: fabui/ext/py/s_scan.py:378 fabui/ext/py/print.py:135
+#: fabui/ext/py/p_scan.py:339 fabui/ext/py/print.py:135
 msgid "Task ID."
 msgstr ""
 
-#: fabui/ext/py/calculate_extrinsic.py:347 fabui/ext/py/r_scan.py:367
-#: fabui/ext/py/p_scan.py:345 fabui/ext/py/pg_scan.py:260
-#: fabui/ext/py/s_scan.py:384
+#: fabui/ext/py/calculate_extrinsic.py:347 fabui/ext/py/s_scan.py:384
+#: fabui/ext/py/r_scan.py:367 fabui/ext/py/pg_scan.py:260
+#: fabui/ext/py/p_scan.py:345
 msgid "Destination folder."
 msgstr ""
 
@@ -154,9 +153,9 @@ msgstr ""
 msgid "Extrinsic camera parameters."
 msgstr ""
 
-#: fabui/ext/py/calculate_extrinsic.py:350 fabui/ext/py/r_scan.py:371
-#: fabui/ext/py/capture_samples.py:111 fabui/ext/py/pg_scan.py:263
-#: fabui/ext/py/s_scan.py:388
+#: fabui/ext/py/calculate_extrinsic.py:350 fabui/ext/py/s_scan.py:388
+#: fabui/ext/py/capture_samples.py:111 fabui/ext/py/r_scan.py:371
+#: fabui/ext/py/pg_scan.py:263
 msgid "Image width in pixels."
 msgstr ""
 
@@ -172,13 +171,13 @@ msgstr ""
 msgid "X offset."
 msgstr ""
 
-#: fabui/ext/py/calculate_extrinsic.py:354 fabui/ext/py/r_scan.py:377
-#: fabui/ext/py/pg_scan.py:268 fabui/ext/py/s_scan.py:393
+#: fabui/ext/py/calculate_extrinsic.py:354 fabui/ext/py/s_scan.py:393
+#: fabui/ext/py/r_scan.py:377 fabui/ext/py/pg_scan.py:268
 msgid "Y offset."
 msgstr ""
 
-#: fabui/ext/py/calculate_extrinsic.py:355 fabui/ext/py/r_scan.py:376
-#: fabui/ext/py/pg_scan.py:267 fabui/ext/py/s_scan.py:394
+#: fabui/ext/py/calculate_extrinsic.py:355 fabui/ext/py/s_scan.py:394
+#: fabui/ext/py/r_scan.py:376 fabui/ext/py/pg_scan.py:267
 msgid "Z offset."
 msgstr ""
 
@@ -206,77 +205,77 @@ msgstr ""
 msgid "Update firmware"
 msgstr ""
 
-#: fabui/ext/py/r_scan.py:335 fabui/ext/py/pg_scan.py:231
-#: fabui/ext/py/s_scan.py:351
+#: fabui/ext/py/s_scan.py:351 fabui/ext/py/r_scan.py:335
+#: fabui/ext/py/pg_scan.py:231
 msgid "Scan aborted."
 msgstr ""
 
-#: fabui/ext/py/r_scan.py:338 fabui/ext/py/pg_scan.py:234
-#: fabui/ext/py/s_scan.py:354
+#: fabui/ext/py/s_scan.py:354 fabui/ext/py/r_scan.py:338
+#: fabui/ext/py/pg_scan.py:234
 msgid "Scan completed."
 msgstr ""
 
-#: fabui/ext/py/r_scan.py:362 fabui/ext/py/p_scan.py:340
-#: fabui/ext/py/pg_scan.py:256 fabui/ext/py/s_scan.py:379
+#: fabui/ext/py/s_scan.py:379 fabui/ext/py/r_scan.py:362
+#: fabui/ext/py/pg_scan.py:256 fabui/ext/py/p_scan.py:340
 msgid "User ID. (future use)"
 msgstr ""
 
-#: fabui/ext/py/r_scan.py:363 fabui/ext/py/p_scan.py:341
-#: fabui/ext/py/s_scan.py:380
+#: fabui/ext/py/s_scan.py:380 fabui/ext/py/r_scan.py:363
+#: fabui/ext/py/p_scan.py:341
 msgid "Object ID."
 msgstr ""
 
-#: fabui/ext/py/r_scan.py:364 fabui/ext/py/p_scan.py:342
-#: fabui/ext/py/s_scan.py:381
+#: fabui/ext/py/s_scan.py:381 fabui/ext/py/r_scan.py:364
+#: fabui/ext/py/p_scan.py:342
 msgid "Object name."
 msgstr ""
 
-#: fabui/ext/py/r_scan.py:365 fabui/ext/py/p_scan.py:343
-#: fabui/ext/py/mill.py:116 fabui/ext/py/s_scan.py:382
+#: fabui/ext/py/s_scan.py:382 fabui/ext/py/r_scan.py:365
+#: fabui/ext/py/mill.py:116 fabui/ext/py/p_scan.py:343
 #: fabui/ext/py/print.py:136
 msgid "File name."
 msgstr ""
 
-#: fabui/ext/py/r_scan.py:368 fabui/ext/py/pg_scan.py:261
-#: fabui/ext/py/s_scan.py:385
+#: fabui/ext/py/s_scan.py:385 fabui/ext/py/r_scan.py:368
+#: fabui/ext/py/pg_scan.py:261
 msgid "Number of slices."
 msgstr ""
 
-#: fabui/ext/py/r_scan.py:369 fabui/ext/py/pg_scan.py:262
-#: fabui/ext/py/s_scan.py:386
+#: fabui/ext/py/s_scan.py:386 fabui/ext/py/r_scan.py:369
+#: fabui/ext/py/pg_scan.py:262
 msgid "ISO."
 msgstr ""
 
-#: fabui/ext/py/r_scan.py:370 fabui/ext/py/s_scan.py:387
+#: fabui/ext/py/s_scan.py:387 fabui/ext/py/r_scan.py:370
 msgid "Scan laser power 0-255."
 msgstr ""
 
-#: fabui/ext/py/r_scan.py:372 fabui/ext/py/pg_scan.py:264
-#: fabui/ext/py/s_scan.py:389
+#: fabui/ext/py/s_scan.py:389 fabui/ext/py/r_scan.py:372
+#: fabui/ext/py/pg_scan.py:264
 msgid "Image height in pixels"
 msgstr ""
 
-#: fabui/ext/py/r_scan.py:373 fabui/ext/py/s_scan.py:390
+#: fabui/ext/py/s_scan.py:390 fabui/ext/py/r_scan.py:373
 msgid "Camera version"
 msgstr ""
 
-#: fabui/ext/py/r_scan.py:374 fabui/ext/py/pg_scan.py:265
-#: fabui/ext/py/s_scan.py:391
+#: fabui/ext/py/s_scan.py:391 fabui/ext/py/r_scan.py:374
+#: fabui/ext/py/pg_scan.py:265
 msgid "Begin scanning from X."
 msgstr ""
 
-#: fabui/ext/py/r_scan.py:375 fabui/ext/py/pg_scan.py:266
-#: fabui/ext/py/s_scan.py:392
+#: fabui/ext/py/s_scan.py:392 fabui/ext/py/r_scan.py:375
+#: fabui/ext/py/pg_scan.py:266
 msgid "End scanning at X."
 msgstr ""
 
-#: fabui/ext/py/r_scan.py:378 fabui/ext/py/pg_scan.py:269
-#: fabui/ext/py/s_scan.py:395
+#: fabui/ext/py/s_scan.py:395 fabui/ext/py/r_scan.py:378
+#: fabui/ext/py/pg_scan.py:269
 msgid "A offset/rotation."
 msgstr ""
 
-#: fabui/ext/py/r_scan.py:379 fabui/ext/py/p_scan.py:346
-#: fabui/ext/py/s_scan.py:396
+#: fabui/ext/py/s_scan.py:396 fabui/ext/py/r_scan.py:379
+#: fabui/ext/py/p_scan.py:346
 msgid "Output point cloud file."
 msgstr ""
 
@@ -288,55 +287,6 @@ msgstr ""
 msgid "Capture finished."
 msgstr ""
 
-#: fabui/ext/py/p_scan.py:300
-#, python-brace-format
-msgid "Saving point cloud to file {0}"
-msgstr ""
-
-#: fabui/ext/py/p_scan.py:313
-msgid "Physical Probing aborted."
-msgstr ""
-
-#: fabui/ext/py/p_scan.py:316
-msgid "Physical Probing completed."
-msgstr ""
-
-#: fabui/ext/py/p_scan.py:347
-msgid "Number of probes."
-msgstr ""
-
-#: fabui/ext/py/p_scan.py:348
-msgid "X1."
-msgstr ""
-
-#: fabui/ext/py/p_scan.py:349
-msgid "Y1."
-msgstr ""
-
-#: fabui/ext/py/p_scan.py:350
-msgid "X2."
-msgstr ""
-
-#: fabui/ext/py/p_scan.py:351
-msgid "Y2."
-msgstr ""
-
-#: fabui/ext/py/p_scan.py:352
-msgid "Safe Z."
-msgstr ""
-
-#: fabui/ext/py/p_scan.py:353
-msgid "Detail threshold."
-msgstr ""
-
-#: fabui/ext/py/p_scan.py:354
-msgid "Maximum number of skipped probes."
-msgstr ""
-
-#: fabui/ext/py/p_scan.py:355 fabui/ext/py/pg_scan.py:271
-msgid "Show this help message and exit"
-msgstr ""
-
 #: fabui/ext/py/plugin_manager.py:121
 msgid "Activating plugin..."
 msgstr ""
@@ -346,17 +296,14 @@ msgid "Deactivating plugin..."
 msgstr ""
 
 #: fabui/ext/py/plugin_manager.py:165
-#, python-brace-format
 msgid "Downloading plugin {0}..."
 msgstr ""
 
 #: fabui/ext/py/plugin_manager.py:176
-#, python-brace-format
 msgid "Installing plugin {0}..."
 msgstr ""
 
 #: fabui/ext/py/plugin_manager.py:178
-#, python-brace-format
 msgid "Installed plugin {0}"
 msgstr ""
 
@@ -377,7 +324,6 @@ msgid "PID Autotune started."
 msgstr ""
 
 #: fabui/ext/py/autotune.py:83 fabui/ext/py/autotune.py:84
-#, python-brace-format
 msgid "Result: P: {0}, I: {1}, D: {2}"
 msgstr ""
 
@@ -425,12 +371,15 @@ msgstr ""
 msgid "Standalone operation. Does all preparations and cleanup."
 msgstr ""
 
+#: fabui/ext/py/pg_scan.py:271 fabui/ext/py/p_scan.py:355
+msgid "Show this help message and exit"
+msgstr ""
+
 #: fabui/ext/py/manual_bed_leveling.py:159
 msgid "Manual bed leveling error."
 msgstr ""
 
 #: fabui/ext/py/manual_bed_leveling.py:175
-#, python-brace-format
 msgid "Measuring point {0} of {1} ({2} times)"
 msgstr ""
 
@@ -446,18 +395,79 @@ msgstr ""
 msgid "Skip homing."
 msgstr ""
 
+#: fabui/ext/py/mill.py:71
+msgid "Milling STARTED"
+msgstr ""
+
+#: fabui/ext/py/mill.py:83
+msgid "Milling PAUSED"
+msgstr ""
+
+#: fabui/ext/py/mill.py:85
+msgid "Milling RESUMED"
+msgstr ""
+
+#: fabui/ext/py/mill.py:87
+msgid "Milling ABORTED"
+msgstr ""
+
+#: fabui/ext/py/mill.py:108
+msgid "Milling Initialized."
+msgstr ""
+
+#: fabui/ext/py/p_scan.py:300
+msgid "Saving point cloud to file {0}"
+msgstr ""
+
+#: fabui/ext/py/p_scan.py:313
+msgid "Physical Probing aborted."
+msgstr ""
+
+#: fabui/ext/py/p_scan.py:316
+msgid "Physical Probing completed."
+msgstr ""
+
+#: fabui/ext/py/p_scan.py:347
+msgid "Number of probes."
+msgstr ""
+
+#: fabui/ext/py/p_scan.py:348
+msgid "X1."
+msgstr ""
+
+#: fabui/ext/py/p_scan.py:349
+msgid "Y1."
+msgstr ""
+
+#: fabui/ext/py/p_scan.py:350
+msgid "X2."
+msgstr ""
+
+#: fabui/ext/py/p_scan.py:351
+msgid "Y2."
+msgstr ""
+
+#: fabui/ext/py/p_scan.py:352
+msgid "Safe Z."
+msgstr ""
+
+#: fabui/ext/py/p_scan.py:353
+msgid "Detail threshold."
+msgstr ""
+
+#: fabui/ext/py/p_scan.py:354
+msgid "Maximum number of skipped probes."
+msgstr ""
+
 #: fabui/ext/py/gmacro.py:76
-#, python-brace-format
 msgid "Preset '{0}' not found"
 msgstr ""
 
 #: fabui/ext/py/gmacro.py:81
-#, python-brace-format
 msgid "{0} Error(s) occurred"
 msgstr ""
 
 #: fabui/ext/py/gmacro.py:82
-#, python-brace-format
 msgid "{0} operation(s) have been skipped due to errors."
 msgstr ""
 
@@ -484,26 +494,6 @@ msgstr ""
 
 #: fabui/ext/py/gmacro.py:105
 msgid "Macro arguments"
-msgstr ""
-
-#: fabui/ext/py/mill.py:71
-msgid "Milling STARTED"
-msgstr ""
-
-#: fabui/ext/py/mill.py:83
-msgid "Milling PAUSED"
-msgstr ""
-
-#: fabui/ext/py/mill.py:85
-msgid "Milling RESUMED"
-msgstr ""
-
-#: fabui/ext/py/mill.py:87
-msgid "Milling ABORTED"
-msgstr ""
-
-#: fabui/ext/py/mill.py:108
-msgid "Milling Initialized."
 msgstr ""
 
 #: fabui/ext/py/print.py:78
@@ -599,27 +589,22 @@ msgid "Task Started"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:311
-#, python-brace-format
 msgid "Wait for nozzle temperature to reach {0}&deg;C"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:313
-#, python-brace-format
 msgid "Wait for bed temperature to reach {0}&deg;C"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:315
-#, python-brace-format
 msgid "Nozzle temperature set to {0}&deg;C"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:317
-#, python-brace-format
 msgid "Bed temperature set to {0}&deg;C"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:323
-#, python-brace-format
 msgid "Fan value set to {0}%"
 msgstr ""
 
@@ -628,23 +613,19 @@ msgid "Fan off"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:338
-#, python-brace-format
 msgid "Speed factor set to {0}%"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:343
-#, python-brace-format
 msgid "Extruder flow set to {0}%"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:356
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:361
-#, python-brace-format
 msgid "Milling motor RPM set to {0}"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:367
-#, python-brace-format
 msgid "Laser power set to {0}%"
 msgstr ""
 
@@ -653,14 +634,60 @@ msgid "Task has been terminated"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/command_parser.py:133
-#, python-brace-format
 msgid "Error parsing command [{0}], {1}"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/utils/gmacro.py:46
 #: fabui/ext/py/fabtotum/utils/gmacro.py:75
-#, python-brace-format
 msgid "Timeout for {0}"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:35
+msgid "Get Position"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:76
+msgid "Reading settings from eeprom"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:106
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:203
+msgid "Controller serial ID"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:109
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:205
+msgid "Controller control code"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:112
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:207
+msgid "Board version"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:115
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:209
+msgid "Production batch"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:118
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:211
+msgid "Production batch control code"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:121
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:213
+msgid "Firmware version"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:124
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:215
+msgid "Firmware build date"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:127
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:217
+msgid "Firmware author"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:43
@@ -717,14 +744,12 @@ msgstr ""
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:67
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:57
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:149
-#, python-brace-format
 msgid "Pre Heating Nozzle ({0}&deg;) (fast)"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:68
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:58
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:150
-#, python-brace-format
 msgid "Pre Heating Bed ({0}&deg;) (fast)"
 msgstr ""
 
@@ -843,9 +868,9 @@ msgid "Engaging 3D-Printer Feeder"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:131
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:185
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:62
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:82
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:185
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:58
 msgid "Zeroing Z axis"
 msgstr ""
@@ -869,6 +894,139 @@ msgstr ""
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:138
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:195
 msgid "Play beep sound"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:61
+#: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:60
+#: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:81
+msgid "Set abs position"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:66
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:134
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:137
+msgid "Raising"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:96
+msgid "Starting up"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:97
+msgid "Alive!"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:98
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:165
+msgid "Probe Up"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:99
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:100
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:101
+msgid "turning on lights"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:103
+msgid "Safety Settings"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:104
+msgid "Homing direction"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:107
+msgid "Machine Limits Collision warning"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:110
+msgid "Shutting down..."
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:111
+msgid "Play alert sound!"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:112
+msgid "Asleep!"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:126
+#: fabui/ext/py/fabtotum/fabui/macros/calibration.py:124
+msgid "Raising probe"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:152
+msgid "Auto Bed leveling Initialized"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:156
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:157
+msgid "Homing all axis"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:158
+msgid "Auto bed leveling procedure"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:159
+msgid "Getting to idle position"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:162
+msgid "Probe Down"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:184
+msgid "Engaging 4th Axis"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:186
+msgid "Setting Relative position"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:187
+#: fabui/ext/py/fabtotum/fabui/macros/scanning.py:60
+msgid "Disable Endstop checking"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:188
+#: fabui/ext/py/fabtotum/fabui/macros/scanning.py:62
+msgid "Engaging 4th Axis Motion"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:190
+#: fabui/ext/py/fabtotum/fabui/macros/scanning.py:64
+msgid "Enable Endstop checking"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:191
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:199
+#: fabui/ext/py/fabtotum/fabui/macros/scanning.py:66
+#: fabui/ext/py/fabtotum/fabui/macros/scanning.py:92
+#: fabui/ext/py/fabtotum/fabui/macros/scanning.py:116
+#: fabui/ext/py/fabtotum/fabui/macros/scanning.py:179
+msgid "Setting 4th axis mode"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:192
+msgid "Setting position"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:194
+msgid "Check position"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:226
+msgid "Setting Red Color"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:227
+msgid "Setting Green Color"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:228
+msgid "Setting Blue Color"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:42
@@ -898,12 +1056,6 @@ msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:59
 msgid "Unloading Spool : Procedure Started."
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:60
-#: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:81
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:61
-msgid "Set abs position"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:61
@@ -1031,181 +1183,6 @@ msgstr ""
 msgid "Milling completed!"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:66
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:134
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:137
-msgid "Raising"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:96
-msgid "Starting up"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:97
-msgid "Alive!"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:98
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:165
-msgid "Probe Up"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:99
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:100
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:101
-msgid "turning on lights"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:103
-msgid "Safety Settings"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:104
-msgid "Homing direction"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:107
-msgid "Machine Limits Collision warning"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:110
-msgid "Shutting down..."
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:111
-msgid "Play alert sound!"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:112
-msgid "Asleep!"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:126
-#: fabui/ext/py/fabtotum/fabui/macros/calibration.py:124
-msgid "Raising probe"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:152
-msgid "Auto Bed leveling Initialized"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:156
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:157
-msgid "Homing all axis"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:158
-msgid "Auto bed leveling procedure"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:159
-msgid "Getting to idle position"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:162
-msgid "Probe Down"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:184
-msgid "Engaging 4th Axis"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:186
-msgid "Setting Relative position"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:187
-#: fabui/ext/py/fabtotum/fabui/macros/scanning.py:60
-msgid "Disable Endstop checking"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:188
-#: fabui/ext/py/fabtotum/fabui/macros/scanning.py:62
-msgid "Engaging 4th Axis Motion"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:190
-#: fabui/ext/py/fabtotum/fabui/macros/scanning.py:64
-msgid "Enable Endstop checking"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:191
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:199
-#: fabui/ext/py/fabtotum/fabui/macros/scanning.py:66
-#: fabui/ext/py/fabtotum/fabui/macros/scanning.py:92
-#: fabui/ext/py/fabtotum/fabui/macros/scanning.py:116
-#: fabui/ext/py/fabtotum/fabui/macros/scanning.py:179
-msgid "Setting 4th axis mode"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:192
-msgid "Setting position"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:194
-msgid "Check position"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:203
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:106
-msgid "Controller serial ID"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:205
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:109
-msgid "Controller control code"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:207
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:112
-msgid "Board version"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:209
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:115
-msgid "Production batch"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:211
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:118
-msgid "Production batch control code"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:213
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:121
-msgid "Firmware version"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:215
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:124
-msgid "Firmware build date"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:217
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:127
-msgid "Firmware author"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:226
-msgid "Setting Red Color"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:227
-msgid "Setting Green Color"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:228
-msgid "Setting Blue Color"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:35
-msgid "Get Position"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:76
-msgid "Reading settings from eeprom"
-msgstr ""
-
 #: fabui/ext/py/fabtotum/fabui/macros/calibration.py:46
 msgid "Heating Extruder"
 msgstr ""
@@ -1254,7 +1231,6 @@ msgid "Setting paper heigth"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/calibration.py:99
-#, python-brace-format
 msgid "G92 Z{0}"
 msgstr ""
 
