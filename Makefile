@@ -310,3 +310,5 @@ $(OS_COMMON_STAMP):
 $(FABUI_BUNDLE): $(BDATA_STAMP) $(OS_COMMON_STAMP) $(OS_STAMP)
 	$(FAKEROOT_ENV) $(MKSQUASHFS) $(BDATA_DIR) $@ -noappend -comp $(BUNDLE_COMP) -b 512K -no-xattrs
 	md5sum $@ > $@.md5sum
+
+include Makefile.locale

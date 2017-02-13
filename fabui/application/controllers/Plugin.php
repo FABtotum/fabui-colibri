@@ -32,17 +32,19 @@
 			<ul class="nav nav-tabs pull-right">
 				<li class="active"><a data-toggle="tab" href="#installed-tab"> Installed</a></li>
 				<li><a data-toggle="tab" href="#online-tab"> Online</a></li>
-				<li><a data-toggle="tab" href="#add-new-tab"><i class="fa fa-upload""></i> Upload</a></li>
-				<li><a data-toggle="tab" href="#create-new-tab"><i class="fa fa-file-code-o" aria-hidden="true"></i> Create New</a></li>
+				<li><a data-toggle="tab" href="#add-new-tab"><i class="fa fa-upload""></i> '._("Upload").'</a></li>
+				<li><a data-toggle="tab" href="#create-new-tab"><i class="fa fa-file-code-o" aria-hidden="true"></i> '._("Create New").'</a></li>
 			</ul>
 			
 			';
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';
-		$widget->header = array('icon' => 'fa-toggle-down', "title" => "<h2>Plugins</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-toggle-down', "title" => "<h2>"._("Plugins")."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('plugin/main_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 
+		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
+		$this->addJSFile('/assets/js/plugin/inputmask/jquery.inputmask.bundle.js');
 		$this->addJsInLine($this->load->view('plugin/js', $data, true));
 		$this->content = $widget->print_html(true);
 		$this->view();

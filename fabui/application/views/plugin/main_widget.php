@@ -1,15 +1,15 @@
 <div class="tab-content padding-10">
 			
-	<div class="tab-pane fade in active" id="installed-tab">
+	<div class="tab-pane fade in" id="installed-tab">
 	
 	<?php if(count($installed_plugins) > 0): ?>
 
 	<table class="table table-striped table-forum">
 		<thead>
 			<tr>
-				<th>Plugin</th>
-				<th class="text-center hidden-xs">Version</th>
-				<th class="text-center hidden-xs">Author</th>
+				<th><?php echo _("Plugin");?></th>
+				<th class="text-center hidden-xs"><?php echo _("Version");?></th>
+				<th class="text-center hidden-xs"><?php echo _("Author");?></th>
 			</tr>
 		</thead>
 		
@@ -21,14 +21,14 @@
 				<td>
 					<h4>
 						<?php echo $plugin_info['name'] ?>
-						<small><?php echo $plugin_info['description'] ?> | <a class="no-ajax" target="_blank" href="<?php echo $plugin_info['plugin_uri'] ?>"> visit plugin site</a></small>
+						<small><?php echo $plugin_info['description'] ?> | <a class="no-ajax" target="_blank" href="<?php echo $plugin_info['plugin_uri'] ?>"> <?php echo _("visit plugin site");?></a></small>
 					</h4>
 					<p class="margin-top-10">
 						<?php if(isPluginActive($plugin)):  ?>
-						<button class="btn btn-xs btn-warning action-button" data-action="deactivate" data-title="<?php echo $plugin ?>" title="Deactivate">Deactivate</button>	
+						<button class="btn btn-xs btn-warning action-button" data-action="deactivate" data-title="<?php echo $plugin ?>" title="Deactivate"><?php echo _("Deactivate");?></button>	
 					<?php else: ?>
-						<button class="btn btn-xs btn-success action-button" data-action="activate" data-title="<?php echo $plugin ?>" " title="Activate">Activate</button>&nbsp;
-						<button class="btn btn-xs btn-danger remove action-button" data-name="<?php echo $plugin_info['name'] ?>" data-action="remove" data-title="<?php echo $plugin ?>" title="Remove">Remove</button>
+						<button class="btn btn-xs btn-success action-button" data-action="activate" data-title="<?php echo $plugin ?>" " title="Activate"><?php echo _("Activate");?></button>&nbsp;
+						<button class="btn btn-xs btn-danger remove action-button" data-name="<?php echo $plugin_info['name'] ?>" data-action="remove" data-title="<?php echo $plugin ?>" title="Remove"><?php echo _("Remove"); ?></button>
 					<?php endif; ?>
 					</p>
 				</td>
@@ -45,9 +45,9 @@
 	
 	<?php else: ?>
 		
-		<h2 class="text-center"><i class="fa fa-plug"></i> No plugin installed</h2>
-		<h6 class="text-center">Click "Upload" button to upload a new plugin</h6>
-		<h6 class="text-center">Or check the "Online" plugin repository</h6>
+		<h2 class="text-center"><i class="fa fa-plug"></i> <?php echo _('No plugin installed');?></h2>
+		<h6 class="text-center"><?php echo _('Click "Upload" button to upload a new plugin');?></h6>
+		<h6 class="text-center"><?php echo _('Or check the "Online" plugin repository');?></h6>
 		
 	<?php endif; ?>
 	
@@ -99,22 +99,25 @@
 		</div>
 	</div>
 	
-	<div class="tab-pane fade in" id="create-new-tab">
+	<div class="tab-pane fade in active" id="create-new-tab">
+		
 		<div class="smart-form">
+			<form action="" class="new-plugin-meta" id="plugin-meta-form">
+			
 			<header>New Plugin Creator</header>
 			<fieldset>
 				<div class="row">
 					<section class="col col-6">
 						<label class="label">Name</label>
 						<label class="input">
-							<input type="text" id="plugin-name" placeholder="My New Plugin">
+							<input type="text" class="plugin-adaptive-meta" id="plugin-name" name="plugin_name" placeholder="My New Plugin">
 						</label>
 					</section>
 					
 					<section class="col col-6">
 						<label class="label">Short name</label>
 						<label class="input">
-							<input type="text" id="plugin-slug" placeholder="my_new_plugin">
+							<input type="text" class="plugin-adaptive-meta" id="plugin-slug" name="plugin_slug" placeholder="my_new_plugin">
 						</label>
 					</section>
 					
@@ -124,14 +127,14 @@
 					<section class="col col-6">
 						<label class="label">Description</label>
 						<label class="input">
-							<input type="text" id="plugin-description" placeholder="Some description">
+							<input type="text" id="plugin-description" name="plugin_description" placeholder="Some description">
 						</label>
 					</section>
 					
 					<section class="col col-6">
 						<label class="label">Version</label>
 						<label class="input">
-							<input type="text" id="plugin-version" placeholder="0.10.0">
+							<input type="text" id="plugin-version" name="plugin_version" placeholder="0.10.0">
 						</label>
 					</section>
 				</div>
@@ -140,14 +143,14 @@
 					<section class="col col-6">
 						<label class="label">Author name</label>
 						<label class="input">
-							<input type="text" id="author-name" placeholder="Name Surname">
+							<input type="text" id="plugin-author" name="author_name" placeholder="Name Surname">
 						</label>
 					</section>
 					
 					<section class="col col-6">
 						<label class="label">Author URL</label>
 						<label class="input">
-							<input type="text" id="author-url" placeholder="http://your.contact.url/">
+							<input type="text" id="plugin-author_url" name="author_url" placeholder="http://your.contact.url/">
 						</label>
 					</section>
 				</div>
@@ -156,14 +159,14 @@
 					<section class="col col-6">
 						<label class="label">Menu Title</label>
 						<label class="input">
-							<input type="text" id="menu-title" placeholder="My New plugin">
+							<input type="text" id="plugin-menu-0-title" name="menu_title" placeholder="My New plugin">
 						</label>
 					</section>
 					
 					<section class="col col-6">
 						<label class="label">Menu Location</label>
 						<label class="input">
-							<input type="text" id="menu-location" placeholder="/my_new_plugin">
+							<input type="text" id="plugin-menu-0-url" name="menu_location" placeholder="/my_new_plugin">
 						</label>
 					</section>
 				</div>
@@ -172,14 +175,24 @@
 					<section class="col col-6">
 						<label class="label">Github Repository</label>
 						<label class="input">
-							<input type="text" id="github-repo" placeholder="https://github.com/MyUserName/my_new_plugin">
+							<input type="text" id="plugin-url" name="plugin_url"placeholder="https://github.com/MyUserName/my_new_plugin">
 						</label>
 					</section>
 				</div>
 				
-
+				<div class="row">
+					<section>&nbsp;</section>
+				</div>
+				
+				<div class="text-center row">
+					<section>
+						<button class="btn btn-lg btn-primary" type="submit" id="create-new-plugin">Generate Plugin</button>
+					</section>
+				</div>
 			</fieldset>
 		</div>
+		
+		</form>
 	</div>
 		
 </div>

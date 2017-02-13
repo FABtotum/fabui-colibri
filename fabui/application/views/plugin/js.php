@@ -4,9 +4,10 @@
 	
 	$(function() {
 		
-		$(".action-button").on('click', confirmation_check);
-		
-		$("#install-button").on('click', do_upload);
+		initFieldValidation();
+		$(".action-button").on('click', confirmationCheck);
+		$("#install-button").on('click', doUpload);
+		$(".plugin-adaptive-meta").on('input', pluginMetaChange);
 		
 		$("#plugin-file").on('change', function(){
 			
@@ -32,19 +33,19 @@
 			
 		});
 		
-		load_online_plugins();
+		loadOnlinePlugins();
 		
 	});
 	
-	function load_online_plugins()
+	function loadOnlinePlugins()
 	{
 		console.log(installed_plugins);
 		$.get("<?php echo site_url('plugin/online') ?>", function(data, status){
-			populate_online_table(data);
+			populateOnlineTable(data);
 		});
 	}
 	
-	function populate_online_table(plugins)
+	function populateOnlineTable(plugins)
 	{
 		var table_html = '<table class="table table-striped table-forum"><thead><tr>\
 					<th>Plugin</th><th class="text-center hidden-xs">Version</th>\
@@ -70,10 +71,10 @@
 		table_html += '</tbody></table>';
 		$("#online-table").html(table_html);
 		
-		$(".action-button").on('click', confirmation_check);
+		$(".action-button").on('click', confirmationCheck);
 	}
 	
-	function do_action(action, plugin_slug)
+	function doAction(action, plugin_slug)
 	{
 		$(".action-button").addClass("disabled");
 		console.log('ACTION', action, plugin_slug);
@@ -84,7 +85,7 @@
 				dataType: 'json',
 			}).done(function(response){
 				
-				console.log("do_action", response);
+				console.log("doAction", response);
 				
 				$(".action-button").addClass("disabled");
 				
@@ -93,7 +94,7 @@
 			});
 	}
 	
-	function confirmation_check()
+	function confirmationCheck()
 	{
 		var action = $( this ).attr('data-action');
 		var plugin_slug = $( this ).attr('data-title');
@@ -111,7 +112,7 @@
 				   
 					if (ButtonPressed === "Yes")
 					{
-						do_action(action, plugin_slug);
+						doAction(action, plugin_slug);
 					}
 					if (ButtonPressed === "No")
 					{
@@ -126,12 +127,12 @@
 				$(this).addClass('status-button');
 				$(this).html('Connecting...');
 			}
-			do_action(action, plugin_slug);
+			doAction(action, plugin_slug);
 		}
 	
 	}
 	
-	function do_upload()
+	function doUpload()
 	{
 		openWait('<i class="fa fa-spinner fa-spin"></i> Uploading and installing plugin...');
 		var pluginFile = $('#plugin-file').prop('files')[0];   
@@ -199,6 +200,94 @@
 					break;
 			}
 		}
+	}
+	
+	function initFieldValidation()
+	{
+		console.log('initFieldValidation');
+		
+		jQuery.validator.addMethod("slugChecker", function(value, element, param) {
+			if(!param)
+				return true;
+				
+			console.log('VALUE',value);
+			console.log('ELEMENT',element);
+			
+			if(value)
+			{
+				return !value.startsWith("plugin") && !value.startsWith("fab_");
+			}
+			
+			return true;
+		}, 'The "plugin_" prefix is not allowed');
+
+
+		$("#plugin-meta-form").validate({
+			rules:{
+				plugin_slug:{
+					slugChecker: true
+				}
+			},
+			messages: {
+				plugin_slug: {
+					slugChecker: '"plugin_" and "fab_" prefixes are not allowed'
+				}
+			},
+			  submitHandler: function(form) {
+				createNewPlugin();
+			},
+			errorPlacement : function(error, element) {
+				error.insertAfter(element.parent());
+			}
+		});
+
+	}
+	
+	function pluginMetaChange()
+	{
+		var id = $(this).attr('id');
+		var name = $(this).attr('name');
+		var value = $(this).val();
+		
+		console.log(id, name, value);
+		if(id == "plugin-name")
+		{
+			var slug="my_new_plugin";
+			if(value)
+				slug = value.replace(/ /g, "_"); //.replace('.'. '_');
+			$("#plugin-slug").val(slug);
+		}
+	}
+	
+	function createNewPlugin()
+	{
+		var meta = getNewPluginMeta();
+		console.log('META', meta);
+		console.log('Form Submit handler');
+	}
+	
+	function getNewPluginMeta()
+	{
+		var meta = {};
+		$(".new-plugin-meta :input").each(function (index, value) {
+			var name = $(this).attr('name');
+			var json_id = $(this).attr('id');
+			var placeholder = $(this).attr('placeholder');
+			var value = $(this).val();
+			var type = $(this).attr('type');
+			
+			if(name)
+			{
+				if(value != "")
+					meta[json_id] = $(this).val();
+				else
+					meta[json_id] = placeholder;
+			}
+		});
+		
+		//~ preset['pwm-off_during_travel'] = $("#off-during-travel").is(":checked")?true:false;
+
+		return meta;
 	}
 
 </script>
