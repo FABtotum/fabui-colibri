@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html lang="it">
 	<head>{head}</head>
-	<body class="fixed-page-footer smart-style-6">
+	<body class="smart-style-6">
 		{top}
 		{sidebar}
 		<div id="main" role="main">

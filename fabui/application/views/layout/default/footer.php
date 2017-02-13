@@ -15,7 +15,7 @@
 			<span class="txt-color-white">FABui © <?php echo date('Y') ?></span>
 		</div>
 		<div class="col-xs-6 col-sm-6 text-right hidden-xs">
-			<div class="txt-color-white inline-block"><?php if(ENVIRONMENT == 'development'): ?> Page rendered in {elapsed_time} <?php endif; ?></div>
+			
 		</div>
 	</div>
 </div>
