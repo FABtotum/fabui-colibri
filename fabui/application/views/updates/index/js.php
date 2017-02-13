@@ -49,29 +49,30 @@
 	function handleAvailableUpdates(object) {
 		
 		$('.fabtotum-icon').parent().addClass('tada animated');
+		var buttons = '';
 		
 		if(object.update.available){
 			$(".status").html('<i class="fa fa-exclamation-circle"></i> New important software updates are now available');
 			$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-exclamation-circle');
 			
-			var buttons = '';
 			buttons += '<button class="btn btn-default  action-buttons" id="do-update"><i class="fa fa-refresh"></i> Update</button> ';
-			buttons += '<button class="btn btn-default  action-buttons" id="bundle-details"><i class="fa fa-reorder"></i> View details</button> ';
-
-			$(".button-container").html(buttons);
-			createBundlesTable(object);
-			createFirmwareTable(object);
-
-			$("#bundle-details").on('click', showHideBundlesDetails);
 			$("#do-update").on('click', doUpdate);
 
 		}else{
 			$(".status").html('Great! Your FABtotum Personal Fabricator is up to date');
+			$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-check');
 		}
+
+		createBundlesTable(object);
+		createFirmwareTable(object);
+
+		buttons += '<button class="btn btn-default  action-buttons" id="bundle-details"><i class="fa fa-reorder"></i> View details</button> ';
+		$(".button-container").html(buttons);
+		$("#bundle-details").on('click', showHideBundlesDetails);
 	}
 
 
-	function createBundlesTable(data)
+	function createBundlesTable(data, show_check)
 	{
 		
 		var html = '<table id="bundles-table" class="table  table-forum">' + 

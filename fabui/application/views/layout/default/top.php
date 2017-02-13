@@ -10,7 +10,7 @@
 <header id="header">
 	<div id="logo-group">
 		<!-- PLACE YOUR LOGO HERE -->
-		 <span id="logo"> <img src="/assets/img/fabui_v1.png"></span>
+		 <span id="logo"> <img src="/assets/img/logo/fabui_6.png"></span>
 		<!-- END LOGO PLACEHOLDER -->
 		<span id="activity" class="activity-dropdown"> <i class="fa fa-user"></i> <b class="badge"> 0 </b> </span>
 		<!-- AJAX-DROPDOWN : control this dropdown height, look and feel from the LESS variable file -->
@@ -88,14 +88,14 @@
 			<span id="top-temperatures">
 				<a href="javascript:void(0)" style="cursor: pointer !important;" rel="tooltip" data-placement="left" data-html="true" data-original-title="Temperatures<br> controls">
 					<i class="icon-fab-term"></i>  
-					<span class="hidden-xs" id="top-temperatures-info"><strong>N</strong>: <span id="top-bar-nozzle-actual" class="hidden-xs"></span>/<span id="top-bar-nozzle-target" class="hidden-xs"></span> - <strong>B</strong>: <span id="top-bar-bed-actual" class="hidden-xs"></span>/<span id="top-bar-bed-target" class="hidden-xs"></span>&nbsp;</span>
+					<span class="hidden-xs" id="top-temperatures-info"><strong>N</strong>: <span class="top-bar-nozzle-actual font-md"></span> - <strong>B</strong>: <span class="top-bar-bed-actual font-md" ></span>&nbsp;</span>
 				</a>
 			</span>
 			<div class="top-ajax-temperatures-dropdown">
-					<h4><i class=" icon-fab-term"></i> Nozzle</h4>
+					<h4><i class=" icon-fab-term"></i> Nozzle  <small> (<span class="top-bar-nozzle-actual"></span> /<span class="top-bar-nozzle-target"></span> &deg; )</small></h4>
 					<div id="top-act-ext-temp"  class="noUiSlider top-act-ext-temp"></div>
 					<div id="top-ext-target-temp" class="noUiSlider top-ext-target-temp top-extruder-range"></div>
-					<h4 class="margin-top-50"><i class=" icon-fab-term"></i> Bed</h4>
+					<h4 class="margin-top-50"><i class=" icon-fab-term"></i> Bed <small>( <span class="top-bar-bed-actual" ></span>/<span class="top-bar-bed-target" ></span> &deg;)</small></h4>
 					<div id="top-act-bed-temp" class="noUiSlider top-act-bed-temp"></div>
 					<div id="top-bed-target-temp" class="noUiSlider top-bed-target-temp top-bed-range"></div>
 				</div>

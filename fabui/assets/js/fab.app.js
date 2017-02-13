@@ -118,10 +118,10 @@ fabApp = (function(app) {
 		
 		//init temperatures sliders on top
 		if (typeof(Storage) !== "undefined") {
-			$("#top-bar-nozzle-actual").html(parseInt(localStorage.getItem("nozzle_temp")));
-			$("#top-bar-nozzle-target").html(parseInt(localStorage.getItem("nozzle_temp_target")));
-			$("#top-bar-bed-actual").html(parseInt(localStorage.getItem("bed_temp")));
-			$("#top-bar-bed-target").html(parseInt(localStorage.getItem("bed_temp_target")));
+			$(".top-bar-nozzle-actual").html(parseInt(localStorage.getItem("nozzle_temp")));
+			$(".top-bar-nozzle-target").html(parseInt(localStorage.getItem("nozzle_temp_target")));
+			$(".top-bar-bed-actual").html(parseInt(localStorage.getItem("bed_temp")));
+			$(".top-bar-bed-target").html(parseInt(localStorage.getItem("bed_temp_target")));
 		}
 		
 		//bed target
@@ -270,7 +270,7 @@ fabApp = (function(app) {
 	 * 
 	 */
 	app.topBedTempSlide = function(e){
-		$("#top-bar-bed-target").html(parseInt(e[0]));
+		$(".top-bar-bed-target").html(parseInt(e[0]));
 		$("#bed-degrees").html(parseInt(e[0]) + '&deg;C');    
 	    if($("#bed-target-temp").length > 0){
 			document.getElementById('bed-target-temp').noUiSlider.set([parseInt(e[0])]);
@@ -298,7 +298,7 @@ fabApp = (function(app) {
 	 * 
 	 */
 	app.topExtTempSlide = function(e){
-		$("#top-bar-nozzle-target").html(parseInt(e[0]));
+		$(".top-bar-nozzle-target").html(parseInt(e[0]));
 	    $("#ext-degrees").html(parseInt(e[0]) + '&deg;C');
 	    if($("#ext-target-temp").length > 0){
 	    	document.getElementById('ext-target-temp').noUiSlider.set([parseInt(e[0])]);
@@ -731,10 +731,10 @@ fabApp = (function(app) {
 		}
 		
 		//update top bar
-		$("#top-bar-nozzle-actual").html(parseInt(ext_temp));
-		$("#top-bar-nozzle-target").html(parseInt(ext_temp_target));
-		$("#top-bar-bed-actual").html(parseInt(bed_temp));
-		$("#top-bar-bed-target").html(parseInt(bed_temp_target));
+		$(".top-bar-nozzle-actual").html(parseInt(ext_temp));
+		$(".top-bar-nozzle-target").html(parseInt(ext_temp_target));
+		$(".top-bar-bed-actual").html(parseInt(bed_temp));
+		$(".top-bar-bed-target").html(parseInt(bed_temp_target));
 		//top bar sliders
 		document.getElementById('top-act-bed-temp').noUiSlider.set([parseInt(bed_temp)]);
 		document.getElementById('top-bed-target-temp').noUiSlider.set([parseInt(bed_temp_target)]);
