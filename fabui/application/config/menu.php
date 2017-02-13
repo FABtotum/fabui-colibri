@@ -9,158 +9,158 @@
 
 $config['menu'] = array(
 	'dashboard' => array(
-		'title' => 'Dashboard',
+		'title' => _("Dashboard"),
 		'icon' => 'fa fa-dashboard',
 		'url' => 'dashboard'
 	),
 	'make' => array(
-		'title' => 'Make',
+		'title' => _("Make"),
 		'icon' => 'fa-play fa-rotate-90',
 		'sub' => array(
 			'print' => array(
-				'title' => 'Print',
+				'title' => _("Print"),
 				'icon' => 'icon-fab-print',
 				'url' => 'make/print'
 			),
 			'mill' => array(
-				'title' => 'Mill',
+				'title' => _("Mill"),
 				'icon' => 'icon-fab-mill',
 				'url' => 'make/mill'
 			),
 			'scan' => array(
-				'title' => 'Scan',
+				'title' => _("Scan"),
 				'icon' => 'icon-fab-scan',
 				'url' => 'scan'
 			),
 			'history' => array(
-				'title' => 'History',
+				'title' => _("Plugins"),
 				'icon' => 'fa-history',
 				'url' => 'history'
 			)
 		)
 	),
 	'jog' => array(
-		'title' => 'Jog',
+		'title' => _("Jog"),
 		'icon' => 'icon-fab-jog',
 		'url' => 'jog'
 	),
 	'projectsmanager' => array(
-		'title' => 'Projects Manager',
+		'title' => _("Project manager"),
 		'icon' => 'fa-cubes',
 		'url' => 'projectsmanager'
 	),
 	'maintenance' => array(
-		'title' => 'Maintenance',
+		'title' => _("Maintenance"),
 		'icon' => 'fa-wrench',
 		'sub' => array(
 			'head' => array(
-				'title' => 'Head Installation',
+				'title' => _("Head installation"),
 				'icon' => 'fa-toggle-down',
 				'url' => 'maintenance/head/install'
 			),
 			'spool' => array(
-				'title' => 'Spool Management',
+				'title' => _("Spool managment"),
 				'icon' => 'fa-circle-o-notch',
 				'url' => 'maintenance/spool-management'
 			),
 			'bedcalibration' => array(
-				'title' => 'Bed Calibration',
+				'title' => _("Bed calibration"),
 				'icon' => 'fa-arrows-h',
 				'url' => 'maintenance/bed-calibration'
 			),
 			'nozzle' => array (
-				'title' => 'Nozzle',
+				'title' => _("Nozzle"),
 				'icon' => 'fa-thumb-tack',
 				'sub' => array(
 					'height' => array(
-						'title' => 'Height Calibration',
+						'title' => _("Height calibration"),
 						'icon' => 'fa-arrows-v',
 						'url' => 'maintenance/nozzle-height-calibration'
 					)
 				)
 			),
 			'probecalibration' => array(
-				'title' => 'Probe Calibration',
+				'title' => _("Probe calibration"),
 				'icon' => 'fa-level-down',
 				'sub'  => array(
 					'angle' => array(
-						'title' => 'Angle Calibration',
+						'title' => _("Angle calibration"),
 						'icon' => 'fa-angle-left',
 						'url' => 'maintenance/probe-angle-calibration'
 					)
 				)
 			),
 			'feedercalibration' => array(
-				'title' => 'Feeder',
+				'title' => _("Feeder"),
 				'icon' => 'fa-level-down',
 				'sub'  => array(
 					'length' => array(
-						'title' => 'Step Calibration',
+						'title' => _("Step calibration"),
 						'icon' => 'fa-cog',
 						'url' => 'maintenance/feeder-calibration'
 					),
 					'angle' => array(
-						'title' => 'Engage',
+						'title' => _("Engage"),
 						'icon' => 'fa-hand-o-right',
 						'url' => 'maintenance/feeder-engage'
 					)
 				)
 			),
 			'4thaxis' => array(
-				'title' => '4th Axis',
+				'title' => _("4th axis"),
 				'icon' => 'fa-arrows-h',
 				'url' => 'maintenance/4th-axis'
 			),
 			'firstsetup' => array(
-				'title' => 'First Setup',
+				'title' => _("First setup"),
 				'icon' => 'fa-magic',
 				'url' => 'maintenance/first-setup'
 			),
 			'firmware' => array(
-				'title' => 'Firmware',
+				'title' => _("Firmware"),
 				'icon' => 'fa-microchip',
 				'url' => 'maintenance/firmware'
 			),
 			'systeminfo' => array(
-				'title' => 'System Info',
+				'title' => _("system info"),
 				'icon' => 'fa-info-circle',
 				'url' => 'maintenance/system-info'
 			)
 		)
 	),
 	'settings' => array (
-		'title' => 'Settings',
+		'title' => _("Settings"),
 		'icon' => 'fa-cogs',
 		'sub' => array(
 			'hardware' => array(
-				'title' => 'Hardware',
+				'title' => _("Hardware"),
 				'icon' => 'fa-cog',
 				'url' => 'settings/hardware'
 			),
 			'network' => array(
-				'title' => 'Network',
+				'title' => _("Network"),
 				'icon' => 'fa-globe',
 				'url' => 'settings/network'
 			),
 			'raspicam' => array(
-				'title' => 'Raspicam',
+				'title' => _("Raspicam"),
 				'icon' => 'fa-video-camera',
 				'url' => 'settings/cam'
 			)
 		)
 	),
 	'updates' => array(
- 		'title' => 'Updates',
+ 		'title' => _("Updates"),
  		'icon' => 'fa fa-refresh',
  		'url' => 'updates'
 	),
 	'support' => array(
- 		'title' => 'Support',
+ 		'title' => _("Support"),
  		'icon' => 'fa-life-ring',
  		'url' => 'support'
 	),
 	'plugin' => array(
- 		'title' => 'Plugins',
+ 		'title' => _("Plugins"),
  		'icon' => 'fa-plug',
  		'url' => 'plugin'
 	),
