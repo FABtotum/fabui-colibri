@@ -125,6 +125,8 @@ MKSQUASHFS		?= mksquashfs
 BUNDLE_COMP		?= lzo
 ########################### Makefile rules #############################
 
+.PHONY: locale clean distclean bundle check-tools fabui/locale/*.pot
+
 all: $(FABUI_BUNDLE)
 
 clean:

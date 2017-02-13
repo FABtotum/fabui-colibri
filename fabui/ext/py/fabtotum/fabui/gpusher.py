@@ -53,11 +53,11 @@ _ = tr.ugettext
 
 ERROR_MESSAGE = {
     #error codes
-    'UNKNOWN_ERROR'             : _(''),
-    'NO_ERROR'                  : _(''),
-    'ERROR_KILLED'              : _(''),
-    'ERROR_STOPPED'             : _(''),
-    'ERROR_DOOR_OPEN'           : _(''),
+    'UNKNOWN_ERROR'             : _('Unknown error'),
+    'NO_ERROR'                  : _('No error'),
+    'ERROR_KILLED'              : _('Killed'),
+    'ERROR_STOPPED'             : _('Stopped'),
+    'ERROR_DOOR_OPEN'           : _('External door opened'),
     'ERROR_MIN_TEMP'            : _('Extruder temperature below minimal.'),
     'ERROR_MAX_TEMP'            : _('Extruder temperature above maximal.'),
     'ERROR_MAX_BED_TEMP'        : _('Bed temperature above maximal.'),
@@ -65,10 +65,10 @@ ERROR_MESSAGE = {
     'ERROR_X_MIN_ENDSTOP'       : _('X min end-stop triggered.'),
     'ERROR_Y_MAX_ENDSTOP'       : _('Y max end-stop triggered.'),
     'ERROR_Y_MIN_ENDSTOP'       : _('Y min end-stop triggered.'),
-    'ERROR_IDLE_SAFETY'         : _(''),
+    'ERROR_IDLE_SAFETY'         : _('Idle safety'),
     #error codes for FABUI configurable functionalities
-    'ERROR_Y_BOTH_TRIGGERED'    : _(''),
-    'ERROR_Z_BOTH_TRIGGERED'    : _('')
+    'ERROR_Y_BOTH_TRIGGERED'    : _('Both Y endstops triggered'),
+    'ERROR_Z_BOTH_TRIGGERED'    : _('Both Z endstops triggered')
 }
 
 ################################################################################

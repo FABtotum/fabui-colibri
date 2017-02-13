@@ -1,0 +1,16 @@
+XGETTEXT 		= xgettext
+XGETTEXT_ARGS	= --no-wrap
+LC_AUTHOR 		= FABtotum
+LC_PACKAGE_NAME	= FABUI
+
+LC_FABUI_INPUT 	= $(wildcard fabui/application/controllers/*.php wildcard fabui/application/views/*/*.php fabui/application/views/*/*/*.php) \
+				  $(wildcard fabui/ext/py/*.py wildcard fabui/ext/py/fabtotum/*.py fabui/ext/py/fabtotum/*/*.py fabui/ext/py/fabtotum/*/*/*.py )
+
+fabui/locale/fabui.pot: $(LC_FABUI_INPUT)
+	$(XGETTEXT) $(XGETTEXT_ARGS) \
+		-o $@ \
+		--copyright-holder=$(LC_AUTHOR) \
+		--package-name=$(LC_PACKAGE_NAME) \
+		$^
+
+locale: fabui/locale/fabui.pot
