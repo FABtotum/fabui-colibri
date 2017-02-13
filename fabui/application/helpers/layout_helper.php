@@ -306,4 +306,39 @@ if(!function_exists('highlightInstagramHashTags')){
 		return $new_feeds;
 	}
 }
+//////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('buildLanguagesMenu'))
+{
+	/**
+	 * 
+	 */
+	function buildLanguagesMenu()
+	{
+		
+		//TO DO get selcted language
+		
+		$languages = array(
+			'gb' => 'English',
+			'it' => 'Italiano',
+			'de' => 'Deutsch'
+		);
+		
+		$selected  = 'gb';
+		
+		$html = '<ul class="header-dropdown-list hidden-xs"><li>';
+		
+		$html .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="/assets/img/blank.gif" class="flag flag-'.$selected.'" alt="'.$languages[$selected].'"> <span> '.$languages[$selected].' </span> <i class="fa fa-angle-down"></i> </a>';
+		
+		$html .= '<ul class="dropdown-menu pull-right">';
+		foreach($languages as $code => $label){
+			
+			$class = $selected == $code ? 'active' : '';
+			$html .= '<li class="'.$class.'"><a href="javascript:void(0);"><img src="/assets/img/blank.gif" class="flag flag-'.$code.'" alt="'.$label.'"> '.$label.' </a></li>';
+		}
+		$html .= '</ul>';
+		$html .= '</li></ul>';
+		
+		return $html;
+	}
+}
 ?>

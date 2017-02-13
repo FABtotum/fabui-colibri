@@ -64,11 +64,13 @@
 			return;
  		}
 		
-		$data['jsScripts'] = jScriptsInclusion($this->js);
-		$data['cssFiles']  = cssFilesInclusion($this->css);
-		$data['jsInLine']  = $this->jsInLine;
+		$data['jsScripts']   = jScriptsInclusion($this->js);
+		$data['cssFiles']    = cssFilesInclusion($this->css);
+		$data['jsInLine']    = $this->jsInLine;
 		$data['jsInlineTop'] = $this->jsInLineTop;
-		$data['cssInLine'] = $this->cssInline;
+		$data['cssInLine']   = $this->cssInline;
+		$data['languagesMenu'] = buildLanguagesMenu();
+		
 		$this->template['head']    = $this->load->view($this->layoutDefaultFolder.'/head', $data, true);
 		$this->template['top']     = $this->load->view($this->layoutDefaultFolder.'/top', $data, true);
 		$this->template['sidebar'] = $this->load->view($this->layoutDefaultFolder.'/sidebar', array('menu'=> buildMenu($this->menu)), true);

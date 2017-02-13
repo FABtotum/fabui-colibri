@@ -101,6 +101,8 @@
 				</div>
 		</div>
 	</div>
-	<!-- END TEMPERATURES CONTROL BUTTONS -->	
+	<!-- END TEMPERATURES CONTROL BUTTONS -->
+	<?php echo $languagesMenu; ?>
+	
 	<!-- end pulled right: nav area -->
 </header>
