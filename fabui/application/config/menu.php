@@ -33,7 +33,7 @@ $config['menu'] = array(
 				'url' => 'scan'
 			),
 			'history' => array(
-				'title' => _("Plugins"),
+				'title' => _("History"),
 				'icon' => 'fa-history',
 				'url' => 'history'
 			)
