@@ -602,7 +602,11 @@ body.smart-style-6 .top-bed-target-temp, body.smart-style-6 .top-ext-target-temp
 	right: -30px; top:-10;
 }
 
-#top-bar-nozzle-actual, #top-bar-bed-actual {
+.top-bar-nozzle-actual, .top-bar-bed-actual {
+	/*
 	font-size: 15px !important;
 	color: #a65858 !important;
+	*/
+	/*font-weight:bolder;
+	font-size: 15px !important;*/
 }
