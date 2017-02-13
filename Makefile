@@ -33,6 +33,7 @@ BIGTEMP_PATH	 ?= $(MOUNT_BASE_PATH)bigtemp/
 USERDATA_PATH	 ?= $(MOUNT_BASE_PATH)userdata/
 DB_PATH			 ?= $(LIB_PATH)/
 USB_MEDIA_PATH	 ?= /run/media/
+LOCALE_PATH		 ?= $(FABUI_PATH)locale/
 
 # FAB-UI parameters
 SERIAL_PORT 	?= /dev/ttyAMA0
@@ -63,7 +64,8 @@ FABUI_FILES		=	fabui/recovery \
 					fabui/application \
 					fabui/system \
 					fabui/assets \
-					fabui/utilities
+					fabui/utilities \
+					fabui/locale
 
 # <files>/* is to avoid making <files>/<files> path
 RECOVERY_FILES	=	recovery/*
@@ -72,7 +74,7 @@ RECOVERY_FILES	=	recovery/*
 DB				= 	sqlite3
 DB_FILES		= 	fabtotum.db
 
-CONFIG_FILES	=	config.ini serial.ini
+CONFIG_FILES	=	config.ini serial.ini lang.ini
 
 # Files that will end up in SHARED_PATH
 STATIC_FILES	=	
@@ -169,7 +171,8 @@ bundle: $(FABUI_BUNDLE)
 		USB_MEDIA_PATH=$(USB_MEDIA_PATH) \
 		SERIAL_PORT=$(SERIAL_PORT) \
 		SERIAL_BAUD=$(SERIAL_BAUD) \
-		COLIBRI_LIB_PATH=$(COLIBRI_LIB_PATH)
+		COLIBRI_LIB_PATH=$(COLIBRI_LIB_PATH) \
+		LOCALE_PATH=$(LOCALE_PATH)
 
 $(TEMP_DIR):
 	mkdir -p $@
@@ -214,6 +217,9 @@ endif
 #	Public runtime directories
 #~ 	$(FAKEROOT_ENV) $(INSTALL) -d -g $(WWW_DATA_GID) -m 0775 $(BDATA_DIR)/$(TEMP_PATH)
 #	$(FAKEROOT_ENV) $(INSTALL) -d -g $(WWW_DATA_GID) -m 0775 $(BDATA_DIR)$(LIB_PATH)/plugins
+#   Remove unused files
+	$(FAKEROOT_ENV) find $(BDATA_DIR) -name "*.po" -delete
+	$(FAKEROOT_ENV) find $(BDATA_DIR) -name "*.pot" -delete
 ########################################################################
 # 	Fix permissions
 	$(FAKEROOT_ENV) chown -R $(WWW_DATA_UID):$(WWW_DATA_GID) $(BDATA_DIR)$(WWW_PATH)

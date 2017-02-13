@@ -30,8 +30,8 @@
 		
 		$headerToolbar = '
 			<ul class="nav nav-tabs pull-right">
-				<li class="active"><a data-toggle="tab" href="#installed-tab"> Installed</a></li>
-				<li><a data-toggle="tab" href="#online-tab"> Online</a></li>
+				<li class="active"><a data-toggle="tab" href="#installed-tab"> '._("Installed").'</a></li>
+				<li><a data-toggle="tab" href="#online-tab"> '._("Online").'</a></li>
 				<li><a data-toggle="tab" href="#add-new-tab"><i class="fa fa-upload""></i> '._("Upload").'</a></li>
 				<li><a data-toggle="tab" href="#create-new-tab"><i class="fa fa-file-code-o" aria-hidden="true"></i> '._("Create New").'</a></li>
 			</ul>

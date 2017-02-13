@@ -48,17 +48,17 @@
 	function populateOnlineTable(plugins)
 	{
 		var table_html = '<table class="table table-striped table-forum"><thead><tr>\
-					<th>Plugin</th><th class="text-center hidden-xs">Version</th>\
-					<th class="text-center hidden-xs">Author</th>\
+					<th><?php echo _("Plugin"); ?></th><th class="text-center hidden-xs">Version</th>\
+					<th class="text-center hidden-xs"><?php echo ("Author");?></th>\
 				</tr></thead><tbody>';
 				
 		$.each(plugins, function(i, plugin) {
 			console.log('plugin', plugin);
-			table_html += '<tr><td><h4>' + plugin.name + '<small>' + plugin.desc + ' | <a class="no-ajax" target="_blank" href="'+plugin.url+'"> visit plugin site</a></small><p class="margin-top-10">';
+			table_html += '<tr><td><h4>' + plugin.name + '<small>' + plugin.desc + ' | <a class="no-ajax" target="_blank" href="'+plugin.url+'"> <?php echo ("visit plugin site");?></a></small><p class="margin-top-10">';
 			
 			//if( installed_plugins.indexOf(plugin.slug) == -1 )
 			{
-				table_html += '<button class="btn btn-xs btn-primary action-button" data-action="update" data-title="'+plugin.slug+'" " title="Install">Install</button>&nbsp;';
+				table_html += '<button class="btn btn-xs btn-primary action-button" data-action="update" data-title="'+plugin.slug+'" " title="Install"><?php echo ("Install");?></button>&nbsp;';
 			}
 			//else
 			{
@@ -125,7 +125,7 @@
 			if(action == 'update')
 			{
 				$(this).addClass('status-button');
-				$(this).html('Connecting...');
+				$(this).html('<?php echo ("Connecting");?>...');
 			}
 			doAction(action, plugin_slug);
 		}
@@ -134,7 +134,7 @@
 	
 	function doUpload()
 	{
-		openWait('<i class="fa fa-spinner fa-spin"></i> Uploading and installing plugin...');
+		openWait('<i class="fa fa-spinner fa-spin"></i> <?php echo ("Uploading and installing plugin");?>...');
 		var pluginFile = $('#plugin-file').prop('files')[0];   
 		var form_data = new FormData();                  
 		form_data.append('plugin-file', pluginFile);
@@ -150,7 +150,7 @@
 			success: function(response){
 				console.log(response);
 				if(response.installed == true){
-					waitContent('Plugin installed successfully<br>Redirecting to plugins page...');
+					waitContent('<?php echo ("Plugin installed successfully");?><br><?php echo ("Redirecting to plugins page");?>...');
 					setTimeout(function(){
 						location.reload();
 					}, 2000);
@@ -160,7 +160,7 @@
 					closeWait();
 					$.smallBox({
 						title : "Error",
-						content : 'Uploaded zip file is not a plugin archive.',
+						content : '<?php echo ("Uploaded zip file is not a plugin archive");?>',
 						color : "#C46A69",
 						timeout: 10000,
 						icon : "fa fa-warning"
@@ -190,13 +190,13 @@
 		if(current.status != ''){
 			switch(current.status){
 				case 'downloading' :
-					$(".status-button").html('<i class="fa fa-download"></i> Downloading &nbsp;');
+					$(".status-button").html('<i class="fa fa-download"></i> <?php echo ("Downloading");?> &nbsp;');
 					break;
 				case 'installing' :
-					$(".status-button").html('<i class="fa fa-gear fa-spin"></i> Installing &nbsp;');
+					$(".status-button").html('<i class="fa fa-gear fa-spin"></i> <?php echo ("Installing");?> &nbsp;');
 					break;
 				case 'installed':
-					$(".status-button").html('<i class="fa fa-check"></i> Installed &nbsp;');
+					$(".status-button").html('<i class="fa fa-check"></i> <?php echo ("Installed");?> &nbsp;');
 					break;
 			}
 		}

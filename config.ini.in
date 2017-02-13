@@ -31,6 +31,7 @@ notify_file = @FABUI_TEMP_PATH@notify.json
 settings_path = @LIB_PATH@settings/
 plugins_path  = @LIB_PATH@plugins/
 bundles_path  = @COLIBRI_LIB_PATH@bundle/
+locale_path   = @LOCALE_PATH@
 
 [monitor]
 backtrack = 20

@@ -1,25 +1,20 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR FABtotum
-# This file is distributed under the same license as the FABUI package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: FABUI\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-13 16:40+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: fabui/application/controllers/Plugin.php:33
 msgid "Installed"
-msgstr ""
+msgstr "Installato"
 
 #: fabui/application/controllers/Plugin.php:34
 msgid "Online"
@@ -27,28 +22,28 @@ msgstr ""
 
 #: fabui/application/controllers/Plugin.php:35
 msgid "Upload"
-msgstr ""
+msgstr "Caricare"
 
 #: fabui/application/controllers/Plugin.php:36
 msgid "Create New"
-msgstr ""
+msgstr "Creare nuovo"
 
 #: fabui/application/controllers/Plugin.php:43
 msgid "Plugins"
-msgstr ""
+msgstr "Plugins"
 
 #: fabui/application/views/plugin/js.php:51
 #: fabui/application/views/plugin/main_widget.php:10
 msgid "Plugin"
-msgstr ""
+msgstr "Plugin"
 
 #: fabui/application/views/plugin/main_widget.php:11
 msgid "Version"
-msgstr ""
+msgstr "Versione"
 
 #: fabui/application/views/plugin/main_widget.php:12
 msgid "Author"
-msgstr ""
+msgstr "Autore"
 
 #: fabui/application/views/plugin/main_widget.php:24
 msgid "visit plugin site"
@@ -56,15 +51,15 @@ msgstr ""
 
 #: fabui/application/views/plugin/main_widget.php:28
 msgid "Deactivate"
-msgstr ""
+msgstr "Disattivare"
 
 #: fabui/application/views/plugin/main_widget.php:30
 msgid "Activate"
-msgstr ""
+msgstr "Attivare"
 
 #: fabui/application/views/plugin/main_widget.php:31
 msgid "Remove"
-msgstr ""
+msgstr "Rimuovere"
 
 #: fabui/application/views/plugin/main_widget.php:48
 msgid "No plugin installed"
@@ -356,9 +351,9 @@ msgid "Installing plugin {0}..."
 msgstr ""
 
 #: fabui/ext/py/plugin_manager.py:178
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "Installed plugin {0}"
-msgstr ""
+msgstr "Installato"
 
 #: fabui/ext/py/plugin_manager.py:180
 msgid "Finishing task"
@@ -369,8 +364,9 @@ msgid "Command (actvivate|deactivate|install|remove|update)"
 msgstr ""
 
 #: fabui/ext/py/plugin_manager.py:189
+#, fuzzy
 msgid "Plugin list"
-msgstr ""
+msgstr "Plugins"
 
 #: fabui/ext/py/autotune.py:62
 msgid "PID Autotune started."
@@ -1158,8 +1154,9 @@ msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:207
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:112
+#, fuzzy
 msgid "Board version"
-msgstr ""
+msgstr "Versione"
 
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:209
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:115

@@ -1,16 +1,32 @@
 XGETTEXT 		= xgettext
 XGETTEXT_ARGS	= --no-wrap
+MSGMERGE		= msgmerge
 LC_AUTHOR 		= FABtotum
 LC_PACKAGE_NAME	= FABUI
 
 LC_FABUI_INPUT 	= $(wildcard fabui/application/controllers/*.php wildcard fabui/application/views/*/*.php fabui/application/views/*/*/*.php) \
 				  $(wildcard fabui/ext/py/*.py wildcard fabui/ext/py/fabtotum/*.py fabui/ext/py/fabtotum/*/*.py fabui/ext/py/fabtotum/*/*/*.py )
 
+LC_FABUI_OUTPUT = fabui/locale/fabui.pot
+
 fabui/locale/fabui.pot: $(LC_FABUI_INPUT)
-	$(XGETTEXT) $(XGETTEXT_ARGS) \
+	@echo "Creating" $@
+	@$(XGETTEXT) $(XGETTEXT_ARGS) \
 		-o $@ \
 		--copyright-holder=$(LC_AUTHOR) \
 		--package-name=$(LC_PACKAGE_NAME) \
 		$^
 
-locale: fabui/locale/fabui.pot
+locale: locale.it locale.de
+
+locale.%: fabui/locale/%/LC_MESSAGES/fabui.po fabui/locale/fabui.pot
+	$(MSGMERGE) $< $(LC_FABUI_OUTPUT) > new.po
+	cp new.po $<
+	rm new.po
+
+#~ fabui/locale/%/LC_MESSAGES/fabui.po: $(LC_FABUI_OUTPUT)
+#~ 	mkdir -p $(shell dirname $@ )
+#~ 	cp $(LC_FABUI_OUTPUT) $@
+
+fabui/locale/%/LC_MESSAGES/fabui.mo: fabui/locale/%/LC_MESSAGES/fabui.po
+	msgfmt $< -o $@
