@@ -102,7 +102,5 @@
 		</div>
 	</div>
 	<!-- END TEMPERATURES CONTROL BUTTONS -->
-	<?php echo $languagesMenu; ?>
-	
 	<!-- end pulled right: nav area -->
 </header>

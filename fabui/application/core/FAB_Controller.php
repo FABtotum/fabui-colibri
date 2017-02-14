@@ -69,7 +69,6 @@
 		$data['jsInLine']    = $this->jsInLine;
 		$data['jsInlineTop'] = $this->jsInLineTop;
 		$data['cssInLine']   = $this->cssInline;
-		$data['languagesMenu'] = buildLanguagesMenu();
 		
 		$this->template['head']    = $this->load->view($this->layoutDefaultFolder.'/head', $data, true);
 		$this->template['top']     = $this->load->view($this->layoutDefaultFolder.'/top', $data, true);
