@@ -43,6 +43,7 @@
 		$this->load->model('User', 'user');
 		$user = $this->user->get($postData, 1);
 		$user['settings'] = json_decode($user['settings'], true);
+		if(!isset($user['settings']['language'])) $user['settings']['language'] = 'en_US';
 		if($user == false){ //if user doesn't exists
 			//TO DO add flash message
 			redirect('login');
