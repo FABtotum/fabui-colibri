@@ -110,6 +110,15 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="form-group">
+								<label>Select your language </label>
+								<div class="icon-addon addon-md">
+				                    <?php echo langauges_menu('form-control', 'language', 'id="language"');?>
+				                    <label class="fa fa-flag"></label>
+				                </div>
+							</div>
+						</div>
+						<div class="col-sm-12">
+							<div class="form-group">
 								<label>On which timezone you are? </label>
 								<div class="icon-addon addon-md">
 				                    <?php echo timezone_menu('form-control', 'timezone', 'id="timezone"');?>

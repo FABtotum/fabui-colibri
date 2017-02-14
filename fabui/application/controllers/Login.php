@@ -42,6 +42,7 @@
 		//load libraries, models, helpers
 		$this->load->model('User', 'user');
 		$user = $this->user->get($postData, 1);
+		$user['settings'] = json_decode($user['settings'], true);
 		if($user == false){ //if user doesn't exists
 			//TO DO add flash message
 			redirect('login');
@@ -52,7 +53,6 @@
 		//load hardware settings
 		$this->load->helpers('fabtotum_helper');
 		$hardwareSettings = loadSettings('default');
-		if($hardwareSettings['settings_type'] == 'custom') $hardwareSettings = loadSettings('custom');
 		//save hardware settings on session
 		$this->session->settings = $hardwareSettings;
 		redirect('#dashboard');

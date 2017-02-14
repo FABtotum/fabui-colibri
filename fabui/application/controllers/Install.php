@@ -28,6 +28,7 @@ class Install extends FAB_Controller {
 	private function installView()
 	{
 		$this->load->helper('date_helper');
+		$this->load->helper('language_helper');
 		//TODO
 		$this->content = $this->load->view('install/wizard', null, true );
 		$this->addJsInLine($this->load->view('install/js', '', true));
@@ -222,25 +223,36 @@ class Install extends FAB_Controller {
 		$this->load->model('User', 'user');
 		$this->load->model('Configuration', 'configuration');
 		$this->load->helper('os_helper');
+		//load configs
+		$this->config->load('fabtotum');
 		
 		//get data from post	
 		$postData = $this->input->post();
-		print_r($postData);
-		//set system date (first time internet is not available)
-		setSystemDate($postData['browser-date']);
-		unset($postData['browser-date']);
-		//set time zone
-		setTimeZone($postData['timezone']);
-		$this->configuration->store('timezone', $postData['timezone']);
+		
+		//if is first install
+		if(file_exists($this->config->item('autoinstall_file'))){
+			//set system date (first time internet is not available)
+			setSystemDate($postData['browser-date']);
+			unset($postData['browser-date']);
+			//set time zone
+			setTimeZone($postData['timezone']);
+			$this->configuration->store('timezone', $postData['timezone']);
+		}
+		
+		$language = $postData['language'];
 		
 		unset($postData['timezone']);
 		unset($postData['passwordConfirm']);
 		unset($postData['terms']);
 		unset($postData['confirmPassword']);
+		unset($postData['language']);
+		unset($postData['browser-date']);
 		//set user account data
 		$userData = $postData;
 		$userData['session_id'] = $this->session->session_id;
-		$userData['settings'] = '{}';
+		$userData['settings'] = json_encode(array(
+				'language' => $language
+		));
 		$userData['password'] = md5($userData['password']);
 		//ADD USER ACCOUNT
 		$newUserID = $this->user->add($userData);

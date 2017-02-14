@@ -19,6 +19,7 @@
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-production-plugins.min.css">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-production.min.css">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-skins.min.css">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/fabtotum.css?v=<?php echo FABUI_VERSION ?>"
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/demo.min.css">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/lockscreen.min.css">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/third_party.css?v=<?php echo FABUI_VERSION;  ?>" >

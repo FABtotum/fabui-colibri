@@ -16,6 +16,7 @@
 		initValidate();
 		initWizard();
 		initTimeZone();
+		initLanguage();
 		$("#i-agree").click(function(){
 			$this=$("#terms");
 			if($this.checked) {
@@ -134,6 +135,7 @@
 	{
 		$(".next").find('a').html('Installing...');
 		$("#browser-date").val(moment().format('YYYY-MM-DD HH:mm:ss'));
+		openWait("<i class='fa fa-spin fa-spinner'></i> Installation in progress", "This may take awhile, please wait", false);
 		$("#install-form").submit();
 	}
 	/**
@@ -144,5 +146,13 @@
 		var tz = jstz.determine();
 		$("#timezone").val(tz.name());
 	    
+	}
+	/**
+	* detect and select language 
+	*/
+	function initLanguage()
+	{
+		var lang = navigator.language || navigator.userLanguage;
+		$("#language").val(lang);
 	}
 </script>

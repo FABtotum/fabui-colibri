@@ -1,2 +1,15 @@
 [language]
-lang=en
+list=english,italian,german
+current=english
+
+[english]
+code=en
+description=English
+
+[italian]
+code=it
+description=Italiano
+
+[german]
+code=de
+description=Deutsch
