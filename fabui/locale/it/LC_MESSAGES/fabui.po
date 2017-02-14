@@ -6,11 +6,12 @@ msgstr ""
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: it\n"
+"Language: it_IT\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: fabui/application/config/menu.php:12
 msgid "Dashboard"
@@ -34,7 +35,7 @@ msgstr ""
 
 #: fabui/application/config/menu.php:36
 msgid "History"
-msgstr ""
+msgstr "Storia"
 
 #: fabui/application/config/menu.php:43
 msgid "Jog"
@@ -46,19 +47,19 @@ msgstr ""
 
 #: fabui/application/config/menu.php:53
 msgid "Maintenance"
-msgstr ""
+msgstr "Manutenzione"
 
 #: fabui/application/config/menu.php:57
 msgid "Head installation"
-msgstr ""
+msgstr "Installazione testa"
 
 #: fabui/application/config/menu.php:62
 msgid "Spool managment"
-msgstr ""
+msgstr "Gestione filamento"
 
 #: fabui/application/config/menu.php:67
 msgid "Bed calibration"
-msgstr ""
+msgstr "Calibrazione piatto"
 
 #: fabui/application/config/menu.php:72
 msgid "Nozzle"
@@ -190,71 +191,67 @@ msgstr "Rimuovere"
 #: fabui/application/views/plugin/main_widget.php:48
 #: fabui/application/views/plugin/main_widget.bak.php:48
 msgid "No plugin installed"
-msgstr ""
+msgstr "Non ci sono plugin installati"
 
 #: fabui/application/views/plugin/main_widget.php:49
 #: fabui/application/views/plugin/main_widget.bak.php:49
 msgid "Click \"Upload\" button to upload a new plugin"
-msgstr ""
+msgstr "Premi \"Carica\" per caricare un nuovo plugin "
 
 #: fabui/application/views/plugin/main_widget.php:50
 #: fabui/application/views/plugin/main_widget.bak.php:50
 msgid "Or check the \"Online\" plugin repository"
-msgstr ""
+msgstr "Oppure controlla il respository remoto"
 
 #: fabui/application/views/plugin/main_widget.php:59
 #: fabui/application/views/plugin/main_widget.bak.php:59
 msgid "Checking online repository"
-msgstr ""
+msgstr "Controllo repository remoto"
 
 #: fabui/application/views/plugin/main_widget.php:80
 #: fabui/application/views/plugin/main_widget.bak.php:80
-msgid ""
-"If you have a plugin in .zip format, you may install it by uploading it here"
+msgid "If you have a plugin in .zip format, you may install it by uploading it here"
 msgstr ""
 
 #: fabui/application/views/plugin/main_widget.php:85
 #: fabui/application/views/plugin/main_widget.bak.php:85
-#, fuzzy
 msgid "Install now"
-msgstr "Installato"
+msgstr "Installa"
 
 #: fabui/application/views/plugin/main_widget.php:99
 #: fabui/application/views/plugin/main_widget.bak.php:100
 msgid "New Plugin Creator"
-msgstr ""
+msgstr "Generatore di plugin"
 
 #: fabui/application/views/plugin/main_widget.php:103
 #: fabui/application/views/plugin/main_widget.bak.php:104
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: fabui/application/views/plugin/main_widget.php:110
 #: fabui/application/views/plugin/main_widget.bak.php:111
 msgid "Short name"
-msgstr ""
+msgstr "Nome abbreviato"
 
 #: fabui/application/views/plugin/main_widget.php:120
 #: fabui/application/views/plugin/main_widget.bak.php:121
 msgid "Description"
-msgstr ""
+msgstr "Descrizione"
 
 #: fabui/application/views/plugin/main_widget.php:136
 #: fabui/application/views/plugin/main_widget.bak.php:137
-#, fuzzy
 msgid "Author name"
-msgstr "Autore"
+msgstr "Nome autore"
 
 #: fabui/application/views/plugin/main_widget.php:143
 #: fabui/application/views/plugin/main_widget.bak.php:144
-#, fuzzy
 msgid "Author URL"
-msgstr "Autore"
+msgstr "URL autore"
 
 #: fabui/application/views/plugin/main_widget.php:152
 #: fabui/application/views/plugin/main_widget.bak.php:153
 msgid "Menu title"
-msgstr ""
+msgstr "Titolo menu"
 
 #: fabui/application/views/plugin/main_widget.php:159
 #: fabui/application/views/plugin/main_widget.bak.php:160
@@ -269,7 +266,7 @@ msgstr ""
 #: fabui/application/views/plugin/main_widget.php:181
 #: fabui/application/views/plugin/main_widget.bak.php:182
 msgid "Generate Plugin"
-msgstr ""
+msgstr "Genera plugin"
 
 #: fabui/ext/py/calculate_extrinsic.py:169
 msgid "Find chessboard: SUCCESS."
