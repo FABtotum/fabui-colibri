@@ -13,17 +13,6 @@
  	
 	public function index()
 	{
-		
-		
-		putenv('LC_ALL=it_IT');
-		setlocale(LC_ALL, 'it_IT');
-
-		// Specify location of translation tables
-		bindtextdomain("fabui", "/usr/share/fabui/locale");
-
-		// Choose domain
-		textdomain("fabui");
-		
 		//load libraries, helpers, model
 		$this->load->library('smart');
 		$this->load->helper('form');

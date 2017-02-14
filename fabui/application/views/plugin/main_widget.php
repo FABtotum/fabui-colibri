@@ -1,6 +1,6 @@
 <div class="tab-content padding-10">
 			
-	<div class="tab-pane fade in" id="installed-tab">
+	<div class="tab-pane fade in active" id="installed-tab">
 	
 	<?php if(count($installed_plugins) > 0): ?>
 
@@ -91,7 +91,7 @@
 		</div>
 	</div>
 	
-	<div class="tab-pane fade in active" id="create-new-tab">
+	<div class="tab-pane fade in" id="create-new-tab">
 		
 		<div class="smart-form">
 			<form action="" class="new-plugin-meta" id="plugin-meta-form">

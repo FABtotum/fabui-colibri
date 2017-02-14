@@ -36,7 +36,7 @@ from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
 
 # Set up message catalog access
-tr = gettext.translation('p_scan', 'locale', fallback=True)
+tr = gettext.translation('fabui', 'locale', fallback=True)
 _ = tr.ugettext
 
 ################################################################################

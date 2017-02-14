@@ -45,7 +45,7 @@ import fabtotum.speedups.triangulation as tricpp
 from fabtotum.utils.ascfile import ASCFile
 
 # Set up message catalog access
-tr = gettext.translation('r_scan', 'locale', fallback=True)
+tr = gettext.translation('fabui', 'locale', fallback=True)
 _ = tr.ugettext
 
 ################################################################################

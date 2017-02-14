@@ -32,7 +32,7 @@ import fabtotum.fabui.macros.general as general_macros
 import fabtotum.fabui.macros.printing as print_macros
 
 # Set up message catalog access
-tr = gettext.translation('mill', 'locale', fallback=True)
+tr = gettext.translation('fabui', 'locale', fallback=True)
 _ = tr.ugettext
 
 ################################################################################

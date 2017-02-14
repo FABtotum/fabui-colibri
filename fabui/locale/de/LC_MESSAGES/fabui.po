@@ -1,80 +1,82 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-13 17:26+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
-"Language-Team: \n"
+"Language-Team: FABTeam\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.7.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: fabui/application/config/menu.php:12
 msgid "Dashboard"
-msgstr ""
+msgstr "Instrumententafel"
 
 #: fabui/application/config/menu.php:17
 msgid "Make"
-msgstr ""
+msgstr "Herstellen"
 
 #: fabui/application/config/menu.php:21
 msgid "Print"
-msgstr ""
+msgstr "Drucken"
 
 #: fabui/application/config/menu.php:26
 msgid "Mill"
-msgstr ""
+msgstr "Fräsen"
 
 #: fabui/application/config/menu.php:31
 msgid "Scan"
-msgstr ""
+msgstr "Scan"
 
 #: fabui/application/config/menu.php:36
 msgid "History"
-msgstr ""
+msgstr "Historie"
 
 #: fabui/application/config/menu.php:43
 msgid "Jog"
-msgstr ""
+msgstr "Jog"
 
 #: fabui/application/config/menu.php:48
 msgid "Project manager"
-msgstr ""
+msgstr "Projektmanager"
 
 #: fabui/application/config/menu.php:53
 msgid "Maintenance"
-msgstr ""
+msgstr "Instandhaltung"
 
 #: fabui/application/config/menu.php:57
 msgid "Head installation"
-msgstr ""
+msgstr "Kopf Installieren"
 
 #: fabui/application/config/menu.php:62
 msgid "Spool managment"
-msgstr ""
+msgstr "Spool-Verwaltung"
 
 #: fabui/application/config/menu.php:67
 msgid "Bed calibration"
-msgstr ""
+msgstr "Bett kalibrierung"
 
 #: fabui/application/config/menu.php:72
 msgid "Nozzle"
-msgstr ""
+msgstr "Düse"
 
 #: fabui/application/config/menu.php:76
 msgid "Height calibration"
-msgstr ""
+msgstr "Höhenkalibrierung"
 
 #: fabui/application/config/menu.php:83
 msgid "Probe calibration"
-msgstr ""
+msgstr "Sondenkalibrierung"
 
 #: fabui/application/config/menu.php:87
 msgid "Angle calibration"
-msgstr ""
+msgstr "Winkelkalibrierung"
 
 #: fabui/application/config/menu.php:94
 msgid "Feeder"
@@ -82,19 +84,19 @@ msgstr ""
 
 #: fabui/application/config/menu.php:98
 msgid "Step calibration"
-msgstr ""
+msgstr "Schrittkalibrierung"
 
 #: fabui/application/config/menu.php:103
 msgid "Engage"
-msgstr ""
+msgstr "Einrasten"
 
 #: fabui/application/config/menu.php:110
 msgid "4th axis"
-msgstr ""
+msgstr "Vierte Achse"
 
 #: fabui/application/config/menu.php:115
 msgid "First setup"
-msgstr ""
+msgstr "Erste Einstellung"
 
 #: fabui/application/config/menu.php:120
 msgid "Firmware"
@@ -102,11 +104,11 @@ msgstr ""
 
 #: fabui/application/config/menu.php:125
 msgid "system info"
-msgstr ""
+msgstr "Systeminformationen"
 
 #: fabui/application/config/menu.php:132
 msgid "Settings"
-msgstr ""
+msgstr "Einstellungen"
 
 #: fabui/application/config/menu.php:136
 msgid "Hardware"
@@ -114,7 +116,7 @@ msgstr ""
 
 #: fabui/application/config/menu.php:141
 msgid "Network"
-msgstr ""
+msgstr "Netzwerk"
 
 #: fabui/application/config/menu.php:146
 msgid "Raspicam"
@@ -122,11 +124,11 @@ msgstr ""
 
 #: fabui/application/config/menu.php:153
 msgid "Updates"
-msgstr ""
+msgstr "Aktualisierungen"
 
 #: fabui/application/config/menu.php:158
 msgid "Support"
-msgstr ""
+msgstr "Unterstützung"
 
 #: fabui/application/config/menu.php:163
 #: fabui/application/controllers/Plugin.php:43
@@ -210,57 +212,53 @@ msgstr ""
 
 #: fabui/application/views/plugin/main_widget.php:80
 #: fabui/application/views/plugin/main_widget.bak.php:80
-msgid ""
-"If you have a plugin in .zip format, you may install it by uploading it here"
+msgid "If you have a plugin in .zip format, you may install it by uploading it here"
 msgstr ""
 
 #: fabui/application/views/plugin/main_widget.php:85
 #: fabui/application/views/plugin/main_widget.bak.php:85
-#, fuzzy
 msgid "Install now"
-msgstr "Installiert"
+msgstr "Jetzt installieren"
 
 #: fabui/application/views/plugin/main_widget.php:99
 #: fabui/application/views/plugin/main_widget.bak.php:100
 msgid "New Plugin Creator"
-msgstr ""
+msgstr "Neuer Plugin ersteller"
 
 #: fabui/application/views/plugin/main_widget.php:103
 #: fabui/application/views/plugin/main_widget.bak.php:104
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: fabui/application/views/plugin/main_widget.php:110
 #: fabui/application/views/plugin/main_widget.bak.php:111
 msgid "Short name"
-msgstr ""
+msgstr "Kurzname"
 
 #: fabui/application/views/plugin/main_widget.php:120
 #: fabui/application/views/plugin/main_widget.bak.php:121
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: fabui/application/views/plugin/main_widget.php:136
 #: fabui/application/views/plugin/main_widget.bak.php:137
-#, fuzzy
 msgid "Author name"
-msgstr "Autor"
+msgstr "Autor Name"
 
 #: fabui/application/views/plugin/main_widget.php:143
 #: fabui/application/views/plugin/main_widget.bak.php:144
-#, fuzzy
 msgid "Author URL"
-msgstr "Autor"
+msgstr "Autor URL"
 
 #: fabui/application/views/plugin/main_widget.php:152
 #: fabui/application/views/plugin/main_widget.bak.php:153
 msgid "Menu title"
-msgstr ""
+msgstr "Menü Titel"
 
 #: fabui/application/views/plugin/main_widget.php:159
 #: fabui/application/views/plugin/main_widget.bak.php:160
 msgid "Menu location"
-msgstr ""
+msgstr "Menü Lage"
 
 #: fabui/application/views/plugin/main_widget.php:168
 #: fabui/application/views/plugin/main_widget.bak.php:169
@@ -270,7 +268,7 @@ msgstr ""
 #: fabui/application/views/plugin/main_widget.php:181
 #: fabui/application/views/plugin/main_widget.bak.php:182
 msgid "Generate Plugin"
-msgstr ""
+msgstr "Plugin generieren"
 
 #: fabui/ext/py/calculate_extrinsic.py:169
 msgid "Find chessboard: SUCCESS."
@@ -563,9 +561,8 @@ msgid "Command (actvivate|deactivate|install|remove|update)"
 msgstr ""
 
 #: fabui/ext/py/plugin_manager.py:189
-#, fuzzy
 msgid "Plugin list"
-msgstr "Plugins"
+msgstr "Plugin Liste"
 
 #: fabui/ext/py/autotune.py:62
 msgid "PID Autotune started."

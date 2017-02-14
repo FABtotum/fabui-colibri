@@ -43,7 +43,7 @@ from fabtotum.database.plugin import Plugin
 from fabtotum.update import UpdateFactory, PluginTask
 
 # Set up message catalog access
-tr = gettext.translation('update', 'locale', fallback=True)
+tr = gettext.translation('fabui', 'locale', fallback=True)
 _ = tr.ugettext
 
 ################################################################################
