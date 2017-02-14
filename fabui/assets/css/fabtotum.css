@@ -678,3 +678,7 @@ body.smart-style-6 #logo img {
 	/*
   display: none; */
 }
+
+body.smart-style-6 .ribbon-button-alignment {
+	display: inline-block !important;
+}
