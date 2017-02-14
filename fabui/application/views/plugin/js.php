@@ -215,7 +215,7 @@
 			
 			if(value)
 			{
-				return !value.startsWith("plugin") && !value.startsWith("fab_");
+				return !value.startsWith("plugin");
 			}
 			
 			return true;
@@ -236,7 +236,7 @@
 			},
 			messages: {
 				plugin_slug: {
-					slugChecker: '<?php echo ('"plugin_" and "fab_" prefixes are not allowed');?>'
+					slugChecker: '<?php echo ('"plugin_" prefix is not allowed');?>'
 				},
 				author_name:{
 					required: "<?php echo ('Please enter your name here');?>"
@@ -252,6 +252,8 @@
 				error.insertAfter(element.parent());
 			}
 		});
+		
+		$("#plugin-slug").inputmask("Regex");
 
 	}
 	
@@ -270,6 +272,10 @@
 			$("#plugin-slug").val(slug);
 			$("#plugin-menu-0-title").val(value);
 			$("#plugin-menu-0-url").val('/'+slug);
+		}
+		else if(id == "plugin-slug")
+		{
+			$("#plugin-menu-0-url").val('/'+value);
 		}
 	}
 	

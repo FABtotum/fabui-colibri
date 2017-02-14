@@ -13,6 +13,17 @@
  	
 	public function index()
 	{
+		
+		
+		putenv('LC_ALL=it_IT');
+		setlocale(LC_ALL, 'it_IT');
+
+		// Specify location of translation tables
+		bindtextdomain("fabui", "/usr/share/fabui/locale");
+
+		// Choose domain
+		textdomain("fabui");
+		
 		//load libraries, helpers, model
 		$this->load->library('smart');
 		$this->load->helper('form');
@@ -20,6 +31,13 @@
 
 		$data = array();
 		$data['installed_plugins'] = getInstalledPlugins();
+		
+		$data['user'] = $this->session->user;
+		
+		unset($data['user']['session_id']);
+		unset($data['user']['id']);
+		unset($data['user']['password']);
+		unset($data['user']['settings']);
 		
 		$widgetOptions = array(
 			'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,

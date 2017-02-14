@@ -109,7 +109,7 @@
 					<section class="col col-6">
 						<label class="label"><?php echo _('Short name');?></label>
 						<label class="input">
-							<input type="text" class="plugin-adaptive-meta" id="plugin-slug" name="plugin_slug" placeholder="my_new_plugin">
+							<input type="text"  data-inputmask-regex="[_a-z]*" class="plugin-adaptive-meta" id="plugin-slug" name="plugin_slug" placeholder="my_new_plugin">
 						</label>
 					</section>
 					
@@ -135,14 +135,14 @@
 					<section class="col col-6">
 						<label class="label"><?php echo _('Author name');?></label>
 						<label class="input">
-							<input type="text" id="plugin-author" name="author_name" placeholder="Name Surname">
+							<input type="text" id="plugin-author" name="author_name" placeholder="Name Surname" value="<?php echo $user['first_name'];?> <?php echo $user['last_name'];?>">
 						</label>
 					</section>
 					
 					<section class="col col-6">
 						<label class="label"><?php echo _('Author URL');?></label>
 						<label class="input">
-							<input type="text" id="plugin-author_url" name="author_url" placeholder="http://your.contact.url/">
+							<input type="text" id="plugin-author_url" name="author_url" placeholder="mailto:<?php echo $user['email'];?>">
 						</label>
 					</section>
 				</div>
@@ -167,7 +167,7 @@
 					<section class="col col-6">
 						<label class="label"><?php echo _('Github Repository');?></label>
 						<label class="input">
-							<input type="text" id="plugin-url" name="plugin_url"placeholder="https://github.com/MyUserName/my_new_plugin">
+							<input type="text" id="plugin-url" name="plugin_url" placeholder="https://github.com/">
 						</label>
 					</section>
 				</div>
