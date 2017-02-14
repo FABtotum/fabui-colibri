@@ -30,11 +30,9 @@ import os, re
 # Import external modules
 
 # Import internal modules
+from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config import ConfigService
 
-# Set up message catalog access
-tr = gettext.translation('gpusher', 'locale', fallback=True)
-_ = tr.ugettext
 
 def read_eeprom(gcodeSender):
         

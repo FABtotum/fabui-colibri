@@ -31,14 +31,11 @@ import gettext
 from threading import Event, Thread
 
 # Import internal modules
+from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.utils.pyro.gcodeclient import GCodeServiceClient
 from fabtotum.database      import Database, TableItem
 from fabtotum.database.sysconfig import SysConfig
-
-# Set up message catalog access
-tr = gettext.translation('systeminfo', 'locale', fallback=True)
-_ = tr.ugettext
 
 ################################################################################
 

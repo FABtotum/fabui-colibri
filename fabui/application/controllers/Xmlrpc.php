@@ -86,7 +86,7 @@ class XmlRPC extends FAB_Controller {
         
         $_reply = doMacro($command, '', $args);
         
-        $this->output->set_content_type('application/json')->set_output( json_encode(array('reply' => $_reply['reply'], 'result' => $_reply['response'])) );
+        $this->output->set_content_type('application/json')->set_output( json_encode(array('reply' => $_reply['reply'], 'result' => $_reply['response'], 'other' => $_reply)) );
     }
         
     public function method($method, $value1 = Null, $value2 = Null, $value3 = Null, $value4 = Null)

@@ -349,9 +349,11 @@ if(!function_exists('sendToXmlrpcServer'))
 if(!function_exists('doMacro'))
 {
 	function doMacro($macroName, $traceFile = '', $extrArgs = '')
-	{		
+	{	
+		$CI =& get_instance(); //init ci instance
+		
 		if($traceFile == '' or $traceFile == null){
-			$CI =& get_instance(); //init ci instance
+			
 			$CI->config->load('fabtotum');
 			$traceFile = $CI->config->item('trace');
 		}
@@ -361,13 +363,19 @@ if(!function_exists('doMacro'))
 			$extrArgs = array($extrArgs);
 		}
 		
+		$CI->load->helper('language_helper');
+		$language_code = getCurrentLanguage().'.UTF-8';
+		
 		$data = array( array($macroName, 'string'),
 				array($extrArgs, 'array'),
-				array(true, 'boolean')
+				array(true, 'boolean'),
+				array($language_code, 'string')
 		);
 		
 		log_message('debug', "do_macro: ".$macroName);
 		$serverResponse = sendToXmlrpcServer('do_macro', $data);
+		
+		$serverResponse['lang'] = $language_code ;
 		
 		if($serverResponse['response'] == false){
 			$serverResponse['trace'] = $serverResponse['message'];

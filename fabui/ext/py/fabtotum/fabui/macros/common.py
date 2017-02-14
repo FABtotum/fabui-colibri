@@ -24,13 +24,10 @@ __version__ = "1.0"
 
 # Import standard python module
 import re
-import gettext
 
-tr = gettext.translation('gmacro', 'locale', fallback=True)
-_ = tr.ugettext
+from fabtotum.utils.translation import _, setLanguage
 
-
-def getPosition(app):
+def getPosition(app, lang='en_US.UTF-8'):
     
     data = app.macro("M114", "ok", 2, _("Get Position"), verbose=False)
     reply = data[0]
@@ -52,7 +49,7 @@ def getPosition(app):
     
     return position
 
-def getEeprom(app):
+def getEeprom(app, lang='en_US.UTF-8'):
     
     def serialize(string_source, regex_to_serach, keys):
         match = re.search(regex_to_serach, string_source, re.IGNORECASE)

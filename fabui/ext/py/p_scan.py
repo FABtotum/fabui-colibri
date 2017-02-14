@@ -32,12 +32,9 @@ from threading import Event, Thread
 import numpy as np
 
 # Import internal modules
+from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
-
-# Set up message catalog access
-tr = gettext.translation('p_scan', 'locale', fallback=True)
-_ = tr.ugettext
 
 ################################################################################
 

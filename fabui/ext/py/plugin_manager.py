@@ -32,6 +32,7 @@ from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 
 # Import internal modules
+from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.gpusher import GCodePusher
 from fabtotum.update.factory  import UpdateFactory
 from fabtotum.update import BundleTask, FirmwareTask, BootTask
@@ -41,10 +42,6 @@ from fabtotum.utils.plugin import activate_plugin, deactivate_plugin, \
                             remove_plugin, install_plugin, get_installed_plugins
 from fabtotum.database.plugin import Plugin
 from fabtotum.update import UpdateFactory, PluginTask
-
-# Set up message catalog access
-tr = gettext.translation('update', 'locale', fallback=True)
-_ = tr.ugettext
 
 ################################################################################
 

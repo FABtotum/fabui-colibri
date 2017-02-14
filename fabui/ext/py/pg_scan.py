@@ -37,12 +37,9 @@ except ImportError:
 from picamera import PiCamera
 
 # Import internal modules
+from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
-
-# Set up message catalog access
-tr = gettext.translation('r_scan', 'locale', fallback=True)
-_ = tr.ugettext
 
 ################################################################################
 
@@ -112,7 +109,7 @@ class PhotogrammetryScan(GCodePusher):
             sock.connect((self.host_address, self.host_port))
             SOCK_CONNECTED = True
         except Exception as e:
-            print _("Connection error:"), e
+            self.trace( _("Connection error: {0}").format( str(e)) )
             SOCK_CONNECTED = False
             if file:
                 self.skipped_images.append(file)
@@ -135,7 +132,7 @@ class PhotogrammetryScan(GCodePusher):
                 if(data.strip() == 'DELETE'):
                     os.remove(file)
             except Exception as e:
-                print _("Unexpected error:"), e
+                self.trace( _("Unexpected error: {0}").format( str(e)) )
                 self.skipped_images.append(file)
                 
         elif(action == self.FINISH):
@@ -205,10 +202,10 @@ class PhotogrammetryScan(GCodePusher):
                 self.update_monitor_file()
                 
             if self.is_paused():
-                self.trace("Paused")
+                self.trace(_("Paused"))
                 self.ev_resume.wait()
                 self.ev_resume.clear()
-                self.trace("Resuming")
+                self.trace(_("Resuming"))
                 
             if self.is_aborted():
                 break
@@ -228,10 +225,10 @@ class PhotogrammetryScan(GCodePusher):
             self.exec_macro("end_scan")
             
             if self.is_aborted():
-                self.trace( _("Scan aborted.") )
+                self.trace( _("Scan aborted") )
                 self.set_task_status(GCodePusher.TASK_ABORTED)
             else:
-                self.trace( _("Scan completed.") )
+                self.trace( _("Scan completed") )
                 self.set_task_status(GCodePusher.TASK_COMPLETED)
         
         self.stop()

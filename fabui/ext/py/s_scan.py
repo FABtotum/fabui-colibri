@@ -38,15 +38,12 @@ from picamera import PiCamera
 import numpy as np
 
 # Import internal modules
+from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
 import fabtotum.utils.triangulation as tripy
 import fabtotum.speedups.triangulation as tricpp
 from fabtotum.utils.ascfile import ASCFile
-
-# Set up message catalog access
-tr = gettext.translation('s_scan', 'locale', fallback=True)
-_ = tr.ugettext
 
 ################################################################################
 

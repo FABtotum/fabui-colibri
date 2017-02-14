@@ -52,11 +52,15 @@ class MacroUnexpectedReply(MacroException):
     
 class GMacroHandler:
     
-    def __init__(self, gcs, config, trace, reset_trace):
+    def __init__(self, gcs, config, trace, reset_trace, lang='en_US.UTF-8'):
         self.gcs = gcs
         self.config = config
         self.__trace = trace
         self.__reset_trace = reset_trace
+        self.lang = lang
+    
+    def setLanguage(self, lang):
+        self.lang = lang
     
     def trace(self, message):
         self.__trace(message)
@@ -107,7 +111,7 @@ class GMacroHandler:
 
         try:
             if preset in PRESET_MAP:
-                reply = PRESET_MAP[preset](self, args)
+                reply = PRESET_MAP[preset](self, args, self.lang)
                 response = MACRO_SUCCESS
             else:
                 response = MACRO_UNKNOWN
