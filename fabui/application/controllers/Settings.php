@@ -40,7 +40,7 @@ class Settings extends FAB_Controller {
 		
 		$data['yesNoOptions'] = array('1' => 'Yes', '0' => 'No');
 		$data['customizeActionsOptions'] = array('none' => 'None', 'shutdown' => 'Shutdown');
-		$data['printCalibrationPreferenceOptions'] = array('homing' => 'Simple Homing', 'auto_bed_leveling' => 'Auto Bed Leveling');
+		$data['printCalibrationPreferenceOptions'] = array('homing' => _('Simple homing'), 'auto_bed_leveling' => _('Auto bed leveling'));
 		//main page widget
 		$widgetOptions = array(
 			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
@@ -48,19 +48,19 @@ class Settings extends FAB_Controller {
 		);
 		$headerToolbar = '
 			<ul class="nav nav-tabs pull-right">
-				<li class="active"><a data-toggle="tab" href="#hardware-tab"> Hardware</a></li>
-				<li><a data-toggle="tab" href="#safety-tab"> Safety</a></li>
-				<li><a data-toggle="tab" href="#homing-tab"> Homing</a></li>
-				<li><a data-toggle="tab" href="#customized-actions-tab"> Customized actions</a></li>
-				<li><a data-toggle="tab" href="#print-tab"> Print</a></li>
-				<li><a data-toggle="tab" href="#milling-tab"> Milling</a></li>
-				<li><a data-toggle="tab" href="#lighting-tab"> Lighting</a></li>
+				<li class="active"><a data-toggle="tab" href="#hardware-tab"> '._('Hardware').'</a></li>
+				<li><a data-toggle="tab" href="#safety-tab"> '._('Safety').'</a></li>
+				<li><a data-toggle="tab" href="#homing-tab"> '._('Homing').'</a></li>
+				<li><a data-toggle="tab" href="#customized-actions-tab"> '._('Customized actions').'</a></li>
+				<li><a data-toggle="tab" href="#print-tab"> '._('Print').'</a></li>
+				<li><a data-toggle="tab" href="#milling-tab"> '._('Milling').'</a></li>
+				<li><a data-toggle="tab" href="#lighting-tab"> '._('Lighting').'</a></li>
 			</ul>';
-		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		$widgeFooterButtons = $this->smart->create_button(_('Save'), 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 							  
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'hardware-settings-widget';
-		$widget->header = array('icon' => 'fa-cog', "title" => "<h2>Hardware</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-cog', "title" => "<h2>"._('Hardware')."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('settings/hardware_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 		
 		$this->addJSInLine($this->load->view('settings/hardware_js', $data, true));
@@ -230,11 +230,11 @@ class Settings extends FAB_Controller {
 			else
 			{
 				$if_type = 'eth';
-				$title = 'Ethernet';
+				$title = _('Ethernet');
 				$tab_data = array(
 					'iface' => $iface,
 					'info' => $info,
-					'addressModeEth' => array('static' => 'Static', 'dhcp' => 'Automatic (DHCP)')
+					'addressModeEth' => array('static' => 'Static', 'dhcp' => _('Automatic (DHCP)'))
 				);
 				$tabs_content .= $this->load->view('settings/ethernet_tab', $tab_data, true );
 			}
@@ -249,16 +249,16 @@ class Settings extends FAB_Controller {
 		$data['iface_tabs'] = $tabs_content;
 		$data['interfaces'] = $interfaces;
 		
-		$tabs_title .= '<li data-attribute="dnssd" class="tab"><a data-toggle="tab" href="#dnssd-tab"> DNS-SD</a></li>';
+		$tabs_title .= '<li data-attribute="dnssd" class="tab"><a data-toggle="tab" href="#dnssd-tab"> '._('DNS-SD').'</a></li>';
 		
 		$headerToolbar = '<ul class="nav nav-tabs pull-right">' . $tabs_title .'</ul>';
 		
-		$widgeFooterButtons = $this->smart->create_button('Scan', 'primary')->attr(array('id' => 'scanButton', 'style' => 'display:none'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true)
-						 .' '.$this->smart->create_button('Save', 'primary')->attr(array('id' => 'saveButton'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		$widgeFooterButtons = $this->smart->create_button(_('Scan'), 'primary')->attr(array('id' => 'scanButton', 'style' => 'display:none'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true)
+						 .' '.$this->smart->create_button(_('Save'), 'primary')->attr(array('id' => 'saveButton'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'network-settings-widget';
-		$widget->header = array('icon' => 'fa-globe', "title" => "<h2>Network settings</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-globe', "title" => "<h2>"._('Network settings')."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('settings/network_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 		
 		$this->addJsInLine($this->load->view('settings/network_js', $data, true));

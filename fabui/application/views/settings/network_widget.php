@@ -17,7 +17,7 @@
 			<fieldset>
 				<div class="row">
 					<section class="col col-6">
-						<label class="label">Name</label>
+						<label class="label"><?php echo _('Name')?></label>
 						<div class="input-group">
 							<span class="input-group-addon">http://</span>
 							<input style="padding-left:5px" value="<?php echo $current_hostname; ?>" placeholder="<?php echo $current_hostname; ?>" class="form-control" id="dnssd-hostname" type="text">
@@ -28,7 +28,7 @@
 				</div>
 				<div class="row">
 					<section class="col col-6">
-						<label class="label">Description</label>
+						<label class="label"><?php echo _('Description')?></label>
 						<label class="input">
 							<input type="text" value="<?php echo $current_name; ?>" id="dnssd-name"> 
 						</label>
@@ -37,7 +37,7 @@
 				<div class="row">
 					<section class="col col-6">
 						<div class="note">
-						To easily access to the FABtotum Personal Fabricator by using the name you inserted you need to install on the device you are using to access it a multicast domain name system service discovery such as <abbr title="Bonjour">Bonjour</abbr> or similar
+						<?php echo _('To easily access to the FABtotum Personal Fabricator by using the name you inserted you need to install on the device you are using to access it a multicast domain name system service discovery such as Bonjour or similar')?>
 					</div>
 					</section>
 				</div>
@@ -65,15 +65,15 @@
 						</section>
 						<section>
 							<label class="checkbox">
-								<input type="checkbox" data-attribute="modal" class="show-password"> <i></i> Show password
+								<input type="checkbox" data-attribute="modal" class="show-password"> <i></i> <?php echo _('Show password')?>
 							</label>
 						</section>
 					</fieldset>
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-primary" id="modalConnectButton"><i class="fa fa-check"></i> Connect </button>
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Cancel')?></button>
+				<button type="button" class="btn btn-primary" id="modalConnectButton"><i class="fa fa-check"></i> <?php echo _('Connect')?> </button>
 			</div>
 		</div>
 	</div>

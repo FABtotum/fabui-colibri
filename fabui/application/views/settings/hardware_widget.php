@@ -25,13 +25,13 @@
 			<fieldset class="custom_settings" <?php if($defaultSettings['settings_type'] == 'default'): ?> style="display: none;" <?php endif;?> >
 				<div class="row">
 					<section class="col col-6">
-						<label class="label">Engage/Disengage Feeder option</label>
+						<label class="label"><?php echo _('Engage')?>/<?php echo _('Disengage')?> <?php echo _('Feeder option')?></label>
 						<label class="select">
 							<?php echo form_dropdown('feeder-show', $yesNoOptions, $defaultSettings['feeder']['show'], 'id="feeder-show"'); ?> <i></i>
 						</label>
 					</section>
 					<section class="col col-6">
-						<label class="label">Invert X Endstop Logic</label>
+						<label class="label"><?php echo _('Invert X Endstop Logic')?></label>
 						<label class="select">
 							<?php echo form_dropdown('custom-invert_x_endstop_logic', $yesNoOptions, $defaultSettings['custom']['invert_x_endstop_logic'], 'id="custom-invert_x_endstop_logic"'); ?> <i></i>
 						</label>
@@ -39,22 +39,22 @@
 				</div>
 				<div class="row">
 					<section class="col col-6">
-						<label class="label">Extruder steps per unit <strong>(A mode)</strong></label>
+						<label class="label"> <?php echo _('Extruder steps per unit')?><strong>(<?php echo _('A mode')?>)</strong></label>
 						<label class="input">
 							<input type="text" id="a" name="a" value="<?php echo $defaultSettings['a'] ?>">
-							<b class="tooltip tooltip-top-right"><i class="fa fa-refresh txt-color-teal"></i> you must restart the FABtotum to apply these changes</b> </label>
+							<b class="tooltip tooltip-top-right"><i class="fa fa-refresh txt-color-teal"></i> <?php echo _('You must restart the FABtotum to apply these changes')?></b> </label>
 						</label>
 					</section>
 				</div>
 				<div class="row">
 					<section class="col col-12">
 						<div class="note">
-							If you change values for Extruder steps you have to restart the FABtotum so that can values take effect
+							<?php echo _('If you change values for extruder steps you have to restart the FABtotum so that can values take effect')?>
 						</div>
 					</section>
 				</div>
 				<section>
-					<label class="label">Custom overrides</label>
+					<label class="label"><?php echo _('Custom overrides')?></label>
 					<label class="textarea">
 						<textarea id="custom-overrides" name="cutom-overrides" rows="5"><?php echo $defaultSettings['custom']['overrides']; ?></textarea>
 					</label>
@@ -67,26 +67,26 @@
 		<div class="smart-form">
 			<fieldset>
 				<section>
-					<label class="label">Door Safety Messages</label>
+					<label class="label"><?php echo _('Door safety messages')?></label>
 					<div class="inline-group">
 						<label class="radio">
-							<input type="radio" id="safety-door" name="safety-door" value="1" <?php if($defaultSettings['safety']['door'] == 1) echo 'checked="checked"'; ?>><i></i>Enable
+							<input type="radio" id="safety-door" name="safety-door" value="1" <?php if($defaultSettings['safety']['door'] == 1) echo 'checked="checked"'; ?>><i></i><?php echo _('Enable')?>
 						</label>
 						<label class="radio">
-							<input type="radio" id="safety-door" name="safety-door" value="0" <?php if($defaultSettings['safety']['door'] == 0) echo 'checked="checked"'; ?>><i></i>Disabled
+							<input type="radio" id="safety-door" name="safety-door" value="0" <?php if($defaultSettings['safety']['door'] == 0) echo 'checked="checked"'; ?>><i></i><?php echo _('Disabled')?>
 						</label>
 					</div>
 				</section>
 			</fieldset>
 			<fieldset>
 				<section>
-					<label class="label">Machine Limits Collision warning</label>
+					<label class="label"> <?php echo _('Machine limits collision warning')?></label>
 					<div class="inline-group">
 						<label class="radio">
-							<input type="radio" id="safety-collision_warning" name="safety-collision_warning" value="1" <?php if($defaultSettings['safety']['collision_warning'] == 1) echo 'checked="checked"'; ?>><i></i>Enable
+							<input type="radio" id="safety-collision_warning" name="safety-collision_warning" value="1" <?php if($defaultSettings['safety']['collision_warning'] == 1) echo 'checked="checked"'; ?>><i></i><?php echo _('Enable')?>
 						</label>
 						<label class="radio">
-							<input type="radio" id="safety-collision_warning" name="safety-collision_warning" value="0" <?php if($defaultSettings['safety']['collision_warning'] == 0) echo 'checked="checked"'; ?>><i></i>Disabled
+							<input type="radio" id="safety-collision_warning" name="safety-collision_warning" value="0" <?php if($defaultSettings['safety']['collision_warning'] == 0) echo 'checked="checked"'; ?>><i></i><?php echo _('Disabled')?>
 						</label>
 					</div>
 				</section>
@@ -98,26 +98,26 @@
 		<div class="smart-form">
 			<fieldset>
 				<section>
-					<label class="label">Default Homing Direction</label>
+					<label class="label"><?php echo _('Default Homing Direction')?></label>
 					<div class="inline-group">
 						<label class="radio">
-							<input type="radio" id="switch" name="switch" value="l" <?php if($defaultSettings['switch'] == 1) echo 'checked="checked"'; ?>><i></i>Left
+							<input type="radio" id="switch" name="switch" value="l" <?php if($defaultSettings['switch'] == 1) echo 'checked="checked"'; ?>><i></i><?php echo _('Left')?>
 						</label>
 						<label class="radio">
-							<input type="radio" id="switch" name="switch" value="0" <?php if($defaultSettings['switch'] == 0) echo 'checked="checked"'; ?>><i></i>Right
+							<input type="radio" id="switch" name="switch" value="0" <?php if($defaultSettings['switch'] == 0) echo 'checked="checked"'; ?>><i></i><?php echo _('Right')?>
 						</label>
 					</div>
 				</section>
 			</fieldset>
 			<fieldset>
 				<section>
-					<label class="label">Use the Z Touch Probe during homing</label>
+					<label class="label"><?php echo _('Use the z touch probe during homing')?></label>
 					<div class="inline-group">
 						<label class="radio">
-							<input type="radio" id="zprobe-enable" name="zprobe-enable" value="1" <?php if($defaultSettings['zprobe']['enable'] == 1) echo 'checked="checked"'; ?>><i></i>Enable
+							<input type="radio" id="zprobe-enable" name="zprobe-enable" value="1" <?php if($defaultSettings['zprobe']['enable'] == 1) echo 'checked="checked"'; ?>><i></i><?php echo _('Enable')?>
 						</label>
 						<label class="radio">
-							<input type="radio" id="zprobe-enable" name="zprobe-enable" value="0" <?php if($defaultSettings['zprobe']['enable'] == 0) echo 'checked="checked"'; ?>><i></i>Disable
+							<input type="radio" id="zprobe-enable" name="zprobe-enable" value="0" <?php if($defaultSettings['zprobe']['enable'] == 0) echo 'checked="checked"'; ?>><i></i><?php echo _('Disabled')?>
 						</label>
 					</div>
 				</section>
@@ -125,7 +125,7 @@
 			<fieldset>
 				<div class="row">
 					<section class="col col-sm-12">
-						<label class="label">Z Max Home Pos (mm)</label>
+						<label class="label"><?php echo _('Z max home pos')?> (mm)</label>
 						<label class="input">
 							<input type="number" id="zprobe-zmax" name="zprobe-zmax" value="<?php echo $defaultSettings['z_max_offset']; ?>">
 						</label>
@@ -139,13 +139,13 @@
 		<div class="smart-form">
 			<fieldset>
 				<section>
-					<label class="label">Both Y Endstops pressed</label>
+					<label class="label"><?php echo _('Both Y endstops pressed')?></label>
 					<label class="select">
 						<?php echo form_dropdown('customized_actions-bothy', $customizeActionsOptions, $defaultSettings['customized_actions']['bothy'], 'id="customized_action-bothy"'); ?> <i></i>
 					</label>
 				</section>
 				<section>
-					<label class="label">Both Z Endstops pressed</label>
+					<label class="label"><?php echo _('Both Z endstops pressed')?></label>
 					<label class="select">
 						<?php echo form_dropdown('customized_actions-bothz', $customizeActionsOptions, $defaultSettings['customized_actions']['bothz'], 'id="customized_action-bothz"'); ?> <i></i>
 					</label>
@@ -159,7 +159,7 @@
 			<fieldset>
 				<div class="row">
 					<section class="col col-sm-12">
-						<label class="label">Pre-heating Nozzle temperature</label>
+						<label class="label"> <?php echo _('Pre-heating nozzle temperature')?></label>
 						<label class="input">
 							<input type="number" id="print-pre_heating-nozzle" name="print-pre_heating-nozzle" value="<?php echo $defaultSettings['print']['pre_heating']['nozzle'] ?>">
 						</label>
@@ -167,7 +167,7 @@
 				</div>
 				<div class="row">
 					<section class="col col-sm-12">
-						<label class="label">Pre-heating Bed temperature</label>
+						<label class="label"><?php echo _('Pre-heating bed temperature')?></label>
 						<label class="input">
 							<input type="number" id="print-pre_heating-bed" name="print-pre_heating-bed" value="<?php echo $defaultSettings['print']['pre_heating']['bed'] ?>">
 						</label>
@@ -175,7 +175,7 @@
 				</div>
 				<div class="row">
 					<section class="col col-sm-12">
-						<label class="label">Calibration preference</label>
+						<label class="label"><?php echo _('Calibration preference')?></label>
 						<label class="select">
 							<?php echo form_dropdown('print-calibration', $printCalibrationPreferenceOptions, $defaultSettings['print']['calibration'], 'id="print-calibration"'); ?> <i></i>
 						</label>
@@ -190,7 +190,7 @@
 			<fieldset>
 				
 					<section >
-						<label class="label">Sacrificial Layer Thickness (mm)</label>
+						<label class="label"><?php echo _('Sacrificial layer thickness')?> (mm)</label>
 						<label class="input">
 							<input type="number" id="milling-layer_offset" name="milling-layer_offset" value="<?php echo $defaultSettings['milling']['layer_offset'] ?>">
 						</label>
@@ -212,7 +212,7 @@
 			<div class="col-sm-6">
 				<div class="row margin-top-10">
 					<div class="col-sm-12">
-						<p>Standby</p>
+						<p><?php echo _('Standby')?> </p>
 					</div>
 				</div>
 				<div class="row margin-top-10">
