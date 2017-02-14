@@ -2,7 +2,7 @@
 	<div class="smart-form">
 		<fieldset>
 			<section class="col col-6">
-				<label class="label">Address Mode</label>
+				<label class="label"><?php echo _('Address mode')?></label>
 				<label class="select">
 					<?php echo form_dropdown('address-show', $addressModeWiFi, $info['address_mode'], array('id' => 'address-mode', 'class' => "address-mode", 'data-attribute' => $iface) ); ?> <i></i>
 				</label>
@@ -16,11 +16,11 @@
 							<td style="border:0px;"><strong><?php echo $info['wireless']['ssid']; ?></strong></td>
 						</tr>
 						<tr>
-							<td >IP Address</td>
+							<td ><?php echo _('IP address')?></td>
 							<td><a class="no-ajax" href="http://<?php echo $info['ipv4_address']; ?>" target="_blank"><?php echo $info['ipv4_address']; ?></a></td>
 						</tr>
 						<tr>
-							<td>MAC Address</td>
+							<td><?php echo _('MAC address')?></td>
 							<td><strong><?php echo $info['mac_address']; ?></strong></td>
 						</tr>
 					</tbody>
@@ -33,7 +33,7 @@
 			<section id="address-container" style="<?php if($info['address_mode'] == 'dhcp') echo 'display:none;';?>" class="col col-6">
 				<form class="addressForm">
 				<div class="form-group">
-					<label class="label">Address</label>
+					<label class="label"><?php echo _('Address')?></label>
 					<label class="input">
 					<div class="input-group">
 						<input type="text" id="ipv4" name="ipv4" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo $info['ipv4_address']; ?>"/>
@@ -42,7 +42,7 @@
 					</label>
 				</div>
 				<div class="form-group">
-					<label class="label">Netmask</label>
+					<label class="label"><?php echo _('Netmask')?></label>
 					<label class="input">
 					<div class="input-group">
 						<input type="text" id="netmask" name="netmask" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo $info['netmask_address']; ?>"/>
@@ -51,7 +51,7 @@
 					</label>
 				</div>
 				<div class="form-group" id="gateway-container" style="<?php if($info['address_mode'] == 'static-ap') echo 'display:none;';?>">
-					<label class="label">Gateway</label>
+					<label class="label"><?php echo _('Gateway')?></label>
 					<label class="input">
 					<div class="input-group">
 						<input type="text" id="gateway" name="gateway" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo $info['gateway']; ?>"/>
@@ -65,7 +65,7 @@
 			<section id="ap-container" style="<?php if($info['address_mode'] != 'static-ap') echo 'display:none;';?>" class="col col-6">
 				<form id="apForm" class="apForm">
 					<div  class="form-group">
-						<label class="label">SSID</label>
+						<label class="label"><?php echo _('Ssid')?></label>
 						<label class="input">
 						<div class="input-group">
 							<input type="text" id="ap-ssid" name="ssid" placeholder="FABtotum" class="form-control" value="<?php echo ($info['address_mode'] == 'static-ap')?$info['wireless']['ssid']:"FABtotum"; ?>"/>
@@ -74,7 +74,7 @@
 						</label>
 					</div>
 					<div class="form-group">
-						<label class="label">Password</label>
+						<label class="label"><?php echo _('Password')?></label>
 						<label class="input">
 						<div class="input-group">
 							<input type="password" id="ap-password" placeholder="enter password" name="password" class="form-control password" value="<?php echo ($info['address_mode'] == 'static-ap')?$info['wireless']['passphrase']:""; ?>"/>
@@ -82,7 +82,7 @@
 						</div>
 						</label>
 						<label class="checkbox">
-						<input type="checkbox" class="show-password" data-attribute="<?php echo $iface;?>"> <i></i> Show password
+						<input type="checkbox" class="show-password" data-attribute="<?php echo $iface;?>"> <i></i> <?php echo _('Show password')?>
 						</label>
 					</div>
 				</form>

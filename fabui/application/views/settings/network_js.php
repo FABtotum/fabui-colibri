@@ -96,8 +96,8 @@
 			else
 			{
 				$.smallBox({
-					title : "Warning",
-					content : 'You need to connect to a network first',
+					title : "<?php echo _('Warning')?>",
+					content : '<?php echo _('You need to connect to a network first')?>',
 					color : "#C46A69",
 					timeout: 10000,
 					icon : "fa fa-check bounce animated"
@@ -115,7 +115,7 @@
 	{
 		var button = $("#saveButton");
 		button.addClass('disabled');
-		button.html('<i class="fa fa-save"></i> Saving..');
+		button.html('<i class="fa fa-save"></i> <?php echo _('Saving')?>..');
 		
 		console.log('posting', data);
 		
@@ -125,7 +125,7 @@
 			data : data,
 			dataType: 'json'
 		}).done(function(response) {
-			button.html('<i class="fa fa-save"></i> Save');
+			button.html('<i class="fa fa-save"></i> <?php echo _('Save')?>');
 			button.removeClass('disabled');
 			
 			$("#"+data['active']+"-tab #hidden-address-mode").val(data['address-mode']);
@@ -133,8 +133,8 @@
 			console.log('response', response);
 			
 			$.smallBox({
-				title : "Settings",
-				content : 'Network settings saved',
+				title : "<?php echo _('Settings')?>",
+				content : '<?php echo _('Network settings saved')?>',
 				color : "#5384AF",
 				timeout: 1000,
 				icon : "fa fa-check bounce animated"
@@ -262,7 +262,7 @@
 			var frequency = net.frequency != '' ? net.frequency : '';
 			var buttonAttributeProtected = net.encryption_key == 'on' ? 'true' : 'false';
 			var buttonAttributeAction = bssid == net.address ? 'disconnect' : 'connect';
-			var buttonLabel =  bssid == net.address ? 'Disconnect' : 'Connect';
+			var buttonLabel =  bssid == net.address ? '<?php echo _('Disconnect')?>' : '<?php echo _('Connect')?>';
 			var trClass = bssid == net.address ? 'warning' : '';
 			
 			console.log('bssid', bssid, net.address);
@@ -328,7 +328,7 @@
 	function showPasswordModal(essid)
 	{	
 		resetForms();
-		$("#passwordModalTitle").html('Password for <strong>' + essid + '</strong>');
+		$("#passwordModalTitle").html('<?php echo _('Password for')?> <strong>' + essid + '</strong>');
 		$('#passwordModal').modal({});
 	}
 	/**
@@ -366,7 +366,7 @@
 				return true;
 				
 			}
-		}, "Please specify a valid IP address");
+		}, "<?php echo _('Please specify a valid IP address')?>");
 		
 		$("#passwordModalForm").validate({
 			rules:{
@@ -376,7 +376,7 @@
 			},
 			messages: {
 				wifiPassword: {
-					required: 'Please insert valid password'
+					required: '<?php echo _('Please insert valid password')?>'
 				}
 			},
 			errorPlacement : function(error, element) {
@@ -401,13 +401,13 @@
 				},
 				messages : {
 					ipv4 : {
-						isIPaddress : 'Please insert a valid IP address'
+						isIPaddress : '<?php echo _('Please insert a valid IP address')?>'
 					},
 					netmask : {
-						isIPaddress : 'Please insert a valid netmask'
+						isIPaddress : '<?php echo _('Please insert a valid netmask')?>'
 					},
 					gateway : {
-						isIPaddress : 'Please insert a valid gateway address'
+						isIPaddress : '<?php echo _('Please insert a valid gateway address')?>'
 					},
 				},
 				errorPlacement : function(error, element) {
@@ -434,14 +434,14 @@
 				},
 				messages : {
 					ssid : {
-						required : 'Please specify an SSID',
-						minlength : 'Please specify an SSID that is between 4 and 63 characters',
-						maxlength : 'Please specify an SSID that is between 4 and 63 characters'
+						required : '<?php echo _('Please specify an SSID')?>',
+						minlength : '<?php echo _('Please specify an SSID that is between 4 and 63 characters')?>',
+						maxlength : '<?php echo _('Please specify an SSID that is between 4 and 63 characters')?>'
 					},
 					password : {
-						required : 'Please specify a password',
-						minlength : 'Please specify a password between 8 and 63 characters',
-						maxlength : 'Please specify a password between 8 and 63 characters'
+						required : '<?php echo _('Please specify a password')?>',
+						minlength : '<?php echo _('Please specify a password between 8 and 63 characters')?>',
+						maxlength : '<?php echo _('Please specify a password between 8 and 63 characters')?>'
 					},
 				},
 				errorPlacement : function(error, element) {
