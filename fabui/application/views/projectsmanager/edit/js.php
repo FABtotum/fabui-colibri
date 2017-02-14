@@ -59,7 +59,7 @@
 	function save_object(){
 		
 		$("#save-object").addClass('disabled');
-		$('#save-object').html('<i class="fa fa-save"></i> Saving...');
+		$('#save-object').html('<i class="fa fa-save"></i> <?php echo _("Saving") ?>...');
 		
 		var object_data = {
 			object_id : 	<?php echo $object['id'] ?>, 
@@ -75,10 +75,10 @@
 			dataType: 'json'
 		}).done(function(response) {
 			$("#save-object").removeClass('disabled');
-			$('#save-object').html('<i class="fa fa-save"></i> Save');
+			$('#save-object').html('<i class="fa fa-save"></i> <?php echo _("Save") ?>');
 			
 			$.smallBox({
-				title : "Object saved with success",
+				title : "<?php echo _("Object saved with success") ?>",
 				color : "#659265",
 				iconSmall : "fa fa-check bounce animated",
 				timeout : 4000
@@ -92,16 +92,16 @@
 	function ask_delete(id_file, file_name) {
 		
 		$.SmartMessageBox({
-			title: "Attention!",
-			content: "Remove <b>" + file_name + "</b> ?",
-			buttons: '[No][Yes]'
+			title: "<?php echo _("Warning") ?>!",
+			content: "<?php echo _("Remove") ?> <b>" + file_name + "</b> ?",
+			buttons: '[<?php echo _("No") ?>][<?php echo _("Yes") ?>]'
 		}, function(ButtonPressed) {
 		   
-			if (ButtonPressed === "Yes")
+			if (ButtonPressed === "<?php echo _("Yes") ?>")
 			{
 				delete_file(id_file);
 			}
-			if (ButtonPressed === "No")
+			if (ButtonPressed === "<?php echo _("No") ?>")
 			{
 				
 			}
@@ -111,7 +111,7 @@
 	
 	function delete_file(id_file) {
 		
-		openWait('Deleting file..');
+		openWait('<?php echo _("Deleting file") ?>..');
 		
 		var ids = new Array();
 		ids.push(id_file);
@@ -125,7 +125,7 @@
 		
 		if(action == "")
 		{
-			show_message("Please select an action");
+			show_message("");
 			return false;
 		}
 		
@@ -143,7 +143,7 @@
 	function delete_files(list){
 		
 		$(".bulk-button").addClass("disabled");
-		$(".bulk-button[data-action='delete']").html("Deleting...");
+		$(".bulk-button[data-action='delete']").html("<?php echo _("Deleting") ?>...");
 
 		$.ajax({
 				type: "POST",
@@ -157,10 +157,10 @@
 				}
 				else 
 				{
-					showErrorAlert('Error deleting file(s)', response.message);
+					showErrorAlert('<?php echo _("Error deleting file(s)") ?>', response.message);
 				}
 				
-				$(".bulk-button[data-action='delete']").html("<i class='fa fa-trash'></i> Delete");
+				$(".bulk-button[data-action='delete']").html("<i class='fa fa-trash'></i> <?php echo _("Delete") ?>");
 				$(".bulk-button").removeClass("disabled");
 			});
 	}
@@ -182,7 +182,7 @@
 		}
 		else
 		{
-			show_message("Please select at least 1 file");
+			show_message("<?php echo _("Please select at least 1 file") ?>");
 			return false;
 		}
 	}
@@ -190,11 +190,11 @@
 	function show_message(message){
 		
 		$.SmartMessageBox({
-				title: "<i class='fa fa-info-circle'></i> Information",
+				title: "<i class='fa fa-info-circle'></i> <?php echo _("Information") ?>",
 				content: message,
-				buttons: '[Ok]'
+				buttons: '[<?php echo _("Ok)") ?>]'
 			}, function(ButtonPressed) {
-				if (ButtonPressed === "OK") {
+				if (ButtonPressed === "<?php echo _("Ok") ?>") {
 				}
 				
 			});
@@ -203,15 +203,15 @@
 	
 	function bulk_ask_delete(ids){
 		$.SmartMessageBox({
-				title: "<i class='fa fa-warning txt-color-orangeDark'></i> Warning!",
-				content: "Do you really want to remove the selected files",
-				buttons: '[No][Yes]'
+				title: "<i class='fa fa-warning txt-color-orangeDark'></i> <?php echo _("Warning") ?>!",
+				content: "<?php echo _("Do you really want to remove the selected files") ?>",
+				buttons: '[<?php echo _("No") ?>][<?php echo _("Yes") ?>]'
 			}, function(ButtonPressed) {
-				if (ButtonPressed === "Yes")
+				if (ButtonPressed === "<?php echo _("Yes") ?>")
 				{
 					delete_files(ids);
 				}
-				if (ButtonPressed === "No")
+				if (ButtonPressed === "<?php echo _("No") ?>")
 				{
 					
 				}
@@ -238,15 +238,15 @@
    	
 	function bulk_ask_download(ids){
 		$.SmartMessageBox({
-				title: "<i class='fa fa-warning txt-color-orangeDark'></i> Warning!",
-				content: "Do you really want download the selected files",
+				title: "<i class='fa fa-warning txt-color-orangeDark'></i> <?php echo _("Warning") ?>!",
+				content: "<?php echo _("Do you really want download the selected files") ?>",
 				buttons: '[No][Yes]'
 		}, function(ButtonPressed) {
-			if (ButtonPressed === "Yes")
+			if (ButtonPressed === "<?php echo _("Yes") ?>")
 			{
 				download_files(ids);
 			}
-			if (ButtonPressed === "No")
+			if (ButtonPressed === "<?php echo _("No") ?>")
 			{
 				
 			}

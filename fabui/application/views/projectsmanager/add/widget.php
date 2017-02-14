@@ -14,13 +14,13 @@
 			<fieldset>
 				<div class="row">
 					<section class="col col-6">
-						<label class="label">Name</label>
+						<label class="label"><?php echo _("Name") ?></label>
 						<label class="input">
 							<input type="text" name="name" id="name">
 						</label>
 					</section>
 					<section class="col col-6">
-						<label class="label">Public</label>
+						<label class="label"><?php echo _("Public") ?></label>
 						<div class="inline-group">
 							<label class="radio">
 								<input type="radio" checked="checked" name="public" value="1"><i></i> Yes
@@ -32,7 +32,7 @@
 					</section>
 				</div>
 				<section>
-					<label class="label">Description</label>
+					<label class="label"><?php echo _("Description") ?></label>
 					<label class="textarea textarea-resizable">
 						<textarea name="description" rows="5" class="custom-scroll"></textarea> 
 					</label>
@@ -48,10 +48,10 @@
 	<div class="col-sm-12">
 		<ul id="myTab1" class="nav nav-tabs">
 			<li class="active">
-				<a href="#dropzone-tab" data-toggle="tab">Dropzone</a>
+				<a href="#dropzone-tab" data-toggle="tab"><?php echo _("Dropzone") ?></a>
 			</li>
 			<li>
-				<a href="#usb-tab" data-toggle="tab">Usb Disk</a>
+				<a href="#usb-tab" data-toggle="tab"><?php echo _("Usb disk") ?></a>
 			</li>
 		</ul>
 		<div id="myTabContent1" class="tab-content padding-10">
@@ -62,8 +62,8 @@
 				<!-- tree is populated in js -->
 				<div class="text-center">
 							<h1><span style="font-size: 50px;" class="icon-fab-usb"></span></h1>
-							<h1>Please insert USB disk</h1>
-							<a id="check-usb" class="btn btn-default" href="javascript:void(0);">Reload</a>
+							<h1><?php echo _("Please insert USB disk") ?></h1>
+							<a id="check-usb" class="btn btn-default" href="javascript:void(0);"><?php echo _("Reload") ?></a>
 				</div>
 			</div>
 		</div>
@@ -74,7 +74,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title" id="myModalLabel"><i class="fa fa-upload"></i> Upload progress</h4>
+				<h4 class="modal-title" id="myModalLabel"><i class="fa fa-upload"></i> <?php echo _("Upload progress") ?></h4>
 			</div>
 			<div class="modal-body custom-scroll " id="progressModalBody">
 			</div>	

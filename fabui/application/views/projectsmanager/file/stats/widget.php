@@ -2,7 +2,7 @@
 	<div class="row">
 		<div class="col-sm-6">	
 		<?php if(count($durations) <= 0): ?>
-			<div class="alert alert-info animated fadeIn notification"><i class="fa-fw fa fa-info"></i> No data available </div>
+			<div class="alert alert-info animated fadeIn notification"><i class="fa-fw fa fa-info"></i> <?php echo _("No data available") ?> </div>
 		<?php endif; ?>
 		</div>
 		<div class="col-sm-6">
@@ -20,9 +20,9 @@
 		<table id="table-list" class="table  table-bordered table-hover" width="100%">
 			<thead>
 				<tr>
-					<th>When</th>
-					<th>Status</th>
-					<th>Duration</th>
+					<th><?php echo _("When") ?></th>
+					<th><?php echo _("Status") ?></th>
+					<th><?php echo _("Duration") ?></th>
 					<th class="hidden"></th>
 				</tr>
 			</thead>
@@ -33,7 +33,7 @@
 	<div class="col-sm-4 ">
 		<div class="row">
 			<div class="col-sm-12">
-				<h5><?php echo $file['print_type'] == 'additive' ? 'Prints' : ($file['print_type'] == 'substractive' ? 'Milling' : 'Scanning'); ?> attempts <span class="pull-right total-tasks"><?php echo array_sum($totals) ?></span></h5>
+				<h5><?php echo $file['print_type'] == 'additive' ? 'Prints' : ($file['print_type'] == 'substractive' ? 'Milling' : 'Scanning'); ?> <?php echo _("attempts") ?> <span class="pull-right total-tasks"><?php echo array_sum($totals) ?></span></h5>
 				<h5>Duration <span class="pull-right total-duration"><?php echo $total_durations; ?></span></h5>
 				<hr class="simple">
 			</div>
@@ -63,4 +63,4 @@
 		
 	</div>
 </div>
-<div class="alert alert-info animated fadeIn notification" id="no-data-container" style="display:none"><i class="fa-fw fa fa-info"></i> No data available </div>
+<div class="alert alert-info animated fadeIn notification" id="no-data-container" style="display:none"><i class="fa-fw fa fa-info"></i> <?php echo _("No data available") ?> </div>

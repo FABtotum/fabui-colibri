@@ -43,7 +43,7 @@
 		
 		if(action == "")
 		{
-			show_message("Please select an action");
+			show_message("<?php echo _('Please select an action') ?>");
 			return false;
 		}
 		
@@ -87,15 +87,15 @@
 
 	function ask_delete(ids){
 		$.SmartMessageBox({
-				title: "<i class='fa fa-warning txt-color-orangeDark'></i> Warning!",
-				content: "Do you really want to remove this file",
-				buttons: '[No][Yes]'
+				title: "<i class='fa fa-warning txt-color-orangeDark'></i> <?php echo _('Warning') ?>!",
+				content: "<?php echo _('Do you really want to remove this file') ?>",
+				buttons: '[<?php echo _('No') ?>][<?php echo _('Yes') ?>]'
 			}, function(ButtonPressed) {
-				if (ButtonPressed === "Yes")
+				if (ButtonPressed === "<?php echo _('Yes') ?>")
 				{
 					delete_file();
 				}
-				if (ButtonPressed === "No")
+				if (ButtonPressed === "<?php echo _('No') ?>")
 				{
 					
 				}
@@ -110,7 +110,7 @@
 	function save_file(){
 		$(".ace_editor").css('opacity', '0.1');   
 		$('#save').addClass("disabled");
-		$('#save').html('<i class="fa fa-spin fa-spinner"></i> Saving');
+		$('#save').html('<i class="fa fa-spin fa-spinner"></i> <?php echo _('Saving') ?>');
 
 		var note         = encodeURIComponent($.trim($("#note").val()));
 		var name         = encodeURIComponent($.trim($("#name").val()));
@@ -136,14 +136,14 @@
 			
 			$.smallBox({
 				title : "Success",
-				content : "<i class='fa fa-check'></i> The file was saved",
+				content : "<i class='fa fa-check'></i> <?php echo _('The file was saved') ?>",
 				color : "#659265",
 				iconSmall : "fa fa-thumbs-up bounce animated",
 				timeout : 4000
 			});
 			
 			$('#save').removeClass("disabled");
-			$('#save').html('<i class="fa fa-save"></i> Save');
+			$('#save').html('<i class="fa fa-save"></i> <?php echo _('Save') ?>');
 			$(".ace_editor").css('opacity', '1'); 
 		  
 		});

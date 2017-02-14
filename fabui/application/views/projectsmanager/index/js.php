@@ -91,7 +91,7 @@
 		}
 		else
 		{
-			show_message("Please select at least 1 object");
+			show_message("<?php echo _("Please select at least 1 object") ?>");
 			return false;
 		}
 
@@ -110,14 +110,14 @@
 		}
 		else
 		{
-			 show_message("Please select at least 1 object");
+			 show_message("<?php echo _("Please select at least 1 object") ?>");
 			 return false;
 		}
 	}
 
 	function show_message(message){
 		$.SmartMessageBox({
-				title: "<i class='fa fa-info-circle'></i> Information",
+				title: "<i class='fa fa-info-circle'></i> <?php echo _("Informazione") ?>",
 				content: message,
 				buttons: '[Ok]'
 			}, function(ButtonPressed) {
@@ -129,15 +129,15 @@
 
 	function bulk_ask_delete(ids){
 		$.SmartMessageBox({
-				title: "<i class='fa fa-warning txt-color-orangeDark'></i> Warning!",
-				content: "Do you really want to remove the selected objects",
-				buttons: '[No][Yes]'
+				title: "<i class='fa fa-warning txt-color-orangeDark'></i> <?php echo _("Warning") ?>!",
+				content: "<?php echo _("Do you really want to remove the selected objects") ?>",
+				buttons: '[<?php echo _("No") ?>][<?php echo _("Yes") ?>]'
 		}, function(ButtonPressed) {
-			if (ButtonPressed === "Yes") 
+			if (ButtonPressed === "<?php echo _("Yes") ?>") 
 			{
 				delete_objects(ids);
 			}
-			if (ButtonPressed === "No")
+			if (ButtonPressed === "<?php echo _("No") ?>")
 			{
 
 			}
@@ -147,7 +147,7 @@
 	function delete_objects(list){
 		
 		$(".bulk-button").addClass("disabled");
-		$(".bulk-button[data-action='delete']").html("<i class='fa fa-spinner'></i> Deleting...");
+		$(".bulk-button[data-action='delete']").html("<i class='fa fa-spinner'></i> <?php echo _("Deleting") ?>...");
 		
 		$.ajax({
 				type: "POST",
@@ -162,10 +162,10 @@
 				}
 				else
 				{
-					showErrorAlert('Error deleting object', response.message);
+					showErrorAlert('<?php echo _("Error deleting object") ?>', response.message);
 				}
 				
-				$(".bulk-button[data-action='delete']").html("<i class='fa fa-trash'></i> Delete");
+				$(".bulk-button[data-action='delete']").html("<i class='fa fa-trash'></i> <?php echo _("Delete") ?>");
 				$(".bulk-button").removeClass("disabled");
 				
 			});
@@ -174,14 +174,14 @@
 
 	function bulk_ask_download(ids){
 		$.SmartMessageBox({
-				title: "<i class='fa fa-warning txt-color-orangeDark'></i> Warning!",
-				content: "Do you really want download the selected objects",
-				buttons: '[No][Yes]'
+				title: "<i class='fa fa-warning txt-color-orangeDark'></i> <?php echo _("Warning") ?>!",
+				content: "<?php echo _("Do you really want download the selected objects") ?>",
+				buttons: '[<?php echo _("No") ?>][<?php echo _("Yes") ?>]'
 		}, function(ButtonPressed) {
-			if (ButtonPressed === "Yes") {
+			if (ButtonPressed === "<?php echo _("Yes") ?>") {
 				download_objects(ids);
 			}
-			if (ButtonPressed === "No") {
+			if (ButtonPressed === "<?php echo _("No") ?>") {
 
 			}
 		});

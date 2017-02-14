@@ -2,7 +2,7 @@
 
 <div id="analysisModal" class="modal hide fade">
     <div class="modal-header">
-        <h3>Running analysis....</h3>
+        <h3><?php echo _("Running analysis") ?>....</h3>
     </div>
     <div class="modal-body">
         <div class="progress" >
@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <a href="#" class="btn disabled">Please wait for process to get finished</a>
+        <a href="#" class="btn disabled"><?php echo _("Please wait for process to get finished") ?></a>
     </div>
 </div>
 
@@ -21,7 +21,7 @@
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#progressAccordionTab">
-                        Progress indicators
+                        <?php echo _("Progress indicators") ?>
                     </a>
                 </div>
                 <div id="progressAccordionTab" class="accordion-body collapse">
@@ -40,7 +40,7 @@
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#infoAccordionTab">
-                        Model info
+                        <?php echo _("Model info") ?>
                     </a>
                 </div>
                 <div id="infoAccordionTab" class="accordion-body collapse">
@@ -64,23 +64,23 @@
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#options2DAccordionTab">
-                        2D Render options
+                        <?php echo _("2D render options") ?>
                     </a>
                 </div>
                 <div id="options2DAccordionTab" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        <label>Speed display type: </label>
+                        <label><?php echo _("Speed display type") ?>: </label>
                             <label for="speedDisplayRadio"><input type="radio" name="speedDisplay" id="speedDisplayRadio" value="1"  onclick="GCODE.ui.processOptions()" checked> mm/sec</label>
-                            <label for="exPerMMRadio"><input type="radio" name="speedDisplay" id="exPerMMRadio" value="1"  onclick="GCODE.ui.processOptions()" > mm extrusion per mm move</label>
+                            <label for="exPerMMRadio"><input type="radio" name="speedDisplay" id="exPerMMRadio" value="1"  onclick="GCODE.ui.processOptions()" > <?php echo _("mm extrusion per mm move") ?></label>
                             <label for="volPerSecRadio"><input type="radio"  name="speedDisplay" id="volPerSecRadio" value="1"  onclick="GCODE.ui.processOptions()" > mm^3/sec</label>
-                        <label for="showMovesCheckbox"><input type="checkbox" id="showMovesCheckbox" value="1"  onclick="GCODE.ui.processOptions()" checked> Show non-extrusion moves</label>
-                        <label for="showRetractsCheckbox"><input type="checkbox" id="showRetractsCheckbox" value="2" onclick="GCODE.ui.processOptions()" checked> Show retracts and restarts</label>
-                        <label for="moveModelCheckbox"><input type="checkbox" id="moveModelCheckbox" value="3"  onclick="GCODE.ui.processOptions()" checked> Move model to the center of the grid</label>
-                        <label for="differentiateColorsCheckbox"><input type="checkbox" id="differentiateColorsCheckbox" value="7"  onclick="GCODE.ui.processOptions()" checked> Show different speeds with different colors</label>
-                        <label for="thickExtrusionCheckbox"><input type="checkbox" id="thickExtrusionCheckbox" value="8"  onclick="GCODE.ui.processOptions()"> Emulate extrusion width</label>
-                        <label for="alphaCheckbox"><input type="checkbox" id="alphaCheckbox" value="10"  onclick="GCODE.ui.processOptions()" > Render lines slightly transparent</label>
+                        <label for="showMovesCheckbox"><input type="checkbox" id="showMovesCheckbox" value="1"  onclick="GCODE.ui.processOptions()" checked> <?php echo _("Show non-extrusion moves") ?></label>
+                        <label for="showRetractsCheckbox"><input type="checkbox" id="showRetractsCheckbox" value="2" onclick="GCODE.ui.processOptions()" checked> <?php echo _("Show retracts and restarts") ?></label>
+                        <label for="moveModelCheckbox"><input type="checkbox" id="moveModelCheckbox" value="3"  onclick="GCODE.ui.processOptions()" checked> <?php echo _("Move model to the center of the grid") ?></label>
+                        <label for="differentiateColorsCheckbox"><input type="checkbox" id="differentiateColorsCheckbox" value="7"  onclick="GCODE.ui.processOptions()" checked> <?php echo _("Show different speeds with different colors") ?></label>
+                        <label for="thickExtrusionCheckbox"><input type="checkbox" id="thickExtrusionCheckbox" value="8"  onclick="GCODE.ui.processOptions()"> <?php echo _("Emulate extrusion width") ?></label>
+                        <label for="alphaCheckbox"><input type="checkbox" id="alphaCheckbox" value="10"  onclick="GCODE.ui.processOptions()" > <?php echo _("Render lines slightly transparent") ?></label>
                         <!--<label for="widthModifier">Width modifier: <input type="text" value="2" id="widthModifier" onchange="GCODE.ui.processOptions()"/></label>-->
-                        <label for="showNextLayer"><input type="checkbox" id="showNextLayer" value="9"  onclick="GCODE.ui.processOptions()" > Show +1 layer</label>
+                        <label for="showNextLayer"><input type="checkbox" id="showNextLayer" value="9"  onclick="GCODE.ui.processOptions()" > <?php echo _("Show +1 layer") ?></label>
                     </div>
                 </div>
             </div>
@@ -88,14 +88,14 @@
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#analyzeOptionsAccordioinTab">
-                        GCode analyzer options
+                        <?php echo _("GCode analyzer options") ?>
                     </a>
                 </div>
                 <div id="analyzeOptionsAccordioinTab" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        These require re-analyzing file:<br />
-                        <label for="sortLayersCheckbox"><input type="checkbox" id="sortLayersCheckbox" value="4" onclick="GCODE.ui.processOptions()" checked>Sort layers by Z</label>
-                        <label for="purgeEmptyLayersCheckbox"><input type="checkbox" id="purgeEmptyLayersCheckbox" value="5"  onclick="GCODE.ui.processOptions()" checked>Hide empty layers</label>
+                        <?php echo _("These require re-analyzing file") ?>:<br />
+                        <label for="sortLayersCheckbox"><input type="checkbox" id="sortLayersCheckbox" value="4" onclick="GCODE.ui.processOptions()" checked><?php echo _("Sort layers by Z") ?></label>
+                        <label for="purgeEmptyLayersCheckbox"><input type="checkbox" id="purgeEmptyLayersCheckbox" value="5"  onclick="GCODE.ui.processOptions()" checked><?php echo _("Hide empty layers") ?></label>
                         <!--label for="showGCodeCheckbox"><input type="checkbox" id="showGCodeCheckbox" value="6" onclick="GCODE.ui.processOptions()" checked>Show GCode in GCode tab (memory intensive!)</label-->
                     </div>
                 </div>
@@ -104,18 +104,18 @@
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#printerInfoAccordioinTab">
-                        Printer Info
+                        <?php echo _("Printer Info") ?>
                     </a>
                 </div>
                 <div id="printerInfoAccordioinTab" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        <label for="filamentDia">Plastic diameter: <input type="text" value="1.75" id="filamentDia" onchange="GCODE.ui.processOptions()"/></label>
-                        <label>Plastic type: </label>
-                            <label for="plasticABS"><input type="radio" name="radPlastic" id="plasticABS" value="ABS"  onclick="GCODE.ui.processOptions()" checked>ABS</label>
-                            <label for="plasticPLA"><input type="radio" name="radPlastic" id="plasticPLA" value="PLA"  onclick="GCODE.ui.processOptions()" >PLA</label>
-                        <label for="nozzleDia">Nozzle size: <input type="text" value="0.4" id="nozzleDia" onchange="GCODE.ui.processOptions()"/></label>
-                        <label for="hourlyCost">Printer hourly cost: <input type="text" value="1.00" id="hourlyCost" onchange="GCODE.ui.processOptions()"/></label>
-                        <label for="filamentPrice">Filament price(per gram): <input type="text" value="0.05" id="filamentPrice" onchange="GCODE.ui.processOptions()"/></label>
+                        <label for="filamentDia"><?php echo _("Plastic diameter") ?>: <input type="text" value="1.75" id="filamentDia" onchange="GCODE.ui.processOptions()"/></label>
+                        <label><?php echo _("Plastic type") ?>: </label>
+                            <label for="plasticABS"><input type="radio" name="radPlastic" id="plasticABS" value="ABS"  onclick="GCODE.ui.processOptions()" checked><?php echo _("ABS") ?></label>
+                            <label for="plasticPLA"><input type="radio" name="radPlastic" id="plasticPLA" value="PLA"  onclick="GCODE.ui.processOptions()" ><?php echo _("PLA") ?></label>
+                        <label for="nozzleDia"><?php echo _("Nozzle size") ?>: <input type="text" value="0.4" id="nozzleDia" onchange="GCODE.ui.processOptions()"/></label>
+                        <label for="hourlyCost"><?php echo _("Printer hourly cost") ?>: <input type="text" value="1.00" id="hourlyCost" onchange="GCODE.ui.processOptions()"/></label>
+                        <label for="filamentPrice"><?php echo _("Filament price(per gram)") ?>: <input type="text" value="0.05" id="filamentPrice" onchange="GCODE.ui.processOptions()"/></label>
                     </div>
                 </div>
             </div>
@@ -123,14 +123,14 @@
             <div class="accordion-group hide" id="errAnalyseTab">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#errorAnalysisAccordioinTab">
-                        Error Analysis
+                        <?php echo _("Error Analysis") ?>
                     </a>
                 </div>
                 <div id="errorAnalysisAccordioinTab" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        <button class="btn disabled" id="runAnalysisButton" onclick="GCODE.analyzer.runAnalyze()"/>Run analysis</button>
+                        <button class="btn disabled" id="runAnalysisButton" onclick="GCODE.analyzer.runAnalyze()"/><?php echo _("Run analysis") ?></button>
                         <div id="analysisOptionsDiv" class="hide">
-                            <label for="renderErrors"><input type="checkbox" id="renderErrors" onclick="GCODE.ui.processOptions()">Render error analysis results</label>
+                            <label for="renderErrors"><input type="checkbox" id="renderErrors" onclick="GCODE.ui.processOptions()"><?php echo _("Render error analysis results") ?></label>
                         </div>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
                 <li class=""><a href="#tab2d" data-toggle="tab">2D</a></li>
                 <li class=""><a href="#tab3d" data-toggle="tab">3D</a></li>
                 <!--li class=""><a href="#tabGCode" data-toggle="tab">GCode</a></li-->
-                <li class="active"><a href="#tabAbout" data-toggle="tab">About</a></li>
+                <li class="active"><a href="#tabAbout" data-toggle="tab"><?php echo _("About") ?></a></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane" id="tab2d">
