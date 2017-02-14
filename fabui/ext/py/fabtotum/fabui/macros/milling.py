@@ -23,19 +23,13 @@ __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
 # Import standard python module
-import gettext
 
 # Import external modules
 
 # Import internal modules
+from fabtotum.utils.translation import _, setLanguage
 
-
-# Set up message catalog access
-tr = gettext.translation('gmacro', 'locale', fallback=True)
-_ = tr.ugettext
-
-
-def start_subtractive(app, args = None):
+def start_subtractive(app, args = None, lang='en_US.UTF-8'):
     units_a = app.config.get('settings', 'a')
     
     #macro("G92 X0 Y0 Z0 E0","ok",3,"Setting Origin Point",1)
@@ -43,7 +37,7 @@ def start_subtractive(app, args = None):
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th Axis mode"), verbose=False)
     
     
-def end_subtractive(app, args = None):
+def end_subtractive(app, args = None, lang='en_US.UTF-8'):
 
     try:
         color = app.config.get('settings', 'color')

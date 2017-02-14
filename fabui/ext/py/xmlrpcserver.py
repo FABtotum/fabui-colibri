@@ -29,6 +29,7 @@ import json
 # Import external modules
 
 # Import internal modules
+from fabtotum.utils.translation import _, setLanguage
 from fabtotum.os.paths     import RUN_PATH
 from fabtotum.fabui.config import ConfigService
 from fabtotum.utils.gcodefile import GCodeFile, GCodeInfo
@@ -94,10 +95,11 @@ class ExposeCommands:
         """
         return self.gcs.send(code, block=block, timeout=timeout, async=async)
     
-    def do_macro(self, preset, args = None, atomic = True):
+    def do_macro(self, preset, args = None, atomic = True, lang='en_US.UTF-8'):
         """
         Execute macro command.
         """
+        self.gmacro.setLanguage(lang)
         return json.dumps( self.gmacro.run(preset, args, atomic) )
         
     def do_abort(self):

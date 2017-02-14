@@ -26,10 +26,19 @@ import ConfigParser
 # Import external modules
 
 # Import internal modules
+from fabtotum.fabui.config  import ConfigService
 
 # Set up message catalog access
-
-
-
-tr = gettext.translation('fabui', 'locale', fallback=True)
+tr = gettext.translation('fabui', '/usr/share/fabui/locale', fallback=True)
 _ = tr.ugettext
+
+def setLanguage(lang, domain='fabui', config=None):
+	if not config:
+		config = ConfigService()
+
+	locale_path = config.get('general', 'locale_path')
+	
+	tr = gettext.translation('fabui', locale_path, fallback=True, languages=[lang])
+	_ = tr.ugettext
+	
+	return _

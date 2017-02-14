@@ -32,13 +32,10 @@ from watchdog.events import PatternMatchingEventHandler
 import pycurl
 
 # Import internal modules
+from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.gpusher import GCodePusher
 from fabtotum.update.factory  import UpdateFactory
 from fabtotum.update import BundleTask, FirmwareTask, BootTask
-
-# Set up message catalog access
-tr = gettext.translation('update', 'locale', fallback=True)
-_ = tr.ugettext
 
 ################################################################################
 

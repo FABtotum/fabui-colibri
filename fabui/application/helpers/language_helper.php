@@ -47,6 +47,18 @@ if(!function_exists('langauges_menu'))
 		return $html;
 	}
 }
+if(!function_exists('getCurrentLanguage'))
+{
+	function getCurrentLanguage()
+	{
+		$CI =& get_instance();
+		
+		if(isset($CI->session->user['settings']['language']))
+			return $CI->session->user['settings']['language'];
+		
+		return 'en_US';
+	}
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('loadTranslation'))
 {
@@ -58,11 +70,7 @@ if(!function_exists('loadTranslation'))
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		
-		if(isset($CI->session->user['settings']['language'])){
-			$language_code = $CI->session->user['settings']['language'];
-		}else{
-			$language_code = 'en_US';
-		}
+		$language_code = getCurrentLanguage();
 		
 		putenv('LC_ALL='.$language_code.'.UTF-8');
 		setlocale(LC_ALL, $language_code.'.UTF-8');

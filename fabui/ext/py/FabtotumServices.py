@@ -32,6 +32,7 @@ from watchdog.observers import Observer
 from ws4py.client.threadedclient import WebSocketClient
 
 # Import internal modules
+from fabtotum.utils.translation         import _, setLanguage
 from fabtotum.os.paths                  import TEMP_PATH, RUN_PATH, PYTHON_PATH
 from fabtotum.fabui.config              import ConfigService
 from fabtotum.fabui.bootstrap           import hardwareBootstrap

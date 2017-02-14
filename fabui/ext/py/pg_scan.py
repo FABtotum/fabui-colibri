@@ -37,12 +37,9 @@ except ImportError:
 from picamera import PiCamera
 
 # Import internal modules
+from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
-
-# Set up message catalog access
-tr = gettext.translation('fabui', 'locale', fallback=True)
-_ = tr.ugettext
 
 ################################################################################
 

@@ -24,21 +24,16 @@ __version__ = "1.0"
 
 # Import standard python module
 import re
-import gettext
 
 # Import external modules
 
-from fabtotum.fabui.macros.common import getEeprom
-
 # Import internal modules
+from fabtotum.fabui.macros.common import getEeprom
+from fabtotum.utils.translation import _, setLanguage
 
-
-# Set up message catalog access
-tr = gettext.translation('gmacro', 'locale', fallback=True)
-_ = tr.ugettext
-
-def home_all(app, args = None):
-
+def home_all(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    
     try:
         ext_temp = args[0]
         bed_temp = args[1]
@@ -67,7 +62,8 @@ def home_all(app, args = None):
     else:
         app.macro("G28",                                "ok", 100,  _("Homing all axes"), verbose=False)
 
-def start_up(app, args = None):
+def start_up(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     
     try:
         color = app.config.get('settings', 'color')
@@ -106,15 +102,17 @@ def start_up(app, args = None):
 
     app.macro("M734 S"+str(collision_warning),  "ok", 2, _("Machine Limits Collision warning"), verbose=False)
 
-def shutdown(app, args = None):
+def shutdown(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     app.trace( _("Shutting down...") ) 
     app.macro("M300",   "ok", 5, _("Play alert sound!"), verbose=False)
     app.macro("M729",   "ok", 2, _("Asleep!"), verbose=False)
     
-def raise_bed(app, args = None):
+def raise_bed(app, args = None, lang='en_US.UTF-8'):
     """
     For homing procedure before probe calibration and print without homing.
     """
+    _ = setLanguage(lang)
     try:
         zprobe = app.config.get('settings', 'zprobe')
         zprobe_disabled = (zprobe['disable'] == 1)
@@ -137,7 +135,8 @@ def raise_bed(app, args = None):
         app.macro("G0 Z10 F10000",  "ok", 15,   _("Raising") )
         app.macro("G28",            "ok", 100,  _("Homing all axes"), verbose=False)
 
-def auto_bed_leveling(app, args = None):
+def auto_bed_leveling(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     try:
         ext_temp = args[0]
         bed_temp = args[1]
@@ -158,14 +157,23 @@ def auto_bed_leveling(app, args = None):
     app.macro("G29",                "ok", 140,  _("Auto bed leveling procedure") )
     app.macro("G0 X5 Y5 Z60 F2000", "ok", 100,  _("Getting to idle position") )
 
-def probe_down(app, args = None):
+def probe_down(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    
+    print "LANG:", lang
+    
     app.macro("M401",   "ok", 1, _("Probe Down") )
     
-def probe_up(app, args = None):
+def probe_up(app, args = None, lang='en_US.UTF-8'):
+    
+    print "LANG:", lang
+    
+    _ = setLanguage(lang)
     app.macro("M402",   "ok", 1, _("Probe Up") )
 
-def safe_zone(app, args = None):
+def safe_zone(app, args = None, lang='en_US.UTF-8'):
     """ .. todo: turn these into macroes """
+    _ = setLanguage(lang)
     pass
     #~ app.send("G91")
     #~ app.send("G0 E-5 F1000")
@@ -174,7 +182,8 @@ def safe_zone(app, args = None):
     #~ app.send("G27 Z0")
     #~ app.send("G0 X210 Y210")
 
-def engage_4axis(app, args = None):
+def engage_4axis(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     units_a = app.config.get('settings', 'a')
     try:
         feeder_disengage_offset = app.config.get('settings', 'feeder')['disengage_offset']
@@ -194,11 +203,13 @@ def engage_4axis(app, args = None):
     app.macro("G0 Z234",            "ok", 1,    _("Check position"), verbose=False)
     app.macro("M300",               "ok", 3,    _("Play beep sound"), verbose=False)
     
-def do_4th_axis_mode(app, args = None):
+def do_4th_axis_mode(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     units_a = app.config.get('settings', 'a')
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), verbose=False)
 
-def version(app, args = None):
+def version(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     result = []
     retr = app.macro("M760",   "ok", 1, _("Controller serial ID"), verbose=False)
     result.append(retr[0])
@@ -218,7 +229,8 @@ def version(app, args = None):
     result.append(retr[0])
     return result
 
-def set_ambient_color(app, args = None):
+def set_ambient_color(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     red = args[0]
     green = args[1]
     blue = args[2]
@@ -227,8 +239,10 @@ def set_ambient_color(app, args = None):
     app.macro("M702 S{0}".format(green),   "ok", 1,    _("Setting Green Color"))
     app.macro("M703 S{0}".format(blue),   "ok", 1,    _("Setting Blue Color"))
 
-def install_head(app, args = None):
+def install_head(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     pass
 
-def read_eeprom(app, args = None):
-    return getEeprom(app)
+def read_eeprom(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    return getEeprom(app, lang)

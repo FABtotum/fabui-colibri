@@ -1240,7 +1240,7 @@ msgstr ""
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:98
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:165
 msgid "Probe Up"
-msgstr ""
+msgstr "Sonde nach oben"
 
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:99
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:100
@@ -1296,7 +1296,7 @@ msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:162
 msgid "Probe Down"
-msgstr ""
+msgstr "Sonde nach unten"
 
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:184
 msgid "Engaging 4th Axis"

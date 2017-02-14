@@ -27,14 +27,11 @@ import gettext
 from threading import Event, Thread
 
 # Import internal modules
+from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
 import fabtotum.fabui.macros.general as general_macros
 import fabtotum.fabui.macros.printing as print_macros
-
-# Set up message catalog access
-tr = gettext.translation('fabui', 'locale', fallback=True)
-_ = tr.ugettext
 
 ################################################################################
 

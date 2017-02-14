@@ -25,32 +25,25 @@ __version__ = "1.0"
 # Import standard python module
 import os
 import json
-import gettext
-
-from fabtotum.fabui.macros.common import getPosition
-from fabtotum.fabui.macros.common import getEeprom
 
 # Import external modules
 
 # Import internal modules
+from fabtotum.utils.translation import _, setLanguage
+from fabtotum.fabui.macros.common import getPosition
+from fabtotum.fabui.macros.common import getEeprom
 
-
-# Set up message catalog access
-tr = gettext.translation('gmacro', 'locale', fallback=True)
-_ = tr.ugettext
-
-
-def probe_setup_prepare(app, args = None):
+def probe_setup_prepare(app, args = None, lang='en_US.UTF-8'):
     #~ app.trace( _("Preparing Calibration procedure") )
     #~ app.trace( _("This may take a wile") )
     app.macro("M104 S200",          "ok", 90,   _("Heating Extruder") )
     app.macro("M140 S45",           "ok", 90,   _("Heating Bed (fast)") )
     app.macro("G90",                "ok", 2,    _("Setting rel position"), verbose=False)
     app.macro("G27",                "ok", 100,  _("Homing all axes") )
-    app.macro("G0 Z50 F10000",      "ok", 100,    _("G0 Z50 F10000"), verbose=False)
+    app.macro("G0 Z50 F10000",      "ok", 100,   _("G0 Z50 F10000"), verbose=False)
     app.macro("G28",                "ok", 100,  _("Homing all axes") )
     app.macro("G90",                "ok", 2,    _("Setting rel position"), verbose=False)
-    app.macro("G0 X103.00 Y119.50 Z5 F10000",                "ok", 2,    _("Setting rel position"), verbose=False)
+    app.macro("G0 X103.00 Y119.50 Z5 F10000", "ok", 2,    _("Setting rel position"), verbose=False)
     #app.macro("G91",                "ok", 2,    _("Relative mode"), verbose=False)
     #app.macro("G0 X17 Y61.5 F6000", "ok", 100,    _("Offset"), verbose=False)
     #current_position = getPosition(app)
@@ -60,16 +53,16 @@ def probe_setup_prepare(app, args = None):
     #app.macro("G91",                "ok", 2,    _("Setting abs position"), verbose=False)
     #app.macro("M109",               None, 300,  _("Witing for extruder temperature"), warning=False) 
     
-def probe_setup_calibrate(app, args = None):
+def probe_setup_calibrate(app, args = None, lang='en_US.UTF-8'):
     
     app.macro("M104 S0",    "ok", 2,   _("Extruder heating off") )
     app.macro("M140 S0",    "ok", 2,   _("Bed heating off") )
     
     app.trace( _("Calibrating probe") )
-    eeprom = getEeprom(app)
+    eeprom = getEeprom(app, lang)
     z_probe_old = float(eeprom['probe_length'])
     
-    current_position = getPosition(app)
+    current_position = getPosition(app, lang)
     z_touch = float(current_position['z'])
     
      # write config to EEPROM
@@ -94,7 +87,7 @@ def probe_setup_calibrate(app, args = None):
     app.macro("G92 Z0.08",    "ok", 2,   _("Setting paper heigth"), verbose=False )
     app.macro("G0 Z300 F1000",    "ok", 90,   _("Lowering bed"), verbose=False )
     
-    current_position = getPosition(app)
+    current_position = getPosition(app, lang)
     z_offset_max = current_position['count']['z']
     app.macro('G92 Z{0}'.format(z_offset_max),    "ok", 2,   _('G92 Z{0}'.format(z_offset_max)), verbose=False )
     
@@ -114,7 +107,7 @@ def probe_setup_calibrate(app, args = None):
         'z_max' : str(z_offset_max)
     }
     
-def raise_bed_no_g27(app, args = None):
+def raise_bed_no_g27(app, args = None, lang='en_US.UTF-8'):
     #for homing procedure before probe calibration.
     
     zprobe = app.config.get('units', 'zprobe')

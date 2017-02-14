@@ -23,19 +23,14 @@ __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
 # Import standard python module
-import gettext
 
 # Import external modules
 
 # Import internal modules
+from fabtotum.utils.translation import _, setLanguage
 
 
-# Set up message catalog access
-tr = gettext.translation('gmacro', 'locale', fallback=True)
-_ = tr.ugettext
-
-
-def prepare_additive(app, args=None):
+def prepare_additive(app, args=None, lang='en_US.UTF-8'):
     
     zprobe_disabled = int(app.config.get('settings', 'zprobe.enable')) == 0
     z_max_offset    = app.config.get('settings', 'z_max_offset')
@@ -54,7 +49,7 @@ def prepare_additive(app, args=None):
     
     
 
-def start_additive(app, args = None):
+def start_additive(app, args = None, lang='en_US.UTF-8'):
     units_e = app.config.get('settings', 'e')
     
     ext_temp = args[0];
@@ -71,7 +66,7 @@ def start_additive(app, args = None):
     app.macro("M92 E"+str(units_e),     "ok", 1,    _("Setting extruder mode"),           verbose=False)
     app.macro("M400",                   "ok", 60,   _("Waiting for all moves to finish"), verbose=False)
 
-def end_additive(app, args = None):
+def end_additive(app, args = None, lang='en_US.UTF-8'):
     try:
         color = app.config.get('settings', 'color')
     except KeyError:
@@ -99,12 +94,12 @@ def end_additive(app, args = None):
     app.macro("M703 S"+str(color['b']), "ok", 2,    _("Turning on lights"), verbose=False)
     app.macro("M300",                   "ok", 1,    _("Printing completed!"), verbose=False)  #end print signal
 
-def end_additive_safe_zone(app, args = None):
+def end_additive_safe_zone(app, args = None, lang='en_US.UTF-8'):
     app.macro("G90",                        "ok", 2,    _("Setting Absolute position") )
     app.macro("G0 X210 Y210 Z100 F10000",   "ok", 100,  _("Moving to safe zone") )
     app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish") )
 
-def check_pre_print(app, args = None):
+def check_pre_print(app, args = None, lang='en_US.UTF-8'):
     try:
         safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
@@ -116,7 +111,7 @@ def check_pre_print(app, args = None):
     app.macro("M744",       "TRIGGERED", 1, _("Building plane inserted correctly"), warning=True)
     app.macro("M742",       "TRIGGERED", 1, _("Spool panel control"), warning=True)
 
-def engage_feeder(app, args = None):
+def engage_feeder(app, args = None, lang='en_US.UTF-8'):
     try:
         safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:

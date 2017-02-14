@@ -23,19 +23,13 @@ __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
 # Import standard python module
-import gettext
 
 # Import external modules
 
 # Import internal modules
+from fabtotum.utils.translation import _, setLanguage
 
-
-# Set up message catalog access
-tr = gettext.translation('gmacro', 'locale', fallback=True)
-_ = tr.ugettext
-
-
-def check_pre_scan(app, args = None):
+def check_pre_scan(app, args = None, lang='en_US.UTF-8'):
     units_a = app.config.get('settings', 'a')
     
     try:
@@ -69,7 +63,7 @@ def check_pre_scan(app, args = None):
     #app.macro("M400",           "ok", 55,       _("Wait for all moves to finish"), verbose=False)
     # macro("M18","ok",1,"Motor Off",1) #should be moved to firmware
     
-def rotary_scan(app, args = None):
+def rotary_scan(app, args = None, lang='en_US.UTF-8'):
     units_a = app.config.get('settings', 'a')
     
     try:
@@ -93,7 +87,7 @@ def rotary_scan(app, args = None):
     #app.macro("M400",        "ok", 55,          _("Wait for all moves to finish"), verbose=False)
     #macro("M92 E"+str(units['a']),"ok",1,"Setting 4th axis mode",0)
     
-def photogrammetry_scan(app, args = None):
+def photogrammetry_scan(app, args = None, lang='en_US.UTF-8'):
     units_a = app.config.get('settings', 'a')
     
     try:
@@ -116,7 +110,7 @@ def photogrammetry_scan(app, args = None):
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), verbose=True)
     #app.macro("M400",       "ok", 55,           _("Wait for all moves to finish"), verbose=False)
 
-def sweep_scan(app, args = None):
+def sweep_scan(app, args = None, lang='en_US.UTF-8'):
     try:
         safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
@@ -138,30 +132,8 @@ def sweep_scan(app, args = None):
     # macro("M92 E"+str(units['a']),"ok",1,"Setting 4th axis mode",0)
     app.macro("G0 Z145 F1000",  "ok", 100,       _("Lowering the plane"), verbose=False)
     #app.macro("M400",            "ok", 55,      _("Wait for all moves to finish"), verbose=False)
-    
-#~ def sweep_scan_new(app, args = None):
-    #~ try:
-        #~ safety_door = app.config.get('settings', 'safety')['door']
-    #~ except KeyError:
-        #~ safety_door = 0
-    
-    #~ app.trace( _("Initializing Sweeping Laserscanner") )
-    #~ app.trace( _("checking panel door status and bed inserted") )
-    #~ if(safety_door == 1):
-        #~ app.macro("M741",       "TRIGGERED", 2, _("Front panel door control") )
-    #~ app.macro("M744",           "TRIGGERED", 2, _("Building plane removed!"), warning=True)
-    #~ app.macro("M742",           "TRIGGERED", 1, _("Spool panel is not closed!"), warning=True, verbose=False)
-    #~ app.macro("M701 S0",        "ok", 2,        _("Turning off lights") )
-    #~ app.macro("M702 S0",        "ok", 2,        _("Turning off lights"), verbose=False)
-    #~ app.macro("M703 S0",        "ok", 2,        _("Turning off lights"), verbose=False)
-    #~ # macro("M744","open",2,"Working plane absent/tilted",0.1)
-    #~ app.macro("G27",            "ok", 90,       _("Homing all axis") )
-    #~ app.macro("G90",            "ok", 2,        _("Setting Absolute position"), verbose=False)
-    #~ # macro("M92 E"+str(units['a']),"ok",1,"Setting 4th axis mode",0)
-    #~ app.macro("G0 Z145 F1000",  "ok", 90,       _("Lowering the plane"), verbose=False)
-    #~ app.macro("M400",            "ok", 55,      _("Wait for all moves to finish"), verbose=False)
 
-def probe_scan(app, args = None):
+def probe_scan(app, args = None, lang='en_US.UTF-8'):
     units_a = app.config.get('settings', 'a')
     try:
         safety_door = app.config.get('settings', 'safety')['door']
@@ -178,7 +150,7 @@ def probe_scan(app, args = None):
     app.macro("M302 S0",            "ok", 2,        _("Disabling cold extrusion prevention"), verbose=True)
     app.macro("M92 E"+str(units_a), "ok", 2,        _("Setting 4th axis mode"), verbose=True)
 
-def end_scan(app, args = None):
+def end_scan(app, args = None, lang='en_US.UTF-8'):
     try:
         color = app.config.get('settings', 'color')
     except KeyError:

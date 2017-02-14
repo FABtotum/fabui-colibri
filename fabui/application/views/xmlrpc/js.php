@@ -41,7 +41,7 @@
               dataType: 'json'
         }).done(function( data ) { 
             closeWait();
-            
+            console.log(data);
             $(".response-container").html( JSON.stringify(data.reply) );
         });
 
