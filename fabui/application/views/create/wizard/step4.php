@@ -25,14 +25,14 @@
 			<div class="smart-form">
 				<fieldset>
 					<section>
-						<label class="label">Duration: <span class="pull-right"><span class="elapsed-time"></span></span></label>
+						<label class="label"><?php echo _('Duration'); ?>: <span class="pull-right"><span class="elapsed-time"></span></span></label>
 					</section>
 					<div class="row">
 						<section class="col col-9">
-							<label class="label">Z's height is <strong><span class="z-height"></span></strong> do you want to save it and override the value for the next prints? </label>
+							<label class="label"><?php echo _("Z's height is"); ?> <strong><span class="z-height"></span></strong>  <?php echo _("Do you want to save it and override the value for the next prints?"); ?> </label>
 						</section>
 						<section class="col col-3">
-							<a style="padding:6px 10px 5px" href="javascript:void(0);" class="btn btn-default btn-block save-z-height"><i class="fa fa-save"></i> Yes</a>
+							<a style="padding:6px 10px 5px" href="javascript:void(0);" class="btn btn-default btn-block save-z-height"><i class="fa fa-save"></i> <?php echo _("Yes"); ?></a>
 						</section>
 					</div>
 					<section>
@@ -57,12 +57,12 @@
 							<label for="quality-2"><i class="fa fa-star"></i></label>
 							<input type="radio" name="quality" id="quality-1">
 							<label for="quality-1"><i class="fa fa-star"></i></label>
-							Quality of the print
+							<?php echo _("Quality of the print"); ?>
 						</div>
 					</section>
 					<div class="row">
-						<section class="col col-6"><a style="padding:6px 10px 5px" href="javascript:void(0);" class="btn btn-default btn-block restart-print"><i class="fa fa-refresh"></i> Restart Print</a></section>
-						<section class="col col-6"><a style="padding:6px 10px 5px" href="javascript:void(0);" class="btn btn-default btn-block new-print"><i class="fa fa-lg fa-fw icon-fab-<?php echo $type ?>"></i> New <?php echo ucfirst($type) ?></a></section>
+						<section class="col col-6"><a style="padding:6px 10px 5px" href="javascript:void(0);" class="btn btn-default btn-block restart-print"><i class="fa fa-refresh"></i> <?php echo _("Restart print"); ?></a></section>
+						<section class="col col-6"><a style="padding:6px 10px 5px" href="javascript:void(0);" class="btn btn-default btn-block new-print"><i class="fa fa-lg fa-fw icon-fab-<?php echo $type ?>"></i><?php echo _("New"); ?><?php echo ucfirst($type) ?></a></section>
 					</div>
 				</fieldset>
 			</div>

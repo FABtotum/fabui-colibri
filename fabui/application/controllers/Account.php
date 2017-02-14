@@ -76,6 +76,8 @@
 		$user['settings'] = json_decode($user['settings'], true);
 		$this->session->user = $user;
 		
+		$this->output->set_content_type('application/json')->set_output(json_encode( $this->session->user ));
+		
 	}
 			
  }

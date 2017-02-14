@@ -71,13 +71,28 @@
 			jQuery.each( fields, function( index, object ) {
 				data[object.name] = object.value;
 			});
-
+			$("#save").html('<i class="fa fa-save"></i> Saving');
+			disableButton('#save');
 			$.ajax({
 				type: 'post',
 				url: '<?php echo site_url('account/saveUser/'.$this->session->user['id']); ?>',
 				data : data,
 				dataType: 'json'
 			}).done(function(response) {
+				enableButton('#save');
+				$("#save").html('<i class="fa fa-save"></i> Save');
+
+				$.smallBox({
+					title : "Settings",
+					content : 'Account informations saved',
+					color : "#5384AF",
+					timeout: 3000,
+					icon : "fa fa-check bounce animated"
+				});
+
+				if("<?php echo $this->session->user['settings']['language'] ?>" != $("#settings-language").val()){
+					location.reload();
+				}
 				
 			});
 		}

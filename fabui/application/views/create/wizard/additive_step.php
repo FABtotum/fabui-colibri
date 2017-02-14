@@ -11,7 +11,7 @@
 <div class="step-pane" id="step2" data-step="2">
 	<hr class="simple">
 	<?php if($this->session->settings['feeder']['show'] == false): ?>
-	<h4 class="text-center">Follow the instructions</h4>
+	<h4 class="text-center"><?php echo _('Follow the instructions'); ?></h4>
 	<div class="row">
 		<div class="col-sm-6 col-md-6  ">
 			<div class="product-content product-wrap clearfix">
@@ -24,7 +24,7 @@
 					<div class="col-sm-8">
 						<div class="description text-center">
 							<h1><span class="badge bg-color-blue txt-color-white">1</span></h1>
-							<p class="font-md">Make sure that the working plane is clean and free to use</p>
+							<p class="font-md"><?php echo _('Make sure that the working plane is clean and free to use'); ?></p>
 						</div>
 					</div>
 				</div>
@@ -41,7 +41,7 @@
 					<div class="col-sm-8">
 						<div class="description text-center">
 							<h1><span class="badge bg-color-blue txt-color-white">2</span></h1>
-							<p class="font-md">Close the cover</p>
+							<p class="font-md"><?php echo _('Close the cover'); ?></p>
 						</div>
 					</div>
 				</div>
@@ -49,7 +49,7 @@
 		</div>
 	</div>
 	<hr class="simple">
-	<h4 class="text-center">Choose calibration type</h4>
+	<h4 class="text-center"><?php echo _('Choose calibration type'); ?></h4>
 	<div class="row">
 		<div class="col-sm-6 col-md-6">
 			<div  class="product-content product-wrap clearfix">
@@ -64,10 +64,10 @@
 							<div class="radio margin-top-10">
 								<label>
 									<input type="radio" value="home_all" class="radiobox style-0" checked="checked" name="calibration">
-									<span>Simple homing</span> 
+									<span><?php echo _('Simple homing'); ?></span> 
 								</label>
 							</div>
-							<p class="font-md">Quickly home all axis. Works well with a well calibrated working plane. <br>(SUGGESTED)</p>
+							<p class="font-md"><?php echo _('Quickly home all axis. Works well with a well calibrated working plane'); ?>. <br>(<?php echo _('Suggested'); ?>)</p>
 						</div>
 					</div>
 				</div>
@@ -86,10 +86,10 @@
 							<div class="radio margin-top-10">
 								<label>
 									<input value="auto_bed_leveling" type="radio" class="radiobox style-0" name="calibration">
-									<span>Auto Bed Leveling</span> 
+									<span><?php echo _('Auto bed leveling'); ?></span> 
 								</label>
 							</div>
-							<p class="font-md">Probes the working plane to auto-correct movements to account for not leveled bed.</p>
+							<p class="font-md"><?php echo _('Probes the working plane to auto-correct movements to account for not leveled bed'); ?>.</p>
 						</div>
 					</div>
 				</div>

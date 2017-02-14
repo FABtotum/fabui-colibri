@@ -15,10 +15,10 @@
 	<hr class="simple">
 	<ul id="filesTab"  class="nav nav-tabs  bordered">
 		<li class=" active">
-			<a href="#files-tab" data-toggle="tab">All files</a>
+			<a href="#files-tab" data-toggle="tab"><?php echo _('All files'); ?></a>
 		</li>
 		<li class="">
-			<a href="#recent-prints-tab" data-toggle="tab">Recent prints</a>
+			<a href="#recent-prints-tab" data-toggle="tab"><?php echo _('Recent prints'); ?></a>
 		</li>
 	</ul>
 	<div id="filesTabContent" class="tab-content ">
@@ -28,8 +28,8 @@
 					<thead>
 						<tr>
 							<th width="20" class="text-center"></th>
-							<th>File</th>
-							<th class="hidden-xs">Project</th>
+							<th><?php echo _('File'); ?></th>
+							<th class="hidden-xs"><?php echo _('Project'); ?></th>
 							<th class="hidden"></th>
 							<th class="hidden"></th>
 						</tr>
@@ -44,8 +44,8 @@
 					<thead>
 						<tr>
 							<th width="20" class="text-center"></th>
-							<th>File</th>
-							<th class="hidden-xs">Project</th>
+							<th><?php echo _('File'); ?></th>
+							<th class="hidden-xs"><?php echo _('Project'); ?></th>
 							<th class="hidden"></th>
 							<th class="hidden"></th>
 						</tr>
