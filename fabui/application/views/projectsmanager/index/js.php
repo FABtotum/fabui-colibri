@@ -117,11 +117,11 @@
 
 	function show_message(message){
 		$.SmartMessageBox({
-				title: "<i class='fa fa-info-circle'></i> <?php echo _("Informazione") ?>",
+				title: "<i class='fa fa-info-circle'></i> <?php echo _("Information") ?>",
 				content: message,
-				buttons: '[Ok]'
+				buttons: '[<?php echo _("Ok")?>]'
 			}, function(ButtonPressed) {
-				if (ButtonPressed === "OK") 
+				if (ButtonPressed === "<?php echo _("Ok")?>") 
 				{
 				}
 			});

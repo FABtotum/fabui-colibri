@@ -192,7 +192,7 @@
 		$.SmartMessageBox({
 				title: "<i class='fa fa-info-circle'></i> <?php echo _("Information") ?>",
 				content: message,
-				buttons: '[<?php echo _("Ok)") ?>]'
+				buttons: '[<?php echo _("Ok") ?>]'
 			}, function(ButtonPressed) {
 				if (ButtonPressed === "<?php echo _("Ok") ?>") {
 				}
@@ -240,7 +240,7 @@
 		$.SmartMessageBox({
 				title: "<i class='fa fa-warning txt-color-orangeDark'></i> <?php echo _("Warning") ?>!",
 				content: "<?php echo _("Do you really want download the selected files") ?>",
-				buttons: '[No][Yes]'
+				buttons: '[<?php echo _("No") ?>][<?php echo _("Yes") ?>]'
 		}, function(ButtonPressed) {
 			if (ButtonPressed === "<?php echo _("Yes") ?>")
 			{

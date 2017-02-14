@@ -54,11 +54,11 @@
 				
 		$.each(plugins, function(i, plugin) {
 			console.log('plugin', plugin);
-			table_html += '<tr><td><h4>' + plugin.name + '<small>' + plugin.desc + ' | <a class="no-ajax" target="_blank" href="'+plugin.url+'"> <?php echo ("visit plugin site");?></a></small><p class="margin-top-10">';
+			table_html += '<tr><td><h4>' + plugin.name + '<small>' + plugin.desc + ' | <a class="no-ajax" target="_blank" href="'+plugin.url+'"> <?php echo _("visit plugin site");?></a></small><p class="margin-top-10">';
 			
 			//if( installed_plugins.indexOf(plugin.slug) == -1 )
 			{
-				table_html += '<button class="btn btn-xs btn-primary action-button" data-action="update" data-title="'+plugin.slug+'" " title="Install"><?php echo ("Install");?></button>&nbsp;';
+				table_html += '<button class="btn btn-xs btn-primary action-button" data-action="update" data-title="'+plugin.slug+'" " title="Install"><?php echo _("Install");?></button>&nbsp;';
 			}
 			//else
 			{
@@ -105,16 +105,16 @@
 			var plugin_name = $( this ).attr('data-name');
 			
 				$.SmartMessageBox({
-					title: "Attention!",
-					content: "Remove <b>" + plugin_name + " </b> plugin?",
-					buttons: '[No][Yes]'
+					title: "<?php echo _("Attention");?>!",
+					content: "<?php echo _("Remove");?> <b>" + plugin_name + " </b> <?php echo _("plugin");?>?",
+					buttons: '[<?php echo _("No")?>][<?php echo _("Yes")?>]'
 				}, function(ButtonPressed) {
 				   
-					if (ButtonPressed === "Yes")
+					if (ButtonPressed === "<?php echo _("Yes")?>")
 					{
 						doAction(action, plugin_slug);
 					}
-					if (ButtonPressed === "No")
+					if (ButtonPressed === "<?php echo _("No")?>")
 					{
 						/* do nothing */
 					}
@@ -125,7 +125,7 @@
 			if(action == 'update')
 			{
 				$(this).addClass('status-button');
-				$(this).html('<?php echo ("Connecting");?>...');
+				$(this).html('<?php echo _("Connecting");?>...');
 			}
 			doAction(action, plugin_slug);
 		}
@@ -134,7 +134,7 @@
 	
 	function doUpload()
 	{
-		openWait('<i class="fa fa-spinner fa-spin"></i> <?php echo ("Uploading and installing plugin");?>...');
+		openWait('<i class="fa fa-spinner fa-spin"></i> <?php echo _("Uploading and installing plugin");?>...');
 		var pluginFile = $('#plugin-file').prop('files')[0];   
 		var form_data = new FormData();                  
 		form_data.append('plugin-file', pluginFile);
@@ -150,7 +150,7 @@
 			success: function(response){
 				console.log(response);
 				if(response.installed == true){
-					waitContent('<?php echo ("Plugin installed successfully");?><br><?php echo ("Redirecting to plugins page");?>...');
+					waitContent('<?php echo _("Plugin installed successfully");?><br><?php echo _("Redirecting to plugins page");?>...');
 					setTimeout(function(){
 						location.reload();
 					}, 2000);
@@ -160,7 +160,7 @@
 					closeWait();
 					$.smallBox({
 						title : "Error",
-						content : '<?php echo ("Uploaded zip file is not a plugin archive");?>',
+						content : '<?php echo _("Uploaded zip file is not a plugin archive");?>',
 						color : "#C46A69",
 						timeout: 10000,
 						icon : "fa fa-warning"
@@ -190,13 +190,13 @@
 		if(current.status != ''){
 			switch(current.status){
 				case 'downloading' :
-					$(".status-button").html('<i class="fa fa-download"></i> <?php echo ("Downloading");?> &nbsp;');
+					$(".status-button").html('<i class="fa fa-download"></i> <?php echo _("Downloading");?> &nbsp;');
 					break;
 				case 'installing' :
-					$(".status-button").html('<i class="fa fa-gear fa-spin"></i> <?php echo ("Installing");?> &nbsp;');
+					$(".status-button").html('<i class="fa fa-gear fa-spin"></i> <?php echo _("Installing");?> &nbsp;');
 					break;
 				case 'installed':
-					$(".status-button").html('<i class="fa fa-check"></i> <?php echo ("Installed");?> &nbsp;');
+					$(".status-button").html('<i class="fa fa-check"></i> <?php echo _("Installed");?> &nbsp;');
 					break;
 			}
 		}
@@ -236,13 +236,13 @@
 			},
 			messages: {
 				plugin_slug: {
-					slugChecker: '<?php echo ('"plugin_" prefix is not allowed');?>'
+					slugChecker: '<?php echo _('"plugin_" prefix is not allowed');?>'
 				},
 				author_name:{
-					required: "<?php echo ('Please enter your name here');?>"
+					required: "<?php echo _('Please enter your name here');?>"
 				},
 				plugin_description:{
-					required: "<?php echo ('Please write a short description');?>"
+					required: "<?php echo _('Please write a short description');?>"
 				}
 			},
 			  submitHandler: function(form) {
