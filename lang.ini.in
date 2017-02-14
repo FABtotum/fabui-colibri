@@ -3,13 +3,13 @@ list=english,italian,german
 current=english
 
 [english]
-code=en
+code=en_US
 description=English
 
 [italian]
-code=it
+code=it_IT
 description=Italiano
 
 [german]
-code=de
+code=de_DE
 description=Deutsch

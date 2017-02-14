@@ -47,4 +47,28 @@ if(!function_exists('langauges_menu'))
 		return $html;
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('loadTranslation'))
+{
+	/**
+	 * 
+	 */
+	function loadTranslation()
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		
+		if(isset($CI->session->user['settings']['language'])){
+			$language_code = $CI->session->user['settings']['language'];
+		}else{
+			$language_code = 'en_US';
+		}
+		
+		putenv('LC_ALL='.$language_code.'.UTF-8');
+		setlocale(LC_ALL, $language_code.'.UTF-8');
+		bindtextdomain("fabui", $CI->config->item('locale_path'));
+		textdomain("fabui");
+		
+	}
+}
 ?>

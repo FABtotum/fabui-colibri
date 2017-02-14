@@ -38,12 +38,12 @@
 			//if not redirect to login page
 			//load needed libraries, helpers
 			$this->load->library(array('session', 'parser'));
-			$this->load->helper(array('url', 'layout'));
+			$this->load->helper(array('url', 'layout', 'language'));
 			$this->load->database();
 			if($this->session->loggedIn == false && !in_array(get_class($this), $this->noSessionNeeded)){
-				$this->load->helper('url');	
 				redirect('login/index');	
 			}
+			loadTranslation();
 			if(!$this->isAjax){ //for ajax request no need to load menu
 				//load menu
 				$this->config->load('menu');
