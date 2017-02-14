@@ -23,8 +23,8 @@
 					<tr>
 						<th><label class="checkbox-inline"><input type="checkbox" id="selectAll" name="checkbox-inline" class="checkbox"><span></span> </label></th>
 						<th>Name</th>
-						<th class="hidden-xs">Description</th>
-						<th class="hidden-xs">Date</th>
+						<th class="hidden-xs"><?php echo _("Description") ?></th>
+						<th class="hidden-xs"><?php echo _("Date") ?></th>
 						<th class="hidden-xs"><i class="fa fa-files-o"></i></th>
 					</tr>
 				</thead>

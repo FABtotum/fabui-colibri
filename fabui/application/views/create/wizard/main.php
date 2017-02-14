@@ -12,16 +12,16 @@
 	<div class="steps-container">
 		<ul class="steps">
 			<li data-step="1" data-target="#step1" class="<?php echo !$runningTask ? 'active' : ''; ?>">
-				<span class="badge badge-info">1</span>Choose File<span class="chevron"></span>
+				<span class="badge badge-info">1</span><?php echo _('Choose file'); ?><span class="chevron"></span>
 			</li>
 			<li data-step="2" data-target="#step2">
-				<span class="badge">2</span>Get Ready<span class="chevron"></span>
+				<span class="badge">2</span><?php echo _('Get ready'); ?><span class="chevron"></span>
 			</li>
 			<li data-step="3" data-target="#step3" class="<?php echo $runningTask ? 'active' : ''; ?>">
-				<span class="badge">3</span>Printing<span class="chevron"></span>
+				<span class="badge">3</span> <?php echo _('Printing'); ?> <span class="chevron"></span>
 			</li>
 			<li data-step="4" data-target="#step4">
-				<span class="badge">4</span>Finish<span class="chevron"></span>
+				<span class="badge">4</span><?php echo _('Finish'); ?><span class="chevron"></span>
 			</li>
 		</ul>
 	</div>

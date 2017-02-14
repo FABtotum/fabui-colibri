@@ -27,14 +27,14 @@ class Projectsmanager extends FAB_Controller {
 		);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-success" href="projectsmanager/add-project"><i class="fa fa-plus"></i> Add New Project </a>
-		<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> Delete </button>
-		<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> Download </button>
+		<a class="btn btn-success" href="projectsmanager/add-project"><i class="fa fa-plus"></i> '._("Add new project").' </a>
+		<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> '._("Delete").' </button>
+		<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> '._("Download").' </button>
 		</div>';
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-widget';
-		$widget->header = array('icon' => 'fa-cubes', "title" => "<h2>Projects</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-cubes', "title" => "<h2>"._("Projects")."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('projectsmanager/index/widget', $data, true ), 'class'=>'no-padding');
 		$this->content  = $widget->print_html(true);
 		
@@ -69,18 +69,18 @@ class Projectsmanager extends FAB_Controller {
 				'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
 			);
 			
-			$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save-object'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+			$widgeFooterButtons = $this->smart->create_button(_("Save"), 'primary')->attr(array('id' => 'save-object'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 			
 			$headerToolbar = '<div class="widget-toolbar" role="menu">
 			<a class="btn btn-default" href="projectsmanager"><i class="fa fa-arrow-left"></i> Back </a>
-			<a class="btn btn-success" href="projectsmanager/add-file/'.$objectId.'"><i class="fa fa-plus"></i> Add Files </a>
-			<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> Delete </button>
-			<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> Download </button>
+			<a class="btn btn-success" href="projectsmanager/add-file/'.$objectId.'"><i class="fa fa-plus"></i> '._("Add files").' </a>
+			<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> '._("Delete").' </button>
+			<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> '._("Download").' </button>
 			</div>';
 			
 			$widget = $this->smart->create_widget($widgetOptions);
 			$widget->id = 'file-manager-edit-object-widget';
-			$widget->header = array('icon' => 'fa-cubes', "title" => "<h2>Edit project</h2>", 'toolbar'=>$headerToolbar);
+			$widget->header = array('icon' => 'fa-cubes', "title" => "<h2>"._("Edit project")."</h2>", 'toolbar'=>$headerToolbar);
 			$widget->body   = array('content' => $this->load->view('projectsmanager/edit/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 			$this->content  = $widget->print_html(true);
 			
@@ -197,18 +197,18 @@ class Projectsmanager extends FAB_Controller {
 				 <input type="checkbox" class="checkbox" disabled="disabled" id="also-content">
 				 <span>Save content also </span>
 			</label>' .
-			$this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+			$this->smart->create_button(_("Save"), 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-default" href="projectsmanager/project/'.$objectId.'"><i class="fa fa-arrow-left"></i> Back </a>
-		<a class="btn btn-info" href="projectsmanager/file/'.$fileId.'/stats"><i class="fa fa-area-chart"></i> Stats </a>
-		<button class="btn btn-danger button-action" data-action="delete"><i class="fa fa-download"></i> Delete </button>
-		<button class="btn btn-info button-action" data-action="download"><i class="fa fa-download"></i> Download </button>
+		<a class="btn btn-default" href="projectsmanager/project/'.$objectId.'"><i class="fa fa-arrow-left"></i> '._("Back").' </a>
+		<a class="btn btn-info" href="projectsmanager/file/'.$fileId.'/stats"><i class="fa fa-area-chart"></i> '._("Stats").' </a>
+		<button class="btn btn-danger button-action" data-action="delete"><i class="fa fa-trash"></i> '._("Delete").' </button>
+		<button class="btn btn-info button-action" data-action="download"><i class="fa fa-download"></i> '._("Download").' </button>
 		</div>';
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-edit-object-widget';
-		$widget->header = array('icon' => 'fa-cube', "title" => "<h2>File view</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-cube', "title" => "<h2>"._("File view")."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('projectsmanager/file/view/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
 		
@@ -466,12 +466,12 @@ class Projectsmanager extends FAB_Controller {
 		$widgeFooterButtons = '';
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-default" href="projectsmanager/file/'.$fileId.'"><i class="fa fa-arrow-left"></i> Back </a>
+		<a class="btn btn-default" href="projectsmanager/file/'.$fileId.'"><i class="fa fa-arrow-left"></i> '._("Back").' </a>
 		</div>';
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-edit-object-widget';
-		$widget->header = array('icon' => 'fa-area-chart', "title" => "<h2>File statistics</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-area-chart', "title" => "<h2>"._("File statistics")."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('projectsmanager/file/stats/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
 		
@@ -509,7 +509,7 @@ class Projectsmanager extends FAB_Controller {
 				$this->gcodeviewer($fileID);
 				break;
 			default:
-				echo "Not supported";
+				echo _("Not supported");
 		}
 	}
 	
@@ -541,7 +541,7 @@ class Projectsmanager extends FAB_Controller {
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-edit-object-widget';
-		$widget->header = array('icon' => 'fa-cube', "title" => "<h2>gCodeViewer</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-cube', "title" => "<h2>"._("gCodeViewer")."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('projectsmanager/file/gcodeviewer/index', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
 
@@ -656,15 +656,15 @@ class Projectsmanager extends FAB_Controller {
 			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
 		);
 		
-		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		$widgeFooterButtons = $this->smart->create_button(_("Save"), 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-danger" href="projectsmanager"><i class="fa fa-arrow-left"></i> Cancel </a>
+		<a class="btn btn-danger" href="projectsmanager"><i class="fa fa-arrow-left"></i> '._("Cancel").' </a>
 		</div>';
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-add-object-widget';
-		$widget->header = array('icon' => 'fa-cubes', "title" => "<h2>Add new project</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-cubes', "title" => "<h2>"._("Add new project")."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('projectsmanager/add/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
 		
@@ -699,15 +699,15 @@ class Projectsmanager extends FAB_Controller {
 			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
 		);
 		
-		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		$widgeFooterButtons = $this->smart->create_button(_("Save"), 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-danger" href="projectsmanager/project/'.$objectID.'"><i class="fa fa-arrow-left"></i> Cancel </a>
+		<a class="btn btn-danger" href="projectsmanager/project/'.$objectID.'"><i class="fa fa-arrow-left"></i> '._("Cancel").' </a>
 		</div>';
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'file-manager-add-object-widget';
-		$widget->header = array('icon' => 'fa-cube', "title" => "<h2>Add new file</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-cube', "title" => "<h2>"._("Add new file")."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('projectsmanager/file/add/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		$this->content  = $widget->print_html(true);
 		
@@ -803,7 +803,7 @@ class Projectsmanager extends FAB_Controller {
 		}
 		
 		
-		$this->session->set_flashdata('alert', array('type' => 'alert-success', 'message'=> '<i class="fa fa-fw fa-check"></i> Object has been added' ));
+		$this->session->set_flashdata('alert', array('type' => 'alert-success', 'message'=> '<i class="fa fa-fw fa-check"></i> '._("Object has been added") ));
 		
 		redirect($redirectTo);
 	}
@@ -840,7 +840,7 @@ class Projectsmanager extends FAB_Controller {
 		else
 		{
 			$response['success'] = false;
-			$response['message'] = 'No POST data.';
+			$response['message'] = _("No POST data");
 		}
 		
 		// TODO: exec gcode_analyzer.py 

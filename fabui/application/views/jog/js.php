@@ -125,7 +125,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	{
 		search_filter = $(this).attr('data-attr');
 		
-		var new_text = search_filter=='gcode'?"Search for a code ...":"Search in the description ...";
+		var new_text = search_filter=='gcode'?"<?php echo _("Search for a code"); ?> ...":"<?php echo _("Search in the description"); ?> ...";
 		
 		$("#fa-icon-search").attr("placeholder", new_text);
 	}
@@ -383,7 +383,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		if(action == "off")
 		{
 			$.SmartMessageBox({
-				title: "<h4><span class='txt-color-orangeDark'><i class='fa fa-warning fa-2x'></i></span>&nbsp;&nbsp; Turning the cold extrusion protection might be dangerous if the fillament has not been removed from the head already.<br>Do you want to disable cold extrusion?</h4>",
+				title: "<h4><span class='txt-color-orangeDark'><i class='fa fa-warning fa-2x'></i></span>&nbsp;&nbsp; <?php echo _("Turning the cold extrusion protection might be dangerous if the fillament has not been removed from the head already"); ?>.<br><?php echo _("Do you want to disable cold extrusion?"); ?></h4>",
 				buttons: '[No][Yes]'
 			}, function(ButtonPressed) {
 			   

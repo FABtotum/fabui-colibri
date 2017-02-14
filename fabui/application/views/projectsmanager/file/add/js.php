@@ -30,13 +30,13 @@
 		$("div#newObjectDropzone").dropzone({ 
 			url: "<?php echo site_url('projectsmanager/uploadFile/') ?>",
 			addRemoveLinks : true, 
-			dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-lg-block visible-md-block visible-sm-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i> Drops files <span class="font-xs">to upload</span></span><span>&nbsp&nbsp<h4 class="display-inline"> (or click)</h4></span>',
+			dictDefaultMessage: '<span class="text-center"><span class="font-lg visible-lg-block visible-md-block visible-sm-block"><span class="font-lg"><i class="fa fa-caret-right text-danger"></i> <?php echo _("Drop files") ?> <span class="font-xs"><?php echo _("to upload") ?></span></span><span>&nbsp&nbsp<h4 class="display-inline"> (<?php echo _("or click") ?>)</h4></span>',
 			parallelUploads: 1,
 			uploadMultiple: false,
 			acceptedFiles: "<?php echo $accepted_files; ?>",
 			autoProcessQueue: false,
-			dictRemoveFile: 'Remove file',
-			dictMaxFilesExceeded: 'You can upload 10 files at time',
+			dictRemoveFile: '<?php echo _("Remove file") ?>',
+			dictMaxFilesExceeded: '<?php echo _("You can upload 10 files at time") ?>',
 			init: function(){
 				filesDropzone = this;
 				this.on("complete", function (file) {
@@ -82,7 +82,7 @@
 			// Messages for form validation
 			messages : {
 				name : {
-					required : 'Please enter object name'
+					required : '<?php echo _("Please enter object name") ?>'
 				}
 			},
 			// Do not change code below
@@ -119,7 +119,7 @@
 	{
 		$("#files").val(fileList);
 		add_usb_files();
-		openWait("<i class='fa fa-save'></i> Adding files", 'Please wait', false);
+		openWait("<i class='fa fa-save'></i> <?php echo _("Adding files") ?>", '<?php echo _("Please wait") ?>', false);
 		$("#object-form").submit();
 	}
 	

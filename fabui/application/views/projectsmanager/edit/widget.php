@@ -14,13 +14,13 @@
 			<fieldset>
 				<div class="row">
 					<section class="col col-6">
-						<label class="label">Name</label>
+						<label class="label"><?php echo _("Name") ?></label>
 						<label class="input">
 							<input type="text" name="name" id="obj_name" value="<?php echo $object['name'] ?>">
 						</label>
 					</section>
 					<section class="col col-6">
-						<label class="label">Public</label>
+						<label class="label"><?php echo _("Public") ?></label>
 						<div class="inline-group">
 							<label class="radio">
 								<input type="radio" <?php echo $object['public'] == 1 ? 'checked="checked"' : ''; ?> name="public" value="1"><i></i> Yes
@@ -32,7 +32,7 @@
 					</section>
 				</div>
 				<section>
-					<label class="label">Description</label>
+					<label class="label"><?php echo _("Description") ?></label>
 					<label class="textarea textarea-resizable">
 						<textarea id="obj_description" rows="5" class="custom-scroll"><?php echo $object['description'] ?></textarea> 
 					</label>
@@ -48,11 +48,11 @@
 				<thead>
 					<tr>
 						<th><label class="checkbox-inline"><input type="checkbox" id="selectAll" name="checkbox-inline" class="checkbox"><span></span> </label></th>
-						<th>Name</th>
-						<th>Type</th>
-						<th>Note</th>
-						<th>Date</th>
-						<th>Default action</th>
+						<th><?php echo _("Name") ?></th>
+						<th><?php echo _("Type") ?></th>
+						<th><?php echo _("Note") ?></th>
+						<th><?php echo _("Date") ?></th>
+						<th><?php echo _("Default action") ?></th>
 					</tr>
 				</thead>
 				<tbody></tbody>

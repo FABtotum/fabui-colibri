@@ -10,7 +10,7 @@
 ?>
 <div class="step-pane" id="step2" data-step="2">
 	<hr class="simple">
-	<h4 class="text-center">Follow the instructions</h4>
+	<h4 class="text-center"><?php echo _("Follow the instructions"); ?></h4>
 	<div class="row">
 		<div class="col-sm-6 col-md-6">
 			<div class="product-content product-wrap clearfix">
@@ -23,7 +23,7 @@
 					<div class="col-sm-8">
 						<div class="description text-center">
 							<h1><span class="badge bg-color-blue txt-color-white">1</span></h1>
-							<p class="font-md">Close the cover</p>
+							<p class="font-md"><?php echo _("Close the cover"); ?></p>
 						</div>
 					</div>
 				</div>
@@ -40,7 +40,7 @@
 					<div class="col-sm-8">
 						<div class="description text-center">
 							<h1><span class="badge bg-color-blue txt-color-white">2</span></h1>
-							<p class="font-md">Jog the endmill to the desired origin point, press HOME and when you are ready press "Next"</p>
+							<p class="font-md"><?php echo _('Jog the endmill to the desired origin point, press HOME and when you are ready press "Next"'); ?></p>
 						</div>
 					</div>
 				</div>
@@ -84,20 +84,20 @@
 				<fieldset>
 					<div class="row">
 						<section class="col col-6">
-							<label class="label">XY Step</label>
+							<label class="label">XY <?php echo _('Step'); ?></label>
 							<label class="input">
 								<input type="number" min="1" value="10" id="xyStep">
 							</label>
 						</section>
 						<section class="col col-6">
-							<label class="label">Z Step (mm)</label>
+							<label class="label">Z <?php echo _('Step'); ?> (mm)</label>
 							<label class="input">
 								<input type="number" min="1" value="10" id="zStep">
 							</label>
 						</section>
 					</div>
 					<section>
-						<label class="label">XYZ Feedrate</label>
+						<label class="label">XYZ <?php echo _('Feedrate'); ?></label>
 						<label class="input">
 							<input type="number" min="1" value="1000" id="xyzFeed">
 						</label>

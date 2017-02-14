@@ -122,7 +122,7 @@ $config['menu'] = array(
 				'url' => 'maintenance/firmware'
 			),
 			'systeminfo' => array(
-				'title' => _("system info"),
+				'title' => _("System info"),
 				'icon' => 'fa-info-circle',
 				'url' => 'maintenance/system-info'
 			)
