@@ -22,20 +22,20 @@
 			<fieldset>
 				<div class="row">
 					<section class="col col-6">
-						<label class="label">XY Step</label>
+						<label class="label">XY <?php echo _("Step"); ?></label>
 						<label class="input">
 							<input type="number" min="1" value="1" id="xyStep">
 						</label>
 					</section>
 					<section class="col col-6">
-						<label class="label">Z Step (mm)</label>
+						<label class="label">Z <?php echo _("Step"); ?> (mm)</label>
 						<label class="input">
 							<input type="number" min="1" value="0.5" id="zStep">
 						</label>
 					</section>
 				</div>
 				<section>
-					<label class="label">XYZ Feedrate</label>
+					<label class="label">XYZ <?php echo _("Feedrate"); ?></label>
 					<label class="input">
 						<input type="number" min="1" value="1000" id="xyzFeed">
 					</label>
@@ -62,13 +62,13 @@
 		
 		<ul id="myTab3" class="nav nav-tabs tabs-pull-right ">
 			<li class="pull-right">
-				<a href="#fourthaxis-tab" data-toggle="tab">4th axis</a>
+				<a href="#fourthaxis-tab" data-toggle="tab"><?php echo _("4th axis"); ?></a>
 			</li>
 			<li class="pull-right">
-				<a href="#extruder-tab" data-toggle="tab">Extruder</a>
+				<a href="#extruder-tab" data-toggle="tab"><?php echo _("Nozzle"); ?></a>
 			</li>
 			<li class="active pull-right">
-				<a href="#functions-tab" data-toggle="tab">Head/Bed</a>
+				<a href="#functions-tab" data-toggle="tab"><?php echo _("Head/bed"); ?></a>
 			</li>
 		</ul>
 		
@@ -86,13 +86,13 @@
 						</div>
 						<div class="row">
 							<section class="col col-6">
-								<label class="label">Step (mm)</label>
+								<label class="label"><?php echo _("Step"); ?> (mm)</label>
 								<label class="input">
 									<input type="number" value="10" min="1" id="extruderStep">
 								</label>
 							</section>
 							<section class="col col-6">
-								<label class="label">Feedrate</label>
+								<label class="label"><?php echo _("Feedrate"); ?></label>
 								<label class="input">
 									<input type="number" value="300" min="100" id="extruder-feedrate">
 								</label>
@@ -101,12 +101,12 @@
 						<hr class="simple">
 						<div class="row">
 							<section class="col col-6">
-								<label class="label">Cold Extrusion</label>
-								<button class="btn btn-primary btn-block cold-extrusion" data-attribute="on" style="padding:6px 10px 5px">Turn ON</button>
+								<label class="label"><?php echo _("Cold extrusion"); ?></label>
+								<button class="btn btn-primary btn-block cold-extrusion" data-attribute="on" style="padding:6px 10px 5px"><?php echo _("Turn on"); ?></button>
 							</section>
 							<section class="col col-6">
 								<label class="label">&nbsp;</label>
-								<button class="btn btn-primary btn-block cold-extrusion" data-attribute="off" style="padding:6px 10px 5px">Turn OFF</button>
+								<button class="btn btn-primary btn-block cold-extrusion" data-attribute="off" style="padding:6px 10px 5px"><?php echo _("Turn off"); ?></button>
 							</section>
 						</div>
 					</fieldset>
@@ -120,7 +120,7 @@
 				<div class="smart-form">
 					<fieldset>
 						<section>
-							<label class="label">Feedrate</label>
+							<label class="label"><?php echo _("Feedrate"); ?></label>
 							<label class="input">
 								<input type="number" min="1" value="800" id="4thaxis-feedrate">
 							</label>
@@ -134,37 +134,37 @@
 				
 				<div class="col-sm-12 margin-bottom-50">
 					<?php if($headPrintSupport): ?>
-					<h4><i class="icon-fab-term"></i> <span>Nozzle</span> <span class="pull-right"><span rel="tooltip" data-placement="top" data-original-title="Extruder current temperature"  class="extruder-temp"></span> / <strong><span rel="tooltip" data-placement="top" data-original-title="Extruder target temperature" class="slider-extruder-target">0</span></strong> &deg;C</span></h4>
+					<h4><i class="icon-fab-term"></i> <span><?php echo _("Nozzle"); ?></span> <span class="pull-right"><span rel="tooltip" data-placement="top" data-original-title="Extruder current temperature"  class="extruder-temp"></span> / <strong><span rel="tooltip" data-placement="top" data-original-title="Extruder target temperature" class="slider-extruder-target">0</span></strong> &deg;C</span></h4>
 					<div id="create-ext-target-slider" class="noUiSlider sliders"></div>
 					<?php else: ?>
-					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> Head does not have a heater</h4></div>
+					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> <?php echo _("Head does not have a heater"); ?></h4></div>
 					<?php endif; ?>
 				</div>
 				
 				<div class="col-sm-12 margin-bottom-50">
 					<?php if($headFanSupport): ?>
-					<h4>Fan <span class="pull-right"><strong><span class="slider-task-fan">0</span></strong>%</span></h4>
+					<h4><?php echo _("Fan"); ?> <span class="pull-right"><strong><span class="slider-task-fan">0</span></strong>%</span></h4>
 					<div id="create-fan-slider" class="noUiSlider sliders"></div>
 					<?php else: ?>
-					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> Head does not have a fan</h4></div>
+					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> <?php echo _("Head does not have a fan"); ?> </h4></div>
 					<?php endif; ?>
 				</div>
 				
 				<div class="col-sm-12 margin-bottom-50">
 					<?php if($headMillSupport): ?>
-					<h4>RPM <span class="pull-right"><strong><span class="slider-task-rpm">Off</span></strong></span></h4>
+					<h4><?php echo _("RPM"); ?> <span class="pull-right"><strong><span class="slider-task-rpm"><?php echo _("Off"); ?></span></strong></span></h4>
 					<div id="create-rpm-slider" class="noUiSlider sliders"></div>
 					<?php else: ?>
-					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> Head does not have a milling motor</h4></div>
+					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> <?php echo _("Head does not have a milling motor"); ?></h4></div>
 					<?php endif; ?>
 				</div>
 				
 				<div class="col-sm-12 margin-bottom-50">
 					<?php if($haveBed): ?>
-					<h4><i class="icon-fab-term"></i> Bed <span class="pull-right"><span rel="tooltip" data-placement="top" data-original-title="Bed current temperature" class="bed-temp"></span> / <strong><span rel="tooltip" data-placement="top" data-original-title="Bed target temperature" class="slider-bed-target">0</span></strong> &deg;C</span></h4>
+					<h4><i class="icon-fab-term"></i> <?php echo _("Bed"); ?> <span class="pull-right"><span rel="tooltip" data-placement="top" data-original-title="Bed current temperature" class="bed-temp"></span> / <strong><span rel="tooltip" data-placement="top" data-original-title="Bed target temperature" class="slider-bed-target">0</span></strong> &deg;C</span></h4>
 					<div id="create-bed-target-slider" class="noUiSlider sliders"></div>
 					<?php else: ?>
-					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> Bed is not installed</h4></div>
+					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> <?php echo _("Bed is not installed"); ?></h4></div>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -184,10 +184,10 @@
 			</div>
 			<!-- CHAT REPLY/SEND -->
 			<span class="textarea-controls">
-				<button class="btn btn-sm btn-primary pull-right" type="button" id="mdiButton">Send</button> 
+				<button class="btn btn-sm btn-primary pull-right" type="button" id="mdiButton"><?php echo _("Send"); ?></button> 
 				<span class="pull-right smart-form" style="margin-top: 3px; margin-right: 10px;"> <label class="checkbox pull-right">
 					<input type="checkbox" name="enterSend" id="enterSend" checked="checked">
-					<i></i>Press <strong> ENTER </strong> to </label> </span> 
+					<i></i><?php echo _("Press"); ?> <strong> <?php echo _("Enter"); ?> </strong> <?php echo _("to"); ?> </label> </span> 
 					<a href="#" data-toggle="modal" data-target="#gcodeHelp" class="pull-left btn btn-primary btn-circle"><i class="fa fa-question" aria-hidden="true"></i> </a> 
 			</span>
 		</div>
@@ -201,7 +201,7 @@
 			</div>
 			<!-- CHAT REPLY/SEND -->
 			<span class="textarea-controls">
-				<button class="btn btn-sm btn-primary pull-right" type="button" id="clearButton">Clear</button> 
+				<button class="btn btn-sm btn-primary pull-right" type="button" id="clearButton"><?php echo _("Clear"); ?></button> 
 			</span>
 		</div>
 	</div>
@@ -213,7 +213,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Supported GCodes</h4>
+        <h4 class="modal-title"><?php echo _("Supported GCodes"); ?></h4>
       </div>
       
       <div class="modal-body">
@@ -227,8 +227,8 @@
 					  <div class="input-group-btn">
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-fw  fa-search"></i><span class="caret"></span></button>
 						<ul class="dropdown-menu dropdown-menu-right">
-						  <li><a class="filter-select" data-attr="gcode">GCode</a></li>
-						  <li><a class="filter-select" data-attr="desc">Description</a></li>
+						  <li><a class="filter-select" data-attr="gcode"><?php echo _("GCode"); ?></a></li>
+						  <li><a class="filter-select" data-attr="desc"><?php echo _("Description"); ?></a></li>
 						</ul>
 					  </div><!-- /btn-group -->
 					</div><!-- /input-group -->
@@ -243,8 +243,8 @@
 					<table class="table table-hover">
 						<thead>
 							<tr>
-								<th>Code</th>
-								<th>Description</th>
+								<th><?php echo _("Code"); ?></th>
+								<th><?php echo _("Description"); ?></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -265,11 +265,11 @@
 									<td colspan="2" class="code-extra">
 										<?php if( array_key_exists('params',$info) ): ?>
 										<div class="row">
-											<div class="col-sm-1 help-param-header">Param</div>
-											<div class="col-sm-7 help-param-header">Desc</div>
-											<div class="col-sm-1 help-param-header">Type</div>
-											<div class="col-sm-1 help-param-header">Unit</div>
-											<div class="col-sm-2 help-param-header">Range</div>
+											<div class="col-sm-1 help-param-header"><?php echo _("Param"); ?></div>
+											<div class="col-sm-7 help-param-header"><?php echo _("Desc"); ?></div>
+											<div class="col-sm-1 help-param-header"><?php echo _("Type"); ?></div>
+											<div class="col-sm-1 help-param-header"><?php echo _("Unit"); ?></div>
+											<div class="col-sm-2 help-param-header"><?php echo _("Range"); ?></div>
 										</div>
 										
 											<?php foreach($info['params'] as $param => $info): ?>
@@ -291,12 +291,12 @@
 											
 											<?php endforeach; ?>
 										<?php else: ?>
-											<span class="description">No parameters.</span>
+											<span class="description"><?php echo _("No parameters"); ?>.</span>
 										<?php endif; ?>
 
 											<?php if( isset($info['reply']) ): ?>
 											<div class="row">
-												<div class="col-sm-12 help-param-header">Reply</div>
+												<div class="col-sm-12 help-param-header"><?php echo _("Reply"); ?></div>
 											</div>
 											<div class="row">
 												<div class="col-sm-12 code-extra-content"><?php echo $info['reply'];?> </div>
@@ -314,7 +314,7 @@
 		</div>
       
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _("Close"); ?></button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
