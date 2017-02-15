@@ -157,7 +157,7 @@
 				}
 				else 
 				{
-					showErrorAlert('<?php echo _("Error deleting file(s)") ?>', response.message);
+					showErrorAlert("<?php echo _("Error deleting file(s)") ?>", response.message);
 				}
 				
 				$(".bulk-button[data-action='delete']").html("<i class='fa fa-trash'></i> <?php echo _("Delete") ?>");

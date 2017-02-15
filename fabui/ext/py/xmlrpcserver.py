@@ -51,7 +51,7 @@ def signal_handler(signal, frame):
 
 class ExposeCommands:
     
-    def __init__(self, gcs, config, log_trace):
+    def __init__(self, gcs, config, log_trace, logger):
         self.gcs = gcs
         self.config = config
         self.macro_warning = 0
@@ -69,6 +69,8 @@ class ExposeCommands:
         ch.setFormatter(formatter)
         ch.setLevel(logging.INFO)
         self.trace_logger.addHandler(ch)
+        
+        self.log = logger
         
         self.gmacro = GMacroHandler(self.gcs, self.config, self.trace, self.__resetTrace)
     
@@ -100,7 +102,15 @@ class ExposeCommands:
         Execute macro command.
         """
         self.gmacro.setLanguage(lang)
-        return json.dumps( self.gmacro.run(preset, args, atomic) )
+        
+        self.log.debug("Macro START: " + preset)
+        
+        result = json.dumps( self.gmacro.run(preset, args, atomic) )
+        
+        self.log.debug("Macro END: " + preset)
+        self.log.debug("Macro: " + result) 
+        
+        return result
         
     def do_abort(self):
         """ Send abort request """
@@ -158,7 +168,10 @@ with open(pidfile, 'w') as f:
 logger = logging.getLogger('XML-RPC')
 logger.setLevel(logging.DEBUG)
 
-ch = logging.StreamHandler()
+if args.log == '<stdout>':
+    ch = logging.StreamHandler()
+else:
+    ch = logging.FileHandler(args.log)
 
 formatter = logging.Formatter("%(levelname)s : %(message)s")
 ch.setFormatter(formatter)
@@ -174,9 +187,9 @@ config = ConfigService()
 SOCKET_HOST         = config.get('xmlrpc', 'xmlrpc_host')
 SOCKET_PORT         = config.get('xmlrpc', 'xmlrpc_port')
 
-log_trace           = config.get('general', 'trace')
+log_trace = config.get('general', 'trace')
 
-rpc = ServerContainer(SOCKET_HOST, int(SOCKET_PORT), ExposeCommands(gcs, config, log_trace), logger)
+rpc = ServerContainer(SOCKET_HOST, int(SOCKET_PORT), ExposeCommands(gcs, config, log_trace, logger), logger)
 rpc.start()
 
 # Ensure CTRL+C detection to gracefully stop the server.

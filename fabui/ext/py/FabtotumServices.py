@@ -203,7 +203,7 @@ signal.signal(signal.SIGINT, signal_handler)
 
 # Start XMLRPC server
 xmlrpc_exe = os.path.join(PYTHON_PATH, 'xmlrpcserver.py')
-os.system('python {0} -p {1} &'.format(xmlrpc_exe, xmlrpc_pidfile) )
+os.system('python {0} -p {1} -L /var/log/fabui/xmlrpc.log &'.format(xmlrpc_exe, xmlrpc_pidfile) )
 
 # Wait for all threads to finish
 gcserver.loop()

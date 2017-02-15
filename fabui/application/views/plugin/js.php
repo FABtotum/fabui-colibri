@@ -26,7 +26,7 @@
 			
 			if($.inArray(extension.toLowerCase(), allowed_types) == -1){
 				
-				$(".well").after('<div class="alert alert-warning type-warning"><i class="fa-fw fa fa-warning"></i><strong>Warning</strong> Only .zip files are allowed</div>');
+				$(".well").after('<div class="alert alert-warning type-warning"><i class="fa-fw fa fa-warning"></i>'+"<?php echo _("<strong>Warning</strong>: Only .zip files are allowed");?>"+'</div>');
 				$(this).val("");
 				$("#install-button").addClass("disabled");
 			}
@@ -48,21 +48,21 @@
 	function populateOnlineTable(plugins)
 	{
 		var table_html = '<table class="table table-striped table-forum"><thead><tr>\
-					<th><?php echo _("Plugin"); ?></th><th class="text-center hidden-xs">Version</th>\
-					<th class="text-center hidden-xs"><?php echo ("Author");?></th>\
+					<th>'+"<?php echo _("Plugin"); ?>"+'</th><th class="text-center hidden-xs">Version</th>\
+					<th class="text-center hidden-xs">'+"<?php echo ("Author");?>"+'</th>\
 				</tr></thead><tbody>';
 				
 		$.each(plugins, function(i, plugin) {
 			console.log('plugin', plugin);
-			table_html += '<tr><td><h4>' + plugin.name + '<small>' + plugin.desc + ' | <a class="no-ajax" target="_blank" href="'+plugin.url+'"> <?php echo _("visit plugin site");?></a></small><p class="margin-top-10">';
+			table_html += '<tr><td><h4>' + plugin.name + '<small>' + plugin.desc + ' | <a class="no-ajax" target="_blank" href="'+plugin.url+'"> '+"<?php echo _("visit plugin site");?>"+'</a></small><p class="margin-top-10">';
 			
 			if( installed_plugins.indexOf(plugin.slug) == -1 )
 			{
-				table_html += '<button class="btn btn-xs btn-primary action-button" data-action="update" data-title="'+plugin.slug+'" " title="Install"><?php echo _("Install");?></button>&nbsp;';
+				table_html += '<button class="btn btn-xs btn-primary action-button" data-action="update" data-title="'+plugin.slug+'" " title="Install">' + "<?php echo _("Install");?>" + '</button>&nbsp;';
 			}
 			else
 			{
-				table_html += '<span class="label label-success"><?php echo _("Installed");?></span>';
+				table_html += '<span class="label label-success">' + "<?php echo _("Installed");?>" + '</span>';
 			}
 			
 			table_html += '</p></h4><p class="margin-top-10"></p></td><td class="text-center hidden-xs">' + plugin.version + '</td><td class="text-center hidden-xs"><a class="no-ajax" target="_blank" href="'+plugin.author_uri+'">'+plugin.author+'</a></td></tr>';
@@ -133,7 +133,7 @@
 	
 	function doUpload()
 	{
-		openWait('<i class="fa fa-spinner fa-spin"></i> <?php echo _("Uploading and installing plugin");?>...');
+		openWait('<i class="fa fa-spinner fa-spin"></i>' + "<?php echo _("Uploading and installing plugin");?>...");
 		var pluginFile = $('#plugin-file').prop('files')[0];   
 		var form_data = new FormData();                  
 		form_data.append('plugin-file', pluginFile);
@@ -149,7 +149,7 @@
 			success: function(response){
 				console.log(response);
 				if(response.installed == true){
-					waitContent('<?php echo _("Plugin installed successfully");?><br><?php echo _("Redirecting to plugins page");?>...');
+					waitContent("<?php echo _("Plugin installed successfully");?><br><?php echo _("Redirecting to plugins page");?>...");
 					setTimeout(function(){
 						location.reload();
 					}, 2000);
@@ -232,7 +232,7 @@
 			},
 			messages: {
 				plugin_slug: {
-					slugChecker: '<?php echo _('"plugin_" prefix is not allowed');?>'
+					slugChecker: "<?php echo _("\"plugin_\" prefix is not allowed");?>"
 				},
 				author_name:{
 					required: "<?php echo _('Please enter your name here');?>"
