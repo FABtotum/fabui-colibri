@@ -56,13 +56,13 @@
 			console.log('plugin', plugin);
 			table_html += '<tr><td><h4>' + plugin.name + '<small>' + plugin.desc + ' | <a class="no-ajax" target="_blank" href="'+plugin.url+'"> <?php echo _("visit plugin site");?></a></small><p class="margin-top-10">';
 			
-			//if( installed_plugins.indexOf(plugin.slug) == -1 )
+			if( installed_plugins.indexOf(plugin.slug) == -1 )
 			{
 				table_html += '<button class="btn btn-xs btn-primary action-button" data-action="update" data-title="'+plugin.slug+'" " title="Install"><?php echo _("Install");?></button>&nbsp;';
 			}
-			//else
+			else
 			{
-				//table_html += '<span class="label label-success">Installed</span>';
+				table_html += '<span class="label label-success"><?php echo _("Installed");?></span>';
 			}
 			
 			table_html += '</p></h4><p class="margin-top-10"></p></td><td class="text-center hidden-xs">' + plugin.version + '</td><td class="text-center hidden-xs"><a class="no-ajax" target="_blank" href="'+plugin.author_uri+'">'+plugin.author+'</a></td></tr>';
@@ -209,9 +209,6 @@
 		jQuery.validator.addMethod("slugChecker", function(value, element, param) {
 			if(!param)
 				return true;
-				
-			console.log('VALUE',value);
-			console.log('ELEMENT',element);
 			
 			if(value)
 			{
@@ -284,6 +281,27 @@
 		var meta = getNewPluginMeta();
 		console.log('META', meta);
 		console.log('Form Submit handler');
+		
+		var data = {meta: meta};
+		
+		$.ajax({
+			type: 'post',
+			url: '<?php echo site_url('plugin/create'); ?>',
+			data : data,
+			dataType: 'json'
+		}).done(function(response) {
+			console.log(response);
+			/*$.smallBox({
+				title : "<?php echo _('Settings')?>",
+				content : '<?php echo _('Hardware settings saved')?>',
+				color : "#5384AF",
+				timeout: 3000,
+				icon : "fa fa-check bounce animated"
+			});*/
+			
+			document.location.href = '<?php echo site_url('plugin/download/') ?>/' + response.slug;
+			
+		});
 	}
 	
 	function getNewPluginMeta()
@@ -303,6 +321,9 @@
 				else
 					meta[json_id] = placeholder;
 			}
+			
+			meta["plugin-menu-0-icon"] = "fa-cube";
+			meta["plugin-menu-0-url"] = "plugin/" + meta["plugin-slug"];
 		});
 		
 		//~ preset['pwm-off_during_travel'] = $("#off-during-travel").is(":checked")?true:false;

@@ -28,73 +28,70 @@ import gettext
 # Import external modules
 
 # Import internal modules
-from templating import create_from_template, create_dir, create_link, build_path
+from fabtotum.development.templating import create_from_template, create_dir, create_link, build_path
 
 # Set up message catalog access
 tr = gettext.translation('fab_creator', 'locale', fallback=True)
 _ = tr.ugettext 
 
-def create_plugin(args):
+def create_plugin(args, raw_meta):
         
     # Plugin name
-    plugin_name = raw_input("Plugin name (human readable): ")
-    if not plugin_name:
-        print "No name provided. Exiting..."
-        exit()
+    #~ plugin_name = raw_input("Plugin name (human readable): ")
+    #~ if not plugin_name:
+        #~ print "No name provided. Exiting..."
+        #~ exit()
         
-    # Plugin slag
-    slug = plugin_name.lower().replace(' ', '_')
-    plugin_slug = raw_input("Plugin slag ({0}): ".format(slug))
-    if not plugin_slug:
-        plugin_slug = slug
+    #~ # Plugin slag
+    #~ slug = plugin_name.lower().replace(' ', '_')
+    #~ plugin_slug = raw_input("Plugin slag ({0}): ".format(slug))
+    #~ if not plugin_slug:
+        #~ plugin_slug = slug
 
-    # Version
-    plugin_version = raw_input("Plugin version (1.0): ")
-    if not plugin_version:
-        plugin_version = "1.0"
+    #~ # Version
+    #~ plugin_version = raw_input("Plugin version (1.0): ")
+    #~ if not plugin_version:
+        #~ plugin_version = "1.0"
             
-    # Plugin description
-    plugin_desc = raw_input("Description: ")
-    # Plugin autor
-    plugin_author = raw_input("Author: ")
+    #~ # Plugin description
+    #~ plugin_desc = raw_input("Description: ")
+    #~ # Plugin autor
+    #~ plugin_author = raw_input("Author: ")
     
-    # Menu item
-    menu_title = plugin_name
-    menu_icon = 'fa-cube'
-    menu_url = 'plugin/' + plugin_slug
+    #~ # Menu item
+    #~ menu_title = plugin_name
+    #~ menu_icon = 'fa-cube'
+    #~ menu_url = 'plugin/' + plugin_slug
     
-    plugin_menu_title = raw_input("Manu title ({0}): ".format(menu_title))
-    if not plugin_menu_title:
-        plugin_menu_title = menu_title
-    plugin_menu_icon = raw_input("Manu icon ({0}): ".format(menu_icon))
-    if not plugin_menu_icon:
-        plugin_menu_icon = menu_icon
-    plugin_menu_url = raw_input("Manu url ({0}): ".format(menu_url))
-    if not plugin_menu_url:
-        plugin_menu_url = menu_url
+    #~ plugin_menu_title = raw_input("Manu title ({0}): ".format(menu_title))
+    #~ if not plugin_menu_title:
+        #~ plugin_menu_title = menu_title
+    #~ plugin_menu_icon = raw_input("Manu icon ({0}): ".format(menu_icon))
+    #~ if not plugin_menu_icon:
+        #~ plugin_menu_icon = menu_icon
+    #~ plugin_menu_url = raw_input("Manu url ({0}): ".format(menu_url))
+    #~ if not plugin_menu_url:
+        #~ plugin_menu_url = menu_url
         
     meta = {
-        "name" : plugin_name,
-        "version" : plugin_version,
-        "description" : plugin_desc,
-        "plugin_uri" : "",
-        "plugin_slug" : plugin_slug,
+        "name" : raw_meta['name'],
+        "version" : raw_meta['version'],
+        "description" : raw_meta['description'],
+        "plugin_uri" : raw_meta['url'],
+        "plugin_slug" : raw_meta['slug'],
         "required_bundles" : [],
-        "author" : plugin_author,
-        "author_uri" : "",
+        "author" : raw_meta['author'],
+        "author_uri" : raw_meta['author_url'],
         "icon" : "",
         "filetypes" : [],
         "hooks" : [],
-        "menu" : {
-            "/" + plugin_slug : {
-                "title" : plugin_menu_title,
-                "icon"  : plugin_menu_icon,
-                "url"   : plugin_menu_url
-            },
-        }
+        "menu" : {}
     }
+    
+    menu_loc = raw_meta['menu'][0].pop('loc')
+    meta['menu'][menu_loc] = raw_meta['menu']
 
-    destDir = build_path(args.dest, plugin_slug)
+    destDir = build_path(args.dest, raw_meta['slug'])
     create_dir(destDir)
     
     meta_filename = build_path(destDir, 'meta.json')
@@ -103,12 +100,12 @@ def create_plugin(args):
         outfile.write( json.dumps(meta, indent=4) )
     
     env = {
-        "plugin_name" : plugin_name,
-        "plugin_version" : plugin_version,
-        "plugin_description" : plugin_desc,
-        "plugin_author" : plugin_author,
-        "plugin_slug" : plugin_slug,
-        "plugin_icon" : plugin_menu_icon
+        "plugin_name" : raw_meta['name'],
+        "plugin_version" : raw_meta['version'],
+        "plugin_description" : raw_meta['description'],
+        "plugin_author" : raw_meta['author'],
+        "plugin_slug" : raw_meta['slug'],
+        "plugin_icon" : raw_meta['menu'][0]['icon']
     }
     
     filename = build_path(destDir, 'controller.php')
@@ -145,6 +142,7 @@ def main():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("command",       help=_("Command.") )
     parser.add_argument("-d", "--dest",  help="Destination",  default='.' )
+    parser.add_argument("-i", "--input",  help="Generation plan", required=True)
     #parser.add_argument("-t", "--type",  help="Destination",  default='default' )
     # GET ARGUMENTS    
     args = parser.parse_args()
@@ -154,10 +152,14 @@ def main():
         'controller' : create_controller
     }
     
-    cmd = args.command
+    plan_file = args.input
     
+    with open(plan_file) as f:
+        plan = json.loads( f.read() )
+    
+    cmd = args.command
     if cmd in CMDS:
-        CMDS[cmd](args)
+        CMDS[cmd](args, plan[cmd])
 
 if __name__ == "__main__":
     main()

@@ -158,7 +158,7 @@
 					<section class="col col-6">
 						<label class="label"><?php echo _('Menu location');?></label>
 						<label class="input">
-							<input type="text" id="plugin-menu-0-url" name="menu_location" placeholder="/my_new_plugin">
+							<input type="text" id="plugin-menu-0-loc" name="menu_location" placeholder="/my_new_plugin">
 						</label>
 					</section>
 				</div>

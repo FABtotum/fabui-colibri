@@ -117,6 +117,55 @@
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
+	
+	public function download($slug = '')
+	{
+		if($slug == '')
+			return;
+		
+		$this->load->library('zip');
+		$this->config->load('fabtotum');
+		$tmpPath = $this->config->item('temp_path');
+		$plugin_dir = $tmpPath.$slug;
+		
+		$this->zip->read_dir($plugin_dir, false, $tmpPath);
+		
+		//~ shell_exec('rm -rf '.$plugin_dir);
+		
+		$this->zip->download($slug.'.zip');
+	}
+	
+	public function create()
+	{
+		//get data from post
+		$postData = $this->input->post();
+		
+		$this->load->helper('plugin_helper');
+		$this->load->helpers('utility_helper');
+		$this->load->helpers('fabtotum_helper');
+		$this->load->library('zip');
+		
+		//create settings array
+		$plugin_meta = arrayFromPost($postData['meta']);
+		
+		$result = array();
+		
+		$plugin_dir = createPlugin($plugin_meta);
+		
+		$result['success'] = true;
+		$result['meta'] = $plugin_meta;
+		$result['slug'] = $plugin_meta['plugin']['slug'];
+
+		/*$filename = realpath($filename);
+		$ext = pathinfo($filename, PATHINFO_EXTENSION);
+		$_file_name = 'raspicam.'.$ext;
+		$_data      = file_get_contents($filename);
+		
+		
+		force_download($filename, NULL);*/
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+	}
 
 	public function online()
 	{

@@ -207,7 +207,7 @@ if ( ! function_exists('managePlugin'))
 		$CI =& get_instance();
 		$CI->load->helper('fabtotum');
 		
-		return startPyScript('plugin_manager.py', $action.' -p '.$plugin, false, true);
+		return startPyScript('plugin_manager.py', $action.' -p "'.$plugin.'"', false, true);
 	}
 	 
 }
@@ -374,6 +374,32 @@ if(!function_exists('startPluginPyScript'))
 		if($sudo)
 			$cmd = 'sudo ' . $cmd;
 		return doCommandLine($cmd, $extPath.'py/'.$script, $params, $background);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('createPlugin'))
+{
+	/**
+	 * start python task
+	 */
+	function createPlugin($meta)
+	{
+		$CI =& get_instance();
+		$CI->load->helper('fabtotum_helper');
+		$CI->config->load('fabtotum');
+		$tmpPath = $CI->config->item('temp_path');
+		
+		file_put_contents($tmpPath.'new_plugin_meta.json', json_encode($meta));
+		
+		$params = array(
+			'plugin' => '',
+			'-i' => $tmpPath.'new_plugin_meta.json',
+			'-d' => $tmpPath
+		);
+		
+		startPyScript('fab_creator.py', $params, false);
+		unlink($tmpPath.'new_plugin_meta.json');
+		return $tmpPath.$meta['plugin']['slug'];
 	}
 }
 

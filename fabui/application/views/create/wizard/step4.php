@@ -29,7 +29,7 @@
 					</section>
 					<div class="row">
 						<section class="col col-9">
-							<label class="label"><?php echo _("Z's height is"); ?> <strong><span class="z-height"></span></strong>  <?php echo _("Do you want to save it and override the value for the next prints?"); ?> </label>
+							<label class="label"><?php echo _("Z height is"); ?> <strong><span class="z-height"></span></strong>  <?php echo _("Do you want to save it and override the value for the next prints?"); ?> </label>
 						</section>
 						<section class="col col-3">
 							<a style="padding:6px 10px 5px" href="javascript:void(0);" class="btn btn-default btn-block save-z-height"><i class="fa fa-save"></i> <?php echo _("Yes"); ?></a>

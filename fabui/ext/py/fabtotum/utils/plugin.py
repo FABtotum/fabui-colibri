@@ -139,7 +139,7 @@ def extract_plugin(plugin_filename, config=None):
 	temp_dir = build_path( config.get('general', 'temp_path'), 'new_plugin' )
 	create_dir(temp_dir)
 	
-	cmd = "unzip {0} -d {1} -o".format(plugin_filename, temp_dir)
+	cmd = 'unzip "{0}" -d "{1}" -o'.format(plugin_filename, temp_dir)
 	try:
 		subprocess.check_output( shlex.split(cmd) )
 	except subprocess.CalledProcessError as e:

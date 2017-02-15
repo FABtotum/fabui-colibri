@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-14 18:55+0100\n"
+"POT-Creation-Date: 2017-02-15 12:05+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: FABTeam\n"
@@ -23,6 +23,7 @@ msgid "Make"
 msgstr "Herstellen"
 
 #: fabui/application/config/menu.php:21
+#: fabui/application/controllers/Settings.php:55
 msgid "Print"
 msgstr "Drucken"
 
@@ -31,6 +32,7 @@ msgid "Mill"
 msgstr "Fräsen"
 
 #: fabui/application/config/menu.php:31
+#: fabui/application/controllers/Settings.php:256
 msgid "Scan"
 msgstr "Scan"
 
@@ -91,6 +93,7 @@ msgid "Step calibration"
 msgstr "Schrittkalibrierung"
 
 #: fabui/application/config/menu.php:103
+#: fabui/application/views/settings/hardware_widget.php:28
 msgid "Engage"
 msgstr "Einrasten"
 
@@ -112,10 +115,15 @@ msgid "System info"
 msgstr "Systeminformationen"
 
 #: fabui/application/config/menu.php:132
+#: fabui/application/views/plugin/js.php:295
+#: fabui/application/views/settings/hardware_js.php:143
+#: fabui/application/views/settings/network_js.php:136
 msgid "Settings"
 msgstr "Einstellungen"
 
 #: fabui/application/config/menu.php:136
+#: fabui/application/controllers/Settings.php:51
+#: fabui/application/controllers/Settings.php:63
 msgid "Hardware"
 msgstr ""
 
@@ -140,6 +148,67 @@ msgstr "Unterstützung"
 msgid "Plugins"
 msgstr "Plugins"
 
+#: fabui/application/controllers/Settings.php:43
+#: fabui/application/views/create/wizard/additive_step.php:67
+msgid "Simple homing"
+msgstr ""
+
+#: fabui/application/controllers/Settings.php:43
+#: fabui/application/views/create/wizard/additive_step.php:89
+msgid "Auto bed leveling"
+msgstr ""
+
+#: fabui/application/controllers/Settings.php:52
+msgid "Safety"
+msgstr ""
+
+#: fabui/application/controllers/Settings.php:53
+msgid "Homing"
+msgstr ""
+
+#: fabui/application/controllers/Settings.php:54
+msgid "Customized actions"
+msgstr ""
+
+#: fabui/application/controllers/Settings.php:56
+#, fuzzy
+msgid "Milling"
+msgstr "Fräsen"
+
+#: fabui/application/controllers/Settings.php:57
+#, fuzzy
+msgid "Lighting"
+msgstr "Drucken"
+
+#: fabui/application/controllers/Settings.php:59
+#: fabui/application/controllers/Settings.php:257
+#: fabui/application/controllers/Projectsmanager.php:72
+#: fabui/application/controllers/Projectsmanager.php:200
+#: fabui/application/controllers/Projectsmanager.php:659
+#: fabui/application/controllers/Projectsmanager.php:702
+#: fabui/application/views/settings/hardware_js.php:138
+#: fabui/application/views/settings/network_js.php:128
+#: fabui/application/views/projectsmanager/edit/js.php:78
+msgid "Save"
+msgstr "Speichern"
+
+#: fabui/application/controllers/Settings.php:233
+msgid "Ethernet"
+msgstr ""
+
+#: fabui/application/controllers/Settings.php:237
+msgid "Automatic (DHCP)"
+msgstr ""
+
+#: fabui/application/controllers/Settings.php:252
+msgid "DNS-SD"
+msgstr ""
+
+#: fabui/application/controllers/Settings.php:261
+#, fuzzy
+msgid "Network settings"
+msgstr "Netzwerk"
+
 #: fabui/application/controllers/Projectsmanager.php:30
 #: fabui/application/controllers/Projectsmanager.php:667
 msgid "Add new project"
@@ -163,14 +232,6 @@ msgstr "Herunterladen"
 #, fuzzy
 msgid "Projects"
 msgstr "Projektmanager"
-
-#: fabui/application/controllers/Projectsmanager.php:72
-#: fabui/application/controllers/Projectsmanager.php:200
-#: fabui/application/controllers/Projectsmanager.php:659
-#: fabui/application/controllers/Projectsmanager.php:702
-#: fabui/application/views/projectsmanager/edit/js.php:78
-msgid "Save"
-msgstr "Speichern"
 
 #: fabui/application/controllers/Projectsmanager.php:76
 msgid "Add files"
@@ -208,6 +269,7 @@ msgstr ""
 
 #: fabui/application/controllers/Projectsmanager.php:662
 #: fabui/application/controllers/Projectsmanager.php:705
+#: fabui/application/views/settings/network_widget.php:75
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -224,6 +286,7 @@ msgid "No POST data"
 msgstr ""
 
 #: fabui/application/controllers/Plugin.php:40
+#: fabui/application/views/plugin/js.php:65
 #: fabui/application/views/plugin/js.php:199
 msgid "Installed"
 msgstr "Installiert"
@@ -271,7 +334,7 @@ msgstr ""
 #: fabui/application/views/jog/widget.php:123
 #: fabui/application/views/create/wizard/subtractive_step.php:100
 msgid "Feedrate"
-msgstr ""
+msgstr "Vorschubgeschwindigkeit"
 
 #: fabui/application/views/jog/widget.php:71
 msgid "Head/bed"
@@ -291,17 +354,17 @@ msgstr "Einschalten"
 
 #: fabui/application/views/jog/widget.php:140
 msgid "Head does not have a heater"
-msgstr ""
+msgstr "Kopf hat keine Heizung"
 
 #: fabui/application/views/jog/widget.php:146
 #: fabui/application/views/create/wizard/step3.php:90
 #: fabui/application/views/create/wizard/step3.php:178
 msgid "Fan"
-msgstr ""
+msgstr "Ventilator"
 
 #: fabui/application/views/jog/widget.php:149
 msgid "Head does not have a fan"
-msgstr ""
+msgstr "Der Kopf hat keinen Ventilator"
 
 #: fabui/application/views/jog/widget.php:155
 #: fabui/application/views/create/wizard/step3.php:96
@@ -315,7 +378,7 @@ msgstr ""
 
 #: fabui/application/views/jog/widget.php:158
 msgid "Head does not have a milling motor"
-msgstr ""
+msgstr "Der Kopf hat keinen Fräsmotor"
 
 #: fabui/application/views/jog/widget.php:164
 #: fabui/application/views/create/wizard/step3.php:44
@@ -325,7 +388,7 @@ msgstr "Bett"
 
 #: fabui/application/views/jog/widget.php:167
 msgid "Bed is not installed"
-msgstr ""
+msgstr "Bett ist nich installiert"
 
 #: fabui/application/views/jog/widget.php:187
 msgid "Send"
@@ -359,6 +422,7 @@ msgstr ""
 #: fabui/application/views/jog/widget.php:247
 #: fabui/application/views/plugin/main_widget.php:120
 #: fabui/application/views/plugin/main_widget.bak.php:121
+#: fabui/application/views/settings/network_widget.php:31
 #: fabui/application/views/projectsmanager/index/widget.php:26
 #: fabui/application/views/projectsmanager/edit/widget.php:35
 #: fabui/application/views/projectsmanager/add/widget.php:35
@@ -400,7 +464,7 @@ msgstr ""
 
 #: fabui/application/views/jog/widget.php:317
 msgid "Close"
-msgstr ""
+msgstr "Schliesen"
 
 #: fabui/application/views/plugin/js.php:51
 #: fabui/application/views/plugin/main_widget.php:10
@@ -420,7 +484,7 @@ msgstr "Installieren"
 
 #: fabui/application/views/plugin/js.php:108
 msgid "Attention"
-msgstr ""
+msgstr "Achtung"
 
 #: fabui/application/views/plugin/js.php:109
 #: fabui/application/views/plugin/main_widget.php:31
@@ -495,17 +559,22 @@ msgstr ""
 msgid "Installing"
 msgstr "Installieren"
 
-#: fabui/application/views/plugin/js.php:239
+#: fabui/application/views/plugin/js.php:236
 #, fuzzy
 msgid "\"plugin_\" prefix is not allowed"
 msgstr "besuchen Sie die plugin-website"
 
-#: fabui/application/views/plugin/js.php:242
+#: fabui/application/views/plugin/js.php:239
 msgid "Please enter your name here"
 msgstr ""
 
-#: fabui/application/views/plugin/js.php:245
+#: fabui/application/views/plugin/js.php:242
 msgid "Please write a short description"
+msgstr ""
+
+#: fabui/application/views/plugin/js.php:296
+#: fabui/application/views/settings/hardware_js.php:144
+msgid "Hardware settings saved"
 msgstr ""
 
 #: fabui/application/views/plugin/main_widget.php:11
@@ -569,6 +638,7 @@ msgstr "Neuer Plugin ersteller"
 
 #: fabui/application/views/plugin/main_widget.php:103
 #: fabui/application/views/plugin/main_widget.bak.php:104
+#: fabui/application/views/settings/network_widget.php:20
 #: fabui/application/views/projectsmanager/edit/widget.php:17
 #: fabui/application/views/projectsmanager/edit/widget.php:51
 #: fabui/application/views/projectsmanager/add/widget.php:17
@@ -610,6 +680,238 @@ msgstr ""
 msgid "Generate Plugin"
 msgstr "Plugin generieren"
 
+#: fabui/application/views/settings/hardware_js.php:124
+#: fabui/application/views/settings/network_js.php:118
+#: fabui/application/views/projectsmanager/edit/js.php:62
+msgid "Saving"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:28
+#, fuzzy
+msgid "Disengage"
+msgstr "Einrasten"
+
+#: fabui/application/views/settings/hardware_widget.php:28
+msgid "Feeder option"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:34
+msgid "Invert X Endstop Logic"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:42
+msgid "Extruder steps per unit"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:42
+msgid "A mode"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:45
+msgid "You must restart the FABtotum to apply these changes"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:52
+msgid ""
+"If you change values for extruder steps you have to restart the FABtotum so "
+"that can values take effect"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:57
+msgid "Custom overrides"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:70
+msgid "Door safety messages"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:73
+#: fabui/application/views/settings/hardware_widget.php:86
+#: fabui/application/views/settings/hardware_widget.php:117
+msgid "Enable"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:76
+#: fabui/application/views/settings/hardware_widget.php:89
+#: fabui/application/views/settings/hardware_widget.php:120
+msgid "Disabled"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:83
+msgid "Machine limits collision warning"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:101
+msgid "Default Homing Direction"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:104
+msgid "Left"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:107
+msgid "Right"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:114
+msgid "Use the z touch probe during homing"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:128
+msgid "Z max home pos"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:142
+msgid "Both Y endstops pressed"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:148
+msgid "Both Z endstops pressed"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:162
+msgid "Pre-heating nozzle temperature"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:170
+msgid "Pre-heating bed temperature"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:178
+msgid "Calibration preference"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:193
+msgid "Sacrificial layer thickness"
+msgstr ""
+
+#: fabui/application/views/settings/hardware_widget.php:215
+msgid "Standby"
+msgstr ""
+
+#: fabui/application/views/settings/ethernet_tab.php:5
+#: fabui/application/views/settings/wireless_tab.php:5
+msgid "Address mode"
+msgstr ""
+
+#: fabui/application/views/settings/ethernet_tab.php:15
+#: fabui/application/views/settings/wireless_tab.php:19
+msgid "IP address"
+msgstr ""
+
+#: fabui/application/views/settings/ethernet_tab.php:19
+#: fabui/application/views/settings/wireless_tab.php:23
+msgid "MAC address"
+msgstr ""
+
+#: fabui/application/views/settings/ethernet_tab.php:31
+#: fabui/application/views/settings/wireless_tab.php:36
+msgid "Address"
+msgstr ""
+
+#: fabui/application/views/settings/ethernet_tab.php:40
+#: fabui/application/views/settings/wireless_tab.php:45
+msgid "Netmask"
+msgstr ""
+
+#: fabui/application/views/settings/ethernet_tab.php:49
+#: fabui/application/views/settings/wireless_tab.php:54
+msgid "Gateway"
+msgstr ""
+
+#: fabui/application/views/settings/network_js.php:99
+#: fabui/application/views/projectsmanager/index/js.php:132
+#: fabui/application/views/projectsmanager/index/js.php:177
+#: fabui/application/views/projectsmanager/edit/js.php:95
+#: fabui/application/views/projectsmanager/edit/js.php:206
+#: fabui/application/views/projectsmanager/edit/js.php:241
+msgid "Warning"
+msgstr "Achtung"
+
+#: fabui/application/views/settings/network_js.php:100
+msgid "You need to connect to a network first"
+msgstr ""
+
+#: fabui/application/views/settings/network_js.php:137
+msgid "Network settings saved"
+msgstr ""
+
+#: fabui/application/views/settings/network_js.php:265
+msgid "Disconnect"
+msgstr ""
+
+#: fabui/application/views/settings/network_js.php:265
+#: fabui/application/views/settings/network_widget.php:76
+msgid "Connect"
+msgstr ""
+
+#: fabui/application/views/settings/network_js.php:331
+msgid "Password for"
+msgstr ""
+
+#: fabui/application/views/settings/network_js.php:369
+#, fuzzy
+msgid "Please specify a valid IP address"
+msgstr "Bitte geben Sie eine gültige Email-Adresse ein"
+
+#: fabui/application/views/settings/network_js.php:379
+#, fuzzy
+msgid "Please insert valid password"
+msgstr "Bitte geben Sie eine gültige Email-Adresse ein"
+
+#: fabui/application/views/settings/network_js.php:404
+#, fuzzy
+msgid "Please insert a valid IP address"
+msgstr "Bitte geben Sie eine gültige Email-Adresse ein"
+
+#: fabui/application/views/settings/network_js.php:407
+#, fuzzy
+msgid "Please insert a valid netmask"
+msgstr "Bitte geben Sie eine gültige Email-Adresse ein"
+
+#: fabui/application/views/settings/network_js.php:410
+#, fuzzy
+msgid "Please insert a valid gateway address"
+msgstr "Bitte geben Sie eine gültige Email-Adresse ein"
+
+#: fabui/application/views/settings/network_js.php:437
+msgid "Please specify an SSID"
+msgstr ""
+
+#: fabui/application/views/settings/network_js.php:438
+#: fabui/application/views/settings/network_js.php:439
+msgid "Please specify an SSID that is between 4 and 63 characters"
+msgstr ""
+
+#: fabui/application/views/settings/network_js.php:442
+msgid "Please specify a password"
+msgstr ""
+
+#: fabui/application/views/settings/network_js.php:443
+#: fabui/application/views/settings/network_js.php:444
+msgid "Please specify a password between 8 and 63 characters"
+msgstr ""
+
+#: fabui/application/views/settings/network_widget.php:40
+msgid ""
+"To easily access to the FABtotum Personal Fabricator by using the name you "
+"inserted you need to install on the device you are using to access it a "
+"multicast domain name system service discovery such as Bonjour or similar"
+msgstr ""
+
+#: fabui/application/views/settings/network_widget.php:68
+#: fabui/application/views/settings/wireless_tab.php:85
+msgid "Show password"
+msgstr ""
+
+#: fabui/application/views/settings/wireless_tab.php:68
+msgid "Ssid"
+msgstr ""
+
+#: fabui/application/views/settings/wireless_tab.php:77
+msgid "Password"
+msgstr ""
+
 #: fabui/application/views/account/js.php:46
 msgid "Please enter your email address"
 msgstr "Geben Sie bitte Ihre Email-Adresse ein"
@@ -644,6 +946,105 @@ msgstr "Email"
 msgid "Language"
 msgstr "Sprache"
 
+#: fabui/application/views/create/js.php:228
+msgid "Preparing"
+msgstr ""
+
+#: fabui/application/views/create/js.php:228
+#: fabui/application/views/create/js.php:630
+#: fabui/application/views/create/js.php:1008
+#: fabui/application/views/create/js.php:1115
+#: fabui/application/views/projectsmanager/add/js.php:120
+msgid "Please wait"
+msgstr "Bitte warten Sie"
+
+#: fabui/application/views/create/js.php:394
+#: fabui/application/views/create/js.php:656
+#, fuzzy
+msgid "Resume Print"
+msgstr "Zuletzt gedrückt"
+
+#: fabui/application/views/create/js.php:401
+#: fabui/application/views/create/js.php:659
+#, fuzzy
+msgid "Pause Print"
+msgstr "Drucken"
+
+#: fabui/application/views/create/js.php:557
+msgid "Ext temp"
+msgstr ""
+
+#: fabui/application/views/create/js.php:566
+msgid "Ext target"
+msgstr ""
+
+#: fabui/application/views/create/js.php:575
+msgid "Bed temp"
+msgstr ""
+
+#: fabui/application/views/create/js.php:583
+msgid "Bed target"
+msgstr ""
+
+#: fabui/application/views/create/js.php:630
+msgid "Aborting print"
+msgstr ""
+
+#: fabui/application/views/create/js.php:643
+msgid "Print aborted"
+msgstr ""
+
+#: fabui/application/views/create/js.php:643
+#, fuzzy
+msgid "Reloading page"
+msgstr "Nachladen"
+
+#: fabui/application/views/create/js.php:677
+msgid "Print paused"
+msgstr ""
+
+#: fabui/application/views/create/js.php:680
+msgid "Print resumed"
+msgstr ""
+
+#: fabui/application/views/create/js.php:683
+msgid "Speed override changed to"
+msgstr ""
+
+#: fabui/application/views/create/js.php:686
+msgid "Flow Rate override changed to"
+msgstr ""
+
+#: fabui/application/views/create/js.php:689
+msgid "Fan override changed to"
+msgstr ""
+
+#: fabui/application/views/create/js.php:692
+msgid "Z height increased"
+msgstr ""
+
+#: fabui/application/views/create/js.php:693
+msgid "Z height decreased"
+msgstr ""
+
+#: fabui/application/views/create/js.php:696
+msgid "RPM speed se to"
+msgstr ""
+
+#: fabui/application/views/create/js.php:699
+msgid "Unknown action"
+msgstr ""
+
+#: fabui/application/views/create/js.php:714
+msgid "Waiting for first move"
+msgstr ""
+
+#: fabui/application/views/create/js.php:1008
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:99
+#: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:58
+msgid "Moving to safe zone"
+msgstr ""
+
 #: fabui/application/views/projectsmanager/index/js.php:94
 #: fabui/application/views/projectsmanager/index/js.php:113
 msgid "Please select at least 1 object"
@@ -660,14 +1061,6 @@ msgstr "Information"
 #: fabui/application/views/projectsmanager/edit/js.php:197
 msgid "Ok"
 msgstr ""
-
-#: fabui/application/views/projectsmanager/index/js.php:132
-#: fabui/application/views/projectsmanager/index/js.php:177
-#: fabui/application/views/projectsmanager/edit/js.php:95
-#: fabui/application/views/projectsmanager/edit/js.php:206
-#: fabui/application/views/projectsmanager/edit/js.php:241
-msgid "Warning"
-msgstr "Achtung"
 
 #: fabui/application/views/projectsmanager/index/js.php:133
 msgid "Do you really want to remove the selected objects"
@@ -690,10 +1083,6 @@ msgstr ""
 #: fabui/application/views/projectsmanager/index/widget.php:27
 #: fabui/application/views/projectsmanager/edit/widget.php:54
 msgid "Date"
-msgstr ""
-
-#: fabui/application/views/projectsmanager/edit/js.php:62
-msgid "Saving"
 msgstr ""
 
 #: fabui/application/views/projectsmanager/edit/js.php:81
@@ -757,10 +1146,6 @@ msgstr ""
 msgid "Saving object"
 msgstr ""
 
-#: fabui/application/views/projectsmanager/add/js.php:120
-msgid "Please wait"
-msgstr "Bitte warten Sie"
-
 #: fabui/application/views/projectsmanager/add/widget.php:51
 msgid "Dropzone"
 msgstr ""
@@ -817,20 +1202,12 @@ msgstr ""
 msgid "Choose calibration type"
 msgstr ""
 
-#: fabui/application/views/create/wizard/additive_step.php:67
-msgid "Simple homing"
-msgstr ""
-
 #: fabui/application/views/create/wizard/additive_step.php:70
 msgid "Quickly home all axis. Works well with a well calibrated working plane"
 msgstr ""
 
 #: fabui/application/views/create/wizard/additive_step.php:70
 msgid "Suggested"
-msgstr ""
-
-#: fabui/application/views/create/wizard/additive_step.php:89
-msgid "Auto bed leveling"
 msgstr ""
 
 #: fabui/application/views/create/wizard/additive_step.php:92
@@ -868,7 +1245,7 @@ msgid "Duration"
 msgstr "Beschreibung"
 
 #: fabui/application/views/create/wizard/step4.php:32
-msgid "Z's height is"
+msgid "Z height is"
 msgstr ""
 
 #: fabui/application/views/create/wizard/step4.php:32
@@ -1413,6 +1790,10 @@ msgstr ""
 msgid "Auto bed leveling. Valid only when --standalone is used."
 msgstr ""
 
+#: fabui/ext/py/fab_creator.py:143
+msgid "Command."
+msgstr ""
+
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:56
 msgid "Unknown error"
 msgstr ""
@@ -1689,11 +2070,6 @@ msgstr ""
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:149
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:166
 msgid "Setting Absolute position"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:99
-#: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:58
-msgid "Moving to safe zone"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:108

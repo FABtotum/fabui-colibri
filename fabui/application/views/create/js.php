@@ -225,7 +225,7 @@
 	function startCreate()
 	{
 		is_task_on = true;
-		openWait('<i class="fa fa-spinner fa-spin "></i> Preparing <?php echo ucfirst($type) ?>', 'Please wait');
+		openWait('<i class="fa fa-spinner fa-spin "></i> <?php echo _('Preparing').' '.ucfirst($type) ?>', <?php echo _('Please wait');?>);
 		
 		var calibration = $('input[name=calibration]:checked').val();
 		var data = {idFile:idFile, skipEngage:skipEngage, calibration:calibration};
@@ -391,14 +391,14 @@
 			case 'paused':
 				if(firstCall){
 					var element = $(".isPaused-button");
-					element.html('<i class="fa fa-play"></i> Resume Print');
+					element.html('<i class="fa fa-play"></i> <?php echo _("Resume Print");?>');
 					element.attr('data-action', 'resume');
 				}
 				break;
 			case 'started':
 				if(firstCall){
 					var element = $(".isPaused-button");
-					element.html('<i class="fa fa-pause"></i> Pause Print');
+					element.html('<i class="fa fa-pause"></i> <?php echo _("Pause Print");?>');
 					element.attr('data-action', 'pause');
 				}
 				break;
@@ -554,7 +554,7 @@
 			data.push({
 				data: seriesExtTemp,
 	      		lines: { show: true, fill: true },
-	     	 	label: "Ext temp",
+	     	 	label: "<?php echo _("Ext temp");?>",
 	     	 	color: "#FF0000",
 	     	 	points: {"show" : false}
 			});
@@ -563,7 +563,7 @@
 			data.push({
 				data: seriesExtTarget,
 	      		lines: { show: true, fill: false, lineWidth:1 },
-	     	 	label: "Ext target",
+	     	 	label: "<?php echo _("Ext target");?>",
 	     	 	color: "#ff9933",
 	     	 	points: {"show" : false}
 			});
@@ -572,7 +572,7 @@
 			data.push({
 				data: seriesBedTemp,
 	      		lines: { show: true, fill: true },
-	     	 	label: "Bed temp",
+	     	 	label: "<?php echo _("Bed temp");?>",
 	     	 	color: "#3276B1"
 			});
 		//bed target line
@@ -580,7 +580,7 @@
 			data.push({
 				data: seriesBedTarget,
 				lines: { show: true, fill: false, lineWidth:1 },
-	     	 	label: "Bed target",
+	     	 	label: "<?php echo _("Bed target");?>",
 	     	 	color: "#33ccff"
 			});
 		return data;
@@ -627,7 +627,7 @@
 	 */
 	function abort()
 	{
-		openWait('<i class="fa fa-spinner fa-spin "></i> Aborting print', 'Please wait..', false);
+		openWait('<i class="fa fa-spinner fa-spin "></i> <?php echo _("Aborting print");?>', <?php echo _("Please wait");?>, false);
 		$.ajax({
 			type: 'post',
 			url: '<?php echo site_url('control/taskAction/abort') ?>',
@@ -640,7 +640,7 @@
 	*/
 	function aborted()
 	{
-		openWait('<i class="fa fa-check "></i> Print aborted', 'Reloading page...', false);
+		openWait('<i class="fa fa-check "></i> <?php echo _("Print aborted");?>', '<?php echo _("Reloading page");?>...', false);
 		setTimeout(function(){
 			location.reload();
 		}, 5000);
@@ -653,10 +653,10 @@
 	{
 		if(action == 'pause') {
 			element.attr('data-action', 'resume');
-			element.html('<i class="fa fa-play"></i> Resume print');
+			element.html('<i class="fa fa-play"></i> <?php echo _("Resume Print");?>');
 		}else if(action == 'resume'){
 			element.attr('data-action', 'pause');
-			element.html('<i class="fa fa-pause"></i> Pause print');
+			element.html('<i class="fa fa-pause"></i> <?php echo _("Pause Print");?>');
 		}
 		sendActionRequest(action);		
 	}
@@ -674,29 +674,29 @@
 		}).done(function(response) {
 			switch(action){
 				case 'pause':
-					message="Print paused";
+					message="<?php echo _("Print paused");?>";
 					break;
 				case 'resume':
-					message="Print resumed";
+					message="<?php echo _("Print resumed");?>";
 					break;
 				case 'speed':
-					message="Speed override changed to: " + value;
+					message="<?php echo _("Speed override changed to");?>: " + value;
 					break;
 				case 'flowRate':
-					message="Flow Rate override changed to: " + value;
+					message="<?php echo _("Flow Rate override changed to");?>: " + value;
 					break;
 				case 'fan':
-					message="Fan override changed to: " + value;
+					message="<?php echo _("Fan override changed to");?>: " + value;
 					break;
 				case 'zHeight':
-					if(value.charAt(0) == '+') message="Z height increased";
-					else message="Z height decreased";
+					if(value.charAt(0) == '+') message="<?php echo _("Z height increased");?>";
+					else message="<?php echo _("Z height decreased");?>";
 					break;
 				case 'rpm':
-					message="RPM speed se to: " + value;
+					message="<?php echo _("RPM speed se to");?>: " + value;
 					break;
 				default:
-					message="Unknown action: "+ action;
+					message="<?php echo _("Unknown action");?>: "+ action;
 			}
 			showActionAlert(message);
 		});
@@ -711,7 +711,7 @@
 		remainingTime = estimatedTime - elapsedTime;
 		$(".elapsed-time").html(transformSeconds(elapsedTime));
 		if(estimatedTime == 0)
-			$(".estimated-time-left").html('Waiting for first move...');
+			$(".estimated-time-left").html('<?php echo _("Waiting for first move");?>...');
 		else
 			$(".estimated-time-left").html(transformSeconds(remainingTime));
 	}
@@ -1005,7 +1005,7 @@
 	*/
 	function completingTask()
 	{
-		openWait('<i class="fa fa-spinner fa-spin "></i> Completing <?php echo ucfirst($type) ?>', 'Please wait...\r\nMoving to safe zone', false);
+		openWait('<i class="fa fa-spinner fa-spin "></i> Completing <?php echo ucfirst($type) ?>', '<?php echo _("Please wait");?>...\r\n<?php echo _("Moving to safe zone");?>', false);
 	}
 	/**
 	* complete task
@@ -1032,7 +1032,7 @@
 	function showErrorAlert(message)
 	{
 		$.smallBox({
-			title : "Warning",
+			title : "<?php echo_("Warning");?>",
 			content : message,
 			color : "#C46A69",
 			timeout: 10000,
@@ -1061,7 +1061,7 @@
 	function showActionAlert(message)
 	{
 		$.smallBox({
-			title : "Info",
+			title : "<?php echo_("Info");?>",
 			content : message,
 			color : "#5384AF",
 			timeout: 3000,
@@ -1103,7 +1103,7 @@
 			dataType: 'json'
 		}).done(function(response) {
 			console.log(response);
-			showActionAlert("Z's Height saved");
+			showActionAlert("<?php echo_("Z Height saved");?>");
 			enableButton('.save-z-height');
 		});
 	}
@@ -1112,7 +1112,7 @@
 	*/
 	function aborting()
 	{
-		openWait('<i class="fa fa-spinner fa-spin "></i> Aborting print', 'Please wait..', false);
+		openWait('<i class="fa fa-spinner fa-spin "></i> <?php _echo("Aborting print");?>', '<?php echo _("Please wait");?>', false);
 	}
 	/**
 	*
