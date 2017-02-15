@@ -338,7 +338,19 @@ class Settings extends FAB_Controller {
 		
 		$this->output->set_content_type('application/json')->set_output($result);
 	}
-
+	
+	
+	public function getNetworkInfo()
+	{
+		$this->load->helper('os_helper');
+		$data['interfaces'] = getInterfaces();
+		$data['internet'] = false;
+		if(isset($data['interfaces']['wlan0']['wireless']['ssid'])){
+			$data['internet'] = isInternetAvaialable();
+		}
+		$this->output->set_content_type('application/json')->set_output(json_encode($data));
+	}
+	
  }
  
 ?>

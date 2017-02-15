@@ -35,6 +35,7 @@ var serial_exec_url_action      = base_url + '/jog/exec';
 var first_setup_url_action      = '/#controller/first_setup';
 var check_internet_url_action   = '/temp/internet';
 var updates_status_url          = base_url + 'updates/updateStatus';
+var newtwork_info_url           = base_url + 'settings/getNetworkInfo';
 /*
 * xmlrpc
 */

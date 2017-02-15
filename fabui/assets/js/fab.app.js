@@ -1245,6 +1245,23 @@ fabApp = (function(app) {
 			}
 		} 
 	}
+	/**
+	* get network interfaces and show icon on ribbon
+	**/
+	app.getNetworkInfo = function ()
+	{
+		$.get(newtwork_info_url, function(data, status){
+			console.log(data);
+			if(data.interfaces.wlan0.wireless.hasOwnProperty('ssid')){
+				$(".ribbon-button-alignment").prepend('<span data-title="Wifi connected"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon"><i class="fa fa-wifi"></i></span>');
+				
+			}
+			if(data.internet){
+				$(".ribbon-button-alignment").prepend('<span data-title="Internet available"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon"><i class="fa fa-globe"></i></span>');
+			}
+			pageSetUp();
+		});
+	}
 	return app;
 })({});
 

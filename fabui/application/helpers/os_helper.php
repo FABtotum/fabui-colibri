@@ -258,7 +258,8 @@ if(!function_exists('isInternetAvaialable'))
 	 */
 	function isInternetAvaialable()
 	{
-		return !$sock = @fsockopen('http://www.google.com', 80, $num, $error, 2) ? false : true;
+		$result = startBashScript('internet.sh', null, false, true);
+		return trim($result) == 'online';
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
