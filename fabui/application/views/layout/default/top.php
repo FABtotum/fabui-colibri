@@ -17,15 +17,9 @@
 		<div class="ajax-dropdown">
 			<!-- the ID links are fetched via AJAX to the ajax container "ajax-notifications" -->
 			<div class="btn-group btn-group-justified" data-toggle="buttons">
-				<label class="btn btn-default">
-					<input type="radio" name="activity" id="/ajax/notify/mail.php">
-					Msgs (14) </label>
-				<label class="btn btn-default">
-					<input type="radio" name="activity" id="/ajax/notify/notifications.php">
-					notify (3) </label>
-				<label class="btn btn-default">
-					<input type="radio" name="activity" id="/ajax/notify/tasks.php">
-					Tasks (4) </label>
+				<label class="btn btn-default"><input type="radio" name="activity" id="/fabui/updates/notifications">Updates <span class="updates-number"></span></label>
+				<label class="btn btn-default"><input type="radio" name="activity" id="/ajax/notify/notifications.php">notify</label>
+				<label class="btn btn-default"><input type="radio" name="activity" id="/ajax/notify/tasks.php">Tasks <span class="tasks-number"></span></label>
 			</div>
 			<!-- notification content -->
 			<div class="ajax-notifications custom-scroll">
@@ -37,7 +31,7 @@
 			</div>
 			<!-- end notification content -->
 			<!-- footer: refresh area -->
-			<span> Last updated on: 12/12/2013 9:43AM
+			<span> Last updated on: <span class="last-update-time"></span>
 				<button type="button" data-loading-text="<i class='fa fa-refresh fa-spin'></i> Loading..." class="btn btn-xs btn-default pull-right">
 					<i class="fa fa-refresh"></i>
 				</button> </span>

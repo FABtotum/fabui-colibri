@@ -237,11 +237,17 @@ fabApp = (function(app) {
 	**/
 	app.domReadyMisc = function() {
 		
-		if (typeof(Storage) !== "undefined"){
-			if(localStorage.getItem("temperaturesPlot") !== null){			
-				temperaturesPlot =  JSON.parse(localStorage.getItem("temperaturesPlot"));
+		
+		
+		// update notification when ajax-dropdown is closed
+		$(document).mouseup(function(e) {
+			if (!$('.ajax-dropdown').is(e.target) && $('.ajax-dropdown').has(e.target).length === 0) {
+				
+				if($('.ajax-dropdown').is(":visible")){
+					app.updateNotificationBadge();
+				}
 			}
-		}
+		});
 		
         $(".language").click(function() {
 
@@ -417,12 +423,14 @@ fabApp = (function(app) {
 					app.unFreezeParent(link);
 					link.append('<span class="badge bg-color-red pull-right inbox-badge freeze-menu">!</span>');
 				}
+				number_tasks =  1;
 			}else{
 				link.addClass('menu-disabled');
 				link.removeAttr('href');
 			}
 		});
 		$('.menu-disabled').click(function () {return false;});
+		app.updateNotificationBadge();
 	};
 	/*
 	 * 
@@ -574,11 +582,29 @@ fabApp = (function(app) {
 	 * update notification badge
 	 */
 	app.updateNotificationBadge = function () {
-		if(($.number_updates + $.number_tasks) > 0){
-			$("#activity").find('.badge').html(($.number_updates + $.number_tasks));
+		if((number_updates + number_tasks) > 0){
+			$("#activity").find('.badge').html((number_updates + number_tasks));
 			$("#activity").find('.badge').addClass('bg-color-red bounceIn animated');
 		}else{
 			$("#activity").find('.badge').removeClass('bg-color-red bounceIn animated');
+		}
+		
+		$(".updates-number").html( '(' + number_updates + ')');
+		$(".tasks-number").html( '(' + number_tasks + ')');
+		if(number_updates > 0 ){
+			
+			
+			var a = $("nav li > a");
+			a.each(function() {
+				var link = $(this);
+				var controller = link.attr('data-controller');
+				if(controller == 'updates'){
+					$("#update-menu-badge").remove();
+					link.append('<span id="update-menu-badge" class="badge pull-right inbox-badge bg-color-red margin-right-13">'+number_updates+'</span>');
+				}
+			});
+			
+			
 		}
 		
 	};
@@ -914,8 +940,8 @@ fabApp = (function(app) {
 	 * set tasks
 	 */
 	app.setTasks = function(data){
-		$.number_tasks = data.number;
-		$.is_task_on = $.number_tasks > 0;
+		number_tasks = data.number;
+		$.is_task_on = number_tasks > 0;
 		if($.is_task_on == true){
 			$.each(data.items, function() {
 				var row = this;
@@ -923,6 +949,7 @@ fabApp = (function(app) {
 				if (controller == 'make') controller += '/' + row.type;
 				app.freezeMenu(controller); //freeze menu
 				$(".task-list").find('span').html('	Tasks (' + data.number + ') '); //update number on ajax dropdown list
+				app.updateNotificationBadge();
 			});
 		}else app.unFreezeMenu();
 	};
@@ -1094,11 +1121,51 @@ fabApp = (function(app) {
 			if(data.task.hasOwnProperty('status')){
 				if(jQuery.inArray( data.task.status, freezing_status ) >= 0 ){
 					app.freezeMenu(data.task.type);
+					number_tasks = 1;
+					
 				}else{
 					app.unFreezeMenu();
+					number_tasks = 0;
 				}
 			}
+			app.updateNotificationBadge();
 		});
+	}
+	/**
+	*
+	**/
+	app.getUpdates = function() {
+		
+		var now = new Date();
+		var last_update = new Date(app_storage_data.last_update);
+		var diff = now.getTime() - last_update.getTime();
+		var diff_seconds = Math.abs(diff / 1000);
+		/**
+		* check if last_update time is expired or if not present update data
+		**/
+		if((diff_seconds > app_storage_expire_time) || (app_storage_data.update.hasOwnProperty('update') == false )){
+				
+			$.get(updates_status_url, function(data, status){
+				app_storage_data.update = data;
+				number_updates = app_storage_data.update.update.bundles;
+				if(app_storage_data.update.update.firmware) number_updates = number_updates + 1;
+				
+				app.updateNotificationBadge();
+				var now = new Date();
+				app_storage_data.last_update = now;
+				localStorage.setItem('app_storage_data', JSON.stringify(app_storage_data));
+				
+				console.log(app_storage_data.last_update);
+				
+				//$(".last-update-time").html(now.getDate() + '/' + (now.getMonth()+1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes());
+				$(".last-update-time").html(now.toLocaleString());
+			})
+		}else{
+			number_updates = app_storage_data.update.update.bundles;
+			localStorage.setItem('app_storage_data', JSON.stringify(app_storage_data));
+			app.updateNotificationBadge();
+			$(".last-update-time").html(app_storage_data.last_update);
+		}
 	}
 	/**
 	* redirect to a specific url only when the url responds 200
@@ -1162,6 +1229,21 @@ fabApp = (function(app) {
 				link.parent().removeClass('hidden');
 			}
 		});
+	}
+	/**
+	* initi vars from localstorage if it is enabled
+	**/
+	app.initFromLocalStorage = function ()
+	{
+		if (typeof(Storage) !== "undefined"){
+			if(localStorage.getItem("temperaturesPlot") !== null){			
+				temperaturesPlot =  JSON.parse(localStorage.getItem("temperaturesPlot"));
+			}
+			
+			if(localStorage.getItem("app_storage_data") !== null){			
+				app_storage_data =  JSON.parse(localStorage.getItem("app_storage_data"));
+			}
+		} 
 	}
 	return app;
 })({});
