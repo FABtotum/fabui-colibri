@@ -286,9 +286,12 @@ if(!function_exists('doCommandLine'))
 		
 		shell_exec('echo '.$command.' > /tmp/fabui/doCommandLine');
 		
-		$command .= ' | tee /tmp/fabui/doCommandLine.log';
-		//~ if($background) $command .= ' &';
-		//~ if($background) $command .= ' &> /tmp/fabui/doCommandLine.log &';
+		/* Note to myself: DO NOT PLAY WITH THESE COMMANDS !!!!! */
+		if($background) 
+			$command .= ' &> /tmp/fabui/doCommandLine.log &';
+		else
+			$command .= ' | tee /tmp/fabui/doCommandLine.log';
+		/* Note to myself: DO NOT PLAY WITH THESE COMMANDS !!!!! */
 		
 		log_message('debug', $command);
 		return shell_exec($command);

@@ -234,7 +234,10 @@
 			data: data,
 			url: '<?php echo site_url('create/startCreate/'.$type); ?>',
 			dataType: 'json'
-		}).done(function(response) {	
+		}).done(function(response) {
+			
+			console.log('startCreate', response)
+			
 			if(response.start == false){
 				$('.wizard').wizard('selectedItem', { step: 2 });
 				showErrorAlert(response.message);
