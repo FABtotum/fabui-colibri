@@ -99,14 +99,13 @@
 		var action = $( this ).attr('data-action');
 		var plugin_slug = $( this ).attr('data-title');
 		
-		
 		if( action == 'remove' )
 		{
 			var plugin_name = $( this ).attr('data-name');
 			
 				$.SmartMessageBox({
 					title: "<?php echo _("Attention");?>!",
-					content: "<?php echo _("Remove");?> <b>" + plugin_name + " </b> <?php echo _("plugin");?>?",
+					content: "<?php echo _("Remove <b>{0}</b> plugin");?>?".format(plugin_name),
 					buttons: '[<?php echo _("No")?>][<?php echo _("Yes")?>]'
 				}, function(ButtonPressed) {
 				   

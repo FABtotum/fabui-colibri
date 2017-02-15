@@ -136,4 +136,20 @@ String.prototype.replaceAll = function(search, replacement) {
     var target = this;
     return target.replace(new RegExp(search, 'g'), replacement);
 };
-
+/**
+ * Python like string format function 
+ */
+String.prototype.format = function() {
+    var str = this;   
+    var num = arguments.length; 
+    console.log('pyformat', arguments, 'str:', str);
+    
+    var matches = str.match(/{[0-9]}/g);
+    if( !matches || matches.length !== num ) 
+         throw " wrong number of arguments";
+    
+    for (var i = 0; i < num; i++)
+        str = str.replace('{'+i+'}', arguments[i]);
+	
+    return str;
+};
