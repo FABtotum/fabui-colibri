@@ -103,21 +103,21 @@
 		{
 			var plugin_name = $( this ).attr('data-name');
 			
-				$.SmartMessageBox({
-					title: "<?php echo _("Attention");?>!",
-					content: "<?php echo _("Remove <b>{0}</b> plugin");?>?".format(plugin_name),
-					buttons: '[<?php echo _("No")?>][<?php echo _("Yes")?>]'
-				}, function(ButtonPressed) {
-				   
-					if (ButtonPressed === "<?php echo _("Yes")?>")
-					{
-						doAction(action, plugin_slug);
-					}
-					if (ButtonPressed === "<?php echo _("No")?>")
-					{
-						/* do nothing */
-					}
-				});
+			$.SmartMessageBox({
+				title: "<?php echo _("Attention");?>!",
+				content: "<?php echo _("Remove <strong>{0}</strong> plugin?");?>".format(plugin_name),
+				buttons: '[<?php echo _("No")?>][<?php echo _("Yes")?>]'
+			}, function(ButtonPressed) {
+			   
+				if (ButtonPressed === "<?php echo _("Yes")?>")
+				{
+					doAction(action, plugin_slug);
+				}
+				if (ButtonPressed === "<?php echo _("No")?>")
+				{
+					
+				}
+			});
 		}
 		else
 		{

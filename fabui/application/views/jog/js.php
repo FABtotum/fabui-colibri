@@ -383,7 +383,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		if(action == "off")
 		{
 			$.SmartMessageBox({
-				title: "<h4><span class='txt-color-orangeDark'><i class='fa fa-warning fa-2x'></i></span>&nbsp;&nbsp; <?php echo _("Turning the cold extrusion protection might be dangerous if the fillament has not been removed from the head already"); ?>.<br><?php echo _("Do you want to disable cold extrusion?"); ?></h4>",
+				title: "<h4><span class='txt-color-orangeDark'><i class='fa fa-warning fa-2x'></i></span>&nbsp;&nbsp; <?php echo _("Turning the cold extrusion protection might be dangerous if the fillament has not been removed from the head already"); ?>.<br><?php echo _("Do you want to disable cold extrusion?");?></h4>",
 				buttons: '[No][Yes]'
 			}, function(ButtonPressed) {
 			   

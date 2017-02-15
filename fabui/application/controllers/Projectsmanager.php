@@ -72,7 +72,7 @@ class Projectsmanager extends FAB_Controller {
 			$widgeFooterButtons = $this->smart->create_button(_("Save"), 'primary')->attr(array('id' => 'save-object'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 			
 			$headerToolbar = '<div class="widget-toolbar" role="menu">
-			<a class="btn btn-default" href="projectsmanager"><i class="fa fa-arrow-left"></i> Back </a>
+			<a class="btn btn-default" href="projectsmanager"><i class="fa fa-arrow-left"></i> '._("Back").' </a>
 			<a class="btn btn-success" href="projectsmanager/add-file/'.$objectId.'"><i class="fa fa-plus"></i> '._("Add files").' </a>
 			<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> '._("Delete").' </button>
 			<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> '._("Download").' </button>
@@ -1047,7 +1047,7 @@ class Projectsmanager extends FAB_Controller {
 		if($file['print_type'] == 'additive')
 		{
 			$builtin_actions[] = array(
-				"title" => "Print",
+				"title" => _("Print"),
 				"icon" => "fa-rotate-90 fa-play",
 				"url" => "#make/print/file/".$fileID
 			);
@@ -1056,7 +1056,7 @@ class Projectsmanager extends FAB_Controller {
 		else if($file['print_type'] == 'subtractive')
 		{
 			$builtin_actions[] = array(
-				"title" => "Mill",
+				"title" => _("Mill"),
 				"icon" => "fa-rotate-90 fa-play",
 				"url" => "#make/mill/file/".$fileID
 			);
@@ -1064,7 +1064,7 @@ class Projectsmanager extends FAB_Controller {
 		}
 			
 		$builtin_actions[] = array(
-				"title" => "Download",
+				"title" => _("Download"),
 				"icon" => "fa-download",
 				"url" => "projectsmanager/download/file/".$fileID
 			);
@@ -1072,12 +1072,12 @@ class Projectsmanager extends FAB_Controller {
 		if( $file['print_type'] == 'additive' or $file['print_type'] == 'subtractive' )
 		{
 			$builtin_actions[] = array(
-				"title" => "Preview",
+				"title" => _("Preview"),
 				"icon" => "fa-eye",
 				"url" => "#projectsmanager/file/".$fileID."/preview"
 			);
 			$builtin_actions[] = array(
-				"title" => "Stats",
+				"title" => _("Stats"),
 				"icon" => "fa-area-chart",
 				"url" => "#projectsmanager/file/".$fileID."/stats"
 			);

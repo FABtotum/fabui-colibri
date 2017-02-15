@@ -146,7 +146,7 @@ String.prototype.format = function() {
     
     var matches = str.match(/{[0-9]}/g);
     if( !matches || matches.length !== num ) 
-         throw " wrong number of arguments";
+         throw "wrong number of arguments, expected " + num + " but got " + matches.length;
     
     for (var i = 0; i < num; i++)
         str = str.replace('{'+i+'}', arguments[i]);

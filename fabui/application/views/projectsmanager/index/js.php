@@ -130,7 +130,7 @@
 	function bulk_ask_delete(ids){
 		$.SmartMessageBox({
 				title: "<i class='fa fa-warning txt-color-orangeDark'></i> <?php echo _("Warning") ?>!",
-				content: "<?php echo _("Do you really want to remove the selected objects") ?>",
+				content: "<?php echo _("Do you really want to remove the selected objects?") ?>",
 				buttons: '[<?php echo _("No") ?>][<?php echo _("Yes") ?>]'
 		}, function(ButtonPressed) {
 			if (ButtonPressed === "<?php echo _("Yes") ?>") 
@@ -162,7 +162,7 @@
 				}
 				else
 				{
-					showErrorAlert('<?php echo _("Error deleting object") ?>', response.message);
+					showErrorAlert("<?php echo _("Error deleting object") ?>", response.message);
 				}
 				
 				$(".bulk-button[data-action='delete']").html("<i class='fa fa-trash'></i> <?php echo _("Delete") ?>");
@@ -175,7 +175,7 @@
 	function bulk_ask_download(ids){
 		$.SmartMessageBox({
 				title: "<i class='fa fa-warning txt-color-orangeDark'></i> <?php echo _("Warning") ?>!",
-				content: "<?php echo _("Do you really want download the selected objects") ?>",
+				content: "<?php echo _("Do you really want download the selected objects?") ?>",
 				buttons: '[<?php echo _("No") ?>][<?php echo _("Yes") ?>]'
 		}, function(ButtonPressed) {
 			if (ButtonPressed === "<?php echo _("Yes") ?>") {

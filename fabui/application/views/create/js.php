@@ -225,7 +225,7 @@
 	function startCreate()
 	{
 		is_task_on = true;
-		openWait('<i class="fa fa-spinner fa-spin "></i> <?php echo _('Preparing').' '.ucfirst($type) ?>', <?php echo _('Please wait');?>);
+		openWait('<i class="fa fa-spinner fa-spin "></i>' + "<?php echo _('Preparing {0}');?>".format("<?php echo _(ucfirst($type)); ?>"), "<?php echo _('Please wait');?>");
 		
 		var calibration = $('input[name=calibration]:checked').val();
 		var data = {idFile:idFile, skipEngage:skipEngage, calibration:calibration};
@@ -627,7 +627,7 @@
 	 */
 	function abort()
 	{
-		openWait('<i class="fa fa-spinner fa-spin "></i> <?php echo _("Aborting print");?>', <?php echo _("Please wait");?>, false);
+		openWait('<i class="fa fa-spinner fa-spin "></i> <?php echo _("Aborting print");?>', "<?php echo _("Please wait");?>", false);
 		$.ajax({
 			type: 'post',
 			url: '<?php echo site_url('control/taskAction/abort') ?>',
@@ -1032,7 +1032,7 @@
 	function showErrorAlert(message)
 	{
 		$.smallBox({
-			title : "<?php echo_("Warning");?>",
+			title : "<?php echo _("Warning");?>",
 			content : message,
 			color : "#C46A69",
 			timeout: 10000,
@@ -1061,7 +1061,7 @@
 	function showActionAlert(message)
 	{
 		$.smallBox({
-			title : "<?php echo_("Info");?>",
+			title : "<?php echo _("Info");?>",
 			content : message,
 			color : "#5384AF",
 			timeout: 3000,
@@ -1103,7 +1103,7 @@
 			dataType: 'json'
 		}).done(function(response) {
 			console.log(response);
-			showActionAlert("<?php echo_("Z Height saved");?>");
+			showActionAlert("<?php echo _("Z Height saved");?>");
 			enableButton('.save-z-height');
 		});
 	}
@@ -1112,7 +1112,7 @@
 	*/
 	function aborting()
 	{
-		openWait('<i class="fa fa-spinner fa-spin "></i> <?php _echo("Aborting print");?>', '<?php echo _("Please wait");?>', false);
+		openWait('<i class="fa fa-spinner fa-spin "></i> <?php echo _("Aborting print");?>', '<?php echo _("Please wait");?>', false);
 	}
 	/**
 	*

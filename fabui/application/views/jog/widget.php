@@ -187,7 +187,7 @@
 				<button class="btn btn-sm btn-primary pull-right" type="button" id="mdiButton"><?php echo _("Send"); ?></button> 
 				<span class="pull-right smart-form" style="margin-top: 3px; margin-right: 10px;"> <label class="checkbox pull-right">
 					<input type="checkbox" name="enterSend" id="enterSend" checked="checked">
-					<i></i><?php echo _("Press"); ?> <strong> <?php echo _("Enter"); ?> </strong> <?php echo _("to"); ?> </label> </span> 
+					<i></i><?php echo _("Press <strong>Enter</strong> to"); ?></label> </span> 
 					<a href="#" data-toggle="modal" data-target="#gcodeHelp" class="pull-left btn btn-primary btn-circle"><i class="fa fa-question" aria-hidden="true"></i> </a> 
 			</span>
 		</div>
