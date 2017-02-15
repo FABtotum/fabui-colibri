@@ -284,25 +284,36 @@ if(!function_exists('instaSort')){
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////
-if(!function_exists('highlightInstagramHashTags')){
+if(!function_exists('highlightInstagramPost')){
 	
 	/**
 	 * 
 	 */
-	function highlightInstagramHashTags($feeds)
+	function highlightInstagramPost($feeds)
 	{
-		$re = '/(#\w+)/';
+		$re = '/(@\w+|#\w+)/';
 		$new_feeds = array();
+		
 		foreach($feeds as $feed){
 			$caption = $feed['caption'];
 			preg_match_all($re, $feed['caption'], $matches);
 			foreach($matches[0] as $match){
-				$caption =  highlight_phrase($caption, $match, '<a target="_blank" href="https://www.instagram.com/explore/tags/'.str_replace('#', '', $match).'">', '</a>').PHP_EOL;
+				
+				switch($match[0]){
+					case '#':
+						$caption =  highlight_phrase($caption, $match, '<a target="_blank" href="https://www.instagram.com/explore/tags/'.str_replace('#', '', $match).'">', '</a>');
+						break;
+					case '@':
+						$caption = highlight_phrase($caption, $match, '<a target="_blank" href="https://www.instagram.com/'.str_replace('@', '', $match).'"><strong>', '</strong></a>');
+						break; 
+				}
+				
 			}
 			$temp = $feed;
 			$temp['caption'] = $caption;
 			$new_feeds[] = $temp;
 		}
+		
 		return $new_feeds;
 	}
 }

@@ -34,6 +34,7 @@ var emergency_json_url          = '/tmp/emergency.json';
 var serial_exec_url_action      = base_url + '/jog/exec';
 var first_setup_url_action      = '/#controller/first_setup';
 var check_internet_url_action   = '/temp/internet';
+var updates_status_url          = base_url + 'updates/updateStatus';
 /*
 * xmlrpc
 */
@@ -71,6 +72,8 @@ var is_emergency    = false; //true if printer is in emergency status
  */
 var maxTemperaturesPlot = 200;
 var temperaturesPlot = {extruder: {temp: [], target: []}, bed: {temp:[], target:[]}};
+var app_storage_data = { last_update : new Date(), update: {}, task: {}};
+var app_storage_expire_time = 1800 ; // seconds (30 minutes) 
 
 /*
  * emergency descriptions 

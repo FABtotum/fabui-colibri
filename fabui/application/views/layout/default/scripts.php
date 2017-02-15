@@ -33,10 +33,12 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		pageSetUp();
+		fabApp.initFromLocalStorage();
 		fabApp.webSocket();
 		fabApp.FabActions();
 		fabApp.domReadyMisc();
 		fabApp.getState();
+		fabApp.getUpdates();
 		fabApp.getSettings();
 		//start intervals
 		temperatures_interval = setInterval(fabApp.getTemperatures, temperatures_interval_timer);

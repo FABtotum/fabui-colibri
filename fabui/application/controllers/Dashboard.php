@@ -152,8 +152,20 @@
 		if(file_exists($this->config->item('instagram_feed_file'))){
 			$feeds = json_decode(file_get_contents($this->config->item('instagram_feed_file')), true);
 			$feeds = $feeds['data'];
-			$feeds = highlightInstagramHashTags($feeds);
+			$feeds = highlightInstagramPost($feeds);
 			$feeds = array_unique($feeds, SORT_REGULAR);
+			/**
+			 * array unique is not enough
+			 */
+			$filteredFeeds    = array();
+			$newFeedsId = array();
+			foreach ($feeds as $i) {
+				if(!in_array($i['id'], $newFeedsId)){
+					array_push($newFeedsId, $i['id']);
+					$filteredFeeds[] = $i;
+				}
+			}
+			$feeds = $filteredFeeds;
 			/**
 			 * sort by date and order columns to have the most recent on top
 			 */

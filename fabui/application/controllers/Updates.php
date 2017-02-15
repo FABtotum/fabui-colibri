@@ -59,7 +59,7 @@
 		$this->load->helper('update_helper');
 		//get remote bundles status
 		$bundlesStatus = getUpdateStatus();
-		echo json_encode($bundlesStatus);
+		$this->output->set_content_type('application/json')->set_output(json_encode($bundlesStatus));
 	}
 	/**
 	 * start update
@@ -95,6 +95,14 @@
 
 		startPyScript('update.py', $updateArgs, true, true);
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
+	}
+	
+	/**
+	 * 
+	 */
+	public function notifications()
+	{
+		
 	}
 
  }
