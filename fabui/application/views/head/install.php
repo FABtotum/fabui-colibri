@@ -21,7 +21,7 @@
 				<div class="col-sm-6">
 					<div class="row">
 						<div class="col-sm-12">
-							<p class="font-md">Make sure you removed the filament, milling bits and any other accessory on the head.<br>See also <a href="<?php echo site_url('maintenance/spool') ?>">spool maintenance</a></p>
+							<p class="font-md">Make sure you removed the filament, milling bits and any other accessory on the head.<br>See also <a href="maintenance/spool-management">spool maintenance</a></p>
 						</div>
 					</div>	
 					<div class="smart-form">

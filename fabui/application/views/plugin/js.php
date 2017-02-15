@@ -232,7 +232,7 @@
 			},
 			messages: {
 				plugin_slug: {
-					slugChecker: "<?php echo _("\"plugin_\" prefix is not allowed");?>"
+					slugChecker: "<?php echo _('\'plugin_\' prefix is not allowed');?>"
 				},
 				author_name:{
 					required: "<?php echo _('Please enter your name here');?>"

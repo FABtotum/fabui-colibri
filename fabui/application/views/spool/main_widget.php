@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-sm-12">
 		<div class="alert alert-info animated fadeIn">
-			<h4 class="text-center"><i class="fa fa-shopping-cart"></i> <a target="_blank" href="https://store.fabtotum.com/eu/store/filaments.html?from=fabui">Get new filaments!</a></h4>
+			<h4 class="text-center"><i class="fa fa-shopping-cart"></i> <a class="no-ajax" target="_blank" href="https://store.fabtotum.com/eu/store/filaments.html?from=fabui">Get new filaments!</a></h4>
 		</div>
 	</div>
 </div>

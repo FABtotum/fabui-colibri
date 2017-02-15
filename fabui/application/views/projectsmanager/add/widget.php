@@ -23,10 +23,10 @@
 						<label class="label"><?php echo _("Public") ?></label>
 						<div class="inline-group">
 							<label class="radio">
-								<input type="radio" checked="checked" name="public" value="1"><i></i> Yes
+								<input type="radio" checked="checked" name="public" value="1"><i></i> <?php echo _("Yes");?>
 							</label>
 							<label class="radio">
-								<input type="radio" name="public" value="0"><i></i> No
+								<input type="radio" name="public" value="0"><i></i> <?php echo _("No");?>
 							</label>
 						</div>
 					</section>
