@@ -26,8 +26,8 @@
 		$("#modalConnectButton").on('click', passwordModalConnect);
 		
 		$('a[data-toggle="tab"]').on('shown.bs.tab', tab_change);
-		
 		initFieldValidator();
+		triggerPreSelected();
 	});
 
 	function do_save()
@@ -114,10 +114,13 @@
 	function post_data(data)
 	{
 		var button = $("#saveButton");
+		disableButton("#saveButton");
 		button.addClass('disabled');
 		button.html('<i class="fa fa-save"></i> <?php echo _('Saving')?>..');
-		
-		console.log('posting', data);
+
+		if(data.hasOwnProperty('hidden-ssid') && data['address-mode'] == 'dhcp'){
+			openWait("<i class='fa fa-spin fa-spinner'></i> <?php echo _("Connecting to") ?> <strong>" + data['hidden-ssid']+'</strong> <i class="fa fa-wifi"></i>', "<?php echo _("Please wait") ?>...", false );
+		}
 		
 		$.ajax({
 			type: 'post',
@@ -130,8 +133,6 @@
 			
 			$("#"+data['active']+"-tab #hidden-address-mode").val(data['address-mode']);
 			
-			console.log('response', response);
-			
 			$.smallBox({
 				title : "<?php echo _('Settings')?>",
 				content : '<?php echo _('Network settings saved')?>',
@@ -139,12 +140,19 @@
 				timeout: 1000,
 				icon : "fa fa-check bounce animated"
 			});
-			
+			waitContent("<?php echo _("Reloading page") ?>...");
 			setTimeout(function(){
-					location.reload();
+
+					if(window.location.href ==  ('<?php echo site_url('#settings/network/') ?>/' + data['active'])){
+						location.reload();
+					}else{
+						window.location.href = '<?php echo site_url('#settings/network/') ?>/' + data['active'];
+					}
+					
+					//location.reload();
 				}, 2000
 			);
-			
+						
 		});
 	}
 
@@ -224,7 +232,6 @@
 	function do_scan()
 	{
 		var iface = $("li.tab.active").attr('data-attribute');
-		console.log('do_scan', iface);
 		scan(iface);
 	}
 
@@ -234,6 +241,8 @@
 	function scan(iface)
 	{
 		$("#"+iface+"-table-container").css('opacity', '0.1');
+		$("#scanButton").html('<i class="fa fa-search"></i> <?php echo _("Scanning") ?>..');
+		disableButton("#scanButton");
 		$.ajax({
 			type: 'get',
 			url: "<?php echo site_url('settings/scanWifi'); ?>/"+iface,
@@ -245,6 +254,8 @@
 			else
 				console.log('no scan results');
 			$("#"+iface+"-table-container").css('opacity', '1');
+			$("#scanButton").html('<i class="fa fa-search"></i> <?php echo _("Scan") ?>');
+			enableButton("#scanButton");
 		});
 	}
 	
@@ -253,62 +264,75 @@
 	 */
 	function buildTable(iface, nets)
 	{
-		console.log(nets);
+		
 		$("#"+iface+"-table-container .nets-table").remove();
 		var bssid = $("#"+iface+"-tab #hidden-bssid").val().toLowerCase();
 		var table = '<table class="table table-striped table-forum nets-table"><tbody>';
 		$.each(nets, function( index, net ) {
+			
 			var protected = net.encryption_key == 'on' ? 'Protected <i class="fa fa-lock"></i>' : '';
 			var frequency = net.frequency != '' ? net.frequency : '';
 			var buttonAttributeProtected = net.encryption_key == 'on' ? 'true' : 'false';
 			var buttonAttributeAction = bssid == net.address ? 'disconnect' : 'connect';
 			var buttonLabel =  bssid == net.address ? '<?php echo _('Disconnect')?>' : '<?php echo _('Connect')?>';
 			var trClass = bssid == net.address ? 'warning' : '';
-			
-			console.log('bssid', bssid, net.address);
-			
+						
 			table += '<tr class="'+ trClass+'">';
 			table += '<td class="text-center va-middle" style="width: 40px;"><i class="icon-communication-035 fa-2x text-muted"></i></td>';
 			table += '<td>';
-			table += '<p>'+net.essid+'<span class="hidden-xs pull-right">Signal level: '+Math.round(net.quality) +'/100</span></p>';
+			table += '<p><a data-attribute-essid="'+net.essid+'"  data-attribute-iface="'+iface+'" data-attribute-action="'+buttonAttributeAction+'" data-attribute-protected="'+buttonAttributeProtected+'"   class="font-md connect" href="javascript:void(0);">'+net.essid+'</a><span class="hidden-xs pull-right">Signal level: '+Math.round(net.quality) +'/100</span></p>';
 			table += '<div class="hidden-xs progress progress-sm progress-striped active"><div class="progress-bar  bg-color-blue" aria-valuetransitiongoal="'+ net.quality +'" style="width:'+net.quality+'%"></div></div>';
 			table += '<small class="hidden-xs note">'+ protected  + ' / ' + net.mode + ' / ' + frequency + ' / ' + net.encryption +' </small>';
 			table += '</td>';
-			table += '<td style="width: 100px" class="text-right va-middle"><button data-attribute-essid="'+net.essid+'" data-attribute-iface="'+iface+'" data-attribute-action="'+buttonAttributeAction+'" data-attribute-protected="'+buttonAttributeProtected+'" class="btn btn-default btn-sm btn-block connect">'+buttonLabel+'</button></td></td>';
+			table += '<td class="hidden-xs va-middle" style="width: 100px" class="text-right va-middle"><button data-attribute-essid="'+net.essid+'" data-attribute-iface="'+iface+'" data-attribute-action="'+buttonAttributeAction+'" data-attribute-protected="'+buttonAttributeProtected+'" class="btn btn-default btn-sm btn-block  connect">'+buttonLabel+'</button></td></td>';
 			table += '</tr>';
 		});
 		table += '</tbody></table>';
 		$("#"+iface+"-table-container").html(table);
-		$('.progress-bar').progressbar({display_text : 'fill'
-			});
+		$('.progress-bar').progressbar({display_text : 'fill' });
 		$('.connect').on('click', connectionManager);
 	}
 	
 	function connectionManager()
 	{
 		var element   = $(this);
+		console.log(element);
 		wifiSelected  = element.attr('data-attribute-essid');
 		wifiIface  	  = element.attr('data-attribute-iface');
 		var action    = element.attr('data-attribute-action');
 		var protected = eval(element.attr('data-attribute-protected'));
 		
 		if(action == 'connect') connectToWifi(wifiIface, wifiSelected, protected);
-		else disconnectFromWifi(wifiIface);
+		else askForDisconnectFromWifi(wifiSelected, wifiIface);
 	}
 	
 	function connectToWifi(iface, essid, isProtected)
 	{
-		console.log('connect to ', essid, isProtected, ' @', iface);
 		if(isProtected){
 			showPasswordModal(essid);
 		}else{
 			sendActionRequest('connect', essid);
 		}
 	}
-	
+	/**
+	* ask confirm to disconnect from wifi
+	**/
+	function askForDisconnectFromWifi(wifiSelected, wifiIface)
+	{
+		$.SmartMessageBox({
+            title : '<i class="fa fa-wifi"></i> ' + wifiSelected,
+            content : "<?php echo _('Are you sure you want to disconnect?')?>",
+            buttons: "[<?php echo _("No") ?>][<?php echo _("Yes") ?>]"
+        }, function(ButtonPressed) {
+           if(ButtonPressed == '<?php echo _("Yes") ?>') disconnectFromWifi(wifiIface);
+       });
+	}
+	/**
+	*
+	*/
 	function disconnectFromWifi(iface)
 	{
-		
+		openWait("<i class='fa fa-spin fa-spinner'></i> <?php echo _("Disconnecting") ?>... ", "<?php echo _("Please wait") ?>...", false );	
 		$.ajax({
 			type: 'post',
 			url: "<?php echo site_url('settings/saveNetworkSettings/disconnect'); ?>",
@@ -318,7 +342,16 @@
 			},
 			dataType: 'json'
 		}).done(function(response) {
-			console.log('disconnected from', iface);
+			waitContent("<?php echo _("Reloading page") ?>...");
+			setTimeout(function(){
+					if(window.location.href ==  ('<?php echo site_url('#settings/network/') ?>/' + iface)){
+						location.reload();
+					}else{
+						window.location.href = '<?php echo site_url('#settings/network/') ?>/' + iface;
+					}
+				}, 2000
+			);
+			
 		});
 	}
 	
@@ -460,5 +493,32 @@
 		$(".show-password").attr('checked', false);
 		$(".input-password").attr('type', 'password');
 	}
-	
+	/**
+	*
+	**/
+	function triggerPreSelected()
+	{
+		<?php if($preSelectedInterface != ''): ?>
+
+		var target = '#<?php echo $preSelectedInterface ?>';
+
+		if( target.startsWith("#wlan") )
+		{
+			var mode = $(target + ' #address-mode').val();
+			if(mode != 'static-ap')
+				$("#scanButton").show();
+			else
+				$("#scanButton").hide();
+		}
+		else if( target.startsWith("#eth") )
+		{
+			$("#scanButton").hide();
+		}
+		else if( target.startsWith("#dnssd") )
+		{
+			$("#scanButton").hide();
+		}
+		
+		<?php endif; ?>
+	}
 </script>

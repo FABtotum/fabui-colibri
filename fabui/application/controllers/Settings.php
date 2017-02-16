@@ -130,7 +130,7 @@ class Settings extends FAB_Controller {
 		$this->output->set_content_type('application/json')->set_output(json_encode($nets));
 	}
 	
-	public function network()
+	public function network($preSelectedInterface = 'eth0')
 	{
 		$postData = $this->input->post();
 		
@@ -145,6 +145,7 @@ class Settings extends FAB_Controller {
 		$data['yesNoOptions'] = array('1' => 'Yes', '0' => 'No');
 		$data['current_hostname'] = getHostName();
 		$data['current_name'] = getAvahiServiceName();
+		$data['preSelectedInterface'] = $preSelectedInterface;
 		
 		$ifaces_data = getInterfaces();
 		
@@ -155,7 +156,6 @@ class Settings extends FAB_Controller {
 		);
 		
 		$tabs_title = '';
-		$is_active = 'active';
 		$if_idx = array('eth' => 1, 'wlan' => 1);
 		$if_number = array('eth' => 0, 'wlan' => 0);
 		foreach($ifaces_data as $iface => $info)
@@ -223,7 +223,8 @@ class Settings extends FAB_Controller {
 				$tab_data = array(
 					'iface' => $iface,
 					'info' => $info,
-					'addressModeWiFi' => $wifiModes
+					'addressModeWiFi' => $wifiModes,
+					'active' => $iface == $preSelectedInterface ? 'active' : ''
 				);
 				$tabs_content .= $this->load->view('settings/wireless_tab', $tab_data, true );
 			}
@@ -234,7 +235,8 @@ class Settings extends FAB_Controller {
 				$tab_data = array(
 					'iface' => $iface,
 					'info' => $info,
-					'addressModeEth' => array('static' => 'Static', 'dhcp' => _('Automatic (DHCP)'))
+					'addressModeEth' => array('static' => 'Static', 'dhcp' => _('Automatic (DHCP)')),
+					'active' => $iface == $preSelectedInterface ? 'active' : ''
 				);
 				$tabs_content .= $this->load->view('settings/ethernet_tab', $tab_data, true );
 			}
@@ -243,17 +245,20 @@ class Settings extends FAB_Controller {
 				$title .= ' ('.$if_idx[$if_type].')';
 			$if_idx[$if_type] += 1;
 			
+			$is_active = $iface == $preSelectedInterface ? 'active' : '';
+			
 			$tabs_title .= '<li data-net-type="'.$if_type.'" data-attribute="'.$iface.'" class="tab '.$is_active.'"><a data-toggle="tab" href="'.$iface.'-tab"> '.$title.'</a></li>';
-			$is_active = '';
+			//$is_active = '';
 		}
 		$data['iface_tabs'] = $tabs_content;
 		$data['interfaces'] = $interfaces;
 		
-		$tabs_title .= '<li data-attribute="dnssd" class="tab"><a data-toggle="tab" href="#dnssd-tab"> '._('DNS-SD').'</a></li>';
+		$dnssdActive = $preSelectedInterface == 'dnssd' ? 'active': '';
+		$tabs_title .= '<li data-attribute="dnssd" class="tab '.$dnssdActive.' "><a data-toggle="tab" href="#dnssd-tab"> '._('DNS-SD').'</a></li>';
 		
-		$headerToolbar = '<ul class="nav nav-tabs pull-right">' . $tabs_title .'</ul>';
+		$headerToolbar = '<ul class="nav nav-tabs network-tabs pull-right">' . $tabs_title .'</ul>';
 		
-		$widgeFooterButtons = $this->smart->create_button(_('Scan'), 'primary')->attr(array('id' => 'scanButton', 'style' => 'display:none'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true)
+		$widgeFooterButtons = $this->smart->create_button(_('Scan'), 'primary')->attr(array('id' => 'scanButton', 'style' => 'display:none'))->attr('data-action', 'exec')->icon('fa-search')->print_html(true)
 						 .' '.$this->smart->create_button(_('Save'), 'primary')->attr(array('id' => 'saveButton'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$widget         = $this->smart->create_widget($widgetOptions);

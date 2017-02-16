@@ -10,10 +10,8 @@
 ?>
 <div class="tab-content padding-10">
 	<?php echo $iface_tabs ?>
-	<div class="tab-pane fade in" id="dnssd-tab"  data-attribute="dnssd">
-
+	<div class="tab-pane fade in <?php echo $preSelectedInterface == 'dnssd'? 'active' : '' ?>" id="dnssd-tab"  data-attribute="dnssd">
 		<form class="smart-form" id="hostname-form">
-			
 			<fieldset>
 				<div class="row">
 					<section class="col col-6">

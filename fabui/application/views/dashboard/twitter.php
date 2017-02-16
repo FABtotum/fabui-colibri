@@ -12,7 +12,7 @@
 <?php
 if(isset($feeds)){
 	foreach($feeds as $feed){
-		echo displayBlogFeedItem($feed);
+		echo displayTwitterFeedItem($feed);
 	}
 }else{
 ?>
