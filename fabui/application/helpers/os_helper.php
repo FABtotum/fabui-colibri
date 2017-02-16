@@ -258,6 +258,8 @@ if(!function_exists('isInternetAvaialable'))
 	 */
 	function isInternetAvaialable()
 	{
+		$CI =& get_instance();
+		$CI->load->helper('fabtotum');
 		$result = startBashScript('internet.sh', null, false, true);
 		return trim($result) == 'online';
 	}
