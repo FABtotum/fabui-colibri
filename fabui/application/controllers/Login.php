@@ -12,6 +12,11 @@
  	
 	public function index(){
 		
+		//load configs
+		$this->config->load('fabtotum');
+		if(file_exists($this->config->item('autoinstall_file'))){
+			redirect('install');
+		}
 		$data['alert'] = $this->session->flashdata('alert');
 		$this->content = $this->load->view('login/login_form', $data, true);
 		$this->addJsInLine($this->load->view('login/login_js', '', true));

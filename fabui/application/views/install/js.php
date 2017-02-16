@@ -16,7 +16,6 @@
 		initValidate();
 		initWizard();
 		initTimeZone();
-		initLanguage();
 		$("#i-agree").click(function(){
 			$this=$("#terms");
 			if($this.checked) {
