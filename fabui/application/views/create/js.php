@@ -407,6 +407,7 @@
 				break;
 			case 'aborting':
 				aborting();
+				break;
 			case 'aborted':
 				aborted();
 				break;
@@ -646,7 +647,7 @@
 		openWait('<i class="fa fa-check "></i> <?php echo _("Print aborted");?>', '<?php echo _("Reloading page");?>...', false);
 		setTimeout(function(){
 			location.reload();
-		}, 5000);
+		}, 5000); 
 	}
 	
 	/**
