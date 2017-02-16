@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-15 12:05+0100\n"
+"POT-Creation-Date: 2017-02-16 11:57+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -23,10 +23,12 @@ msgstr ""
 
 #: fabui/application/config/menu.php:21
 #: fabui/application/controllers/Settings.php:55
+#: fabui/application/controllers/Projectsmanager.php:1050
 msgid "Print"
 msgstr "Stampa"
 
 #: fabui/application/config/menu.php:26
+#: fabui/application/controllers/Projectsmanager.php:1059
 msgid "Mill"
 msgstr "Fresa"
 
@@ -66,6 +68,7 @@ msgstr "Calibrazione piatto"
 #: fabui/application/config/menu.php:72
 #: fabui/application/views/jog/widget.php:68
 #: fabui/application/views/jog/widget.php:137
+#: fabui/application/views/layout/default/top.php:89
 #: fabui/application/views/create/wizard/step3.php:27
 #: fabui/application/views/create/wizard/step3.php:154
 msgid "Nozzle"
@@ -114,7 +117,7 @@ msgid "System info"
 msgstr "Informazioni del sistema"
 
 #: fabui/application/config/menu.php:132
-#: fabui/application/views/plugin/js.php:295
+#: fabui/application/views/plugin/js.php:294
 #: fabui/application/views/settings/hardware_js.php:143
 #: fabui/application/views/settings/network_js.php:136
 msgid "Settings"
@@ -135,6 +138,7 @@ msgid "Raspicam"
 msgstr ""
 
 #: fabui/application/config/menu.php:153
+#: fabui/application/views/layout/default/top.php:20
 msgid "Updates"
 msgstr "Aggiornamenti"
 
@@ -146,6 +150,45 @@ msgstr "Supporto"
 #: fabui/application/controllers/Plugin.php:50
 msgid "Plugins"
 msgstr "Plugins"
+
+#: fabui/application/controllers/Control.php:229
+#, fuzzy
+msgid "running"
+msgstr "Attenzione"
+
+#: fabui/application/controllers/Control.php:230
+#, fuzzy
+msgid "paused"
+msgstr "Pausa"
+
+#: fabui/application/controllers/Control.php:231
+#, fuzzy
+msgid "aborted"
+msgstr "Scansione annullata"
+
+#: fabui/application/controllers/Control.php:232
+#, fuzzy
+msgid "aborting"
+msgstr "Stampa in corso"
+
+#: fabui/application/controllers/Control.php:233
+#, fuzzy
+msgid "completed"
+msgstr "Scansione completata"
+
+#: fabui/application/controllers/Control.php:234
+#, fuzzy
+msgid "completing"
+msgstr "Eliminazione"
+
+#: fabui/application/controllers/Control.php:244
+msgid "task"
+msgstr ""
+
+#: fabui/application/controllers/Control.php:266
+#, fuzzy
+msgid "No running tasks"
+msgstr "Completamento task"
 
 #: fabui/application/controllers/Settings.php:43
 #: fabui/application/views/create/wizard/additive_step.php:67
@@ -224,12 +267,19 @@ msgstr "Elimina"
 #: fabui/application/controllers/Projectsmanager.php:32
 #: fabui/application/controllers/Projectsmanager.php:78
 #: fabui/application/controllers/Projectsmanager.php:206
+#: fabui/application/controllers/Projectsmanager.php:1067
 msgid "Download"
 msgstr "Scarica"
 
 #: fabui/application/controllers/Projectsmanager.php:37
 msgid "Projects"
 msgstr "Progetti"
+
+#: fabui/application/controllers/Projectsmanager.php:75
+#: fabui/application/controllers/Projectsmanager.php:203
+#: fabui/application/controllers/Projectsmanager.php:469
+msgid "Back"
+msgstr "Indietro"
 
 #: fabui/application/controllers/Projectsmanager.php:76
 msgid "Add files"
@@ -239,12 +289,8 @@ msgstr "Aggiungi file"
 msgid "Edit project"
 msgstr "Modifica progetto"
 
-#: fabui/application/controllers/Projectsmanager.php:203
-#: fabui/application/controllers/Projectsmanager.php:469
-msgid "Back"
-msgstr "Indietro"
-
 #: fabui/application/controllers/Projectsmanager.php:204
+#: fabui/application/controllers/Projectsmanager.php:1080
 msgid "Stats"
 msgstr "Statistiche"
 
@@ -282,9 +328,14 @@ msgstr "L'oggetto è stato aggiunto"
 msgid "No POST data"
 msgstr ""
 
+#: fabui/application/controllers/Projectsmanager.php:1075
+#, fuzzy
+msgid "Preview"
+msgstr "Vista file"
+
 #: fabui/application/controllers/Plugin.php:40
 #: fabui/application/views/plugin/js.php:65
-#: fabui/application/views/plugin/js.php:199
+#: fabui/application/views/plugin/js.php:198
 msgid "Installed"
 msgstr "Installato"
 
@@ -378,6 +429,7 @@ msgid "Head does not have a milling motor"
 msgstr "La testa non ha un motore per la fresa"
 
 #: fabui/application/views/jog/widget.php:164
+#: fabui/application/views/layout/default/top.php:92
 #: fabui/application/views/create/wizard/step3.php:44
 #: fabui/application/views/create/wizard/step3.php:159
 msgid "Bed"
@@ -392,16 +444,8 @@ msgid "Send"
 msgstr "Invia"
 
 #: fabui/application/views/jog/widget.php:190
-msgid "Press"
-msgstr "Premi"
-
-#: fabui/application/views/jog/widget.php:190
-msgid "Enter"
-msgstr "Invio"
-
-#: fabui/application/views/jog/widget.php:190
-msgid "to"
-msgstr "per"
+msgid "Press <strong>Enter</strong> to"
+msgstr ""
 
 #: fabui/application/views/jog/widget.php:204
 msgid "Clear"
@@ -463,6 +507,10 @@ msgstr "Risposta"
 msgid "Close"
 msgstr "Chiudi"
 
+#: fabui/application/views/plugin/js.php:29
+msgid "<strong>Warning</strong>: Only .zip files are allowed"
+msgstr ""
+
 #: fabui/application/views/plugin/js.php:51
 #: fabui/application/views/plugin/main_widget.php:10
 #: fabui/application/views/plugin/main_widget.bak.php:10
@@ -479,24 +527,16 @@ msgstr "Visita il sito web del plugin"
 msgid "Install"
 msgstr "Installa"
 
-#: fabui/application/views/plugin/js.php:108
+#: fabui/application/views/plugin/js.php:107
 msgid "Attention"
 msgstr "Attenzione"
 
-#: fabui/application/views/plugin/js.php:109
-#: fabui/application/views/plugin/main_widget.php:31
-#: fabui/application/views/plugin/main_widget.bak.php:31
-#: fabui/application/views/projectsmanager/edit/js.php:96
-msgid "Remove"
-msgstr "Rimuovi"
+#: fabui/application/views/plugin/js.php:108
+msgid "Remove <strong>{0}</strong> plugin?"
+msgstr ""
 
 #: fabui/application/views/plugin/js.php:109
-#, fuzzy
-msgid "plugin"
-msgstr "Plugin"
-
-#: fabui/application/views/plugin/js.php:110
-#: fabui/application/views/plugin/js.php:117
+#: fabui/application/views/plugin/js.php:116
 #: fabui/application/views/projectsmanager/index/js.php:134
 #: fabui/application/views/projectsmanager/index/js.php:140
 #: fabui/application/views/projectsmanager/index/js.php:179
@@ -507,11 +547,13 @@ msgstr "Plugin"
 #: fabui/application/views/projectsmanager/edit/js.php:214
 #: fabui/application/views/projectsmanager/edit/js.php:243
 #: fabui/application/views/projectsmanager/edit/js.php:249
+#: fabui/application/views/projectsmanager/add/widget.php:29
 msgid "No"
 msgstr "No"
 
-#: fabui/application/views/plugin/js.php:110
-#: fabui/application/views/plugin/js.php:113
+#: fabui/application/views/plugin/js.php:109
+#: fabui/application/views/plugin/js.php:112
+#: fabui/application/views/std/task_finished.php:35
 #: fabui/application/views/projectsmanager/index/js.php:134
 #: fabui/application/views/projectsmanager/index/js.php:136
 #: fabui/application/views/projectsmanager/index/js.php:179
@@ -522,51 +564,53 @@ msgstr "No"
 #: fabui/application/views/projectsmanager/edit/js.php:210
 #: fabui/application/views/projectsmanager/edit/js.php:243
 #: fabui/application/views/projectsmanager/edit/js.php:245
+#: fabui/application/views/projectsmanager/add/widget.php:26
 #: fabui/application/views/create/wizard/step4.php:35
 msgid "Yes"
 msgstr "Si"
 
-#: fabui/application/views/plugin/js.php:128
+#: fabui/application/views/plugin/js.php:127
 msgid "Connecting"
 msgstr "Connessione"
 
-#: fabui/application/views/plugin/js.php:137
+#: fabui/application/views/plugin/js.php:136
 msgid "Uploading and installing plugin"
 msgstr "Caricamento e installazione plugin"
 
-#: fabui/application/views/plugin/js.php:153
+#: fabui/application/views/plugin/js.php:152
 msgid "Plugin installed successfully"
 msgstr "Plugin installato correttamente"
 
-#: fabui/application/views/plugin/js.php:153
+#: fabui/application/views/plugin/js.php:152
 msgid "Redirecting to plugins page"
 msgstr "Reindirizzamento alla pagina dei plugin"
 
-#: fabui/application/views/plugin/js.php:163
+#: fabui/application/views/plugin/js.php:162
 msgid "Uploaded zip file is not a plugin archive"
 msgstr "Il file zip caricato non è un plugin valido"
 
-#: fabui/application/views/plugin/js.php:193
+#: fabui/application/views/plugin/js.php:192
 msgid "Downloading"
 msgstr "Scaricamento"
 
-#: fabui/application/views/plugin/js.php:196
+#: fabui/application/views/plugin/js.php:195
 msgid "Installing"
 msgstr "Installazione"
 
-#: fabui/application/views/plugin/js.php:236
-msgid "\"plugin_\" prefix is not allowed"
+#: fabui/application/views/plugin/js.php:235
+#, fuzzy
+msgid "'plugin_' prefix is not allowed"
 msgstr "il prefisso \"plugin_\" non è utilizzabile"
 
-#: fabui/application/views/plugin/js.php:239
+#: fabui/application/views/plugin/js.php:238
 msgid "Please enter your name here"
 msgstr "Inserisci il tuo nome qui"
 
-#: fabui/application/views/plugin/js.php:242
+#: fabui/application/views/plugin/js.php:241
 msgid "Please write a short description"
 msgstr "Scrivi una breve descrizione"
 
-#: fabui/application/views/plugin/js.php:296
+#: fabui/application/views/plugin/js.php:295
 #: fabui/application/views/settings/hardware_js.php:144
 msgid "Hardware settings saved"
 msgstr ""
@@ -592,6 +636,12 @@ msgstr "Disattivare"
 #: fabui/application/views/plugin/main_widget.bak.php:30
 msgid "Activate"
 msgstr "Attivare"
+
+#: fabui/application/views/plugin/main_widget.php:31
+#: fabui/application/views/plugin/main_widget.bak.php:31
+#: fabui/application/views/projectsmanager/edit/js.php:96
+msgid "Remove"
+msgstr "Rimuovi"
 
 #: fabui/application/views/plugin/main_widget.php:48
 #: fabui/application/views/plugin/main_widget.bak.php:48
@@ -816,6 +866,8 @@ msgid "Gateway"
 msgstr ""
 
 #: fabui/application/views/settings/network_js.php:99
+#: fabui/application/views/std/task_wizard.php:16
+#: fabui/application/views/create/js.php:1038
 #: fabui/application/views/projectsmanager/index/js.php:132
 #: fabui/application/views/projectsmanager/index/js.php:177
 #: fabui/application/views/projectsmanager/edit/js.php:95
@@ -944,109 +996,239 @@ msgstr "Email"
 msgid "Language"
 msgstr "Lingua"
 
+#: fabui/application/views/std/task_execute_js.php:726
+#: fabui/application/views/create/js.php:717
+msgid "Waiting for first move"
+msgstr ""
+
+#: fabui/application/views/std/select_file.php:17
+#: fabui/application/views/create/wizard/step1.php:18
+msgid "All files"
+msgstr "Tutti i file"
+
+#: fabui/application/views/std/select_file.php:21
+#, fuzzy
+msgid "Recent"
+msgstr "Stampe recenti"
+
+#: fabui/application/views/std/select_file.php:32
+#: fabui/application/views/std/select_file.php:49
+#: fabui/application/views/create/wizard/step1.php:31
+#: fabui/application/views/create/wizard/step1.php:47
+msgid "File"
+msgstr "File"
+
+#: fabui/application/views/std/select_file.php:33
+#: fabui/application/views/std/select_file.php:50
+#: fabui/application/views/create/wizard/step1.php:32
+#: fabui/application/views/create/wizard/step1.php:48
+msgid "Project"
+msgstr "Progetto"
+
+#: fabui/application/views/std/task_finished.php:28
+#: fabui/application/views/create/wizard/step4.php:28
+msgid "Duration"
+msgstr "Durata"
+
+#: fabui/application/views/std/task_finished.php:32
+#: fabui/application/views/create/wizard/step4.php:32
+#, fuzzy
+msgid "Z height is"
+msgstr "L'altezza della Z è"
+
+#: fabui/application/views/std/task_finished.php:32
+#: fabui/application/views/create/wizard/step4.php:32
+msgid "Do you want to save it and override the value for the next prints?"
+msgstr ""
+
+#: fabui/application/views/std/task_finished.php:64
+#, fuzzy
+msgid "Restart"
+msgstr "Riavvia stampa"
+
+#: fabui/application/views/std/task_finished.php:65
+#: fabui/application/views/create/wizard/step4.php:65
+msgid "New"
+msgstr "Nuovo"
+
+#: fabui/application/views/std/task_execute.php:14
+#: fabui/application/views/create/wizard/step3.php:14
+msgid "Live feeds"
+msgstr ""
+
+#: fabui/application/views/std/task_execute.php:15
+#: fabui/application/views/create/wizard/step3.php:15
+msgid "Controls"
+msgstr "Controlli"
+
 #: fabui/application/views/create/js.php:228
-msgid "Preparing"
+msgid "Preparing {0}"
 msgstr ""
 
 #: fabui/application/views/create/js.php:228
-#: fabui/application/views/create/js.php:630
-#: fabui/application/views/create/js.php:1008
-#: fabui/application/views/create/js.php:1115
+#: fabui/application/views/create/js.php:633
+#: fabui/application/views/create/js.php:1011
+#: fabui/application/views/create/js.php:1118
 #: fabui/application/views/projectsmanager/add/js.php:120
 msgid "Please wait"
 msgstr "Attendere prego"
 
-#: fabui/application/views/create/js.php:394
-#: fabui/application/views/create/js.php:656
+#: fabui/application/views/create/js.php:397
+#: fabui/application/views/create/js.php:659
 #, fuzzy
 msgid "Resume Print"
 msgstr "Stampe recenti"
 
-#: fabui/application/views/create/js.php:401
-#: fabui/application/views/create/js.php:659
+#: fabui/application/views/create/js.php:404
+#: fabui/application/views/create/js.php:662
 #, fuzzy
 msgid "Pause Print"
 msgstr "Stampa"
 
-#: fabui/application/views/create/js.php:557
+#: fabui/application/views/create/js.php:560
 msgid "Ext temp"
 msgstr ""
 
-#: fabui/application/views/create/js.php:566
+#: fabui/application/views/create/js.php:569
 #, fuzzy
 msgid "Ext target"
 msgstr "Target"
 
-#: fabui/application/views/create/js.php:575
+#: fabui/application/views/create/js.php:578
 msgid "Bed temp"
 msgstr ""
 
-#: fabui/application/views/create/js.php:583
+#: fabui/application/views/create/js.php:586
 #, fuzzy
 msgid "Bed target"
 msgstr "Target"
 
-#: fabui/application/views/create/js.php:630
+#: fabui/application/views/create/js.php:633
+#: fabui/application/views/create/js.php:1118
 msgid "Aborting print"
 msgstr ""
 
-#: fabui/application/views/create/js.php:643
+#: fabui/application/views/create/js.php:646
 #, fuzzy
 msgid "Print aborted"
 msgstr "Scansione annullata"
 
-#: fabui/application/views/create/js.php:643
+#: fabui/application/views/create/js.php:646
 #, fuzzy
 msgid "Reloading page"
 msgstr "Ricarica"
 
-#: fabui/application/views/create/js.php:677
+#: fabui/application/views/create/js.php:680
 msgid "Print paused"
 msgstr ""
 
-#: fabui/application/views/create/js.php:680
+#: fabui/application/views/create/js.php:683
 msgid "Print resumed"
 msgstr ""
 
-#: fabui/application/views/create/js.php:683
+#: fabui/application/views/create/js.php:686
 msgid "Speed override changed to"
 msgstr ""
 
-#: fabui/application/views/create/js.php:686
+#: fabui/application/views/create/js.php:689
 msgid "Flow Rate override changed to"
 msgstr ""
 
-#: fabui/application/views/create/js.php:689
+#: fabui/application/views/create/js.php:692
 msgid "Fan override changed to"
 msgstr ""
 
-#: fabui/application/views/create/js.php:692
+#: fabui/application/views/create/js.php:695
 #, fuzzy
 msgid "Z height increased"
 msgstr "L'altezza della Z è"
 
-#: fabui/application/views/create/js.php:693
+#: fabui/application/views/create/js.php:696
 #, fuzzy
 msgid "Z height decreased"
 msgstr "L'altezza della Z è"
 
-#: fabui/application/views/create/js.php:696
+#: fabui/application/views/create/js.php:699
 msgid "RPM speed se to"
 msgstr ""
 
-#: fabui/application/views/create/js.php:699
+#: fabui/application/views/create/js.php:702
 #, fuzzy
 msgid "Unknown action"
 msgstr "Errore sconosciuto"
 
-#: fabui/application/views/create/js.php:714
-msgid "Waiting for first move"
-msgstr ""
-
-#: fabui/application/views/create/js.php:1008
+#: fabui/application/views/create/js.php:1011
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:99
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:58
 msgid "Moving to safe zone"
+msgstr ""
+
+#: fabui/application/views/create/js.php:1067
+msgid "Info"
+msgstr ""
+
+#: fabui/application/views/create/js.php:1109
+#, fuzzy
+msgid "Z Height saved"
+msgstr "L'altezza della Z è"
+
+#: fabui/application/views/layout/default/top.php:21
+msgid "Notify"
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:22
+msgid "Tasks"
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:27
+msgid "Click a button to show messages here"
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:28
+msgid ""
+"This blank page message helps protect your privacy, or you can show the "
+"first message here automatically."
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:34
+msgid "Last updated on"
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:35
+#, fuzzy
+msgid "Loading"
+msgstr "Scaricamento"
+
+#: fabui/application/views/layout/default/top.php:46
+msgid "Collapse Menu"
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:51
+msgid "Power Off/Log Out"
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:51
+msgid "What do you want to do?"
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:55
+msgid "This button will restart the control board, continue?"
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:55
+msgid "Restart Controller.<br>This will restart the control board"
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:60
+msgid "This button will stop all the operations, continue?"
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:60
+msgid "Emergency Button. <br>This will stop all operations on the FABtotum"
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:83
+msgid "Temperature<br> controls"
 msgstr ""
 
 #: fabui/application/views/projectsmanager/index/js.php:94
@@ -1067,7 +1249,8 @@ msgid "Ok"
 msgstr "Ok"
 
 #: fabui/application/views/projectsmanager/index/js.php:133
-msgid "Do you really want to remove the selected objects"
+#, fuzzy
+msgid "Do you really want to remove the selected objects?"
 msgstr "Vuoi davvero eliminare gli oggetti selezionati?"
 
 #: fabui/application/views/projectsmanager/index/js.php:150
@@ -1080,7 +1263,8 @@ msgid "Error deleting object"
 msgstr "Errore durante l'eliminazione dell'oggetto"
 
 #: fabui/application/views/projectsmanager/index/js.php:178
-msgid "Do you really want download the selected objects"
+#, fuzzy
+msgid "Do you really want download the selected objects?"
 msgstr "Vuoi davvero scaricare gli oggetti selezionati"
 
 #: fabui/application/views/projectsmanager/index/widget.php:27
@@ -1105,11 +1289,13 @@ msgid "Please select at least 1 file"
 msgstr "Selezione almeno 1 file"
 
 #: fabui/application/views/projectsmanager/edit/js.php:207
-msgid "Do you really want to remove the selected files"
+#, fuzzy
+msgid "Do you really want to remove the selected files?"
 msgstr "Vuoi davvero eliminare i file selezionati"
 
 #: fabui/application/views/projectsmanager/edit/js.php:242
-msgid "Do you really want download the selected files"
+#, fuzzy
+msgid "Do you really want download the selected files?"
 msgstr "Vuoi davvero scaricare i file selezionati"
 
 #: fabui/application/views/projectsmanager/edit/widget.php:23
@@ -1126,19 +1312,17 @@ msgid "Default action"
 msgstr "Azione standard"
 
 #: fabui/application/views/projectsmanager/add/js.php:33
-msgid "Drops files"
+#, fuzzy
+msgid "Drop files to upload"
 msgstr "Trascina i file"
-
-#: fabui/application/views/projectsmanager/add/js.php:33
-msgid "to upload"
-msgstr "da caricare"
 
 #: fabui/application/views/projectsmanager/add/js.php:33
 msgid "or click"
 msgstr "oppure premi"
 
 #: fabui/application/views/projectsmanager/add/js.php:39
-msgid "You can upload 10 files at time"
+#, fuzzy
+msgid "You can upload 10 files at a time"
 msgstr "Puoi caricare 10 file alla volta"
 
 #: fabui/application/views/projectsmanager/add/js.php:85
@@ -1169,23 +1353,9 @@ msgstr "Ricarica"
 msgid "Upload progress"
 msgstr "Progressi caricamento"
 
-#: fabui/application/views/create/wizard/step1.php:18
-msgid "All files"
-msgstr "Tutti i file"
-
 #: fabui/application/views/create/wizard/step1.php:21
 msgid "Recent prints"
 msgstr "Stampe recenti"
-
-#: fabui/application/views/create/wizard/step1.php:31
-#: fabui/application/views/create/wizard/step1.php:47
-msgid "File"
-msgstr "File"
-
-#: fabui/application/views/create/wizard/step1.php:32
-#: fabui/application/views/create/wizard/step1.php:48
-msgid "Project"
-msgstr "Progetto"
 
 #: fabui/application/views/create/wizard/additive_step.php:14
 #: fabui/application/views/create/wizard/subtractive_step.php:13
@@ -1241,19 +1411,6 @@ msgid ""
 "ready press \"Next\""
 msgstr ""
 
-#: fabui/application/views/create/wizard/step4.php:28
-msgid "Duration"
-msgstr "Durata"
-
-#: fabui/application/views/create/wizard/step4.php:32
-#, fuzzy
-msgid "Z height is"
-msgstr "L'altezza della Z è"
-
-#: fabui/application/views/create/wizard/step4.php:32
-msgid "Do you want to save it and override the value for the next prints?"
-msgstr ""
-
 #: fabui/application/views/create/wizard/step4.php:60
 msgid "Quality of the print"
 msgstr "Qualità della stampa"
@@ -1261,18 +1418,6 @@ msgstr "Qualità della stampa"
 #: fabui/application/views/create/wizard/step4.php:64
 msgid "Restart print"
 msgstr "Riavvia stampa"
-
-#: fabui/application/views/create/wizard/step4.php:65
-msgid "New"
-msgstr "Nuovo"
-
-#: fabui/application/views/create/wizard/step3.php:14
-msgid "Live feeds"
-msgstr ""
-
-#: fabui/application/views/create/wizard/step3.php:15
-msgid "Controls"
-msgstr "Controlli"
 
 #: fabui/application/views/create/wizard/step3.php:32
 #: fabui/application/views/create/wizard/step3.php:49
@@ -1928,31 +2073,45 @@ msgstr ""
 msgid "Timeout for {0}"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:38
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:41
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:52
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:148
+#, python-brace-format
+msgid "Pre Heating Nozzle ({0}&deg;) (fast)"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:42
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:53
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:149
+#, python-brace-format
+msgid "Pre Heating Bed ({0}&deg;) (fast)"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:44
 msgid "Retract Probe"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:39
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:45
 msgid "Set Absolute"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:41
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:48
 #: fabui/ext/py/fabtotum/fabui/macros/calibration.py:88
 msgid "Lowering bed"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:44
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:49
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:60
 msgid "Set Z Max"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:45
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:47
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:50
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:52
 #: fabui/ext/py/fabtotum/fabui/macros/calibration.py:124
 msgid "Raising bed"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:48
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:53
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:55
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:59
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:63
@@ -1966,31 +2125,17 @@ msgstr ""
 msgid "Homing all axes"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:58
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:60
 msgid "Preparing the FABtotum Personal Fabricator"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:59
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:61
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:125
 msgid "Setting absolute position"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:60
-msgid "Moving to oozing point"
-msgstr ""
-
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:62
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:52
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:148
-#, python-brace-format
-msgid "Pre Heating Nozzle ({0}&deg;) (fast)"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:63
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:53
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:149
-#, python-brace-format
-msgid "Pre Heating Bed ({0}&deg;) (fast)"
+msgid "Moving to oozing point"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:64
@@ -2649,3 +2794,19 @@ msgstr ""
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:174
 msgid "Scan completed!"
 msgstr ""
+
+#~ msgid "Press"
+#~ msgstr "Premi"
+
+#~ msgid "Enter"
+#~ msgstr "Invio"
+
+#~ msgid "to"
+#~ msgstr "per"
+
+#, fuzzy
+#~ msgid "plugin"
+#~ msgstr "Plugin"
+
+#~ msgid "to upload"
+#~ msgstr "da caricare"

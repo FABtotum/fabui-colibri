@@ -36,7 +36,7 @@
 			acceptedFiles: "<?php echo $accepted_files; ?>",
 			autoProcessQueue: false,
 			dictRemoveFile: 'Remove file',
-			dictMaxFilesExceeded: "<?php echo _("You can upload 10 files at time") ?>",
+			dictMaxFilesExceeded: "<?php echo _("You can upload 10 files at a time") ?>",
 			init: function(){
 				filesDropzone = this;
 				this.on("complete", function (file) {

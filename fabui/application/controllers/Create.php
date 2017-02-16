@@ -220,7 +220,7 @@
 	 */
 	public function startCreate($type = 'print')
 	{
-		$postData = $this->input->post(); //home_all
+		$postData = $this->input->post();
 		
 		switch($type){
 			case 'print':
@@ -250,23 +250,35 @@
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => 'File not found')));
 			return;
 		}
+		
 		$preparingResult = doMacro('prepare_additive', '', [ $temperatures['extruder'], $temperatures['bed'] ]);
 		if($preparingResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $preparingResult['message'])));
 			return;
 		}
+		
 		if($data['calibration'] == 'auto_bed_leveling'){
-			$calibrationResult = doMacro($data['calibration'], '');
+			$calibrationResult = doMacro("auto_bed_leveling");
 			if($calibrationResult['response'] == false){
 				$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $calibrationResult['message'])));
 				return;
 			}
 		}
-		$startPrintResult = doMacro('start_additive', '' );
+		else
+		{
+			$calibrationResult = doMacro("home_all");
+			if($calibrationResult['response'] == false){
+				$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $calibrationResult['message'])));
+				return;
+			}
+		}
+		
+		$startPrintResult = doMacro('start_additive');
 		if($startPrintResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $startPrintResult['message'], 'trace'=>$startPrintResult['trace'], 'error' => $startPrintResult['reply'])));
 			return;
 		}
+		
 		//get object record
 		$object = $this->files->getObject($fileToCreate['id']);
 		//ready to print

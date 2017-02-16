@@ -46,6 +46,7 @@
 			loadTranslation();
 			if(!$this->isAjax){ //for ajax request no need to load menu
 				//load menu
+				$this->load->helper('utility_helper');
 				$this->config->load('menu');
 				$this->menu = $this->config->item('menu');
 			}

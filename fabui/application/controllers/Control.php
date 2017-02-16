@@ -218,6 +218,56 @@
 	public function runningTasks()
 	{
 		
+		$this->load->model('Tasks', 'tasks');
+		$this->load->model('Files', 'files');
+		
+		$tasks = $this->tasks->getRunning();
+		
+		if($tasks)
+		{
+			/* used to define gettext versions of those words for task status*/
+			$_running = _("running");
+			$_paused = _("paused");
+			$_aborted = _("aborted");
+			$_aborting = _("aborting");
+			$_completed = _("completed");
+			$_completing = _("completing");
+			/* do not remove lines above */
+			$task_status = _($tasks['status']);
+			
+			$task_type = $tasks['type'];
+			$task_file_id = $tasks['id_file'];
+			
+			$file = $this->files->get($task_file_id, 1);
+			$task_filename = $file['client_name'];
+			
+			$task_label = _(ucfirst($task_type)).' '._("task");
+			
+			echo '<ul class="notification-body">';
+				echo '
+					<li>
+						<span class="padding-10 unread">
+							<em class=" padding-5 no-border-radius  pull-left margin-right-5 ">
+								<i class="fa fa-tablet fa-2x "></i>
+							</em>
+							<span>
+								<strong><a class="display-normal" href="#">'.$task_label.' <i class="font-xs txt-color-orangeDark">('.$task_status.')</i></a></strong>
+								<p>'.$task_filename.'</p>
+							</span>
+						</span>
+					</li>
+				';
+			echo '</ul>';
+		}
+		else
+		{
+			echo '
+				<div class="alert alert-transparent">
+					<h4 class="text-center">'._("No running tasks").'</h4>
+				</div>
+			';
+		}
+
 	}
 	
 	/**
@@ -225,12 +275,13 @@
 	 */
 	public function notifications()
 	{
-		echo '<div class="alert alert-transparent">
-			<h4>Click a button to show messages here</h4>
-			This blank page message helps protect your privacy, or you can show the
-			first message here automatically.
-			</div>
-			<i class="fa fa-lock fa-4x fa-border"></i>';
+		echo '
+				<div class="alert alert-transparent">
+					<h4>Click a button to show messages here</h4>
+					This blank page message helps protect your privacy, or you can show the first message here automatically.
+				</div>
+				<i class="fa fa-lock fa-4x fa-border"></i>
+			';
 	}
  }
  

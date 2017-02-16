@@ -102,7 +102,36 @@
 	 */
 	public function notifications()
 	{
+		/*$this->load->model('Tasks', 'tasks');
 		
+		$tasks = $this->tasks->getRunning();
+		
+		if(!$tasks)
+		{
+			echo '<ul class="notification-body">';
+				echo '
+					<li>
+						<span class="padding-10 unread">
+							<em class=" padding-5 no-border-radius  pull-left margin-right-5 ">
+								<i class="fa fa-tablet fa-2x "></i>
+							</em>
+							<span>
+								<strong><a class="display-normal" href="#">FABUI <i class="font-xs txt-color-orangeDark">beta</i></a>  is out!</strong>
+								<a href="" class="btn btn-xs btn-primary margin-top-5"><i class="fa fa-refresh"></i> Update now!</a>
+							</span>
+						</span>
+					</li>
+				';
+			echo '</ul>';
+		}
+		else
+		{
+			echo '
+				<div class="alert alert-transparent">
+					<h4 class="text-center">'._("No running tasks").'</h4>
+				</div>
+			';
+		}*/
 	}
 
  }

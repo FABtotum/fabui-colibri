@@ -35,22 +35,22 @@ def prepare_additive(app, args=None, lang='en_US.UTF-8'):
     ext_temp = args[0];
     bed_temp = args[1];
     
-    zprobe_disabled = int(app.config.get('settings', 'zprobe.enable')) == 0
-    z_max_offset    = app.config.get('settings', 'z_max_offset')
+    #~ zprobe_disabled = int(app.config.get('settings', 'zprobe.enable')) == 0
+    #~ z_max_offset    = app.config.get('settings', 'z_max_offset')
     
     app.macro("M104 S"+str(ext_temp),   "ok", 3,    _("Pre Heating Nozzle ({0}&deg;) (fast)").format(str(ext_temp)))
     app.macro("M140 S"+str(bed_temp),   "ok", 3,    _("Pre Heating Bed ({0}&deg;) (fast)").format(str(bed_temp)))
     
     app.macro("M402", "ok", 2,    _("Retract Probe"), verbose=False)
-    app.macro("G90", "ok", 2,    _("Set Absolute"), verbose=False)
+    #~ app.macro("G90", "ok", 2,    _("Set Absolute"), verbose=False)
 
-    if(zprobe_disabled):
-        app.macro("G27", "ok", 99,                              _("Lowering bed"), verbose=False)
-        app.macro('G92 Z{0}'.format(z_max_offset), "ok", 99,    _("Set Z Max"), verbose=True)
-        app.macro('G0 X10 Y10 Z70 F1000', "ok", 99,             _("Raising bed"))
-    else:
-        app.macro('G0 Z50 F10000', "ok", 99,    _("Raising bed"))
-        app.macro('G28', "ok", 99,              _("Homing all axes"))
+    #~ if(zprobe_disabled):
+        #~ app.macro("G27", "ok", 99,                              _("Lowering bed"), verbose=False)
+        #~ app.macro('G92 Z{0}'.format(z_max_offset), "ok", 99,    _("Set Z Max"), verbose=True)
+        #~ app.macro('G0 X10 Y10 Z70 F1000', "ok", 99,             _("Raising bed"))
+    #~ else:
+        #~ app.macro('G0 Z50 F10000', "ok", 99,    _("Raising bed"))
+        #~ app.macro('G28', "ok", 99,              _("Homing all axes"))
     
     
 

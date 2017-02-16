@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-15 17:10+0100\n"
+"POT-Creation-Date: 2017-02-16 11:57+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: FABTeam\n"
@@ -69,6 +69,7 @@ msgstr "Bett kalibrierung"
 #: fabui/application/config/menu.php:72
 #: fabui/application/views/jog/widget.php:68
 #: fabui/application/views/jog/widget.php:137
+#: fabui/application/views/layout/default/top.php:89
 #: fabui/application/views/create/wizard/step3.php:27
 #: fabui/application/views/create/wizard/step3.php:154
 msgid "Nozzle"
@@ -138,6 +139,7 @@ msgid "Raspicam"
 msgstr ""
 
 #: fabui/application/config/menu.php:153
+#: fabui/application/views/layout/default/top.php:20
 msgid "Updates"
 msgstr "Aktualisierungen"
 
@@ -150,10 +152,42 @@ msgstr "Unterstützung"
 msgid "Plugins"
 msgstr "Plugins"
 
+#: fabui/application/controllers/Control.php:229
+msgid "running"
+msgstr "laufend"
+
+#: fabui/application/controllers/Control.php:230
+msgid "paused"
+msgstr "pausiert"
+
+#: fabui/application/controllers/Control.php:231
+msgid "aborted"
+msgstr "abgebrochen"
+
+#: fabui/application/controllers/Control.php:232
+msgid "aborting"
+msgstr "wird abbrechen"
+
+#: fabui/application/controllers/Control.php:233
+msgid "completed"
+msgstr "abgeschlossen"
+
+#: fabui/application/controllers/Control.php:234
+msgid "completing"
+msgstr "wird abgeschlossen"
+
+#: fabui/application/controllers/Control.php:244
+msgid "task"
+msgstr "aufgabe"
+
+#: fabui/application/controllers/Control.php:266
+msgid "No running tasks"
+msgstr "Keine laufenden Aufgaben"
+
 #: fabui/application/controllers/Settings.php:43
 #: fabui/application/views/create/wizard/additive_step.php:67
 msgid "Simple homing"
-msgstr ""
+msgstr "Einfaches homing"
 
 #: fabui/application/controllers/Settings.php:43
 #: fabui/application/views/create/wizard/additive_step.php:89
@@ -166,7 +200,7 @@ msgstr "Sicherheit"
 
 #: fabui/application/controllers/Settings.php:53
 msgid "Homing"
-msgstr ""
+msgstr "Homing"
 
 #: fabui/application/controllers/Settings.php:54
 msgid "Customized actions"
@@ -385,6 +419,7 @@ msgid "Head does not have a milling motor"
 msgstr "Der Kopf hat keinen Fräsmotor"
 
 #: fabui/application/views/jog/widget.php:164
+#: fabui/application/views/layout/default/top.php:92
 #: fabui/application/views/create/wizard/step3.php:44
 #: fabui/application/views/create/wizard/step3.php:159
 msgid "Bed"
@@ -508,6 +543,7 @@ msgstr "Nein"
 
 #: fabui/application/views/plugin/js.php:109
 #: fabui/application/views/plugin/js.php:112
+#: fabui/application/views/std/task_finished.php:35
 #: fabui/application/views/projectsmanager/index/js.php:134
 #: fabui/application/views/projectsmanager/index/js.php:136
 #: fabui/application/views/projectsmanager/index/js.php:179
@@ -817,6 +853,7 @@ msgid "Gateway"
 msgstr ""
 
 #: fabui/application/views/settings/network_js.php:99
+#: fabui/application/views/std/task_wizard.php:16
 #: fabui/application/views/create/js.php:1038
 #: fabui/application/views/projectsmanager/index/js.php:132
 #: fabui/application/views/projectsmanager/index/js.php:177
@@ -828,24 +865,24 @@ msgstr "Achtung"
 
 #: fabui/application/views/settings/network_js.php:100
 msgid "You need to connect to a network first"
-msgstr ""
+msgstr "Sie müssen zuerst eine Verbindung zu einem Netzwerk herstellen"
 
 #: fabui/application/views/settings/network_js.php:137
 msgid "Network settings saved"
-msgstr ""
+msgstr "Netzwerkeinstellungen gespeichert"
 
 #: fabui/application/views/settings/network_js.php:265
 msgid "Disconnect"
-msgstr ""
+msgstr "Trennen"
 
 #: fabui/application/views/settings/network_js.php:265
 #: fabui/application/views/settings/network_widget.php:76
 msgid "Connect"
-msgstr ""
+msgstr "Verbinden"
 
 #: fabui/application/views/settings/network_js.php:331
 msgid "Password for"
-msgstr ""
+msgstr "Passwort für"
 
 #: fabui/application/views/settings/network_js.php:369
 msgid "Please specify a valid IP address"
@@ -874,7 +911,7 @@ msgstr "Bitte geben Sie ein SSID ein"
 #: fabui/application/views/settings/network_js.php:438
 #: fabui/application/views/settings/network_js.php:439
 msgid "Please specify an SSID that is between 4 and 63 characters"
-msgstr ""
+msgstr "Bitte geben Sie eine SSID zwischen 4 und 63 Zeichen ein"
 
 #: fabui/application/views/settings/network_js.php:442
 msgid "Please specify a password"
@@ -883,7 +920,7 @@ msgstr "Bitte geben Sie ein passwort ein"
 #: fabui/application/views/settings/network_js.php:443
 #: fabui/application/views/settings/network_js.php:444
 msgid "Please specify a password between 8 and 63 characters"
-msgstr ""
+msgstr "Bitte geben Sie ein Passwort zwischen 8 und 63 Zeichen ein"
 
 #: fabui/application/views/settings/network_widget.php:40
 msgid ""
@@ -938,6 +975,71 @@ msgstr "Email"
 #: fabui/application/views/account/widget.php:38
 msgid "Language"
 msgstr "Sprache"
+
+#: fabui/application/views/std/task_execute_js.php:726
+#: fabui/application/views/create/js.php:717
+msgid "Waiting for first move"
+msgstr ""
+
+#: fabui/application/views/std/select_file.php:17
+#: fabui/application/views/create/wizard/step1.php:18
+msgid "All files"
+msgstr "Alle Dateien"
+
+#: fabui/application/views/std/select_file.php:21
+#, fuzzy
+msgid "Recent"
+msgstr "Aktuelle Dateien"
+
+#: fabui/application/views/std/select_file.php:32
+#: fabui/application/views/std/select_file.php:49
+#: fabui/application/views/create/wizard/step1.php:31
+#: fabui/application/views/create/wizard/step1.php:47
+msgid "File"
+msgstr "Datai"
+
+#: fabui/application/views/std/select_file.php:33
+#: fabui/application/views/std/select_file.php:50
+#: fabui/application/views/create/wizard/step1.php:32
+#: fabui/application/views/create/wizard/step1.php:48
+msgid "Project"
+msgstr "Projekt"
+
+#: fabui/application/views/std/task_finished.php:28
+#: fabui/application/views/create/wizard/step4.php:28
+msgid "Duration"
+msgstr "Dauer"
+
+#: fabui/application/views/std/task_finished.php:32
+#: fabui/application/views/create/wizard/step4.php:32
+msgid "Z height is"
+msgstr "Z Höhe ist"
+
+#: fabui/application/views/std/task_finished.php:32
+#: fabui/application/views/create/wizard/step4.php:32
+msgid "Do you want to save it and override the value for the next prints?"
+msgstr ""
+"Möchten Sie es speichern und den Wert für die nächsten Ausdrucke "
+"überschreiben?"
+
+#: fabui/application/views/std/task_finished.php:64
+msgid "Restart"
+msgstr "Neu starten"
+
+#: fabui/application/views/std/task_finished.php:65
+#: fabui/application/views/create/wizard/step4.php:65
+msgid "New"
+msgstr "Neue"
+
+#: fabui/application/views/std/task_execute.php:14
+#: fabui/application/views/create/wizard/step3.php:14
+msgid "Live feeds"
+msgstr ""
+
+#: fabui/application/views/std/task_execute.php:15
+#: fabui/application/views/create/wizard/step3.php:15
+msgid "Controls"
+msgstr "Steuerungen"
 
 #: fabui/application/views/create/js.php:228
 msgid "Preparing {0}"
@@ -1026,12 +1128,8 @@ msgstr ""
 msgid "Unknown action"
 msgstr ""
 
-#: fabui/application/views/create/js.php:717
-msgid "Waiting for first move"
-msgstr ""
-
 #: fabui/application/views/create/js.php:1011
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:98
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:99
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:58
 msgid "Moving to safe zone"
 msgstr ""
@@ -1044,10 +1142,69 @@ msgstr ""
 msgid "Z Height saved"
 msgstr "Z Höhe erhöht"
 
+#: fabui/application/views/layout/default/top.php:21
+msgid "Notify"
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:22
+msgid "Tasks"
+msgstr "Aufgaben"
+
+#: fabui/application/views/layout/default/top.php:27
+msgid "Click a button to show messages here"
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:28
+msgid ""
+"This blank page message helps protect your privacy, or you can show the "
+"first message here automatically."
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:34
+msgid "Last updated on"
+msgstr "Zuletzt aktualisiert am"
+
+#: fabui/application/views/layout/default/top.php:35
+msgid "Loading"
+msgstr "Laden"
+
+#: fabui/application/views/layout/default/top.php:46
+msgid "Collapse Menu"
+msgstr "Menü reduzieren"
+
+#: fabui/application/views/layout/default/top.php:51
+msgid "Power Off/Log Out"
+msgstr "Ausschalten / Abmelden"
+
+#: fabui/application/views/layout/default/top.php:51
+msgid "What do you want to do?"
+msgstr "Was möchten Sie tun?"
+
+#: fabui/application/views/layout/default/top.php:55
+msgid "This button will restart the control board, continue?"
+msgstr "Diese Taste wird die Steuerplatine neu starten, fortfahren?"
+
+#: fabui/application/views/layout/default/top.php:55
+msgid "Restart Controller.<br>This will restart the control board"
+msgstr "Steuerplatine neu starten.<br>Es wird die Steuerplatine neu starten"
+
+#: fabui/application/views/layout/default/top.php:60
+msgid "This button will stop all the operations, continue?"
+msgstr "Diese Taste wird alle Vorgänge abbrechen, fortfahren?"
+
+#: fabui/application/views/layout/default/top.php:60
+msgid "Emergency Button. <br>This will stop all operations on the FABtotum"
+msgstr ""
+"Notfall Knopf. <br> Dadurch werden alle Operationen auf dem FABtotum beendet"
+
+#: fabui/application/views/layout/default/top.php:83
+msgid "Temperature<br> controls"
+msgstr "Temperatur<br> Kontrollen"
+
 #: fabui/application/views/projectsmanager/index/js.php:94
 #: fabui/application/views/projectsmanager/index/js.php:113
 msgid "Please select at least 1 object"
-msgstr ""
+msgstr "Bitte wählen Sie mindestens ein Objekt aus"
 
 #: fabui/application/views/projectsmanager/index/js.php:120
 #: fabui/application/views/projectsmanager/edit/js.php:193
@@ -1129,8 +1286,8 @@ msgid "or click"
 msgstr "oder klicken Sie"
 
 #: fabui/application/views/projectsmanager/add/js.php:39
-msgid "You can upload 10 files at time"
-msgstr ""
+msgid "You can upload 10 files at a time"
+msgstr "Sie können bis zu 10 Dateien auf einmal hochladen"
 
 #: fabui/application/views/projectsmanager/add/js.php:85
 msgid "Please enter object name"
@@ -1160,23 +1317,9 @@ msgstr "Nachladen"
 msgid "Upload progress"
 msgstr "Hochladungs fortschritt"
 
-#: fabui/application/views/create/wizard/step1.php:18
-msgid "All files"
-msgstr "Alle Dateien"
-
 #: fabui/application/views/create/wizard/step1.php:21
 msgid "Recent prints"
 msgstr "Aktuelle Dateien"
-
-#: fabui/application/views/create/wizard/step1.php:31
-#: fabui/application/views/create/wizard/step1.php:47
-msgid "File"
-msgstr "Datai"
-
-#: fabui/application/views/create/wizard/step1.php:32
-#: fabui/application/views/create/wizard/step1.php:48
-msgid "Project"
-msgstr "Projekt"
 
 #: fabui/application/views/create/wizard/additive_step.php:14
 #: fabui/application/views/create/wizard/subtractive_step.php:13
@@ -1199,6 +1342,8 @@ msgstr "Wählen Sie Kalibriertyp"
 #: fabui/application/views/create/wizard/additive_step.php:70
 msgid "Quickly home all axis. Works well with a well calibrated working plane"
 msgstr ""
+"Schnell alle Achsen referenzieren. Funktioniert gut mit einer gut "
+"kalibrierten Arbeitsebene"
 
 #: fabui/application/views/create/wizard/additive_step.php:70
 msgid "Suggested"
@@ -1209,6 +1354,8 @@ msgid ""
 "Probes the working plane to auto-correct movements to account for not "
 "leveled bed"
 msgstr ""
+"Untersucht dei Arbeitsebene, um Bewegungen zu korrigieren, um nicht ebenes "
+"Bett zu berücksichtigen"
 
 #: fabui/application/views/create/wizard/main.php:15
 msgid "Choose file"
@@ -1232,20 +1379,6 @@ msgid ""
 "ready press \"Next\""
 msgstr ""
 
-#: fabui/application/views/create/wizard/step4.php:28
-msgid "Duration"
-msgstr "Dauer"
-
-#: fabui/application/views/create/wizard/step4.php:32
-msgid "Z height is"
-msgstr "Z Höhe ist"
-
-#: fabui/application/views/create/wizard/step4.php:32
-msgid "Do you want to save it and override the value for the next prints?"
-msgstr ""
-"Möchten Sie es speichern und den Wert für die nächsten Ausdrucke "
-"überschreiben?"
-
 #: fabui/application/views/create/wizard/step4.php:60
 msgid "Quality of the print"
 msgstr "Qualität des Drucks"
@@ -1253,18 +1386,6 @@ msgstr "Qualität des Drucks"
 #: fabui/application/views/create/wizard/step4.php:64
 msgid "Restart print"
 msgstr "Druck Neu starten"
-
-#: fabui/application/views/create/wizard/step4.php:65
-msgid "New"
-msgstr "Neue"
-
-#: fabui/application/views/create/wizard/step3.php:14
-msgid "Live feeds"
-msgstr ""
-
-#: fabui/application/views/create/wizard/step3.php:15
-msgid "Controls"
-msgstr "Steuerungen"
 
 #: fabui/application/views/create/wizard/step3.php:32
 #: fabui/application/views/create/wizard/step3.php:49
@@ -1920,31 +2041,45 @@ msgstr ""
 msgid "Timeout for {0}"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:38
-msgid "Retract Probe"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:39
-msgid "Set Absolute"
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:41
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:52
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:148
+#, python-brace-format
+msgid "Pre Heating Nozzle ({0}&deg;) (fast)"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:42
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:53
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:149
+#, python-brace-format
+msgid "Pre Heating Bed ({0}&deg;) (fast)"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:44
+msgid "Retract Probe"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:45
+msgid "Set Absolute"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:48
 #: fabui/ext/py/fabtotum/fabui/macros/calibration.py:88
 msgid "Lowering bed"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:43
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:49
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:60
 msgid "Set Z Max"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:44
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:46
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:50
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:52
 #: fabui/ext/py/fabtotum/fabui/macros/calibration.py:124
 msgid "Raising bed"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:47
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:53
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:55
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:59
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:63
@@ -1958,47 +2093,33 @@ msgstr ""
 msgid "Homing all axes"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:57
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:60
 msgid "Preparing the FABtotum Personal Fabricator"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:58
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:61
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:125
 msgid "Setting absolute position"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:59
-msgid "Moving to oozing point"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:61
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:52
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:148
-#, python-brace-format
-msgid "Pre Heating Nozzle ({0}&deg;) (fast)"
-msgstr ""
-
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:62
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:53
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:149
-#, python-brace-format
-msgid "Pre Heating Bed ({0}&deg;) (fast)"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:63
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:86
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:57
-msgid "Reset Speed factor override"
+msgid "Moving to oozing point"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:64
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:87
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:57
+msgid "Reset Speed factor override"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:65
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:88
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:58
 msgid "Reset Extruder factor override"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:65
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:130
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:66
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:131
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:36
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:44
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:61
@@ -2006,39 +2127,39 @@ msgstr ""
 msgid "Setting extruder mode"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:66
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:83
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:99
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:128
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:67
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:84
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:100
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:129
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:55
 msgid "Waiting for all moves to finish"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:79
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:80
 msgid "Terminating..."
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:84
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:85
 msgid "Shutting down Extruder"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:85
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:86
 msgid "Shutting down Heated Bed"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:88
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:89
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:59
 msgid "Turning Fan off"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:89
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:90
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:60
 msgid "Motor Off"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:91
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:92
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:93
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:94
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:62
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:63
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:64
@@ -2051,11 +2172,11 @@ msgstr ""
 msgid "Turning on lights"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:94
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:95
 msgid "Printing completed!"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:97
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:98
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:202
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:59
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:83
@@ -2065,12 +2186,12 @@ msgstr ""
 msgid "Setting Absolute position"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:107
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:108
 msgid "Checking safety measures"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:109
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:123
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:110
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:124
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:108
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:47
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:77
@@ -2080,21 +2201,21 @@ msgstr ""
 msgid "Front panel door control"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:110
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:111
 msgid "Building plane inserted correctly"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:111
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:124
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:112
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:125
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:49
 msgid "Spool panel control"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:121
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:122
 msgid "Engaging 3D-Printer Feeder"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:125
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:126
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:57
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:77
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:194
@@ -2102,23 +2223,23 @@ msgstr ""
 msgid "Zeroing Z axis"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:126
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:127
 msgid "Set rel movement"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:127
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:128
 msgid "Setting Z position"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:129
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:130
 msgid "Set absolute movement"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:131
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:132
 msgid "Stopping motors"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:132
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:133
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:204
 msgid "Play beep sound"
 msgstr ""

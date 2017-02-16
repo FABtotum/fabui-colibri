@@ -10,7 +10,32 @@
 ?>
 <div class="step-pane" id="step2" data-step="2">
 	<hr class="simple">
-	<?php if($this->session->settings['feeder']['show'] == false): ?>
+
+	<div class="" style="<?php echo ($this->session->settings['feeder']['show'] == true)?"":"display:none;"; ?>" >
+		<h4 class="text-center"><?php echo _('Engage feeder'); ?></h4>
+		<div class="row">
+			<div class="col-sm-12 col-md-12">
+				<div class="product-content product-wrap clearfix">
+					<div class="row">
+						<div class="col-sm-4 hidden-xs">
+							<div class="product-image medium text-center">
+								<img class="img-responsive" src="/assets/img/controllers/feeder/feeder.png" />
+							</div>
+						</div>
+						<div class="col-sm-8">
+							<div class="description text-center">
+								<h1><span class="badge bg-color-blue txt-color-white">0</span></h1>
+								<p class="font-md"><?php echo _('To engage the filament feeder first pres ENGAGE button below and wait for the bed to stop moving.'); ?></p>
+								<p class="font-md"><?php echo _('Then push the small button under the building platform near the 4th axis chuck. Apply a good amount of force when pushing.'); ?></p>
+								<button class="btn btn-primary engage-feeder"><?php echo _("Engage");?></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<h4 class="text-center"><?php echo _('Follow the instructions'); ?></h4>
 	<div class="row">
 		<div class="col-sm-6 col-md-6  ">
@@ -48,7 +73,7 @@
 			</div>
 		</div>
 	</div>
-	<hr class="simple">
+
 	<h4 class="text-center"><?php echo _('Choose calibration type'); ?></h4>
 	<div class="row">
 		<div class="col-sm-6 col-md-6">
@@ -96,6 +121,5 @@
 			</div>
 		</div>
 	</div>
-	<?php else: ?>
-	<?php endif; ?>
+
 </div>
