@@ -11,8 +11,8 @@
 
 <hr class="simple">
 <ul id="createFeed" class="nav nav-tabs bordered">
-	<li class="active"><a href="#live-feeds-tab" data-toggle="tab">Live feeds</a></li>
-	<li><a href="#controls-tab" data-toggle="tab"><i class="fa fa-sliders"></i> Controls</a></li>
+	<li class="active"><a href="#live-feeds-tab" data-toggle="tab"><?php echo _("Live feeds")?></a></li>
+	<li><a href="#controls-tab" data-toggle="tab"><i class="fa fa-sliders"></i> <?php echo _("Controls");?></a></li>
 </ul>
 <div id="createFeedContent" class="tab-content padding-10">
 	<br>

@@ -16,7 +16,6 @@
     var breakpointDefinition = { tablet : 1024, phone : 480};
     
 	$(document).ready(function() {
-		console.log('select_file_js: ready');
 		initFilesTable();
 		
 		<?php if( isset($get_reacent_url) ): ?>

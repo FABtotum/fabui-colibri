@@ -250,19 +250,19 @@
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => 'File not found')));
 			return;
 		}
-		$preparingResult = doMacro('prepare_additive', '');
+		$preparingResult = doMacro('prepare_additive', '', [ $temperatures['extruder'], $temperatures['bed'] ]);
 		if($preparingResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $preparingResult['message'])));
 			return;
 		}
 		if($data['calibration'] == 'auto_bed_leveling'){
-			$calibrationResult = doMacro($data['calibration'], '', [ $temperatures['extruder'], $temperatures['bed'] ]);
+			$calibrationResult = doMacro($data['calibration'], '');
 			if($calibrationResult['response'] == false){
 				$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $calibrationResult['message'])));
 				return;
 			}
 		}
-		$startPrintResult = doMacro('start_additive', '', [ $temperatures['extruder'], $temperatures['bed'] ] );
+		$startPrintResult = doMacro('start_additive', '' );
 		if($startPrintResult['response'] == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $startPrintResult['message'], 'trace'=>$startPrintResult['trace'], 'error' => $startPrintResult['reply'])));
 			return;

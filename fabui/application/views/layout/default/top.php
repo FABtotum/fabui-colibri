@@ -18,8 +18,8 @@
 			<!-- the ID links are fetched via AJAX to the ajax container "ajax-notifications" -->
 			<div class="btn-group btn-group-justified" data-toggle="buttons">
 				<label class="btn btn-default"><input type="radio" name="activity" id="/fabui/updates/notifications">Updates <span class="updates-number"></span></label>
-				<label class="btn btn-default"><input type="radio" name="activity" id="/ajax/notify/notifications.php">notify</label>
-				<label class="btn btn-default"><input type="radio" name="activity" id="/ajax/notify/tasks.php">Tasks <span class="tasks-number"></span></label>
+				<label class="btn btn-default"><input type="radio" name="activity" id="/fabui/control/notifications">Notify</label>
+				<label class="btn btn-default"><input type="radio" name="activity" id="/fabui/control/runningTasks">Tasks <span class="tasks-number"></span></label>
 			</div>
 			<!-- notification content -->
 			<div class="ajax-notifications custom-scroll">

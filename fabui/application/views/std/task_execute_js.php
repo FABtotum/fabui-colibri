@@ -33,6 +33,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	var speedSlider;
 	var fanSlider;
 	var zOverride = 0;
+	var skipEngage = <?php echo $this->session->settings['feeder']['show'] == false ? 'true' : 'false' ?>; //force true if feeder engage is hidden
 	//graph
 	var temperaturesGraph;
 	var showExtActual = true;
@@ -683,14 +684,21 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		$.get('/temp/task_monitor.json'+ '?' + jQuery.now(), function(data, status){
 			manageMonitor(data);
 			if(firstCall) {
-				handleTaskStatus(data.task.status, true);
+				if(data.hasOwnProperty("task"))
+				{
+					handleTaskStatus(data.task.status, true);
+					elapsedTime = parseInt(data.task.duration);
+					estimatedTime = parseInt(data.task.estimated_time);
+				}
+					
 				setTemperaturesSlidersValue();
-				updateSpeed(data.override.speed);
-				updateFlowRate(data.override.flow_rate);
-				updateFan(data.override.fan);
-				updateZOverride(data.override.z_override);
-				elapsedTime = parseInt(data.task.duration);
-				estimatedTime = parseInt(data.task.estimated_time);
+				if(data.hasOwnProperty("override"))
+				{
+					updateSpeed(data.override.speed);
+					updateFlowRate(data.override.flow_rate);
+					updateFan(data.override.fan);
+					updateZOverride(data.override.z_override);
+				}
 				
 				timerInterval = setInterval(timer, 1000);
 				setInterval(jsonMonitor, 1000);
@@ -715,24 +723,31 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		remainingTime = estimatedTime - elapsedTime;
 		$(".elapsed-time").html(transformSeconds(elapsedTime));
 		if(estimatedTime == 0)
-			$(".estimated-time-left").html('Waiting for first move...');
+			$(".estimated-time-left").html( "<?php echo _("Waiting for first move");?>...");
 		else
 			$(".estimated-time-left").html(transformSeconds(remainingTime));
 	}
 	
 	if(typeof manageMonitor != 'function'){
 		window.manageMonitor = function(data){
-			handleTaskStatus(data.task.status);
-			updateProgress(data.task.percent);
-			updateSpeed(data.override.speed);
-			<?php if($type == "print"): ?>
-			updateFlowRate(data.override.flow_rate);
-			updateFan(data.override.fan);
-			<?php endif; ?>
-			<?php if($type == "mill" || $type == "laser"): ?>
-			updateRPM(data.override.rpm);
-			<?php endif; ?>
-			updateTimers(data.task.started_time, data.task.duration, data.task.estimated_time);
+			if(data.hasOwnProperty("task"))
+			{
+				handleTaskStatus(data.task.status);
+				updateProgress(data.task.percent);
+				updateTimers(data.task.started_time, data.task.duration, data.task.estimated_time);
+			}
+			
+			if(data.hasOwnProperty("override"))
+			{
+				updateSpeed(data.override.speed);
+				<?php if($type == "print"): ?>
+				updateFlowRate(data.override.flow_rate);
+				updateFan(data.override.fan);
+				<?php endif; ?>
+				<?php if($type == "mill" || $type == "laser"): ?>
+				updateRPM(data.override.rpm);
+				<?php endif; ?>
+			}
 		};
 	}
 	
@@ -766,6 +781,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	function handleTaskStatus(status, firstCall)
 	{
 		var taskType = "<?php echo isset($type_label) ? $type_label : ucfirst($type); ?>";
+		console.log("TASK STATUS = ", status);
 		switch(status){
 			case 'paused':
 				if(firstCall){

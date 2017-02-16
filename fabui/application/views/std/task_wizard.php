@@ -9,8 +9,13 @@
  
 /* variable initialization */
 if( !isset($steps) ) $steps = array();
-
+if( !isset($warning) ) $warning = '';
 ?>
+<?php if($warning): ?>
+<div class="alert alert-warning animated  fadeIn" role="alert">
+	<i class="fa fa-warning"></i><strong><?php echo _("Warning");?></strong> <?php echo $warning;?>
+</div>
+<?php endif; ?>
 
 <div class="wizard" data-initialize="wizard" id="myWizard">
 	<div class="steps-container">

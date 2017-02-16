@@ -1166,7 +1166,7 @@ msgstr "Alle Dateien"
 
 #: fabui/application/views/create/wizard/step1.php:21
 msgid "Recent prints"
-msgstr "Zuletzt gedrückt"
+msgstr "Aktuelle Dateien"
 
 #: fabui/application/views/create/wizard/step1.php:31
 #: fabui/application/views/create/wizard/step1.php:47

@@ -32,40 +32,41 @@ from fabtotum.utils.translation import _, setLanguage
 
 def prepare_additive(app, args=None, lang='en_US.UTF-8'):
     
+    ext_temp = args[0];
+    bed_temp = args[1];
+    
     zprobe_disabled = int(app.config.get('settings', 'zprobe.enable')) == 0
     z_max_offset    = app.config.get('settings', 'z_max_offset')
+    
+    app.macro("M104 S"+str(ext_temp),   "ok", 3,    _("Pre Heating Nozzle ({0}&deg;) (fast)").format(str(ext_temp)))
+    app.macro("M140 S"+str(bed_temp),   "ok", 3,    _("Pre Heating Bed ({0}&deg;) (fast)").format(str(bed_temp)))
     
     app.macro("M402", "ok", 2,    _("Retract Probe"), verbose=False)
     app.macro("G90", "ok", 2,    _("Set Absolute"), verbose=False)
 
     if(zprobe_disabled):
-        app.macro("G27", "ok", 99,    _("Lowering bed"), verbose=False)
+        app.macro("G27", "ok", 99,                              _("Lowering bed"), verbose=False)
         app.macro('G92 Z{0}'.format(z_max_offset), "ok", 99,    _("Set Z Max"), verbose=True)
-        app.macro('G0 X10 Y10 Z70 F1000', "ok", 99,    _("Raising bed"))
+        app.macro('G0 X10 Y10 Z70 F1000', "ok", 99,             _("Raising bed"))
     else:
         app.macro('G0 Z50 F10000', "ok", 99,    _("Raising bed"))
-        app.macro('G28', "ok", 99,    _("Homing all axes"))
+        app.macro('G28', "ok", 99,              _("Homing all axes"))
     
     
 
 def start_additive(app, args = None, lang='en_US.UTF-8'):
     units_e = app.config.get('settings', 'e')
-    
-    ext_temp = args[0];
-    bed_temp = args[1];
-    
+        
     app.trace( _("Preparing the FABtotum Personal Fabricator") )
     app.macro("G90",                    "ok", 2,    _("Setting absolute position"), verbose=False)
     app.macro("G0 X5 Y5 Z60 F1500",     "ok", 10,    _("Moving to oozing point") )
     #~ # Pre-heating (dismissed)
-    app.macro("M104 S"+str(ext_temp),   "ok", 3,    _("Pre Heating Nozzle ({0}&deg;) (fast)").format(str(ext_temp)))
-    app.macro("M140 S"+str(bed_temp),   "ok", 3,    _("Pre Heating Bed ({0}&deg;) (fast)").format(str(bed_temp)))
     app.macro("M220 S100",              "ok", 1,    _("Reset Speed factor override"),     verbose=False)
     app.macro("M221 S100",              "ok", 1,    _("Reset Extruder factor override"),  verbose=False)
     app.macro("M92 E"+str(units_e),     "ok", 1,    _("Setting extruder mode"),           verbose=False)
     app.macro("M400",                   "ok", 60,   _("Waiting for all moves to finish"), verbose=False)
 
-def end_additive(app, args = None, lang='en_US.UTF-8'):
+def end_additive(app, args=None, lang='en_US.UTF-8'):
     try:
         color = app.config.get('settings', 'color')
     except KeyError:

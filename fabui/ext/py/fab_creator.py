@@ -89,7 +89,7 @@ def create_plugin(args, raw_meta):
     }
     
     menu_loc = raw_meta['menu'][0].pop('loc')
-    meta['menu'][menu_loc] = raw_meta['menu']
+    meta['menu'][menu_loc] = raw_meta['menu'][0]
 
     destDir = build_path(args.dest, raw_meta['slug'])
     create_dir(destDir)

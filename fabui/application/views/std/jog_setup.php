@@ -83,8 +83,7 @@
 									
 									<div class="tab-pane fade in" id="touch-tab">
 										<div class="touch-container">
-											<!--img class="touch-container" src="/assets/plugin/fab_laser/img/hybrid_bed_v2_small.jpg" style="opacity: 0.5; filter: alpha(opacity=50);"-->
-											<img class="bed-image" src="/assets/plugin/fab_laser/img/hybrid_bed_v2_small.jpg" >
+											<img class="bed-image" src="/assets/img/std/hybrid_bed_v2_small.jpg" >
 											
 											<div class="button_container">
 												<button class="btn btn-primary touch-home-xy" data-toggle="tooltip" title="Before using the touch interface you need to home XY axis first.<br><br>Make sure that the head will not hit anything during homing." data-container="body" data-html="true">
