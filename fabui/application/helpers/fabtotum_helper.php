@@ -35,6 +35,7 @@ if ( !function_exists('createDefaultSettings'))
 			'settings_type' 	 => 'default',
 			'hardware'     	 	 => array('head' => 'print_v2', 'camera' => 'camera_v1'),
 			'print'         	 => array('pre_heating' => array('nozzle' => 150, 'bed'=>50), 'calibration' => 'homing'),
+			'stored_position'	 => array(),
 			'custom'             => array(
 				'overrides' => '',
 				'invert_x_endstop_logic' =>false
@@ -98,6 +99,51 @@ if(!function_exists('saveSettings'))
 		$CI->load->helper('file');
 		$CI->config->load('fabtotum');
 		return write_file($CI->config->item('settings'), json_encode($data));
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('savePosition'))
+{
+	/**
+	 * 
+	 * @param $x, $y, $z => head position
+	 * @param $task_type => task type to save the position to
+	 * 
+	 * 
+	 */
+	function savePosition($x, $y, $x, $task_type)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$data = loadSettings();
+		
+		if( !array_key_exists('stored_position', $data) )
+		{
+			$data['stored_position'] = array();
+		}
+		
+		$data['stored_position'][$task_type] = array('x' => $x, 'y' => $y, 'z' => $z);
+		
+		saveSettings($data);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('loadPosition'))
+{
+	function loadPosition($task_type = '')
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$data = loadSettings();
+		
+		if( !array_key_exists('stored_position', $data) )
+			return false;
+			
+		if($task_type == '')
+			return $data['stored_position'];
+			
+		if( array_key_exists($task_type, $data['stored_position']) )
+			return $data['stored_position'][$task_type];
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

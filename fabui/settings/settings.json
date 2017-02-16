@@ -39,6 +39,7 @@
       "bed": 50
     }
   },
+  "stored_position": [],
   "custom": {
     "overrides": "''",
     "invert_x_endstop_logic": false
