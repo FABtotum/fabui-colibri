@@ -8,6 +8,27 @@
  * 
  */
 ?>
-<?php foreach($feeds as $feed): ?>
-	<?php echo displayBlogFeedItem($feed);?>
-<?php endforeach;?>
+<!-- BLOG WIDGET  -->
+<?php
+if(isset($feeds)){
+	foreach($feeds as $feed){
+		echo displayBlogFeedItem($feed);
+	}
+}else{
+?>
+
+<div class="panel panel-default">
+	<div class="panel-body status">
+		<div class="who clearfix">
+			<h5><?php echo _("Development blog") ?></h5>
+		</div>
+		<div class="text">
+			<p><?php echo _("Latest news from Development blog aren't available") ?></p>
+			<p><?php echo _("Please check internet connection and try again") ?></p>
+		</div>
+	</div>
+</div>
+<?php
+}
+?>
+<!-- END BLOG WIDGET -->

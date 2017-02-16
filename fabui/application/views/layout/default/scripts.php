@@ -38,9 +38,9 @@
 		fabApp.FabActions();
 		fabApp.domReadyMisc();
 		fabApp.getState();
-		fabApp.getUpdates();
 		fabApp.getSettings();
 		fabApp.getNetworkInfo();
+		fabApp.getUpdates();
 		//start intervals
 		temperatures_interval = setInterval(fabApp.getTemperatures, temperatures_interval_timer);
 	});

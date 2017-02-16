@@ -19,13 +19,13 @@
 		$widgetOptions = array(
 				'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
 				'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false, 'load' => site_url('dashboard/blog'),
-				'refresh' => 60
+				'refresh' => 300
 		);
 		//bloog feeds widget
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'blog-feeds-widget';
 		$widget->class = 'well transparent ';
-		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>Latest from Development blog</h2>", 'toolbar'=>'');
+		$widget->header = array('icon' => 'fa-folder-open', "title" => "<h2>"._("Latest from Development blog")."</h2>", 'toolbar'=>'');
 		$widget->body   = array('content' =>'', 'class'=>'no-padding');
 		$blogFeedsWidget  = $widget->print_html(true);
 		//twitter feeds widget
@@ -33,7 +33,7 @@
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'twitter-feeds-widget';
 		$widget->class = 'well transparent'; 
-		$widget->header = array('icon' => 'fa-twitter', "title" => "<h2>Latest Tweets</h2>", 'toolbar'=>'');
+		$widget->header = array('icon' => 'fa-twitter', "title" => "<h2>"._("Latest Tweets")."</h2>", 'toolbar'=>'');
 		$widget->body   = array('content' => '', 'class'=>'no-padding');
 		$tweeterFeedsWidget  = $widget->print_html(true);
 		//instagram feeds widget
@@ -41,7 +41,7 @@
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'instagram-feeds-widget';
 		$widget->class = 'well transparent';
-		$widget->header = array('icon' => 'fa-instagram', "title" => "<h2>Instagram</h2>", 'toolbar'=>'');
+		$widget->header = array('icon' => 'fa-instagram', "title" => "<h2>"._("Instagram")."</h2>", 'toolbar'=>'');
 		$widget->body   = array('content' => '', 'class'=>'no-padding');
 		$instagramFeedsWidget  = $widget->print_html(true);
 		
@@ -63,6 +63,7 @@
 		//load configs
 		$this->config->load('fabtotum');
 		$this->load->helper('layout_helper');
+		$data = array();
 		if(file_exists($this->config->item('blog_feed_file'))){
 			$xml = simplexml_load_file($this->config->item('blog_feed_file'),'SimpleXMLElement', LIBXML_NOCDATA); 
 			$data["blogTitle"] = $xml->channel->title;
@@ -91,8 +92,11 @@
 				);
 			}
 			$data['feeds'] = $processedFeeds;
-			$this->load->view('dashboard/blog', $data);
+			
+		}else{
+			
 		}
+		$this->load->view('dashboard/blog', $data);
 	}
 	/**
 	 * show twitter feed
@@ -103,6 +107,7 @@
 		$this->config->load('fabtotum');
 		$this->load->helper('text_helper');
 		$this->load->helper('layout_helper');
+		$data = array();
 		if(file_exists($this->config->item('twitter_feed_file'))){
 			$feeds = json_decode(file_get_contents($this->config->item('twitter_feed_file')), true);
 			$processedFeeds    = array();
@@ -132,8 +137,11 @@
 			}
 			
 			$data['feeds'] = $processedFeeds;
-			$this->load->view('dashboard/twitter', $data);
+			
+		}else{
+			
 		}
+		$this->load->view('dashboard/twitter', $data);
 		
 	}
 	/**
@@ -145,11 +153,13 @@
 		$this->config->load('fabtotum');
 		$this->load->helper('text_helper');
 		$this->load->helper('layout_helper');
-		$data['feeds']  = array();
-		$data['feedsA'] = array();
-		$data['feedsB'] = array();
-		
+		$data = array();
 		if(file_exists($this->config->item('instagram_feed_file'))){
+			
+			$data['feeds']  = array();
+			$data['feedsA'] = array();
+			$data['feedsB'] = array();
+			
 			$feeds = json_decode(file_get_contents($this->config->item('instagram_feed_file')), true);
 			$feeds = $feeds['data'];
 			$feeds = highlightInstagramPost($feeds);
@@ -180,11 +190,20 @@
 			}
 			$data['feedsA'] = $a;
 			$data['feedsB'] = $b;
+			$data['feeds']  = $feeds;
+		}else{
+			
 		}
-		
 		$this->load->view('dashboard/instagram', $data);
 	}
-			
+	/**
+	 * blank page just for first access
+	 */
+	public function blank()
+	{
+		$this->view();
+	}
+	
  }
  
 ?>
