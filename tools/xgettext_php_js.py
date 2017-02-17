@@ -13,8 +13,9 @@ def find_match(line, fn, ln):
 		char = line[i]
 		
 		if start:
-			if line[i:i+2] == '")':
-				start = False
+			seg = line[i:i+2]
+			if (seg == '")' and start == '_("') or (seg == "')" and start == "_'("):
+				start = ""
 				if msgid not in match:
 					match[msgid] = []
 				match[msgid].append('#: {0}:{1}'.format(fn, ln))
@@ -22,8 +23,9 @@ def find_match(line, fn, ln):
 			else:
 				msgid += char
 		else:
-			if line[i:i+3] == '_("':
-				start = True
+			seg = line[i:i+3]
+			if seg == '_("' or seg == "_('":
+				start = seg
 				i+= 2
 				
 		i += 1
