@@ -16,7 +16,7 @@
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/bootstrap.min.css?v=<?php echo FABUI_VERSION ?>">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/font-awesome.min.css?v=<?php echo FABUI_VERSION ?>">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/line-icons-pro/styles.css?v=<?php echo FABUI_VERSION ?>">
-<!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+<!-- Caution! DO NOT change the order -->
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-production-plugins.min.css?v=<?php echo FABUI_VERSION ?>">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-production.min.css?v=<?php echo FABUI_VERSION ?>">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-skins.min.css?v=<?php echo FABUI_VERSION ?>">
@@ -41,4 +41,7 @@
 <script src="/assets/js/libs/jquery-2.1.1.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script src="/assets/js/libs/jquery-ui-1.10.3.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <?php echo $cssInLine; ?>
+<!--  TRANSLATIONS -->
+<?php echo $translations; ?>
+<!-- END TRANSLATIONS -->
 <?php echo $jsInlineTop; ?>

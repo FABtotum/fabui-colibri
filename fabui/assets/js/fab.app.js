@@ -5,22 +5,22 @@ fabApp = (function(app) {
 		var fabActions = {
 			userLogout: function($this){
 				$.SmartMessageBox({
-					title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> Hi <span class='txt-color-orangeDark'><strong>" + $this.data("user-name") + "</strong></span> ",
+					title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> " + app_text[0]  + " <span class='txt-color-orangeDark'><strong>" + $this.data("user-name") + "</strong></span> ",
 					content : $this.data('logout-msg') || "You can improve your security further after logging out by closing this opened browser",
-					buttons: "[Cancel][Go]",
+					buttons: "[" + app_text[1] + "][" + app_text[2] + "]",
 					input: "select",
-					options: "[Shutdown][Restart][Logout]"
+					options: "[" + app_text[3]  +"][" + app_text[4]  + "][" + app_text[5] + "]"
 				}, function(ButtonPressed, Option) {
-					if(ButtonPressed == 'Cancel'){
+					if(ButtonPressed == app_text[1]){ //cancel
 						return;
 					}
-					if (Option == "Logout") {
+					if (Option == app_text[5]) { //logout
 						app.logout();
 					}
-					if(Option == 'Shutdown'){
+					if(Option == app_text[3]){ //shutdown
 						app.poweroff();
 					}
-					if(Option == 'Restart'){
+					if(Option == app_text[4]){ //restart
 						app.reboot();
 					}
 				});
@@ -30,9 +30,9 @@ fabApp = (function(app) {
 				$.SmartMessageBox({
                     title: "<i class='fa fa-bolt'></i> <span class='txt-color-orangeDark'><strong>Reset Controller</strong></span> ",
                     content: $this.data("reset-msg") || "You can improve your security further after logging out by closing this opened browser",
-                    buttons: "[No][Yes]"
+                    buttons: "[" + app_text[6] + "][" + app_text[7] + "]"
                 }, function(ButtonPressed) {
-                   if(ButtonPressed == 'Yes') app.resetController();
+                   if(ButtonPressed == app_text[7]) app.resetController(); //yes
                });
 				
 			},
@@ -474,7 +474,7 @@ fabApp = (function(app) {
 	 */
 	app.resetController = function() {
 		$.is_macro_on = true;
-		openWait("<i class=\"fa fa-circle-o-notch fa-spin\"></i> Resetting controller");
+		openWait("<i class=\"fa fa-circle-o-notch fa-spin\"></i> " + app_text[8]);
 		$.get(reset_controller_url_action, function(){
 			closeWait();
 			$.is_task_on = true;
@@ -484,11 +484,11 @@ fabApp = (function(app) {
 	 * stop all operations and task on the fabtotum and refresh the page after 3 seconds
 	 */
 	app.stopAll = function(message) {
-		message = message || 'Aborting all operations ';
+		message = message || app_text[9] ;
 		openWait(message, ' ', false);
 		$.is_stopping_all = true;
 		$.get(stop_all_url_action, function(){
-			waitContent("Refreshing page");
+			waitContent(app_text[10]);
 			setTimeout(function(){ 
 				location.reload(); 
 			}, 3000);
@@ -498,9 +498,9 @@ fabApp = (function(app) {
 	 * show a message and refresh the page after 3 seconds
 	 */
 	app.refreshPage = function(message) {
-		message = message || 'Aborting all operations ';
+		message = message || app_text[9];
 		openWait(message, ' ', false);
-		waitContent("Refreshing page");
+		waitContent(app_text[10]);
 		setTimeout(function(){ 
 			location.reload();
 		}, 3000);
@@ -511,13 +511,13 @@ fabApp = (function(app) {
 	app.reboot = function() {
 		clearInterval(temperatures_interval);
 		//$.is_macro_on = true;
-		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> Restart in progress", 'Please wait...', false);
+		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> " + app_text[11], app_text[12] + '...', false);
 		$.ajax({
 			url: reboot_url_action,
 		}).done(function(data) {
 		}).fail(function(jqXHR, textStatus){
 			//clear intervals
-			waitContent("you will be redirect to login page");
+			waitContent(app_text[13]);
 			app.redirectToUrlWhenisReady(base_url);
 		});
 	};
@@ -527,14 +527,14 @@ fabApp = (function(app) {
 	app.poweroff = function() {
 		clearInterval(temperatures_interval);
 		//is_macro_on = true;
-		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Shutdown in progress', 'Please wait...', false);
+		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> ' + app_text[14], app_text[12] + '...', false);
 		$.ajax({
 			url: poweroff_url_action,
 		}).done(function(data) {
 			
 		}).fail(function(jqXHR, textStatus){
 			setTimeout(function() {
-				waitTitle('Now you can switch off the power');
+				waitTitle(app_text[15]);
 				waitContent('');
 				//is_macro_on = false;
 			}, 10000);
@@ -851,7 +851,7 @@ fabApp = (function(app) {
 	 */
 	app.checkExit = function(){
 		if($.is_stopping_all == false && $.is_macro_on == true){
-			return "You have attempted to leave this page. The Fabtotum Personal Fabricator is still working. Are you sure you want to reload this page?";
+			return app_text[16];
 		}
 	};
 	/*
@@ -862,19 +862,19 @@ fabApp = (function(app) {
 		var code = parseInt(data.code);
 		if(code == 102){ // if panel door is open force emergency button
 			//app.stopAll('Front panel has been opened.<br> Aborting all operations');
-			app.refreshPage('Front panel has been opened.<br> Aborting all operations');
+			app.refreshPage(app_text[17] + '.<br> ' + app_text[9]);
 			return;
 		}
 		is_emergency = true;
-		var buttons = '[OK][IGNORE]';
-		if(code == 103) buttons = '[IGNORE] [INSTALL HEAD]';
+		var buttons = '[' + app_text[18]  + '][' + app_text[19] + ']';
+		if(code == 103) buttons = '[' + app_text[19] + '] [' + app_text[20] + ']';
 		$.SmartMessageBox({
 			buttons : buttons,
-			title : "<h4><span class='txt-color-orangeDark'><i class='fa fa-warning fa-2x'></i></span>&nbsp;&nbsp;" + emergency_descriptions[code] + "<br>&nbsp;Press OK to continue or Ignore to disable this warning</h4>"
+			title : "<h4><span class='txt-color-orangeDark'><i class='fa fa-warning fa-2x'></i></span>&nbsp;&nbsp;" + emergency_descriptions[code] + "<br>&nbsp;" + app_text[21] + "</h4>"
 		},function(ButtonPressed) {
-			if(ButtonPressed == 'OK' || (ButtonPressed == 'IGNORE' && buttons.indexOf("INSTALL HEAD") > -1) ) app.setSecure(1);
-			else if(ButtonPressed == 'IGNORE') app.setSecure(0);
-			else if(ButtonPressed == 'INSTALL HEAD') app.goToInstallNewHead();
+			if(ButtonPressed == app_text[18] || (ButtonPressed == app_text[19] && buttons.indexOf(app_text[20]) > -1) ) app.setSecure(1);
+			else if(ButtonPressed == app_text[19]) app.setSecure(0);
+			else if(ButtonPressed == app_text[20]) app.goToInstallNewHead();
 		});
 	};
 	/*
@@ -948,7 +948,7 @@ fabApp = (function(app) {
 				controller = row.controller;
 				if (controller == 'make') controller += '/' + row.type;
 				app.freezeMenu(controller); //freeze menu
-				$(".task-list").find('span').html('	Tasks (' + data.number + ') '); //update number on ajax dropdown list
+				$(".task-list").find('span').html('	' + app_text[22] + ' (' + data.number + ') '); //update number on ajax dropdown list
 				app.updateNotificationBadge();
 			});
 		}else app.unFreezeMenu();
@@ -1185,7 +1185,7 @@ fabApp = (function(app) {
 	app.forceRecovery = function (){
 		
 		setTimeout(function(){
-			openWait("<i class='fa fa-warning'></i> Oops.. An error occurred", 'you will be redirect to recovery page', false);
+			openWait("<i class='fa fa-warning'></i> " + app_text[23], app_text[24], false);
 			
 			$.get(set_recovery_url + '/activate', function(data){ 
 				console.log(data);
@@ -1253,11 +1253,11 @@ fabApp = (function(app) {
 		$.get(newtwork_info_url, function(data, status){
 			console.log(data);
 			if(data.interfaces.wlan0.wireless.hasOwnProperty('ssid')){
-				$(".ribbon-button-alignment").prepend('<span data-title="Wifi connected"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon"><i class="fa fa-wifi"></i></span>');
+				$(".ribbon-button-alignment").prepend('<span data-title="' + app_text[25] + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon"><i class="fa fa-wifi"></i></span>');
 				
 			}
 			if(data.internet){
-				$(".ribbon-button-alignment").prepend('<span data-title="Internet available"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon"><i class="fa fa-globe"></i></span>');
+				$(".ribbon-button-alignment").prepend('<span data-title="' + app_text[26] + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon"><i class="fa fa-globe"></i></span>');
 			}
 			pageSetUp();
 		});
