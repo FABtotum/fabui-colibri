@@ -340,7 +340,7 @@ class Settings extends FAB_Controller {
 			default:
 				$result = false;
 		}
-		
+		writeNetworkInfo();
 		$this->output->set_content_type('application/json')->set_output($result);
 	}
 	

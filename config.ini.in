@@ -32,6 +32,7 @@ settings_path = @LIB_PATH@settings/
 plugins_path  = @LIB_PATH@plugins/
 bundles_path  = @COLIBRI_LIB_PATH@bundle/
 locale_path   = @LOCALE_PATH@
+network_info_file = @FABUI_TEMP_PATH@network.json
 
 [monitor]
 backtrack = 20

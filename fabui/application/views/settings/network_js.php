@@ -80,9 +80,6 @@
 			return;
 		}
 		
-		console.log('save wlan', iface);
-		console.log(data);
-		
 		if( data['address-mode'] == 'static-ap' )
 		{
 			post_data(data);
@@ -141,15 +138,13 @@
 				icon : "fa fa-check bounce animated"
 			});
 			waitContent("<?php echo _("Reloading page") ?>...");
+			fabApp.getNetworkInfo();
 			setTimeout(function(){
-
 					if(window.location.href ==  ('<?php echo site_url('#settings/network/') ?>/' + data['active'])){
 						location.reload();
 					}else{
 						window.location.href = '<?php echo site_url('#settings/network/') ?>/' + data['active'];
 					}
-					
-					//location.reload();
 				}, 2000
 			);
 						
@@ -332,6 +327,8 @@
 	*/
 	function disconnectFromWifi(iface)
 	{
+		var complete_url = '<?php echo site_url('#settings/network/') ?>/' + iface;
+		
 		openWait("<i class='fa fa-spin fa-spinner'></i> <?php echo _("Disconnecting") ?>... ", "<?php echo _("Please wait") ?>...", false );	
 		$.ajax({
 			type: 'post',
@@ -343,11 +340,12 @@
 			dataType: 'json'
 		}).done(function(response) {
 			waitContent("<?php echo _("Reloading page") ?>...");
+			fabApp.getNetworkInfo();
 			setTimeout(function(){
-					if(window.location.href ==  ('<?php echo site_url('#settings/network/') ?>/' + iface)){
+					if(window.location.href == complete_url){
 						location.reload();
 					}else{
-						window.location.href = '<?php echo site_url('#settings/network/') ?>/' + iface;
+						window.location.href = complete_url;
 					}
 				}, 2000
 			);

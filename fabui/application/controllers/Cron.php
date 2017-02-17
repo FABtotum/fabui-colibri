@@ -76,6 +76,15 @@ class Cron extends CI_Controller {
 		$updateJSON = json_encode(getUpdateStatus());
 		write_file($this->config->item('updates_json_file'), $updateJSON);
 	}
+	/**
+	 * 
+	 */
+	public function networkInfo()
+	{
+		//load helpers, config
+		$this->load->helper('os_helper');
+		writeNetworkInfo();
+	}
 	
 }
 ?>

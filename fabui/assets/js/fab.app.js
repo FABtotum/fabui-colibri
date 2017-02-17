@@ -1265,11 +1265,9 @@ fabApp = (function(app) {
 	**/
 	app.getNetworkInfo = function ()
 	{
-		$.get(newtwork_info_url, function(data, status){
-			console.log(data);
+		$.get(network_info_url + '?' + jQuery.now(), function(data, status){
 			if(data.interfaces.wlan0.wireless.hasOwnProperty('ssid')){
-				$(".ribbon-button-alignment").prepend('<span data-title="' + app_text[25] + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon"><i class="fa fa-wifi"></i></span>');
-				
+				$(".ribbon-button-alignment").prepend('<span data-title="' + app_text[25] + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon"><i class="fa fa-wifi"></i></span>');	
 			}
 			if(data.internet){
 				$(".ribbon-button-alignment").prepend('<span data-title="' + app_text[26] + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon"><i class="fa fa-globe"></i></span>');
