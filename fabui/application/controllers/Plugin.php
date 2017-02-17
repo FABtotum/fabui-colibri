@@ -170,7 +170,7 @@
 	public function online()
 	{
 		$this->load->helper('plugin_helper');
-		$this->output->set_content_type('application/json')->set_output( json_encode( getOnlinePlugins() ) );
+		$this->output->set_content_type('application/json')->set_output(json_encode(getOnlinePlugins()));
 	}
 
  }

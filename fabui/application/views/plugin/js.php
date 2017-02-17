@@ -39,39 +39,43 @@
 	
 	function loadOnlinePlugins()
 	{
-		console.log(installed_plugins);
 		$.get("<?php echo site_url('plugin/online') ?>", function(data, status){
 			populateOnlineTable(data);
 		});
 	}
-	
+	/**
+	*
+	**/
 	function populateOnlineTable(plugins)
 	{
-		var table_html = '<table class="table table-striped table-forum"><thead><tr>\
-					<th>'+"<?php echo _("Plugin"); ?>"+'</th><th class="text-center hidden-xs">Version</th>\
-					<th class="text-center hidden-xs">'+"<?php echo ("Author");?>"+'</th>\
-				</tr></thead><tbody>';
+		if(plugins == false){
+			$("#online-table").html('<h2 class="text-center"><i class="fa fa-warning"></i> <?php echo _(" No internet connection found") ?></h2><h6 class="text-center"><?php echo _("Check your connection or try again") ?></h6>');
+
+		}else{
+			var table_html = '<table class="table table-striped table-forum"><thead><tr>\
+						<th>'+"<?php echo _("Plugin"); ?>"+'</th><th class="text-center hidden-xs">Version</th>\
+						<th class="text-center hidden-xs">'+"<?php echo ("Author");?>"+'</th>\
+					</tr></thead><tbody>';
+			
+			$.each(plugins, function(i, plugin) {
+				table_html += '<tr><td><h4>' + plugin.name + '<small>' + plugin.desc + ' | <a class="no-ajax" target="_blank" href="'+plugin.url+'"> '+"<?php echo _("visit plugin site");?>"+'</a></small><p class="margin-top-10">';
 				
-		$.each(plugins, function(i, plugin) {
-			console.log('plugin', plugin);
-			table_html += '<tr><td><h4>' + plugin.name + '<small>' + plugin.desc + ' | <a class="no-ajax" target="_blank" href="'+plugin.url+'"> '+"<?php echo _("visit plugin site");?>"+'</a></small><p class="margin-top-10">';
+				if( installed_plugins.indexOf(plugin.slug) == -1 )
+				{
+					table_html += '<button class="btn btn-xs btn-primary action-button" data-action="update" data-title="'+plugin.slug+'" " title="Install">' + "<?php echo _("Install");?>" + '</button>&nbsp;';
+				}
+				else
+				{
+					table_html += '<span class="label label-success">' + "<?php echo _("Installed");?>" + '</span>';
+				}
+				
+				table_html += '</p></h4><p class="margin-top-10"></p></td><td class="text-center hidden-xs">' + plugin.version + '</td><td class="text-center hidden-xs"><a class="no-ajax" target="_blank" href="'+plugin.author_uri+'">'+plugin.author+'</a></td></tr>';
+			});
 			
-			if( installed_plugins.indexOf(plugin.slug) == -1 )
-			{
-				table_html += '<button class="btn btn-xs btn-primary action-button" data-action="update" data-title="'+plugin.slug+'" " title="Install">' + "<?php echo _("Install");?>" + '</button>&nbsp;';
-			}
-			else
-			{
-				table_html += '<span class="label label-success">' + "<?php echo _("Installed");?>" + '</span>';
-			}
-			
-			table_html += '</p></h4><p class="margin-top-10"></p></td><td class="text-center hidden-xs">' + plugin.version + '</td><td class="text-center hidden-xs"><a class="no-ajax" target="_blank" href="'+plugin.author_uri+'">'+plugin.author+'</a></td></tr>';
-		});
-		
-		table_html += '</tbody></table>';
-		$("#online-table").html(table_html);
-		
-		$(".action-button").on('click', confirmationCheck);
+			table_html += '</tbody></table>';
+			$("#online-table").html(table_html);
+			$(".action-button").on('click', confirmationCheck);
+		}
 	}
 	
 	function doAction(action, plugin_slug)

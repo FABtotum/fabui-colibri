@@ -111,12 +111,15 @@ if ( !function_exists('getOnlinePlugins'))
 	 */
 	function getOnlinePlugins(){
 		$CI =& get_instance();
+		$CI->load->helper('os_helper');
 		$CI->config->load('fabtotum');
-		$url_base = $CI->config->item('plugins_endpoint');
+		$repo = getRemoteFile($CI->config->item('plugins_endpoint').'cached.json');
+		if($repo != false){
+			return json_decode($repo, true);
+		}else{
+			return false;
+		}
 		
-		$repo = json_decode( file_get_contents( $url_base . 'cached.json' ), true);
-		
-		return $repo;
 	}
 }
 
