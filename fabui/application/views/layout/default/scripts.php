@@ -45,4 +45,5 @@
 		temperatures_interval = setInterval(fabApp.getTemperatures, temperatures_interval_timer);
 	});
 </script>
+<?php echo $translations; ?>
 <?php echo $jsInLine; ?>

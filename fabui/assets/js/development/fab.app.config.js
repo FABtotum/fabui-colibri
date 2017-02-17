@@ -75,25 +75,3 @@ var maxTemperaturesPlot = 200;
 var temperaturesPlot = {extruder: {temp: [], target: []}, bed: {temp:[], target:[]}};
 var app_storage_data = { last_update : new Date(), update: {}, task: {}};
 var app_storage_expire_time = 1800 ; // seconds (30 minutes) 
-
-/*
- * emergency descriptions 
- */
-emergency_descriptions = {
-	100 : 'General Safety Lockdown',
-	101 : 'Printer stopped due to errors',
-	102 : 'Front panel is open, cannot continue',
-	103 : 'Head not properly aligned or absent',
-	104 : 'Extruder Temperature critical, shutting down',
-	105 : 'Bed Temperature critical, shutting down',
-	106 : 'X max Endstop hit: Move the carriage to the center or check <span class="txt-color-orangeDark"><strong>Settings > Hardware > Custom Settings > Invert X Endstop Logic</strong></span>',
-	107 : 'X min Endstop hit: Move the carriage to the center or check <span class="txt-color-orangeDark"><strong>Settings > Hardware > Custom Settings >Invert X Endstop Logic</strong></span>',
-	108 : 'Y max Endstop hit: Move the carriage to the center and reset',
-	109 : 'Y min Endstop hit: Move the carriage to the center and reset',
-	110 : 'The FABtotum has been idling for more than 10 minutes. Temperatures and Motors have been turned off.',
-	120 : 'Both Y Endstops hit at the same time',
-	121 : 'Both Z Endstops hit at the same time',
-	122 : 'Ambient temperature is less then 15°C. Cannot continue.',
-	123 : 'Cannot extrude filament: the nozzle temperature is too low',
-	124 : 'Cannot extrude so much filament!'
-}
