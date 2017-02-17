@@ -449,9 +449,49 @@ fabApp = (function(app) {
 	/**
 	*
 	*/
-	app.unFreezeParent = function(link){
+	app.unFreezeParent = function(link) {
 		//TODO
 	}
+	
+	/**
+	* show error message 
+	*/
+	app.showWarningAlert = function (message) {
+		$.smallBox({
+			title : "Warning",
+			content : message,
+			color : "#C46A69",
+			timeout: 10000,
+			icon : "fa fa-warning"
+		});
+	}
+	
+	/**
+	* show error message 
+	*/
+	app.showErrorAlert = function (message) {
+		$.smallBox({
+			title : "Error",
+			content : message,
+			color : "#C46A69",
+			timeout: 10000,
+			icon : "fa fa-error"
+		});
+	}
+	
+	/**
+	* show info message
+	*/
+	app.showInfoAlert = function(message) {
+		$.smallBox({
+			title : "Info",
+			content : message,
+			color : "#5384AF",
+			timeout: 3000,
+			icon : "fa fa-check bounce animated"
+		});
+	}
+	
 	/*
 	 *  check for first setup wizard
 	 */

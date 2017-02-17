@@ -7,6 +7,10 @@
  * 
  */
  
+/* variable initialization */
+if( !isset($fourth_axis) ) $fourth_axis = False;
+if( !isset($$stored_position) ) $stored_position = array("x" => "undefined", "y" => "undefined", "z" => "undefined");
+
 ?>
 <script type="text/javascript">
 
@@ -14,14 +18,23 @@
 	var jog_touch;
 	var jog_controls;
 	var jog_is_xy_homed = false;
+	var jog_is_z_homed = false;
 	var cold_extrustion_enabled = false;
 	var touch_busy = false;
 	var jog_busy = false;
 	var extruder_mode = 'none';
+	
+	var stored_position = {
+		x : <?php echo $stored_position['x'];?>,
+		y : <?php echo $stored_position['y'];?>,
+		z : <?php echo $stored_position['z'];?>
+	};
 
 	$(document).ready(function() {
 		
-		/*$('.knob').knob({
+		<?php if($fourth_axis): ?>
+		$('.knob').knob({
+			//draw: draw_knob,
 			change: function (value) {
 			},
 			release: function (value) {
@@ -30,13 +43,14 @@
 			cancel: function () {
 				console.log("cancel : ", this);
 			}
-		});*/
+		});
 		
-		/*$('.knob').keypress(function(e) {
+		$('.knob').keypress(function(e) {
 			if(e.which == 13) {
 				rotation($(this).val());
 			}
-		 });*/
+		 });
+		<?php endif; ?>
 		 
 		var touch_options = {
 			guides: false,
@@ -104,20 +118,24 @@
 		
 	}
 	
-	/*function jogZeroAllCallback(e)
-	{
-		writeJogResponse(e);
-		
-		if(jog_is_xy_homed)
-		{
-			jog_touch.jogtouch('zero');
-		}
-	}*/
-	
 	function jogHomeXYCallback(e)
 	{
 		unlock_touch();
 		jogFinishAction();
+		$('.save-indication').show()
+	}
+	
+	function jogHomeXYZCallback(e)
+	{
+		jogHomeXYCallback(e);
+		jog_is_z_homed = true;
+		$('.save-indication').show();
+	}
+	
+	function jogHomeZCallback(e)
+	{
+		jog_is_z_homed = true;
+		$('.save-indication').show();
 	}
 	
 	function jogFinishAction(e)
@@ -138,17 +156,12 @@
 		var extruderFeed = $("#extruder-feedrate").length > 0 ? $("#extruder-feedrate").val() : 300;
 		var waitForFinish= true;
 		
+		console.log(e.action);
+		
 		switch(e.action)
 		{
 			case "zero":
-				/*fabApp.jogGetPosition( function(e) {
-					var tmp = e[0].reply.split(" ");
-					var x = tmp[0].replace("X:","");
-					var y = tmp[1].replace("Y:","");
-				});
-				
-				fabApp.jogZeroAll(jogZeroAllCallback);*/
-				
+				jogSetAsZero();
 				break;
 			case "right":
 			case "left":
@@ -169,13 +182,34 @@
 				fabApp.jogMove(e.action, zStep*mul, xyzFeed, waitForFinish, jogFinishAction);
 				break;
 			case "home-xy":
-				fabApp.jogHomeXY(jogHomeXYCallback);
+				if(jog_is_z_homed && !jog_is_xy_homed)
+					fabApp.jogHomeXYZ(jogHomeXYZCallback);
+				else
+					fabApp.jogHomeXY(jogHomeXYCallback);
 				break;
 			case "home-z":
-				fabApp.jogHomeZ();
+				fabApp.jogHomeZ(jogHomeZCallback);
 				break;
 			case "home-xyz":
-				fabApp.jogHomeXYZ(jogHomeXYCallback);
+				fabApp.jogHomeXYZ(jogHomeXYZCallback);
+				break;
+			case "restore-xy":
+				fabApp.showInfoAlert("restore XY");
+				if(jog_is_xy_homed)
+				{
+					var have_x = stored_position.x != "undefined";
+					var have_y = stored_position.y != "undefined";
+					if(have_x && have_y)
+					{
+						console.log('stoed:', stored_position);
+					}
+				}
+				break;
+			case "restore-z":
+				if(jog_is_z_homed)
+				{
+					console.log('stoed:', stored_position);
+				}
 				break;
 		}
 		

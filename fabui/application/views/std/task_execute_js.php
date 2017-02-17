@@ -62,6 +62,25 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	});
 	
 	/**
+	* freeze ui
+	*/
+	function freezeUI()
+	{
+		disableButton('.btn-prev');
+		disableButton('.btn-next');
+		disableButton('.top-directions');
+		disableButton('.top-axisz');
+	}
+	/**
+	*
+	*/
+	function unFreezeUI()
+	{
+		enableButton('.top-directions');
+		enableButton('.top-axisz');
+	}
+	
+	/**
 	 * init sliders
 	 */
 	function initSliders()
@@ -560,33 +579,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		});
 	}
 	
-	/**
-	* show error message 
-	*/
-	function showErrorAlert(message)
-	{
-		$.smallBox({
-			title : "Warning",
-			content : message,
-			color : "#C46A69",
-			timeout: 10000,
-			icon : "fa fa-warning"
-		});
-	}
-	
-	/**
-	*
-	*/
-	function showActionAlert(message)
-	{
-		$.smallBox({
-			title : "Info",
-			content : message,
-			color : "#5384AF",
-			timeout: 3000,
-			icon : "fa fa-check bounce animated"
-		});
-	}
+
 	
 	/**
 	 * exec action 

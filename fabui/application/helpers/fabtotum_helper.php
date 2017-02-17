@@ -137,7 +137,7 @@ if(!function_exists('loadPosition'))
 		$data = loadSettings();
 		
 		if( !array_key_exists('stored_position', $data) )
-			return false;
+			return array("x" => "undefined", "y" => "undefined", "z" => "undefined");
 			
 		if($task_type == '')
 			return $data['stored_position'];

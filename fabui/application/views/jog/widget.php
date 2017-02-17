@@ -51,8 +51,8 @@
 			<img class="bed-image" src="/assets/img/std/hybrid_bed_v2_small.jpg" >
 			
 			<div class="button_container">
-				<button class="btn btn-primary touch-home-xy" data-rel="tooltip" title="Before using the touch interface you need to home XY axis first.<br><br>Make sure that the head will not hit anything during homing." data-container="body" data-html="true">
-					Home XY
+				<button class="btn btn-primary touch-home-xy" data-rel="tooltip" title="<?php echo _("Before using the touch interface you need to home XY axis first.<br><br>Make sure that the head will not hit anything during homing.");?>" data-container="body" data-html="true">
+					<?php echo _("Home XY");?>
 				</button>
 			</div>
 		</div>
@@ -134,7 +134,7 @@
 				
 				<div class="col-sm-12 margin-bottom-50">
 					<?php if($headPrintSupport): ?>
-					<h4><i class="icon-fab-term"></i> <span><?php echo _("Nozzle"); ?></span> <span class="pull-right"><span rel="tooltip" data-placement="top" data-original-title="Extruder current temperature"  class="extruder-temp"></span> / <strong><span rel="tooltip" data-placement="top" data-original-title="Extruder target temperature" class="slider-extruder-target">0</span></strong> &deg;C</span></h4>
+					<h4><i class="icon-fab-term"></i> <span><?php echo _("Nozzle"); ?></span> <span class="pull-right"><span rel="tooltip" data-placement="top" data-original-title="<?php echo _("Extruder current temperature");?>"  class="extruder-temp"></span> / <strong><span rel="tooltip" data-placement="top" data-original-title="<?php echo _("Extruder target temperature");?>" class="slider-extruder-target">0</span></strong> &deg;C</span></h4>
 					<div id="create-ext-target-slider" class="noUiSlider sliders"></div>
 					<?php else: ?>
 					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> <?php echo _("Head does not have a heater"); ?></h4></div>
@@ -161,7 +161,7 @@
 				
 				<div class="col-sm-12 margin-bottom-50">
 					<?php if($haveBed): ?>
-					<h4><i class="icon-fab-term"></i> <?php echo _("Bed"); ?> <span class="pull-right"><span rel="tooltip" data-placement="top" data-original-title="Bed current temperature" class="bed-temp"></span> / <strong><span rel="tooltip" data-placement="top" data-original-title="Bed target temperature" class="slider-bed-target">0</span></strong> &deg;C</span></h4>
+					<h4><i class="icon-fab-term"></i> <?php echo _("Bed"); ?> <span class="pull-right"><span rel="tooltip" data-placement="top" data-original-title="<?php echo _("Bed current temperature");?>" class="bed-temp"></span> / <strong><span rel="tooltip" data-placement="top" data-original-title="<?php echo _("Bed target temperature");?>" class="slider-bed-target">0</span></strong> &deg;C</span></h4>
 					<div id="create-bed-target-slider" class="noUiSlider sliders"></div>
 					<?php else: ?>
 					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> <?php echo _("Bed is not installed"); ?></h4></div>
@@ -179,7 +179,7 @@
 		<div class="chat-footer">
 			<div class="textarea-div">
 				<div class="typearea">
-					<textarea placeholder=">_ Write command"  id="mdiCommands" class="custom-scroll" rows="10"></textarea>
+					<textarea placeholder=">_ <?php echo _("Write command");?>"  id="mdiCommands" class="custom-scroll" rows="10"></textarea>
 				</div>
 			</div>
 			<!-- CHAT REPLY/SEND -->
