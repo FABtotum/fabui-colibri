@@ -1,6 +1,8 @@
 @reboot php /usr/share/fabui/index.php Cron blogFeeds &
 @reboot php /usr/share/fabui/index.php Cron twitterFeeds &
 @reboot php /usr/share/fabui/index.php Cron instagramFeeds &
-*/30 * * * * php /usr/share/fabui/index.php Cron blogFeeds &
+@reboot php /usr/share/fabui/index.php Cron getUpdateJSON &
+*/25 * * * * php /usr/share/fabui/index.php Cron blogFeeds &
 */30 * * * * php /usr/share/fabui/index.php Cron twitterFeeds &
-*/30 * * * * php /usr/share/fabui/index.php Cron instagramFeeds &
+*/35 * * * * php /usr/share/fabui/index.php Cron instagramFeeds &
+*/40 * * * * php /usr/share/fabui/index.php Cron getUpdateJSON &

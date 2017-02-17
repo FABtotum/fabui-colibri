@@ -23,7 +23,9 @@
 	**/
 	function checkUpdateStatus()
 	{
-		$(".status").html('<i class="fa fa-spinner fa-spin"></i> checking for updates');
+		$(".button-container").html('');
+		$('.fabtotum-icon .badge').html('<i class="fa fa-refresh fa-spin"></i>');
+		$(".status").html('<i class="fa fa-spinner fa-spin"></i> <?php echo _("Checking for updates") ?>');
 		$.ajax({
 			type: "POST",
 			url: "<?php echo site_url('updates/updateStatus') ?>",
@@ -34,6 +36,7 @@
 			}else{
 				handleAvailableUpdates(response);
 			}
+			fabApp.getUpdates();
 		});
 	}
 	/**
@@ -41,7 +44,19 @@
 	**/
 	function noInternetAvailable()
 	{
-		
+		$(".status").html('<i class="fa fa-exclamation-circle"></i><br><?php echo _(" No internet connection found") ?><br><?php echo _("Check your connection or try again") ?>');
+		$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-exclamation-circle');
+
+		buttons = '<button class="btn btn-default  action-buttons" id="check-again"> <?php echo _("Check again") ?></button> ';
+		$(".button-container").html(buttons);
+		$("#check-again").on('click', checkAgain);
+	}
+	/**
+	*
+	**/
+	function checkAgain()
+	{
+		checkUpdateStatus();
 	}
 	/**
 	*
@@ -52,21 +67,21 @@
 		var buttons = '';
 		
 		if(object.update.available){
-			$(".status").html('<i class="fa fa-exclamation-circle"></i> New important software updates are now available');
+			$(".status").html('<i class="fa fa-exclamation-circle"></i> <?php echo _(" New important software updates are now available") ?>');
 			$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-exclamation-circle');
 			
-			buttons += '<button class="btn btn-default  action-buttons" id="do-update"><i class="fa fa-refresh"></i> Update</button> ';
+			buttons += '<button class="btn btn-default  action-buttons" id="do-update"><i class="fa fa-refresh"></i> <?php echo _("Update") ?></button> ';
 			$("#do-update").on('click', doUpdate);
 
 		}else{
-			$(".status").html('Great! Your FABtotum Personal Fabricator is up to date');
+			$(".status").html('<?php echo _("Great! Your FABtotum Personal Fabricator is up to date") ?>');
 			$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-check');
 		}
 
 		createBundlesTable(object);
 		createFirmwareTable(object);
 
-		buttons += '<button class="btn btn-default  action-buttons" id="bundle-details"><i class="fa fa-reorder"></i> View details</button> ';
+		buttons += '<button class="btn btn-default  action-buttons" id="bundle-details"><i class="fa fa-reorder"></i> <?php echo _("View details"); ?></button> ';
 		$(".button-container").html(buttons);
 		$("#bundle-details").on('click', showHideBundlesDetails);
 	}
@@ -80,7 +95,7 @@
 							'<tr>' +
 								'<th colspan="2">Bundle</th>' +
 								/*'<th class="text-center" style="width:150px">Installed version</th>' + */
-								'<th class="text-center" style="width:150px">Remote version</th>' +
+								'<th class="text-center" style="width:150px"><?php echo _("Remote version") ?></th>' +
 								'<th class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px; margin-bottom:0px"><label><input id="select-all-bundles" value="all_bundles" type="checkbox" class="checkbox"><span></span></label></div></th>' + 
 							'</tr>' + 
 						'</thead>' + 
@@ -97,7 +112,7 @@
 				html += '<tr id="tr-' + bundle_name + '" class="' + tr_class + '">' +
 		        	'<td  class="text-center" style="width:40px;"><i id="icon-'+ bundle_name +'" class="'+ icon + '"></i></td>' +
 		        	'<td><h4><a href="javascript:void(0)">' + bundle_name.capitalize() + '</a> <small></small>' + 
-		        	'<small id="small-'+ bundle_name +'">Installed version: ' + object.local +' | Build date: ' + object.info.build_date + '</small>' +
+		        	'<small id="small-'+ bundle_name +'"><?php echo _("Installed version") ?>: ' + object.local +' | <?php echo _("Build date") ?>: ' + object.info.build_date + '</small>' +
 		        	'</h4></td>' + 
 		        	/*'<td class="text-center">' + object.local + '</td>'+*/
 		        	'<td class="text-center">' + object.latest + ' </td>' +
@@ -115,7 +130,7 @@
 				html += '<tr id="tr-' + bundle_name + '" class="' + tr_class + '">' +
 		        	'<td  class="text-center" style="width:40px;"><i id="icon-'+ bundle_name +'" class="'+ icon + '"></i></td>' +
 		        	'<td><h4><a href="javascript:void(0)">' + bundle_name.capitalize() + '</a> <small></small>' + 
-		        	'<small id="small-'+ bundle_name +'">Installed version: ' + object.local +' | Build date: ' + object.info.build_date + '</small>' +
+		        	'<small id="small-'+ bundle_name +'"><?php echo _("Installed version") ?>: ' + object.local +' | <?php echo _("Build date") ?>: ' + object.info.build_date + '</small>' +
 		        	'</h4></td>' + 
 		        	/*'<td class="text-center">' + object.local + '</td>'+*/
 		        	'<td class="text-center">' + object.latest + ' </td>' +
@@ -155,7 +170,7 @@
 					'<thead>'+
 						'<tr>'+
 							'<th colspan="2"></th>' +
-							'<th class="text-center" style="width:150px">Remote version</th>' +
+							'<th class="text-center" style="width:150px"><?php echo _("Remote version") ?></th>' +
 							'<th class="text-center" style="width:40px;"></th>' +
 						'</tr>' +
 					'</thead>';
@@ -165,7 +180,7 @@
 						'<td>'+
 							'<h4>'+
 								'<a href="javascript:void(0);"> Fablin </a>' + 
-								'<small>Installed version: ' + object.firmware.installed  + '</small>' +
+								'<small><?php echo _("Installed version") ?>: ' + object.firmware.installed  + '</small>' +
 							'</h4>'+
 						'</td>'+
 						'<td class="text-center">'+ object.firmware.remote.version  +'</td>'+
@@ -190,14 +205,14 @@
 			
 			$(".fabtotum-icon").slideUp(function(){
 				$(".tabs-container").slideDown(function(){
-					button.html("<i class='fa fa-reorder'></i> Hide details");
+					button.html("<i class='fa fa-reorder'></i> <?php echo _("Hide details") ?>");
 				});
 			});
 		}else{
 			$(".tabs-container").slideUp(function(){
 				$(".fabtotum-icon").slideDown(function(){
 					$(".fabtotum-icon").css( "display", "inline" );
-					button.html("<i class='fa fa-reorder'></i> View details");
+					button.html("<i class='fa fa-reorder'></i> <?php echo _("View details") ?>");
 				});
 				
 			});
@@ -256,11 +271,11 @@
 
 		if($(".update-details").is(":visible")){
 			$(".update-details").slideUp(function(){
-				button.html("<i class='fa fa-reorder'></i> View details");
+				button.html("<i class='fa fa-reorder'></i> <?php echo _("View details") ?>");
 			});
 		}else{
 			$(".update-details").slideDown(function(){
-				button.html("<i class='fa fa-reorder'></i> Hide details");
+				button.html("<i class='fa fa-reorder'></i> <?php echo _("Hide details") ?>");
 			});
 		}
 	}
@@ -292,7 +307,7 @@
 		
 		switch(status){ 
 			case 'preparing':
-				$(".status").html('Connecting to update server...');
+				$(".status").html('<?php echo _("Connecting to update server") ?>...');
 				break;
 			case 'runnning':
 				break;
@@ -301,8 +316,8 @@
 				$('.fabtotum-icon .badge').addClass('check').find('i').removeClass('fa-spin fa-refresh').addClass('fa-check');
 				$("#do-abort").remove();
 				fabApp.unFreezeMenu();
-				$(".small").html('A reboot is needed to apply new features');
-				if($("#do-reboot").length == 0) $(".button-container").append('<button class="btn btn-default  action-buttons" id="do-reboot"> Reboot now</button>')
+				$(".small").html('<?php echo _("A reboot is needed to apply new features") ?>');
+				if($("#do-reboot").length == 0) $(".button-container").append('<button class="btn btn-default  action-buttons" id="do-reboot"> <?php echo _("Reboot now") ?></button>')
 				$('.fabtotum-icon').parent().removeClass().addClass('tada animated');
 				$("#do-reboot").on('click', fabApp.reboot);
 				break;
@@ -317,10 +332,10 @@
 		if(current.status != ''){
 			switch(current.status){
 				case 'downloading' :
-					$(".status").html('<i class="fa fa-download"></i> Downloading ' + current.type + ' (' + current.name.capitalize() +')');
+					$(".status").html('<i class="fa fa-download"></i> <?php echo _("Downloading") ?> ' + current.type + ' (' + current.name.capitalize() +')');
 					break;
 				case 'installing' :
-					$(".status").html('<i class="fa fa-gear fa-spin"></i> Installing ' + current.type + '  (' + current.name.capitalize() +')');
+					$(".status").html('<i class="fa fa-gear fa-spin"></i> <?php echo _("Installing") ?> ' + current.type + '  (' + current.name.capitalize() +')');
 					break;
 			}
 		}
@@ -343,22 +358,22 @@
 			
 			switch(task.status){
 				case 'downloading':
-					label = '<p><i class="fa fa-download"></i> Downloading (' + humanFileSize(task.files.main_file.size)  + ') <span class="pull-right">'+ parseInt(task.files.main_file.progress)  +'%</span></p>'+
+					label = '<p><i class="fa fa-download"></i> <?php echo _("Downloading") ?> (' + humanFileSize(task.files.main_file.size)  + ') <span class="pull-right">'+ parseInt(task.files.main_file.progress)  +'%</span></p>'+
 						'<div class="progress progress-xs"> '+
 							'<div class="progress-bar bg-color-blue" style="width: '+ parseInt(task.files.main_file.progress) +'%;"></div> '+
 						'</div>';
 					break;
 				case 'downloaded':
-					label = '<i class="fa fa-check"></i> Downloaded';
+					label = '<i class="fa fa-check"></i> <?php echo _("Downloaded") ?>';
 					break;
 				case 'installing':
-					label = '<i class="fa fa-gear fa-spin"></i> Installing ';
+					label = '<i class="fa fa-gear fa-spin"></i> <?php echo _("Installing") ?> ';
 					break;
 				case 'installed':
-					label = '<i class="fa fa-check"></i> Installed';
+					label = '<i class="fa fa-check"></i> <?php echo _("Installed") ?>';
 					break;
 				case 'error':
-					label = '<p><i class="fa fa-times"></i> Error</p>' +
+					label = '<p><i class="fa fa-times"></i> <?php echo _("Error") ?></p>' +
 							'<p>' + task.message.replaceAll('\n', '<br>') + '</p>';
 					break;
 				default:
@@ -387,7 +402,7 @@
 	function initTask()
 	{
 		fabApp.freezeMenu('updates');
-		$(".small").html('Please don\'t turn off the printer until the operation is completed');
+		$(".small").html("<?php echo _("Please don't turn off the printer until the operation is completed") ?>");
 		
 		$(".tabs-container").slideUp(function() {
 			$(".fabtotum-icon").slideDown(function(){
@@ -395,8 +410,8 @@
 				$('.fabtotum-icon .badge').find('i').removeClass('fa-exclamation-circle').addClass('fa-spin fa-refresh');
 
 				var buttons = '';
-				buttons += '<button class="btn btn-default  action-buttons" id="do-abort"><i class="fa fa-times"></i> Abort</button> ';
-				buttons += '<button class="btn btn-default  action-buttons" id="update-details"><i class="fa fa-reorder"></i> View details</button> ';
+				buttons += '<button class="btn btn-default  action-buttons" id="do-abort"><i class="fa fa-times"></i> <?php echo _("Abort") ?></button> ';
+				buttons += '<button class="btn btn-default  action-buttons" id="update-details"><i class="fa fa-reorder"></i> <?php echo _("View details") ?></button> ';
 
 				$(".button-container").html(buttons);
 				$("#update-details").on('click', showHideUpdateDetails);

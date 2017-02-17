@@ -13,7 +13,7 @@
 			<h1>
 				<span class="fabtotum-icon">
 					<i class="fa fa-play fa-rotate-90 fa-border border-black fa-4x"></i>
-					<span><b class="badge"><i class="fa fa-refresh fa-spin"></i></b></span>
+					<span><b class="badge"></b></span>
 				</span>
 			</h1>
 			<h4 class="status"></h4>

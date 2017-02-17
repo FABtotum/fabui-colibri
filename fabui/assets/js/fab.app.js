@@ -1176,36 +1176,15 @@ fabApp = (function(app) {
 	**/
 	app.getUpdates = function() {
 		
-		var now = new Date();
-		var last_update = new Date(app_storage_data.last_update);
-		var diff = now.getTime() - last_update.getTime();
-		var diff_seconds = Math.abs(diff / 1000);
-		/**
-		* check if last_update time is expired or if not present update data
-		**/
-		if((diff_seconds > app_storage_expire_time) || (app_storage_data.update.hasOwnProperty('update') == false )){
-				
-			$.get(updates_status_url, function(data, status){
-				app_storage_data.update = data;
-				number_updates = app_storage_data.update.update.bundles;
-				if(app_storage_data.update.update.firmware) number_updates = number_updates + 1;
-				
-				app.updateNotificationBadge();
-				var now = new Date();
-				app_storage_data.last_update = now;
-				localStorage.setItem('app_storage_data', JSON.stringify(app_storage_data));
-				
-				console.log(app_storage_data.last_update);
-				
-				//$(".last-update-time").html(now.getDate() + '/' + (now.getMonth()+1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes());
-				$(".last-update-time").html(now.toLocaleString());
-			})
-		}else{
-			number_updates = app_storage_data.update.update.bundles;
-			localStorage.setItem('app_storage_data', JSON.stringify(app_storage_data));
+		$.get(updates_json_url + '?' + jQuery.now(), function(data, status){
+			console.log(data);
+			number_updates = data.update.bundles;
+			if(data.update.firmware) number_updates += 1;
+			
 			app.updateNotificationBadge();
-			$(".last-update-time").html(app_storage_data.last_update);
-		}
+			
+		});
+		
 	}
 	/**
 	* redirect to a specific url only when the url responds 200
@@ -1278,10 +1257,6 @@ fabApp = (function(app) {
 		if (typeof(Storage) !== "undefined"){
 			if(localStorage.getItem("temperaturesPlot") !== null){			
 				temperaturesPlot =  JSON.parse(localStorage.getItem("temperaturesPlot"));
-			}
-			
-			if(localStorage.getItem("app_storage_data") !== null){			
-				app_storage_data =  JSON.parse(localStorage.getItem("app_storage_data"));
 			}
 		} 
 	}

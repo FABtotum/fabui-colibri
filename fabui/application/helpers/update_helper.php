@@ -108,7 +108,6 @@ if(!function_exists('getBundlesStatus'))
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		$CI->load->helper('fabtotum_helper');
-		
 		$localBundles      = getLocalBundles();
 		$remoteBundles     = getRemoteBundles();
 		$firmwareRemote    = getRemoteFwVersions();
@@ -132,11 +131,12 @@ if(!function_exists('getBundlesStatus'))
 				'bundles'   => 0,
 				'firwmare'  => false,
 				'endpoint'  => array(
-							'bundles' =>$bundlesEndpoint,
-							'fimware' => $fwEndpoint
-							)
+					'bundles' =>$bundlesEndpoint,
+					'fimware' => $fwEndpoint
+				)
 			),
 			'remote_connection' =>  $remoteBundles ? true : false,
+			'date' => date("Y-m-d H:i:s")
 		);
 		
 		foreach($localBundles as $bundleName => $localBundleData)

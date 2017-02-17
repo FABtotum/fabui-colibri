@@ -64,6 +64,18 @@ class Cron extends CI_Controller {
 			log_message('debug', 'Instagram hash feeds unavailable');
 		}
 	}
+	/**
+	 * retrieve updates json object
+	 */
+	public function getUpdateJSON()
+	{
+		//load helpers, config
+		$this->load->helper('update_helper');
+		$this->load->helper('file');
+		$this->config->load('fabtotum');
+		$updateJSON = json_encode(getUpdateStatus());
+		write_file($this->config->item('updates_json_file'), $updateJSON);
+	}
 	
 }
 ?>

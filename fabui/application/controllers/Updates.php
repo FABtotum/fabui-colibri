@@ -55,10 +55,13 @@
 	 */
 	function updateStatus()
 	{
-		//load helpers
+		//load helpers, config
 		$this->load->helper('update_helper');
+		$this->load->helper('file');
+		$this->config->load('fabtotum');
 		//get remote bundles status
 		$bundlesStatus = getUpdateStatus();
+		write_file($this->config->item('updates_json_file'), json_encode($bundlesStatus));
 		$this->output->set_content_type('application/json')->set_output(json_encode($bundlesStatus));
 	}
 	/**
