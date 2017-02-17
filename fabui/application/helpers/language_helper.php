@@ -79,4 +79,30 @@ if(!function_exists('loadTranslation'))
 		
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getJsonTranslation'))
+{
+	/**
+	 * 
+	 */
+	function getJsonTranslation()
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		
+		$language_code = getCurrentLanguage();
+		$language_code_short = explode('_', $language_code)[0];
+		
+		$filename = $CI->config->item('locale_path') . $language_code_short . '/LC_MESSAGES/fabui.json';
+		
+		if( file_exists($filename) )
+		{
+			return file_get_contents($filename);
+		}
+		else
+		{
+			return '{}';
+		}
+	}
+}
 ?>

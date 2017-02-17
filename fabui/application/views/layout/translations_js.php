@@ -63,4 +63,21 @@ var app_text = {
 	25 : '<?php echo _("Wifi connected") ?>',
 	26 : '<?php echo _("Internet available") ?>',
 }
+
+var gettext_data = <?php echo getJsonTranslation(); ?>;
+
+function _(msgid)
+{
+	if(gettext_data.hasOwnProperty(msgid))
+	{
+		var msgstr = gettext_data[msgid];
+		if(msgstr[1] == "")
+			return msgid;
+		return msgstr[1];
+	}
+	
+	return msgid;
+}
+
+
 </script>

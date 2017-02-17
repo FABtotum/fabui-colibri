@@ -9,7 +9,9 @@
  
 /* variable initialization */
 if( !isset($fourth_axis) ) $fourth_axis = False;
-if( !isset($$stored_position) ) $stored_position = array("x" => "undefined", "y" => "undefined", "z" => "undefined");
+if( !isset($type) ) $type = 'mill';
+if( !isset($store_position_url) ) $store_position_url = 'std/storePosition/'.$type;
+if( !isset($stored_position) ) $stored_position = array("x" => "undefined", "y" => "undefined", "z" => "undefined");
 
 ?>
 <script type="text/javascript">
@@ -25,9 +27,9 @@ if( !isset($$stored_position) ) $stored_position = array("x" => "undefined", "y"
 	var extruder_mode = 'none';
 	
 	var stored_position = {
-		x : <?php echo $stored_position['x'];?>,
-		y : <?php echo $stored_position['y'];?>,
-		z : <?php echo $stored_position['z'];?>
+		x : "<?php echo $stored_position['x'];?>",
+		y : "<?php echo $stored_position['y'];?>",
+		z : "<?php echo $stored_position['z'];?>"
 	};
 
 	$(document).ready(function() {
@@ -134,6 +136,7 @@ if( !isset($$stored_position) ) $stored_position = array("x" => "undefined", "y"
 	
 	function jogHomeZCallback(e)
 	{
+		jogFinishAction();
 		jog_is_z_homed = true;
 		$('.save-indication').show();
 	}
@@ -141,6 +144,88 @@ if( !isset($$stored_position) ) $stored_position = array("x" => "undefined", "y"
 	function jogFinishAction(e)
 	{
 		jog_busy = false;
+	}
+	
+	function jogStorePosition()
+	{
+		fabApp.jogGetPosition( function(e) {
+			var tmp = e[0].reply.split(" ");
+			var x = tmp[0].replace("X:","");
+			var y = tmp[1].replace("Y:","");
+			var z = tmp[2].replace("Z:","");
+			
+			console.log('position', x, y, z);
+			
+			if(!jog_is_xy_homed)
+			{
+				x = "undefined";
+				y = "undefined";
+			}
+			
+			if(!jog_is_z_homed)
+			{
+				z = "undefined";
+			}
+			
+			data = {x:x, y:y, z:z};
+			
+			$.ajax({
+				type: 'post',
+				data: data,
+				url: '<?php echo site_url($store_position_url); ?>',
+				dataType: 'json'
+			}).done(function(data) {
+				//~ console.log(response);
+				if(data.result)
+				{
+					if(jog_is_xy_homed)
+					{
+						if(jog_is_z_homed)
+							fabApp.showInfoAlert( _("Position {0}, {1}, {2} stored").format(x,y,z));
+						else
+							fabApp.showInfoAlert( _("X/Y Position {0}, {1} stored").format(x,y));
+					}
+					else if(jog_is_z_homed)
+					{
+						fabApp.showInfoAlert( _("Z Position {0} stored").format(z));
+					}
+				}
+				else
+				{
+					fabApp.showErrorAlert('Failed to store position');
+				}
+			})
+			
+		});
+	}
+	
+	function jogRestoreTo(x = '', y = '', z = '')
+	{
+		jog_busy = true;
+		if(z != '')
+		{
+			if(x != '')
+			{
+				fabApp.jogMdi('G90\nG0 X'+x+' Y'+y+' Z'+z+' F5000\nM400', function(e){
+					fabApp.showInfoAlert("Position restored to {0}, {1}, {2}".format(x, y, z) );
+					jog_busy = false;
+				});
+			}
+			else
+			{
+				fabApp.jogMdi('G90\nG0 Z'+z+' F5000\nM400', function(e){
+					fabApp.showInfoAlert("Z Position restored to {0}".format(z) );
+					jog_busy = false;
+				});
+			}
+		}
+		else
+		{
+			fabApp.jogMdi('G90\nG0 X'+x+' Y'+y+' F5000\nM400', function(e){
+				fabApp.showInfoAlert("X/Y position restored to {0}, {1}".format(x, y) );
+				jog_busy = false;
+			});
+		}
 	}
 	
 	function jogAction(e)
@@ -161,6 +246,7 @@ if( !isset($$stored_position) ) $stored_position = array("x" => "undefined", "y"
 		switch(e.action)
 		{
 			case "zero":
+				jogStorePosition();
 				jogSetAsZero();
 				break;
 			case "right":
@@ -194,21 +280,42 @@ if( !isset($$stored_position) ) $stored_position = array("x" => "undefined", "y"
 				fabApp.jogHomeXYZ(jogHomeXYZCallback);
 				break;
 			case "restore-xy":
-				fabApp.showInfoAlert("restore XY");
 				if(jog_is_xy_homed)
 				{
 					var have_x = stored_position.x != "undefined";
 					var have_y = stored_position.y != "undefined";
 					if(have_x && have_y)
 					{
-						console.log('stoed:', stored_position);
+						console.log('restore:', stored_position);
+						jogRestoreTo(stored_position.x, stored_position.y);
 					}
+					else
+					{
+						fabApp.showErrorAlert("No X/Y position was stored");
+					}
+				}
+				else
+				{
+					fabApp.showWarningAlert("You need to home X/Y axis first");
 				}
 				break;
 			case "restore-z":
 				if(jog_is_z_homed)
 				{
-					console.log('stoed:', stored_position);
+					var have_z = stored_position.z != "undefined";
+					if(have_z)
+					{
+						console.log('restore:', stored_position);
+						jogRestoreTo('', '', stored_position.z);
+					}
+					else
+					{
+						fabApp.showErrorAlert("No Z position was stored");
+					}
+				}
+				else
+				{
+					fabApp.showWarningAlert("You need to home Z axis first");
 				}
 				break;
 		}

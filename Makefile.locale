@@ -1,32 +1,50 @@
 XGETTEXT 		= xgettext
+XGETTEXT_JS		= tools/xgettext_php_js.py
 XGETTEXT_ARGS	= --no-wrap
 MSGMERGE		= msgmerge
+MSGFMT			= msgfmt
+POJSON			= pojson
 LC_AUTHOR 		= FABtotum
 LC_PACKAGE_NAME	= FABUI
 
-LC_FABUI_INPUT 	= $(wildcard fabui/application/*/*.php fabui/application/views/*/*.php fabui/application/views/*/*/*.php) \
-				  $(wildcard fabui/ext/py/*.py fabui/ext/py/fabtotum/*.py fabui/ext/py/fabtotum/*/*.py fabui/ext/py/fabtotum/*/*/*.py )
+LC_FABUI_PHP_INPUT 	= $(wildcard fabui/application/*/*.php fabui/application/views/*/*.php fabui/application/views/*/*/*.php)
+
+LC_FABUI_PY_INPUT = $(wildcard fabui/ext/py/*.py fabui/ext/py/fabtotum/*.py fabui/ext/py/fabtotum/*/*.py fabui/ext/py/fabtotum/*/*/*.py )
+
+LC_FABUI_JS_INPUT = $(wildcard fabui/application/*/*_js.php fabui/application/views/*/*_js.php fabui/application/views/*/*/*_js.php)
+
+LC_FABUI_INPUT    = $(LC_FABUI_PHP_INPUT) $(LC_FABUI_PY_INPUT) $(LC_FABUI_JS_INPUT)
 
 LC_FABUI_OUTPUT = fabui/locale/fabui.pot
 
+LC_LANGUAGES	= locale.it locale.de
+LC_JSON			= fabui/locale/it/LC_MESSAGES/fabui.json fabui/locale/de/LC_MESSAGES/fabui.json
+
 fabui/locale/fabui.pot: $(LC_FABUI_INPUT)
 	@echo "Creating" $@
+	$(XGETTEXT_JS) $(LC_FABUI_JS_INPUT) > fabui/locale/fabui_js.pot
 	@$(XGETTEXT) $(XGETTEXT_ARGS) \
 		-o $@ \
 		--copyright-holder=$(LC_AUTHOR) \
 		--package-name=$(LC_PACKAGE_NAME) \
 		$^
+	@$(XGETTEXT) $(XGETTEXT_ARGS) -j fabui/locale/fabui_js.pot \
+		-o $@ \
+		--copyright-holder=$(LC_AUTHOR) \
+		--package-name=$(LC_PACKAGE_NAME) \
+		$^
+	
+	
 
-locale: locale.it locale.de
+locale: $(LC_LANGUAGES) $(LC_JSON)
 
 locale.%: fabui/locale/%/LC_MESSAGES/fabui.po fabui/locale/fabui.pot
 	$(MSGMERGE) $< $(LC_FABUI_OUTPUT) > new.po
 	cp new.po $<
 	rm new.po
 
-#~ fabui/locale/%/LC_MESSAGES/fabui.po: $(LC_FABUI_OUTPUT)
-#~ 	mkdir -p $(shell dirname $@ )
-#~ 	cp $(LC_FABUI_OUTPUT) $@
-
 fabui/locale/%/LC_MESSAGES/fabui.mo: fabui/locale/%/LC_MESSAGES/fabui.po
-	msgfmt $< -o $@
+	$(MSGFMT) $< -o $@
+
+fabui/locale/%/LC_MESSAGES/fabui.json: fabui/locale/%/LC_MESSAGES/fabui.po
+	$(POJSON) $< > $@

@@ -111,7 +111,7 @@ if(!function_exists('savePosition'))
 	 * 
 	 * 
 	 */
-	function savePosition($x, $y, $x, $task_type)
+	function savePosition($x, $y, $z, $task_type)
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');

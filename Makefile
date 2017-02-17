@@ -129,7 +129,7 @@ BUNDLE_COMP		?= lzo
 
 .PHONY: locale clean distclean bundle check-tools fabui/locale/*.pot
 
-all: $(FABUI_BUNDLE)
+all: check-tools $(FABUI_BUNDLE)
 
 clean:
 	rm -rf $(TEMP_DIR)
@@ -140,17 +140,16 @@ distclean: clean
 	rm -rf *.cb
 	rm -rf *.cb.md5sum
 	rm -f $(GENERATED_FILES)
-	
 
 check-tools:
-	@echo "Looking for fakeroot"
-	@which fakeroot &> /dev/null
-	@echo "OK"
-	@echo "Looking for mksquashfs"
-	@which mksquashfs  &> /dev/null
-	@echo "OK"
-
-bundle: $(FABUI_BUNDLE)
+	which fakeroot
+	@echo "Looking for fakeroot: FOUND"
+	which mksquashfs
+	@echo "Looking for mksquashfs: FOUND"
+	which pojson
+	@echo "Looking for pojson: FOUND"
+	
+bundle: check-tools distclean $(FABUI_BUNDLE)
 
 # Collects rules of all *.in files and uses the generator on them.
 % : %.in
