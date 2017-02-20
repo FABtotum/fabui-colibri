@@ -1049,7 +1049,7 @@ class Projectsmanager extends FAB_Controller {
 			$builtin_actions[] = array(
 				"title" => _("Print"),
 				"icon" => "fa-rotate-90 fa-play",
-				"url" => "#make/print/file/".$fileID
+				"url" => "#make/print/".$fileID
 			);
 			$default_action = $builtin_actions[0];
 		}
@@ -1058,7 +1058,16 @@ class Projectsmanager extends FAB_Controller {
 			$builtin_actions[] = array(
 				"title" => _("Mill"),
 				"icon" => "fa-rotate-90 fa-play",
-				"url" => "#make/mill/file/".$fileID
+				"url" => "#make/mill/".$fileID
+			);
+			$default_action = $builtin_actions[0];
+		}
+		else if($file['print_type'] == 'laser')
+		{
+			$builtin_actions[] = array(
+				"title" => _("Engrave"),
+				"icon" => "fa-rotate-90 fa-play",
+				"url" => "#make/laser/".$fileID
 			);
 			$default_action = $builtin_actions[0];
 		}

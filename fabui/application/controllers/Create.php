@@ -25,7 +25,7 @@
 	}
 	
 	//controller router
-	public function index($type = 'print', $what = '', $what_id = ''){
+	public function index($type = 'print', $what_id = '-1'){
 		
 		if($this->runningTask){
 			$method = 'do'.ucfirst($this->runningTask['type']);
@@ -34,217 +34,403 @@
 		}else{
 			switch($type){
 				case 'mill':
-					$this->doMill();
+					$this->doMill($what_id);
 					break;
 				case 'print':
-					$this->doPrint($what, $what_id);
+					$this->doPrint($what_id);
+					break;
+				case 'laser':
+					$this->doLaser($what_id);
 					break;
 				default:
-					$this->doPrint($what, $what_id);
+					$this->doPrint($what_id);
 			}
 		}
 	}
 	
-	//print controller function
-	/**
-	 *  @param $what string {object | file}
-	 *  @param $what_id int 
-	 * */
-	public function doPrint($what = '', $what_id = '')
+	private function doPrint($fileId)
 	{
-		//load libraries, helpers, model
 		$this->load->library('smart');
 		$this->load->helper('form');
-		//data
-		$data = array();
-		$data['type']      = 'print';
-		$data['printType'] = 'additive';
-		$data['runningTask'] = $this->runningTask;
-		$data['zHeightOptions'] = array('0.1' => '0.1', '0.01' => '0.01');
-		$data['what'] = $what;
-		$data['what_id'] = $what_id;
-		//if there's no running task don't load all steps
-		if(!$this->runningTask){
-			$data['step1']  = $this->load->view('create/wizard/step1', $data, true );
-			$data['step2']  = $this->load->view('create/wizard/additive_step', $data, true );	
-		}
-		//wizard
-		$data['step3']  = $this->load->view('create/wizard/step3', $data, true );
-		$data['step4']  = $this->load->view('create/wizard/step4', $data, true );
-		$data['wizard'] = $this->load->view('create/wizard/main',  $data, true );
+		$this->load->helper('fabtotum_helper');
+		$this->load->helper('plugin_helper');
+		$this->load->model('Files', 'files');
 		
-		//main page widget
+		$data = array();
+		$data['runningTask'] = $this->runningTask;
+		$data['file_id'] = '';
+		
+		// Skip file selection step if fileID is provided
+		$file = $this->files->get($fileId, 1);
+		$file_is_ok = False;
+		
+		if($file)
+		{
+			if($file['print_type'] == 'additive')
+			{
+				$data['file_id'] = $fileId;
+				$file_is_ok = True;
+				$data['wizard_jump_to'] = 2; // jump to step 2 if fileID is available
+			}
+			else
+			{
+				$data['warning'] = "Selected file is not for printing";
+			}
+		}
+		
+		// Skip to Job Execution step if task is already running
+		$task_is_running = False;
+		if($data['runningTask'])
+		{
+			$data['wizard_jump_to'] = 3;
+			$task_is_running = True;
+		}
+		
+		$data['type']      = 'print';
+		$data['type_label'] = _("Printing");
+		
+		// select_file
+		$data['get_files_url'] = 'std/getFiles/additive';
+		$data['get_reacent_url'] = 'std/getRecentFiles/print';
+		
+		// task_wizard
+		$data['start_task_url'] = 'create/startPrintTask';
+		
+		$data['steps'] = array(
+				array('number'  => 1,
+				 'title'   => _("Choose file"),
+				 'content' => $this->load->view( 'std/select_file', $data, true ),
+				 'active'  => !$file_is_ok && !$task_is_running
+			    ),
+				array('number'  => 2,
+				 'title'   => _("Get ready"),
+				 'content' => $this->load->view( 'std/print_setup', $data, true ),
+				 'active'  => $file_is_ok && !$task_is_running
+			    ),
+				array('number'  => 3,
+				 'title'   => _("Printing"),
+				 'content' => $this->load->view( 'std/task_execute', $data, true ),
+				 'active' => $task_is_running
+			    ),
+				array('number'  => 4,
+				 'title'   => _("Finish"),
+				 'content' => $this->load->view( 'std/task_finished', $data, true )
+			    )
+			);
+		
 		$widgetOptions = array(
 			'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
 			'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
 		);
 		
-		//$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		$widgeFooterButtons = '';
 
 		$widget         = $this->smart->create_widget($widgetOptions);
-		$widget->id     = 'main-widget-print';
-		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>Print</h2>");
-		$widget->body   = array('content' => $this->load->view('create/main_widget', $data, true ), 'class'=>'fuelux');
-		//add css files
-		$this->addCssFile('/assets/css/create/style.css');
-		//add javascript dependencies
-		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
-		if(!$this->runningTask){ //if task is running these filee are not needed
-			$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
-			$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
-			$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
-			$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
-			$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
-		}
-		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.cust.min.js'); //datatable
-		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.resize.min.js'); //datatable
-		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.fillbetween.min.js'); //datatable
-		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.time.min.js'); //datatable
-		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js'); //datatable
+		$widget->id     = 'main-widget-head-installation';
+		$widget->header = array('icon' => 'fa-cube', "title" => "<h2>"._("Print")."</h2>");
+		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ), 'class'=>'fuelux', 'footer'=>$widgeFooterButtons);
+
+		$this->addCssFile('/assets/css/std/select_file.css');
+		$this->addCssFile('/assets/css/std/task_execute.css');
+
+		$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
 		
-		$this->addJsInLine($this->load->view('create/js', $data, true)); 
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.cust.min.js'); 
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.resize.min.js');
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.fillbetween.min.js');
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.time.min.js');
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js');
+
+		$this->addJsInLine($this->load->view( 'create/print_js', $data, true));
+
+		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
+		$this->addJsInLine($this->load->view( 'std/task_wizard_js', $data, true));
+		
+		$this->addJsInLine($this->load->view( 'std/select_file_js', $data, true));
+		
+		$this->addJsInLine($this->load->view( 'std/print_setup_js', $data, true));
+		
+		$this->addJsInLine($this->load->view( 'std/task_execute_js', $data, true));
+		$this->addJsInLine($this->load->view( 'std/task_finished_js', $data, true));
+
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
 	
-	//mill controller function()
-	/**
-	 *  @param $what string {object | file}
-	 *  @param $what_id int
-	 * */
-	public function doMill($what = '', $what_id = '')
+	private function doMill($fileId)
 	{
-		//load libraries, helpers, model
 		$this->load->library('smart');
 		$this->load->helper('form');
-		//data
+		$this->load->helper('fabtotum_helper');
+		$this->load->helper('plugin_helper');
+		$this->load->model('Files', 'files');
+		
 		$data = array();
-		$data['type']      = 'mill';
-		$data['printType'] = 'subtractive';
 		$data['runningTask'] = $this->runningTask;
-		$data['zHeightOptions'] = array('0.1' => '0.1', '0.01' => '0.01');
-		$data['what'] = $what;
-		$data['what_id'] = $what_id;
-		//wizard
-		if(!$this->runningTask){
-			$data['step1']  = $this->load->view('create/wizard/step1', $data, true );
-			$data['step2']  = $this->load->view('create/wizard/subtractive_step', $data, true );
-		}
-		$data['step3']  = $this->load->view('create/wizard/step3', $data, true );
-		$data['step4']  = $this->load->view('create/wizard/step4', $data, true );
-		$data['wizard'] = $this->load->view('create/wizard/main',  $data, true );
+		$data['file_id'] = '';
 		
-		//main page widget
+		// Skip file selection step if fileID is provided
+		$file = $this->files->get($fileId, 1);
+		$file_is_ok = False;
+		
+		if($file)
+		{
+			if($file['print_type'] == 'subtractive')
+			{
+				$data['file_id'] = $fileId;
+				$file_is_ok = True;
+				$data['wizard_jump_to'] = 2; // jump to step 2 if fileId is available
+			}
+			else
+			{
+				$data['warning'] = "Selected file is not for milling";
+			}
+		}
+		
+		// Skip to Job Execution step if task is already running
+		$task_is_running = False;
+		if($data['runningTask'])
+		{
+			$data['wizard_jump_to'] = 3;
+			$task_is_running = True;
+		}
+		
+		$data['type']      = 'mill';
+		$data['type_label'] = _("Milling");
+		
+		// select_file
+		$data['get_files_url'] = 'std/getFiles/subtractive';
+		$data['get_reacent_url'] = 'std/getRecentFiles/mill';
+		
+		// task_wizard
+		$data['start_task_url'] = 'create/startMillTask';
+		
+		$data['steps'] = array(
+				array('number'  => 1,
+				 'title'   => _("Choose file"),
+				 'content' => $this->load->view( 'std/select_file', $data, true ),
+				 'active'  => !$file_is_ok && !$task_is_running
+			    ),
+				array('number'  => 2,
+				 'title'   => _("Get ready"),
+				 'content' => $this->load->view( 'std/jog_setup', $data, true ),
+				 'active'  => $file_is_ok && !$task_is_running
+			    ),
+				array('number'  => 3,
+				 'title'   => _("Milling"),
+				 'content' => $this->load->view( 'std/task_execute', $data, true ),
+				 'active' => $task_is_running
+			    ),
+				array('number'  => 4,
+				 'title'   => _("Finish"),
+				 'content' => $this->load->view( 'std/task_finished', $data, true )
+			    )
+			);
+		
 		$widgetOptions = array(
-				'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
-				'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
+			'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
+			'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
 		);
-		$widget         = $this->smart->create_widget($widgetOptions);
-		$widget->id     = 'main-widget-mill';
-		$widget->header = array('icon' => 'icon-fab-mill', "title" => "<h2>Mill</h2>");
-		$widget->body   = array('content' => $this->load->view('create/main_widget', $data, true ), 'class'=>'fuelux');
-		//add css files
-		$this->addCssFile('/assets/css/create/style.css');
-		//add javascript dependencies
-		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
-		if(!$this->runningTask){ //if task is running these filee are not needed
-			$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
-			$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
-			$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
-			$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
-			$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
-		}
-		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.cust.min.js'); //datatable
-		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.resize.min.js'); //datatable
-		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.fillbetween.min.js'); //datatable
-		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.time.min.js'); //datatable
-		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js'); //datatable
 		
-		$this->addJsInLine($this->load->view('create/js', $data, true));
+		$widgeFooterButtons = '';
+
+		$widget         = $this->smart->create_widget($widgetOptions);
+		$widget->id     = 'main-widget-head-installation';
+		$widget->header = array('icon' => 'fa-cube', "title" => "<h2>"._("Mill")."</h2>");
+		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ), 'class'=>'fuelux', 'footer'=>$widgeFooterButtons);
+
+		$this->addCssFile('/assets/css/std/select_file.css');
+		$this->addCssFile('/assets/css/std/task_execute.css');
+		$this->addCssFile('/assets/css/std/jog_setup.css');
+		$this->addCssFile('/assets/css/std/jogtouch.css');
+		$this->addCssFile('/assets/css/std/jogcontrols.css');
+
+		$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
+		
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.cust.min.js'); 
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.resize.min.js');
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.fillbetween.min.js');
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.time.min.js');
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js');
+
+		$this->addJsInLine($this->load->view( 'create/mill_js', $data, true));
+
+		$this->addJSFile('/assets/js/std/raphael.js' ); //vector library
+		$this->addJSFile('/assets/js/std/modernizr-touch.js' ); //touch device detection
+		$this->addJSFile('/assets/js/std/jogcontrols.js' ); //jog controls
+		$this->addJSFile('/assets/js/std/jogtouch.js' ); //jog controls
+
+		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
+		$this->addJsInLine($this->load->view( 'std/task_wizard_js', $data, true));
+		
+		$this->addJsInLine($this->load->view( 'std/select_file_js', $data, true));
+		
+		$this->addJSFile('/assets/js/plugin/knob/jquery.knob.min.js');
+		$this->addJsInLine($this->load->view( 'std/jog_setup_js', $data, true));
+		
+		$this->addJsInLine($this->load->view( 'std/task_execute_js', $data, true));
+		$this->addJsInLine($this->load->view( 'std/task_finished_js', $data, true));
+
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
 	
-	/**
-	 * @param type (additive, subtractive)
-	 * @param $selected_file int file to select
-	 * @return json object for dataTables plugin
-	 * get all files
-	 */
-	public function getFiles($type = 'additive')
+	private function doLaser($fileId)
 	{
-		//load libraries, models, helpers
+		$this->load->library('smart');
+		$this->load->helper('form');
+		$this->load->helper('fabtotum_helper');
+		$this->load->helper('plugin_helper');
 		$this->load->model('Files', 'files');
-		$files  = $this->files->getForCreate($type);
-		$aaData = $this->dataTableFormat($files);
-		$this->output->set_content_type('application/json')->set_output(json_encode(array('aaData' => $aaData)));
-	}
-	
-	/**
-	 * @param type (print, mill)
-	 * @return json object for dataTables plugin
-	 * get recent printed files
-	 */
-	public function getRecentFiles($type = 'print')
-	{
-		//load libraries, models, helpers
-		$this->load->model('Tasks', 'tasks');
-		$files  = $this->tasks->getLastCreations($type);
-		$aaData = $this->dataTableFormat($files);
-		$this->output->set_content_type('application/json')->set_output(json_encode(array('aaData' => $aaData)));
-	}
-	
-	/**
-	 * @param $data (list)
-	 * return array data for dataTable pluguin
-	 */
-	private function dataTableFormat($data)
-	{
-		//load text helper
-		$this->load->helper('text_helper');
-		$aaData = array();
-		foreach($data as $file){ 
-			$td0 = '<label class="radio"><input type="radio" name="create-file" value="'.$file['id_file'].'"><i></i></label>';
-			$td1 = '<i class="fa fa-cube"></i> <span class="hidden-xs">'.$file['orig_name'].'</span><span class="hidden-md hidden-sm hidden-lg">'.ellipsize($file['orig_name'], 35).'</span>';
-			$td2 = '<i class="fa fa-cubes"></i> <span class="hidden-xs">'.$file['name'].'</span><span class="hidden-md hidden-sm hidden-lg">'.ellipsize($file['name'], 35).'</span>';
-			$td3 = $file['id_file'];
-			$td4 = $file['id_object'];
-			$aaData[] = array($td0, $td1, $td2, $td3, $td4);
-		}
-		return $aaData;
-	}
-	
-	/**
-	 * @param $type (print or mill) 
-	 * Start print or mill
-	 */
-	public function startCreate($type = 'print')
-	{
-		$postData = $this->input->post();
 		
-		switch($type){
-			case 'print':
-				$this->startPrint($postData); // go to start print function
-				break;
-			case 'mill':
-				$this->startMill($postData); // go to start mill function
-				break;
+		$data = array();
+		$data['runningTask'] = $this->runningTask;
+		$data['file_id'] = '';
+		
+		// Skip file selection step if fileID is provided
+		$file = $this->files->get($fileId, 1);
+		$file_is_ok = False;
+		if($file)
+		{
+			if($file['print_type'] == 'laser')
+			{
+				$data['file_id'] = $fileId;
+				$file_is_ok = True;
+				$data['wizard_jump_to'] = 2; // jump to step 2 if fileID is available
+			}
 		}
-	}
+		
+		// Skip to Job Execution step if task is already running
+		$task_is_running = False;
+		if($data['runningTask'])
+		{
+			$data['wizard_jump_to'] = 4;
+			$task_is_running = True;
+		}
+		
+		//$data['wizard_jump_to'] = 0;
+		
+		$data['type']      = 'laser';
+		$data['type_label'] = 'Engraving';
+		
+		//~ $data['z_height_values'] = array('0.1' => '0.1', '0.01' => '0.01');
+		
+		// select_file
+		$data['get_files_url'] = 'std/getFiles/laser';
+		$data['get_reacent_url'] = 'std/getRecentFiles/laser';
+		
+		// task_wizard
+		$data['start_task_url'] = 'create/startLaserTask';
+		
+		// jog_setup
+		$data['jog_message'] = 'Position the laser point to the origin (bottom-left corner) of the drawing. Jog to desired XY position, press <i class="fa fa-bullseye"></i> and then press "Start" ';
+		$data['jog_image'] = '/assets/img/controllers/create/laser/fabui_laser_02a.png';
+		$data['fourth_axis'] = False;
+		
+		// job_execute
+		$data['set_rpm_function'] = 'setLaserPWM';
+		$data['rpm_label'] = 'PWM';
+		//~ $data['rpm_message'] = 'PWM value set to:';
+		$data['rpm_min'] = 0;
+		$data['rpm_max'] = 255;
+		
+		// job finish
+		$data['z_height_save_message'] = "Z's height correction is <strong><span class=\"z-height\"></span></strong>, do you want to save it and override the value for the next engraving?";
+		$data['task_jump_restart'] = 3;
+		
+		$data['steps'] = array(
+				array('number'  => 1,
+				 'title'   => 'Choose File',
+				 'content' => $this->load->view( 'std/select_file', $data, true ),
+				 'active'  => !$file_is_ok && !$task_is_running
+			    ),
+				array('number'  => 2,
+				 'title'   => 'Safety',
+				 'content' => $this->load->view( 'std/laser_safety', $data, true ),
+				 'active'  => $file_is_ok && !$task_is_running
+			    ),
+				array('number'  => 3,
+				 'title'   => 'Get Ready',
+				 'content' => $this->load->view( 'std/jog_setup', $data, true ),
+			    ),
+				array('number'  => 4,
+				 'title'   => 'Laser Engraving',
+				 'content' => $this->load->view( 'std/task_execute', $data, true ),
+				 'active' => $task_is_running
+			    ),
+				array('number'  => 5,
+				 'title'   => 'Finish',
+				 'content' => $this->load->view( 'std/task_finished', $data, true )
+			    )
+			);
+		
+		$widgetOptions = array(
+			'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
+			'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
+		);
+		
+		$widgeFooterButtons = '';
 
-	/**
-	 * @param $data (POST DATA)
-	 * start print task
-	 */
-	//~ private function startPrint($data)
-	private function startPrint($data)
-	{		
+		$widget         = $this->smart->create_widget($widgetOptions);
+		$widget->id     = 'main-widget-make-laser';
+		$widget->header = array('icon' => 'fa-cube', "title" => "<h2>Laser Engraving</h2>");
+		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ), 'class'=>'fuelux', 'footer'=>$widgeFooterButtons);
+
+		$this->addCssFile('/assets/css/std/select_file.css');
+		$this->addCssFile('/assets/css/std/jog_setup.css');
+		$this->addCssFile('/assets/css/std/jogtouch.css');
+		$this->addCssFile('/assets/css/std/jogcontrols.css');
+
+		$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
+		
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.cust.min.js'); 
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.resize.min.js');
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.fillbetween.min.js');
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.time.min.js');
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js');
+
+		$this->addJsInLine($this->load->view( 'create/laser_js', $data, true));
+
+		$this->addJSFile('/assets/js/std/raphael.js' ); //vector library
+		$this->addJSFile('/assets/js/std/modernizr-touch.js' ); //touch device detection
+		$this->addJSFile('/assets/js/std/jogcontrols.js' ); //jog controls
+		$this->addJSFile('/assets/js/std/jogtouch.js' ); //jog controls
+
+		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
+		$this->addJsInLine($this->load->view( 'std/task_wizard_js', $data, true));
+		
+		$this->addJsInLine($this->load->view( 'std/select_file_js', $data, true));
+		
+		$this->addJSFile('/assets/js/plugin/knob/jquery.knob.min.js');
+		$this->addJsInLine($this->load->view( 'std/jog_setup_js', $data, true));
+		
+		$this->addJsInLine($this->load->view( 'std/task_execute_js', $data, true));
+		$this->addJsInLine($this->load->view( 'std/task_finished_js', $data, true));
+		
+		$this->content = $widget->print_html(true);
+		$this->view();
+	}
+	
+	public function startPrintTask()
+	{
+		$data = $this->input->post();
 		//load helpers
 		$this->load->helpers('fabtotum_helper');
 		$this->load->model('Files', 'files');
 		$fileToCreate = $this->files->get($data['idFile'], 1);
 		$temperatures = readInitialTemperatures($fileToCreate['full_path']);
-		//reset task monitor file
 		resetTaskMonitor();
 		if($temperatures == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => 'File not found')));
@@ -252,14 +438,14 @@
 		}
 		
 		$preparingResult = doMacro('prepare_additive', '', [ $temperatures['extruder'], $temperatures['bed'] ]);
-		if($preparingResult['response'] == false){
+		if($preparingResult['response'] != 'ok'){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $preparingResult['message'])));
 			return;
 		}
 		
 		if($data['calibration'] == 'auto_bed_leveling'){
 			$calibrationResult = doMacro("auto_bed_leveling");
-			if($calibrationResult['response'] == false){
+			if($calibrationResult['response'] != 'ok'){
 				$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $calibrationResult['message'])));
 				return;
 			}
@@ -267,18 +453,17 @@
 		else
 		{
 			$calibrationResult = doMacro("home_all");
-			if($calibrationResult['response'] == false){
+			if($calibrationResult['response'] != 'ok'){
 				$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $calibrationResult['message'])));
 				return;
 			}
 		}
 		
 		$startPrintResult = doMacro('start_additive');
-		if($startPrintResult['response'] == false){
+		if($startPrintResult['response'] != 'ok'){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $startPrintResult['message'], 'trace'=>$startPrintResult['trace'], 'error' => $startPrintResult['reply'])));
 			return;
 		}
-		
 		//get object record
 		$object = $this->files->getObject($fileToCreate['id']);
 		//ready to print
@@ -305,17 +490,15 @@
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId, 'temperatures' => $temperatures)));
 	}
-	/**
-	 * @param $data (POST DATA)
-	 * start mill task
-	 */
-	private function startMill($data)
+	
+	public function startMillTask()
 	{
-		//TODO
+		$data = $this->input->post();
 		//load helpers
 		$this->load->helpers('fabtotum_helper');
 		$this->load->model('Files', 'files');
 		$fileToCreate = $this->files->get($data['idFile'], 1);
+		
 		//reset task monitor file
 		resetTaskMonitor();
 		$startSubtractive = doMacro('start_subtractive');
@@ -338,9 +521,8 @@
 				'start_date' => date('Y-m-d H:i:s')
 		);
 		$taskId   = $this->tasks->add($taskData);
-		$userID   = $this->session->user['id'];
 		
-		//start print
+		//start milling
 		$printArgs = array(
 				'-T' => $taskId,
 				'-F' => $fileToCreate['full_path']
@@ -349,40 +531,48 @@
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
 	}
-	/**
-	 * complete task
-	 */
-	public function complete($taskID)
-	{
-		//DEPRECATED
-	}
 	
-	public function saveQualityRating($taskID, $rating)
+	public function startLaserTask()
 	{
-		$this->load->model('Tasks', 'tasks');
+		$data = $this->input->post();
+		//load helpers
+		$this->load->helpers('fabtotum_helper');
+		$this->load->model('Files', 'files');
+		$fileToCreate = $this->files->get($data['idFile'], 1);
 		
-		$result = false;
-		
-		$task = $this->tasks->get($taskID, 1);
-		if($task)
-		{
-			$attributes = json_decode(utf8_encode(preg_replace('!\\r?\\n!', "<br>", $task['attributes'])), true);
-			$attributes['rating'] = $rating;
-			
-			$json = json_encode( $attributes );
-			
-			
-			$taskData = array(
-				'attributes' => $json
-			);
-			$this->tasks->update($taskID, $taskData);
-			
-			$result = true;
+		//reset task monitor file
+		resetTaskMonitor();
+		$startSubtractive = doMacro('start_subtractive');
+		if($startSubtractive['response'] =! 'ok'){
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $startSubtractive['message'])));
+			return;
 		}
+		//get object record
+		$object = $this->files->getObject($fileToCreate['id']);
+		//ready to print
+		//add record to DB
+		$this->load->model('Tasks', 'tasks');
+		$taskData = array(
+				'user'       => $this->session->user['id'],
+				'controller' => 'make',
+				'type'       => 'laser',
+				'status'     => 'running',
+				'id_file'    => $data['idFile'],
+				'id_object'  => $object['id'],
+				'start_date' => date('Y-m-d H:i:s')
+		);
+		$taskId   = $this->tasks->add($taskData);
 		
-		$this->output->set_content_type('application/json')->set_output(json_encode(array($result)));
+		//start milling
+		$printArgs = array(
+				'-T' => $taskId,
+				'-F' => $fileToCreate['full_path']
+		);
+		startPyScript('mill.py', $printArgs);
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
 	}
-	
- }
+
+}
  
 ?>
