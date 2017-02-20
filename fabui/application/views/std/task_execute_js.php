@@ -792,6 +792,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 				break;
 			case 'aborting':
 				aborting();
+				break;
 			case 'aborted':
 				aborted();
 				break;
