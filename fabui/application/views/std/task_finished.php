@@ -7,7 +7,10 @@
  * @license https://opensource.org/licenses/GPL-3.0
  * 
  */
- 
+
+/* variable initialization */
+if( !isset($z_height_save_message) ) $z_height_save_message = _("Z height is <strong><span class=\"z-height\"></span></strong>. Do you want to save it and override the value for the next prints?");
+
 ?>
 <hr class="simple">
 <div class="row">
@@ -29,7 +32,7 @@
 				</section>
 				<div class="row" id="save-z-height-section">
 					<section class="col col-9">
-						<label class="label"><?php echo isset($z_height_save_message)?$z_height_save_message:_("Z height is")." <strong><span class=\"z-height\"></span></strong> "._("Do you want to save it and override the value for the next prints?"); ?> </label>
+						<label class="label"><?php echo $z_height_save_message; ?></label>
 					</section>
 					<section class="col col-3">
 						<a style="padding:6px 10px 5px" href="javascript:void(0);" class="btn btn-default btn-block save-z-height"><i class="fa fa-save"></i> <?php echo _("Yes");?></a>

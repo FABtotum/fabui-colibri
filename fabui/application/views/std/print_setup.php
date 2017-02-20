@@ -1,3 +1,17 @@
+<?php
+/**
+ * 
+ * @author Krios Mane
+ * @author Daniel Kesler
+ * @version 0.1
+ * @license https://opensource.org/licenses/GPL-3.0
+ * 
+ * List of all files
+ * 
+ */
+ 
+?>
+
 <hr class="simple">
 
 <div class="" style="<?php echo ($this->session->settings['feeder']['show'] == true)?"":"display:none;"; ?>" >

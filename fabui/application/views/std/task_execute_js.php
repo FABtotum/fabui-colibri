@@ -606,29 +606,6 @@ if(!isset($bed_max)) 		$bed_max = 100;
 				break;
 		}
 	}
-	/**
-	 * 
-	 */
-	function abort()
-	{
-		openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Aborting print"), _("Please wait")+"...", false);
-		$.ajax({
-			type: 'post',
-			url: '<?php echo site_url('control/taskAction/abort') ?>',
-			dataType: 'json'
-		}).done(function(response) {
-		});
-	}
-	/**
-	* handle called when task is aborted
-	*/
-	function aborted()
-	{
-		openWait('<i class="fa fa-check "></i> '+ _("Print aborted"), _("Reloading page")+"...", false);
-		setTimeout(function(){
-			location.reload();
-		}, 5000);
-	}
 	
 	/**
 	 * 
@@ -806,11 +783,37 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	}
 	
 	/**
+	 * 
+	 */
+	function abort()
+	{
+		var taskType = "<?php echo $type; ?>";
+		openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Aborting " + taskType), _("Please wait")+"...", false);
+		$.ajax({
+			type: 'post',
+			url: '<?php echo site_url('control/taskAction/abort') ?>',
+			dataType: 'json'
+		}).done(function(response) {
+		});
+	}
+	/**
+	* handle called when task is aborted
+	*/
+	function aborted()
+	{
+		var taskType = "<?php echo ucfirst($type); ?>";
+		openWait('<i class="fa fa-check "></i> '+ _(taskType + " aborted"), _("Reloading page")+"...", false);
+		setTimeout(function(){
+			location.reload();
+		}, 5000);
+	}
+	/**
 	*
 	*/
 	function aborting()
 	{
-		openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Aborting print"), _("Please wait")+"...", false);
+		var taskType = "<?php echo $type; ?>";
+		openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Aborting")+' '+_(taskType), _("Please wait")+"...", false);
 	}
 	
 	/**
@@ -818,14 +821,16 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	*/
 	function completingTask()
 	{
-		openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Completing") + _("<?php echo ucfirst($type) ?>"), _("Please wait") + "...\r\n" + _("Moving to safe zone"), false);
+		var taskType = "<?php echo $type; ?>";
+		openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Completing") + ' ' + _(taskType), _("Please wait") + "...\r\n" + _("Moving to safe zone"), false);
 	}
 	/**
 	* complete task
 	*/
 	function completeTask()
 	{	
-		openWait('<i class="fa fa-check "></i> '+ _( "<?php echo ucfirst($type) ?> completed !" ), null, false);
+		var taskType = "<?php echo ucfirst($type); ?>";
+		openWait('<i class="fa fa-check "></i> '+ _( taskType + " completed !" ), null, false);
 
 		setTimeout(function(){
 			closeWait();

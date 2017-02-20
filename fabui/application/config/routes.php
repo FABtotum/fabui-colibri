@@ -60,10 +60,12 @@ $route['login/new-account']    = 'login/newAccount';
 $route['login/reset-password'] = 'login/resetPassword';
 $route['login/do']             = 'login/doLogin';
 // make
-$route['make/print/([a-z]+)/(\d+)'] = 'create/index/print/$1/$2';
-$route['make/mill/([a-z]+)/(\d+)']  = 'create/index/mill/$1/$2';
+$route['make/print/(\d+)'] = 'create/index/print/$1';
+$route['make/mill/(\d+)']  = 'create/index/mill/$1';
+$route['make/laser/(\d+)']  = 'create/index/laser/$1';
 $route['make/print'] = 'create/index/print';
 $route['make/mill']  = 'create/index/mill';
+$route['make/laser']  = 'create/index/laser';
 $route['make/scan']  = 'scan';
 //file manager
 $route['projectsmanager/add-project']  = 'projectsmanager/newProject';

@@ -2,12 +2,18 @@
 /**
  * 
  * @author Krios Mane
+ * @author Daniel Kesler
  * @version 0.1
  * @license https://opensource.org/licenses/GPL-3.0
  * 
  */
  
+/* variable initialization */
+if( !isset($z_height_values) ) $z_height_values = array('0.1' => '0.1', '0.01' => '0.01');
+if( !isset($rpm_label) ) $rpm_label = _("RPM");
+ 
 ?>
+
 <hr class="simple">
 <ul id="createFeed" class="nav nav-tabs bordered">
 	<li class="active"><a href="#live-feeds-tab" data-toggle="tab"><?php echo _("Live feeds")?></a></li>
@@ -83,7 +89,7 @@
 						</div> </div>
 					<?php endif; ?>
 					<?php if($type == 'mill' || $type == 'laser'): ?>
-					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"><?php echo isset($rpm_label) ? $rpm_label : 'RPM'; ?> <span class="pull-right"><span class="task-rpm"></span> </span> </span>
+					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"><?php echo $rpm_label; ?> <span class="pull-right"><span class="task-rpm"></span> </span> </span>
 						<div class="progress">
 							<div class="progress-bar" id="task-rpm-bar"></div>
 						</div> </div>
@@ -128,7 +134,7 @@
 					</span> 
 					<span class="col-xs-4 col-sm-4 col-md-4 col-lg-4"> 
 						<label style="width:100%;">
-							<?php echo form_dropdown('zHeight', isset($z_height_values)?$z_height_values:array('0.1' => '0.1', '0.01' => '0.01'), '', 'id="zHeight" class="form-control"'); ?> <i></i>
+							<?php echo form_dropdown('zHeight', $z_height_values, '', 'id="zHeight" class="form-control"'); ?> <i></i>
 						</label>
 					</span>
 					<span class="col-xs-4 col-sm-4 col-md-4 col-lg-4"> 
@@ -172,7 +178,7 @@
 			<?php if($type == 'mill' || $type == 'laser'):?>
 			<hr class="simple hidden-md hidden-sm hidden-lg">
 			<div class="col-sm-6 margin-bottom-50">
-				<h4><?php echo isset($rpm_label) ? $rpm_label : 'RPM'; ?> <span class="pull-right"><strong><span class="slider-task-rpm"></span></strong> </span></h4>
+				<h4><?php echo $rpm_label; ?> <span class="pull-right"><strong><span class="slider-task-rpm"></span></strong> </span></h4>
 				<div id="create-rpm-slider" class="noUiSlider sliders"></div>
 			</div>
 			<?php endif;?>

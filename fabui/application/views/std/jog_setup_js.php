@@ -12,8 +12,7 @@ if( !isset($fourth_axis) ) $fourth_axis = False;
 if( !isset($type) ) $type = 'mill';
 if( !isset($store_position_url) ) $store_position_url = 'std/storePosition/'.$type;
 if( !isset($stored_position) ) $stored_position = loadPosition($type);
-//array("x" => "undefined", "y" => "undefined", "z" => "undefined");
-//$data['stored_position'] = loadPosition($data['type']);
+
 ?>
 <script type="text/javascript">
 

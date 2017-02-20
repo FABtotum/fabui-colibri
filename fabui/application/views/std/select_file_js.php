@@ -7,6 +7,9 @@
  * 
  */
  
+/* variable initialization */
+if( !isset($get_files_url) ) $get_files_url = 'std/getFiles/' + $type;
+ 
 ?>
 <script type="text/javascript">
 
