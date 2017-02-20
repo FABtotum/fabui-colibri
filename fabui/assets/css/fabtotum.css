@@ -682,3 +682,7 @@ body.smart-style-6 #logo img {
 body.smart-style-6 .ribbon-button-alignment {
 	display: inline-block !important;
 }
+
+body.smart-style-6 .smart-form .select select {
+	padding-left: 5px !important;
+}
