@@ -55,7 +55,9 @@ class Head extends FAB_Controller {
 		
 		$data['head'] = isset($_units['hardware']['head']) ? $_units['hardware']['head'] : 'head_shape';
 
-		$headerToolbar = '';
+		$headerToolbar = '<div class="widget-toolbar" role="menu">
+		<a class="btn btn-success settings-action" data-action="add" href=""><i class="fa fa-plus"></i> '._("Add new head").' </a>
+		</div>';
 		
 		//main page widget
 		$widgetOptions = array(
