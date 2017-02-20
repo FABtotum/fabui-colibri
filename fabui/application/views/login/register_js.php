@@ -59,27 +59,27 @@
 			// Messages for form validation
 			messages : {
 				login : {
-					required : 'Please enter your login'
+					required : '<?php echo _("Please enter your login");?>'
 				},
 				email : {
-					required : 'Please enter your email address',
-					email : 'Please enter a VALID email address'
+					required : '<?php echo _("Please enter your email address");?>',
+					email : '<?php echo _("Please enter a valid email address");?>'
 				},
 				password : {
-					required : 'Please enter your password'
+					required : '<?php echo _("Please enter your password");?>'
 				},
 				passwordConfirm : {
-					required : 'Please enter your password one more time',
-					equalTo : 'Please enter the same password as above'
+					required : '<?php echo _("Please enter your password one more time");?>',
+					equalTo : '<?php echo _("Please enter the same password as above");?>'
 				},
 				first_name : {
-					required : 'Please select your first name'
+					required : '<?php echo _("Please enter your first name");?>'
 				},
 				last_name : {
-					required : 'Please select your last name'
+					required : '<?php echo _("Please enter your last name");?>'
 				},
 				terms : {
-					required : 'You must agree with Terms and Conditions'
+					required : '<?php echo _("You must agree with Terms and Conditions");?>'
 				}
 			},
 

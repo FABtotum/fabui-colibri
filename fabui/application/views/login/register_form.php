@@ -13,46 +13,46 @@
 	<div class="col-sm-6">
 		<div class="well no-padding">
 			<form action="<?php echo site_url('login/doNewAccount'); ?>" method="POST" id="register-form" class="smart-form client-form">
-				<header><i class="fa fa-play fa-rotate-90"></i> Register new account</header>
+				<header><i class="fa fa-play fa-rotate-90"></i> <?php echo _("Register new account");?></header>
 				<fieldset>
 					<section>
 						<label class="input"> <i class="icon-append fa fa-user"></i>
 							<input type="email" name="email" placeholder="Email">
-							<b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Needed to enter the website</b></label>
+							<b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> <?php echo _("Needed to enter the fabui");?></b></label>
 					</section>
 					<section>
 						<label class="input"> <i class="icon-append fa fa-lock"></i>
 							<input type="password" name="password" placeholder="Password" id="password">
-							<b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> Don't forget your password</b> </label>
+							<b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> <?php echo _("Don't forget your password");?></b> </label>
 					</section>
 					<section>
 						<label class="input"> <i class="icon-append fa fa-lock"></i>
 							<input type="password" name="passwordConfirm" placeholder="Confirm password">
-							<b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> Don't forget your password</b> </label>
+							<b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> <?php echo _("Don't forget your password");?></b> </label>
 					</section>
 				</fieldset>
 				<fieldset>
 					<div class="row">
 						<section class="col col-6">
 							<label class="input"> 
-								<input type="text" placeholder="First name" name="first_name">
+								<input type="text" placeholder="<?php echo _("First name");?>" name="first_name">
 							</label>
 						</section>
 						<section class="col col-6">
 							<label class="input"> 
-								<input type="text" placeholder="Last name" name="last_name">
+								<input type="text" placeholder="<?php echo _("Last name");?>" name="last_name">
 							</label>
 						</section>
 					</div>
 					<section>
 						<label class="checkbox">
 							<input type="checkbox" name="terms" id="terms">
-							<i></i>I agree with the <a href="#" data-toggle="modal" data-target="#myModal"> Terms and Conditions </a>
+							<i></i><?php echo _("I agree with the");?> <a href="#" data-toggle="modal" data-target="#myModal"> <?php echo _("Terms and Conditions");?> </a>
 						</label>
 					</section>
 				</fieldset>
 				<footer>
-					<button type="submit" class="btn btn-primary">Register</button>
+					<button type="submit" class="btn btn-primary"><?php echo _("Register");?></button>
 				</footer>
 			</form>
 		</div>
@@ -81,16 +81,10 @@ Donec lacus velit, lobortis vel elementum et, commodo quis mauris. Vivamus effic
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">
-						Cancel
-					</button>
-					<button type="button" class="btn btn-primary" id="i-agree">
-						<i class="fa fa-check"></i> I Agree
-					</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _("Cancel");?></button>
+					<button type="button" class="btn btn-primary" id="i-agree"><i class="fa fa-check"></i> <?php echo _("I agree");?> </button>
 					
-					<button type="button" class="btn btn-danger pull-left" id="print">
-						<i class="fa fa-print"></i> Print
-					</button>
+					<button type="button" class="btn btn-danger pull-left" id="print"><i class="fa fa-print"></i> <?php echo _("Print");?></button>
 				</div>
 			</div>
 		</div>

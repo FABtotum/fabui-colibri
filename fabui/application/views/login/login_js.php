@@ -40,11 +40,11 @@
 			// Messages for form validation
 			messages : {
 				email : {
-					required : 'Please enter your email address',
-					email : 'Please enter a VALID email address'
+					required : '<?php echo _("Please enter your email address");?>',
+					email : '<?php echo _("Please enter a valid email address");?>'
 				},
 				password : {
-					required : 'Please enter your password'
+					required : '<?php echo _("Please enter your password");?>'
 				}
 			},
 			// Do not change code below
