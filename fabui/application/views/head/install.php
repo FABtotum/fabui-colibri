@@ -31,8 +31,8 @@
 								<div class="input-group">
 									<label class="select"> <?php echo form_dropdown('heads', $heads_list, $head, 'class="input-lg" id="heads"'); ?> <i></i> </label>
 									<span class="input-group-btn btn-group-lg">
-									  <button type="button" class="btn btn-default settings-action" title="<?php echo _("Edit");?>" data-action="edit"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-									  <button type="button" class="btn btn-default settings-action" title="<?php echo _("Remove");?>" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></button>
+									  <button type="button" id="edit-button" class="btn btn-default settings-action" title="<?php echo _("Edit");?>" data-action="edit"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+									  <button type="button" id="remove-button" class="btn btn-default settings-action" title="<?php echo _("Remove");?>" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></button>
 									</span>
 								</div>
 							</section>
@@ -90,30 +90,29 @@
 
 			<div class="modal-body">
 				
-				<form action="" class="smart-form" id="settings">
+				<form action="" class="smart-form" id="head-settings">
 					<fieldset>
 						<div class="row">
 							<section class="col col-6">
 								<label class="label"><?php echo _('Name');?></label>
 								<label class="input">
-									<input type="text" class="plugin-adaptive-meta" id="head-name" name="name" placeholder="My New Head">
+									<input type="text" data-inputmask-regex="[_a-z A-Z0-9]*" class="plugin-adaptive-meta" id="head-name" name="name" placeholder="My New Head">
 								</label>
 							</section>
 							
 							<section class="col col-6">
 								<label class="label"><?php echo _('URL');?></label>
 								<label class="input">
-									<input type="text" class="plugin-adaptive-meta" id="head-name" name="name" placeholder="More info link">
+									<input type="text" class="plugin-adaptive-meta" id="head-link" name="link" placeholder="More info link">
 								</label>
 							</section>
 							
 						</div>
 						
-
 						<section>
 							<label class="label"><?php echo _('Description');?></label>
 							<label class="textarea">
-								<textarea id="head-desc" name="description" rows="3" placeholder="Head description"></textarea>
+								<textarea id="head-description" name="description" rows="3" placeholder="Head description"></textarea>
 							</label>
 						</section>
 
@@ -121,24 +120,27 @@
 							
 							<section class="col col-6">
 								<label class="label"><?php echo _('Capabilities');?></label>
-								<div class="row">
+								<div class="row" id="capabilities-container">
 									<div class="col col-6">
 										<label class="checkbox">
-											<input type="checkbox" name="print" class="capability">
+											<input type="checkbox" id="cap-print" name="capability[]" data-attr="print" class="capability">
 											<i></i>Print</label>
 										<label class="checkbox">
-											<input type="checkbox" name="mill" class="capability">
+											<input type="checkbox" id="cap-mill" name="capability[]" data-attr="mill" class="capability">
 											<i></i>Mill</label>
 										<label class="checkbox">
-											<input type="checkbox" name="laser" class="capability">
+											<input type="checkbox" id="cap-laser" name="capability[]" data-attr="laser" class="capability">
 											<i></i>Laser</label>
 									</div>
 									<div class="col col-6">
 										<label class="checkbox">
-											<input type="checkbox" name="feeder" class="capability">
+											<input type="checkbox" id="cap-fan" name="capability[]" data-attr="fan" class="capability">
+											<i></i>Fan</label>
+										<label class="checkbox">
+											<input type="checkbox" id="cap-feeder" name="capability[]" data-attr="feeder" class="capability">
 											<i></i>Feeder</label>
 										<label class="checkbox">
-											<input type="checkbox" name="scan" class="capability">
+											<input type="checkbox" id="cap-scan" name="capability[]" data-attr="scan" class="capability">
 											<i></i>Scan</label>
 
 									</div>
@@ -148,7 +150,7 @@
 							<section class="col col-6">
 								<label class="label"><?php echo _('Custom initialization');?></label>
 								<label class="textarea">
-									<textarea id="head-desc" name="custom_gcode" rows="5" placeholder="Gcode initialization sequence"></textarea>
+									<textarea id="head-override" name="custom_gcode" rows="5" placeholder="Gcode initialization sequence"></textarea>
 								</label>
 							</section>
 							
@@ -160,7 +162,7 @@
 							<section class="col col-6">
 								<label class="label">Working mode</label>
 								<label class="select">
-									<select id="working-mode" name="working_mode">
+									<select id="head-working_mode" name="working_mode">
 										<option value="0">Hybrid</option>
 										<option value="1">FFF</option>
 										<option value="2">Laser</option>
@@ -173,7 +175,7 @@
 							<section class="col col-6">
 								<label class="label"><?php echo _('Soft ID')?></label>
 								<label class="input">
-									<input type="number" id="head-fw_id" name="fw_id" min="100" max="255" value="100">
+									<input type="number" id="head-fw_id" name="fw_id" min="0" max="255" value="100">
 								</label>
 							</section>
 						</div>
@@ -191,7 +193,7 @@
 							<section class="col col-4">
 								<label class="label">Thermistor</label>
 								<label class="select">
-									<select>
+									<select id="head-thermistor_index" name="thermistor_index">
 										<option value="0">Fabtotum</option>
 										<option value="1">Standard 100k</option>
 									</select> <i></i> </label>
@@ -200,9 +202,11 @@
 							<section class="col col-4">
 								<label class="label"><?php echo _('Max temperature')?></label>
 								<label class="input">
-									<input type="number" id="head-max_temp" name="max_temp" value="250">
+									<input type="number" id="head-max_temp" name="max_temp" min="180" max="300" value="250">
 								</label>
 							</section>
+							
+							<input type="hidden" id="head-probe_offset" name="probe_offset" value="0"/>
 						</div>
 					</fieldset>
 					
@@ -241,6 +245,7 @@
 			</div><!-- /.modal-body -->
 
 			<div class="modal-footer">
+			<input id="inputId" type="file" style="display:none" accept=".json">
 			<button type="button" class="btn btn-default settings-action" data-action="import" title="<?php echo _("Import from file")?>">Import</button>
 			<button type="button" class="btn btn-default settings-action" data-action="export" title="<?php echo _("Export to file")?>">Export</button>
 			<button type="button" class="btn btn-primary settings-action" data-action="save" data-dismiss="modal">Save</button>

@@ -11,20 +11,8 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
  
 class Head extends FAB_Controller {
-
-	public function index($type = 'install')
-	{
-		switch($type){
-			case 'install':
-				$this->doInstall();
-				break;
-			case 'add':
-				$this->doAdd();
-				break;
-		}
-	}
 	
-	public function doInstall()
+	public function index()
 	{
 		//load libraries, helpers, model
 		$this->load->library('smart');
@@ -73,13 +61,11 @@ class Head extends FAB_Controller {
 		$widget->header = array('icon' => 'fa-toggle-down', "title" => "<h2>Heads</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('head/install', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 
+		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
+		$this->addJSFile('/assets/js/plugin/inputmask/jquery.inputmask.bundle.js');
+		$this->addJSFile('/assets/js/plugin/FileSaver.min.js');
 		$this->addJsInLine($this->load->view('head/install_js', $data, true));
 		$this->content = $widget->print_html(true);
-		$this->view();
-	}
-	
-	public function doAdd()
-	{
 		$this->view();
 	}
 	
@@ -125,6 +111,22 @@ class Head extends FAB_Controller {
 		$this->output->set_content_type('application/json')->set_output(json_encode( $head_info ));
 	}
 
+	public function removeHead($head)
+	{
+		$this->load->helper('fabtotum_helper');
+		$result = removeHeadInfo($head);
+		$this->output->set_content_type('application/json')->set_output(json_encode( $result ));
+	}
+	
+	public function saveHead($head_filename)
+	{
+		$this->load->helper('fabtotum_helper');
+		
+		$info = $this->input->post();
+		$result = saveHeadInfo($info, $head_filename);
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode( $result ));
+	}
 }
  
 ?>

@@ -22,7 +22,7 @@ $.stop_all_url_action         = '/fabui/application/modules/controller/ajax/stop
 $.update_check_url            = '/fabui/updates/check';
 $.check_notification_url      = '/fabui/application/modules/controller/ajax/check_notifications.php';
 $.secure_url_action           = '/fabui/application/modules/controller/ajax/secure.php';
-$.new_head_url_action         = '#maintenance/head/install?warning=1';
+$.new_head_url_action         = '#maintenance/head?warning=1';
 $.safety_json_url             = '/temp/safety.json';
 $.serial_exec_url_action      = '/fabui/application/modules/jog/ajax/exec.php';
 $.first_setup_url_action      = '#controller/first_setup';

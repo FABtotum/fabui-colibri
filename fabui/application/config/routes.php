@@ -73,7 +73,7 @@ $route['projectsmanager/add-file/(:num)']  = 'projectsmanager/newFile/$1';
 //settings
 $route['settings/cam'] = 'cam';
 //maintenance
-$route['maintenance/head/install']              = 'head/index/install';
+$route['maintenance/head']                      = 'head';
 $route['maintenance/bed-calibration']           = 'bed';
 $route['maintenance/spool-management']          = 'spool';
 $route['maintenance/probe-length-calibration']  = 'probe/index/length';

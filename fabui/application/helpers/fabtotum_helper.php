@@ -41,7 +41,7 @@ if ( !function_exists('createDefaultSettings'))
 				'invert_x_endstop_logic' =>false
 			)
 		);
-		write_file($CI->config->item('settings'), json_encode($settings));
+		write_file($CI->config->item('settings'), json_encode($settings, JSON_PRETTY_PRINT));
 	}	
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -203,6 +203,41 @@ if(!function_exists('loadHeads'))
 		}
 
 		return $heads;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('removeHeadInfo'))
+{
+	function removeHeadInfo($head_filename)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$heads_dir = $CI->config->item('heads');
+		
+		$fn = $heads_dir.'/'.$head_filename.'.json';
+		
+		if( file_exists($fn) )
+		{
+			unlink($fn);
+			return true;
+		}
+		
+		return false;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('saveHeadInfo'))
+{
+	function saveHeadInfo($info, $head_name)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$heads_dir = $CI->config->item('heads');
+		
+		$fn = $heads_dir.'/'.$head_name.'.json';
+		
+		$content = json_encode($info, JSON_PRETTY_PRINT);
+		return file_put_contents($fn, $content) > 0;
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

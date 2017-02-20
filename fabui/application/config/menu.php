@@ -61,7 +61,7 @@ $config['menu'] = array(
 			'head' => array(
 				'title' => _("Head"),
 				'icon' => 'fa-toggle-down',
-				'url' => 'maintenance/head/install'
+				'url' => 'maintenance/head'
 			),
 			'spool' => array(
 				'title' => _("Spool managment"),

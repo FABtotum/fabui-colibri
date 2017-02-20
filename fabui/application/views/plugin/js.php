@@ -254,6 +254,7 @@
 		});
 		
 		$("#plugin-slug").inputmask("Regex");
+		$("#plugin-name").inputmask("Regex");
 
 	}
 	

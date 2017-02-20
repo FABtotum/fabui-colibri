@@ -102,7 +102,7 @@
 					<section class="col col-6">
 						<label class="label"><?php echo _('Name');?></label>
 						<label class="input">
-							<input type="text" class="plugin-adaptive-meta" id="plugin-name" name="plugin_name" placeholder="My New Plugin">
+							<input type="text" data-inputmask-regex="[_a-z A-Z0-9]*" class="plugin-adaptive-meta" id="plugin-name" name="plugin_name" placeholder="My New Plugin">
 						</label>
 					</section>
 					
