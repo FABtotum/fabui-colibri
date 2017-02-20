@@ -129,7 +129,7 @@ if(!function_exists('getBundlesStatus'))
 			'update' => array(
 				'available' => false,
 				'bundles'   => 0,
-				'firwmare'  => false,
+				'firmware'  => false,
 				'endpoint'  => array(
 					'bundles' =>$bundlesEndpoint,
 					'fimware' => $fwEndpoint

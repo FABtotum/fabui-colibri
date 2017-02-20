@@ -105,36 +105,44 @@
 	 */
 	public function notifications()
 	{
-		/*$this->load->model('Tasks', 'tasks');
+		//load helpers, config
+		$this->load->helper('update_helper');
+		$this->config->load('fabtotum');
+		$updatesJSON = json_decode(file_get_contents($this->config->item('updates_json_file')), true);
 		
-		$tasks = $this->tasks->getRunning();
-		
-		if(!$tasks)
-		{
-			echo '<ul class="notification-body">';
-				echo '
-					<li>
-						<span class="padding-10 unread">
-							<em class=" padding-5 no-border-radius  pull-left margin-right-5 ">
-								<i class="fa fa-tablet fa-2x "></i>
-							</em>
-							<span>
-								<strong><a class="display-normal" href="#">FABUI <i class="font-xs txt-color-orangeDark">beta</i></a>  is out!</strong>
-								<a href="" class="btn btn-xs btn-primary margin-top-5"><i class="fa fa-refresh"></i> Update now!</a>
-							</span>
-						</span>
-					</li>
-				';
-			echo '</ul>';
+		if($updatesJSON['update']['available']){
+			
+			$number = $updatesJSON['update']['bundles'];
+			$html  = '<ul class="notification-body">';
+			
+			if($number > 0){
+				$html .= '<li>';
+				$html .= '<span class="padding-10">';
+				$html .= '<em class="badge padding-5 no-border-radius bg-color-blueLight pull-left margin-right-5"><i class="fa fa-refresh fa-fw fa-2x"></i></em>';
+				$text = $number == 1 ? _("1 new update is available") : _("{0} new updates are available", $number);
+				$html .= '<span> '.$text.' <a class="display-normal" href="'.site_url('#updates').'"><strong>'._("Update now").'</strong></a> </span>';
+				$html .= '</span>';
+				$html .= '</li>';
+			}
+			
+			if($updatesJSON['update']['firmware']){
+				$html .= '<li>';
+				$html .= '<span class="padding-10">';
+				$html .= '<em class="badge padding-5 no-border-radius  bg-color-green pull-left margin-right-5"><i class="fa fa-microchip fa-fw fa-2x"></i></em>';
+				$text = _("A new firmware update is available");
+				$html .= '<span> '.$text.' <a class="display-normal" href="'.site_url('#updates').'"><strong>'._("Update now").'</strong></a> </span>';
+				$html .= '</span>';
+				$html .= '</li>';
+			}
+			
+			$html .= '</ul>';
+			echo $html;
+			
+		}else{
+			echo '<div class="alert alert-transparent">
+					<h4 class="text-center">'._("Great! Your FABtotum Personal Fabricator is up to date").'</h4>
+				</div>';
 		}
-		else
-		{
-			echo '
-				<div class="alert alert-transparent">
-					<h4 class="text-center">'._("No running tasks").'</h4>
-				</div>
-			';
-		}*/
 	}
 
  }
