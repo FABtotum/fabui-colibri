@@ -19,16 +19,16 @@
 			<div class="form-bootstrapWizard">
 				<ul class="bootstrapWizard form-wizard">
 					<li class="active" data-target="#welcome-tab">
-						<a href="#welcome-tab" data-toggle="tab"> <span class="step">1</span> <span class="title">Welcome</span> </a>
+						<a href="#welcome-tab" data-toggle="tab"> <span class="step">1</span> <span class="title"><?php echo _("Welcome")?></span> </a>
 					</li>
 					<li data-target="#account-tab">
-						<a href="#account-tab" data-toggle="tab"> <span class="step">2</span> <span class="title">Account</span> </a>
+						<a href="#account-tab" data-toggle="tab"> <span class="step">2</span> <span class="title"><?php echo _("Account")?></span> </a>
 					</li>
 					<li data-target="#settings-tab">
-						<a href="#settings-tab" data-toggle="tab"> <span class="step">3</span> <span class="title">Settings</span> </a>
+						<a href="#settings-tab" data-toggle="tab"> <span class="step">3</span> <span class="title"><?php echo _("Settings")?></span> </a>
 					</li>
 					<li data-target="#finish-tab">
-						<a href="#finish-tab" data-toggle="tab"> <span class="step">4</span> <span class="title">Finish</span> </a>
+						<a href="#finish-tab" data-toggle="tab"> <span class="step">4</span> <span class="title"><?php echo _("Finish")?></span> </a>
 					</li>
 				</ul>
 				<div class="clearfix"></div>
@@ -36,23 +36,23 @@
 			<div class="tab-content">
 				<div class="tab-pane active" id="welcome-tab">
 					<br>
-					<h3><strong>Step 1 </strong> - Welcome</h3>
+					<h3><strong><?php echo _("Step")?> 1 </strong> - <?php echo _("Welcome")?></h3>
 					<div class="row">
 						<div class="col-sm-12">
-							<p class="font-md text-center">Welcome to the installation wizard of the FABtotum User Interface. 
-							Follow the steps and enter the data as promted</p>
+							<p class="font-md text-center"><?php echo _("Welcome to the installation wizard of the FABtotum User Interface")?>. 
+							<?php echo _("Follow the steps and enter the data as promted")?></p>
 						</div>
 					</div>
 				</div>
 				<div class="tab-pane" id="account-tab">
 					<br>
-					<h3><strong>Step 2 </strong> - Create your personal account</h3>
+					<h3><strong><?php echo _("Step")?> 2 </strong> - <?php echo _("Create your personal account")?></h3>
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="form-group">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user  fa-fw"></i></span>
-									<input class="form-control " placeholder="First name" type="text" name="first_name" id="first_name">
+									<input class="form-control " placeholder="<?php echo _("First name")?>" type="text" name="first_name" id="first_name">
 								</div>
 							</div>
 						</div>
@@ -60,7 +60,7 @@
 							<div class="form-group">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-user  fa-fw"></i></span>
-									<input class="form-control " placeholder="Last name" type="text" name="last_name" id="last_name">
+									<input class="form-control " placeholder="<?php echo _("Last name")?>" type="text" name="last_name" id="last_name">
 								</div>
 							</div>
 						</div>
@@ -98,7 +98,7 @@
 							<div class="form-group">			
 								<label class="checkbox-inline">
 									 <input type="checkbox" class="checkbox" name="terms" id="terms">
-									 <span>I agree with the <a href="#" data-toggle="modal" data-target="#termsConditionModal"> Terms and Conditions </a></span>
+									 <span><?php echo _("I agree with the")?> <a href="#" data-toggle="modal" data-target="#termsConditionModal"> <?php echo _("Terms and Conditions")?> </a></span>
 								</label>
 							</div>
 						</div>
@@ -106,11 +106,11 @@
 				</div>
 				<div class="tab-pane" id="settings-tab">
 					<br>
-					<h3><strong>Step 3 </strong> - Settings</h3>
+					<h3><strong><?php echo _("Step")?> 3 </strong> - <?php echo _("Settings")?></h3>
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="form-group">
-								<label>Select your language </label>
+								<label><?php echo _("Select your language")?> </label>
 								<div class="icon-addon addon-md">
 				                    <?php echo langauges_menu('form-control', 'language', 'id="language"');?>
 				                    <label class="fa fa-flag"></label>
@@ -119,7 +119,7 @@
 						</div>
 						<div class="col-sm-12">
 							<div class="form-group">
-								<label>On which timezone you are? </label>
+								<label><?php echo _("On which timezone you are?")?> </label>
 								<div class="icon-addon addon-md">
 				                    <?php echo timezone_menu('form-control', 'timezone', 'id="timezone"');?>
 				                    <label class="fa fa-map-marker"></label>
@@ -133,7 +133,7 @@
 					<br>
 					<div class="row margin-top-10">
 						<div class="col-sm-12">
-							<p class="font-md text-center">You're almost done.<br>Click <strong>install</strong> to complete</p>
+							<p class="font-md text-center"><?php echo _("You're almost done")?>.<br><?php echo _("Click")?> <strong><?php echo _("Install")?></strong> <?php echo _("to complete")?></p>
 						</div>
 					</div>
 				</div>
@@ -142,10 +142,10 @@
 						<div class="col-sm-12">
 							<ul class="pager wizard no-margin">
 								<li class="previous disabled">
-									<a href="javascript:void(0);" class="btn btn-lg btn-default"> Previous </a>
+									<a href="javascript:void(0);" class="btn btn-lg btn-default"> <?php echo _("Previous")?> </a>
 								</li>
 								<li class="next">
-									<a href="javascript:void(0);" class="btn btn-lg txt-color-darken"> Next </a>
+									<a href="javascript:void(0);" class="btn btn-lg txt-color-darken"> <?php echo _("Next")?>  </a>
 								</li>
 							</ul>
 					</div>
@@ -176,16 +176,9 @@ Donec lacus velit, lobortis vel elementum et, commodo quis mauris. Vivamus effic
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">
-						Cancel
-					</button>
-					<button type="button" class="btn btn-primary" id="i-agree">
-						<i class="fa fa-check"></i> I Agree
-					</button>
-					
-					<button type="button" class="btn btn-danger pull-left" id="print">
-						<i class="fa fa-print"></i> Print
-					</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _("Cancel")?></button>
+					<button type="button" class="btn btn-primary" id="i-agree"><i class="fa fa-check"></i> <?php echo _("I agree")?></button>
+					<button type="button" class="btn btn-danger pull-left" id="print"><i class="fa fa-print"></i> <?php echo _("Print")?></button>
 				</div>
 			</div>
 		</div>
