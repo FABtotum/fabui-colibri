@@ -421,7 +421,7 @@ fabApp = (function(app) {
 				if(controller == except){
 					//link.addClass('except-link');
 					app.unFreezeParent(link);
-					link.append('<span class="badge bg-color-red pull-right inbox-badge freeze-menu">!</span>');
+					if($(".freeze-menu").length == 0) link.append('<span class="badge bg-color-red pull-right inbox-badge freeze-menu">!</span>');
 				}
 				number_tasks =  1;
 			}else{

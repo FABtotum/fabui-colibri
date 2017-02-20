@@ -68,16 +68,14 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	{
 		disableButton('.btn-prev');
 		disableButton('.btn-next');
-		disableButton('.top-directions');
-		disableButton('.top-axisz');
+		fabApp.disableTopBarControls();
 	}
 	/**
 	*
 	*/
 	function unFreezeUI()
 	{
-		enableButton('.top-directions');
-		enableButton('.top-axisz');
+		fabApp.enableTopBarControls();
 	}
 	
 	/**
@@ -638,7 +636,6 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		freezeUI();
 		getTrace();
 		
-		
 		<?php if($type=="print"): ?>
 		initGraph();
 		<?php endif; ?>
@@ -698,7 +695,8 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			$(".estimated-time-left").html(transformSeconds(remainingTime));
 	}
 	
-	if(typeof manageMonitor != 'function'){
+	/*if(typeof manageMonitor != 'function'){*/
+		
 		window.manageMonitor = function(data){
 			if(data.hasOwnProperty("task"))
 			{
@@ -719,7 +717,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 				<?php endif; ?>
 			}
 		};
-	}
+	/*}*/
 	
 	/**
 	 *  monitor interval if websocket is not available

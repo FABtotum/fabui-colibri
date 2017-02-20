@@ -71,7 +71,7 @@
 			$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-exclamation-circle');
 			
 			buttons += '<button class="btn btn-default  action-buttons" id="do-update"><i class="fa fa-refresh"></i> <?php echo _("Update") ?></button> ';
-			$("#do-update").on('click', doUpdate);
+			
 
 		}else{
 			$(".status").html('<?php echo _("Great! Your FABtotum Personal Fabricator is up to date") ?>');
@@ -84,6 +84,7 @@
 		buttons += '<button class="btn btn-default  action-buttons" id="bundle-details"><i class="fa fa-reorder"></i> <?php echo _("View details"); ?></button> ';
 		$(".button-container").html(buttons);
 		$("#bundle-details").on('click', showHideBundlesDetails);
+		$("#do-update").on('click', doUpdate);
 	}
 
 

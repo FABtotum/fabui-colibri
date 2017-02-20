@@ -29,7 +29,7 @@
 		
 		if($this->runningTask){
 			$method = 'do'.ucfirst($this->runningTask['type']);
-			if(method_exists($this, $method)) $this->$method();
+			if(method_exists($this, $method)) $this->$method($what_id);
 			else redirect('dashboard');
 		}else{
 			switch($type){

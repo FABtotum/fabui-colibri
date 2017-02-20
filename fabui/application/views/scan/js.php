@@ -67,8 +67,36 @@
 				
 			}
 		   
-		});
-		
+		});	
 	}
+
+	/**
+	* override default manage monitor for scan controller
+	*/
+	/*if(typeof manageMonitor != 'function'){*/
+		window.manageMonitor = function(data){
+			updateTaskProgress(data.task.percent);
+			if(data.scan.hasOwnProperty('postprocessing_percent')){
+				$(".postprocessing").show();
+				updatePostprocessingProgressBar(data.scan.postprocessing_percent);
+			}
+			
+			updateSlices(data.scan.scan_total, data.scan.scan_current);
+			if(data.scan.hasOwnProperty('point_count'))
+			{
+				$(".pointcloudinfo").show();
+				updateClouds(data.scan.point_count, data.scan.cloud_size);
+			}
+			
+			if(data.scan.type != 'probe')
+			{
+				$(".imageinfo").show();
+			}
+			
+			updateResolution(data.scan.width, data.scan.height);
+			updateIso(data.scan.iso);
+			handleTaskStatus(data.task.status);
+		};
+	/*}*/
 	
 </script>  

@@ -15,14 +15,12 @@
 	
 	
 	$(document).ready(function() {
-		//~ $('#understandSafety').on('click', understandSafety);
 		console.log('idFile', idFile);
 		$('[data-toggle="tooltip"]').tooltip();
 	});
 	
 	function checkWizard()
 	{
-		console.log('check Wizard');
 		var step = $('.wizard').wizard('selectedItem').step;
 		console.log(step);
 		switch(step){
