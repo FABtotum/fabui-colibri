@@ -59,7 +59,7 @@ $config['menu'] = array(
 		'icon' => 'fa-wrench',
 		'sub' => array(
 			'head' => array(
-				'title' => _("Head installation"),
+				'title' => _("Head"),
 				'icon' => 'fa-toggle-down',
 				'url' => 'maintenance/head/install'
 			),
