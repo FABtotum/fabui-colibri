@@ -72,8 +72,13 @@ if(!function_exists('loadTranslation'))
 		
 		$language_code = getCurrentLanguage();
 		
-		putenv('LC_ALL='.$language_code.'.UTF-8');
-		setlocale(LC_ALL, $language_code.'.UTF-8');
+		putenv('LC_MESSAGES='.$language_code.'.UTF-8');
+		setlocale(LC_MESSAGES, $language_code.'.UTF-8');
+		
+		// Set numeric format to en_US as it uses dot '.' as decimal separator
+		putenv('LC_NUMERIC='.'en_US.UTF-8');
+		setlocale(LC_NUMERIC, 'en_US.UTF-8');
+		
 		bindtextdomain("fabui", $CI->config->item('locale_path'));
 		textdomain("fabui");
 		
