@@ -34,10 +34,13 @@
 	 	
 	 	<?php endif; ?>
 	 	
-	 	
+	 	$('.settings-action').on('click', button_action);
+	 	$('.capability').on('change', capability_change);
 	 });
 
 	 function set_head_img(){
+	 	
+	 	console.log('selected head', $(this).val() );
 	 	
 	 	$(".jumbotron").html('');
 	 	
@@ -89,5 +92,102 @@
 			
 		});
 	}
+	
+	function capability_change()
+	{
+		var capabilities = [];
+		
+		$(".capability").each(function (index, value) {
+			if($(this).is(":checked"))
+			{
+				capabilities.push($(this).attr('name'));
+			}
+		});
+		
+		var working_mode = 3;
+		
+		if(capabilities.indexOf("print") > -1)
+		{
+			$(".nozzle-settings").slideDown();
+			working_mode = 1;
+		}
+		else
+			$(".nozzle-settings").slideUp();
+			
+		if(capabilities.indexOf("mill") > -1)
+		{
+			$(".motor-settings").slideDown();
+			if(working_mode == 1)
+				working_mode = 0;
+			else
+				working_mode = 3;
+		}
+		else
+			$(".motor-settings").slideUp();
+			
+		if(capabilities.indexOf("feeder") > -1)
+			$(".feeder-settings").slideDown();
+		else
+			$(".feeder-settings").slideUp();
+			
+		
+		if(capabilities.indexOf("laser") > -1)
+			working_mode = 2;
+			
+		if(capabilities.indexOf("scan") > -1)
+			working_mode = 4;
+			
+		$("#working-mode").val(working_mode);
+
+	}
+	
+	function button_action(){
+		var action = $(this).attr('data-action');
+		console.log('action:', action);
+		
+		switch(action)
+		{
+			case "edit":
+			case "add":
+				$('#settingsModal').modal('show');
+				break;
+			case "remove":
+				remove_head_settings();
+				break;
+			case "save":
+				break;
+			case "import":
+				break;
+			case "export":
+				break;
+		}
+		
+		return false;
+	}
+	
+	function edit_head_settings()
+	{
+	}
+	
+	function remove_head_settings()
+	{
+		$.SmartMessageBox({
+			title: "<?php echo _("Attention");?>!",
+			content: "<?php echo _("Remove <strong>{0}</strong> head settings?");?>".format("name"),
+			buttons: '[<?php echo _("No")?>][<?php echo _("Yes")?>]'
+		}, function(ButtonPressed) {
+		   
+			if (ButtonPressed === "<?php echo _("Yes")?>")
+			{
+				
+			}
+			if (ButtonPressed === "<?php echo _("No")?>")
+			{
+				
+			}
+		});
+	}
+	
+	
 	
 </script>

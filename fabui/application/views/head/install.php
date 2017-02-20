@@ -26,8 +26,15 @@
 					</div>	
 					<div class="smart-form">
 						<fieldset style="background: none !important;">
-							<section>
-								<label class="label font-md">Please select which head you want to install </label><label class="select"> <?php echo form_dropdown('heads', $heads_list, $head, 'class="input-lg" id="heads"'); ?> <i></i> </label>
+							<label class="label font-md">Please select which head you want to install </label>
+							<section >
+								<div class="input-group">
+									<label class="select"> <?php echo form_dropdown('heads', $heads_list, $head, 'class="input-lg" id="heads"'); ?> <i></i> </label>
+									<span class="input-group-btn btn-group-lg">
+									  <button type="button" class="btn btn-default settings-action" title="<?php echo _("Edit");?>" data-action="edit"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+									  <button type="button" class="btn btn-default settings-action" title="<?php echo _("Remove");?>" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></button>
+									</span>
+								</div>
 							</section>
 						</fieldset>
 					</div>
@@ -69,4 +76,178 @@
 		</div>
 	<?php endforeach; ?>
 </div>
+
+
+<!-- SETTINGS MODAL -->
+<div class="modal fade" tabindex="-1" role="dialog" id="settingsModal">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title"><?php echo _("Head settings");?></h4>
+			</div><!-- /.modal-header -->
+
+			<div class="modal-body">
+				
+				<form action="" class="smart-form" id="settings">
+					<fieldset>
+						<div class="row">
+							<section class="col col-6">
+								<label class="label"><?php echo _('Name');?></label>
+								<label class="input">
+									<input type="text" class="plugin-adaptive-meta" id="head-name" name="name" placeholder="My New Head">
+								</label>
+							</section>
+							
+							<section class="col col-6">
+								<label class="label"><?php echo _('URL');?></label>
+								<label class="input">
+									<input type="text" class="plugin-adaptive-meta" id="head-name" name="name" placeholder="More info link">
+								</label>
+							</section>
+							
+						</div>
+						
+
+						<section>
+							<label class="label"><?php echo _('Description');?></label>
+							<label class="textarea">
+								<textarea id="head-desc" name="description" rows="3" placeholder="Head description"></textarea>
+							</label>
+						</section>
+
+						<div class="row">
+							
+							<section class="col col-6">
+								<label class="label"><?php echo _('Capabilities');?></label>
+								<div class="row">
+									<div class="col col-6">
+										<label class="checkbox">
+											<input type="checkbox" name="print" class="capability">
+											<i></i>Print</label>
+										<label class="checkbox">
+											<input type="checkbox" name="mill" class="capability">
+											<i></i>Mill</label>
+										<label class="checkbox">
+											<input type="checkbox" name="laser" class="capability">
+											<i></i>Laser</label>
+									</div>
+									<div class="col col-6">
+										<label class="checkbox">
+											<input type="checkbox" name="feeder" class="capability">
+											<i></i>Feeder</label>
+										<label class="checkbox">
+											<input type="checkbox" name="scan" class="capability">
+											<i></i>Scan</label>
+
+									</div>
+								</div>
+							</section>
+							
+							<section class="col col-6">
+								<label class="label"><?php echo _('Custom initialization');?></label>
+								<label class="textarea">
+									<textarea id="head-desc" name="custom_gcode" rows="5" placeholder="Gcode initialization sequence"></textarea>
+								</label>
+							</section>
+							
+						</div>
+					</fieldset>
+					
+					<fieldset>
+						<div class="row">
+							<section class="col col-6">
+								<label class="label">Working mode</label>
+								<label class="select">
+									<select id="working-mode" name="working_mode">
+										<option value="0">Hybrid</option>
+										<option value="1">FFF</option>
+										<option value="2">Laser</option>
+										<option value="3" selected>CNC</option>
+										<option value="4">Scan</option>
+										<option value="5">SLA</option>
+									</select> <i></i> </label>
+							</section>
+							
+							<section class="col col-6">
+								<label class="label"><?php echo _('Soft ID')?></label>
+								<label class="input">
+									<input type="number" id="head-fw_id" name="fw_id" min="100" max="255" value="100">
+								</label>
+							</section>
+						</div>
+					</fieldset>
+					
+					<fieldset class="nozzle-settings" style="display:none">
+						<div class="row">
+							<section class="col col-4">
+								<label class="label"><?php echo _('PID')?></label>
+								<label class="input">
+									<input type="text" id="head-pid" name="pid" value="M301 P20 I3.5 D30">
+								</label>
+							</section>
+							
+							<section class="col col-4">
+								<label class="label">Thermistor</label>
+								<label class="select">
+									<select>
+										<option value="0">Fabtotum</option>
+										<option value="1">Standard 100k</option>
+									</select> <i></i> </label>
+							</section>
+							
+							<section class="col col-4">
+								<label class="label"><?php echo _('Max temperature')?></label>
+								<label class="input">
+									<input type="number" id="head-max_temp" name="max_temp" value="250">
+								</label>
+							</section>
+						</div>
+					</fieldset>
+					
+					<fieldset class="motor-settings" style="display:none">
+						<div class="row">
+							<section class="col col-6">
+								<label class="label"><?php echo _('Min RPM')?></label>
+								<label class="input">
+									<input type="number" id="head-min_rpm" name="min_rpm" value="6000">
+								</label>
+							</section>
+							
+							<section class="col col-6">
+								<label class="label"><?php echo _('Max RPM')?></label>
+								<label class="input">
+									<input type="number" id="head-max_rpm" name="max_rpm" value="14000">
+								</label>
+							</section>
+						</div>
+					</fieldset>
+					
+					<fieldset class="feeder-settings" style="display:none">
+						<div class="row">
+							<section class="col col-6">
+								<label class="label"><?php echo _('Feeder step')?></label>
+								<label class="input">
+									<input type="number" id="head-feeder_step" name="feeder_step" min="1" max="50000" step="0.1" value="200">
+								</label>
+							</section>
+						</div>
+					</fieldset>
+					
+				</form>
+				
+				
+			</div><!-- /.modal-body -->
+
+			<div class="modal-footer">
+			<button type="button" class="btn btn-default settings-action" data-action="import" title="<?php echo _("Import from file")?>">Import</button>
+			<button type="button" class="btn btn-default settings-action" data-action="export" title="<?php echo _("Export to file")?>">Export</button>
+			<button type="button" class="btn btn-primary settings-action" data-action="save" data-dismiss="modal">Save</button>
+			</div><!-- /.modal-footer -->
+
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
