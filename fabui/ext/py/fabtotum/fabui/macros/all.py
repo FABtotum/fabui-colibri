@@ -28,7 +28,6 @@ import fabtotum.fabui.macros.milling     as mill_macros
 import fabtotum.fabui.macros.scanning    as scan_macros
 import fabtotum.fabui.macros.maintenance as maint_macros
 import fabtotum.fabui.macros.calibration as calib_macros
-import fabtotum.fabui.macros.testing     as test_macros
 
 PRESET_MAP = {
     # General purpose

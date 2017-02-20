@@ -485,9 +485,10 @@
       var ratio;
 
       // Check `container` is necessary for IE8
-      /*if (this.isDisabled || !container) {
+      if (!container) {
+        console.log('skipping NO CONTAINER');
         return;
-      }*/
+      }
 
       if( $container.width() < 100 )
         return;

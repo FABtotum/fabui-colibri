@@ -34,6 +34,8 @@ from fabtotum.fabui.macros.common import getPosition
 from fabtotum.fabui.macros.common import getEeprom
 
 def probe_setup_prepare(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    
     #~ app.trace( _("Preparing Calibration procedure") )
     #~ app.trace( _("This may take a wile") )
     app.macro("M104 S200",          "ok", 90,   _("Heating Extruder") )
@@ -54,6 +56,7 @@ def probe_setup_prepare(app, args = None, lang='en_US.UTF-8'):
     #app.macro("M109",               None, 300,  _("Witing for extruder temperature"), warning=False) 
     
 def probe_setup_calibrate(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     
     app.macro("M104 S0",    "ok", 2,   _("Extruder heating off") )
     app.macro("M140 S0",    "ok", 2,   _("Bed heating off") )
@@ -108,6 +111,7 @@ def probe_setup_calibrate(app, args = None, lang='en_US.UTF-8'):
     }
     
 def raise_bed_no_g27(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     #for homing procedure before probe calibration.
     
     zprobe = app.config.get('units', 'zprobe')

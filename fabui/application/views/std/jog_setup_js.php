@@ -11,8 +11,9 @@
 if( !isset($fourth_axis) ) $fourth_axis = False;
 if( !isset($type) ) $type = 'mill';
 if( !isset($store_position_url) ) $store_position_url = 'std/storePosition/'.$type;
-if( !isset($stored_position) ) $stored_position = array("x" => "undefined", "y" => "undefined", "z" => "undefined");
-
+if( !isset($stored_position) ) $stored_position = loadPosition($type);
+//array("x" => "undefined", "y" => "undefined", "z" => "undefined");
+//$data['stored_position'] = loadPosition($data['type']);
 ?>
 <script type="text/javascript">
 
@@ -85,6 +86,8 @@ if( !isset($stored_position) ) $stored_position = array("x" => "undefined", "y" 
 			}
 		 };
 		 
+		console.log('jog_touch[prev]:', jog_touch);
+		 
 		 jog_touch =  $('.bed-image').jogtouch(touch_options);
 		 
 		 $('.touch-home-xy').on('click', function(e) {
@@ -104,6 +107,11 @@ if( !isset($stored_position) ) $stored_position = array("x" => "undefined", "y" 
 		
 		jog_controls = $('.jog-controls-holder').jogcontrols(controls_options);
 		jog_controls.on('action', jogAction);
+		
+		// workaround for missing resize event on show
+		$(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+			jog_touch.jogtouch('resize');
+		})
 	});
 	
 	function unlock_touch()
@@ -156,45 +164,61 @@ if( !isset($stored_position) ) $stored_position = array("x" => "undefined", "y" 
 			
 			console.log('position', x, y, z);
 			
+			var store = false;
+			
 			if(!jog_is_xy_homed)
 			{
 				x = "undefined";
 				y = "undefined";
+			}
+			else
+			{
+				store = true;
+				stored_position.x = x;
+				stored_position.y = y;
 			}
 			
 			if(!jog_is_z_homed)
 			{
 				z = "undefined";
 			}
+			else
+			{
+				store = true;
+				stored_position.z = z;
+			}
 			
 			data = {x:x, y:y, z:z};
 			
-			$.ajax({
-				type: 'post',
-				data: data,
-				url: '<?php echo site_url($store_position_url); ?>',
-				dataType: 'json'
-			}).done(function(data) {
-				//~ console.log(response);
-				if(data.result)
-				{
-					if(jog_is_xy_homed)
+			if(store)
+			{
+				$.ajax({
+					type: 'post',
+					data: data,
+					url: '<?php echo site_url($store_position_url); ?>',
+					dataType: 'json'
+				}).done(function(data) {
+					//~ console.log(response);
+					if(data.result)
 					{
-						if(jog_is_z_homed)
-							fabApp.showInfoAlert( _("Position {0}, {1}, {2} stored").format(x,y,z));
-						else
-							fabApp.showInfoAlert( _("X/Y Position {0}, {1} stored").format(x,y));
+						if(jog_is_xy_homed)
+						{
+							if(jog_is_z_homed)
+								fabApp.showInfoAlert( _("Position {0}, {1}, {2} stored").format(x,y,z));
+							else
+								fabApp.showInfoAlert( _("X/Y Position {0}, {1} stored").format(x,y));
+						}
+						else if(jog_is_z_homed)
+						{
+							fabApp.showInfoAlert( _("Z Position {0} stored").format(z));
+						}
 					}
-					else if(jog_is_z_homed)
+					else
 					{
-						fabApp.showInfoAlert( _("Z Position {0} stored").format(z));
+						fabApp.showErrorAlert('Failed to store position');
 					}
-				}
-				else
-				{
-					fabApp.showErrorAlert('Failed to store position');
-				}
-			})
+				})
+			}
 			
 		});
 	}
@@ -207,14 +231,14 @@ if( !isset($stored_position) ) $stored_position = array("x" => "undefined", "y" 
 			if(x != '')
 			{
 				fabApp.jogMdi('G90\nG0 X'+x+' Y'+y+' Z'+z+' F5000\nM400', function(e){
-					fabApp.showInfoAlert("Position restored to {0}, {1}, {2}".format(x, y, z) );
+					fabApp.showInfoAlert(_("Position restored to {0}, {1}, {2}").format(x, y, z) );
 					jog_busy = false;
 				});
 			}
 			else
 			{
 				fabApp.jogMdi('G90\nG0 Z'+z+' F5000\nM400', function(e){
-					fabApp.showInfoAlert("Z Position restored to {0}".format(z) );
+					fabApp.showInfoAlert(_("Z Position restored to {0}").format(z) );
 					jog_busy = false;
 				});
 			}
@@ -222,7 +246,7 @@ if( !isset($stored_position) ) $stored_position = array("x" => "undefined", "y" 
 		else
 		{
 			fabApp.jogMdi('G90\nG0 X'+x+' Y'+y+' F5000\nM400', function(e){
-				fabApp.showInfoAlert("X/Y position restored to {0}, {1}".format(x, y) );
+				fabApp.showInfoAlert(_("X/Y position restored to {0}, {1}").format(x, y) );
 				jog_busy = false;
 			});
 		}
@@ -238,7 +262,7 @@ if( !isset($stored_position) ) $stored_position = array("x" => "undefined", "y" 
 		var zStep        = $("#zStep").length             > 0 ? $("#zStep").val()             : 0.5;
 		var extruderStep = $("#extruderStep").length      > 0 ? $("#extruderStep").val()      : 10;
 		var xyzFeed      = $("#xyzFeed").length           > 0 ? $("#xyzFeed").val()           : 1000;
-		var extruderFeed = $("#extruder-feedrate").length > 0 ? $("#extruder-feedrate").val() : 300;
+		var extruderFeed = $("#4thaxis-feedrate").length > 0 ? $("#4thaxis-feedrate").val() : 300;
 		var waitForFinish= true;
 		
 		console.log(e.action);
@@ -291,12 +315,12 @@ if( !isset($stored_position) ) $stored_position = array("x" => "undefined", "y" 
 					}
 					else
 					{
-						fabApp.showErrorAlert("No X/Y position was stored");
+						fabApp.showErrorAlert(_("No X/Y position was stored"));
 					}
 				}
 				else
 				{
-					fabApp.showWarningAlert("You need to home X/Y axis first");
+					fabApp.showWarningAlert(_("You need to home X/Y axis first"));
 				}
 				break;
 			case "restore-z":
@@ -310,12 +334,12 @@ if( !isset($stored_position) ) $stored_position = array("x" => "undefined", "y" 
 					}
 					else
 					{
-						fabApp.showErrorAlert("No Z position was stored");
+						fabApp.showErrorAlert(_("No Z position was stored"));
 					}
 				}
 				else
 				{
-					fabApp.showWarningAlert("You need to home Z axis first");
+					fabApp.showWarningAlert(_("You need to home Z axis first"));
 				}
 				break;
 		}

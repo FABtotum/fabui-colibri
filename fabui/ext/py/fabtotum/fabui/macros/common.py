@@ -28,6 +28,7 @@ import re
 from fabtotum.utils.translation import _, setLanguage
 
 def getPosition(app, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     
     data = app.macro("M114", "ok", 2, _("Get Position"), verbose=False)
     reply = data[0]
@@ -50,6 +51,7 @@ def getPosition(app, lang='en_US.UTF-8'):
     return position
 
 def getEeprom(app, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     
     def serialize(string_source, regex_to_serach, keys):
         match = re.search(regex_to_serach, string_source, re.IGNORECASE)
@@ -98,7 +100,9 @@ def getEeprom(app, lang='en_US.UTF-8'):
     
     return eeprom
 
-def version(app):
+def version(app, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    
     ### controller serail ID
     retr = app.macro("M760",   "ok", 1, _("Controller serial ID"), verbose=False)
     controller_serial_id = retr[0]

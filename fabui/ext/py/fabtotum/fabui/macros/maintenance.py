@@ -31,6 +31,7 @@ __version__ = "1.0"
 from fabtotum.utils.translation import _, setLanguage
 
 def extrude(app, args, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     filamentToExtrude = float(args[0])
     units_e = app.config.get('settings', 'e')
     app.macro("M92 E{0}".format(units_e), "ok", 2, _("Setting extruder mode") )
@@ -40,15 +41,18 @@ def extrude(app, args, lang='en_US.UTF-8'):
     #app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), verbose=False)
     
 def change_step(app, args, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     new_step = float(args[0])
     app.macro("M92 E{0}".format(new_step),  "ok", 1,   _("Setting extruder mode") )
     app.macro("M500",                       None, 1,   _("Writing settings to eeprom") )
 
-def pre_unload_spool(app, args = None, lang='en_US.UTF-8'):        
+def pre_unload_spool(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     app.macro("M104 S190",  "ok", 5,    _("Pre-Heating Nozzle...") )
     app.macro("M109 S190",  None, 400,  _("Waiting for nozzle to reach temperature...") ) #heating and waiting.
     
 def unload_spool(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     units_e = app.config.get('settings', 'e')
     
     app.trace( _("Unloading Spool : Procedure Started.") )
@@ -70,6 +74,7 @@ def unload_spool(app, args = None, lang='en_US.UTF-8'):
     app.macro("M302 S170",          "ok", 10,   _("Extrusion prevention enabled"), verbose=False)
     
 def load_spool(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     units_e = app.config.get('settings', 'e')
     
     app.trace( _("Loading Spool : Procedure Started.") )
@@ -92,7 +97,7 @@ def load_spool(app, args = None, lang='en_US.UTF-8'):
     app.macro("M302 S170",          "ok", 1,    _("Disabling Cold Extrusion Prevention"), verbose=False)
 
 def manual_bed_leveling(app, args = None, lang='en_US.UTF-8'):
-    
+    _ = setLanguage(lang)
     app.trace( _("Manual bed leveling started.") )
     
     skip_homing = args[0]

@@ -41,11 +41,16 @@ if( !isset($warning) ) $warning = '';
 		<?php 
 			foreach($steps as $step)
 			{
+				
 				$active = '';
 				if( array_key_exists('active', $step) )
+				{
 					if($step['active'] == True)
+					{
 						$active = 'active';
-						
+					}
+				}
+				
 				echo '<div class="step-pane '.$active.'" id="step'.$step['number'].'" data-step="'.$step['number'].'">';
 				echo $step['content'];
 				echo '</div>';

@@ -305,11 +305,11 @@ if(!isset($bed_max)) 		$bed_max = 100;
 					 extruderSlider.noUiSlider.set(soft_extruder_min);
 				}
 				fabApp.serial("setExtruderTemp",extruder_target);
-				showActionAlert("Extruder temperature set to "+extruder_target+'&deg;');
+				fabApp.showInfoAlert(_("Extruder temperature set to {0} &deg;").format(extruder_target));
 				break;
 			case 'bed-target':
 				fabApp.serial("setBedTemp",parseInt(value[0]));
-				showActionAlert("Bed temperature set to "+parseInt(value[0])+'&deg;');
+				fabApp.showInfoAlert(_("Bed temperature set to {0} &deg;").format(parseInt(value[0])));
 				break;
 			case 'flow-rate':
 				sendActionRequest('flowRate', parseInt(value[0]));
@@ -486,7 +486,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			data.push({
 				data: seriesExtTemp,
 	      		lines: { show: true, fill: true },
-	     	 	label: "Ext temp",
+	     	 	label: _("Ext temp"),
 	     	 	color: "#FF0000",
 	     	 	points: {"show" : false}
 			});
@@ -496,7 +496,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			data.push({
 				data: seriesExtTarget,
 	      		lines: { show: true, fill: false, lineWidth:1 },
-	     	 	label: "Ext target",
+	     	 	label: _("Ext target"),
 	     	 	color: "#ff9933",
 	     	 	points: {"show" : false}
 			});
@@ -506,7 +506,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			data.push({
 				data: seriesBedTemp,
 	      		lines: { show: true, fill: true },
-	     	 	label: "Bed temp",
+	     	 	label: _("Bed temp"),
 	     	 	color: "#3276B1"
 			});
 			
@@ -515,7 +515,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			data.push({
 				data: seriesBedTarget,
 				lines: { show: true, fill: false, lineWidth:1 },
-	     	 	label: "Bed target",
+	     	 	label: _("Bed target"),
 	     	 	color: "#33ccff"
 			});
 		return data;
@@ -551,31 +551,31 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		}).done(function(response) {
 			switch(action){
 				case 'pause':
-					message=taskType+" paused";
+					message=_(taskType+" paused");
 					break;
 				case 'resume':
-					message=taskType+" resumed";
+					message=_(taskType+" resumed");
 					break;
 				case 'speed':
-					message="Speed override changed to: " + value;
+					message=_("Speed override changed to {0}").format(value);
 					break;
 				case 'flowRate':
-					message="Flow Rate override changed to: " + value;
+					message=_("Flow Rate override changed to {0}").format(value);
 					break;
 				case 'fan':
-					message="Fan override changed to: " + value;
+					message=_("Fan override changed to {0}").format(value);
 					break;
 				case 'zHeight':
-					if(value.charAt(0) == '+') message="Z height increased";
-					else message="Z height decreased";
+					if(value.charAt(0) == '+') message=_("Z height increased");
+					else message=_("Z height decreased");
 					break;
 				case 'rpm':
-					message="<?php echo isset($rpm_message) ? $rpm_message : "RPM speed set to:"; ?> " + value;
+					message=_("<?php echo isset($rpm_message) ? $rpm_message : "RPM speed set to {0}"; ?> ").format(value);
 					break;
 				default:
-					message="Unknown action: "+ action;
+					message=_("Unknown action: {0}").format(action);
 			}
-			showActionAlert(message);
+			fabApp.showInfoAlert(message);
 		});
 	}
 	
@@ -611,7 +611,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	 */
 	function abort()
 	{
-		openWait('<i class="fa fa-spinner fa-spin "></i> Aborting print', 'Please wait..', false);
+		openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Aborting print"), _("Please wait")+"...", false);
 		$.ajax({
 			type: 'post',
 			url: '<?php echo site_url('control/taskAction/abort') ?>',
@@ -624,7 +624,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	*/
 	function aborted()
 	{
-		openWait('<i class="fa fa-check "></i> Print aborted', 'Reloading page...', false);
+		openWait('<i class="fa fa-check "></i> '+ _("Print aborted"), _("Reloading page")+"...", false);
 		setTimeout(function(){
 			location.reload();
 		}, 5000);
@@ -638,10 +638,10 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		var taskType = "<?php echo isset($type_label) ? $type_label : ucfirst($type); ?>";
 		if(action == 'pause') {
 			element.attr('data-action', 'resume');
-			element.html('<i class="fa fa-play"></i> Resume '+taskType);
+			element.html('<i class="fa fa-play"></i> '+_("Resume "+taskType) );
 		}else if(action == 'resume'){
 			element.attr('data-action', 'pause');
-			element.html('<i class="fa fa-pause"></i> Pause '+taskType);
+			element.html('<i class="fa fa-pause"></i> '+_("Pause "+taskType) );
 		}
 		sendActionRequest(action);
 	}
@@ -779,14 +779,14 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			case 'paused':
 				if(firstCall){
 					var element = $(".isPaused-button");
-					element.html('<i class="fa fa-play"></i> Resume '+taskType);
+					element.html('<i class="fa fa-play"></i> '+_("Resume " + taskType) );
 					element.attr('data-action', 'resume');
 				}
 				break;
 			case 'started':
 				if(firstCall){
 					var element = $(".isPaused-button");
-					element.html('<i class="fa fa-pause"></i> Pause '+taskType);
+					element.html('<i class="fa fa-pause"></i> '+_("Pause " +taskType) );
 					element.attr('data-action', 'pause');
 				}
 				break;
@@ -809,7 +809,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	*/
 	function aborting()
 	{
-		openWait('<i class="fa fa-spinner fa-spin "></i> Aborting print', 'Please wait..', false);
+		openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Aborting print"), _("Please wait")+"...", false);
 	}
 	
 	/**
@@ -817,14 +817,14 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	*/
 	function completingTask()
 	{
-		openWait('<i class="fa fa-spinner fa-spin "></i> Completing <?php echo ucfirst($type) ?>', 'Please wait...\r\nMoving to safe zone', false);
+		openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Completing") + _("<?php echo ucfirst($type) ?>"), _("Please wait") + "...\r\n" + _("Moving to safe zone"), false);
 	}
 	/**
 	* complete task
 	*/
 	function completeTask()
 	{	
-		openWait('<i class="fa fa-check "></i> <?php echo ucfirst($type) ?> completed ! ', null, false);
+		openWait('<i class="fa fa-check "></i> '+ _( "<?php echo ucfirst($type) ?> completed !" ), null, false);
 
 		setTimeout(function(){
 			closeWait();

@@ -8,7 +8,6 @@
  */
  
 ?>
-
 <hr class="simple">
 <ul id="createFeed" class="nav nav-tabs bordered">
 	<li class="active"><a href="#live-feeds-tab" data-toggle="tab"><?php echo _("Live feeds")?></a></li>

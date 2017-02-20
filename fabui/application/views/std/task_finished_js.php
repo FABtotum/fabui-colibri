@@ -34,7 +34,7 @@ if(!isset($task_jump_restart)) $task_jump_restart = 1;
 			dataType: 'json'
 		}).done(function(response) {
 			console.log(response);
-			showActionAlert("Z's Height saved");
+			fabApp.showInfoAlert( _("Z Height saved") );
 			enableButton('.save-z-height');
 		});
 	}

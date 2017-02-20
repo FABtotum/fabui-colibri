@@ -31,30 +31,19 @@ from fabtotum.utils.translation import _, setLanguage
 
 
 def prepare_additive(app, args=None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     
     ext_temp = args[0];
     bed_temp = args[1];
-    
-    #~ zprobe_disabled = int(app.config.get('settings', 'zprobe.enable')) == 0
-    #~ z_max_offset    = app.config.get('settings', 'z_max_offset')
-    
+
     app.macro("M104 S"+str(ext_temp),   "ok", 3,    _("Pre Heating Nozzle ({0}&deg;) (fast)").format(str(ext_temp)))
     app.macro("M140 S"+str(bed_temp),   "ok", 3,    _("Pre Heating Bed ({0}&deg;) (fast)").format(str(bed_temp)))
     
     app.macro("M402", "ok", 2,    _("Retract Probe"), verbose=False)
-    #~ app.macro("G90", "ok", 2,    _("Set Absolute"), verbose=False)
-
-    #~ if(zprobe_disabled):
-        #~ app.macro("G27", "ok", 99,                              _("Lowering bed"), verbose=False)
-        #~ app.macro('G92 Z{0}'.format(z_max_offset), "ok", 99,    _("Set Z Max"), verbose=True)
-        #~ app.macro('G0 X10 Y10 Z70 F1000', "ok", 99,             _("Raising bed"))
-    #~ else:
-        #~ app.macro('G0 Z50 F10000', "ok", 99,    _("Raising bed"))
-        #~ app.macro('G28', "ok", 99,              _("Homing all axes"))
-    
-    
 
 def start_additive(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    
     units_e = app.config.get('settings', 'e')
         
     app.trace( _("Preparing the FABtotum Personal Fabricator") )
@@ -67,6 +56,8 @@ def start_additive(app, args = None, lang='en_US.UTF-8'):
     app.macro("M400",                   "ok", 60,   _("Waiting for all moves to finish"), verbose=False)
 
 def end_additive(app, args=None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    
     try:
         color = app.config.get('settings', 'color')
     except KeyError:
@@ -95,11 +86,13 @@ def end_additive(app, args=None, lang='en_US.UTF-8'):
     app.macro("M300",                   "ok", 1,    _("Printing completed!"), verbose=False)  #end print signal
 
 def end_additive_safe_zone(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     app.macro("G90",                        "ok", 2,    _("Setting Absolute position") )
     app.macro("G0 X210 Y210 Z100 F10000",   "ok", 100,  _("Moving to safe zone") )
     app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish") )
 
 def check_pre_print(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     try:
         safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
@@ -112,6 +105,7 @@ def check_pre_print(app, args = None, lang='en_US.UTF-8'):
     app.macro("M742",       "TRIGGERED", 1, _("Spool panel control"), warning=True)
 
 def engage_feeder(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     try:
         safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:

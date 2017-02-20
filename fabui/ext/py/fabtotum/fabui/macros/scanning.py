@@ -30,6 +30,7 @@ __version__ = "1.0"
 from fabtotum.utils.translation import _, setLanguage
 
 def check_pre_scan(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     units_a = app.config.get('settings', 'a')
     
     try:
@@ -64,6 +65,7 @@ def check_pre_scan(app, args = None, lang='en_US.UTF-8'):
     # macro("M18","ok",1,"Motor Off",1) #should be moved to firmware
     
 def rotary_scan(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     units_a = app.config.get('settings', 'a')
     
     try:
@@ -88,6 +90,7 @@ def rotary_scan(app, args = None, lang='en_US.UTF-8'):
     #macro("M92 E"+str(units['a']),"ok",1,"Setting 4th axis mode",0)
     
 def photogrammetry_scan(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     units_a = app.config.get('settings', 'a')
     
     try:
@@ -111,6 +114,7 @@ def photogrammetry_scan(app, args = None, lang='en_US.UTF-8'):
     #app.macro("M400",       "ok", 55,           _("Wait for all moves to finish"), verbose=False)
 
 def sweep_scan(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     try:
         safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
@@ -134,6 +138,7 @@ def sweep_scan(app, args = None, lang='en_US.UTF-8'):
     #app.macro("M400",            "ok", 55,      _("Wait for all moves to finish"), verbose=False)
 
 def probe_scan(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     units_a = app.config.get('settings', 'a')
     try:
         safety_door = app.config.get('settings', 'safety')['door']
@@ -151,6 +156,7 @@ def probe_scan(app, args = None, lang='en_US.UTF-8'):
     app.macro("M92 E"+str(units_a), "ok", 2,        _("Setting 4th axis mode"), verbose=True)
 
 def end_scan(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
     try:
         color = app.config.get('settings', 'color')
     except KeyError:

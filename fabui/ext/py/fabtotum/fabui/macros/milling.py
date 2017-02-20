@@ -30,15 +30,17 @@ __version__ = "1.0"
 from fabtotum.utils.translation import _, setLanguage
 
 def start_subtractive(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    
     units_a = app.config.get('settings', 'a')
     
-    #macro("G92 X0 Y0 Z0 E0","ok",3,"Setting Origin Point",1)
-    #macro("G90","ok",3,"Setting Origin Point",0.1, verbose=False)
+    app.macro("G92 X0 Y0 Z0 E0", "ok", 1,       _("Setting Origin Point"), verbose=False)
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th Axis mode"), verbose=False)
     
     
 def end_subtractive(app, args = None, lang='en_US.UTF-8'):
-
+    _ = setLanguage(lang)
+    
     try:
         color = app.config.get('settings', 'color')
     except KeyError:

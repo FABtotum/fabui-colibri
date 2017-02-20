@@ -319,7 +319,7 @@
 		//reset task monitor file
 		resetTaskMonitor();
 		$startSubtractive = doMacro('start_subtractive');
-		if($startSubtractive['response'] == false){
+		if($startSubtractive['response'] =! 'ok'){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $startSubtractive['message'])));
 			return;
 		}
