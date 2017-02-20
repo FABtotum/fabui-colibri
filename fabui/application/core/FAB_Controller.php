@@ -72,11 +72,12 @@
 		$data['cssInLine']   = $this->cssInline;
 		$data['translations'] = $this->load->view('layout/translations_js', null, true);
 		
-		$this->template['head']    = $this->load->view($this->layoutDefaultFolder.'/head', $data, true);
-		$this->template['top']     = $this->load->view($this->layoutDefaultFolder.'/top', $data, true);
+		$this->template['head']    = $this->load->view($this->layoutDefaultFolder.'/head',    $data, true);
+		$this->template['top']     = $this->load->view($this->layoutDefaultFolder.'/top',     $data, true);
 		$this->template['sidebar'] = $this->load->view($this->layoutDefaultFolder.'/sidebar', array('menu'=> buildMenu($this->menu)), true);
-		$this->template['ribbon']  = $this->load->view($this->layoutDefaultFolder.'/ribbon', $data, true);
-		$this->template['footer']  = $this->load->view($this->layoutDefaultFolder.'/footer', $data, true);
+		$this->template['ribbon']  = $this->load->view($this->layoutDefaultFolder.'/ribbon',  $data, true);
+		$this->template['footer']  = $this->load->view($this->layoutDefaultFolder.'/footer',  $data, true);
+		$this->template['ga']      = $this->load->view('layout/ga',                           $data, true);
 		$this->template['scripts'] = $this->load->view($this->layoutDefaultFolder.'/scripts', $data, true);
 		$this->template['content'] = $this->content;
 		
@@ -95,6 +96,7 @@
 		$this->template['cssFiles'] = cssFilesInclusion($this->css, true); 
 		$this->template['cssInLine'] = $this->cssInline;
 		$this->template['content'] = $this->content;
+		$this->template['ga']      = $this->load->view('layout/ga', $data, true);
 		$this->template['scripts'] = $this->load->view($this->layoutAjax.'/scripts', $data, true);
 		$this->parser->parse($this->layoutAjax.'/structure', $this->template);
 		

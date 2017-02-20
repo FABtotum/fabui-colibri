@@ -11,6 +11,7 @@
 <html lang="it">
 	<head>{head}</head>
 	<body class="smart-style-6">
+		{ga}
 		{top}
 		{sidebar}
 		<div id="main" role="main">

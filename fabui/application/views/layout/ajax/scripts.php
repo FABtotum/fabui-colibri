@@ -9,6 +9,10 @@
  
 ?>
 <script type="text/javascript">
+	var page = location.pathname + location.hash;
+	console.log("page: ", page);
+	ga('set', { page: (page)});
+	ga('send', 'pageview');
 	pageSetUp();
 	transformLinks();
 	<?php echo $jsInLine; ?>
