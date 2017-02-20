@@ -157,6 +157,7 @@ def probe_scan(app, args = None, lang='en_US.UTF-8'):
 
 def end_scan(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
+    units_e = app.config.get('settings', 'e')
     try:
         color = app.config.get('settings', 'color')
     except KeyError:
@@ -165,13 +166,13 @@ def end_scan(app, args = None, lang='en_US.UTF-8'):
             'g' : 255,
             'b' : 255,
         }
-    
     app.trace( _("Terminating digitalization procedure") )
     app.macro("M402",                   "ok", 10,   _("Retracting Probe") )
     app.macro("M700 S0",                "ok", 3,    _("Shutting Down Laser") )
     app.macro("G90",                    "ok", 10,   _("Setting Absolute position"), verbose=False)
-    app.macro("G0 E0 F5000",            "ok", 100,   _("Rasing Probe"), verbose=False)
-    app.macro("G0 Z140 F5000",          "ok", 100,   _("Rasing Probe"), verbose=False)
+    app.macro("G0 E0 F5000",            "ok", 100,  _("Rasing Probe"), verbose=False)
+    app.macro("G0 Z140 F5000",          "ok", 100,  _("Rasing Probe"), verbose=False)
+    app.macro("M92 E"+str(units_e),     "ok", 1,    _("Setting extruder mode"), verbose=True)
     #go back to user-defined colors
     app.macro("M701 S"+str(color['r']), "ok", 2,    _("Turning on lights"), verbose=False)
     app.macro("M702 S"+str(color['g']), "ok", 2,    _("Turning on lights"), verbose=False)

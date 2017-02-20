@@ -40,6 +40,7 @@ def start_subtractive(app, args = None, lang='en_US.UTF-8'):
     
 def end_subtractive(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
+    units_e = app.config.get('settings', 'e')
     
     try:
         color = app.config.get('settings', 'color')
@@ -59,7 +60,8 @@ def end_subtractive(app, args = None, lang='en_US.UTF-8'):
     app.macro("M220 S100",  "ok", 50,    _("Reset Speed factor override") )
     app.macro("M221 S100",  "ok", 5,     _("Reset Extruder factor override") )
     app.macro("M107",       "ok", 50,    _("Turning Fan off") ) # moved to firmware
-    app.macro("M18",        "ok", 50,    _("Motor Off") ) 
+    app.macro("M18",        "ok", 50,    _("Motor Off") )
+    app.macro("M92 E"+str(units_e), "ok", 1,    _("Setting extruder mode"), verbose=False)
     #go back to user-defined colors
     app.macro("M701 S"+str(color['r']), "ok", 2,  _("Turning on lights"), verbose=False)
     app.macro("M702 S"+str(color['g']), "ok", 2,  _("Turning on lights"), verbose=False)
