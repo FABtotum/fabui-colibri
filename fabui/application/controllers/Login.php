@@ -79,6 +79,7 @@
 	 */
 	public function newAccount()
 	{
+		$this->load->helper('fabtotum_helper');
 		$this->content = $this->load->view('login/register_form', '', true);
 		$this->addJsInLine($this->load->view('login/register_js', '', true));
 		$this->loginLayout('register');

@@ -29,6 +29,7 @@ class Install extends FAB_Controller {
 	{
 		$this->load->helper('date_helper');
 		$this->load->helper('language_helper');
+		$this->load->helper('fabtotum_helper');
 		//TODO
 		$this->content = $this->load->view('install/wizard', null, true );
 		$this->addJsInLine($this->load->view('install/js', '', true));

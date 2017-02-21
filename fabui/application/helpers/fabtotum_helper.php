@@ -899,4 +899,17 @@ if(!function_exists('firmwareInfo'))
 		);
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('termsAndConditions'))
+{
+	/**
+	 * 
+	 */
+	function termsAndConditions()
+	{
+		$CI =& get_instance();
+		$CI->load->helper('language_helper');
+		return $CI->load->view('layout/conditions/'.getCurrentLanguage(), null, true);
+	}
+}
 ?>
