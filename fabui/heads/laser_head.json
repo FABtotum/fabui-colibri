@@ -1,0 +1,19 @@
+{
+    "name": "Laser Head",
+    "link": "http:\/\/www.fabtotum.com\/3d-printers\/heads\/3d-laser-printer\/",
+    "description": "The <strong>FABtotum Laser head<\/strong> is equipped with a a Class 3B laser module (up to 500mW),  enough to both engrave and cut, depending on the chosen material (check the material compatibility in the <a class=\"no-ajax\" href=\"http:\/\/www.fabtotum.com\/?p=116429\/\" target=\"_blank\">Safety & Health guidelines<\/a>).<br>The Laser head features a onboard active cooling with temperature control and smoke dispersion (to prevent damages to the optics).<br>The Laser head also features realtime power tuning, so that you can correct the power of the output on some materials or have different levels of engraving.It can be used in conjuction with the milling head on projects that require laser marking, engraving and milling as a final operation like PCB prototyping",
+    "custom_gcode": "",
+    "working_mode": "2",
+    "fw_id": "4",
+    "pid": "",
+    "thermistor_index": "0",
+    "max_temp": "0",
+    "probe_offset": "0",
+    "min_rpm": "6000",
+    "max_rpm": "0",
+    "feeder_step": "200",
+    "capabilities": [
+        "laser",
+        "fan"
+    ]
+}
