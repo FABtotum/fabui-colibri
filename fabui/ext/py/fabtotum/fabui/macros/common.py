@@ -74,7 +74,7 @@ def getEeprom(app, lang='en_US.UTF-8'):
             object = {'r': match.group(1), 'e': match.group(2)}
             return object
         
-    reply = app.macro('M503', None, 1, _("Reading settings from eeprom"), verbose=False)
+    reply = app.macro('M503', '*', 1, _("Reading settings from eeprom"), verbose=False)
     
     eeprom = {}
     
