@@ -101,10 +101,10 @@
 					<label class="label"><?php echo _('Default Homing Direction')?></label>
 					<div class="inline-group">
 						<label class="radio">
-							<input type="radio" id="switch" name="switch" value="l" <?php if($defaultSettings['switch'] == 1) echo 'checked="checked"'; ?>><i></i><?php echo _('Left')?>
+							<input type="radio" id="switch" name="switch" value="0" <?php if($defaultSettings['switch'] == 0) echo 'checked="checked"'; ?>><i></i><?php echo _('Left')?>
 						</label>
 						<label class="radio">
-							<input type="radio" id="switch" name="switch" value="0" <?php if($defaultSettings['switch'] == 0) echo 'checked="checked"'; ?>><i></i><?php echo _('Right')?>
+							<input type="radio" id="switch" name="switch" value="1" <?php if($defaultSettings['switch'] == 1) echo 'checked="checked"'; ?>><i></i><?php echo _('Right')?>
 						</label>
 					</div>
 				</section>
