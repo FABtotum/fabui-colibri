@@ -119,7 +119,7 @@
 				$html .= '<li>';
 				$html .= '<span class="padding-10">';
 				$html .= '<em class="badge padding-5 no-border-radius bg-color-blueLight pull-left margin-right-5"><i class="fa fa-refresh fa-fw fa-2x"></i></em>';
-				$text = $number == 1 ? _("1 new update is available") : _("{0} new updates are available", $number);
+				$text = $number == 1 ? _("1 new update is available") : $number.' '. _("new updates are available");
 				$html .= '<span> '.$text.' <a class="display-normal" href="'.site_url('#updates').'"><strong>'._("Update now").'</strong></a> </span>';
 				$html .= '</span>';
 				$html .= '</li>';
