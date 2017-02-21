@@ -1266,9 +1266,23 @@ fabApp = (function(app) {
 	app.getNetworkInfo = function ()
 	{
 		$.get(network_info_url + '?' + jQuery.now(), function(data, status){
-			if(data.interfaces.wlan0.wireless.hasOwnProperty('ssid')){
-				$(".ribbon-button-alignment").prepend('<span data-title="' + app_text[25] + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon"><i class="fa fa-wifi"></i></span>');	
+			
+			
+			if(data.interfaces.hasOwnProperty('wlan0')){
+			
+				if(data.interfaces.wlan0.wireless.hasOwnProperty('ssid')){
+					$(".ribbon-button-alignment").prepend('<span data-title="' + app_text[25] + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon"><i class="fa fa-wifi"></i></span>');	
+				}
 			}
+			
+			if(data.interfaces.hasOwnProperty('wlan1')){
+			
+				if(data.interfaces.wlan1.wireless.hasOwnProperty('ssid')){
+					$(".ribbon-button-alignment").prepend('<span data-title="' + app_text[25] + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon"><i class="fa fa-wifi"></i></span>');	
+				}
+			}
+			
+			
 			if(data.internet){
 				$(".ribbon-button-alignment").prepend('<span data-title="' + app_text[26] + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon"><i class="fa fa-globe"></i></span>');
 			}
