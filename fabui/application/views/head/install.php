@@ -150,7 +150,7 @@
 							<section class="col col-6">
 								<label class="label"><?php echo _('Custom initialization');?></label>
 								<label class="textarea">
-									<textarea id="head-override" name="custom_gcode" rows="5" placeholder="Gcode initialization sequence"></textarea>
+									<textarea class="gcodearea" id="head-custom_gcode" name="custom_gcode" rows="5" placeholder="Gcode initialization sequence"></textarea>
 								</label>
 							</section>
 							

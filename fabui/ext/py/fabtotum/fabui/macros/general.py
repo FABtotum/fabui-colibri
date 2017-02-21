@@ -215,11 +215,19 @@ def set_ambient_color(app, args = None, lang='en_US.UTF-8'):
     app.macro("M702 S{0}".format(green),   "ok", 1,    _("Setting Green Color"))
     app.macro("M703 S{0}".format(blue),   "ok", 1,    _("Setting Blue Color"))
 
-def install_head(app, args = None, lang='en_US.UTF-8'):
+def install_head(app, args, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     head_name = args[0]
     
-    return configure_head(app, head_name, lang)
+    result = configure_head(app, head_name, lang)
+    app.macro("M999",   "ok", 1,    _("Clearing error state"), verbose=False)
+    app.macro("M728",   "ok", 1,    _("Awaken"), verbose=False)
+    app.trace(_("Head is ready"))
+    return result
+
+def clear_errors(app, args = None, lang='en_US.UTF-8'):
+    app.macro("M999",   "ok", 1,    _("Clearing error state"))
+    app.macro("M728",   "ok", 1,    _("Awaken"), verbose=False)
 
 def read_eeprom(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)

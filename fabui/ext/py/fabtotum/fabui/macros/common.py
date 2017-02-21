@@ -197,6 +197,13 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     #~ gcs.send( "M450 S{0}".format( mode ), group='bootstrap' )
     app.macro( "M450 S{0}".format( mode ),   "ok", 2, _("Configuring working mode"))
     
+    # Custom initialization code
+    app.trace( _("Custom initialization") )
+    for line in head.get('custom_gcode', '').split('\n'):
+        if line:
+            code = line.split(';')[0]
+            app.macro( code, "ok*", 50, "hidden message", verbose=False)
+    
     # Save settings
     #~ gcs.send( "M500", group='bootstrap' )
     return True

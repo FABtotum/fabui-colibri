@@ -316,6 +316,11 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         offset  = float(head.get('probe_offset', 0))
         fw_id   = int(head.get('fw_id',0))
         max_temp= int(head.get('max_temp',0))
+        custom_gcode = head.get('custom_gcode','')
+        
+        # Set installed head
+        if fw_id is not None:
+            gcs.send( "M793 S{0}".format( fw_id ), group='bootstrap' )
         
         # Set head PID
         if pid is not None:
@@ -327,10 +332,6 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         # Set max_temp
         if max_temp > 25:
             gcs.send( "M801 S{0}".format( max_temp ), group='bootstrap' )
-                
-        # Set installed head
-        if fw_id is not None:
-            gcs.send( "M793 S{0}".format( fw_id ), group='bootstrap' )
         
         # Set probe offset
         if offset:
@@ -339,8 +340,17 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         # Working mode
         gcs.send( "M450 S{0}".format( mode ), group='bootstrap' )
         
+        for line in custom_gcode.split('\n'):
+            if line:
+                code = line.split(';')[0]
+                gcs.send( code, group='bootstrap' )
+        
+        
         # Save settings
-        gcs.send( "M500", group='bootstrap' )
+        #gcs.send( "M500", group='bootstrap' )
+        
+        
+        
     except Exception as e:
         print "ERROR (head install)", e
 

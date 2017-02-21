@@ -65,6 +65,7 @@ class Head extends FAB_Controller {
 		$this->addJSFile('/assets/js/plugin/inputmask/jquery.inputmask.bundle.js');
 		$this->addJSFile('/assets/js/plugin/FileSaver.min.js');
 		$this->addJsInLine($this->load->view('head/install_js', $data, true));
+		$this->addCssFile('/assets/css/head/style.css');
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}

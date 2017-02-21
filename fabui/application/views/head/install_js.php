@@ -137,13 +137,12 @@
 			$(".alerts-container").find('div:first-child').remove();
 			$(".alerts-container").append('<div class="alert alert-success animated  fadeIn" role="alert"><i class="fa fa-check"></i> Well done! Now your <strong>FABtotum Personal Fabricator</strong> is set for the <strong>'+ data.name +'</strong>.</div>');
 			
-			waitContent('Well done! Now your <strong><i>FABtotum Personal Fabricator</i></strong> is configured to use <strong><i>'+ data.name+'</i></strong>.');
+			//waitContent('Well done! Now your <strong><i>FABtotum Personal Fabricator</i></strong> is configured to use <strong><i>'+ data.name+'</i></strong>.');
 			
 			setTimeout(function(){
-					document.location.href =  '<?php echo site_url('head/index/install'); ?>?head_installed';
+					document.location.href =  '<?php echo site_url('head'); ?>?head_installed';
 					location.reload();
-				}, 2000
-			);
+				}, 2000);
 			
 		});
 	}
@@ -254,6 +253,9 @@
 					console.log('INPUT', name);
 					settings[name] = $(this).val();
 				}
+				
+				if(name == "custom_gcode")
+					settings[name] = settings[name].toUpperCase();
 			}
 		});
 		

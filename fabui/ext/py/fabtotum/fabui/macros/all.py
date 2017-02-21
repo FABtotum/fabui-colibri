@@ -46,6 +46,7 @@ PRESET_MAP = {
     "set_ambient_color"             : general_macros.set_ambient_color,  
     "version"                       : general_macros.version,  
     "install_head"                  : general_macros.install_head,
+    "clear_errors"                  : general_macros.clear_errors,
     
     # Print
     "prepare_additive"              : print_macros.prepare_additive,
