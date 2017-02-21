@@ -28,7 +28,7 @@ import re
 # Import external modules
 
 # Import internal modules
-from fabtotum.fabui.macros.common import getEeprom
+from fabtotum.fabui.macros.common import getEeprom, configure_head
 from fabtotum.utils.translation import _, setLanguage
 
 def home_all(app, args = None, lang='en_US.UTF-8'):
@@ -217,7 +217,9 @@ def set_ambient_color(app, args = None, lang='en_US.UTF-8'):
 
 def install_head(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    pass
+    head_name = args[0]
+    
+    return configure_head(app, head_name, lang)
 
 def read_eeprom(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)

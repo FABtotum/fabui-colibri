@@ -23,13 +23,14 @@
 import sys, traceback
 import time
 import json
+import re
 import gettext
 
 # Import external modules
 
 # Import internal modules
 from fabtotum.fabui.macros.all import PRESET_MAP
-
+from fabtotum.utils import glob2re
 # Set up message catalog access
 tr = gettext.translation('gmacro', 'locale', fallback=True)
 _ = tr.ugettext
@@ -80,12 +81,20 @@ class GMacroHandler:
             else:
                 raise MacroTimeOutException(command)
         
+        found = False
         if expected_reply is not None:
-            if (expected_reply not in reply):
-                if warning:
-                    self.trace(message)
-                else:
-                    raise MacroUnexpectedReply(command, message, expected_reply)
+            for reply_line in reply:
+                
+                retr = re.match( glob2re(expected_reply), reply_line )
+                if retr:
+                    found = True
+                    break
+                    
+        if not found:
+            if warning:
+                self.trace(message)
+            else:
+                raise MacroUnexpectedReply(command, message, expected_reply)
                 
         return reply
     

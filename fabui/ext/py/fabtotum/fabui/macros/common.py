@@ -23,7 +23,9 @@ __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
 # Import standard python module
+import os
 import re
+import json
 
 from fabtotum.utils.translation import _, setLanguage
 
@@ -146,3 +148,55 @@ def version(app, lang='en_US.UTF-8'):
             'version' : board_version
         }
     }
+
+def configure_head(app, head_name, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    
+    # Load Head
+    try:
+        head_file = os.path.join( app.config.get('hardware', 'heads'), head_name + '.json');
+    
+        with open(head_file) as json_f:
+            head = json.load(json_f)
+    except Exception as e:
+        app.trace( str(e) )
+        return False
+        
+    pid     = head.get('pid')
+    th_idx  = int(head.get('thermistor_index', 0))
+    mode    = int(head.get('working_mode', 0))
+    offset  = float(head.get('probe_offset', 0))
+    fw_id   = int(head.get('fw_id',0))
+    max_temp= int(head.get('max_temp',230))
+    
+    # Set installed head ID
+    if fw_id is not None:
+        #~ gcs.send( "M793 S{0}".format( fw_id ), group='bootstrap' )
+        app.macro( "M793 S{0}".format( fw_id ),   "ok", 2, _("Setting soft ID to {0}").format(fw_id) )
+    
+    # Set head PID
+    if pid is not None:
+        #~ app.trace( _("Configuring PID") )
+        #~ app.send( head['pid'] )
+        app.macro(head['pid'],   "ok *", 2, _("Configuring PID"))
+    # Set Thermistor index
+    #~ gcs.send( "M800 S{0}".format( th_idx ), group='bootstrap' )
+    app.macro( "M800 S{0}".format( th_idx ),   "ok", 2, _("Setting thermistor index to {0}").format(th_idx) )
+    
+    # Set max_temp
+    if max_temp > 25:
+        #~ gcs.send( "M801 S{0}".format( max_temp ), group='bootstrap' )
+        app.macro( "M801 S{0}".format( max_temp ),   "ok", 2, _("Setting MAX temperature to {0}".format(max_temp)) )
+    
+    # Set probe offset
+    if offset:
+        #~ gcs.send( "M710 S{0}".format( offset ), group='bootstrap' )
+        app.macro( "M710 S{0}".format( offset ),   "ok", 2, _("Configuring nozzle offset"))
+    
+    # Working mode
+    #~ gcs.send( "M450 S{0}".format( mode ), group='bootstrap' )
+    app.macro( "M450 S{0}".format( mode ),   "ok", 2, _("Configuring working mode"))
+    
+    # Save settings
+    #~ gcs.send( "M500", group='bootstrap' )
+    return True

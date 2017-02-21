@@ -285,7 +285,23 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     gcs.send("M734 S{0}".format(collision_warning), group='bootstrap')
     # Set homing preferences
     gcs.send("M714 S{0}".format(switch), group='bootstrap')
-    
+            
+    # Execute version specific intructions
+    HW_VERSION_CMDS = {
+        'custom' : customHardware,
+        '1'      : hardware1,
+        '2'      : hardware2,
+        '3'      : hardware3,
+        '4'      : hardware4,
+        '5'      : hardware5
+    }
+    if config.get('settings', 'settings_type') == 'custom':
+        customHardware(gcs, config, log)
+    elif hardwareID in HW_VERSION_CMDS:
+        HW_VERSION_CMDS[hardwareID](gcs, config, log)
+    else:
+        log.error("Unsupported hardware version: %s", hardwareID)
+
     # Load Head
     #~ try:
     head_file = os.path.join( config.get('hardware', 'heads'), config.get('settings', 'hardware.head') + '.json');
@@ -311,10 +327,7 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         # Set max_temp
         if max_temp > 25:
             gcs.send( "M801 S{0}".format( max_temp ), group='bootstrap' )
-        
-        # Working mode
-        gcs.send( "M450 S{0}".format( mode ), group='bootstrap' )
-        
+                
         # Set installed head
         if fw_id is not None:
             gcs.send( "M793 S{0}".format( fw_id ), group='bootstrap' )
@@ -323,25 +336,12 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         if offset:
             gcs.send( "M710 S{0}".format( offset ), group='bootstrap' )
         
+        # Working mode
+        gcs.send( "M450 S{0}".format( mode ), group='bootstrap' )
+        
         # Save settings
         gcs.send( "M500", group='bootstrap' )
     except Exception as e:
         print "ERROR (head install)", e
-        
-    # Execute version specific intructions
-    HW_VERSION_CMDS = {
-        'custom' : customHardware,
-        '1'      : hardware1,
-        '2'      : hardware2,
-        '3'      : hardware3,
-        '4'      : hardware4,
-        '5'      : hardware5
-    }
-    if config.get('settings', 'settings_type') == 'custom':
-        customHardware(gcs, config, log)
-    elif hardwareID in HW_VERSION_CMDS:
-        HW_VERSION_CMDS[hardwareID](gcs, config, log)
-    else:
-        log.error("Unsupported hardware version: %s", hardwareID)
 
     gcs.atomic_end()
