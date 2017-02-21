@@ -69,10 +69,6 @@
 		if(object.update.available){
 			$(".status").html('<i class="fa fa-exclamation-circle"></i> <?php echo _(" New important software updates are now available") ?>');
 			$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-exclamation-circle');
-			
-			buttons += '<button class="btn btn-default  action-buttons" id="do-update"><i class="fa fa-refresh"></i> <?php echo _("Update") ?></button> ';
-			
-
 		}else{
 			$(".status").html('<?php echo _("Great! Your FABtotum Personal Fabricator is up to date") ?>');
 			$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-check');
@@ -80,7 +76,7 @@
 
 		createBundlesTable(object);
 		createFirmwareTable(object);
-
+		buttons += '<button class="btn btn-default  action-buttons" id="do-update"><i class="fa fa-refresh"></i> <?php echo _("Update") ?></button> ';
 		buttons += '<button class="btn btn-default  action-buttons" id="bundle-details"><i class="fa fa-reorder"></i> <?php echo _("View details"); ?></button> ';
 		$(".button-container").html(buttons);
 		$("#bundle-details").on('click', showHideBundlesDetails);
@@ -239,21 +235,28 @@
 				firmware = true;
 			}
 		});
-		/*$("#firmware-table").find("tr > td input:checkbox").each(function () {
-			if($(this).is(':checked')){
-				firmware = true;
-			}
-		});*/
-		
-		console.log(bundles_to_update, firmware, boot);
-		
-		startUpdate(bundles_to_update, firmware, boot);
+
+		if(bundles_to_update.length > 0 || firmware || boot){
+			startUpdate(bundles_to_update, firmware, boot);
+		}else{
+			enableButton('.action-buttons');
+			$.smallBox({
+				title : "<?php echo _('Warning')?>",
+				content : '<?php echo _('Please select at least 1 bundle or firmware to update')?>',
+				color : "#5384AF",
+				timeout: 3000,
+				icon : "fa fa-warning"
+			});
+		}
+	
+		//startUpdate(bundles_to_update, firmware, boot);
 	}
 	/**
 	*
 	**/
 	function startUpdate(bundles, firmware, boot)
 	{
+		$(".status").html('<?php echo _("Connecting to update server") ?>...');
 		$.ajax({
 			type: "POST",
 			data: {'bundles': bundles, 'firmware' : firmware, 'boot' : boot},
@@ -411,7 +414,6 @@
 				$('.fabtotum-icon .badge').find('i').removeClass('fa-exclamation-circle').addClass('fa-spin fa-refresh');
 
 				var buttons = '';
-				buttons += '<button class="btn btn-default  action-buttons" id="do-abort"><i class="fa fa-times"></i> <?php echo _("Abort") ?></button> ';
 				buttons += '<button class="btn btn-default  action-buttons" id="update-details"><i class="fa fa-reorder"></i> <?php echo _("View details") ?></button> ';
 
 				$(".button-container").html(buttons);
