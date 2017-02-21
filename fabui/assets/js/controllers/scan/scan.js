@@ -810,6 +810,7 @@ function startTask()
 	fabApp.freezeMenu('scan');
 	fabApp.disableTopBarControls();
 	setInterval(timer, 1000);
+	ga('send', 'event', 'scan', 'start', 'Started scan: ' + scanMode);
 }  
 
 /**
@@ -878,6 +879,7 @@ function handleTaskStatus(status)
 	}else if(status == 'completed'){
 		if(isCompleted == false) {
 			openWait('Scan completed');
+			ga('send', 'event', 'scan', 'complete', 'Completed scan: ' + scanMode);
 			waitContent('refreshing page');
 			setTimeout(function () {
 				location.reload();
@@ -889,6 +891,7 @@ function handleTaskStatus(status)
 		isAborting = true;
 	}else if(status == 'aborted'){
 		if(isAborted == false){
+			ga('send', 'event', 'scan', 'abort', 'Aborted scan: ' + scanMode);
 			openWait('Scan aborted');
 			waitContent('refreshing page');
 			setTimeout(function () {

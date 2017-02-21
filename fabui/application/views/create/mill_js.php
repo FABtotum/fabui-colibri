@@ -85,6 +85,8 @@
 				
 				initRunningTaskPage();
 				updateZOverride(0);
+
+				ga('send', 'event', 'mill', 'start', 'Started mill');
 			}
 			closeWait();
 		})

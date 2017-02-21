@@ -106,6 +106,8 @@
 				
 				initRunningTaskPage();
 				updateZOverride(0);
+
+				ga('send', 'event', 'laser', 'start', 'Started laser');
 			}
 			closeWait();
 		})

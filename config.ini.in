@@ -65,3 +65,6 @@ colibri_endpoint = http://update.fabtotum.com/colibri/
 firmware_endpoint = http://update.fabtotum.com/firmware/
 plugins_endpoint = http://update.fabtotum.com/plugins/
 updates_json_file = @FABUI_TEMP_PATH@updates.json
+
+[analytics]
+ga_property_id = UA-42679362-4

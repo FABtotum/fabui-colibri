@@ -786,6 +786,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	function abort()
 	{
 		var taskType = "<?php echo $type; ?>";
+		ga('send', 'event', '<?php echo $type; ?>', 'abort', '<?php echo $type; ?> aborted');
 		openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Aborting " + taskType), _("Please wait")+"...", false);
 		$.ajax({
 			type: 'post',
@@ -829,7 +830,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	{	
 		var taskType = "<?php echo ucfirst($type); ?>";
 		openWait('<i class="fa fa-check "></i> '+ _( taskType + " completed !" ), null, false);
-
+	
 		setTimeout(function(){
 			closeWait();
 			gotoWizardFinish();
@@ -838,6 +839,8 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			clearInterval(timerInterval);
 			elapsedTime = 0;
 			estimatedTime = 0;
+			ga('send', 'event', '<?php echo $type; ?>', 'complete', '<?php echo $type; ?> completed');
+			
 		}, 3000);
 		
 		if(zOverride != 0)
