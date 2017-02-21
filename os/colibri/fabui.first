@@ -55,13 +55,9 @@ case "$1" in
         sudo -uwww-data ln -s /mnt/userdata/heads ${LIB_PATH}
         
         # Hardware Settings
-        sudo -uwww-data cp ${LIB_PATH}settings/default_settings.json /mnt/userdata/settings
-        rm ${LIB_PATH}settings/default_settings.json
-        sudo -uwww-data ln -s /mnt/userdata/settings/default_settings.json ${LIB_PATH}settings
-        
-        cp ${LIB_PATH}settings/default_settings.json /mnt/userdata/settings/custom_settings.json
-        #rm ${LIB_PATH}settings/custom_settings.json
-        sudo -uwww-data ln -s /mnt/userdata/settings/custom_settings.json ${LIB_PATH}settings
+        sudo -uwww-data cp ${LIB_PATH}settings/settings.json /mnt/userdata/settings
+        rm ${LIB_PATH}settings/settings.json
+        sudo -uwww-data ln -s /mnt/userdata/settings/settings.json ${LIB_PATH}settings
         
         sudo chown -R 33.33 /mnt/userdata
     fi

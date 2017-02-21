@@ -121,25 +121,16 @@ class Install extends FAB_Controller {
 			/*
 			 * Remove previous hardware settings (default and custom) and copy fresh ones to userdata
 			 * */
-			shell_exec('rm -rf /mnt/userdata/settings/default_settings.json /mnt/userdata/settings/custom_settings.json');
-			
 			// Copy a fresh copy of default_settings
-			shell_exec('cp /var/lib/fabui/settings/default_settings.json /mnt/userdata/settings/default_settings.json');
-			shell_exec('sudo chown 33.33 /mnt/userdata/settings/default_settings.json');
-			
-			// Copy a fresh copy of custom_settings
-			shell_exec('cp /var/lib/fabui/settings/default_settings.json /mnt/userdata/settings/custom_settings.json');
-			shell_exec('sudo chown 33.33 /mnt/userdata/settings/custom_settings.json');
+			shell_exec('cp /var/lib/fabui/settings/settings.json /mnt/userdata/settings/settings.json');
+			shell_exec('sudo chown 33.33 /mnt/userdata/settings/settings.json');
 		}
 		// else keep the previous settings
 		
 		// Create links to settings on userdata partition
-		shell_exec('rm -f /var/lib/fabui/settings/default_settings.json');
-		shell_exec('ln -s /mnt/userdata/settings/default_settings.json /var/lib/fabui/settings/default_settings.json');
-		
-		shell_exec('rm -f /var/lib/fabui/settings/custom_settings.json');
-		shell_exec('ln -s /mnt/userdata/settings/custom_settings.json /var/lib/fabui/settings/custom_settings.json');
-		
+		shell_exec('rm -f /var/lib/fabui/settings/settings.json');
+		shell_exec('ln -s /mnt/userdata/settings/settings.json /var/lib/fabui/settings/settings.json');
+
 		if(!$this->input->post('task_history'))
 		{
 			/*
