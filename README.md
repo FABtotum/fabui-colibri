@@ -1,8 +1,9 @@
 # FABUI - Colibri
-
 ![N|Solid](http://www.fabtotum.com/fabui_v1.png)
 
-# Installation
+the first Operating System in the world completely developed for 3D printing.
+
+## Installation
   - Download the latest archive [here][latest-archive]
   - Format an SD Card to one FAT32 with label “boot”
   - Unzip the file you downloaded at step 1 and copy all files to Sd Card
@@ -11,7 +12,7 @@
   - Turn on the FABtotum
   - Wait for the leds to became blue and open a web browser and in the address bar type 169.254.1.2
 
-# What's new
+## What's new
   - New OS from scratch
   - Designed to be more resilient to power failures
   - No SD Card flashing needed, only simple copy
@@ -42,6 +43,8 @@
   - Built-in GCode help that is in sync with the current firmware
   - GCode help supports search by code and description
   - Milling and laser engraving jog support position storing/restoring, useful for multi-step manufacturing or laser height calibration
-   
-   [latest-archive]: <http://update.fabtotum.com/colibri/armhf/images/latest_sdcard>
 
+## Support
+Please [open an issue](https://github.com/FABtotum/fabui-colibri/issues/new) for support
+   
+   [latest-archive]: <http://update.fabtotum.com/colibri/armhf/images/sdcard_latest>
