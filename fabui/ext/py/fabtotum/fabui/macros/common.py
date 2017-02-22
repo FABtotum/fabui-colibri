@@ -162,7 +162,7 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
         app.trace( str(e) )
         return False
         
-    pid     = head.get('pid')
+    pid     = head.get('pid', '')
     th_idx  = int(head.get('thermistor_index', 0))
     mode    = int(head.get('working_mode', 0))
     offset  = float(head.get('probe_offset', 0))
@@ -175,12 +175,10 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
         app.macro( "M793 S{0}".format( fw_id ),   "ok", 2, _("Setting soft ID to {0}").format(fw_id) )
     
     # Set head PID
-    if pid is not None:
-        #~ app.trace( _("Configuring PID") )
-        #~ app.send( head['pid'] )
+    if pid != "":
         app.macro(head['pid'],   "ok *", 2, _("Configuring PID"))
+        
     # Set Thermistor index
-    #~ gcs.send( "M800 S{0}".format( th_idx ), group='bootstrap' )
     app.macro( "M800 S{0}".format( th_idx ),   "ok", 2, _("Setting thermistor index to {0}").format(th_idx) )
     
     # Set max_temp
@@ -190,11 +188,9 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     
     # Set probe offset
     if offset:
-        #~ gcs.send( "M710 S{0}".format( offset ), group='bootstrap' )
         app.macro( "M710 S{0}".format( offset ),   "ok", 2, _("Configuring nozzle offset"))
     
     # Working mode
-    #~ gcs.send( "M450 S{0}".format( mode ), group='bootstrap' )
     app.macro( "M450 S{0}".format( mode ),   "ok", 2, _("Configuring working mode"))
     
     # Custom initialization code

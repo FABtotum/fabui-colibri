@@ -323,7 +323,7 @@ def hardwareBootstrap(gcs, config = None, logger = None):
             gcs.send( "M793 S{0}".format( fw_id ), group='bootstrap' )
         
         # Set head PID
-        if pid is not None:
+        if pid != "":
             gcs.send( head['pid'], group='bootstrap' )
         
         # Set Thermistor index
@@ -343,7 +343,8 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         for line in custom_gcode.split('\n'):
             if line:
                 code = line.split(';')[0]
-                gcs.send( code, group='bootstrap' )
+                if code:
+                    gcs.send( code, group='bootstrap' )
         
         
         # Save settings
