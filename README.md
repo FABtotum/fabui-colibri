@@ -1,24 +1,47 @@
-FAB-UI
-======
+# FABUI - Colibri
 
-New development branches of the FAB-UI intended for the new FABtotum 
-Colibri os flavor.
+![N|Solid](http://www.fabtotum.com/fabui_v1.png)
 
-FABtotum/Colibri
-----------------
-System features and development status:
+# Installation
+  - Download the latest archive [here][latest-archive]
+  - Format an SD Card to one FAT32 with label “boot”
+  - Unzip the file you downloaded at step 1 and copy all files to Sd Card
+  - Insert the SD Card into the slot of the FABtotum
+  - Connect to the FABtotum via Ethernet cable
+  - Turn on the FABtotum
+  - Wait for the leds to became blue and open a web browser and in the address bar type 169.254.1.2
 
-### What changes
-- Base system switch from Raspbian to homebrew
-  [Colibri](https://github.com/Colibri-Embedded)
-- Http server Apache 2 replaced by Lighttpd
-- Application database MySQL replaced by SQLite 3
-- Codegniter framework updated to last version
-
-### Improvements
-- Easy installation / reinstallation: just copy the installation files
-  on a FAT32 formatted SD card
-- Fast boot (<20 secs) and shutdown (<10 secs)
-- Resilient to power failures / hard power-offs
-- Reengineered code
+# What's new
+  - New OS from scratch
+  - Designed to be more resilient to power failures
+  - No SD Card flashing needed, only simple copy
+  - Earlyboot-WebUI for first install and recovery
+  - Built-in recovery procedure
+  -- Recovery can preserve user and system settings
+  - Faster boot, install and recovery
+  - Http server Apache 2 replaced by Lighttpd
+  - Application database MySQL replaced by SQLite 3
+  - Upgraded to Codeigniter framework 3.x
+  - Full backend redesign
+  - Uses WebSocket and XML-RPC for faster UI vs backend communication
+  - UI pages loaded via ajax for faster navigation and better user experience
+  - Easy to write python script extensions
+  - New Plugin framework that allows better plugin integration into the UI
+  - Added standard views to help write plugin UI easier
+  - Plugin generator for easy plugin creating
+  - Plugins can extend supported file types and integrate into Project manager
+  - Plugin online repository
+  - All system updates accessible from Update section
+  - Firmware rollback to previous versions
+  - On RPi3 wifi Access Point mode is supported
+  - Custom head settings creation (Thermistor, PID, capabilities..)
+  - Probe length store per head so no recalibration is needed when heads are switched
+  - Jog redesigned
+  - Jog supports multiplier for easier step change on touch interfaces
+  - Jog supports bed touch interface for fast head positioning
+  - Built-in GCode help that is in sync with the current firmware
+  - GCode help supports search by code and description
+  - Milling and laser engraving jog support position storing/restoring, useful for multi-step manufacturing or laser height calibration
+   
+   [latest-archive]: <http://update.fabtotum.com/colibri/armhf/images/latest_sdcard>
 
