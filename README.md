@@ -4,7 +4,9 @@ the first Operating System in the world completely developed for 3D printing.
 
 ## Fabui-Colibri beta is ready for testing
 The FABtotum Development Team is pleased to announce that the public beta release of Fabui-Colibri is now available.
+
 This beta release is made available to allow a broad user base to test and evaluate the next major version, but is not recommended for production use at this stage.
+
 Beta will be available for 42 days from 23/02/2017 to 06/04/2017
 
 Help us gathering bugs!
