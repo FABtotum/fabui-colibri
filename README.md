@@ -47,7 +47,7 @@ the first Operating System in the world completely developed for 3D printing.
 ## Support & Contributing
 Please [open an issue](https://github.com/FABtotum/fabui-colibri/issues/new) for support
 
-## Know issues
+## Known issues
  - Incompatibility with the following wifi adapters drivers on Raspberry Pi 1:
   * 8188eu [see](https://github.com/FABtotum/fabui-colibri/issues/10)
   * 8192cu [see](https://github.com/FABtotum/fabui-colibri/issues/11)
