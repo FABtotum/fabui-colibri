@@ -207,7 +207,10 @@
 				{
 					populateHeadSettings(heads[selected_head]);
 				}
+				$('#settingsModal').modal('show');
+				break;
 			case "add":
+				document.getElementById("head-settings").reset();
 				$('#settingsModal').modal('show');
 				break;
 			case "remove":
@@ -278,7 +281,6 @@
 			for (var key in head) {
 				var value = head[key];
 				// now you can use key as the key, value as the... you guessed right, value
-				console.log(key, value);
 				if(Array.isArray(value))
 				{
 					for(var i=0; i<value.length; i++)

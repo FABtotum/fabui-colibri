@@ -16,7 +16,7 @@
 
 <div class="row">
 	<div class="col-sm-12">
-		<div class="well">
+		<div class="well well-light">
 			<div class="row margin-bottom-10">
 				<div class="col-sm-6">
 					<div class="row">
