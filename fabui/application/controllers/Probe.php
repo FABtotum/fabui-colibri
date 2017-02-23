@@ -126,12 +126,16 @@ class Probe extends FAB_Controller {
 	public function overrideLenght($override_by)
 	{
 		$this->load->helper('fabtotum_helper');
-		$_result = doMacro('read_eeprom');
-		$old_probe_lenght = $_result['reply']['probe_length'];
+		
+		$info = getInstalledHeadInfo();
+		$old_probe_lenght = $info['probe_offset'];
 		$new_probe_lenght = abs($old_probe_lenght) - $override_by;
 		
 		// override probe value
 		doGCode('M710 S'.$new_probe_lenght );
+		$info['probe_offset'] = $new_probe_lenght;
+		// save changes to head json
+		saveInfoToInstalledHead($info);
 		
 		$this->output->set_content_type('application/json')->set_output(
 				json_encode( array(

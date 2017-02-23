@@ -241,6 +241,19 @@ if(!function_exists('saveHeadInfo'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('saveInfoToInstalledHead'))
+{
+	function saveInfoToInstalledHead($info)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$heads_dir = $CI->config->item('heads');
+		$_data = loadSettings();
+		$head_name = $_data['hardware']['head'];
+		return saveHeadInfo($info, $head_name);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('getInstalledHeadInfo'))
 {
 	/**
@@ -254,7 +267,6 @@ if(!function_exists('getInstalledHeadInfo'))
 		$heads_dir = $CI->config->item('heads');
 		
 		$_data = loadSettings();
-		$settings_type = $_data['settings_type'];
 		
 		$head_filename =  $heads_dir .'/'. $_data['hardware']['head'] . '.json';
 		return json_decode(file_get_contents($head_filename), true);

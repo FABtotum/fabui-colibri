@@ -49,7 +49,7 @@ if(!isset($task_jump_restart)) $task_jump_restart = 1;
 		$.ajax({
 			type: 'post',
 			data: data,
-			url: '<?php echo site_url('create/saveQualityRating'); ?>/' + idTask + '/' + rating,
+			url: '<?php echo site_url('std/saveQualityRating'); ?>/' + idTask + '/' + rating,
 			dataType: 'json'
 		}).done(function(response) {
 			// do nothing

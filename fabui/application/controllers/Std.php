@@ -86,6 +86,32 @@ class Std extends FAB_Controller {
 		}
 		return $aaData;
 	}
+	
+	public function saveQualityRating($taskID, $rating)
+		{
+			$this->load->model('Tasks', 'tasks');
+			
+			$result = false;
+			
+			$task = $this->tasks->get($taskID, 1);
+			if($task)
+			{
+				$attributes = json_decode(utf8_encode(preg_replace('!\\r?\\n!', "<br>", $task['attributes'])), true);
+				$attributes['rating'] = $rating;
+				
+				$json = json_encode( $attributes );
+				
+				
+				$taskData = array(
+					'attributes' => $json
+				);
+				$this->tasks->update($taskID, $taskData);
+				
+				$result = true;
+			}
+			
+			$this->output->set_content_type('application/json')->set_output(json_encode(array($result)));
+		}
 
  }
  
