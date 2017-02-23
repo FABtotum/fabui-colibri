@@ -87,6 +87,9 @@ class Head extends FAB_Controller {
 		$_data['hardware']['head'] = $new_head;
 		
 		saveSettings($_data, $settings_type);
+		
+		// reset totumduino
+		resetController();
 
 		$this->output->set_content_type('application/json')->set_output(json_encode( $head_info ));
 	}

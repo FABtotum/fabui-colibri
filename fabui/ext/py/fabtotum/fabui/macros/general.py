@@ -220,9 +220,10 @@ def install_head(app, args, lang='en_US.UTF-8'):
     head_name = args[0]
     
     result = configure_head(app, head_name, lang)
-    app.macro("M999",   "ok", 1,    _("Clearing error state"), verbose=False)
-    app.macro("M728",   "ok", 1,    _("Awaken"), verbose=False)
-    app.trace(_("Head is ready"))
+    #~ app.macro("M999",   "ok", 1,    _("Clearing error state"), verbose=False)
+    #~ app.macro("M728",   "ok", 1,    _("Awaken"), verbose=False)
+    #~ app.trace(_("Head is ready"))
+    app.trace(_("Restarting totumduino"))
     return result
 
 def clear_errors(app, args = None, lang='en_US.UTF-8'):

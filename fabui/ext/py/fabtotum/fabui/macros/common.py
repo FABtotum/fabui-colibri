@@ -174,6 +174,9 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
         #~ gcs.send( "M793 S{0}".format( fw_id ), group='bootstrap' )
         app.macro( "M793 S{0}".format( fw_id ),   "ok", 2, _("Setting soft ID to {0}").format(fw_id) )
     
+    # Working mode
+    app.macro( "M450 S{0}".format( mode ),   "ok", 2, _("Configuring working mode"))
+    
     # Set head PID
     if pid != "":
         app.macro(head['pid'],   "ok *", 2, _("Configuring PID"))
@@ -189,9 +192,6 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     # Set probe offset
     if offset:
         app.macro( "M710 S{0}".format( offset ),   "ok", 2, _("Configuring nozzle offset"))
-    
-    # Working mode
-    app.macro( "M450 S{0}".format( mode ),   "ok", 2, _("Configuring working mode"))
     
     # Custom initialization code
     app.trace( _("Custom initialization") )
