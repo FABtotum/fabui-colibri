@@ -141,11 +141,11 @@
 			fabApp.getNetworkInfo();
 			setTimeout(function(){
 					if(window.location.href ==  ('<?php echo site_url('#settings/network/') ?>/' + data['active'])){
-						location.reload();
+						location.reload(); 
 					}else{
 						window.location.href = '<?php echo site_url('#settings/network/') ?>/' + data['active'];
 					}
-				}, 2000
+				}, 5000
 			);
 						
 		});
@@ -347,7 +347,7 @@
 					}else{
 						window.location.href = complete_url;
 					}
-				}, 2000
+				}, 5000
 			);
 			
 		});
