@@ -12,7 +12,7 @@
 	<div class="row">
 		<div class="col-sm-3 hidden-xs hidden-sm"></div>
 		<div class="col-sm-6">
-			<div class="alert <?php echo $alert['type'] ?> animated fadeIn">
+			<div class="alert <?php echo $alert['type'] ?> animated bounce">
 				<?php echo $alert['message']; ?>
 			</div>
 		</div>

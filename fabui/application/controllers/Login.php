@@ -47,12 +47,16 @@
 		//load libraries, models, helpers
 		$this->load->model('User', 'user');
 		$user = $this->user->get($postData, 1);
-		$user['settings'] = json_decode($user['settings'], true);
-		if(!isset($user['settings']['language'])) $user['settings']['language'] = 'en_US';
+		
 		if($user == false){ //if user doesn't exists
 			//TO DO add flash message
+			$this->session->mark_as_flash('alert');
+			$this->session->set_flashdata('alert', array('type' => 'alert-danger', 'message'=> '<i class="fa fa-fw fa-warning"></i> '._("Please check your email or password") ));
 			redirect('login');
 		}
+		
+		$user['settings'] = json_decode($user['settings'], true);
+		if(!isset($user['settings']['language'])) $user['settings']['language'] = 'en_US';
 		//create valid session for fabui
 		$this->session->loggedIn = true;
 		$this->session->user = $user;
@@ -103,7 +107,7 @@
 		//load libraries, models, helpers
 		$this->load->model('User', 'user');
 		$newUserID = $this->user->add($postData);
-		$this->session->set_flashdata('alert', array('type' => 'alert-success', 'message'=> '<i class="fa fa-fw fa-check"></i>New user created successfully' ));
+		$this->session->set_flashdata('alert', array('type' => 'alert-success', 'message'=> '<i class="fa fa-fw fa-check"></i> '._("New user created successfully") ));
 		redirect('login');
 		
 	}
