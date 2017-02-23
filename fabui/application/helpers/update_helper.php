@@ -92,6 +92,7 @@ if(!function_exists('getArchitecture'))
 		$versions = array(
 			'armv7l' => 'armhf',
 			'armv6'  => 'armhf',
+			'armv6l' => 'armhf'
 		);
 		$arch = trim(str_replace(PHP_EOL, '', shell_exec('uname -m')));
 		return $versions[$arch];
