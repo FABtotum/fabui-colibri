@@ -49,8 +49,8 @@ Please [open an issue](https://github.com/FABtotum/fabui-colibri/issues/new) for
 
 ## Know issues
  - Incompatibility with the following wifi adapters drivers on Raspberry Pi 1:
-  * 8188eu
-  * 8192cu
+  * 8188eu [see](https://github.com/FABtotum/fabui-colibri/issues/10)
+  * 8192cu [see](https://github.com/FABtotum/fabui-colibri/issues/11)
 
    
    [latest-archive]: <http://update.fabtotum.com/colibri/armhf/images/sdcard_latest>
