@@ -57,7 +57,7 @@
 	function startTask()
 	{
 		console.log('Starting task');
-		openWait('<i class="fa fa-spinner fa-spin "></i>' + "<?php echo _('Preparing {0}');?>".format("<?php echo _(ucfirst($type)); ?>"), "<?php echo _('Please wait');?>");
+		openWait('<i class="fa fa-spinner fa-spin "></i> ' + "<?php echo _('Preparing {0}');?>".format("<?php echo _(ucfirst($type)); ?>"), "<?php echo _('Please wait');?>");
 		
 		var calibration = $('input[name=calibration]:checked').val();
 		
@@ -82,7 +82,7 @@
 				//setInterval(jsonMonitor, 1000);
 				idTask = response.id_task;
 				
-				fabApp.resetTemperaturesPlot(50);
+				fabApp.resetTemperaturesPlot(1);
 				setTimeout(initGraph, 1000);
 				
 				initRunningTaskPage();
