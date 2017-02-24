@@ -119,8 +119,15 @@ def main():
     
     data['unit_configs'] = config.settings
     
+    network_json_info = open(config.get('general', 'network_info_file'))
+    network_info = json.load(network_json_info)
+    
+    
     data['eth_bytes'] = get_rx_tx_bytes('eth0')
-    data['wlan_bytes'] = get_rx_tx_bytes('wlan0')
+    
+    if 'wlan0' in network_info['interfaces'] :
+        data['wlan_bytes'] = get_rx_tx_bytes('wlan0')
+    
 
     print json.dumps(data)
     

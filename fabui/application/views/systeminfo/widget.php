@@ -8,11 +8,11 @@
 				<caption></caption>
 				<tbody>
 					<tr>
-						<td>OS</td>
+						<td><?php echo _("Os") ?></td>
 						<td><span class="pull-right"><?php echo $os_info; ?></span></td>
 					</tr>
 					<tr>
-						<td>Firmware</td>
+						<td><?php echo _("Firmware") ?></td>
 						<td><span class="pull-right">v<?php echo $fabtotum_info['fw']; ?></span></td>
 					</tr>
 					<tr>
@@ -20,11 +20,11 @@
 						<td><span class="pull-right">v<?php echo $fabui_version?></span></td>
 					</tr>
 					<tr>
-						<td>Hardware</td>
+						<td><?php echo _("Hardware") ?></td>
 						<td><span class="pull-right">v<?php echo $fabtotum_info['hw']; ?></span></td>
 					</tr>
 					<tr>
-						<td>Installed Head</td>
+						<td><?php echo _("Installed head") ?></td>
 						<td><span class="pull-right"><?php echo $unit_configs['hardware']['head']; ?></span></td>
 					</tr>
 				</tbody>
@@ -35,19 +35,19 @@
 <hr class="simple">
 <div class="row">
 	<div class="col-sm-6 margin-bottom-10">
-		<h1 class="txt-color-blueDark"> Board details</h1>
+		<h1 class="txt-color-blueDark"> <?php echo _("Board details") ?></h1>
 	</div>
 	<div class="col-sm-6 margin-bottom-10">
 		<div class="well no-padding well-light">
 			<table class="table table-striped table-condensed">
-				<caption>RAM Memory</caption>
+				<caption><?php echo _("RAM memory") ?></caption>
 				<tbody>
 					<tr>
-						<td>Free</td>
+						<td><?php echo _("Free") ?></td>
 						<td><span class="pull-right"><?php echo floor($mem_free / 1024); ?> MB</span></td>
 					</tr>
 					<tr>
-						<td>Total</td>
+						<td><?php echo _("Total") ?></td>
 						<td><span class="pull-right"><?php echo floor($mem_total / 1000); ?> MB</span></td>
 					</tr>
 				</tbody>
@@ -59,18 +59,18 @@
 	<div class="col-sm-6 margin-bottom-10">
 		<div class="well no-padding well-light">
 			<table class="table table-striped">
-				<caption>Hardware</caption>
+				<caption><?php echo _("Hardware") ?></caption>
 				<tbody>
 					<tr>
-						<td>Board</td>
+						<td><?php echo _("Board") ?></td>
 						<td><span class="pull-right"><?php echo $rpi_version?></span></td>
 					</tr>
 					<tr>
-						<td>Time Alive</td>
+						<td><?php echo _("Time alive") ?></td>
 						<td><span class="pull-right"><?php echo transformSeconds($time_alive)?></span></td>
 					</tr>
 					<tr>
-						<td>Board Temperature</td>
+						<td><?php echo _("Board temperature") ?></td>
 						<td><span class="pull-right"><?php echo $temp . '&deg;'; ?></span></td>
 					</tr>
 				</tbody>
@@ -80,15 +80,19 @@
 	<div class="col-sm-6 margin-bottom-10">
 		<div class="well no-padding well-light">
 			<table class="table table-striped">
-				<caption>Network <span class="pull-right" style="margin-right: 5px;">(eth / wlan)</span></caption>
+				<caption><?php echo _("Network") ?> 
+					<span class="pull-right" style="margin-right: 5px;">(eth / wlan)</span>
+				</caption>
 				<tbody>
 					<tr>
-						<td>Down</td>
-						<td><span class="pull-right"><?php echo humanFileSize($eth_bytes[0]) ?> / <?php echo humanFileSize($wlan_bytes[0])?></span></td>
+						<td><?php echo _("Down") ?> </td>
+						<td>
+							<span class="pull-right"><?php echo humanFileSize($eth_bytes[0]) ?> / <?php echo isset($wlan_bytes) ? humanFileSize($wlan_bytes[0]) : '.'?></span>
+						</td>
 					</tr>
 					<tr>
-						<td>Up</td>
-						<td><span class="pull-right"><?php echo humanFileSize($eth_bytes[1])?> / <?php echo humanFileSize($wlan_bytes[1])?></span></td>
+						<td><?php echo _("Up") ?> </td>
+						<td><span class="pull-right"><?php echo humanFileSize($eth_bytes[1])?> / <?php echo  isset($wlan_bytes) ? humanFileSize($wlan_bytes[1]): '.'?></span></td>
 					</tr>
 				</tbody>
 			</table>
@@ -99,7 +103,7 @@
 	<div class="col-sm-12 margin-bottom-10">
 		<div class="well no-padding well-light">
 			<table class="table table-striped">
-				<caption>Storage</caption>
+				<caption><?php echo _("Storage") ?> </caption>
 				<thead>
 					<tr>
 					<?php $col_count = 0; ?>
