@@ -43,8 +43,15 @@
 			//if not redirect to login page
 			//load needed libraries, helpers
 			$this->load->library(array('session', 'parser'));
-			$this->load->helper(array('url', 'layout', 'language'));
+			$this->load->helper(array('url', 'layout', 'language', 'update'));
 			$this->load->database();
+			
+			/**
+			 * get and define FABUI version
+			 */
+			$fabuiBundle = getLocalBundle('fabui');
+			define('FABUI_VERSION', $fabuiBundle['version']);
+			
 			if($this->session->loggedIn == false && !in_array(get_class($this), $this->noSessionNeeded)){
 				redirect('login/index');	
 			}

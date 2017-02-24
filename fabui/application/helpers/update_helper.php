@@ -51,6 +51,23 @@ if(!function_exists('getLocalBundles')){
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getLocalBundle')){
+
+	/**
+	 * return local bundle
+	 */
+	function getLocalBundle($bundle_name)
+	{
+		$bundles = getLocalBundles();
+		
+		if(array_key_exists($bundle_name, $bundles)){
+			return $bundles[$bundle_name];	
+		}
+		
+		return false;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('getRemoteBundles')){
 	
 	/**

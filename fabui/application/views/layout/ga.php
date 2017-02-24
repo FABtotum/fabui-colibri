@@ -6,6 +6,6 @@
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   ga('create', '<?php echo $ga_property_id ?>', 'auto');
   ga('set', 'appName', 'fabui');
-  ga('set', 'appVersion', <?php echo FABUI_VERSION ?>);
+  ga('set', 'appVersion', '<?php echo FABUI_VERSION ?>');
   ga('send', 'screenview', {screenName: page});
 </script>
