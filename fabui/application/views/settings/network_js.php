@@ -3,6 +3,7 @@
 	var wifiSelected;
 	var wifiIface;
 	var wifiPassword;
+	var currentEthIPV4;
 
 	$(function () 
 	{
@@ -28,6 +29,7 @@
 		$('a[data-toggle="tab"]').on('shown.bs.tab', tab_change);
 		initFieldValidator();
 		triggerPreSelected();
+		initEthCurrentIPV4();
 	});
 
 	function do_save()
@@ -71,6 +73,8 @@
 		}
 		
 		console.log('save eth', iface);
+		console.log(data);
+		//return false;
 		post_data(data);
 	}
 
@@ -115,19 +119,37 @@
 		button.addClass('disabled');
 		button.html('<i class="fa fa-save"></i> <?php echo _('Saving')?>..');
 
-		if(data.hasOwnProperty('hidden-ssid') && data['address-mode'] == 'dhcp'){
+		if(data.hasOwnProperty('hidden-ssid') && data['net_type'] == 'wlan'){
 			openWait("<i class='fa fa-spin fa-spinner'></i> <?php echo _("Connecting to") ?> <strong>" + data['hidden-ssid']+'</strong> <i class="fa fa-wifi"></i>', "<?php echo _("Please wait") ?>...", false );
+		}else if(data['net_type'] == 'eth' && data['address-mode'] == 'static'){
+
+			openWait("<i class='fa fa-spin fa-spinner'></i> <?php echo _("Saving new ethernet configuration") ?>", "<?php echo _("Please wait") ?>...", false );
+			/** 
+			* if static ip address change
+			**/
+			if(currentEthIPV4 != data['ipv4']){
+				
+				setTimeout(function(){
+					waitContent("<?php echo _("Redirect to new address") ?>...");
+					fabApp.redirectToUrlWhenisReady('http://'+ data['ipv4'] + '/fabui/#settings/network');
+				}, 3000);
+			}			
 		}
 		
 		$.ajax({
 			type: 'post',
 			url: "<?php echo site_url('settings/saveNetworkSettings/connect'); ?>",
 			data : data,
-			dataType: 'json'
+			dataType: 'json',
+			async: true,
+			timout: 20000, //timeout 1 minute,
+			error: function(request, status, err) {
+				console.log("ERROR");
+			}
 		}).done(function(response) {
 			button.html('<i class="fa fa-save"></i> <?php echo _('Save')?>');
 			button.removeClass('disabled');
-			
+			/*
 			$("#"+data['active']+"-tab #hidden-address-mode").val(data['address-mode']);
 			
 			$.smallBox({
@@ -137,17 +159,25 @@
 				timeout: 1000,
 				icon : "fa fa-check bounce animated"
 			});
-			waitContent("<?php echo _("Reloading page") ?>...");
-			fabApp.getNetworkInfo();
-			setTimeout(function(){
-					if(window.location.href ==  ('<?php echo site_url('#settings/network/') ?>/' + data['active'])){
-						location.reload(); 
-					}else{
-						window.location.href = '<?php echo site_url('#settings/network/') ?>/' + data['active'];
-					}
-				}, 5000
-			);
+			*/
+			/**
+			* if wlan
+			**/
+			//if(data['net_type'] == 'wlan'){
+				waitContent("<?php echo _("Reloading page") ?>...");
+				fabApp.getNetworkInfo();
+				setTimeout(function(){
+						if(window.location.href ==  ('<?php echo site_url('#settings/network/') ?>/' + data['active'])){
+							location.reload(); 
+						}else{
+							window.location.href = '<?php echo site_url('#settings/network/') ?>/' + data['active'];
+						}
+					}, 5000
+				);
+			//}
 						
+		}).fail(function(jqXHR, textStatus){
+			console.log("FAIL");
 		});
 	}
 
@@ -518,5 +548,13 @@
 		}
 		
 		<?php endif; ?>
+	}
+	/**
+	* initCurrentIPV4
+	**/
+	function initEthCurrentIPV4()
+	{
+		currentEthIPV4 = $("#ipv4").val();
+		console.log(currentEthIPV4);
 	}
 </script>
