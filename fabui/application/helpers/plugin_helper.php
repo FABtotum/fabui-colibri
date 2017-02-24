@@ -380,6 +380,26 @@ if(!function_exists('startPluginPyScript'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('startPluginBashScript'))
+{
+	/**
+	 * start bash script
+	 */
+	function startPluginBashScript($script, $params = '', $background = true, $sudo = false)
+	{
+		$CI =& get_instance();
+		$CI->load->helper('fabtotum_helper');
+		$CI->config->load('fabtotum');
+		//~ $extPath = $CI->config->item('ext_path');
+		$extPath = plugin_path() . '/scripts/';
+		// TODO: check trailing /
+		$cmd = 'bash';
+		if($sudo)
+			$cmd = 'sudo ' . $cmd;
+			return doCommandLine($cmd, $extPath.'bash/'.$script, $params, $background);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('createPlugin'))
 {
 	/**
