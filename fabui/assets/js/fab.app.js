@@ -555,6 +555,8 @@ fabApp = (function(app) {
 		$.ajax({
 			url: reboot_url_action,
 		}).done(function(data) {
+			waitContent(app_text[13]);
+			app.redirectToUrlWhenisReady(base_url);
 		}).fail(function(jqXHR, textStatus){
 			//clear intervals
 			waitContent(app_text[13]);
@@ -1189,14 +1191,17 @@ fabApp = (function(app) {
 	/**
 	* redirect to a specific url only when the url responds 200
 	**/
-	app.redirectToUrlWhenisReady = function (url, timer)
+	app.redirectToUrlWhenisReady = function (url)
 	{
-		timer = timer | 1000;
-		var checkInterval = setInterval(function(){
-			$.get(url)
-				.success(function(result) { clearInterval(checkInterval); document.location.href = url; })
-				.error(function(jqXHR, textStatus, errorThrown) { });
-		}, timer);
+		$.get(url)
+			.success(function(result) {				
+				document.location.href = url;
+			})
+			.error(function(jqXHR, textStatus, errorThrown) {
+				setTimeout( function() {
+					app.redirectToUrlWhenisReady(url);
+				}, 50 );
+			});
 	}
 	/**
 	*
