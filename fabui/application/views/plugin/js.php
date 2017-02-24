@@ -69,7 +69,7 @@
 					table_html += '<span class="label label-success">' + "<?php echo _("Installed");?>" + '</span>';
 				}
 				
-				table_html += '</p></h4><p class="margin-top-10"></p></td><td class="text-center hidden-xs">' + plugin.version + '</td><td class="text-center hidden-xs"><a class="no-ajax" target="_blank" href="'+plugin.author_uri+'">'+plugin.author+'</a></td></tr>';
+				table_html += '</p></h4><p class="margin-top-10"></p></td><td class="text-center hidden-xs">' + plugin.latest + '</td><td class="text-center hidden-xs"><a class="no-ajax" target="_blank" href="'+plugin.author_uri+'">'+plugin.author+'</a></td></tr>';
 			});
 			
 			table_html += '</tbody></table>';
