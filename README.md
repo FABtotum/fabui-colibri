@@ -57,6 +57,7 @@ Help us gathering bugs!
 Please [open an issue](https://github.com/FABtotum/fabui-colibri/issues/new) for support
 
 ### Issues reporting rules
+- Please first make sure the system is up-to-date
 - 1 bug per issue
 - Provide printer version
 - Write a short description about how the bug happened
