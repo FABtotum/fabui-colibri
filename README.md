@@ -56,7 +56,12 @@ Help us gathering bugs!
 ## Support & Contributing
 Please [open an issue](https://github.com/FABtotum/fabui-colibri/issues/new) for support
 
-## Known issues
+### Issues reporting rules
+- 1 bug per issue
+- Provide printer version
+- Write a short description about how the bug happened
+
+### Known issues
  - Incompatibility with the following wifi adapters drivers on Raspberry Pi 1:
   * 8188eu [see](https://github.com/FABtotum/fabui-colibri/issues/10)
   * 8192cu [see](https://github.com/FABtotum/fabui-colibri/issues/11)
