@@ -47,6 +47,7 @@ class UpdateApplication(GCodePusher):
     def __init__(self, arch='armhf', mcu='atmega1280'):
         super(UpdateApplication, self).__init__()
         
+        self.resetTrace()
         self.factory = UpdateFactory(arch=arch, mcu=mcu, config=self.config, gcs=self.gcs, notify_update=self.update_monitor)
         self.update_stats = {}
         

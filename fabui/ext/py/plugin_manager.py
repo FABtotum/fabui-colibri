@@ -53,11 +53,10 @@ class PluginManagerApplication(GCodePusher):
     def __init__(self, arch='armhf', mcu='atmega1280'):
         super(PluginManagerApplication, self).__init__()
         
-        self.factory = UpdateFactory(config=self.config, gcs=self.gcs, notify_update=self.update_monitor)
+        self.resetTrace()
         self.update_stats = {}
-        
-        self.add_monitor_group('update', self.update_stats)      
-        
+        self.add_monitor_group('update', self.update_stats)
+    
     def playBeep(self):
         self.send('M300')
 
@@ -107,7 +106,9 @@ class PluginManagerApplication(GCodePusher):
         plugins_path = self.config.get('general', 'plugins_path')
         
         for plugin in plugins:
+            self.trace( _("Deleting plugin <strong>{0}</strong> files...").format(plugin) )
             remove_plugin(plugin, self.config)
+            self.trace( _("Done") )
             print "ok"
         
     def run_activate(self, plugins):
@@ -115,8 +116,9 @@ class PluginManagerApplication(GCodePusher):
         Activate plugins by creating links in the system to plugin resources
         """        
         for plugin in plugins:
-            self.trace(_("Activating plugin..."))
+            self.trace( _("Integrating plugin <strong>{0}</strong> into system...").format(plugin) )
             activate_plugin(plugin, self.config)
+            self.trace( _("Done") )
             print "ok"
         
     def run_deactivate(self, plugins):
@@ -124,8 +126,9 @@ class PluginManagerApplication(GCodePusher):
         Deactivate plugins by removing their links to the system
         """
         for plugin in plugins:
-            self.trace(_("Deactivating plugin..."))
+            self.trace( _("Decoupling plugin <strong>{0}</strong> from system...").format(plugin) )
             deactivate_plugin(plugin, self.config)
+            self.trace( _("Done") )
             print "ok"
     
     def run_update(self, task_id, plugins):
@@ -134,6 +137,8 @@ class PluginManagerApplication(GCodePusher):
         """
         #~ task_id = -1
         print "task started"
+        
+        self.factory = UpdateFactory(config=self.config, gcs=self.gcs, notify_update=self.update_monitor)
         
         self.prepare_task(task_id, task_type='plugin', task_controller='update')
         self.set_task_status(GCodePusher.TASK_RUNNING)

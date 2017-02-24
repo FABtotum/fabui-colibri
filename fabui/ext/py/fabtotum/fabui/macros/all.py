@@ -55,6 +55,7 @@ PRESET_MAP = {
     "start_additive"                : print_macros.start_additive,
     "end_additive"                  : print_macros.end_additive,
     "end_additive_safe_zone"        : print_macros.end_additive_safe_zone,
+    "end_additive_aborted"          : print_macros.end_additive_aborted,
     
     # Maintenance
     "pre_unload_spool"              : maint_macros.pre_unload_spool,

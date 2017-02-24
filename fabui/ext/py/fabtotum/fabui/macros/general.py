@@ -45,11 +45,11 @@ def home_all(app, args = None, lang='en_US.UTF-8'):
     app.macro("G90", "ok", 2, _("Set abs position"), verbose=False)
     
     if zprobe_disabled :
-        app.macro("G27", "ok", 100,                             _("Homing all axes"), verbose=False)
+        app.macro("G27", "ok", 200,                             _("Homing all axes"), verbose=False)
         app.macro('G92 Z{0}'.format(z_max_offset), "ok", 99,    _("Set Z Max"), verbose=False)
         app.macro("G0 Z50 F10000", "ok", 15,                    _("Raising"), verbose=False)
     else:
-        app.macro("G28", "ok", 100,                             _("Homing all axes"), verbose=False)
+        app.macro("G28", "ok", 200,                             _("Homing all axes"), verbose=False)
 
 def start_up(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)

@@ -83,6 +83,23 @@
 		$(".action-button").addClass("disabled");
 		console.log('ACTION', action, plugin_slug);
 		
+		var message = '';
+		switch(action)
+		{
+			case 'activate':
+				message = _("Activating plugin");
+				break;
+			case 'deactivate':
+				message = _("Deactivating plugin");
+				break;
+			case 'remove':
+				message = _("Removing plugin");
+				break;
+		}
+		
+		if(message)
+			openWait("<i class='fa fa-spin fa-spinner'></i>  <strong>" +message+ '</strong> ', "<?php echo _("Please wait") ?>...", false );
+		
 		$.ajax({
 				type: "POST",
 				url: "plugin/"+action+"/"+plugin_slug,
