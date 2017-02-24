@@ -88,7 +88,7 @@
 				initRunningTaskPage();
 				updateZOverride(0);
 				
-				ga('send', 'event', 'print', 'start', 'Started print');
+				ga('send', 'event', 'print', 'start', 'print started');
 			}
 			closeWait();
 		})
