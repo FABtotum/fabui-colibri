@@ -902,12 +902,13 @@ if(!function_exists('firmwareInfo'))
 {
 	function firmwareInfo()
 	{
-		$tmp = doMacro('version');
+		$tmp   = doMacro('version');
 		$reply = $tmp['reply'];
+		
 		return array(
-			'version'  => trim(str_replace('V', '', $reply[5])),
-			'author'   => $reply[7],
-			'buildate' => $reply[6]
+			'version'  => trim(str_replace('V', '', $reply['firmware']['version'])),
+			'author'   => $reply['firmware']['author'],
+			'buildate' => $reply['firmware']['build_date']
 		);
 	}
 }
