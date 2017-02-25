@@ -28,7 +28,7 @@ import re
 # Import external modules
 
 # Import internal modules
-from fabtotum.fabui.macros.common import getEeprom, configure_head
+from fabtotum.fabui.macros.common import getEeprom, configure_head, version as get_version
 from fabtotum.utils.translation import _, setLanguage
 
 def home_all(app, args = None, lang='en_US.UTF-8'):
@@ -186,24 +186,7 @@ def do_4th_axis_mode(app, args = None, lang='en_US.UTF-8'):
 
 def version(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    result = []
-    retr = app.macro("M760",   "ok", 1, _("Controller serial ID"), verbose=False)
-    result.append(retr[0])
-    retr = app.macro("M761",   "ok", 1, _("Controller control code"), verbose=False)
-    result.append(retr[0])
-    retr = app.macro("M762",   "ok", 1, _("Board version"), verbose=False)
-    result.append(retr[0])
-    retr = app.macro("M763",   "ok", 1, _("Production batch"), verbose=False)
-    result.append(retr[0])
-    retr = app.macro("M764",   "ok", 1, _("Production batch control code"), verbose=False)
-    result.append(retr[0])
-    retr = app.macro("M765",   "ok", 1, _("Firmware version"), verbose=False)
-    result.append(retr[0])
-    retr = app.macro("M766",   "ok", 1, _("Firmware build date"), verbose=False)
-    result.append(retr[0])
-    retr = app.macro("M767",   "ok", 1, _("Firmware author"), verbose=False)
-    result.append(retr[0])
-    return result
+    return get_version(app, lang)
 
 def set_ambient_color(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)

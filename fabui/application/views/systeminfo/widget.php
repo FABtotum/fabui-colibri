@@ -1,165 +1,114 @@
-<div class="row">
-	<div class="col-sm-6 margin-bottom-10">
-		<h1 class="txt-color-blueDark"><i class="fa fa-play fa-rotate-90 fa-border"></i> FABtotum Personal Fabricator</h1>
-	</div>
-	<div class="col-sm-6 margin-bottom-10">
-		<div class="well no-padding well-light">
-			<table class="table table-striped table-condensed">
-				<caption></caption>
-				<tbody>
-					<tr>
-						<td><?php echo _("Os") ?></td>
-						<td><span class="pull-right"><?php echo $os_info; ?></span></td>
-					</tr>
-					<tr>
-						<td><?php echo _("Firmware") ?></td>
-						<td><span class="pull-right">v<?php echo $fabtotum_info['fw']; ?></span></td>
-					</tr>
-					<tr>
-						<td>FabUI</td>
-						<td><span class="pull-right">v<?php echo $fabui_version?></span></td>
-					</tr>
-					<tr>
-						<td><?php echo _("Hardware") ?></td>
-						<td><span class="pull-right">v<?php echo $fabtotum_info['hw']; ?></span></td>
-					</tr>
-					<tr>
-						<td><?php echo _("Installed head") ?></td>
-						<td><span class="pull-right"><?php echo $unit_configs['hardware']['head']; ?></span></td>
-					</tr>
-				</tbody>
-			</table>
+<?php
+/**
+ * 
+ * @author Krios Mane
+ * @author FabTeam
+ * @version 0.1
+ * @license https://opensource.org/licenses/GPL-3.0
+ * 
+ */
+?>
+<div class="panel-group smart-accordion-default" id="accordion">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> Fabtotum Personal Fabricator </a></h4>
+		</div>
+		<div id="collapseOne" class="panel-collapse collapse in">
+			<div class="panel-body ">
+				 <dl class="dl-horizontal">
+			        <dt><?php echo _("Os");?></dt>
+			        <dd><?php echo $os_info; ?></dd>
+			        
+			        <dt><?php echo _("Fabui");?></dt>
+			        <dd><?php echo $bundles['fabui']['version']?></dd>
+			        
+			        <?php if(isset($versions['firmware'])):?>
+			        <dt><?php echo _("Firmware");?></dt>
+			        <dd><?php echo isset($versions['firmware']['version']) ? $versions['firmware']['version'] : _("n.a.") ?>
+			        	<?php echo isset($versions['firmware']['build_date']) ? " - "._("Build date").": ".$versions['firmware']['build_date'] : "" ?>
+			        	<?php echo isset($versions['firmware']['author']) ? " - "._("Author").": ".$versions['firmware']['author'] : "" ?>
+			        </dd>
+			        <?php endif; ?>
+			        
+			        <dt><?php echo _("Hardware");?></dt>
+			        <dd><?php echo isset($versions['production']['batch']) ? $versions['production']['batch'] : _("n.a.") ?></dd>
+			        
+			        <dt><?php echo _("Installed head");?></dt>
+			        <dd><?php echo $installed_head['name']; ?></dd>
+      			</dl>
+			</div>
 		</div>
 	</div>
-</div>
-<hr class="simple">
-<div class="row">
-	<div class="col-sm-6 margin-bottom-10">
-		<h1 class="txt-color-blueDark"> <?php echo _("Board details") ?></h1>
-	</div>
-	<div class="col-sm-6 margin-bottom-10">
-		<div class="well no-padding well-light">
-			<table class="table table-striped table-condensed">
-				<caption><?php echo _("RAM memory") ?></caption>
-				<tbody>
-					<tr>
-						<td><?php echo _("Free") ?></td>
-						<td><span class="pull-right"><?php echo floor($mem_free / 1024); ?> MB</span></td>
-					</tr>
-					<tr>
-						<td><?php echo _("Total") ?></td>
-						<td><span class="pull-right"><?php echo floor($mem_total / 1000); ?> MB</span></td>
-					</tr>
-				</tbody>
-			</table>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> <?php echo _("Board details"); ?> </a></h4>
+		</div>
+		<div id="collapseTwo" class="panel-collapse collapse">
+			<div class="panel-body">
+				<dl class="dl-horizontal">
+					<dt><?php echo _("Board");?></dt>
+			        <dd><?php echo $rpi_version?></dd>
+			        
+			        <dt><?php echo _("Time alive");?></dt>
+			        <dd><?php echo transformSeconds($time_alive)?></dd>
+			        
+			        <dt><?php echo _("Temperature") ?></dt>
+			        <dd><?php echo $temp . '&deg;'; ?></dd>
+			        
+			        <dt><?php echo _("RAM memory") ?></dt>
+			        <dd><?php echo _("Free ") ?> <?php echo floor($mem_free / 1024); ?> MB</dd>
+			        <dd><?php echo _("Used ") ?> <?php echo (floor($mem_total / 1024) - floor($mem_free / 1024) ) ; ?> MB</dd>
+			        <dd><?php echo _("Total ") ?> <?php echo floor($mem_total / 1000); ?> MB</dd>
+			        
+				</dl>
+			</div>
 		</div>
 	</div>
-</div>
-<div class="row">
-	<div class="col-sm-6 margin-bottom-10">
-		<div class="well no-padding well-light">
-			<table class="table table-striped">
-				<caption><?php echo _("Hardware") ?></caption>
-				<tbody>
-					<tr>
-						<td><?php echo _("Board") ?></td>
-						<td><span class="pull-right"><?php echo $rpi_version?></span></td>
-					</tr>
-					<tr>
-						<td><?php echo _("Time alive") ?></td>
-						<td><span class="pull-right"><?php echo transformSeconds($time_alive)?></span></td>
-					</tr>
-					<tr>
-						<td><?php echo _("Board temperature") ?></td>
-						<td><span class="pull-right"><?php echo $temp . '&deg;'; ?></span></td>
-					</tr>
-				</tbody>
-			</table>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> Storage </a></h4>
 		</div>
-	</div>
-	<div class="col-sm-6 margin-bottom-10">
-		<div class="well no-padding well-light">
-			<table class="table table-striped">
-				<caption><?php echo _("Network") ?> 
-					<span class="pull-right" style="margin-right: 5px;">(eth / wlan)</span>
-				</caption>
-				<tbody>
-					<tr>
-						<td><?php echo _("Down") ?> </td>
-						<td>
-							<span class="pull-right"><?php echo humanFileSize($eth_bytes[0]) ?> / <?php echo isset($wlan_bytes) ? humanFileSize($wlan_bytes[0]) : '.'?></span>
-						</td>
-					</tr>
-					<tr>
-						<td><?php echo _("Up") ?> </td>
-						<td><span class="pull-right"><?php echo humanFileSize($eth_bytes[1])?> / <?php echo  isset($wlan_bytes) ? humanFileSize($wlan_bytes[1]): '.'?></span></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-</div>
-<div class="row">
-	<div class="col-sm-12 margin-bottom-10">
-		<div class="well no-padding well-light">
-			<table class="table table-striped">
-				<caption><?php echo _("Storage") ?> </caption>
-				<thead>
-					<tr>
-					<?php $col_count = 0; ?>
-					<?php foreach($table_header as $header): ?>
-						<?php if($header != ''): ?>
-						<?php
-
-						switch($col_count) {
-							case 4 :
-								$class = 'text-center';
-								break;
-							case 5 :
-								$class = 'text-right';
-								break;
-							default :
-								$class = '';
-						}
-						?>
-						<th class="<?php echo $class; ?> th-border-top"><?php echo $header; ?></th>
-						<?php $col_count++; ?>
-						<?php endif; ?>
-					<?php endforeach; ?>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach($table_rows as $row): ?>
+		<div id="collapseThree" class="panel-collapse collapse">
+			<div class="panel-body no-padding">
+				<table class="table table-bordered table-condensed">
+					<thead>
 						<tr>
-							<?php $items = explode(' ', $row); ?>
-							<?php $col_count = 0; ?>
-							<?php foreach($items as $item): ?>
-								<?php if($item!==""): ?>
-									
-									<?php
-									switch($col_count) {
-										case 4 :
-											$class = 'text-center';
-											$content = '<div class="progress"><div class="progress-bar bg-color-blue" data-transitiongoal="' . intval($item) . '" style=""></div></div>';
-											break;
-										case 5 :
-											$class = 'text-right';
-											$content = $item;
-											break;
-										default :
-											$class = '';
-											$content = $item;
-									}
-									?>
-																
-									<td class="<?php echo $class; ?>"><?php echo $content; ?></td>
-									<?php $col_count++; ?>
-								<?php endif; ?>
-							<?php endforeach; ?>
+						<?php foreach ($table_header as $header): ?>
+							<th><?php echo $header; ?></th>
+						<?php endforeach; ?>
 						</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+					<?php foreach ($table_rows as $row): ?>
+						<tr>
+						<?php $columns = explode(' ', $row); ?>
+						<?php foreach($columns as $column): ?>
+							<td><?php echo $column; ?></td>
+						<?php endforeach;?>
+						</tr>
+					<?php endforeach;?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" class="collapsed"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> <?php echo _("Bundles"); ?> </a></h4>
+		</div>
+		<div id="collapseFour" class="panel-collapse collapse">
+			<div class="panel-body">
+				<dl class="dl-horizontal">
+				<?php foreach ($bundles as $bundle):?>
+					<dt><?php echo ucfirst($bundle['info']['name']);?></dt>
+			        <dd><?php echo $bundle['info']['version']?></dd>
+			        <dd><?php echo _("Build date") ?>: <?php echo $bundle['info']['build_date']?></dd>
+			        <hr class="simple">
+				<?php endforeach;?>
+				</dl>
+			</div>
 		</div>
 	</div>
 </div>
+

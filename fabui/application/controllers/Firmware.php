@@ -40,11 +40,13 @@ class Firmware extends FAB_Controller {
 		$tmp = doMacro('version');
 		$reply = $tmp['reply'];
 		
-		$data['fw_version'] = $reply[5]; //'V 1.0.0096-rc1';
-		$data['fw_author'] = $reply[7]; //'FABteam';
-		$data['fw_buildate'] = $reply[6]; //'Nov 14 2016 17:21:17';
-		$data['td_serial'] = $reply[0]; //'524205';
-		$data['td_version'] = $reply[2]; //'524205';
+		
+		
+		$data['fw_version'] = $reply['firmware']['version']; //'V 1.0.0096-rc1';
+		$data['fw_author'] = $reply['firmware']['author']; //'FABteam';
+		$data['fw_buildate'] = $reply['firmware']['build_date']; //'Nov 14 2016 17:21:17';
+		$data['td_serial'] = $reply['controller']['serial_id']; //'524205';
+		$data['td_version'] = $reply['board']['version']; //'524205';
 		$data['content'] = $content;
 
 		$fw_versions = array();

@@ -103,19 +103,19 @@ def main():
     # OS Info
     data['os_info'] = shell_exec('uname -a')[0].strip();
     
-    # Fabtotum info
-    reply = gcs.send('M765')
-    fw = reply[0].split()[1]
+    # Fabtotum info 
+    #reply = gcs.send('M765')
+    #fw = reply[0].split()[1]
     
-    reply = gcs.send('M763')
-    hw = reply[0]
-    data['fabtotum_info'] = {'fw':fw, 'hw':hw}
+    #reply = gcs.send('M763')
+    #hw = reply[0]
+    #data['fabtotum_info'] = {'fw':fw, 'hw':hw}
     
     # FABUI version
-    db = Database(config)
-    fabui_version = SysConfig(db)
-    fabui_version.query_by('key', 'fabui_version')
-    data['fabui_version'] = fabui_version['text']
+    ##db = Database(config)
+    #fabui_version = SysConfig(db)
+    #fabui_version.query_by('key', 'fabui_version')
+    #data['fabui_version'] = fabui_version['text']
     
     data['unit_configs'] = config.settings
     
