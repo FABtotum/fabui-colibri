@@ -23,12 +23,12 @@
 			<div class="tabs-container margin-top-10 text-align-left" style="display:none;">
 				<ul id="updateTab" class="nav nav-tabs bordered">
 					<li class="active"><a href="#bundles_tab" data-toggle="tab"><i class="fa fa-lg fa-puzzle-piece"></i> Bundles <span id="bundles-badge" class="badge bg-color-red txt-color-white inbox-badge"></span></a></li>
-					<!-- <li><a href="#boot_tab" data-toggle="tab"><i class="fa fa-lg fa-rocket"></i> Boot</a></li> -->
+					<li><a href="#boot_tab" data-toggle="tab"><i class="fa fa-lg fa-rocket"></i> Boot</a></li>
 					<li><a href="#firwmare_tab" data-toggle="tab"><i class="fa fa-lg fa-microchip"></i> Firmware <span id="firmware-badge" class="badge bg-color-red txt-color-white inbox-badge"></span></a></li>
 				</ul>
 				<div id="updateTabContent" class="tab-content padding-10">
 					<div class="tab-pane fade in active" id="bundles_tab"></div>
-					<!-- <div class="tab-pane fade in" id="boot_tab"></div> -->
+					<div class="tab-pane fade in" id="boot_tab"></div>
 					<div class="tab-pane fade in" id="firwmare_tab"></div>
 				</div>
 			</div>

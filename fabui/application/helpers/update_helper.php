@@ -34,6 +34,7 @@ if(!function_exists('getLocalBundles')){
 		
 		foreach($list as $line){
 			preg_match_all($re, $line, $matches);
+			// @TODO: add failsafe in case the matches does not match enough
 			$bundle_name = isset($matches[4]) ? trim($matches[4][0]) : '';
 			$temp = array(
 				'name'     => $bundle_name, 
@@ -143,6 +144,8 @@ if(!function_exists('getBundlesStatus'))
 		
 		$status = array(
 			'bundles'    => array(),
+			'boot' => array(),
+			'images' => array(),
 			'firmware'   => $firmware,
 			'update' => array(
 				'available' => false,
@@ -264,4 +267,5 @@ if(!function_exists('getRemoteFwVersions'))
 		else false;
 	}
 }
+
 ?>

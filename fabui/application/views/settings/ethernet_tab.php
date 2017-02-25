@@ -13,7 +13,7 @@
 					<tbody>
 						<tr>
 							<td style="border:0px;" width="200px"> <?php echo _('IP address')?></td>
-							<td style="border:0px;"><a href="http://<?php echo $info['ipv4_address']; ?>" target="_blank"><?php echo $info['ipv4_address']; ?></a></td>
+							<td style="border:0px;"><a class="no-ajax" href="http://<?php echo $info['ipv4_address']; ?>" target="_blank"><?php echo $info['ipv4_address']; ?></a></td>
 						</tr>
 						<tr>
 							<td><?php echo _('MAC address')?></td>
