@@ -255,7 +255,6 @@ if(!function_exists('isInternetAvaialable'))
 {
 	/**
 	 * check if internet connection is avaialable
-	 * @todo: improve interfaces check (what if eht0 is in DHCP?)
 	 */
 	function isInternetAvaialable()
 	{
@@ -271,25 +270,29 @@ if(!function_exists('downloadRemoteFile'))
 	/**
 	 * download remote file 
 	 */
-	function downloadRemoteFile($remoteUrl, $path, $timeout=3)
+	function downloadRemoteFile($remoteUrl, $path, $timeout=3, $do_internet_check=true)
 	{	
-		if(isInternetAvaialable()){
-			$curl = curl_init($remoteUrl);
-			curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $timeout);
-			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-			$downloadedFile = curl_exec($curl); //make call
-			$info = curl_getinfo($curl);
-			if(isset($info['http_code']) && $info['http_code'] == 200){ //if response is OK
-				$CI =& get_instance();
-				$CI->load->helper('file_helper');
-				write_file($path, $downloadedFile, 'w+');
-				return true;
-			}else{
+		if($do_internet_check)
+		{
+			if(!isInternetAvaialable())
+			{
+				log_message('debug', 'Internet connection not available');
 				return false;
 			}
+		}
+
+		$curl = curl_init($remoteUrl);
+		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $timeout);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+		$downloadedFile = curl_exec($curl); //make call
+		$info = curl_getinfo($curl);
+		if(isset($info['http_code']) && $info['http_code'] == 200){ //if response is OK
+			$CI =& get_instance();
+			$CI->load->helper('file_helper');
+			write_file($path, $downloadedFile, 'w+');
+			return true;
 		}else{
-			log_message('debug', 'Internet connection not available');
 			return false;
 		}
 	}
@@ -300,23 +303,28 @@ if(!function_exists('getRemoteFile'))
 	/**
 	 * 
 	 */
-	function getRemoteFile($url)
+	function getRemoteFile($url, $do_internet_check=true)
 	{
-		if(isInternetAvaialable()){
-			$curl = curl_init($url);
-			curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 3);
-			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-			$content = curl_exec($curl); //make call
-			$info = curl_getinfo($curl);
-			if(isset($info['http_code']) && $info['http_code'] == 200){ //if response is OK
-				return $content;
-			}else{
+		if($do_internet_check)
+		{
+			if(!isInternetAvaialable())
+			{
+				log_message('debug', 'Internet connection not available');
 				return false;
 			}
+		}
+		
+		$curl = curl_init($url);
+		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 3);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		$content = curl_exec($curl); //make call
+		$info = curl_getinfo($curl);
+		if(isset($info['http_code']) && $info['http_code'] == 200){ //if response is OK
+			return $content;
 		}else{
-			log_message('debug', 'Internet connection not available');
 			return false;
 		}
+
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

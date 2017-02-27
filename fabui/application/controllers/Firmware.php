@@ -34,13 +34,10 @@ class Firmware extends FAB_Controller {
 		
 		$fw_versions_url = $this->config->item('firmware_endpoint') . 'fablin/atmega1280/version.json';
 		
-		
 		$content = getRemoteFile($fw_versions_url);
 		
 		$tmp = doMacro('version');
 		$reply = $tmp['reply'];
-		
-		
 		
 		$data['fw_version'] = $reply['firmware']['version']; //'V 1.0.0096-rc1';
 		$data['fw_author'] = $reply['firmware']['author']; //'FABteam';

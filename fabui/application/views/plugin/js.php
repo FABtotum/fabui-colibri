@@ -40,7 +40,14 @@
 	function loadOnlinePlugins()
 	{
 		$.get("<?php echo site_url('plugin/online') ?>", function(data, status){
-			populateOnlineTable(data);
+			if(data)
+			{
+				populateOnlineTable(data);
+			}
+			else
+			{
+				$("#online-table").html(_("No Internet connection."));
+			}
 		});
 	}
 	/**

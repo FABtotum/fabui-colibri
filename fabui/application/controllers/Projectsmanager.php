@@ -161,10 +161,10 @@ class Projectsmanager extends FAB_Controller {
 	
 		$attributes = json_decode($data['file']['attributes'], true);
 		
-		$data['dimesions'] = 'processing';
-		$data['filament'] = 'processing';
-		$data['number_of_layers'] = 'processing';
-		$data['estimated_time'] = 'processing';
+		$data['dimesions'] = '-';
+		$data['filament'] = '-';
+		$data['number_of_layers'] = '-';
+		$data['estimated_time'] = '-';
 		
 		if(is_array($attributes) and $attributes)
 		{
@@ -183,7 +183,10 @@ class Projectsmanager extends FAB_Controller {
 		{
 			if( $data['file']['print_type'] == 'additive' && $attributes != 'Processing' )
 			{
-				startPyScript('gcode_analyzer.py', array($fileId), true);
+				//startPyScript('gcode_analyzer.py', array($fileId), true);
+				/**
+				 * @todo improve script - disabled temporary
+				 */
 			}
 		}
 		

@@ -6,15 +6,7 @@
  * @license https://opensource.org/licenses/GPL-3.0
  *
  */
-if ( ! function_exists('isInternetAvaiable'))
-{
-	/**
-	 * Check whether there is access to the internet.
-	 */
-	function isInternetAvaiable() {
-		return !$sock = @fsockopen('www.google.com', 80, $num, $error, 2) ? false : true;
-	}
-}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('getLocalBundles')){
 	
@@ -94,7 +86,7 @@ if(!function_exists('getSystemRemoteVersions')){
 		$CI->config->load('fabtotum');
 		$CI->load->helper('os_helper');
 		$endpoint = $CI->config->item('colibri_endpoint').getArchitecture().'/version.json';
-		$remoteContent = getRemoteFile($endpoint);
+		$remoteContent = getRemoteFile($endpoint, false);
 		if($remoteContent != false) return json_decode($remoteContent, true);
 		else false;
 	}
@@ -157,7 +149,7 @@ if(!function_exists('getBundlesStatus'))
 			$latestFirmwareRemote            = $firmwareRemote['firmware']['latest'];
 			$firmware['need_update']         = version_compare($installedFirmware['firmware']['version'], $firmwareRemote['firmware']['latest']) == -1 ? true : false;
 			$firmware['remote']              = $firmwareRemote['firmware'][$firmwareRemote['firmware']['latest']];
-			$firmware['remote']['changelog'] = getRemoteFile($fwEndpoint.'/latest/changelog.txt');
+			$firmware['remote']['changelog'] = getRemoteFile($fwEndpoint.'/latest/changelog.txt', false);
 
 			//retrieve remote bootfiles info
 			$bootfiles['need_update']        = version_compare($installedBootfiles, $remoteBootfiles['latest']) == -1 ? true : false;
@@ -191,7 +183,7 @@ if(!function_exists('getBundlesStatus'))
 				$needUpdate = version_compare($localBundleData['version'], $latestVersion) == -1 ? true : false;
 				$changelog = '';
 				if($needUpdate) {
-					$remoteContent = getRemoteFile($bundlesEndpoint.'/bundles/'.$bundleName.'/changelog.json');
+					$remoteContent = getRemoteFile($bundlesEndpoint.'/bundles/'.$bundleName.'/changelog.json', false);
 					if($remoteContent != false){
 						$temp = json_decode($remoteContent, true);
 						$changelog = ($temp[$remoteBundle['latest']]);
@@ -285,7 +277,7 @@ if(!function_exists('getRemoteFwVersions'))
 		$CI->config->load('fabtotum');
 		$CI->load->helper('os_helper');
 		$endpoint = $CI->config->item('firmware_endpoint').'fablin/atmega1280/version.json';
-		$remoteContent = getRemoteFile($endpoint);
+		$remoteContent = getRemoteFile($endpoint, false);
 		if($remoteContent != false) return json_decode($remoteContent, true);
 		else false;
 	}

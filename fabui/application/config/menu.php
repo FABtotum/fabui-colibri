@@ -27,11 +27,11 @@ $config['menu'] = array(
 				'icon' => 'icon-fab-mill',
 				'url' => 'make/mill'
 			),
-			'laser' => array(
+			/*'laser' => array(
 				'title' => _("Laser"),
 				'icon' => 'icon-fab-mill',
 				'url' => 'make/laser'
-			),
+			),*/
 			'scan' => array(
 				'title' => _("Scan"),
 				'icon' => 'icon-fab-scan',
