@@ -49,7 +49,7 @@ case "$1" in
     #~ echo $! > ${XMLRPCS_PID}
 	
 	# craete network info json file
-	php /usr/share/fabui/index.php Cron networkInfo &> /var/log/fabui/netwokrk.log 2>&1 &
+	sudo -u www-data php /usr/share/fabui/index.php Cron networkInfo &> /var/log/fabui/netwokrk.log 2>&1 &
     
     evaluate_retval
     ;;
