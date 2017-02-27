@@ -129,12 +129,15 @@ if(!function_exists('getBundlesStatus'))
 		$CI->load->helper('fabtotum_helper');
 		$CI->load->helper('os_helper');
 		//init
-		$remoteBundles  = false;
-		$firmwareRemote = false;
-		$isInternet     = isInternetAvaialable();
+		$remoteBundles   = false;
+		$firmwareRemote  = false;
+		$isInternet      = isInternetAvaialable();
+		$bundlesEndpoint = $CI->config->item('colibri_endpoint').getArchitecture();
+		$fwEndpoint      = $CI->config->item('firmware_endpoint').'fablin/atmega1280/';
 		//get local info
 		$localBundles      = getLocalBundles();
 		$installedFirmware = firmwareInfo();
+		
 		
 		$firmware['installed']   = $installedFirmware['version'];
 		$firmware['need_update'] = false;
@@ -150,9 +153,6 @@ if(!function_exists('getBundlesStatus'))
 			$firmware['remote']['changelog'] = getRemoteFile($fwEndpoint.'/latest/changelog.txt');
 		}
 		
-		$bundlesEndpoint = $CI->config->item('colibri_endpoint').getArchitecture();
-		$fwEndpoint      = $CI->config->item('firmware_endpoint').'fablin/atmega1280/';
-
 		$status = array(
 			'bundles'    => array(),
 			'boot' => array(),
