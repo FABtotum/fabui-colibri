@@ -143,7 +143,7 @@ if(!function_exists('getBundlesStatus'))
 		$firmware['installed']   = $installedFirmware['firmware']['version'];
 		$firmware['need_update'] = false;
 		
-		$bootfiles['installed'] = $installedBootfiles;
+		$bootfiles['installed']   = $installedBootfiles;
 		$bootfiles['need_update'] = false;
 		
 		if($isInternet){ //check only if internet is available
@@ -174,6 +174,7 @@ if(!function_exists('getBundlesStatus'))
 				'available' => false,
 				'bundles'   => 0,
 				'firmware'  => false,
+				'boot'      => $bootfiles['need_update'],
 				'endpoint'  => array(
 					'bundles' =>$bundlesEndpoint,
 					'fimware' => $fwEndpoint
@@ -212,7 +213,7 @@ if(!function_exists('getBundlesStatus'))
  				'packages'    => $localBundleData['packages'],
 			);
 		}
-		$status['update']['available'] = $status['update']['bundles'] > 0 || $firmware['need_update'] ? true : false;
+		$status['update']['available'] = $status['update']['bundles'] > 0 || $firmware['need_update'] || $bootfiles['need_update'] ? true : false;
 		return $status;
 	}
 }

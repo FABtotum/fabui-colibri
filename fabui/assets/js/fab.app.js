@@ -1179,6 +1179,7 @@ fabApp = (function(app) {
 			console.log(data);
 			number_updates = data.update.bundles;
 			if(data.update.firmware) number_updates += 1;
+			if(data.update.boot) number_updates += 1;
 			
 			app.updateNotificationBadge();
 			
