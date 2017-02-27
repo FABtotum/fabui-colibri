@@ -128,23 +128,33 @@ if(!function_exists('getBundlesStatus'))
 		$CI->config->load('fabtotum');
 		$CI->load->helper('fabtotum_helper');
 		$localBundles      = getLocalBundles();
-		$remoteBundles     = getRemoteBundles();
+		
+		$remoteMeta        = getSystemRemoteVersions();
+		
+		$remoteBundles     = $remoteMeta['bundles'];
+		$remoteBootfiles   = $remoteMeta['boot'];
 		$firmwareRemote    = getRemoteFwVersions();
 		$installedFirmware = firmwareInfo();
+		$installedBootfiles = bootFilesInfo();
 		
 		$bundlesEndpoint = $CI->config->item('colibri_endpoint').getArchitecture();
 		$fwEndpoint      = $CI->config->item('firmware_endpoint').'fablin/atmega1280/';
 		
 		$latestFirmwareRemote = $firmwareRemote['firmware']['latest'];
 		
-		$firmware['installed']   = $installedFirmware['version'];
-		$firmware['need_update'] = version_compare($installedFirmware['version'], $firmwareRemote['firmware']['latest']) == -1 ? true : false;
+		$firmware['installed']   = $installedFirmware['firmware']['version'];
+		$firmware['need_update'] = version_compare($installedFirmware['firmware']['version'], $firmwareRemote['firmware']['latest']) == -1 ? true : false;
 		$firmware['remote']      = $firmwareRemote['firmware'][$firmwareRemote['firmware']['latest']];
 		$firmware['remote']['changelog'] = getRemoteFile($fwEndpoint.'/latest/changelog.txt');
 		
+		$bootfiles['installed'] = $installedBootfiles;
+		$bootfiles['need_update'] = version_compare($installedBootfiles, $remoteBootfiles['latest']) == -1 ? true : false;
+		$bootfiles['remote'] = array();
+		$bootfiles['remote']['version'] = $remoteBootfiles['latest'];
+		
 		$status = array(
 			'bundles'    => array(),
-			'boot' => array(),
+			'boot' => $bootfiles,
 			'images' => array(),
 			'firmware'   => $firmware,
 			'update' => array(

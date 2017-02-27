@@ -76,6 +76,7 @@
 
 		createBundlesTable(object);
 		createFirmwareTable(object);
+		createBootFilesTable(object);
 		buttons += '<button class="btn btn-default  action-buttons" id="do-update"><i class="fa fa-refresh"></i> <?php echo _("Update") ?></button> ';
 		buttons += '<button class="btn btn-default  action-buttons" id="bundle-details"><i class="fa fa-reorder"></i> <?php echo _("View details"); ?></button> ';
 		$(".button-container").html(buttons);
@@ -191,6 +192,48 @@
 		$("#firwmare_tab").html(html);
 		
 	}
+	
+	/**
+	*
+	**/
+	function createBootFilesTable(object)
+	{
+		var icon = "fa fa-check text-muted";
+		var tr_class = "";
+		var checked = '';
+		if(object.boot.need_update){
+			$("#boot-badge").html('!');
+			icon = "fa fa-exclamation-circle text-muted";
+			tr_class = "warning";
+			checked = 'checked="checked"';
+		}
+		
+		var html = '<table id="boot-table" class="table  table-forum">' +
+					'<thead>'+
+						'<tr>'+
+							'<th colspan="2"></th>' +
+							'<th class="text-center" style="width:150px"><?php echo _("Remote version") ?></th>' +
+							'<th class="text-center" style="width:40px;"></th>' +
+						'</tr>' +
+					'</thead>';
+		html += '<tbody>' +
+					'<tr class="' + tr_class + '">' +
+						'<td style="width:40px;"><i class="' + icon + '"></i></td>'+
+						'<td>'+
+							'<h4>'+
+								'<a href="javascript:void(0);"> Boot files </a>' + 
+								'<small><?php echo _("Installed version") ?>: ' + object.boot.installed  + '</small>' +
+							'</h4>'+
+						'</td>'+
+						'<td class="text-center">'+ object.boot.remote.version  +'</td>'+
+						'<td class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px;"><label><input value="firmware" type="checkbox" '+checked +' class="checkbox"><span></span></label></div></td>' + 
+					'</tr>' + 
+					'<tr><td></td><td></td><td></td><td></td></tr>' +
+				'</tbody>';	
+		html += '</table>';
+		$("#boot_tab").html(html);
+	}
+	
 	/**
 	*
 	**/
@@ -235,6 +278,11 @@
 				firmware = true;
 			}
 		});
+		$("#boot-table").find("tr > td input:checkbox").each(function () {
+			if($(this).is(':checked')){
+				boot = true;
+			}
+		});
 
 		if(bundles_to_update.length > 0 || firmware || boot){
 			startUpdate(bundles_to_update, firmware, boot);
@@ -242,7 +290,7 @@
 			enableButton('.action-buttons');
 			$.smallBox({
 				title : "<?php echo _('Warning')?>",
-				content : '<?php echo _('Please select at least 1 bundle or firmware to update')?>',
+				content : '<?php echo _('Please select at least 1 bundle firmware or boot update')?>',
 				color : "#5384AF",
 				timeout: 3000,
 				icon : "fa fa-warning"

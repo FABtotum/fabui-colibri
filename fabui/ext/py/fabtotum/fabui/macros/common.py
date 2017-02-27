@@ -123,6 +123,10 @@ def version(app, lang='en_US.UTF-8'):
     ### firmware version
     retr = app.macro("M765",   "ok", 1, _("Firmware version"), verbose=False)
     firmware_version = retr[0]
+    try:
+        firmware_version = firmware_version.split()[1]
+    except:
+        pass
     ### Firmware build date
     retr = app.macro("M766",   "ok", 1, _("Firmware build date"), verbose=False)
     firmware_build_date = retr[0]

@@ -904,11 +904,23 @@ if(!function_exists('firmwareInfo'))
 	{
 		$tmp = doMacro('version');
 		$reply = $tmp['reply'];
-		return array(
-			'version'  => trim(str_replace('V', '', $reply[5])),
-			'author'   => $reply[7],
-			'buildate' => $reply[6]
-		);
+		
+		return $reply;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('bootFilesInfo'))
+{
+	function bootFilesInfo()
+	{
+		$version = 'v20170223';
+		
+		if(file_exists('/mnt/live/mnt/boot/version'))
+		{
+			$version = file_get_contents('/mnt/live/mnt/boot/version');
+		}
+		
+		return $version;
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

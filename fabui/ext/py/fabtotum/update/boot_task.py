@@ -25,7 +25,7 @@ from fabtotum.update.subtask  import SubTask
 
 class BootTask(SubTask):
 	def __init__(self, name, data, factory=None):
-		super(BootTask, self).__init__(name, "system", factory)
+		super(BootTask, self).__init__(name, "boot", factory)
 		
 		self.latest        = data["latest"]
 		self.date_uploaded = data[self.latest]['date-uploaded']
@@ -45,20 +45,20 @@ class BootTask(SubTask):
 		self.setStatus('installing')
 		print "TODO: boot install"
 		
-		cmd = 'sh /usr/share/fabui/ext/bash/totumduino_manager.sh update ' + self.getFile("firmware").getLocal()
+		cmd = 'colibrimngr updateboot all ' + self.getFile("boot").getLocal()
 		
 		errorcode = 0
 		success = [0]
 		
-		#~ try:
-			#~ install_output = subprocess.check_output( shlex.split(cmd) )
-		#~ except subprocess.CalledProcessError as e:
-			#~ install_output = e.output
-			#~ errorcode = e.returncode
+		try:
+			install_output = subprocess.check_output( shlex.split(cmd) )
+		except subprocess.CalledProcessError as e:
+			install_output = e.output
+			errorcode = e.returncode
 		
-		#~ print cmd
-		#~ print install_output
-		time.sleep(2)
+		print cmd
+		print install_output
+		#~ time.sleep(2)
 		
 		if errorcode in success:
 			print "Boot installed"

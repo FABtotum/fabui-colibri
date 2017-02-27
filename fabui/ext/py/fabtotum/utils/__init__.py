@@ -18,7 +18,7 @@ def create_dir(f):
         try:
             os.makedirs(f)
         except OSError as exc:  # Python >2.5
-            if exc.errno == errno.EEXIST and os.path.isdir(path):
+            if exc.errno == errno.EEXIST and os.path.isdir(f):
                 pass
             else:
                 raise
