@@ -135,6 +135,16 @@
 				$html .= '</li>';
 			}
 			
+			if($updatesJSON['update']['boot']){
+				$html .= '<li>';
+				$html .= '<span class="padding-10">';
+				$html .= '<em class="badge padding-5 no-border-radius  bg-color-pink pull-left margin-right-5"><i class="fa fa-rocket fa-fw fa-2x"></i></em>';
+				$text = _("A new boot update is available");
+				$html .= '<span> '.$text.' <a class="display-normal" href="'.site_url('#updates').'"><strong>'._("Update now").'</strong></a> </span>';
+				$html .= '</span>';
+				$html .= '</li>';
+			}
+			
 			$html .= '</ul>';
 			echo $html;
 			
