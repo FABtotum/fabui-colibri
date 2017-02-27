@@ -102,7 +102,7 @@ def getEeprom(app, lang='en_US.UTF-8'):
     
     return eeprom
 
-def version(app, lang='en_US.UTF-8'):
+def get_versions(app, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
     ### controller serail ID

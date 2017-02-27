@@ -573,13 +573,10 @@ fabApp = (function(app) {
 		$.ajax({
 			url: poweroff_url_action,
 		}).done(function(data) {
+			app.showAlertToPowerOff();
 			
 		}).fail(function(jqXHR, textStatus){
-			setTimeout(function() {
-				waitTitle(app_text[15]);
-				waitContent('');
-				//is_macro_on = false;
-			}, 10000);
+			app.showAlertToPowerOff();
 		});
 	};
 	/*
@@ -1295,6 +1292,25 @@ fabApp = (function(app) {
 			}
 			pageSetUp();
 		});
+	}
+	/**
+	* notify user when is possible to power off the printer
+	**/
+	app.showAlertToPowerOff = function ()
+	{
+		$.get(base_url)
+			.success(function(result) {				
+				setTimeout( function() {
+					app.showAlertToPowerOff();
+				}, 50 );
+			})
+			.error(function(jqXHR, textStatus, errorThrown) {
+				setTimeout(function() {
+					waitTitle(app_text[15]);
+					waitContent('');
+					//is_macro_on = false;
+				}, 10000);
+			});
 	}
 	return app;
 })({});

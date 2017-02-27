@@ -902,9 +902,8 @@ if(!function_exists('firmwareInfo'))
 {
 	function firmwareInfo()
 	{
-		$tmp = doMacro('version');
+		$tmp   = doMacro('version');
 		$reply = $tmp['reply'];
-		
 		return $reply;
 	}
 }
@@ -917,7 +916,7 @@ if(!function_exists('bootFilesInfo'))
 		
 		if(file_exists('/mnt/live/mnt/boot/version'))
 		{
-			$version = file_get_contents('/mnt/live/mnt/boot/version');
+			$version = trim(file_get_contents('/mnt/live/mnt/boot/version'));
 		}
 		
 		return $version;

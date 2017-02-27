@@ -986,7 +986,10 @@ class Projectsmanager extends FAB_Controller {
 			$response['fileId'] = $fileId;
 			if( $data['print_type'] == 'additive' )
 			{
-				startPyScript('gcode_analyzer.py', array($fileId), true);
+				//startPyScript('gcode_analyzer.py', array($fileId), true);
+				/**
+				 * @todo improve script - disabled temporary
+				 */
 			}
 		}else{
 			$response['upload'] = false;

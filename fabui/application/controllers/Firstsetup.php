@@ -14,6 +14,7 @@ class FirstSetup extends FAB_Controller {
 
     public function index()
     {
+    	/*
 		//load libraries, helpers, model
 		$this->load->library('smart');
 		$this->load->helper('form');
@@ -33,9 +34,7 @@ class FirstSetup extends FAB_Controller {
 			'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
 			'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
 		);
-		
-		
-
+		*/
 		$this->view();
     }
 

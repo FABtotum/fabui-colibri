@@ -28,7 +28,7 @@ import re
 # Import external modules
 
 # Import internal modules
-from fabtotum.fabui.macros.common import getEeprom, configure_head, version as get_version
+from fabtotum.fabui.macros.common import getEeprom, configure_head, get_versions
 from fabtotum.utils.translation import _, setLanguage
 
 def home_all(app, args = None, lang='en_US.UTF-8'):
@@ -186,7 +186,7 @@ def do_4th_axis_mode(app, args = None, lang='en_US.UTF-8'):
 
 def version(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    return get_version(app, lang)
+    return get_versions(app, lang)
 
 def set_ambient_color(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)

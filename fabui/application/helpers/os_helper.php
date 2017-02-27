@@ -259,15 +259,10 @@ if(!function_exists('isInternetAvaialable'))
 	 */
 	function isInternetAvaialable()
 	{
-		$interfaces = getInterfaces();
-		if(isset($interfaces['wlan0']['wireless']['ssid'])){
-			$CI =& get_instance();
-			$CI->load->helper('fabtotum');
-			$result = startBashScript('internet.sh', null, false, true);
-			return trim($result) == 'online';
-		}else{
-			return false;
-		}
+		$CI =& get_instance();
+		$CI->load->helper('fabtotum');
+		$result = startBashScript('internet.sh', null, false, true);
+		return trim($result) == 'online';
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -277,9 +272,7 @@ if(!function_exists('downloadRemoteFile'))
 	 * download remote file 
 	 */
 	function downloadRemoteFile($remoteUrl, $path, $timeout=3)
-	{
-		$interfaces = getInterfaces();
-		
+	{	
 		if(isInternetAvaialable()){
 			$curl = curl_init($remoteUrl);
 			curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $timeout);
@@ -309,8 +302,6 @@ if(!function_exists('getRemoteFile'))
 	 */
 	function getRemoteFile($url)
 	{
-		$interfaces = getInterfaces();
-		
 		if(isInternetAvaialable()){
 			$curl = curl_init($url);
 			curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 3);

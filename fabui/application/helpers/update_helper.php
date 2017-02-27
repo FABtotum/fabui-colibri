@@ -127,30 +127,43 @@ if(!function_exists('getBundlesStatus'))
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		$CI->load->helper('fabtotum_helper');
+		$CI->load->helper('os_helper');
+		//init
+		$remoteMeta      = false;
+		$remoteBundles   = false;
+		$firmwareRemote  = false;
+		$isInternet      = isInternetAvaialable();
+		$bundlesEndpoint = $CI->config->item('colibri_endpoint').getArchitecture();
+		$fwEndpoint      = $CI->config->item('firmware_endpoint').'fablin/atmega1280/';
+		//get local info
 		$localBundles      = getLocalBundles();
-		
-		$remoteMeta        = getSystemRemoteVersions();
-		
-		$remoteBundles     = $remoteMeta['bundles'];
-		$remoteBootfiles   = $remoteMeta['boot'];
-		$firmwareRemote    = getRemoteFwVersions();
 		$installedFirmware = firmwareInfo();
 		$installedBootfiles = bootFilesInfo();
 		
-		$bundlesEndpoint = $CI->config->item('colibri_endpoint').getArchitecture();
-		$fwEndpoint      = $CI->config->item('firmware_endpoint').'fablin/atmega1280/';
-		
-		$latestFirmwareRemote = $firmwareRemote['firmware']['latest'];
-		
 		$firmware['installed']   = $installedFirmware['firmware']['version'];
-		$firmware['need_update'] = version_compare($installedFirmware['firmware']['version'], $firmwareRemote['firmware']['latest']) == -1 ? true : false;
-		$firmware['remote']      = $firmwareRemote['firmware'][$firmwareRemote['firmware']['latest']];
-		$firmware['remote']['changelog'] = getRemoteFile($fwEndpoint.'/latest/changelog.txt');
+		$firmware['need_update'] = false;
 		
 		$bootfiles['installed'] = $installedBootfiles;
-		$bootfiles['need_update'] = version_compare($installedBootfiles, $remoteBootfiles['latest']) == -1 ? true : false;
-		$bootfiles['remote'] = array();
-		$bootfiles['remote']['version'] = $remoteBootfiles['latest'];
+		$bootfiles['need_update'] = false;
+		
+		if($isInternet){ //check only if internet is available
+			$remoteMeta        = getSystemRemoteVersions();
+			$remoteBundles     = $remoteMeta['bundles'];
+			$remoteBootfiles   = $remoteMeta['boot'];
+			$remoteBundles     = getRemoteBundles();
+			$firmwareRemote    = getRemoteFwVersions();
+			
+			//retrieve remote firmware info
+			$latestFirmwareRemote            = $firmwareRemote['firmware']['latest'];
+			$firmware['need_update']         = version_compare($installedFirmware['firmware']['version'], $firmwareRemote['firmware']['latest']) == -1 ? true : false;
+			$firmware['remote']              = $firmwareRemote['firmware'][$firmwareRemote['firmware']['latest']];
+			$firmware['remote']['changelog'] = getRemoteFile($fwEndpoint.'/latest/changelog.txt');
+
+			//retrieve remote bootfiles info
+			$bootfiles['need_update']        = version_compare($installedBootfiles, $remoteBootfiles['latest']) == -1 ? true : false;
+			$bootfiles['remote']             = array();
+			$bootfiles['remote']['version']  = $remoteBootfiles['latest'];
+		}
 		
 		$status = array(
 			'bundles'    => array(),
@@ -172,7 +185,7 @@ if(!function_exists('getBundlesStatus'))
 		
 		foreach($localBundles as $bundleName => $localBundleData)
 		{
-			if($remoteBundles){
+			if($remoteBundles){ //retrieve remote bundle info
 				$remoteBundle = $remoteBundles[$bundleName];
 				$latestVersion = str_replace('v', '', $remoteBundle['latest']);
 				$needUpdate = version_compare($localBundleData['version'], $latestVersion) == -1 ? true : false;
