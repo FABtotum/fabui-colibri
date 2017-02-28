@@ -48,7 +48,7 @@
 		<!-- end collapse menu -->
 		<!-- logout button -->
 		<div id="logout" class="btn-header transparent pull-right">
-			<span> <a href="<?php echo site_url('login/out') ?>" title="<?php echo _("Power Off/Log Out");?>" data-action="fabUserLogout" data-logout-msg="<?php echo _("What do you want to do?");?>" ><i class="fa fa-power-off"></i></a> </span>
+			<span> <a href="<?php echo site_url('login/out') ?>" data-user-name="<?php echo isset($this->session->user['first_name']) ?  $this->session->user['first_name'] : '' ?>" title="<?php echo _("Power Off/Log Out");?>" data-action="fabUserLogout" data-logout-msg="<?php echo _("What do you want to do?");?>" ><i class="fa fa-power-off"></i></a> </span>
 		</div>
 		<!-- reset controller button -->
 		<div  class="btn-header transparent pull-right">
