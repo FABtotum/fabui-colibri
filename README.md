@@ -11,6 +11,23 @@ Beta will be available for 42 days from 23/02/2017 to 06/04/2017
 
 Help us gathering bugs!
 
+## Support & Contributing
+Please [open an issue](https://github.com/FABtotum/fabui-colibri/issues/new) for support
+
+### Issues reporting rules
+- Make sure you are running the latest sdcard image (a new sdcard image is released daily after 18.00 pm  (GMT+1))
+- 1 bug per issue
+- Check in closed issues that it's not a duplicate
+- Provide printer version
+- Write a short description about how the bug happened
+- Report OS version where sdcard was formatted
+- Report only **issues**
+
+### Known issues
+ - Incompatibility with the following wifi adapters drivers on Raspberry Pi 1:
+  * 8188eu [see](https://github.com/FABtotum/fabui-colibri/issues/10)
+  * 8192cu [see](https://github.com/FABtotum/fabui-colibri/issues/11)
+
 ## Installation
   - Download the latest archive [here][latest-archive]
   - Use at least 4GB SD Card
@@ -55,19 +72,6 @@ Help us gathering bugs!
   - GCode help supports search by code and description
   - Milling and laser engraving jog support position storing/restoring, useful for multi-step manufacturing or laser height calibration
 
-## Support & Contributing
-Please [open an issue](https://github.com/FABtotum/fabui-colibri/issues/new) for support
-
-### Issues reporting rules
-- Please first make sure the system is up-to-date
-- 1 bug per issue
-- Provide printer version
-- Write a short description about how the bug happened
-
-### Known issues
- - Incompatibility with the following wifi adapters drivers on Raspberry Pi 1:
-  * 8188eu [see](https://github.com/FABtotum/fabui-colibri/issues/10)
-  * 8192cu [see](https://github.com/FABtotum/fabui-colibri/issues/11)
 
    
    [latest-archive]: <http://update.fabtotum.com/colibri/armhf/images/sdcard_latest.zip>
