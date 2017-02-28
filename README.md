@@ -11,7 +11,6 @@ Beta will be available for 42 days from 23/02/2017 to 06/04/2017
 
 Help us gathering bugs!
 
-
 ## Installation
   - Download the latest archive [here][latest-archive]
   - Use at least 4GB SD Card
@@ -22,7 +21,7 @@ Help us gathering bugs!
   - Turn on the FABtotum
   - Wait for the leds to became blue and open a web browser and in the address bar type 169.254.1.2
   
-  See the [Wiki](https://github.com/FABtotum/fabui-colibri/wiki) for more docs.
+  **See the [Wiki](https://github.com/FABtotum/fabui-colibri/wiki) for more docs.**
 
 ## What's new
   - New OS from scratch
