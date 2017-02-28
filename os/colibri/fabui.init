@@ -33,7 +33,6 @@ case "$1" in
     boot_msg "Starting ${SERVICE_NAME}."
 
     # (obsolete)
-    #python /var/www/fabui/python/baud.py
     #python ${PYTHON_PATH}/setBaud.py &> /var/log/fabui/setBaud.log
     
     ######## fabtotum server ########
@@ -66,6 +65,18 @@ case "$1" in
     killall -9 python
     rm -f ${FABSERVICE_PID}
     rm -f ${XMLRPCS_PID}
+
+    # Configure RESET pin to output
+    PIN=17
+    STATE=out
+
+    echo "$PIN" > /sys/class/gpio/export
+    GPIO_DIR="gpio$PIN"
+    echo "$STATE" > /sys/class/gpio/$GPIO_DIR/direction
+
+    # Reset totumduino
+    echo 0 > /sys/class/gpio/$GPIO_DIR/value
+    
     # Start the services with totumduino hw reset
     ${0} start "forced"
     ;;

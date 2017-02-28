@@ -44,12 +44,15 @@ def change_step(app, args, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     new_step = float(args[0])
     app.macro("M92 E{0}".format(new_step),  "ok", 1,   _("Setting extruder mode") )
-    app.macro("M500",                       None, 1,   _("Writing settings to eeprom") )
+    app.macro("M500",                       "*", 1,   _("Writing settings to eeprom") )
+    
+    app.config.set('settings', 'e', new_step);
+    app.config.save('settings')
 
 def pre_unload_spool(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     app.macro("M104 S190",  "ok", 5,    _("Pre-Heating Nozzle...") )
-    app.macro("M109 S190",  None, 400,  _("Waiting for nozzle to reach temperature...") ) #heating and waiting.
+    app.macro("M109 S190",  "*", 400,  _("Waiting for nozzle to reach temperature...") ) #heating and waiting.
     
 def unload_spool(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)

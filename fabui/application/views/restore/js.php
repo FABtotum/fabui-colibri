@@ -69,7 +69,8 @@
 	 */
 	function install()
 	{
-		$(".next").find('a').html('Restoring...');
+		$(".next").find('a').html( _("Restoring...") );
+		$(".wizard-button").disable(true);
 		$("#browser-date").val(moment().format('YYYY-MM-DD HH:mm:ss'));
 		$("#restore-form").submit();
 	}

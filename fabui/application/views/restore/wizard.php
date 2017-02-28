@@ -120,10 +120,10 @@
 						<div class="col-sm-12">
 							<ul class="pager wizard no-margin">
 								<li class="previous disabled">
-									<a href="javascript:void(0);" class="btn btn-lg btn-default"> Previous </a>
+									<a href="javascript:void(0);" class="btn btn-lg btn-default wizard-button"> Previous </a>
 								</li>
 								<li class="next">
-									<a href="javascript:void(0);" class="btn btn-lg txt-color-darken"> Next </a>
+									<a href="javascript:void(0);" class="btn btn-lg txt-color-darken wizard-button"> Next </a>
 								</li>
 							</ul>
 					</div>

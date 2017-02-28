@@ -97,6 +97,7 @@ fabApp = (function(app) {
 			case "home-xy":
 			case "home-z":
 			case "home-xyz":
+				app.jogHomeXYZ();
 				break;
 		}
 		
