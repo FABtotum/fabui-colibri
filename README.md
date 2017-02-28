@@ -21,7 +21,7 @@ Please [open an issue](https://github.com/FABtotum/fabui-colibri/issues/new) for
 - Provide printer version
 - Write a short description about how the bug happened
 - Report OS version where sdcard was formatted
-- Report only **issues**
+- Report only **issues** (feature request will not be considered in this phase)
 
 ### Known issues
  - Incompatibility with the following wifi adapters drivers on Raspberry Pi 1:
