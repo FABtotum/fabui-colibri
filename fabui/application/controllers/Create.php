@@ -429,6 +429,10 @@
 		//load helpers
 		$this->load->helpers('fabtotum_helper');
 		$this->load->model('Files', 'files');
+		
+		$userID   = $this->session->user['id'];
+		session_write_close(); //avoid freezing page
+		
 		$fileToCreate = $this->files->get($data['idFile'], 1);
 		$temperatures = readInitialTemperatures($fileToCreate['full_path']);
 		resetTaskMonitor();
@@ -479,7 +483,7 @@
 			'start_date' => date('Y-m-d H:i:s')
 		);
 		$taskId   = $this->tasks->add($taskData);
-		$userID   = $this->session->user['id'];
+		
 		
 		//start print
 		$printArgs = array(
