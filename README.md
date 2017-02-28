@@ -21,6 +21,8 @@ Help us gathering bugs!
   - Connect to the FABtotum via Ethernet cable
   - Turn on the FABtotum
   - Wait for the leds to became blue and open a web browser and in the address bar type 169.254.1.2
+  
+  See the [Wiki](https://github.com/FABtotum/fabui-colibri/wiki) for more docs.
 
 ## What's new
   - New OS from scratch
