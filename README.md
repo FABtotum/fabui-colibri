@@ -15,7 +15,7 @@ Help us gathering bugs!
 Please [open an issue](https://github.com/FABtotum/fabui-colibri/issues/new) for support
 
 ### Issues reporting rules
-- Make sure you are running the latest sdcard image (a new sdcard image is released daily after 18.00 pm  (GMT+1))
+- Make sure you are running the latest [sdcard image](http://update.fabtotum.com/colibri/armhf/images/sdcard_latest.zip)  (a new sdcard image is released daily after 18.00 pm  (GMT+1))
 - 1 bug per issue
 - Check in closed issues that it's not a duplicate
 - Provide printer version
