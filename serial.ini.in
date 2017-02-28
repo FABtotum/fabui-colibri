@@ -1,3 +1,0 @@
-[serial]
-baud = @SERIAL_BAUD@
-port = @SERIAL_PORT@
