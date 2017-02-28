@@ -14,7 +14,7 @@ Help us gathering bugs!
 ## Installation
   - Download the latest archive [here][latest-archive]
   - Use at least 4GB SD Card
-  - Format an SD Card to one FAT32 with label “boot”
+  - [Format an SD Card](https://github.com/FABtotum/fabui-colibri/wiki/SDCard-formatting) to one FAT32 with label “boot”
   - Unzip the file you downloaded at step 1 and copy all files to Sd Card
   - Insert the SD Card into the slot of the FABtotum
   - Connect to the FABtotum via Ethernet cable
