@@ -23,11 +23,6 @@ Please [open an issue](https://github.com/FABtotum/fabui-colibri/issues/new) for
 - Report OS version where sdcard was formatted
 - Report only **issues** (feature request will not be considered in this phase)
 
-### Known issues
- - Incompatibility with the following wifi adapters drivers on Raspberry Pi 1:
-  * 8188eu [see](https://github.com/FABtotum/fabui-colibri/issues/10)
-  * 8192cu [see](https://github.com/FABtotum/fabui-colibri/issues/11)
-
 ## Installation
   - Download the latest archive [here][latest-archive]
   - Use at least 4GB SD Card
