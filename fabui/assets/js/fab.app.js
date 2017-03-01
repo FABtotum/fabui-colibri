@@ -805,6 +805,9 @@ fabApp = (function(app) {
 					case 'usb':
 						app.usb(obj.data.status, obj.data.alert);
 						break;
+					case 'eth':
+						app.eth(obj.data.status);
+						break;
 					case 'jog':
 						app.manageJogResponse(obj.data);
 						break;
@@ -1161,6 +1164,19 @@ fabApp = (function(app) {
 				icon : "fa fa-usb"
 			});
 		}
+	};
+	/**
+	 * notify when eth cable is plugged or unplugged
+	 */
+	app.eth = function (status){
+		var message = _("Ethernet cable") + " " + _(status);
+		$.smallBox({
+			title : _("Network"),
+			content : message,
+			color : "#296191",
+			timeout : 3000,
+			icon : "fa fa-sitemap"
+		});
 	};
 	/**
 	 * things to do when socket is connected
