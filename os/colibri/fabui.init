@@ -43,10 +43,7 @@ case "$1" in
     fi
     python ${PYTHON_PATH}/FabtotumServices.py ${ARGS} &> /var/log/fabui/FabtotumServices.log 2>&1 &
     #~ echo $! > ${FABSERVICE_PID}
-	
-	# craete network info json file
-	sudo -u www-data php /usr/share/fabui/index.php Cron networkInfo &> /var/log/fabui/netwokrk.log 2>&1 &
-    
+
     evaluate_retval
     ;;
   stop)

@@ -1,8 +1,3 @@
-@reboot sudo -u www-data php /usr/share/fabui/index.php Cron blogFeeds &
-@reboot sudo -u www-data php /usr/share/fabui/index.php Cron twitterFeeds &
-@reboot sudo -u www-data php /usr/share/fabui/index.php Cron instagramFeeds &
-@reboot sudo -u www-data php /usr/share/fabui/index.php Cron getUpdateJSON &
-##@reboot sudo -u www-data php /usr/share/fabui/index.php Cron networkInfo &
 */25 * * * * sudo -u www-data php /usr/share/fabui/index.php Cron blogFeeds &
 */30 * * * * sudo -u www-data php /usr/share/fabui/index.php Cron twitterFeeds &
 */35 * * * * sudo -u www-data php /usr/share/fabui/index.php Cron instagramFeeds &
