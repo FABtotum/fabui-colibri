@@ -43,9 +43,6 @@ case "$1" in
     fi
     python ${PYTHON_PATH}/FabtotumServices.py ${ARGS} &> /var/log/fabui/FabtotumServices.log 2>&1 &
     #~ echo $! > ${FABSERVICE_PID}
-    
-    #~ python ${PYTHON_PATH}/xmlrpcserver.py &> /var/log/fabui/xmlrpcserver.log 2>&1 &
-    #~ echo $! > ${XMLRPCS_PID}
 	
 	# craete network info json file
 	sudo -u www-data php /usr/share/fabui/index.php Cron networkInfo &> /var/log/fabui/netwokrk.log 2>&1 &
@@ -55,10 +52,11 @@ case "$1" in
   stop)
     boot_msg "Stopping ${SERVICE_NAME}."
     
-    start-stop-daemon -K -q -p ${FABSERVICE_PID}
-    start-stop-daemon -K -q -p ${XMLRPCS_PID}
+    start-stop-daemon -K -q -o -p ${FABSERVICE_PID}
+    start-stop-daemon -K -q -o -p ${XMLRPCS_PID}
     
     evaluate_retval
+
     ;;
   emergency)
     # Forcefully stop python scripts

@@ -1309,7 +1309,7 @@ fabApp = (function(app) {
 			.error(function(jqXHR, textStatus, errorThrown) {
 				setTimeout(function() {
 					waitTitle(app_text[15]);
-					waitContent('');
+					waitContent(_("Note: 5 seconds after the beep it's safe to switch off your unit."));
 					//is_macro_on = false;
 				}, 10000);
 			});

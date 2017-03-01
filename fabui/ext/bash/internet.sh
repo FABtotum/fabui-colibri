@@ -11,7 +11,7 @@ if [ -z "$WLAN_INET" ] && [ "$ETH_GW" == "169.254.1.1" ]; then
   exit 0
 fi
 
-echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 -w 3 > /dev/null 2>&1
+echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 -w 5 > /dev/null 2>&1
 
 if [ $? -eq 0 ]; then
     echo "online"

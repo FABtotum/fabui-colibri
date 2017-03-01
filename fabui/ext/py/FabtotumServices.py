@@ -202,13 +202,17 @@ statsMonitor.start()
 signal.signal(signal.SIGINT, signal_handler)
 
 # Start XMLRPC server
-#~ xmlrpc_exe = os.path.join(PYTHON_PATH, 'xmlrpcserver.py')
-#~ os.system('python {0} -p {1} -L /var/log/fabui/xmlrpc.log &'.format(xmlrpc_exe, xmlrpc_pidfile) )
 
-from fabtotum.utils.xmlrpc.xmlrpcserver import create as rpc_create
+soc_id = shell_exec('</proc/cpuinfo grep Hardware | awk \'{print $3}\'')[0].strip()
+rpc = None
 
-rpc = rpc_create(gcservice, config)
-rpc.start()
+if soc_id == 'BCM2709':
+    xmlrpc_exe = os.path.join(PYTHON_PATH, 'fabtotum/utils/xmlrpc/xmlrpcserver.py')
+    os.system('python {0} -p {1} -L /var/log/fabui/xmlrpc.log &'.format(xmlrpc_exe, xmlrpc_pidfile) )
+else:
+    from fabtotum.utils.xmlrpc.xmlrpcserver import create as rpc_create
+    rpc = rpc_create(gcservice, config)
+    rpc.start()
 
 # Wait for all threads to finish
 gcserver.loop()
@@ -218,4 +222,5 @@ statsMonitor.loop()
 observer.join()
 #usbMonitor.join()
 gpioMonitor.join()
-rpc.loop()
+if rpc:
+    rpc.loop()

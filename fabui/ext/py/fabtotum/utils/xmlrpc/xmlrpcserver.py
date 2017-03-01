@@ -197,7 +197,7 @@ def main():
     gcs = GCodeServiceClient()
     config = ConfigService()
 
-    rpc = run(gcs, config, args.log)
+    rpc = create(gcs, config, args.log)
     rpc.start()
     rpc.loop()
 
