@@ -54,7 +54,10 @@
     function directions()
     {
         var value = $(this).attr("data-attribue-direction");
-        fabApp.jogMoveXY(value);
+        var xyStep = 10;
+        var xyzFeed = 1000;
+        var waitForFinish = true;
+        fabApp.jogMove(value, xyStep, xyzFeed, waitForFinish);
     }
     
     function default_all()

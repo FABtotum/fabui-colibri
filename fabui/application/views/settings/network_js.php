@@ -400,6 +400,7 @@
 		if($("#passwordModalForm").valid()){
 			$("#"+wifiIface+"-tab #hidden-ssid").val(wifiSelected);
 			$("#"+wifiIface+"-tab #hidden-passphrase").val($("#wifiPassword").val());
+			$("#"+wifiIface+"-tab #hidden-psk").val('');
 			do_save();
 			$('#passwordModal').modal('hide');
 			//sendActionRequest('connect', wifiIface, wifiSelected, $("#wifiPassword").val());
@@ -510,6 +511,8 @@
 				}
 			});
 		});
+		
+		$("#wifiPassword").inputmask("Regex");
 	}
 
 	/**

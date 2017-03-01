@@ -377,7 +377,7 @@ if(!function_exists('doCommandLine'))
 			$command .= $args;
 		}
 		
-		shell_exec('echo '.$command.' > /tmp/fabui/doCommandLine');
+		shell_exec("echo '".$command."' > /tmp/fabui/doCommandLine");
 		
 		/* Note to myself: DO NOT PLAY WITH THESE COMMANDS !!!!! */
 		if($background) 

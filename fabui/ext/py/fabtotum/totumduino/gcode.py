@@ -95,6 +95,7 @@ class Command(object):
     def __init__(self, id, data = None, expected_reply = 'ok', group = 'raw', timeout = None, async = False):
         self.id = id
         self.aborted = False
+        self.expired = False
         self.async = async
         self.data = data
         self.reply = []
@@ -120,11 +121,12 @@ class Command(object):
         else:
             return NotImplemented
     
-    def notify(self, abort = False):
+    def notify(self, abort = False, expire = False):
         """
         Notify the waiting thread that the reply has been received.
         """
         self.aborted = abort
+        self.expired = expire
         self.__ev.set()
         
     def wait(self, timeout = None):
@@ -141,6 +143,12 @@ class Command(object):
         Check whether the command was aborted.
         """
         return self.aborted
+    
+    def isExpired(self):
+        """
+        Check whether the command has expired.
+        """
+        return self.expired
     
     def isGroup(self, group):
         """
@@ -633,6 +641,7 @@ class GCodeService:
                     if not cmd.hasExpired():
                         self.__send_gcode_command(cmd)
                     else:
+                        cmd.notify(abort=True, expire=True)
                         self.log.info("Expired [%s]", cmd.data )
                 else:
                     self.log.debug("Atomic (%s) in progress, ignoring [%s / %s]", self.atomic_group, cmd.data, cmd.group)

@@ -47,6 +47,7 @@ EOF
 			else
 				# Store password as psk instead of plain text
 				wpa_passphrase $1 $2 | sed -e '/#.*/d' >> $WPA_CONF
+				#~ wpa_passphrase $1 $2 >> $WPA_CONF
 			fi
 		fi
 	fi

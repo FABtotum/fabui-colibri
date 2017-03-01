@@ -86,6 +86,7 @@ class PrintApplication(GCodePusher):
     def state_change_callback(self, state):
         if state == 'paused':
             self.trace( _("Print PAUSED") )
+            self.trace( _("Please wait until the buffered moves in totumduino are finished") )
         if state == 'resumed':
             self.trace( _("Print RESUMED") )
         if state == 'aborted':

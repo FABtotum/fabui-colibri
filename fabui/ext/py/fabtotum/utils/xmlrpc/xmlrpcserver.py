@@ -151,49 +151,61 @@ class ExposeCommands:
     
     def set_rpm(self, value):
         return self.gcs.send('M3 S{0}\r\n'.format(value))
-        
-# Setup arguments
-parser = argparse.ArgumentParser()
-parser.add_argument("-L", "--log", help="Use logfile to store log messages.",   default='<stdout>')
-parser.add_argument("-p", "--pidfile", help="File to store process pid.",       default=os.path.join(RUN_PATH, 'xmlrpcserver.pid') )
 
-# Get arguments
-args = parser.parse_args()
-pidfile = args.pidfile
+def create(gcs, config, log_type='<stdout>'):
+    # Setup logger
+    logger = logging.getLogger('XML-RPC')
+    logger.setLevel(logging.DEBUG)
 
-with open(pidfile, 'w') as f:
-    f.write( str(os.getpid()) )
+    if log_type == '<stdout>':
+        ch = logging.StreamHandler()
+    else:
+        ch = logging.FileHandler(log_type)
 
-# Setup logger
-logger = logging.getLogger('XML-RPC')
-logger.setLevel(logging.DEBUG)
+    formatter = logging.Formatter("%(levelname)s : %(message)s")
+    ch.setFormatter(formatter)
+    ch.setLevel(logging.DEBUG)
+    logger.addHandler(ch)
+    
+    SOCKET_HOST         = config.get('xmlrpc', 'xmlrpc_host')
+    SOCKET_PORT         = config.get('xmlrpc', 'xmlrpc_port')
 
-if args.log == '<stdout>':
-    ch = logging.StreamHandler()
-else:
-    ch = logging.FileHandler(args.log)
+    log_trace = config.get('general', 'trace')
 
-formatter = logging.Formatter("%(levelname)s : %(message)s")
-ch.setFormatter(formatter)
-ch.setLevel(logging.DEBUG)
-logger.addHandler(ch)
+    rpc = ServerContainer(SOCKET_HOST, int(SOCKET_PORT), ExposeCommands(gcs, config, log_trace, logger), logger)
+    
+    return rpc
+    
+    #~ rpc.loop()
 
-time.sleep(2)
+def main():
+    # Setup arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-L", "--log", help="Use logfile to store log messages.",   default='<stdout>')
+    parser.add_argument("-p", "--pidfile", help="File to store process pid.",       default=os.path.join(RUN_PATH, 'xmlrpcserver.pid') )
 
-gcs = GCodeServiceClient()
+    # Get arguments
+    args = parser.parse_args()
+    pidfile = args.pidfile
 
-config = ConfigService()
+    with open(pidfile, 'w') as f:
+        f.write( str(os.getpid()) )
 
-SOCKET_HOST         = config.get('xmlrpc', 'xmlrpc_host')
-SOCKET_PORT         = config.get('xmlrpc', 'xmlrpc_port')
 
-log_trace = config.get('general', 'trace')
+    time.sleep(2)
 
-rpc = ServerContainer(SOCKET_HOST, int(SOCKET_PORT), ExposeCommands(gcs, config, log_trace, logger), logger)
-rpc.start()
+    gcs = GCodeServiceClient()
+    config = ConfigService()
 
-# Ensure CTRL+C detection to gracefully stop the server.
-signal.signal(signal.SIGINT, signal_handler)
+    rpc = run(gcs, config, args.log)
+    rpc.start()
+    rpc.loop()
 
-rpc.loop()
 
+    # Ensure CTRL+C detection to gracefully stop the server.
+    #~ signal.signal(signal.SIGINT, signal_handler)
+
+   
+
+if __name__ == "__main__":
+    main()
