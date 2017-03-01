@@ -711,6 +711,48 @@ fabApp = (function(app) {
 	};
 	 
 	app.ws_callbacks = {};
+	
+	app.ws_onerror = function(e)
+	{
+		console.log ('Error with WebSocket');
+		app.ws_callbacks = {};
+		
+		socket_connected = false;
+		
+		console.log ('in 3sec reconnecting...');
+		
+		//socket.close();
+		
+		
+		app.ws_reconnecting = true;
+		
+		setTimeout(function(e){
+			app.ws_reconnecting = false;
+			app.webSocket();
+			}, 3000);
+	}
+	
+	app.ws_onclose = function(e)
+	{
+		console.log ('CLOSED WebSocket');
+		app.ws_callbacks = {};
+		
+		socket_connected = false;
+		socket = null;
+		
+		if(app.ws_reconnecting == false)
+		{
+			app.ws_reconnecting = true;
+			setTimeout(function(e){
+				app.ws_reconnecting = false;
+				app.webSocket();
+				}, 3000);
+		}
+
+	}
+	
+	app.ws_reconnecting = false;
+	
 	app.webSocket = function()
 	{
 		options = {
@@ -720,9 +762,17 @@ fabApp = (function(app) {
 		socket = ws = $.WebSocket ('ws://'+socket_host+':'+socket_port, null, options);
 
 		// WebSocket onerror event triggered also in fallback
-		ws.onerror = function (e) {
+		/*ws.onerror = function (e) {
 			console.log ('Error with WebSocket uid: ' + e.target.uid);
 		};
+
+		ws.onclose = function (e) {
+			console.log ('CLOSED WebSocket uid: ' + e.target.uid);
+			app.ws_callbacks = {};
+		}*/
+		
+		ws.onerror = app.ws_onerror;
+		ws.onclose = app.ws_onclose;
 
 		// if connection is opened => start opening a pipe (multiplexing)
 		ws.onopen = function () {
@@ -768,6 +818,19 @@ fabApp = (function(app) {
 				return;
 			}
 		}
+		
+		setTimeout(function(e){
+				if(app.ws_reconnecting == false && ws.readyState == 3)
+				{
+					app.ws_onerror();
+				}
+				
+				if(ws.readyState == 1)
+				{
+					socket_connected = true;
+				}
+			}, 1000);
+		
 	};
 	/*
 	 * update printer status 

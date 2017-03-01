@@ -67,6 +67,9 @@
  */
 (function($){
 
+
+
+
     // attach to jQuery
     $.extend({
 
@@ -112,7 +115,9 @@
                 onerror:   function(e) {},
                 onclose:   function()  {},
                 onmessage: function(e) {},
-                send:      function(d) { _ws._send(d); }
+                send:      function(d) {                     
+                    _ws._send(d); 
+                }
             };
 
             /***********************************************************************************************************
@@ -764,6 +769,8 @@
                     ws       = new WebSocket(url);
                 }
 
+                console.log('jquery.ws = ', ws);
+
                 // extend it with our additions and return
                 return _extend(
                     _getWebSocketSkeleton(url, isNative),
@@ -783,6 +790,13 @@
             // we iterate the functionTable and use the events for injecting our hooks
             for (event in _functionTable) {
                 _injectHook(event, _ws);
+            }
+
+            console.log('return new websocket');
+            
+            _ws.onerror = function(e)
+            {
+                console.log('premature error');
             }
 
             // return WebSocket

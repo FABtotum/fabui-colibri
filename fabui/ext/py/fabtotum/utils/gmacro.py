@@ -45,6 +45,10 @@ class MacroException(Exception):
 class MacroTimeOutException(MacroException):
     def __init__(self, command):
         super(MacroTimeOutException, self).__init__(command, _('Timeout for {0}'.format(command)) )
+        
+class MacroAbortedException(MacroException):
+    def __init__(self, command):
+        super(MacroAbortedException, self).__init__(command, _('{0} aborted'.format(command)) )
     
 class MacroUnexpectedReply(MacroException):
     def __init__(self, command, message, expected_reply):
