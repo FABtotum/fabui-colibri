@@ -109,7 +109,6 @@
 		$this->template['cssFiles'] = cssFilesInclusion($this->css, true); 
 		$this->template['cssInLine'] = $this->cssInline;
 		$this->template['content'] = $this->content;
-		$this->template['ga']      = $this->load->view('layout/ga', $data, true);
 		$this->template['scripts'] = $this->load->view($this->layoutAjax.'/scripts', $data, true);
 		$this->parser->parse($this->layoutAjax.'/structure', $this->template);
 		
