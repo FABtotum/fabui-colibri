@@ -41,15 +41,15 @@
 						</tr>
 						<tr>
 							<td style="border:0px;" width="200px">Version</td>
-							<td style="border:0px;"><?php echo $fw_version;?></td>
+							<td style="border:0px;"><?php echo isset($firmwareInfo['firmware']['version']) ? $firmwareInfo['firmware']['version'] : 'n.a.';?></td>
 						</tr>
 						<tr>
 							<td >Author</td>
-							<td><?php echo $fw_author;?></td>
+							<td><?php echo isset($firmwareInfo['firmware']['author']) ? $firmwareInfo['firmware']['author'] : 'n.a.';?></td>
 						</tr>
 						<tr>
 							<td >Build-date</td>
-							<td><?php echo $fw_buildate;?></td>
+							<td><?php echo isset($firmwareInfo['firmware']['build_date']) ? $firmwareInfo['firmware']['build_date'] : 'n.a.';?></td>
 						</tr>
 					</tbody>
 				</table>

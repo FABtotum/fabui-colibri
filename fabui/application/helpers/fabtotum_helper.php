@@ -903,8 +903,10 @@ if(!function_exists('firmwareInfo'))
 	function firmwareInfo()
 	{
 		$tmp   = doMacro('version');
-		$reply = $tmp['reply'];
-		return $reply;
+		if($tmp['response'] == true){
+			return $tmp['reply'];
+		}
+		return false;
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
