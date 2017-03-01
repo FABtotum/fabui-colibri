@@ -614,46 +614,13 @@ if(!function_exists('checkManufactoring'))
 	 */
 	function checkManufactoring($filePath, $numLines = 100)
 	{
-		$CI =& get_instance();
-		$CI->load->helper('plugin_helper');
-		$CI->load->helper('file_helper');
-		
-		$ext = strtolower(getFileExtension($filePath));
-		$supported_filetypes = array('gcode', 'gc', 'nc');
-		
-		if( !in_array($ext, $supported_filetypes) )
-		{
-			
-			return strtoupper($ext);
-		}
-		
-		$subtractiveRe = "/(M450\\s)/"; 
-		$lines = explode(PHP_EOL, doCommandLine('head', '"'.$filePath.'"', array('-n' => $numLines)));
-		
-		foreach($lines as $line){
-			if(substr( $line, 0, 1 ) !== ';'){
-				preg_match($subtractiveRe, $line, $matches);
-				if(count($matches) > 0){
-					return 'laser';
-				}
-			}
-		}
-		
-		$subtractiveRe = "/(M3\\s)|(M5\\s)|(M4\\s)|(M03\\s)/"; 
-
-		foreach($lines as $line){
-			if(substr( $line, 0, 1 ) !== ';'){
-				preg_match($subtractiveRe, $line, $matches);
-				if(count($matches) > 0){
-					return 'subtractive';
-				}
-			}
-		}
-		
-		return 'additive';
+		$args = array(
+			'-f' => $filePath,
+			'-n' => $numLines
+		);
+		return startPyScript('check_manufactoring.py', $args, false, true);
 	}
 }
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('writeToCommandFile'))
 {
