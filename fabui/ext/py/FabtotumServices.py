@@ -63,6 +63,13 @@ def signal_handler(signal, frame):
     gpioMonitor.stop()
     statsMonitor.stop()
 
+def shell_exec(cmd):
+	stdin,stdout = os.popen2(cmd)
+	stdin.close()
+	lines = stdout.readlines(); 
+	stdout.close()
+	return lines
+
 # Setup arguments
 parser = argparse.ArgumentParser()
 parser.add_argument("-B", "--bootstrap", action='store_true',  help="Execute bootstrape commands on startup.")
