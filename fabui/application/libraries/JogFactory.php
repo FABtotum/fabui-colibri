@@ -86,11 +86,16 @@
 		foreach($this->commands as $timestamp => $data){
 			
 			$responseTemp = sendToXmlrpcServer('send', $data['code']);
-			//print_r($responseTemp);
+			
+			if(!is_array($responseTemp['reply'])){
+				$tmp = $responseTemp['reply'];
+				$responseTemp['reply'] = array();
+				$responseTemp['reply'][0] = $tmp;
+			}
 			
 			$data['response'] = $responseTemp['response'];
 			$data['message']  = $responseTemp['message'];
-			$data['reply']    = implode(PHP_EOL,$responseTemp['reply']);
+			$data['reply'] = $responseTemp['reply'];
 			$this->commands[$timestamp] = $data;
 		}
 	}
