@@ -450,7 +450,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			$.each(e, function(i, item) {
 				html += '<span class="jog_response code">' + item.code + '</span>';
 				
-				$.each( item.reply.split('\n'), function(ii, line) {
+				$.each( item.reply, function(ii, line) {
 					var tmp = line.trim();
 					var cls = "jog_response reply";
 					if(tmp.startsWith('ok'))
