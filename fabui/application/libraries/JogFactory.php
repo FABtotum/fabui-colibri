@@ -163,16 +163,16 @@
 			return array();
 		
 		$actions['up']         = 'G0 Y+%.2f F%.2f';
-		$actions['up-right']   = 'GO Y+%1$.2f X+%1$.2f F%2$.2f';
+		$actions['up-right']   = 'G0 Y+%1$.2f X+%1$.2f F%2$.2f';
 		$actions['up-left']    = 'G0 Y+%1$.2f X-%1$.2f F%2$.2f';
 		$actions['down']       = 'G0 Y-%.2f F%.2f';
 		$actions['down-right'] = 'G0 Y-%1$.2f X+%1$.2f F%2$.2f';
-		$actions['down-left']  = 'GO Y-%1$.2f X-%1$.2f F%2$.2f';
-		$actions['left']       = 'GO X-%.2f F%.2f';
-		$actions['right']      = 'GO X+%.2f F%.2f';
+		$actions['down-left']  = 'G0 Y-%1$.2f X-%1$.2f F%2$.2f';
+		$actions['left']       = 'G0 X-%.2f F%.2f';
+		$actions['right']      = 'G0 X+%.2f F%.2f';
 		
-		$actions['z-up']      = 'GO Z-%.2f F%.2f';
-		$actions['z-down']      = 'GO Z+%.2f F%.2f';
+		$actions['z-up']       = 'G0 Z-%.2f F%.2f';
+		$actions['z-down']     = 'G0 Z+%.2f F%.2f';
 		
 		if( !array_key_exists($action, $actions) )
 			return array();
