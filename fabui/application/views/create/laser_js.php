@@ -33,8 +33,8 @@
 					disableButton('.btn-next');
 				$('.btn-next').find('span').html('Next');
 				
-				//cmd = 'M60 S0\n';
-				//fabApp.jogMdi(cmd);
+				cmd = 'M62';
+				fabApp.jogMdi(cmd);
 				
 				break;
 			case 2: // Safety
@@ -42,8 +42,8 @@
 				disableButton('.btn-next');
 				$('.btn-next').find('span').html('Next');
 				
-				//cmd = 'M60 S0\n';
-				//fabApp.jogMdi(cmd);
+				cmd = 'M62';
+				fabApp.jogMdi(cmd);
 				
 				break;
 			case 3: // Calibration
@@ -51,14 +51,16 @@
 				disableButton('.btn-next');
 				$('.btn-next').find('span').html('Engrave');
 				
-				//cmd = 'M60 S10\nM300\n';
-				//fabApp.jogMdi(cmd);
+				cmd = 'M60 S10\nM300\n';
+				fabApp.jogMdi(cmd);
 				
 				break;
 			case 4: // Execution
 				<?php if($runningTask): ?>;
 				// do nothing
 				<?php else: ?>
+					cmd = 'M62';
+					fabApp.jogMdi(cmd);
 					startTask();
 				<?php endif; ?>
 				return false;

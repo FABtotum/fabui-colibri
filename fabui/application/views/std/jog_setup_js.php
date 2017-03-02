@@ -155,8 +155,11 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 	
 	function jogStorePosition()
 	{
+		
+		console.log("Store Position");
+		
 		fabApp.jogGetPosition( function(e) {
-			var tmp = e[0].reply.split(" ");
+			var tmp = e[0].reply[0].split(" ");
 			var x = tmp[0].replace("X:","");
 			var y = tmp[1].replace("Y:","");
 			var z = tmp[2].replace("Z:","");

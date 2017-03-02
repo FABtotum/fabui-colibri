@@ -29,7 +29,7 @@ __version__ = "1.0"
 # Import internal modules
 from fabtotum.utils.translation import _, setLanguage
 
-def start_subtractive(app, args = None, lang='en_US.UTF-8'):
+def start_engraving(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
     units_a = app.config.get('settings', 'a')
@@ -38,7 +38,7 @@ def start_subtractive(app, args = None, lang='en_US.UTF-8'):
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th Axis mode"), verbose=False)
     
     
-def end_subtractive(app, args = None, lang='en_US.UTF-8'):
+def end_engraving(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     units_e = app.config.get('settings', 'e')
     
@@ -55,8 +55,10 @@ def end_subtractive(app, args = None, lang='en_US.UTF-8'):
     #macro("G27","ok",100,"Lowering the building platform",1,verbose=False) #normally Z=240mm
     #note: movement here is done so it works with manual positioning (subtractive mode).
     
+    app.macro("G0 X0 Y0 Z0 E0 F2000", "ok", 1, _("Go back to Origin Point"), verbose=False)
+    
     app.macro("M400",       "ok", 200,   _("Waiting for all moves to finish") )
-    app.macro("M5",         "ok", 100,   _("Shutting Down Milling Motor") ) #should be moved to firmware       
+    app.macro("M62",        "ok", 10,    _("Shutting down the laser") ) #should be moved to firmware       
     app.macro("M220 S100",  "ok", 50,    _("Reset Speed factor override") )
     app.macro("M221 S100",  "ok", 5,     _("Reset Extruder factor override") )
     app.macro("M107",       "ok", 50,    _("Turning Fan off") ) # moved to firmware
@@ -66,7 +68,7 @@ def end_subtractive(app, args = None, lang='en_US.UTF-8'):
     app.macro("M701 S"+str(color['r']), "ok", 2,  _("Turning on lights"), verbose=False)
     app.macro("M702 S"+str(color['g']), "ok", 2,  _("Turning on lights"), verbose=False)
     app.macro("M703 S"+str(color['b']), "ok", 2,  _("Turning on lights"), verbose=False)
-    app.macro("M300",                   "ok", 10, _("Milling completed!") ) #should be moved to firmware
+    app.macro("M300",                   "ok", 10, _("Laser engraving completed!") ) #should be moved to firmware
 
-def end_subtractive_aborted(app, args = None, lang='en_US.UTF-8'):
-    pass
+def end_engraving_aborted(app, args = None, lang='en_US.UTF-8'):
+	pass

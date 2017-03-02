@@ -25,6 +25,7 @@ __version__ = "1.0"
 import fabtotum.fabui.macros.general     as general_macros
 import fabtotum.fabui.macros.printing    as print_macros
 import fabtotum.fabui.macros.milling     as mill_macros
+import fabtotum.fabui.macros.engraving   as laser_macros
 import fabtotum.fabui.macros.scanning    as scan_macros
 import fabtotum.fabui.macros.maintenance as maint_macros
 import fabtotum.fabui.macros.calibration as calib_macros
@@ -57,6 +58,16 @@ PRESET_MAP = {
     "end_additive_safe_zone"        : print_macros.end_additive_safe_zone,
     "end_additive_aborted"          : print_macros.end_additive_aborted,
     
+    # Milling
+    "start_subtractive"             : mill_macros.start_subtractive,
+    "end_subtractive"               : mill_macros.end_subtractive,
+    "end_subtractive_aborted"       : mill_macros.end_subtractive_aborted,
+    
+    # Laser
+    "start_engraving"               : laser_macros.start_engraving,
+    "end_engraving"                 : laser_macros.end_engraving,
+    "end_engraving_aborted"         : laser_macros.end_engraving_aborted,
+    
     # Maintenance
     "pre_unload_spool"              : maint_macros.pre_unload_spool,
     "unload_spool"                  : maint_macros.unload_spool,
@@ -64,10 +75,6 @@ PRESET_MAP = {
     "extrude"                       : maint_macros.extrude,
     "change_step"                   : maint_macros.change_step,
     "manual_bed_leveling"           : maint_macros.manual_bed_leveling,
-    
-    # Milling
-    "start_subtractive"             : mill_macros.start_subtractive,
-    "end_subtractive"               : mill_macros.end_subtractive,
     
     # Scanning    
     "check_pre_scan"                : scan_macros.check_pre_scan, 

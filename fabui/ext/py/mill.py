@@ -55,11 +55,13 @@ class MillApplication(GCodePusher):
             else:
                 self.set_task_status(GCodePusher.TASK_COMPLETING)
             
-            self.exec_macro("end_subtractive")
+            
             
             if self.is_aborted():
+                self.exec_macro("end_subtractive_aborted")
                 self.set_task_status(GCodePusher.TASK_ABORTED)
             else:
+                self.exec_macro("end_subtractive")
                 self.set_task_status(GCodePusher.TASK_COMPLETED)
         
         self.stop()
