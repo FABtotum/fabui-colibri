@@ -195,8 +195,9 @@ class Projectsmanager extends FAB_Controller {
 			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
 		);
 		
-		$widgeFooterButtons = 	
-			'<label class="checkbox-inline" style="padding-top:0px;">
+		$widgeFooterButtons =
+			'<button class="btn btn-default pull-left" type="button" id="load-content"><i class="fa fa-angle-double-down"></i> view content </button>
+				<label class="checkbox-inline" style="padding-top:0px;">
 				 <input type="checkbox" class="checkbox" disabled="disabled" id="also-content">
 				 <span>Save content also </span>
 			</label>' .
