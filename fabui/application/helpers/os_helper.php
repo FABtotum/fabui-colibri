@@ -156,7 +156,7 @@ if(!function_exists('getDNS'))
 		$result = startBashScript('get_dns.sh', '', false, true);
 		
 		$dns = array(
-			'head1' => array(),
+			'head' => array(),
 			'current' => array(),
 			'tail' => array()
 		);
