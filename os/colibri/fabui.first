@@ -58,7 +58,7 @@ case "$1" in
         sudo -uwww-data ln -s /mnt/userdata/settings/settings.json ${LIB_PATH}settings
         
         # Official pre-installed plugins
-        cp ${PLUGINS_PATH}/* /mnt/userdata/plugins
+        cp -R ${PLUGINS_PATH}/* /mnt/userdata/plugins
         rm -rf ${PLUGINS_PATH}
         sudo -uwww-data ln -sf /mnt/userdata/plugins ${LIB_PATH}
         
