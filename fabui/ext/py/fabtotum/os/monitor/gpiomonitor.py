@@ -120,7 +120,8 @@ class GPIOMonitor:
             
             if GPIO_STATUS == 0:
                 reply = self.gcs.send("M730", group='*')
-                if reply:
+                if not reply.isEmpty():
+                    reply = reply.data
                     if len(reply) > 1:
                         search = re.search('ERROR\s:\s(\d+)', reply[-2])
                         if search != None:

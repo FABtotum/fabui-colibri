@@ -95,7 +95,8 @@ class ExposeCommands:
         """
         Send GCode and receive it's reply.
         """
-        return self.gcs.send(code, block=block, timeout=timeout, async=async)
+        reply = self.gcs.send(code, block=block, timeout=timeout, async=async)
+        return reply.data
     
     def do_macro(self, preset, args = None, atomic = True, lang='en_US.UTF-8'):
         """

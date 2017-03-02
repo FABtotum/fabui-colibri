@@ -66,6 +66,34 @@ HOOKS = [
     action_hook
 ]
 
+class GCodeReply(object):
+    """
+    GCode Command reply object that stores command reply and status like 
+    aborted or expired.
+    """
+    def __init__(self, data = None, aborted = False, expired = False):
+        self.data = data
+        self.aborted = aborted
+        self.expired = expired
+    
+    def isEmpty(self):
+        return self.data is None
+    
+    def isAborted(self):
+        return self.aborted
+        
+    def hasExpired(self):
+        return self.expired
+        
+    def isValid(self):
+        return ( not self.aborted) and ( not self.expired ) and ( not self.isEmpty() )
+        
+    def __bool__(self):
+        return not self.data is None
+        
+    __nonzero__=__bool__
+        
+
 class Command(object):
     
     """
@@ -1208,7 +1236,7 @@ class GCodeService:
         """
         if self.is_resetting or self.released:
             time.sleep(1)
-            return None
+            return GCodeReply()
         
         code = code.encode('latin-1')
         if self.running:
@@ -1228,11 +1256,11 @@ class GCodeService:
             
             # Don't block, return immediately 
             if not block:
-                return None
+                return GCodeReply()
             
             # Protection #1 in case the service is stopped
             if not self.running or self.released:
-                return None
+                return GCodeReply()
             # Last resort protection #2 if service is stopped
             # As this function is called from a separate thread from 'sender'
             # and 'receiver' it can be active after they have been terminated.
@@ -1244,24 +1272,27 @@ class GCodeService:
                 if self.is_resetting or self.released:
                     cmd.notify(abort=True)
                     time.sleep(1)
-                    return None
+                    return GCodeReply()
                 
                 if not self.running or self.released:
                     # Aborting because the service has been stopped
                     self.log.info('Aborting reply due to stop. [%s]', code)
-                    return None
+                    return GCodeReply()
+                    
                 if timeout:
                     if ( time.time() - sent_timestamp ) >= timeout:
                         self.log.info('Timeout for [%s]', code)
-                        return None
+                        
+                        return GCodeReply(None, aborted=False, expired=True)
                         
             if cmd.aborted:
                 self.log.info('Command aborted. [%s]', code)
-                return None
-                        
-            return cmd.reply
+                
+                return GCodeReply(None, aborted=True)
+            
+            return GCodeReply(cmd.reply)
         else:
-            return None
+            return GCodeReply()
         
     def push(self, id, data):
         """

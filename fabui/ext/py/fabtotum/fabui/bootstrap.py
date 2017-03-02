@@ -57,6 +57,8 @@ def read_eeprom(gcodeSender):
     
     #reply = app.macro('M503', None, 1, _("Reading settings from eeprom"), verbose=False)
     reply = gcodeSender.send('M503', group='bootstrap')
+    reply = reply.data
+
 
     eeprom = {}
 
@@ -263,6 +265,7 @@ def hardwareBootstrap(gcs, config = None, logger = None):
 
     # Get hardware id (version)
     reply = gcs.send('M763', group='bootstrap')
+    reply = reply.data
     try:
         hardwareID = reply[0].strip()
     except Exception as e:

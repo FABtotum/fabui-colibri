@@ -77,17 +77,20 @@ class GMacroHandler:
         reply = self.gcs.send(command, expected_reply=final_reply, block=True, timeout=timeout, group='macro')
         
         if('G0 ' in command):
-            reply = self.gcs.send('M400', block=True, timeout=timeout, group='macro')
-        
-        if reply is None:
+            tmp_reply = self.gcs.send('M400', block=True, timeout=timeout, group='macro')
+
+        if reply.hasExpired():
             if warning:
                 self.trace( _('Timeout for {0}'.format(command)) )
             else:
                 raise MacroTimeOutException(command)
+                
+        if reply.isAborted():
+            raise MacroAbortedException(command)
         
         found = False
-        if expected_reply is not None:
-            for reply_line in reply:
+        if (expected_reply is not None) and ( not reply.isEmpty() ):
+            for reply_line in reply.data:
                 
                 retr = re.match( glob2re(expected_reply), reply_line )
                 if retr:
@@ -100,7 +103,7 @@ class GMacroHandler:
             else:
                 raise MacroUnexpectedReply(command, message, expected_reply)
                 
-        return reply
+        return reply.data
     
     def run(self, preset, args = None, atomic = True):
         """

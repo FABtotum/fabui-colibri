@@ -169,7 +169,8 @@ class StatsMonitor:
             # command like M109,M190,G29 or G28
             #~ reply = self.gcs.send('M105', group = 'monitor', timeout = 2) 
             reply = self.gcs.send('M105', group = 'monitor', block=True)
-            if reply != None: # No timeout occured
+            if reply.isValid(): # No timeout occured
+                reply = reply.data
                 try:
                     a, b, c, d = self.__parse_temperature(reply[0])
                     self.__update_values(a,b,c,d)
