@@ -476,7 +476,7 @@ fabApp = (function(app) {
 			content : message,
 			color : "#C46A69",
 			timeout: 10000,
-			icon : "fa fa-error"
+			icon : "fa fa-warning"
 		});
 	}
 	

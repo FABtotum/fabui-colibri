@@ -253,9 +253,19 @@ class Settings extends FAB_Controller {
 		$data['iface_tabs'] = $tabs_content;
 		$data['interfaces'] = $interfaces;
 		
+		$dns = getDNS();
+		$data['dns'] = getDNS();
+		
+		
 		$dnssdActive = $preSelectedInterface == 'dnssd' ? 'active': '';
 		$tabs_title .= '<li data-attribute="dnssd" class="tab '.$dnssdActive.' "><a data-toggle="tab" href="#dnssd-tab"> '._('DNS-SD').'</a></li>';
 		
+		$dnsActive = $preSelectedInterface == 'dns' ? 'active': '';
+		$tabs_title .= '<li data-attribute="dns" class="tab '.$dnsActive.' "><a data-toggle="tab" href="#dns-tab"> '._('DNS').'</a></li>';
+		/*
+		$sshActive = $preSelectedInterface == 'ssh' ? 'active': '';
+		$tabs_title .= '<li data-attribute="ssh" class="tab '.$sshActive.' "><a data-toggle="tab" href="#ssh-tab"> '._('SSH').'</a></li>';
+		*/
 		$headerToolbar = '<ul class="nav nav-tabs network-tabs pull-right">' . $tabs_title .'</ul>';
 		
 		$widgeFooterButtons = $this->smart->create_button(_('Scan'), 'primary')->attr(array('id' => 'scanButton', 'style' => 'display:none'))->attr('data-action', 'exec')->icon('fa-search')->print_html(true)
@@ -337,11 +347,15 @@ class Settings extends FAB_Controller {
 				setHostName($hostname, $name);
 				storeNetworkSettings($net_type, '', '', '', '', '', '', '', '', $hostname, $name);
 				break;
+			case "dns":
+				// TODO
+				$dns = $postData['dns'];
+				configureDNS($dns);
 			default:
 				$result = false;
 		}
 		writeNetworkInfo();
-		$this->output->set_content_type('application/json')->set_output($result);
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
 	
 	

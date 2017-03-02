@@ -144,6 +144,87 @@ if(!function_exists('getInterfaces'))
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getDNS'))
+{
+	/**
+	 * Get system DNS data
+	 */
+	function getDNS()
+	{
+		$CI =& get_instance();
+		$CI->load->helper('fabtotum');
+		$result = startBashScript('get_dns.sh', '', false, true);
+		
+		$dns = array(
+			'head1' => array(),
+			'current' => array(),
+			'tail' => array()
+		);
+		
+		$list = explode(";", $result);
+		
+		foreach($list as $entry)
+		{
+			$entry = trim($entry);
+			if( startsWith($entry, 'H=') ) {
+				$dns['head'][] = ltrim($entry, "H=");
+			}
+			else if ( startsWith($entry, 'C=') ) {
+				$c = ltrim($entry, "C=");
+				if(!in_array($c, $dns['head']) && !in_array($c, $dns['tail'])) {
+					$dns['current'][] = $c;
+				}
+			}
+			else if ( startsWith($entry, 'T=') ) {
+				$dns['tail'][] = ltrim($entry, "T=");
+			}
+		}
+		
+		return $dns;
+	}
+}
+
+if(!function_exists('configureDNS'))
+{
+	function configureDNS($dns_settings)
+	{
+		
+		$head_content = '';
+		if(isset($dns_settings['head'])) {
+			foreach($dns_settings['head'] as $entry)
+			{
+				$head_content .= "nameserver " . $entry . PHP_EOL;
+			}
+		}
+		
+		$current_content = '';
+		if(isset($dns_settings['current'])) {
+			foreach($dns_settings['current'] as $entry)
+			{
+				$current_content .= "nameserver " . $entry . PHP_EOL;
+			}
+		}
+		
+		$tail_content = '';
+		if(isset($dns_settings['tail'])) {
+			foreach($dns_settings['tail'] as $entry)
+			{
+				$tail_content .= "nameserver " . $entry . PHP_EOL;
+			}
+		}
+		
+		file_put_contents('/tmp/fabui/resolv.conf.head', $head_content);
+		file_put_contents('/tmp/fabui/resolv.conf', $head_content . $current_content . $tail_content);
+		file_put_contents('/tmp/fabui/resolv.conf.tail', $tail_content);
+		
+		shell_exec("sudo mv /tmp/fabui/resolv.conf.head /etc/resolv.conf.head");
+		shell_exec("sudo mv /tmp/fabui/resolv.conf /etc/resolv.conf");
+		shell_exec("sudo mv /tmp/fabui/resolv.conf.tail /etc/resolv.conf.tail");
+		
+		return true;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('cidr2NetmaskAddr'))
 {
 	function cidr2NetmaskAddr($cidr)
@@ -455,10 +536,7 @@ if(!function_exists('writeNetworkInfo'))
 		$CI->load->helper('file');
 		
 		$data['interfaces'] = getInterfaces();
-		$data['internet'] = false;
-		if(isset($data['interfaces']['wlan0']['wireless']['ssid'])){
-			$data['internet'] = isInternetAvaialable();
-		}
+		$data['internet'] = isInternetAvaialable();
 		write_file($CI->config->item('network_info_file'), json_encode($data));
 	}
 }

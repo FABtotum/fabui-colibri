@@ -9,6 +9,7 @@
  
 ?>
 <div class="tab-content padding-10">
+	
 	<?php echo $iface_tabs ?>
 	<div class="tab-pane fade in <?php echo $preSelectedInterface == 'dnssd'? 'active' : '' ?>" id="dnssd-tab"  data-attribute="dnssd">
 		<form class="smart-form" id="hostname-form">
@@ -41,9 +42,78 @@
 				</div>
 			</fieldset>
 		</form>
-
-
-	</div>
+	</div><!-- DNS-SD -->
+	
+	<div class="tab-pane fade in <?php echo $preSelectedInterface == 'dns'? 'active' : '' ?>" id="dns-tab"  data-attribute="dns">
+		<form class="smart-form" id="dns-form">
+			
+			<fieldset>
+				<div class="row">
+					<section class="col col-6">
+						<div class="form-group">
+							<label class="label"><?php echo _('Head')?></label>
+							<label class="input">
+								<input type="text" data-attr="head" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo isset($dns['head'][0])?$dns['head'][0]:''; ?>"/>
+							</label>
+							<label class="input">
+								<input type="text" data-attr="head" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo isset($dns['head'][1])?$dns['head'][1]:''; ?>"/>
+							</label>
+						</div>
+					</section>
+				</div>
+				
+				<div class="row">
+					<section class="col col-6">
+						<div class="note">
+						<?php echo _('These DNS settings will be added before DNS which is acquired over DHCP')?>
+						</div>
+					</section>
+				</div>
+			</fieldset><!-- Head -->
+			
+			<fieldset>
+				<div class="row">
+					<section class="col col-6">
+						<div class="form-group">
+							<label class="label"><?php echo _('Current')?></label>
+							<label class="input">
+								<input type="text" data-attr="current" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo isset($dns['current'][0])?$dns['current'][0]:''; ?>" readonly/>
+							</label>
+							<label class="input">
+								<input type="text" data-attr="current" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo isset($dns['current'][1])?$dns['current'][1]:''; ?>" readonly/>
+							</label>
+						</div>
+					</section>
+				</div>
+			</fieldset><!-- Current -->
+			
+			<fieldset>
+				<div class="row">
+					<section class="col col-6">
+						<div class="form-group">
+							<label class="label"><?php echo _('Tail')?></label>
+							<label class="input">
+								<input type="text" data-attr="tail" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo isset($dns['tail'][0])?$dns['tail'][0]:''; ?>"/>
+							</label>
+							<label class="input">
+								<input type="text" data-attr="tail" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo isset($dns['tail'][1])?$dns['tail'][1]:''; ?>"/>
+							</label>
+						</div>
+					</section>
+				</div>
+				
+				<div class="row">
+					<section class="col col-6">
+						<div class="note">
+						<?php echo _('These DNS settings will be added after DNS which is acquired over DHCP')?>
+						</div>
+					</section>
+				</div>
+			</fieldset><!-- Tail -->
+			
+		</form>
+	</div><!-- DNS -->
+	
 </div>
 
 <!-- PASSWORD MODAL -->

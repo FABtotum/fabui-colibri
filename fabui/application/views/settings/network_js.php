@@ -40,13 +40,18 @@
 		var data = {};
 		$("#"+tab+"-tab :input").each(function (index, value) {
 			if($(this).is('input:text') || $(this).is('input:password') || $(this).is('select') || $(this).is(':input[type="number"]') || ($(this).is('input:radio') && $(this).is(':checked')) ){
-				data[$(this).attr('id')] = $(this).val();
+				if($(this).attr('id')){
+					data[$(this).attr('id')] = $(this).val();
+				}
 			}
 		});
 		
-		if(tab == "dnssd")
-		{
+		if(tab == "dnssd") {
 			net_type = "dnssd";
+		}
+		
+		if(tab == "dns") {
+			net_type = "dns";
 		}
 		
 		data['active'] = tab;
@@ -60,8 +65,11 @@
 			case "wlan":
 				save_wifi(tab, data);
 				break;
-			default:
-				save_dnssd(data)
+			case "dnssd":
+				save_dnssd(data);
+				break;
+			case "dns":
+				save_dns(data);
 				break;
 		}
 	}
@@ -71,10 +79,7 @@
 		if( !$("#"+iface+"-tab .addressForm").valid() ){
 			return;
 		}
-		
-		console.log('save eth', iface);
-		console.log(data);
-		//return false;
+
 		post_data(data);
 	}
 
@@ -111,6 +116,25 @@
 	{
 		post_data(data);
 	}
+	
+	function save_dns(data)
+	{
+		var dns = {
+			head: [],
+			current: [],
+			tail: []
+		};
+		
+		$("#dns-tab :input").each(function (index, value) {
+			if($(this).is('input:text') || $(this).is('input:password') || $(this).is('select') || $(this).is(':input[type="number"]') || ($(this).is('input:radio') && $(this).is(':checked')) ){
+				if($(this).val()) {
+					dns[$(this).attr('data-attr')].push( $(this).val() );
+				}
+			}
+		});
+		data['dns'] = dns;
+		post_data(data);
+	}
 
 	function post_data(data)
 	{
@@ -119,21 +143,62 @@
 		button.addClass('disabled');
 		button.html('<i class="fa fa-save"></i> <?php echo _('Saving')?>..');
 
-		if(data.hasOwnProperty('hidden-ssid') && data['net_type'] == 'wlan'){
-			openWait("<i class='fa fa-spin fa-spinner'></i> <?php echo _("Connecting to") ?> <strong>" + data['hidden-ssid']+'</strong> <i class="fa fa-wifi"></i>', "<?php echo _("Please wait") ?>...", false );
-		}else if(data['net_type'] == 'eth' && data['address-mode'] == 'static'){
+		var wait_title = "";
+		var wait_message = _("Please wait") + '...';
+		var finish_message = _("Reloading page");
+		var error_message = _("Unknown error");
+		var reload_timeout = 5000;
 
-			openWait("<i class='fa fa-spin fa-spinner'></i> <?php echo _("Saving new ethernet configuration") ?>", "<?php echo _("Please wait") ?>...", false );
+		if(data.hasOwnProperty('hidden-ssid') && data['net_type'] == 'wlan') 
+		{
+			wait_title = _("Connecting to") + '<strong>' + data['hidden-ssid']+'</strong> <i class="fa fa-wifi"></i>';
+			error_message = _("Failed to connect to Wireless network");
+		} 
+		else if(data['net_type'] == 'eth' && data['address-mode'] == 'static')
+		{
+			wait_title = _("Saving new ethernet configuration");
+			error_message = _("Failed to save ethernet configuration");
+			reload_timeout = 0;
 			/** 
 			* if static ip address change
 			**/
-			if(currentEthIPV4 != data['ipv4']){
-				
+			if(currentEthIPV4 != data['ipv4'])
+			{
 				setTimeout(function(){
 					waitContent("<?php echo _("Redirect to new address") ?>...");
-					fabApp.redirectToUrlWhenisReady('http://'+ data['ipv4'] + '/fabui/#settings/network');
+					fabApp.redirectToUrlWhenisReady('http://'+ data['ipv4'] + '/fabui/#settings/network/eth0');
 				}, 3000);
-			}			
+			}
+		} 
+		else if(data['net_type'] == 'eth' && data['address-mode'] == 'dhcp')
+		{
+			wait_title = _("Saving new ethernet configuration");
+			error_message = _("Failed to save ethernet configuration");
+			reload_timeout = 0;
+			
+			setTimeout(function(){
+				waitContent( _("It might take some time for the new address to become visible on the network. This page will be reloaded as soon as the new address is available.") );
+				var dnssd_hostname = $("#dnssd-hostname").val() + ".local";
+				fabApp.redirectToUrlWhenisReady('http://'+ dnssd_hostname + '/fabui/#settings/network/eth0');
+			}, 3000);
+		}
+		else if(data['net_type'] == 'dns')
+		{
+			//~ wait_title = _("Saving DNS configuration");
+			finish_message = _("DNS settings saved");
+			error_message = _("Failed to save DNS configuration");
+			reload_timeout = 0;
+		}
+		else if(data['net_type'] == 'dnssd')
+		{
+			finish_message = _("DNS-SD settings saved");
+			error_message = _("Failed to save DNS-SD configuration");
+			reload_timeout = 0;
+		}
+		
+		if(wait_title)
+		{
+			openWait("<i class='fa fa-spin fa-spinner'></i> " + wait_title, wait_message, false );
 		}
 		
 		$.ajax({
@@ -144,40 +209,41 @@
 			async: true,
 			timout: 20000, //timeout 1 minute,
 			error: function(request, status, err) {
-				console.log("ERROR");
+				
+				fabApp.showErrorAlert(error_message);
+				
 			}
 		}).done(function(response) {
 			button.html('<i class="fa fa-save"></i> <?php echo _('Save')?>');
 			button.removeClass('disabled');
-			/*
-			$("#"+data['active']+"-tab #hidden-address-mode").val(data['address-mode']);
+			enableButton("#saveButton");
 			
-			$.smallBox({
-				title : "<?php echo _('Settings')?>",
-				content : '<?php echo _('Network settings saved')?>',
-				color : "#5384AF",
-				timeout: 1000,
-				icon : "fa fa-check bounce animated"
-			});
-			*/
-			/**
-			* if wlan
-			**/
-			//if(data['net_type'] == 'wlan'){
-				waitContent("<?php echo _("Reloading page") ?>...");
-				fabApp.getNetworkInfo();
+			if( (wait_title == "") && (finish_message != ""))
+			{
+				fabApp.showInfoAlert(finish_message);
+			}
+			else
+			{
+				waitContent(finish_message);
+			}
+			
+			fabApp.getNetworkInfo();
+			
+			// With reload_timeout=0 we can skip this as some reloads are handled with fabApp.redirectToUrlWhenisReady
+			if(reload_timeout)
+			{
 				setTimeout(function(){
 						if(window.location.href ==  ('<?php echo site_url('#settings/network/') ?>/' + data['active'])){
 							location.reload(); 
 						}else{
 							window.location.href = '<?php echo site_url('#settings/network/') ?>/' + data['active'];
 						}
-					}, 5000
+					}, reload_timeout
 				);
-			//}
+			}
 						
 		}).fail(function(jqXHR, textStatus){
-			console.log("FAIL");
+			fabApp.showErrorAlert(error_message);
 		});
 	}
 
@@ -291,7 +357,10 @@
 	{
 		
 		$("#"+iface+"-table-container .nets-table").remove();
-		var bssid = $("#"+iface+"-tab #hidden-bssid").val().toLowerCase();
+		var bssid = "";
+		if($("#"+iface+"-tab #hidden-bssid").val())
+			bssid = $("#"+iface+"-tab #hidden-bssid").val().toLowerCase();
+			
 		var table = '<table class="table table-striped table-forum nets-table"><tbody>';
 		$.each(nets, function( index, net ) {
 			
@@ -397,6 +466,7 @@
 	 */
 	function passwordModalConnect()
 	{
+		console.log("passwordModalConnect:save");
 		if($("#passwordModalForm").valid()){
 			$("#"+wifiIface+"-tab #hidden-ssid").val(wifiSelected);
 			$("#"+wifiIface+"-tab #hidden-passphrase").val($("#wifiPassword").val());
