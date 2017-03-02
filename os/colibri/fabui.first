@@ -32,9 +32,7 @@ case "$1" in
     mkdir -p /mnt/userdata/heads
     mkdir -p /mnt/userdata/plugins
     chown -R 33:33 /mnt/userdata/*
-    ln -sf /mnt/userdata/uploads ${UPLOAD_PATH}
-    rm -f ${PLUGINS_PATH}
-    sudo -uwww-data ln -sf /mnt/userdata/plugins ${LIB_PATH}
+    ln -sf /mnt/userdata/uploads ${UPLOAD_PATH}   
     
     # Detect previous database
     if [ -f "/mnt/userdata/settings/fabtotum.db" ]; then
@@ -58,6 +56,11 @@ case "$1" in
         sudo -uwww-data cp ${LIB_PATH}settings/settings.json /mnt/userdata/settings
         rm ${LIB_PATH}settings/settings.json
         sudo -uwww-data ln -s /mnt/userdata/settings/settings.json ${LIB_PATH}settings
+        
+        # Official pre-installed plugins
+        cp ${PLUGINS_PATH}/* /mnt/userdata/plugins
+        rm -rf ${PLUGINS_PATH}
+        sudo -uwww-data ln -sf /mnt/userdata/plugins ${LIB_PATH}
         
         sudo chown -R 33.33 /mnt/userdata
     fi

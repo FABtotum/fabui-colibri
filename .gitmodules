@@ -1,0 +1,3 @@
+[submodule "fabui/plugins/fab_laser"]
+	path = fabui/plugins/fab_laser
+	url = https://github.com/FABtotum/fab_laser.git

@@ -83,6 +83,7 @@ STATIC_FILES	=
 DYNAMIC_FILES	=	$(CONFIG_FILES) \
 					$(DB_FILES) \
 					fabui/heads \
+					fabui/plugins \
 					fabui/cameras \
 					fabui/settings
 
