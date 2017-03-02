@@ -686,3 +686,20 @@ body.smart-style-6 .ribbon-button-alignment {
 body.smart-style-6 .smart-form .select select {
 	padding-left: 5px !important;
 }
+
+.fabtotum-icon {
+	position: relative;
+	font-size:30px;
+}
+
+.border-1px-solid {
+	border: solid 1px !important;
+}
+
+.fabtotum-icon .fabtotum-badge {
+	position: absolute;
+	right: 55px;
+	top: -58px;
+	font-size: 50px;
+	background-color: transparent !important;
+}

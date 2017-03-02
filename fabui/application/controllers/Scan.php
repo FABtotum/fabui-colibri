@@ -69,6 +69,7 @@
 		}
 		
 		$data['step4']  = $this->load->view('scan/wizard/step4', $data, true );
+		$data['step5']  = $this->load->view('scan/wizard/step5', $data, true );
 		$data['wizard'] = $this->load->view('scan/wizard/main',  $data, true );
 		//main page widget
 		$widgetOptions = array(

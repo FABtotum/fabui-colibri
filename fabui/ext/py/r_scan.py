@@ -86,7 +86,9 @@ class RotaryScan(GCodePusher):
             'height'        : height,
             'iso'           : iso,
             'point_count'   : 0,
-            'cloud_size'    : 0.0
+            'cloud_size'    : 0.0,
+            'file_id'       : 0,
+            'object_id'     : 0
         }
         
         self.add_monitor_group('scan', self.scan_stats)
@@ -239,7 +241,9 @@ class RotaryScan(GCodePusher):
         
         if task:
             os.remove(cloud_file)
-
+        
+        self.scan_stats['file_id']   = f['id']
+        self.scan_stats['object_id'] = obj['id']
         # Update task content
         if task:
             task['id_object'] = obj['id']

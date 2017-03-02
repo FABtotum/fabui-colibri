@@ -22,7 +22,7 @@
 							<p class="font-sm"><?php echo $mode['info']['description']; ?></p>
 						</div>
 						<ul class="links text-right">
-							<li><button data-scan-mode="<?php echo $mode_label; ?>" type="button" class="btn btn-default mode-choise">Choose <i class="fa  fa-arrow-right"></i></button></li>
+							<li><button data-scan-mode="<?php echo $mode_label; ?>" type="button" class="btn btn-default mode-choise"><?php echo _("Choose"); ?> <i class="fa  fa-arrow-right"></i></button></li>
 						</ul>
 					</div>
 				</div>

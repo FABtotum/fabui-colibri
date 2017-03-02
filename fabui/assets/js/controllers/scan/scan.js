@@ -873,34 +873,22 @@ function timer()
 function handleTaskStatus(status)
 {
 	
-	if(status == 'completing'){		
-		if(isCompleting == false) openWait('Finalizing scan');
-		isCompleting = true;
-	}else if(status == 'completed'){
-		if(isCompleted == false) {
-			openWait('Scan completed');
-			ga('send', 'event', 'scan', 'complete', 'Completed scan: ' + scanMode);
-			waitContent('refreshing page');
-			setTimeout(function () {
-				location.reload();
-			}, 5000);
-		}
-		isCompleted = true;
-	}else if(status == 'aborting'){
-		if(isAborting == false) openWait('Aborting scan');
-		isAborting = true;
-	}else if(status == 'aborted'){
-		if(isAborted == false){
-			ga('send', 'event', 'scan', 'abort', 'Aborted scan: ' + scanMode);
-			openWait('Scan aborted');
-			waitContent('refreshing page');
-			setTimeout(function () {
-				location.reload();
-			}, 5000);
-		}
-		isAborted = true;
-	}else{
-		isRunning = true;
+	switch(status){
+		case 'completing':
+			completingTask();
+			break;
+		case 'completed':
+			completeTask();
+			break;
+		case 'aborting':
+			abortingTask();
+			break;
+		case 'aborted':
+			abortTask();
+			break;
+		default:
+			isRunning = true;
+			console.log(status);
 	}
 }
 /**
@@ -956,17 +944,6 @@ function pauseScan()
 	
 	doAction(action);
 }
-/**
-*
-**/
-//~ function resumeScan()
-//~ {	
-	//~ //disableButton('.abort');
-	//~ doAction('resume');
-//~ }
-/**
-*
-**/
 function doAction(action)
 {
 	$.ajax({
@@ -975,4 +952,65 @@ function doAction(action)
 		dataType: 'json'
 	}).done(function(response) {
 	});
+}
+/**
+*
+**/
+function completingTask()
+{
+	if(isCompleting == false) openWait('Finalizing scan');
+	isCompleting = true;
+}
+/***
+**
+**/
+function completeTask()
+{
+	if(isCompleted == false) {
+		closeWait();
+		//openWait('Scan completed');
+		ga('send', 'event', 'scan', 'complete', 'Completed scan: ' + scanMode);
+		gotoWizardFinish();
+		fabApp.unFreezeMenu();
+		/**
+		*
+		**/
+		var projectsManagerURL = '/fabui/projectsmanager/project/' + objectID;
+		var downloadURL = '/fabui/projectsmanager/download/file/' + fileID;
+		$("#got-to-projects-manager").attr('href', projectsManagerURL);
+		$("#download-file").attr('href', downloadURL);
+		transformLinks();
+		
+	}
+	isCompleted = true;
+}
+/**
+*
+**/
+function abortingTask()
+{
+	if(isAborting == false) openWait('Aborting scan');
+	isAborting = true;
+}
+/**
+*
+**/
+function abortTask()
+{
+	if(isAborted == false){
+		ga('send', 'event', 'scan', 'abort', 'Aborted scan: ' + scanMode);
+		openWait('Scan aborted');
+		waitContent('refreshing page');
+		setTimeout(function () {
+			location.reload();
+		}, 5000);
+	}
+	isAborted = true;
+}
+/**
+*
+**/
+function gotoWizardFinish()
+{
+	$('.wizard').wizard('selectedItem', { step: 5 });
 }

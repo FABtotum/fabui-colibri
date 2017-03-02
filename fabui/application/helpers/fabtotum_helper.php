@@ -618,7 +618,7 @@ if(!function_exists('checkManufactoring'))
 			'-f' => $filePath,
 			'-n' => $numLines
 		);
-		return startPyScript('check_manufactoring.py', $args, false, true);
+		return trim(startPyScript('check_manufactoring.py', $args, false, true));
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

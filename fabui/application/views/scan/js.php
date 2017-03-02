@@ -32,6 +32,8 @@
 	var isCompleted = false;
 	var isAborting = false;
 	var isAborted = false;
+	var objectID = 0;
+	var fileID = 0;
 	
 	function checkConnection(obj){
 		
@@ -96,7 +98,12 @@
 			updateResolution(data.scan.width, data.scan.height);
 			updateIso(data.scan.iso);
 			handleTaskStatus(data.task.status);
+			objectID = data.scan.object_id;
+			fileID = data.scan.file_id;
 		};
 	/*}*/
 	
+	$("#restart").on('click', function(){
+		location.reload();
+	});
 </script>  
