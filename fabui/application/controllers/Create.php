@@ -146,15 +146,11 @@
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js');
 
 		$this->addJsInLine($this->load->view( 'create/print_js', $data, true));
-
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
-		$this->addJsInLine($this->load->view( 'std/task_wizard_js', $data, true));
-		
-		$this->addJsInLine($this->load->view( 'std/select_file_js', $data, true));
-		
-		$this->addJsInLine($this->load->view( 'std/print_setup_js', $data, true));
-		
-		$this->addJsInLine($this->load->view( 'std/task_execute_js', $data, true));
+		$this->addJsInLine($this->load->view( 'std/task_wizard_js',   $data, true));
+		$this->addJsInLine($this->load->view( 'std/select_file_js',   $data, true));
+		$this->addJsInLine($this->load->view( 'std/print_setup_js',   $data, true));
+		$this->addJsInLine($this->load->view( 'std/task_execute_js',  $data, true));
 		$this->addJsInLine($this->load->view( 'std/task_finished_js', $data, true));
 
 		$this->content = $widget->print_html(true);
