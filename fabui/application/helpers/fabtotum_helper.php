@@ -296,12 +296,17 @@ if(!function_exists('isHeadinPlace'))
 {
 	function isHeadInPlace()
 	{
+		/**
+		 * check if head in properly inserted
+		 * @return boolean
+		 */
 		$reply = doGCode(array('M745'));
 		if( isset($reply['commands']))
 		{
 			foreach($reply['commands'] as $value)
 			{
-				return $value['reply'] == "TRIGGERED\nok";
+				$join = join('-', $value['reply']);
+				return $join == "TRIGGERED-ok";
 			}
 		}
 		return false;
@@ -310,6 +315,10 @@ if(!function_exists('isHeadinPlace'))
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('isBedinPlace'))
 {
+	/**
+	 * check if bed is inserted
+	 * @return boolean
+	 */
 	function isBedInPlace()
 	{
 		$reply = doGCode(array('M744'));
@@ -317,7 +326,8 @@ if(!function_exists('isBedinPlace'))
 		{
 			foreach($reply['commands'] as $value)
 			{
-				return $value['reply'] == "TRIGGERED\nok";
+				$join = join('-', $value['reply']);
+				return $join == "TRIGGERED-ok";
 			}
 		}
 		return false;
