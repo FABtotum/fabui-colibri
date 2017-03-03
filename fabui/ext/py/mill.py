@@ -45,24 +45,22 @@ class MillApplication(GCodePusher):
         self.autolevel = autolevel
         self.finalize = finalize
         
-    def progress_callback(self, percentage):
-        print "Progress", percentage
+    #~ def progress_callback(self, percentage):
+        #~ print "Progress", percentage
     
-    def print_finalize(self):                                                                                                                                                                                                                                                                                                                                                                  
-        if self.standalone or self.finalize:
-            if self.is_aborted():
-                self.set_task_status(GCodePusher.TASK_ABORTING)
-            else:
-                self.set_task_status(GCodePusher.TASK_COMPLETING)
-            
-            
-            
-            if self.is_aborted():
-                self.exec_macro("end_subtractive_aborted")
-                self.set_task_status(GCodePusher.TASK_ABORTED)
-            else:
-                self.exec_macro("end_subtractive")
-                self.set_task_status(GCodePusher.TASK_COMPLETED)
+    def print_finalize(self):
+        if self.is_aborted():
+            self.set_task_status(GCodePusher.TASK_ABORTING)
+        else:
+            self.set_task_status(GCodePusher.TASK_COMPLETING)
+        
+        
+        if self.is_aborted():
+            self.exec_macro("end_subtractive_aborted")
+            self.set_task_status(GCodePusher.TASK_ABORTED)
+        else:
+            self.exec_macro("end_subtractive")
+            self.set_task_status(GCodePusher.TASK_COMPLETED)
         
         self.stop()
     

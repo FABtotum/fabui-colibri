@@ -40,6 +40,14 @@ def start_subtractive(app, args = None, lang='en_US.UTF-8'):
     
 def end_subtractive(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
+
+    app.trace("Terminating...")
+    
+    # Deinitialize and restore settings
+    end_subtractive_aborted(app, args, lang)
+
+
+def end_subtractive_aborted(app, args = None, lang='en_US.UTF-8'):
     units_e = app.config.get('settings', 'e')
     
     try:
@@ -50,11 +58,7 @@ def end_subtractive(app, args = None, lang='en_US.UTF-8'):
             'g' : 255,
             'b' : 255,
         }
-
-    app.trace("Terminating...")
-    #macro("G27","ok",100,"Lowering the building platform",1,verbose=False) #normally Z=240mm
-    #note: movement here is done so it works with manual positioning (subtractive mode).
-    
+        
     app.macro("M400",       "ok", 200,   _("Waiting for all moves to finish") )
     app.macro("M5",         "ok", 100,   _("Shutting Down Milling Motor") ) #should be moved to firmware       
     app.macro("M220 S100",  "ok", 50,    _("Reset Speed factor override") )
@@ -67,6 +71,3 @@ def end_subtractive(app, args = None, lang='en_US.UTF-8'):
     app.macro("M702 S"+str(color['g']), "ok", 2,  _("Turning on lights"), verbose=False)
     app.macro("M703 S"+str(color['b']), "ok", 2,  _("Turning on lights"), verbose=False)
     app.macro("M300",                   "ok", 10, _("Milling completed!") ) #should be moved to firmware
-
-def end_subtractive_aborted(app, args = None, lang='en_US.UTF-8'):
-    pass

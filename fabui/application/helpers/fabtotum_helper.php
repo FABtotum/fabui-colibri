@@ -121,6 +121,24 @@ if(!function_exists('savePosition'))
 		{
 			$data['stored_position'] = array();
 		}
+		else
+		{
+			if( !array_key_exists($task_type,$data['stored_position']) )
+			{
+				$old_x = $data['stored_position']['x'];
+				$old_y = $data['stored_position']['y'];
+				$old_z = $data['stored_position']['z'];
+				
+				// Preserve previous values if they have not been set
+				if($x == 'undefined' and $old_x != 'x')
+					$x = $old_x;
+				if($y == 'undefined' and $old_y != 'y')
+					$y = $old_y;
+				if($z == 'undefined' and $old_z != 'z')
+					$z = $old_z;
+			}
+			
+		}
 		
 		$data['stored_position'][$task_type] = array('x' => $x, 'y' => $y, 'z' => $z);
 		
@@ -313,11 +331,12 @@ if(!function_exists('isBedinPlace'))
 	function isBedInPlace()
 	{
 		$reply = doGCode(array('M744'));
+		
 		if( isset($reply['commands']))
 		{
 			foreach($reply['commands'] as $value)
 			{
-				return $value['reply'] == "TRIGGERED\nok";
+				return $value['reply'][0] == "TRIGGERED";
 			}
 		}
 		return false;

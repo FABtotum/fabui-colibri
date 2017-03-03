@@ -1069,7 +1069,7 @@ class Projectsmanager extends FAB_Controller {
 			);
 			$default_action = $builtin_actions[0];
 		}
-		else if($file['print_type'] == 'laser')
+		/*else if($file['print_type'] == 'laser')
 		{
 			$builtin_actions[] = array(
 				"title" => _("Engrave"),
@@ -1077,7 +1077,7 @@ class Projectsmanager extends FAB_Controller {
 				"url" => "#make/laser/".$fileID
 			);
 			$default_action = $builtin_actions[0];
-		}
+		}*/
 			
 		$builtin_actions[] = array(
 				"title" => _("Download"),

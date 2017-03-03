@@ -36,12 +36,22 @@ def start_engraving(app, args = None, lang='en_US.UTF-8'):
     
     app.macro("G92 X0 Y0 Z0 E0", "ok", 1,       _("Setting Origin Point"), verbose=False)
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th Axis mode"), verbose=False)
+    app.macro("M106 S255", "ok", 1,             _ ("Turning fan on"), verbose=False)
     
     
 def end_engraving(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    units_e = app.config.get('settings', 'e')
     
+
+    app.trace("Terminating...")    
+    app.macro("G0 X0 Y0 Z0 E0 F2000", "ok", 1, _("Go back to Origin Point"), verbose=False)
+    
+    # Deinitialize and restore settings
+    end_engraving_aborted(app, args, lang)
+
+def end_engraving_aborted(app, args = None, lang='en_US.UTF-8'):
+    
+    units_e = app.config.get('settings', 'e')
     try:
         color = app.config.get('settings', 'color')
     except KeyError:
@@ -51,12 +61,6 @@ def end_engraving(app, args = None, lang='en_US.UTF-8'):
             'b' : 255,
         }
 
-    app.trace("Terminating...")
-    #macro("G27","ok",100,"Lowering the building platform",1,verbose=False) #normally Z=240mm
-    #note: movement here is done so it works with manual positioning (subtractive mode).
-    
-    app.macro("G0 X0 Y0 Z0 E0 F2000", "ok", 1, _("Go back to Origin Point"), verbose=False)
-    
     app.macro("M400",       "ok", 200,   _("Waiting for all moves to finish") )
     app.macro("M62",        "ok", 10,    _("Shutting down the laser") ) #should be moved to firmware       
     app.macro("M220 S100",  "ok", 50,    _("Reset Speed factor override") )
@@ -69,6 +73,3 @@ def end_engraving(app, args = None, lang='en_US.UTF-8'):
     app.macro("M702 S"+str(color['g']), "ok", 2,  _("Turning on lights"), verbose=False)
     app.macro("M703 S"+str(color['b']), "ok", 2,  _("Turning on lights"), verbose=False)
     app.macro("M300",                   "ok", 10, _("Laser engraving completed!") ) #should be moved to firmware
-
-def end_engraving_aborted(app, args = None, lang='en_US.UTF-8'):
-	pass
