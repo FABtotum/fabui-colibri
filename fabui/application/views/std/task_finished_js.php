@@ -28,6 +28,9 @@ if(!isset($task_jump_restart)) $task_jump_restart = 1;
 	function saveZHeight()
 	{
 		disableButton('.save-z-height');
+		if(zOverride == 0){
+			zOverride = $(".z-height").html();
+		}
 		$.ajax({
 			type: 'post',
 			url: '<?php echo site_url('probe/overrideLenght'); ?>/' + zOverride,

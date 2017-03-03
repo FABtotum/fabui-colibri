@@ -833,9 +833,11 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	
 		setTimeout(function(){
 			closeWait();
+			number_tasks = number_tasks - 1;
 			gotoWizardFinish();
 			fabApp.unFreezeMenu();
 			unFreezeUI();
+			fabApp.updateNotificationBadge();
 			clearInterval(timerInterval);
 			elapsedTime = 0;
 			estimatedTime = 0;

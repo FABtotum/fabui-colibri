@@ -13,9 +13,7 @@
 	var idFile <?php echo $file_id != '' ? ' = '.$file_id : ''; ?>; //file to create
 	var idTask <?php echo $runningTask ? ' = '.$runningTask['id'] : ''; ?>;
 	
-	
 	$(document).ready(function() {
-		console.log('idFile', idFile);
 		$('[data-toggle="tooltip"]').tooltip();
 	});
 	
@@ -56,7 +54,6 @@
 	
 	function startTask()
 	{
-		console.log('Starting task');
 		openWait('<i class="fa fa-spinner fa-spin "></i> ' + "<?php echo _('Preparing {0}');?>".format("<?php echo _(ucfirst($type)); ?>"), "<?php echo _('Please wait');?>");
 		
 		var calibration = $('input[name=calibration]:checked').val();
@@ -77,17 +74,11 @@
 				$('.wizard').wizard('selectedItem', { step: 2 });
 				fabApp.showErrorAlert(response.message);
 			}else{
-
-				//setInterval(timer, 1000);
-				//setInterval(jsonMonitor, 1000);
 				idTask = response.id_task;
-				
 				fabApp.resetTemperaturesPlot(1);
 				setTimeout(initGraph, 1000);
-				
-				initRunningTaskPage();
 				updateZOverride(0);
-				
+				initRunningTaskPage();
 				ga('send', 'event', 'print', 'start', 'print started');
 			}
 			closeWait();

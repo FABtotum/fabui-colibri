@@ -11,7 +11,17 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
  
 class Spool extends FAB_Controller {
-
+	/**
+	 * 
+	 */
+	function __construct()
+	{
+		parent::__construct();
+		session_write_close(); //avoid freezing page
+	}
+	/**
+	 * 
+	 */
 	public function index($type = 'load')
 	{
 		$this->load->library('smart');
@@ -39,23 +49,27 @@ class Spool extends FAB_Controller {
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
-
+	/**
+	 * 
+	 */
 	public function load()
 	{
 		$this->load->helpers('fabtotum_helper');
 		$result = doMacro('load_spool');
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
-
+	/**
+	 * 
+	 */
 	public function preUnload()
 	{
 		$this->load->helpers('fabtotum_helper');
-		
 		$result = doMacro('pre_unload_spool');
-		
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
-
+	/**
+	 * 
+	 */
 	public function unload()
 	{
 		$this->load->helpers('fabtotum_helper');

@@ -10,7 +10,14 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
  
 class Firmware extends FAB_Controller {
-
+	/**
+	 *
+	 */
+	function __construct()
+	{
+		parent::__construct();
+		session_write_close(); //avoid freezing page
+	}
 	public function test()
 	{
 		$this->load->helper('fabtotum_helper');
@@ -20,7 +27,9 @@ class Firmware extends FAB_Controller {
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($reply));
 	}
-
+	/**
+	 * 
+	 */
 	public function index()
 	{
 		$this->load->library('smart');
@@ -75,7 +84,9 @@ class Firmware extends FAB_Controller {
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
-	
+	/**
+	 * 
+	 */
 	public function doFlashFirmware($version)
 	{
 		//load helpers
@@ -102,7 +113,9 @@ class Firmware extends FAB_Controller {
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
-	
+	/**
+	 * 
+	 */
 	public function doUploadFirmware()
 	{
 		//load helpers

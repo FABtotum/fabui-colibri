@@ -11,7 +11,17 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
  
 class Nozzle extends FAB_Controller {
-
+	/**
+	 * 
+	 */
+	function __construct()
+	{	
+		parent::__construct();
+		session_write_close(); //avoid freezing page
+	}
+	/**
+	 * 
+	 */
 	public function index($type = 'length')
 	{
 		switch($type){
@@ -20,8 +30,9 @@ class Nozzle extends FAB_Controller {
 				break;
 		}
 	}
-
-	// length calibration controller
+	/**
+	 * height calibration controller
+	 */
 	public function doHeightCalibration()
 	{
 		//load libraries, helpers, model
@@ -49,7 +60,9 @@ class Nozzle extends FAB_Controller {
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
-	
+	/**
+	 * 
+	 */
 	public function getLength()
 	{
 		$this->load->helper('fabtotum_helper');
@@ -59,7 +72,9 @@ class Nozzle extends FAB_Controller {
 				json_encode( array('probe_length' => $probe_length) )
 			);
 	}
-
+	/**
+	 * 
+	 */
 	public function overrideLenght($override_by)
 	{
 		$this->load->helper('fabtotum_helper');

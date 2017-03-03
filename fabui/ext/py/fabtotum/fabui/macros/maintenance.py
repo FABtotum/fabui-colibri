@@ -117,7 +117,7 @@ def manual_bed_leveling(app, args = None, lang='en_US.UTF-8'):
     
     zprobe = app.config.get('settings', 'zprobe')
     zprobe_disabled = (zprobe['enable'] == 0)
-    zmax_home_pos   = float(zprobe['zmax'])
+    zmax_home_pos   = float(app.config.get('settings', 'z_max_offset'))
     
     probe_length = 50.0
     

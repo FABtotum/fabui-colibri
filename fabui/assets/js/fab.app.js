@@ -622,13 +622,17 @@ fabApp = (function(app) {
 	 * update notification badge
 	 */
 	app.updateNotificationBadge = function () {
-		if((number_updates + number_tasks) > 0){
-			$("#activity").find('.badge').html((number_updates + number_tasks));
+		
+		var totalNotifications = number_updates + number_tasks;
+		if(totalNotifications < 0) totalNotifications = 0;
+		
+		if((totalNotifications) > 0){
 			$("#activity").find('.badge').addClass('bg-color-red bounceIn animated');
 		}else{
 			$("#activity").find('.badge').removeClass('bg-color-red bounceIn animated');
 		}
 		
+		$("#activity").find('.badge').html(totalNotifications);
 		$(".updates-number").html( '(' + number_updates + ')');
 		$(".tasks-number").html( '(' + number_tasks + ')');
 		if(number_updates > 0 ){
@@ -1210,23 +1214,28 @@ fabApp = (function(app) {
 	 */
 	app.resetTemperaturesPlot = function(elements)
 	{
+		console.log("resetTemperaturesPlot " + elements);
 		elements = elements || 0;
 		
 		if(elements > 0){
 			if(temperaturesPlot.extruder.temp.length > elements){
-				temperaturesPlot.extruder.temp.splice(0, temperaturesPlot.extruder.temp.length - 10);
+				temperaturesPlot.extruder.temp.splice(0, temperaturesPlot.extruder.temp.length - 5);
 			}
 			if(temperaturesPlot.extruder.target.length > elements){
-				temperaturesPlot.extruder.target.splice(0, temperaturesPlot.extruder.target.length - 10);
+				temperaturesPlot.extruder.target.splice(0, temperaturesPlot.extruder.target.length - 5);
 			}
 			if(temperaturesPlot.bed.temp.length > elements){
-				temperaturesPlot.bed.temp.splice(0, temperaturesPlot.bed.temp.length - 10);
+				temperaturesPlot.bed.temp.splice(0, temperaturesPlot.bed.temp.length - 5);
 			}
 			if(temperaturesPlot.bed.target.length > elements){
-				temperaturesPlot.bed.target.splice(0, temperaturesPlot.bed.target.length - 10);
+				temperaturesPlot.bed.target.splice(0, temperaturesPlot.bed.target.length - 5);
 			}
 		}else{
 			temperaturesPlot = {extruder: {temp: [], target: []}, bed: {temp:[], target:[]}};
+		}
+		
+		if(typeof (Storage) !== "undefined") {
+			localStorage.setItem('temperaturesPlot', JSON.stringify(temperaturesPlot));
 		}
 		
 	}
