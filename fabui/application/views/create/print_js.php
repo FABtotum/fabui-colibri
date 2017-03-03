@@ -74,11 +74,10 @@
 				$('.wizard').wizard('selectedItem', { step: 2 });
 				fabApp.showErrorAlert(response.message);
 			}else{
-				updateZOverride(1);
 				idTask = response.id_task;
 				fabApp.resetTemperaturesPlot(1);
 				setTimeout(initGraph, 1000);
-				
+				updateZOverride(0);
 				initRunningTaskPage();
 				ga('send', 'event', 'print', 'start', 'print started');
 			}

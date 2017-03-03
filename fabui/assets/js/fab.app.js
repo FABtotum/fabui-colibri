@@ -622,13 +622,17 @@ fabApp = (function(app) {
 	 * update notification badge
 	 */
 	app.updateNotificationBadge = function () {
-		if((number_updates + number_tasks) > 0){
-			$("#activity").find('.badge').html((number_updates + number_tasks));
+		
+		var totalNotifications = number_updates + number_tasks;
+		if(totalNotifications < 0) totalNotifications = 0;
+		
+		if((totalNotifications) > 0){
 			$("#activity").find('.badge').addClass('bg-color-red bounceIn animated');
 		}else{
 			$("#activity").find('.badge').removeClass('bg-color-red bounceIn animated');
 		}
 		
+		$("#activity").find('.badge').html(totalNotifications);
 		$(".updates-number").html( '(' + number_updates + ')');
 		$(".tasks-number").html( '(' + number_tasks + ')');
 		if(number_updates > 0 ){
