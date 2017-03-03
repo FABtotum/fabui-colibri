@@ -11,7 +11,17 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
  
 class Feeder extends FAB_Controller {
-
+	/**
+	 *
+	 */
+	function __construct()
+	{
+		parent::__construct();
+		session_write_close(); //avoid freezing page
+	}
+	/**
+	 * 
+	 */
 	public function index($type = 'calibrate')
 	{
 		switch($type){
@@ -53,7 +63,9 @@ class Feeder extends FAB_Controller {
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
-	
+	/**
+	 * 
+	 */
 	public function doEngage()
 	{
 		//load libraries, helpers, model
@@ -77,21 +89,27 @@ class Feeder extends FAB_Controller {
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
-	
+	/**
+	 * 
+	 */
 	public function extrude($filament_to_extrude)
 	{
 		$this->load->helpers('fabtotum_helper');
 		$json_data = doMacro('extrude', null, $filament_to_extrude );
 		$this->output->set_content_type('application/json')->set_output(json_encode( $json_data ));
 	}
-	
+	/**
+	 * 
+	 */
 	public function engage()
 	{
 		$this->load->helpers('fabtotum_helper');
 		$json_data = doMacro('engage_feeder');
 		$this->output->set_content_type('application/json')->set_output(json_encode( $json_data ));
 	}
-	
+	/**
+	 * 
+	 */
 	public function changeStep($new_step)
 	{
 		$this->load->helpers('fabtotum_helper');
@@ -103,7 +121,9 @@ class Feeder extends FAB_Controller {
 		$response['response'] = $result['response'];
 		$this->output->set_content_type('application/json')->set_output(json_encode( $response ));
 	}
-	
+	/**
+	 * 
+	 */
 	public function calculateStep($actual_step, $filament_to_extrude, $filament_extruded)
 	{
 		$this->load->helpers('fabtotum_helper');

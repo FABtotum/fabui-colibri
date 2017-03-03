@@ -11,7 +11,17 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
  
 class Probe extends FAB_Controller {
-
+	/**
+	 *
+	 */
+	function __construct()
+	{
+		parent::__construct();
+		session_write_close(); //avoid freezing page
+	}
+	/**
+	 * 
+	 */
 	public function index($type = 'length')
 	{
 		switch($type){
@@ -112,7 +122,9 @@ class Probe extends FAB_Controller {
 			json_encode( array(true) )
 			);
 	}
-	
+	/**
+	 * 
+	 */
 	public function getLength()
 	{
 		$this->load->helper('fabtotum_helper');
@@ -122,7 +134,9 @@ class Probe extends FAB_Controller {
 				json_encode( array('probe_length' => $probe_length) )
 			);
 	}
-
+	/**
+	 * 
+	 */
 	public function overrideLenght($override_by)
 	{
 		$this->load->helper('fabtotum_helper');
@@ -144,7 +158,9 @@ class Probe extends FAB_Controller {
 					'over' => $override_by) )
 			);
 	}
-	
+	/**
+	 * 
+	 */
 	public function clibrateLength()
 	{
 		$this->load->helper('fabtotum_helper');
@@ -156,7 +172,9 @@ class Probe extends FAB_Controller {
 				) )
 			);
 	}
-	
+	/**
+	 * 
+	 */
 	public function heatup()
 	{
 		$this->load->helper('fabtotum_helper');

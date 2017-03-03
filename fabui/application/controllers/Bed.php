@@ -11,7 +11,17 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
  
 class Bed extends FAB_Controller {
-
+	/**
+	 * 
+	 */
+	function __construct()
+	{
+		parent::__construct();
+		session_write_close(); //avoid freezing page
+	}
+	/**
+	 * 
+	 */
     public function index()
     {
 		//load libraries, helpers, model
@@ -36,7 +46,9 @@ class Bed extends FAB_Controller {
 		$this->content = $widget->print_html(true);
 		$this->view();
     }
-    
+    /**
+     * 
+     */
 	public function calibrate($time, $num_probes, $skip_homing)
 	{ 
 		$this->load->helpers('fabtotum_helper');
@@ -46,7 +58,7 @@ class Bed extends FAB_Controller {
 				'-n' => $num_probes //number of probes
 		);
 		if($skip_homing) $arguments['-s'] = '';
-		startPyScript('manual_bed_leveling.py', $arguments, false);
+		startPyScript('manual_bed_leveling.py', $arguments, false, true);
 		$task_monitor = $this->config->item('task_monitor');
 		$monitor = json_decode(file_get_contents($task_monitor), true);
 		
@@ -55,7 +67,6 @@ class Bed extends FAB_Controller {
 		$content = $this->load->view('bed/calibration_results', $data, true );
 		
 		$html = $content;
-		
 		//$json_data = array(true);
 		$this->output->set_content_type('application/json')->set_output(json_encode( array('html' => $html) ));
 	}
