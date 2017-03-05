@@ -1362,18 +1362,22 @@ fabApp = (function(app) {
 			$(".wifi-ribbon-icon").remove();
 			$(".internet-ribbon-icon").remove();
 			
-			if(data.interfaces.hasOwnProperty('wlan0')){
+			if(data.interfaces != null){
 			
-				if(data.interfaces.wlan0.wireless.hasOwnProperty('ssid')){
-					$(".ribbon-button-alignment").prepend('<span data-title="' + app_text[25] + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="fa fa-wifi"></i></span>');	
+				if(data.interfaces.hasOwnProperty('wlan0')){
+				
+					if(data.interfaces.wlan0.wireless.hasOwnProperty('ssid')){
+						$(".ribbon-button-alignment").prepend('<span data-title="' + app_text[25] + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="fa fa-wifi"></i></span>');	
+					}
 				}
-			}
-			
-			if(data.interfaces.hasOwnProperty('wlan1')){
-			
-				if(data.interfaces.wlan1.wireless.hasOwnProperty('ssid')){
-					$(".ribbon-button-alignment").prepend('<span data-title="' + app_text[25] + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="fa fa-wifi"></i></span>');	
+				
+				if(data.interfaces.hasOwnProperty('wlan1')){
+				
+					if(data.interfaces.wlan1.wireless.hasOwnProperty('ssid')){
+						$(".ribbon-button-alignment").prepend('<span data-title="' + app_text[25] + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="fa fa-wifi"></i></span>');	
+					}
 				}
+			
 			}
 			
 			
