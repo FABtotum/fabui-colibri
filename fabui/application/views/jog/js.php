@@ -446,6 +446,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	function writeJogResponse(e)
 	{
 		if($(".jogResponseContainer2").length > 0){
+			console.log(e);
 			var html = '';
 			$.each(e, function(i, item) {
 				html += '<span class="jog_response code">' + item.code + '</span>';
@@ -457,7 +458,8 @@ if(!isset($bed_max)) 		$bed_max = 100;
 					{
 						line = line.replace(/ok/g, '<span class="ok">ok</span>');
 					}
-					html += '<br><span class="'+cls+'"><small>' + line + '</span>';
+					var smallClass = item.response == false ? 'txt-color-red' : '';
+					html += '<br><span class="'+cls+'"><small class="' + smallClass + '">' + line + '</small></span>';
 				});
 				
 				html += '<hr class="simple">';
