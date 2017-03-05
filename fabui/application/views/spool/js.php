@@ -59,9 +59,7 @@
             return;
         }
         
-        $(".trace").slideDown('slow');
-        $(".new-spool").remove();
-        $("." + choice + "-choice").slideUp('slow');
+        
         
         openWait("<i class='fa fa-circle-o-notch fa-spin'></i> Please wait");
         
@@ -71,22 +69,25 @@
               dataType: 'json'
         }).done(function( response ) { 
             
-            //response_file = response.uri_response;
-            //trace_file    = response.uri_trace;
-            
-            //interval_response = setInterval(do_monitor, 1000);
-            //interval_trace    = setInterval(do_trace, 1000);
-            
             closeWait();
-            
-            $(".start").slideUp('slow');
-            $(".start-button").addClass('disabled');
-            $(".re-choice").slideUp('slow');
-            $(".title").find("h2").html(choice.charAt(0).toUpperCase() + choice.slice(1) + 'ing filament');
-            $(".title").slideDown('slow', function () {});
-            $(".console").slideDown('slow', function () {});
-            
-            end();
+
+            if(response.response == true){
+
+            	$(".trace").slideDown('slow');
+                $(".new-spool").remove();
+                $("." + choice + "-choice").slideUp('slow');
+                
+	            $(".start").slideUp('slow');
+	            $(".start-button").addClass('disabled');
+	            $(".re-choice").slideUp('slow');
+	            $(".title").find("h2").html(choice.charAt(0).toUpperCase() + choice.slice(1) + 'ing filament');
+	            $(".title").slideDown('slow', function () {});
+	            $(".console").slideDown('slow', function () {});
+	            
+	            end();
+            }else{
+            	showErrorAlert('<?php echo _("Error") ?>', response.message);
+            }
             
         });
     }
@@ -102,13 +103,15 @@
             
         }).done(function(response){
             choice = 'unload';
-            
             closeWait();
-
-            $(".pre_unload-choice").slideUp( "slow", function() {});
-            $( ".choice" ).slideUp( "slow", function() {});
-            $("." + choice + "-choice").slideDown('slow');
-            $(".re-choice").slideDown('slow');
+            if(response.response == true){
+	            $(".pre_unload-choice").slideUp( "slow", function() {});
+	            $( ".choice" ).slideUp( "slow", function() {});
+	            $("." + choice + "-choice").slideDown('slow');
+	            $(".re-choice").slideDown('slow');
+            }else{
+            	showErrorAlert('<?php echo _("Error") ?>', response.message);
+            }
             
         });
     }

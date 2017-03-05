@@ -129,13 +129,16 @@
               url: "<?php echo site_url("nozzle/prepare") ?>",
               dataType: 'json',
         }).done(function( response ) {
+        	 closeWait();
             if(response.response == true){               
 	            $("#row-normal-" + index).slideUp('slow', function(){
 	                $("#row-normal-" + (index+1)).slideDown('slow');
 	                
 	            });
+            }else{
+            	showErrorAlert('<?php echo _("Error") ?>', response.message);
             }
-            closeWait();
+           
         });
     }
     

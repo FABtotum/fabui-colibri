@@ -1,13 +1,13 @@
 <div class="row">
 	<div class="col-sm-12">
 		<div class="smart-form">
-			<header>Quick settings</header>
+			<header><?php echo _("Quick settings");?></header>
 			<fieldset>
 				<div class="row">
 					<section class="col col-8">
-						<label class="label">Actual Extruder steps </label>
+						<label class="label"><?php echo _("Actual extruder steps");?> </label>
 						<label class="input">
-							<input type="text" id="actual-step" readonly="readonly" value="<?php echo $eeprom['steps_per_unit']['e']; ?>">
+							<input type="text" id="actual-step" readonly="readonly" value="<?php echo isset($eeprom['steps_per_unit']['e']) ? $eeprom['steps_per_unit']['e'] : _("n.a."); ?>">
 						</label>
 					</section>
 					<section class="col col-4">
@@ -16,31 +16,31 @@
 					</section>
 				</div>
 			</fieldset>
-			<header>Measure and calibrate extruder step</header>
+			<header><?php echo _("Measure and calibrate extruder step");?></header>
 			<fieldset>
 				<div class="row">
 					<section class="col col-8">
-						<label class="label"> Filament to extrude (mm) </label>
+						<label class="label"> <?php echo _("Filament to extrude (mm)");?> </label>
 						<label class="input">
 							<input type="number" value="100" id="filament-to-extrude" readonly="readonly">
 						</label>
 					</section>
 					<section class="col col-4">
 						<label class="label">&nbsp;</label>
-						<a href="javascript:void(0);" class="btn btn-sm btn-default btn-block extrude"><i class="fab-lg fab-fw icon-fab-e"></i> Start to extrude</a>
+						<a href="javascript:void(0);" class="btn btn-sm btn-default btn-block extrude"><i class="fab-lg fab-fw icon-fab-e"></i> <?php echo _("Start to extrude");?></a>
 					</section>
 				</div>
 				
 				<div class="row calc-row" style="display:none;">
 					<section class="col col-8">
-						<label class="label">Enter the measure of the filament extruded (mm) </label>
+						<label class="label"><?php echo _("Enter the measure of the filament extruded (mm)");?> </label>
 						<label class="input">
 							<input type="number" placeholder="100" value="100" id="filament-extruded">
 						</label>
 					</section>
 					<section class="col col-4">
 						<label class="label">&nbsp;</label>
-						<a href="javascript:void(0);" class="btn btn-sm btn-default btn-block recalculate"><i class="fa fa-calculator"></i> Recalculate</a>
+						<a href="javascript:void(0);" class="btn btn-sm btn-default btn-block recalculate"><i class="fa fa-calculator"></i> <?php echo _("Recalculate");?></a>
 					</section>
 				</div>
 			</fieldset>
@@ -57,7 +57,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">Set new value for extruder step</h4>
+				<h4 class="modal-title" id="myModalLabel"><?php echo _("Set new value for extruder step");?></h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -69,8 +69,8 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default step-change-modal-cancel" data-dismiss="modal">Cancel</button>
-				<button type="button" id="change-extruder-step-value-button" class="btn btn-primary"><i class="fa fa-check"></i> Change</button>
+				<button type="button" class="btn btn-default step-change-modal-cancel" data-dismiss="modal"><?php echo _("Cancel");?></button>
+				<button type="button" id="change-extruder-step-value-button" class="btn btn-primary"><i class="fa fa-check"></i> <?php echo _("Change");?></button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
