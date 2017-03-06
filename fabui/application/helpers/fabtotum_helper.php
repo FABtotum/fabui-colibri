@@ -41,7 +41,7 @@ if ( !function_exists('createDefaultSettings'))
 				'invert_x_endstop_logic' =>false
 			)
 		);
-		write_file($CI->config->item('settings'), json_encode($settings, JSON_PRETTY_PRINT));
+		write_file($CI->config->item('settings'), json_encode($settings, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK));
 	}	
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,7 +98,7 @@ if(!function_exists('saveSettings'))
 		$CI =& get_instance();
 		$CI->load->helper('file');
 		$CI->config->load('fabtotum');
-		return write_file($CI->config->item('settings'), json_encode($data));
+		return write_file($CI->config->item('settings'), json_encode($data, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK));
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
