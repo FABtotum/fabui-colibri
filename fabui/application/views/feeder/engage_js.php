@@ -13,7 +13,7 @@
               url: "<?php echo site_url("feeder/engage") ?>",
               dataType: 'json'
         }).done(function( data ) { 
-            if(data.response){
+            if(data.response == 'success'){
                 $(".step-1").hide();
                 $(".step-2").show();
             }

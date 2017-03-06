@@ -71,7 +71,7 @@
             
             closeWait();
 
-            if(response.response == true){
+            if(response.response == 'success'){
 
             	$(".trace").slideDown('slow');
                 $(".new-spool").remove();
@@ -104,7 +104,7 @@
         }).done(function(response){
             choice = 'unload';
             closeWait();
-            if(response.response == true){
+            if(response.response == 'success'){
 	            $(".pre_unload-choice").slideUp( "slow", function() {});
 	            $( ".choice" ).slideUp( "slow", function() {});
 	            $("." + choice + "-choice").slideDown('slow');

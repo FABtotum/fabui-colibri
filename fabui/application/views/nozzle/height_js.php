@@ -123,14 +123,14 @@
         //var content = 'Heating extruder and bed<br>This operation will take a while';
         index = 1;
         
-        openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Please wait');
+        openWait('<i class="fa fa-circle-o-notch fa-spin"></i> <?php echo _("Please wait"); ?>');
         $.ajax({
               type: "POST",
               url: "<?php echo site_url("nozzle/prepare") ?>",
               dataType: 'json',
         }).done(function( response ) {
         	 closeWait();
-            if(response.response == true){               
+            if(response.response == 'success'){               
 	            $("#row-normal-" + index).slideUp('slow', function(){
 	                $("#row-normal-" + (index+1)).slideDown('slow');
 	                
