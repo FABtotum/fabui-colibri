@@ -10,7 +10,7 @@
 /* variable initialization */
 if( !isset($steps) ) $steps = array();
 if( !isset($warning) ) $warning = '';
-
+if( !isset($safety_check) ) $safety_check = array("all_is_ok" => true);
 ?>
 
 <?php if($warning): ?>
@@ -19,44 +19,51 @@ if( !isset($warning) ) $warning = '';
 </div>
 <?php endif; ?>
 
-<div class="wizard" data-initialize="wizard" id="myWizard">
-	<div class="steps-container">
-		<ul class="steps">
-		<?php foreach($steps as $step):?>
-		<li data-step="<?php echo $step['number']; ?>" data-target="#step<?php echo $step['number']; ?>" class="<?php echo (!$runningTask && $step['number'] == 1) ? 'active' : ''; ?>">
-			<span class="badge"><?php echo $step['number']; ?></span><?php echo $step['title']; ?><span class="chevron"></span>
-		</li>
-	    <?php endforeach;?>
-		</ul>
-	</div>
-	<div class="actions">
-		<button type="button" class="btn btn-sm btn-primary btn-prev">
-			<i class="fa fa-arrow-left"></i> <span>Prev</span>
-		</button>
-		<button type="button" class="btn btn-sm btn-success btn-next" data-last="Finish">
-			<span>Next</span> <i class="fa fa-arrow-right"></i>
-		</button>
-	</div>
+<div id="safety-check-content">
+<?php if(!$safety_check['all_is_ok']): ?>
+<?php echo $safety_check['content']; ?>
+<?php endif; ?>
 </div>
-<div class="step-content">
-	<form class="form-horizontal" id="fuelux-wizard" method="post">
-		<?php 
-			foreach($steps as $step)
-			{
-				
-				$active = '';
-				if( array_key_exists('active', $step) )
+<div id="task-wizard-content" style="<?php echo $safety_check["all_is_ok"]?"":"display:none" ?>">
+	<div class="wizard" data-initialize="wizard" id="myWizard">
+		<div class="steps-container">
+			<ul class="steps">
+			<?php foreach($steps as $step):?>
+			<li data-step="<?php echo $step['number']; ?>" data-target="#step<?php echo $step['number']; ?>" class="<?php echo (!$runningTask && $step['number'] == 1) ? 'active' : ''; ?>">
+				<span class="badge"><?php echo $step['number']; ?></span><?php echo $step['title']; ?><span class="chevron"></span>
+			</li>
+			<?php endforeach;?>
+			</ul>
+		</div>
+		<div class="actions">
+			<button type="button" class="btn btn-sm btn-primary btn-prev">
+				<i class="fa fa-arrow-left"></i> <span>Prev</span>
+			</button>
+			<button type="button" class="btn btn-sm btn-success btn-next" data-last="Finish">
+				<span>Next</span> <i class="fa fa-arrow-right"></i>
+			</button>
+		</div>
+	</div>
+	<div class="step-content">
+		<form class="form-horizontal" id="fuelux-wizard" method="post">
+			<?php 
+				foreach($steps as $step)
 				{
-					if($step['active'] == True)
+					
+					$active = '';
+					if( array_key_exists('active', $step) )
 					{
-						$active = 'active';
+						if($step['active'] == True)
+						{
+							$active = 'active';
+						}
 					}
+					
+					echo '<div class="step-pane '.$active.'" id="step'.$step['number'].'" data-step="'.$step['number'].'">';
+					echo $step['content'];
+					echo '</div>';
 				}
-				
-				echo '<div class="step-pane '.$active.'" id="step'.$step['number'].'" data-step="'.$step['number'].'">';
-				echo $step['content'];
-				echo '</div>';
-			}
-		?>
-	</form>
+			?>
+		</form>
+	</div>
 </div>

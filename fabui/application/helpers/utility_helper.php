@@ -281,20 +281,7 @@ if(!function_exists('endsWith'))
 	}
 }
 
- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if(!function_exists('pyformat'))
-{
-	function pyformat($fmt, $args)
-	{
-		foreach($args as $i => $arg_val)
-		{
-			$arg_sym = '{' .$i. '}';
-			$fmt = str_replace($arg_sym, $arg_val, $fmt);
-		}
 
-		return $fmt;
-	}
-}
 
 
 ?>

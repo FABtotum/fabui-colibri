@@ -287,7 +287,44 @@ if(!function_exists('getInstalledHeadInfo'))
 		$_data = loadSettings();
 		
 		$head_filename =  $heads_dir .'/'. $_data['hardware']['head'] . '.json';
-		return json_decode(file_get_contents($head_filename), true);
+		$info = json_decode(file_get_contents($head_filename), true);
+		$fw_id = intval($info['fw_id']);
+		if( $fw_id < 100 )
+		{
+			$info['image_src'] = '/assets/img/head/' . $_data['hardware']['head'] . '.png';
+		}
+		else
+		{
+			// @TODO: support for custom images
+			$info['image_src'] = '/assets/img/head/head_shape.png';
+		}
+		
+		return $info;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('safetyCheck'))
+{
+	/**
+	 * Check whether the installed head supports a specific feature and bed is flipped to heater side
+	 * @param feature Feature to look for (print, mill, laser...)
+	 * @param heated_bed true|false
+	 */
+	function safetyCheck($feature, $heated_bed)
+	{
+		$result = array(
+			'head_is_ok' => false,
+			'head_info' => getInstalledHeadInfo(),
+			'head_in_place' => isHeadInPlace(),
+			'bed_is_ok'  => false,
+			'bed_in_place' => isBedInPlace()
+		);
+		
+		$result['head_is_ok'] = canHeadSupport($feature) && isHeadInPlace();
+		$result['bed_is_ok'] = $heated_bed == isBedInPlace();
+		$result['all_is_ok'] = $result['head_is_ok'] && $result['bed_is_ok'];
+		
+		return $result;
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -323,8 +360,9 @@ if(!function_exists('isHeadinPlace'))
 		{
 			foreach($reply['commands'] as $value)
 			{
-				$join = join('-', $value['reply']);
-				return $join == "TRIGGERED-ok";
+				//~ $join = join('-', $value['reply']);
+				//~ return $join == "TRIGGERED-ok";
+				return $value['reply'][0] == "TRIGGERED";
 			}
 		}
 		return false;
@@ -345,8 +383,9 @@ if(!function_exists('isBedinPlace'))
 		{
 			foreach($reply['commands'] as $value)
 			{
-				//$join = join('-', $value['reply']);
-				return "TRIGGERED" == $value['reply'][0];
+				//~ $join = join('-', $value['reply']);
+				//~ return $join == "TRIGGERED-ok";
+				return $value['reply'][0] == "TRIGGERED";
 			}
 		}
 		return false;

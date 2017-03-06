@@ -85,6 +85,10 @@
 		
 		$data['type']      = 'print';
 		$data['type_label'] = _("Printing");
+
+		$data['safety_check'] = safetyCheck("print", true);
+		$data['safety_check']['url'] = 'std/safetyCheck/print/yes';
+		$data['safety_check']['content'] = $this->load->view( 'std/task_safety_check', $data, true );
 		
 		// select_file
 		$data['get_files_url'] = 'std/getFiles/additive';
@@ -143,6 +147,7 @@
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js');
 
 		$this->addJsInLine($this->load->view( 'create/print_js', $data, true));
+		$this->addJsInLine($this->load->view( 'std/task_safety_check_js', $data, true));
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
 		$this->addJsInLine($this->load->view( 'std/task_wizard_js',   $data, true));
 		$this->addJsInLine($this->load->view( 'std/select_file_js',   $data, true));
@@ -195,6 +200,10 @@
 		$data['type']      = 'mill';
 		$data['type_label'] = _("Milling");
 		
+		$data['safety_check'] = safetyCheck("mill", false);
+		$data['safety_check']['url'] = 'std/safetyCheck/mill/no';
+		$data['safety_check']['content'] = $this->load->view( 'std/task_safety_check', $data, true );
+				
 		// select_file
 		$data['get_files_url'] = 'std/getFiles/subtractive';
 		$data['get_reacent_url'] = 'std/getRecentFiles/mill';
@@ -261,14 +270,12 @@
 		$this->addJSFile('/assets/js/std/jogcontrols.js' ); //jog controls
 		$this->addJSFile('/assets/js/std/jogtouch.js' ); //jog controls
 
+		$this->addJsInLine($this->load->view( 'std/task_safety_check_js', $data, true));
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
 		$this->addJsInLine($this->load->view( 'std/task_wizard_js', $data, true));
-		
 		$this->addJsInLine($this->load->view( 'std/select_file_js', $data, true));
-		
 		$this->addJSFile('/assets/js/plugin/knob/jquery.knob.min.js');
 		$this->addJsInLine($this->load->view( 'std/jog_setup_js', $data, true));
-		
 		$this->addJsInLine($this->load->view( 'std/task_execute_js', $data, true));
 		$this->addJsInLine($this->load->view( 'std/task_finished_js', $data, true));
 
