@@ -294,15 +294,22 @@
 			return;
 		}
 		
-		$preparingResult = doMacro('prepare_additive', '', [ $temperatures['extruder'], $temperatures['bed'] ]);
-		if($preparingResult['response'] != 'ok'){
+		
+		$preparingResult = doMacro("check_additive");
+		if($preparingResult['response'] != 'success'){
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $preparingResult['message'])));
+			return;
+		}
+		
+		$preparingResult = doMacro("prepare_additive", '', [ $temperatures['extruder'], $temperatures['bed'] ]);
+		if($preparingResult['response'] != 'success'){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $preparingResult['message'])));
 			return;
 		}
 		
 		if($data['calibration'] == 'auto_bed_leveling'){
 			$calibrationResult = doMacro("auto_bed_leveling");
-			if($calibrationResult['response'] != 'ok'){
+			if($calibrationResult['response'] != 'success'){
 				$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $calibrationResult['message'])));
 				return;
 			}
@@ -310,14 +317,14 @@
 		else
 		{
 			$calibrationResult = doMacro("home_all");
-			if($calibrationResult['response'] != 'ok'){
+			if($calibrationResult['response'] != 'success'){
 				$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $calibrationResult['message'])));
 				return;
 			}
 		}
 		
 		$startPrintResult = doMacro('start_additive');
-		if($startPrintResult['response'] != 'ok'){
+		if($startPrintResult['response'] != 'success'){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $startPrintResult['message'], 'trace'=>$startPrintResult['trace'], 'error' => $startPrintResult['reply'])));
 			return;
 		}

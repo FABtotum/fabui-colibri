@@ -51,19 +51,21 @@ PRESET_MAP = {
     
     # Print
     "prepare_additive"              : print_macros.prepare_additive,
-    "check_pre_print"               : print_macros.check_pre_print,
     "engage_feeder"                 : print_macros.engage_feeder,
+    "check_additive"                : print_macros.check_additive,
     "start_additive"                : print_macros.start_additive,
     "end_additive"                  : print_macros.end_additive,
     "end_additive_safe_zone"        : print_macros.end_additive_safe_zone,
     "end_additive_aborted"          : print_macros.end_additive_aborted,
     
     # Milling
+    "check_subtractive"             : mill_macros.check_subtractive,
     "start_subtractive"             : mill_macros.start_subtractive,
     "end_subtractive"               : mill_macros.end_subtractive,
     "end_subtractive_aborted"       : mill_macros.end_subtractive_aborted,
     
     # Laser
+    "check_engraving"               : laser_macros.check_engraving,
     "start_engraving"               : laser_macros.start_engraving,
     "end_engraving"                 : laser_macros.end_engraving,
     "end_engraving_aborted"         : laser_macros.end_engraving_aborted,

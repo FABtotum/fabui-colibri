@@ -29,6 +29,19 @@ __version__ = "1.0"
 # Import internal modules
 from fabtotum.utils.translation import _, setLanguage
 
+def check_subtractive(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    try:
+        safety_door = app.config.get('settings', 'safety')['door']
+    except KeyError:
+        safety_door = 0
+        
+    app.trace( _("Checking safety measures") )
+    if safety_door == 1:
+        app.macro("M741",   "TRIGGERED", 2, _("Front panel door control") )
+    
+    app.macro("M744",       "open", 1, _("Building plane inserted correctly"))
+
 def start_subtractive(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     

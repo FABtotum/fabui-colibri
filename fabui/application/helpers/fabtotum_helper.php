@@ -345,8 +345,8 @@ if(!function_exists('isBedinPlace'))
 		{
 			foreach($reply['commands'] as $value)
 			{
-				$join = join('-', $value['reply']);
-				return $join == "TRIGGERED-ok";
+				//$join = join('-', $value['reply']);
+				return "TRIGGERED" == $value['reply'][0];
 			}
 		}
 		return false;
@@ -455,12 +455,14 @@ if(!function_exists('sendToXmlrpcServer'))
 				$tmp = json_decode( $CI->xmlrpc->display_response(), true );
 				if(json_last_error()){
 					$reply = $CI->xmlrpc->display_response();
-					$response = True;
+					$response = 'error';
+					$message = json_last_error_msg();
 				}else{
-					if($tmp['response'] == 'success')
+					/*if($tmp['response'] == 'success')
 					{
 						$response = True;
-					}
+					}*/
+					$response = $tmp['response'];
 					$reply   = $tmp['reply'];
 					$message = $tmp['message'];
 				}
@@ -502,7 +504,7 @@ if(!function_exists('doMacro'))
 		
 		$serverResponse['lang'] = $language_code ;
 		
-		if($serverResponse['response'] == false){
+		if($serverResponse['response'] != 'success'){
 			$serverResponse['trace'] = $serverResponse['message'];
 		}else{
 			$serverResponse['trace'] = file_get_contents($traceFile);

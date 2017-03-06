@@ -107,7 +107,7 @@ def end_additive_aborted(app, args = None, lang='en_US.UTF-8'):
     app.macro("G0 Z5 F10000",   "ok", 100,  _("Moving to safe zone") )
     app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish") )
 
-def check_pre_print(app, args = None, lang='en_US.UTF-8'):
+def check_additive(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     try:
         safety_door = app.config.get('settings', 'safety')['door']
@@ -117,8 +117,10 @@ def check_pre_print(app, args = None, lang='en_US.UTF-8'):
     app.trace( _("Checking safety measures") )
     if safety_door == 1:
         app.macro("M741",   "TRIGGERED", 2, _("Front panel door control") )
-    app.macro("M744",       "TRIGGERED", 1, _("Building plane inserted correctly"), warning=True)
-    app.macro("M742",       "TRIGGERED", 1, _("Spool panel control"), warning=True)
+        
+    app.trace( _("Checking building plate") )
+    app.macro("M744",       "TRIGGERED", 1, _("Build plate needs to be flipped to the printing side"), verbose=False )
+    app.macro("M742",       "TRIGGERED", 1, _("Spool panel control"), verbose=False, warning=True)
 
 def engage_feeder(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)

@@ -16,9 +16,10 @@ MAX_STATIONS=10
 
 set_wpa_supplicant_conf()
 {
-	SSID=${1}
-	PASSWORD=${2}
-    PSK=${3}
+	SSID="${1}"
+	PASSWORD="${2}"
+    PSK="${3}"
+        
 	cat <<EOF > $WPA_CONF
 # Automatically generated file, do not edit by hand.
 ctrl_interface=DIR=/run/wpa_supplicant GROUP=netdev
@@ -46,8 +47,7 @@ network={
 EOF
 			else
 				# Store password as psk instead of plain text
-				wpa_passphrase $1 $2 | sed -e '/#.*/d' >> $WPA_CONF
-				#~ wpa_passphrase $1 $2 >> $WPA_CONF
+				wpa_passphrase "$1" "$2" | sed -e '/#.*/d' >> $WPA_CONF
 			fi
 		fi
 	fi
@@ -55,10 +55,10 @@ EOF
 
 set_hostapd_conf()
 {
-	IFACE=${1}
-	SSID=${2}
-	PASS=${3}
-	CHANNEL=${4}
+	IFACE="${1}"
+	SSID="${2}"
+	PASS="${3}"
+	CHANNEL="${4}"
 cat <<EOF > $HOSTAPD_CONF
 # Automatically generated, do not edit
 interface=$IFACE
@@ -105,7 +105,7 @@ EOF
 
 set_dhcp()
 {
-    IFACE=${1}
+    IFACE="${1}"
 cat <<EOF > $INTERFACESD/$IFACE
 # Automatically generated, do not edit \n
 
@@ -119,9 +119,9 @@ EOF
 
 set_static_ap()
 {
-    IFACE=${1}
-    IP=${2}
-    NETMASK=${3}
+    IFACE="${1}"
+    IP="${2}"
+    NETMASK="${3}"
     
     masked=$(mask_ip $IP $NETMASK)
     RANGE=$(make_range $masked)
@@ -164,8 +164,8 @@ EOF
 
 mask_ip()
 {
-    IP=${1}
-    NETMASK=${2}
+    IP="${1}"
+    NETMASK="${2}"
 IFS=. read -r i1 i2 i3 i4 << EOF
 $IP
 EOF
@@ -179,7 +179,7 @@ EOF
 
 make_range()
 {
-    IP=${1}
+    IP="${1}"
 IFS=. read -r i1 i2 i3 i4 << EOF
 $IP
 EOF
@@ -213,25 +213,25 @@ do
              MODE="ap"
              ;;
          s)
-             SSID=$OPTARG
+             SSID="$OPTARG"
              ;;
          p)
-             PASS=$OPTARG
+             PASS="$OPTARG"
              ;;
          k)
-             PSK=$OPTARG
+             PSK="$OPTARG"
              ;;
          a)
-             IP=$OPTARG
+             IP="$OPTARG"
              ;;
          n)
-             NETMASK=$OPTARG
+             NETMASK="$OPTARG"
              ;;
          g)
-             GATEWAY=$OPTARG
+             GATEWAY="$OPTARG"
              ;;
          i)
-             IFACE=$OPTARG
+             IFACE="$OPTARG"
              ;;
          ?)
              usage
@@ -240,22 +240,22 @@ do
      esac
 done
 
-if [[ -z $MODE ]] || [[ -z $SSID ]] || [[ -z $IFACE ]]
+if [[ -z "$MODE" ]] || [[ -z "$SSID" ]] || [[ -z "$IFACE" ]]
 then
      usage
      exit 1
 fi
 
-if [[ $MODE == "ap" ]]; then
-    if [[ -z $PASS ]] || [[ -z $IP ]] || [[ -z $NETMASK ]]; then
+if [[ "$MODE" == "ap" ]]; then
+    if [[ -z "$PASS" ]] || [[ -z "$IP" ]] || [[ -z "$NETMASK" ]]; then
         echo "error: AP mode must have a password, ip, netmask, ip range"
         usage
         exit 1
     fi
 fi
 
-if [[ $MODE == "static" ]]; then
-    if [[ -z $IP ]] || [[ -z $NETMASK ]] || [[ -z $GATEWAY ]]; then
+if [[ "$MODE" == "static" ]]; then
+    if [[ -z "$IP" ]] || [[ -z "$NETMASK" ]] || [[ -z "$GATEWAY" ]]; then
         echo "error: In STATIC mode you must provide ip, netmask and gateway"
         usage
         exit 1
@@ -273,16 +273,16 @@ case $MODE in
         if [ -n "$PSK" ]; then
             PASS="-"
         fi
-        set_wpa_supplicant_conf $SSID $PASS $PSK
-        set_dhcp $IFACE
+        set_wpa_supplicant_conf "$SSID" "$PASS" "$PSK"
+        set_dhcp "$IFACE"
         ;;
     static)
-        set_wpa_supplicant_conf $SSID $PASS
-        set_static $IFACE $IP $NETMASK $GATEWAY
+        set_wpa_supplicant_conf "$SSID" "$PASS"
+        set_static "$IFACE" "$IP" "$NETMASK" "$GATEWAY"
         ;;
     ap)
-        set_hostapd_conf $IFACE $SSID $PASS $CHANNEL
-        set_static_ap $IFACE $IP $NETMASK
+        set_hostapd_conf "$IFACE" "$SSID" "$PASS" "$CHANNEL"
+        set_static_ap "$IFACE" "$IP" "$NETMASK"
         ;;
     *)
         echo "error: unknown mode \'$MODE\'"

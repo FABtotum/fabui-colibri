@@ -54,6 +54,11 @@ class MacroUnexpectedReply(MacroException):
     def __init__(self, command, message, expected_reply):
         super(MacroUnexpectedReply, self).__init__(command, message)
         self.expected_reply = expected_reply
+        
+class MacroWarningException(MacroException):
+    def __init__(self, command, message, expected_reply):
+        super(MacroWarningException, self).__init__(command, message)
+        self.expected_reply = expected_reply
     
 class GMacroHandler:
     
@@ -112,6 +117,7 @@ class GMacroHandler:
         
         reply = None
         error_message = ''
+        error_trace = ''
         response = MACRO_ERROR
 
         self.__reset_trace()
@@ -132,7 +138,8 @@ class GMacroHandler:
                 self.trace('Macro "{0}" not found.'.format(preset));
         except MacroException as err:
             response = MACRO_ERROR
-            error_message = str(err) + traceback.format_exc()
+            error_trace = str(err) + traceback.format_exc()
+            error_message = err.message
             self.trace( str(err) )
         except Exception as e:
             response = MACRO_ERROR
