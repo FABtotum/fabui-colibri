@@ -35,11 +35,13 @@
 			uploadMultiple: false,
 			acceptedFiles: "<?php echo $accepted_files; ?>",
 			autoProcessQueue: false,
-			dictRemoveFile: '<?php echo _("Remove file") ?>',
+			dictRemoveFile: '<?php echo _("Remove file"); ?>',
+			dictInvalidFileType: "<?php echo _("You can't upload files of this type.") ?>",
 			dictMaxFilesExceeded: "<?php echo _("You can upload 10 files at time") ?>",
 			init: function(){
 				filesDropzone = this;
 				this.on("complete", function (file) {
+					if(file.status == 'error') return;
 					var response = jQuery.parseJSON(file.xhr.response);
 					if(response.upload == true){
 						fileList.push(response.fileId);
@@ -117,6 +119,9 @@
 	 */
 	function submitForm()
 	{
+		if(fileList.length == 0){
+			return;
+		}
 		$("#files").val(fileList);
 		add_usb_files();
 		openWait('<i class="fa fa-save"></i> '+"<?php echo _("Adding files") ?>", "<?php echo _("Please wait") ?>", false);

@@ -721,3 +721,6 @@ select{
     appearance: none;
     padding: 30px;
 }
+.dropzone .dz-preview.dz-error .dz-error-message {
+	margin-top: 20px !important;
+}
