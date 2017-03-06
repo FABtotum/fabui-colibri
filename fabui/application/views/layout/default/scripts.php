@@ -28,6 +28,7 @@
 <script type="text/javascript" src="/assets/js/fabtotum.js?v=<?php echo FABUI_VERSION ?>"></script>
 <?php echo $jsScripts; ?>
 <script type="text/javascript">
+	var heads = <?php echo json_encode($heads)?>;
 	$(document).ready(function() {
 		pageSetUp();
 		fabApp.initFromLocalStorage();

@@ -22,10 +22,7 @@ class Head extends FAB_Controller {
 		$data = array();
 
 		$_units = loadSettings();
-		
-		
 		$heads  = loadHeads();
-		
 		$data['units'] = $_units;
 		$data['heads'] = $heads;
 

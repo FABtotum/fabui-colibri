@@ -62,10 +62,13 @@ var app_text = {
 	24 : '<?php echo _("You will be redirect to recovery page") ?>',
 	25 : '<?php echo _("Wifi connected") ?>',
 	26 : '<?php echo _("Internet available") ?>',
+	27 : '<?php echo _("Installing head") ?>',
+	28 : '<?php echo _("Before proceed make sure the head is properly locked in place") ?>'
 }
-
+/**
+ * GETTEXT
+ */
 var gettext_data = <?php echo getJsonTranslation(); ?>;
-
 function _(msgid)
 {
 	if(gettext_data.hasOwnProperty(msgid))
@@ -75,9 +78,6 @@ function _(msgid)
 			return msgid;
 		return msgstr[1];
 	}
-	
 	return msgid;
 }
-
-
 </script>

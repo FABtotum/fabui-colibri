@@ -515,7 +515,7 @@ fabApp = (function(app) {
 	 */
 	app.resetController = function() {
 		$.is_macro_on = true;
-		openWait("<i class=\"fa fa-circle-o-notch fa-spin\"></i> " + app_text[8]);
+		openWait("<i class=\"fa fa-circle-o-notch fa-spin\"></i> " + app_text[8], app_text[12], false);
 		$.get(reset_controller_url_action, function(){
 			closeWait();
 			$.is_task_on = true;
@@ -715,7 +715,9 @@ fabApp = (function(app) {
 	};
 	 
 	app.ws_callbacks = {};
-	
+	/**
+	*
+	**/
 	app.ws_onerror = function(e)
 	{
 		console.log ('Error with WebSocket');
@@ -735,7 +737,9 @@ fabApp = (function(app) {
 			app.webSocket();
 			}, 3000);
 	}
-	
+	/**
+	*
+	**/
 	app.ws_onclose = function(e)
 	{
 		console.log ('CLOSED WebSocket');
@@ -754,9 +758,13 @@ fabApp = (function(app) {
 		}
 
 	}
-	
+	/**
+	*
+	*/
 	app.ws_reconnecting = false;
-	
+	/**
+	*
+	*/
 	app.webSocket = function()
 	{
 		options = {
@@ -970,23 +978,108 @@ fabApp = (function(app) {
 	app.manageEmergency = function(data) {
 		if(is_emergency == true) return; //exit if is already on emergency status
 		var code = parseInt(data.code);
-		if(code == 102){ // if panel door is open force emergency button
-			//app.stopAll('Front panel has been opened.<br> Aborting all operations');
-			app.refreshPage(app_text[17] + '.<br> ' + app_text[9]);
-			return;
-		}
 		is_emergency = true;
+			
+		switch(code)
+		{
+			case 102:
+				app.refreshPage(app_text[17] + '.<br> ' + app_text[9]);
+				break;
+			case 103:
+				//TODO
+				app.showInstallHeadModal();
+				break;
+			default:
+				app.showEmergencyAlert(code);
+		}
+		
+	};
+	/**
+	*
+	**/
+	app.showEmergencyAlert = function (error_code)
+	{
 		var buttons = '[' + app_text[18]  + '][' + app_text[19] + ']';
-		if(code == 103) buttons = '[' + app_text[19] + '] [' + app_text[20] + ']';
 		$.SmartMessageBox({
 			buttons : buttons,
-			title : "<h4><span class='txt-color-orangeDark'><i class='fa fa-warning fa-2x'></i></span>&nbsp;&nbsp;" + emergency_descriptions[code] + "<br>&nbsp;" + app_text[21] + "</h4>"
+			title : "<h4><span class='txt-color-orangeDark'><i class='fa fa-warning fa-2x'></i></span>&nbsp;&nbsp;" + emergency_descriptions[error_code] + "<br>&nbsp;" + app_text[21] + "</h4>"
 		},function(ButtonPressed) {
 			if(ButtonPressed == app_text[18] || (ButtonPressed == app_text[19] && buttons.indexOf(app_text[20]) > -1) ) app.setSecure(1);
 			else if(ButtonPressed == app_text[19]) app.setSecure(0);
-			else if(ButtonPressed == app_text[20]) app.goToInstallNewHead();
 		});
-	};
+	}
+	/**
+	*
+	**/
+	app.showInstallHeadModal = function ()
+	{
+		error_code = 103;	
+		var options = '';
+		
+		$.each(heads, function(i, item) {
+			options += '['+item.name +']';
+		});
+		
+		$.SmartMessageBox({
+			title : '<i class="fa fa-warning txt-color-orangeDark"></i> ' + emergency_descriptions[error_code],
+			content : app_text[28],
+			buttons : "[" + app_text[20]  + "]["+ app_text[19] +"]",
+			input : "select",
+			options : options
+		}, function(ButtonPressed, Value) {
+			if(ButtonPressed == app_text[19]) app.setSecure(0);
+			if(ButtonPressed == app_text[20]){
+				$.each(heads, function(i, item) {
+					if(Value == item.name){
+						app.installHead(i);
+						return;
+					}
+				});
+			}
+		});
+		/*
+		//create modal if not exists
+		if($("#installHeadMoal").length <= 0){
+			var heads_options_html = '';
+			$.each(heads, function(i, item) {
+				heads_options_html += '<option>'+item.name +'</option>';
+				
+			});
+			var html_modal = '<div class="modal fade" id="installHeadMoal" tabindex="-1" role="dialog">'+
+				'<div class="modal-dialog" role="document">' +
+					'<div class="modal-content">' + 
+						'<div class="modal-header">' + 
+							'<h4 class="modal-title" id="myModalLabel"><i class="fa fa-warning"></i> '+ emergency_descriptions[error_code] +'</h4>' +
+						'</div>' +
+						'<div class="modal-body">'+
+							'<div class="smart-form">'+
+								'<fieldset>'+
+									'<section>'+
+										'<label class="label"> Select head </label>'+
+										'<label class="select">'+
+											'<select>'+heads_options_html+'</select>'+
+											'<i></i>'+
+										'</label>'+
+									'</section>'+
+								'</fieldset>'+
+							'</div>'+
+						'</div>' +
+						'<div class="modal-footer">' + 
+							'<button type="button" class="btn btn-primary"><i class="fa fa-wrench"></i> Install</button>' +
+						'</div>' +
+					'</div>'+
+				'</div>'+
+			'</div>';
+			$("#main").append(html_modal);
+		}
+		$("#installHeadMoal").modal({
+			backdrop: 'static'
+		});
+		$('#installHeadMoal').modal('show');
+		*/
+
+		
+	}
 	/*
 	 * alive the fabtotum after an emergency
 	 */
@@ -1008,6 +1101,20 @@ fabApp = (function(app) {
 		}).done(function(response) {
 			is_emergency = false;
 			is_macro_on  = false;
+		});
+	}
+	/**
+	*
+	**/
+	app.installHead = function(head)
+	{
+		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> ' + app_text[27], app_text[12] + '...', false);
+		$.ajax({
+			type : "POST",
+			url : install_head_url + '/'+head,
+			dataType : 'json'
+		}).done(function(response) {
+			location.reload();
 		});
 	}
 	/*
@@ -1120,7 +1227,7 @@ fabApp = (function(app) {
 		
 		if($.isFunction(callback))
 		{
-			console.log('register callback', stamp, messageToSend);
+			//console.log('register callback', stamp, messageToSend);
 			app.ws_callbacks[stamp] = callback;
 		}
 		else

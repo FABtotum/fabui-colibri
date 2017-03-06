@@ -703,3 +703,9 @@ body.smart-style-6 .smart-form .select select {
 	font-size: 50px;
 	background-color: transparent !important;
 }
+
+.MessageBoxMiddle {
+    position: relative;
+    left: 10% !important;
+    width: 90% !important;
+}

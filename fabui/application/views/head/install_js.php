@@ -9,8 +9,6 @@
  
 ?>
 <script type="text/javascript">
-
-	var heads = <?php echo json_encode($heads)?>;
 	var selected_head = "<?php echo $head?>";
 	
 	$(function () {

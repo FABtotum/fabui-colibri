@@ -77,13 +77,16 @@
 			return;
  		}
 		
-		$data['jsScripts']    = jScriptsInclusion($this->js);
-		$data['cssFiles']     = cssFilesInclusion($this->css);
-		$data['jsInLine']     = $this->jsInLine;
-		$data['jsInlineTop']  = $this->jsInLineTop;
-		$data['cssInLine']    = $this->cssInline;
-		$data['translations'] = $this->load->view('layout/translations_js', null, true);
+ 		$this->load->helper('fabtotum_helper');
+ 		
+		$data['jsScripts']      = jScriptsInclusion($this->js);
+		$data['cssFiles']       = cssFilesInclusion($this->css);
+		$data['jsInLine']       = $this->jsInLine;
+		$data['jsInlineTop']    = $this->jsInLineTop;
+		$data['cssInLine']      = $this->cssInline;
+		$data['translations']   = $this->load->view('layout/translations_js', null, true);
 		$data['ga_property_id'] = $this->config->config['ga_property_id'];
+		$data['heads']          = loadHeads();
 		
 		$this->template['head']    = $this->load->view($this->layoutDefaultFolder.'/head',    $data, true);
 		$this->template['top']     = $this->load->view($this->layoutDefaultFolder.'/top',     $data, true);
