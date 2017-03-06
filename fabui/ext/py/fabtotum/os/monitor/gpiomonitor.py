@@ -35,7 +35,7 @@ except:
     pass
 
 # Import internal modules
-from fabtotum.fabui.config import ConfigService
+
 
 # Set up message catalog access
 tr = gettext.translation('gpio_monitor', 'locale', fallback=True)
@@ -51,6 +51,7 @@ class GPIOMonitor:
         self.gcs = gcs
         self.log = logger
         self.ACTION_PIN = int(action_pin)
+        self.running = False
         
     def gpioEventListener(self, chanel):
         """
@@ -132,10 +133,77 @@ class GPIOMonitor:
         except:
             pass
             
+        self.running = True
+            
     def stop(self):
         """ Place holder """
-        pass
+        self.running = False
         
     def join(self):
         """ Place holder """
         pass
+        
+    def loop(self):
+        while self.running:
+            time.sleep(2)
+
+def main():
+    from ws4py.client.threadedclient import WebSocketClient
+    from fabtotum.fabui.notify       import NotifyService
+    from fabtotum.utils.pyro.gcodeclient import GCodeServiceClient
+    from fabtotum.fabui.config import ConfigService
+    from fabtotum.os.paths     import RUN_PATH
+    import logging
+    import argparse
+    import os
+    
+    
+    # Setup arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-L", "--log", help="Use logfile to store log messages.",   default='/var/log/fabui/gpiomonitor.log')
+    parser.add_argument("-p", "--pidfile", help="File to store process pid.",       default=os.path.join(RUN_PATH, 'gpiomonitor.pid') )
+
+    # Get arguments
+    args = parser.parse_args()
+    pidfile = args.pidfile
+    
+    with open(pidfile, 'w') as f:
+        f.write( str(os.getpid()) )
+    
+    config = ConfigService()
+
+    # Load configuration
+    NOTIFY_FILE         = config.get('general', 'notify_file')
+    ##################################################################
+    SOCKET_HOST         = config.get('socket', 'host')
+    SOCKET_PORT         = config.get('socket', 'port')
+    ##################################################################
+    GPIO_PIN    = config.get('gpio', 'pin')
+    
+    # Pyro GCodeService wrapper
+    gcs = GCodeServiceClient()
+    
+    ws = WebSocketClient('ws://'+SOCKET_HOST +':'+SOCKET_PORT+'/')
+    ws.connect();
+
+    # Notification service
+    ns = NotifyService(ws, NOTIFY_FILE, config)
+    
+    # Setup logger
+    logger2 = logging.getLogger('GPIOMonitor')
+    logger2.setLevel(logging.DEBUG)
+    fh = logging.FileHandler(args.log, mode='w')
+
+    #~ formatter = logging.Formatter("%(name)s - %(levelname)s : %(message)s")
+    formatter = logging.Formatter("%(levelname)s : %(message)s")
+    fh.setFormatter(formatter)
+    fh.setLevel(logging.DEBUG)
+    logger2.addHandler(fh)
+    
+    gpioMonitor = GPIOMonitor(ns, gcs, logger2, GPIO_PIN)
+    gpioMonitor.start()
+    gpioMonitor.loop()
+    
+
+if __name__ == "__main__":
+    main()

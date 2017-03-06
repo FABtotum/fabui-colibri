@@ -188,18 +188,17 @@ if do_bootstrap:
 ## Safety monitor
 
 # Setup logger
-logger2 = logging.getLogger('GPIOMonitor')
-logger2.setLevel(logging.DEBUG)
-fh = logging.FileHandler('/var/log/fabui/gpiomonitor.log', mode='w')
+#~ logger2 = logging.getLogger('GPIOMonitor')
+#~ logger2.setLevel(logging.DEBUG)
+#~ fh = logging.FileHandler('/var/log/fabui/gpiomonitor.log', mode='w')
 
-#~ formatter = logging.Formatter("%(name)s - %(levelname)s : %(message)s")
-formatter = logging.Formatter("%(levelname)s : %(message)s")
-fh.setFormatter(formatter)
-fh.setLevel(logging.DEBUG)
-logger2.addHandler(fh)
+#~ formatter = logging.Formatter("%(levelname)s : %(message)s")
+#~ fh.setFormatter(formatter)
+#~ fh.setLevel(logging.DEBUG)
+#~ logger2.addHandler(fh)
 
-gpioMonitor = GPIOMonitor(ns, gcservice, logger2, GPIO_PIN)
-gpioMonitor.start()
+#~ gpioMonitor = GPIOMonitor(ns, gcservice, logger2, GPIO_PIN)
+#~ gpioMonitor.start()
 
 ## Stats monitor
 statsMonitor = StatsMonitor(TEMP_MONITOR_FILE, gcservice, config, logger=logger)
@@ -228,6 +227,6 @@ logger.info("Server stopped.")
 statsMonitor.loop()
 observer.join()
 #usbMonitor.join()
-gpioMonitor.join()
+#gpioMonitor.join()
 if rpc:
     rpc.loop()

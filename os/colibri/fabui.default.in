@@ -10,4 +10,5 @@ LIB_PATH=@LIB_PATH@
 
 FABSERVICE_PID=/run/fabtotumservices.pid
 XMLRPCS_PID=/run/xmlrpcserver.pid
+GPIOMONITOR_PID=/run/gpiomonitor.pid
 WEBSOCKET_PID=/run/webSocket.pid

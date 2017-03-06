@@ -1,7 +1,7 @@
 <script type="text/javascript">
 	
 	var installed_plugins = [ <?php foreach($installed_plugins as $plugin => $plugin_info) { echo '"'.$plugin.'", '; } ?> ];
-	
+	var installed_plugins_version = [ <?php foreach($installed_plugins as $plugin => $plugin_info) { echo '"'.$plugin_info["version"].'", '; } ?> ];
 	$(function() {
 		
 		initFieldValidation();
@@ -36,6 +36,22 @@
 		loadOnlinePlugins();
 		
 	});
+	
+	function cmpVersions (a, b) {
+		var i, diff;
+		var regExStrip0 = /(\.0+)+$/;
+		var segmentsA = a.replace(regExStrip0, '').split('.');
+		var segmentsB = b.replace(regExStrip0, '').split('.');
+		var l = Math.min(segmentsA.length, segmentsB.length);
+
+		for (i = 0; i < l; i++) {
+			diff = parseInt(segmentsA[i], 10) - parseInt(segmentsB[i], 10);
+			if (diff) {
+				return diff;
+			}
+		}
+		return segmentsA.length - segmentsB.length;
+	}
 	
 	function loadOnlinePlugins()
 	{
@@ -73,7 +89,12 @@
 				}
 				else
 				{
-					table_html += '<span class="label label-success">' + "<?php echo _("Installed");?>" + '</span>';
+					var idx = installed_plugins.indexOf(plugin.slug);
+					console.log(installed_plugins_version);
+					if( cmpVersions(installed_plugins_version[idx], plugin.latest) < 0 )
+						table_html += '<button class="btn btn-xs btn-primary action-button" data-action="update" data-title="'+plugin.slug+'" " title="Update">' + "<?php echo _("Update");?>" + '</button>&nbsp;';
+					else
+						table_html += '<span class="label label-success">' + "<?php echo _("Installed");?>" + '</span>';
 				}
 				
 				table_html += '</p></h4><p class="margin-top-10"></p></td><td class="text-center hidden-xs">' + plugin.latest + '</td><td class="text-center hidden-xs"><a class="no-ajax" target="_blank" href="'+plugin.author_uri+'">'+plugin.author+'</a></td></tr>';
