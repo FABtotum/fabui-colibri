@@ -77,6 +77,7 @@ parser.add_argument("-R", "--reset", action='store_true',  help="Reset totumduin
 parser.add_argument("-L", "--log", help="Use logfile to store log messages.",               default='<stdout>')
 parser.add_argument("-p", "--pidfile", help="File to store process pid.",                   default=os.path.join(RUN_PATH,'fabtotumservices.pid') )
 parser.add_argument("-x", "--xmlrpc_pidfile", help="File to store xmlrpc process pid.",     default=os.path.join(RUN_PATH,'xmlrpcserver.pid') )
+parser.add_argument("-g", "--gpio_pidfile", help="File to store gpio monitor process pid.",     default=os.path.join(RUN_PATH,'gpiomonitor.pid') )
 
 # Get arguments
 args = parser.parse_args()
@@ -86,6 +87,7 @@ do_reset            = args.reset
 logging_facility    = args.log
 pidfile             = args.pidfile
 xmlrpc_pidfile      = args.xmlrpc_pidfile
+gpio_pidfile        = args.gpio_pidfile
 
 with open(pidfile, 'w') as f:
     f.write( str(os.getpid()) )
@@ -199,6 +201,9 @@ if do_bootstrap:
 
 #~ gpioMonitor = GPIOMonitor(ns, gcservice, logger2, GPIO_PIN)
 #~ gpioMonitor.start()
+
+gpiomon_exe = os.path.join(PYTHON_PATH, 'fabtotum/os/monitor/gpiomonitor.py')
+os.system('python {0} -p {1} -L /var/log/fabui/gpiomonitor.log &'.format(gpiomon_exe, gpio_pidfile) )
 
 ## Stats monitor
 statsMonitor = StatsMonitor(TEMP_MONITOR_FILE, gcservice, config, logger=logger)

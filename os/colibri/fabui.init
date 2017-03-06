@@ -42,7 +42,7 @@ case "$1" in
         ARGS="-R ${ARGS}"
     fi
     python ${PYTHON_PATH}/FabtotumServices.py ${ARGS} &> /var/log/fabui/FabtotumServices.log 2>&1 &
-    python ${PYTHON_PATH}/fabtotum/os/monitor/gpiomonitor.py -p ${GPIOMONITOR_PID} -L /var/log/fabui/gpiomonitor.log &
+    #~ python ${PYTHON_PATH}/fabtotum/os/monitor/gpiomonitor.py -p ${GPIOMONITOR_PID} -L /var/log/fabui/gpiomonitor.log &
     #~ echo $! > ${FABSERVICE_PID}
 
     evaluate_retval
