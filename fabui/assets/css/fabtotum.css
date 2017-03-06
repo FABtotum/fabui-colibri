@@ -709,3 +709,15 @@ body.smart-style-6 .smart-form .select select {
     left: 10% !important;
     width: 90% !important;
 }
+
+body.smart-style-6 .input-group-addon+.form-control[type=password] {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 30px;
+}
