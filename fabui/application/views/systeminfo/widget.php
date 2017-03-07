@@ -16,6 +16,9 @@
 		<div id="collapseOne" class="panel-collapse collapse in">
 			<div class="panel-body ">
 				 <dl class="dl-horizontal">
+				 	<dt><?php echo _("Serial number");?></dt>
+			        <dd><?php echo strtoupper(getSerialNumber()); ?></dd>
+			        
 			        <dt><?php echo _("Os");?></dt>
 			        <dd><?php echo $os_info; ?></dd>
 			        

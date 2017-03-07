@@ -26,6 +26,7 @@
 				<li><a data-toggle="tab" href="#temperatures-tab"> temperatures.json</a></li>
 				<li><a data-toggle="tab" href="#notify-tab"> notify.json</a></li>
 				<li><a data-toggle="tab" href="#trace-tab"> trace</a></li>
+				<li><a data-toggle="tab" href="#json-rpc-tab"> json-rpc</a></li>
 			</ul>';
 		$data = array();
 		$widget = $this->smart->create_widget($widgetOptions);
@@ -108,20 +109,48 @@
 		$this->view();
 	}
 	
-	public function jsonrpc()
+	public function jsonrpc($method)
 	{
 		//load jog factory class
-		$data['url'] = 'https://my.fabtotum.com/myfabtotum/default/call/jsonrpc2';
-		$this->load->library('JsonRPC', $data, 'jsonRPC');
+		$init['url'] = 'https://my.fabtotum.com/myfabtotum/default/call/jsonrpc2';
+		$this->load->library('JsonRPC', $init, 'jsonRPC');
 		
 		$this->load->helpers('os_helper');
+		$this->load->helpers('fabtotum_helper');
 		
 		$params['fabid']      = 'fabtest@fabtotum.com';
-		$params['serialno']   = '123456789';
+		$params['serialno']   = getSerialNumber();
 		$params['mac']        = getMACAddres();
 		$params['apiversion'] = 1;
 		
-		print_r($this->jsonRPC->execute('fab_register_printer', $params));
+		switch($method){
+			case 'fab_register_printer':
+				break;
+			case 'fab_info_update':
+				
+				$macroResponse = doMacro('version');
+				if($macroResponse['response']){
+					$versions = $macroResponse['reply'];
+				}
+				$head = getInstalledHeadInfo();
+				$interfaces = getInterfaces();
+				
+				$data['name'] = getUnitName();
+				$data['model'] = $versions['production']['batch'];
+				$data['head'] = $head['name'];
+				$data['fwwersion'] = $versions['firmware']['version'];
+				$data['iplan'] = $interfaces['wlan0']['ipv4_address'];
+				$params['data'] = $data;
+				break;
+			case 'fab_polling':
+				$params['state'] = "AVAILABLE";
+				break;
+		}
+		
+		
+		$result = $this->jsonRPC->execute($method, $params);
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode(array('method'=>$method, 'params'=>$params, 'result'=>$result)));
 	}
  }
  

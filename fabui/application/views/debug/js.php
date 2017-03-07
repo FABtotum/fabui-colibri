@@ -10,6 +10,8 @@
 	$(document).ready(function(){
 
 		getTaskMonitor();
+
+		$(".json-rpc").on("click", jsonRPC);
 		
 		task_monitor_interval = setInterval(getTaskMonitor, 1000);
 		
@@ -55,22 +57,35 @@
 	function getTrace()
 	{
 		$.get('/temp/trace?' + jQuery.now(), function(data, status){
-			
 			if(traceData != data){
 				var new_content = data.replace(traceData, '');
 				$("#trace").append('<hr><i class="fa fa-plus"></i> ' + new_content);
 				$("#trace").scrollTop(1E10);
-				traceData = data;
-				
+				traceData = data;			
 			}
 		});
 	}
-
+	
 	function clearAllIntervals()
 	{
 		clearInterval(task_monitor_interval);
 		clearInterval(temperatures_interval);
 		clearInterval(notify_interval);
 		clearInterval(trace_interval);
+	}
+	/**
+	*
+	**/
+	function jsonRPC()
+	{
+		var method = $(this).attr('data-action');
+		$("#json-rpc-result").html("");
+		$.ajax({
+			  type: "POST",
+			  url: "<?php echo site_url('debug/jsonrpc/'); ?>/" + method,
+			  dataType: 'json',
+		}).done(function( response ) {
+			$("#json-rpc-result").JSONView(response);
+		});
 	}
 </script>

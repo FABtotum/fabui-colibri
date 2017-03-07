@@ -984,8 +984,24 @@ if(!function_exists('getSerialNumber'))
 	 */
 	function getSerialNumber()
 	{ 
-		//TODO
-		return '';
+		$CI =& get_instance();
+		$CI->load->model('Configuration', 'configuration');
+		return $CI->configuration->load('serial_number');
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getUnitName'))
+{
+	/**
+	 * return unit name
+	 * you can find it in the back of the unit
+	 * @todo
+	 */
+	function getUnitName()
+	{
+		$CI =& get_instance();
+		$CI->load->model('Configuration', 'configuration');
+		return $CI->configuration->load('unit_name');
 	}
 }
 ?>

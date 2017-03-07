@@ -127,7 +127,7 @@
 								<label><?php echo _("Insert serial number"); ?></label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-play fa-key  fa-fw"></i></span>
-									<input class="form-control" data-mask="*****-***-*****" data-mask-placeholder= "_" type="text" name="serial_number" id="serial_number">
+									<input class="form-control uppercase" data-mask="*****-***-*****" data-mask-placeholder= "_" type="text" name="serial_number" id="serial_number">
 								</div>
 								<p class="note"><?php echo _("The unit's serial number can be found on the back cover."); ?></p>
 							</div>
