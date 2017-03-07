@@ -228,9 +228,9 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 	function jogRestoreTo(x = '', y = '', z = '')
 	{
 		jog_busy = true;
-		if(z != '')
+		if( (z != '') && (z != null) && (z != undefined) )
 		{
-			if(x != '')
+			if( ((x != '') && (x != null) && (x != undefined)) && ((y != '') && (y != null) && (y != undefined)) )
 			{
 				fabApp.jogMdi('G90\nG0 X'+x+' Y'+y+' Z'+z+' F5000\nM400', function(e){
 					fabApp.showInfoAlert(_("Position restored to {0}, {1}, {2}").format(x, y, z) );
@@ -247,10 +247,13 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 		}
 		else
 		{
-			fabApp.jogMdi('G90\nG0 X'+x+' Y'+y+' F5000\nM400', function(e){
-				fabApp.showInfoAlert(_("X/Y position restored to {0}, {1}").format(x, y) );
-				jog_busy = false;
-			});
+			if( ((x != '') && (x != null) && (x != undefined)) && ((y != '') && (y != null) && (y != undefined)) )
+			{
+				fabApp.jogMdi('G90\nG0 X'+x+' Y'+y+' F5000\nM400', function(e){
+					fabApp.showInfoAlert(_("X/Y position restored to {0}, {1}").format(x, y) );
+					jog_busy = false;
+				});
+			}
 		}
 	}
 	

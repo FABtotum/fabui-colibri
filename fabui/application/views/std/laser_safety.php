@@ -23,7 +23,7 @@
 				<div class="col-sm-8">
 					<div class="description text-center">
 						<!-- <h1><span class="badge bg-color-blue txt-color-white">2</span></h1> -->
-						<div class="alert alert-warning" role="alert"><strong>Warning:</strong> You are about to start a manufacturing task involving the laser head.</div>
+						<div class="alert alert-warning" role="alert"><?php echo _("<strong>Warning:</strong> You are about to start a manufacturing task involving the laser head.");?></div>
 						<p class="font-md text-left">
 						Make sure to follow the <a target="_blank" href="http://www.fabtotum.com/laser-head-safety-health-guidelines" class="no-ajax">safety guidelines</a>.
 						Verify that engraving or cutting the material poses no hazard.
