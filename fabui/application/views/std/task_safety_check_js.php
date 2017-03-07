@@ -42,6 +42,7 @@ if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_i
 			$('#safety-check-bed-image').attr('src', '/assets/img/controllers/bed/hybrid_bed_' + (data.bed_in_place?"glass":"mill") + '.png');
 			
 			var message = '<h4><strong>'+("Bed inserted incorrectly")+'</strong> <i class="fa fa-times-circle text-danger fa-2x"></i></h4>';
+			message += '<h3>'+  _("Please flip the bed to the other side.") + '</h3>';
 			
 			if(data.bed_is_ok)
 			{

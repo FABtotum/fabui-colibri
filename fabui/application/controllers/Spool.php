@@ -42,7 +42,7 @@ class Spool extends FAB_Controller {
 
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'maintenance-spool-widget';
-		$widget->header = array('icon' => 'fa-cog', "title" => "<h2>Spool</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-circle-o-notch', "title" => "<h2>Spool</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('spool/main_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 		
 		$this->addJsInLine($this->load->view('spool/js', $data, true));

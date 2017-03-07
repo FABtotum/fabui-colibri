@@ -236,10 +236,19 @@
 			$task_status = _($tasks['status']);
 			
 			$task_type = $tasks['type'];
+			$task_controller = $tasks['controller'];
 			$task_file_id = $tasks['id_file'];
 			
+			$task_url = $task_controller;
+			if($task_type)
+				$task_url .= '/' . $task_type;
+			
+			
 			$file = $this->files->get($task_file_id, 1);
-			$task_filename = $file['client_name'];
+			if($task_type == 'scan')
+				$task_filename = _("Being generated...");
+			else
+				$task_filename = $file['client_name'];
 			
 			$task_label = _(ucfirst($task_type)).' '._("task");
 			
@@ -251,7 +260,7 @@
 								<i class="fa fa-tablet fa-2x "></i>
 							</em>
 							<span>
-								<strong><a class="display-normal" href="#">'.$task_label.' <i class="font-xs txt-color-orangeDark">('.$task_status.')</i></a></strong>
+								<strong><a class="display-normal" href="#'.$task_url.'">'.$task_label.' <i class="font-xs txt-color-orangeDark">('.$task_status.')</i></a></strong>
 								<p>'.$task_filename.'</p>
 							</span>
 						</span>

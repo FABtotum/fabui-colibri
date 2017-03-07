@@ -82,7 +82,7 @@ class Feeder extends FAB_Controller {
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-feeder-engage';
-		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>Engage Feeder</h2>");
+		$widget->header = array('icon' => 'fa-hand-o-right', "title" => "<h2>Engage Feeder</h2>");
 		$widget->body   = array('content' => $this->load->view('feeder/engage_widget', $data, true ), 'class'=>'fuelux');
 		
 		$this->addJsInLine($this->load->view('feeder/engage_js', $data, true));

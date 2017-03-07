@@ -549,26 +549,27 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		}).done(function(response) {
 			switch(action){
 				case 'pause':
-					message=_(taskType+" paused");
+					message = _(taskType+" paused");
 					break;
 				case 'resume':
-					message=_(taskType+" resumed");
+					message = _(taskType+" resumed");
 					break;
 				case 'speed':
-					message=_("Speed override changed to {0}").format(value);
+					message = _("Speed override changed to {0}").format(value);
 					break;
 				case 'flowRate':
-					message=_("Flow Rate override changed to {0}").format(value);
+					message = _("Flow Rate override changed to {0}").format(value);
 					break;
 				case 'fan':
-					message=_("Fan override changed to {0}").format(value);
+					message = _("Fan override changed to {0}").format(value);
 					break;
 				case 'zHeight':
 					if(value.charAt(0) == '+') message=_("Z height increased");
-					else message=_("Z height decreased");
+					else message = _("Z height decreased");
 					break;
 				case 'rpm':
-					message=_("<?php echo isset($rpm_message) ? $rpm_message : "RPM speed set to {0}"; ?> ").format(value);
+					// _( " is not a type, is there to prevent this string from being extracted by gettext
+					message = _( "<?php echo isset($rpm_message) ? $rpm_message : "RPM speed set to {0}"; ?>" ).format(value);
 					break;
 				default:
 					message=_("Unknown action: {0}").format(action);
@@ -787,7 +788,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	{
 		var taskType = "<?php echo $type; ?>";
 		ga('send', 'event', '<?php echo $type; ?>', 'abort', '<?php echo $type; ?> aborted');
-		openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Aborting " + taskType), _("Please wait")+"...", false);
+		openWait('<i class="fa fa-spinner fa-spin "></i> '+_( "Aborting " + taskType), _("Please wait")+"...", false);
 		$.ajax({
 			type: 'post',
 			url: '<?php echo site_url('control/taskAction/abort') ?>',

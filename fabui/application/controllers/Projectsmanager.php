@@ -1069,16 +1069,7 @@ class Projectsmanager extends FAB_Controller {
 			);
 			$default_action = $builtin_actions[0];
 		}
-		/*else if($file['print_type'] == 'laser')
-		{
-			$builtin_actions[] = array(
-				"title" => _("Engrave"),
-				"icon" => "fa-rotate-90 fa-play",
-				"url" => "#make/laser/".$fileID
-			);
-			$default_action = $builtin_actions[0];
-		}*/
-			
+
 		$builtin_actions[] = array(
 				"title" => _("Download"),
 				"icon" => "fa-download",
@@ -1171,6 +1162,7 @@ class Projectsmanager extends FAB_Controller {
 		$this->load->model('Files', 'files');
 		$this->load->model('Objects', 'objects');
 		$this->load->helper('download');
+		$this->load->helper('utility_helper');
 		$this->load->library('zip');
 		$this->config->load('fabtotum');
 		
@@ -1184,14 +1176,22 @@ class Projectsmanager extends FAB_Controller {
 					
 					$file = $this->files->get($files[0], 1);
 					$data = file_get_contents($file['full_path']);
-					force_download($file['client_name'], $data);
+					$fn = $file['client_name'];
+					$ext = $file['file_ext'];
+					if( !endsWith($fn, $ext) )
+						$fn .= $ext;
+					force_download($fn, $data);
 				} 
 				else
 				{
 					foreach($files as $file_id) 
 					{
 						$file = $this->files->get($file_id, 1);
-						$this->zip->read_file($file['full_path'], $file['client_name'] );
+						$fn = $file['client_name'];
+						$ext = $file['file_ext'];
+						if( !endsWith($fn, $ext) )
+							$fn .= $ext;
+						$this->zip->read_file($file['full_path'], $fn );
 					}
 					$this->zip->download('fabtotum_files.zip');
 				}
@@ -1218,7 +1218,11 @@ class Projectsmanager extends FAB_Controller {
 					foreach ($files as $file)
 					{
 						// Create virtual file path for zip file
-						$file_path = $obj_folder . '/' . $file['client_name'];
+						$fn = $file['client_name'];
+						$ext = $file['file_ext'];
+						if( !endsWith($fn, $ext) )
+							$fn .= $ext;
+						$file_path = $obj_folder . '/' . $fn;
 						$this->zip->read_file($file['full_path'], $file_path );
 					}
 				}

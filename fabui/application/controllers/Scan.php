@@ -378,13 +378,9 @@
 			'-d' => '/tmp/fabui',
 			'-n' => $params['density'],
 			'-x' => $params['x1'],
-			//~ '-x' => 107,
 			'-y' => $params['y1'],
-			//~ '-y' => 117,
 			'-i' => $params['x2'],
-			//~ '-i' => 110,
 			'-j' => $params['y2'],
-			//~ '-j' => 120,
 			'-z' => $params['safe_z'],
 			'-t' => $params['threshold'],
 			'-F' => $params['file_name']
@@ -426,8 +422,7 @@
 				'status'     => 'running',
 				'start_date' => date('Y-m-d H:i:s')
 		);
-		//~ $taskId   = $this->tasks->add($taskData);
-		$taskId = 12;
+		$taskId   = $this->tasks->add($taskData);
 		//starting scan
 		
 		$tmp = explode('x', $params['size']);

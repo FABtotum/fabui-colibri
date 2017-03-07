@@ -47,7 +47,7 @@
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';
-		$widget->header = array('icon' => 'fa-toggle-down', "title" => "<h2>"._("Plugins")."</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-plug', "title" => "<h2>"._("Plugins")."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('plugin/main_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator

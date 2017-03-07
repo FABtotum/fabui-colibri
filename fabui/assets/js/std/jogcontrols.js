@@ -272,6 +272,8 @@
       var r1 = r * button.R1;
       var r2 = r * button.R2;
       
+      var tooltip = (button.tooltip == undefined)?"":button.tooltip;
+      
       var x0 = (button.x == undefined)?0:button.x;
       var y0 = (button.y == undefined)?0:button.y;
       
@@ -283,6 +285,8 @@
       var p = sector(paper, x0, y0, r1, r2, angle, angle + angleplus, {fill:color});
       p.node.setAttribute("class","jog-btn");
       st.push(p);
+      
+      p.attr("title", tooltip);
       
       var scale = 3 * global_scale;
       
@@ -561,6 +565,7 @@
           buttons.push(
             {
                 name:'restore-xy',
+                tooltip: _("Restore XY"),
                 R1:r4,
                 R2:0,
                 A0:0, // start angle
@@ -568,14 +573,18 @@
                 SYM:folder_open,
                 sym_scale: 0.6,
                 crx:-5,
-                cry:-5,
+                cry:-10,
                 x: -0.8,
-                y: -0.7
+                y: -0.7,
+                TXT: "xy",
+                tcrx: 0,
+                tcry: 15
             }
           );
           buttons.push(
             {
                 name:'restore-z',
+                tooltip: _("Restore Z"),
                 R1:r4,
                 R2:0,
                 A0:0, // start angle
@@ -583,9 +592,12 @@
                 SYM:folder_open,
                 sym_scale: 0.6,
                 crx:-5,
-                cry:-5,
+                cry:-10,
                 x: -0.8,
-                y: 0.7
+                y: 0.7,
+                TXT: "z",
+                tcrx: 0,
+                tcry: 15
             }
           );
       }

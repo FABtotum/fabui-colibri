@@ -99,13 +99,16 @@
 							</section>
 						</div>
 						<hr class="simple">
+							<section>
+							<label class="label"><?php echo _("Cold extrusion safety"); ?></label>
+							</section>
 						<div class="row">
 							<section class="col col-6">
-								<label class="label"><?php echo _("Cold extrusion"); ?></label>
+								
 								<button class="btn btn-primary btn-block cold-extrusion" data-attribute="on" style="padding:6px 10px 5px"><?php echo _("Turn on"); ?></button>
 							</section>
 							<section class="col col-6">
-								<label class="label">&nbsp;</label>
+								
 								<button class="btn btn-primary btn-block cold-extrusion" data-attribute="off" style="padding:6px 10px 5px"><?php echo _("Turn off"); ?></button>
 							</section>
 						</div>

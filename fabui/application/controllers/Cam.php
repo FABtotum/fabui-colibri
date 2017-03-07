@@ -33,7 +33,7 @@
 
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';
-		$widget->header = array('icon' => 'fa-toggle-down', "title" => "<h2>Camera</h2>");
+		$widget->header = array('icon' => 'fa-video-camera', "title" => "<h2>Camera</h2>");
 		$widget->body   = array('content' => $this->load->view('camera/main_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 
 		$this->addJsInLine($this->load->view('camera/js', $data, true));

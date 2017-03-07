@@ -42,6 +42,7 @@ if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_i
 		<h4><strong><?php echo _("Bed inserted correctly");?></strong> <i class="fa fa-check-circle text-success fa-2x"></i></h4>
 		<?php else:?>
 		<h4><strong><?php echo _("Bed inserted incorrectly");?></strong> <i class="fa fa-times-circle text-danger fa-2x"></i></h4>
+		<h3><?php echo  _("Please flip the bed to the other side."); ?></h3>
 		<?php endif;?>
 		</div>
 	</div>
