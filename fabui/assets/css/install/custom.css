@@ -8,3 +8,7 @@
 {
 	.lockscreen { top: 0 !important; }
 }
+
+.bootstrapWizard li {
+	width: 20% !important;
+}

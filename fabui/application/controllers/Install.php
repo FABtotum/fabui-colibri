@@ -34,6 +34,7 @@ class Install extends FAB_Controller {
 		$this->content = $this->load->view('install/wizard', null, true );
 		$this->addJsInLine($this->load->view('install/js', '', true));
 		//add js file
+		$this->addJSFile('/assets/js/plugin/masked-input/jquery.maskedinput.min.js');
 		$this->addJSFile('/assets/js/plugin/bootstrap-wizard/jquery.bootstrap.wizard.min.js'); //wizard
 		$this->addJSFile('/assets/js/plugin/moment/moment.min.js'); //moment
 		$this->addJSFile('/assets/js/plugin/tzdetection/jstz.min.js'); //timezonedetection
@@ -228,7 +229,9 @@ class Install extends FAB_Controller {
 			unset($postData['browser-date']);
 			//set time zone
 			setTimeZone($postData['timezone']);
-			$this->configuration->store('timezone', $postData['timezone']);
+			$this->configuration->store('timezone',      $postData['timezone']);
+			$this->configuration->store('serial_number', $postData['serial_number']);
+			$this->configuration->store('unit_name',     $postData['unit_name']);
 		}
 		
 		$language = $postData['language'];
@@ -239,13 +242,14 @@ class Install extends FAB_Controller {
 		unset($postData['confirmPassword']);
 		unset($postData['language']);
 		unset($postData['browser-date']);
+		unset($postData['serial_number']);
+		unset($postData['unit_name']);
 		//set user account data
 		$userData = $postData;
 		$userData['session_id'] = $this->session->session_id;
-		$userData['settings'] = json_encode(array(
-				'language' => $language
-		));
-		$userData['password'] = md5($userData['password']);
+		$userData['role']       = 'administrator';
+		$userData['settings']   = json_encode(array('language' => $language ));
+		$userData['password']   = md5($userData['password']);
 		//ADD USER ACCOUNT
 		$newUserID = $this->user->add($userData);
 		//Install samples

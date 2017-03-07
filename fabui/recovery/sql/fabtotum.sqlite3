@@ -191,7 +191,7 @@ CREATE TABLE sys_plugins (id INTEGER PRIMARY KEY AUTOINCREMENT, name text NOT NU
 
 -- Table: sys_user
 DROP TABLE IF EXISTS sys_user;
-CREATE TABLE sys_user (id INTEGER PRIMARY KEY AUTOINCREMENT, email varchar (255) DEFAULT NULL, password varchar (255) DEFAULT NULL, first_name varchar (255) NOT NULL, last_name varchar (255) NOT NULL, last_login datetime DEFAULT '1970-01-01 00:00:00', session_id varchar (255), settings text NOT NULL);
+CREATE TABLE sys_user (id INTEGER PRIMARY KEY AUTOINCREMENT, email varchar (255) DEFAULT NULL, password varchar (255) DEFAULT NULL, first_name varchar (255) NOT NULL, last_name varchar (255) NOT NULL, last_login datetime DEFAULT '1970-01-01 00:00:00', session_id varchar (255), settings text NOT NULL, role varchar (255));
 
 -- Table: sys_obj_files
 DROP TABLE IF EXISTS sys_obj_files;

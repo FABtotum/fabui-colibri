@@ -13,6 +13,7 @@
 	var $validator;
 	
 	$(document).ready(function() {
+		runAllForms();
 		initValidate();
 		initWizard();
 		initTimeZone();
@@ -103,12 +104,12 @@
 		        		$('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).addClass('complete');
 		        		$('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).find('.step').html('<i class="fa fa-check"></i>');
 		        		
-		        		if(index == 3){
+		        		if(index == 4){
 		        			$(".next").find('a').attr('style', 'cursor: pointer !important;');
                        		$(".next").find('a').html('Install');
 		        		}
 		        		
-		        		if(index == 4){
+		        		if(index == 5){
 		        			install();
 		        		}
 		        		

@@ -24,11 +24,14 @@
 					<li data-target="#account-tab">
 						<a href="#account-tab" data-toggle="tab"> <span class="step">2</span> <span class="title"><?php echo _("Account")?></span> </a>
 					</li>
+					<li data-target="#printer-tab">
+						<a href="#printer-tab" data-toggle="tab"> <span class="step">3</span> <span class="title"><?php echo _("Printer")?></span> </a>
+					</li>
 					<li data-target="#settings-tab">
-						<a href="#settings-tab" data-toggle="tab"> <span class="step">3</span> <span class="title"><?php echo _("Settings")?></span> </a>
+						<a href="#settings-tab" data-toggle="tab"> <span class="step">4</span> <span class="title"><?php echo _("Settings")?></span> </a>
 					</li>
 					<li data-target="#finish-tab">
-						<a href="#finish-tab" data-toggle="tab"> <span class="step">4</span> <span class="title"><?php echo _("Finish")?></span> </a>
+						<a href="#finish-tab" data-toggle="tab"> <span class="step">5</span> <span class="title"><?php echo _("Finish")?></span> </a>
 					</li>
 				</ul>
 				<div class="clearfix"></div>
@@ -104,9 +107,36 @@
 						</div>
 					</div>
 				</div>
+				<div class="tab-pane" id="printer-tab">
+					<br>
+					<h3><strong><?php echo _("Step")?> 3 </strong> - <?php echo _("Printer")?></h3>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label><?php echo _("Assign a name to your FABtotum"); ?></label>
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-play fa-rotate-90  fa-fw"></i></span>
+									<input class="form-control " placeholder="<?php echo _("I'd like to have a name");?>" type="text" name="unit_name" id="unit_name">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label><?php echo _("Insert serial number"); ?></label>
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-play fa-key  fa-fw"></i></span>
+									<input class="form-control" data-mask="*****-***-*****" data-mask-placeholder= "_" type="text" name="serial_number" id="serial_number">
+								</div>
+								<p class="note"><?php echo _("The unit's serial number can be found on the back cover."); ?></p>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="tab-pane" id="settings-tab">
 					<br>
-					<h3><strong><?php echo _("Step")?> 3 </strong> - <?php echo _("Settings")?></h3>
+					<h3><strong><?php echo _("Step")?> 4 </strong> - <?php echo _("Settings")?></h3>
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="form-group">

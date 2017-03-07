@@ -107,6 +107,22 @@
 		
 		$this->view();
 	}
+	
+	public function jsonrpc()
+	{
+		//load jog factory class
+		$data['url'] = 'https://my.fabtotum.com/myfabtotum/default/call/jsonrpc2';
+		$this->load->library('JsonRPC', $data, 'jsonRPC');
+		
+		$this->load->helpers('os_helper');
+		
+		$params['fabid']      = 'fabtest@fabtotum.com';
+		$params['serialno']   = '123456789';
+		$params['mac']        = getMACAddres();
+		$params['apiversion'] = 1;
+		
+		print_r($this->jsonRPC->execute('fab_register_printer', $params));
+	}
  }
  
 ?>
