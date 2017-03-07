@@ -974,4 +974,18 @@ if(!function_exists('termsAndConditions'))
 		return $CI->load->view('layout/conditions/'.getCurrentLanguage(), null, true);
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getSerialNumber'))
+{
+	/**
+	 * return printer serial number
+	 * you can find it in the back of the unit
+	 * @todo
+	 */
+	function getSerialNumber()
+	{ 
+		//TODO
+		return '';
+	}
+}
 ?>

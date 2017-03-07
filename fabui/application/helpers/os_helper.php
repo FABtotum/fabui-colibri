@@ -540,4 +540,20 @@ if(!function_exists('writeNetworkInfo'))
 		write_file($CI->config->item('network_info_file'), json_encode($data));
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getMACAddress'))
+{
+	/**
+	 * return mac address
+	 */
+	function getMACAddres($interface = 'eth0')
+	{
+		$interfaces = getInterfaces();
+		if(array_key_exists($interface,$interfaces)){
+			if(isset($interfaces[$interface]["mac_address"]))
+				return $interfaces[$interface]["mac_address"];
+		}
+		return false;
+	}
+}
 ?>
