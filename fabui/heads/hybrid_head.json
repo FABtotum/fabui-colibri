@@ -8,7 +8,7 @@
     "pid": "M301 P15 I5 D30",
     "thermistor_index": "0",
     "max_temp": "230",
-    "probe_offset": "0",
+    "nozzle_offset": "5",
     "min_rpm": "6000",
     "max_rpm": "14000",
     "feeder_step": "200",

@@ -29,10 +29,33 @@ import json
 
 from fabtotum.utils.translation import _, setLanguage
 
+def zProbe(app, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    app.macro("M401", "ok", 5, _("Open probe"), verbose=False)
+    data = app.macro("G30", "ok", 120, _("Probe position"), verbose=False)
+    reply = data[0]
+    
+    print reply
+    
+    match = re.search("Feedrate: ([-|+0-9.]+)\sBed\sX:\s([-|+0-9.]+)\sY:\s([-|+0-9.]+)\sZ:\s([-|+0-9.]+)", reply, re.IGNORECASE)
+    #  Feedrate: 200.00 Bed X: 10.00 Y: 10.00 Z: 38.53
+    
+    app.macro("G91",                "ok", 2,    _("Setting rel position"), verbose=False)
+    app.macro("G0 Z5 F1000",        "ok", 20,   _("Moving bed away from the probe"), verbose=False)
+    app.macro("M402", "ok", 5, _("Retract probe"), verbose=False)
+
+    probe = {
+        "x" : match.group(2),
+        "y" : match.group(3),
+        "z" : match.group(4)
+        }    
+    return probe
+    
+
 def getPosition(app, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
-    data = app.macro("M114", "ok", 2, _("Get Position"), verbose=False)
+    data = app.macro("M114", "ok", 2, _("Get position"), verbose=False)
     reply = data[0]
     position = None
     match = re.search('X:([-|+0-9.]+)\sY:([-|+0-9.]+)\sZ:([-|+0-9.]+)\sE:([-|+0-9.]+)\sCount\sX:\s([-|+0-9.]+)\sY:([-|+0-9.]+)\sZ:([-|+0-9.]+)', reply, re.IGNORECASE)

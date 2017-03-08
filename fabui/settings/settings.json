@@ -25,7 +25,8 @@
     "keys": []
   },
   "zprobe": {
-    "enable": true
+    "enable": false,
+    "length": 38
   },
   "settings_type": "default",
   "hardware": {
@@ -44,5 +45,5 @@
     "overrides": "''",
     "invert_x_endstop_logic": false
   },
-  "z_max_offset": 206
+  "z_max_offset": 241.5
 }

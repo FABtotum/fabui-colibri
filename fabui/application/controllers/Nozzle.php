@@ -75,22 +75,24 @@ class Nozzle extends FAB_Controller {
 	/**
 	 * 
 	 */
-	public function overrideLenght($override_by)
+	public function overrideOffset($override_by)
 	{
 		$this->load->helper('fabtotum_helper');
-		$_result = doMacro('read_eeprom');
-		$old_probe_lenght = $_result['reply']['probe_length'];
-		$new_probe_lenght = abs($old_probe_lenght) - $override_by;
+		//$_result = doMacro('read_eeprom');
+		//$old_probe_lenght = $_result['reply']['probe_length'];
+		//$new_probe_lenght = abs($old_probe_lenght) - $override_by;
 		
 		// override probe value
-		doGCode('M710 S'.$new_probe_lenght );
+		//doGCode('M710 S'.$new_probe_lenght );
 		
-		$this->output->set_content_type('application/json')->set_output(
+		
+		
+		/*$this->output->set_content_type('application/json')->set_output(
 				json_encode( array(
 					'probe_length' => $new_probe_lenght,
 					'old_probe_lenght' => $old_probe_lenght,
 					'over' => $override_by) )
-			);
+			);*/
 	}
 	/**
 	 * 
@@ -98,12 +100,11 @@ class Nozzle extends FAB_Controller {
 	public function calibrateHeight()
 	{
 		$this->load->helper('fabtotum_helper');
-		$_result = doMacro('probe_setup_calibrate');
+		$_result = doMacro('measure_nozzle_offset');
+		
 		$this->output->set_content_type('application/json')->set_output(
 			json_encode( array(
-				'old_probe_lenght' => $_result['reply']['old_probe_lenght'],
-				'probe_length'     => $_result['reply']['new_probe_length'],
-				'z_max'            => $_result['reply']['z_max']
+				'nozzle_z_offset'     => $_result['reply']['nozzle_z_offset'],
 				) )
 			);
 	}
@@ -113,8 +114,9 @@ class Nozzle extends FAB_Controller {
 	public function prepare()
 	{
 		$this->load->helper('fabtotum_helper');
-		$result = doMacro('probe_setup_prepare');
-		$this->output->set_content_type('application/json')->set_output(json_encode( $result ));
+		$offset = doMacro('measure_probe_offset');
+		$result = doMacro('measure_nozzle_prepare');
+		$this->output->set_content_type('application/json')->set_output(json_encode( $offset ));
 	}
 }
  

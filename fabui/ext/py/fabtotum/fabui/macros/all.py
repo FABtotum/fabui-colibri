@@ -91,7 +91,8 @@ PRESET_MAP = {
     "end_scan"                      : scan_macros.end_scan,
     
     # Calibration
-    "probe_setup_prepare"           : calib_macros.probe_setup_prepare,
-    "probe_setup_calibrate"         : calib_macros.probe_setup_calibrate,
-    "raise_bed_no_g27"              : calib_macros.raise_bed_no_g27,
+    "measure_probe_offset"          : calib_macros.measure_probe_offset,
+    "measure_nozzle_prepare"        : calib_macros.measure_nozzle_prepare,
+    "measure_nozzle_offset"         : calib_macros.measure_nozzle_offset,
+    
 }

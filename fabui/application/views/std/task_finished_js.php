@@ -33,7 +33,7 @@ if(!isset($task_jump_restart)) $task_jump_restart = 1;
 		}
 		$.ajax({
 			type: 'post',
-			url: '<?php echo site_url('probe/overrideLenght'); ?>/' + zOverride,
+			url: '<?php echo site_url('nozzle/overrideOffset'); ?>/' + zOverride,
 			dataType: 'json'
 		}).done(function(response) {
 			console.log(response);

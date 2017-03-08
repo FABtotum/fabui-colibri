@@ -33,7 +33,7 @@ if ( !function_exists('createDefaultSettings'))
 			'zprobe'        	 => array('enable'=> false, 'length' => 38),
 			'z_max_offset'       => 241.5,
 			'settings_type' 	 => 'default',
-			'hardware'     	 	 => array('head' => 'print_v2', 'camera' => 'camera_v1'),
+			'hardware'     	 	 => array('head' => 'printing_head_v2', 'camera' => 'camera_v1'),
 			'print'         	 => array('pre_heating' => array('nozzle' => 150, 'bed'=>50), 'calibration' => 'homing'),
 			'stored_position'	 => array(),
 			'custom'             => array(

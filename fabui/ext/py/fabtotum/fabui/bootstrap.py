@@ -313,10 +313,12 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         pid     = head.get('pid')
         th_idx  = int(head.get('thermistor_index', 0))
         mode    = int(head.get('working_mode', 0))
-        offset  = float(head.get('probe_offset', 0))
+        offset  = float(head.get('nozzle_offset', 0))
         fw_id   = int(head.get('fw_id',0))
         max_temp= int(head.get('max_temp',0))
         custom_gcode = head.get('custom_gcode','')
+        
+        probe_length  = float(config.get('settings', 'zprobe.length', 0))
         
         # Set installed head
         if fw_id is not None:
@@ -334,8 +336,8 @@ def hardwareBootstrap(gcs, config = None, logger = None):
             gcs.send( "M801 S{0}".format( max_temp ), group='bootstrap' )
         
         # Set probe offset
-        if offset:
-            gcs.send( "M710 S{0}".format( offset ), group='bootstrap' )
+        if probe_offset:
+            gcs.send( "M710 S{0}".format( probe_length ), group='bootstrap' )
         
         # Working mode
         gcs.send( "M450 S{0}".format( mode ), group='bootstrap' )

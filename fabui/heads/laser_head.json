@@ -8,7 +8,7 @@
     "pid": "",
     "thermistor_index": "0",
     "max_temp": "0",
-    "probe_offset": "0",
+    "nozzle_offset": "0",
     "min_rpm": "6000",
     "max_rpm": "0",
     "feeder_step": "200",

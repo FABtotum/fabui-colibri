@@ -23,6 +23,8 @@ __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
 # Import standard python module
+import os
+import json
 
 # Import external modules
 
@@ -46,6 +48,13 @@ def start_additive(app, args = None, lang='en_US.UTF-8'):
     
     units_e = app.config.get('settings', 'e')
     
+    head_file = os.path.join( app.config.get('hardware', 'heads'), app.config.get('settings', 'hardware.head') + '.json');
+
+    with open(head_file) as json_f:
+        head = json.load(json_f)
+    
+    offset  = float(head.get('nozzle_offset', 0))
+
     try:
         switch = app.config.get('settings', 'switch')
     except KeyError:
@@ -54,10 +63,15 @@ def start_additive(app, args = None, lang='en_US.UTF-8'):
     app.trace( _("Preparing the FABtotum Personal Fabricator") )
     app.macro("G90",                    "ok", 2,    _("Setting absolute position"), verbose=False)
     
+    oozing_z = 60.0
+    oozing_z_adjusted = 60.0 + offset
+    
     if switch == 0:
-        app.macro("G0 X5 Y5 Z60 F1500",     "ok", 10,    _("Moving to oozing point") )
+        app.macro("G0 X5 Y5 Z{0} F1500".format(oozing_z_adjusted),     "ok", 10,    _("Moving to oozing point") )
+        app.macro("G92 Z{0}".format(oozing_z),  "ok" , 10, _("Adjusting nozzle offset"), verbose=False );
     else:
-        app.macro("G0 X209 Y5 Z60 F1500",     "ok", 10,  _("Moving to oozing point") )
+        app.macro("G0 X209 Y5 Z{0} F1500".format(oozing_z_adjusted),     "ok", 10,    _("Moving to oozing point") )
+        app.macro("G92 Z{0}".format(oozing_z),  "ok" , 10, _("Adjusting nozzle offset"), verbose=False );
     
     #~ # Pre-heating (dismissed)
     app.macro("M220 S100",              "ok", 1,    _("Reset Speed factor override"),     verbose=False)

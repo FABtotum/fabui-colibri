@@ -30,100 +30,72 @@ import json
 
 # Import internal modules
 from fabtotum.utils.translation import _, setLanguage
-from fabtotum.fabui.macros.common import getPosition
-from fabtotum.fabui.macros.common import getEeprom
+from fabtotum.fabui.macros.common import getPosition, getEeprom, zProbe
 
-def probe_setup_prepare(app, args = None, lang='en_US.UTF-8'):
+def measure_probe_offset(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
-    #~ app.trace( _("Preparing Calibration procedure") )
-    #~ app.trace( _("This may take a wile") )
-    app.macro("M104 S200",          "ok", 90,   _("Heating Extruder") )
-    app.macro("M140 S45",           "ok", 90,   _("Heating Bed (fast)") )
-    app.macro("G90",                "ok", 2,    _("Setting rel position"), verbose=False)
-    app.macro("G27",                "ok", 100,  _("Homing all axes") )
-    app.macro("G0 Z50 F10000",      "ok", 100,   _("G0 Z50 F10000"), verbose=False)
-    app.macro("G28",                "ok", 100,  _("Homing all axes") )
-    app.macro("G90",                "ok", 2,    _("Setting rel position"), verbose=False)
-    app.macro("G0 X103.00 Y119.50 Z5 F10000", "ok", 2,    _("Setting rel position"), verbose=False)
-    #app.macro("G91",                "ok", 2,    _("Relative mode"), verbose=False)
-    #app.macro("G0 X17 Y61.5 F6000", "ok", 100,    _("Offset"), verbose=False)
-    #current_position = getPosition(app)
-    #app.trace( current_position )
-    #app.macro("G90",                "ok", 2,    _("Setting rel position"), verbose=False)
-    #app.macro("G0 Z5 F1000",        "ok", 100,    _("Moving to calibration position") )
-    #app.macro("G91",                "ok", 2,    _("Setting abs position"), verbose=False)
-    #app.macro("M109",               None, 300,  _("Witing for extruder temperature"), warning=False) 
+    # app.trace( _("Preparing Calibration procedure") )    
+    # Get Z-Max
+    app.trace( _("Measuring Z max offset") )
+    app.macro("G27",                "ok", 100,  _("Homing all axes"), verbose=False )
+    zmax = getPosition(app, lang)
+
+    # Get Probe-Length
+    app.trace( _("Measuring probe length") )
+    app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False)
+    app.macro("G0 Z50 F1000",       "ok", 100,  _("Moving the bed 50mm away from nozzle"), verbose=False)
+    app.macro("G0 X86 Y58 F6000",   "ok", 100,  _("Moving the probe to the center"), verbose=False)
+    probe_length = 0.0
+    for i in range(0,4):
+        app.trace( _("Measurement ({0}/4)").format(i+1) )
+        zprobe = zProbe(app, lang)
+        probe_length = probe_length + float(zprobe['z'])
+        
+    probe_length = probe_length / 4
     
-def probe_setup_calibrate(app, args = None, lang='en_US.UTF-8'):
+    app.macro("M710 S{0}".format(probe_length), "ok", 2, _("Write config to EEPROM"), verbose=False)
+    
+    # Move closer to nozzle
+    app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False)
+    app.macro("G0 X103 Y119.5 Z20 F1000",  "ok", 100,  _("Moving the bed 20mm away from nozzle"), verbose=False)
+    
+    app.config.set('settings', 'z_max_offset', float(zmax['z']))
+    app.config.set('settings', 'zprobe.length', float(probe_length))
+    app.config.save('settings')
+    
+    return {
+        'z_max_offset' : float(zmax['z']),
+        'z_probe_offset' : float(probe_length)
+    }
+
+def measure_nozzle_prepare(app, args = None, lang='en_US.UTF-8'):
+    app.macro("M140 S45",           "ok", 90,   _("Heating Bed") )
+    app.macro("M104 S200",          "ok", 90,   _("Heating Extruder") )
+    app.macro("M109 S200",          "ok", 200,  _("Waiting for extruder temperature (200&deg;)") )
+    
+def measure_nozzle_offset(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
     app.macro("M104 S0",    "ok", 2,   _("Extruder heating off") )
     app.macro("M140 S0",    "ok", 2,   _("Bed heating off") )
     
-    app.trace( _("Calibrating probe") )
-    eeprom = getEeprom(app, lang)
-    z_probe_old = float(eeprom['probe_length'])
+    app.trace( _("Measuring nozzle offset") )
+    zpos = getPosition(app, lang)
     
-    current_position = getPosition(app, lang)
-    z_touch = float(current_position['z'])
-    
-     # write config to EEPROM
-    z_probe_new = abs( z_probe_old + (z_touch - 0.1) )
-    app.macro("M710 S{0}".format(z_probe_new), "ok", 2, _("Write config to EEPROM"), verbose=False)
+    # Paper width is 0.08mm
+    nozzle = float(zpos['z']) - 0.08
     
     # Store offset to head config
     head_file = os.path.join( app.config.get('hardware', 'heads'), app.config.get('settings', 'hardware.head') + '.json');
     with open(head_file) as json_f:
         head_info = json.load(json_f)
         
-    head_info['probe_offset'] = str(round(z_probe_new,2))
+    head_info['nozzle_offset'] = str(round(nozzle,2))
     
     with open(head_file, 'w') as outfile:
         json.dump(head_info, outfile, sort_keys=True, indent=4)
-    #############################
-    
-    
-    app.trace( _("Calculating Z Max Height") )
-    
-    app.macro("G90",    "ok", 2,   _("Set Absolute Mode"), verbose=False )
-    app.macro("G92 Z0.08",    "ok", 2,   _("Setting paper heigth"), verbose=False )
-    app.macro("G0 Z300 F1000",    "ok", 90,   _("Lowering bed"), verbose=False )
-    
-    current_position = getPosition(app, lang)
-    z_offset_max = current_position['count']['z']
-    app.macro('G92 Z{0}'.format(z_offset_max),    "ok", 2,   _('G92 Z{0}'.format(z_offset_max)), verbose=False )
-    
-    app.config.set('settings', 'z_max_offset', float(z_offset_max))
-    app.config.save('settings')
-    
-    
-    app.macro("G0 Z50 F1000",   "ok", 99,    _("Moving the plane"), verbose=False)
-    app.macro("G28 X0 Y0",      "ok", 90,   _("homing all axis"), verbose=False)
-    
-    app.macro("M300",           "ok", 5,    _("Done!"), verbose=False)
     
     return {
-        'old_probe_lenght' : str(z_probe_old),
-        'new_probe_length' : str(z_probe_new),
-        'z_touch'    : str(z_touch),
-        'z_max' : str(z_offset_max)
+        'nozzle_z_offset' : nozzle
     }
-    
-def raise_bed_no_g27(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
-    #for homing procedure before probe calibration.
-    
-    zprobe = app.config.get('units', 'zprobe')
-    zprobe_disabled = (zprobe['disable'] == 1)
-    zmax_home_pos   = float(zprobe['zmax'])
-    
-    app.macro("M402",   "ok", 4,    _("Raising probe") )
-    app.macro("G90",    "ok", 2,    _("Setting abs position"), verbose=False)
-    
-    if zprobe_disabled:
-        app.macro("G27 X0 Y0 Z" + str(zmax_home_pos),   "ok", 100,  _("Homing all axes") )
-        app.macro("G0 Z50 F10000",                      "ok", 15,   _("raising") )
-    else:
-        app.macro("G0 Z20 F10000",  "ok", 15,   _("Raising bed"), verbose=False)
-        app.macro("G28",            "ok", 100,  _("Homing all axes") )

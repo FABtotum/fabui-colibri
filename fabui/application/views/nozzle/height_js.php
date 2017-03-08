@@ -3,6 +3,10 @@
      var choice = '';
      var probe_length = 0;
      var interval;
+     
+    var z_max_offset = 0;
+    var z_probe_offset = 0;
+    var z_nozzle_offset = 0;
 
     $(function () {
        
@@ -130,7 +134,9 @@
               dataType: 'json',
         }).done(function( response ) {
         	 closeWait();
-            if(response.response == 'success'){               
+            if(response.response == 'success'){
+                z_max_offset = response.reply.z_max_offset;
+                z_probe_offset = response.reply.z_probe_offset;
 	            $("#row-normal-" + index).slideUp('slow', function(){
 	                $("#row-normal-" + (index+1)).slideDown('slow');
 	                
@@ -146,7 +152,6 @@
     {
         $(".re-choice").slideUp('slow');
         
-        //~ var content = 'Heating extruder and bed<br>This operation will take a while';
         index = 2;
         
         openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Please wait');
@@ -159,12 +164,15 @@
             $("#row-normal-" + index).slideUp('slow', function(){
                 $("#row-normal-" + (index+1)).slideDown('slow');
                 
+                z_nozzle_offset = data.nozzle_z_offset;
+                
                 closeWait();
                 
                 var html = 'Nozzle Height Calibration\n';
                 html += '====================================\n';
-                html += 'New Probe Length: ' + Math.abs(data.probe_length) + '\n';
-                html += 'New Z Max offset: ' + data.z_max;
+                html += 'New Probe Length: ' + Math.abs(z_probe_offset) + '\n';
+                html += 'New Z Max offset: ' + z_max_offset + '\n';
+                html += 'New nozzle offset: ' + z_nozzle_offset;
                 
                 $("#calibrate-trace").html(html);
             });
