@@ -105,7 +105,7 @@
 		var sliders = document.getElementsByClassName('standby-color');
 		
 		$.ajax({
-		url : 'settings/setColor',
+		url : '<?php echo site_url('settings/setColor'); ?>',
 		  dataType : 'json',
 		  type: 'post',
 		  async : true,
