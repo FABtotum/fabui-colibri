@@ -16,9 +16,7 @@ if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_i
 <script type="text/javascript">
 	
 	$(document).ready(function() {
-		console.log('task_safety_check_js: ready');
-		
-		setTimeout(checkSafety, 1500);
+		setTimeout(checkSafety, 2000);
 	});
 	
 	function checkSafety()
@@ -29,8 +27,10 @@ if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_i
 			  type: "POST",
 			  url: "<?php echo site_url($safety_check['url']) ?>",
 			  dataType: 'json'
-		}).done(function( data ) { 
+		}).done(function( data ) {
 			// safety measure to stop the periodic check if the view was changed
+			
+			console.log(data);
 			
 			if($('#safety-check-bed-image').length === 0)
 				return;

@@ -312,17 +312,22 @@ if(!function_exists('safetyCheck'))
 	 */
 	function safetyCheck($feature, $heated_bed)
 	{
+		
+		$head_in_place = isHeadInPlace();
+		$bed_in_place  = isBedInPlace();
+		
 		$result = array(
-			'head_is_ok' => false,
-			'head_info' => getInstalledHeadInfo(),
-			'head_in_place' => isHeadInPlace(),
-			'bed_is_ok'  => false,
-			'bed_in_place' => isBedInPlace()
+			'head_is_ok'    => false,
+			'head_info'     => getInstalledHeadInfo(),
+			'head_in_place' => $head_in_place,
+			'bed_is_ok'     => false,
+			'bed_in_place'  => $bed_in_place
 		);
 		
-		$result['head_is_ok'] = canHeadSupport($feature) && isHeadInPlace();
-		$result['bed_is_ok'] = $heated_bed == isBedInPlace();
-		$result['all_is_ok'] = $result['head_is_ok'] && $result['bed_is_ok'];
+		$result['head_is_ok'] = canHeadSupport($feature) && $head_in_place;
+		$result['bed_is_ok']  = $heated_bed == $bed_in_place;
+		$result['all_is_ok']  = $result['head_is_ok'] && $result['bed_is_ok'];
+		
 		
 		return $result;
 	}
@@ -354,16 +359,21 @@ if(!function_exists('isHeadinPlace'))
 		/**
 		 * check if head in properly inserted
 		 * @return boolean
+		 * _0 is for check timestamp with index 0
+		 * more details JogFactory -> buildCommands 
 		 */
-		$reply = doGCode(array('M745'));
-		if( isset($reply['commands']))
+		$timestamp = time().rand();
+		$reply = doGCode(array('M745'), $timestamp);
+		if( isset($reply['commands'][$timestamp.'_0']))
 		{
+			/*
 			foreach($reply['commands'] as $value)
 			{
 				//~ $join = join('-', $value['reply']);
 				//~ return $join == "TRIGGERED-ok";
 				return $value['reply'][0] == "TRIGGERED";
-			}
+			}*/
+			return $reply['commands'][$timestamp.'_0']['reply'][0] == "TRIGGERED";
 		}
 		return false;
 	}
@@ -374,19 +384,24 @@ if(!function_exists('isBedinPlace'))
 	/**
 	 * check if bed is inserted
 	 * @return boolean
+	 * _0 is for check timestamp with index 0
+	 * more details JogFactory -> buildCommands
 	 */
 	function isBedInPlace()
 	{
-		$reply = doGCode(array('M744'));
+		$timestamp = time().rand();
+		$reply     = doGCode(array('M744'), $timestamp);
 		
-		if( isset($reply['commands']))
+		if( isset($reply['commands'][$timestamp.'_0']))
 		{
+			/*
 			foreach($reply['commands'] as $value)
 			{
 				//~ $join = join('-', $value['reply']);
 				//~ return $join == "TRIGGERED-ok";
 				return $value['reply'][0] == "TRIGGERED";
-			}
+			}*/
+			return $reply['commands'][$timestamp.'_0']['reply'][0] == "TRIGGERED";
 		}
 		return false;
 	}
@@ -558,12 +573,12 @@ if(!function_exists('doGCode'))
 	 * @param $gcodes GCode command or an array of GCode commands
 	 * Send gcode commands using JogFactory
 	 */
-	function doGCode($gcodes)
+	function doGCode($gcodes, $timestamp = '')
 	{
 		$CI =& get_instance();
 		$CI->load->helper('file');
 		$CI->load->library('JogFactory', '', 'jogFactory');
-		$CI->jogFactory->sendCommands( $gcodes );
+		$CI->jogFactory->sendCommands( $gcodes, $timestamp);
 		return $CI->jogFactory->response();
 	}
 }
