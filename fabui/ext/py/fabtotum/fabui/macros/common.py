@@ -192,9 +192,10 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     pid     = head.get('pid', '')
     th_idx  = int(head.get('thermistor_index', 0))
     mode    = int(head.get('working_mode', 0))
-    offset  = float(head.get('probe_offset', 0))
+    offset  = float(head.get('nozzle_offset', 0))
     fw_id   = int(head.get('fw_id',0))
     max_temp= int(head.get('max_temp',230))
+    probe_length  = float(config.get('settings', 'zprobe.length', 0))
     
     # Set installed head ID
     if fw_id is not None:
@@ -215,10 +216,14 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     if max_temp > 25:
         #~ gcs.send( "M801 S{0}".format( max_temp ), group='bootstrap' )
         app.macro( "M801 S{0}".format( max_temp ),   "ok", 2, _("Setting MAX temperature to {0}".format(max_temp)) )
+
+    # Set nozzle offset
+    #~ if offset:
+        #~ app.macro( "M206 Z-{0}".format( offset ),   "ok", 2, _("Configuring nozzle offset"))
     
     # Set probe offset
-    if offset:
-        app.macro( "M710 S{0}".format( offset ),   "ok", 2, _("Configuring nozzle offset"))
+    if probe_length:
+        app.macro( "M710 S{0}".format( probe_length ),   "ok", 2, _("Configuring probe offset"))
     
     # Custom initialization code
     app.trace( _("Custom initialization") )

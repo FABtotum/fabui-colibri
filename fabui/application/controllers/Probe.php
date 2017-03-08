@@ -25,9 +25,9 @@ class Probe extends FAB_Controller {
 	public function index($type = 'length')
 	{
 		switch($type){
-			case 'length':
+			/*case 'length':
 				$this->doLengthCalibration();
-				break;
+				break;*/
 			case 'angle':
 				$this->doAngleCalibration();
 				break;
@@ -35,7 +35,7 @@ class Probe extends FAB_Controller {
 	}
 
 	// length calibration controller
-	public function doLengthCalibration()
+	/*public function doLengthCalibration()
 	{
 		//load libraries, helpers, model
 		$this->load->library('smart');
@@ -61,7 +61,7 @@ class Probe extends FAB_Controller {
 		$this->addJsInLine($this->load->view('probe/length_js', $data, true));
 		$this->content = $widget->print_html(true);
 		$this->view();
-	}
+	}*/
 
 	// angle calibration controller
 	public function doAngleCalibration()
@@ -137,7 +137,7 @@ class Probe extends FAB_Controller {
 	/**
 	 * 
 	 */
-	public function overrideLenght($override_by)
+	/*public function overrideLenght($override_by)
 	{
 		$this->load->helper('fabtotum_helper');
 		
@@ -157,11 +157,11 @@ class Probe extends FAB_Controller {
 					'old_probe_lenght' => $old_probe_lenght,
 					'over' => $override_by) )
 			);
-	}
+	}*/
 	/**
 	 * 
 	 */
-	public function clibrateLength()
+	/*public function clibrateLength()
 	{
 		$this->load->helper('fabtotum_helper');
 		$_result = doMacro('probe_setup_calibrate');
@@ -171,18 +171,18 @@ class Probe extends FAB_Controller {
 				'probe_length'     => $_result['reply']['new_probe_length']
 				) )
 			);
-	}
+	}*/
 	/**
 	 * 
 	 */
-	public function heatup()
+	/*public function heatup()
 	{
 		$this->load->helper('fabtotum_helper');
 		$_result = doMacro('probe_setup_prepare');
 		$this->output->set_content_type('application/json')->set_output(
 			json_encode( array(true) )
 			);
-	}
+	}*/
 }
  
 ?>

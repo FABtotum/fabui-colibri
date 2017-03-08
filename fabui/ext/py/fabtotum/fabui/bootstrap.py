@@ -320,6 +320,8 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         
         probe_length  = float(config.get('settings', 'zprobe.length', 0))
         
+        log.error("PROBE_LENGTH: %s", probe_length)
+        
         # Set installed head
         if fw_id is not None:
             gcs.send( "M793 S{0}".format( fw_id ), group='bootstrap' )
@@ -335,8 +337,12 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         if max_temp > 25:
             gcs.send( "M801 S{0}".format( max_temp ), group='bootstrap' )
         
+        # Set nozzle offset
+        #~ if offset:
+            #~ app.macro( "M206 Z-{0}".format( offset ),   "ok", 2, _("Configuring nozzle offset"))
+        
         # Set probe offset
-        if probe_offset:
+        if probe_length:
             gcs.send( "M710 S{0}".format( probe_length ), group='bootstrap' )
         
         # Working mode

@@ -38,6 +38,7 @@ def measure_probe_offset(app, args = None, lang='en_US.UTF-8'):
     # app.trace( _("Preparing Calibration procedure") )    
     # Get Z-Max
     app.trace( _("Measuring Z max offset") )
+    app.macro("M206 X0 Y0 Z0",      "ok", 5,    _("Reset homing offset"), verbose=False )
     app.macro("G27",                "ok", 100,  _("Homing all axes"), verbose=False )
     zmax = getPosition(app, lang)
 

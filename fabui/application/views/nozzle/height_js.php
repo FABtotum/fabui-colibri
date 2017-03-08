@@ -1,9 +1,9 @@
 <script type="text/javascript">
 
-     var choice = '';
-     var probe_length = 0;
-     var interval;
-     
+    var choice = '';
+    var probe_length = 0;
+    var interval;
+
     var z_max_offset = 0;
     var z_probe_offset = 0;
     var z_nozzle_offset = 0;
@@ -84,14 +84,14 @@
             
         });
         
-        $("#probe-calibration-save").on('click', override_probe_length);
+        $("#probe-calibration-save").on('click', override_nozzle_offset);
 
     });
     
     function get_probe_length(){
         if(probe_length <= 0){
         
-            openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Please wait');
+            openWait('<i class="fa fa-circle-o-notch fa-spin"></i> '+_("Please wait") + '...');
             
             $.ajax({
                 type: "POST",
@@ -127,7 +127,7 @@
         //var content = 'Heating extruder and bed<br>This operation will take a while';
         index = 1;
         
-        openWait('<i class="fa fa-circle-o-notch fa-spin"></i> <?php echo _("Please wait"); ?>');
+        openWait('<i class="fa fa-circle-o-notch fa-spin"></i> <?php echo _("Please wait"); ?>...');
         $.ajax({
               type: "POST",
               url: "<?php echo site_url("nozzle/prepare") ?>",
@@ -154,7 +154,7 @@
         
         index = 2;
         
-        openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Please wait');
+        openWait('<i class="fa fa-circle-o-notch fa-spin"></i> ' + _("Please wait") + '...');
         $.ajax({
               type: "POST",
               url: "<?php echo site_url("nozzle/calibrateHeight") ?>",
@@ -168,11 +168,11 @@
                 
                 closeWait();
                 
-                var html = 'Nozzle Height Calibration\n';
+                var html = _("Nozzle offset calibration")+'\n';
                 html += '====================================\n';
-                html += 'New Probe Length: ' + Math.abs(z_probe_offset) + '\n';
-                html += 'New Z Max offset: ' + z_max_offset + '\n';
-                html += 'New nozzle offset: ' + z_nozzle_offset;
+                html += _("New Probe Length: {0}").format(Math.abs(z_probe_offset)) + '\n';
+                html += _("New Z Max offset: {0}").format(z_max_offset) + '\n';
+                html += _("New nozzle offset: {0}").format(z_nozzle_offset);
                 
                 $("#calibrate-trace").html(html);
             });
@@ -196,25 +196,25 @@
         fabApp.jogMdi(gcode);
     }
     
-    function override_probe_length()
+    function override_nozzle_offset()
     {
         $(".re-choice").slideUp('slow');
-        openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Please wait');
+        openWait('<i class="fa fa-circle-o-notch fa-spin"></i> ' + _("Please wait") + '...');
         
         $.ajax({
                 type: "POST",
-                url: "<?php echo site_url("nozzle/overrideLenght") ?>/"
+                url: "<?php echo site_url("nozzle/overrideOffset") ?>/"
                 + $("#over").val(),
                 dataType: "json",
             }).done(function( data ) {
                
                
-               var html = 'Calibrating probe\n';
+               var html = _("Calibrating nozzle offset") + '\n';
                html += '====================================\n';
-               html += 'Old Probe Length: ' + Math.abs(data.old_probe_lenght) + '\n';
-               html += 'Override value: ' +  data.over + '\n';
+               html += _("Old nozzle offset: {0}").format( Math.abs(data.old_nozzle_offset) ) + '\n';
+               html += _("Override value: {0}").format(data.over) + '\n';
                html += '====================================\n';
-               html += 'New Probe Length: ' + data.probe_length;
+               html += _("New nozzle offset: {0}").format(data.nozzle_offset);
                
                $("#over-calibrate-trace").html(html);
                $("#row-fast-1").slideUp('fast', function(){

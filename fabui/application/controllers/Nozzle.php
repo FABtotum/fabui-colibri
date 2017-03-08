@@ -63,7 +63,7 @@ class Nozzle extends FAB_Controller {
 	/**
 	 * 
 	 */
-	public function getLength()
+	/*public function getLength()
 	{
 		$this->load->helper('fabtotum_helper');
 		$_result = doMacro('read_eeprom');
@@ -71,7 +71,7 @@ class Nozzle extends FAB_Controller {
 		$this->output->set_content_type('application/json')->set_output(
 				json_encode( array('probe_length' => $probe_length) )
 			);
-	}
+	}*/
 	/**
 	 * 
 	 */
@@ -85,14 +85,20 @@ class Nozzle extends FAB_Controller {
 		// override probe value
 		//doGCode('M710 S'.$new_probe_lenght );
 		
+		$info = getInstalledHeadInfo();
 		
+		$old_nozzle_offset = $info['nozzle_offset'];
+		$new_nozzle_offset = $old_nozzle_offset + $override_by;
 		
-		/*$this->output->set_content_type('application/json')->set_output(
+		$info['nozzle_offset'] = $new_nozzle_offset;
+		$result = saveInfoToInstalledHead($info);
+		
+		$this->output->set_content_type('application/json')->set_output(
 				json_encode( array(
-					'probe_length' => $new_probe_lenght,
-					'old_probe_lenght' => $old_probe_lenght,
+					'nozzle_offset' => $new_nozzle_offset,
+					'old_nozzle_offset' => $old_nozzle_offset,
 					'over' => $override_by) )
-			);*/
+			);
 	}
 	/**
 	 * 
