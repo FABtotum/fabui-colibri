@@ -118,38 +118,45 @@
 		$this->load->helpers('os_helper');
 		$this->load->helpers('fabtotum_helper');
 		
-		$params['fabid']      = 'fabtest@fabtotum.com';
 		$params['serialno']   = getSerialNumber();
 		$params['mac']        = getMACAddres();
 		$params['apiversion'] = 1;
 		
+		
+		$result_codes[200]  = 'SERVICE_SUCCESS';
+		$result_codes[401]  = 'SERVICE_UNAUTHORIZED';
+		$result_codes[403]  = 'SERVICE_FORBIDDEN';
+		$result_codes[500]  = 'SERVICE_SERVER_ERROR';
+		$result_codes[1001] = 'SERVICE_INVALID_PARAMETER';
+		$result_codes[1002] = 'SERVICE_ALREADY_REGISTERED';
+		
 		switch($method){
 			case 'fab_register_printer':
+				$params['fabid']      = 'fabtest@fabtotum.com';
 				break;
 			case 'fab_info_update':
-				
 				$macroResponse = doMacro('version');
 				if($macroResponse['response']){
 					$versions = $macroResponse['reply'];
 				}
-				$head = getInstalledHeadInfo();
+				$head       = getInstalledHeadInfo();
 				$interfaces = getInterfaces();
 				
-				$data['name'] = getUnitName();
-				$data['model'] = $versions['production']['batch'];
-				$data['head'] = $head['name'];
-				$data['fwwersion'] = $versions['firmware']['version'];
-				$data['iplan'] = $interfaces['wlan0']['ipv4_address'];
-				$params['data'] = $data;
+				$data['name']      = getUnitName();
+				$data['model']     = $versions['production']['batch'];
+				$data['head']      = $head['name'];
+				$data['fwversion'] = $versions['firmware']['version'];
+				$data['iplan']     = $interfaces['wlan0']['ipv4_address'];
+				$params['data']    = $data;
 				break;
 			case 'fab_polling':
-				$params['state'] = "AVAILABLE";
+				//$params['state'] = "BUSY";
 				break;
 		}
-		
-		
 		$result = $this->jsonRPC->execute($method, $params);
-		
+		if(isset($result['status_code'])){
+			$result['status_description'] = $result_codes[$result['status_code']];
+		}
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('method'=>$method, 'params'=>$params, 'result'=>$result)));
 	}
  }
