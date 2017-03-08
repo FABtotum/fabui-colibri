@@ -40,7 +40,7 @@
   	 * build list commands
   	 * @param array commands or string
   	 */
-  	function buildCommands($commands, $id_stamp='')
+  	function buildCommands($commands, $id_stamp = '')
   	{	
 		if($id_stamp == '')
 		{
@@ -79,20 +79,16 @@
 	 * send gcode
 	 * @param array|string $commands
 	 */
-	function sendCommands($commands, $id_stamp='')
+	function sendCommands($commands, $id_stamp= '')
 	{	
 		$this->buildCommands($commands, $id_stamp);
-		
 		foreach($this->commands as $timestamp => $data){
-			
 			$responseTemp = sendToXmlrpcServer('send', $data['code']);
-			
 			if(!is_array($responseTemp['reply'])){
 				$tmp = $responseTemp['reply'];
 				$responseTemp['reply'] = array();
 				$responseTemp['reply'][0] = $tmp;
 			}
-			
 			$data['response'] = $responseTemp['response'];
 			$data['message']  = $responseTemp['message'];
 			$data['reply'] = $responseTemp['reply'];
