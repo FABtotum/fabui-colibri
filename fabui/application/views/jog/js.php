@@ -14,6 +14,8 @@ if(!isset($extruder_min)) 	$extruder_min = 0;
 if(!isset($extruder_max)) 	$extruder_max = 250;
 if(!isset($bed_min)) 		$bed_min = 0;
 if(!isset($bed_max)) 		$bed_max = 100;
+if(!isset($rpm_min)) 		$rpm_min = 6000;
+if(!isset($rpm_max)) 		$rpm_max = 14000;
 
 ?>
 <script type="text/javascript">
@@ -28,7 +30,12 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	var wasRpmSliderMoved = false;
 	
 	var bedSlider;
+	var isBedSliderBusy = false;
+	var wasBedSliderMoved = false;
+	
 	var extruderSlider;
+	var isExtSliderBusy = false;
+	var wasExtSliderMoved = false;
 	
 	/* jog */
 	var jog_touch;
@@ -121,6 +128,12 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		initHelpSearch();
 	});
 	
+	window.updateTemperatures = function(ext_temp, ext_temp_target, bed_temp, bed_temp_target)
+	{
+		updateExtTarget(ext_temp_target);
+		updateBedTarget(bed_temp_target);
+	}
+	
 	function selectFilter()
 	{
 		search_filter = $(this).attr('data-attr');
@@ -155,10 +168,10 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			noUiSlider.create(document.getElementById('create-ext-target-slider'), {
 				start: <?php echo $extruder_min; ?>,
 				connect: "lower",
-				range: {'min': <?php echo isset($extruder_min) ? $extruder_min : 0; ?>, 'max' : <?php echo $extruder_max; ?>},
+				range: {'min': <?php echo $extruder_min; ?>, 'max' : <?php echo $extruder_max; ?>},
 				pips: {
 					mode: 'values',
-					values: [0, 175, 250],
+					values: [0, 175, <?php echo $extruder_max ?>],
 					density: 4,
 					format: wNumb({
 						postfix: '&deg;'
@@ -168,9 +181,17 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			extruderSlider = document.getElementById('create-ext-target-slider');
 			extruderSlider.noUiSlider.on('slide',  function(e){
 				onSlide('extruder-target', e);
+				wasExtSliderMoved = true;
 			});
 			extruderSlider.noUiSlider.on('change', function(e){
 				onChange('extruder-target', e);
+			});
+			extruderSlider.noUiSlider.on('end', function(e){
+				isExtSliderBusy = false;
+			});
+			extruderSlider.noUiSlider.on('start', function(e){
+				isExtSliderBusy = true;
+				wasExtSliderMoved = true;
 			});
 		}
 		<?php endif; ?>
@@ -185,7 +206,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 				range: {'min': <?php echo $bed_min; ?>, 'max' : <?php echo $bed_max; ?>},
 				pips: {
 					mode: 'positions',
-					values: [0,25,50,75,100],
+					values: [0,25,50,75,<?php echo $bed_max; ?>],
 					density: 5,
 					format: wNumb({
 						postfix: '&deg;'
@@ -195,9 +216,17 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			bedSlider      = document.getElementById('create-bed-target-slider');
 			bedSlider.noUiSlider.on('slide',  function(e){
 				onSlide('bed-target', e);
+				wasBedSliderMoved = true;
 			});
 			bedSlider.noUiSlider.on('change', function(e){
 				onChange('bed-target', e);
+			});
+			bedSlider.noUiSlider.on('end', function(e){
+				isBedSliderBusy = false;
+			});
+			bedSlider.noUiSlider.on('start', function(e){
+				isBedSliderBusy = true;
+				wasBedSliderMoved = true;
 			});
 		}
 		<?php endif; ?>
@@ -247,10 +276,10 @@ if(!isset($bed_max)) 		$bed_max = 100;
 				start: 0,
 				connect: "lower",
 				step: 100,
-				range: {'min': 0, 'max' : <?php echo isset($rpm_max) ? $rpm_max : 14000; ?>},
+				range: {'min': 0, 'max' : <?php echo $rpm_max; ?>},
 				pips: {
 					mode: 'values',
-					values: [6000,8000,10000,12000,14000],
+					values: [6000,8000,10000,12000,<?php echo $rpm_max; ?>],
 					density: 10,
 					format: wNumb({})
 				}
@@ -579,6 +608,26 @@ if(!isset($bed_max)) 		$bed_max = 100;
 					e.preventDefault();
 					return false;
 				}
+			}
+		}
+	}
+	
+	function updateExtTarget(value)
+	{
+		if(!isExtSliderBusy){
+			$('.slider-extruder-target').html(parseInt(value));
+			if(typeof extruderSlider !== 'undefined'){
+				extruderSlider.noUiSlider.set(value);
+			}
+		}
+	}
+	
+	function updateBedTarget(value)
+	{
+		if(!isBedSliderBusy){
+			$('.slider-bed-target').html(parseInt(value));
+			if(typeof bedSlider !== 'undefined'){
+				bedSlider.noUiSlider.set(value);
 			}
 		}
 	}

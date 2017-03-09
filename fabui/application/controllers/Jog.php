@@ -30,6 +30,11 @@
 		$data['headMillSupport'] = canHeadSupport("mill");
 		$data['headLaserSupport'] = canHeadSupport("laser");
 		
+		$info = getInstalledHeadInfo();
+		if( isset($info['max_temp']) ) {
+			$data['extruder_max'] = $info['max_temp'];
+		}
+		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'jog-widget';
 		$widget->header = array('icon' => 'icon-fab-jog', "title" => "<h2>Jog Panel</h2>");

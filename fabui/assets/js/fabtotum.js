@@ -119,6 +119,24 @@ function RefreshTable(tableId, urlData)
     
     });
 }
+
+/**
+* Called before pageSetUp to clean up anything previous views might have left behind
+*/
+function pageCleanUp()
+{
+    
+    console.log('=== pageCleanUp ===');
+    
+    if (typeof window.viewCleanUp == 'function') window.viewCleanUp();
+    
+    window.manageMonitor = null;
+    window.updateTemperatures = null;
+    window.viewCleanUp = null;
+    
+}
+
+
 /**
 * Base64 Object
 **/

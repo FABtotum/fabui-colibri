@@ -13,6 +13,7 @@
 	console.log("page: ", page);
 	ga('set', { page: (page)});
 	ga('send', 'pageview');
+	pageCleanUp();
 	pageSetUp();
 	transformLinks();
 	<?php echo $jsInLine; ?>

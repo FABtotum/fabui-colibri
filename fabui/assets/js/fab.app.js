@@ -101,8 +101,6 @@ fabApp = (function(app) {
 				break;
 		}
 		
-		console.log("send jog.top command", e.multiplier);
-		
 		return false;
 	};
 	/**
@@ -383,7 +381,6 @@ fabApp = (function(app) {
 	 * @callback Callback function on execution finish
 	 */
 	app.jogMdi = function(value, callback) {
-		console.log(value);
 		
 		var commands = value.split("\n");
 		var fixed = []
@@ -690,8 +687,6 @@ fabApp = (function(app) {
 		var stamp = null;
 		var response = [];
 		
-		console.log('jog-data', data);
-		
 		for(i in data.commands)
 		{
 			if(stamp != null)
@@ -920,6 +915,7 @@ fabApp = (function(app) {
 		if($(".bed-temp").length > 0) $(".bed-temp").html(parseFloat(bed_temp).toFixed(0));
 		if($(".bed-target").length > 0) $(".bed-target").html(parseFloat(bed_temp_target).toFixed(0));
 		
+		if (typeof window.updateTemperatures == 'function') window.updateTemperatures(ext_temp, ext_temp_target, bed_temp,bed_temp_target);
 	};
 	/*
 	 * display jog response
@@ -954,7 +950,7 @@ fabApp = (function(app) {
 		if($(".jogResponseContainer").length > 0){
 			var html = '';
 			$.each(data.commands, function(i, item) {
-				console.log(item.reply);
+				//console.log(item.reply);
 				html += '<span class="jog_response ">' + item.code + ' : <small>' + item.reply + '</small> </span><hr class="simple">';
 				
 			});
@@ -1230,10 +1226,10 @@ fabApp = (function(app) {
 			//console.log('register callback', stamp, messageToSend);
 			app.ws_callbacks[stamp] = callback;
 		}
-		else
+		/*else
 		{
 			console.log("no callback");
-		}
+		}*/
 		
 		socket.send( JSON.stringify(messageToSend) );
 		
@@ -1372,13 +1368,11 @@ fabApp = (function(app) {
 	app.getUpdates = function() {
 		
 		$.get(updates_json_url + '?' + jQuery.now(), function(data, status){
-			console.log(data);
 			number_updates = data.update.bundles;
 			if(data.update.firmware) number_updates += 1;
 			if(data.update.boot) number_updates += 1;
 			
 			app.updateNotificationBadge();
-			
 		});
 		
 	}

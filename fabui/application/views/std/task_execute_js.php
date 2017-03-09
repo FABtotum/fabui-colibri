@@ -49,6 +49,11 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	var wasFanSliderMoved       = false;
 	var isRpmSliderBusy         = false;
 	var wasRpmSliderMoved       = false;
+	
+	var isExtSliderBusy         = false;
+	var isBedSliderBusy         = false;
+	var wasExtSliderMoved       = false;
+	var wasBedSliderMoved       = false;
 	//
 	var soft_extruder_min  = 175;
 	
@@ -154,16 +159,32 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		//extruder
 		extruderSlider.noUiSlider.on('slide',  function(e){
 			onSlide('extruder-target', e);
+			wasExtSliderMoved = true;
 		});
 		extruderSlider.noUiSlider.on('change', function(e){
 			onChange('extruder-target', e);
 		});
+		extruderSlider.noUiSlider.on('end', function(e){
+			isExtSliderBusy = false;
+		});
+		extruderSlider.noUiSlider.on('start', function(e){
+			isExtSliderBusy = true;
+			wasExtSliderMoved = true;
+		});
 		//bed
 		bedSlider.noUiSlider.on('slide',  function(e){
 			onSlide('bed-target', e);
+			wasBedSliderMoved = true;
 		});
 		bedSlider.noUiSlider.on('change', function(e){
 			onChange('bed-target', e);
+		});
+		bedSlider.noUiSlider.on('end', function(e){
+			isBedSliderBusy = false;
+		});
+		bedSlider.noUiSlider.on('start', function(e){
+			isBedSliderBusy = true;
+			wasBedSliderMoved = true;
 		});
 		//flow rate
 		flowRateSlider.noUiSlider.on('change', function(e){
@@ -370,10 +391,12 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			$(".slider-bed-target").html(parseFloat(bed_temp_target).toFixed(0));
 
 			if(typeof extruderSlider !== 'undefined'){
-				extruderSlider.noUiSlider.set(ext_temp_target);
+				if(!isExtSliderBusy)
+					extruderSlider.noUiSlider.set(ext_temp_target);
 			}
 			if(typeof bedSlider !== 'undefined'){
-				bedSlider.noUiSlider.set(bed_temp_target);
+				if(!isBedSliderBusy)
+					bedSlider.noUiSlider.set(bed_temp_target);
 			}
 		});
 	}
@@ -527,7 +550,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	 */
 	function updateGraph()
 	{
-		var data = getPlotTemperatures();	
+		var data = getPlotTemperatures();
 		if(typeof temperaturesGraph !== 'undefined' ){
 			temperaturesGraph.setData(data);
 			temperaturesGraph.draw();
@@ -713,29 +736,32 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			$(".estimated-time-left").html(transformSeconds(remainingTime));
 	}
 	
-	/*if(typeof manageMonitor != 'function'){*/
+	window.manageMonitor = function(data){
+		if(data.hasOwnProperty("task"))
+		{
+			handleTaskStatus(data.task.status);
+			updateProgress(data.task.percent);
+			updateTimers(data.task.started_time, data.task.duration, data.task.estimated_time);
+		}
 		
-		window.manageMonitor = function(data){
-			if(data.hasOwnProperty("task"))
-			{
-				handleTaskStatus(data.task.status);
-				updateProgress(data.task.percent);
-				updateTimers(data.task.started_time, data.task.duration, data.task.estimated_time);
-			}
-			
-			if(data.hasOwnProperty("override"))
-			{
-				updateSpeed(data.override.speed);
-				<?php if($type == "print"): ?>
-				updateFlowRate(data.override.flow_rate);
-				updateFan(data.override.fan);
-				<?php endif; ?>
-				<?php if($type == "mill" || $type == "laser"): ?>
-				updateRPM(data.override.rpm);
-				<?php endif; ?>
-			}
-		};
-	/*}*/
+		if(data.hasOwnProperty("override"))
+		{
+			updateSpeed(data.override.speed);
+			<?php if($type == "print"): ?>
+			updateFlowRate(data.override.flow_rate);
+			updateFan(data.override.fan);
+			<?php endif; ?>
+			<?php if($type == "mill" || $type == "laser"): ?>
+			updateRPM(data.override.rpm);
+			<?php endif; ?>
+		}
+	};
+	
+	window.updateTemperatures = function(ext_temp, ext_temp_target, bed_temp, bed_temp_target)
+	{
+		updateExtTarget(ext_temp_target);
+		updateBedTarget(bed_temp_target);
+	}
 	
 	/**
 	 *  monitor interval if websocket is not available
@@ -942,6 +968,26 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			$('.slider-task-speed').html(parseInt(value));
 			if(typeof speedSlider !== 'undefined'){
 				speedSlider.noUiSlider.set(value);
+			}
+		}
+	}
+	
+	function updateExtTarget(value)
+	{
+		if(!isExtSliderBusy){
+			$('.slider-extruder-target').html(parseInt(value));
+			if(typeof extruderSlider !== 'undefined'){
+				extruderSlider.noUiSlider.set(value);
+			}
+		}
+	}
+	
+	function updateBedTarget(value)
+	{
+		if(!isBedSliderBusy){
+			$('.slider-bed-target').html(parseInt(value));
+			if(typeof bedSlider !== 'undefined'){
+				bedSlider.noUiSlider.set(value);
 			}
 		}
 	}
