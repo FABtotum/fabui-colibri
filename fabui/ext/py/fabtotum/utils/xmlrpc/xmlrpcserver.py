@@ -97,6 +97,13 @@ class ExposeCommands:
         """
         return self.gcs.send(code, block=block, timeout=timeout, async=async)
     
+    def respond(self, reply, response='success', message=''):
+        return {
+            'reply' : reply,
+            'response' : response,
+            'message' : message
+        }
+
     def do_macro(self, preset, args = None, atomic = True, lang='en_US.UTF-8'):
         """
         Execute macro command.
@@ -115,42 +122,46 @@ class ExposeCommands:
     def do_abort(self):
         """ Send abort request """
         self.gcs.abort()
-        return 'ok'
+        return self.respond('ok')
         
     def do_pause(self):
         """ Send pause request """
         self.gcs.pause()
-        return 'ok'
+        return self.respond('ok')
         
     def do_resume(self):
         """ Send resume request """
         self.gcs.resume()
-        return 'ok'
+        return self.respond('ok')
         
     def do_reset(self):
         """ Send reset request """
         self.gcs.reset()
-        return 'ok'
+        return self.respond('ok')
 
     def set_z_modify(self, value):
         self.gcs.z_modify(float(value))
-        return 'ok'
+        return self.respond('ok')
         
     def set_speed(self, value):
-        return self.gcs.send('M220 S{0}\r\n'.format(value))
+        self.gcs.send('M220 S{0}\r\n'.format(value))
+        return self.respond('ok')
         
     def set_fan(self, value):
-        return self.gcs.send('M106 S{0}\r\n'.format(value))
+        self.gcs.send('M106 S{0}\r\n'.format(value))
+        return self.respond('ok')
         
     def set_flow_rate(self, value):
-        return self.gcs.send('M221 S{0}\r\n'.format(value))
+        self.gcs.send('M221 S{0}\r\n'.format(value))
+        return self.respond('ok')
         
     def set_auto_shutdown(self, value): # !shutdown:<on|off>
         self.gcs.push('config:shutdown', value)
-        return 'ok'
+        return self.respond('ok')
     
     def set_rpm(self, value):
-        return self.gcs.send('M3 S{0}\r\n'.format(value))
+        self.gcs.send('M3 S{0}\r\n'.format(value))
+        return self.respond('ok')
 
 def create(gcs, config, log_type='<stdout>'):
     # Setup logger

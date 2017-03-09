@@ -648,9 +648,14 @@ class GCodeService:
                     cmd.notify(abort=True)
             
             elif cmd == Command.ZMODIFY:
-                z_offset = float( cmd.data )
+                #~ z_offset = float( cmd.data )
+                new_z_override = float( cmd.data )
+                old_z_override = float(self.z_override)
                 
-                self.z_override += z_offset
+                z_offset = float(new_z_override - old_z_override)
+                
+                #~ self.z_override += z_offset
+                self.z_override = new_z_override
                 
                 self.log.debug("ZMODIFY: %f", z_offset)
                 self.__send_gcode_command("G91", group="override", modify=False)

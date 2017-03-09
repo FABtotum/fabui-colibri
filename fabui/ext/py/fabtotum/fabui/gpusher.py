@@ -329,7 +329,7 @@ class GCodePusher(object):
                     monitor_write = True
             
             elif action == 'z_override':
-                self.override_stats['z_override'] = str(data[0])
+                self.override_stats['z_override'] = float(data[0])
             
             elif action == 'printing':
                 

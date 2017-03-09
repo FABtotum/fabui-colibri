@@ -34,6 +34,12 @@ from fabtotum.fabui.macros.common import getPosition, getEeprom, zProbe
 
 def measure_probe_offset(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
+
+    ext_temp = 200
+    bed_temp = 45
+    
+    app.macro("M104 S"+str(ext_temp),   "ok", 3,    _("Pre Heating Nozzle ({0}&deg;) (fast)").format(str(ext_temp)))
+    app.macro("M140 S"+str(bed_temp),   "ok", 3,    _("Pre Heating Bed ({0}&deg;) (fast)").format(str(bed_temp)))
     
     # app.trace( _("Preparing Calibration procedure") )    
     # Get Z-Max
@@ -71,8 +77,8 @@ def measure_probe_offset(app, args = None, lang='en_US.UTF-8'):
     }
 
 def measure_nozzle_prepare(app, args = None, lang='en_US.UTF-8'):
-    app.macro("M140 S45",           "ok", 90,   _("Heating Bed") )
-    app.macro("M104 S200",          "ok", 90,   _("Heating Extruder") )
+    _ = setLanguage(lang)
+    
     app.macro("M109 S200",          "ok", 200,  _("Waiting for extruder temperature (200&deg;)") )
     
 def measure_nozzle_offset(app, args = None, lang='en_US.UTF-8'):

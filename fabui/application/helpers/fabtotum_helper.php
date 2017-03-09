@@ -494,6 +494,8 @@ if(!function_exists('sendToXmlrpcServer'))
 		$reply    = '';
 		$message = '';
 		
+		$trace = '';
+		
 		if ( !$CI->xmlrpc->send_request())
 		{
 			$reply    = $CI->xmlrpc->display_error();
@@ -507,15 +509,16 @@ if(!function_exists('sendToXmlrpcServer'))
 				$response = True;
 			}else {
 				$tmp = json_decode( $CI->xmlrpc->display_response(), true );
+				$trace = $CI->xmlrpc->display_response();
 				if(json_last_error()){
 					$reply = $CI->xmlrpc->display_response();
 					$response = 'error';
 					$message = json_last_error_msg();
 				}else{
-					/*if($tmp['response'] == 'success')
+					if($tmp['response'] == 'success')
 					{
 						$response = True;
-					}*/
+					}
 					$response = $tmp['response'];
 					$reply   = $tmp['reply'];
 					$message = $tmp['message'];
@@ -784,10 +787,11 @@ if(!function_exists('zHeight'))
 	 */
 	function zHeight($value)
 	{
-		$sign = substr($value, 0,1);
-		$value = str_replace($sign, '' , $value);
-		$command = $sign == '-' ? '!z_minus' : '!z_plus';
-		return sendToXmlrpcServer('set_z_modify', $sign.$value);
+		//$sign = substr($value, 0,1);
+		//$value = str_replace($sign, '' , $value);
+		//$command = $sign == '-' ? '!z_minus' : '!z_plus';
+		//return sendToXmlrpcServer('set_z_modify', $sign.$value);
+		return sendToXmlrpcServer('set_z_modify', $value);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

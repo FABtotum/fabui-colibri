@@ -130,7 +130,7 @@ if( !isset($rpm_label) ) $rpm_label = _("RPM");
 				</span>
 				<span class="show-stat-buttons"> 
 					<span class="col-xs-4 col-sm-4 col-md-4 col-lg-4"> 
-						<button data-rel="tooltip" data-original-title="Away from the nozzle" type="button" data-action="zHeight" data-attribute="+" class="btn btn-default btn-block action"><i class="fa fa-arrow-down"></i></button>
+						<button data-rel="tooltip" data-placement="bottom" data-original-title="Away from the nozzle" type="button" data-action="zHeight" data-attribute="+" class="btn btn-default btn-block action"><i class="fa fa-arrow-down"></i></button>
 					</span> 
 					<span class="col-xs-4 col-sm-4 col-md-4 col-lg-4"> 
 						<label style="width:100%;">
@@ -138,7 +138,7 @@ if( !isset($rpm_label) ) $rpm_label = _("RPM");
 						</label>
 					</span>
 					<span class="col-xs-4 col-sm-4 col-md-4 col-lg-4"> 
-						<button rel="tooltip" title="Closer to the nozzle" type="button" data-action="zHeight" data-attribute="-" class="btn btn-default btn-block action"><i class="fa fa-arrow-up"></i></button>
+						<button data-rel="tooltip" data-placement="bottom" title="Closer to the nozzle" type="button" data-action="zHeight" data-attribute="-" class="btn btn-default btn-block action"><i class="fa fa-arrow-up"></i></button>
 					</span>
 				</span>
 			</div>

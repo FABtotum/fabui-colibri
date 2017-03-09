@@ -52,6 +52,9 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	//
 	var soft_extruder_min  = 175;
 	
+	var zOverrideTimeoout = null;
+	var zOverrideValue = 0;
+	
 	$(document).ready(function() {
 		initSliders();
 		<?php if($runningTask == true): ?>
@@ -532,6 +535,12 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		}
 	}
 	
+	function zOverrideCallback()
+	{
+		zOverrideTimeoout = null;
+		sendActionRequest('zHeight', zOverrideValue);
+	}
+	
 	/**
 	 * 
 	 */
@@ -564,8 +573,9 @@ if(!isset($bed_max)) 		$bed_max = 100;
 					message = _("Fan override changed to {0}").format(value);
 					break;
 				case 'zHeight':
-					if(value.charAt(0) == '+') message=_("Z height increased");
-					else message = _("Z height decreased");
+					//~ if(value.charAt(0) == '+') message=_("Z height increased");
+					//~ else message = _("Z height decreased");
+					message = _("Z height override changed to {0}mm").format(value)
 					break;
 				case 'rpm':
 					// _( " is not a type, is there to prevent this string from being extracted by gettext
@@ -600,8 +610,15 @@ if(!isset($bed_max)) 		$bed_max = 100;
 				var overrideToAdd = parseFloat($("#zHeight").val()).toFixed(2);
 				var actualOverride = parseFloat($(".z-height").html()).toFixed(2);
 				var operation = '(' + actualOverride +')' + sign + '(' + overrideToAdd + ')';
-				$(".z-height").html(parseFloat(eval(operation)).toFixed(2));
-				sendActionRequest('zHeight', sign+$("#zHeight").val());
+				var new_value = parseFloat(eval(operation)).toFixed(2);
+				$(".z-height").html(new_value);
+				
+				if(zOverrideTimeoout)
+					clearTimeout(zOverrideTimeoout);
+					
+				zOverrideValue = new_value;
+				zOverrideTimeoout = setTimeout(zOverrideCallback, 500);
+				
 				break;
 		}
 	}
