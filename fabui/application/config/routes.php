@@ -85,7 +85,8 @@ $route['maintenance/first-setup']               = 'firstsetup';
 $route['maintenance/firmware']                  = 'firmware';
 $route['maintenance/system-info']               = 'systeminfo';
 $route['maintenance/nozzle-height-calibration'] = 'nozzle';
-
+$route['maintenance/nozzle-pid-tune']           = 'nozzle/pidtune';
+//plugin
 $route['plugin/add'] = 'plugin/add';
 $route['plugin/online'] = 'plugin/online';
 $route['plugin/create'] = 'plugin/create';

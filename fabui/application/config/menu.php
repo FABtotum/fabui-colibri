@@ -76,6 +76,11 @@ $config['menu'] = array(
 						'title' => _("Height calibration"),
 						'icon' => 'fa-arrows-v',
 						'url' => 'maintenance/nozzle-height-calibration'
+					),
+					'pidtune' => array(
+						'title' => _("Pid tune"),
+						'icon' => 'fa-thermometer-three-quarters',
+						'url' => 'maintenance/nozzle-pid-tune'
 					)
 				)
 			),

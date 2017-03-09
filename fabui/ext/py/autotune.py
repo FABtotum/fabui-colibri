@@ -46,17 +46,25 @@ class PIDAutotune(GCodePusher):
         self.autotune_stats = {
             'P' : 0.0,
             'I' : 0.0,
-            'D' : 0.0
+            'D' : 0.0,
+            'target' : 0.0
         }
         
-        self.add_monitor_group('autotune', self.autotune_stats)
+        self.add_monitor_group('pid_tune', self.autotune_stats)
 
     def run(self, task_id, extruder, temperature, cycles):
         
-        self.prepare_task(task_id, task_type='autotune')
+        self.send('M300')
+        self.autotune_stats['target'] = temperature
+        self.add_monitor_group('pid_tune', self.autotune_stats)
+        
+        self.prepare_task(task_id, task_type='pid_tune', task_controller='maintenance')
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
         self.trace( _('PID Autotune started.') )
+        
+        # needed to keep UI updated
+        self.send('M104 S{0}'.format(temperature))
         
         reply = self.send('M303 E{0} S{1} C{2}'.format(extruder, temperature, cycles), expected_reply = 'PID Autotune finished!' )
         #print reply
@@ -95,7 +103,7 @@ def main():
 
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("task_id",          help=_("Task ID.") )
+    parser.add_argument("-T", "--task-id",  help=_("Task ID."),                         default=0)
     parser.add_argument("-e", "--extruder", help=_("Extruder to select."),              default=0)
     parser.add_argument("-t", "--temp",     help=_("Temperature used for PID tunind."), default=200)
     parser.add_argument("-c", "--cycles",   help=_("Number of tuning cycles"),          default=8)
