@@ -20,7 +20,7 @@
 			<!-- <header>Status: <span class="header-status"><?php echo isset($task) ? 'running' : 'stopped'; ?></span></header> -->
 			<header class="">
 				<?php echo _("Installed head"); ?>: <strong><?php echo $installed_head['name'];?></strong>
-				<br><small><?php echo _("Actual PID"); ?> <?php echo str_replace("M301", "", $installed_head['pid']) ?></small>
+				<br><small><?php echo _("Current PID"); ?> <?php echo str_replace("M301", "", $installed_head['pid']) ?></small>
 			</header>
 			<fieldset>
 				<div class="row">
