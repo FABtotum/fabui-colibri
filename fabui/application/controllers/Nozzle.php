@@ -201,11 +201,9 @@ class Nozzle extends FAB_Controller {
 	{
 		$postData = $this->input->post();
 		$this->load->helpers('fabtotum_helper');
-		$settings = loadSettings();
-		$installedHead = $settings['hardware']['head'];
-		$installedHeadInfo = getInstalledHeadInfo();
+		$installedHeadInfo        = getInstalledHeadInfo();
 		$installedHeadInfo['pid'] = 'M301 P'.$postData['p'].' I'.$postData['i'].' D'.$postData['d'];
-		saveHeadInfo($installedHeadInfo, $installedHead);
+		saveInfoToInstalledHead($installedHeadInfo);
 		resetController();
 		$this->output->set_content_type('application/json')->set_output(json_encode( $installedHeadInfo ));
 	}
