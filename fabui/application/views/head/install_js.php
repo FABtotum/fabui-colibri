@@ -209,6 +209,10 @@
 				break;
 			case "add":
 				document.getElementById("head-settings").reset();
+				$(".url-container").show();
+				$(".description-container").show();
+				$("#head-name").removeAttr("readonly");
+				$("#head-fw_id").removeAttr("readonly");
 				$('#settingsModal').modal('show');
 				break;
 			case "remove":
@@ -271,32 +275,39 @@
 	function populateHeadSettings(head)
 	{
 		document.getElementById("head-settings").reset();
-		
-		//if(heads.hasOwnProperty(selected_head))
-		{
-			//var head = heads[selected_head];
-			
-			for (var key in head) {
-				var value = head[key];
-				// now you can use key as the key, value as the... you guessed right, value
-				if(Array.isArray(value))
+
+		console.log(head);
+		for (var key in head) {
+			var value = head[key];
+			// now you can use key as the key, value as the... you guessed right, value
+			if(Array.isArray(value))
+			{
+				for(var i=0; i<value.length; i++)
 				{
-					for(var i=0; i<value.length; i++)
-					{
-						var id = "#cap-" + value[i];
-						$(id).prop('checked', true);
-					}
-				}
-				else
-				{
-					var id = "#head-"+key;
-					$(id).val(value);
-					console.log('try to', id);
+					var id = "#cap-" + value[i];
+					$(id).prop('checked', true);
 				}
 			}
-			
-			capability_change(false);
+			else
+			{
+				var id = "#head-"+key;
+				$(id).val(value);
+				console.log('try to', id);
+			}
 		}
+		
+		capability_change(false);
+		/**
+		* only for fabtotums official heads
+		*/
+		if(head.fw_id < 100){
+			$(".url-container").hide();
+			$(".description-container").hide();
+			$("#head-name").attr("readonly", "readonly");
+			$("#head-fw_id").attr("readonly", "readonly");
+			
+		}
+
 	}
 	
 	function saveHeadSettings()

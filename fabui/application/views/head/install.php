@@ -100,7 +100,7 @@
 								</label>
 							</section>
 							
-							<section class="col col-6">
+							<section class="col col-6 url-container">
 								<label class="label"><?php echo _('URL');?></label>
 								<label class="input">
 									<input type="text" class="plugin-adaptive-meta" id="head-link" name="link" placeholder="More info link">
@@ -109,7 +109,7 @@
 							
 						</div>
 						
-						<section>
+						<section class="description-container">
 							<label class="label"><?php echo _('Description');?></label>
 							<label class="textarea">
 								<textarea id="head-description" name="description" rows="3" placeholder="Head description"></textarea>
@@ -160,7 +160,7 @@
 					<fieldset>
 						<div class="row">
 							<section class="col col-6">
-								<label class="label">Working mode</label>
+								<label class="label"><?php echo _("Working mode");?></label>
 								<label class="select">
 									<select id="head-working_mode" name="working_mode">
 										<option value="0">Hybrid</option>
@@ -191,7 +191,7 @@
 							</section>
 							
 							<section class="col col-4">
-								<label class="label">Thermistor</label>
+								<label class="label"><?php echo _("Thermistor");?></label>
 								<label class="select">
 									<select id="head-thermistor_index" name="thermistor_index">
 										<option value="0">Fabtotum</option>
@@ -246,9 +246,9 @@
 
 			<div class="modal-footer">
 			<input id="inputId" type="file" style="display:none" accept=".json">
-			<button type="button" class="btn btn-default settings-action" data-action="import" title="<?php echo _("Import from file")?>">Import</button>
-			<button type="button" class="btn btn-default settings-action" data-action="export" title="<?php echo _("Export to file")?>">Export</button>
-			<button type="button" class="btn btn-primary settings-action" data-action="save" data-dismiss="modal">Save</button>
+			<button type="button" class="btn btn-default settings-action" data-action="import" title="<?php echo _("Import from file")?>"><?php echo _("Import");?></button>
+			<button type="button" class="btn btn-default settings-action" data-action="export" title="<?php echo _("Export to file")?>"><?php echo _("Export");?></button>
+			<button type="button" class="btn btn-primary settings-action" data-action="save" data-dismiss="modal"><?php echo _("Save");?></button>
 			</div><!-- /.modal-footer -->
 
 		</div><!-- /.modal-content -->
