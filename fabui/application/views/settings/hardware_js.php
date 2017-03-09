@@ -119,6 +119,7 @@
 	//
 	function saveSettings()
 	{
+		openWait("<i class='fa fa-spin fa-spinner'></i> <?php echo _("Applying new settings"); ?>", "<?php echo _("Please wait"); ?>...", false );
 		var button = $(this);
 		button.addClass('disabled');
 		button.html('<i class="fa fa-save"></i> <?php echo _('Saving')?>..');
@@ -135,10 +136,10 @@
 			data : data,
 			dataType: 'json'
 		}).done(function(response) {
+			closeWait();
 			button.html('<i class="fa fa-save"></i> <?php echo _('Save')?>');
 			button.removeClass('disabled');
 			fabApp.analizeMenu(response.feeder.show);
-
 			$.smallBox({
 				title : "<?php echo _('Settings')?>",
 				content : '<?php echo _('Hardware settings saved')?>',

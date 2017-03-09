@@ -195,7 +195,7 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     offset  = float(head.get('nozzle_offset', 0))
     fw_id   = int(head.get('fw_id',0))
     max_temp= int(head.get('max_temp',230))
-    probe_length  = float(config.get('settings', 'zprobe.length', 0))
+    probe_length  = float(app.config.get('settings', 'zprobe.length', 0))
     
     # Set installed head ID
     if fw_id is not None:

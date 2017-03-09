@@ -26,6 +26,7 @@
 <script type="text/javascript" src="/assets/js/app.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script type="text/javascript" src="/assets/js/fab.app.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script type="text/javascript" src="/assets/js/fabtotum.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script type="text/javascript" src="/assets/js/demo.js?v=<?php echo FABUI_VERSION ?>"></script>
 <?php echo $jsScripts; ?>
 <script type="text/javascript">
 	var heads = <?php echo json_encode($heads)?>;
