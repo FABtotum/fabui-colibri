@@ -78,15 +78,8 @@ class Nozzle extends FAB_Controller {
 	public function overrideOffset($override_by)
 	{
 		$this->load->helper('fabtotum_helper');
-		//$_result = doMacro('read_eeprom');
-		//$old_probe_lenght = $_result['reply']['probe_length'];
-		//$new_probe_lenght = abs($old_probe_lenght) - $override_by;
-		
-		// override probe value
-		//doGCode('M710 S'.$new_probe_lenght );
 		
 		$info = getInstalledHeadInfo();
-		
 		$old_nozzle_offset = $info['nozzle_offset'];
 		$new_nozzle_offset = $old_nozzle_offset + $override_by;
 		
@@ -124,6 +117,100 @@ class Nozzle extends FAB_Controller {
 		$result = doMacro('measure_nozzle_prepare');
 		$this->output->set_content_type('application/json')->set_output(json_encode( $offset ));
 	}
+	/**
+	 * 
+	 */
+	public function pidtune()
+	{
+		$this->load->library('smart');
+		$this->load->helper('form');
+		$this->load->helper('fabtotum_helper');
+		$this->load->helper('plugin_helper');
+		
+		$this->load->model('Tasks', 'tasks');
+		//$this->tasks->truncate();
+		$runningTask = $this->tasks->getRunning();
+		
+		
+		$data = array();
+		$data['installed_head'] = getInstalledHeadInfo();
+		$data['runningTask'] = $this->tasks->getRunning('maintenance');
+		
+		$data['task'] = 'stopped';
+		
+		$widgetOptions = array(
+				'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
+				'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
+		);
+		
+		$widgeFooterButtons = $this->smart->create_button(_('Save'), 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		
+		
+		$widgeFooterButtons = $this->smart->create_button(_('Start'), 'default')->attr(array('id' => 'autotune'))->attr('data-action', 'start')->icon('fa-play')->print_html(true)
+		.' '.$this->smart->create_button(_('Save'), 'primary')->attr(array('id' => 'save'))->icon('fa-save')->print_html(true);
+		
+		
+		$widget         = $this->smart->create_widget($widgetOptions);
+		$widget->id     = 'main-widget-nozzle-pidtune';
+		$widget->header = array('icon' => 'fa-thermometer-three-quarters', "title" => "<h2>PID Tune</h2>");
+		$widget->body   = array('content' => $this->load->view('nozzle/pidtune/widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
+		
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.cust.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.resize.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.fillbetween.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.time.min.js'); //datatable
+		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js'); //datatable
+		
+		
+		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
+		$this->addJsInLine($this->load->view('nozzle/pidtune/js', $data, true));
+		$this->content = $widget->print_html(true);
+		$this->view();
+	}
+	/**
+	 * 
+	 */
+	public function startPidTune()
+	{
+		$postData = $this->input->post();
+		$this->load->helpers('fabtotum_helper');
+		//create db record
+		$this->load->model('Tasks', 'tasks');
+		$taskData = array(
+			'user'       => $this->session->user['id'],
+			'controller' => 'maintenance',
+			'type'       => 'pid_tune',
+			'status'     => 'running',
+			'start_date' => date('Y-m-d H:i:s')
+		);
+		
+		$taskID = $this->tasks->add($taskData);
+		$taskArgs = array(
+			'-T' => $taskID,
+			'-t' => $postData['temperature'],
+			'-c' => $postData['cycle']
+		);
+		resetTaskMonitor();
+		startPyScript('autotune.py', $taskArgs);
+		$this->output->set_content_type('application/json')->set_output(json_encode( array('start'=> true, 'args' => $taskArgs) ));
+	}
+	/**
+	 * 
+	 */
+	public function savePIDValues()
+	{
+		$postData = $this->input->post();
+		$this->load->helpers('fabtotum_helper');
+		$settings = loadSettings();
+		$installedHead = $settings['hardware']['head'];
+		$installedHeadInfo = getInstalledHeadInfo();
+		$installedHeadInfo['pid'] = 'M301 P'.$postData['p'].' I'.$postData['i'].' D'.$postData['d'];
+		saveHeadInfo($installedHeadInfo, $installedHead);
+		resetController();
+		$this->output->set_content_type('application/json')->set_output(json_encode( $installedHeadInfo ));
+	}
+	
+	
 }
  
 ?>
