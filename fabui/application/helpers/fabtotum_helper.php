@@ -316,13 +316,12 @@ if(!function_exists('restoreHeadFactorySettings'))
 		$CI->load->helper('file');
 		$CI->config->load('fabtotum');
 		$heads_dir        = $CI->config->item('heads');
-		$factory_dir      = $heads_dir.'/factory/';
+		$factory_dir      = $CI->config->item('fabui_path').'heads/';
 		if(file_exists($factory_dir.$head_file_name.'.json')){
 			$factory_settings = json_decode(file_get_contents($factory_dir.$head_file_name.'.json'), true);
 			return saveHeadInfo($factory_settings, $head_file_name);
 		}
 		return false;
-		
 	}
 }
 
