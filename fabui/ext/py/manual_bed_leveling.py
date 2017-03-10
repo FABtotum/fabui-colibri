@@ -85,10 +85,11 @@ class ManualBedLeveling(GCodePusher):
         :rtype: float
         """
         self.send('G0 X{0} Y{1} F{2}'.format(x, y, self.XY_FEEDRATE) )
-        
-        reply = self.send('G30', expected_reply = 'echo:', timeout = timeout)
-        if reply:            
-            z = float( reply[-1].split("Z:")[1].strip() )
+        reply = self.send('G30', timeout = timeout)
+        if reply:
+            match = re.search("Feedrate: ([-|+0-9.]+)\sBed\sX:\s([-|+0-9.]+)\sY:\s([-|+0-9.]+)\sZ:\s([-|+0-9.]+)", reply[0], re.IGNORECASE)
+            #~ z = float( reply[-1].split("Z:")[1].strip() )
+            z = float( match.group(4) )
             z = round(z, 3)  # round to 3 decimanl points
             return [x,y,z,1]
             
