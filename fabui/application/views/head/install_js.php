@@ -76,9 +76,10 @@
 		
 		$("#head-name").inputmask("Regex");
 	}
-
-	 function set_head_img(){
-	 	
+	/**
+	*
+	**/
+	function set_head_img(){
 	 	selected_head = $(this).val();
 	 	
 	 	if(heads.hasOwnProperty(selected_head))
@@ -112,39 +113,35 @@
 	 		$("#head_img").css('cursor', 'pointer');
 	 		$("#set-head").prop("disabled",true);
 		}
-		
 		if($(this).val() == 'head_shape'){
 			$("#set-head").prop("disabled",true);
 		}
 	 }
-
+	/**
+	*
+	**/
 	function set_head(){
 	 	if($("#heads").val() == 'head_shape'){
 	 		alert('Please select a Head');
 	 		return false;
 	 	}
-	 	
-	 	openWait('<i class="fa fa-circle-o-notch fa-spin"></i> Installing head');
-	 	
+	 	openWait('<i class="fa fa-circle-o-notch fa-spin"></i> <?php echo _("Installing head"); ?>', '<?php echo _("Please wait"); ?>...');
 	 	$.ajax({
 			type: "POST",
 			url: "<?php echo site_url("head/setHead") ?>/"+ $("#heads").val(),
 			dataType: 'json'
 		}).done(function( data ) {
-			
 			$(".alerts-container").find('div:first-child').remove();
-			$(".alerts-container").append('<div class="alert alert-success animated  fadeIn" role="alert"><i class="fa fa-check"></i> Well done! Now your <strong>FABtotum Personal Fabricator</strong> is set for the <strong>'+ data.name +'</strong>.</div>');
-			
-			//waitContent('Well done! Now your <strong><i>FABtotum Personal Fabricator</i></strong> is configured to use <strong><i>'+ data.name+'</i></strong>.');
-			
+			$(".alerts-container").append('<div class="alert alert-success animated  fadeIn" role="alert"><i class="fa fa-check"></i> Well done! Now your <strong>FABtotum Personal Fabricator</strong> is set for the <strong>'+ data.name +'</strong>.</div>');			
 			setTimeout(function(){
 					document.location.href =  '<?php echo site_url('head'); ?>?head_installed';
 					location.reload();
 				}, 2000);
-			
 		});
 	}
-	
+	/**
+	*
+	**/
 	function capability_change(update_working_mode=true)
 	{
 		var capabilities = [];
@@ -193,11 +190,11 @@
 			$("#head-working_mode").val(working_mode);
 
 	}
-	
+	/**
+	*
+	**/
 	function buttonAction(){
 		var action = $(this).attr('data-action');
-		console.log('action:', action);
-		
 		switch(action)
 		{
 			case "edit":
@@ -209,10 +206,7 @@
 				break;
 			case "add":
 				document.getElementById("head-settings").reset();
-				$(".url-container").show();
-				$(".description-container").show();
-				$("#head-name").removeAttr("readonly");
-				$("#head-fw_id").removeAttr("readonly");
+				showHideInputsForOfficialHeads('show');
 				$('#settingsModal').modal('show');
 				break;
 			case "remove":
@@ -233,7 +227,9 @@
 		
 		return false;
 	}
-	
+	/**
+	*
+	**/
 	function getHeadSettings()
 	{
 		var capabilities = [];
@@ -265,18 +261,14 @@
 		});
 		
 		settings['capabilities'] = capabilities;
-		
-		console.log(settings);
-		
-		//console.log();
 		return settings;
 	}
-	
+	/**
+	*
+	**/
 	function populateHeadSettings(head)
 	{
 		document.getElementById("head-settings").reset();
-
-		console.log(head);
 		for (var key in head) {
 			var value = head[key];
 			// now you can use key as the key, value as the... you guessed right, value
@@ -295,29 +287,24 @@
 				console.log('try to', id);
 			}
 		}
-		
 		capability_change(false);
 		/**
 		* only for fabtotums official heads
 		*/
 		if(head.fw_id < 100){
-			$(".url-container").hide();
-			$(".description-container").hide();
-			$("#head-name").attr("readonly", "readonly");
-			$("#head-fw_id").attr("readonly", "readonly");
-			
+			showHideInputsForOfficialHeads('hide');
+		}else{
+			showHideInputsForOfficialHeads('show');
 		}
 
 	}
-	
+	/**
+	*
+	**/
 	function saveHeadSettings()
 	{
-		console.log('saveHeadSettings');
-		var settings = getHeadSettings();
-		
+		var settings = getHeadSettings();	
 		var filename = settings['name'].replace(/ /g, "_").toLowerCase();
-		console.log('filename', filename);
-		
 		$.ajax({
 			type: 'post',
 			url: '<?php echo site_url('head/saveHead'); ?>/' + filename,
@@ -331,17 +318,20 @@
 			}, 1000);
 		});
 	}
-	
+	/**
+	*
+	**/
 	function exportHeadSettings()
 	{
 		var settings = getHeadSettings();
 		var filename = settings['name'].replace(/ /g, "_").toLowerCase() + ".json";
-		
 		var content = JSON.stringify(settings, null, 2)
 		var blob = new Blob([content], {type: "text/plain"});
 		saveAs(blob, filename);
 	}
-	
+	/**
+	*
+	**/
 	function importHeadSettings(event)
 	{
 		var input = event.target;
@@ -353,10 +343,11 @@
 			populateHeadSettings(content);
 		}
 		reader.readAsText(input.files[0]);
-		
 		return false;
 	}
-	
+	/**
+	*
+	**/
 	function removeHeadSettings()
 	{
 		$.SmartMessageBox({
@@ -364,10 +355,8 @@
 			content: "<?php echo _("Remove <strong>{0}</strong> settings?");?>".format(heads[selected_head].name),
 			buttons: '[<?php echo _("No")?>][<?php echo _("Yes")?>]'
 		}, function(ButtonPressed) {
-		   
 			if (ButtonPressed === "<?php echo _("Yes")?>")
 			{
-				console.log("Remove head confirmation");
 				$.ajax({
 					type: 'post',
 					url: '<?php echo site_url('head/removeHead'); ?>/' + selected_head,
@@ -382,11 +371,24 @@
 			}
 			if (ButtonPressed === "<?php echo _("No")?>")
 			{
-				
 			}
 		});
 	}
-	
-	
-	
+	/**
+	*
+	**/
+	function showHideInputsForOfficialHeads(action)
+	{
+		if(action == 'show'){
+			$(".url-container").show();
+			$(".description-container").show();
+			$("#head-name").removeAttr("readonly")
+			$("#head-fw_id").removeAttr("readonly");
+		}else if(action == 'hide'){
+			$(".url-container").hide();
+			$(".description-container").hide();
+			$("#head-name").attr("readonly", "readonly");
+			$("#head-fw_id").attr("readonly", "readonly");
+		}
+	}
 </script>

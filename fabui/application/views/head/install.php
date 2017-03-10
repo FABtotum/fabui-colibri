@@ -31,8 +31,8 @@
 								<div class="input-group">
 									<label class="select"> <?php echo form_dropdown('heads', $heads_list, $head, 'class="input-lg" id="heads"'); ?> <i></i> </label>
 									<span class="input-group-btn btn-group-lg">
-									  <button type="button" id="edit-button" class="btn btn-default settings-action" title="<?php echo _("Edit");?>" data-action="edit"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-									  <button type="button" id="remove-button" class="btn btn-default settings-action" title="<?php echo _("Remove");?>" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></button>
+									  <button type="button" id="edit-button" class="btn btn-default btn-success settings-action" title="<?php echo _("Edit");?>" data-action="edit"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+									  <button type="button" id="remove-button" class="btn btn-default btn-danger settings-action" title="<?php echo _("Remove");?>" data-action="remove"><i class="fa fa-trash" aria-hidden="true"></i></button>
 									</span>
 								</div>
 							</section>
