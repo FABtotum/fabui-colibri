@@ -48,7 +48,7 @@ case "$1" in
         
         # Move data to userdata partition
         # Heads
-        cp -r ${LIB_PATH}heads/* /mnt/userdata/heads
+        cp ${LIB_PATH}heads/* /mnt/userdata/heads
         rm -rf ${LIB_PATH}heads
         sudo -uwww-data ln -s /mnt/userdata/heads ${LIB_PATH}
         
