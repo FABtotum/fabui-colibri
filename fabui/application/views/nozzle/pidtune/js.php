@@ -253,8 +253,7 @@
              dataType: "json"
          }).done(function( data ) {
 			closeWait();
-            console.log(data);
-                	 
+			$(".current-pid").html(data.pid.replace("M301", ""));
          });
 	}
 	/**
