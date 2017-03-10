@@ -246,9 +246,10 @@
 
 			<div class="modal-footer">
 			<input id="inputId" type="file" style="display:none" accept=".json">
-			<button type="button" class="btn btn-default settings-action" data-action="import" title="<?php echo _("Import from file")?>"><?php echo _("Import");?></button>
-			<button type="button" class="btn btn-default settings-action" data-action="export" title="<?php echo _("Export to file")?>"><?php echo _("Export");?></button>
-			<button type="button" class="btn btn-primary settings-action" data-action="save" data-dismiss="modal"><?php echo _("Save");?></button>
+			<button type="button" class="btn btn-default settings-action pull-left factory-head-button" data-action="factory-reset" title="<?php echo _("Restore factory settings")?>"><i class="fa fa-refresh"></i> <?php echo _("Factory reset");?></button>
+			<button type="button" class="btn btn-default settings-action custom-head-button" data-action="import" title="<?php echo _("Import from file")?>"><i class="fa fa-upload"></i> <?php echo _("Import");?></button>
+			<button type="button" class="btn btn-default settings-action" data-action="export" title="<?php echo _("Export to file")?>"><i class="fa fa-download"></i> <?php echo _("Export");?></button>
+			<button type="button" class="btn btn-primary settings-action" data-action="save" data-dismiss="modal"><i class="fa fa-save"></i> <?php echo _("Save");?></button>
 			</div><!-- /.modal-footer -->
 
 		</div><!-- /.modal-content -->

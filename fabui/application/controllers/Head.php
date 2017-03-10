@@ -66,7 +66,9 @@ class Head extends FAB_Controller {
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
-	
+	/**
+	 * 
+	 */
 	public function setHead($new_head)
 	{
 		$this->load->helper('fabtotum_helper');
@@ -90,21 +92,32 @@ class Head extends FAB_Controller {
 
 		$this->output->set_content_type('application/json')->set_output(json_encode( $head_info ));
 	}
-
+	/**
+	 * 
+	 */
 	public function removeHead($head)
 	{
 		$this->load->helper('fabtotum_helper');
 		$result = removeHeadInfo($head);
 		$this->output->set_content_type('application/json')->set_output(json_encode( $result ));
 	}
-	
+	/**
+	 * 
+	 */
 	public function saveHead($head_filename)
 	{
 		$this->load->helper('fabtotum_helper');
-		
 		$info = $this->input->post();
 		$result = saveHeadInfo($info, $head_filename);
-		
+		$this->output->set_content_type('application/json')->set_output(json_encode( $result ));
+	}
+	/**
+	 * 
+	 */
+	public function factoryReset($head_filename)
+	{
+		$this->load->helper('fabtotum_helper');
+		$result = restoreHeadFactorySettings($head_filename);
 		$this->output->set_content_type('application/json')->set_output(json_encode( $result ));
 	}
 }

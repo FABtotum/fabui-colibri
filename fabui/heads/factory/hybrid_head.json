@@ -1,0 +1,20 @@
+{
+    "name": "Hybrid Head",
+    "link": "https:\/\/store.fabtotum.com\/eu\/hybrid-head-v2-hyb.html",
+    "description": "The <strong>Hybrid head<\/strong> is the original multipurpose head of the FABtotum Personal Fabricator. It's capable of 3D printing PLA and ABS up to 230&deg;C and Milling up to 14000 RPM.<br> The milling chuck supports 1\/8 bits",
+    "custom_gcode": "",
+    "working_mode": "0",
+    "fw_id": "1",
+    "pid": "M301 P15 I5 D30",
+    "thermistor_index": "0",
+    "max_temp": "230",
+    "nozzle_offset": "5",
+    "min_rpm": "6000",
+    "max_rpm": "14000",
+    "feeder_step": "200",
+    "capabilities": [
+        "print",
+        "mill",
+        "fan"
+    ]
+}

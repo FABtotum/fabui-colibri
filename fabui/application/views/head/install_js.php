@@ -223,6 +223,9 @@
 				if($("#head-settings").valid())
 					exportHeadSettings();
 				break;
+			case "factory-reset":
+				factoryReset(selected_head);
+				break;
 		}
 		
 		return false;
@@ -246,12 +249,10 @@
 					if($(this).is(":checked"))
 					{
 						capabilities.push( $(this).attr('data-attr') );
-						console.log('CHECK', $(this).attr('data-attr') );
 					}
 				}
 				else
 				{
-					console.log('INPUT', name);
 					settings[name] = $(this).val();
 				}
 				
@@ -384,11 +385,44 @@
 			$(".description-container").show();
 			$("#head-name").removeAttr("readonly")
 			$("#head-fw_id").removeAttr("readonly");
+			$(".factory-head-button").hide();
+			$(".custom-head-button").show();
 		}else if(action == 'hide'){
 			$(".url-container").hide();
 			$(".description-container").hide();
 			$("#head-name").attr("readonly", "readonly");
 			$("#head-fw_id").attr("readonly", "readonly");
+			$(".factory-head-button").show();
+			$(".custom-head-button").hide();
 		}
+	}
+	/**
+	*
+	**/
+	function factoryReset()
+	{
+		$.SmartMessageBox({
+			title: "<?php echo _("Attention");?>!",
+			content: "<?php echo _("Restore factory settings for <strong>{0}</strong> ?");?>".format(heads[selected_head].name),
+			buttons: '[<?php echo _("No")?>][<?php echo _("Yes")?>]'
+		}, function(ButtonPressed) {
+			if (ButtonPressed === "<?php echo _("Yes")?>")
+			{
+				$.ajax({
+					type: 'post',
+					url: '<?php echo site_url('head/factoryReset'); ?>/' + selected_head,
+					dataType: 'json'
+				}).done(function(response) {
+					fabApp.showInfoAlert('<?php echo _("Factory settings restored") ?>');
+					setTimeout(function(){
+						location.reload();
+					}, 1000);
+				});
+			}
+			if (ButtonPressed === "<?php echo _("No")?>")
+			{
+			}
+		});
+		
 	}
 </script>
