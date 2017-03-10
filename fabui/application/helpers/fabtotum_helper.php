@@ -198,10 +198,13 @@ if(!function_exists('loadHeads'))
 		$CI->config->load('fabtotum');
 		#$settings = json_decode(file_get_contents($CI->config->item($type.'_settings')), true);
 		$heads_dir = $CI->config->item('heads');
-		$heads_files = array_diff(scandir($heads_dir), array('..', '.'));
-
+		
+		$heads_files = array();
+		foreach (glob($heads_dir.'/*.json') as $zip) {
+			$info = get_file_info($zip);
+			$heads_files [] = $info['name'];
+		}
 		$heads = array();
-
 		$constants = get_defined_constants(true);
 		$json_errors = array();
 		foreach ($constants["json"] as $name => $value) {
@@ -209,7 +212,6 @@ if(!function_exists('loadHeads'))
 				$json_errors[$value] = $name;
 			}
 		}
-
 		foreach($heads_files as $head)
 		{
 			$head_file = $heads_dir . '/' . $head;
