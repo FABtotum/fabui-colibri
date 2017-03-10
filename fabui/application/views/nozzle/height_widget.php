@@ -147,7 +147,7 @@ If the print first layer is too high or too close to the bed, use this function 
                                             <label><strong>Closer</strong></label>
                                         </section>
                                         <section class="col col-6 text-center">
-                                            <label><strong>Distance override (<span id="probe-lenght"></span> mm)</strong></label>
+                                            <label><strong>Distance override (<span id="nozzle-offset"></span> mm)</strong></label>
                                         </section>
                                         <section class="col col-3 text-center">
                                             <label><strong>Further</strong></label>

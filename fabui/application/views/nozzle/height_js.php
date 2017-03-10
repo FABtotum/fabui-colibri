@@ -1,7 +1,7 @@
 <script type="text/javascript">
 
     var choice = '';
-    var probe_length = 0;
+    var nozzle_offset = 0;
     var interval;
 
     var z_max_offset = 0;
@@ -70,7 +70,7 @@
             }
             
             if(choice == 'fast'){
-                get_probe_length();
+                get_nozzle_offset();
             }
    
         });
@@ -88,14 +88,14 @@
 
     });
     
-    function get_probe_length(){
-        if(probe_length <= 0){
+    function get_nozzle_offset(){
+        if(nozzle_offset <= 0){
         
             openWait('<i class="fa fa-circle-o-notch fa-spin"></i> '+_("Please wait") + '...');
             
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url("nozzle/getLength") ?>",
+                url: "<?php echo site_url("nozzle/getOffset") ?>",
                 dataType: "json"
             }).done(function( data ) {
                
@@ -107,8 +107,8 @@
                 $(".start").slideDown('slow');
                 closeWait();
                 
-                probe_length = data.probe_length;
-                $("#probe-lenght").html(Math.abs(data.probe_length));
+                nozzle_offset = data.nozzle_offset;
+                $("#nozzle-offset").html(data.nozzle_offset);
                
             });
         
@@ -170,8 +170,8 @@
                 
                 var html = _("Nozzle offset calibration")+'\n';
                 html += '====================================\n';
-                html += _("New Probe Length: {0}").format(Math.abs(z_probe_offset)) + '\n';
-                html += _("New Z Max offset: {0}").format(z_max_offset) + '\n';
+                html += _("New probe Length: {0}").format(Math.abs(z_probe_offset)) + '\n';
+                html += _("New Z max offset: {0}").format(z_max_offset) + '\n';
                 html += _("New nozzle offset: {0}").format(z_nozzle_offset);
                 
                 $("#calibrate-trace").html(html);

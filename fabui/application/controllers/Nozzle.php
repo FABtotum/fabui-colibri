@@ -63,15 +63,14 @@ class Nozzle extends FAB_Controller {
 	/**
 	 * 
 	 */
-	/*public function getLength()
+	public function getOffset()
 	{
 		$this->load->helper('fabtotum_helper');
-		$_result = doMacro('read_eeprom');
-		$probe_length = $_result['reply']['probe_length'];
+		$info = getInstalledHeadInfo();
 		$this->output->set_content_type('application/json')->set_output(
-				json_encode( array('probe_length' => $probe_length) )
+				json_encode( array('nozzle_offset' => $info['nozzle_offset']) )
 			);
-	}*/
+	}
 	/**
 	 * 
 	 */
