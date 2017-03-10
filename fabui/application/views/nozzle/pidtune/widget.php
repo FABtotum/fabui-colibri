@@ -11,7 +11,7 @@
 <div class="row">
 	<div class="col-sm-6">
 		<p class="margin-top-10" style="padding:10px">
-			<span class=""> <i class="fab-lg fab-fw icon-fab-term "></i> <span class="mode-label"><?php echo _("Nozzle");?></span> <span class="spd-temperature"></span> &deg;C</span>			
+			<span class=""> <i class="fa fa-fw fa-thermometer-three-quarters "></i> <span class="mode-label"><?php echo _("Nozzle");?></span> <code class="spd-temperature"></code> &deg;C</span>			
 		</p>
 		<div id="temperatures-chart" style="margin-top:0px;" class="chart"> </div>	
 	</div>
@@ -27,6 +27,7 @@
 					<section class="col col-6">
 						<label class="label"><?php echo _("Target temperature");?> </label>
 						<label class="input">
+							<i class="icon-prepend fa fa-thermometer-three-quarters"></i>
 							<input type="number" max="250" value="200" id="temperature_target">
 						</label>
 					</section>
@@ -39,16 +40,22 @@
 				</div>
 				<div class="row tuning-values">
 					<section class="col col-4">
-						<label class="label">Kp</label>
-						<label class="input"><input type="text" id="kp" readonly="readonly" /></label>
+						<label class="input">
+							<span class="icon-prepend">P</span>
+							<input type="text" id="kp" readonly="readonly" />
+						</label>
 					</section>
 					<section class="col col-4">
-						<label class="label">Ki</label>
-						<label class="input"><input type="text" id="ki" readonly="readonly" /></label>
+						<label class="input">
+							<span class="icon-prepend">I</span>
+							<input type="text" id="ki" readonly="readonly" />
+						</label>
 					</section>
 					<section class="col col-4">
-						<label class="label">Kd</label>
-						<label class="input"><input type="text" id="kd" readonly="readonly" /></label>
+						<label class="input">
+							<span class="icon-prepend">D</span>
+							<input type="text" id="kd" readonly="readonly" />
+						</label>
 					</section>
 				</div>		
 			</fieldset>
