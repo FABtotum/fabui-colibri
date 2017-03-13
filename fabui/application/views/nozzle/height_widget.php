@@ -1,4 +1,14 @@
+
 <div class="row">
+	
+	<div class="col-sm-12 alerts-container">
+	<?php if($warning): ?>
+		<div class="alert alert-info animated  fadeIn" role="alert">
+			<i class="fa fa-info-circle"></i> Seems that you still have not done nozzle height calibration for this head.
+		</div>
+	<?php endif; ?>
+	</div>
+	
     <div class="col-sm-12">
         
             

@@ -44,6 +44,12 @@ class Nozzle extends FAB_Controller {
 		
 		//data
 		$data = array();
+		$data['warning'] = false;
+		
+		$head_info = getInstalledHeadInfo();
+		
+		if($head_info['nozzle_offset'] == 0)
+			$data['warning'] = true;
 		
 		//main page widget
 		$widgetOptions = array(

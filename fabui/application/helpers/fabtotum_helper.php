@@ -301,6 +301,9 @@ if(!function_exists('getInstalledHeadInfo'))
 			$info['image_src'] = '/assets/img/head/head_shape.png';
 		}
 		
+		if(!isset($info['nozzle_offset']))
+			$info['nozzle_offset'] = 0;
+		
 		return $info;
 	}
 }
