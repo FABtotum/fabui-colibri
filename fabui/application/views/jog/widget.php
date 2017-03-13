@@ -98,29 +98,25 @@
 								</label>
 							</section>
 						</div>
-						<hr class="simple">
-							<section>
+						<section>
 							<label class="label"><?php echo _("Cold extrusion safety"); ?></label>
-							</section>
+						</section>
 						<div class="row">
-							<section class="col col-6">
-								
+							<section class="col col-6">	
 								<button class="btn btn-primary btn-block cold-extrusion" data-attribute="on" style="padding:6px 10px 5px"><?php echo _("Turn on"); ?></button>
 							</section>
 							<section class="col col-6">
-								
 								<button class="btn btn-primary btn-block cold-extrusion" data-attribute="off" style="padding:6px 10px 5px"><?php echo _("Turn off"); ?></button>
 							</section>
 						</div>
 					</fieldset>
 				</div>
 			</div>
-			
 			<div class="tab-pane fade in" id="fourthaxis-tab">
 				<div class="knobs-container text-center" id="mode-a">
-					<input value="0" class="knob" data-displayPrevious="true" data-width="230" data-height="230" data-cursor="true" data-step="0.5" data-min="0" data-max="360" data-thickness=".3" data-fgColor="#A0CFEC" data-displayInput="true">
+					<input value="0" class="knob" data-displayPrevious="true" data-width="170" data-height="170" data-cursor="true" data-step="0.5" data-min="0" data-max="360" data-thickness=".3" data-fgColor="#A0CFEC" data-displayInput="true">
 				</div>
-				<div class="smart-form">
+				<div class="smart-form" style="margin-top:-10px;">
 					<fieldset>
 						<section>
 							<label class="label"><?php echo _("Feedrate"); ?></label>
@@ -128,6 +124,17 @@
 								<input type="number" min="1" value="800" id="4thaxis-feedrate">
 							</label>
 						</section>
+						<section>
+							<label class="label"><?php echo _("Cold extrusion safety"); ?></label>
+						</section>
+						<div class="row">
+							<section class="col col-6">
+								<button class="btn btn-primary btn-block cold-extrusion" data-attribute="on" style="padding:6px 10px 5px"><?php echo _("Turn on"); ?></button>
+							</section>
+							<section class="col col-6">
+								<button class="btn btn-primary btn-block cold-extrusion" data-attribute="off" style="padding:6px 10px 5px"><?php echo _("Turn off"); ?></button>
+							</section>
+						</div>
 					</fieldset>
 				</div>
 			</div>
