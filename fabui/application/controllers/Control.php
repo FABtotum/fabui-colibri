@@ -118,6 +118,8 @@
 			$requestData = json_decode($request, true);
 			
 			$this->load->config('fabtotum');
+			$this->load->helper('fabtotum_helper');
+			$this->load->helper('os_helper');
 			
 			// notify.json
 			$notify = array(

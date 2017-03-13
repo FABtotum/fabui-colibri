@@ -383,7 +383,7 @@ fabApp = (function(app) {
 	app.jogMdi = function(value, callback) {
 		
 		var commands = value.split("\n");
-		var fixed = []
+		var fixed = [];
 		for(var i=0; i<commands.length; i++)
 		{
 			fixed.push( commands[i].split(";")[0] );
@@ -729,7 +729,7 @@ fabApp = (function(app) {
 		
 		setTimeout(function(e){
 			app.ws_reconnecting = false;
-			app.webSocket();
+			app.webSocket(true);
 			}, 3000);
 	}
 	/**
@@ -760,10 +760,13 @@ fabApp = (function(app) {
 	/**
 	*
 	*/
-	app.webSocket = function()
+	app.webSocket = function(force_fallback)
 	{
+		force_fallback = force_fallback || false;
 		options = {
 			http: websocket_fallback_url,
+			force_fallback : force_fallback,
+			interval : 5000
 		};
 		
 		socket = ws = $.WebSocket ('ws://'+socket_host+':'+socket_port, null, options);
@@ -1204,6 +1207,8 @@ fabApp = (function(app) {
 		
 		if(debugState)
 			root.console.log("✔ app.serial: " + func + ', ' + val);
+		
+		console.log(val);
 		
 		var stamp = Date.now();
 		
