@@ -97,11 +97,11 @@ $config['menu'] = array(
 			),
 			'feedercalibration' => array(
 				'title' => _("Feeder"),
-				'icon' => 'fa-level-down',
+				'icon' => 'fa-cog',
 				'sub'  => array(
 					'length' => array(
 						'title' => _("Step calibration"),
-						'icon' => 'fa-cog',
+						'icon' => 'icon-fab-e',
 						'url' => 'maintenance/feeder-calibration'
 					),
 					'angle' => array(
