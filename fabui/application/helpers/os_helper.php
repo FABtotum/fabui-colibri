@@ -93,6 +93,9 @@ if(!function_exists('configureWireless'))
 			case "static-ap":
 				$args .= ' -A -a '.$address.' -n '.$netmask;
 				break;
+			case "disabled":
+				$args .= ' -M disabled';
+				break;
 			default:
 				return false;
 		}
@@ -286,6 +289,14 @@ if(!function_exists('scanWlan'))
 		$CI =& get_instance();
 		$CI->load->helper('fabtotum');
 		#$scanCommand = 'sudo python '.$CI->config->item('ext_path').'py/scan_wifi.py '.$interface;
+		
+		$data = getInterfaces();
+		if( $data[$interface]['address_mode'] == 'manual' )
+		{
+			$args = '-i ' . $interface . ' -M default';
+			$result = startBashScript('set_wifi.sh', $args, false, true);
+		}
+		
 		$result = startPyScript('scan_wifi.py', $interface, false, true);
 		$nets = json_decode( $result, true);
 		
