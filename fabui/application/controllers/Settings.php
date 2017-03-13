@@ -194,9 +194,9 @@ class Settings extends FAB_Controller {
 				$interfaces[$iface]['do_scan'] = true;
 				
 				if($info['wireless']['can_be_ap'] == 'yes')
-					$wifiModes = array('static' => 'Static', 'dhcp' => 'Automatic (DHCP)', 'static-ap' => 'Access Point');
+					$wifiModes = array('static' => _("Static"), 'dhcp' => _("Automatic (DHCP)"), 'static-ap' => _("Access Point"), 'disabled' => _("Disable") );
 				else
-					$wifiModes = array('static' => 'Static', 'dhcp' => 'Automatic (DHCP)');
+					$wifiModes = array('static' => _("Static"), 'dhcp' => _("Automatic (DHCP)"), 'disabled' => _("Disable") );
 				
 				if(!isset($info['wireless']['bssid']) && $info['address_mode'] == 'static')
 				{
@@ -216,6 +216,12 @@ class Settings extends FAB_Controller {
 						$info['address_mode'] = 'static-ap';
 						$interfaces[$iface]['do_scan'] = false;
 					}
+				}
+				
+				if( $info['address_mode'] == 'manual' )
+				{
+					$info['address_mode'] = 'disabled';
+					$interfaces[$iface]['do_scan'] = false;
 				}
 				
 				$if_type = 'wlan';

@@ -17,3 +17,5 @@ fi
 IFACE="$1"
 
 wpa_cli -p /run/wpa_supplicant -i$IFACE disconnect
+
+sh /usr/share/fabui/ext/bash/set_wifi.sh -i "${IFACE}" -M "default"

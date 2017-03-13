@@ -16,6 +16,8 @@
 		<?php 
 			foreach($interfaces as $iface => $value)
 			{
+				echo 'console.log("'.$iface.'", \''.json_encode($value).'\');'.PHP_EOL;
+				echo '$("#'.$iface.'-tab #address-mode").trigger("change");'.PHP_EOL;
 				if($value['do_scan'])
 				{
 					echo 'scan("'.$iface.'");'.PHP_EOL;
@@ -101,13 +103,20 @@
 			}
 			else
 			{
-				$.smallBox({
-					title : "<?php echo _('Warning')?>",
-					content : '<?php echo _('You need to connect to a network first')?>',
-					color : "#C46A69",
-					timeout: 10000,
-					icon : "fa fa-check bounce animated"
-				});
+				if( data['address-mode'] == 'disabled' )
+				{
+					post_data(data);
+				}
+				else
+				{
+					$.smallBox({
+						title : "<?php echo _('Warning')?>",
+						content : '<?php echo _('You need to connect to a network first')?>',
+						color : "#C46A69",
+						timeout: 10000,
+						icon : "fa fa-check bounce animated"
+					});
+				}
 			}
 		}
 	}
@@ -149,10 +158,20 @@
 		var error_message = _("Unknown error");
 		var reload_timeout = 5000;
 
+		console.log(data);
+
 		if(data.hasOwnProperty('hidden-ssid') && data['net_type'] == 'wlan') 
 		{
-			wait_title = _("Connecting to") + '<strong>' + data['hidden-ssid']+'</strong> <i class="fa fa-wifi"></i>';
-			error_message = _("Failed to connect to Wireless network");
+			if(data['address-mode'] == 'disabled')
+			{
+				wait_title = _("Disabling Wireless interface");
+				error_message = _("Failed to disable Wireless interface");
+			}
+			else
+			{
+				wait_title = _("Connecting to ") + '<strong>' + data['hidden-ssid']+'</strong> <i class="fa fa-wifi"></i>';
+				error_message = _("Failed to connect to Wireless network");
+			}
 		} 
 		else if(data['net_type'] == 'eth' && data['address-mode'] == 'static')
 		{
@@ -254,7 +273,7 @@
 		if( target.startsWith("#wlan") )
 		{
 			var mode = $(target + ' #address-mode').val();
-			if(mode != 'static-ap')
+			if(mode != 'static-ap' && mode != 'disabled')
 				$("#scanButton").show();
 			else
 				$("#scanButton").hide();
@@ -302,6 +321,14 @@
 			case "static-ap":
 				$("#"+iface+"-tab #address-container").slideDown('slow');
 				$("#"+iface+"-tab #ap-container").slideDown('slow');
+				$("#"+iface+"-tab #gateway-container").slideUp('slow');
+				$("#"+iface+"-tab #dhcp-address-container").slideUp('slow');
+				$("#"+iface+"-table-container").slideUp('slow');
+				$("#scanButton").hide();
+				break;
+			case "disabled":
+				$("#"+iface+"-tab #address-container").slideUp('slow');
+				$("#"+iface+"-tab #ap-container").slideUp('slow');
 				$("#"+iface+"-tab #gateway-container").slideUp('slow');
 				$("#"+iface+"-tab #dhcp-address-container").slideUp('slow');
 				$("#"+iface+"-table-container").slideUp('slow');
@@ -599,28 +626,7 @@
 	**/
 	function triggerPreSelected()
 	{
-		<?php if($preSelectedInterface != ''): ?>
 
-		var target = '#<?php echo $preSelectedInterface ?>';
-
-		if( target.startsWith("#wlan") )
-		{
-			var mode = $(target + ' #address-mode').val();
-			if(mode != 'static-ap')
-				$("#scanButton").show();
-			else
-				$("#scanButton").hide();
-		}
-		else if( target.startsWith("#eth") )
-		{
-			$("#scanButton").hide();
-		}
-		else if( target.startsWith("#dnssd") )
-		{
-			$("#scanButton").hide();
-		}
-		
-		<?php endif; ?>
 	}
 	/**
 	* initCurrentIPV4

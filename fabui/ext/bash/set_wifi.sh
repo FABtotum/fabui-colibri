@@ -14,6 +14,17 @@
 INTERFACESD=/etc/network/interfaces.d
 MAX_STATIONS=10
 
+set_wpa_supplicant_default()
+{
+	cat <<EOF > $WPA_CONF
+ctrl_interface=DIR=/run/wpa_supplicant GROUP=netdev
+update_config=1
+network={
+}
+EOF
+
+}
+
 set_wpa_supplicant_conf()
 {
 	SSID="${1}"
@@ -103,6 +114,37 @@ iface $IFACE inet static
 EOF
 }
 
+set_disabled()
+{
+cat <<EOF > $INTERFACESD/$IFACE
+# Automatically generated, do not edit \n
+# Interface is disabled
+iface $IFACE inet manual
+EOF
+
+}
+
+set_default()
+{
+    IFACE=${1}
+    IDX=$(echo $IFACE | sed s/wlan//)
+    let "IDX++"
+    IP="172.17.0.$IDX"
+    NETMASK="255.255.0.0"
+
+cat <<EOF > $INTERFACESD/$IFACE
+# Automatically generated, do not edit \n
+
+allow-hotplug $IFACE
+auto $IFACE
+iface $IFACE inet static
+  wpa-conf $WPA_CONF
+  address  $IP
+  netmask  $NETMASK
+
+EOF
+}
+
 set_dhcp()
 {
     IFACE="${1}"
@@ -149,6 +191,7 @@ This script configures wifi connection.
 OPTIONS:
    -h      Show this message
    -i      WiFi interface
+   -M      Special mode (default|disabled)
    -D      DHCP address mode
    -S      STATIC address mode
    -A      Access Point mode
@@ -196,12 +239,16 @@ IP=
 NETMASK=
 GATEWAY=
 CHANNEL=1
-while getopts “hDSAi:s:p:k:a:n:g:r:” OPTION
+while getopts “hDSAi:s:p:k:a:n:g:r:M:” OPTION
 do
      case $OPTION in
          h)
              usage
              exit 1
+             ;;
+         M)
+             MODE="$OPTARG"
+             SSID="-"
              ;;
          D)
              MODE="dhcp"
@@ -239,6 +286,8 @@ do
              ;;
      esac
 done
+
+echo "MODE: $MODE"
 
 if [[ -z "$MODE" ]] || [[ -z "$SSID" ]] || [[ -z "$IFACE" ]]
 then
@@ -283,6 +332,13 @@ case $MODE in
     ap)
         set_hostapd_conf "$IFACE" "$SSID" "$PASS" "$CHANNEL"
         set_static_ap "$IFACE" "$IP" "$NETMASK"
+        ;;
+    default)
+        set_wpa_supplicant_default
+        set_default "$IFACE"
+        ;;
+    disabled)
+        set_disabled "$IFACE"
         ;;
     *)
         echo "error: unknown mode \'$MODE\'"
