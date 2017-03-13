@@ -1,12 +1,12 @@
 <?php
 /**
- * 
- * @author Krios Mane
- * @author FabTeam
- * @version 0.1
- * @license https://opensource.org/licenses/GPL-3.0
- * 
- */
+ *
+* @author Krios Mane
+* @author FabTeam
+* @version 0.1
+* @license https://opensource.org/licenses/GPL-3.0
+*
+*/
 ?>
 <div class="panel-group smart-accordion-default" id="accordion">
 	<div class="panel panel-default">
@@ -39,6 +39,55 @@
 			        <dt><?php echo _("Installed head");?></dt>
 			        <dd><?php echo $installed_head['name']; ?></dd>
       			</dl>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse5" class="collapsed"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> <?php echo _("Print settings (M503 output)"); ?> </a></h4>
+		</div>
+		<div id="collapse5" class="panel-collapse collapse">
+			<div class="panel-body">
+				<dl class="dl-horizontal big">
+					<dt>Steps per unit</dt>
+					<dd><code><?php echo isset($eeprom['steps_per_unit']['string']) ? $eeprom['steps_per_unit']['string'] : _("n.a.") ?></code></dd>
+					
+					<dt>Maximum feedrates (mm/s)</dt>
+					<dd><code><?php echo isset($eeprom['maximum_feedrates']['string']) ? $eeprom['maximum_feedrates']['string'] : _("n.a.") ?></code></dd>
+					
+					<dt>Maximum Acceleration (mm/s2)</dt>
+					<dd><code><?php echo isset($eeprom['maximum_accelaration']['string']) ? $eeprom['maximum_accelaration']['string'] : _("n.a.") ?></code></dd> 
+					
+					<dt>Acceleration: S=acceleration, T=retract acceleration</dt>
+					<dd><code><?php echo isset($eeprom['acceleration']['string']) ? $eeprom['acceleration']['string'] : _("n.a.") ?></code></dd>
+					
+					<dt>Advanced variables</dt>
+					<dd><code><?php echo isset($eeprom['advanced_variables']['string']) ? $eeprom['advanced_variables']['string'] : _("n.a.") ?></code></dd> 
+					
+					<dt>Home offset (mm)</dt>
+					<dd><code><?php echo isset($eeprom['home_offset']['string']) ? $eeprom['home_offset']['string'] : _("n.a.") ?></code></dd>
+					
+					<dt>PID</dt>
+					<dd><code><?php echo isset($eeprom['pid']['string']) ? $eeprom['pid']['string'] : _("n.a.") ?></code></dd>
+					
+					<dt>Servo Endstop</dt>
+					<dd><code><?php echo isset($eeprom['servo_endstop']) ? 'R: '.$eeprom['servo_endstop']['r'].' E: '.$eeprom['servo_endstop']['e'] : _("n.a.") ?></code></dd>
+					
+					<dt>Z Probe Length</dt>
+					<dd><code><?php echo isset($eeprom['probe_length']) ? $eeprom['probe_length'] : _("n.a.") ?></code></dd> 
+					
+					<dt>Installed head ID</dt>
+					<dd><code><?php echo isset($eeprom['installed_head']) ? $eeprom['installed_head'] : _("n.a.") ?></code></dd>
+					
+					<dt>Batch number</dt>
+					<dd><code><?php echo isset($eeprom['batch_number']) ? $eeprom['batch_number'] : _("n.a.") ?></code></dd>
+					
+					<dt>Baudrate</dt>
+					<dd><code><?php echo isset($eeprom['baudrate']) ? $eeprom['baudrate'] : _("n.a.") ?></code></dd>
+					
+					<dt>FABlin version</dt>
+					<dd><code><?php echo isset($eeprom['fablin_version']) ? $eeprom['fablin_version'] : _("n.a.") ?></code></dd>
+				</dl>
 			</div>
 		</div>
 	</div>
