@@ -97,6 +97,36 @@ def getEeprom(app, lang='en_US.UTF-8'):
             object = {'r': match.group(1), 'e': match.group(2)}
             return object
         
+    def getProbeLength(string_source):
+        match = re.search('Z\sProbe\sLength:\s([-|+][0-9.]+)', string_source, re.IGNORECASE)
+        if match != None:
+            value = match.group(1)
+            return value
+    
+    def getBaudrate(string_source):
+        match = re.search('Baudrate:\s([0-9.]+)', string_source, re.IGNORECASE)
+        if match != None:
+            value = match.group(1)
+            return value
+    
+    def getInstalledHead(string_source):
+        match = re.search('M793\sS([0-9.]+)', string_source, re.IGNORECASE)
+        if match != None:
+            value = match.group(1)
+            return value
+        
+    def getBatchNumber(string_source):
+        match = re.search('Batch\sNumber:\s([0-9.]+)', string_source, re.IGNORECASE)
+        if match != None:
+            value = match.group(1)
+            return value
+        
+    def getFablinVersion(string_source):
+        match = re.search('Version:\sV\s(\w.+)', string_source, re.IGNORECASE)
+        if match != None:
+            value = match.group(1)
+            return value
+        
     reply = app.macro('M503', '*', 1, _("Reading settings from eeprom"), verbose=False)
     
     eeprom = {}
@@ -111,17 +141,25 @@ def getEeprom(app, lang='en_US.UTF-8'):
         elif line.startswith('M201'):
             eeprom["maximum_accelaration"] = serialize(line, '(M201\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['x', 'y', 'z', 'e'])
         elif line.startswith('M204'):
-            eeprom["acceleration"] = serialize(reply[9], '(M204\sS[0-9.]+\sT1[0-9.]+)', ['s', 't1'])
+            eeprom["acceleration"] = serialize(line, '(M204\sS[0-9.]+\sT[0-9.]+)', ['s', 't'])
         elif line.startswith('M205'):
            eeprom["advanced_variables"] = serialize(line,'(M205\sS[0-9.]+\sT0[0-9.]+\sB[0-9.]+\sX[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['s', 't', 'b', 'x', 'z', 'e'])
         elif line.startswith('M206'):
             eeprom["home_offset"] = serialize(line,'(M206\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+)', ['x', 'y', 'z'])
-        elif line.startswith('M31'):
+        elif line.startswith('M301'):
             eeprom["pid"] = serialize(line,'(M301\sP[0-9.]+\sI[0-9.]+\sD[0-9.]+)', ['p', 'i', 'd'])
         elif line.startswith('Z Probe Length') or line.startswith('Probe Length'):
-            eeprom["probe_length"] = line.split(':')[1].strip()
+            eeprom["probe_length"] = getProbeLength(line)
         elif line.startswith('Servo Endstop'):
             eeprom["servo_endstop"] = getServoEndstopValues(line)
+        elif line.startswith('Baudrate'):
+            eeprom["baudrate"] = getBaudrate(line)
+        elif line.startswith('M793'):
+            eeprom['installed_head'] = getInstalledHead(line)
+        elif line.startswith('Batch Number'):
+            eeprom['batch_number'] = getBatchNumber(line)
+        elif line.startswith('Version'):
+            eeprom['fablin_version'] = getFablinVersion(line)
     
     return eeprom
 

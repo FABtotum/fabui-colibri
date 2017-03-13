@@ -23,13 +23,20 @@ class SystemInfo extends FAB_Controller {
 		//
 		$data = json_decode(startPyScript('systeminfo.py', '', false), true);
 		$data['bundles'] = getLocalBundles();
+		//versions macro
 		$data['versions'] = array();
 		$macroResponse = doMacro('version');
 		if($macroResponse['response']){
 			$data['versions'] = $macroResponse['reply'];
 		}
-		$data['installed_head'] = getInstalledHeadInfo();
+		//eeprom macro
+		$data['eeprom'] = array();
+		$macroResponse = doMacro('read_eeprom');
+		if($macroResponse['response']){
+			$data['eeprom'] = $macroResponse['reply'];
+		}
 		
+		$data['installed_head'] = getInstalledHeadInfo();
 		$widgetOptions = array(
 				'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
 				'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
@@ -39,6 +46,7 @@ class SystemInfo extends FAB_Controller {
 		$widget->header = array('icon' => 'fa-info-circle', "title" => "<h2>System Info</h2>");
 		$widget->body   = array('content' => $this->load->view('systeminfo/widget', $data, true ), 'class'=>'');
 		$this->content = $widget->print_html(true);
+		$this->addCSSInLine('<style> @media (min-width: 768px){ .big dt {width:300px !important;} .big dd {margin-left:310px !important;} }</style>');
 		$this->view();
 	}
 }
