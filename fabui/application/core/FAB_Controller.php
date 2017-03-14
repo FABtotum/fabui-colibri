@@ -106,13 +106,14 @@
 	public function ajaxView()
 	{
 		
-		$data['jsScripts'] = ajaxJScriptsInclusion($this->js);
-		$data['jsInLine']  = ajaxJSInline($this->jsInLine, count($this->js) == 0);
-		$this->template['jsInlineTop'] = $this->jsInLineTop;
-		$this->template['cssFiles'] = cssFilesInclusion($this->css, true); 
-		$this->template['cssInLine'] = $this->cssInline;
-		$this->template['content'] = $this->content;
-		$this->template['scripts'] = $this->load->view($this->layoutAjax.'/scripts', $data, true);
+		$data['jsScripts']   = ajaxJScriptsInclusion($this->js);
+		$data['jsInLine']    = ajaxJSInline($this->jsInLine, count($this->js) == 0);
+		$data['jsInlineTop'] = $this->jsInLineTop;
+		$this->template['topScripts']  = $this->load->view($this->layoutAjax.'/top_scripts', $data, true);
+		$this->template['cssFiles']    = cssFilesInclusion($this->css, true); 
+		$this->template['cssInLine']   = $this->cssInline;
+		$this->template['content']     = $this->content;
+		$this->template['scripts']     = $this->load->view($this->layoutAjax.'/scripts', $data, true);
 		$this->parser->parse($this->layoutAjax.'/structure', $this->template);
 		
 	}

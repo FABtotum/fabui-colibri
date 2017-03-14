@@ -10,6 +10,6 @@
 ?>
 {cssFiles}
 {cssInLine}
-{jsInlineTop}
+{topScripts}
 {content}
 {scripts}
