@@ -448,11 +448,9 @@ class GCodePusher(object):
                 #~ self.trace( _("Task has been paused") )
                 self.task_stats['status'] = GCodePusher.TASK_PAUSED
                 #self.monitor_info["paused"] = True
-                
             elif data == 'resumed':
-                #~ self.trace( _("Task has been resumed") )
                 self.task_stats['status'] = GCodePusher.TASK_RUNNING
-            
+                
             elif data == 'aborted':
                 #~ self.trace( _("Task has been aborted") )
                 self.task_stats['status'] = GCodePusher.TASK_ABORTING
@@ -467,6 +465,10 @@ class GCodePusher(object):
             self.update_monitor_file()
         
         self.state_change_callback(data)
+        
+        with self.monitor_lock:   
+            if data == 'resuming':
+                self.gcs.resumed()
     
     def progress_callback(self, percentage):
         """ 
@@ -688,7 +690,7 @@ class GCodePusher(object):
         """
         Execute macro command.
         """
-        return self.gmacro.run(preset, args, atomic)
+        return self.gmacro.run(preset, args, atomic, reset_trace=False)
         
     def send(self, code, block = True, timeout = None, trace = None, group = 'gcode', expected_reply = 'ok'):
         """

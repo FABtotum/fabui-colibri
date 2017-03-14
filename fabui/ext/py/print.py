@@ -87,6 +87,12 @@ class PrintApplication(GCodePusher):
         if state == 'paused':
             self.trace( _("Print PAUSED") )
             self.trace( _("Please wait until the buffered moves in totumduino are finished") )
+            self.exec_macro("pause_additive")
+            
+        if state == 'resuming':    
+            self.trace( _("RESUMING Print") )
+            self.exec_macro("resume_additive")
+            
         if state == 'resumed':
             self.trace( _("Print RESUMED") )
         if state == 'aborted':

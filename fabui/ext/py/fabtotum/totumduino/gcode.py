@@ -87,6 +87,7 @@ class Command(object):
     FINISH  = 'finish'
     PAUSE   = 'pause'
     RESUME  = 'resume'
+    RESUMED  = 'resumed'
     ZMODIFY = 'zmodify'
     KILL    = 'kill'
     RESET   = 'reset'
@@ -218,6 +219,11 @@ class Command(object):
     def resume(cls):
         """ Constructor for ``RESUME`` command. """
         return cls(Command.RESUME, None)
+        
+    @classmethod
+    def resumed(cls):
+        """ Constructor for ``RESUMED`` command. """
+        return cls(Command.RESUMED, None)
 
     @classmethod
     def gcode(cls, code, expected_reply = 'ok', group = 'gcode', timeout = None, async = False):
@@ -351,6 +357,9 @@ class GCodeService:
         # Must be defined before any thread is created
         self.cq = queue.Queue() # Command Queue
         self.rq = queue.Queue(self.REPLY_QUEUE_SIZE) # Reply Queue
+        
+        self.position_stored = False
+        self.position = {'x': 0.0, 'y': 0.0, 'z': 0.0}
 
         self.ev_tx_started = Event()
         self.ev_rx_started = Event()
@@ -693,14 +702,17 @@ class GCodeService:
                     
                 elif self.file_state == GCodeService.FILE_WAIT:
                     self.file_state = GCodeService.FILE_PAUSED_WAIT
-                
-            elif cmd == Command.RESUME:
+            
+            elif cmd == Command.RESUMED:
                 self.__trigger_callback('state_change', 'resumed')
                 if self.file_state == GCodeService.FILE_PAUSED_WAIT:
                     self.file_state = GCodeService.FILE_WAIT
                     
                 elif self.file_state == GCodeService.FILE_PAUSED:
                     self.file_state = GCodeService.FILE_PUSH
+                    
+            elif cmd == Command.RESUME:
+                self.__trigger_callback('state_change', 'resuming')
             
             elif cmd == Command.FINISH:
                 self.__trigger_callback('state_change', 'finished')
@@ -1120,6 +1132,15 @@ class GCodeService:
         
         self.cq.put( Command.resume() )
         
+    def resumed(self):
+        """
+        
+        """
+        if self.is_resetting or self.released:
+            return
+        
+        self.cq.put( Command.resumed() )
+        
     def abort(self):
         """
         Abort current file push. In case no file is being pushed this command
@@ -1219,12 +1240,12 @@ class GCodeService:
         if self.running:
             sent_timestamp = time.time()
             # QUESTION: should this be handled or not?
-            #~ if code == 'M25':
-                #~ self.pause()
-                #~ return None
-            #~ elif code == 'M24':
-                #~ self.resume()
-                #~ return None
+            if code == 'M25':
+                self.pause()
+                return ['ok']
+            elif code == 'M24':
+                self.resume()
+                return ['ok']
             
             self.log.debug("put on command queue: %s,%s", code, group)
             

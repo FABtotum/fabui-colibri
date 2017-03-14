@@ -79,6 +79,11 @@ class MillApplication(GCodePusher):
         if state == 'paused':
             self.trace( _("Milling PAUSED") )
             self.trace( _("Please wait until the buffered moves in totumduino are finished") )
+            self.exec_macro("pause_subtractive")
+            
+        if state == 'resuming':    
+            self.trace( _("RESUMING Print") )
+            self.exec_macro("resume_subtractive")
         if state == 'resumed':
             self.trace( _("Milling RESUMED") )
         if state == 'aborted':

@@ -92,8 +92,7 @@ def load_spool(app, args = None, lang='en_US.UTF-8'):
     app.macro("M300",               "ok", 5,    _("<b>Start pushing!</b>") )
     app.macro("G0 E110 F500",       "ok", 300,    _("Loading filament") )
     app.macro("G0 E660 F700",       "ok", 300,    _("Loading filament (fast)") )
-    app.macro("M109 S210",          None, 400,  _("Waiting to get to temperature...") ) #heating and waiting.
-    #app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
+    app.macro("M109 S210",          "*", 400,  _("Waiting to get to temperature...") ) #heating and waiting.
     app.macro("G0 E100 F200",       "ok", 100,    _("Entering the hotend (slow)") )
     #app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
     app.macro("M104 S0",            "ok", 1,    _("Turning off heater") )

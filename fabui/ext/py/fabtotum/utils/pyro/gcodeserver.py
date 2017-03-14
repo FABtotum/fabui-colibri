@@ -55,6 +55,9 @@ class GCodeServiceServerPyroWrapper(object):
     
     def resume(self):
         self.gcs.resume()
+        
+    def resumed(self):
+        self.gcs.resumed()
     
     def reset(self):
         self.gcs.reset()

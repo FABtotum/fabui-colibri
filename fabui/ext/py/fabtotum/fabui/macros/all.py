@@ -57,13 +57,17 @@ PRESET_MAP = {
     "end_additive"                  : print_macros.end_additive,
     "end_additive_safe_zone"        : print_macros.end_additive_safe_zone,
     "end_additive_aborted"          : print_macros.end_additive_aborted,
+    "pause_additive"                : print_macros.pause_additive,
+    "resume_additive"               : print_macros.resume_additive,
     
     # Milling
     "check_subtractive"             : mill_macros.check_subtractive,
     "start_subtractive"             : mill_macros.start_subtractive,
     "end_subtractive"               : mill_macros.end_subtractive,
     "end_subtractive_aborted"       : mill_macros.end_subtractive_aborted,
-    
+    "pause_subtractive"             : mill_macros.pause_subtractive,
+    "resume_subtractive"            : mill_macros.resume_subtractive,
+        
     # Laser
     "check_engraving"               : laser_macros.check_engraving,
     "start_engraving"               : laser_macros.start_engraving,

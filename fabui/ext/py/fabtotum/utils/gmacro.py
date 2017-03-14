@@ -107,7 +107,7 @@ class GMacroHandler:
                 
         return reply
     
-    def run(self, preset, args = None, atomic = True):
+    def run(self, preset, args=None, atomic=True, reset_trace=True):
         """
         Execute macro command.
         """
@@ -120,7 +120,8 @@ class GMacroHandler:
         error_trace = ''
         response = MACRO_ERROR
 
-        self.__reset_trace()
+        if reset_trace:
+            self.__reset_trace()
         if atomic:
             """ 
             Start macro execution block. This will activate atomic execution and 

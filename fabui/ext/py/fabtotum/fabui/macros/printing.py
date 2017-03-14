@@ -30,7 +30,47 @@ import json
 
 # Import internal modules
 from fabtotum.utils.translation import _, setLanguage
+from fabtotum.fabui.macros.common import getPosition
 
+def pause_additive(app, args=None, lang='en_US.UTF-8'):
+    app.macro("M400",   "ok", 240,    _("Waiting for all moves to finish"), verbose=False)
+    position = getPosition(app, lang)
+    
+    with open('/var/lib/fabui/settings/stored_task.json', 'w') as f:
+        f.write( json.dumps({
+            'position':position
+            }) )
+    
+    current_z = float(position['z'])
+    safe_z = current_z + 50.0
+    
+    max_z = app.config.get('settings', 'z_max_offset', 241.5) - 5
+    if safe_z > max_z:
+        safe_z = max_z
+    
+    app.macro("G90",                "ok", 2,    _("Setting absolute position"), verbose=False )
+    app.macro("G0 Z{0} F5000".format(safe_z),        "ok", 100,  _("Moving to Z safe zone"), verbose=False )
+    
+    app.macro("G0 X210 Y210 F6000", "ok", 100,  _("Moving to safe zone"), verbose=False )
+    
+def resume_additive(app, args=None, lang='en_US.UTF-8'):
+    
+    # restore position
+    
+    if os.path.exists('/var/lib/fabui/settings/stored_task.json'):
+        content = {}
+        with open('/var/lib/fabui/settings/stored_task.json') as f:
+            content = json.load(f)
+        
+        if "position" in content:
+            x = float(content['position']['x'])
+            y = float(content['position']['y'])
+            z = float(content['position']['z'])
+            
+            app.macro("G90",                            "ok", 2,  _("Setting absolute position"), verbose=False )
+            app.macro("G0 X{0} Y{1} F6000".format(x,y), "ok", 60,  _("Restore XY position"), verbose=False )
+            app.macro("G0 Z{0} F5000".format(z),        "ok", 60,  _("Restore Z position"), verbose=False )
+            app.macro("M400",                           "ok", 120,  _("Waiting for all moves to finish"), verbose=False)
 
 def prepare_additive(app, args=None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
