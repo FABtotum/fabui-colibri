@@ -1050,4 +1050,18 @@ if(!function_exists('getUnitName'))
 		return $CI->configuration->load('unit_name');
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getFilamentDescription'))
+{
+	/**
+	 * 
+	 * @todo
+	 */
+	function getFilamentDescription($filament)
+	{
+		$CI =& get_instance();
+		$CI->load->helper('language_helper');
+		return $CI->load->view('layout/filaments/'.$filament.'/'.getCurrentLanguage(), null, true);
+	}
+}
 ?>

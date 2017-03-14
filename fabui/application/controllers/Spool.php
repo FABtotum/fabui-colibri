@@ -76,6 +76,50 @@ class Spool extends FAB_Controller {
 		$result = doMacro('unload_spool');
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
+	/**
+	 * 
+	 */
+	public function new_index()
+	{
+		//load libraries, helpers, model
+		$this->load->library('smart');
+		$this->load->helper('form');
+		$this->load->helper('fabtotum_helper');
+		
+		$data = array();
+		
+		//main page widget
+		$widgetOptions = array(
+			'sortable'         => false, 
+			'fullscreenbutton' => true,  
+			'refreshbutton'    => false, 
+			'togglebutton'     => false,
+			'deletebutton'     => false, 
+			'editbutton'       => false, 
+			'colorbutton'      => false, 
+			'collapsed'        => false
+		);
+		
+		
+		$data['filamentsOptions'] = array('pla' => 'PLA', 'abs' => 'ABS', 'nylon' => 'Nylon');
+		
+		$data['step1']  = $this->load->view('spool/new/wizard/step1', $data, true );
+		$data['step2']  = $this->load->view('spool/new/wizard/step2', $data, true );
+		$data['step3']  = $this->load->view('spool/new/wizard/step3', $data, true );
+		$data['step4']  = $this->load->view('spool/new/wizard/step4', $data, true );
+		
+		
+		$widget = $this->smart->create_widget($widgetOptions);
+		$widget->id = 'main-widget-spool-management';
+		
+		$widget->header = array('icon' => 'fa-circle-o-notch', "title" => "<h2>Spool management</h2>");
+		$widget->body   = array('content' => $this->load->view('spool/new/main_widget', $data, true ),'class'=>'fuelux');
+		
+		$this->content = $widget->print_html(true);
+		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
+		$this->addJsInLine($this->load->view('spool/new/js', $data, true));
+		$this->view();
+	}
 }
  
 ?>
