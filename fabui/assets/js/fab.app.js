@@ -270,6 +270,11 @@ fabApp = (function(app) {
 		});
 		
 		app.initTopBarControls();
+		
+		if(window.self !== window.top){
+			$("#header").hide();
+			$("#left-panel").css("padding-top", "0");
+		}
 	};
 	/*
 	 * 
