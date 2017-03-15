@@ -1,6 +1,6 @@
 server.max-request-size = 134217728
 
-server.modules += ( "mod_rewrite", "mod_expire" )
+server.modules += ( "mod_rewrite", "mod_expire" , "mod_setenv")
 
 expire.url = ("/assets/" => "access plus 1 years")
 
@@ -11,3 +11,5 @@ expire.url = ("/assets/" => "access plus 1 years")
 # RewriteRule ^(.*)$ /fabui/index.php/$1 [L]
 
 url.rewrite-once = ("^/fabui/(?!index\.php|assets|application|down|robots|upload|ajax|temp|slic3r|\.txt\.json).*" => "/fabui/index.php/$1")
+
+setenv.add-response-header = ( "Access-Control-Allow-Origin" => "*" )

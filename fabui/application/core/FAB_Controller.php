@@ -34,7 +34,6 @@
 		 * Enable CORS (Cross Origin Resource Sharing) (for example: redirect to a new eht ip address)
 		 * @todo : improve cors management
 		 */
-    	header('Access-Control-Allow-Origin: *'); 
         parent::__construct(); //CI father CLASS
         
 		if( ! $this->input->is_cli_request()) { // if is not a command line call
