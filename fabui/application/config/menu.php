@@ -99,6 +99,11 @@ $config['menu'] = array(
 				'title' => _("Feeder"),
 				'icon' => 'fa-cog',
 				'sub'  => array(
+					'profiles' => array(
+						'title' => _("Profiles"),
+						'icon' => 'fa-bars',
+						'url' => 'maintenance/feeder-profiles'
+					),
 					'length' => array(
 						'title' => _("Step calibration"),
 						'icon' => 'icon-fab-e',

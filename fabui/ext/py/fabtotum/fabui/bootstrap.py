@@ -218,6 +218,87 @@ def hardware5(gcodeSender, config, log):
     
     log.debug("Rev5")
 
+def configure_head(gcs, config, log):
+
+    try:
+        log.debug("Initializing HEAD")
+            
+        head = config.get_current_head_info()
+        if head == None:
+            log.error("Failed to read head configuration")
+            return
+            
+        pid     = head.get('pid')
+        th_idx  = int(head.get('thermistor_index', 0))
+        mode    = int(head.get('working_mode', 0))
+        offset  = float(head.get('nozzle_offset', 0))
+        fw_id   = int(head.get('fw_id',0))
+        max_temp= int(head.get('max_temp',0))
+        custom_gcode = head.get('custom_gcode','')
+        
+        probe_length  = float(config.get('settings', 'zprobe.length', 0))
+        
+        # Set installed head
+        if fw_id is not None:
+            gcs.send( "M793 S{0}".format( fw_id ), group='bootstrap' )
+        
+        # Set head PID
+        if pid != "":
+            gcs.send( head['pid'], group='bootstrap' )
+        
+        # Set Thermistor index
+        gcs.send( "M800 S{0}".format( th_idx ), group='bootstrap' )
+        
+        # Set max_temp
+        if max_temp > 25:
+            gcs.send( "M801 S{0}".format( max_temp ), group='bootstrap' )
+        
+        # Set nozzle offset
+        #~ if offset:
+            #~ app.macro( "M206 Z-{0}".format( offset ),   "ok", 2, _("Configuring nozzle offset"))
+        
+        # Set probe offset
+        if probe_length:
+            gcs.send( "M710 S{0}".format( probe_length ), group='bootstrap' )
+        
+        # Working mode
+        gcs.send( "M450 S{0}".format( mode ), group='bootstrap' )
+        
+        for line in custom_gcode.split('\n'):
+            if line:
+                code = line.split(';')[0]
+                if code:
+                    gcs.send( code, group='bootstrap' )
+        
+    except Exception as e:
+        print log.error("head configuration failed: {0}".format(str(e)))
+    
+def configure_feeder(gcs, config, log):
+    try:
+        
+        log.debug("Initializing FEEDER")
+        
+        feeder = config.get_current_feeder_info()
+        if feeder == None:
+            log.error("Failed to read feeder configuration")
+            return
+            
+        steps_per_unit = float(feeder['steps_per_unit'])
+        max_feedrate = float(feeder['max_feedrate'])
+        max_acceleration = float(feeder['max_acceleration'])
+        max_jerk = float(feeder['max_jerk'])
+        retract_acceleration = float(feeder['retract_acceleration'])
+
+        gcs.send("M92 E{0}".format(steps_per_unit),        group='bootstrap' )
+        gcs.send("G92 E0".format(steps_per_unit),          group='bootstrap' )
+        gcs.send("M201 E{0}".format(max_acceleration),     group='bootstrap' )
+        gcs.send("M203 E{0}".format(max_feedrate),         group='bootstrap' )
+        gcs.send("M205 E{0}".format(max_jerk),             group='bootstrap' )
+        gcs.send("M204 T{0}".format(retract_acceleration), group='bootstrap' )
+            
+    except Exception as e:
+        print log.error("Feeder configuration failed: {0}".format(str(e)))
+
 def hardwareBootstrap(gcs, config = None, logger = None):
     if not config:
         config = ConfigService()
@@ -302,65 +383,8 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     else:
         log.error("Unsupported hardware version: %s", hardwareID)
 
-    # Load Head
-    #~ try:
-    head_file = os.path.join( config.get('hardware', 'heads'), config.get('settings', 'hardware.head') + '.json');
+    configure_head(gcs, config, log)
     
-    try:
-        with open(head_file) as json_f:
-            head = json.load(json_f)
-            
-        pid     = head.get('pid')
-        th_idx  = int(head.get('thermistor_index', 0))
-        mode    = int(head.get('working_mode', 0))
-        offset  = float(head.get('nozzle_offset', 0))
-        fw_id   = int(head.get('fw_id',0))
-        max_temp= int(head.get('max_temp',0))
-        custom_gcode = head.get('custom_gcode','')
-        
-        probe_length  = float(config.get('settings', 'zprobe.length', 0))
-        
-        log.error("PROBE_LENGTH: %s", probe_length)
-        
-        # Set installed head
-        if fw_id is not None:
-            gcs.send( "M793 S{0}".format( fw_id ), group='bootstrap' )
-        
-        # Set head PID
-        if pid != "":
-            gcs.send( head['pid'], group='bootstrap' )
-        
-        # Set Thermistor index
-        gcs.send( "M800 S{0}".format( th_idx ), group='bootstrap' )
-        
-        # Set max_temp
-        if max_temp > 25:
-            gcs.send( "M801 S{0}".format( max_temp ), group='bootstrap' )
-        
-        # Set nozzle offset
-        #~ if offset:
-            #~ app.macro( "M206 Z-{0}".format( offset ),   "ok", 2, _("Configuring nozzle offset"))
-        
-        # Set probe offset
-        if probe_length:
-            gcs.send( "M710 S{0}".format( probe_length ), group='bootstrap' )
-        
-        # Working mode
-        gcs.send( "M450 S{0}".format( mode ), group='bootstrap' )
-        
-        for line in custom_gcode.split('\n'):
-            if line:
-                code = line.split(';')[0]
-                if code:
-                    gcs.send( code, group='bootstrap' )
-        
-        
-        # Save settings
-        #gcs.send( "M500", group='bootstrap' )
-        
-        
-        
-    except Exception as e:
-        print "ERROR (head install)", e
+    configure_feeder(gcs, config, log)
 
     gcs.atomic_end()

@@ -78,6 +78,7 @@ $route['maintenance/bed-calibration']           = 'bed';
 $route['maintenance/spool-management']          = 'spool';
 $route['maintenance/probe-length-calibration']  = 'probe/index/length';
 $route['maintenance/probe-angle-calibration']   = 'probe/index/angle';
+$route['maintenance/feeder-profiles']           = 'feeder/index/profiles';
 $route['maintenance/feeder-calibration']        = 'feeder/index/calibrate';
 $route['maintenance/feeder-engage']             = 'feeder/index/engage';
 $route['maintenance/4th-axis']                  = 'fourthaxis';

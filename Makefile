@@ -66,7 +66,8 @@ FABUI_FILES		=	fabui/recovery \
 					fabui/assets \
 					fabui/utilities \
 					fabui/locale \
-					fabui/heads
+					fabui/heads \
+					fabui/feeders
 
 # <files>/* is to avoid making <files>/<files> path
 RECOVERY_FILES	=	recovery/*
@@ -84,6 +85,7 @@ STATIC_FILES	=
 DYNAMIC_FILES	=	$(CONFIG_FILES) \
 					$(DB_FILES) \
 					fabui/heads \
+					fabui/feeders \
 					fabui/plugins \
 					fabui/cameras \
 					fabui/settings

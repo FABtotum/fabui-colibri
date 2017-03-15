@@ -186,6 +186,20 @@ class Install extends FAB_Controller {
 			shell_exec('ln -s /mnt/userdata/heads /var/lib/fabui');
 		}
 		
+		if(!$this->input->post('feeder_settings'))
+		{
+			/*
+			 * Remove previous feeder settings and copy fresh ones to userdata
+			 * */
+			shell_exec('rm -rf /mnt/userdata/feeders/*');
+			shell_exec('cp /var/lib/fabui/feeders/* /mnt/userdata/feeders');
+		}
+		else
+		{
+			shell_exec('rm -rf /var/lib/fabui/feeders');
+			shell_exec('ln -s /mnt/userdata/feeders /var/lib/fabui');
+		}
+		
 		
 		if(!$this->input->post('plugins'))
 		{

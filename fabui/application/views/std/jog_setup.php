@@ -78,19 +78,19 @@ if( !isset($fourth_axis) ) $fourth_axis = False;
 									<section class="col col-4">
 										<label class="label-mill text-center">XY <?php echo _("Step"); ?> (mm)</label>
 										<label class="input">
-											<input  type="number" id="xyStep" value="1" step="1" min="0" max="100">
+											<input  type="number" id="xyStep" value="1" step="0.1" min="0.1" max="100">
 										</label>
 									</section>
 									<section class="col col-4">
 										<label class="label-mill text-center"><?php echo _("Feedrate"); ?></label>
 										<label class="input">
-											<input  type="number" id="xyzFeed" value="1000" step="50" min="0" max="10000">
+											<input  type="number" id="xyzFeed" value="1000" step="50" min="1" max="10000">
 										</label>
 									</section>
 									<section class="col col-4">
 										<label class="label-mill text-center">Z <?php echo _("Step"); ?> (mm)</label>
 										<label class="input"> 
-											<input type="number" id="zStep" value="0.5" step="0.1" min="0" max="100">
+											<input type="number" id="zStep" value="0.5" step="0.1" min="0.1" max="100">
 										</label>
 									</section>
 								</div>

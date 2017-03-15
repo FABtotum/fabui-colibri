@@ -29,7 +29,6 @@ class Head extends FAB_Controller {
 		$heads_list = array();
 		$heads_list['head_shape'] = '---';
 
-		
 		foreach($heads as $head => $val)
 		{
 			$heads_list[$head] = $val['name'];

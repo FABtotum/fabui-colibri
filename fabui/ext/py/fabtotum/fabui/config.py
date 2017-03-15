@@ -24,6 +24,7 @@ __version__ = "1.0"
 
 # Import standard python module
 import json
+import os
 import ConfigParser
 
 # Import external modules
@@ -172,3 +173,64 @@ class ConfigService:
             return self.__set_dict_value(self.settings, key, value)
             
         return False
+        
+    def get_head_info(self, head_name):
+        head_file = os.path.join( self.get('hardware', 'heads'), head_name + '.json');
+        try:
+            with open(head_file) as json_f:
+                head = json.load(json_f)
+            return head            
+            
+        except Exception as e:
+            return None
+            
+        return None
+        
+    def get_current_head_info(self):
+        """
+        """
+        head_name = self.get('settings', 'hardware.head', 'hybrid_head')
+        return self.get_head_info(head_name)
+        
+        
+    def get_feeder_info(self, feeder_name):
+        """
+        Return feeder info.
+        """
+        head_file = os.path.join( self.get('hardware', 'heads'), feeder_name + '.json');
+        feeder_file = os.path.join( self.get('hardware', 'feeders'), feeder_name + '.json');
+        
+        if os.path.exists(head_file):
+            # Load Head feeder
+            try:
+                with open(head_file) as json_f:
+                    head = json.load(json_f)
+                    
+                feeder = head['feeder']
+                feeder['name'] = head['name']
+                feeder['description'] = head['description']
+                feeder['link'] = head['link']
+                return feeder
+                
+            except Exception as e:
+                return None
+
+        if os.path.exists(feeder_file):
+            # Load Feeder
+            try:
+                with open(feeder_file) as json_f:
+                    feeder = json.load(json_f)
+                return feeder
+            except Exception as e:
+                return None
+                
+        return None
+    
+    def get_current_feeder_info(self):
+        """
+        Return feeder info of current feeder.
+        """
+        feeder_name = self.get('settings', 'hardware.feeder', 'built_in_feeder')
+        return self.get_feeder_info(feeder_name)
+        
+

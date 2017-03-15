@@ -1,6 +1,7 @@
 [hardware]
 settings = @LIB_PATH@settings/settings.json
 heads = @LIB_PATH@heads
+feeders = @LIB_PATH@feeders
 cameras = @LIB_PATH@cameras
 
 [socket]

@@ -33,7 +33,7 @@ if ( !function_exists('createDefaultSettings'))
 			'zprobe'        	 => array('enable'=> false, 'length' => 38),
 			'z_max_offset'       => 241.5,
 			'settings_type' 	 => 'default',
-			'hardware'     	 	 => array('head' => 'printing_head_v2', 'camera' => 'camera_v1'),
+			'hardware'     	 	 => array('head' => 'printing_head_v2', 'feeder' => 'built_in_feeder', 'camera' => 'camera_v1'),
 			'print'         	 => array('pre_heating' => array('nozzle' => 150, 'bed'=>50), 'calibration' => 'homing'),
 			'stored_position'	 => array(),
 			'custom'             => array(
@@ -226,6 +226,50 @@ if(!function_exists('loadHeads'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('loadFeeders'))
+{
+	/**
+	 *
+	 *
+	 *  Load settings configuration
+	 *  @return settings configuration
+	 *
+	 */
+	function loadFeeders()
+	{
+		$CI =& get_instance();
+		$CI->load->helper('file');
+		$CI->config->load('fabtotum');
+		#$settings = json_decode(file_get_contents($CI->config->item($type.'_settings')), true);
+		$feeders_dir = $CI->config->item('feeders');
+		
+		$feeders_files = array();
+		foreach (glob($feeders_dir.'/*.json') as $json) {
+			$info = get_file_info($json);
+			$feeders_files [] = $info['name'];
+		}
+		$feeders = array();
+		$constants = get_defined_constants(true);
+		$json_errors = array();
+		foreach ($constants["json"] as $name => $value) {
+			if (!strncmp($name, "JSON_ERROR_", 11)) {
+				$json_errors[$value] = $name;
+			}
+		}
+		foreach($feeders_files as $feeder)
+		{
+			$feeder_file = $feeders_dir . '/' . $feeder;
+			$key = basename($feeder_file, '.json');
+			$content = file_get_contents($feeder_file);
+			// UTF-8 safety
+			$content = iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($content));
+			$feeders[$key] = json_decode($content , true);
+		}
+
+		return $feeders;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('removeHeadInfo'))
 {
 	function removeHeadInfo($head_filename)
@@ -235,6 +279,26 @@ if(!function_exists('removeHeadInfo'))
 		$heads_dir = $CI->config->item('heads');
 		
 		$fn = $heads_dir.'/'.$head_filename.'.json';
+		
+		if( file_exists($fn) )
+		{
+			unlink($fn);
+			return true;
+		}
+		
+		return false;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('removeFeederInfo'))
+{
+	function removeFeederInfo($feeder_filename)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$feeders_dir = $CI->config->item('feeders');
+		
+		$fn = $feeders_dir.'/'.$feeder_filename.'.json';
 		
 		if( file_exists($fn) )
 		{
@@ -261,6 +325,21 @@ if(!function_exists('saveHeadInfo'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('saveFeederInfo'))
+{
+	function saveFeederInfo($info, $feeder_name)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$feeders_dir = $CI->config->item('feeders');
+		
+		$fn = $feeders_dir.'/'.$feeder_name.'.json';
+		
+		$content = json_encode($info, JSON_PRETTY_PRINT);
+		return file_put_contents($fn, $content) > 0;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('saveInfoToInstalledHead'))
 {
 	function saveInfoToInstalledHead($info)
@@ -271,6 +350,18 @@ if(!function_exists('saveInfoToInstalledHead'))
 		$_data = loadSettings();
 		$head_name = $_data['hardware']['head'];
 		return saveHeadInfo($info, $head_name);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('saveInfoToInstalledFeeder'))
+{
+	function saveInfoToInstalledFeeder($info)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$_data = loadSettings();
+		$feeder_name = $_data['hardware']['feeder'];
+		return saveHeadInfo($info, $feeder_name);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -327,6 +418,26 @@ if(!function_exists('restoreHeadFactorySettings'))
 		return false;
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('restoreFeederFactorySettings'))
+{
+	/**
+	 * restore factory settings for head
+	 */
+	function restoreFeederFactorySettings($feeder_file_name)
+	{
+		$CI =& get_instance();
+		$CI->load->helper('file');
+		$CI->config->load('fabtotum');
+		$heads_dir        = $CI->config->item('feeders');
+		$factory_dir      = $CI->config->item('fabui_path').'feeders/';
+		if(file_exists($factory_dir.$feeder_file_name.'.json')){
+			$factory_settings = json_decode(file_get_contents($factory_dir.$feeder_file_name.'.json'), true);
+			return saveFeederInfo($factory_settings, $feeder_file_name);
+		}
+		return false;
+	}
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -379,7 +490,7 @@ if(!function_exists('canHeadSupport'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if(!function_exists('isHeadinPlace'))
+if(!function_exists('isHeadInPlace'))
 {
 	function isHeadInPlace()
 	{

@@ -214,18 +214,46 @@ def get_versions(app, lang='en_US.UTF-8'):
         }
     }
 
+def configure_feeder(app, feeder_name, lang='en_US.UTF-8'):
+    """
+    """
+    _ = setLanguage(lang)
+    
+    feeder = app.config.get_feeder_info(feeder_name)
+    
+    if not feeder:
+        return False
+    
+    steps_per_unit = float(feeder['steps_per_unit'])
+    max_feedrate = float(feeder['max_feedrate'])
+    max_acceleration = float(feeder['max_acceleration'])
+    max_jerk = float(feeder['max_jerk'])
+    retract_acceleration = float(feeder['retract_acceleration'])
+
+    app.macro("M92 E{0}".format(steps_per_unit),            "ok", 1,   _("Setting E steps_per_unit") )
+    app.macro("G92 E0".format(steps_per_unit),              "ok", 1,   _("Setting E position to 0"), verbose=False )
+    app.macro("M201 E{0}".format(max_acceleration),         "ok", 1,   _("Setting E acceleration") )
+    app.macro("M203 E{0}".format(max_feedrate),             "ok", 1,   _("Setting E feedrate") )
+    app.macro("M205 E{0}".format(max_jerk),                 "ok", 1,   _("Setting E jerk") )
+    app.macro("M204 T{0}".format(retract_acceleration),     "ok", 1,   _("Setting retract acceleration") )
+    
+    return True
+    
 def configure_head(app, head_name, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
     # Load Head
-    try:
-        head_file = os.path.join( app.config.get('hardware', 'heads'), head_name + '.json');
-    
-        with open(head_file) as json_f:
-            head = json.load(json_f)
-    except Exception as e:
-        app.trace( str(e) )
+    head = app.config.get_head_info(head_name)
+    if not head:
         return False
+    #~ try:
+        #~ head_file = os.path.join( app.config.get('hardware', 'heads'), head_name + '.json');
+    
+        #~ with open(head_file) as json_f:
+            #~ head = json.load(json_f)
+    #~ except Exception as e:
+        #~ app.trace( str(e) )
+        #~ return False
         
     pid     = head.get('pid', '')
     th_idx  = int(head.get('thermistor_index', 0))

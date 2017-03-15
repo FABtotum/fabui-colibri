@@ -31,6 +31,7 @@
   "settings_type": "default",
   "hardware": {
     "head": "hybrid_head",
+    "feeder": "built_in_feeder",
     "camera": "camera_v1"
   },
   "print": {
@@ -42,7 +43,7 @@
   },
   "stored_position": [],
   "custom": {
-    "overrides": "''",
+    "overrides": "",
     "invert_x_endstop_logic": false
   },
   "z_max_offset": 241.5
