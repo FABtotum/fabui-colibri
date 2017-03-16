@@ -53,6 +53,7 @@
 				$('td', row).eq(0).addClass('center table-checkbox').attr('width', '20px');
 				$('td', row).eq(2).addClass('hidden-xs');
 				$('td', row).eq(3).addClass('center hidden-xs').attr('width', '20px');
+				$('td', row).eq(4).addClass('hidden-xs');
 			}
 		});
 	}

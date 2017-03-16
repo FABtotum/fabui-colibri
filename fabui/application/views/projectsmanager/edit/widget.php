@@ -49,9 +49,9 @@
 					<tr>
 						<th><label class="checkbox-inline"><input type="checkbox" id="selectAll" name="checkbox-inline" class="checkbox"><span></span> </label></th>
 						<th><?php echo _("Name") ?></th>
-						<th><?php echo _("Type") ?></th>
-						<th><?php echo _("Note") ?></th>
-						<th><?php echo _("Date") ?></th>
+						<th class="hidden-xs"><?php echo _("Type") ?></th>
+						<th class="hidden-xs"><?php echo _("Note") ?></th>
+						<th class="hidden-xs"><?php echo _("Date") ?></th>
 						<th><?php echo _("Default action") ?></th>
 					</tr>
 				</thead>

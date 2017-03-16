@@ -52,6 +52,11 @@
 			},
 			"sAjaxSource": "<?php echo site_url("projectsmanager/getFiles/".$object['id']) ?>",
 			"fnRowCallback": function (row, data, index ){
+
+				
+				$('td', row).eq(2).addClass('hidden-xs');
+				$('td', row).eq(3).addClass('hidden-xs');
+				$('td', row).eq(4).addClass('hidden-xs');
 			}
 		});
 	}

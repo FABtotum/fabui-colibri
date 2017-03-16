@@ -27,9 +27,9 @@ class Projectsmanager extends FAB_Controller {
 		);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-success" href="projectsmanager/add-project"><i class="fa fa-plus"></i> '._("Add new project").' </a>
-		<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> '._("Delete").' </button>
-		<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> '._("Download").' </button>
+		<a class="btn btn-success" href="projectsmanager/add-project"><i class="fa fa-plus"></i> <span class="hidden-xs">'._("Add new project").'</span> </a>
+		<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> <span class="hidden-xs">'._("Delete").'</span> </button>
+		<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> <span class="hidden-xs">'._("Download").'</span> </button>
 		</div>';
 		
 		$widget = $this->smart->create_widget($widgetOptions);
@@ -69,13 +69,13 @@ class Projectsmanager extends FAB_Controller {
 				'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
 			);
 			
-			$widgeFooterButtons = $this->smart->create_button(_("Save"), 'primary')->attr(array('id' => 'save-object'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+			$widgeFooterButtons = $this->smart->create_button("<span class='hidden-xs'>"._("Save")."</span>", 'primary')->attr(array('id' => 'save-object'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 			
 			$headerToolbar = '<div class="widget-toolbar" role="menu">
-			<a class="btn btn-default" href="projectsmanager"><i class="fa fa-arrow-left"></i> '._("Back").' </a>
-			<a class="btn btn-success" href="projectsmanager/add-file/'.$objectId.'"><i class="fa fa-plus"></i> '._("Add files").' </a>
-			<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> '._("Delete").' </button>
-			<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> '._("Download").' </button>
+			<a class="btn btn-default" href="projectsmanager"><i class="fa fa-arrow-left"></i> <span class="hidden-xs">'._("Back").'</span> </a>
+			<a class="btn btn-success" href="projectsmanager/add-file/'.$objectId.'"><i class="fa fa-plus"></i> <span class="hidden-xs">'._("Add files").'</span> </a>
+			<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> <span class="hidden-xs">'._("Delete").'</span> </button>
+			<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> <span class="hidden-xs">'._("Download").'</span> </button>
 			</div>';
 			
 			$widget = $this->smart->create_widget($widgetOptions);
@@ -91,6 +91,7 @@ class Projectsmanager extends FAB_Controller {
 			$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
 			$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
 			$this->addJsInLine($this->load->view('projectsmanager/edit/js',$data['object'], true));
+			$this->addCSSInLine('<style>.dropdown-menu {min-width: auto !important;}</style>');
 			
 			$this->view();
 		}
@@ -204,10 +205,10 @@ class Projectsmanager extends FAB_Controller {
 			$this->smart->create_button(_("Save"), 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-default" href="projectsmanager/project/'.$objectId.'"><i class="fa fa-arrow-left"></i> '._("Back").' </a>
-		<a class="btn btn-info" href="projectsmanager/file/'.$fileId.'/stats"><i class="fa fa-area-chart"></i> '._("Stats").' </a>
-		<button class="btn btn-danger button-action" data-action="delete"><i class="fa fa-trash"></i> '._("Delete").' </button>
-		<button class="btn btn-info button-action" data-action="download"><i class="fa fa-download"></i> '._("Download").' </button>
+		<a class="btn btn-default" href="projectsmanager/project/'.$objectId.'"><i class="fa fa-arrow-left"></i> <span class="hidden-xs">'._("Back").'</span> </a>
+		<a class="btn btn-info" href="projectsmanager/file/'.$fileId.'/stats"><i class="fa fa-area-chart"></i> <span class="hidden-xs">'._("Stats").'</span> </a>
+		<button class="btn btn-danger button-action" data-action="delete"><i class="fa fa-trash"></i> <span class="hidden-xs">'._("Delete").'</span> </button>
+		<button class="btn btn-info button-action" data-action="download"><i class="fa fa-download"></i> <span class="hidden-xs">'._("Download").'</span> </button>
 		</div>';
 		
 		$widget = $this->smart->create_widget($widgetOptions);
@@ -470,7 +471,7 @@ class Projectsmanager extends FAB_Controller {
 		$widgeFooterButtons = '';
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-default" href="projectsmanager/file/'.$fileId.'"><i class="fa fa-arrow-left"></i> '._("Back").' </a>
+		<a class="btn btn-default" href="projectsmanager/file/'.$fileId.'"><i class="fa fa-arrow-left"></i> <span class="hidden-xs">'._("Back").'</span> </a>
 		</div>';
 		
 		$widget = $this->smart->create_widget($widgetOptions);
@@ -663,7 +664,7 @@ class Projectsmanager extends FAB_Controller {
 		$widgeFooterButtons = $this->smart->create_button(_("Save"), 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-danger" href="projectsmanager"><i class="fa fa-arrow-left"></i> '._("Cancel").' </a>
+		<a class="btn btn-danger" href="projectsmanager"><i class="fa fa-arrow-left"></i> <span class="hidden-xs">'._("Cancel").'</span> </a>
 		</div>';
 		
 		$widget = $this->smart->create_widget($widgetOptions);
@@ -1005,7 +1006,7 @@ class Projectsmanager extends FAB_Controller {
 	private function generateActionDropdown($default_action, $builtin_actions, $plugin_actions)
 	{
 		$html = '<div class="btn-group">
-					<button data-action="'.site_url($default_action['url']).'"type="button" class="btn btn-xs btn-success file-action"><i class="fa '.$default_action['icon'].'"></i> '.$default_action['title'].' </button>';
+					<button data-action="'.site_url($default_action['url']).'"type="button" class="btn btn-xs btn-success file-action"><i class="fa '.$default_action['icon'].'"></i> <span class="hidden-xs">'.$default_action['title'].'</span> </button>';
 		
 		if( count($plugin_actions) > 0 || count($builtin_actions) > 0 )
 		{
@@ -1018,7 +1019,7 @@ class Projectsmanager extends FAB_Controller {
 			
 			foreach($builtin_actions as $a)
 			{
-				$html .= '<li><a class="file-action" data-action="'.$a['url'].'"><i class="fa '.$a['icon'].'"></i> '.$a['title'].' </a></li>';
+				$html .= '<li><a class="file-action" data-action="'.$a['url'].'"><i class="fa '.$a['icon'].'"></i> <span class="hidden-xs">'.$a['title'].'</span> </a></li>';
 			}
 			
 			if(count($plugin_actions) > 0)
@@ -1026,7 +1027,7 @@ class Projectsmanager extends FAB_Controller {
 				$html .= '<li role="separator" class="divider"></li>';
 				foreach($plugin_actions as $a)
 				{
-					$html .= '<li><a class="file-action" data-action="'.$a['url'].'"><i class="fa '.$a['icon'].'"></i> '.$a['title'].' </a></li>';
+					$html .= '<li><a class="file-action" data-action="'.$a['url'].'"><i class="fa '.$a['icon'].'"></i> <span class="hidden-xs">'.$a['title'].'</span> </a></li>';
 				}
 			}
 			
