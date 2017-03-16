@@ -1,6 +1,6 @@
 <?php
 
-if(is_array($_response)){ // if there is a valid response
+if(is_array($_response) && isset($_response['bed_leveling'])){ // if there is a valid response
 
 	$screws = array();	
 	$greens = 0;
