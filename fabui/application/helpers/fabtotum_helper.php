@@ -431,6 +431,25 @@ if(!function_exists('getInstalledHeadInfo'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getInstalledFeederInfo'))
+{
+	/**
+	 * Load installed feeder information
+	 */	
+	function getInstalledFeederInfo()
+	{
+		$CI =& get_instance();
+		$CI->load->helper('file');
+		$CI->config->load('fabtotum');
+		
+		$_data = loadSettings();
+		$feeder_name = $_data['hardware']['feeder'];
+		
+		$feeders = loadFeeders();
+		return $feeders[$feeder_name];
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('restoreHeadFactorySettings'))
 {
 	/**

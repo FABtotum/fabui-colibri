@@ -33,7 +33,10 @@ from fabtotum.utils.translation import _, setLanguage
 def extrude(app, args, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     filamentToExtrude = float(args[0])
-    units_e = app.config.get('settings', 'e')
+    
+    feeder = app.config.get_current_feeder_info();
+    units_e = feeder['steps_per_unit']
+    
     app.macro("M92 E{0}".format(units_e), "ok", 2, _("Setting extruder mode") )
     app.macro("M302",  "ok", 1,    _("Allowing cold extrusion") )
     app.macro("G91",   "ok", 1,    _("Set rel position") )
@@ -44,19 +47,30 @@ def change_step(app, args, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     new_step = float(args[0])
     app.macro("M92 E{0}".format(new_step),  "ok", 1,   _("Setting extruder mode") )
-    app.macro("M500",                       "*", 1,   _("Writing settings to eeprom") )
+    #app.macro("M500",                       "*", 1,   _("Writing settings to eeprom") )
     
-    app.config.set('settings', 'e', new_step);
-    app.config.save('settings')
+    #app.config.set('settings', 'e', new_step);
+    #app.config.save('settings')
+    
+    #feeder = app.config.get_current_feeder_info();
+    #feeder['steps_per_unit'] = new_step;
+    #app.config.save_current_feeder_info(feeder)
+    
 
 def pre_unload_spool(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    app.macro("M104 S190",  "ok", 5,    _("Pre-Heating Nozzle...") )
-    app.macro("M109 S190",  "*", 400,  _("Waiting for nozzle to reach temperature...") ) #heating and waiting.
+    
+    #~ ext_temp = float(args[0])
+    ext_temp = 190
+    
+    app.macro("M104 S{0}".format(ext_temp),  "ok", 5,    _("Pre-Heating Nozzle...") )
+    app.macro("M109 S{0}".format(ext_temp),  "*", 400,  _("Waiting for nozzle to reach temperature...") ) #heating and waiting.
     
 def unload_spool(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    units_e = app.config.get('settings', 'e')
+    
+    feeder = app.config.get_current_feeder_info();
+    units_e = feeder['steps_per_unit']
     
     app.trace( _("Unloading Spool : Procedure Started.") )
     app.macro("G90",                "ok", 10,   _("Set abs position"), verbose=False)
@@ -78,7 +92,11 @@ def unload_spool(app, args = None, lang='en_US.UTF-8'):
     
 def load_spool(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    units_e = app.config.get('settings', 'e')
+    feeder = app.config.get_current_feeder_info();
+    units_e = feeder['steps_per_unit']
+    
+    #~ ext_temp = float(args[0])
+    ext_temp = 210
     
     app.trace( _("Loading Spool : Procedure Started.") )
     app.macro("G90",                "ok", 2,    _("Set abs position"), verbose=False)
@@ -88,11 +106,11 @@ def load_spool(app, args = None, lang='en_US.UTF-8'):
     app.macro("G91",                "ok", 2,    _("Set relative position"), verbose=False)
     app.macro("G92 E0",             "ok", 5,    _("Setting extruder position to 0"), verbose=False)
     app.macro("M92 E{0}".format(units_e), "ok", 5,    _("Setting extruder mode"), verbose=False)
-    app.macro("M104 S190",          "ok", 5,    _("Pre-Heating Nozzle. Get ready to push...") ) #heating and waiting.
+    app.macro("M104 S{0}".format(ext_temp), "ok", 5,    _("Pre-Heating Nozzle. Get ready to push...") ) #heating and waiting.
     app.macro("M300",               "ok", 5,    _("<b>Start pushing!</b>") )
     app.macro("G0 E110 F500",       "ok", 300,    _("Loading filament") )
     app.macro("G0 E660 F700",       "ok", 300,    _("Loading filament (fast)") )
-    app.macro("M109 S210",          "*", 400,  _("Waiting to get to temperature...") ) #heating and waiting.
+    app.macro("M109 S{0}".format(ext_temp),          "*", 400,  _("Waiting to get to temperature...") ) #heating and waiting.
     app.macro("G0 E100 F200",       "ok", 100,    _("Entering the hotend (slow)") )
     #app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
     app.macro("M104 S0",            "ok", 1,    _("Turning off heater") )

@@ -48,6 +48,10 @@ def pause_additive(app, args=None, lang='en_US.UTF-8'):
     if safe_z > max_z:
         safe_z = max_z
     
+    feeder = app.config.get_current_feeder_info()
+    #app.macro("M82",                "ok", 2,    _("E relative position mode"), verbose=False )
+    app.macro("G0 E-{0} F{1}".format(feeder['retract_amount'], feeder['retract_feedrate']),  "ok", 20,    _("Retract fillament") )
+    
     app.macro("G90",                "ok", 2,    _("Setting absolute position"), verbose=False )
     app.macro("G0 Z{0} F5000".format(safe_z),        "ok", 100,  _("Moving to Z safe zone"), verbose=False )
     
@@ -62,6 +66,8 @@ def resume_additive(app, args=None, lang='en_US.UTF-8'):
         with open('/var/lib/fabui/settings/stored_task.json') as f:
             content = json.load(f)
         
+        os.remove('/var/lib/fabui/settings/stored_task.json')
+        
         if "position" in content:
             x = float(content['position']['x'])
             y = float(content['position']['y'])
@@ -71,6 +77,7 @@ def resume_additive(app, args=None, lang='en_US.UTF-8'):
             app.macro("G0 X{0} Y{1} F6000".format(x,y), "ok", 60,  _("Restore XY position"), verbose=False )
             app.macro("G0 Z{0} F5000".format(z),        "ok", 60,  _("Restore Z position"), verbose=False )
             app.macro("M400",                           "ok", 120,  _("Waiting for all moves to finish"), verbose=False)
+            app.macro("G0 E{0} F{1}".format(feeder['retract_amount'], feeder['retract_feedrate']),  "ok", 20,    _("Restore fillament") )
 
 def prepare_additive(app, args=None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
@@ -86,7 +93,8 @@ def prepare_additive(app, args=None, lang='en_US.UTF-8'):
 def start_additive(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
-    units_e = app.config.get('settings', 'e')
+    feeder = app.config.get_current_feeder_info();
+    units_e = feeder['steps_per_unit']
     
     head_file = os.path.join( app.config.get('hardware', 'heads'), app.config.get('settings', 'hardware.head') + '.json');
 
@@ -185,7 +193,8 @@ def engage_feeder(app, args = None, lang='en_US.UTF-8'):
     except KeyError:
         safety_door = 0
         
-    units_e = app.config.get('settings', 'e')
+    feeder = app.config.get_current_feeder_info();
+    units_e = feeder['steps_per_unit']
 
     app.trace( _("Engaging 3D-Printer Feeder") )
     if safety_door == 1:

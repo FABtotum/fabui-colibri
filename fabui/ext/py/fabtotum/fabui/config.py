@@ -232,5 +232,36 @@ class ConfigService:
         """
         feeder_name = self.get('settings', 'hardware.feeder', 'built_in_feeder')
         return self.get_feeder_info(feeder_name)
+    
+    def save_feeder_info(self, feeder_name, info):
+        head_file = os.path.join( self.get('hardware', 'heads'), feeder_name + '.json');
+        feeder_file = os.path.join( self.get('hardware', 'feeders'), feeder_name + '.json');
+        if os.path.exists(head_file):
+            try:
+                with open(head_file) as json_f:
+                    head = json.load(json_f)
+                
+                info.pop('name')
+                info.pop('description')
+                info.pop('link')
+                
+                head['feeder'] = info
+                
+                with open(head_file, 'w') as json_f:
+                    json_f.write( json.dumps(head) )
+                return True
+                
+            except Exception as e:
+                return False
         
-
+        try:
+            with open(feeder_file, 'w') as json_f:
+                json_f.write( json.dumps(info) )
+        except Exception as e:
+            return False
+            
+        return True
+            
+    def save_current_feeder_info(self, info):
+        feeder_name = self.get('settings', 'hardware.feeder', 'built_in_feeder')
+        self.save_feeder_info(feeder_name, info)

@@ -157,7 +157,8 @@ def probe_scan(app, args = None, lang='en_US.UTF-8'):
 
 def end_scan(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    units_e = app.config.get('settings', 'e')
+    feeder = app.config.get_current_feeder_info();
+    units_e = feeder['steps_per_unit']
     try:
         color = app.config.get('settings', 'color')
     except KeyError:

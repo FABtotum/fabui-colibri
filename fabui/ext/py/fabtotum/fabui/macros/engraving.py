@@ -57,7 +57,6 @@ def start_engraving(app, args = None, lang='en_US.UTF-8'):
 def end_engraving(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
-
     app.trace("Terminating...")    
     app.macro("G0 X0 Y0 Z0 E0 F2000", "ok", 1, _("Go back to Origin Point"), verbose=False)
     
@@ -66,7 +65,9 @@ def end_engraving(app, args = None, lang='en_US.UTF-8'):
 
 def end_engraving_aborted(app, args = None, lang='en_US.UTF-8'):
     
-    units_e = app.config.get('settings', 'e')
+    feeder = app.config.get_current_feeder_info();
+    units_e = feeder['steps_per_unit']
+    
     try:
         color = app.config.get('settings', 'color')
     except KeyError:

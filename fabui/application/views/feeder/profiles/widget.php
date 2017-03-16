@@ -174,7 +174,7 @@
 							<section class="col col-6">
 								<label class="label"><?php echo _('Retraction amount (mm)')?></label>
 								<label class="input">
-									<input type="number" id="feeder-retract_amoun" name="retract_amoun" min="0" max="20" value="4">
+									<input type="number" id="feeder-retract_amount" name="retract_amount" min="0" max="20" value="4">
 								</label>
 							</section>
 						</div>
