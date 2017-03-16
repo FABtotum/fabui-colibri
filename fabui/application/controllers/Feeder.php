@@ -179,7 +179,7 @@ class Feeder extends FAB_Controller {
 		
 		$feeder = getInstalledFeederInfo();
 		$feeder['steps_per_unit'] = $new_step;
-		saveInfoToInstalledFeeder($feeder)
+		saveInfoToInstalledFeeder($feeder);
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode( $response ));
 	}
