@@ -61,7 +61,7 @@ def pre_unload_spool(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
     #~ ext_temp = float(args[0])
-    ext_temp = 190
+    ext_temp = args[0]
     
     app.macro("M104 S{0}".format(ext_temp),  "ok", 5,    _("Pre-Heating Nozzle...") )
     app.macro("M109 S{0}".format(ext_temp),  "*", 400,  _("Waiting for nozzle to reach temperature...") ) #heating and waiting.
@@ -69,8 +69,9 @@ def pre_unload_spool(app, args = None, lang='en_US.UTF-8'):
 def unload_spool(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
-    feeder = app.config.get_current_feeder_info();
-    units_e = feeder['steps_per_unit']
+    feeder      = app.config.get_current_feeder_info();
+    units_e     = feeder['steps_per_unit']
+    tube_length = feeder['tube_length']
     
     app.trace( _("Unloading Spool : Procedure Started.") )
     app.macro("G90",                "ok", 10,   _("Set abs position"), verbose=False)
@@ -83,7 +84,7 @@ def unload_spool(app, args = None, lang='en_US.UTF-8'):
     app.macro("M300",               "ok", 2,    _("<b>Start Pulling!</b>"), verbose=False)
     #app.macro("M400",               "ok", 100,  _("Wait for move to finish"), verbose=False)
     app.trace( _("<b>Start Pulling!</b>") )
-    app.macro("G0 E-800 F550",      "ok", 300,   _("Expelling filament") )
+    app.macro("G0 E-{0} F550".format(tube_length),      "ok", 300,   _("Expelling filament") )
     #app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
     app.macro("G0 E-200 F550",      "ok", 300,   _("Expelling filament"), verbose=False)
     #app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
@@ -92,11 +93,12 @@ def unload_spool(app, args = None, lang='en_US.UTF-8'):
     
 def load_spool(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    feeder = app.config.get_current_feeder_info();
-    units_e = feeder['steps_per_unit']
+    feeder      = app.config.get_current_feeder_info();
+    tube_length = feeder['tube_length']
+    units_e     = feeder['steps_per_unit']
     
     #~ ext_temp = float(args[0])
-    ext_temp = 210
+    ext_temp = args[0]
     
     app.trace( _("Loading Spool : Procedure Started.") )
     app.macro("G90",                "ok", 2,    _("Set abs position"), verbose=False)
@@ -106,10 +108,10 @@ def load_spool(app, args = None, lang='en_US.UTF-8'):
     app.macro("G91",                "ok", 2,    _("Set relative position"), verbose=False)
     app.macro("G92 E0",             "ok", 5,    _("Setting extruder position to 0"), verbose=False)
     app.macro("M92 E{0}".format(units_e), "ok", 5,    _("Setting extruder mode"), verbose=False)
-    app.macro("M104 S{0}".format(ext_temp), "ok", 5,    _("Pre-Heating Nozzle. Get ready to push...") ) #heating and waiting.
+    app.macro("M104 S{0}".format(ext_temp), "ok", 5,    _("Pre-Heating Nozzle. Get ready to push... ") ) #heating and waiting.
     app.macro("M300",               "ok", 5,    _("<b>Start pushing!</b>") )
     app.macro("G0 E110 F500",       "ok", 300,    _("Loading filament") )
-    app.macro("G0 E660 F700",       "ok", 300,    _("Loading filament (fast)") )
+    app.macro("G0 E{0} F700".format(tube_length),       "ok", 300,    _("Loading filament (fast)") )
     app.macro("M109 S{0}".format(ext_temp),          "*", 400,  _("Waiting to get to temperature...") ) #heating and waiting.
     app.macro("G0 E100 F200",       "ok", 100,    _("Entering the hotend (slow)") )
     #app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)

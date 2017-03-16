@@ -13,7 +13,5 @@
 	ga('set', { page: (page)});
 	ga('send', 'pageview');
 	pageCleanUp();
-	pageSetUp();
-	transformLinks();
 </script>
 <?php echo $jsInlineTop; ?>

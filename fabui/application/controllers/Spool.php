@@ -22,64 +22,7 @@ class Spool extends FAB_Controller {
 	/**
 	 * 
 	 */
-	public function index($type = 'load')
-	{
-		$this->load->library('smart');
-		$this->load->helper('form');
-		$this->config->load('fabtotum');
-        
-		//main page widget
-		$widgetOptions = array(
-			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
-			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
-		);
-
-		$data = array();
-
-		$headerToolbar = ''; //'<div class="alert alert-info animated fadeIn"><h4 class="text-center"><i class="fa fa-shopping-cart"></i> <a target="_blank" href="https://store.fabtotum.com/eu/store/filaments.html?from=fabui">Get new filaments!</a></h4></div>';
-		$widgeFooterButtons = '';
-		//$this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
-
-		$widget         = $this->smart->create_widget($widgetOptions);
-		$widget->id     = 'maintenance-spool-widget';
-		$widget->header = array('icon' => 'fa-circle-o-notch', "title" => "<h2>Spool</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('spool/main_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
-		
-		$this->addJsInLine($this->load->view('spool/js', $data, true));
-		$this->content = $widget->print_html(true);
-		$this->view();
-	}
-	/**
-	 * 
-	 */
-	public function load()
-	{
-		$this->load->helpers('fabtotum_helper');
-		$result = doMacro('load_spool');
-		$this->output->set_content_type('application/json')->set_output(json_encode($result));
-	}
-	/**
-	 * 
-	 */
-	public function preUnload()
-	{
-		$this->load->helpers('fabtotum_helper');
-		$result = doMacro('pre_unload_spool');
-		$this->output->set_content_type('application/json')->set_output(json_encode($result));
-	}
-	/**
-	 * 
-	 */
-	public function unload()
-	{
-		$this->load->helpers('fabtotum_helper');
-		$result = doMacro('unload_spool');
-		$this->output->set_content_type('application/json')->set_output(json_encode($result));
-	}
-	/**
-	 * 
-	 */
-	public function new_index()
+	public function index()
 	{
 		//load libraries, helpers, model
 		$this->load->library('smart');
@@ -87,6 +30,9 @@ class Spool extends FAB_Controller {
 		$this->load->helper('fabtotum_helper');
 		
 		$data = array();
+		$data['settings'] = loadSettings();
+		
+		
 		
 		//main page widget
 		$widgetOptions = array(
@@ -103,23 +49,68 @@ class Spool extends FAB_Controller {
 		
 		$data['filamentsOptions'] = array('pla' => 'PLA', 'abs' => 'ABS', 'nylon' => 'Nylon');
 		
-		$data['step1']  = $this->load->view('spool/new/wizard/step1', $data, true );
-		$data['step2']  = $this->load->view('spool/new/wizard/step2', $data, true );
-		$data['step3']  = $this->load->view('spool/new/wizard/step3', $data, true );
-		$data['step4']  = $this->load->view('spool/new/wizard/step4', $data, true );
+		$data['step1']  = $this->load->view('spool/wizard/step1', $data, true );
+		$data['step2']  = $this->load->view('spool/wizard/step2', $data, true );
+		$data['step3']  = $this->load->view('spool/wizard/step3', $data, true );
+		$data['step4']  = $this->load->view('spool/wizard/step4', $data, true );
 		
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'main-widget-spool-management';
 		
 		$widget->header = array('icon' => 'fa-circle-o-notch', "title" => "<h2>Spool management</h2>");
-		$widget->body   = array('content' => $this->load->view('spool/new/main_widget', $data, true ),'class'=>'fuelux');
+		$widget->body   = array('content' => $this->load->view('spool/main_widget', $data, true ),'class'=>'fuelux');
 		
 		$this->content = $widget->print_html(true);
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
-		$this->addJsInLine($this->load->view('spool/new/js', $data, true));
+		$this->addJsInLine($this->load->view('spool/js', $data, true));
 		$this->view();
 	}
+	/**
+	 * 
+	 */
+	public function load($filament_type = 'pla')
+	{
+		$this->load->helpers('fabtotum_helper');
+		$filament = getFilament($filament_type);	
+		$result = doMacro('load_spool', '', [$filament['temperatures']['extrusion']]);
+		if($result['response'] == 'success'){
+			setFilament($filament_type, true);
+		}
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+	}
+	/**
+	 * 
+	 */
+	public function preUnload()
+	{
+		$this->load->helpers('fabtotum_helper');
+		$result = doMacro('pre_unload_spool');
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+	}
+	/**
+	 * 
+	 */
+	public function unload($filament_type = 'pla')
+	{
+		$this->load->helpers('fabtotum_helper');
+		$filament = getFilament($filament_type);
+		
+		$resultPreUnLoad = doMacro('pre_unload_spool', '', [$filament['temperatures']['extrusion']]);
+		
+		if($resultPreUnLoad['response'] != 'success'){
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $resultPreUnLoad['message'])));
+			exit();
+		}
+		$resultUnload = doMacro('unload_spool');
+		
+		if($resultUnload['response'] == 'success'){
+			setFilament($filament_type, false);
+		}
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($resultUnload));
+	}
+	
 }
  
 ?>

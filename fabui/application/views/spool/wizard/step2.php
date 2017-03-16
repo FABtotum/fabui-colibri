@@ -13,17 +13,16 @@
 	<div class="row">
 		<!--  -->
 		<div class="col-sm-12">
-			<div class="smart-form">
-				<fieldset>
-					<section>
-						<label class="label font-md"><?php echo _('Select filament to load')?></label>
-						<label class="select">
-							<?php echo form_dropdown('filament', $filamentsOptions, '', 'id="filament" class="input-lg"'); ?> <i></i>
-						</label>
-					</section>
-				</fieldset>
-			</div>
+			<h3 id="filament-title"></h3>
+			<div class="btn-group btn-group-justified">
+			<?php foreach($filamentsOptions as $code => $label):?>
+				<a class="btn btn-default filament <?php echo $code; ?>" data-type="<?php echo $code; ?>" href="javascript:void(0);"><?php echo $label?> <span></span></a>
+			<?php endforeach; ?>
+			</div>					
 		</div>
+	</div>
+	<hr class="simple">
+	<div class="row">
 		<!--  -->
 		<div class="col-sm-12">
 			<div class="well well-light" id="filament-description"><?php echo getFilamentDescription('pla'); ?></div>

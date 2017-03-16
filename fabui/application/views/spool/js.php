@@ -1,156 +1,180 @@
+<?php
+/**
+ * 
+ * @author Krios Mane
+ * @author Fabtotum Development Team
+ * @version 0.1
+ * @license https://opensource.org/licenses/GPL-3.0
+ * 
+ */
+?>
 <script type="text/javascript">
+	var wizard;
+	var mode;
+	var filament;
+	$(document).ready(function() {
+		initWizard();
+		setFilamentDescription('<?php echo isset($settings['filament']['type']) ? $settings['filament']['type'] : 'pla' ?>');
+		$(".mode-choise").on('click', clickSetMode);
+		$(".filament").on('click', filamentButtonClick);
+		$("#restart-button").on('click', restartAction);
+	});
+	/**
+	*
+	**/
+	function initWizard()
+	{
+		wizard = $('.wizard').wizard();
 
-    var choice = '';
-    
-    var interval_trace;
-    var interval_response;
-    var trace_file;
-    var response_file;
-    
-    var finished = false;
-    var editor;
-
-    $(function () {
-         
-        $(".choice-button").on('click', function (){
-                
-            choice = $(this).attr('data-action');
-            
-            var name_procedure = '';
-            
-            $( ".choice" ).slideUp( "slow", function() {});
-            $("." + choice + "-choice").slideDown('slow');
-            $(".re-choice").slideDown('slow');
-            $(".start").slideDown('slow');
-            
-            if(choice == 'unload' || choice == 'pre_unload'){
-            	name_procedure = 'Unload Filament';
-            }else{
-            	name_procedure = 'Load Filament';
-            }
-            
-            $(".procedure-name").html('>  <strong>' + name_procedure +' </strong>');
-                
-        });
-        
-        
-        $(".re-choice-button").on('click', function(){
-            
-            $("." + choice + "-choice").slideUp('slow');
-            $( ".choice" ).slideDown( "slow", function() {});
-            $(".re-choice").slideUp('slow');
-            $(".start").slideUp('slow');
-            
-            $(".procedure-name").html("");
-            
-        });
-        
-        
-        $(".start-button").on('click', do_macro);
-        
-        
-    });
-    
-    function do_macro()
-    {
-        
-        if(choice == 'pre_unload'){
-            pre_unload();
-            return;
-        }
-        
-        
-        
-        openWait("<i class='fa fa-circle-o-notch fa-spin'></i> Please wait");
-        
-        $.ajax({
-              type: "POST",
-              url: "<?php echo site_url("spool") ?>/" + choice,
-              dataType: 'json'
-        }).done(function( response ) { 
-            
-            closeWait();
-
-            if(response.response == 'success'){
-
-            	$(".trace").slideDown('slow');
-                $(".new-spool").remove();
-                $("." + choice + "-choice").slideUp('slow');
-                
-	            $(".start").slideUp('slow');
-	            $(".start-button").addClass('disabled');
-	            $(".re-choice").slideUp('slow');
-	            $(".title").find("h2").html(choice.charAt(0).toUpperCase() + choice.slice(1) + 'ing filament');
-	            $(".title").slideDown('slow', function () {});
-	            $(".console").slideDown('slow', function () {});
-	            
-	            end();
-            }else{
-            	showErrorAlert('<?php echo _("Error") ?>', response.message);
-            }
-            
-        });
-    }
-    
-    function pre_unload()
-    {
-        openWait("<i class='fa fa-circle-o-notch fa-spin'></i> Please wait");
-        
-        $.ajax({
-            type:"POST",
-            url: "<?php echo site_url("spool/preUnload") ?>",
-            dataType: "json"
-            
-        }).done(function(response){
-            choice = 'unload';
-            closeWait();
-            if(response.response == 'success'){
-	            $(".pre_unload-choice").slideUp( "slow", function() {});
-	            $( ".choice" ).slideUp( "slow", function() {});
-	            $("." + choice + "-choice").slideDown('slow');
-	            $(".re-choice").slideDown('slow');
-            }else{
-            	showErrorAlert('<?php echo _("Error") ?>', response.message);
-            }
-            
-        });
-    }
-    
-    function end()
-    {        
-        $(".title").find("h2").html('Spool ' +  choice.charAt(0).toUpperCase() + choice.slice(1) + ' completed <i class="fa fa-check text-success"></i>');
-        
-        var act = choice == 'unload' ? 'load' : 'unload';
-            
-        $(".title").find('h2').append('<h5 class="new-spool">Do you want to ' + act + ' spool? <a id="again-link" href="javascript:void(0);"> YES </a> </h5>');
-            
-        /** VUOI CARICARCARE FILO ? */
-        
-        $("#again-link").on('click', function() {
-            again(act);
-        });
-        
-        $(".trace").slideUp('slow');
-        
-        $(".console").html('');
-    }
-    
-    
-    function again(action)
-    {
-        choice = action;
-        finished = false;
-        
-        $(".title").slideUp('fast');
-        $(".start-button").removeClass('disabled');
-        $(".re-choice").slideDown('fast');
-        
-        $("." + action + "-choice").slideDown('fast', function() {
-            
-            $(".start").slideDown('fast');
-            
-        });
-    }
-    
-
+		disableButton('.button-prev');
+		disableButton('.button-next');
+		
+		$('.wizard').on('changed.fu.wizard', function (evt, data) {
+			handleStep();
+		});
+		
+		$('#myWizard').on('clicked.fu.wizard', function (evt, data) {
+		});
+		
+		$('.button-prev').on('click', function(e) {
+			$('#myWizard').wizard('previous');
+		});
+		
+		$('.button-next').on('click', function(e) {
+			var step = $('.wizard').wizard('selectedItem').step;
+			if(step == 3){
+				doSpoolAction();
+				return;
+			}else{
+				$('#myWizard').wizard('next');
+			}
+		});
+	}
+	/**
+	*
+	**/
+	function handleStep()
+	{
+		var step = $('.wizard').wizard('selectedItem').step;
+		console.log(step);
+		switch(step)
+		{
+			case 1:
+				disableButton('.button-prev');
+				disableButton('.button-next');
+				break;
+			case 2:
+				enableButton('.button-prev');
+				enableButton('.button-next');
+				break;
+			case 3:
+				enableButton('.button-prev');
+				enableButton('.button-next');
+				break;
+			case 4:
+				disableButton('.button-prev');
+				disableButton('.button-next');
+				break;
+		}
+	}
+	/**
+	*
+	**/
+	function clickSetMode()
+	{
+		var action = $(this).attr('data-action');
+		setMode(action);
+	}
+	/**
+	*
+	**/
+	function setMode(action)
+	{	
+		mode = action;
+		$(".get-ready-row").hide();
+		$("#"+mode+"-row").show();
+		
+		switch(action)
+		{
+			case 'load':
+				$("#filament-title").html('<?php echo _('Select filament to load')?>');
+				break;
+			case 'unload':
+				$("#filament-title").html('<?php echo _('What filament are you going to unload?')?>');
+				break;
+		}
+		goToStep2();
+		
+	}
+	/**
+	*
+	**/
+	function goToStep(step)
+	{
+		$('.wizard').wizard('selectedItem', { step: step });
+	}
+	/**
+	*
+	**/
+	function goToStep2()
+	{
+		console.log("gotostep2");
+		goToStep(2);
+		
+	}
+	/**
+	*
+	**/
+	function goToStep3()
+	{
+		goToStep(3);
+	}
+	/**
+	*
+	**/
+	function  filamentButtonClick()
+	{
+		var type = $(this).attr("data-type");
+		setFilamentDescription(type);
+	}
+	/**
+	*
+	**/
+	function setFilamentDescription(type)
+	{	
+		filament = type;
+		$(".filament").addClass('btn-default').removeClass('bg-color-blueLight txt-color-white').find('span').html('');
+		$("." + filament).addClass('bg-color-blueLight txt-color-white').removeClass('btn-default').find('span').html('<i class="fa fa-check"></i>');
+		var html = $("#"+ filament +"_description").html();
+		$("#filament-description").html(html);
+	}
+	/**
+	*
+	**/
+	function doSpoolAction()
+	{
+		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> <?php echo _("Please wait");?>");
+		$.ajax({
+            type: "POST",
+            url: "<?php echo site_url("spool") ?>/" + mode + '/' + filament,
+            dataType: 'json'
+      }).done(function( response ) {
+          closeWait();
+          if(response.response == 'success'){
+              if(mode == 'unload'){
+                  $("#restart-button").removeClass('hidden');
+              }
+        	  goToStep(4);
+          }else{
+        	  showErrorAlert('<?php echo _("Error") ?>', response.message);
+          }
+      });
+	}
+	/**
+	*
+	*/
+	function restartAction()
+	{
+		setMode('load')
+	}
 </script>

@@ -10,7 +10,8 @@
 ?>
 <div class="step-pane" id="step3" data-step="3">
 	<hr class="simple">
-	<div class="row">
+	<!-- LOAD ROW  -->
+	<div class="row get-ready-row" id="load-row">
 		<!--  -->
 		<div class="col-sm-4">
 			<div class="product-content product-wrap clearfix">
@@ -66,6 +67,14 @@
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+	<!-- UNLOAD ROW  -->
+	<div class="row get-ready-row" id="unload-row">
+		<div class="col-sm-12">
+			<div class="well well-sm well-light text-center">
+				<h3><?php echo _("Press Next to proceed"); ?></h3>
 			</div>
 		</div>
 	</div>

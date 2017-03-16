@@ -38,7 +38,8 @@ if ( !function_exists('createDefaultSettings'))
 			'custom'             => array(
 				'overrides' => '',
 				'invert_x_endstop_logic' =>false
-			)
+			),
+			'filament' 			 => array('type'=>'pla', 'inserted' => false)
 		);
 		write_file($CI->config->item('settings'), json_encode($settings, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK));
 	}	
@@ -1235,6 +1236,40 @@ if(!function_exists('getFilamentDescription'))
 		$CI =& get_instance();
 		$CI->load->helper('language_helper');
 		return $CI->load->view('layout/filaments/'.$filament.'/'.getCurrentLanguage(), null, true);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getFilament'))
+{
+	/**
+	 *
+	 * @todo
+	 */
+	function getFilament($filament)
+	{
+		$CI =& get_instance();
+		$CI->config->load('filaments');
+		$filaments = $CI->config->item('filaments');
+		return $filaments[$filament];
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('setFilament'))
+{
+	/**
+	 *
+	 * @todo
+	 */
+	function setFilament($filament, $inserted)
+	{
+		$settings = loadSettings();
+		$temp = array(
+			'type' => $filament,	
+			'inserted' => $inserted
+		);
+		$settings['filament'] = $temp;
+		saveSettings($settings);
+		
 	}
 }
 ?>
