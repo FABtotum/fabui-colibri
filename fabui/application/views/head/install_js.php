@@ -241,7 +241,17 @@
 		
 		$("#head-settings :input").each(function (index, value) {
 			var name = $(this).attr('name');
+			var id = $(this).attr('id');
 			var type = $(this).attr('type');
+			var feeder = id.startsWith("feeder-");
+			
+			console.log('store:', id, feeder);
+			
+			if( !settings.hasOwnProperty('feeder'))
+			{
+				settings['feeder'] = {};
+			}
+			
 			if(name)
 			{
 				if(type == 'checkbox')
@@ -253,16 +263,39 @@
 				}
 				else
 				{
-					settings[name] = $(this).val();
+					if(feeder)
+						settings['feeder'][name] = $(this).val();
+					else
+						settings[name] = $(this).val();
 				}
 				
 				if(name == "custom_gcode")
-					settings[name] = settings[name].toUpperCase();
+				{
+					if(feeder)
+						settings['feeder'][name] = settings['feeder'][name].toUpperCase();
+					else
+						settings[name] = settings[name].toUpperCase();
+				}
 			}
 		});
 		
 		settings['capabilities'] = capabilities;
+		
+		console.log(settings);
+		
 		return settings;
+	}
+	
+	
+	function isObject(val) 
+	{
+		if (val === null) { return false;}
+		return ( (typeof val === 'function') || (typeof val === 'object') );
+	}
+	
+	function isArray(val)
+	{
+		return Array.isArray(val);
 	}
 	/**
 	*
@@ -273,12 +306,28 @@
 		for (var key in head) {
 			var value = head[key];
 			// now you can use key as the key, value as the... you guessed right, value
-			if(Array.isArray(value))
+			if(isArray(value))
 			{
-				for(var i=0; i<value.length; i++)
+				if(key == "capabilities")
 				{
-					var id = "#cap-" + value[i];
-					$(id).prop('checked', true);
+					for(var i=0; i<value.length; i++)
+					{
+						var id = "#cap-" + value[i];
+						$(id).prop('checked', true);
+					}
+				}
+			}
+			else if(isObject(value))
+			{
+				if(key == "feeder")
+				{
+					for (var fkey in value)
+					{
+						var fvalue = value[fkey];
+						var id = "#feeder-"+fkey;
+						$(id).val(fvalue);
+						console.log('try to', id);
+					}
 				}
 			}
 			else
@@ -304,8 +353,8 @@
 	**/
 	function saveHeadSettings()
 	{
-		var settings = getHeadSettings();	
-		var filename = settings['name'].replace(/ /g, "_").toLowerCase();
+		var settings = getHeadSettings();
+		var filename = settings['name'].replace(/ /g, "_").replace(/-/g, "_").toLowerCase();
 		$.ajax({
 			type: 'post',
 			url: '<?php echo site_url('head/saveHead'); ?>/' + filename,
@@ -314,9 +363,9 @@
 		}).done(function(response) {
 			console.log(response);
 			fabApp.showInfoAlert('<strong>{0}</strong> saved'.format(settings.name));
-			setTimeout(function(){
+			/*setTimeout(function(){
 				location.reload();
-			}, 1000);
+			}, 1000);*/
 		});
 	}
 	/**
@@ -325,7 +374,7 @@
 	function exportHeadSettings()
 	{
 		var settings = getHeadSettings();
-		var filename = settings['name'].replace(/ /g, "_").toLowerCase() + ".json";
+		var filename = settings['name'].replace(/ /g, "_").replace(/-/g, "_").toLowerCase() + ".json";
 		var content = JSON.stringify(settings, null, 2)
 		var blob = new Blob([content], {type: "text/plain"});
 		saveAs(blob, filename);

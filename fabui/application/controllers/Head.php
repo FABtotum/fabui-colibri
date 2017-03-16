@@ -80,9 +80,22 @@ class Head extends FAB_Controller {
 		}
 
 		$head_info = $heads[$new_head];
+		$_data['hardware']['head'] = $new_head;
 		doMacro('install_head', '', [$new_head]);
 
-		$_data['hardware']['head'] = $new_head;
+		if(in_array('feeder', $head_info['capabilities']))
+		{
+			$_data['hardware']['feeder'] = $new_head;
+			doMacro('install_feeder', '', [$new_head]);
+		}
+		else
+		{
+			if( isFeederInHead($_data['hardware']['feeder']) )
+			{
+				$_data['hardware']['feeder'] = 'built_in_feeder';
+				doMacro('install_feeder', '', ['built_in_feeder']);
+			}
+		}
 		
 		saveSettings($_data, $settings_type);
 		

@@ -221,7 +221,7 @@ def configure_feeder(app, feeder_name, lang='en_US.UTF-8'):
     
     feeder = app.config.get_feeder_info(feeder_name)
     
-    if not feeder:
+    if feeder == None:
         return False
     
     steps_per_unit = float(feeder['steps_per_unit'])
@@ -244,7 +244,7 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     
     # Load Head
     head = app.config.get_head_info(head_name)
-    if not head:
+    if head == None:
         return False
     #~ try:
         #~ head_file = os.path.join( app.config.get('hardware', 'heads'), head_name + '.json');

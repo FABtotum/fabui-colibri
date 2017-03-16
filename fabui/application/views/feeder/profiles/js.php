@@ -63,17 +63,16 @@
 	*
 	**/
 	function setFeederImg(){
-	 	selected_feeder = $(this).val();
-	 	
-        $(".jumbotron").html('');
-        
-	 	if(feeders.hasOwnProperty(selected_feeder))
-	 	{
-            
+		selected_feeder = $(this).val();
+
+		$(".jumbotron").html('');
+
+		if(feeders.hasOwnProperty(selected_feeder))
+		{
 			$("#edit-button").show();
 			$("#remove-button").show();
 			var feeder = feeders[selected_feeder];
-			if( feeder.factory )
+			if( parseInt(feeder.factory) == 1 )
 				$("#remove-button").hide();
 				
 			$(".jumbotron").html(feeders[selected_feeder].description);
@@ -84,37 +83,17 @@
 			$("#remove-button").hide();
 		}
 	 	
-	 	
-	 	
 	 	//~ $("#feeder_img").parent().attr('href', 'javascript:void(0);');
 	 	//~ $("#feeder_img").css('cursor', 'default');
 	 	//~ $("#set-feeder").prop("disabled",false);
 	 	
 		//$("#head_img").attr('src', '/assets/img/head/' + $(this).val() + '.png');
-		
-        console.log('selected', $(this).val());
-        
-		/*if($("#" + $(this).val() + "_description").length > 0){
-			$(".jumbotron").html($("#" + $(this).val() + "_description").html());
-		}*/
-		
-		/*if($(this).val() == 'more_heads'){
-			$("#head_img").parent().attr('href', 'https://store.fabtotum.com?from=fabui&module=maintenance&section=head');
-	 		$("#head_img").css('cursor', 'pointer');
-	 		$("#set-head").prop("disabled",true);
-		}
-		if($(this).val() == 'head_shape'){
-			$("#set-head").prop("disabled",true);
-		}*/
+
 	 }
 	/**
 	*
 	**/
 	function setFeeder(){
-	 	/*if($("#feeders").val() == 'head_shape'){
-	 		alert('Please select a Head');
-	 		return false;
-	 	}*/
 	 	openWait('<i class="fa fa-circle-o-notch fa-spin"></i> <?php echo _("Configuring feeder"); ?>', '<?php echo _("Please wait"); ?>...');
 	 	$.ajax({
 			type: "POST",
@@ -206,7 +185,7 @@
 		/**
 		* only for fabtotums official heads
 		*/
-		if(feeder.factory == "1" || feeder.factory == 1){
+		if( parseInt(feeder.factory) == 1 ){
 			showHideInputsForOfficialFeeders('hide');
 		}else{
 			showHideInputsForOfficialFeeders('show');

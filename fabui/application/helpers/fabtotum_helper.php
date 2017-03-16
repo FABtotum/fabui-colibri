@@ -265,6 +265,22 @@ if(!function_exists('loadFeeders'))
 			$content = iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($content));
 			$feeders[$key] = json_decode($content , true);
 		}
+		
+		if( canHeadSupport('feeder') )
+		{
+			$head = getInstalledHeadInfo();
+			$_data = loadSettings();
+			$key = $_data['hardware']['head'];
+			$info = $head['feeder'];
+			$info['name'] = $head['name'];
+			$info['description'] = $head['description'];
+			$info['link'] = $head['link'];
+			$fw_id = (int)$head['fw_id'];
+			if($fw_id){
+				$info['factory'] = 1;
+			}
+			$feeders[$key] = $info;
+		}
 
 		return $feeders;
 	}
@@ -332,11 +348,27 @@ if(!function_exists('saveFeederInfo'))
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		$feeders_dir = $CI->config->item('feeders');
+		$heads_dir = $CI->config->item('heads');
 		
 		$fn = $feeders_dir.'/'.$feeder_name.'.json';
 		
-		$content = json_encode($info, JSON_PRETTY_PRINT);
-		return file_put_contents($fn, $content) > 0;
+		if( isFeederInHead($feeder_name) )
+		{
+			$heads = loadHeads();
+			
+			unset($info['name']);
+			unset($info['description']);
+			unset($info['link']);
+			
+			$heads[$feeder_name]['feeder'] = $info;
+			
+			saveHeadInfo($heads[$feeder_name], $feeder_name);
+		}
+		else
+		{
+			$content = json_encode($info, JSON_PRETTY_PRINT);
+			return file_put_contents($fn, $content) > 0;
+		}
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -361,7 +393,7 @@ if(!function_exists('saveInfoToInstalledFeeder'))
 		$CI->config->load('fabtotum');
 		$_data = loadSettings();
 		$feeder_name = $_data['hardware']['feeder'];
-		return saveHeadInfo($info, $feeder_name);
+		return saveFeederInfo($info, $feeder_name);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -487,6 +519,18 @@ if(!function_exists('canHeadSupport'))
 		}
 		
 		return false;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('isFeederInHead'))
+{
+	/**
+	 * Check whether the feeder is part of the head.
+	 */
+	function isFeederInHead($feeder_name)
+	{
+		$heads = loadHeads();
+		return array_key_exists($feeder_name, $heads);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

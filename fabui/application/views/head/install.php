@@ -229,7 +229,7 @@
 					</fieldset>
 					
 					<fieldset class="feeder-settings" style="display:none">
-						<div class="row">
+						<!-- <div class="row">
 							<section class="col col-6">
 								<label class="label"><?php echo _('Feeder step')?></label>
 								<label class="input">
@@ -237,6 +237,75 @@
 								</label>
 							</section>
 						</div>
+						-->
+						<div class="row">
+							<section class="col col-6">
+								
+								<label class="label"><?php echo _('Steps per unit');?></label>
+								<label class="input">
+									<input type="number" id="feeder-steps_per_unit" name="steps_per_unit" min="1" max="5000" value="3048.16" step=0.1>
+								</label>
+								
+							</section>
+							
+							<section class="col col-6">
+								
+								<label class="label"><?php echo _('Tube length (mm)');?></label>
+								<label class="input">
+									<input type="number" id="feeder-tube_length" name="tube_length" min="0" max="2000" value="0">
+								</label>
+								
+							</section>
+						</div>
+						
+						<div class="row">
+							<section class="col col-6">
+								<label class="label"><?php echo _('Max E acceleration (mm/s<sup>2</sup>)')?></label>
+								<label class="input">
+									<input type="number" id="feeder-max_acceleration" name="max_acceleration" min="0" max="10000" value="100">
+								</label>
+							</section>
+							
+							<section class="col col-6">
+								<label class="label"><?php echo _('Max E feedrate (mm/s)')?></label>
+								<label class="input">
+									<input type="number" id="feeder-max_feedrate" name="max_feedrate" min="0" max="500" value="100">
+								</label>
+							</section>
+							
+							<section class="col col-6">
+								<label class="label"><?php echo _('Max E jerk (mm)')?></label>
+								<label class="input">
+									<input type="number" id="feeder-max_jerk" name="max_jerk" min="0" max="200" value="100">
+								</label>
+							</section>
+							
+							<section class="col col-6">
+								<label class="label"><?php echo _('Retract acceleration (mm/s<sup>2</sup>)')?></label>
+								<label class="input">
+									<input type="number" id="feeder-retract_acceleration" name="retract_acceleration" min="0" max="10000" value="100">
+								</label>
+							</section>
+						</div>
+
+						<div class="row">
+							<section class="col col-6">
+								<label class="label"><?php echo _('Retraction speed (mm/s)')?></label>
+								<label class="input">
+									<input type="number" id="feeder-retract_feedrate" name="retract_feedrate" min="1" max="500" value="12">
+								</label>
+							</section>
+							
+							<section class="col col-6">
+								<label class="label"><?php echo _('Retraction amount (mm)')?></label>
+								<label class="input">
+									<input type="number" id="feeder-retract_amoun" name="retract_amoun" min="0" max="20" value="4">
+								</label>
+							</section>
+						</div>
+						
+						<input type="hidden" id="feeder-factory" name="factory" value="0"/>
+						
 					</fieldset>
 					
 				</form>
