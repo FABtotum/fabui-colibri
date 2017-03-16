@@ -45,5 +45,6 @@
     "overrides": "",
     "invert_x_endstop_logic": false
   },
-  "z_max_offset": 241.5
+  "z_max_offset": 241.5,
+  "filament" : "pla"
 }
