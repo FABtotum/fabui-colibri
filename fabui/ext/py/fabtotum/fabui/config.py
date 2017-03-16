@@ -192,7 +192,6 @@ class ConfigService:
         head_name = self.get('settings', 'hardware.head', 'hybrid_head')
         return self.get_head_info(head_name)
         
-        
     def get_feeder_info(self, feeder_name):
         """
         Return feeder info.
@@ -248,7 +247,7 @@ class ConfigService:
                 head['feeder'] = info
                 
                 with open(head_file, 'w') as json_f:
-                    json_f.write( json.dumps(head) )
+                    json.dump(head, json_f, sort_keys=True, indent=4)
                 return True
                 
             except Exception as e:
@@ -256,7 +255,7 @@ class ConfigService:
         
         try:
             with open(feeder_file, 'w') as json_f:
-                json_f.write( json.dumps(info) )
+                json.dump(info, json_f, sort_keys=True, indent=4)
         except Exception as e:
             return False
             

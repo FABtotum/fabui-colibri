@@ -31,7 +31,8 @@ from fabtotum.utils.translation import _, setLanguage
 
 def check_pre_scan(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    units_a = app.config.get('settings', 'a')
+    feeder = get_feeder_info('built_in_feeder')
+    units_a = feeder['steps_per_angle']
     
     try:
         feeder_disengage_offset = app.config.get('settings', 'feeder')['disengage_offset']
@@ -66,7 +67,8 @@ def check_pre_scan(app, args = None, lang='en_US.UTF-8'):
     
 def rotary_scan(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    units_a = app.config.get('settings', 'a')
+    feeder = get_feeder_info('built_in_feeder')
+    units_a = feeder['steps_per_angle']
     
     try:
         safety_door = app.config.get('settings', 'safety')['door']
@@ -91,7 +93,8 @@ def rotary_scan(app, args = None, lang='en_US.UTF-8'):
     
 def photogrammetry_scan(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    units_a = app.config.get('settings', 'a')
+    feeder = get_feeder_info('built_in_feeder')
+    units_a = feeder['steps_per_angle']
     
     try:
         safety_door = app.config.get('settings', 'safety')['door']
@@ -139,7 +142,8 @@ def sweep_scan(app, args = None, lang='en_US.UTF-8'):
 
 def probe_scan(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    units_a = app.config.get('settings', 'a')
+    feeder = get_feeder_info('built_in_feeder')
+    units_a = feeder['steps_per_angle']
     try:
         safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:

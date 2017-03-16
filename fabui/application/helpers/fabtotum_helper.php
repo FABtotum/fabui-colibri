@@ -27,7 +27,6 @@ if ( !function_exists('createDefaultSettings'))
 			'switch'        	 => 0,
 			'feeder'        	 => array('disengage_offset'=> 2, 'show' => true),
 			'milling'       	 => array('layer_offset' => 12),
-			'a'             	 => 177.777778,
 			'customized_actions' => array('bothy' => 'none', 'bothz' => 'none'),
 			'api'                => array('keys' => array()),
 			'zprobe'        	 => array('enable'=> false, 'length' => 38),

@@ -135,15 +135,10 @@ def auto_bed_leveling(app, args = None, lang='en_US.UTF-8'):
 
 def probe_down(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    
-    print "LANG:", lang
-    
+   
     app.macro("M401",   "ok", 1, _("Probe Down") )
     
-def probe_up(app, args = None, lang='en_US.UTF-8'):
-    
-    print "LANG:", lang
-    
+def probe_up(app, args = None, lang='en_US.UTF-8'):    
     _ = setLanguage(lang)
     app.macro("M402",   "ok", 1, _("Probe Up") )
 
@@ -160,7 +155,8 @@ def safe_zone(app, args = None, lang='en_US.UTF-8'):
 
 def engage_4axis(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    units_a = app.config.get('settings', 'a')
+    feeder = get_feeder_info('built_in_feeder')
+    units_a = feeder['steps_per_angle']
     try:
         feeder_disengage_offset = app.config.get('settings', 'feeder')['disengage_offset']
     except KeyError:
@@ -181,7 +177,8 @@ def engage_4axis(app, args = None, lang='en_US.UTF-8'):
     
 def do_4th_axis_mode(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    units_a = app.config.get('settings', 'a')
+    feeder = get_feeder_info('built_in_feeder')
+    units_a = feeder['steps_per_angle']
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), verbose=False)
 
 def version(app, args = None, lang='en_US.UTF-8'):

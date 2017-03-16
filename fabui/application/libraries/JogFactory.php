@@ -240,6 +240,9 @@
 	function setExtruderMode($mode, $id_stamp)
 	{
 		$settings = loadSettings();
+		$feeders = loadFeeders();
+		
+		$builtin = $feeders['built_in_feeder'];
 		$feeder = getInstalledFeederInfo();
 		
 		if($mode == "extruder")
@@ -248,7 +251,7 @@
 		}
 		else if($mode == "4thaxis")
 		{
-			$this->sendCommands(array('M92 E'.$settings['a'], 'G92 E0'), $id_stamp);
+			$this->sendCommands(array('M92 E'.$builtin['steps_per_angle'], 'G92 E0'), $id_stamp);
 		}
 		return $this->response();
 	}

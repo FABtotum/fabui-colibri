@@ -84,6 +84,39 @@ def read_eeprom(gcodeSender):
     
     return eeprom
 
+def updateFactoryFeeder(config, info):
+    fabui_path = config.get('general', 'fabui_path')
+    
+    feeder_file = os.path.join(fabui_path, 'feeders', 'built_in_feeder.json')
+    with open(feeder_file, 'w') as json_f:
+        json.dump(info, json_f, sort_keys=True, indent=4)
+
+def loadFctoryFeeder(config):
+    fabui_path = config.get('general', 'fabui_path')
+    
+    try:
+        feeder_file = os.path.join(fabui_path, 'feeders', 'built_in_feeder.json')
+        with open(feeder_file) as json_f:
+            info = json.load(json_f)
+            return info
+    except:
+        return {
+                "name": "Built-in feeder",
+                "description": "Built-in feeder (4th axis)",
+                "link": "",
+                "custom_gcode": "",
+                "tube_length": 770,
+                "steps_per_unit": 3048.16,
+                "steps_per_angle": 177.777778,
+                "max_acceleration": 100,
+                "max_feedrate": 12,
+                "max_jerk": 1,
+                "retract_acceleration": 100,
+                "retract_feedrate": 12,
+                "retract_amount": 4,
+                "factory": 1
+            }
+
 def customHardware(gcodeSender, config, log):
     """
     Revision for customs edits
@@ -116,9 +149,19 @@ def hardware1(gcodeSender, config, log):
     
     config.set('settings', 'hardware.id', 1)
     config.set('settings', 'feeder.show', True)
-    config.set('settings', 'a', 177.777778)
-    config.set('settings', 'e', eeprom['steps_per_unit']['e'])
     config.save('settings')
+    
+    feeder = loadFctoryFeeder(config)
+    steps_per_unit = float(feeder['steps_per_unit'])
+    if steps_per_unit != 3048.16:
+        steps_per_unit = 3048.16
+        steps_per_angle = 177.777778
+        
+        feeder['steps_per_unit'] = steps_per_unit
+        feeder['steps_per_angle'] = steps_per_angle
+        
+        updateFactoryFeeder(config, feeder)
+        config.save_feeder_info('built_in_feeder', feeder)
     
     log.debug("Rev1")
     
@@ -136,13 +179,23 @@ def hardware2(gcodeSender, config, log):
     #save settings
     gcodeSender.send("M500", group='bootstrap')
     
-    eeprom = read_eeprom(gcodeSender)
+    #~ eeprom = read_eeprom(gcodeSender)
     
     config.set('settings', 'hardware.id', 2)
     config.set('settings', 'feeder.show', True)
-    config.set('settings', 'a', 177.777778)
-    config.set('settings', 'e', eeprom['steps_per_unit']['e'])
     config.save('settings')
+    
+    feeder = loadFctoryFeeder(config)
+    steps_per_unit = float(feeder['steps_per_unit'])
+    if steps_per_unit != 3048.16:
+        steps_per_unit = 3048.16
+        steps_per_angle = 177.777778
+        
+        feeder['steps_per_unit'] = steps_per_unit
+        feeder['steps_per_angle'] = steps_per_angle
+        
+        updateFactoryFeeder(config, feeder)
+        config.save_feeder_info('built_in_feeder', feeder)
     
     log.debug("Rev2")
     
@@ -167,9 +220,19 @@ def hardware3(gcodeSender, config, log):
     
     config.set('settings', 'hardware.id', 3)
     config.set('settings', 'feeder.show', False)
-    config.set('settings', 'a', 177.777778)
-    config.set('settings', 'e', eeprom['steps_per_unit']['e'])
     config.save('settings')
+    
+    feeder = loadFctoryFeeder(config)
+    steps_per_unit = float(feeder['steps_per_unit'])
+    if steps_per_unit != 3048.16:
+        steps_per_unit = 3048.16
+        steps_per_angle = 177.777778
+        
+        feeder['steps_per_unit'] = steps_per_unit
+        feeder['steps_per_angle'] = steps_per_angle
+        
+        updateFactoryFeeder(config, feeder)
+        config.save_feeder_info('built_in_feeder', feeder)
     
     log.debug("Rev3")
     
@@ -190,9 +253,19 @@ def hardware4(gcodeSender, config, log):
     
     config.set('settings', 'hardware.id', 4)
     config.set('settings', 'feeder.show', False)
-    config.set('settings', 'a', 88.888889)
-    config.set('settings', 'e', eeprom['steps_per_unit']['e'])
     config.save('settings')
+    
+    feeder = loadFctoryFeeder(config)
+    steps_per_unit = float(feeder['steps_per_unit'])
+    if steps_per_unit != 1524:
+        steps_per_unit = 1524
+        steps_per_angle = 88.888889
+        
+        feeder['steps_per_unit'] = steps_per_unit
+        feeder['steps_per_angle'] = steps_per_angle
+        
+        updateFactoryFeeder(config, feeder)
+        config.save_feeder_info('built_in_feeder', feeder)
     
     log.debug("Rev4")
     
@@ -212,9 +285,19 @@ def hardware5(gcodeSender, config, log):
     
     config.set('settings', 'hardware.id', 5)
     config.set('settings', 'feeder.show', False)
-    config.set('settings', 'a', 88.888889)
-    config.set('settings', 'e', eeprom['steps_per_unit']['e'])
     config.save('settings')
+    
+    feeder = loadFctoryFeeder(config)
+    steps_per_unit = float(feeder['steps_per_unit'])
+    if steps_per_unit != 1524:
+        steps_per_unit = 1524
+        steps_per_angle = 88.888889
+        
+        feeder['steps_per_unit'] = steps_per_unit
+        feeder['steps_per_angle'] = steps_per_angle
+        
+        updateFactoryFeeder(config, feeder)
+        config.save_feeder_info('built_in_feeder', feeder)
     
     log.debug("Rev5")
 
