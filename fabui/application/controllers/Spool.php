@@ -54,11 +54,16 @@ class Spool extends FAB_Controller {
 		$data['step3']  = $this->load->view('spool/wizard/step3', $data, true );
 		$data['step4']  = $this->load->view('spool/wizard/step4', $data, true );
 		
+		$headerToolbar = '
+		<div class="widget-toolbar" role="menu">
+			<a class="btn btn-default no-ajax" target="_blank" href="http://store.fabtotum.com/"><i class="fa fa-cart-plus"></i> <span class="hidden-xs">'._("Get more filaments").'</span> </a>
+		</div>';
+		
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'main-widget-spool-management';
 		
-		$widget->header = array('icon' => 'fa-circle-o-notch', "title" => "<h2>Spool management</h2>");
+		$widget->header = array('icon' => 'fa-circle-o-notch', "title" => "<h2>Spool management</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('spool/main_widget', $data, true ),'class'=>'fuelux');
 		
 		$this->content = $widget->print_html(true);

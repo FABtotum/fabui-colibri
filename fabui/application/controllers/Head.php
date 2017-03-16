@@ -39,8 +39,10 @@ class Head extends FAB_Controller {
 		
 		$data['head'] = isset($_units['hardware']['head']) ? $_units['hardware']['head'] : 'head_shape';
 
-		$headerToolbar = '<div class="widget-toolbar" role="menu">
-		<a class="btn btn-success settings-action" data-action="add" href=""><i class="fa fa-plus"></i> '._("Add new head").' </a>
+		$headerToolbar = '
+		<div class="widget-toolbar" role="menu">
+			<a class="btn btn-success settings-action" data-action="add" href=""><i class="fa fa-plus"></i> '._("Add new head").' </a>
+			<a class="btn btn-default no-ajax" target="_blank" href="http://store.fabtotum.com/"><i class="fa fa-cart-plus"></i> <span class="hidden-xs">'._("Get more heads").'</span> </a>
 		</div>';
 		
 		//main page widget
@@ -80,22 +82,9 @@ class Head extends FAB_Controller {
 		}
 
 		$head_info = $heads[$new_head];
-		$_data['hardware']['head'] = $new_head;
 		doMacro('install_head', '', [$new_head]);
 
-		if(in_array('feeder', $head_info['capabilities']))
-		{
-			$_data['hardware']['feeder'] = $new_head;
-			doMacro('install_feeder', '', [$new_head]);
-		}
-		else
-		{
-			if( isFeederInHead($_data['hardware']['feeder']) )
-			{
-				$_data['hardware']['feeder'] = 'built_in_feeder';
-				doMacro('install_feeder', '', ['built_in_feeder']);
-			}
-		}
+		$_data['hardware']['head'] = $new_head;
 		
 		saveSettings($_data, $settings_type);
 		
