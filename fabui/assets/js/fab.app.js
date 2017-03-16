@@ -534,7 +534,7 @@ fabApp = (function(app) {
 			waitContent(app_text[10]);
 			setTimeout(function(){ 
 				location.reload(); 
-			}, 3000);
+			}, 5000);
 		});
 	}
 	/*
