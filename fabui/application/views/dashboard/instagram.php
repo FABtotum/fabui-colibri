@@ -8,7 +8,7 @@
  * 
  */
 ?>
-<?php if(isset($feeds)): ?>
+<?php if(isset($feeds) && count($feeds)>0): ?>
 <div class="row">
 	<?php if(count($feedsA) > 0): ?>
 	<div class="col-sm-6 col-xs-6">
@@ -26,7 +26,6 @@
 	<?php endif; ?>
 </div>
 <?php else: ?>
-
 <div class="panel panel-default">
 	<div class="panel-body status">
 		<div class="who clearfix">
