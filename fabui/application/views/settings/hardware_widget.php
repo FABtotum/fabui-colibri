@@ -38,15 +38,6 @@
 					</section>
 				</div>
 				<div class="row">
-					<section class="col col-6">
-						<label class="label"> <?php echo _('Extruder steps per unit')?><strong>(<?php echo _('A mode')?>)</strong></label>
-						<label class="input">
-							<input type="text" id="a" name="a" value="<?php echo $defaultSettings['a'] ?>">
-							<b class="tooltip tooltip-top-right"><i class="fa fa-refresh txt-color-teal"></i> <?php echo _('You must restart the FABtotum to apply these changes')?></b> </label>
-						</label>
-					</section>
-				</div>
-				<div class="row">
 					<section class="col col-12">
 						<div class="note">
 							<?php echo _('If you change values for extruder steps you have to restart the FABtotum so that can values take effect')?>
