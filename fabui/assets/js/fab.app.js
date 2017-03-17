@@ -1,7 +1,8 @@
 fabApp = (function(app) {
 	
-	app.FabActions = function(){
+	app.rebooting = false; //is the unit rebooting?
 	
+	app.FabActions = function(){
 		var fabActions = {
 			userLogout: function($this){
 				$.SmartMessageBox({
@@ -542,6 +543,7 @@ fabApp = (function(app) {
 	 * launch reboot command and refresh the page after 21 seconds
 	 */
 	app.reboot = function() {
+		app.rebooting = true;
 		clearInterval(temperatures_interval);
 		//$.is_macro_on = true;
 		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> " + app_text[11], app_text[12] + '...', false);
@@ -701,19 +703,21 @@ fabApp = (function(app) {
 	app.ws_callbacks = {};
 	/**
 	* web socket error handler - try to reconnect when ws connection is closed
+	* 
 	**/
 	app.ws_onerror = function(e)
 	{
 		console.log ('Error with WebSocket', ws.readyState);
-		
-		app.ws_callbacks = {};
-		socket_connected = false;
-		app.ws_reconnecting = true;
-		
-		setTimeout(function(e){
-			app.ws_reconnecting = false;
-			app.webSocket(true);
-			}, 1000);
+		if(app.rebooting == false){ //reconnect only if the unit is not rebooting
+			app.ws_callbacks = {};
+			socket_connected = false;
+			app.ws_reconnecting = true;
+			
+			setTimeout(function(e){
+				app.ws_reconnecting = false;
+				app.webSocket(true);
+				}, 1000);
+		}
 	}
 	/**
 	* websocket onclose event handler
@@ -721,17 +725,19 @@ fabApp = (function(app) {
 	app.ws_onclose = function(e)
 	{
 		console.log ('WebSocket onClose',ws.readyState);
-		app.ws_callbacks = {};	
-		socket_connected = false;
-		socket = null;
-		
-		if(app.ws_reconnecting == false)
-		{
-			app.ws_reconnecting = true;
-			setTimeout(function(e){
-				app.ws_reconnecting = false;
-				app.webSocket(true);
-				}, 1000);
+		if(app.rebooting == false){ //reconnect only if the unit is not rebooting
+			app.ws_callbacks = {};	
+			socket_connected = false;
+			socket = null;
+			
+			if(app.ws_reconnecting == false)
+			{
+				app.ws_reconnecting = true;
+				setTimeout(function(e){
+					app.ws_reconnecting = false;
+					app.webSocket(true);
+					}, 1000);
+			}
 		}
 	}
 	/**
