@@ -235,9 +235,6 @@ fabApp = (function(app) {
 	*
 	**/
 	app.domReadyMisc = function() {
-		
-		
-		
 		// update notification when ajax-dropdown is closed
 		$(document).mouseup(function(e) {
 			if (!$('.ajax-dropdown').is(e.target) && $('.ajax-dropdown').has(e.target).length === 0) {
@@ -455,7 +452,6 @@ fabApp = (function(app) {
 	app.unFreezeParent = function(link) {
 		//TODO
 	}
-	
 	/**
 	* show error message 
 	*/
@@ -468,7 +464,6 @@ fabApp = (function(app) {
 			icon : "fa fa-warning"
 		});
 	}
-	
 	/**
 	* show error message 
 	*/
@@ -481,7 +476,6 @@ fabApp = (function(app) {
 			icon : "fa fa-warning"
 		});
 	}
-	
 	/**
 	* show info message
 	*/
@@ -494,7 +488,6 @@ fabApp = (function(app) {
 			icon : "fa fa-check bounce animated"
 		});
 	}
-	
 	/*
 	 *  check for first setup wizard
 	 */
@@ -516,11 +509,9 @@ fabApp = (function(app) {
 	 * launch reset controller command
 	 */
 	app.resetController = function() {
-		$.is_macro_on = true;
 		openWait("<i class=\"fa fa-circle-o-notch fa-spin\"></i> " + app_text[8], app_text[12], false);
 		$.get(reset_controller_url_action, function(){
 			closeWait();
-			$.is_task_on = true;
 		});
 	}
 	/*
@@ -529,7 +520,6 @@ fabApp = (function(app) {
 	app.stopAll = function(message) {
 		message = message || app_text[9] ;
 		openWait(message, ' ', false);
-		$.is_stopping_all = true;
 		$.get(stop_all_url_action, function(){
 			waitContent(app_text[10]);
 			setTimeout(function(){ 
@@ -577,7 +567,6 @@ fabApp = (function(app) {
 			url: poweroff_url_action,
 		}).done(function(data) {
 			app.showAlertToPowerOff();
-			
 		}).fail(function(jqXHR, textStatus){
 			app.showAlertToPowerOff();
 		});
@@ -639,7 +628,6 @@ fabApp = (function(app) {
 		$(".tasks-number").html( '(' + number_tasks + ')');
 		if(number_updates > 0 ){
 			
-			
 			var a = $("nav li > a");
 			a.each(function() {
 				var link = $(this);
@@ -649,10 +637,7 @@ fabApp = (function(app) {
 					link.append('<span id="update-menu-badge" class="badge pull-right inbox-badge bg-color-red margin-right-13">'+number_updates+'</span>');
 				}
 			});
-			
-			
 		}
-		
 	};
 	/*
 	 * refresh notification content (dropdown list)
@@ -684,7 +669,6 @@ fabApp = (function(app) {
 			});
 		}
 	}
-	
 	/*
 	 * Manage jog response and jog callbacks
 	 */
@@ -704,47 +688,40 @@ fabApp = (function(app) {
 				response.push(data.commands[i]);
 			}
 		}
-		
 		if(app.ws_callbacks.hasOwnProperty(stamp))
 		{
 			app.ws_callbacks[stamp](response);
 			delete app.ws_callbacks[stamp];
 		}
-		
 		app.writeSerialResponseToConsole(data);
 	};
-	 
+	/**
+	 * 
+	 */
 	app.ws_callbacks = {};
 	/**
-	*
+	* web socket error handler - try to reconnect when ws connection is closed
 	**/
 	app.ws_onerror = function(e)
 	{
-		console.log ('Error with WebSocket');
+		console.log ('Error with WebSocket', ws.readyState);
+		
 		app.ws_callbacks = {};
-		
 		socket_connected = false;
-		
-		console.log ('in 3sec reconnecting...');
-		
-		//socket.close();
-		
-		
 		app.ws_reconnecting = true;
 		
 		setTimeout(function(e){
 			app.ws_reconnecting = false;
 			app.webSocket(true);
-			}, 3000);
+			}, 1000);
 	}
 	/**
-	*
+	* websocket onclose event handler
 	**/
 	app.ws_onclose = function(e)
 	{
-		console.log ('CLOSED WebSocket');
-		app.ws_callbacks = {};
-		
+		console.log ('WebSocket onClose',ws.readyState);
+		app.ws_callbacks = {};	
 		socket_connected = false;
 		socket = null;
 		
@@ -753,38 +730,29 @@ fabApp = (function(app) {
 			app.ws_reconnecting = true;
 			setTimeout(function(e){
 				app.ws_reconnecting = false;
-				app.webSocket();
-				}, 3000);
+				app.webSocket(true);
+				}, 1000);
 		}
-
 	}
 	/**
 	*
 	*/
 	app.ws_reconnecting = false;
 	/**
-	*
+	* WebSocket for faster communications
+	* it goes automatically with ajax pulling method if WebSocket is not supported
 	*/
 	app.webSocket = function(force_fallback)
 	{
 		force_fallback = force_fallback || false;
+		
 		options = {
-			http: websocket_fallback_url,
-			force_fallback : force_fallback,
-			interval : 5000
+			http:           websocket_fallback_url,
+			force_fallback : force_fallback,        //force websocket emulation instead of native implementation
+			interval       : 5000                   // number of ms between poll request
 		};
 		
 		socket = ws = $.WebSocket ('ws://'+socket_host+':'+socket_port, null, options);
-
-		// WebSocket onerror event triggered also in fallback
-		/*ws.onerror = function (e) {
-			console.log ('Error with WebSocket uid: ' + e.target.uid);
-		};
-
-		ws.onclose = function (e) {
-			console.log ('CLOSED WebSocket uid: ' + e.target.uid);
-			app.ws_callbacks = {};
-		}*/
 		
 		ws.onerror = app.ws_onerror;
 		ws.onclose = app.ws_onclose;
@@ -794,19 +762,19 @@ fabApp = (function(app) {
 			socket_connected = true;
 			if(debugState)
 				root.console.log("WebSocket opened as" , socket.fallback?"fallback":"native" );
-			
 			app.afterSocketConnect();
 		};  
-		
+		/**
+		 * handle messages from the server
+		 */
 		ws.onmessage = function (e) {
 			try {
 				var obj = jQuery.parseJSON(e.data);
 				if(debugState)
 					console.log("✔ WebSocket received message: %c [" + obj.type + "]", debugStyle);
-				
 				switch(obj.type){
 					case 'temperatures':
-						fabApp.updateTemperatures(obj.data);
+						app.updateTemperatures(obj.data);
 						break;
 					case 'emergency':
 						app.manageEmergency(obj.data);
@@ -829,6 +797,9 @@ fabApp = (function(app) {
 					case 'trace':
 						app.handleTrace(obj.data.content);
 						break;
+					case 'poll':
+						app.handlePollMessage(obj);
+						break;
 					default:
 						break;
 				}
@@ -836,20 +807,23 @@ fabApp = (function(app) {
 				return;
 			}
 		}
-		
-		setTimeout(function(e){
-				if(app.ws_reconnecting == false && ws.readyState == 3)
-				{
-					app.ws_onerror();
-				}
-				
-				if(ws.readyState == 1)
-				{
-					socket_connected = true;
-				}
-			}, 1000);
-		
+		setTimeout(app.checkWebSocketStatus, 1000);		
 	};
+	/**
+	 *  check websocket availability
+	 *  if not switch to ajax-polling mode
+	 */
+	app.checkWebSocketStatus = function()
+	{
+		if(app.ws_reconnecting == false && ws.readyState == 3){
+			app.ws_onerror();
+		}
+		if(ws.readyState == 1){
+			socket_connected = true;
+			if(debugState)
+				root.console.log("✔  WebSocket connected as" , socket.fallback?"fallback":"native");
+		}
+	}
 	/*
 	 * update printer status 
 	 */
@@ -958,9 +932,7 @@ fabApp = (function(app) {
 		if($(".jogResponseContainer").length > 0){
 			var html = '';
 			$.each(data.commands, function(i, item) {
-				//console.log(item.reply);
 				html += '<span class="jog_response ">' + item.code + ' : <small>' + item.reply + '</small> </span><hr class="simple">';
-				
 			});
 			
 			$(".consoleContainer").append(html);
@@ -983,7 +955,7 @@ fabApp = (function(app) {
 		if(is_emergency == true) return; //exit if is already on emergency status
 		var code = parseInt(data.code);
 		is_emergency = true;
-			
+		
 		switch(code)
 		{
 			case 102:
@@ -996,7 +968,6 @@ fabApp = (function(app) {
 			default:
 				app.showEmergencyAlert(code);
 		}
-		
 	};
 	/**
 	*
@@ -1213,8 +1184,6 @@ fabApp = (function(app) {
 		if(debugState)
 			root.console.log("✔ app.serial: " + func + ', ' + val);
 		
-		console.log(val);
-		
 		var stamp = Date.now();
 		
 		var data = {
@@ -1233,7 +1202,6 @@ fabApp = (function(app) {
 		
 		if($.isFunction(callback))
 		{
-			//console.log('register callback', stamp, messageToSend);
 			app.ws_callbacks[stamp] = callback;
 		}
 		/*else
@@ -1300,7 +1268,6 @@ fabApp = (function(app) {
 	 */
 	app.afterSocketConnect = function(){
 		if(socket_connected == true){
-			//socket.send('{"function": "getTasks"}'); //check for tasks, @tag:remove
 			socket.send('{"function": "usbInserted"}');   //check for if usb disk is connected
 		}
 	}
@@ -1308,7 +1275,6 @@ fabApp = (function(app) {
 	 * handle trace content from task/macro
 	 */
 	app.handleTrace = function(content) {
-		
 		if($(".trace-console").length > 0){
 			var contentSplitted = content.split('\n');
 			var html = '';
@@ -1327,9 +1293,7 @@ fabApp = (function(app) {
 	 */
 	app.resetTemperaturesPlot = function(elements)
 	{
-		console.log("resetTemperaturesPlot " + elements);
-		elements = elements || 0;
-		
+		elements = elements || 0;	
 		if(elements > 0){
 			if(temperaturesPlot.extruder.temp.length > elements){
 				temperaturesPlot.extruder.temp.splice(0, temperaturesPlot.extruder.temp.length - 5);
@@ -1346,11 +1310,9 @@ fabApp = (function(app) {
 		}else{
 			temperaturesPlot = {extruder: {temp: [], target: []}, bed: {temp:[], target:[]}};
 		}
-		
 		if(typeof (Storage) !== "undefined") {
 			localStorage.setItem('temperaturesPlot', JSON.stringify(temperaturesPlot));
 		}
-		
 	}
 	/**
 	* check if there are running tasks, and more
@@ -1410,8 +1372,6 @@ fabApp = (function(app) {
 			openWait("<i class='fa fa-warning'></i> " + app_text[23], app_text[24], false);
 			
 			$.get(set_recovery_url + '/activate', function(data){ 
-				console.log(data);
-				
 				$.ajax({
 					url: reboot_url_action,
 				}).done(function(data) {
@@ -1419,13 +1379,9 @@ fabApp = (function(app) {
 					//clear intervals
 					app.redirectToUrlWhenisReady('http://'+ location.hostname);
 				});
-				
-				
 			});
 			
 		}, 5000);
-		
-		
 	}
 	/**
 	* get hardware settings
@@ -1516,6 +1472,19 @@ fabApp = (function(app) {
 					//is_macro_on = false;
 				}, 10000);
 			});
+	}
+	/**
+	 * 
+	 */
+	app.handlePollMessage = function(object)
+	{
+		app.handleTrace(object.data.trace.data);
+		app.manageTask(object.data.task.data);
+		app.usb(object.data.usb.data.status, object.data.usb.data.alert);
+		
+		if(!object.data.notify.data.last_event.hasOwnProperty('seen')){
+			app.manageEmergency(object.data.notify.data.last_event.data);
+		}
 	}
 	return app;
 })({});

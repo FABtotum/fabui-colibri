@@ -66,30 +66,13 @@
 	 */
 	public function setSecure($mode)
 	{
-		/*//load fabtotum config
-		$this->config->load('fabtotum');
-		//load serial class
-		$this->load->library('serial');
-		
-		//init serial class
-		$this->serial->deviceSet($this->config->item('serial_port'));
-		$this->serial->confBaudRate($this->config->item('serial_baud'));
-		$this->serial->confParity("none");
-		$this->serial->confCharacterLength(8);
-		$this->serial->confStopBits(1);
-		$this->serial->confFlowControl("none");
-		$this->serial->deviceOpen();
-		$this->serial->serialflush();
-		
-		//if($mode == false) $this->serial->sendMessage('M731'.PHP_EOL);
-		$this->serial->sendMessage('M999'.PHP_EOL.'M728'.PHP_EOL);
-		//$this->serial->sendMessage('M728'.PHP_EOL);
-		
-		$this->serial->serialflush();
-		$this->serial->deviceClose();*/
-		
 		//if is called from fabui
 		if($this->input->is_ajax_request()){
+			$this->load->config('fabtotum');
+			$this->load->helper('file');
+			$notify = json_decode( file_get_contents( $this->config->item('notify_file') ), true);
+			$notify['last_event']['seen'] = true;
+			write_file($this->config->item('notify_file'), json_encode($notify, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK));
 			$this->output->set_content_type('application/json')->set_output(json_encode(true));
 		}
 	}
@@ -123,7 +106,7 @@
 			
 			// notify.json
 			$notify = array(
-				'data' => file_get_contents( $this->config->item('trace') ),
+				'data' => json_decode( file_get_contents( $this->config->item('notify_file') ), true),
 				'type' => 'trace'
 			);
 			
@@ -135,7 +118,7 @@
 			
 			// trace
 			$trace = array(
-				'data' => file_get_contents( $this->config->item('trace') ),
+				'data' => file_get_contents($this->config->item('trace')),
 				'type' => 'trace'
 			);
 			
@@ -146,11 +129,12 @@
 				);
 			
 			$response['type'] = 'poll';
+			
 			$response['data'] = array(
 				'notify' => $notify,
-				'trace' => $trace,
-				'task' => $task,
-				'usb' => $usb
+				'trace'  => $trace,
+				'task'   => $task,
+				'usb'    => $usb
 			);
 		} 
 		else if($method == "POST")

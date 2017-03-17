@@ -252,7 +252,7 @@ if(!function_exists('getHostName'))
 
 if(!function_exists('setHostName'))
 {
-	function setHostName($hostname, $name)
+	function setHostName($hostname, $name="Fabtotum Personal Fabricator 3D Printer")
 	{
 		$CI =& get_instance();
 		$CI->load->helper('fabtotum');
