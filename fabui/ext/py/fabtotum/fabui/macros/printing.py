@@ -50,7 +50,7 @@ def pause_additive(app, args=None, lang='en_US.UTF-8'):
     
     feeder = app.config.get_current_feeder_info()
     #app.macro("M82",                "ok", 2,    _("E relative position mode"), verbose=False )
-    app.macro("G0 E-{0} F{1}".format(feeder['retract_amount'], feeder['retract_feedrate']),  "ok", 20,    _("Retract fillament") )
+    #app.macro("G0 E-{0} F{1}".format(feeder['retract_amount'], feeder['retract_feedrate']),  "ok", 20,    _("Retract fillament") )
     
     app.macro("G90",                "ok", 2,    _("Setting absolute position"), verbose=False )
     app.macro("G0 Z{0} F5000".format(safe_z),        "ok", 100,  _("Moving to Z safe zone"), verbose=False )
@@ -77,7 +77,7 @@ def resume_additive(app, args=None, lang='en_US.UTF-8'):
             app.macro("G0 X{0} Y{1} F6000".format(x,y), "ok", 60,  _("Restore XY position"), verbose=False )
             app.macro("G0 Z{0} F5000".format(z),        "ok", 60,  _("Restore Z position"), verbose=False )
             app.macro("M400",                           "ok", 120,  _("Waiting for all moves to finish"), verbose=False)
-            app.macro("G0 E{0} F{1}".format(feeder['retract_amount'], feeder['retract_feedrate']),  "ok", 20,    _("Restore fillament") )
+            #app.macro("G0 E{0} F{1}".format(feeder['retract_amount'], feeder['retract_feedrate']),  "ok", 20,    _("Restore fillament") )
 
 def prepare_additive(app, args=None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
