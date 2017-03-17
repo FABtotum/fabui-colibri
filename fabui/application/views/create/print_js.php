@@ -17,38 +17,52 @@
 		$('[data-toggle="tooltip"]').tooltip();
 	});
 	
+	function handleStep()
+	{
+		var step = $('.wizard').wizard('selectedItem').step;
+		console.log('handleStep', step);
+		
+		if(step == 2)
+		{
+			<?php if($runningTask): ?>;
+			// do nothing
+			<?php else: ?>
+				// send zero axis
+				startTask();
+				gotoWizardStep(3);
+			<?php endif; ?>
+			return false;
+		}
+		
+		return true;
+	}
+	
 	function checkWizard()
 	{
 		var step = $('.wizard').wizard('selectedItem').step;
 		console.log(step);
 		switch(step){
 			case 1: // Select file
-				disableButton('.btn-prev');
+				disableButton('.button-prev');
 				if(idFile)
-					enableButton('.btn-next');
+					enableButton('.button-next');
 				else
-					disableButton('.btn-next');
-				$('.btn-next').find('span').html('Next');
+					disableButton('.button-next');
+				$('.button-next').find('span').html('Next');
 				
 				break;
 			case 2: // Get Ready
-				enableButton('.btn-prev');
-				//~ disableButton('.btn-next');
-				enableButton('.btn-next');
-				$('.btn-next').find('span').html(_("Print"));
+				enableButton('.button-prev');
+				//~ disableButton('.button-next');
+				enableButton('.button-next');
+				$('.button-next').find('span').html(_("Print"));
 				break;
 				
 			case 3: // Execution
-				<?php if($runningTask): ?>;
-				// do nothing
-				<?php else: ?>
-					startTask();
-				<?php endif; ?>
-				return false;
 				break;
 			case 4:
 				
-				$('.btn-next').find('span').html('');
+				$('.button-next').find('span').html('');
 		}
 	}
 	

@@ -374,6 +374,16 @@ class GCodeService:
             formatter = logging.Formatter("%(levelname)s : %(message)s")
             ch.setFormatter(formatter)
             self.log.addHandler(ch)
+            
+        self.state = {
+            "axis_relative_mode" : {
+                'x' : False,
+                'y' : False,
+                'z' : False,
+                'e' : False
+            },
+            "feedrate": 1000.0
+        }
     
     """ Internal *private* functions """
     

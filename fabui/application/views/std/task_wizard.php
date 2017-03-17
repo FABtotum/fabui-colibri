@@ -8,7 +8,12 @@
  */
  
 /* variable initialization */
+
+$this->load->helper('std_helper');
 if( !isset($steps) ) $steps = array();
+$steps = initializeSteps($steps);
+
+if( !isset($runningTask) ) $runningTask = 0;
 if( !isset($warning) ) $warning = '';
 if( !isset($safety_check) ) $safety_check = array("all_is_ok" => true);
 ?>
@@ -36,11 +41,11 @@ if( !isset($safety_check) ) $safety_check = array("all_is_ok" => true);
 			</ul>
 		</div>
 		<div class="actions">
-			<button type="button" class="btn btn-sm btn-primary btn-prev">
-				<i class="fa fa-arrow-left"></i> <span>Prev</span>
+			<button type="button" class="btn btn-sm btn-primary button-prev">
+				<i class="fa fa-arrow-left"></i> <span><?php echo _("Prev");?></span>
 			</button>
-			<button type="button" class="btn btn-sm btn-success btn-next" data-last="Finish">
-				<span>Next</span> <i class="fa fa-arrow-right"></i>
+			<button type="button" class="btn btn-sm btn-success button-next" data-last="<?php echo _("Finish"); ?>">
+				<span><?php echo _("Next");?></span> <i class="fa fa-arrow-right"></i>
 			</button>
 		</div>
 	</div>

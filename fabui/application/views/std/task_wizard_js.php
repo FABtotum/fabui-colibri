@@ -8,6 +8,9 @@
  */
 
 /* variable initialization */
+$this->load->helper('std_helper');
+if( !isset($steps) ) $steps = array();
+$steps = initializeSteps($steps);
 
 if( !isset($wizard_finish) ) $wizard_finish = end($steps)['number'];
 
@@ -25,12 +28,45 @@ if( !isset($wizard_finish) ) $wizard_finish = end($steps)['number'];
 	function initWizard()
 	{
 		wizard = $('.wizard').wizard();
-		disableButton('.btn-prev');
-		disableButton('.btn-next');
+
+		disableButton('.button-prev');
+		disableButton('.button-next');
 		
-		$('.wizard').on('changed.fu.wizard', function (evt, data) {
+		$('#myWizard').on('changed.fu.wizard', function (evt, data) {
 			checkWizard();
 		});
+		
+		$('#myWizard').on('clicked.fu.wizard', function (evt, data) {
+		});
+		
+		$('.button-prev').on('click', function(e) {
+			$('#myWizard').wizard('previous');
+		});
+		
+		$('.button-next').on('click', function(e) {
+			var step = $('#myWizard').wizard('selectedItem').step;
+			/*if(step == 3){
+				//doSpoolAction();
+				return;
+			}else{
+				$('#myWizard').wizard('next');
+			}*/
+			if( handleStep() )
+			{
+				$('#myWizard').wizard('next');
+			}
+		});
+		
+		
+		/*$('#myWizard').on('changed.fu.wizard', function (evt, data) {
+			checkWizard();
+		});
+		
+		$('#myWizard').on('clicked.fu.wizard', function (evt, data) {
+			console.log('clicked.fu.wizard');
+			return false;
+		});
+		
 		$('.btn-prev').on('click', function() {
 			console.log('prev');
 			if(canWizardPrev()){
@@ -38,18 +74,22 @@ if( !isset($wizard_finish) ) $wizard_finish = end($steps)['number'];
 		});
 		$('.btn-next').on('click', function() {
 			console.log('next');
-			if(canWizardNext()){
-			}
-		});
+			//if(canWizardNext()){
+			//}
+			//if( !handleStep() )
+			//return true;
+			//checkWizard();
+			return false;
+		});*/
 		
 		<?php if(isset($wizard_jump_to)): ?>
 			/*$('.wizard').wizard('selectedItem', {
 				step: <?php echo $wizard_jump_to?>
 			});*/
-			gotoWizardStep(<?php echo $wizard_jump_to?>);
-			enableButton('.btn-prev');
+			//gotoWizardStep(<?php echo $wizard_jump_to?>);
+			//enableButton('.btn-prev');
 		<?php else: ?>
-			checkWizard();
+			//checkWizard();
 		<?php endif; ?>
 	}
 	

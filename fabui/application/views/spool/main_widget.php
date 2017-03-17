@@ -26,10 +26,10 @@
 		</ul>
 	</div>
 	<div class="actions">
-		<button type="button" class="btn btn-sm btn-primary button-prev">
+		<button type="button" class="btn btn-sm btn-primary btn-prev">
 			<i class="fa fa-arrow-left"></i> <span>Prev</span>
 		</button>
-		<button type="button" class="btn btn-sm btn-success button-next" data-last="Finish">
+		<button type="button" class="btn btn-sm btn-success btn-next" data-last="Finish">
 			<span>Next</span> <i class="fa fa-arrow-right"></i>
 		</button>
 	</div>

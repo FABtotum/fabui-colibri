@@ -517,7 +517,6 @@ if(!function_exists('safetyCheck'))
 		$result['bed_is_ok']  = $heated_bed == $bed_in_place;
 		$result['all_is_ok']  = $result['head_is_ok'] && $result['bed_is_ok'];
 		
-		
 		return $result;
 	}
 }

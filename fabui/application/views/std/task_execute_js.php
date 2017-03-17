@@ -74,8 +74,8 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	*/
 	function freezeUI()
 	{
-		disableButton('.btn-prev');
-		disableButton('.btn-next');
+		disableButton('.button-prev');
+		disableButton('.button-next');
 		fabApp.disableTopBarControls();
 	}
 	/**

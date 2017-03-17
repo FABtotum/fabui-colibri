@@ -118,7 +118,7 @@ if( !isset($get_files_url) ) $get_files_url = 'std/getFiles/' + $type;
 		$(tr).addClass('bold-text txt-color-blueDark uppercase');
 		idFile = $(tr).find("input[type='radio']").val();
 		//im in firs step
-		enableButton('.btn-next');
+		enableButton('.button-next');
 	}
 
 </script>

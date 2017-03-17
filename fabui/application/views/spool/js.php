@@ -9,74 +9,60 @@
  */
 ?>
 <script type="text/javascript">
-	var wizard;
 	var mode;
 	var filament;
+	
 	$(document).ready(function() {
-		initWizard();
 		setFilamentDescription('<?php echo isset($settings['filament']['type']) ? $settings['filament']['type'] : 'pla' ?>');
 		$(".mode-choise").on('click', clickSetMode);
 		$(".filament").on('click', filamentButtonClick);
 		$("#restart-button").on('click', restartAction);
 	});
-	/**
-	*
-	**/
-	function initWizard()
-	{
-		wizard = $('.wizard').wizard();
-
-		disableButton('.button-prev');
-		disableButton('.button-next');
-		
-		$('.wizard').on('changed.fu.wizard', function (evt, data) {
-			handleStep();
-		});
-		
-		$('#myWizard').on('clicked.fu.wizard', function (evt, data) {
-		});
-		
-		$('.button-prev').on('click', function(e) {
-			$('#myWizard').wizard('previous');
-		});
-		
-		$('.button-next').on('click', function(e) {
-			var step = $('.wizard').wizard('selectedItem').step;
-			if(step == 3){
-				doSpoolAction();
-				return;
-			}else{
-				$('#myWizard').wizard('next');
-			}
-		});
-	}
+	
 	/**
 	*
 	**/
 	function handleStep()
 	{
 		var step = $('.wizard').wizard('selectedItem').step;
-		console.log(step);
-		switch(step)
+		console.log('handleStep', step);
+		
+		if(step == 3)
 		{
-			case 1:
+			doSpoolAction();
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/**
+	*
+	**/
+	function checkWizard()
+	{
+		var step = $('.wizard').wizard('selectedItem').step;
+		console.log('Check', step);
+		switch(step){
+			case 1: // Choose mode
 				disableButton('.button-prev');
 				disableButton('.button-next');
 				break;
-			case 2:
+			case 2: // Filament
 				enableButton('.button-prev');
 				enableButton('.button-next');
 				break;
-			case 3:
+			case 3: // Get ready
 				enableButton('.button-prev');
 				enableButton('.button-next');
 				break;
-			case 4:
+			case 4: // Finish
 				disableButton('.button-prev');
 				disableButton('.button-next');
 				break;
 		}
 	}
+	
 	/**
 	*
 	**/
@@ -103,31 +89,7 @@
 				$("#filament-title").html('<?php echo _('What filament are you going to unload?')?>');
 				break;
 		}
-		goToStep2();
-		
-	}
-	/**
-	*
-	**/
-	function goToStep(step)
-	{
-		$('.wizard').wizard('selectedItem', { step: step });
-	}
-	/**
-	*
-	**/
-	function goToStep2()
-	{
-		console.log("gotostep2");
-		goToStep(2);
-		
-	}
-	/**
-	*
-	**/
-	function goToStep3()
-	{
-		goToStep(3);
+		gotoWizardStep(2);
 	}
 	/**
 	*
@@ -155,20 +117,20 @@
 	{
 		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> <?php echo _("Please wait");?>");
 		$.ajax({
-            type: "POST",
-            url: "<?php echo site_url("spool") ?>/" + mode + '/' + filament,
-            dataType: 'json'
-      }).done(function( response ) {
-          closeWait();
-          if(response.response == 'success'){
-              if(mode == 'unload'){
-                  $("#restart-button").removeClass('hidden');
-              }
-        	  goToStep(4);
-          }else{
-        	  showErrorAlert('<?php echo _("Error") ?>', response.message);
-          }
-      });
+			type: "POST",
+			url: "<?php echo site_url("spool") ?>/" + mode + '/' + filament,
+			dataType: 'json'
+		}).done(function( response ) {
+		closeWait();
+		if(response.response == 'success'){
+			if(mode == 'unload'){
+				$("#restart-button").removeClass('hidden');
+			}
+			gotoWizardFinish();
+		}else{
+			showErrorAlert('<?php echo _("Error") ?>', response.message);
+		}
+	  });
 	}
 	/**
 	*

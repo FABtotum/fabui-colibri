@@ -32,8 +32,6 @@ class Spool extends FAB_Controller {
 		$data = array();
 		$data['settings'] = loadSettings();
 		
-		
-		
 		//main page widget
 		$widgetOptions = array(
 			'sortable'         => false, 
@@ -46,13 +44,31 @@ class Spool extends FAB_Controller {
 			'collapsed'        => false
 		);
 		
-		
 		$data['filamentsOptions'] = array('pla' => 'PLA', 'abs' => 'ABS', 'nylon' => 'Nylon');
 		
-		$data['step1']  = $this->load->view('spool/wizard/step1', $data, true );
-		$data['step2']  = $this->load->view('spool/wizard/step2', $data, true );
-		$data['step3']  = $this->load->view('spool/wizard/step3', $data, true );
-		$data['step4']  = $this->load->view('spool/wizard/step4', $data, true );
+		$data['steps'] = array(
+				array(
+				 'title'   => _("Choose mode"),
+				 'name'    => 'choose',
+				 'content' => $this->load->view( 'spool/wizard/step1', $data, true ),
+				 'active'  => true
+			    ),
+				array(
+				 'title'   => _("Filament"),
+				 'name'    => 'filament',
+				 'content' => $this->load->view( 'spool/wizard/step2', $data, true )
+			    ),
+				array(
+				 'title'   => _("Get ready"),
+				 'name'    => 'get_ready',
+				 'content' => $this->load->view( 'spool/wizard/step3', $data, true )
+			    ),
+				array(
+				 'title'   => _("Finish"),
+				 'name'    => 'finish',
+				 'content' => $this->load->view( 'spool/wizard/step4', $data, true )
+			    )
+			);
 		
 		$headerToolbar = '
 		<div class="widget-toolbar" role="menu">
@@ -63,11 +79,12 @@ class Spool extends FAB_Controller {
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'main-widget-spool-management';
 		
-		$widget->header = array('icon' => 'fa-circle-o-notch', "title" => "<h2>Spool management</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('spool/main_widget', $data, true ),'class'=>'fuelux');
+		$widget->header = array('icon' => 'fa-circle-o-notch', "title" => "<h2>" . _("Spool management") . "</h2>", 'toolbar'=>$headerToolbar);
+		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ),'class'=>'fuelux');
 		
 		$this->content = $widget->print_html(true);
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
+		$this->addJsInLine($this->load->view( 'std/task_wizard_js',   $data, true));
 		$this->addJsInLine($this->load->view('spool/js', $data, true));
 		$this->view();
 	}
