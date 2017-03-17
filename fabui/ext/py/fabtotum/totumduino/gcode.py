@@ -344,15 +344,6 @@ class GCodeService:
         self.SERIAL_BAUD = serial_baud
         self.SERIAL_TIMEOUT = serial_timeout
         
-        # Serial
-        #~ self.serial = serial.serial_for_url(
-                                #~ serial_port,
-                                #~ baudrate = serial_baud,
-                                #~ timeout = serial_timeout
-                                #~ )
-        #~ self.serial.flushInput()
-        #~ self.buffer = bytearray()
-        
         # Inter-thread communication
         # Must be defined before any thread is created
         self.cq = queue.Queue() # Command Queue
@@ -497,7 +488,7 @@ class GCodeService:
             gcode_raw = code.data + '\r\n'
             gcode_command = code
         else:
-            self.log.debug("Unknown command")
+            self.log.info("Unknown command")
             raise AttributeError
         
         for hook in HOOKS:
@@ -557,8 +548,7 @@ class GCodeService:
                 line, attrs = self.file_iter.next()
                 
                 line = line.rstrip()
-                #print "L << ", line
-                
+
                 if attrs:
                     self.__trigger_callback('gcode_comment', attrs)
                 
@@ -571,7 +561,6 @@ class GCodeService:
                 
                 self.current_line_number += 1
                 
-                #~ self.progress = 100 * float(self.current_line_number) / float(self.total_line_number)
                 self.progress = 100 * float(self.group_ack['file']) / float(self.gcode_count)
                 
                 if line:
@@ -586,22 +575,16 @@ class GCodeService:
                         no push operation must be done before they are executed.
                         """
                         self.file_state = GCodeService.FILE_WAIT
-                        #~ self.log.debug(">>>>>>>>>>>>>> FILE WAIT <<<<<<<<<<<<")
                     
             elif ( self.file_state == GCodeService.FILE_WAIT or 
                    self.file_state == GCodeService.FILE_PAUSED_WAIT):
                 """ Wait for reply before continuing (M109, M190, G28, G27) """
                 
-                #~ self.log.debug(">>>>>>>>>>>>>> FILE WAIT (wait) <<<<<<<<<<<<")
-                
                 if self.last_command.wait(1): # Wait for one second and give the context back
-                    #~ self.log.debug(">>>>>>>>>>>>>> FILE WAIT (done) <<<<<<<<<<<<")
                     if self.file_state == GCodeService.FILE_WAIT:
                         self.file_state = GCodeService.FILE_PUSH
                     elif self.file_state == GCodeService.FILE_PAUSED_WAIT:
                         self.file_state = GCodeService.FILE_PAUSED
-                #~ else:
-                    #~ self.log.debug(">>>>>>>>>>>>>> FILE WAIT (timeout) <<<<<<<<<<<<")
                     
         except StopIteration:
             # Create a new thread that is waiting for the last command 
@@ -614,7 +597,7 @@ class GCodeService:
         """
         Sender thread used to send commands to Totumduino.
         """
-        self.log.debug("sender thread: started")
+        self.log.info("sender thread: started")
         
         self.state = GCodeService.IDLE
         
@@ -657,13 +640,11 @@ class GCodeService:
                     cmd.notify(abort=True)
             
             elif cmd == Command.ZMODIFY:
-                #~ z_offset = float( cmd.data )
                 new_z_override = float( cmd.data )
                 old_z_override = float(self.z_override)
                 
                 z_offset = float(new_z_override - old_z_override)
                 
-                #~ self.z_override += z_offset
                 self.z_override = new_z_override
                 
                 self.log.debug("ZMODIFY: %f", z_offset)
@@ -750,27 +731,22 @@ class GCodeService:
                 self.__cleanup()
                 self.__terminate_all_running_tasks()
                 
-                #self.__send_gcode_command("M999", group="*", modify=False)
-                #self.__send_gcode_command("M728", group="*", modify=False)
-                #xmlrpc_exe = os.path.join(PYTHON_PATH, 'xmlrpcserver.py')
                 os.system('/etc/init.d/fabui emergency &')
                 self.is_terminating = False
                 
             elif cmd == Command.KILL:
                 break
                 
-        self.log.debug("sender thread: stopped")
+        self.log.info("sender thread: stopped")
     
     def __handle_line(self, line_raw):
         """
         Process a one line of reply message.
         """
         
-        #print "__handle_line", line_raw, "[", self.active_cmd, self.rq.qsize(),  "]"
-        self.log.debug("__handle_line %s [%s]", line_raw, self.active_cmd)
+        #~ self.log.debug("__handle_line %s [%s]", line_raw, self.active_cmd)
         
         if self.is_resetting:
-            print "during reset:", line_raw
             return
         
         try:
@@ -781,8 +757,6 @@ class GCodeService:
             print e
             return
         
-        #print "__handle_line: decoded"
-        
         if not line:
             #print "__handle_line: return line_empty"
             return
@@ -790,24 +764,15 @@ class GCodeService:
         # Update idle time start
         self.idle_time_started = time.time()
         
-        #print "__handle_line: get reply from queue"
-        
         # If there is no active command try to get it from the reply queue
         if not self.active_cmd:
             try:
                 if self.rq.qsize() > 0:
-                    #print "there is something, block until I get it."
                     self.active_cmd = self.rq.get()
-                    #print "ok, I got it:", self.active_cmd
                 else:
-                    #print "there might be something, let's try."
                     self.active_cmd = self.rq.get_nowait()
-                    #print "ok, I got something:", self.active_cmd
             except queue.Empty as e:
                 pass
-                #print "Reply queue is EMPTY, ignoring received reply."
-                #print ">>", line
-                #return
         
         if self.active_cmd:
             self.log.debug("  >> [%s] [%s]", self.active_cmd.data.rstrip(), line.rstrip())
@@ -842,9 +807,7 @@ class GCodeService:
                         
                         if cmd.data[:4] != 'M999' and cmd.data[:4] != 'M998':
                             pass
-                            #cmd.reply = None
                         
-               # print "Notify:", cmd
                 cmd.notify()
                 
                 group = self.active_cmd.group
@@ -856,15 +819,13 @@ class GCodeService:
                     count += 1
                         
                     self.group_ack[group] = count
-                    
-                    #print "group_ack", group, count
                 
                 self.active_cmd = None
                 
             # Line does not contain expected reply
             else:
                 if cmd.reply[-1].startswith('Error:Printer halted.') or cmd.reply[-1].startswith('Printer stopped due to errors.'):
-                    self.log.debug("Printer halted [%s]", cmd.data)
+                    self.log.info("Printer halted [%s]", cmd.data)
                     cmd.notify(abort=True)
                     self.terminate()
                 
@@ -894,13 +855,11 @@ class GCodeService:
                         except:
                             pass
     
-        #print "__handle_line: return"
-    
     def __receiver_thread(self):
         """
         Thread handling incoming serial data.
         """
-        self.log.debug("receiver thread: started")
+        self.log.info("receiver thread: started")
         
         if not hasattr(self.serial, 'cancel_read'):
             self.serial.timeout = 1
@@ -931,15 +890,12 @@ class GCodeService:
             else:
                 if data:
                     self.buffer.extend(data)
-                    #print 'R: [', data, ']'
-                    
-                    
                     
                     while self.READ_TERM in self.buffer:
                         line_raw, self.buffer = self.buffer.split(self.READ_TERM, 1)
                         self.__handle_line(line_raw)
         
-        self.log.debug("receiver thread: stopped")
+        self.log.info("receiver thread: stopped")
     
     def __reset_totumduino(self):
         """ Does a hardware reset of the totumduino board. """
@@ -948,7 +904,7 @@ class GCodeService:
         
         self.is_resetting = True
         
-        self.log.debug("__reset_totumduino: started")
+        self.log.info("__reset_totumduino: started")
         
         self.__cleanup()
         
@@ -966,13 +922,13 @@ class GCodeService:
     
         self.is_resetting = False
         
-        self.log.debug("__reset_totumduino: finished")
+        self.log.info("__reset_totumduino: finished")
         
         
-        time.sleep(10)
-        self.log.debug("__reset_totumduino: bootstrap")
+        time.sleep(5)
+        self.log.info("__reset_totumduino: bootstrap")
         hardwareBootstrap(self, logger=self.log)
-        self.log.debug("__reset_totumduino: bootstrap-finished")
+        self.log.info("__reset_totumduino: bootstrap-finished")
         
         self.atomic_end()
     

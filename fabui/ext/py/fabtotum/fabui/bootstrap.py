@@ -137,7 +137,7 @@ def customHardware(gcodeSender, config, log):
     
     config.set('settings', 'e', eeprom['steps_per_unit']['e'])
     config.save('settings')
-    log.debug("Custom Hardware")
+    log.info("Custom Hardware")
 
 def hardware1(gcodeSender, config, log):
     """
@@ -163,7 +163,7 @@ def hardware1(gcodeSender, config, log):
         updateFactoryFeeder(config, feeder)
         config.save_feeder_info('built_in_feeder', feeder)
     
-    log.debug("Rev1")
+    log.info("Rev1")
     
 def hardware2(gcodeSender, config, log):
     """
@@ -197,7 +197,7 @@ def hardware2(gcodeSender, config, log):
         updateFactoryFeeder(config, feeder)
         config.save_feeder_info('built_in_feeder', feeder)
     
-    log.debug("Rev2")
+    log.info("Rev2")
     
 def hardware3(gcodeSender, config, log):
     """
@@ -234,7 +234,7 @@ def hardware3(gcodeSender, config, log):
         updateFactoryFeeder(config, feeder)
         config.save_feeder_info('built_in_feeder', feeder)
     
-    log.debug("Rev3")
+    log.info("Rev3")
     
     
 def hardware4(gcodeSender, config, log):
@@ -267,7 +267,7 @@ def hardware4(gcodeSender, config, log):
         updateFactoryFeeder(config, feeder)
         config.save_feeder_info('built_in_feeder', feeder)
     
-    log.debug("Rev4")
+    log.info("Rev4")
     
 def hardware5(gcodeSender, config, log):
     """
@@ -299,12 +299,12 @@ def hardware5(gcodeSender, config, log):
         updateFactoryFeeder(config, feeder)
         config.save_feeder_info('built_in_feeder', feeder)
     
-    log.debug("Rev5")
+    log.info("Rev5")
 
 def configure_head(gcs, config, log):
 
     try:
-        log.debug("Initializing HEAD")
+        log.info("Initializing HEAD")
             
         head = config.get_current_head_info()
         if head == None:
@@ -359,7 +359,7 @@ def configure_head(gcs, config, log):
 def configure_feeder(gcs, config, log):
     try:
         
-        log.debug("Initializing FEEDER")
+        log.info("Initializing FEEDER")
         
         feeder = config.get_current_feeder_info()
         if feeder == None:

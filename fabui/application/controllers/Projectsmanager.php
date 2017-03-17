@@ -553,7 +553,9 @@ class Projectsmanager extends FAB_Controller {
 		$this->addCssFile('/assets/css/projectsmanager/gcodeviewer/lib/codemirror.css');
 		$this->addCssFile('/assets/css/projectsmanager/gcodeviewer/style.css');
 		
-		$this->addJSFile('/assets/js/libs/jquery-2.1.1.min.js');
+		$this->addJsInLine($this->load->view('projectsmanager/file/gcodeviewer/js', $data, true));
+		
+		//~ $this->addJSFile('/assets/js/libs/jquery-2.1.1.min.js');
 		$this->addJSFile('/assets/js/libs/jquery-ui-1.10.3.min.js');
 		
 		$this->addJSFile('/assets/js/plugin/gcodeviewer/lib/codemirror.js');
@@ -569,7 +571,7 @@ class Projectsmanager extends FAB_Controller {
 		$this->addJSFile('/assets/js/plugin/gcodeviewer/analyzer.js');
 		$this->addJSFile('/assets/js/plugin/gcodeviewer/renderer3d.js');
 		
-		$this->addJsInLine($this->load->view('projectsmanager/file/gcodeviewer/js', $data, true));
+		
 		
 		$this->view();
 	}

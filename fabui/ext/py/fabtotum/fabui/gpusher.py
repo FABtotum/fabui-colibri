@@ -742,10 +742,7 @@ class GCodePusher(object):
     def delete_object(self, object_id):
         """
         Remove object from database and all the files associated to it.
-        """
-        #obj = Object(self.db, object_id=object_id)
-        #obj.delete()
-        
+        """        
         to_delete = []
         
         obj = self.get_object(object_id)
@@ -772,8 +769,5 @@ class GCodePusher(object):
                 try:
                     os.remove(f)
                 except Exception as e: 
-                    #~ print e
                     pass
-            
-        #~ else:
-            #~ print "Object {0} not found".format(object_id)
+

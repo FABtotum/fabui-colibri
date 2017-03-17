@@ -40,10 +40,9 @@ def measure_probe_offset(app, args = None, lang='en_US.UTF-8'):
     bed_temp = 45
     max_probe_length = 45
     default_probe_length = 38
-    
     eeprom = getEeprom(app)
-    
     curret_probe_length = abs(float(eeprom["probe_length"]))
+    zprobe_disabled = int(app.config.get('settings', 'zprobe.enable')) == 0
     
     if(curret_probe_length > max_probe_length):
         app.macro("M710 S{0}".format(default_probe_length), "ok", 2, _("Write config to EEPROM"), verbose=False)
@@ -59,19 +58,22 @@ def measure_probe_offset(app, args = None, lang='en_US.UTF-8'):
     zmax = getPosition(app, lang)
 
     # Get Probe-Length
-    app.trace( _("Measuring probe length") )
-    app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False)
-    app.macro("G0 Z50 F1000",       "ok", 100,  _("Moving the bed 50mm away from nozzle"), verbose=False)
-    app.macro("G0 X86 Y58 F6000",   "ok", 100,  _("Moving the probe to the center"), verbose=False)
-    probe_length = 0.0
-    for i in range(0,4):
-        app.trace( _("Measurement ({0}/4)").format(i+1) )
-        zprobe = zProbe(app, lang)
-        probe_length = probe_length + float(zprobe['z'])
-        
-    probe_length = probe_length / 4
-    
-    app.macro("M710 S{0}".format(probe_length), "ok", 2, _("Write config to EEPROM"), verbose=False)
+    if not zprobe_disabled:
+		app.trace( _("Measuring probe length") )
+		app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False)
+		app.macro("G0 Z50 F1000",       "ok", 100,  _("Moving the bed 50mm away from nozzle"), verbose=False)
+		app.macro("G0 X86 Y58 F6000",   "ok", 100,  _("Moving the probe to the center"), verbose=False)
+		probe_length = 0.0
+		for i in range(0,4):
+			app.trace( _("Measurement ({0}/4)").format(i+1) )
+			zprobe = zProbe(app, lang)
+			probe_length = probe_length + float(zprobe['z'])
+			
+		probe_length = probe_length / 4
+		
+		app.macro("M710 S{0}".format(probe_length), "ok", 2, _("Write config to EEPROM"), verbose=False)
+    else:
+        probe_length = 38.0
     
     # Move closer to nozzle
     app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False)

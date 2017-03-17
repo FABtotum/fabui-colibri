@@ -105,7 +105,6 @@ SOCKET_HOST         = config.get('socket', 'host')
 SOCKET_PORT         = config.get('socket', 'port')
 ##################################################################
 HW_DEFAULT_SETTINGS = config.get('hardware', 'settings')
-#HW_CUSTOM_SETTINGS  = config.get('hardware', 'custom_settings')
 ##################################################################
 USB_DISK_FOLDER     = config.get('usb', 'usb_disk_folder')
 USB_FILE            = config.get('usb', 'usb_file')
@@ -136,7 +135,8 @@ else:
 #~ formatter = logging.Formatter("%(name)s - %(levelname)s : %(message)s")
 formatter = logging.Formatter("%(levelname)s : %(message)s")
 ch.setFormatter(formatter)
-ch.setLevel(logging.DEBUG)
+#~ ch.setLevel(logging.DEBUG)
+ch.setLevel(logging.INFO)
 logger.addHandler(ch)
 
 if do_reset:
