@@ -113,6 +113,9 @@
 	{
 		$this->load->model('Plugins', 'plugins');
 		$this->load->helper('plugin_helper');
+		$this->load->helper('file');
+		$this->config->load('fabtotum');
+		$this->load->helper('update_helper');
 		
 		$installed_plugins = getInstalledPlugins();
 		$allowed_actions = array('remove', 'activate', 'deactivate', 'update');
@@ -126,6 +129,12 @@
 				managePlugin($action, $plugin);
 				$result = true;
 			}
+		}
+		
+		if($action == 'update')
+		{
+			$updateStatus = getUpdateStatus();
+			write_file($this->config->item('updates_json_file'), json_encode($updateStatus));
 		}
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
