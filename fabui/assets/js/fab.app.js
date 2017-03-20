@@ -641,7 +641,7 @@ fabApp = (function(app) {
 			});
 		}
 		
-		/*if(number_plugin_updates > 0 ){
+		if(number_plugin_updates > 0 ){
 			
 			var a = $("nav li > a");
 			a.each(function() {
@@ -652,7 +652,7 @@ fabApp = (function(app) {
 					link.append('<span id="plugin-update-menu-badge" class="badge pull-right inbox-badge bg-color-red margin-right-13">'+number_plugin_updates+'</span>');
 				}
 			});
-		}*/
+		}
 	};
 	/*
 	 * refresh notification content (dropdown list)

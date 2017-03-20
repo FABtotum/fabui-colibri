@@ -65,6 +65,11 @@
 				$("#online-table").html(_("No Internet connection."));
 			}
 		});
+		
+		if(number_plugin_updates)
+		{
+			$("#online-badge").html(number_plugin_updates);
+		}
 	}
 	/**
 	*

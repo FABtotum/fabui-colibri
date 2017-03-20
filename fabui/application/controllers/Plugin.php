@@ -51,7 +51,7 @@
 		$headerToolbar = '
 			<ul class="nav nav-tabs pull-right">
 				<li class="'.$is_installed_active.'"><a data-toggle="tab" href="#installed-tab"> '._("Installed").'</a></li>
-				<li class="'.$is_online_active.'"><a data-toggle="tab" href="#online-tab"> '._("Online").'</a></li>
+				<li class="'.$is_online_active.'"><a data-toggle="tab" href="#online-tab"> '.'<span id="online-badge" class="badge bg-color-red txt-color-white inbox-badge"></span> '._("Online").'</a></li>
 				<li><a data-toggle="tab" href="#add-new-tab"><i class="fa fa-upload""></i> '._("Upload").'</a></li>
 				<li><a data-toggle="tab" href="#create-new-tab"><i class="fa fa-file-code-o" aria-hidden="true"></i> '._("Create New").'</a></li>
 			</ul>
