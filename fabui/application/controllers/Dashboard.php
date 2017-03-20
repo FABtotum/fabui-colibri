@@ -163,12 +163,12 @@
 			$temp_feeds = array();
 			
 			if(isset($feeds['user_feeds'])){
-				$user_feeds = array_slice($feeds['user_feeds']['items'], 0, 9);
+				$user_feeds = array_slice($feeds['user_feeds']['fullResponse']['items'], 0, 9);
 				$temp_feeds = array_merge($temp_feeds, $user_feeds);
 			}
 			
 			if(isset($feeds['hashtag_feeds'])){
-				$hashtag_feeds = array_slice($feeds['hashtag_feeds']['items'], 0, 9);
+				$hashtag_feeds = array_slice($feeds['hashtag_feeds']['fullResponse']['items'], 0, 9);
 				$temp_feeds = array_merge($temp_feeds, $hashtag_feeds);
 			}
 			

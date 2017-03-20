@@ -240,7 +240,6 @@ if(!function_exists('displayInstagramFeedItem'))
 	 */
 	function displayInstagramFeedItem($feed)
 	{
-		
 		$src_image = getInstagramImageSrc($feed);
 		$src_video = getInstagramVideoSrc($feed);
 		$date = date('j M, Y',$feed['taken_at']);
@@ -258,6 +257,8 @@ if(!function_exists('displayInstagramFeedItem'))
 		$likes .= '<li class="txt-color-red"><i class="fa fa-heart"></i> ('.$feed['like_count'].')</li>';
 		//if(is_array($feed['comments']))
 		$comments .= '<li class="txt-color-blue"><i class="fa fa-comments"></i> ('.$feed['comment_count'].')</li>';
+		if(isset($feed['location']['name']))
+			$location .= '<br><i class="fa fa-map-marker"></i> '.$feed['location']['name'];
 		return <<<EOT
 			<div class="panel panel-default">
 				<div class="panel-body status">
@@ -267,7 +268,8 @@ if(!function_exists('displayInstagramFeedItem'))
 						<span class="pull-right">
 							<a href="{$post_url}" target="_blank" title="View on instagram"><i class="fa fa-instagram"></i></a>
 						</span></span>
-						<span class="from">{$date} 
+						<span class="from">{$date}
+							{$location}
 						</span>
 					</div>
 					{$image}
@@ -304,12 +306,20 @@ if(!function_exists('highlightInstagramPost')){
 	 */
 	function highlightInstagramPost($feeds)
 	{
+		$re_link = '/(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])/';
 		$re = '/(@\w+|#\w+)/';
 		$new_feeds = array();
 		
 		foreach($feeds as $feed){
 			$caption = $feed['caption']['text'];
-			preg_match_all($re, $feed['caption']['text'], $matches);
+			//highligth links
+			preg_match_all($re_link, $caption, $matches);
+
+			if(isset($matches[0][0])){
+				$caption =  highlight_phrase($caption, $matches[0][0], '<b><a target="_blank" href="'.$matches[0][0].'">', '</a></b>');
+			}
+			//higlithgt entities
+			preg_match_all($re, $caption, $matches);
 			foreach($matches[0] as $match){
 				
 				switch($match[0]){
@@ -320,7 +330,6 @@ if(!function_exists('highlightInstagramPost')){
 						$caption = highlight_phrase($caption, $match, '<a target="_blank" href="https://www.instagram.com/'.str_replace('@', '', $match).'"><strong>', '</strong></a>');
 						break; 
 				}
-				
 			}
 			$temp = $feed;
 			$temp['caption']['text'] = $caption;
