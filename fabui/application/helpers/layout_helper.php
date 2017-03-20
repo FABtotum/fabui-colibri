@@ -240,26 +240,30 @@ if(!function_exists('displayInstagramFeedItem'))
 	 */
 	function displayInstagramFeedItem($feed)
 	{
-		$date = date('j M, Y',$feed['date']);
+		$src_image = getInstagramImageSrc($feed);	
+		$date = date('j M, Y',$feed['taken_at']);
 		$location = '';
 		$likes    = '';
 		$comments = '';
 		$post_url = 'http://www.instagram.com/p/'.$feed['code'];
-		if(is_array($feed['likes']))
-			$likes .= '<li class="txt-color-red"><i class="fa fa-heart"></i> ('.$feed['likes']['count'].')</li>';
-		if(is_array($feed['comments']))
-			$comments .= '<li class="txt-color-blue"><i class="fa fa-comments"></i> ('.$feed['comments']['count'].')</li>';
+		//if(is_array($feed['likes']))
+		$likes .= '<li class="txt-color-red"><i class="fa fa-heart"></i> ('.$feed['like_count'].')</li>';
+		//if(is_array($feed['comments']))
+		$comments .= '<li class="txt-color-blue"><i class="fa fa-comments"></i> ('.$feed['comment_count'].')</li>';
 		return <<<EOT
 			<div class="panel panel-default">
 				<div class="panel-body status">
-					<div class="who clearfix padding-10">
-						<span class="from">{$date} </span>
+					<div class="who clearfix">
+						<img src="{$feed['user']['profile_pic_url']}" />
+						<span class="name"><b><a target="_blank" href="http://www.instagram.com/{$feed['user']['username']}">{$feed['user']['username']}</a></b>
 						<span class="pull-right">
 							<a href="{$post_url}" target="_blank" title="View on instagram"><i class="fa fa-instagram"></i></a>
+						</span></span>
+						<span class="from">{$date} 
 						</span>
 					</div>
-					<div class="image padding-10"><img src="{$feed['display_src']}" /></div>
-					<div class="text padding-top-0 hidden-xs"><p>{$feed['caption']}</p></div>
+					<div class="image padding-10"><img src="{$src_image}" /></div>
+					<div class="text padding-top-0 hidden-xs"><p>{$feed['caption']['text']}</p></div>
 					<ul class="links">
 						{$likes}
 						{$comments}
@@ -277,10 +281,10 @@ if(!function_exists('instaSort')){
 	 */
 	function instaSort($feedA, $feedB)
 	{
-		if ($feedA['date'] == $feedB['date']) {
+		if ($feedA['taken_at'] == $feedB['taken_at']) {
 			return 0;
 		}
-		return ($feedA['date'] > $feedB['date']) ? -1 : 1;
+		return ($feedA['taken_at'] > $feedB['taken_at']) ? -1 : 1;
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -295,8 +299,8 @@ if(!function_exists('highlightInstagramPost')){
 		$new_feeds = array();
 		
 		foreach($feeds as $feed){
-			$caption = $feed['caption'];
-			preg_match_all($re, $feed['caption'], $matches);
+			$caption = $feed['caption']['text'];
+			preg_match_all($re, $feed['caption']['text'], $matches);
 			foreach($matches[0] as $match){
 				
 				switch($match[0]){
@@ -310,7 +314,7 @@ if(!function_exists('highlightInstagramPost')){
 				
 			}
 			$temp = $feed;
-			$temp['caption'] = $caption;
+			$temp['caption']['text'] = $caption;
 			$new_feeds[] = $temp;
 		}
 		
@@ -350,6 +354,30 @@ if(!function_exists('buildLanguagesMenu'))
 		$html .= '</li></ul>';
 		
 		return $html;
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getInstagramImageSrc'))
+{
+	/**
+	 * 
+	 */
+	function getInstagramImageSrc($feed)
+	{
+		if(isset($feed['image_versions2']['candidates'])){
+			
+			$url = "";
+			$maxWidth = 0;
+			foreach($feed['image_versions2']['candidates'] as $image){
+				if($image['width'] > $maxWidth){
+					$url = $image['url'];
+					$maxWidth = $image['width'];
+				}
+			}
+			return $url;
+			
+		}
+		
 	}
 }
 ?>

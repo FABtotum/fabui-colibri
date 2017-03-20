@@ -160,40 +160,45 @@
 			$data['feedsB'] = array();
 			
 			$feeds = json_decode(file_get_contents($this->config->item('instagram_feed_file')), true);
+			$temp_feeds = array();
 			
-			if(isset($feeds['data']) && count($feeds['data'])>0){
+			if(isset($feeds['user_feeds'])){
+				$user_feeds = array_slice($feeds['user_feeds']['items'], 0, 9);
+				$temp_feeds = array_merge($temp_feeds, $user_feeds);
+			}
 			
-				$feeds = $feeds['data'];
-				$feeds = highlightInstagramPost($feeds);
-				$feeds = array_unique($feeds, SORT_REGULAR);
-				/**
-				 * array unique is not enough
-				 */
-				$filteredFeeds    = array();
-				$newFeedsId = array();
-				foreach ($feeds as $i) {
-					if(!in_array($i['id'], $newFeedsId)){
-						array_push($newFeedsId, $i['id']);
-						$filteredFeeds[] = $i;
-					}
+			if(isset($feeds['hashtag_feeds'])){
+				$hashtag_feeds = array_slice($feeds['hashtag_feeds']['items'], 0, 9);
+				$temp_feeds = array_merge($temp_feeds, $hashtag_feeds);
+			}
+			
+			$temp_feeds = highlightInstagramPost($temp_feeds);
+			$temp_feeds = array_unique($temp_feeds, SORT_REGULAR);
+			uasort($temp_feeds, 'instaSort');
+			
+			$filteredFeeds    = array();
+			$newFeedsId = array();
+			foreach ($temp_feeds as $i) {
+				if(!in_array($i['id'], $newFeedsId)){
+					array_push($newFeedsId, $i['id']);
+					$filteredFeeds[] = $i;
 				}
-				$feeds = $filteredFeeds;
-				/**
-				 * sort by date and order columns to have the most recent on top
-				 */
-				uasort($feeds, 'instaSort');
-				$a = array();
-				$b = array();
-				foreach($feeds as $key => $feed){
-					if($key%2==0)
-						array_push($a, $feed);
+			}
+			$temp_feeds = $filteredFeeds;
+			
+			$a = array();
+			$b = array();
+			foreach($temp_feeds as $key => $feed){
+				if($key%2==0)
+					array_push($a, $feed);
 					else
 						array_push($b, $feed);
-				}
-				$data['feedsA'] = $a;
-				$data['feedsB'] = $b;
-				$data['feeds']  = $feeds;
 			}
+			
+			$data['feedsA'] = $a;
+			$data['feedsB'] = $b;
+			$data['feeds']  = $temp_feeds;
+			
 		}else{
 			
 		}
