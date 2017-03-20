@@ -119,11 +119,13 @@ if(!function_exists('getBundlesStatus'))
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		$CI->load->helper('fabtotum_helper');
+		$CI->load->helper('plugin_helper');
 		$CI->load->helper('os_helper');
 		//init
 		$remoteMeta      = false;
 		$remoteBundles   = false;
 		$firmwareRemote  = false;
+		$remotePlugins   = false;
 		$isInternet      = isInternetAvaialable();
 		$bundlesEndpoint = $CI->config->item('colibri_endpoint').getArchitecture();
 		$fwEndpoint      = $CI->config->item('firmware_endpoint').'fablin/atmega1280/';
@@ -131,6 +133,7 @@ if(!function_exists('getBundlesStatus'))
 		$localBundles      = getLocalBundles();
 		$installedFirmware = firmwareInfo();
 		$installedBootfiles = bootFilesInfo();
+		$installedPlugins   = getInstalledPlugins();
 		
 		$firmware['installed']   = $installedFirmware['firmware']['version'];
 		$firmware['need_update'] = false;
@@ -138,12 +141,16 @@ if(!function_exists('getBundlesStatus'))
 		$bootfiles['installed']   = $installedBootfiles;
 		$bootfiles['need_update'] = false;
 		
+		$plugins['installed'] = getInstalledPlugins();
+		$plugins['need_update'] = false;
+		
 		if($isInternet){ //check only if internet is available
 			$remoteMeta        = getSystemRemoteVersions();
 			$remoteBundles     = $remoteMeta['bundles'];
 			$remoteBootfiles   = $remoteMeta['boot'];
 			$remoteBundles     = getRemoteBundles();
 			$firmwareRemote    = getRemoteFwVersions();
+			$remotePlugins     = getOnlinePlugins();
 			
 			//retrieve remote firmware info
 			$latestFirmwareRemote            = $firmwareRemote['firmware']['latest'];
@@ -162,9 +169,11 @@ if(!function_exists('getBundlesStatus'))
 			'boot' => $bootfiles,
 			'images' => array(),
 			'firmware'   => $firmware,
+			'plugins' => array(),
 			'update' => array(
 				'available' => false,
 				'bundles'   => 0,
+				'plugins'   => 0,
 				'firmware'  => false,
 				'boot'      => $bootfiles['need_update'],
 				'endpoint'  => array(
@@ -205,7 +214,40 @@ if(!function_exists('getBundlesStatus'))
  				'packages'    => $localBundleData['packages'],
 			);
 		}
-		$status['update']['available'] = $status['update']['bundles'] > 0 || $firmware['need_update'] || $bootfiles['need_update'] ? true : false;
+		
+		foreach($installedPlugins as $pluginSlug => $pluginData)
+		{
+			$needUpdate = false;
+			$latestVersion = 'unknown';
+			$changelog = 'unknown';
+			$onlineData = 'unknown';
+			
+			if($remotePlugins)
+			{
+				// check if there is an online version of this plugin
+				if( array_key_exists($pluginSlug, $remotePlugins) )
+				{
+					$onlineData = $remotePlugins[$pluginSlug];
+					$latestVersion = $onlineData['latest'];
+					
+					$needUpdate = version_compare($pluginData['version'], $onlineData['latest']) == -1 ? true : false;
+					$changelog = '';
+					if($needUpdate)
+					{
+						$status['update']['plugins'] += 1;
+					}
+				}
+			}
+			
+			$status['plugins'][$pluginSlug] = array(
+				'latest'      => $latestVersion,
+				'need_update' => $needUpdate,
+				'changelog'   => $changelog,
+				'info'        => $pluginData
+			);
+		}
+		
+		$status['update']['available'] = $status['update']['bundles'] > 0 || $status['update']['plugins'] > 0 || $firmware['need_update'] || $bootfiles['need_update'] ? true : false;
 		return $status;
 	}
 }

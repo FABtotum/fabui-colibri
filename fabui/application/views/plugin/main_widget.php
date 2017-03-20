@@ -1,6 +1,6 @@
 <div class="tab-content padding-10">
 			
-	<div class="tab-pane fade in active" id="installed-tab">
+	<div class="tab-pane fade in <?php echo $installed_is_active?>" id="installed-tab">
 	
 	<?php if(count($installed_plugins) > 0): ?>
 
@@ -53,7 +53,7 @@
 	
 	</div>
 	
-	<div class="tab-pane fade in" id="online-tab">
+	<div class="tab-pane fade in <?php echo $online_is_active?>" id="online-tab">
 		
 		<div id="online-table">
 			<h2 class="text-center"><i class="fa fa-cog fa-spin fa-fw" aria-hidden="true"></i> <?php echo _('Checking online repository');?>...</h2>

@@ -89,6 +89,7 @@ $route['maintenance/nozzle-height-calibration'] = 'nozzle';
 $route['maintenance/nozzle-pid-tune']           = 'nozzle/pidtune';
 //plugin
 $route['plugin/add'] = 'plugin/add';
+$route['plugin/getOnline'] = 'plugin/getOnline';
 $route['plugin/online'] = 'plugin/online';
 $route['plugin/create'] = 'plugin/create';
 $route['plugin/download/(:any)'] = 'plugin/download/$1';

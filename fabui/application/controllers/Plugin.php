@@ -11,12 +11,19 @@
  
  class Plugin extends FAB_Controller {
  	
-	public function index()
+ 	public function online()
+ 	{
+		$this->index('online');
+	}
+ 	
+	public function index($tab = 'installed')
 	{
 		//load libraries, helpers, model
 		$this->load->library('smart');
 		$this->load->helper('form');
 		$this->load->helper('plugin_helper');
+
+		$postData = $this->input->post();
 
 		$data = array();
 		$data['installed_plugins'] = getInstalledPlugins();
@@ -35,10 +42,16 @@
 		
 		$widgeFooterButtons = '';
 		
+		$is_installed_active = ($tab=='installed')?"active":"";
+		$is_online_active = ($tab=='online')?"active":"";
+		
+		$data['online_is_active'] = $is_online_active;
+		$data['installed_is_active'] = $is_installed_active;
+		
 		$headerToolbar = '
 			<ul class="nav nav-tabs pull-right">
-				<li class="active"><a data-toggle="tab" href="#installed-tab"> '._("Installed").'</a></li>
-				<li><a data-toggle="tab" href="#online-tab"> '._("Online").'</a></li>
+				<li class="'.$is_installed_active.'"><a data-toggle="tab" href="#installed-tab"> '._("Installed").'</a></li>
+				<li class="'.$is_online_active.'"><a data-toggle="tab" href="#online-tab"> '._("Online").'</a></li>
 				<li><a data-toggle="tab" href="#add-new-tab"><i class="fa fa-upload""></i> '._("Upload").'</a></li>
 				<li><a data-toggle="tab" href="#create-new-tab"><i class="fa fa-file-code-o" aria-hidden="true"></i> '._("Create New").'</a></li>
 			</ul>
@@ -167,7 +180,7 @@
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
 
-	public function online()
+	public function getOnline()
 	{
 		$this->load->helper('plugin_helper');
 		$this->output->set_content_type('application/json')->set_output(json_encode(getOnlinePlugins()));

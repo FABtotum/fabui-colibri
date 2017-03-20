@@ -85,7 +85,7 @@
 			dataType: 'json'
 		}).done(function(response) {
 			if(response.start == false){
-				$('.wizard').wizard('selectedItem', { step: 2 });
+				gotoWizardStep(2);
 				fabApp.showErrorAlert(response.message);
 			}else{
 				idTask = response.id_task;

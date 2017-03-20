@@ -112,15 +112,25 @@
 		
 		if($updatesJSON['update']['available']){
 			
-			$number = $updatesJSON['update']['bundles'];
+			$bundleNumber = $updatesJSON['update']['bundles'];
+			$pluginNumber = $updatesJSON['update']['plugins'];
 			$html  = '<ul class="notification-body">';
 			
-			if($number > 0){
+			if($bundleNumber > 0){
 				$html .= '<li>';
 				$html .= '<span class="padding-10">';
 				$html .= '<em class="badge padding-5 no-border-radius bg-color-blueLight pull-left margin-right-5"><i class="fa fa-refresh fa-fw fa-2x"></i></em>';
-				$text = $number == 1 ? _("1 new update is available") : $number.' '. _("new updates are available");
+				$text = $bundleNumber == 1 ? _("1 new update is available") : $bundleNumber.' '. _("new updates are available");
 				$html .= '<span> '.$text.' <a class="display-normal" href="'.site_url('#updates').'"><strong>'._("Update now").'</strong></a> </span>';
+				$html .= '</span>';
+				$html .= '</li>';
+			}
+			if($pluginNumber > 0){
+				$html .= '<li>';
+				$html .= '<span class="padding-10">';
+				$html .= '<em class="badge padding-5 no-border-radius bg-color-blueLight pull-left margin-right-5"><i class="fa fa-refresh fa-fw fa-2x"></i></em>';
+				$text = $pluginNumber == 1 ? _("1 new plugin update is available") : $pluginNumber.' '. _("new plugin updates are available");
+				$html .= '<span> '.$text.' <a class="display-normal" href="'.site_url('#plugin/online').'"><strong>'._("Update now").'</strong></a> </span>';
 				$html .= '</span>';
 				$html .= '</li>';
 			}

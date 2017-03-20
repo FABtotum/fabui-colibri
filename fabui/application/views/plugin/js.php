@@ -55,7 +55,7 @@
 	
 	function loadOnlinePlugins()
 	{
-		$.get("<?php echo site_url('plugin/online') ?>", function(data, status){
+		$.get("<?php echo site_url('plugin/getOnline') ?>", function(data, status){
 			if(data)
 			{
 				populateOnlineTable(data);
