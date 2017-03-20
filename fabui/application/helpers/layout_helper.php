@@ -240,12 +240,20 @@ if(!function_exists('displayInstagramFeedItem'))
 	 */
 	function displayInstagramFeedItem($feed)
 	{
-		$src_image = getInstagramImageSrc($feed);	
+		
+		$src_image = getInstagramImageSrc($feed);
+		$src_video = getInstagramVideoSrc($feed);
 		$date = date('j M, Y',$feed['taken_at']);
 		$location = '';
 		$likes    = '';
 		$comments = '';
 		$post_url = 'http://www.instagram.com/p/'.$feed['code'];
+		$video    = "";
+		$image    = '<div class="image padding-10"><img src="'.$src_image.'" /></div>';
+		if($src_video != ""){
+			$video .= '<div class="image padding-10"><video class="img-responsive" controls><source src="'.$src_video.'" type="video/mp4"><img src="'.$src_image.'" /></video></div>';
+			$image = "";
+		}
 		//if(is_array($feed['likes']))
 		$likes .= '<li class="txt-color-red"><i class="fa fa-heart"></i> ('.$feed['like_count'].')</li>';
 		//if(is_array($feed['comments']))
@@ -262,8 +270,9 @@ if(!function_exists('displayInstagramFeedItem'))
 						<span class="from">{$date} 
 						</span>
 					</div>
-					<div class="image padding-10"><img src="{$src_image}" /></div>
-					<div class="text padding-top-0 hidden-xs"><p>{$feed['caption']['text']}</p></div>
+					{$image}
+					{$video}
+					<div class="text padding-top-0 hidden-xs"><p style="word-wrap: break-word">{$feed['caption']['text']}</p></div>
 					<ul class="links">
 						{$likes}
 						{$comments}
@@ -374,10 +383,22 @@ if(!function_exists('getInstagramImageSrc'))
 					$maxWidth = $image['width'];
 				}
 			}
-			return $url;
-			
+			return $url;	
 		}
-		
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getInstagramVideoSrc'))
+{
+	/**
+	 *
+	 */
+	function getInstagramVideoSrc($feed)
+	{
+		if(isset($feed['video_versions'])){
+			return $feed['video_versions'][0]['url'];
+		}
+		return "";
 	}
 }
 ?>

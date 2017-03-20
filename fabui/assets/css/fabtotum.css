@@ -727,3 +727,15 @@ select{
 .dropzone .dz-preview.dz-error .dz-error-message {
 	margin-top: 20px !important;
 }
+
+video::-internal-media-controls-download-button {
+    display:none;
+}
+
+video::-webkit-media-controls-enclosure {
+    overflow:hidden;
+}
+
+video::-webkit-media-controls-panel {
+    width: calc(100% + 30px); /* Adjust as needed */
+}
