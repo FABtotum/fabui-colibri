@@ -616,7 +616,7 @@ fabApp = (function(app) {
 	 */
 	app.updateNotificationBadge = function () {
 		
-		var totalNotifications = number_updates + number_tasks;
+		var totalNotifications = number_updates + number_tasks + number_plugin_updates;
 		if(totalNotifications < 0) totalNotifications = 0;
 		
 		if((totalNotifications) > 0){
@@ -626,7 +626,7 @@ fabApp = (function(app) {
 		}
 		
 		$("#activity").find('.badge').html(totalNotifications);
-		$(".updates-number").html( '(' + number_updates + ')');
+		$(".updates-number").html( '(' + (number_updates + number_plugin_updates) + ')');
 		$(".tasks-number").html( '(' + number_tasks + ')');
 		if(number_updates > 0 ){
 			
@@ -640,6 +640,19 @@ fabApp = (function(app) {
 				}
 			});
 		}
+		
+		/*if(number_plugin_updates > 0 ){
+			
+			var a = $("nav li > a");
+			a.each(function() {
+				var link = $(this);
+				var controller = link.attr('data-controller');
+				if(controller == 'plugin'){
+					$("#plugin-update-menu-badge").remove();
+					link.append('<span id="plugin-update-menu-badge" class="badge pull-right inbox-badge bg-color-red margin-right-13">'+number_plugin_updates+'</span>');
+				}
+			});
+		}*/
 	};
 	/*
 	 * refresh notification content (dropdown list)
@@ -1347,6 +1360,9 @@ fabApp = (function(app) {
 		
 		$.get(updates_json_url + '?' + jQuery.now(), function(data, status){
 			number_updates = data.update.bundles;
+			
+			number_plugin_updates = data.update.plugins;
+			
 			if(data.update.firmware) number_updates += 1;
 			if(data.update.boot) number_updates += 1;
 			

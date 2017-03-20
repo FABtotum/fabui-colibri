@@ -6,6 +6,7 @@ var base_url = '/fabui/';
  * general
  */
 number_updates = 0;
+number_plugin_updates = 0;
 number_tasks   = 0;
 /*
  * DOM elements
