@@ -243,6 +243,17 @@
 			
 			$task_label = _(ucfirst($task_type)).' '._("task");
 			
+			switch($task_type){
+				case 'pid_tune':
+					$task_label = 'PID tune';
+					$task_url   = $task_controller.'/nozzle-pid-tune';
+					break;
+				case 'update':
+					$task_label = 'Update';
+					$task_url   = $task_controller;
+					break;
+			}
+			
 			echo '<ul class="notification-body">';
 				echo '
 					<li>
