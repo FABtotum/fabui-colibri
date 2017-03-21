@@ -17,7 +17,7 @@ if(!isset($task_jump_restart)) $task_jump_restart = 1;
 	
 	$(document).ready(function() {
 		$(".new-task").on('click', function(){$('.wizard').wizard('selectedItem', { step: <?php echo $task_jump_new; ?> });});
-		$(".restart-task").on('click', function(){$('.wizard').wizard('selectedItem', { step: <?php echo $task_jump_restart; ?> });});
+		$(".restart-task").on('click',restartPrint);
 		$(".save-z-height").on('click', saveZHeight);
 		$("input[name='quality']").on('click', qualityRating);
 	});
@@ -58,6 +58,20 @@ if(!isset($task_jump_restart)) $task_jump_restart = 1;
 			// do nothing
 			console.log('save quality rating', response);
 		});
+	}
+	/**
+	*
+	**/
+	function restartPrint()
+	{
+		window.location.href = '#make/<?php echo $type; ?>/' + idFile;
+	}
+	/**
+	*
+	**/
+	function newPrint()
+	{
+		 location.reload();
 	}
 	
 </script>
