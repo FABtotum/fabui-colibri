@@ -83,11 +83,11 @@ if( !isset($wizard_finish) ) $wizard_finish = end($steps)['number'];
 		});*/
 		
 		<?php if(isset($wizard_jump_to)): ?>
-			/*$('.wizard').wizard('selectedItem', {
+			$('.wizard').wizard('selectedItem', {
 				step: <?php echo $wizard_jump_to?>
-			});*/
-			//gotoWizardStep(<?php echo $wizard_jump_to?>);
-			//enableButton('.btn-prev');
+			});
+			gotoWizardStep(<?php echo $wizard_jump_to?>);
+			enableButton('.btn-prev');
 		<?php else: ?>
 			//checkWizard();
 		<?php endif; ?>
