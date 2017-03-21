@@ -74,23 +74,32 @@ class Head extends FAB_Controller {
 	{
 		$this->load->helper('fabtotum_helper');
 		$heads  = loadHeads();
-
 		$_data = loadSettings();
 		$settings_type = $_data['settings_type'];
 		if (isset($_data['settings_type']) && $_data['settings_type'] == 'custom') {
 			$_data = loadSettings( $_data['settings_type'] );
 		}
-
 		$head_info = $heads[$new_head];
-		doMacro('install_head', '', [$new_head]);
-
 		$_data['hardware']['head'] = $new_head;
+		doMacro('install_head', '', [$new_head]);
+		if(in_array('feeder', $head_info['capabilities']))
+		{
+			$_data['hardware']['feeder'] = $new_head;
+			doMacro('install_feeder', '', [$new_head]);
+		}
+		else
+		{
+			if( isFeederInHead($_data['hardware']['feeder']) )
+			{
+				$_data['hardware']['feeder'] = 'built_in_feeder';
+				doMacro('install_feeder', '', ['built_in_feeder']);
+			}
+		}
 		
 		saveSettings($_data, $settings_type);
 		
 		// reset totumduino
 		resetController();
-
 		$this->output->set_content_type('application/json')->set_output(json_encode( $head_info ));
 	}
 	/**

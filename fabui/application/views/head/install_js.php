@@ -363,9 +363,9 @@
 		}).done(function(response) {
 			console.log(response);
 			fabApp.showInfoAlert('<strong>{0}</strong> saved'.format(settings.name));
-			/*setTimeout(function(){
+			setTimeout(function(){
 				location.reload();
-			}, 1000);*/
+			}, 1000);
 		});
 	}
 	/**
