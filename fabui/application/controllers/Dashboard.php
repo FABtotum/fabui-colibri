@@ -149,6 +149,8 @@
 	 */
 	public function instagram()
 	{
+		$fabtotu_max_post = 5;
+		$hashtag_max_post = 10;
 		//load configs
 		$this->config->load('fabtotum');
 		$this->load->helper('text_helper');
@@ -163,18 +165,27 @@
 			$temp_feeds = array();
 			
 			if(isset($feeds['user_feeds'])){
-				$user_feeds = array_slice($feeds['user_feeds']['fullResponse']['items'], 0, 9);
+				$user_feeds = array_slice($feeds['user_feeds']['fullResponse']['items'], 0, $fabtotu_max_post);
 				$temp_feeds = array_merge($temp_feeds, $user_feeds);
 			}
-			
 			if(isset($feeds['hashtag_feeds'])){
-				$hashtag_feeds = array_slice($feeds['hashtag_feeds']['fullResponse']['items'], 0, 9);
+				//get last 9 post
+				$hashtag_feeds = array_slice($feeds['hashtag_feeds']['fullResponse']['items'], 0, $hashtag_max_post);
 				$temp_feeds = array_merge($temp_feeds, $hashtag_feeds);
+				//poular posts
+				if(isset($feeds['hashtag_feeds']['ranked_items'])){
+					$ranked_feeds = array();
+					foreach($feeds['hashtag_feeds']['ranked_items'] as $feed){
+						$temp = $feed;
+						$temp["is_ranked"] = true;
+						array_push($ranked_feeds, $temp);
+					}
+					$temp_feeds = array_merge($temp_feeds, $ranked_feeds);
+				}
 			}
-			
-			$temp_feeds = highlightInstagramPost($temp_feeds);
+			$temp_feeds = highlightInstagramPost($temp_feeds); //highlight links, tags, hashtags
 			$temp_feeds = array_unique($temp_feeds, SORT_REGULAR);
-			uasort($temp_feeds, 'instaSort');
+			uasort($temp_feeds, 'instaSort'); //order list by post date
 			
 			$filteredFeeds    = array();
 			$newFeedsId = array();
@@ -189,10 +200,8 @@
 			$a = array();
 			$b = array();
 			foreach($temp_feeds as $key => $feed){
-				if($key%2==0)
-					array_push($a, $feed);
-					else
-						array_push($b, $feed);
+				if($key%2==0) array_push($a, $feed);
+				else array_push($b, $feed);
 			}
 			
 			$data['feedsA'] = $a;

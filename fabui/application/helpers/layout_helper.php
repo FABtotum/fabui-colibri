@@ -246,6 +246,7 @@ if(!function_exists('displayInstagramFeedItem'))
 		$location = '';
 		$likes    = '';
 		$comments = '';
+		$ranked   = '';
 		$post_url = 'http://www.instagram.com/p/'.$feed['code'];
 		$video    = "";
 		$image    = '<div class="image padding-10"><img src="'.$src_image.'" /></div>';
@@ -253,12 +254,15 @@ if(!function_exists('displayInstagramFeedItem'))
 			$video .= '<div class="image padding-10"><video class="img-responsive" controls><source src="'.$src_video.'" type="video/mp4"><img src="'.$src_image.'" /></video></div>';
 			$image = "";
 		}
-		//if(is_array($feed['likes']))
 		$likes .= '<li class="txt-color-red"><i class="fa fa-heart"></i> ('.$feed['like_count'].')</li>';
-		//if(is_array($feed['comments']))
 		$comments .= '<li class="txt-color-blue"><i class="fa fa-comments"></i> ('.$feed['comment_count'].')</li>';
+		//if is popular post
+		if(isset($feed['is_ranked']) && $feed['is_ranked'] = true)
+			$ranked = '<li title="'._("Popular").'" class="txt-color-yellow pull-right"><i class="fa fa-star"></i> </li>';
+		//location
 		if(isset($feed['location']['name']))
 			$location .= '<br><i class="fa fa-map-marker"></i> '.$feed['location']['name'];
+		
 		return <<<EOT
 			<div class="panel panel-default">
 				<div class="panel-body status">
@@ -278,6 +282,7 @@ if(!function_exists('displayInstagramFeedItem'))
 					<ul class="links">
 						{$likes}
 						{$comments}
+						{$ranked}
 					</ul>
 				</div>
 			</div>
