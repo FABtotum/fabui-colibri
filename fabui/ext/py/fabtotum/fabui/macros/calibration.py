@@ -103,6 +103,9 @@ def measure_nozzle_offset(app, args = None, lang='en_US.UTF-8'):
     
     # Paper width is 0.08mm
     nozzle = float(zpos['z']) - 0.08
+
+    app.macro("G90",      "ok", 2,    _("Setting relative position"), verbose=False)
+    app.macro("G0 Z+40",  "ok", 100,  _("Moving the bed 40mm away from measured height"), verbose=False)
     
     # Store offset to head config
     head_file = os.path.join( app.config.get('hardware', 'heads'), app.config.get('settings', 'hardware.head') + '.json');
