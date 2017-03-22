@@ -52,7 +52,9 @@ class FirstSetup extends FAB_Controller {
 		$_units = loadSettings();
 		$heads  = loadHeads();
 		$data['units'] = $_units;
+		$data['settings'] = loadSettings();
 		$data['heads'] = $heads;
+		$data['filamentsOptions'] = array('pla' => 'PLA', 'abs' => 'ABS', 'nylon' => 'Nylon');
 		
 		$heads_list = array();
 
@@ -64,49 +66,89 @@ class FirstSetup extends FAB_Controller {
 		$data['heads_list'] = $heads_list;
 		$data['head'] = 'printing_head_v2';
 		
+		/*$bed_subtask_data = array(
+			'name'  => 'bed',
+			'steps' => array(
+					array(
+					 'title'   => _("Intro"),
+					 'name'    => 'intro',
+					 'content' => $this->load->view( 'firstsetup/wizard/bed/intro', $data, true ),
+					 'active'  => true
+					),
+					array(
+					 'title'   => _("Bed"),
+					 'name'    => 'bed',
+					 'content' => $this->load->view( 'firstsetup/wizard/bed/results', $data, true )
+					)
+			)
+		);*/
+		
 		$data['steps'] = array(
 				array(
-				 'title'   => _("Head"),
-				 'name'    => 'head',
-				 'content' => $this->load->view( 'firstsetup/wizard/head', $data, true ),
-				 'active'  => ($step == 'head')
+					'title'   => _("Head"),
+					'name'    => 'head',
+					'content' => $this->load->view( 'firstsetup/wizard/head', $data, true ),
+					'active'  => ($step == 'head')
+			    ),
+			    array(
+					'title'   => _("Bed"),
+					'name'    => 'bed',
+					'content' => $this->load->view( 'bed/calibration_widget', $data, true ),
+					'active'  => ($step == 'bed')
+				),
+
+				array(
+					'title'   => _("Nozzle"),
+					'name'    => 'nozzle',
+					//'content' => $this->load->view( 'std/subtask_wizard', $data, true ),
+					'active'  => ($step == 'nozzle'),
+					'steps' => array(
+							array(
+							 'title'   => _("Get ready"),
+							 'name'    => 'get_ready',
+							 'content' => $this->load->view( 'firstsetup/wizard/nozzle/get_ready', $data, true ),
+							 'active'  => false
+							),
+							array(
+							 'title'   => _("Jog"),
+							 'name'    => 'jog',
+							 'content' => $this->load->view( 'firstsetup/wizard/nozzle/jog', $data, true ),
+							 'active'  => true
+							)
+					)
 			    ),
 				array(
-				 'title'   => _("Bed"),
-				 'name'    => 'bed',
-				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
-				 'active'  => ($step == 'bed')
+					'title'   => _("Spool"),
+					'name'    => 'spool',
+					//'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
+					'active'  => ($step == 'spool'),
+					'steps' => array(
+							array(
+							 'title'   => _("Get ready"),
+							 'name'    => 'get_ready',
+							 'content' => $this->load->view( 'spool/wizard/step2', $data, true ),
+							 'active'  => true
+							)
+					)
 			    ),
 				array(
-				 'title'   => _("Nozzle"),
-				 'name'    => 'nozzle',
-				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
-				 'active'  => ($step == 'nozzle')
+					'title'   => _("Feeder"),
+					'name'    => 'feeder',
+					'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
+					'active'  => ($step == 'feeder')
 			    ),
 				array(
-				 'title'   => _("Spool"),
-				 'name'    => 'spool',
-				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
-				 'active'  => ($step == 'spool')
+					'title'   => _("Test"),
+					'name'    => 'test',
+					'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
+					'active'  => ($step == 'test')
 			    ),
 				array(
-				 'title'   => _("Feeder"),
-				 'name'    => 'feeder',
-				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
-				 'active'  => ($step == 'feeder')
-			    ),
-				array(
-				 'title'   => _("Test"),
-				 'name'    => 'test',
-				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
-				 'active'  => ($step == 'test'),
-			    ),
-				array(
-				 'title'   => _("Finish"),
-				 'name'    => 'finish',
-				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
-				 'active'  => ($step == 'finish')
-			    ),
+				'title'   => _("Finish"),
+				'name'    => 'finish',
+				'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
+				'active'  => ($step == 'finish')
+			    )
 			);
 		
 		$widgetOptions = array(
@@ -119,13 +161,15 @@ class FirstSetup extends FAB_Controller {
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-firstsetup';
 		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>"._("First setup")."</h2>");
-		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ), 'class'=>'fuelux', 'footer'=>$widgeFooterButtons);
+		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ), 'class'=>'fuelux');
 
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
 		$this->addJsInLine($this->load->view( 'std/task_wizard_js',   $data, true));
+		//~ $this->addJsInLine($this->load->view( 'std/subtask_wizard_js',   $data, true));
 		
 		$this->addJsInLine($this->load->view( 'firstsetup/js', $data, true));
 		$this->addJsInLine($this->load->view( 'firstsetup/wizard/head_js', $data, true));
+		$this->addJsInLine($this->load->view( 'bed/calibration_js', $data, true));
 
 
 		$this->content = $widget->print_html(true);

@@ -9,7 +9,6 @@
  */
 ?>
 
-<hr class="simple">
 <!-- LOAD ROW  -->
 <div class="row get-ready-row" id="load-row">
 	<!--  -->

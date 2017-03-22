@@ -9,7 +9,6 @@
  */
 ?>
 
-<hr class="simple">
 <div class="row">
 	<!--  -->
 	<div class="col-sm-6">

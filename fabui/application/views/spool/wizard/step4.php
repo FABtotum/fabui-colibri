@@ -9,7 +9,6 @@
  */
 ?>
 
-<hr class="simple">
 <div class="row">
 	<div class="col-sm-12">
 		<div class="well well-sm well-light text-center">

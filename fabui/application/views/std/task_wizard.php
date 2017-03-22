@@ -65,7 +65,29 @@ if( !isset($safety_check) ) $safety_check = array("all_is_ok" => true);
 					}
 					
 					echo '<div class="step-pane '.$active.'" id="step'.$step['number'].'" data-step="'.$step['number'].'">';
+					echo '<hr class="simple">';
 					echo $step['content'];
+					
+					// Sub wizard
+					 
+					if( array_key_exists('steps', $step) )
+					{
+						$step['steps'] = initializeSteps($step['steps']);
+						
+						foreach($step['steps'] as $sub_step)
+						{
+							$active = 'display:none';
+							if($sub_step['active'])
+							{
+								$active = '';
+							}
+							
+							echo '<div style="'.$active.'" id="step'.$step['number'].'-'.$sub_step['number'].'" data-step="'.$sub_step['name'].'">';
+							echo $sub_step['content'];
+							echo '</div>';
+						}
+					}
+					
 					echo '</div>';
 				}
 			?>

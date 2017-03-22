@@ -20,6 +20,12 @@ if(!function_exists('initializeSteps'))
 			if(!array_key_exists('number', $step))
 				$steps[$__idx]['number'] = -1;
 				
+			if(!array_key_exists('content', $step))
+				$steps[$__idx]['content'] = '';
+				
+			if(!array_key_exists('active', $step))
+				$steps[$__idx]['active'] = false;
+				
 			if( $steps[$__idx]['number'] == -1) 
 				$steps[$__idx]['number'] = $__step_count++; 
 		}

@@ -15,7 +15,7 @@
 				Click "Start" when ready </h2>
 				<hr class="simple">
 				<p class="text-center">
-					<a href="javascript:void(0);" class="btn btn-primary btn-default do-bed-calibration"> Start</a>
+					<a href="javascript:void(0);" class="btn btn-primary btn-default do-bed-calibration "> Start</a>
 				</p>
 			</div>
 		</div>

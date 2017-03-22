@@ -4,7 +4,7 @@
     var skip_homing = 0;
     
     $(function () {
-        $(".do-calibration").on('click', do_calibration);
+        $(".do-bed-calibration").on('click', do_calibration);
     });
     
     function do_calibration()
