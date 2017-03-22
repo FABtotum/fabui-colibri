@@ -67,5 +67,24 @@ if(!function_exists('hasStep'))
 		return false;
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getActiveStep'))
+{
+	/**
+	 * 
+	 */
+	function getActiveStep($steps)
+	{
+		foreach($steps as $__idx => $step){ 1;
+			if( array_key_exists('active', $steps[$__idx]) ) 
+			{
+				if($steps[$__idx]['active'] == true)
+					return $__idx+1;
+			}
+		}
+		
+		return 1;
+	}
+}
  
 ?>

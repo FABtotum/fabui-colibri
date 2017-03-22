@@ -316,7 +316,7 @@ def configure_head(gcs, config, log):
         mode    = int(head.get('working_mode', 0))
         offset  = float(head.get('nozzle_offset', 0))
         fw_id   = int(head.get('fw_id',0))
-        max_temp= int(head.get('max_temp',0))
+        max_temp= int(head.get('max_temp',0)) + 15
         custom_gcode = head.get('custom_gcode','')
         
         probe_length  = float(config.get('settings', 'zprobe.length', 0))

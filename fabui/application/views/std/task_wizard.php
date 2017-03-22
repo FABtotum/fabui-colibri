@@ -58,7 +58,7 @@ if( !isset($safety_check) ) $safety_check = array("all_is_ok" => true);
 					$active = '';
 					if( array_key_exists('active', $step) )
 					{
-						if($step['active'] == True)
+						if($step['active'] == true)
 						{
 							$active = 'active';
 						}

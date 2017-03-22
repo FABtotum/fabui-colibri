@@ -38,7 +38,7 @@ class FirstSetup extends FAB_Controller {
 		$this->view();
     }
 
-	public function new_index()
+	public function new_index($step = 'head')
 	{
 		$this->load->library('smart');
 		$this->load->helper('form');
@@ -49,42 +49,63 @@ class FirstSetup extends FAB_Controller {
 		$data['head_in_place'] = isHeadInPlace();
 		$data['head_info'] = getInstalledHeadInfo();
 		
+		$_units = loadSettings();
+		$heads  = loadHeads();
+		$data['units'] = $_units;
+		$data['heads'] = $heads;
+		
+		$heads_list = array();
+
+		foreach($heads as $head => $val)
+		{
+			$heads_list[$head] = $val['name'];
+		}
+		
+		$data['heads_list'] = $heads_list;
+		$data['head'] = 'printing_head_v2';
+		
 		$data['steps'] = array(
 				array(
 				 'title'   => _("Head"),
 				 'name'    => 'head',
-				 'content' => $this->load->view( 'firstsetup/wizard/install_head', $data, true ),
-				 'active'  => true
+				 'content' => $this->load->view( 'firstsetup/wizard/head', $data, true ),
+				 'active'  => ($step == 'head')
 			    ),
 				array(
 				 'title'   => _("Bed"),
 				 'name'    => 'bed',
-				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true )
+				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
+				 'active'  => ($step == 'bed')
 			    ),
 				array(
 				 'title'   => _("Nozzle"),
 				 'name'    => 'nozzle',
-				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true )
+				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
+				 'active'  => ($step == 'nozzle')
 			    ),
 				array(
 				 'title'   => _("Spool"),
 				 'name'    => 'spool',
-				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true )
+				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
+				 'active'  => ($step == 'spool')
 			    ),
 				array(
 				 'title'   => _("Feeder"),
 				 'name'    => 'feeder',
-				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true )
+				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
+				 'active'  => ($step == 'feeder')
 			    ),
 				array(
 				 'title'   => _("Test"),
 				 'name'    => 'test',
-				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true )
+				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
+				 'active'  => ($step == 'test'),
 			    ),
 				array(
 				 'title'   => _("Finish"),
 				 'name'    => 'finish',
-				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true )
+				 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
+				 'active'  => ($step == 'finish')
 			    ),
 			);
 		
@@ -104,6 +125,7 @@ class FirstSetup extends FAB_Controller {
 		$this->addJsInLine($this->load->view( 'std/task_wizard_js',   $data, true));
 		
 		$this->addJsInLine($this->load->view( 'firstsetup/js', $data, true));
+		$this->addJsInLine($this->load->view( 'firstsetup/wizard/head_js', $data, true));
 
 
 		$this->content = $widget->print_html(true);

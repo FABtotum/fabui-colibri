@@ -246,21 +246,13 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     head = app.config.get_head_info(head_name)
     if head == None:
         return False
-    #~ try:
-        #~ head_file = os.path.join( app.config.get('hardware', 'heads'), head_name + '.json');
-    
-        #~ with open(head_file) as json_f:
-            #~ head = json.load(json_f)
-    #~ except Exception as e:
-        #~ app.trace( str(e) )
-        #~ return False
         
     pid     = head.get('pid', '')
     th_idx  = int(head.get('thermistor_index', 0))
     mode    = int(head.get('working_mode', 0))
     offset  = float(head.get('nozzle_offset', 0))
     fw_id   = int(head.get('fw_id',0))
-    max_temp= int(head.get('max_temp',230))
+    max_temp= int(head.get('max_temp',230)) + 15
     probe_length  = float(app.config.get('settings', 'zprobe.length', 0))
     
     # Set installed head ID
