@@ -15,10 +15,10 @@ head_tour_steps = [
         backdrop: true,
         backdropContainer : '#left-panel',
         // workaround for backdrop hide not detected
-        delay: {
+        /*delay: {
             show: 0,
-            hide:5000
-            }
+            hide:200
+            }*/
       },
       {
         element: "#heads",
@@ -29,10 +29,10 @@ head_tour_steps = [
         backdropContainer : '#content',
         orphan: true, // workaround for element being loaded later
         // workaround for backdrop hide not detected
-        delay: {
-            show: 100,
+        /*delay: {
+            show: 200,
             hide:0
-            }
+            }*/
       },
       {
         element: "#set-head",

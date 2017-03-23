@@ -14,6 +14,8 @@ function startTour(name)
     if(tour != false)
     {
         tour.restart();
+        tour.init();
+        //tour.goTo(0);
         tour.start(true);
         return;
     }
@@ -31,7 +33,7 @@ function startTour(name)
     tour = new Tour({
         steps: steps,
         debug:true,
-        template: '<div class="popover" role="tooltip">\
+        /*template: '<div class="popover" role="tooltip">\
                     <div class="arrow"></div> \
                     <h3 class="popover-title"></h3> \
                     <div class="popover-content"></div> \
@@ -42,14 +44,14 @@ function startTour(name)
                         <button class="btn btn-sm btn-default" data-role="pause-resume" data-pause-text="Pause" data-resume-text="Resume">Pause</button> \
                     </div> \
                     <button class="btn btn-sm btn-default" data-role="end">End tour</button> \
-                </div> </div>'
+                </div> </div>'*/
     });
     
     localStorage.removeItem("tour_current_step");
     localStorage.removeItem("tour_ended");
     
     tour.init();
-    tour.restart();
-    tour.goTo(0);
+    //tour.restart();
+    //tour.goTo(0);
     tour.start(true);
 }
