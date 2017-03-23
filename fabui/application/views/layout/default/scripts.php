@@ -25,11 +25,23 @@
 <script type="text/javascript" src="/assets/js/std/jogcontrols.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script type="text/javascript" src="/assets/js/app.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script type="text/javascript" src="/assets/js/fab.app.js?v=<?php echo FABUI_VERSION ?>"></script>
+
+<!--script type="text/javascript" src="/assets/js/plugin/introjs/intro.js?v=<?php echo FABUI_VERSION ?>"></script-->
+<script type="text/javascript" src="/assets/js/plugin/bootstrap-tour/bootstrap-tour.js?v=<?php echo FABUI_VERSION ?>"></script>
+<!-- TOUR includes: start -->
+
+<script type="text/javascript" src="/assets/js/tour/head.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script type="text/javascript" src="/assets/js/tour/bed.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script type="text/javascript" src="/assets/js/tour/nozzle.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script type="text/javascript" src="/assets/js/tour/spool.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script type="text/javascript" src="/assets/js/tour/feeder.js?v=<?php echo FABUI_VERSION ?>"></script>
+
+<script type="text/javascript" src="/assets/js/tour/tour.js?v=<?php echo FABUI_VERSION ?>"></script>
+<!-- TOUR includes: end -->
+
 <script type="text/javascript" src="/assets/js/fabtotum.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script type="text/javascript" src="/assets/js/demo.js?v=<?php echo FABUI_VERSION ?>"></script>
-<!--script type="text/javascript" src="/assets/js/plugin/introjs/intro.js?v=<?php echo FABUI_VERSION ?>"></script-->
-<script type="text/javascript" src="/assets/js/plugin/bootstrap-tour/bootstrap-tour.min.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/intro.js?v=<?php echo FABUI_VERSION ?>"></script>
+
 <?php echo $jsScripts; ?>
 <script type="text/javascript">
 	var heads = <?php echo json_encode($heads)?>;
@@ -45,11 +57,6 @@
 		fabApp.getUpdates();
 		//start intervals
 		temperatures_interval = setInterval(fabApp.getTemperatures, temperatures_interval_timer);
-		
-		/*setTimeout(function(){
-			startIntroduction();
-		}, 3000);*/
-		
 	});
 </script>
 <?php echo $jsInLine; ?>

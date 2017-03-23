@@ -136,6 +136,20 @@ function pageCleanUp()
     
 }
 
+function pageLoadSuccess()
+{
+    console.log("pageLoadSuccess");
+    //setTimeout(function(){
+    //startIntroduction();
+    //}, 5000);
+    updateTour();
+}
+
+function pageLoadError()
+{
+    console.log("pageLoadError");
+}
+
 
 /**
 * Base64 Object
