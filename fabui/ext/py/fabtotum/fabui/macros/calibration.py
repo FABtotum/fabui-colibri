@@ -90,7 +90,7 @@ def measure_probe_offset(app, args = None, lang='en_US.UTF-8'):
 
 def measure_nozzle_prepare(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    app.macro("M109 S200",          "ok", 200,  _("Waiting for extruder temperature (200&deg;)") )
+    app.macro("M109 S200",          "ok", 200,  _("Waiting for extruder temperature (<span class='top-bar-nozzle-actual'>-</span> / 200&deg;)") )
     
 def measure_nozzle_offset(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)

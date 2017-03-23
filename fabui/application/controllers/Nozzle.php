@@ -31,7 +31,7 @@ class Nozzle extends FAB_Controller {
 		}
 	}
 	/**
-	 * height calibration controller
+	 * 
 	 */
 	public function doHeightCalibration()
 	{
@@ -39,33 +39,57 @@ class Nozzle extends FAB_Controller {
 		$this->load->library('smart');
 		$this->load->helper('form');
 		$this->load->helper('fabtotum_helper');
-		$this->config->load('fabtotum');
-		$extPath = $this->config->item('ext_path');
 		
-		//data
 		$data = array();
-		$data['warning'] = false;
-		
-		$head_info = getInstalledHeadInfo();
-		
-		if($head_info['nozzle_offset'] == 0)
-			$data['warning'] = true;
 		
 		//main page widget
 		$widgetOptions = array(
-			'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
-			'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
+			'sortable'         => false,
+			'fullscreenbutton' => true,
+			'refreshbutton'    => false,
+			'togglebutton'     => false,
+			'deletebutton'     => false,
+			'editbutton'       => false,
+			'colorbutton'      => false,
+			'collapsed'        => false
 		);
 		
-		$widget         = $this->smart->create_widget($widgetOptions);
-		$widget->id     = 'main-widget-feeder-calibration';
-		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>Nozzle Height Calibration</h2>");
-		$widget->body   = array('content' => $this->load->view('nozzle/height_widget', $data, true ), 'class'=>'fuelux');
+		$data['steps'] = array(
+			array(
+				'title'   => _("Choose mode"),
+				'name'    => 'choice',
+				'content' => $this->load->view( 'nozzle/height/wizard/choise', $data, true ),
+				'active'  => true
+			),
+			array(
+				'title'   => _("Calibration"),
+				'name'    => 'mode',
+				'content' => $this->load->view( 'nozzle/height/wizard/mode', $data, true ),
+				'active'  => true
+			),
+			array(
+				'title'   => _("Finish"),
+				'name'    => 'finish',
+				'content' => $this->load->view( 'nozzle/height/wizard/finish', $data, true ),
+				'active'  => true
+			)
+		);
 		
-		$this->addJsInLine($this->load->view('nozzle/height_js', $data, true));
+		$widget = $this->smart->create_widget($widgetOptions);
+		$widget->id = 'main-widget-nozzl-height-calibration';
+		
+		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>" . _("Nozzle height calibration") . "</h2>");
+		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ),'class'=>'fuelux');
 		$this->content = $widget->print_html(true);
+		
+		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
+		$this->addJsInLine($this->load->view( 'std/task_wizard_js',   $data, true));
+		$this->addJsInLine($this->load->view('nozzle/height/js', $data, true));
+		
 		$this->view();
+		
 	}
+	
 	/**
 	 * 
 	 */

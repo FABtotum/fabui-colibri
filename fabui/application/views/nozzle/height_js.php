@@ -42,7 +42,6 @@
                 $("#over").val(over.toFixed(2));
                 
                 interval = window.setInterval(function(){
-                
                      if(over >= -2 && over <=  2){
                         over = eval(parseFloat(over) + action + '0.01');
                         $("#over").val(over.toFixed(2));
