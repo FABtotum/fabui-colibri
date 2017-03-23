@@ -48,7 +48,7 @@
 		
 		/*setTimeout(function(){
 			startIntroduction();
-		}, 2000);*/
+		}, 3000);*/
 		
 	});
 </script>
