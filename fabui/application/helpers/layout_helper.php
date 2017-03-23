@@ -95,6 +95,11 @@ function buildMenu($menu_array, $is_sub = FALSE, $parent = '') {
 		 * array elements as variables, using the array key
 		 * as the variable name.
 		 */
+		 
+			/*
+			 * Intro.js specific guide attributes
+			 */
+			
 			foreach ($properties as $key => $val) {
 				/*
 				 * If the array element contains another array,
@@ -113,6 +118,7 @@ function buildMenu($menu_array, $is_sub = FALSE, $parent = '') {
 					$$key = $val;
 				}
 			}
+			
 			/*
 			 * If no array element had the key 'url', set the $url variable to #
 			 */
@@ -122,7 +128,13 @@ function buildMenu($menu_array, $is_sub = FALSE, $parent = '') {
 			/*
 			 * Use the created variables to output HTML
 			 */
-			$menu .= '<li><a data-controller="'.$id.'" data-href="'.$url.'" href="' . $url . '"><i class="fa fa-lg fa-fw ' . $icon . '"></i> <span ' . $attr . '>' . $title . '</span></a> ' . $sub . '</li>';
+			 
+			$menu_id = 'menu-item';
+			if($parent != '')
+				$menu_id .= '-'.$parent;
+			$menu_id .= '-'.$id;
+			 
+			$menu .= '<li><a id="'.$menu_id.'" data-controller="'.$id.'" data-href="'.$url.'" href="' . $url . '"><i class="fa fa-lg fa-fw ' . $icon . '"></i> <span ' . $attr . '>' . $title . '</span></a> ' . $sub . '</li>';
 			/*
 			 * Destroy the variables to ensure they're reset
 			 * on each iteration

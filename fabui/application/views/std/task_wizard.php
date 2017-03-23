@@ -74,6 +74,7 @@ if( !isset($safety_check) ) $safety_check = array("all_is_ok" => true);
 					{
 						$step['steps'] = initializeSteps($step['steps']);
 						
+						
 						foreach($step['steps'] as $sub_step)
 						{
 							$active = 'display:none';
@@ -86,6 +87,36 @@ if( !isset($safety_check) ) $safety_check = array("all_is_ok" => true);
 							echo $sub_step['content'];
 							echo '</div>';
 						}
+						
+						
+						echo '<div class="wizard" data-initialize="wizard" id="subWizard-'.$step['name'].'">';
+						echo '<div class="steps-container">';
+						echo '<ul class="steps">';
+						
+						foreach($step['steps'] as $sub_step) {
+							$active = '';
+							if($sub_step['active'])
+							{
+								$active = 'active';
+							}
+							echo '<li data-step="'. $step['number'].'" data-target="#step'. $sub_step['number']. '" class="'.$active.'">';
+							echo '<span class="badge">'.$step['number'].'.'.$sub_step['number'].'</span>'.$sub_step['title'].'<span class="chevron"></span>';
+							echo '</li>';
+						}
+						
+						echo '
+						<div class="actions">
+							<button type="button" class="btn btn-sm btn-primary button-prev">
+								<i class="fa fa-arrow-left"></i> <span>'._("Prev").'</span>
+							</button>
+							<button type="button" class="btn btn-sm btn-success button-next" data-last="'. _("Finish").'">
+								<span>'._("Next").'</span> <i class="fa fa-arrow-right"></i>
+							</button>
+						</div>';
+						
+						echo '</ul></div></div>';
+						
+						
 					}
 					
 					echo '</div>';

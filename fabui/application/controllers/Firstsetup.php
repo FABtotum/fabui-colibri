@@ -124,10 +124,22 @@ class FirstSetup extends FAB_Controller {
 					'active'  => ($step == 'spool'),
 					'steps' => array(
 							array(
-							 'title'   => _("Get ready"),
+							 'title'   => _("Choose"),
 							 'name'    => 'get_ready',
 							 'content' => $this->load->view( 'spool/wizard/step2', $data, true ),
 							 'active'  => true
+							),
+							array(
+							 'title'   => _("Load"),
+							 'name'    => 'load',
+							 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
+							 'active'  => false
+							),
+							array(
+							 'title'   => _("Finish"),
+							 'name'    => 'finish',
+							 'content' => $this->load->view( 'firstsetup/wizard/empty', $data, true ),
+							 'active'  => false
 							)
 					)
 			    ),
