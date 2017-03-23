@@ -73,7 +73,7 @@
 			}).done(function(response) {
 				if (response.success == true)
 				{
-					document.location.href = "<?php echo site_url('#projectsmanager/object/'. $object['id']); ?>";
+					document.location.href = "<?php echo site_url('#projectsmanager/project/'. $object['id']); ?>";
 					//~ location.reload();
 				}
 				else 
