@@ -83,7 +83,8 @@ class History extends FAB_Controller {
 		
 		$tasks = $this->tasks->getMakeTasks($filters);
 		
-		$data['icons'] = array('print' => 'icon-fab-print', 'mill' => 'icon-fab-mill', 'scan' => 'icon-fab-scan');
+		// @TODO: this is a temporary fix as it only covers the extra laser plugin scenario
+		$data['icons'] = array('print' => 'icon-fab-print', 'mill' => 'icon-fab-mill', 'scan' => 'icon-fab-scan', 'laser' => 'icon-communication-143');
 
 		$data['status_label'] = array('completed' => '<span class="label label-success">COMPLETED</span>', 'aborted' => '<span class="label label-warning">ABORTED</span>', 'terminated' => '<span class="label label-danger">TERMINATED</span>');
 		$data['stats_label'] = array('total_time' => '<i class="fa fa-clock-o"></i> Total time', 'completed' => '<i class="fa fa-check"></i> Completed', 'aborted' => '<i class="fa fa-times"></i> Aborted', 'terminated' => '<i class="fa fa-ban"></i> Terminated');
@@ -155,7 +156,8 @@ class History extends FAB_Controller {
 		
 		$tasks = $this->tasks->getMakeTasks($filters);
 		
-		$data['icons'] = array('print' => 'icon-fab-print', 'mill' => 'icon-fab-mill', 'scan' => 'icon-fab-scan');
+		// @TODO: this is a temporary fix as it only covers the extra laser plugin scenario
+		$data['icons'] = array('print' => 'icon-fab-print', 'mill' => 'icon-fab-mill', 'scan' => 'icon-fab-scan', 'laser' => 'icon-communication-143');
 
 		$data['status_label'] = array('completed' => '<span class="label label-success">COMPLETED</span>', 'aborted' => '<span class="label label-warning">ABORTED</span>', 'terminated' => '<span class="label label-danger">TERMINATED</span>');
 		

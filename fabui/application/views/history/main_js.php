@@ -135,7 +135,7 @@
 			
 			if(type == 'print' || type == 'mill')
 			{
-				var action_url = '#make/'+type+'/file/' + id_file;
+				var action_url = '#make/'+type+'/' + id_file;
 				var action_button = '<a class="btn btn-xs btn-default" href="'+action_url+'"><i class="fa fa-play fa-rotate-90"></i> ' + type[0].toUpperCase() + type.slice(1) +' it again</a>';
 				var stats_button = '<a style="margin-left:5px;" class="btn btn-xs btn-default" href="#projectsmanager/file/'+id_file+'/stats"><i class="fa fa-area-chart"></i> Stats</a>';
 				
