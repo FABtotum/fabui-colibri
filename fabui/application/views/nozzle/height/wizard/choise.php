@@ -28,7 +28,7 @@
 					<p><?php echo _("Helps you correct the nozzle height during prints. Each time you swap heads you should re-calibrate"); ?></p>
 				</div>
 				<ul class="links text-center">
-					<li><button data-action="assisted" type="button" class="btn btn-default mode-choise"><?php echo _("Choose");?> <i class="fa  fa-arrow-right"></i></button></li>
+					<li><button data-action="assisted" type="button" class="btn btn-default mode-choise" id="nozzle-assisted-calibration"><?php echo _("Choose");?> <i class="fa  fa-arrow-right"></i></button></li>
 				</ul>
 			</div>
 		</div>
@@ -44,7 +44,7 @@
 					<p><?php echo _("Manually edit the override distance to fine tune the nozzle height during prints."); ?></p>
 				</div>
 				<ul class="links text-center">
-					<li><button data-action="fine" type="button" class="btn btn-default mode-choise"><?php echo _("Choose");?>  <i class="fa  fa-arrow-right"></i></button></li>
+					<li><button data-action="fine" type="button" class="btn btn-default mode-choise" id="nozzle-fine-calibration"><?php echo _("Choose");?>  <i class="fa  fa-arrow-right"></i></button></li>
 				</ul>
 			</div>
 		</div>

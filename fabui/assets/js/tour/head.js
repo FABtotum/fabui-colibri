@@ -10,7 +10,7 @@ head_tour_steps = [
       {
         element: "#menu-item-maintenance-head",
         title: "Head management",
-        content: "Click on the menu item to continue",
+        content: "<strong>Click</strong> on the menu item to continue",
         reflex: true,
         backdrop: true,
         backdropContainer : '#left-panel',

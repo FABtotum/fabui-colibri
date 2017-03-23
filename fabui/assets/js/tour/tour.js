@@ -11,28 +11,40 @@ function updateTour()
 
 function startTour(name)
 {
-    if(tour != false)
-    {
-        tour.restart();
-        tour.init();
-        //tour.goTo(0);
-        tour.start(true);
-        return;
-    }
 
     tour_name = name;
     
     steps = [];
+    var firstStep = 1;
     
     switch(name)
     {
         case "head":
             steps = head_tour_steps;
+            if( $("#menu-item-maintenance").parent().hasClass("active") )
+            {
+                firstStep = 1;
+            }
+        case "nozzle":
+            steps = nozzle_tour_steps;
+            if( $("#menu-item-maintenance").parent().hasClass("active") )
+            {
+                firstStep = 1;
+            }            
+    }
+    
+    if(tour != false)
+    {
+        tour.restart();
+        tour.init();
+        tour.start(true);
+        tour.goTo(firstStep);
+        return;
     }
     
     tour = new Tour({
         steps: steps,
-        debug:true,
+        //~ debug:true,
         /*template: '<div class="popover" role="tooltip">\
                     <div class="arrow"></div> \
                     <h3 class="popover-title"></h3> \
@@ -51,7 +63,6 @@ function startTour(name)
     localStorage.removeItem("tour_ended");
     
     tour.init();
-    //tour.restart();
-    //tour.goTo(0);
     tour.start(true);
+    tour.goTo(firstStep);
 }

@@ -13,14 +13,15 @@
 <script type="text/javascript">
 	
 	$(document).ready(function() {
-		$("#start-head-install-intro").on('click', start_head_install_intro);
+		$(".start-tour").on('click', start_tour);
 	});
 	
-	function start_head_install_intro()
+	function start_tour()
 	{
-		console.log('start_head_install_intro');
+		var tour_type = $(this).attr("data-attr");
+		//console.log('start_head_install_intro');
 		
-		startTour("head");
+		startTour(tour_type);
 		
 		/*if(tour == false)
 		{
