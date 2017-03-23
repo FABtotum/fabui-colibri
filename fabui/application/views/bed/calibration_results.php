@@ -22,12 +22,12 @@ if(is_array($_response) && isset($_response['bed_leveling'])){ // if there is a 
 	}
 	
 ?>
-	<h4 class="text-center">
-	Screw or unscrew following the indication given for each point.<br>
-	Green points are optimally leveled.<br>
-	Always follow the order without skipping any point (even green ones) and repeat until all the points are green. Arrows show the direction (CW or CCW) as seen from above.
+	<h4 class="text-center hidden-xs">
+	<?php echo _("Screw or unscrew following the indication given for each point")?><br>
+	<?php echo _("Green points are optimally leveled.")?><br>
+	<?php echo _("Always follow the order without skipping any point (even green ones) and repeat until all the points are green.")?><br>
+	<?php echo _("Arrows show the direction (CW or CCW) as seen from above")?>
 	</h4>
-	<hr class="simple">
 	<div class="margin-top-10">
 		<table class="table table-hover screws-rows">
 			<thead>
@@ -43,8 +43,8 @@ if(is_array($_response) && isset($_response['bed_leveling'])){ // if there is a 
 	<?php if($greens == 4): ?>
 		<div class="alert alert-success alert-block">
 			
-			<h4 class="alert-heading"><i class="fa fa-check"></i> Well done!</h4>
-			The bed is well calibrated to print
+			<h4 class="alert-heading"><i class="fa fa-check"></i> <?php echo _("Well done!");?></h4>
+			<?php echo _("The bed is well calibrated to print");?>
 		</div>
 	<?php endif; ?>
 	
@@ -52,7 +52,7 @@ if(is_array($_response) && isset($_response['bed_leveling'])){ // if there is a 
 }else{ //else there is something wrong need to do it again
 
  echo '<h4 class="text-center">
-		Well this is embarassing, during measurements something went wrong. Try again
+		'._("Well this is embarassing, during measurements something went wrong").'<br>'._("Try again").'
 	</h4>';
 }
 
@@ -141,7 +141,7 @@ function get_instructions($screw){
 	$badge_background_color['right'] = ' #0084ff!important;';
 	$badge_background_color['left'] = ' #ff0000!important; ';
 	
-	$rotation_section = 'following this rotation sense <span class="badge" style="background-color: '.$badge_background_color[$screw['direction']].'"><i class="fa fa-rotate-'.$screw['direction'].'"></i></span>';
+	$rotation_section = _("following this rotation sense").' <span class="badge" style="background-color: '.$badge_background_color[$screw['direction']].'"><i class="fa fa-rotate-'.$screw['direction'].'"></i></span>';
 	
 	if($screw['turns']['times'] < 1 ){
 		return 'Turn for '.$screw['turns']['degrees'].' degrees, '.$rotation_section;

@@ -57,11 +57,11 @@ if( !isset($wizard_finish) ) $wizard_finish = end($steps)['number'];
 				step: <?php echo $wizard_jump_to?>
 			});
 			gotoWizardStep(<?php echo $wizard_jump_to?>);
-			enableButton('.button-prev');
+			//enableButton('.button-prev');
 		<?php else: ?>
 			console.log("ACTIVE-STEP", "<?php echo getActiveStep($steps);?>")
 			gotoWizardStep(<?php echo getActiveStep($steps);?>);
-			enableButton('.button-prev');
+			//enableButton('.button-prev');
 		<?php endif; ?>
 	}
 	
