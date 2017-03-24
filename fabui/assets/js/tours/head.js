@@ -24,7 +24,7 @@ head_tour_steps = [
         element: "#heads",
         title: "Select head",
         content: "Choose the installed head",
-        reflex: true,
+        reflex: 'change',
         backdrop: true,
         backdropContainer : '#content',
         orphan: true, // workaround for element being loaded later

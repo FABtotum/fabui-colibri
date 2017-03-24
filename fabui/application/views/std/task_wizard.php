@@ -41,10 +41,10 @@ if( !isset($safety_check) ) $safety_check = array("all_is_ok" => true);
 			</ul>
 		</div>
 		<div class="actions">
-			<button type="button" class="btn btn-sm btn-primary button-prev">
+			<button type="button" class="btn btn-sm btn-primary button-prev" id="wizard-button-prev">
 				<i class="fa fa-arrow-left"></i> <span><?php echo _("Prev");?></span>
 			</button>
-			<button type="button" class="btn btn-sm btn-success button-next" data-last="<?php echo _("Finish"); ?>">
+			<button type="button" class="btn btn-sm btn-success button-next" data-last="<?php echo _("Finish"); ?>" id="wizard-button-next">
 				<span><?php echo _("Next");?></span> <i class="fa fa-arrow-right"></i>
 			</button>
 		</div>

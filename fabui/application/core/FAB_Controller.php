@@ -84,6 +84,7 @@
 		$data['jsInlineTop']    = $this->jsInLineTop;
 		$data['cssInLine']      = $this->cssInline;
 		$data['translations']   = $this->load->view('layout/translations_js', null, true);
+		$data['tours']          = $this->load->view('layout/tours_js', array('available_tours' => getTours()), true);
 		$data['ga_property_id'] = $this->config->config['ga_property_id'];
 		$data['heads']          = loadHeads();
 		

@@ -13,7 +13,7 @@
 	<!--  -->
 	<div class="col-sm-12">
 		<h3 id="filament-title"></h3>
-		<div class="btn-group btn-group-justified">
+		<div class="btn-group btn-group-justified" id="filament-choice">
 		<?php foreach($filamentsOptions as $code => $label):?>
 			<a class="btn btn-default filament <?php echo $code; ?>" data-type="<?php echo $code; ?>" href="javascript:void(0);"><?php echo $label?> <span></span></a>
 		<?php endforeach; ?>

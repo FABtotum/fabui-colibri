@@ -21,7 +21,7 @@
 					<p><?php echo _("Automatically load the filament into the machine"); ?></p>
 				</div>
 				<ul class="links text-center">
-					<li><button data-action="load" type="button" class="btn btn-default mode-choise">Choose <i class="fa  fa-arrow-right"></i></button></li>
+					<li><button data-action="load" type="button" class="btn btn-default mode-choise" id="spool-load-choice">Choose <i class="fa  fa-arrow-right"></i></button></li>
 				</ul>
 			</div>
 		</div>
@@ -37,7 +37,7 @@
 					<p><?php echo _("Automatically unload the filament from the machine"); ?></p>
 				</div>
 				<ul class="links text-center">
-					<li><button data-action="unload" type="button" class="btn btn-default mode-choise">Choose <i class="fa  fa-arrow-right"></i></button></li>
+					<li><button data-action="unload" type="button" class="btn btn-default mode-choise" id="spool-unload-choice">Choose <i class="fa  fa-arrow-right"></i></button></li>
 				</ul>
 			</div>
 		</div>

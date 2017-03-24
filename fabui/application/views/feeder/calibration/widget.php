@@ -12,7 +12,7 @@
 					</section>
 					<section class="col col-4">
 						<label class="label">&nbsp;</label>
-						<a href="javascript:void(0);" class="btn btn-sm btn-default btn-block step-change-modal-open"><i class="fa fa-pencil"></i> Change value</a>
+						<a href="javascript:void(0);" class="btn btn-sm btn-default btn-block step-change-modal-open" id="button-change-value"><i class="fa fa-pencil"></i> Change value</a>
 					</section>
 				</div>
 			</fieldset>
@@ -27,7 +27,7 @@
 					</section>
 					<section class="col col-4">
 						<label class="label">&nbsp;</label>
-						<a href="javascript:void(0);" class="btn btn-sm btn-default btn-block extrude"><i class="fab-lg fab-fw icon-fab-e"></i> <?php echo _("Start to extrude");?></a>
+						<a href="javascript:void(0);" class="btn btn-sm btn-default btn-block extrude" id="button-start-extrude"><i class="fab-lg fab-fw icon-fab-e"></i> <?php echo _("Start to extrude");?></a>
 					</section>
 				</div>
 				
@@ -40,7 +40,7 @@
 					</section>
 					<section class="col col-4">
 						<label class="label">&nbsp;</label>
-						<a href="javascript:void(0);" class="btn btn-sm btn-default btn-block recalculate"><i class="fa fa-calculator"></i> <?php echo _("Recalculate");?></a>
+						<a href="javascript:void(0);" class="btn btn-sm btn-default btn-block recalculate" id="button-recalculate"><i class="fa fa-calculator"></i> <?php echo _("Recalculate");?></a>
 					</section>
 				</div>
 			</fieldset>

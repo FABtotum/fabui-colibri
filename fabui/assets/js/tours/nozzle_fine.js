@@ -1,4 +1,4 @@
-nozzle_tour_steps = [
+nozzle_fine_tour_steps = [
       {
         element: "#menu-item-maintenance",
         title: "Maintenance menu",
@@ -24,12 +24,12 @@ nozzle_tour_steps = [
         backdropContainer : '#left-panel',
       },
       {
-        element: "#nozzle-assisted-calibration",
+        element: "#nozzle-fine-calibration",
         title: "Calibration",
         content: "Click on this button continue",
         reflex: true,
         backdrop: true,
-        orphab: true,
+        orphan: true,
         backdropContainer : '#content',
       },
 ];

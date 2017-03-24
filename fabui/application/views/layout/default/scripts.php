@@ -26,18 +26,27 @@
 <script type="text/javascript" src="/assets/js/app.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script type="text/javascript" src="/assets/js/fab.app.js?v=<?php echo FABUI_VERSION ?>"></script>
 
-<!--script type="text/javascript" src="/assets/js/plugin/introjs/intro.js?v=<?php echo FABUI_VERSION ?>"></script-->
 <script type="text/javascript" src="/assets/js/plugin/bootstrap-tour/bootstrap-tour.js?v=<?php echo FABUI_VERSION ?>"></script>
-<!-- TOUR includes: start -->
+<!--  TRANSLATIONS -->
+<?php echo $tours; ?>
 
-<script type="text/javascript" src="/assets/js/tour/head.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/tour/bed.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/tour/nozzle.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/tour/spool.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/tour/feeder.js?v=<?php echo FABUI_VERSION ?>"></script>
+<!-- TOUR includes: start 
+<script type="text/javascript" src="/assets/js/plugin/bootstrap-tour/bootstrap-tour.js?v=<?php echo FABUI_VERSION ?>"></script>
 
-<script type="text/javascript" src="/assets/js/tour/tour.js?v=<?php echo FABUI_VERSION ?>"></script>
-<!-- TOUR includes: end -->
+ @TODO: make this automatically loaded by php 
+<?php
+	// TODO
+?>
+<script type="text/javascript" src="/assets/js/tours/head.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script type="text/javascript" src="/assets/js/tours/bed.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script type="text/javascript" src="/assets/js/tours/nozzle_assisted.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script type="text/javascript" src="/assets/js/tours/nozzle_fine.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script type="text/javascript" src="/assets/js/tours/spool_load.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script type="text/javascript" src="/assets/js/tours/spool_unload.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script type="text/javascript" src="/assets/js/tours/feeder.js?v=<?php echo FABUI_VERSION ?>"></script>
+
+<script type="text/javascript" src="/assets/js/tours.js?v=<?php echo FABUI_VERSION ?>"></script>
+ TOUR includes: end -->
 
 <script type="text/javascript" src="/assets/js/fabtotum.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script type="text/javascript" src="/assets/js/demo.js?v=<?php echo FABUI_VERSION ?>"></script>

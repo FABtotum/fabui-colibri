@@ -1271,4 +1271,33 @@ if(!function_exists('setFilament'))
 		
 	}
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getTours'))
+{
+	/**
+	 *
+	 * @todo
+	 */
+	function getTours()
+	{
+		$tours = array();
+		
+		$dir    = '/var/www/assets/js/tours/';
+		$tour_js_files = scandir($dir);
+
+		foreach($tour_js_files as $tour_file)
+		{
+			$path_info = pathinfo($tour_file);
+			if( $path_info['extension'] == 'js' )
+			{
+				//echo '<script type="text/javascript" src="/assets/js/tours/'.$tour_file.'?v='.FABUI_VERSION.'"></script>'.PHP_EOL;
+				array_push($tours, $path_info['filename']);
+			}
+		}
+		
+		return $tours;
+	}
+}
+
 ?>

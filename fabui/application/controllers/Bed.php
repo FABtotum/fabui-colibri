@@ -59,7 +59,7 @@ class Bed extends FAB_Controller {
 	
 		$headerToolbar = '
 		<div class="widget-toolbar" role="menu">
-			<a class="btn btn-default no-ajax" target="_blank" href="http://store.fabtotum.com/"><i class="fa fa-cart-plus"></i> <span class="hidden-xs">'._("Get more beds").'</span> </a>
+			<a id="get-more-beds" class="btn btn-default no-ajax" target="_blank" href="http://store.fabtotum.com/"><i class="fa fa-cart-plus"></i> <span class="hidden-xs">'._("Get more beds").'</span> </a>
 		</div>';
 	
 		$widget = $this->smart->create_widget($widgetOptions);

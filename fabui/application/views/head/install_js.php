@@ -15,6 +15,12 @@
 		
 		$("#heads").on('change', set_head_img);
 		$("#heads").trigger('change');
+		$("#heads").on('click', function(){
+			console.log("heads CLICK");
+			});
+		$("#heads").on('select', function(){
+			console.log("heads SELECT");
+			});
 		$("#set-head").on('click', set_head);
 		
 		
@@ -80,6 +86,7 @@
 	*
 	**/
 	function set_head_img(){
+		console.log("heads CHANGE");
 	 	selected_head = $(this).val();
 	 	
 	 	if(heads.hasOwnProperty(selected_head))
