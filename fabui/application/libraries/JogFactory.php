@@ -125,7 +125,7 @@
 	 * @return array status of the printer (temperatures)
 	 * get Nozzle and Bed temperatures
 	 */
-	public function getTemperatures($id_stamp)
+	public function getTemperatures($id_stamp = '')
 	{
 		$this->setResponseType('temperatures');
 		$this->temperatures = json_decode(file_get_contents($this->CI->config->item('temperature')), true);
@@ -135,7 +135,7 @@
 	 * @param int $temperature
 	 * set heated bed temperature
 	 */
-	public function setBedTemp($temperature, $id_stamp)
+	public function setBedTemp($temperature, $id_stamp = '')
 	{
 		$this->sendCommands(array('M140 S'.$temperature), $id_stamp);
 		return $this->response();
@@ -144,7 +144,7 @@
 	 * @param int $temperature
 	 * set nozzle temperature
 	 */
-	public function setExtruderTemp($temperature, $id_stamp)
+	public function setExtruderTemp($temperature, $id_stamp = '')
 	{
 		$this->sendCommands(array('M104 S'.$temperature), $id_stamp );
 		return $this->response();
@@ -153,7 +153,7 @@
 	 * @param string $action 
 	 * execute movement command
 	 */
-	public function move($action, $id_stamp)
+	public function move($action, $id_stamp = '')
 	{
 		if($action == '')
 			return array();
@@ -199,13 +199,13 @@
 	/**
 	 * zero all 
 	 */
-	public function zeroAll($empty, $id_stamp)
+	public function zeroAll($empty, $id_stamp = '')
 	{
 		$this->sendCommands(array('G92 X0 Y0 Z0 E0'), $id_stamp);
 		return $this->response();
 	}
 	
-	public function getPosition($empty, $id_stamp)
+	public function getPosition($empty, $id_stamp = '')
 	{
 		$this->sendCommands(array('M114'), $id_stamp);
 		return $this->response();
@@ -214,7 +214,7 @@
 	/***
 	 * @tag: to_be_removed
 	 */
-	public function emergency($mode, $id_stamp)
+	public function emergency($mode, $id_stamp = '')
 	{
 		//$commands[] = 'M730';
 		//if($mode == 'false') $commands[] = 'M731';
@@ -227,7 +227,7 @@
 	/**
 	 * 
 	 */
-	function extrude($sign, $id_stamp)
+	function extrude($sign, $id_stamp = '')
 	{
 		//TODO
 		$this->sendCommands(array('G91', 'G0 E'.$sign.$this->step.' F'.$this->feedrate), $id_stamp);
@@ -237,7 +237,7 @@
 	 * set extruder mode
 	 * @mode extruder|4thaxis
 	 */
-	function setExtruderMode($mode, $id_stamp)
+	function setExtruderMode($mode, $id_stamp = '')
 	{
 		$settings = loadSettings();
 		$feeders = loadFeeders();
@@ -258,7 +258,7 @@
 	/**
 	 * Manual Data Input (MDI)
 	 */
-	function manualDataInput($inputCommands, $id_stamp)
+	function manualDataInput($inputCommands, $id_stamp= '')
 	{
 		//TODO
 		$commandsToSend = array();
