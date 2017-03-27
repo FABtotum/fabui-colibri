@@ -755,7 +755,7 @@
     //
     multipliers: [10, 1, 0.1, 1],
     //
-    multiplier: 0,
+    multiplier: 1,
     //
     hasRestore: true,
     //
