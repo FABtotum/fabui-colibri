@@ -46,7 +46,9 @@
 					if(response.upload == true){
 						fileList.push(response.fileId);
 					}
-					$(".result-" + file.name.replace(/[\s+|\,|\(|\)|\.]/g, '')).html('<i class="fa fa-check"></i>');
+					// class name invalid characters removal 
+					// invalid: ~ ! @ $ % ^ & * ( ) + = , . / ' ; : " ? > < [ ] \ { } | ` #
+					$(".result-" + file.name.replace(/[^a-z0-9\-_:]|^[^a-z]+/gi, "")).html('<i class="fa fa-check"></i>');
 					if(this.getQueuedFiles().length > 0){
 						this.processQueue(); 
 					}else{
@@ -63,7 +65,9 @@
 					numFiles --;
 				});
 				this.on("uploadprogress", function(file, progress) {
-					$("." + file.name.replace(/[\s+|\,|\(|\)|\.]/g, '')).attr('style', 'width:' + progress + '%');
+					// class name invalid characters removal 
+					// invalid: ~ ! @ $ % ^ & * ( ) + = , . / ' ; : " ? > < [ ] \ { } | ` #
+					$("." + file.name.replace(/[^a-z0-9\-_:]|^[^a-z]+/gi, "")).attr('style', 'width:' + progress + '%');
 				});
 			}
 		});

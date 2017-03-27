@@ -41,12 +41,17 @@
 			init: function(){
 				filesDropzone = this;
 				this.on("complete", function (file) {
+					
+					console.log("complete:", file);
+					
 					if(file.status == 'error') return;
 					var response = jQuery.parseJSON(file.xhr.response);
 					if(response.upload == true){
 						fileList.push(response.fileId);
 					}
-					$(".result-" + file.name.replace(/[\s+|\,|\(|\)|\.]/g, '')).html('<i class="fa fa-check"></i>');
+					// class name invalid characters removal 
+					// invalid: ~ ! @ $ % ^ & * ( ) + = , . / ' ; : " ? > < [ ] \ { } | ` #
+					$(".result-" + file.name.replace(/[^a-z0-9\-_:]|^[^a-z]+/gi, "")).html('<i class="fa fa-check"></i>');
 					if(this.getQueuedFiles().length > 0){
 						this.processQueue(); 
 					}else{
@@ -54,16 +59,24 @@
 					}
 				}); 
 				this.on("addedfile", function(file){
+					
+					console.log("addedfile:", file);
+					
 					if(numFiles == 0 && $("#name").val() == ''){
 						$("#name").val(file.name);
 					}
 					numFiles ++;
 				});
 				this.on("removedfile", function(file){
+					console.log("removedfile:", file);
+					
 					numFiles --;
 				});
 				this.on("uploadprogress", function(file, progress) {
-					$("." + file.name.replace(/[\s+|\,|\(|\)|\.]/g, '')).attr('style', 'width:' + progress + '%');
+					console.log("uploadprogress:", file, progress);
+					// class name invalid characters removal 
+					// invalid: ~ ! @ $ % ^ & * ( ) + = , . / ' ; : " ? > < [ ] \ { } | ` #
+					$("." + file.name.replace(/[^a-z0-9\-_:]|^[^a-z]+/gi, "")).attr('style', 'width:' + progress + '%');
 				});
 			}
 		});
