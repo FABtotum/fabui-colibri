@@ -68,11 +68,8 @@
 	{
 		//if is called from fabui
 		if($this->input->is_ajax_request()){
-			$this->load->config('fabtotum');
-			$this->load->helper('file');
-			$notify = json_decode( file_get_contents( $this->config->item('notify_file') ), true);
-			$notify['last_event']['seen'] = true;
-			write_file($this->config->item('notify_file'), json_encode($notify, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK));
+			$this->load->helper('fabtotum_helper');
+			setSecure($mode);
 			$this->output->set_content_type('application/json')->set_output(json_encode(true));
 		}
 	}

@@ -1271,7 +1271,6 @@ if(!function_exists('setFilament'))
 		
 	}
 }
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('getTours'))
 {
@@ -1299,5 +1298,20 @@ if(!function_exists('getTours'))
 		return $tours;
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('setSecure'))
+{
+	/**
+	 * 
+	 */
+	function setSecure($mode = true){
+		$CI =& get_instance();
+		$CI->load->config('fabtotum');
+		$CI->load->helper('file');
+		$notify = json_decode( file_get_contents( $CI->config->item('notify_file') ), true);
+		$notify['last_event']['seen'] = true;
+		write_file($CI->config->item('notify_file'), json_encode($notify, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK));
+		return true;
+	}
+}
 ?>

@@ -194,6 +194,10 @@ class Feeder extends FAB_Controller {
 		
 		$result = doMacro('change_step', null, $new_step_value);
 		
+		$feeder = getInstalledFeederInfo();
+		$feeder['steps_per_unit'] = $new_step_value;
+		saveInfoToInstalledFeeder($feeder);
+		
 		$response = array();
 		$response['new_step'] = $new_step_value;
 		$response['old_step']            = $actual_step;

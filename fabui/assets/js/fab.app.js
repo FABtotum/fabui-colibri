@@ -1504,7 +1504,7 @@ fabApp = (function(app) {
 		app.manageTask(object.data.task.data);
 		app.usb(object.data.usb.data.status, object.data.usb.data.alert);
 		
-		if(!object.data.notify.data.last_event.hasOwnProperty('seen')){
+		if(!object.data.notify.data.last_event.hasOwnProperty('seen') && object.data.notify.data.last_event.type=="emergency"){
 			app.manageEmergency(object.data.notify.data.last_event.data);
 		}
 	}

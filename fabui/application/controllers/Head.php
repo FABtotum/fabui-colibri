@@ -97,7 +97,7 @@ class Head extends FAB_Controller {
 		}
 		
 		saveSettings($_data, $settings_type);
-		
+		setSecure();
 		// reset totumduino
 		resetController();
 		$this->output->set_content_type('application/json')->set_output(json_encode( $head_info ));
