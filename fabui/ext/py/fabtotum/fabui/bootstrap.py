@@ -311,13 +311,14 @@ def configure_head(gcs, config, log):
             log.error("Failed to read head configuration")
             return
             
-        pid     = head.get('pid')
-        th_idx  = int(head.get('thermistor_index', 0))
-        mode    = int(head.get('working_mode', 0))
-        offset  = float(head.get('nozzle_offset', 0))
-        fw_id   = int(head.get('fw_id',0))
-        max_temp= int(head.get('max_temp',0)) + 15
+        pid          = head.get('pid', '')
+        th_idx       = int(head.get('thermistor_index', 0))
+        mode         = int(head.get('working_mode', 0))
+        offset       = float(head.get('nozzle_offset', 0))
+        fw_id        = int(head.get('fw_id',0))
+        max_temp     = int(head.get('max_temp',0)) + 15
         custom_gcode = head.get('custom_gcode','')
+        tool         = head.get('tool', '')
         
         probe_length  = float(config.get('settings', 'zprobe.length', 0))
         
@@ -347,6 +348,10 @@ def configure_head(gcs, config, log):
         # Working mode
         gcs.send( "M450 S{0}".format( mode ), group='bootstrap' )
         
+        #Set tool
+        if tool != "" :
+            gcs.send( head['tool'], group='bootstrap' )
+        
         for line in custom_gcode.split('\n'):
             if line:
                 code = line.split(';')[0]
@@ -366,10 +371,10 @@ def configure_feeder(gcs, config, log):
             log.error("Failed to read feeder configuration")
             return
             
-        steps_per_unit = float(feeder['steps_per_unit'])
-        max_feedrate = float(feeder['max_feedrate'])
-        max_acceleration = float(feeder['max_acceleration'])
-        max_jerk = float(feeder['max_jerk'])
+        steps_per_unit       = float(feeder['steps_per_unit'])
+        max_feedrate         = float(feeder['max_feedrate'])
+        max_acceleration     = float(feeder['max_acceleration'])
+        max_jerk             = float(feeder['max_jerk'])
         retract_acceleration = float(feeder['retract_acceleration'])
 
         gcs.send("M92 E{0}".format(steps_per_unit),        group='bootstrap' )
@@ -449,6 +454,10 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     gcs.send("M734 S{0}".format(collision_warning), group='bootstrap')
     # Set homing preferences
     gcs.send("M714 S{0}".format(switch), group='bootstrap')
+    
+    
+    configure_head(gcs, config, log)
+    configure_feeder(gcs, config, log)
             
     # Execute version specific intructions
     HW_VERSION_CMDS = {
@@ -465,9 +474,5 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         HW_VERSION_CMDS[hardwareID](gcs, config, log)
     else:
         log.error("Unsupported hardware version: %s", hardwareID)
-
-    configure_head(gcs, config, log)
-    
-    configure_feeder(gcs, config, log)
 
     gcs.atomic_end()

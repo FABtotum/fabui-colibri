@@ -305,9 +305,8 @@
 						</div>
 						
 						<input type="hidden" id="feeder-factory" name="factory" value="0"/>
-						
 					</fieldset>
-					
+					<input type="hidden" id="tool" name="tool" value="" />
 				</form>
 				
 				

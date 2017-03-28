@@ -86,9 +86,9 @@
 	*
 	**/
 	function set_head_img(){
-		console.log("heads CHANGE");
+
+		
 	 	selected_head = $(this).val();
-	 	
 	 	if(heads.hasOwnProperty(selected_head))
 	 	{
 			$("#edit-button").show();
@@ -152,6 +152,7 @@
 	function capability_change(update_working_mode=true)
 	{
 		var capabilities = [];
+		var feeder = false;
 		
 		$(".capability").each(function (index, value) {
 			if($(this).is(":checked"))
@@ -181,10 +182,14 @@
 		else
 			$(".motor-settings").slideUp();
 			
-		if(capabilities.indexOf("feeder") > -1)
+		if(capabilities.indexOf("feeder") > -1){
 			$(".feeder-settings").slideDown();
-		else
+			feeder = true;
+		}
+		else{
 			$(".feeder-settings").slideUp();
+			feeder = false;
+		}
 			
 		
 		if(capabilities.indexOf("laser") > -1)
@@ -195,6 +200,8 @@
 		
 		if(update_working_mode)
 			$("#head-working_mode").val(working_mode);
+
+		updateTool(working_mode, feeder);
 
 	}
 	/**
@@ -286,10 +293,7 @@
 			}
 		});
 		
-		settings['capabilities'] = capabilities;
-		
-		console.log(settings);
-		
+		settings['capabilities'] = capabilities;	
 		return settings;
 	}
 	
@@ -480,5 +484,26 @@
 			}
 		});
 		
+	}
+	/**
+	*
+	**/
+	function updateTool(working_mode, hasFeeder)
+	{
+		var tool = 'M563';
+		switch(working_mode){
+			case 0: //hybrid
+			case 1: //FFF
+				tool += ' P0 D0';
+				break;
+			case 2: //laser
+			case 3: //CNC
+				tool += ' P0 D-1';
+				break;
+		}
+		if(hasFeeder){
+			tool = 'M563 P2 D0';
+		}
+		$("#tool").val(tool);
 	}
 </script>

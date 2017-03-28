@@ -224,10 +224,10 @@ def configure_feeder(app, feeder_name, lang='en_US.UTF-8'):
     if feeder == None:
         return False
     
-    steps_per_unit = float(feeder['steps_per_unit'])
-    max_feedrate = float(feeder['max_feedrate'])
-    max_acceleration = float(feeder['max_acceleration'])
-    max_jerk = float(feeder['max_jerk'])
+    steps_per_unit       = float(feeder['steps_per_unit'])
+    max_feedrate         = float(feeder['max_feedrate'])
+    max_acceleration     = float(feeder['max_acceleration'])
+    max_jerk             = float(feeder['max_jerk'])
     retract_acceleration = float(feeder['retract_acceleration'])
 
     app.macro("M92 E{0}".format(steps_per_unit),            "ok", 1,   _("Setting E steps_per_unit") )
@@ -247,13 +247,14 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     if head == None:
         return False
         
-    pid     = head.get('pid', '')
-    th_idx  = int(head.get('thermistor_index', 0))
-    mode    = int(head.get('working_mode', 0))
-    offset  = float(head.get('nozzle_offset', 0))
-    fw_id   = int(head.get('fw_id',0))
-    max_temp= int(head.get('max_temp',230)) + 15
-    probe_length  = float(app.config.get('settings', 'zprobe.length', 0))
+    pid          = head.get('pid', '')
+    th_idx       = int(head.get('thermistor_index', 0))
+    mode         = int(head.get('working_mode', 0))
+    offset       = float(head.get('nozzle_offset', 0))
+    fw_id        = int(head.get('fw_id',0))
+    max_temp     = int(head.get('max_temp',230)) + 15
+    probe_length = float(app.config.get('settings', 'zprobe.length', 0))
+    tool         = head.get('tool', '')
     
     # Set installed head ID
     if fw_id is not None:
@@ -278,6 +279,10 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     # Set nozzle offset
     #~ if offset:
         #~ app.macro( "M206 Z-{0}".format( offset ),   "ok", 2, _("Configuring nozzle offset"))
+        
+    # Set TOOL
+    if tool != "":
+        app.macro(head['tool'],   "ok", 2, _("Configuring TOOL"))
     
     # Set probe offset
     if probe_length:
