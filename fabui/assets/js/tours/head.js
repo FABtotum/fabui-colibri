@@ -1,16 +1,16 @@
 head_tour_steps = [
       {
         element: "#menu-item-maintenance",
-        title: "Maintenance menu",
-        content: "Click on the menu item to continue",
+        title: _("Maintenance menu"),
+        content: _("Click on the menu item to continue"),
         reflex: true,
         backdrop: true,
         backdropContainer : '#left-panel'
       },
       {
         element: "#menu-item-maintenance-head",
-        title: "Head management",
-        content: "<strong>Click</strong> on the menu item to continue",
+        title: _("Head management"),
+        content: _("<strong>Click</strong> on the menu item to continue"),
         reflex: true,
         backdrop: true,
         backdropContainer : '#left-panel',
@@ -22,8 +22,8 @@ head_tour_steps = [
       },
       {
         element: "#heads",
-        title: "Select head",
-        content: "Choose the installed head",
+        title: _("Select head"),
+        content: _("Choose the installed head<br>Note: if the correct head is selected press Next"),
         reflex: 'change',
         backdrop: true,
         backdropContainer : '#content',
@@ -36,8 +36,8 @@ head_tour_steps = [
       },
       {
         element: "#set-head",
-        title: "Install head",
-        content: "Click on this button",
+        title: _("Install head"),
+        content: _("Click on this button"),
         reflex: true,
         backdrop: true,
         backdropContainer : '#content',

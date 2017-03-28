@@ -39,6 +39,12 @@ class FirstSetup extends FAB_Controller {
 		
 		$this->addJsInLine($this->load->view( 'firstsetup/js', $data, true));
 		
+		
+		//~ $this->addJSFile('/assets/js/plugin/circleMenu/jQuery.circleMenu.js');
+		//$this->addJSFile('/assets/js/plugin/ferroMenu/jquery.ferro.ferroMenu-1.2.3.min.js');
+		//$this->addCssFile('/assets/js/plugin/ferroMenu/jquery.ferro.ferroMenu.css');
+		$this->addCssFile('/assets/css/firstsetup/style.css');
+		
 		$this->content = $widget->print_html(true);
 		$this->view();
     }
