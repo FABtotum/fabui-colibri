@@ -28,7 +28,11 @@ function endTour()
     if(tour != false)
     {
         tour.end();
+        tour = false;
     }
+    
+    //localStorage.removeItem("tour_current_step");
+   // localStorage.removeItem("tour_ended");
 }
 
 function updateTour()
@@ -48,7 +52,7 @@ function startTour(name)
 {
 
     steps = [];
-    var firstStep = 1;
+    var firstStep = 0;
     
     var available_tours = {
         <?php 
@@ -90,6 +94,7 @@ function startTour(name)
     tour = new Tour({
         steps: steps,
         debug:true,
+        storage: false
         /*template: '<div class="popover" role="tooltip">\
                     <div class="arrow"></div> \
                     <h3 class="popover-title"></h3> \
@@ -108,7 +113,11 @@ function startTour(name)
     //~ localStorage.removeItem("tour_current_step");
     //~ localStorage.removeItem("tour_ended");
     
+    //localStorage.removeItem("tour_current_step");
+    //localStorage.removeItem("tour_ended");
+    
     tour.init();
+    //tour.restart();
     tour.start(true);
     tour.goTo(firstStep);
     

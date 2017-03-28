@@ -22,7 +22,7 @@
 				var h = $(li).height();
 				$(li)
 				   .css({ transform: 'rotate('+now+'deg) translate('+radius+'px, 0px) rotate('+(-now)+'deg)' });
-			}, duration: 800
+			}, duration: 1000
 		});
 	}
 

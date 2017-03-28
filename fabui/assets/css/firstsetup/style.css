@@ -59,6 +59,7 @@
 	top: -10px;
     line-height: 0;
     font-size: 12px;
+    cursor: pointer;
 }
 
 div.circular-layout .logo {
