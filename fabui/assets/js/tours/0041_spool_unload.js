@@ -1,4 +1,5 @@
-spool_unload_tour_steps = [
+spool_unload_tour_info = {
+	steps : [
       {
         element: "#menu-item-maintenance",
         title: "Maintenance menu",
@@ -54,4 +55,10 @@ spool_unload_tour_steps = [
         backdropContainer : '#content',
         placement:'left'
       },
-];
+	],
+	show: false,
+	name: _("Spool"),
+	icon: '',
+	title: _("Unload spool"),
+	description: _("Some description")
+}

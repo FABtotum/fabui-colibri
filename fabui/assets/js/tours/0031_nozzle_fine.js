@@ -1,4 +1,5 @@
-nozzle_fine_tour_steps = [
+nozzle_fine_tour_info = {
+	steps : [
       {
         element: "#menu-item-maintenance",
         title: "Maintenance menu",
@@ -32,4 +33,10 @@ nozzle_fine_tour_steps = [
         orphan: true,
         backdropContainer : '#content',
       },
-];
+	],
+	show: false,
+	name: _("Nozzle"),
+	icon: '',
+	title: _("Nozzle height calibration"),
+	description: _("After bed is leveled the nozzle height needs to be adjusted")
+}

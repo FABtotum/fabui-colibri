@@ -1,4 +1,5 @@
-feeder_tour_steps = [
+feeder_tour_info = {
+	steps : [
       {
         element: "#menu-item-maintenance",
         title: _("Maintenance menu"),
@@ -33,4 +34,10 @@ feeder_tour_steps = [
         backdropContainer : '#content',
         placement: 'left'
       },
-];
+	],
+	show: true,
+	name: _("Feeder"),
+	icon: '<i class="fa fa-cog" aria-hidden="true"></i>',
+	title: _("Feeder calibration"),
+	description: _("This step can be skipped")
+}

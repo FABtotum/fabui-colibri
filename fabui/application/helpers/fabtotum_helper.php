@@ -1291,7 +1291,14 @@ if(!function_exists('getTours'))
 			if( $path_info['extension'] == 'js' )
 			{
 				//echo '<script type="text/javascript" src="/assets/js/tours/'.$tour_file.'?v='.FABUI_VERSION.'"></script>'.PHP_EOL;
-				array_push($tours, $path_info['filename']);
+				
+				//var id = $(this).val().split("_").pop().join("_");
+				
+				$tour_id = $path_info['filename'];
+				
+				//$tour_id = preg_replace('/^[0-9]+_/', '', $tour_id);
+				
+				array_push($tours, $tour_id);
 			}
 		}
 		

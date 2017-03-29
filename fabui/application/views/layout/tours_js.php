@@ -20,30 +20,53 @@ foreach($available_tours as $tour_file) {
 
 <script type="text/javascript">
     
-var tour = false;
-var tour_name = "";
+var active_tour = false;
+var active_tour_name = "";
+var available_tours = {
+	<?php 
+		foreach($available_tours as $tour_file) 
+		{
+			$tour_id = preg_replace('/^[0-9]+_/', '', $tour_file);
+			echo $tour_id .': '.$tour_id.'_tour_info,';
+		}
+	?>
+};
+    
+function hasTourEnded(name)
+{
+	if (typeof(Storage) !== "undefined") {
+		// Code for localStorage/sessionStorage.
+		var tour_end = localStorage.getItem(name + "_end");
+		return tour_end == "yes";
+	} else {
+		// Sorry! No Web Storage support..
+		return false;
+	}
+}
+
+function onTourEnd(tour)
+{
+	
+}
 
 function endTour()
 {
-    if(tour != false)
+    if(active_tour != false)
     {
-        tour.end();
-        tour = false;
+        active_tour.end();
+        active_tour = false;
     }
-    
-    //localStorage.removeItem("tour_current_step");
-   // localStorage.removeItem("tour_ended");
 }
 
 function updateTour()
 {
-    if(tour != false)
+    if(active_tour != false)
     {
-        if(!tour.ended())
+        if(!active_tour.ended())
         {
-            tour.start(true);
-            var step = tour.getCurrentStep();
-            tour.goTo(step);
+            active_tour.start(true);
+            var step = active_tour.getCurrentStep();
+            active_tour.goTo(step);
         }
     }
 }
@@ -53,48 +76,45 @@ function startTour(name)
 
     steps = [];
     var firstStep = 0;
-    
-    var available_tours = {
-        <?php 
-            foreach($available_tours as $tour_file) 
-            {
-                echo $tour_file .': '.$tour_file.'_tour_steps,';
-            }
-        ?>
-    };
-    
+        
     if( !available_tours.hasOwnProperty(name) )
     {
-        console.log('tour not found', name);
+        console.error('tour not found', name);
         return false;
     }
     else
     {
-        steps = available_tours[name];
-        tour_name = name;
+        steps = available_tours[name].steps;
+        active_tour_name = name;
         console.log('startTour', name);
     }
-    
-    // @TODO: make this automatic based on steps data
-    switch(name)
+        
+    // Skip steps for open menu-items
+    for(idx in steps)
     {
-        case "head":
-        case "nozzle-fine":
-        case "nozzle-assisted":
-        case "bed":
-        case "spool-load":
-        case "spool-unload":
-            if( $("#menu-item-maintenance").parent().hasClass("active") )
-            {
-                firstStep = 1;
-            }
-            break;
-    }
+		var element = steps[idx].element;
+		if( $(element).length > 0 )
+		{
+			if( element.startsWith("#menu-item") )
+			{
+				if( $(element).parent().hasClass("open") )
+				{
+					firstStep++;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+	}
     
-    tour = new Tour({
+    active_tour = new Tour({
+		name: name,
         steps: steps,
         debug:true,
-        storage: false
+        //storage: false,
+        onEnd: onTourEnd,
         /*template: '<div class="popover" role="tooltip">\
                     <div class="arrow"></div> \
                     <h3 class="popover-title"></h3> \
@@ -109,17 +129,10 @@ function startTour(name)
                 </div> </div>'*/
     });
     
-    //@TODO: make a failsave version of this
-    //~ localStorage.removeItem("tour_current_step");
-    //~ localStorage.removeItem("tour_ended");
-    
-    //localStorage.removeItem("tour_current_step");
-    //localStorage.removeItem("tour_ended");
-    
-    tour.init();
+    active_tour.init();
     //tour.restart();
-    tour.start(true);
-    tour.goTo(firstStep);
+    active_tour.start(true);
+    active_tour.goTo(firstStep);
     
     return true;
 }

@@ -1,4 +1,5 @@
-head_tour_steps = [
+head_tour_info = {
+	steps : [
       {
         element: "#menu-item-maintenance",
         title: _("Maintenance menu"),
@@ -43,4 +44,10 @@ head_tour_steps = [
         backdropContainer : '#content',
         placement:'left'
       }
-];
+	],
+	show: true,
+	name: _("Head"),
+	icon: '<i class="fa fa-toggle-down" aria-hidden="true"></i>',
+	title: _("Install head"),
+	description: _("Before starting to use your FABtotum unit you need to install a head")
+}

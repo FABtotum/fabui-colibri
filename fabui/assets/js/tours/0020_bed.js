@@ -1,5 +1,6 @@
-bed_tour_steps = [
-      {
+bed_tour_info = {
+	steps: [ 
+		{
         element: "#menu-item-maintenance",
         title: _("Maintenance menu"),
         content: _("Click on the menu item to continue"),
@@ -25,4 +26,10 @@ bed_tour_steps = [
         backdropContainer : '#content',
         placement:'left'
       }
-];
+	],
+	show: true,
+	name: _("Bed"),
+	icon: '<i class="fa fa-square-o" aria-hidden="true"></i>',
+	title: _("Bed calibration"),
+	description: _("To get the first layer right the bed must be well calibrated")
+}

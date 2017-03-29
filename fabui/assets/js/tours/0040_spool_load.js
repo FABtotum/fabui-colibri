@@ -1,4 +1,5 @@
-spool_load_tour_steps = [
+spool_load_tour_info = {
+	steps : [
       {
         element: "#menu-item-maintenance",
         title: "Maintenance menu",
@@ -54,4 +55,10 @@ spool_load_tour_steps = [
         backdropContainer : '#content',
         placement:'left'
       },
-];
+	],
+	show: true,
+	name: _("Spool"),
+	icon: '',
+	title: _("Load spool"),
+	description: _("To be able to print anything the filament needs to be loaded")
+}
