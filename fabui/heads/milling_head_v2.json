@@ -10,6 +10,7 @@
   "max_temp": "0",
   "nozzle_offset": "0",
   "min_rpm": "6000",
+  "tool": "M563 P0 D-1",
   "max_rpm": "14000",
   "capabilities": [
     "mill"
