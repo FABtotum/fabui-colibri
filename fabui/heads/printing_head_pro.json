@@ -1,0 +1,31 @@
+{
+  "feeder": {
+    "steps_per_unit": "98.30",
+    "tube_length": "0",
+    "max_acceleration": "300",
+    "max_feedrate": "300",
+    "max_jerk": "1",
+    "retract_acceleration": "300",
+    "retract_feedrate": "12",
+    "retract_amoun": "4",
+    "factory": "0"
+  },
+  "name": "Printing Head Pro",
+  "link": "http://www.fabtotum.com/printing-head-pro/",
+  "description": "The <strong>Printing Head Pro</strong> ",
+  "custom_gcode": "M720",
+  "working_mode": "1",
+  "fw_id": "6",
+  "pid": "M301 P53.54 I9.08 D78.94",
+  "thermistor_index": "0",
+  "max_temp": "250",
+  "probe_offset": "0",
+  "min_rpm": "6000",
+  "max_rpm": "0",
+  "tool": "M563 P2 D0",
+  "capabilities": [
+    "print",
+    "fan",
+    "feeder"
+  ]
+}
