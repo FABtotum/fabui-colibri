@@ -129,11 +129,12 @@ def customHardware(gcodeSender, config, log):
     gcodeSender.send("M747 X{0}".format(logic), group='bootstrap')
     
     # custom overrides
-    custom_overrides = config.get('settings', 'custom.overrides').split('\n')
+    custom_overrides = config.get('settings', 'custom.overrides').strip().split('\n')
      
     for line in custom_overrides:
-        log.info("Custom override: {0}".format(line))
-        gcodeSender.send(line, group='bootstrap')
+        if line != "" :
+            log.info("Custom override: {0}".format(line))
+            gcodeSender.send(line, group='bootstrap')
     
     #save settings
     gcodeSender.send("M500", group='bootstrap')
