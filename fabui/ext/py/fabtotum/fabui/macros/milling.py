@@ -87,7 +87,7 @@ def check_subtractive(app, args = None, lang='en_US.UTF-8'):
 def start_subtractive(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
-    feeder = get_feeder_info('built_in_feeder')
+    feeder = app.config.get_feeder_info('built_in_feeder')
     units_a = feeder['steps_per_angle']
     
     app.macro("G92 X0 Y0 Z0 E0", "ok", 1,       _("Setting Origin Point"), verbose=False)
@@ -104,7 +104,7 @@ def end_subtractive(app, args = None, lang='en_US.UTF-8'):
 
 
 def end_subtractive_aborted(app, args = None, lang='en_US.UTF-8'):
-    feeder = app.config.get_current_feeder_info();
+    feeder = app.config.get_current_feeder_info()
     units_e = feeder['steps_per_unit']
     
     try:

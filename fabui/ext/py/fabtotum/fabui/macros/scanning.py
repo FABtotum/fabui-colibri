@@ -31,7 +31,7 @@ from fabtotum.utils.translation import _, setLanguage
 
 def check_pre_scan(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    feeder = get_feeder_info('built_in_feeder')
+    feeder = app.config.get_feeder_info('built_in_feeder')
     units_a = feeder['steps_per_angle']
     
     try:
@@ -67,7 +67,7 @@ def check_pre_scan(app, args = None, lang='en_US.UTF-8'):
     
 def rotary_scan(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    feeder = get_feeder_info('built_in_feeder')
+    feeder = app.config.get_feeder_info('built_in_feeder')
     units_a = feeder['steps_per_angle']
     
     try:
@@ -93,7 +93,7 @@ def rotary_scan(app, args = None, lang='en_US.UTF-8'):
     
 def photogrammetry_scan(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    feeder = get_feeder_info('built_in_feeder')
+    feeder = app.config.get_feeder_info('built_in_feeder')
     units_a = feeder['steps_per_angle']
     
     try:
@@ -142,7 +142,7 @@ def sweep_scan(app, args = None, lang='en_US.UTF-8'):
 
 def probe_scan(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    feeder = get_feeder_info('built_in_feeder')
+    feeder = app.config.get_feeder_info('built_in_feeder')
     units_a = feeder['steps_per_angle']
     try:
         safety_door = app.config.get('settings', 'safety')['door']
