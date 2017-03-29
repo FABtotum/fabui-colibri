@@ -121,15 +121,20 @@ def customHardware(gcodeSender, config, log):
     """
     Revision for customs edits
     """
-    custom_overrides = config.get('settings', 'custom.overrides')
-    if custom_overrides:
-        for line in custom_overrides:
-            gcodeSender.send(line.strip())
+    log.info("Custom Hardware")
     
     logic = 1 if int(config.get('settings', 'custom.invert_x_endstop_logic')) else 0
 
     #set x endstop logic
     gcodeSender.send("M747 X{0}".format(logic), group='bootstrap')
+    
+    # custom overrides
+    custom_overrides = config.get('settings', 'custom.overrides').split('\n')
+     
+    for line in custom_overrides:
+        log.info("Custom override: {0}".format(line))
+        gcodeSender.send(line, group='bootstrap')
+    
     #save settings
     gcodeSender.send("M500", group='bootstrap')
     
@@ -137,7 +142,6 @@ def customHardware(gcodeSender, config, log):
     
     config.set('settings', 'e', eeprom['steps_per_unit']['e'])
     config.save('settings')
-    log.info("Custom Hardware")
 
 def hardware1(gcodeSender, config, log):
     """
