@@ -31,7 +31,10 @@
   "hardware": {
     "head": "hybrid_head",
     "feeder": "built_in_feeder",
-    "camera": "camera_v1"
+    "camera": "camera_v1",
+	"bed": {
+		"enable": true
+	}
   },
   "print": {
     "calibration": "homing",

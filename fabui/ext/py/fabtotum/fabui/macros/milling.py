@@ -78,11 +78,17 @@ def check_subtractive(app, args = None, lang='en_US.UTF-8'):
     except KeyError:
         safety_door = 0
         
+    try:
+        bed_enabled = app.config.get('settings', 'hardware')['bed']['enable']
+    except KeyError:
+        bed_enabled = True
+        
     app.trace( _("Checking safety measures") )
     if safety_door == 1:
         app.macro("M741",   "TRIGGERED", 2, _("Front panel door control") )
     
-    app.macro("M744",       "open", 1, _("Building plane inserted correctly"))
+    if bed_enabled == True:
+        app.macro("M744",       "open", 1, _("Building plane inserted correctly"))
 
 def start_subtractive(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
