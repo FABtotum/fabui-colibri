@@ -8,7 +8,7 @@
  */
 
 /* variable initialization */
-if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_is_ok' => false, 'bed_is_ok' => false );
+if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_is_ok' => false, 'bed_is_ok' => false , 'bed_enabled' => true );
 ?>
 
 <?php if(!$safety_check['all_is_ok']): ?>

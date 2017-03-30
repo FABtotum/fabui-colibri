@@ -32,7 +32,7 @@ if ( !function_exists('createDefaultSettings'))
 			'zprobe'        	 => array('enable'=> 0, 'zmax'=> 241.5),
 			'z_max_offset'       => 241.5,
 			'settings_type' 	 => 'default',
-			'hardware'     	 	 => array('head' => 'printing_head_v2', 'feeder' => 'built_in_feeder', 'camera' => 'camera_v1'),
+			'hardware'     	 	 => array('head' => 'printing_head_v2', 'feeder' => 'built_in_feeder', 'camera' => 'camera_v1', 'bed' => array('enable'=> true)),
 			'print'         	 => array('pre_heating' => array('nozzle' => 150, 'bed'=>50), 'calibration' => 'homing'),
 			'stored_position'	 => array(),
 			'custom'             => array(
@@ -507,19 +507,33 @@ if(!function_exists('safetyCheck'))
 	{
 		
 		$head_in_place = isHeadInPlace();
-		$bed_in_place  = isBedInPlace();
+		$bed_enabled   = isBedEnabled();
 		
 		$result = array(
 			'head_is_ok'    => false,
 			'head_info'     => getInstalledHeadInfo(),
 			'head_in_place' => $head_in_place,
-			'bed_is_ok'     => false,
-			'bed_in_place'  => $bed_in_place
+			'bed_enabled'   => $bed_enabled
 		);
 		
-		$result['head_is_ok'] = canHeadSupport($feature) && $head_in_place;
-		$result['bed_is_ok']  = $heated_bed == $bed_in_place;
-		$result['all_is_ok']  = $result['head_is_ok'] && $result['bed_is_ok'];
+		$result['head_is_ok'] = $result['all_is_ok'] = canHeadSupport($feature) && $head_in_place;
+		
+		if($bed_enabled){
+			$bed_in_place  = isBedInPlace();
+			$result['bed_in_place'] = $bed_in_place;
+			$result['bed_is_ok'] = $heated_bed == $bed_in_place;
+			$result['all_is_ok']  = $result['head_is_ok'] && $result['bed_is_ok'];
+		}
+		
+		/*
+		$result = array(	
+			'head_is_ok'    => false,
+			'head_info'     => getInstalledHeadInfo(),
+			'head_in_place' => $head_in_place,
+			'bed_is_ok'     => false,
+			'bed_in_place'  => $bed_in_place,
+			'bed_enabled'   => isBedEnabled()
+		);*/
 		
 		return $result;
 	}
@@ -608,6 +622,20 @@ if(!function_exists('isBedinPlace'))
 			return $reply['commands'][$timestamp.'_0']['reply'][0] == "TRIGGERED";
 		}
 		return false;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('isBedEnabled'))
+{
+	/***
+	 * return if the bed is enabled
+	 * default is true and always it will be
+	 */
+	function isBedEnabled()
+	{
+		$data = loadSettings();
+		if(!isset($data['hardware']['bed'])) return true;
+		return $data['hardware']['bed']['enable'];
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

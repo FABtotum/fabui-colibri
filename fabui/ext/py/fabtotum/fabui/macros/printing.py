@@ -178,12 +178,19 @@ def check_additive(app, args = None, lang='en_US.UTF-8'):
     except KeyError:
         safety_door = 0
     
+    try:
+        bed_enabled = app.config.get('settings', 'hardware')['bed']['enable']
+    except KeyError:
+        bed_enabled = True
+    
     app.trace( _("Checking safety measures") )
     if safety_door == 1:
         app.macro("M741",   "TRIGGERED", 2, _("Front panel door control") )
         
     app.trace( _("Checking building plate") )
-    app.macro("M744",       "TRIGGERED", 1, _("Build plate needs to be flipped to the printing side"), verbose=False )
+    if bed_enabled == True:
+        app.macro("M744",       "TRIGGERED", 1, _("Build plate needs to be flipped to the printing side"), verbose=False )
+    
     app.macro("M742",       "TRIGGERED", 1, _("Spool panel control"), verbose=False, warning=True)
 
 def engage_feeder(app, args = None, lang='en_US.UTF-8'):

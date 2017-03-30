@@ -8,7 +8,7 @@
  */
  
 /* variable initialization */
-if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_is_ok' => false, 'bed_is_ok' => false );
+if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_is_ok' => false, 'bed_is_ok' => false, 'bed_enabled' => true );
 ?>
 
 <div class="row text-center">
@@ -17,7 +17,7 @@ if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_i
 
 <div class="row">
 	
-	<div class="col-sm-6 col-md-6 text-center">
+	<div class="col-sm-<?php echo $safety_check['bed_enabled'] ? 6 : 12; ?> col-md-<?php echo $safety_check['bed_enabled'] ? 6 : 12; ?> text-center">
 		<div class="row">
 			<img id="safety-check-head-image" class="" src="<?php echo $safety_check['head_in_place']?$safety_check['head_info']['image_src']:"/assets/img/head/head_shape.png"; ?>" style="height:320px">
 		</div>
@@ -31,7 +31,7 @@ if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_i
 		<?php endif; ?>
 		</div>
 	</div>
-	
+	<?php if($safety_check['bed_enabled']):?>
 	<div class="col-sm-6 col-md-6 text-center">
 		<div class="row">
 			<img id="safety-check-bed-image" class="" src="/assets/img/controllers/bed/hybrid_bed_<?php echo $safety_check['bed_in_place']?"glass":"mill";?>.png"  style="height:320px">
@@ -46,7 +46,7 @@ if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_i
 		<?php endif;?>
 		</div>
 	</div>
-	
+	<?php endif; ?>
 </div>
 
 <div class="row">

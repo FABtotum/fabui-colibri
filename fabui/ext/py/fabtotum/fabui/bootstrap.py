@@ -137,7 +137,7 @@ def customHardware(gcodeSender, config, log):
             gcodeSender.send(line, group='bootstrap')
     
     #save settings
-    gcodeSender.send("M500", group='bootstrap')
+    #gcodeSender.send("M500", group='bootstrap')
     
     eeprom = read_eeprom(gcodeSender)
     
@@ -182,7 +182,7 @@ def hardware2(gcodeSender, config, log):
     #set maximum feedrate
     gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00", group='bootstrap')
     #save settings
-    gcodeSender.send("M500", group='bootstrap')
+    #gcodeSender.send("M500", group='bootstrap')
     
     #~ eeprom = read_eeprom(gcodeSender)
     
@@ -219,7 +219,7 @@ def hardware3(gcodeSender, config, log):
     #set maximum feedrate
     gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00", group='bootstrap')
     #save settings
-    gcodeSender.send("M500", group='bootstrap')
+    #gcodeSender.send("M500", group='bootstrap')
     
     eeprom = read_eeprom(gcodeSender)
     
@@ -252,7 +252,7 @@ def hardware4(gcodeSender, config, log):
     #set maximum feedrate
     gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00", group='bootstrap')
     #save settings
-    gcodeSender.send("M500", group='bootstrap')
+    #gcodeSender.send("M500", group='bootstrap')
     
     eeprom = read_eeprom(gcodeSender)
     
@@ -284,7 +284,7 @@ def hardware5(gcodeSender, config, log):
     #set maximum feedrate
     gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E23.00", group='bootstrap')
     #save settings
-    gcodeSender.send("M500", group='bootstrap')
+    #gcodeSender.send("M500", group='bootstrap')
     
     eeprom = read_eeprom(gcodeSender)
     
@@ -459,11 +459,7 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     gcs.send("M734 S{0}".format(collision_warning), group='bootstrap')
     # Set homing preferences
     gcs.send("M714 S{0}".format(switch), group='bootstrap')
-    
-    
-    configure_head(gcs, config, log)
-    configure_feeder(gcs, config, log)
-            
+                
     # Execute version specific intructions
     HW_VERSION_CMDS = {
         'custom' : customHardware,
@@ -473,11 +469,15 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         '4'      : hardware4,
         '5'      : hardware5
     }
+    
     if config.get('settings', 'settings_type') == 'custom':
         customHardware(gcs, config, log)
     elif hardwareID in HW_VERSION_CMDS:
         HW_VERSION_CMDS[hardwareID](gcs, config, log)
     else:
         log.error("Unsupported hardware version: %s", hardwareID)
+    
+    configure_head(gcs, config, log)
+    configure_feeder(gcs, config, log)
 
     gcs.atomic_end()

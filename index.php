@@ -9,7 +9,7 @@
  *  
  */
  
- $endpoint = '/fabui/';
+ $endpoint = '/fabui/#dashboard';
  
  if(file_exists('AUTOINSTALL')){
  	$endpoint .= 'install';
