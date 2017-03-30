@@ -29,7 +29,7 @@ if ( !function_exists('createDefaultSettings'))
 			'milling'       	 => array('layer_offset' => 12),
 			'customized_actions' => array('bothy' => 'none', 'bothz' => 'none'),
 			'api'                => array('keys' => array()),
-			'zprobe'        	 => array('enable'=> false, 'length' => 38),
+			'zprobe'        	 => array('enable'=> 0, 'zmax'=> 241.5),
 			'z_max_offset'       => 241.5,
 			'settings_type' 	 => 'default',
 			'hardware'     	 	 => array('head' => 'printing_head_v2', 'feeder' => 'built_in_feeder', 'camera' => 'camera_v1'),
@@ -98,7 +98,11 @@ if(!function_exists('saveSettings'))
 		$CI =& get_instance();
 		$CI->load->helper('file');
 		$CI->config->load('fabtotum');
-		return write_file($CI->config->item('settings'), json_encode($data, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK));
+		$result = write_file($CI->config->item('settings'), json_encode($data, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK));
+		
+		xmlrpcReloadConfig();
+		
+		return $result;
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -933,6 +937,17 @@ if(!function_exists('abort'))
 	function abort()
 	{
 		return sendToXmlrpcServer('do_abort');
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('xmlrpcReloadConfig'))
+{
+	/**
+	 * Reload XML-RPC server configuration
+	 */
+	function xmlrpcReloadConfig()
+	{
+		return sendToXmlrpcServer('reload_config');
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -24,8 +24,8 @@
     "keys": []
   },
   "zprobe": {
-    "enable": false,
-    "length": 38
+    "enable": 0,
+    "zmax": 241.5
   },
   "settings_type": "default",
   "hardware": {

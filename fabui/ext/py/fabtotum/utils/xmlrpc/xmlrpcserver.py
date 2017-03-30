@@ -97,6 +97,9 @@ class ExposeCommands:
         """
         return self.gcs.send(code, block=block, timeout=timeout, async=async)
     
+    def reload_config(self):
+		self.config.reload()
+    
     def respond(self, reply, response='success', message=''):
         return {
             'reply' : reply,
