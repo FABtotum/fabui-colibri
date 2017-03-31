@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-27 12:44+0200\n"
+"POT-Creation-Date: 2017-03-31 16:36+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -64,6 +64,7 @@ msgstr "Manutenzione"
 
 #: fabui/application/config/menu.php:57
 #: fabui/application/views/settings/network_widget.php:54
+#: fabui/assets/js/tours/0010_head.js:49
 #, fuzzy
 msgid "Head"
 msgstr "Testa/piatto"
@@ -74,6 +75,7 @@ msgstr "Gestione filamento"
 
 #: fabui/application/config/menu.php:67
 #: fabui/application/controllers/Bed.php:68
+#: fabui/assets/js/tours/0020_bed.js:13 fabui/assets/js/tours/0020_bed.js:33
 msgid "Bed calibration"
 msgstr "Calibrazione piatto"
 
@@ -85,6 +87,8 @@ msgstr "Calibrazione piatto"
 #: fabui/application/views/layout/default/top.php:89
 #: fabui/application/views/layout/debug/top.php:89
 #: fabui/application/views/nozzle/pidtune/widget.php:14
+#: fabui/assets/js/tours/0031_nozzle_fine.js:38
+#: fabui/assets/js/tours/0030_nozzle_assisted.js:38
 msgid "Nozzle"
 msgstr ""
 
@@ -104,7 +108,7 @@ msgstr "Calibrazione Probe"
 msgid "Angle calibration"
 msgstr "Calibrazione Angolo"
 
-#: fabui/application/config/menu.php:99
+#: fabui/application/config/menu.php:99 fabui/assets/js/tours/0050_feeder.js:39
 msgid "Feeder"
 msgstr ""
 
@@ -290,45 +294,46 @@ msgstr ""
 msgid "Instagram"
 msgstr "Installazione"
 
-#: fabui/application/controllers/Control.php:215
+#: fabui/application/controllers/Control.php:212
 #, fuzzy
 msgid "running"
 msgstr "Attenzione"
 
-#: fabui/application/controllers/Control.php:216
+#: fabui/application/controllers/Control.php:213
 #, fuzzy
 msgid "paused"
 msgstr "Pausa"
 
-#: fabui/application/controllers/Control.php:217
+#: fabui/application/controllers/Control.php:214
 #, fuzzy
 msgid "aborted"
 msgstr "Scansione annullata"
 
-#: fabui/application/controllers/Control.php:218
+#: fabui/application/controllers/Control.php:215
 #, fuzzy
 msgid "aborting"
 msgstr "Stampa in corso"
 
-#: fabui/application/controllers/Control.php:219
+#: fabui/application/controllers/Control.php:216
 #, fuzzy
 msgid "completed"
 msgstr "Scansione completata"
 
-#: fabui/application/controllers/Control.php:220
+#: fabui/application/controllers/Control.php:217
 #, fuzzy
 msgid "completing"
 msgstr "Eliminazione"
 
-#: fabui/application/controllers/Control.php:238
-msgid "Being generated..."
-msgstr ""
+#: fabui/application/controllers/Control.php:235
+#, fuzzy
+msgid "Being generated"
+msgstr "Temperatura piatto impostata a {0}&deg;C"
 
-#: fabui/application/controllers/Control.php:244
+#: fabui/application/controllers/Control.php:241
 msgid "task"
 msgstr ""
 
-#: fabui/application/controllers/Control.php:277
+#: fabui/application/controllers/Control.php:274
 #, fuzzy
 msgid "No running tasks"
 msgstr "Completamento task"
@@ -375,7 +380,7 @@ msgstr "Stampa in corso"
 #: fabui/application/controllers/Projectsmanager.php:709
 #: fabui/application/controllers/Nozzle.php:175
 #: fabui/application/controllers/Nozzle.php:179
-#: fabui/application/views/head/install.php:321
+#: fabui/application/views/head/install.php:320
 #: fabui/application/views/settings/hardware_js.php:140
 #: fabui/application/views/settings/network_js.php:236
 #: fabui/application/views/feeder/profiles/widget.php:201
@@ -492,7 +497,6 @@ msgstr ""
 
 #: fabui/application/controllers/Projectsmanager.php:669
 #: fabui/application/controllers/Projectsmanager.php:712
-#: fabui/application/views/layout/translations_js.php:39
 #: fabui/application/views/install/wizard.php:199
 #: fabui/application/views/login/register_form.php:74
 #: fabui/application/views/settings/network_widget.php:143
@@ -568,6 +572,8 @@ msgid "Calibration"
 msgstr "Calibrazione piatto"
 
 #: fabui/application/controllers/Nozzle.php:81
+#: fabui/assets/js/tours/0031_nozzle_fine.js:40
+#: fabui/assets/js/tours/0030_nozzle_assisted.js:40
 #, fuzzy
 msgid "Nozzle height calibration"
 msgstr "Calibrazione altezza"
@@ -577,13 +583,11 @@ msgid "Popular"
 msgstr ""
 
 #: fabui/application/views/head/install_js.php:135
-#: fabui/application/views/layout/translations_js.php:65
 #, fuzzy
 msgid "Installing head"
 msgstr "Installato"
 
 #: fabui/application/views/head/install_js.php:135
-#: fabui/application/views/layout/translations_js.php:50
 #: fabui/application/views/nozzle/height_js.php:129
 #: fabui/application/views/plugin/js.php:134
 #: fabui/application/views/spool/js.php:118
@@ -601,24 +605,23 @@ msgstr "Installato"
 msgid "Please wait"
 msgstr "Attendere prego"
 
-#: fabui/application/views/head/install_js.php:411
-#: fabui/application/views/head/install_js.php:461
+#: fabui/application/views/head/install_js.php:415
+#: fabui/application/views/head/install_js.php:465
 #: fabui/application/views/plugin/js.php:161
 #: fabui/application/views/feeder/profiles/js.php:248
 #: fabui/application/views/feeder/profiles/js.php:298
 msgid "Attention"
 msgstr "Attenzione"
 
-#: fabui/application/views/head/install_js.php:412
+#: fabui/application/views/head/install_js.php:416
 #: fabui/application/views/feeder/profiles/js.php:249
 msgid "Remove <strong>{0}</strong> settings?"
 msgstr ""
 
-#: fabui/application/views/head/install_js.php:413
-#: fabui/application/views/head/install_js.php:429
-#: fabui/application/views/head/install_js.php:463
-#: fabui/application/views/head/install_js.php:478
-#: fabui/application/views/layout/translations_js.php:44
+#: fabui/application/views/head/install_js.php:417
+#: fabui/application/views/head/install_js.php:433
+#: fabui/application/views/head/install_js.php:467
+#: fabui/application/views/head/install_js.php:482
 #: fabui/application/views/plugin/js.php:163
 #: fabui/application/views/plugin/js.php:170
 #: fabui/application/views/settings/network_js.php:446
@@ -640,11 +643,10 @@ msgstr ""
 msgid "No"
 msgstr "No"
 
-#: fabui/application/views/head/install_js.php:413
-#: fabui/application/views/head/install_js.php:415
-#: fabui/application/views/head/install_js.php:463
-#: fabui/application/views/head/install_js.php:465
-#: fabui/application/views/layout/translations_js.php:45
+#: fabui/application/views/head/install_js.php:417
+#: fabui/application/views/head/install_js.php:419
+#: fabui/application/views/head/install_js.php:467
+#: fabui/application/views/head/install_js.php:469
 #: fabui/application/views/plugin/js.php:163
 #: fabui/application/views/plugin/js.php:166
 #: fabui/application/views/settings/network_js.php:446
@@ -668,12 +670,12 @@ msgstr "No"
 msgid "Yes"
 msgstr "Si"
 
-#: fabui/application/views/head/install_js.php:462
+#: fabui/application/views/head/install_js.php:466
 #: fabui/application/views/feeder/profiles/js.php:299
 msgid "Restore factory settings for <strong>{0}</strong> ?"
 msgstr ""
 
-#: fabui/application/views/head/install_js.php:472
+#: fabui/application/views/head/install_js.php:476
 #: fabui/application/views/feeder/profiles/js.php:309
 #, fuzzy
 msgid "Factory settings restored"
@@ -729,7 +731,7 @@ msgstr ""
 
 #: fabui/application/views/head/install.php:151
 #: fabui/application/views/feeder/profiles/widget.php:185
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:287
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:292
 msgid "Custom initialization"
 msgstr ""
 
@@ -803,34 +805,34 @@ msgstr ""
 msgid "Retraction amount (mm)"
 msgstr ""
 
-#: fabui/application/views/head/install.php:318
+#: fabui/application/views/head/install.php:317
 #: fabui/application/views/feeder/profiles/widget.php:198
 #, fuzzy
 msgid "Restore factory settings"
 msgstr "Rete"
 
-#: fabui/application/views/head/install.php:318
+#: fabui/application/views/head/install.php:317
 #: fabui/application/views/feeder/profiles/widget.php:198
 msgid "Factory reset"
 msgstr ""
 
-#: fabui/application/views/head/install.php:319
+#: fabui/application/views/head/install.php:318
 #: fabui/application/views/feeder/profiles/widget.php:199
 msgid "Import from file"
 msgstr ""
 
-#: fabui/application/views/head/install.php:319
+#: fabui/application/views/head/install.php:318
 #: fabui/application/views/feeder/profiles/widget.php:199
 #, fuzzy
 msgid "Import"
 msgstr "Supporto"
 
-#: fabui/application/views/head/install.php:320
+#: fabui/application/views/head/install.php:319
 #: fabui/application/views/feeder/profiles/widget.php:200
 msgid "Export to file"
 msgstr ""
 
-#: fabui/application/views/head/install.php:320
+#: fabui/application/views/head/install.php:319
 #: fabui/application/views/feeder/profiles/widget.php:200
 #, fuzzy
 msgid "Export"
@@ -904,120 +906,6 @@ msgstr ""
 
 #: fabui/application/views/layout/translations_js.php:32
 msgid "Cannot extrude so much filament!"
-msgstr ""
-
-#: fabui/application/views/layout/translations_js.php:38
-msgid "Hi"
-msgstr ""
-
-#: fabui/application/views/layout/translations_js.php:40
-msgid "Go"
-msgstr ""
-
-#: fabui/application/views/layout/translations_js.php:41
-msgid "Shutdown"
-msgstr ""
-
-#: fabui/application/views/layout/translations_js.php:42
-#: fabui/application/views/std/task_finished.php:67
-#, fuzzy
-msgid "Restart"
-msgstr "Riavvia stampa"
-
-#: fabui/application/views/layout/translations_js.php:43
-msgid "Logout"
-msgstr ""
-
-#: fabui/application/views/layout/translations_js.php:46
-msgid "Resetting controller"
-msgstr ""
-
-#: fabui/application/views/layout/translations_js.php:47
-#, fuzzy
-msgid "Aborting all operations"
-msgstr "Calibrazione Angolo"
-
-#: fabui/application/views/layout/translations_js.php:48
-#: fabui/application/views/settings/network_js.php:468
-#: fabui/application/views/std/task_execute_js.php:848
-#, fuzzy
-msgid "Reloading page"
-msgstr "Ricarica"
-
-#: fabui/application/views/layout/translations_js.php:49
-#, fuzzy
-msgid "Restart in progress"
-msgstr "Riavvia stampa"
-
-#: fabui/application/views/layout/translations_js.php:51
-#, fuzzy
-msgid "You will be redirect to login page"
-msgstr "Reindirizzamento alla pagina dei plugin"
-
-#: fabui/application/views/layout/translations_js.php:52
-msgid "Shutdown in progress"
-msgstr ""
-
-#: fabui/application/views/layout/translations_js.php:53
-msgid "Now you can switch off the power"
-msgstr ""
-
-#: fabui/application/views/layout/translations_js.php:54
-msgid ""
-"You have attempted to leave this page. The Fabtotum Personal Fabricator is "
-"still working. Are you sure you want to reload this page?"
-msgstr ""
-
-#: fabui/application/views/layout/translations_js.php:55
-msgid "Front panel has been opened"
-msgstr ""
-
-#: fabui/application/views/layout/translations_js.php:56
-#: fabui/application/views/projectsmanager/index/js.php:123
-#: fabui/application/views/projectsmanager/index/js.php:125
-#: fabui/application/views/projectsmanager/edit/js.php:200
-#: fabui/application/views/projectsmanager/edit/js.php:202
-msgid "Ok"
-msgstr "Ok"
-
-#: fabui/application/views/layout/translations_js.php:57
-msgid "Ignore"
-msgstr ""
-
-#: fabui/application/views/layout/translations_js.php:58
-#, fuzzy
-msgid "Install head"
-msgstr "Installato"
-
-#: fabui/application/views/layout/translations_js.php:59
-msgid "Press OK to continue or Ignore to disable this warning"
-msgstr ""
-
-#: fabui/application/views/layout/translations_js.php:60
-#: fabui/application/views/layout/default/top.php:22
-#: fabui/application/views/layout/debug/top.php:22
-msgid "Tasks"
-msgstr ""
-
-#: fabui/application/views/layout/translations_js.php:61
-msgid "Oops.. An error occurred"
-msgstr ""
-
-#: fabui/application/views/layout/translations_js.php:62
-msgid "You will be redirect to recovery page"
-msgstr ""
-
-#: fabui/application/views/layout/translations_js.php:63
-#, fuzzy
-msgid "Wifi connected"
-msgstr "Connessione"
-
-#: fabui/application/views/layout/translations_js.php:64
-msgid "Internet available"
-msgstr ""
-
-#: fabui/application/views/layout/translations_js.php:66
-msgid "Before proceed make sure the head is properly locked in place"
 msgstr ""
 
 #: fabui/application/views/install/js.php:40
@@ -1178,6 +1066,7 @@ msgstr "Vista file"
 #: fabui/application/views/std/task_wizard.php:48
 #: fabui/application/views/std/task_wizard.php:113
 #: fabui/application/views/create/mill_js.php:52
+#: fabui/assets/js/tours/0020_bed.js:21
 msgid "Next"
 msgstr ""
 
@@ -1498,6 +1387,7 @@ msgstr "La testa non ha un motore per la fresa"
 #: fabui/application/views/std/task_execute.php:155
 #: fabui/application/views/layout/default/top.php:92
 #: fabui/application/views/layout/debug/top.php:92
+#: fabui/assets/js/tours/0020_bed.js:31
 msgid "Bed"
 msgstr "Piatto"
 
@@ -1933,6 +1823,12 @@ msgstr ""
 msgid "Disconnecting"
 msgstr "Connessione"
 
+#: fabui/application/views/settings/network_js.php:468
+#: fabui/application/views/std/task_execute_js.php:848
+#, fuzzy
+msgid "Reloading page"
+msgstr "Ricarica"
+
 #: fabui/application/views/settings/network_js.php:488
 msgid "Password for"
 msgstr ""
@@ -2074,6 +1970,11 @@ msgstr ""
 #: fabui/application/views/std/task_finished.php:31
 msgid "Duration"
 msgstr "Durata"
+
+#: fabui/application/views/std/task_finished.php:67
+#, fuzzy
+msgid "Restart"
+msgstr "Riavvia stampa"
 
 #: fabui/application/views/std/task_finished.php:68
 msgid "New"
@@ -2284,6 +2185,11 @@ msgstr ""
 #: fabui/application/views/layout/default/top.php:21
 #: fabui/application/views/layout/debug/top.php:21
 msgid "Notify"
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:22
+#: fabui/application/views/layout/debug/top.php:22
+msgid "Tasks"
 msgstr ""
 
 #: fabui/application/views/layout/default/top.php:27
@@ -2654,6 +2560,13 @@ msgstr "Seleziona almeno 1 oggetto"
 #: fabui/application/views/projectsmanager/edit/js.php:198
 msgid "Information"
 msgstr "Informazione"
+
+#: fabui/application/views/projectsmanager/index/js.php:123
+#: fabui/application/views/projectsmanager/index/js.php:125
+#: fabui/application/views/projectsmanager/edit/js.php:200
+#: fabui/application/views/projectsmanager/edit/js.php:202
+msgid "Ok"
+msgstr "Ok"
 
 #: fabui/application/views/projectsmanager/index/js.php:134
 #, fuzzy
@@ -3424,10 +3337,10 @@ msgid "{0} aborted"
 msgstr "Scansione annullata"
 
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:41
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:183
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:201
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:188
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:208
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:135
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:83
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:88
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:49
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:81
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:107
@@ -3437,7 +3350,7 @@ msgid "Front panel door control"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:43
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:185
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:190
 #, fuzzy
 msgid "Checking building plate"
 msgstr "Controllo repository remoto"
@@ -3451,12 +3364,12 @@ msgid "Building plate inserted correctly"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:53
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:93
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:99
 msgid "Setting Origin Point"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:54
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:94
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:100
 msgid "Setting 4th Axis mode"
 msgstr ""
 
@@ -3476,10 +3389,11 @@ msgstr ""
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:147
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:166
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:172
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:206
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:213
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:36
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:72
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:119
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:125
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:51
 msgid "Waiting for all moves to finish"
 msgstr ""
 
@@ -3490,37 +3404,37 @@ msgstr ""
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:83
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:125
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:150
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:121
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:127
 msgid "Reset Speed factor override"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:84
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:126
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:151
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:122
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:128
 msgid "Reset Extruder factor override"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:85
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:152
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:123
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:129
 msgid "Turning Fan off"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:86
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:153
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:124
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:130
 msgid "Motor Off"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:87
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:127
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:208
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:215
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:40
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:49
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:83
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:110
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:125
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:131
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:180
 msgid "Setting extruder mode"
 msgstr ""
@@ -3531,9 +3445,9 @@ msgstr ""
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:155
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:156
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:157
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:127
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:128
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:129
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:133
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:134
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:135
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:110
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:111
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:112
@@ -3552,7 +3466,7 @@ msgstr ""
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:112
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:51
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:69
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:114
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:115
 msgid "Setting absolute position"
 msgstr ""
 
@@ -3632,7 +3546,7 @@ msgid "Force endstops"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:163
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:174
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:175
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:61
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:87
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:138
@@ -3642,56 +3556,56 @@ msgid "Setting Absolute position"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:165
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:203
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:210
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:79
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:105
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:166
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:167
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:54
 msgid "Zeroing Z axis"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:170
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:167
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:168
 msgid "Setting Relative position"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:181
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:81
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:186
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:86
 msgid "Checking safety measures"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:186
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:192
 msgid "Build plate needs to be flipped to the printing side"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:187
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:202
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:194
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:209
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:51
 msgid "Spool panel control"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:199
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:206
 msgid "Engaging 3D-Printer Feeder"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:204
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:211
 msgid "Set rel movement"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:205
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:212
 msgid "Setting Z position"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:207
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:214
 msgid "Set absolute movement"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:209
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:216
 msgid "Stopping motors"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:210
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:176
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:217
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:177
 msgid "Play beep sound"
 msgstr ""
 
@@ -3839,24 +3753,24 @@ msgstr ""
 msgid "Extend Probe"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:85
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:91
 msgid "Building plane inserted correctly"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:120
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:126
 msgid "Shutting Down Milling Motor"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/milling.py:130
+#: fabui/ext/py/fabtotum/fabui/macros/milling.py:136
 msgid "Milling completed!"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:44
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:48
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:52
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:120
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:123
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:125
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:53
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:121
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:124
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:126
 #: fabui/ext/py/fabtotum/fabui/macros/calibration.py:57
 msgid "Homing all axes"
 msgstr ""
@@ -3866,103 +3780,103 @@ msgid "Set Z Max"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:50
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:121
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:124
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:122
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:125
 msgid "Raising"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:81
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:82
 msgid "Starting up"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:82
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:83
 msgid "Alive!"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:83
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:143
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:84
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:144
 msgid "Probe Up"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:84
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:85
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:86
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:87
 msgid "turning on lights"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:88
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:89
 msgid "Safety Settings"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:89
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:90
 msgid "Homing direction"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:92
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:93
 msgid "Machine Limits Collision warning"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:96
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:97
 msgid "Shutting down..."
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:97
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:98
 msgid "Play alert sound!"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:98
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:99
 msgid "Asleep!"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:113
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:114
 msgid "Raising probe"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:130
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:131
 msgid "Auto Bed leveling Initialized"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:131
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:132
 msgid "Homing Z axis"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:132
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:133
 msgid "Homing X/Y axis"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:133
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:134
 msgid "Probing the bed"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:134
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:135
 msgid "Getting to idle position"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:139
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:140
 msgid "Probe Down"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:165
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:166
 msgid "Engaging 4th Axis"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:168
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:169
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:56
 msgid "Disable Endstop checking"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:169
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:170
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:58
 msgid "Engaging 4th Axis Motion"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:171
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:172
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:60
 msgid "Enable Endstop checking"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:172
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:182
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:173
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:183
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:62
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:90
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:116
@@ -3970,35 +3884,35 @@ msgstr ""
 msgid "Setting 4th axis mode"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:173
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:174
 msgid "Setting position"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:175
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:176
 msgid "Check position"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:194
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:195
 msgid "Setting Red Color"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:195
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:196
 msgid "Setting Green Color"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:196
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:197
 msgid "Setting Blue Color"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:203
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:204
 msgid "Restarting totumduino"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:212
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:213
 msgid "Clearing error state"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:213
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:214
 msgid "Awaken"
 msgstr ""
 
@@ -4095,30 +4009,34 @@ msgstr "Impostazioni"
 msgid "Setting retract acceleration"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:261
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:262
 #, python-brace-format
 msgid "Setting soft ID to {0}"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:264
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:265
 msgid "Configuring working mode"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:268
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:269
 msgid "Configuring PID"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:271
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:272
 #, python-brace-format
 msgid "Setting thermistor index to {0}"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:276
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:277
 #, fuzzy, python-brace-format
 msgid "Setting MAX temperature to {0}"
 msgstr "Temperatura piatto impostata a {0}&deg;C"
 
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:284
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:285
+msgid "Configuring TOOL"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:289
 msgid "Configuring probe offset"
 msgstr ""
 
@@ -4315,13 +4233,111 @@ msgstr ""
 msgid "Restore Z"
 msgstr "Riavvia stampa"
 
-#: fabui/assets/js/tours/bed.js:4
+#: fabui/assets/js/tours/0020_bed.js:5 fabui/assets/js/tours/0010_head.js:5
+#: fabui/assets/js/tours/0050_feeder.js:5
 #, fuzzy
 msgid "Maintenance menu"
 msgstr "Manutenzione"
 
-#: fabui/assets/js/tours/bed.js:5
+#: fabui/assets/js/tours/0020_bed.js:6 fabui/assets/js/tours/0020_bed.js:14
+#: fabui/assets/js/tours/0010_head.js:6 fabui/assets/js/tours/0050_feeder.js:6
+#: fabui/assets/js/tours/0050_feeder.js:14
+#: fabui/assets/js/tours/0050_feeder.js:22
 msgid "Click on the menu item to continue"
+msgstr ""
+
+#: fabui/assets/js/tours/0020_bed.js:22
+msgid "Click on the next button to start bed calibration"
+msgstr ""
+
+#: fabui/assets/js/tours/0020_bed.js:34
+msgid "To get the first layer right the bed must be well calibrated"
+msgstr ""
+
+#: fabui/assets/js/tours/0010_head.js:13
+#, fuzzy
+msgid "Head management"
+msgstr "Gestione filamento"
+
+#: fabui/assets/js/tours/0010_head.js:14
+msgid "<strong>Click</strong> on the menu item to continue"
+msgstr ""
+
+#: fabui/assets/js/tours/0010_head.js:26
+msgid "Select head"
+msgstr ""
+
+#: fabui/assets/js/tours/0010_head.js:27
+msgid ""
+"Choose the installed head<br>Note: if the correct head is selected press Next"
+msgstr ""
+
+#: fabui/assets/js/tours/0010_head.js:40 fabui/assets/js/tours/0010_head.js:51
+#, fuzzy
+msgid "Install head"
+msgstr "Installato"
+
+#: fabui/assets/js/tours/0010_head.js:41
+msgid "Click on this button"
+msgstr ""
+
+#: fabui/assets/js/tours/0010_head.js:52
+msgid "Before starting to use your FABtotum unit you need to install a head"
+msgstr ""
+
+#: fabui/assets/js/tours/0031_nozzle_fine.js:41
+#: fabui/assets/js/tours/0030_nozzle_assisted.js:41
+msgid "After bed is leveled the nozzle height needs to be adjusted"
+msgstr ""
+
+#: fabui/assets/js/tours/0050_feeder.js:13
+#, fuzzy
+msgid "Feeder menu"
+msgstr "Rete"
+
+#: fabui/assets/js/tours/0050_feeder.js:21
+#, fuzzy
+msgid "Step calibration menu"
+msgstr "Calibrazione piatto"
+
+#: fabui/assets/js/tours/0050_feeder.js:29
+msgid "Start extrude"
+msgstr ""
+
+#: fabui/assets/js/tours/0050_feeder.js:30
+msgid "Click on this button to start extruding filament"
+msgstr ""
+
+#: fabui/assets/js/tours/0050_feeder.js:41
+#, fuzzy
+msgid "Feeder calibration"
+msgstr "Calibrazione piatto"
+
+#: fabui/assets/js/tours/0050_feeder.js:42
+msgid "This step can be skipped"
+msgstr ""
+
+#: fabui/assets/js/tours/0041_spool_unload.js:60
+#: fabui/assets/js/tours/0040_spool_load.js:60
+msgid "Spool"
+msgstr ""
+
+#: fabui/assets/js/tours/0041_spool_unload.js:62
+#, fuzzy
+msgid "Unload spool"
+msgstr "Carica"
+
+#: fabui/assets/js/tours/0041_spool_unload.js:63
+#, fuzzy
+msgid "Some description"
+msgstr "Descrizione"
+
+#: fabui/assets/js/tours/0040_spool_load.js:62
+msgid "Load spool"
+msgstr ""
+
+#: fabui/assets/js/tours/0040_spool_load.js:63
+msgid "To be able to print anything the filament needs to be loaded"
 msgstr ""
 
 #: fabui/application/views/std/task_execute_js.php:542
@@ -4343,9 +4359,10 @@ msgstr "L'altezza della Z è"
 msgid "Connecting to "
 msgstr "Connessione"
 
-#: fabui/application/views/std/task_execute_js.php:596
-msgid "Fan override changed to {0}"
-msgstr ""
+#: fabui/application/views/head/install_js.php:68
+#, fuzzy
+msgid "Please select at least one capability"
+msgstr "Seleziona almeno 1 oggetto"
 
 #: fabui/application/views/nozzle/height_js.php:213
 msgid "Old nozzle offset: {0}"
@@ -4369,28 +4386,36 @@ msgstr ""
 msgid "Please install a laser head."
 msgstr "Inserisci un indirizzo email valido"
 
-#: fabui/application/views/head/install_js.php:68
-#, fuzzy
-msgid "Please select at least one capability"
-msgstr "Seleziona almeno 1 oggetto"
+#: fabui/application/views/std/task_execute_js.php:596
+msgid "Fan override changed to {0}"
+msgstr ""
 
 #: fabui/application/views/std/task_execute_js.php:523
 #, fuzzy
 msgid "Ext target"
 msgstr "Target"
 
+#: fabui/application/views/std/task_execute_js.php:330
+#, fuzzy
+msgid "Extruder temperature set to {0} &deg;"
+msgstr "Temperatura piatto impostata a {0}&deg;C"
+
 #: fabui/application/views/std/jog_setup_js.php:328
 msgid "You need to home X/Y axis first"
 msgstr ""
 
+#: fabui/application/views/std/task_execute_js.php:868
+#, fuzzy
+msgid "Completing"
+msgstr "Eliminazione"
+
+#: fabui/application/views/std/task_execute_js.php:334
+#, fuzzy
+msgid "Bed temperature set to {0} &deg;"
+msgstr "Temperatura piatto impostata a {0}&deg;C"
+
 #: fabui/application/views/std/task_execute_js.php:601
 msgid "Z height override changed to {0}mm"
-msgstr ""
-
-#: fabui/application/views/settings/network_js.php:199
-msgid ""
-"It might take some time for the new address to become visible on the "
-"network. This page will be reloaded as soon as the new address is available."
 msgstr ""
 
 #: fabui/application/views/std/task_execute_js.php:608
@@ -4402,8 +4427,8 @@ msgstr "Errore sconosciuto"
 msgid "Saving new ethernet configuration"
 msgstr ""
 
-#: fabui/application/views/std/jog_setup_js.php:347
-msgid "You need to home Z axis first"
+#: fabui/application/views/settings/network_js.php:168
+msgid "Failed to disable Wireless interface"
 msgstr ""
 
 #: fabui/application/views/settings/network_js.php:208
@@ -4423,14 +4448,15 @@ msgstr ""
 msgid "Z Position {0} stored"
 msgstr ""
 
+#: fabui/application/views/settings/network_js.php:199
+msgid ""
+"It might take some time for the new address to become visible on the "
+"network. This page will be reloaded as soon as the new address is available."
+msgstr ""
+
 #: fabui/application/views/settings/network_js.php:195
 msgid "Failed to save ethernet configuration"
 msgstr ""
-
-#: fabui/application/views/std/task_execute_js.php:330
-#, fuzzy
-msgid "Extruder temperature set to {0} &deg;"
-msgstr "Temperatura piatto impostata a {0}&deg;C"
 
 #: fabui/application/views/nozzle/height_js.php:216
 msgid "New nozzle offset: {0}"
@@ -4455,6 +4481,10 @@ msgstr ""
 msgid "Position {0}, {1}, {2} stored"
 msgstr ""
 
+#: fabui/application/views/std/jog_setup_js.php:347
+msgid "You need to home Z axis first"
+msgstr ""
+
 #: fabui/application/views/std/task_execute_js.php:590
 msgid "Speed override changed to {0}"
 msgstr ""
@@ -4477,18 +4507,9 @@ msgstr "L'altezza della Z è"
 msgid "Z Position restored to {0}"
 msgstr ""
 
-#: fabui/application/views/settings/network_js.php:168
-msgid "Failed to disable Wireless interface"
-msgstr ""
-
 #: fabui/application/views/settings/network_js.php:214
 msgid "Failed to save DNS-SD configuration"
 msgstr ""
-
-#: fabui/application/views/std/task_execute_js.php:868
-#, fuzzy
-msgid "Completing"
-msgstr "Eliminazione"
 
 #: fabui/application/views/nozzle/height_js.php:173
 msgid "New Z max offset: {0}"
@@ -4498,11 +4519,6 @@ msgstr ""
 msgid "Disabling Wireless interface"
 msgstr ""
 
-#: fabui/application/views/std/task_execute_js.php:334
-#, fuzzy
-msgid "Bed temperature set to {0} &deg;"
-msgstr "Temperatura piatto impostata a {0}&deg;C"
-
 #: fabui/application/views/nozzle/height_js.php:172
 msgid "New probe Length: {0}"
 msgstr ""
@@ -4511,10 +4527,6 @@ msgstr ""
 #, fuzzy
 msgid "Z height decreased"
 msgstr "L'altezza della Z è"
-
-#: fabui/application/views/std/task_execute_js.php:513
-msgid "Ext temp"
-msgstr ""
 
 #: fabui/application/views/std/jog_setup_js.php:323
 msgid "No X/Y position was stored"
@@ -4536,6 +4548,26 @@ msgstr ""
 #, fuzzy
 msgid "Please enter head name"
 msgstr "Inserisci il nome dell'oggetto"
+
+#: fabui/application/views/std/task_execute_js.php:513
+msgid "Ext temp"
+msgstr ""
+
+#, fuzzy
+#~ msgid "Aborting all operations"
+#~ msgstr "Calibrazione Angolo"
+
+#, fuzzy
+#~ msgid "Restart in progress"
+#~ msgstr "Riavvia stampa"
+
+#, fuzzy
+#~ msgid "You will be redirect to login page"
+#~ msgstr "Reindirizzamento alla pagina dei plugin"
+
+#, fuzzy
+#~ msgid "Wifi connected"
+#~ msgstr "Connessione"
 
 #~ msgid "Head installation"
 #~ msgstr "Installazione testa"

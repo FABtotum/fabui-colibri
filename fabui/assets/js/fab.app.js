@@ -6,22 +6,22 @@ fabApp = (function(app) {
 		var fabActions = {
 			userLogout: function($this){
 				$.SmartMessageBox({
-					title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> " + app_text[0]  + " <span class='txt-color-orangeDark'><strong>" + $this.data("user-name") + "</strong></span> ",
+					title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> " + _("Hi")  + " <span class='txt-color-orangeDark'><strong>" + $this.data("user-name") + "</strong></span> ",
 					content : $this.data('logout-msg') || "You can improve your security further after logging out by closing this opened browser",
-					buttons: "[" + app_text[1] + "][" + app_text[2] + "]",
+					buttons: "[" + _("Cancel") + "][" + _("Go") + "]",
 					input: "select",
-					options: "[" + app_text[3]  +"][" + app_text[4]  + "][" + app_text[5] + "]"
+					options: "[" + _("Shutdown")  +"][" + _("Restart")  + "][" + _("Logout") + "]"
 				}, function(ButtonPressed, Option) {
-					if(ButtonPressed == app_text[1]){ //cancel
+					if(ButtonPressed == _("Cancel")){ //cancel
 						return;
 					}
-					if (Option == app_text[5]) { //logout
+					if (Option == _("Logout")) { //logout
 						app.logout();
 					}
-					if(Option == app_text[3]){ //shutdown
+					if(Option == _("Shutdown")){ //shutdown
 						app.poweroff();
 					}
-					if(Option == app_text[4]){ //restart
+					if(Option == _("Restart")){ //restart
 						app.reboot();
 					}
 				});
@@ -31,9 +31,9 @@ fabApp = (function(app) {
 				$.SmartMessageBox({
                     title: "<i class='fa fa-bolt'></i> <span class='txt-color-orangeDark'><strong>Reset Controller</strong></span> ",
                     content: $this.data("reset-msg") || "You can improve your security further after logging out by closing this opened browser",
-                    buttons: "[" + app_text[6] + "][" + app_text[7] + "]"
+                    buttons: "[" + _("No") + "][" + _("Yes") + "]"
                 }, function(ButtonPressed) {
-                   if(ButtonPressed == app_text[7]) app.resetController(); //yes
+                   if(ButtonPressed == _("Yes")) app.resetController(); //yes
                });
 				
 			},
@@ -510,7 +510,7 @@ fabApp = (function(app) {
 	 * launch reset controller command
 	 */
 	app.resetController = function() {
-		openWait("<i class=\"fa fa-circle-o-notch fa-spin\"></i> " + app_text[8], app_text[12], false);
+		openWait("<i class=\"fa fa-circle-o-notch fa-spin\"></i> " + _("Resetting controller"), _("Please wait"), false);
 		$.get(reset_controller_url_action, function(){
 			closeWait();
 		});
@@ -519,10 +519,10 @@ fabApp = (function(app) {
 	 * stop all operations and task on the fabtotum and refresh the page after 3 seconds
 	 */
 	app.stopAll = function(message) {
-		message = message || app_text[9] ;
+		message = message || _("Aborting all operations") ;
 		openWait(message, ' ', false);
 		$.get(stop_all_url_action, function(){
-			waitContent(app_text[10]);
+			waitContent(_("Reloading page"));
 			setTimeout(function(){ 
 				location.reload(); 
 			}, 5000);
@@ -532,9 +532,9 @@ fabApp = (function(app) {
 	 * show a message and refresh the page after 3 seconds
 	 */
 	app.refreshPage = function(message) {
-		message = message || app_text[9];
+		message = message || _("Aborting all operations");
 		openWait(message, ' ', false);
-		waitContent(app_text[10]);
+		waitContent(_("Reloading page"));
 		setTimeout(function(){ 
 			location.reload();
 		}, 3000);
@@ -546,15 +546,15 @@ fabApp = (function(app) {
 		app.rebooting = true;
 		clearInterval(temperatures_interval);
 		//$.is_macro_on = true;
-		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> " + app_text[11], app_text[12] + '...', false);
+		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> " + _("Restart in progress"), _("Please wait") + '...', false);
 		$.ajax({
 			url: reboot_url_action,
 		}).done(function(data) {
-			waitContent(app_text[13]);
+			waitContent( _("You will be redirect to login page") );
 			app.redirectToUrlWhenisReady(base_url);
 		}).fail(function(jqXHR, textStatus){
 			//clear intervals
-			waitContent(app_text[13]);
+			waitContent( _("You will be redirect to login page") );
 			app.redirectToUrlWhenisReady(base_url);
 		});
 	};
@@ -564,7 +564,7 @@ fabApp = (function(app) {
 	app.poweroff = function() {
 		clearInterval(temperatures_interval);
 		//is_macro_on = true;
-		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> ' + app_text[14], app_text[12] + '...', false);
+		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> ' + _("Shutdown in progress"), _("Please wait") + '...', false);
 		$.ajax({
 			url: poweroff_url_action,
 		}).done(function(data) {
@@ -964,7 +964,7 @@ fabApp = (function(app) {
 	 */
 	app.checkExit = function(){
 		if($.is_stopping_all == false && $.is_macro_on == true){
-			return app_text[16];
+			return _("You have attempted to leave this page. The Fabtotum Personal Fabricator is still working. Are you sure you want to reload this page?");
 		}
 	};
 	/*
@@ -978,7 +978,7 @@ fabApp = (function(app) {
 		switch(code)
 		{
 			case 102:
-				app.refreshPage(app_text[17] + '.<br> ' + app_text[9]);
+				app.refreshPage(_("Front panel has been opened") + '.<br> ' + _("Aborting all operations"));
 				break;
 			case 103:
 				//TODO
@@ -993,13 +993,13 @@ fabApp = (function(app) {
 	**/
 	app.showEmergencyAlert = function (error_code)
 	{
-		var buttons = '[' + app_text[18]  + '][' + app_text[19] + ']';
+		var buttons = '[' + _("Ok")  + '][' + _("Ignore") + ']';
 		$.SmartMessageBox({
 			buttons : buttons,
-			title : "<h4><span class='txt-color-orangeDark'><i class='fa fa-warning fa-2x'></i></span>&nbsp;&nbsp;" + emergency_descriptions[error_code] + "<br>&nbsp;" + app_text[21] + "</h4>"
+			title : "<h4><span class='txt-color-orangeDark'><i class='fa fa-warning fa-2x'></i></span>&nbsp;&nbsp;" + emergency_descriptions[error_code] + "<br>&nbsp;" + _("Press OK to continue or Ignore to disable this warning") + "</h4>"
 		},function(ButtonPressed) {
-			if(ButtonPressed == app_text[18] || (ButtonPressed == app_text[19] && buttons.indexOf(app_text[20]) > -1) ) app.setSecure(1);
-			else if(ButtonPressed == app_text[19]) app.setSecure(0);
+			if(ButtonPressed == _("Ok") || (ButtonPressed == _("Ignore") && buttons.indexOf(_("Install head")) > -1) ) app.setSecure(1);
+			else if(ButtonPressed == _("Ignore")) app.setSecure(0);
 		});
 	}
 	/**
@@ -1016,13 +1016,13 @@ fabApp = (function(app) {
 		
 		$.SmartMessageBox({
 			title : '<i class="fa fa-warning txt-color-orangeDark"></i> ' + emergency_descriptions[error_code],
-			content : app_text[28],
-			buttons : "[" + app_text[20]  + "]["+ app_text[19] +"]",
+			content : _("Before proceed make sure the head is properly locked in place"),
+			buttons : "[" + _("Install head")  + "]["+ _("Ignore") +"]",
 			input : "select",
 			options : options
 		}, function(ButtonPressed, Value) {
-			if(ButtonPressed == app_text[19]) app.setSecure(0);
-			if(ButtonPressed == app_text[20]){
+			if(ButtonPressed == _("Ignore")) app.setSecure(0);
+			if(ButtonPressed == _("Install head")){
 				$.each(heads, function(i, item) {
 					if(Value == item.name){
 						app.installHead(i);
@@ -1102,7 +1102,7 @@ fabApp = (function(app) {
 	**/
 	app.installHead = function(head)
 	{
-		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> ' + app_text[27], app_text[12] + '...', false);
+		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> ' + _("Installing head"), _("Please wait") + '...', false);
 		$.ajax({
 			type : "POST",
 			url : install_head_url + '/'+head,
@@ -1159,7 +1159,7 @@ fabApp = (function(app) {
 				controller = row.controller;
 				if (controller == 'make') controller += '/' + row.type;
 				app.freezeMenu(controller); //freeze menu
-				$(".task-list").find('span').html('	' + app_text[22] + ' (' + data.number + ') '); //update number on ajax dropdown list
+				$(".task-list").find('span').html('	' + _("Tasks") + ' (' + data.number + ') '); //update number on ajax dropdown list
 				app.updateNotificationBadge();
 			});
 		}else app.unFreezeMenu();
@@ -1391,7 +1391,7 @@ fabApp = (function(app) {
 	app.forceRecovery = function (){
 		
 		setTimeout(function(){
-			openWait("<i class='fa fa-warning'></i> " + app_text[23], app_text[24], false);
+			openWait("<i class='fa fa-warning'></i> " + _("Oops.. An error occurred"), _("You will be redirect to recovery page"), false);
 			
 			$.get(set_recovery_url + '/activate', function(data){ 
 				$.ajax({
@@ -1456,14 +1456,14 @@ fabApp = (function(app) {
 				if(data.interfaces.hasOwnProperty('wlan0')){
 				
 					if(data.interfaces.wlan0.wireless.hasOwnProperty('ssid')){
-						$(".ribbon-button-alignment").prepend('<span data-title="' + app_text[25] + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="fa fa-wifi"></i></span>');	
+						$(".ribbon-button-alignment").prepend('<span data-title="' + _("Wifi connected") + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="fa fa-wifi"></i></span>');	
 					}
 				}
 				
 				if(data.interfaces.hasOwnProperty('wlan1')){
 				
 					if(data.interfaces.wlan1.wireless.hasOwnProperty('ssid')){
-						$(".ribbon-button-alignment").prepend('<span data-title="' + app_text[25] + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="fa fa-wifi"></i></span>');	
+						$(".ribbon-button-alignment").prepend('<span data-title="' + _("Wifi connected") + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="fa fa-wifi"></i></span>');	
 					}
 				}
 			
@@ -1471,7 +1471,7 @@ fabApp = (function(app) {
 			
 			
 			if(data.internet){
-				$(".ribbon-button-alignment").prepend('<span data-title="' + app_text[26] + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon internet-ribbon-icon"><i class="fa fa-globe"></i></span>');
+				$(".ribbon-button-alignment").prepend('<span data-title="' + _("Internet available") + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon internet-ribbon-icon"><i class="fa fa-globe"></i></span>');
 			}
 			pageSetUp();
 		});
@@ -1489,7 +1489,7 @@ fabApp = (function(app) {
 			})
 			.error(function(jqXHR, textStatus, errorThrown) {
 				setTimeout(function() {
-					waitTitle(app_text[15]);
+					waitTitle(_("Now you can switch off the power"));
 					waitContent(_("Note: 5 seconds after the beep it's safe to switch off your unit."));
 					//is_macro_on = false;
 				}, 10000);

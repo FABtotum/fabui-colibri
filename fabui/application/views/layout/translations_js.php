@@ -31,40 +31,7 @@ var emergency_descriptions = {
 	123 : '<?php echo _("Cannot extrude filament: the nozzle temperature is too low"); ?>',
 	124 : '<?php echo _("Cannot extrude so much filament!"); ?>'
 }
-/**
- * FAB APP TEXT
- */
-var app_text = {
-	0  : '<?php echo _("Hi")?>',
-	1  : '<?php echo _("Cancel")?>',
-	2  : '<?php echo _("Go") ?>',
-	3  : '<?php echo _("Shutdown") ?>',
-	4  : '<?php echo _("Restart") ?>',
-	5  : '<?php echo _("Logout") ?>',
-	6  : '<?php echo _("No") ?>',
-	7  : '<?php echo _("Yes") ?>',
-	8  : '<?php echo _("Resetting controller") ?>',
-	9  : '<?php echo _("Aborting all operations") ?>',
-	10 : '<?php echo _("Reloading page") ?>',
-	11 : '<?php echo _("Restart in progress") ?>',
-	12 : '<?php echo _("Please wait") ?>',
-	13 : '<?php echo _("You will be redirect to login page") ?>',
-	14 : '<?php echo _("Shutdown in progress") ?>',
-	15 : '<?php echo _("Now you can switch off the power") ?>',
-	16 : '<?php echo _("You have attempted to leave this page. The Fabtotum Personal Fabricator is still working. Are you sure you want to reload this page?") ?>',
-	17 : '<?php echo _("Front panel has been opened") ?>',
-	18 : '<?php echo _("Ok") ?>',
-	19 : '<?php echo _("Ignore") ?>',
-	20 : '<?php echo _("Install head") ?>',
-	21 : '<?php echo _("Press OK to continue or Ignore to disable this warning") ?>',
-	22 : '<?php echo _("Tasks") ?>',
-	23 : '<?php echo _("Oops.. An error occurred") ?>',
-	24 : '<?php echo _("You will be redirect to recovery page") ?>',
-	25 : '<?php echo _("Wifi connected") ?>',
-	26 : '<?php echo _("Internet available") ?>',
-	27 : '<?php echo _("Installing head") ?>',
-	28 : '<?php echo _("Before proceed make sure the head is properly locked in place") ?>'
-}
+
 /**
  * GETTEXT
  */

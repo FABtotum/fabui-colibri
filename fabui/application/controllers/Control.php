@@ -232,7 +232,7 @@
 				$file = $this->files->get($task_file_id, 1);
 				if($file){
 					if($task_type == 'scan')
-						$task_filename = _("Being generated...");
+						$task_filename = _("Being generated") . '...';
 					else
 						$task_filename = $file['client_name'];
 				}
