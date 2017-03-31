@@ -4,7 +4,7 @@
 	var wifiIface;
 	var wifiPassword;
 	var currentEthIPV4;
-
+	
 	$(function () 
 	{
 		$("#saveButton").on('click', do_save);

@@ -1382,7 +1382,7 @@ fabApp = (function(app) {
 			.error(function(jqXHR, textStatus, errorThrown) {
 				setTimeout( function() {
 					app.redirectToUrlWhenisReady(url);
-				}, 50 );
+				}, 500 );
 			});
 	}
 	/**

@@ -307,6 +307,11 @@ class Settings extends FAB_Controller {
 				$iface = $postData['active'];
 				configureEthernet($iface, $mode, $address, $netmask, $gateway);
 				storeNetworkSettings($net_type, $iface, $mode, $address, $netmask, $gateway);
+				
+				//update social feeds
+				downloadBlogFeeds();
+				downloadTwitterFeeds();
+				downloadInstagramFeeds();
 				break;
 			case "wlan":
 				if($action == 'connect')

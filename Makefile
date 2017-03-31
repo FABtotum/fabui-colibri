@@ -152,6 +152,8 @@ check-tools:
 	@echo "Looking for mksquashfs: FOUND"
 	which pojson
 	@echo "Looking for pojson: FOUND"
+	which sqlite3
+	@echo "Looking for sqlite3: FOUND"
 	
 bundle: check-tools distclean $(FABUI_BUNDLE)
 
