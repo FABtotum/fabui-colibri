@@ -29,7 +29,7 @@
   },
   "settings_type": "default",
   "hardware": {
-    "head": "hybrid_head",
+    "head": "printing_head_v2",
     "feeder": "built_in_feeder",
     "camera": "camera_v1",
 	"bed": {
