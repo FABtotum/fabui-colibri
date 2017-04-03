@@ -129,9 +129,9 @@ def auto_bed_leveling(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
     app.trace( _("Auto Bed leveling Initialized") )
-    app.macro("G28",                "ok", 90,   _("Homing Z axis") )
+    app.macro("G28",                "ok", 120,   _("Homing Z axis") )
     app.macro("G28 X Y",            "ok", 90,   _("Homing X/Y axis") )
-    app.macro("G29",                "ok", 140,  _("Probing the bed") )
+    app.macro("G29",                "ok", 150,  _("Probing the bed") )
     app.macro("G0 X5 Y5 Z60 F2000", "ok", 100,  _("Getting to idle position") )
 
 def probe_down(app, args = None, lang='en_US.UTF-8'):
