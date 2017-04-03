@@ -420,17 +420,18 @@ fabApp = (function(app) {
 			var controller = link.attr('data-controller');
 			if(jQuery.inArray( controller, excepet_item_menu ) >= 0 ){
 				if(controller == except){
-					//link.addClass('except-link');
 					app.unFreezeParent(link);
 					if($(".freeze-menu").length == 0) link.append('<span class="badge bg-color-red pull-right inbox-badge freeze-menu">!</span>');
 				}
 				number_tasks =  1;
 			}else{
-				link.addClass('menu-disabled');
-				link.removeAttr('href');
+				if(!link.next().is('ul')){ // disable only is not a parent link
+					link.addClass('menu-disabled');
+					link.removeAttr('href');
+					link.click(function () {return false;});
+				}
 			}
 		});
-		$('.menu-disabled').click(function () {return false;});
 		app.updateNotificationBadge();
 	};
 	/*
@@ -438,14 +439,15 @@ fabApp = (function(app) {
 	 */
 	app.unFreezeMenu = function () {
 		var a = $("nav li > a");
-		$('.menu-disabled').unbind('click');
 		a.each(function() {
 			var link = $(this);
 			link.removeClass('menu-disabled');
 			link.attr('href', $(this).attr('data-href'));
+			if(!link.next().is('ul')){
+				link.unbind('click');
+			}
 		});
 		$(".freeze-menu").remove();
-		
 	}
 	/**
 	*
@@ -1335,8 +1337,9 @@ fabApp = (function(app) {
 	}
 	/**
 	* check if there are running tasks, and more
+	* init true | false (if is first loading time)
 	*/
-	app.getState = function()
+	app.getState = function(init)
 	{
 		var freezing_status = ['running', 'aborting', 'completing'];
 		$.get(task_monitor_file_url + '?' + jQuery.now(), function(data, status){
@@ -1346,7 +1349,7 @@ fabApp = (function(app) {
 					number_tasks = 1;
 					
 				}else{
-					app.unFreezeMenu();
+					if(!init) app.unFreezeMenu();
 					number_tasks = 0;
 				}
 			}

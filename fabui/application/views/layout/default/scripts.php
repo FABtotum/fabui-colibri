@@ -60,7 +60,7 @@
 		fabApp.webSocket();
 		fabApp.FabActions();
 		fabApp.domReadyMisc();
-		fabApp.getState();
+		fabApp.getState(true);
 		fabApp.getSettings();
 		fabApp.getNetworkInfo();
 		fabApp.getUpdates();
