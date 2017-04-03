@@ -174,7 +174,7 @@ if(!function_exists('getBundlesStatus'))
 				'available' => false,
 				'bundles'   => 0,
 				'plugins'   => 0,
-				'firmware'  => false,
+				'firmware'  => $firmware['need_update'],
 				'boot'      => $bootfiles['need_update'],
 				'endpoint'  => array(
 					'bundles' =>$bundlesEndpoint,
