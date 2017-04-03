@@ -137,23 +137,28 @@ function get_instructions($screw){
 		return '<i class="fa fa-check"></i> Well done';
 	}
 	
-	
 	$badge_background_color['right'] = ' #0084ff!important;';
 	$badge_background_color['left'] = ' #ff0000!important; ';
 	
-	$rotation_section = _("following this rotation direction").' <span class="badge" style="background-color: '.$badge_background_color[$screw['direction']].'"><i class="fa fa-rotate-'.$screw['direction'].'"></i></span>';
+	$rotation_section = _(", following this rotation direction").' <span class="badge" style="background-color: '.$badge_background_color[$screw['direction']].'"><i class="fa fa-rotate-'.$screw['direction'].'"></i></span>';
 	
 	if($screw['turns']['times'] < 1 ){
-		return 'Turn for '.$screw['turns']['degrees'].' degrees, '.$rotation_section;
+		return pyformat( _("Turn by {0} degrees"), array( $screw['turns']['degrees'] ) ) . $rotation_section;
 	}
 	
 	if($screw['turns']['times'] > 0){
-		$times_label = $screw['turns']['times'] == 1 ? 'time' : 'times' ;
+		
+		$turn_section = pyformat( _("Turn by {0} times"), array( $screw['turns']['times'] ) );
+		if($screw['turns']['times'] == 1){
+			$turn_section = pyformat( _("Turn by {0} time"), array( $screw['turns']['times'] ) );
+		}
+		
 		$degrees_section = '';
 		if($screw['turns']['degrees'] > 0){
-			$degrees_section =  ' and '.$screw['turns']['degrees'].' degrees';
-		}	
-		return 'Turn for '.$screw['turns']['times'].' '.$times_label.$degrees_section.' '.$rotation_section;
+			$degrees_section =  pyformat( _(" and {0} degrees"), array( $screw['turns']['degrees'] ) );
+		}
+		
+		return $turn_section.$degrees_section.$rotation_section;
 	}
 }
 

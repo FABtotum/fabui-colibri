@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-03 14:26+0200\n"
+"POT-Creation-Date: 2017-04-03 16:03+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -122,7 +122,7 @@ msgstr ""
 
 #: fabui/application/config/menu.php:113
 #: fabui/application/views/settings/hardware_widget.php:28
-#: fabui/application/views/std/print_setup.php:33
+#: fabui/application/views/std/print_setup.php:30
 msgid "Engage"
 msgstr ""
 
@@ -341,12 +341,12 @@ msgid "No running tasks"
 msgstr "Completamento task"
 
 #: fabui/application/controllers/Settings.php:43
-#: fabui/application/views/std/print_setup.php:95
+#: fabui/application/views/std/print_setup.php:92
 msgid "Simple homing"
 msgstr "Homing semplice"
 
 #: fabui/application/controllers/Settings.php:43
-#: fabui/application/views/std/print_setup.php:117
+#: fabui/application/views/std/print_setup.php:114
 msgid "Auto bed leveling"
 msgstr "Auto bed leveling"
 
@@ -1332,10 +1332,26 @@ msgstr ""
 msgid "Try again"
 msgstr ""
 
-#: fabui/application/views/bed/calibration_results.php:144
+#: fabui/application/views/bed/calibration_results.php:143
 #, fuzzy
-msgid "following this rotation direction"
+msgid ", following this rotation direction"
 msgstr "Segui le istruzioni"
+
+#: fabui/application/views/bed/calibration_results.php:146
+msgid "Turn by {0} degrees"
+msgstr ""
+
+#: fabui/application/views/bed/calibration_results.php:151
+msgid "Turn by {0} times"
+msgstr ""
+
+#: fabui/application/views/bed/calibration_results.php:153
+msgid "Turn by {0} time"
+msgstr ""
+
+#: fabui/application/views/bed/calibration_results.php:158
+msgid " and {0} degrees"
+msgstr ""
 
 #: fabui/application/views/jog/js.php:141
 msgid "Search for a code"
@@ -2067,48 +2083,48 @@ msgstr ""
 msgid "Please flip the bed to the other side."
 msgstr ""
 
-#: fabui/application/views/std/print_setup.php:18
+#: fabui/application/views/std/print_setup.php:15
 msgid "Engage feeder"
 msgstr ""
 
-#: fabui/application/views/std/print_setup.php:31
+#: fabui/application/views/std/print_setup.php:28
 msgid ""
 "To engage the filament feeder first pres ENGAGE button below and wait for "
 "the bed to stop moving."
 msgstr ""
 
-#: fabui/application/views/std/print_setup.php:32
+#: fabui/application/views/std/print_setup.php:29
 msgid ""
 "Then push the small button under the building platform near the 4th axis "
 "chuck. Apply a good amount of force when pushing."
 msgstr ""
 
-#: fabui/application/views/std/print_setup.php:42
+#: fabui/application/views/std/print_setup.php:39
 msgid "Follow the instructions"
 msgstr "Segui le istruzioni"
 
-#: fabui/application/views/std/print_setup.php:55
+#: fabui/application/views/std/print_setup.php:52
 msgid "Make sure that the working plane is clean and free to use"
 msgstr "Assicurati che il piatto sia pulito e libero"
 
-#: fabui/application/views/std/print_setup.php:72
+#: fabui/application/views/std/print_setup.php:69
 #: fabui/application/views/std/jog_setup.php:33
 msgid "Close the cover"
 msgstr "Chiudi la cover"
 
-#: fabui/application/views/std/print_setup.php:80
+#: fabui/application/views/std/print_setup.php:77
 msgid "Choose calibration type"
 msgstr "Selezione il tipo di calibrazione"
 
-#: fabui/application/views/std/print_setup.php:98
+#: fabui/application/views/std/print_setup.php:95
 msgid "Quickly home all axis. Works well with a well calibrated working plane"
 msgstr "Homing veloce. Funziona bene con un piatto ben calibrato"
 
-#: fabui/application/views/std/print_setup.php:98
+#: fabui/application/views/std/print_setup.php:95
 msgid "Suggested"
 msgstr "Suggerito"
 
-#: fabui/application/views/std/print_setup.php:120
+#: fabui/application/views/std/print_setup.php:117
 msgid ""
 "Probes the working plane to auto-correct movements to account for not "
 "leveled bed"

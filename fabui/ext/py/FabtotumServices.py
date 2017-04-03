@@ -135,8 +135,8 @@ else:
 #~ formatter = logging.Formatter("%(name)s - %(levelname)s : %(message)s")
 formatter = logging.Formatter("%(levelname)s : %(message)s")
 ch.setFormatter(formatter)
-#~ ch.setLevel(logging.DEBUG)
-ch.setLevel(logging.INFO)
+ch.setLevel(logging.DEBUG)
+#~ ch.setLevel(logging.INFO)
 logger.addHandler(ch)
 
 if do_reset:

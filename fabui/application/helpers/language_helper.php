@@ -79,9 +79,11 @@ if(!function_exists('loadTranslation'))
 		putenv('LC_NUMERIC='.'en_US.UTF-8');
 		setlocale(LC_NUMERIC, 'en_US.UTF-8');
 		
+		
+		
 		bindtextdomain("fabui", $CI->config->item('locale_path'));
 		textdomain("fabui");
-		
+		bind_textdomain_codeset("fabui", "UTF-8");
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

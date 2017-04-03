@@ -2,11 +2,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-03 14:26+0200\n"
+"POT-Creation-Date: 2017-04-03 16:03+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: FABTeam\n"
-"Language: de\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -122,7 +122,7 @@ msgstr "Schrittkalibrierung"
 
 #: fabui/application/config/menu.php:113
 #: fabui/application/views/settings/hardware_widget.php:28
-#: fabui/application/views/std/print_setup.php:33
+#: fabui/application/views/std/print_setup.php:30
 msgid "Engage"
 msgstr "Einrasten"
 
@@ -326,12 +326,12 @@ msgid "No running tasks"
 msgstr "Keine laufenden Aufgaben"
 
 #: fabui/application/controllers/Settings.php:43
-#: fabui/application/views/std/print_setup.php:95
+#: fabui/application/views/std/print_setup.php:92
 msgid "Simple homing"
 msgstr "Einfaches homing"
 
 #: fabui/application/controllers/Settings.php:43
-#: fabui/application/views/std/print_setup.php:117
+#: fabui/application/views/std/print_setup.php:114
 msgid "Auto bed leveling"
 msgstr "Auto Bett Nivellierung"
 
@@ -1305,10 +1305,25 @@ msgstr "Nun, das ist peinlich, bei den Messungen ist etwas schief gelaufen"
 msgid "Try again"
 msgstr "Noch einmal versuchen"
 
-#: fabui/application/views/bed/calibration_results.php:144
-#, fuzzy
-msgid "following this rotation direction"
-msgstr "Folgen Sie die Anweisungen"
+#: fabui/application/views/bed/calibration_results.php:143
+msgid ", following this rotation direction"
+msgstr " umdrehen, nach dieser Drehrichtung"
+
+#: fabui/application/views/bed/calibration_results.php:146
+msgid "Turn by {0} degrees"
+msgstr "Um {0} Grad"
+
+#: fabui/application/views/bed/calibration_results.php:151
+msgid "Turn by {0} times"
+msgstr "Um {0} mal"
+
+#: fabui/application/views/bed/calibration_results.php:153
+msgid "Turn by {0} time"
+msgstr "Um {0} mal"
+
+#: fabui/application/views/bed/calibration_results.php:158
+msgid " and {0} degrees"
+msgstr "und {0} Grad"
 
 #: fabui/application/views/jog/js.php:141
 msgid "Search for a code"
@@ -2025,50 +2040,50 @@ msgstr "Bett falsch eingelegt"
 msgid "Please flip the bed to the other side."
 msgstr "Bitte drehen Sie das Bett auf die andere Seite."
 
-#: fabui/application/views/std/print_setup.php:18
+#: fabui/application/views/std/print_setup.php:15
 msgid "Engage feeder"
 msgstr "Feeder einrasten"
 
-#: fabui/application/views/std/print_setup.php:31
+#: fabui/application/views/std/print_setup.php:28
 msgid ""
 "To engage the filament feeder first pres ENGAGE button below and wait for "
 "the bed to stop moving."
 msgstr ""
 
-#: fabui/application/views/std/print_setup.php:32
+#: fabui/application/views/std/print_setup.php:29
 msgid ""
 "Then push the small button under the building platform near the 4th axis "
 "chuck. Apply a good amount of force when pushing."
 msgstr ""
 
-#: fabui/application/views/std/print_setup.php:42
+#: fabui/application/views/std/print_setup.php:39
 msgid "Follow the instructions"
 msgstr "Folgen Sie die Anweisungen"
 
-#: fabui/application/views/std/print_setup.php:55
+#: fabui/application/views/std/print_setup.php:52
 msgid "Make sure that the working plane is clean and free to use"
 msgstr "Achten Sie darauf, dass die Arbeitsebene sauber und frei ist"
 
-#: fabui/application/views/std/print_setup.php:72
+#: fabui/application/views/std/print_setup.php:69
 #: fabui/application/views/std/jog_setup.php:33
 msgid "Close the cover"
 msgstr "Schließen Sie die Abdeckung"
 
-#: fabui/application/views/std/print_setup.php:80
+#: fabui/application/views/std/print_setup.php:77
 msgid "Choose calibration type"
 msgstr "Wählen Sie Kalibriertyp"
 
-#: fabui/application/views/std/print_setup.php:98
+#: fabui/application/views/std/print_setup.php:95
 msgid "Quickly home all axis. Works well with a well calibrated working plane"
 msgstr ""
 "Schnell alle Achsen referenzieren. Funktioniert gut mit einer gut "
 "kalibrierten Arbeitsebene"
 
-#: fabui/application/views/std/print_setup.php:98
+#: fabui/application/views/std/print_setup.php:95
 msgid "Suggested"
 msgstr "Empfohlen"
 
-#: fabui/application/views/std/print_setup.php:120
+#: fabui/application/views/std/print_setup.php:117
 msgid ""
 "Probes the working plane to auto-correct movements to account for not "
 "leveled bed"
