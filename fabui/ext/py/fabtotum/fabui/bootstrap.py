@@ -55,6 +55,11 @@ def read_eeprom(gcodeSender):
             object = {'r': match.group(1), 'e': match.group(2)}
             return object
     
+    def getBatchNumber(string_source):
+        match = re.search('Batch\sNumber:\s([0-9.]+)', string_source, re.IGNORECASE)
+        if match != None:
+            value = match.group(1)
+            return value
     #reply = app.macro('M503', None, 1, _("Reading settings from eeprom"), verbose=False)
     reply = gcodeSender.send('M503', group='bootstrap')
 
@@ -81,6 +86,8 @@ def read_eeprom(gcodeSender):
             eeprom["probe_length"] = line.split(':')[1].strip()
         elif line.startswith('Servo Endstop'):
             eeprom["servo_endstop"] = getServoEndstopValues(line)
+        elif line.startswith('Batch Number'):
+            eeprom['batch_number'] = getBatchNumber(line)
     
     return eeprom
 
@@ -117,7 +124,7 @@ def loadFctoryFeeder(config):
                 "factory": 1
             }
 
-def customHardware(gcodeSender, config, log):
+def customHardware(gcodeSender, config, log, eeprom):
     """
     Revision for customs edits
     """
@@ -139,18 +146,18 @@ def customHardware(gcodeSender, config, log):
     #save settings
     #gcodeSender.send("M500", group='bootstrap')
     
-    eeprom = read_eeprom(gcodeSender)
+    #eeprom = read_eeprom(gcodeSender)
     
     config.set('settings', 'e', eeprom['steps_per_unit']['e'])
     config.save('settings')
 
-def hardware1(gcodeSender, config, log):
+def hardware1(gcodeSender, config, log, eeprom):
     """
     Rev1: September 2014 - May 2015
     - Original FABtotum
     """
     
-    eeprom = read_eeprom(gcodeSender)
+    #eeprom = read_eeprom(gcodeSender)
     
     config.set('settings', 'hardware.id', 1)
     config.set('settings', 'feeder.show', True)
@@ -170,7 +177,7 @@ def hardware1(gcodeSender, config, log):
     
     log.info("Rev1")
     
-def hardware2(gcodeSender, config, log):
+def hardware2(gcodeSender, config, log, eeprom):
     """
     Rev2: June 2015 - August 2015
     - Simplified Feeder (Removed the disengagement and engagement procedure), if you want you can update it easily following this Tutorial: Feeder update.
@@ -204,7 +211,7 @@ def hardware2(gcodeSender, config, log):
     
     log.info("Rev2")
     
-def hardware3(gcodeSender, config, log):
+def hardware3(gcodeSender, config, log, eeprom):
     """
     Rev3: Aug 2015 - Jan 2016
     - Back panel modified to minimize bowden tube collisions
@@ -221,7 +228,7 @@ def hardware3(gcodeSender, config, log):
     #save settings
     #gcodeSender.send("M500", group='bootstrap')
     
-    eeprom = read_eeprom(gcodeSender)
+    #eeprom = read_eeprom(gcodeSender)
     
     config.set('settings', 'hardware.id', 3)
     config.set('settings', 'feeder.show', False)
@@ -242,7 +249,7 @@ def hardware3(gcodeSender, config, log):
     log.info("Rev3")
     
     
-def hardware4(gcodeSender, config, log):
+def hardware4(gcodeSender, config, log, eeprom):
     """
     Rev4(CORE): Jan 2016 - xxx
     - TBA
@@ -254,7 +261,7 @@ def hardware4(gcodeSender, config, log):
     #save settings
     #gcodeSender.send("M500", group='bootstrap')
     
-    eeprom = read_eeprom(gcodeSender)
+    #eeprom = read_eeprom(gcodeSender)
     
     config.set('settings', 'hardware.id', 4)
     config.set('settings', 'feeder.show', False)
@@ -274,7 +281,7 @@ def hardware4(gcodeSender, config, log):
     
     log.info("Rev4")
     
-def hardware5(gcodeSender, config, log):
+def hardware5(gcodeSender, config, log, eeprom):
     """
     Rev5(CORE): Oct 2016 - xxx
     - RPi3
@@ -286,7 +293,7 @@ def hardware5(gcodeSender, config, log):
     #save settings
     #gcodeSender.send("M500", group='bootstrap')
     
-    eeprom = read_eeprom(gcodeSender)
+    #eeprom = read_eeprom(gcodeSender)
     
     config.set('settings', 'hardware.id', 5)
     config.set('settings', 'feeder.show', False)
@@ -305,6 +312,13 @@ def hardware5(gcodeSender, config, log):
         config.save_feeder_info('built_in_feeder', feeder)
     
     log.info("Rev5")
+    
+def hardware6(gcodeSender, config, log, eeprom):
+    """
+    Rev6(CORE Lite): April 2017
+    """
+    log.info("Rev6 - Lite")
+ 
 
 def configure_head(gcs, config, log):
 
@@ -435,13 +449,18 @@ def hardwareBootstrap(gcs, config = None, logger = None):
 
     gcs.atomic_begin(group='bootstrap')
 
-    # Get hardware id (version)
-    reply = gcs.send('M763', group='bootstrap')
+    # clean output
+    #reply = gcs.send('G1', group='bootstrap')
+    
+    # read EEPROM
+    eeprom = read_eeprom(gcs)
+    
     try:
-        hardwareID = reply[0].strip()
+        hardwareID = eeprom['batch_number']
     except Exception as e:
-        print "ERROR", e
-        hardwareID = 0
+        log.error("cannot read batch number")
+        log.error("batch number set to 1")
+        hardwareID = 1
     
     # Raise probe
     gcs.send('M402', group='bootstrap')
@@ -467,15 +486,18 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         '2'      : hardware2,
         '3'      : hardware3,
         '4'      : hardware4,
-        '5'      : hardware5
+        '5'      : hardware5,
+        '6'      : hardware6,
     }
     
     if config.get('settings', 'settings_type') == 'custom':
-        customHardware(gcs, config, log)
+        customHardware(gcs, config, log, eeprom)
     elif hardwareID in HW_VERSION_CMDS:
-        HW_VERSION_CMDS[hardwareID](gcs, config, log)
+        HW_VERSION_CMDS[hardwareID](gcs, config, log, eeprom)
     else:
         log.error("Unsupported hardware version: %s", hardwareID)
+        log.error("Forced to hardware1")
+        hardware1(gcs, config, log, eeprom)
     
     configure_head(gcs, config, log)
     configure_feeder(gcs, config, log)
