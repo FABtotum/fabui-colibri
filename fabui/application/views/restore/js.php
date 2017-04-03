@@ -42,7 +42,7 @@
 						
 						if(index == 2){
 							$(".next").find('a').attr('style', 'cursor: pointer !important;');
-							$(".next").find('a').html('Restore');
+							$(".next").find('a').html(_("Restore"));
 						}
 						
 						if(index == 3){
@@ -52,7 +52,7 @@
 					}
 			},
 			'onPrevious': function(tab, navigation, index){
-				$(".next").find('a').html('Next');
+				$(".next").find('a').html( _("Next") );
 			},
 			'onLast': function(tab, navigation, inde){
 				console.log("last");

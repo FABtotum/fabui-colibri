@@ -43,7 +43,7 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<p class="font-md text-center"><?php echo _("Welcome to the installation wizard of the FABtotum User Interface")?>. 
-							<?php echo _("Follow the steps and enter the data as promted")?></p>
+							<?php echo _("Follow the steps and enter the data as prompted")?></p>
 						</div>
 					</div>
 				</div>
@@ -101,7 +101,7 @@
 							<div class="form-group">			
 								<label class="checkbox-inline">
 									 <input type="checkbox" class="checkbox" name="terms" id="terms">
-									 <span><?php echo _("I agree with the")?> <a href="#" data-toggle="modal" data-target="#termsConditionModal"> <?php echo _("Terms and Conditions")?> </a></span>
+									 <span><?php echo _("I agree with the")?> <a href="#" data-toggle="modal" data-target="#termsConditionModal"> <?php echo _("Terms & Conditions")?> </a></span>
 								</label>
 							</div>
 						</div>
@@ -149,7 +149,7 @@
 						</div>
 						<div class="col-sm-12">
 							<div class="form-group">
-								<label><?php echo _("On which timezone you are?")?> </label>
+								<label><?php echo _("What is your timezone?")?> </label>
 								<div class="icon-addon addon-md">
 				                    <?php echo timezone_menu('form-control', 'timezone', 'id="timezone"');?>
 				                    <label class="fa fa-map-marker"></label>
@@ -163,7 +163,7 @@
 					<br>
 					<div class="row margin-top-10">
 						<div class="col-sm-12">
-							<p class="font-md text-center"><?php echo _("You're almost done")?>.<br><?php echo _("Click")?> <strong><?php echo _("Install")?></strong> <?php echo _("to complete")?></p>
+							<p class="font-md text-center"><?php echo _("You're almost done.")?><br><?php echo _("Click <strong>Install</strong> to complete")?></p>
 						</div>
 					</div>
 				</div>
@@ -172,7 +172,7 @@
 						<div class="col-sm-12">
 							<ul class="pager wizard no-margin">
 								<li class="previous disabled">
-									<a href="javascript:void(0);" class="btn btn-lg btn-default"> <?php echo _("Previous")?> </a>
+									<a href="javascript:void(0);" class="btn btn-lg btn-default"> <?php echo _("Prev")?> </a>
 								</li>
 								<li class="next">
 									<a href="javascript:void(0);" class="btn btn-lg txt-color-darken"> <?php echo _("Next")?>  </a>
@@ -190,7 +190,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel"><?php echo _("Terms & conditions")?></h4>
+				<h4 class="modal-title" id="myModalLabel"><?php echo _("Terms & Conditions")?></h4>
 			</div>
 				<div class="modal-body custom-scroll terms-body">
 					<div><?php echo termsAndConditions(); ?></div>

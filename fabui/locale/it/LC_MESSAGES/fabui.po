@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-31 16:36+0200\n"
+"POT-Creation-Date: 2017-04-03 14:26+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -182,6 +182,7 @@ msgstr "Supporto"
 
 #: fabui/application/config/menu.php:173
 #: fabui/application/controllers/Plugin.php:63
+#: fabui/application/views/restore/wizard.php:101
 msgid "Plugins"
 msgstr "Plugins"
 
@@ -257,6 +258,7 @@ msgstr "Preparati"
 #: fabui/application/controllers/Create.php:116
 #: fabui/application/controllers/Create.php:230
 #: fabui/application/controllers/Nozzle.php:71
+#: fabui/application/views/restore/wizard.php:28
 #: fabui/application/views/install/wizard.php:34
 #: fabui/application/views/spool/main_widget.php:24
 #: fabui/application/views/std/task_wizard.php:47
@@ -422,6 +424,7 @@ msgid "DNS"
 msgstr ""
 
 #: fabui/application/controllers/Settings.php:282
+#: fabui/application/views/restore/wizard.php:90
 #, fuzzy
 msgid "Network settings"
 msgstr "Rete"
@@ -864,7 +867,7 @@ msgstr ""
 
 #: fabui/application/views/layout/translations_js.php:23
 msgid ""
-"Y min Endstop hit: Move the carriage to the center or check Settings > "
+"X max Endstop hit: Move the carriage to the center or check Settings > "
 "Hardware > Custom Settings >Invert X Endstop Logic"
 msgstr ""
 
@@ -908,6 +911,102 @@ msgstr ""
 msgid "Cannot extrude so much filament!"
 msgstr ""
 
+#: fabui/application/views/restore/wizard.php:22
+#: fabui/application/views/restore/wizard.php:36
+#: fabui/application/views/install/wizard.php:22
+#: fabui/application/views/install/wizard.php:42
+msgid "Welcome"
+msgstr ""
+
+#: fabui/application/views/restore/wizard.php:25
+#: fabui/application/views/restore/wizard.php:45
+#, fuzzy
+msgid "Restore"
+msgstr "Riavvia stampa"
+
+#: fabui/application/views/restore/wizard.php:36
+#: fabui/application/views/restore/wizard.php:45
+#: fabui/application/views/install/wizard.php:42
+#: fabui/application/views/install/wizard.php:52
+#: fabui/application/views/install/wizard.php:112
+#: fabui/application/views/install/wizard.php:139
+#: fabui/application/views/jog/widget.php:25
+#: fabui/application/views/jog/widget.php:31
+#: fabui/application/views/jog/widget.php:89
+#: fabui/application/views/std/jog_setup.php:79
+#: fabui/application/views/std/jog_setup.php:91
+msgid "Step"
+msgstr ""
+
+#: fabui/application/views/restore/wizard.php:39
+msgid ""
+"Welcome to the restore wizard of the FABtotum User Interface. Follow the "
+"steps and select the data to be restored."
+msgstr ""
+
+#: fabui/application/views/restore/wizard.php:50
+#: fabui/application/views/restore/wizard.php:58
+#: fabui/application/views/restore/wizard.php:77
+msgid "Restore all previously uploaded and created objects and files."
+msgstr ""
+
+#: fabui/application/views/restore/wizard.php:52
+msgid "User Objects and Files"
+msgstr ""
+
+#: fabui/application/views/restore/wizard.php:60
+#, fuzzy
+msgid "Hardware Settings"
+msgstr "Rete"
+
+#: fabui/application/views/restore/wizard.php:69
+msgid "Restore all previous task data."
+msgstr ""
+
+#: fabui/application/views/restore/wizard.php:71
+#, fuzzy
+msgid "Task History"
+msgstr "Storia"
+
+#: fabui/application/views/restore/wizard.php:79
+#, fuzzy
+msgid "Head Settings"
+msgstr "Rete"
+
+#: fabui/application/views/restore/wizard.php:88
+msgid "Restore Network settings including WiFi passwords."
+msgstr ""
+
+#: fabui/application/views/restore/wizard.php:99
+msgid "Restore all previously installed plugins."
+msgstr ""
+
+#: fabui/application/views/restore/wizard.php:113
+#: fabui/application/views/install/wizard.php:166
+msgid "You're almost done."
+msgstr ""
+
+#: fabui/application/views/restore/wizard.php:113
+msgid "Click <strong>restore</strong> to complete"
+msgstr ""
+
+#: fabui/application/views/restore/wizard.php:122
+#: fabui/application/views/install/wizard.php:175
+#: fabui/application/views/std/task_wizard.php:45
+#: fabui/application/views/std/task_wizard.php:110
+#, fuzzy
+msgid "Prev"
+msgstr "Vista file"
+
+#: fabui/application/views/restore/wizard.php:125
+#: fabui/application/views/install/wizard.php:178
+#: fabui/application/views/std/task_wizard.php:48
+#: fabui/application/views/std/task_wizard.php:113
+#: fabui/application/views/create/mill_js.php:52
+#: fabui/assets/js/tours/0020_bed.js:21
+msgid "Next"
+msgstr ""
+
 #: fabui/application/views/install/js.php:40
 #: fabui/application/views/install/js.php:68
 msgid "Your email address must be in the format of name@domain.com"
@@ -927,6 +1026,7 @@ msgstr "Inserisci il tuo cognome"
 #: fabui/application/views/install/js.php:67
 #: fabui/application/views/login/login_js.php:43
 #: fabui/application/views/login/register_js.php:65
+#: fabui/application/views/login/login_form.php:33
 #: fabui/application/views/account/js.php:46
 msgid "Please enter your email address"
 msgstr "Inserisci il tuo indirizzo email"
@@ -948,12 +1048,7 @@ msgid "Installation in progress"
 msgstr "Riavvia stampa"
 
 #: fabui/application/views/install/js.php:138
-msgid "This may take awhile, please wait"
-msgstr ""
-
-#: fabui/application/views/install/wizard.php:22
-#: fabui/application/views/install/wizard.php:42
-msgid "Welcome"
+msgid "This may take a while, please wait"
 msgstr ""
 
 #: fabui/application/views/install/wizard.php:25
@@ -966,24 +1061,12 @@ msgstr ""
 msgid "Printer"
 msgstr "Stampa"
 
-#: fabui/application/views/install/wizard.php:42
-#: fabui/application/views/install/wizard.php:52
-#: fabui/application/views/install/wizard.php:112
-#: fabui/application/views/install/wizard.php:139
-#: fabui/application/views/jog/widget.php:25
-#: fabui/application/views/jog/widget.php:31
-#: fabui/application/views/jog/widget.php:89
-#: fabui/application/views/std/jog_setup.php:79
-#: fabui/application/views/std/jog_setup.php:91
-msgid "Step"
-msgstr ""
-
 #: fabui/application/views/install/wizard.php:45
 msgid "Welcome to the installation wizard of the FABtotum User Interface"
 msgstr ""
 
 #: fabui/application/views/install/wizard.php:46
-msgid "Follow the steps and enter the data as promted"
+msgid "Follow the steps and enter the data as prompted"
 msgstr ""
 
 #: fabui/application/views/install/wizard.php:52
@@ -1010,8 +1093,9 @@ msgid "I agree with the"
 msgstr ""
 
 #: fabui/application/views/install/wizard.php:104
+#: fabui/application/views/install/wizard.php:193
 #: fabui/application/views/login/register_form.php:50
-msgid "Terms and Conditions"
+msgid "Terms & Conditions"
 msgstr ""
 
 #: fabui/application/views/install/wizard.php:116
@@ -1035,43 +1119,11 @@ msgid "Select your language"
 msgstr ""
 
 #: fabui/application/views/install/wizard.php:152
-msgid "On which timezone you are?"
+msgid "What is your timezone?"
 msgstr ""
 
 #: fabui/application/views/install/wizard.php:166
-msgid "You're almost done"
-msgstr ""
-
-#: fabui/application/views/install/wizard.php:166
-#, fuzzy
-msgid "Click"
-msgstr "oppure premi"
-
-#: fabui/application/views/install/wizard.php:166
-#: fabui/application/views/plugin/js.php:93
-msgid "Install"
-msgstr "Installa"
-
-#: fabui/application/views/install/wizard.php:166
-#, fuzzy
-msgid "to complete"
-msgstr "Scansione completata"
-
-#: fabui/application/views/install/wizard.php:175
-#, fuzzy
-msgid "Previous"
-msgstr "Vista file"
-
-#: fabui/application/views/install/wizard.php:178
-#: fabui/application/views/std/task_wizard.php:48
-#: fabui/application/views/std/task_wizard.php:113
-#: fabui/application/views/create/mill_js.php:52
-#: fabui/assets/js/tours/0020_bed.js:21
-msgid "Next"
-msgstr ""
-
-#: fabui/application/views/install/wizard.php:193
-msgid "Terms & conditions"
+msgid "Click <strong>Install</strong> to complete"
 msgstr ""
 
 #: fabui/application/views/install/wizard.php:200
@@ -1129,7 +1181,7 @@ msgid "Installed head"
 msgstr "Installato"
 
 #: fabui/application/views/systeminfo/widget.php:47
-msgid "Print settings (M503 output)"
+msgid "Printer settings (M503 output)"
 msgstr ""
 
 #: fabui/application/views/systeminfo/widget.php:96
@@ -1201,7 +1253,7 @@ msgstr ""
 
 #: fabui/application/views/login/register_js.php:62
 #, fuzzy
-msgid "Please enter your login"
+msgid "Please enter your login name"
 msgstr "Inserisci il tuo cognome"
 
 #: fabui/application/views/login/register_js.php:72
@@ -1224,11 +1276,6 @@ msgstr ""
 msgid "Email"
 msgstr "Email"
 
-#: fabui/application/views/login/login_form.php:33
-#, fuzzy
-msgid "Please enter email address"
-msgstr "Inserisci il tuo indirizzo email"
-
 #: fabui/application/views/login/login_form.php:36
 #: fabui/application/views/settings/wireless_tab.php:77
 msgid "Password"
@@ -1239,7 +1286,7 @@ msgid "Enter your password"
 msgstr ""
 
 #: fabui/application/views/login/login_form.php:41
-msgid "Forgot password"
+msgid "Forgot password?"
 msgstr ""
 
 #: fabui/application/views/login/login_form.php:47
@@ -1278,7 +1325,7 @@ msgid "The bed is well calibrated to print"
 msgstr ""
 
 #: fabui/application/views/bed/calibration_results.php:55
-msgid "Well this is embarassing, during measurements something went wrong"
+msgid "Well this is embarrassing, during measurements something went wrong"
 msgstr ""
 
 #: fabui/application/views/bed/calibration_results.php:55
@@ -1287,7 +1334,7 @@ msgstr ""
 
 #: fabui/application/views/bed/calibration_results.php:144
 #, fuzzy
-msgid "following this rotation sense"
+msgid "following this rotation direction"
 msgstr "Segui le istruzioni"
 
 #: fabui/application/views/jog/js.php:141
@@ -1300,8 +1347,8 @@ msgstr "Cerca nella descrizione"
 
 #: fabui/application/views/jog/js.php:415
 msgid ""
-"Turning the cold extrusion protection off might be dangerous if the "
-"fillament has not been removed from the head already"
+"Turning the cold extrusion protection off might be dangerous if the filament "
+"has not been removed from the head already"
 msgstr ""
 
 #: fabui/application/views/jog/js.php:415
@@ -1486,12 +1533,12 @@ msgstr ""
 
 #: fabui/application/views/plugin/js.php:80
 #: fabui/application/views/updates/index/js.php:47
-msgid " No internet connection found"
+msgid "No internet connection found"
 msgstr ""
 
 #: fabui/application/views/plugin/js.php:80
 #: fabui/application/views/updates/index/js.php:47
-msgid "Check your connection or try again"
+msgid "Check your connection and try again"
 msgstr ""
 
 #: fabui/application/views/plugin/js.php:84
@@ -1503,6 +1550,10 @@ msgstr "Plugin"
 #: fabui/application/views/plugin/main_widget.php:24
 msgid "visit plugin site"
 msgstr "Visita il sito web del plugin"
+
+#: fabui/application/views/plugin/js.php:93
+msgid "Install"
+msgstr "Installa"
 
 #: fabui/application/views/plugin/js.php:100
 #: fabui/application/views/updates/index/js.php:80
@@ -2081,12 +2132,6 @@ msgstr ""
 msgid "Preparing engage procedure"
 msgstr ""
 
-#: fabui/application/views/std/task_wizard.php:45
-#: fabui/application/views/std/task_wizard.php:110
-#, fuzzy
-msgid "Prev"
-msgstr "Vista file"
-
 #: fabui/application/views/std/task_execute.php:19
 msgid "Live feeds"
 msgstr ""
@@ -2274,7 +2319,7 @@ msgid "Check again"
 msgstr ""
 
 #: fabui/application/views/updates/index/js.php:70
-msgid " New important software updates are now available"
+msgid "New important software updates are now available"
 msgstr ""
 
 #: fabui/application/views/updates/index/js.php:81
@@ -4354,10 +4399,9 @@ msgstr ""
 msgid "DNS settings saved"
 msgstr "L'altezza della Z è"
 
-#: fabui/application/views/settings/network_js.php:172
-#, fuzzy
-msgid "Connecting to "
-msgstr "Connessione"
+#: fabui/application/views/std/jog_setup_js.php:347
+msgid "You need to home Z axis first"
+msgstr ""
 
 #: fabui/application/views/head/install_js.php:68
 #, fuzzy
@@ -4481,10 +4525,6 @@ msgstr ""
 msgid "Position {0}, {1}, {2} stored"
 msgstr ""
 
-#: fabui/application/views/std/jog_setup_js.php:347
-msgid "You need to home Z axis first"
-msgstr ""
-
 #: fabui/application/views/std/task_execute_js.php:590
 msgid "Speed override changed to {0}"
 msgstr ""
@@ -4552,6 +4592,26 @@ msgstr "Inserisci il nome dell'oggetto"
 #: fabui/application/views/std/task_execute_js.php:513
 msgid "Ext temp"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Connecting to "
+#~ msgstr "Connessione"
+
+#, fuzzy
+#~ msgid "Please enter an email address"
+#~ msgstr "Inserisci il tuo indirizzo email"
+
+#, fuzzy
+#~ msgid "Click"
+#~ msgstr "oppure premi"
+
+#, fuzzy
+#~ msgid "to complete"
+#~ msgstr "Scansione completata"
+
+#, fuzzy
+#~ msgid "Previous"
+#~ msgstr "Vista file"
 
 #, fuzzy
 #~ msgid "Aborting all operations"

@@ -77,7 +77,7 @@
 	function populateOnlineTable(plugins)
 	{
 		if(plugins == false){
-			$("#online-table").html('<h2 class="text-center"><i class="fa fa-warning"></i> <?php echo _(" No internet connection found") ?></h2><h6 class="text-center"><?php echo _("Check your connection or try again") ?></h6>');
+			$("#online-table").html('<h2 class="text-center"><i class="fa fa-warning"></i> <?php echo _("No internet connection found") ?></h2><h6 class="text-center"><?php echo _("Check your connection and try again") ?></h6>');
 
 		}else{
 			var table_html = '<table class="table table-striped table-forum"><thead><tr>\

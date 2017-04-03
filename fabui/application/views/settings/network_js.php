@@ -169,7 +169,7 @@
 			}
 			else
 			{
-				wait_title = _("Connecting to ") + '<strong>' + data['hidden-ssid']+'</strong> <i class="fa fa-wifi"></i>';
+				wait_title = _('Connecting to <strong>{0}</strong> <i class="fa fa-wifi"></i>').format(data['hidden-ssid']);
 				error_message = _("Failed to connect to Wireless network");
 			}
 		} 

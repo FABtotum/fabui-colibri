@@ -106,7 +106,7 @@
 		        		
 		        		if(index == 4){
 		        			$(".next").find('a').attr('style', 'cursor: pointer !important;');
-                       		$(".next").find('a').html('Install');
+                       		$(".next").find('a').html( _("Install") );
 		        		}
 		        		
 		        		if(index == 5){
@@ -116,7 +116,7 @@
 			  		}
 			},
 			'onPrevious': function(tab, navigation, index){
-				$(".next").find('a').html('Next');
+				$(".next").find('a').html( _("Next") );
 			},
 			'onLast': function(tab, navigation, inde){
 				console.log("last");
@@ -135,7 +135,7 @@
 	{
 		$(".next").find('a').html('Installing...');
 		$("#browser-date").val(moment().format('YYYY-MM-DD HH:mm:ss'));
-		openWait("<i class='fa fa-spin fa-spinner'></i> <?php echo _("Installation in progress"); ?>", "<?php echo _("This may take awhile, please wait"); ?>", false);
+		openWait("<i class='fa fa-spin fa-spinner'></i> <?php echo _("Installation in progress"); ?>", "<?php echo _("This may take a while, please wait"); ?>", false);
 		$("#install-form").submit();
 	}
 	/**

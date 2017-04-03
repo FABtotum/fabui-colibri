@@ -44,7 +44,7 @@
 	</div>
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse5" class="collapsed"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> <?php echo _("Print settings (M503 output)"); ?> </a></h4>
+			<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapse5" class="collapsed"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> <?php echo _("Printer settings (M503 output)"); ?> </a></h4>
 		</div>
 		<div id="collapse5" class="panel-collapse collapse">
 			<div class="panel-body">

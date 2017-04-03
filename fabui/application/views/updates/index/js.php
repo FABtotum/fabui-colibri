@@ -44,7 +44,7 @@
 	**/
 	function noInternetAvailable()
 	{
-		$(".status").html('<i class="fa fa-exclamation-circle"></i><br><?php echo _(" No internet connection found") ?><br><?php echo _("Check your connection or try again") ?>');
+		$(".status").html('<i class="fa fa-exclamation-circle"></i><br><?php echo _("No internet connection found") ?><br><?php echo _("Check your connection and try again") ?>');
 		$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-exclamation-circle');
 
 		buttons = '<button class="btn btn-default  action-buttons" id="check-again"> <?php echo _("Check again") ?></button> ';
@@ -67,7 +67,7 @@
 		var buttons = '';
 		
 		if(object.update.available){
-			$(".status").html('<i class="fa fa-exclamation-circle"></i> <?php echo _(" New important software updates are now available") ?>');
+			$(".status").html('<i class="fa fa-exclamation-circle"></i> <?php echo _("New important software updates are now available") ?>');
 			$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-exclamation-circle');
 		}else{
 			$(".status").html('<?php echo _("Great! Your FABtotum Personal Fabricator is up to date") ?>');

@@ -47,7 +47,7 @@
 					<section>
 						<label class="checkbox">
 							<input type="checkbox" name="terms" id="terms">
-							<i></i><?php echo _("I agree with the");?> <a href="#" data-toggle="modal" data-target="#myModal"> <?php echo _("Terms and Conditions");?> </a>
+							<i></i><?php echo _("I agree with the");?> <a href="#" data-toggle="modal" data-target="#myModal"> <?php echo _("Terms & Conditions");?> </a>
 						</label>
 					</section>
 				</fieldset>

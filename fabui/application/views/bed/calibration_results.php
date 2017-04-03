@@ -52,7 +52,7 @@ if(is_array($_response) && isset($_response['bed_leveling'])){ // if there is a 
 }else{ //else there is something wrong need to do it again
 
  echo '<h4 class="text-center">
-		'._("Well this is embarassing, during measurements something went wrong").'<br>'._("Try again").'
+		'._("Well this is embarrassing, during measurements something went wrong").'<br>'._("Try again").'
 	</h4>';
 }
 
@@ -141,7 +141,7 @@ function get_instructions($screw){
 	$badge_background_color['right'] = ' #0084ff!important;';
 	$badge_background_color['left'] = ' #ff0000!important; ';
 	
-	$rotation_section = _("following this rotation sense").' <span class="badge" style="background-color: '.$badge_background_color[$screw['direction']].'"><i class="fa fa-rotate-'.$screw['direction'].'"></i></span>';
+	$rotation_section = _("following this rotation direction").' <span class="badge" style="background-color: '.$badge_background_color[$screw['direction']].'"><i class="fa fa-rotate-'.$screw['direction'].'"></i></span>';
 	
 	if($screw['turns']['times'] < 1 ){
 		return 'Turn for '.$screw['turns']['degrees'].' degrees, '.$rotation_section;

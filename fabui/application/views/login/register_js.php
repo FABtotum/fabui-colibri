@@ -59,7 +59,7 @@
 			// Messages for form validation
 			messages : {
 				login : {
-					required : '<?php echo _("Please enter your login");?>'
+					required : '<?php echo _("Please enter your login name");?>'
 				},
 				email : {
 					required : '<?php echo _("Please enter your email address");?>',

@@ -20,7 +20,7 @@ var emergency_descriptions = {
 	103 : '<?php echo _("Head not properly aligned or absent"); ?>',
 	104 : '<?php echo _("Extruder Temperature critical, shutting down"); ?>',
 	105 : '<?php echo _("Bed Temperature critical, shutting down"); ?>',
-	106 : '<?php echo _("Y min Endstop hit: Move the carriage to the center or check Settings > Hardware > Custom Settings >Invert X Endstop Logic"); ?>',
+	106 : '<?php echo _("X max Endstop hit: Move the carriage to the center or check Settings > Hardware > Custom Settings >Invert X Endstop Logic"); ?>',
 	107 : '<?php echo _("X min Endstop hit: Move the carriage to the center or check Settings > Hardware > Custom Settings >Invert X Endstop Logic"); ?>',
 	108 : '<?php echo _("Y max Endstop hit: Move the carriage to the center and reset"); ?>',
 	109 : '<?php echo _("Y min Endstop hit: Move the carriage to the center and reset"); ?>',
