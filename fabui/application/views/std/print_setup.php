@@ -9,11 +9,8 @@
  * List of all files
  * 
  */
- 
 ?>
-
 <hr class="simple">
-
 <div class="" style="<?php echo ($this->session->settings['feeder']['show'] == true)?"":"display:none;"; ?>" >
 	<h4 class="text-center"><?php echo _('Engage feeder'); ?></h4>
 	<div class="row">
@@ -91,7 +88,7 @@
 					<div class="description text-center">
 						<div class="radio margin-top-10">
 							<label>
-								<input type="radio" value="home_all" class="radiobox style-0" checked="checked" name="calibration">
+							<input type="radio" value="home_all" class="radiobox style-0" <?php echo $this->session->settings["print"]["calibration"] == 'homing' ? 'checked="checked"' : '' ?>  name="calibration">
 								<span><?php echo _('Simple homing'); ?></span> 
 							</label>
 						</div>
@@ -113,7 +110,7 @@
 					<div class="description text-center">
 						<div class="radio margin-top-10">
 							<label>
-								<input value="auto_bed_leveling" type="radio" class="radiobox style-0" name="calibration">
+								<input value="auto_bed_leveling" type="radio" class="radiobox style-0" <?php echo $this->session->settings["print"]["calibration"] == 'auto_bed_leveling' ? 'checked="checked"' : '' ?> name="calibration">
 								<span><?php echo _('Auto bed leveling'); ?></span> 
 							</label>
 						</div>
