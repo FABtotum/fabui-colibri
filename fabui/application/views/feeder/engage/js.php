@@ -6,7 +6,7 @@
      
      function prepare(){
 
-        openWait('Preparing procedure');
+        openWait("<?php echo _("Preparing procedure");?>");
         IS_MACRO_ON = true;
         $.ajax({
               type: "POST",
@@ -20,15 +20,13 @@
             else
             {
                 $.smallBox({
-                    title : "Warning",
+                    title : <?php echo _("Warning");?>,
                     content: data.trace,
                     color : "#C46A69",
                     icon : "fa fa-warning",
                     timeout: 15000
                 });
             }
-            
-            IS_MACRO_ON = false;
             
             closeWait();
 

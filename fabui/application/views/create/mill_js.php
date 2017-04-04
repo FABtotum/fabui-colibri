@@ -49,13 +49,13 @@
 					enableButton('.button-next');
 				else
 					disableButton('.button-next');
-				$('.button-next').find('span').html("<?php echo _("Next"); ?>");
+				$('.button-next').find('span').html(_("Next"));
 				
 				break;
 			case 2: // Get Ready
 				enableButton('.button-prev');
 				disableButton('.button-next');
-				$('.button-next').find('span').html("<?php echo _("Mill"); ?>");
+				$('.button-next').find('span').html(_("Mill"));
 				break;
 				
 			case 3: // Execution

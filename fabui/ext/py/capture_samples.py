@@ -105,12 +105,12 @@ def main():
     
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("task_id",          help=_("Task ID.") )
+    parser.add_argument("task_id",          help="Task ID." )
     parser.add_argument("-s", "--samples",  help="Number of captured images.",  default=20 )
     parser.add_argument("-d", "--dest",     help="Destination folder.",         default=destination )
-    parser.add_argument("-W", "--width",    help=_("Image width in pixels."),   default=1269)
-    parser.add_argument("-H", "--height",   help=_("Image height in pixels."),  default=972)
-    parser.add_argument("-r", "--rotation", help=_("Image rotation."),          default=0)
+    parser.add_argument("-W", "--width",    help="Image width in pixels.",   default=1269)
+    parser.add_argument("-H", "--height",   help="Image height in pixels.",  default=972)
+    parser.add_argument("-r", "--rotation", help="Image rotation.",          default=0)
     # GET ARGUMENTS    
     args = parser.parse_args()
     

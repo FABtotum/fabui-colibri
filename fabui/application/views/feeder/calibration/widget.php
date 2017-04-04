@@ -12,7 +12,7 @@
 					</section>
 					<section class="col col-4">
 						<label class="label">&nbsp;</label>
-						<a href="javascript:void(0);" class="btn btn-sm btn-default btn-block step-change-modal-open" id="button-change-value"><i class="fa fa-pencil"></i> Change value</a>
+						<a href="javascript:void(0);" class="btn btn-sm btn-default btn-block step-change-modal-open" id="button-change-value"><i class="fa fa-pencil"></i> <?php echo _("Change value");?></a>
 					</section>
 				</div>
 			</fieldset>
@@ -33,7 +33,7 @@
 				
 				<div class="row calc-row" style="display:none;">
 					<section class="col col-8">
-						<label class="label"><?php echo _("Enter the measure of the filament extruded (mm)");?> </label>
+						<label class="label"><?php echo _("Enter the measured length of the filament extruded (mm)");?> </label>
 						<label class="input">
 							<input type="number" placeholder="100" value="100" id="filament-extruded">
 						</label>

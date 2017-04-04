@@ -25,7 +25,7 @@
 					<div class="col-sm-8">
 						<div class="description text-center">
 							<h1><span class="badge bg-color-blue txt-color-white">0</span></h1>
-							<p class="font-md"><?php echo _('To engage the filament feeder first pres ENGAGE button below and wait for the bed to stop moving.'); ?></p>
+							<p class="font-md"><?php echo _('To engage the filament feeder first press ENGAGE button below and wait for the bed to stop moving.'); ?></p>
 							<p class="font-md"><?php echo _('Then push the small button under the building platform near the 4th axis chuck. Apply a good amount of force when pushing.'); ?></p>
 							<button class="btn btn-primary engage-feeder"><?php echo _("Engage");?></button>
 						</div>

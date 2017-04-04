@@ -12,7 +12,7 @@ if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_i
 ?>
 
 <div class="row text-center">
-<h1><strong>Safety check</strong></h1>
+<h1><strong><?php echo _("Safety check");?></strong></h1>
 </div>
 
 <div class="row">

@@ -290,7 +290,7 @@
 			enableButton('.action-buttons');
 			$.smallBox({
 				title : "<?php echo _('Warning')?>",
-				content : '<?php echo _('Please select at least 1 bundle firmware or boot update')?>',
+				content : '<?php echo _('Please select at least 1 bundle, firmware or boot update')?>',
 				color : "#5384AF",
 				timeout: 3000,
 				icon : "fa fa-warning"

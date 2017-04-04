@@ -30,10 +30,10 @@
 	</div>
 	<div class="actions">
 		<button type="button" class="btn btn-sm btn-primary button-prev">
-			<i class="fa fa-arrow-left"></i> <span>Prev</span>
+			<i class="fa fa-arrow-left"></i> <span><?php echo _("Prev");?></span>
 		</button>
-		<button type="button" class="btn btn-sm btn-success button-next" data-last="Finish">
-			<span>Next</span> <i class="fa fa-arrow-right"></i>
+		<button type="button" class="btn btn-sm btn-success button-next" data-last="<?php echo _("Finish");?>">
+			<span><?php echo _("Next");?></span> <i class="fa fa-arrow-right"></i>
 		</button>
 	</div>
 </div>

@@ -106,7 +106,7 @@
 			data.push({
 				data: seriesExtTemp,
 				lines: { show: true, fill: true, lineWidth:0.5},
-				label: "<?php echo _("Nozzle Temp");?>",
+				label: "<?php echo _("Nozzle Temperature");?>",
 				color: "#FF0000",
 				points: {"show" : false}
 			});

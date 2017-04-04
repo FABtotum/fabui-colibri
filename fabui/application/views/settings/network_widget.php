@@ -36,7 +36,7 @@
 				<div class="row">
 					<section class="col col-6">
 						<div class="note">
-						<?php echo _('To easily access to the FABtotum Personal Fabricator by using the name you inserted you need to install on the device you are using to access it a multicast domain name system service discovery such as Bonjour or similar')?>
+						<?php echo _('To easily access the FABtotum Personal Fabricator by using the name you inserted it is necessary to have a multicast domain name system service discovery installed, such as Bonjour or similar.')?>
 					</div>
 					</section>
 				</div>

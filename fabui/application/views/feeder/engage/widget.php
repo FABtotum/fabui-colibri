@@ -8,9 +8,9 @@
 
 					<h1><span class="badge bg-color-blue txt-color-white">1</span></h1>
 
-					<h2>Please press the START button to initiate</h2>
+					<h2><?php echo _("Please press the START button to initiate");?></h2>
 
-					<button class="btn btn-default btn-primary prepare-engage"> Start</button>
+					<button class="btn btn-default btn-primary prepare-engage"> <?php echo _("Start");?></button>
 
 				</div>
 
@@ -26,8 +26,8 @@
 						<div class="col-sm-6 text-center">
 							<h1><span class="badge bg-color-blue txt-color-white">2</span></h1>
 
-							<h2>To engage the filament feeder push the small button under the building platform near the 4th axis chuck.</h2>
-							<h2>Apply a good amount of force when pushing</h2>
+							<h2><?php echo _("To engage the filament feeder push the small button under the building platform near the 4th axis chuck.");?></h2>
+							<h2><?php echo _("Apply a good amount of force when pushing");?></h2>
 
 						</div>
 					</div>

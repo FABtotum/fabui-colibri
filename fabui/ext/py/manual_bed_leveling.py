@@ -250,9 +250,9 @@ def main():
 
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-T", "--task-id",                          help=_("Task ID."),default=0)
-    parser.add_argument("-n", "--num_probes",                       help=_("Number of probings per screw."),     default=1, type=int)
-    parser.add_argument("-s", "--skip_homing", action='store_true', help=_("Skip homing.") )
+    parser.add_argument("-T", "--task-id",                          help="Task ID.",default=0)
+    parser.add_argument("-n", "--num_probes",                       help="Number of probings per screw.",     default=1, type=int)
+    parser.add_argument("-s", "--skip_homing", action='store_true', help="Skip homing." )
 
     # GET ARGUMENTS
     args = parser.parse_args()

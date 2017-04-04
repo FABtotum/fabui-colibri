@@ -32,7 +32,7 @@
 						</label>
 					</section>
 					<section class="col col-6">
-						<label class="label"><?php echo _("Cicle");?></label>
+						<label class="label"><?php echo _("Cycle");?></label>
 						<label class="input">
 							<input type="number" value="8" id="cycle">
 						</label>

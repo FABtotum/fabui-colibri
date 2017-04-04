@@ -15,10 +15,10 @@
 			<fieldset>
 				<section>
 					<label class="radio">
-						<input type="radio" id="settings_type" name="settings_type" value="default" <?php if($defaultSettings['settings_type'] == 'default') echo 'checked="checked"'; ?>><i></i>Use default settings
+						<input type="radio" id="settings_type" name="settings_type" value="default" <?php if($defaultSettings['settings_type'] == 'default') echo 'checked="checked"'; ?>><i></i><?php echo _("Use default settings");?>
 					</label>
 					<label class="radio">
-						<input type="radio" id="settings_type" name="settings_type" value="custom"  <?php if($defaultSettings['settings_type'] == 'custom') echo 'checked="checked"'; ?>><i></i>Use custom settings
+						<input type="radio" id="settings_type" name="settings_type" value="custom"  <?php if($defaultSettings['settings_type'] == 'custom') echo 'checked="checked"'; ?>><i></i><?php echo _("Use custom settings");?>
 					</label>
 				</section>
 			</fieldset>

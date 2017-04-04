@@ -10,13 +10,10 @@
 				<div class="col-sm-6">
 					
 					<h1 class="text-center"><span class="badge bg-color-blue txt-color-white">1</span></h1>
-					<h2 class="text-center">This automatic procedure will disengage the feeder and enable the rotating 4th axis.<br>
-						This is a diagnostic procedure and will disable extrusion during 3D prints. <br>
-						If you Engage the 4th axis be sure to engage the feeder prior to 3D printing</h2>
-					
+					<h2 class="text-center"><?php echo _("This automatic procedure will disengage the feeder and enable the rotating 4th axis.");?><br>
+						<?php echo _("This is a diagnostic procedure and will disable extrusion during 3D prints.<br>If you Engage the 4th axis be sure to engage the feeder prior to 3D printing");?></h2>
 					<hr>
-					
-					<p class="text-center"><button class="btn btn-primary btn-default do-engage"> Start </button></p>
+					<p class="text-center"><button class="btn btn-primary btn-default do-engage"> <?php echo _("Start");?> </button></p>
 					
 				</div>
 				

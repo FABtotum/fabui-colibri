@@ -69,6 +69,6 @@
 		$("#calbration-result").html(data.html);
 		closeWait();
 		gotoWizardStep(2);
-		$(".button-next").html("<span>Calibrate again</span>");
+		$(".button-next").html("<span><?php echo _("Calibrate again");?></span>");
 	}
 </script>

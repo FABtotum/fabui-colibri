@@ -343,17 +343,17 @@ def main():
     
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("task_id",          help=_("Task ID.") )
-    parser.add_argument("-d", "--dest",     help=_("Destination folder."),      default=destination )
-    parser.add_argument("-i", "--intrinsic",help=_("Intrinsic camera parameters."), default='intrinsic.json' )
-    parser.add_argument("-o", "--output",   help=_("Extrinsic camera parameters."), default='extrinsic.json' )
-    parser.add_argument("-W", "--width",    help=_("Image width in pixels."),   default=1296)
-    parser.add_argument("-H", "--height",   help=_("Image height in pixels."),  default=972)
-    parser.add_argument("-r", "--rotation", help=_("Image rotation."),          default=0)
-    parser.add_argument("-x", "--x-offset", help=_("X offset."),                default=104)
-    parser.add_argument("-y", "--y-offset", help=_("Y offset."),                default=117)
-    parser.add_argument("-z", "--z-offset", help=_("Z offset."),                default=220)
-    parser.add_argument("-b", "--base-height", help=_("Chessboard height of it's base."), default=0)
+    parser.add_argument("task_id",          help="Task ID." )
+    parser.add_argument("-d", "--dest",     help="Destination folder."),      default=destination )
+    parser.add_argument("-i", "--intrinsic",help="Intrinsic camera parameters.", default='intrinsic.json' )
+    parser.add_argument("-o", "--output",   help="Extrinsic camera parameters.", default='extrinsic.json' )
+    parser.add_argument("-W", "--width",    help="Image width in pixels.",   default=1296)
+    parser.add_argument("-H", "--height",   help="Image height in pixels.",  default=972)
+    parser.add_argument("-r", "--rotation", help="Image rotation.",          default=0)
+    parser.add_argument("-x", "--x-offset", help="X offset.",                default=104)
+    parser.add_argument("-y", "--y-offset", help="Y offset.",                default=117)
+    parser.add_argument("-z", "--z-offset", help="Z offset.",                default=220)
+    parser.add_argument("-b", "--base-height", help="Chessboard height of it's base.", default=0)
     
     
     # GET ARGUMENTS    

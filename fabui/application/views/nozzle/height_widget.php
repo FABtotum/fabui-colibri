@@ -16,15 +16,15 @@
     
         <div class="col-sm-6">
             <div class="well well-light">
-                <h3 class="text-center text-primary">Assisted calibration</h3>
-                <h5 class="text-center">Helps you correct the nozzle height during prints. Each time you swap heads you should re-calibrate.</h5>
+                <h3 class="text-center text-primary"><?php echo _("Assisted calibration");?></h3>
+                <h5 class="text-center"><?php echo _("Helps you correct the nozzle height during prints. Each time you swap heads you should re-calibrate.");?></h5>
                 <h2 class="text-center"><a data-action='normal' href="javascript:void(0);" class="btn btn-default btn-primary btn-circle  choice-button" id="nozzle-calibrate-normal"><i class="fa fa-chevron-down"></i></a></h2>
             </div>
         </div>
         <div class="col-sm-6">
             <div class="well well-light">
-            <h3 class="text-center text-primary">Fine calibration</h3>
-            <h5 class="text-center">Manually edit the override distance to fine tune the nozzle height during prints.</h5>
+            <h3 class="text-center text-primary"><?php echo _("Fine calibration");?></h3>
+            <h5 class="text-center"><?php echo _("Manually edit the override distance to fine tune the nozzle height during prints.");?></h5>
             <h2 class="text-center"><a data-action='fast' href="javascript:void(0);" class="btn btn-default btn-primary btn-circle  choice-button" id="nozzle-calibrate-fast"><i class="fa fa-chevron-down"></i></a></h2>
             </div>
         </div>
@@ -47,7 +47,7 @@
                     </div>
                     
                      <div class="col-sm-6 text-center">
-                        <h2>Make sure nozzle is clean and then press OK to continue</h2>
+                        <h2><?php echo _("Make sure nozzle is clean and then press OK to continue");?></h2>
                         <button id="probe-calibration-prepare" class="btn btn-primary btn-default ">Ok</button>
                     </div>
           		</div>
@@ -65,11 +65,11 @@
                         <div class="row margin-bottom-20">
                             <div class="col-sm-12">
                                 <h4 class="text-center">
-                                    Using the buttons below, raise the bed until a standard piece of copy paper (80 mg) can barely move between the nozzle and the bed.
+                                    <?php echo _("Using the buttons below, raise the bed until a standard piece of copy paper (80 mg) can barely move between the nozzle and the bed.");?>
                                     <br>
-                                    <i class="fa fa-warning"></i> Caution the nozzle is hot!
+                                    <i class="fa fa-warning"></i> <?php echo _("Caution the nozzle is hot!");?>
                                     <br><br>
-                                    When done press Calibrate to finish
+                                    <?php echo _("When done press Calibrate to finish");?>
                                 </h4>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                                             <label><strong>Z</strong></label>
                                         </section>
                                         <section class="col col-6 text-center">
-                                            <label><strong>Step (mm)</strong></label>
+                                            <label><strong><?php echo _("Step (mm)");?></strong></label>
                                         </section>
                                         <section class="col col-3 text-center">
                                             <label><strong>Z</strong></label>
@@ -91,13 +91,13 @@
                                     </div>
                                     <div class="row">
                                         <section class="col col-3">
-                                            <button data-action="+" type="button" title="Away from nozzle" class="btn  btn-default btn-primary btn-sm btn-block z-action"><i class="fa fa-arrow-down"></i> </button>
+                                            <button data-action="+" type="button" title="<?php echo _("Away from nozzle");?>" class="btn  btn-default btn-primary btn-sm btn-block z-action"><i class="fa fa-arrow-down"></i> </button>
                                         </section>
                                         <section class="col col-6">
                                             <label class="input"><input id="z-value" type="text" style="text-align: center;" value="0.1"></label>
                                         </section>
                                         <section class="col col-3">
-                                            <button data-action="-" type="button" title="Close to nozzle" class="btn btn-primary  btn-default btn-sm btn-block z-action"><i class="fa fa-arrow-up"></i></button>
+                                            <button data-action="-" type="button" title="<?php echo _("Closer to nozzle");?>" class="btn btn-primary  btn-default btn-sm btn-block z-action"><i class="fa fa-arrow-up"></i></button>
                                         </section>
                                     </div>
                                 </fieldset>  
@@ -118,10 +118,10 @@
             
             <div class="row">
                 <div class="col-sm-3">
-                    <h3 class="text-primary">Calibration result</h3>
+                    <h3 class="text-primary"><?php echo _("Calibration result");?></h3>
                 </div>
                 <div class="col-sm-9">
-                    <button class="btn btn-primary btn-default  pull-right calibrate-again">Calibrate again</button>
+                    <button class="btn btn-primary btn-default  pull-right calibrate-again"><?php echo _("Calibrate again");?></button>
                 </div>
             </div>
             <div class="row margin-top-10">
@@ -140,10 +140,10 @@
             <div class="well well-light">
                 <div class="row">
                     <div class="col-sm-6">
-                    	<h3 class="text-center text-primary">Fine Calibration</h3>
+                    	<h3 class="text-center text-primary"><?php echo _("Fine calibration");?></h3>
                         <h4 class="text-center">
                           
-If the print first layer is too high or too close to the bed, use this function to finely calibrate the distance from the nozzle and the bed during 3D-prints. Usually 0.05mm increments are enough to make a difference.
+<?php echo _("If the print first layer is too high or too close to the bed, use this function to finely calibrate the distance from the nozzle and the bed during 3D-prints. Usually 0.05mm increments are enough to make a difference.");?>
                             
                         </h4>
                     </div>
@@ -154,13 +154,13 @@ If the print first layer is too high or too close to the bed, use this function 
                                 <fieldset style="background: none; !important">
                                     <div class="row">
                                         <section class="col col-3 text-center">
-                                            <label><strong>Closer</strong></label>
+                                            <label><strong><?php echo _("Closer");?></strong></label>
                                         </section>
                                         <section class="col col-6 text-center">
-                                            <label><strong>Distance override (<span id="nozzle-offset"></span> mm)</strong></label>
+                                            <label><?php echo _('<strong>Distance override (<span id="nozzle-offset"></span> mm)</strong>');?></label>
                                         </section>
                                         <section class="col col-3 text-center">
-                                            <label><strong>Further</strong></label>
+                                            <label><strong><?php echo _("Further");?></strong></label>
                                         </section>
                                     </div>
                                     <div class="row">
@@ -195,10 +195,10 @@ If the print first layer is too high or too close to the bed, use this function 
             
             <div class="row">
                 <div class="col-sm-2">
-                    <h3 class="text-primary">Calibration result</h3>
+                    <h3 class="text-primary"><?php echo _("Calibration result");?></h3>
                 </div>
                 <div class="col-sm-10">
-                    <button  class="btn btn-primary btn-default pull-right calibrate-again">Calibrate again</button>
+                    <button  class="btn btn-primary btn-default pull-right calibrate-again"><?php echo _("Calibrate again");?></button>
                 </div>
             </div>
             <div class="row margin-top-10">

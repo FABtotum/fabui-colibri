@@ -31,7 +31,7 @@
 					enableButton('.btn-next');
 				else
 					disableButton('.btn-next');
-				$('.btn-next').find('span').html('Next');
+				$('.btn-next').find('span').html(_("Next"));
 				
 				cmd = 'M62';
 				fabApp.jogMdi(cmd);
@@ -40,7 +40,7 @@
 			case 2: // Safety
 				enableButton('.btn-prev');
 				disableButton('.btn-next');
-				$('.btn-next').find('span').html('Next');
+				$('.btn-next').find('span').html(_("Next"));
 				
 				cmd = 'M62';
 				fabApp.jogMdi(cmd);
@@ -49,7 +49,7 @@
 			case 3: // Calibration
 				enableButton('.btn-prev');
 				disableButton('.btn-next');
-				$('.btn-next').find('span').html('Engrave');
+				$('.btn-next').find('span').html(_("Engrave"));
 				
 				cmd = 'M60 S10\nM300\n';
 				fabApp.jogMdi(cmd);
@@ -87,7 +87,7 @@
 	function startTask()
 	{
 		console.log('Starting task');
-		openWait('<i class="fa fa-spinner fa-spin "></i>' + "<?php echo _('Preparing {0}');?>".format("<?php echo _(ucfirst($type)); ?>"), "<?php echo _('Please wait');?>");
+		openWait('<i class="fa fa-spinner fa-spin "></i>' + _("Preparing {0}").format("<?php echo _(ucfirst($type)); ?>"), _("Please wait") );
 		
 		var data = {
 			idFile:idFile

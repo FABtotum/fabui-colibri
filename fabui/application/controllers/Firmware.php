@@ -76,7 +76,7 @@ class Firmware extends FAB_Controller {
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-firmware';
-		$widget->header = array('icon' => 'fa-microchip', "title" => "<h2>Firmware</h2>");
+		$widget->header = array('icon' => 'fa-microchip', "title" => "<h2>"._("Firmware")."</h2>");
 		$widget->body   = array('content' => $this->load->view('firmware/main_widget', $data, true ), 'class'=>'fuelux', 'footer'=>$widgeFooterButtons);
 
 		$this->addJSFile('/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js'); //datatable

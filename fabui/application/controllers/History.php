@@ -36,7 +36,7 @@ class History extends FAB_Controller {
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-bed-calibration';
-		$widget->header = array('icon' => 'fa-history', "title" => "<h2>History</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-history', "title" => "<h2>"._("History")."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('history/main_widget', $data, true ), 'class'=>'fuelux');
 		
 		// datatable

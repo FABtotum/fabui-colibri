@@ -11,28 +11,29 @@ LC_FABUI_PHP_INPUT 	= $(wildcard fabui/application/*/*.php fabui/application/vie
 
 LC_FABUI_PY_INPUT = $(wildcard fabui/ext/py/*.py fabui/ext/py/fabtotum/*.py fabui/ext/py/fabtotum/*/*.py fabui/ext/py/fabtotum/*/*/*.py )
 
-LC_FABUI_JS_INPUT = $(wildcard fabui/application/*/*_js.php fabui/application/views/*/*_js.php fabui/application/views/*/*/*_js.php fabui/assets/js/std/jogcontrols.js fabui/assets/js/tours/*.js)
+LC_FABUI_JS_INPUT = $(wildcard fabui/assets/js/fab.app.js fabui/application/*/*_js.php fabui/application/views/*/*_js.php fabui/application/views/*/*/*_js.php fabui/assets/js/std/jogcontrols.js fabui/assets/js/tours/*.js)
 
-LC_FABUI_INPUT    = $(LC_FABUI_PHP_INPUT) $(LC_FABUI_PY_INPUT) $(LC_FABUI_JS_INPUT)
+LC_FABUI_ALL_INPUT    = $(LC_FABUI_PHP_INPUT) $(LC_FABUI_PY_INPUT) $(LC_FABUI_JS_INPUT)
+LC_FABUI_PHP_PY_INPUT    = $(LC_FABUI_PHP_INPUT) $(LC_FABUI_PY_INPUT)
 
 LC_FABUI_OUTPUT = fabui/locale/fabui.pot
 
 LC_LANGUAGES	= locale.it locale.de
 LC_JSON			= fabui/locale/it/LC_MESSAGES/fabui.json fabui/locale/de/LC_MESSAGES/fabui.json
 
-fabui/locale/fabui.pot: $(LC_FABUI_INPUT)
+fabui/locale/fabui.pot: $(LC_FABUI_ALL_INPUT)
 	@echo "Creating" $@
 	$(XGETTEXT_JS) $(LC_FABUI_JS_INPUT) > fabui/locale/fabui_js.pot
 	@$(XGETTEXT) $(XGETTEXT_ARGS) \
 		-o $@ \
 		--copyright-holder=$(LC_AUTHOR) \
 		--package-name=$(LC_PACKAGE_NAME) \
-		$^
+		$(LC_FABUI_PHP_PY_INPUT)
 	@$(XGETTEXT) $(XGETTEXT_ARGS) -j fabui/locale/fabui_js.pot \
 		-o $@ \
 		--copyright-holder=$(LC_AUTHOR) \
 		--package-name=$(LC_PACKAGE_NAME) \
-		$^
+		$(LC_FABUI_PHP_PY_INPUT)
 	
 	
 

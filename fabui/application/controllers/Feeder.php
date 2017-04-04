@@ -78,7 +78,7 @@ class Feeder extends FAB_Controller {
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-feeder-calibration';
-		$widget->header = array('icon' => 'fa-bars', "title" => "<h2>Feeder profiles</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-bars', "title" => "<h2>"._("Feeder profiles")."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('feeder/profiles/widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 		
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
@@ -113,7 +113,7 @@ class Feeder extends FAB_Controller {
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-feeder-calibration';
-		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>Step Calibration</h2>");
+		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>"._("Step Calibration")."</h2>");
 		$widget->body   = array('content' => $this->load->view('feeder/calibration/widget', $data, true ), 'class'=>'fuelux');
 		
 		$this->addJsInLine($this->load->view('feeder/calibration/js', $data, true));
@@ -139,7 +139,7 @@ class Feeder extends FAB_Controller {
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-feeder-engage';
-		$widget->header = array('icon' => 'fa-hand-o-right', "title" => "<h2>Engage Feeder</h2>");
+		$widget->header = array('icon' => 'fa-hand-o-right', "title" => "<h2>"._("Engage Feeder")."</h2>");
 		$widget->body   = array('content' => $this->load->view('feeder/engage/widget', $data, true ), 'class'=>'fuelux');
 		
 		$this->addJsInLine($this->load->view('feeder/engage/js', $data, true));

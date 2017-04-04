@@ -103,10 +103,10 @@ def main():
 
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-T", "--task-id",  help=_("Task ID."),                         default=0)
-    parser.add_argument("-e", "--extruder", help=_("Extruder to select."),              default=0)
-    parser.add_argument("-t", "--temp",     help=_("Temperature used for PID tunind."), default=200)
-    parser.add_argument("-c", "--cycles",   help=_("Number of tuning cycles"),          default=8)
+    parser.add_argument("-T", "--task-id",  help="Task ID.",                         default=0)
+    parser.add_argument("-e", "--extruder", help="Extruder to select.",              default=0)
+    parser.add_argument("-t", "--temp",     help="Temperature used for PID tunind.", default=200)
+    parser.add_argument("-c", "--cycles",   help="Number of tuning cycles",          default=8)
 
     # GET ARGUMENTS
     args = parser.parse_args()

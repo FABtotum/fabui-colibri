@@ -186,7 +186,7 @@
 		html += '<table class="table">' +
 					'<tbody>' +
 						'<tr>' + 
-							'<td><?php echo _('New probe lenght'); ?></td>' +
+							'<td><?php echo _('New probe length'); ?></td>' +
 							'<td> <strong>' + z_probe_offset  + ' (mm)</strong></td>' +
 						'</tr>'+
 						'<tr>'+

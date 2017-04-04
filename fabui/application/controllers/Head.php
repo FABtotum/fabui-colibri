@@ -51,12 +51,12 @@ class Head extends FAB_Controller {
 			'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
 		);
 		
-		$widgeFooterButtons = '<span style="margin-right:10px;"><i class="fa fa-warning"></i> Before clicking "Install", make sure the head is properly locked in place </span>' .
+		$widgeFooterButtons = '<span style="margin-right:10px;"><i class="fa fa-warning"></i>'._('Before clicking "Install", make sure the head is properly locked in place').' </span>' .
 							   $this->smart->create_button('Install', 'primary')->attr(array('id' => 'set-head'))->icon('fa-wrench')->print_html(true);
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';
-		$widget->header = array('icon' => 'fa-toggle-down', "title" => "<h2>Heads</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-toggle-down', "title" => "<h2>"._("Heads")."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('head/install', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator

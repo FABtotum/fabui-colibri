@@ -548,7 +548,7 @@ fabApp = (function(app) {
 		app.rebooting = true;
 		clearInterval(temperatures_interval);
 		//$.is_macro_on = true;
-		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> " + _("Restart in progress"), _("Please wait") + '...', false);
+		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> " + _("Restart in progress") , _("Please wait") + '...', false);
 		$.ajax({
 			url: reboot_url_action,
 		}).done(function(data) {
@@ -566,7 +566,7 @@ fabApp = (function(app) {
 	app.poweroff = function() {
 		clearInterval(temperatures_interval);
 		//is_macro_on = true;
-		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> ' + _("Shutdown in progress"), _("Please wait") + '...', false);
+		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> ' + _("Shutdown in progress") , _("Please wait") + '...', false);
 		$.ajax({
 			url: poweroff_url_action,
 		}).done(function(data) {
@@ -608,8 +608,6 @@ fabApp = (function(app) {
 					}
 				});
 				app.updateNotificationBadge();
-				//var html = '<div class="row"><div class="col-sm-12"><div class="alert alert-danger alert-block animated fadeIn"><button class="close" data-dismiss="alert">×</button><h4 class="alert-heading"> <i class="fa fa-refresh"></i> New important software updates are now available, <a style="text-decoration:underline; color:white;" href="/fabui/updates">update now!</a> </h4></div></div></div>';
-				//if($.module != 'updates') $("#content").prepend(html);
 			}
 		});
 	};

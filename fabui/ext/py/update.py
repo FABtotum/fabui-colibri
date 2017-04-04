@@ -138,11 +138,10 @@ class UpdateApplication(GCodePusher):
 def main():
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-T", "--task-id",     help=_("Task ID."),                      default=0)
-    #~ parser.add_argument("-B", "--bundle", action='append', help=_("Bundle name to be updated") )
-    parser.add_argument("-b", "--bundles", help=_("Bundle name to be updated") )
-    parser.add_argument("--boot", action="store_true", help=_("Update boot files") )
-    parser.add_argument("-f", "--firmware", action="store_true", help=_("Update firmware") )
+    parser.add_argument("-T", "--task-id",     						help="Task ID.",                      default=0)
+    parser.add_argument("-b", "--bundles", 							help="Bundle name to be updated" )
+    parser.add_argument("--boot", action="store_true", 				help="Update boot files" )
+    parser.add_argument("-f", "--firmware", action="store_true", 	help="Update firmware" )
     
     # GET ARGUMENTS
     args = parser.parse_args()

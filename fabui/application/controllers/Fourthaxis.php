@@ -28,7 +28,7 @@ class FourthAxis extends FAB_Controller {
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-4th-axis';
-		$widget->header = array('icon' => 'fa-arrows-h', "title" => "<h2>Engage 4th Axis</h2>");
+		$widget->header = array('icon' => 'fa-arrows-h', "title" => "<h2>"._("Engage 4th Axis")."</h2>");
 		$widget->body   = array('content' => $this->load->view('fourthaxis/main_widget', $data, true ), 'class'=>'fuelux');
 		
 		$this->addJsInLine($this->load->view('fourthaxis/js', $data, true));

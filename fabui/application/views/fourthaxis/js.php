@@ -7,7 +7,7 @@
     
     function do_engage()
     {
-        openWait('Engaging in process');
+        openWait("<?php echo _("Engaging in process");?>");
         
         var now = jQuery.now();
         

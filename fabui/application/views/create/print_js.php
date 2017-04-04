@@ -48,7 +48,7 @@
 					enableButton('.button-next');
 				else
 					disableButton('.button-next');
-				$('.button-next').find('span').html('Next');
+				$('.button-next').find('span').html(_("Next"));
 				
 				break;
 			case 2: // Get Ready
