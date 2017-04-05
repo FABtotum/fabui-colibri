@@ -106,7 +106,7 @@
 		        		
 		        		if(index == 4){
 		        			$(".next").find('a').attr('style', 'cursor: pointer !important;');
-                       		$(".next").find('a').html( _("Install") );
+                       		$(".next").find('a').html( "<?php echo _("Install") ?>" );
 		        		}
 		        		
 		        		if(index == 5){
