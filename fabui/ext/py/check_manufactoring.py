@@ -29,6 +29,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-f", help="file to read")
 parser.add_argument("-n", help="Num lines to check",  default=500, nargs='?', type=int)
 parser.add_argument("-d", "--debug",    help="Debug: print console",   action="store_true")
+parser.add_argument("--lang",           help="Output language",     default='en_US.UTF-8' )
 
 args = parser.parse_args()
 

@@ -49,8 +49,8 @@ class ProbeScan(GCodePusher):
     Z_FEEDRATE      = 1500
     E_FEEDRATE      = 800
     
-    def __init__(self, log_trace, monitor_file, standalone = False, finalize = True):
-        super(ProbeScan, self).__init__(log_trace, monitor_file, use_stdout=standalone)
+    def __init__(self, log_trace, monitor_file, standalone = False, finalize = True, lang = 'en_US.UTF-8'):
+        super(ProbeScan, self).__init__(log_trace, monitor_file, use_stdout=standalone, lang=lang)
         
         self.standalone = standalone
         self.finalize   = finalize
@@ -353,6 +353,7 @@ def main():
     parser.add_argument("-z", "--safe-z",   help="Safe Z.",                 default=1)
     parser.add_argument("-t", "--threshold", help="Detail threshold.",      default=0)
     parser.add_argument("-s", "--max-skip",  help="Maximum number of skipped probes.",      default=10)
+    parser.add_argument("--lang",            help="Output language", 		default='en_US.UTF-8' )
     parser.add_argument('--help', action='help', help="Show this help message and exit" )
 
     # GET ARGUMENTS
@@ -380,7 +381,7 @@ def main():
         standalone  = False
         
     cloud_file      = args.output
-
+	lang			= args.lang
     monitor_file    = config.get('general', 'task_monitor')
     log_trace       = config.get('general', 'trace')
 
@@ -391,7 +392,7 @@ def main():
     print 'Probing density : ', probe_density , " points/mm"
     #print 'Start/End       : ', begin ,' to ', end, 'deg'
 
-    app = ProbeScan(log_trace, monitor_file, standalone)
+    app = ProbeScan(log_trace, monitor_file, standalone, lang=lang)
 
     app_thread = Thread( 
             target = app.run, 

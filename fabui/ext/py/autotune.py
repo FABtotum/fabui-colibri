@@ -40,8 +40,8 @@ class PIDAutotune(GCodePusher):
     Automatic PID tuninig.
     """
     
-    def __init__(self, log_trace, monitor_file):
-        super(PIDAutotune, self).__init__(log_trace, monitor_file)
+    def __init__(self, log_trace, monitor_file, lang = 'en_US.UTF-8'):
+        super(PIDAutotune, self).__init__(log_trace, monitor_file, lang=lang)
         
         self.autotune_stats = {
             'P' : 0.0,
@@ -107,6 +107,7 @@ def main():
     parser.add_argument("-e", "--extruder", help="Extruder to select.",              default=0)
     parser.add_argument("-t", "--temp",     help="Temperature used for PID tunind.", default=200)
     parser.add_argument("-c", "--cycles",   help="Number of tuning cycles",          default=8)
+    parser.add_argument("--lang",           help="Output language", 				 default='en_US.UTF-8' )
 
     # GET ARGUMENTS
     args = parser.parse_args()
@@ -118,8 +119,9 @@ def main():
     temperature     = int(args.temp)
     extruder        = int(args.extruder)
     cycles          = int(args.cycles)
+    lang			= args.lang
     
-    app = PIDAutotune(log_trace, monitor_file)
+    app = PIDAutotune(log_trace, monitor_file, lang=lang)
 
     app_thread = Thread( 
             target = app.run, 

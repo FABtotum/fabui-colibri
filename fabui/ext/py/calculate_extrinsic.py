@@ -40,8 +40,8 @@ tr = gettext.translation('calibration', 'locale', fallback=True)
 _ = tr.ugettext
 
 class Extrinsic(GCodePusher):
-    def __init__(self, log_trace, monitor_file, scan_dir, output_file, width, height, rotation):
-        super(Extrinsic, self).__init__(log_trace, monitor_file)
+    def __init__(self, log_trace, monitor_file, scan_dir, output_file, width, height, rotation, lang = 'en_US.UTF-8'):
+        super(Extrinsic, self).__init__(log_trace, monitor_file, lang=lang)
 
         self.camera = PiCamera()
         self.camera.resolution  = (width, height)
@@ -354,7 +354,7 @@ def main():
     parser.add_argument("-y", "--y-offset", help="Y offset.",                default=117)
     parser.add_argument("-z", "--z-offset", help="Z offset.",                default=220)
     parser.add_argument("-b", "--base-height", help="Chessboard height of it's base.", default=0)
-    
+    parser.add_argument("--lang",           help="Output language", 		 default='en_US.UTF-8' )
     
     # GET ARGUMENTS    
     args = parser.parse_args()
@@ -373,7 +373,7 @@ def main():
     z_offset        = float(args.z_offset)
     base_height     = float(args.base_height)
     output_file     = args.output
-    
+    lang			= args.lang
     output_dir      = destination
 
     if not os.path.exists(output_dir):
@@ -385,7 +385,8 @@ def main():
                   output_file,
                   width=width,
                   height=height,
-                  rotation=rotation)
+                  rotation=rotation,
+                  lang=lang)
 
     app_thread = Thread( 
             target = app.run, 

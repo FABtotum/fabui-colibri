@@ -52,7 +52,7 @@ def pause_additive(app, args=None, lang='en_US.UTF-8'):
     #app.macro("M82",                "ok", 2,    _("E relative position mode"), verbose=False )
     #app.macro("G0 E-{0} F{1}".format(feeder['retract_amount'], feeder['retract_feedrate']),  "ok", 20,    _("Retract fillament") )
     
-    app.macro("G90",                "ok", 2,    _("Setting absolute position"), verbose=False )
+    app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False )
     app.macro("G0 Z{0} F5000".format(safe_z),        "ok", 100,  _("Moving to Z safe zone"), verbose=False )
     
     app.macro("G0 X210 Y210 F6000", "ok", 100,  _("Moving to safe zone"), verbose=False )
@@ -73,7 +73,7 @@ def resume_additive(app, args=None, lang='en_US.UTF-8'):
             y = float(content['position']['y'])
             z = float(content['position']['z'])
             
-            app.macro("G90",                            "ok", 2,  _("Setting absolute position"), verbose=False )
+            app.macro("G90",                            "ok", 2,  _("Setting abs position"), verbose=False )
             app.macro("G0 X{0} Y{1} F6000".format(x,y), "ok", 60,  _("Restore XY position"), verbose=False )
             app.macro("G0 Z{0} F5000".format(z),        "ok", 60,  _("Restore Z position"), verbose=False )
             app.macro("M400",                           "ok", 120,  _("Waiting for all moves to finish"), verbose=False)
@@ -160,14 +160,14 @@ def end_additive(app, args=None, lang='en_US.UTF-8'):
 def end_additive_safe_zone(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     app.macro("M121",                     "ok", 2,    _("Force endstops"), verbose=False )
-    app.macro("G90",                      "ok", 2,    _("Setting Absolute position") )
+    app.macro("G90",                      "ok", 2,    _("Setting abs position") )
     app.macro("G0 X210 Y210 Z240 F10000", "ok", 100,  _("Moving to safe zone") )
     app.macro("G27 Z0",                   "ok", 100,  _("Zeroing Z axis") )
     app.macro("M400",       "ok", 200,   _("Waiting for all moves to finish") )
     
 def end_additive_aborted(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    app.macro("G91",                        "ok", 2,    _("Setting Relative position") )
+    app.macro("G91",                        "ok", 2,    _("Setting rel position") )
     app.macro("G0 Z5 F10000",   "ok", 100,  _("Moving to safe zone") )
     app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish") )
 
@@ -208,10 +208,10 @@ def engage_feeder(app, args = None, lang='en_US.UTF-8'):
         app.macro("M741",           "TRIGGERED", 2, _("Front panel door control") )
     app.macro("M742",               "TRIGGERED", 1, _("Spool panel control"), warning=True, verbose=False)
     app.macro("G27",                "ok", 100,      _("Zeroing Z axis") )
-    app.macro("G91",                "ok", 1,        _("Set rel movement"), verbose=False)
+    app.macro("G91",                "ok", 1,        _("Set rel position"), verbose=False)
     app.macro("G0 Z-4 F1000",       "ok", 5,        _("Setting Z position") )
     app.macro("M400",               "ok", 5,        _("Waiting for all moves to finish"), verbose=False)
-    app.macro("G90",                "ok", 1,        _("Set absolute movement") )
+    app.macro("G90",                "ok", 1,        _("Set abs position") )
     app.macro("M92 E"+str(units_e), "ok", 1,        _("Setting extruder mode") )
     app.macro("M18",                "ok", 3,        _("Stopping motors"), verbose=False)
     app.macro("M300",               "ok", 3,        _("Play beep sound"), verbose=False)   

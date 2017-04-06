@@ -48,8 +48,8 @@ class Capture(GCodePusher):
     #RESOLUTIONS = [(640,480), (1920,1080), (1280,720), (1640,922), (3280,2464)]
     #ROTATIONS   = [0, 270]
     
-    def __init__(self, log_trace, monitor_file, scan_dir, width, height, rotation):
-        super(Capture, self).__init__(log_trace, monitor_file)
+    def __init__(self, log_trace, monitor_file, scan_dir, width, height, rotation, lang = 'en_US.UTF-8'):
+        super(Capture, self).__init__(log_trace, monitor_file, lang=lang)
 
         self.camera = PiCamera()
         self.camera.resolution  = (width, height)
@@ -108,9 +108,10 @@ def main():
     parser.add_argument("task_id",          help="Task ID." )
     parser.add_argument("-s", "--samples",  help="Number of captured images.",  default=20 )
     parser.add_argument("-d", "--dest",     help="Destination folder.",         default=destination )
-    parser.add_argument("-W", "--width",    help="Image width in pixels.",   default=1269)
-    parser.add_argument("-H", "--height",   help="Image height in pixels.",  default=972)
-    parser.add_argument("-r", "--rotation", help="Image rotation.",          default=0)
+    parser.add_argument("-W", "--width",    help="Image width in pixels.",      default=1269)
+    parser.add_argument("-H", "--height",   help="Image height in pixels.",     default=972)
+    parser.add_argument("-r", "--rotation", help="Image rotation.",             default=0)
+    parser.add_argument("--lang",           help="Output language", 		    default='en_US.UTF-8' )
     # GET ARGUMENTS    
     args = parser.parse_args()
     
@@ -123,7 +124,7 @@ def main():
     width           = int(args.width)
     height          = int(args.height)
     rotation        = int(args.rotation)
-    
+    lang			= args.lang
     output_dir      = os.path.join(destination, "samples")
 
     if not os.path.exists(output_dir):
@@ -134,7 +135,8 @@ def main():
                   output_dir,
                   width=width,
                   height=height,
-                  rotation=rotation)
+                  rotation=rotation,
+                  lang=lang)
 
     app_thread = Thread( 
             target = app.run, 

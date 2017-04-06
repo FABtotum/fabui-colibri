@@ -57,8 +57,11 @@ class RotaryScan(GCodePusher):
     E_FEEDRATE      = 800
     QUEUE_SIZE      = 64
     
-    def __init__(self, log_trace, monitor_file, scan_dir, standalone = False, finalize = True, width = 2592, height = 1944, rotation = 0, iso = 800, power = 230, shutter_speed = 35000):
-        super(RotaryScan, self).__init__(log_trace, monitor_file, use_stdout=False)
+    def __init__(self, log_trace, monitor_file, scan_dir, standalone = False, 
+				finalize = True, width = 2592, height = 1944, rotation = 0, 
+				iso = 800, power = 230, shutter_speed = 35000,
+				lang = 'en_US.UTF-8'):
+        super(RotaryScan, self).__init__(log_trace, monitor_file, use_stdout=False, lang=lang)
         
         self.standalone = standalone
         self.finalize   = finalize
@@ -378,7 +381,7 @@ def main():
     parser.add_argument("-y", "--y-offset", help="Y offset.",               default=175.0)
     parser.add_argument("-a", "--a-offset", help="A offset/rotation.",      default=0)
     parser.add_argument("-o", "--output",   help="Output point cloud file.",default=os.path.join(destination, 'cloud.asc'))
-    #~ parser.add_argument('--help', action='help', help=_("Show this help message and exit") )
+    parser.add_argument("--lang",           help="Output language", 		default='en_US.UTF-8' )
 
     # GET ARGUMENTS
     args = parser.parse_args()
@@ -408,7 +411,7 @@ def main():
         standalone  = False
 
     cloud_file      = args.output
-
+	lang			= args.lang
     monitor_file    = config.get('general', 'task_monitor')
     log_trace       = config.get('general', 'trace')
 
@@ -446,7 +449,8 @@ def main():
                     width=width,
                     height=height,
                     iso=iso,
-                    power=power)
+                    power=power,
+                    lang=lang)
 
     app_thread = Thread( 
             target = app.run, 

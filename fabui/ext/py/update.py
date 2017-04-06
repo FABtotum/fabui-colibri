@@ -44,8 +44,8 @@ class UpdateApplication(GCodePusher):
     Update application.
     """
     
-    def __init__(self, arch='armhf', mcu='atmega1280'):
-        super(UpdateApplication, self).__init__()
+    def __init__(self, arch='armhf', mcu='atmega1280', lang = 'en_US.UTF-8'):
+        super(UpdateApplication, self).__init__(lang=lang)
         
         self.resetTrace()
         self.factory = UpdateFactory(arch=arch, mcu=mcu, config=self.config, gcs=self.gcs, notify_update=self.update_monitor)
@@ -142,6 +142,7 @@ def main():
     parser.add_argument("-b", "--bundles", 							help="Bundle name to be updated" )
     parser.add_argument("--boot", action="store_true", 				help="Update boot files" )
     parser.add_argument("-f", "--firmware", action="store_true", 	help="Update firmware" )
+    parser.add_argument("--lang",                                   help="Output language", 		      default='en_US.UTF-8' )
     
     # GET ARGUMENTS
     args = parser.parse_args()
@@ -155,8 +156,9 @@ def main():
         bundles     = []
     firmware    = args.firmware
     boot        = args.boot
+    lang		= args.lang
     
-    app = UpdateApplication()
+    app = UpdateApplication(lang=lang)
 
     app.run(task_id, bundles, firmware, boot)
     app.loop()

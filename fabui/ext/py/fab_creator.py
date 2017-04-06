@@ -143,6 +143,7 @@ def main():
     parser.add_argument("command",       help=_("Command.") )
     parser.add_argument("-d", "--dest",  help="Destination",  default='.' )
     parser.add_argument("-i", "--input",  help="Generation plan", required=True)
+    parser.add_argument("--lang",           help="Output language", default='en_US.UTF-8' )
     #parser.add_argument("-t", "--type",  help="Destination",  default='default' )
     # GET ARGUMENTS    
     args = parser.parse_args()
@@ -153,6 +154,7 @@ def main():
     }
     
     plan_file = args.input
+    lang	  = args.lang
     
     with open(plan_file) as f:
         plan = json.loads( f.read() )

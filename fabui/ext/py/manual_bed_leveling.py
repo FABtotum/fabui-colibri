@@ -64,8 +64,8 @@ class ManualBedLeveling(GCodePusher):
     E_FEEDRATE          = 800
     MAX_NUM_PROBES      = 4
     
-    def __init__(self, log_trace, monitor_file, config):
-        super(ManualBedLeveling, self).__init__(log_trace, monitor_file, config=config, use_stdout=False)
+    def __init__(self, log_trace, monitor_file, config, lang = 'en_US.UTF-8'):
+        super(ManualBedLeveling, self).__init__(log_trace, monitor_file, config=config, use_stdout=False, lang=lang)
         
         self.bed_leveling_stats = {
             'screw_1' : [0.0, 0.0, 0.0], # [turns, degree, height]
@@ -253,7 +253,8 @@ def main():
     parser.add_argument("-T", "--task-id",                          help="Task ID.",default=0)
     parser.add_argument("-n", "--num_probes",                       help="Number of probings per screw.",     default=1, type=int)
     parser.add_argument("-s", "--skip_homing", action='store_true', help="Skip homing." )
-
+	parser.add_argument("--lang",                                   help="Output language",                   default='en_US.UTF-8' )
+	
     # GET ARGUMENTS
     args = parser.parse_args()
 
@@ -263,10 +264,11 @@ def main():
     log_trace       = config.get('general', 'trace') 
     num_probes      = args.num_probes
     skip_homing     = args.skip_homing
+    lang			= args.lang
     
     print "num_probes: ", num_probes
 
-    app = ManualBedLeveling(log_trace, monitor_file, config=config)
+    app = ManualBedLeveling(log_trace, monitor_file, config=config, lang=lang)
 
     app_thread = Thread( 
             target = app.run, 

@@ -39,8 +39,8 @@ class MillApplication(GCodePusher):
     Milling application.
     """
     
-    def __init__(self, log_trace, monitor_file, standalone = False, autolevel = False, finalize = True):
-        super(MillApplication, self).__init__(log_trace, monitor_file, use_stdout=standalone )
+    def __init__(self, log_trace, monitor_file, standalone = False, autolevel = False, finalize = True, lang = 'en_US.UTF-8'):
+        super(MillApplication, self).__init__(log_trace, monitor_file, use_stdout=standalone, lang=lang )
         self.standalone = standalone
         self.autolevel = autolevel
         self.finalize = finalize
@@ -115,9 +115,9 @@ def main():
 
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-T", "--task-id",     help=_("Task ID."),      default=0)
-    parser.add_argument("-F", "--file-name",   help=_("File name."),    required=True)
-
+    parser.add_argument("-T", "--task-id",     help="Task ID.",        default=0)
+    parser.add_argument("-F", "--file-name",   help="File name.",      required=True)
+	parser.add_argument("--lang",              help="Output language", default='en_US.UTF-8' )
     # GET ARGUMENTS
     args = parser.parse_args()
 
@@ -132,8 +132,9 @@ def main():
     autolevel       = False
     monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
     log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
-
-    app = MillApplication(log_trace, monitor_file, standalone, autolevel)
+	lang			= args.lang
+	
+    app = MillApplication(log_trace, monitor_file, standalone, autolevel, lang=lang)
 
     app.run(task_id, gcode_file)
     app.loop()

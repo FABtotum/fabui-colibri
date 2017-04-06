@@ -37,6 +37,7 @@ from threading import Event, Thread, RLock
 # Import external modules
 
 # Import internal modules
+from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config import ConfigService
 from fabtotum.utils.gcodefile import GCodeFile, GCodeInfo
 from fabtotum.utils.gmacro import GMacroHandler
@@ -46,10 +47,6 @@ from fabtotum.database.task import Task
 from fabtotum.database.file import File
 from fabtotum.database.object  import Object
 from fabtotum.database.obj_file import ObjFile
-
-# Set up message catalog access
-tr = gettext.translation('gpusher', 'locale', fallback=True)
-_ = tr.ugettext
 
 ERROR_MESSAGE = {
     #error codes
@@ -98,12 +95,16 @@ class GCodePusher(object):
     
     UPDATE_PERIOD       = 2 # seconds
     
-    def __init__(self, log_trace = None, monitor_file = None, gcs = None, config = None, use_callback = True, use_stdout = False, update_period = 2):
+    def __init__(self, log_trace = None, monitor_file = None, gcs = None, 
+				 config = None, use_callback = True, use_stdout = False, 
+				 update_period = 2, lang = 'en_US.UTF-8'):
                         
         self.monitor_lock = RLock()
         
         self.UPDATE_PERIOD = update_period
         self.gcode_info = None
+        self.lang = lang
+        _ = setLanguage(self.lang)
         self.use_stdout = use_stdout
         # Task specific attributes
         self.task_stats = {
@@ -179,7 +180,7 @@ class GCodePusher(object):
         if use_callback:
             self.gcs.register_callback(self.callback_handler)
         
-        self.gmacro = GMacroHandler(self.gcs, self.config, self.trace, self.resetTrace)
+        self.gmacro = GMacroHandler(self.gcs, self.config, self.trace, self.resetTrace, lang=self.lang)
         
         self.progress_monitor = None
         self.db = Database(self.config)

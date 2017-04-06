@@ -131,11 +131,13 @@ if __name__ == '__main__':
     parser.add_argument("-f", "--files",    help="Sample files glob pattern.",  default='samples/*.jpg' )
     parser.add_argument("-d", "--debug",    help="Debug output directory.",     default='' )
     parser.add_argument("-o", "--output",   help="Calibration output file.",    default='intrinsic.json' )
+    parser.add_argument("--lang",           help="Output language", 			default='en_US.UTF-8' )
     
     args = parser.parse_args()
     
     pattern     = args.files
     debug_dir   = args.debug
     output_file = args.output
+    lang			= args.lang
     
     main(pattern, debug_dir, output_file)

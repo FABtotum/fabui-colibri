@@ -287,6 +287,7 @@
 		$data = $this->input->post();
 		//load helpers
 		$this->load->helpers('fabtotum_helper');
+		$this->load->helpers('language_helper');
 		$this->load->model('Files', 'files');
 		
 		$userID   = $this->session->user['id'];
@@ -354,7 +355,8 @@
 		//start print
 		$printArgs = array(
 						'-T' => $taskId, 
-						'-F' => $fileToCreate['full_path']
+						'-F' => $fileToCreate['full_path'],
+						'--lang' => getCurrentLanguage() . 'UTF-8'
 						);
 		startPyScript('print.py', $printArgs);
 		
@@ -366,6 +368,7 @@
 		$data = $this->input->post();
 		//load helpers
 		$this->load->helpers('fabtotum_helper');
+		$this->load->helpers('language_helper');
 		$this->load->model('Files', 'files');
 		$fileToCreate = $this->files->get($data['idFile'], 1);
 		
@@ -395,7 +398,8 @@
 		//start milling
 		$printArgs = array(
 				'-T' => $taskId,
-				'-F' => $fileToCreate['full_path']
+				'-F' => $fileToCreate['full_path'],
+				'--lang' => getCurrentLanguage() . 'UTF-8'
 		);
 		startPyScript('mill.py', $printArgs);
 		

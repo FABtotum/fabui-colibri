@@ -42,7 +42,7 @@ def home_all(app, args = None, lang='en_US.UTF-8'):
         zprobe_disabled = False
 
     app.trace( _("Homing all axes") )
-    app.macro("G90", "ok", 2, _("Set abs position"), verbose=False)
+    app.macro("G90", "ok", 2, _("Setting abs position"), verbose=False)
     
     if zprobe_disabled :
         app.macro("G27", "ok", 200,                             _("Homing all axes"), verbose=False)
@@ -82,9 +82,9 @@ def start_up(app, args = None, lang='en_US.UTF-8'):
     app.trace( _("Starting up") )
     app.macro("M728",                   "ok", 2, _("Alive!"), verbose=False)
     app.macro("M402",                   "ok", 1, _("Probe Up") )
-    app.macro("M701 S"+str(color['r']), "ok", 2, _("turning on lights"), verbose=False)
-    app.macro("M702 S"+str(color['g']), "ok", 2, _("turning on lights"), verbose=False)
-    app.macro("M703 S"+str(color['b']), "ok", 2, _("turning on lights"), verbose=False)
+    app.macro("M701 S"+str(color['r']), "ok", 2, _("Turning on lights"), verbose=False)
+    app.macro("M702 S"+str(color['g']), "ok", 2, _("Turning on lights"), verbose=False)
+    app.macro("M703 S"+str(color['b']), "ok", 2, _("Turning on lights"), verbose=False)
     
     app.macro("M732 S"+str(safety_door),"ok", 2, _("Safety Settings"), verbose=False)
     app.macro("M714 S"+str(switch),     "ok", 2, _("Homing direction"), verbose=False)
@@ -98,33 +98,6 @@ def shutdown(app, args = None, lang='en_US.UTF-8'):
     app.macro("M300",   "ok", 5, _("Play alert sound!"), verbose=False)
     app.macro("M729",   "ok", 2, _("Asleep!"), verbose=False)
     
-def raise_bed(app, args = None, lang='en_US.UTF-8'):
-    """
-    For homing procedure before probe calibration and print without homing.
-    """
-    _ = setLanguage(lang)
-    try:
-        zprobe = app.config.get('settings', 'zprobe')
-        zprobe_disabled = (zprobe['disable'] == 1)
-        zmax_home_pos   = float(zprobe['zmax'])
-    except KeyError:
-        zmax_home_pos = 206.0
-        zprobe_disabled = False
-    
-    app.macro("M402",   "ok", 4,    _("Raising probe"), verbose=True)
-    app.macro("G90",    "ok", 2,    _("Setting absolute position") )
-    
-    #macro("G27","ok",100,"Homing all axes",0.1)
-    #macro("G0 Z10 F10000","ok",15,"raising",0.1)
-    #macro("G28","ok",100,"homing all axes",0.1)
-    if zprobe_disabled:
-        app.macro("G27 X0 Y0 Z" + str(zmax_home_pos),   "ok", 100,  _("Homing all axes") )
-        app.macro("G0 Z50 F10000",                      "ok", 15,   _("Raising") )
-    else:
-        app.macro("G27",            "ok", 100,  _("Homing all axes") )
-        app.macro("G0 Z10 F10000",  "ok", 15,   _("Raising") )
-        app.macro("G28",            "ok", 100,  _("Homing all axes"), verbose=False)
-
 def auto_bed_leveling(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
@@ -132,7 +105,6 @@ def auto_bed_leveling(app, args = None, lang='en_US.UTF-8'):
     app.macro("G28",                "ok", 120,   _("Homing Z axis") )
     app.macro("G28 X Y",            "ok", 90,   _("Homing X/Y axis") )
     app.macro("G29",                "ok", 150,  _("Probing the bed") )
-    app.macro("G0 X5 Y5 Z60 F2000", "ok", 100,  _("Getting to idle position") )
 
 def probe_down(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
@@ -165,14 +137,14 @@ def engage_4axis(app, args = None, lang='en_US.UTF-8'):
     
     app.trace( _("Engaging 4th Axis") )
     app.macro("G27",                "ok", 100,  _("Zeroing Z axis") )
-    app.macro("G91",                "ok", 1,    _("Setting Relative position"), verbose=False)
-    app.macro("M120",               "ok", 1,    _("Disable Endstop checking") )
-    app.macro("G0 Z+"+str(feeder_disengage_offset)+" F300", "ok", 90,    _("Engaging 4th Axis Motion") )
+    app.macro("G91",                "ok", 1,    _("Setting rel position"), verbose=False)
+    app.macro("M120",               "ok", 1,    _("Disable endstop checking") )
+    app.macro("G0 Z+"+str(feeder_disengage_offset)+" F300", "ok", 90,    _("Engaging 4th Axis") )
     #app.macro("M400",               "ok", 5,    _("Waiting for all moves to finish"), verbose=False)
-    app.macro("M121",               "ok", 1,    _("Enable Endstop checking") )
+    app.macro("M121",               "ok", 1,    _("Enable endstop checking") )
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode") )
-    app.macro("G92 Z241",           "ok", 1,    _("Setting position"), verbose=False)
-    app.macro("G90",                "ok", 1,    _("Setting Absolute position"), verbose=False)
+    app.macro("G92 Z241",           "ok", 1,    _("Setting Z position"), verbose=False)
+    app.macro("G90",                "ok", 1,    _("Setting abs position"), verbose=False)
     app.macro("G0 Z234",            "ok", 1,    _("Check position"), verbose=False)
     app.macro("M300",               "ok", 3,    _("Play beep sound"), verbose=False)
     
@@ -192,9 +164,9 @@ def set_ambient_color(app, args = None, lang='en_US.UTF-8'):
     green = args[1]
     blue = args[2]
     
-    app.macro("M701 S{0}".format(red),   "ok", 1,    _("Setting Red Color"))
-    app.macro("M702 S{0}".format(green),   "ok", 1,    _("Setting Green Color"))
-    app.macro("M703 S{0}".format(blue),   "ok", 1,    _("Setting Blue Color"))
+    app.macro("M701 S{0}".format(red),   "ok", 1,    _("Setting red color"))
+    app.macro("M702 S{0}".format(green),   "ok", 1,    _("Setting green color"))
+    app.macro("M703 S{0}".format(blue),   "ok", 1,    _("Setting blue color"))
 
 def install_head(app, args, lang='en_US.UTF-8'):
     _ = setLanguage(lang)

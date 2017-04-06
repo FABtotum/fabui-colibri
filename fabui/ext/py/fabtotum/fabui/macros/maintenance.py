@@ -39,7 +39,7 @@ def extrude(app, args, lang='en_US.UTF-8'):
     
     app.macro("M92 E{0}".format(units_e), "ok", 2, _("Setting extruder mode") )
     app.macro("M302",  "ok", 1,    _("Allowing cold extrusion") )
-    app.macro("G91",   "ok", 1,    _("Set rel position") )
+    app.macro("G91",   "ok", 1,    _("Setting rel position") )
     app.macro("G0 E{0} F400".format(filamentToExtrude),    "ok", 300,    _("Extruding...") )
     #app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), verbose=False)
     
@@ -74,12 +74,12 @@ def unload_spool(app, args = None, lang='en_US.UTF-8'):
     tube_length = feeder['tube_length']
     
     app.trace( _("Unloading Spool : Procedure Started.") )
-    app.macro("G90",                "ok", 10,   _("Set abs position"), verbose=False)
+    app.macro("G90",                "ok", 10,   _("Setting abs position"), verbose=False)
     app.macro("M302 S0",            "ok", 10,   _("Extrusion prevention disabled"), verbose=False)
     app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), verbose=False)
     app.macro("G0 Z150 F10000",     "ok", 100,   _("Moving to safe zone"), verbose=False) #right top corner Z=150mm
-    app.macro("G91",                "ok", 2,    _("Set rel position"), verbose=False)
-    app.macro("G92 E0",             "ok", 5,    _("Set extruder to zero"), verbose=False)
+    app.macro("G91",                "ok", 2,    _("Setting rel position"), verbose=False)
+    app.macro("G92 E0",             "ok", 5,    _("Setting extruder to zero"), verbose=False)
     app.macro("M92 E{0}".format(units_e), "ok", 30,   _("Setting extruder mode"), verbose=False)
     app.macro("M300",               "ok", 2,    _("<b>Start Pulling!</b>"), verbose=False)
     #app.macro("M400",               "ok", 100,  _("Wait for move to finish"), verbose=False)
@@ -101,11 +101,11 @@ def load_spool(app, args = None, lang='en_US.UTF-8'):
     ext_temp = args[0]
     
     app.trace( _("Loading Spool : Procedure Started.") )
-    app.macro("G90",                "ok", 2,    _("Set abs position"), verbose=False)
+    app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False)
     app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), verbose=False)
-    app.macro("G0 Z150 F10000",     "ok", 100,   _("Moving to Safe Zone"), verbose=False)
+    app.macro("G0 Z150 F10000",     "ok", 100,   _("Moving to safe zone"), verbose=False)
     app.macro("M302 S0",            "ok", 5,    _("Enabling Cold extrusion"), verbose=False)
-    app.macro("G91",                "ok", 2,    _("Set relative position"), verbose=False)
+    app.macro("G91",                "ok", 2,    _("Setting rel position"), verbose=False)
     app.macro("G92 E0",             "ok", 5,    _("Setting extruder position to 0"), verbose=False)
     app.macro("M92 E{0}".format(units_e), "ok", 5,    _("Setting extruder mode"), verbose=False)
     app.macro("M104 S{0}".format(ext_temp), "ok", 5,    _("Pre-Heating Nozzle. Get ready to push... ") ) #heating and waiting.
@@ -158,7 +158,7 @@ def manual_bed_leveling(app, args = None, lang='en_US.UTF-8'):
             app.trace("Milling sacrificial layer thickness not configured - assuming zero")                
 
     app.macro("M402",  "ok",   2,  _("Retracting Probe (safety)"), warning=True, verbose=False)
-    app.macro("G90",   "ok",   5,  _("Setting abs mode"),          verbose=False)
+    app.macro("G90",   "ok",   5,  _("Setting abs position"),          verbose=False)
 
     if not skip_homing:
         app.macro("G27",           "ok",   100,    _("Homing Z - Fast") )

@@ -230,12 +230,12 @@ def configure_feeder(app, feeder_name, lang='en_US.UTF-8'):
     max_jerk             = float(feeder['max_jerk'])
     retract_acceleration = float(feeder['retract_acceleration'])
 
-    app.macro("M92 E{0}".format(steps_per_unit),            "ok", 1,   _("Setting E steps_per_unit") )
-    app.macro("G92 E0".format(steps_per_unit),              "ok", 1,   _("Setting E position to 0"), verbose=False )
-    app.macro("M201 E{0}".format(max_acceleration),         "ok", 1,   _("Setting E acceleration") )
-    app.macro("M203 E{0}".format(max_feedrate),             "ok", 1,   _("Setting E feedrate") )
-    app.macro("M205 E{0}".format(max_jerk),                 "ok", 1,   _("Setting E jerk") )
-    app.macro("M204 T{0}".format(retract_acceleration),     "ok", 1,   _("Setting retract acceleration") )
+    app.macro("M92 E{0}".format(steps_per_unit),            "ok", 1,   _("Setting E steps_per_unit to {0}").format(steps_per_unit) )
+    app.macro("G92 E0",              						"ok", 1,   _("Setting E position to 0"), verbose=False )
+    app.macro("M201 E{0}".format(max_acceleration),         "ok", 1,   _("Setting E acceleration to {0}").format(max_acceleration) )
+    app.macro("M203 E{0}".format(max_feedrate),             "ok", 1,   _("Setting E max feedrate to {0}").format(max_feedrate) )
+    app.macro("M205 E{0}".format(max_jerk),                 "ok", 1,   _("Setting E max jerk to {0}").format(max_jerk) )
+    app.macro("M204 T{0}".format(retract_acceleration),     "ok", 1,   _("Setting retract acceleration {0}").format(retract_acceleration) )
     
     return True
     
@@ -282,7 +282,7 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
         
     # Set TOOL
     if tool != "":
-        app.macro(head['tool'],   "ok", 2, _("Configuring TOOL"))
+        app.macro(head['tool'],   "ok", 2, _("Configuring tool"))
     
     # Set probe offset
     if probe_length:

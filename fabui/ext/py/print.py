@@ -41,8 +41,8 @@ class PrintApplication(GCodePusher):
     Additive print application.
     """
     
-    def __init__(self, log_trace, monitor_file, standalone = False, autolevel = False, finalize = True):
-        super(PrintApplication, self).__init__(log_trace, monitor_file, use_stdout=standalone)
+    def __init__(self, log_trace, monitor_file, standalone = False, autolevel = False, finalize = True, lang = 'en_US.UTF-8'):
+        super(PrintApplication, self).__init__(log_trace, monitor_file, use_stdout=standalone, lang=lang)
         self.standalone = standalone
         self.autolevel = autolevel
         self.finalize = finalize
@@ -118,7 +118,6 @@ class PrintApplication(GCodePusher):
             #~ self.exec_macro("check_pre_print")
             
             #~ if self.autolevel:
-                #~ self.exec_macro("raise_bed")
                 #~ self.exec_macro("auto_bed_leveling")
             #~ else:
                 #~ self.exec_macro("home_all")
@@ -127,7 +126,6 @@ class PrintApplication(GCodePusher):
             #~ self.exec_macro("start_print")
         
         self.send_file(gcode_file)
-        #self.push_file()
         
         self.trace( _("Print initialized.") )
 
@@ -137,9 +135,10 @@ def main():
 
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-T", "--task-id",     help=_("Task ID."),      default=0)
-    parser.add_argument("-F", "--file-name",   help=_("File name."),    required=True)
-    parser.add_argument("--autolevel",  action='store_true',  help=_("Auto bed leveling. Valid only when --standalone is used."), default=False)
+    parser.add_argument("-T", "--task-id",     help="Task ID.",      default=0)
+    parser.add_argument("-F", "--file-name",   help="File name.",    required=True)
+    parser.add_argument("--autolevel",  action='store_true',  help="Auto bed leveling. Valid only when --standalone is used.", default=False)
+    parser.add_argument("--lang",              help="Output language", default='en_US.UTF-8' )
     
     # GET ARGUMENTS
     args = parser.parse_args()
@@ -148,6 +147,7 @@ def main():
     gcode_file      = args.file_name     # GCODE FILE
     task_id         = args.task_id
     autolevel       = args.autolevel
+    lang		    = args.lang
     if task_id == 0:
         standalone  = True
     else:
@@ -156,7 +156,7 @@ def main():
     monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
     log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
     
-    app = PrintApplication(log_trace, monitor_file, standalone, autolevel)
+    app = PrintApplication(log_trace, monitor_file, standalone, autolevel, lang=lang)
 
     app.run(task_id, gcode_file)
     app.loop()

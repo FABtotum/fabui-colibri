@@ -50,8 +50,8 @@ class PluginManagerApplication(GCodePusher):
     Update application.
     """
     
-    def __init__(self, arch='armhf', mcu='atmega1280'):
-        super(PluginManagerApplication, self).__init__()
+    def __init__(self, arch='armhf', mcu='atmega1280', lang = 'en_US.UTF-8'):
+        super(PluginManagerApplication, self).__init__(lang=lang)
         
         self.resetTrace()
         self.update_stats = {}
@@ -186,21 +186,23 @@ class PluginManagerApplication(GCodePusher):
 def main():
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("command", help=_("Command (actvivate|deactivate|install|remove|update)"))
-    parser.add_argument("-T", "--task-id",     help=_("Task ID."),                      default=0)
-    parser.add_argument("-p", "--plugins", help=_("Plugin list") )
+    parser.add_argument("command", help="Command (actvivate|deactivate|install|remove|update)")
+    parser.add_argument("-T", "--task-id",     help="Task ID.",       	default=0)
+    parser.add_argument("-p", "--plugins",     help="Plugin list" )
+    parser.add_argument("--lang",              help="Output language",	default='en_US.UTF-8' )
     
     # GET ARGUMENTS
     args = parser.parse_args()
     # INIT VARs
     task_id     = args.task_id
     command		= args.command
+    lang		= args.lang
     if args.plugins:
         plugins     = args.plugins.split(',')
     else:
         plugins     = []
         
-    app = PluginManagerApplication()
+    app = PluginManagerApplication(lang=lang)
 
     if command == 'activate':
         app.run_activate(plugins)

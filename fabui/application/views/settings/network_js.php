@@ -169,7 +169,7 @@
 			}
 			else
 			{
-				wait_title = _('Connecting to <strong>{0}</strong> <i class="fa fa-wifi"></i>').format(data['hidden-ssid']);
+				wait_title = _("Connecting to <strong>{0}</strong>").format(data['hidden-ssid']) + ' <i class="fa fa-wifi"></i>';
 				error_message = _("Failed to connect to Wireless network");
 			}
 		} 
@@ -184,7 +184,7 @@
 			if(currentEthIPV4 != data['ipv4'])
 			{
 				setTimeout(function(){
-					waitContent("<?php echo _("Redirect to new address") ?>...");
+					waitContent( _("Redirect to new address..." );
 					fabApp.redirectToUrlWhenisReady('http://'+ data['ipv4'] + '/fabui/#settings/network/eth0');
 				}, 3000);
 			}
