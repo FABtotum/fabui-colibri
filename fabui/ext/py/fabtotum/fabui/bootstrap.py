@@ -142,14 +142,6 @@ def customHardware(gcodeSender, config, log, eeprom):
         if line != "" :
             log.info("Custom override: {0}".format(line))
             gcodeSender.send(line, group='bootstrap')
-    
-    #save settings
-    #gcodeSender.send("M500", group='bootstrap')
-    
-    #eeprom = read_eeprom(gcodeSender)
-    
-    config.set('settings', 'e', eeprom['steps_per_unit']['e'])
-    config.save('settings')
 
 def hardware1(gcodeSender, config, log, eeprom):
     """
