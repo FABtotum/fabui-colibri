@@ -6,10 +6,22 @@
 	var trace_interval;
 
 	var traceData = '';
-	
+
+	 var settings_json = restore_settings = <?php echo $settings; ?>;
+	 var opt = { 
+        change: function(data) {settings_json = data;},
+        propertyclick: function(path) { /* called when a property is clicked with the JS path to that property */ }
+	 };
+	    /* opt.propertyElement = '<textarea>'; */ // element of the property field, <input> is default
+	    /* opt.valueElement = '<textarea>'; */  // element of the value field, <input> is default
+	 
 	$(document).ready(function(){
 
+		$('#settings-json').jsonEditor(settings_json, opt);
 		getTaskMonitor();
+
+		$("#save-json-settings").on('click', askSettingsJson);
+		$("#restore-json-settings").on('click', restoreSettingsJson);
 
 		$(".json-rpc").on("click", jsonRPC);
 		
@@ -87,5 +99,48 @@
 		}).done(function( response ) {
 			$("#json-rpc-result").JSONView(response);
 		});
+	}
+	/**
+	*
+	**/
+	function askSettingsJson()
+	{	
+		$.SmartMessageBox({
+			title: "",
+			content : "Are you sure?",
+			buttons: "[Yes][Cancel]",
+		}, function(ButtonPressed, Option) {
+			if(ButtonPressed == "Cancel"){ //cancel
+				return;
+			}
+			if (ButtonPressed == "Yes") { //logout
+				
+				saveSettingsJson(settings_json);
+			}
+		});
+		
+	}
+	/**
+	*
+	**/
+	function saveSettingsJson(json)
+	{
+		openWait("<i class='fa fa-spin fa-spinner'></i> <?php echo _("Applying new settings"); ?>", "<?php echo _("Please wait"); ?>...", false );
+		$.ajax({
+			  type: "POST",
+			  url: "<?php echo site_url('debug/saveSettingsJson/'); ?>",
+			  data: {json: json},
+			  dataType: 'json',
+		}).done(function( response ) {
+			closeWait();
+		});
+	}
+	/**
+	*
+	**/
+	function restoreSettingsJson()
+	{
+		settings_json = restore_settings;
+		saveSettingsJson(restore_settings);
 	}
 </script>

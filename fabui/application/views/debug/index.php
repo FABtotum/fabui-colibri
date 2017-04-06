@@ -12,6 +12,20 @@
 	<div class="tab-pane fade in" id="trace-tab">
 		<pre id="trace"></pre> 
 	</div>
+	<div class="tab-pane fade in" id="settings-tab">
+		<div class="row">
+			<div class="col-sm-12">
+				<button class="btn btn-default" id="save-json-settings"><i class="fa fa-save"></i> Save</button>
+				
+				<button class="btn btn-default" id="restore-json-settings"><i class="fa fa-refresh"></i> Restore</button>
+			</div>
+		</div>
+		<div class="row margin-top-10">
+			<div class="col-sm-12">
+				<div id="settings-json"></div>
+			</div>
+		</div>
+	</div>
 	<div class="tab-pane fade in" id="json-rpc-tab">
 		<div class="row">
 			<div class="col-sm-12">

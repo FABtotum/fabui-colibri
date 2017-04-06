@@ -14,6 +14,7 @@
 	{
 		//load libraries, helpers, model, config
 		$this->load->library('smart');
+		$this->config->load('fabtotum');
 		
 		$widgetOptions = array(
 				'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
@@ -26,18 +27,24 @@
 				<li><a data-toggle="tab" href="#temperatures-tab"> temperatures.json</a></li>
 				<li><a data-toggle="tab" href="#notify-tab"> notify.json</a></li>
 				<li><a data-toggle="tab" href="#trace-tab"> trace</a></li>
+				<li><a data-toggle="tab" href="#settings-tab"> settings</a></li>
 				<li><a data-toggle="tab" href="#json-rpc-tab"> json-rpc</a></li>
 			</ul>';
 		$data = array();
+		$data['settings'] = file_get_contents($this->config->item('settings'));
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'debug-widget';
 		$widget->header = array('icon' => 'fa-bug', "title" => "<h2>Debug panel</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('debug/index', null, true ), 'class'=>'');
+		$widget->body   = array('content' => $this->load->view('debug/index', $data, true ), 'class'=>'');
 		$this->content = $widget->print_html(true);
 		
 		$this->addJSFile('/assets/js/plugin/jsonview/jquery.jsonview.min.js'); //datatable */
 		$this->addCssFile('/assets/js/plugin/jsonview/jquery.jsonview.min.css'); //datatable */
-		$this->addJsInLine($this->load->view('debug/js', null, true));
+		
+		$this->addJSFile('/assets/js/plugin/jsoneditor/jquery.jsoneditor.min.js'); //datatable */
+		$this->addCssFile('/assets/js/plugin/jsoneditor/jsoneditor.css'); //datatable */
+		
+		$this->addJsInLine($this->load->view('debug/js', $data, true));
 		$this->addCSSInLine('<style>hr{margin-top:0px;margin-bottom:0px;}#trace{overflow:auto; height:500px;}</style>'); 
 		
 		$this->debugLayout();
@@ -158,6 +165,23 @@
 			$result['status_description'] = $result_codes[$result['status_code']];
 		}
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('method'=>$method, 'params'=>$params, 'result'=>$result)));
+	}
+	/**
+	 * 
+	 */
+	function saveSettingsJson()
+	{
+		$json = $this->input->post('json');
+		$this->load->helpers('fabtotum_helper');
+		
+		$json['hardware']['bed']['enable'] = $json['hardware']['bed']['enable'] == 'true';
+		$json['feeder']['show'] = $json['feeder']['show'] == 'true';
+		$json['filament']['inserted'] = $json['filament']['inserted'] == 'true';
+		
+		saveSettings($json);
+		resetController();
+		$this->output->set_content_type('application/json')->set_output(json_encode(loadSettings()));
+		
 	}
  }
  
