@@ -252,19 +252,21 @@ if(!function_exists('displayInstagramFeedItem'))
 	 */
 	function displayInstagramFeedItem($feed)
 	{
-		$src_image = getInstagramImageSrc($feed);
-		$src_video = getInstagramVideoSrc($feed);
-		$date = date('j M, Y',$feed['taken_at']);
-		$location = '';
-		$likes    = '';
-		$comments = '';
-		$ranked   = '';
-		$post_url = 'http://www.instagram.com/p/'.$feed['code'];
-		$video    = "";
-		$image    = '<div class="image padding-10"><img src="'.$src_image.'" /></div>';
+		$src_image   = getInstagramImageSrc($feed);
+		$src_video   = getInstagramVideoSrc($feed);
+		$date        = date('j M, Y',$feed['taken_at']);
+		$location    = '';
+		$likes       = '';
+		$comments    = '';
+		$ranked      = '';
+		$post_url    = 'http://www.instagram.com/p/'.$feed['code'];
+		$video       = "";
+		$views_count = "";
+		$image       = '<div class="image padding-10"><img src="'.$src_image.'" /></div>';
 		if($src_video != ""){
 			$video .= '<div class="image padding-10"><video class="img-responsive" controls><source src="'.$src_video.'" type="video/mp4"><img src="'.$src_image.'" /></video></div>';
 			$image = "";
+			$views_count = '<li class="txt-color-green"><i class="fa fa-play"></i> ('.$feed['view_count'].')</li>';
 		}
 		$likes .= '<li class="txt-color-red"><i class="fa fa-heart"></i> ('.$feed['like_count'].')</li>';
 		$comments .= '<li class="txt-color-blue"><i class="fa fa-comments"></i> ('.$feed['comment_count'].')</li>';
@@ -294,6 +296,7 @@ if(!function_exists('displayInstagramFeedItem'))
 					<ul class="links">
 						{$likes}
 						{$comments}
+						{$views_count}
 						{$ranked}
 					</ul>
 				</div>
