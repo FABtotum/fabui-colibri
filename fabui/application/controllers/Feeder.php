@@ -68,7 +68,7 @@ class Feeder extends FAB_Controller {
 		<a class="btn btn-success settings-action" data-action="add" href=""><i class="fa fa-plus"></i> '._("Add new feeder").' </a>
 		</div>';
 		
-		$widgeFooterButtons = $this->smart->create_button('Configure', 'primary')->attr(array('id' => 'set-feeder'))->icon('fa-wrench')->print_html(true);
+		$widgeFooterButtons = $this->smart->create_button( _("Configure"), 'primary')->attr(array('id' => 'set-feeder'))->icon('fa-wrench')->print_html(true);
 		
 		//main page widget
 		$widgetOptions = array(

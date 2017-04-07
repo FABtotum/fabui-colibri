@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-06 14:56+0200\n"
+"POT-Creation-Date: 2017-04-07 15:30+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: FABTeam\n"
@@ -19,6 +19,9 @@ msgid "Dashboard"
 msgstr "Instrumententafel"
 
 #: fabui/application/config/menu.php:17
+#: fabui/application/views/history/main_widget.php:9
+#: fabui/application/views/history/main_widget.php:22
+#: fabui/application/views/history/main_widget.php:66
 msgid "Make"
 msgstr "Herstellen"
 
@@ -28,6 +31,7 @@ msgstr "Herstellen"
 #: fabui/application/controllers/Create.php:130
 #: fabui/application/views/install/wizard.php:201
 #: fabui/application/views/login/register_form.php:77
+#: fabui/application/views/history/main_widget.php:12
 #: fabui/application/views/create/print_js.php:58
 msgid "Print"
 msgstr "Drücken"
@@ -35,6 +39,7 @@ msgstr "Drücken"
 #: fabui/application/config/menu.php:26
 #: fabui/application/controllers/Projectsmanager.php:1069
 #: fabui/application/controllers/Create.php:244
+#: fabui/application/views/history/main_widget.php:15
 #: fabui/application/views/create/mill_js.php:58
 msgid "Mill"
 msgstr "Fräsen"
@@ -43,6 +48,7 @@ msgstr "Fräsen"
 #: fabui/application/controllers/Settings.php:277
 #: fabui/application/controllers/Scan.php:81
 #: fabui/application/views/settings/network_js.php:375
+#: fabui/application/views/history/main_widget.php:18
 #: fabui/application/views/scan/wizard/main.php:24
 msgid "Scan"
 msgstr "Scan"
@@ -179,6 +185,7 @@ msgid "Updates"
 msgstr "Aktualisierungen"
 
 #: fabui/application/config/menu.php:168
+#: fabui/application/views/support/widget.php:38
 msgid "Support"
 msgstr "Unterstützung"
 
@@ -295,6 +302,10 @@ msgstr "Erstelle neue"
 #: fabui/application/controllers/Feeder.php:68
 msgid "Add new feeder"
 msgstr "Neuen Feeder hinzufügen"
+
+#: fabui/application/controllers/Feeder.php:71
+msgid "Configure"
+msgstr "Konfigurieren"
 
 #: fabui/application/controllers/Feeder.php:81
 msgid "Feeder profiles"
@@ -451,6 +462,7 @@ msgstr "Das Projekt bearbeiten"
 
 #: fabui/application/controllers/Projectsmanager.php:209
 #: fabui/application/controllers/Projectsmanager.php:1090
+#: fabui/application/views/history/main_widget.php:55
 msgid "Stats"
 msgstr "Statistik"
 
@@ -532,6 +544,12 @@ msgstr ""
 "Bevor Sie auf \"Installieren\" klicken, vergewissern Sie sich, dass der Kopf "
 "ordnungsgemäß verriegelt ist"
 
+#: fabui/application/controllers/Head.php:55
+#: fabui/application/views/install/js.php:109
+#: fabui/application/views/plugin/js.php:93
+msgid "Install"
+msgstr "Installieren"
+
 #: fabui/application/controllers/Head.php:59
 msgid "Heads"
 msgstr "Köpfe"
@@ -574,6 +592,8 @@ msgstr ""
 "Großartig! Ihre FABtotum Personal Fabricator ist auf dem neuesten Stand"
 
 #: fabui/application/controllers/Bed.php:54
+#: fabui/application/views/head/install_js.php:31
+#: fabui/application/views/head/install_js.php:33
 msgid "Calibrate"
 msgstr "Kalibrieren"
 
@@ -595,9 +615,30 @@ msgstr "Drucken"
 msgid "Choose file"
 msgstr "Datei wählen"
 
+#: fabui/application/controllers/Probe.php:58
+msgid "Probe Angle Calibration"
+msgstr "Sondenwinkel Kalibrierung"
+
+#: fabui/application/controllers/Firmware.php:53
+msgid "Factory default"
+msgstr "Werkseinstellung"
+
+#: fabui/application/controllers/Firmware.php:62
+msgid "download"
+msgstr "Herunterladen"
+
+#: fabui/application/controllers/Firmware.php:67
+msgid "Upload custom"
+msgstr "Benutzer Version hochladen"
+
 #: fabui/application/helpers/layout_helper.php:273
 msgid "Popular"
 msgstr "Beliebt"
+
+#: fabui/application/views/head/install_js.php:31
+#: fabui/application/views/head/install_js.php:37
+msgid "Ignore"
+msgstr "Ignorieren"
 
 #: fabui/application/views/head/install_js.php:135
 msgid "Installing head"
@@ -696,6 +737,35 @@ msgstr "Werkseinstellungen für <strong>{0}</strong> wiederherstellen?"
 msgid "Factory settings restored"
 msgstr "Werkseinstellungen wiederhergestellt"
 
+#: fabui/application/views/head/install.php:5
+msgid ""
+"<strong>Warning</strong> Seems that you still have not set the head your are "
+"using."
+msgstr ""
+
+#: fabui/application/views/head/install.php:9
+#: fabui/application/views/feeder/profiles/widget.php:9
+msgid ""
+"Currently  your <strong>FABtotum Personal Fabricator</strong> is configured "
+"to use <strong>{0}</strong>"
+msgstr ""
+"Derzeit ist Ihr <strong>FABtotum Personal Fabricator</strong> so "
+"konfiguriert, dass er <strong>{0}</strong> verwendet"
+
+#: fabui/application/views/head/install.php:24
+msgid ""
+"Make sure you removed the filament, milling bits and any other accessory on "
+"the head."
+msgstr ""
+
+#: fabui/application/views/head/install.php:24
+msgid "See also <a href=\"maintenance/spool-management\">spool maintenance</a>"
+msgstr ""
+
+#: fabui/application/views/head/install.php:29
+msgid "Please select which head you want to install"
+msgstr "Bitte wählen Sie aus welchen Kopf Sie installieren möchten"
+
 #: fabui/application/views/head/install.php:34
 #: fabui/application/views/feeder/profiles/widget.php:34
 msgid "Edit"
@@ -707,6 +777,12 @@ msgstr "Bearbeiten"
 #: fabui/application/views/projectsmanager/edit/js.php:101
 msgid "Remove"
 msgstr "Entfernen"
+
+#: fabui/application/views/head/install.php:51
+#: fabui/application/views/head/install.php:74
+#: fabui/application/views/feeder/profiles/widget.php:51
+msgid "More details"
+msgstr "Mehr Details"
 
 #: fabui/application/views/head/install.php:88
 msgid "Head settings"
@@ -732,6 +808,7 @@ msgstr ""
 #: fabui/application/views/jog/widget.php:257
 #: fabui/application/views/plugin/main_widget.php:120
 #: fabui/application/views/settings/network_widget.php:30
+#: fabui/application/views/history/main_widget.php:68
 #: fabui/application/views/feeder/profiles/widget.php:102
 #: fabui/application/views/projectsmanager/index/widget.php:26
 #: fabui/application/views/projectsmanager/edit/widget.php:35
@@ -1067,11 +1144,6 @@ msgstr "Bitte geben Sie dasselbe Passwort wie oben ein"
 msgid "You must agree with Terms and Conditions"
 msgstr "Sie müssen mit den Allgemeinen Geschäftsbedingungen einverstanden sein"
 
-#: fabui/application/views/install/js.php:109
-#: fabui/application/views/plugin/js.php:93
-msgid "Install"
-msgstr "Installieren"
-
 #: fabui/application/views/install/js.php:138
 msgid "Installation in progress"
 msgstr "Installation läuft"
@@ -1199,6 +1271,7 @@ msgstr "Baudatum"
 
 #: fabui/application/views/systeminfo/widget.php:32
 #: fabui/application/views/plugin/main_widget.php:12
+#: fabui/application/views/firmware/main_widget.php:47
 msgid "Author"
 msgstr "Autor"
 
@@ -1754,6 +1827,7 @@ msgstr "Hardware-Einstellungen gespeichert"
 
 #: fabui/application/views/plugin/main_widget.php:11
 #: fabui/application/views/plugin/main_widget.php:127
+#: fabui/application/views/firmware/main_widget.php:43
 msgid "Version"
 msgstr "Version"
 
@@ -2125,6 +2199,63 @@ msgstr "Aktuelle Nachrichten aus Entwicklungsblog sind nicht verfügbar"
 msgid "Language"
 msgstr "Sprache"
 
+#: fabui/application/views/firmware/main_widget.php:7
+#, fuzzy
+msgid "Select firmware version"
+msgstr "Firmware Version"
+
+#: fabui/application/views/firmware/main_widget.php:23
+#: fabui/application/views/firmware/main_widget.php:31
+msgid "Flash firmware"
+msgstr ""
+
+#: fabui/application/views/firmware/main_widget.php:40
+#, fuzzy
+msgid "Installed Firmware"
+msgstr "Installierter Kopf"
+
+#: fabui/application/views/firmware/main_widget.php:51
+#, fuzzy
+msgid "Build-date"
+msgstr "Baudatum"
+
+#: fabui/application/views/history/stats_tab.php:6
+msgid "<strong>Info!</strong> No data available"
+msgstr ""
+
+#: fabui/application/views/history/main_widget.php:34
+msgid "Completed"
+msgstr "Abgeschlossen"
+
+#: fabui/application/views/history/main_widget.php:37
+msgid "Aborted"
+msgstr "Abgebrochen"
+
+#: fabui/application/views/history/main_widget.php:40
+msgid "Terminated"
+msgstr "Abgebrochen"
+
+#: fabui/application/views/history/main_widget.php:44
+#: fabui/application/views/history/main_widget.php:67
+msgid "Status"
+msgstr "Status"
+
+#: fabui/application/views/history/main_widget.php:52
+#: fabui/application/views/layout/default/top.php:22
+#: fabui/application/views/layout/debug/top.php:22
+#: fabui/assets/js/fab.app.js:1162
+msgid "Tasks"
+msgstr "Aufgaben"
+
+#: fabui/application/views/history/main_widget.php:65
+msgid "When"
+msgstr "Wann"
+
+#: fabui/application/views/history/main_widget.php:69
+#: fabui/application/views/std/task_finished.php:31
+msgid "Duration"
+msgstr "Dauer"
+
 #: fabui/application/views/std/task_execute_js.php:734
 msgid "Waiting for first move"
 msgstr "Warten auf den ersten Zug"
@@ -2217,10 +2348,6 @@ msgid ""
 msgstr ""
 "Z-Höhe ist <strong> <span class = \"z-height\"> </ span> </ strong>. Möchten "
 "Sie es speichern und den Wert für die nächsten Drucke überschreiben?"
-
-#: fabui/application/views/std/task_finished.php:31
-msgid "Duration"
-msgstr "Dauer"
 
 #: fabui/application/views/std/task_finished.php:67
 #: fabui/assets/js/fab.app.js:24
@@ -2355,6 +2482,65 @@ msgstr ""
 "<strong> Warnung: </strong> Sie sind dabei eine Fertigungsaufgabe mit dem "
 "Laserkopf zu beginnen."
 
+#: fabui/application/views/probe/angle_widget.php:3
+msgid "Set the Extended Angle (open position)"
+msgstr ""
+
+#: fabui/application/views/probe/angle_widget.php:7
+msgid "Change the value until you find the one that is perfectly vertical"
+msgstr ""
+
+#: fabui/application/views/probe/angle_widget.php:14
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:34
+msgid "Open probe"
+msgstr "Sonde geöffnet"
+
+#: fabui/application/views/probe/angle_widget.php:19
+#: fabui/application/views/probe/angle_widget.php:41
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: fabui/application/views/probe/angle_widget.php:24
+msgid "Set the Retracted Angle (closed position)"
+msgstr ""
+
+#: fabui/application/views/probe/angle_widget.php:28
+msgid "Change the value until you find the one that is perfectly horizontal"
+msgstr ""
+
+#: fabui/application/views/probe/angle_widget.php:36
+msgid "Close probe"
+msgstr "Sonde schliesen"
+
+#: fabui/application/views/support/widget.php:14
+msgid "Quick start guide"
+msgstr ""
+
+#: fabui/application/views/support/widget.php:15
+msgid "This quick guide is a must read for getting started!"
+msgstr ""
+
+#: fabui/application/views/support/widget.php:22
+msgid "Knowledgebase"
+msgstr ""
+
+#: fabui/application/views/support/widget.php:23
+msgid "All that you need to know is in the Knowledgebase"
+msgstr ""
+
+#: fabui/application/views/support/widget.php:30
+msgid "Slicing profiles  & configurations"
+msgstr ""
+
+#: fabui/application/views/support/widget.php:31
+msgid ""
+"A public archive with the latest profiles for most commonly used slicing"
+msgstr ""
+
+#: fabui/application/views/support/widget.php:39
+msgid "Get in touch with our technical support team"
+msgstr ""
+
 #: fabui/application/views/create/print_js.php:71
 #: fabui/application/views/create/mill_js.php:78
 #: fabui/application/views/create/laser_js.php:90
@@ -2403,12 +2589,6 @@ msgstr "Anmelden"
 #: fabui/application/views/layout/debug/top.php:21
 msgid "Notify"
 msgstr "Benachrichtigen"
-
-#: fabui/application/views/layout/default/top.php:22
-#: fabui/application/views/layout/debug/top.php:22
-#: fabui/assets/js/fab.app.js:1162
-msgid "Tasks"
-msgstr "Aufgaben"
 
 #: fabui/application/views/layout/default/top.php:27
 #: fabui/application/views/layout/debug/top.php:27
@@ -2667,6 +2847,10 @@ msgstr ""
 msgid "Press Next to proceed"
 msgstr "Drücken Sie Weiter, um fortzufahren"
 
+#: fabui/application/views/scan/wizard/step1.php:19
+msgid "mode"
+msgstr "Modus"
+
 #: fabui/application/views/scan/wizard/step1.php:25
 msgid "Choose"
 msgstr "Wählen Sie"
@@ -2699,6 +2883,10 @@ msgstr "Wolkenpunkte"
 #: fabui/application/views/scan/wizard/step4.php:55
 msgid "Cloud size"
 msgstr "Wolkengröße"
+
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:232
+msgid "Scan completed"
+msgstr "Scan abgeschlossen"
 
 #: fabui/application/views/scan/wizard/step5.php:26
 msgid "Go to projects manager"
@@ -2835,6 +3023,16 @@ msgstr "Verändern"
 #: fabui/application/views/feeder/profiles/js.php:97
 msgid "Configuring feeder"
 msgstr "Feeder wird konfiguriert"
+
+#: fabui/application/views/feeder/profiles/widget.php:5
+msgid ""
+"<strong>Warning</strong> Seems that you still have not set the feeder your "
+"are using."
+msgstr ""
+
+#: fabui/application/views/feeder/profiles/widget.php:29
+msgid "Please select which feeder you want to configure"
+msgstr "Bitte wählen Sie aus, welchen Feeder Sie konfigurieren möchten"
 
 #: fabui/application/views/feeder/profiles/widget.php:75
 msgid "Feeder settings"
@@ -3235,10 +3433,6 @@ msgstr "Erneut gesendet:"
 msgid "Scan aborted"
 msgstr "Scan abgebrochen"
 
-#: fabui/ext/py/pg_scan.py:232
-msgid "Scan completed"
-msgstr "Scan abgeschlossen"
-
 #: fabui/ext/py/fabtotum/fabui/command_parser.py:133
 #, python-brace-format
 msgid "Error parsing command [{0}], {1}"
@@ -3377,10 +3571,6 @@ msgstr ""
 #, python-brace-format
 msgid "{0} aborted"
 msgstr "{0} abgebrochen"
-
-#: fabui/ext/py/fabtotum/fabui/macros/common.py:34
-msgid "Open probe"
-msgstr "Sonde geöffnet"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:35
 msgid "Probe position"
@@ -4238,6 +4428,10 @@ msgstr "DNS-Einstellungen gespeichert"
 msgid "Fan override changed to {0}"
 msgstr "Fan-Override geändert zu {0}"
 
+#: fabui/assets/js/tours/0010_head.js:41
+msgid "Click on this button"
+msgstr ""
+
 #: fabui/application/views/nozzle/height_js.php:213
 msgid "Old nozzle offset: {0}"
 msgstr "Alte Düsenversetzung: {0}"
@@ -4283,6 +4477,10 @@ msgstr ""
 #: fabui/assets/js/tours/0050_feeder.js:13
 msgid "Feeder menu"
 msgstr ""
+
+#: fabui/application/views/create/mill_js.php:78
+msgid "Checking safety measures..."
+msgstr "Sicherheitsmaßnahmen überprüfung..."
 
 #: fabui/assets/js/std/jogcontrols.js:568
 msgid "Restore XY"
@@ -4374,9 +4572,11 @@ msgstr "Neue Ethernet-Konfiguration speicherung im gange"
 msgid "You need to home Z axis first"
 msgstr "Sie müssen zuerst die Z-Achse zum Nullpunkt bringen"
 
-#: fabui/application/views/settings/network_js.php:208
-msgid "Failed to save DNS configuration"
-msgstr "Fehler beim Speichern der DNS-Konfiguration"
+#: fabui/application/views/head/install_js.php:30
+msgid ""
+"New head has been installed, it is recommended to repeat the Probe "
+"Calibration operation"
+msgstr ""
 
 #: fabui/application/views/settings/network_js.php:173
 msgid "Failed to connect to Wireless network"
@@ -4400,9 +4600,9 @@ msgstr "Z Position {0} gespeichert"
 msgid "Wifi connected"
 msgstr "Wifi verbunden"
 
-#: fabui/assets/js/tours/0050_feeder.js:21
-msgid "Step calibration menu"
-msgstr ""
+#: fabui/application/views/settings/network_js.php:208
+msgid "Failed to save DNS configuration"
+msgstr "Fehler beim Speichern der DNS-Konfiguration"
 
 #: fabui/assets/js/fab.app.js:21
 msgid "Shutdown"
@@ -4438,8 +4638,10 @@ msgstr "Neustart im Gange"
 msgid "Aborting"
 msgstr "Wird abbrechen"
 
-#: fabui/assets/js/tours/0010_head.js:41
-msgid "Click on this button"
+#: fabui/application/views/head/install_js.php:142
+msgid ""
+"Well done! Now your <strong>FABtotum Personal Fabricator</strong> is set for "
+"the <strong>{0}</strong>."
 msgstr ""
 
 #: fabui/application/views/nozzle/height_js.php:170
@@ -4452,6 +4654,14 @@ msgstr "Überschreibung Wert: {0}"
 
 #: fabui/application/views/create/laser_js.php:52
 msgid "Engrave"
+msgstr ""
+
+#: fabui/assets/js/tours/0050_feeder.js:21
+msgid "Step calibration menu"
+msgstr ""
+
+#: fabui/application/views/head/install_js.php:132
+msgid "Please select a Head"
 msgstr ""
 
 #: fabui/application/views/settings/network_js.php:172
@@ -4559,10 +4769,6 @@ msgstr "Deaktivierung der Wireless-Schnittstelle im gange"
 msgid "Bed temperature set to {0} &deg;"
 msgstr "Betttemperatur eingestellt auf {0} &deg;"
 
-#: fabui/assets/js/fab.app.js:1024
-msgid "Ignore"
-msgstr "Ignorieren"
-
 #: fabui/application/views/nozzle/height_js.php:172
 msgid "New probe Length: {0}"
 msgstr "Neue Sondenlänge: {0}"
@@ -4665,9 +4871,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Previous"
 #~ msgstr "Dateiansicht"
-
-#~ msgid "A mode"
-#~ msgstr "A-Modus"
 
 #~ msgid "Head installation"
 #~ msgstr "Kopf Installieren"
