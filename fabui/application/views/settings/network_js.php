@@ -184,7 +184,7 @@
 			if(currentEthIPV4 != data['ipv4'])
 			{
 				setTimeout(function(){
-					waitContent( _("Redirect to new address..." );
+					waitContent( _("Redirect to new address..." ));
 					fabApp.redirectToUrlWhenisReady('http://'+ data['ipv4'] + '/fabui/#settings/network/eth0');
 				}, 3000);
 			}
