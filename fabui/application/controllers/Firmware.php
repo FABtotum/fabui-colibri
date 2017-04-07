@@ -50,7 +50,7 @@ class Firmware extends FAB_Controller {
 		$data['content'] = $content;
 
 		$fw_versions = array();
-		$fw_versions['factory'] = 'Factory default';
+		$fw_versions['factory'] = _("Factory default");
 		
 		if($content)
 		{
@@ -59,12 +59,12 @@ class Firmware extends FAB_Controller {
 			{
 				if($key != 'latest')
 				{
-					$fw_versions[$key] = $key . ' (download)';
+					$fw_versions[$key] = $key . ' ('._("download").')';
 				}
 			}
 		}
 		
-		$fw_versions['upload'] = 'Upload custom';
+		$fw_versions['upload'] = _("Upload custom");
 		$data['fw_versions'] = $fw_versions;
 		
 		$widgetOptions = array(

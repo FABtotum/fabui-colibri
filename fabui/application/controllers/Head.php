@@ -52,7 +52,7 @@ class Head extends FAB_Controller {
 		);
 		
 		$widgeFooterButtons = '<span style="margin-right:10px;"><i class="fa fa-warning"></i>'._('Before clicking "Install", make sure the head is properly locked in place').' </span>' .
-							   $this->smart->create_button('Install', 'primary')->attr(array('id' => 'set-head'))->icon('fa-wrench')->print_html(true);
+							   $this->smart->create_button( _("Install"), 'primary')->attr(array('id' => 'set-head'))->icon('fa-wrench')->print_html(true);
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';

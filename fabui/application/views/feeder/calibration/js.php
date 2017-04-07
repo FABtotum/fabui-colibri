@@ -11,7 +11,7 @@
     function extrudeFilament()
     {
         var button = $(this);
-        button.html('<i class="fa fa-spin fa-spinner"></i> Extruding...');
+        button.html('<i class="fa fa-spin fa-spinner"></i> ' + _("Extruding...") );
         disableButton('.extrude');
         disableButton('.step-change-modal-open');
         $(".response-container").html('');
@@ -25,7 +25,7 @@
             enableButton('.extrude');
             enableButton('.step-change-modal-open');
             $(".calc-row").slideDown(function(){
-                $('.extrude').html('<i class="fab-lg fab-fw icon-fab-e"></i> Start to extrude');
+                $('.extrude').html('<i class="fab-lg fab-fw icon-fab-e"></i> ' + _("Start to extrude") );
             });
         });
         
@@ -35,7 +35,7 @@
     function calculateStep()
     {
         var button = $(this);
-        button.html('<i class="fa fa-spin fa-spinner"></i> Calculating...');
+        button.html('<i class="fa fa-spin fa-spinner"></i> ' + _("Calculating..."));
         disableButton('.recalculate');
         disableButton('.extrude');
         disableButton('.step-change-modal-open');
@@ -49,12 +49,12 @@
                 + $("#filament-extruded").val(),
             dataType: 'json'
         }).done(function( data ) {
-            button.html('<i class="fa fa-calculator"></i> Calculate');
+            button.html('<i class="fa fa-calculator"></i> ' + _("Calculate") );
             enableButton('.recalculate');
             enableButton('.extrude');
             enableButton('.step-change-modal-open');
             
-            var html = '<div class="alert alert-info animated fadeIn"> <strong>Calibration completed</strong> New value: <strong>' + data.new_step + '</strong></div>';
+            var html = '<div class="alert alert-info animated fadeIn"> ' + _("<strong>Calibration completed</strong> New value: <strong>{0}</strong>").format(data.new_step) + '</div>';
             //~ $(".calc-row").slideUp(function(){
                 $(".response-container").html(html);
             //~ });
@@ -77,7 +77,7 @@
     {
         $(".calc-row").slideUp(function(){});
         var button = $("#change-extruder-step-value-button");
-        button.html('<i class="fa fa-spin fa-spinner"></i> Storing...');
+        button.html('<i class="fa fa-spin fa-spinner"></i> ' + _("Storing...") );
         disableButton('.step-change-modal-cancel');
         var data = {
             action : 'change',
@@ -91,7 +91,7 @@
             dataType: 'json'
         }).done(function( data ) {
             var button = $("#change-extruder-step-value-button");
-            button.html('<i class="fa fa-check"></i>Change');
+            button.html('<i class="fa fa-check"></i> ' + _("Change") );
             enableButton('.step-change-modal-cancel');
             $('#change-value-modal').modal('hide');
             $("#actual-step").val(data.new_step);

@@ -6,7 +6,7 @@
 		</div>
 <?php else: ?>
 		<div class="alert alert-info animated  fadeIn" role="alert">
-			<i class="fa fa-info-circle"></i> Currently  your <strong>FABtotum Personal Fabricator</strong> is configured to use <strong><?php echo  $heads[$head]['name']; ?></strong>
+			<i class="fa fa-info-circle"></i> <?php echo pyformat( _("Currently  your <strong>FABtotum Personal Fabricator</strong> is configured to use <strong>{0}</strong>"), array($heads[$head]['name']) );?>
 		</div>
 <?php endif; ?>
 	</div>
