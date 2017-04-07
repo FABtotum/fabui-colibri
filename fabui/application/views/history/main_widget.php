@@ -6,20 +6,20 @@
 	</div>
     
 	<div class="btn-group">
-		<button class="btn btn-default dropdown-toggle" data-toggle="dropdown"> <span id="ajax-type">Make</span> <span class="caret"></span></button>
+		<button class="btn btn-default dropdown-toggle" data-toggle="dropdown"> <span id="ajax-type"><?php echo _("Make");?></span> <span class="caret"></span></button>
 		<ul class="dropdown-menu">
 			<li>
-				<a data-type="type"  data-value="print" href="javascript:void(0);"><i class="icon-fab-print"></i> Print</a>
+				<a data-type="type"  data-value="print" href="javascript:void(0);"><i class="icon-fab-print"></i> <?php echo _("Print");?></a>
 			</li>
 			<li>
-				<a  data-type="type" data-value="mill" href="javascript:void(0);"><i class="icon-fab-mill"></i> Mill</a>
+				<a  data-type="type" data-value="mill" href="javascript:void(0);"><i class="icon-fab-mill"></i> <?php echo _("Mill");?></a>
 			</li>
 			<li>
-				<a  data-type="type" data-value="scan" href="javascript:void(0);"><i class="icon-fab-scan"></i> Scan</a>
+				<a  data-type="type" data-value="scan" href="javascript:void(0);"><i class="icon-fab-scan"></i> <?php echo _("Scan");?></a>
 			</li>
 			<li class="divider"></li>
 			<li>
-				<a  data-type="type" data-value="" href="javascript:void(0);"> Make</a>
+				<a  data-type="type" data-value="" href="javascript:void(0);"> <?php echo _("Make");?></a>
 			</li>
 		</ul>
 	</div>
@@ -31,17 +31,17 @@
 		</button>
 		<ul class="dropdown-menu">
 			<li>
-				<a  data-type="status" data-value="completed" href="javascript:void(0);">Completed</a>
+				<a  data-type="status" data-value="completed" href="javascript:void(0);"><?php echo _("Completed");?></a>
 			</li>
 			<li>
-				<a  data-type="status" data-value="aborted" href="javascript:void(0);">Aborted</a>
+				<a  data-type="status" data-value="aborted" href="javascript:void(0);"><?php echo _("Aborted");?></a>
 			</li>
 			<li>
-				<a  data-type="status" data-value="terminated" href="javascript:void(0);">Terminated</a>
+				<a  data-type="status" data-value="terminated" href="javascript:void(0);"><?php echo _("Terminated");?></a>
 			</li>
 			<li class="divider"></li>
 			<li>
-				<a  data-type="status" data-value="" href="javascript:void(0);"> Status</a>
+				<a  data-type="status" data-value="" href="javascript:void(0);"><?php echo _("Status");?></a>
 			</li>
 		</ul>
 	</div>
@@ -49,10 +49,10 @@
 
 <ul id="myTab1" class="nav nav-tabs tabs-pull-right">
 	<li class="active">
-		<a href="#s1" data-toggle="tab"><i class="fa fa-list"></i> Tasks</a>
+		<a href="#s1" data-toggle="tab"><i class="fa fa-list"></i> <?php echo _("Tasks");?></a>
 	</li>
 	<li>
-		<a id="stats-click" href="#s2" data-toggle="tab"><i class="fa fa-area-chart"></i> Stats</a>
+		<a id="stats-click" href="#s2" data-toggle="tab"><i class="fa fa-area-chart"></i> <?php echo _("Stats");?></a>
 	</li>
 </ul>
 
@@ -62,11 +62,11 @@
 			<thead>
 				<tr>
 					<th></th>
-					<th><i class="fa fa-calendar"></i> <span class="hidden-xs">When</span></th>
-					<th><i class="fa fa-play fa-rotate-90 txt-color-blue"></i> <span class="hidden-xs">Make</span></th>
-					<th>Status</th>
-					<th>Description</th>
-					<th><i class="fa fa-clock-o"></i> <span class="hidden-xs">Duration</span></th>
+					<th><i class="fa fa-calendar"></i> <span class="hidden-xs"><?php echo _("When");?></span></th>
+					<th><i class="fa fa-play fa-rotate-90 txt-color-blue"></i> <span class="hidden-xs"><?php echo _("Make");?></span></th>
+					<th><?php echo _("Status");?></th>
+					<th><?php echo _("Description");?></th>
+					<th><i class="fa fa-clock-o"></i> <span class="hidden-xs"><?php echo _("Duration");?></span></th>
 					<th class="hidden"></th>
 					<th class="hidden"></th>
 					<th class="hidden"></th>

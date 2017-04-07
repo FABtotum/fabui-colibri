@@ -43,7 +43,7 @@
 							<div class="col-sm-12"> <span class="text"> <?php echo _("Image resolution");?> <span class="pull-right"> <span class="resolution-width"></span> x <span class="resolution-height"></span> </span> </span>
 								<div class="fake-progress"></div>
 							</div>
-							<div class="col-sm-12"> <span class="text"> <?php echo _("Iso");?> <span class="pull-right"> <span class="iso"></span>  </span> </span>
+							<div class="col-sm-12"> <span class="text"> <?php echo _("ISO");?> <span class="pull-right"> <span class="iso"></span>  </span> </span>
 								<div class="fake-progress"></div>
 							</div>
 						</div>

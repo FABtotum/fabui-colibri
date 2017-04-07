@@ -346,5 +346,5 @@ case $MODE in
         ;;
 esac
 
-ifup $IFACE
-#~ /etc/init.d/network restart
+#ifup $IFACE
+/etc/init.d/network restart

@@ -128,4 +128,6 @@ case $MODE in
 esac
 
 #~ /etc/init.d/network restart
-ifup $IFACE
+#ifup $IFACE
+
+/etc/init.d/network restart

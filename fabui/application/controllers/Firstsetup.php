@@ -12,12 +12,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 class FirstSetup extends FAB_Controller {
 
-    public function index()
-    {
-		$this->view();
-	}
+    //~ public function index()
+    //~ {
+		//~ $this->view();
+	//~ }
 	
-    public function new_index()
+    public function index()
     {
 		//load libraries, helpers, model
 		$this->load->library('smart');

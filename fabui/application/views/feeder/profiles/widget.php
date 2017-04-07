@@ -2,11 +2,11 @@
 	<div class="col-sm-12 alerts-container">
 <?php if(!isset($units['hardware']['feeder']) || $units['hardware']['feeder'] == ''): ?>
 		<div class="alert alert-warning animated  fadeIn" role="alert">
-			<i class="fa fa-warning"></i><strong>Warning</strong> Seems that you still have not set the feeder your are using.
+			<i class="fa fa-warning"></i><?php echo _("<strong>Warning</strong> Seems that you still have not set the feeder your are using.");?>
 		</div>
 <?php else: ?>
 		<div class="alert alert-info animated  fadeIn" role="alert">
-			<i class="fa fa-info-circle"></i> Currently  your <strong>FABtotum Personal Fabricator</strong> is configured to use <strong><?php echo  $feeders[$feeder]['name']; ?></strong>
+			<i class="fa fa-info-circle"></i> <?php echo pyformat( _("Currently  your <strong>FABtotum Personal Fabricator</strong> is configured to use <strong>{0}</strong>"), array($feeders[$feeder]['name']) );?>
 		</div>
 <?php endif; ?>
 	</div>
@@ -26,7 +26,7 @@
 					</div-->
 					<div class="smart-form">
 						<fieldset style="background: none !important;">
-							<label class="label font-md">Please select which feeder you want to configure </label>
+							<label class="label font-md"><?php echo _("Please select which feeder you want to configure");?> </label>
 							<section >
 								<div class="input-group">
 									<label class="select"> <?php echo form_dropdown('feeders', $feeder_list, $feeder, 'class="input-lg" id="feeders"'); ?> <i></i> </label>
@@ -48,7 +48,7 @@
 											<div class="jumbotron">
 											<p class="margin-bottom-10 "><?php echo $feeders[$feeder]['description'] ?></p>
 											<?php if($feeders[$feeder]['link'] != ''): ?>
-											<a style="padding: 6px 12px;" target="_blank" href="<?php echo $feeders[$feeder]['link']; ?>" class="btn btn-default no-ajax">More details</a>
+											<a style="padding: 6px 12px;" target="_blank" href="<?php echo $feeders[$feeder]['link']; ?>" class="btn btn-default no-ajax"><?php echo _("More details");?></a>
 											</div>
 											<?php endif; ?>
 									</div>

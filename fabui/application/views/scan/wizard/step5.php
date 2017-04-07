@@ -21,10 +21,10 @@
 						<span><b class="badge fabtotum-badge"><i class="fa fa-check"></i></b></span>
 					</span>
 				</h1>
-				<h4 class="margin-bottom-20">Scan complete</h4>
+				<h4 class="margin-bottom-20"><?php echo _("Scan completed");?></h4>
 				<div class="button-container text-center">
 					<a class="btn btn-default margin-bottom-10" id="got-to-projects-manager" href="#"><i class="fa fa-cubes"></i> <?php echo  _("Go to projects manager") ?> </a>
-					<button class="btn btn-default margin-bottom-10" id="restart"><i class="fa fa-refresh"></i> <?php echo _("Restart scan"); ?> Restart scan</button>
+					<button class="btn btn-default margin-bottom-10" id="restart"><i class="fa fa-refresh"></i> <?php echo _("Restart scan"); ?></button>
 					<a class="btn btn-default margin-bottom-10 no-ajax" id="download-file"  href="#"><i class="fa fa-download"></i> <?php echo _("Download cloud points file")?> </a>
 				</div>
 			</div>

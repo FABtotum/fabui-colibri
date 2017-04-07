@@ -2,7 +2,7 @@
 	<div class="col-sm-12 alerts-container">
 <?php if(!isset($units['hardware']['head']) || $units['hardware']['head'] == ''): ?>
 		<div class="alert alert-warning animated  fadeIn" role="alert">
-			<i class="fa fa-warning"></i><strong>Warning</strong> Seems that you still have not set the head your are using.
+			<i class="fa fa-warning"></i><?php echo _("<strong>Warning</strong> Seems that you still have not set the head your are using.");?>
 		</div>
 <?php else: ?>
 		<div class="alert alert-info animated  fadeIn" role="alert">
@@ -21,12 +21,12 @@
 				<div class="col-sm-6">
 					<div class="row">
 						<div class="col-sm-12">
-							<p class="font-md">Make sure you removed the filament, milling bits and any other accessory on the head.<br>See also <a href="maintenance/spool-management">spool maintenance</a></p>
+							<p class="font-md"><?php echo _("Make sure you removed the filament, milling bits and any other accessory on the head.");?><br><?php echo _('See also <a href="maintenance/spool-management">spool maintenance</a>');?></p>
 						</div>
 					</div>	
 					<div class="smart-form">
 						<fieldset style="background: none !important;">
-							<label class="label font-md">Please select which head you want to install </label>
+							<label class="label font-md"><?php echo _("Please select which head you want to install");?> </label>
 							<section >
 								<div class="input-group">
 									<label class="select"> <?php echo form_dropdown('heads', $heads_list, $head, 'class="input-lg" id="heads"'); ?> <i></i> </label>
@@ -48,7 +48,7 @@
 											<div class="jumbotron">
 											<p class="margin-bottom-10 "><?php echo $heads[$head]['description'] ?></p>
 											<?php if($heads[$head]['link'] != ''): ?>
-											<a style="padding: 6px 12px;" target="_blank" href="<?php echo $heads[$head]['link']; ?>" class="btn btn-default no-ajax">More details</a>
+											<a style="padding: 6px 12px;" target="_blank" href="<?php echo $heads[$head]['link']; ?>" class="btn btn-default no-ajax"><?php echo _("More details");?></a>
 											</div>
 											<?php endif; ?>
 										<?php endif; ?>
@@ -71,7 +71,7 @@
 		<div id="<?php echo $name ?>_description">
 			<p class="margin-bottom-10"><?php echo $val['description']; ?></p>
 			<?php if($val['link'] != ''): ?>
-			<a style="padding: 6px 12px;" target="_blank" href="<?php echo $val['link']; ?>" class="btn btn-default no-ajax">More details</a>
+			<a style="padding: 6px 12px;" target="_blank" href="<?php echo $val['link']; ?>" class="btn btn-default no-ajax"><?php echo _("More details");?></a>
 			<?php endif; ?>
 		</div>
 	<?php endforeach; ?>

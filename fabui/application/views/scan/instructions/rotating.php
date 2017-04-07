@@ -14,7 +14,7 @@
 		<div class="panel panel-default">
 			<div class="panel-body status">
 				<div class="who clearfix">
-					<h4>Are you ready to scan?</h4>
+					<h4><?php echo _("Are you ready to scan?");?></h4>
 				</div>
 				<!-- first row  -->
 				<div class="row text-center" id="rotating-first-row">
@@ -27,9 +27,9 @@
 						<div class="col-sm-6 col-xs-12">
 							<div class="text text-center">
 								<h1 class=""><span class="badge">1</span></h1>
-								<h1 class="text-primary">Remove the platform</h1>
+								<h1 class="text-primary"><?php echo _("Remove the platform");?></h1>
 								<p class="font-md">
-									Check if the LED light on the platform inside is off. <br>Then remove the building platform, exposing the A axis chuck
+									<?php echo _("Check if the LED light on the platform inside is off. <br>Then remove the building platform, exposing the A axis chuck");?>
 								</p>
 							</div>
 						</div>
@@ -48,8 +48,8 @@
 							<div class="col-sm-6">
 								<div class="text text-center">
 									<h1><span class="badge">2</span></h1>
-									<h1 class="text-primary">Attach the object</h1>
-									<p class="font-md">Attach the object to the chuck with screws, duct tape, wire etc.</p>
+									<h1 class="text-primary"><?php echo _("Attach the object");?></h1>
+									<p class="font-md"><?php echo _("Attach the object to the chuck with screws, duct tape, wire etc.");?></p>
 								</div>
 							</div>
 						</div>
@@ -64,18 +64,13 @@
 							<div class="col-sm-6">
 								<div class="text text-center">
 									<h1><span class="badge">3</span></h1>
-									<h1 class="text-primary">Close</h1>
-									<p class="font-md">Close the front</p>
+									<h1 class="text-primary"><?php echo _("Close");?></h1>
+									<p class="font-md"><?php echo _("Close the front");?></p>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<!-- end second row 
-				<ul class="links text-right">
-					<li><button type="button" data-action="prepare" class="btn btn-default rotating-instructions-button">Prepare </button></li>
-				</ul>
-				-->
 			</div>
 		</div>
 	</div>

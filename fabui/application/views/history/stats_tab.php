@@ -3,7 +3,7 @@
 		<div class="col-sm-12">
 			<div class="alert alert-info animated fadeIn">
 				<i class="fa-fw fa fa-info"></i>
-				<strong>Info!</strong> No data available
+				<?php echo _("<strong>Info!</strong> No data available");?>
 			</div>
 		</div>
 	</div>

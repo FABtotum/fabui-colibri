@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-06 14:38+0200\n"
+"POT-Creation-Date: 2017-04-06 14:56+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -634,6 +634,7 @@ msgid "Installing head"
 msgstr "Installato"
 
 #: fabui/application/views/head/install_js.php:135
+#: fabui/application/views/debug/js.php:128
 #: fabui/application/views/nozzle/height_js.php:129
 #: fabui/application/views/plugin/js.php:134
 #: fabui/application/views/spool/js.php:118
@@ -1048,6 +1049,11 @@ msgstr "Vista file"
 #: fabui/application/views/scan/wizard/main.php:36
 #: fabui/assets/js/tours/0020_bed.js:21
 msgid "Next"
+msgstr ""
+
+#: fabui/application/views/debug/js.php:128
+#: fabui/application/views/settings/hardware_js.php:122
+msgid "Applying new settings"
 msgstr ""
 
 #: fabui/application/views/install/js.php:40
@@ -1580,6 +1586,8 @@ msgid "Reply"
 msgstr "Risposta"
 
 #: fabui/application/views/jog/widget.php:327
+#: fabui/application/views/scan/instructions/rotating.php:67
+#: fabui/application/views/scan/instructions/photogrammetry.php:67
 msgid "Close"
 msgstr "Chiudi"
 
@@ -1953,6 +1961,7 @@ msgstr ""
 
 #: fabui/application/views/settings/wireless_tab.php:19
 #: fabui/application/views/settings/ethernet_tab.php:15
+#: fabui/application/views/scan/settings/photogrammetry.php:59
 #, fuzzy
 msgid "IP address"
 msgstr "Premi"
@@ -1985,10 +1994,6 @@ msgstr ""
 #: fabui/application/views/settings/wireless_tab.php:85
 #: fabui/application/views/settings/network_widget.php:136
 msgid "Show password"
-msgstr ""
-
-#: fabui/application/views/settings/hardware_js.php:122
-msgid "Applying new settings"
 msgstr ""
 
 #: fabui/application/views/settings/hardware_js.php:125
@@ -2694,7 +2699,8 @@ msgid "Image resolution"
 msgstr ""
 
 #: fabui/application/views/scan/wizard/step4.php:46
-msgid "Iso"
+#: fabui/application/views/scan/settings/photogrammetry.php:26
+msgid "ISO"
 msgstr ""
 
 #: fabui/application/views/scan/wizard/step4.php:52
@@ -2717,6 +2723,90 @@ msgstr "Riavvia stampa"
 #: fabui/application/views/scan/wizard/step5.php:28
 msgid "Download cloud points file"
 msgstr ""
+
+#: fabui/application/views/scan/instructions/rotating.php:17
+#: fabui/application/views/scan/instructions/sweep.php:17
+#: fabui/application/views/scan/instructions/photogrammetry.php:17
+#: fabui/application/views/scan/instructions/probing.php:17
+msgid "Are you ready to scan?"
+msgstr ""
+
+#: fabui/application/views/scan/instructions/rotating.php:30
+#: fabui/application/views/scan/instructions/photogrammetry.php:30
+msgid "Remove the platform"
+msgstr ""
+
+#: fabui/application/views/scan/instructions/rotating.php:32
+#: fabui/application/views/scan/instructions/photogrammetry.php:32
+msgid ""
+"Check if the LED light on the platform inside is off. <br>Then remove the "
+"building platform, exposing the A axis chuck"
+msgstr ""
+
+#: fabui/application/views/scan/instructions/rotating.php:51
+#: fabui/application/views/scan/instructions/photogrammetry.php:51
+msgid "Attach the object"
+msgstr ""
+
+#: fabui/application/views/scan/instructions/rotating.php:52
+#: fabui/application/views/scan/instructions/photogrammetry.php:52
+msgid "Attach the object to the chuck with screws, duct tape, wire etc."
+msgstr ""
+
+#: fabui/application/views/scan/instructions/rotating.php:68
+#: fabui/application/views/scan/instructions/photogrammetry.php:68
+#, fuzzy
+msgid "Close the front"
+msgstr "Chiudi la cover"
+
+#: fabui/application/views/scan/instructions/sweep.php:20
+msgid "If you are ready click \"next\" to start scan"
+msgstr ""
+
+#: fabui/application/views/scan/instructions/probing.php:28
+msgid "Position the object"
+msgstr ""
+
+#: fabui/application/views/scan/instructions/probing.php:30
+msgid ""
+"Position your object in the center of the platform when prompted. <br>Secure "
+"it with a double sided tape or use the fixture holes"
+msgstr ""
+
+#: fabui/application/views/scan/settings/default.php:20
+#, fuzzy
+msgid "Create new object"
+msgstr "Crea nuovo"
+
+#: fabui/application/views/scan/settings/default.php:23
+#, fuzzy
+msgid "Add to an existing object"
+msgstr "Errore durante l'eliminazione dell'oggetto"
+
+#: fabui/application/views/scan/settings/photogrammetry.php:35
+msgid "Size"
+msgstr ""
+
+#: fabui/application/views/scan/settings/photogrammetry.php:46
+msgid "Slices"
+msgstr ""
+
+#: fabui/application/views/scan/settings/photogrammetry.php:65
+msgid ""
+"<strong>Before proceeding start desktop server on your pc and check "
+"connection. If you don't have the desktop server you can download it <a "
+"target=\"_blank\" href=\"/utilities/FabtotumDesktopServer.jar\">here</a></"
+"strong>"
+msgstr ""
+
+#: fabui/application/views/scan/settings/photogrammetry.php:71
+msgid "Port"
+msgstr ""
+
+#: fabui/application/views/scan/settings/photogrammetry.php:79
+#, fuzzy
+msgid "Check Connection"
+msgstr "Connessione"
 
 #: fabui/application/views/feeder/calibration/widget.php:4
 #, fuzzy

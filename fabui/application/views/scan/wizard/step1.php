@@ -16,7 +16,7 @@
 				<div class="panel panel-default">
 					<div class="panel-body status">
 						<div class="who clearfix">
-							<h4><?php echo $mode['info']['name']; ?> <small class="hidden-xs">mode</small></h4>
+							<h4><?php echo $mode['info']['name']; ?> <small class="hidden-xs"><?php echo _("mode");?></small></h4>
 						</div>
 						<div class="text hidden-xs">
 							<p class="font-sm"><?php echo $mode['info']['description']; ?></p>

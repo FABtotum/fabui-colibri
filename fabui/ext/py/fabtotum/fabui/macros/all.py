@@ -35,11 +35,9 @@ PRESET_MAP = {
     "start_up"                      : general_macros.start_up,
     "shutdown"                      : general_macros.shutdown,
     "auto_bed_leveling"             : general_macros.auto_bed_leveling,
-#    "jog_setup"                     : general_macros.jog_setup,
     "home_all"                      : general_macros.home_all,
     "probe_down"                    : general_macros.probe_down,
     "probe_up"                      : general_macros.probe_up,
-    "raise_bed"                     : general_macros.raise_bed,
     "safe_zone"                     : general_macros.safe_zone,
     "engage_4axis"                  : general_macros.engage_4axis,
     "4th_axis_mode"                 : general_macros.do_4th_axis_mode,  
@@ -85,15 +83,10 @@ PRESET_MAP = {
     
     # Scanning    
     "check_pre_scan"                : scan_macros.check_pre_scan, 
-    
     "start_rotary_scan"             : scan_macros.rotary_scan,
-    
     "start_photogrammetry_scan"     : scan_macros.photogrammetry_scan,
-    
     "start_sweep_scan"              : scan_macros.sweep_scan,
-    
     "start_probe_scan"              : scan_macros.probe_scan,
-    
     "end_scan"                      : scan_macros.end_scan,
     
     # Calibration

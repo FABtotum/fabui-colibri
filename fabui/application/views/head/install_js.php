@@ -27,14 +27,14 @@
 		<?php if(isset($_REQUEST['head_installed']) && $units['hardware']['head'] != 'mill_v2'): ?>
 			
 			$.SmartMessageBox({
-				title : "<i class='fa fa-warning'></i> New head has been installed, it is recommended to repeat the Probe Calibration operation",
-				buttons : '[<i class="fa fa-crosshairs"></i> Calibrate][Ignore]'
+				title : _("<i class='fa fa-warning'></i> New head has been installed, it is recommended to repeat the Probe Calibration operation"),
+				buttons : '<?php echo _('[<i class="fa fa-crosshairs"></i> Calibrate][Ignore]'); ?>'
 			}, function(ButtonPressed) {
-				if(ButtonPressed === "Calibrate") {	
+				if(ButtonPressed === _("Calibrate") ) {	
 						document.location.href="<?php echo site_url('maintenance/probe-length-calibration'); ?>";
 						location.reload();
 				}
-				if (ButtonPressed === "Ignore") {
+				if (ButtonPressed === _("Ignore") ) {
 					
 				}
 		
@@ -129,7 +129,7 @@
 	**/
 	function set_head(){
 	 	if($("#heads").val() == 'head_shape'){
-	 		alert('Please select a Head');
+	 		alert( _("Please select a Head") );
 	 		return false;
 	 	}
 	 	openWait('<i class="fa fa-circle-o-notch fa-spin"></i> <?php echo _("Installing head"); ?>', '<?php echo _("Please wait"); ?>...');
