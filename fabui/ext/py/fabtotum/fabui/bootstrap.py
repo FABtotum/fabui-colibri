@@ -179,7 +179,7 @@ def hardware2(gcodeSender, config, log, eeprom):
     #invert x endstop logic
     gcodeSender.send("M747 X1", group='bootstrap')
     #set maximum feedrate
-    gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00", group='bootstrap')
+    gcodeSender.send("M203 X550.00 Y550.00 Z15.00", group='bootstrap')
     #save settings
     #gcodeSender.send("M500", group='bootstrap')
     
@@ -190,6 +190,7 @@ def hardware2(gcodeSender, config, log, eeprom):
     config.save('settings')
     
     feeder = loadFctoryFeeder(config)
+    feeder['max_feedrate'] = 12.00
     steps_per_unit = float(feeder['steps_per_unit'])
     if steps_per_unit != 3048.16:
         steps_per_unit = 3048.16
@@ -197,9 +198,9 @@ def hardware2(gcodeSender, config, log, eeprom):
         
         feeder['steps_per_unit'] = steps_per_unit
         feeder['steps_per_angle'] = steps_per_angle
-        
-        updateFactoryFeeder(config, feeder)
-        config.save_feeder_info('built_in_feeder', feeder)
+    
+    updateFactoryFeeder(config, feeder)
+    config.save_feeder_info('built_in_feeder', feeder)
     
     log.info("Rev2")
     
@@ -216,7 +217,7 @@ def hardware3(gcodeSender, config, log, eeprom):
     #invert x endstop logic
     gcodeSender.send("M747 X1", group='bootstrap')
     #set maximum feedrate
-    gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00", group='bootstrap')
+    gcodeSender.send("M203 X550.00 Y550.00 Z15.00", group='bootstrap')
     #save settings
     #gcodeSender.send("M500", group='bootstrap')
     
@@ -227,6 +228,7 @@ def hardware3(gcodeSender, config, log, eeprom):
     config.save('settings')
     
     feeder = loadFctoryFeeder(config)
+    feeder['max_feedrate'] = 12.00
     steps_per_unit = float(feeder['steps_per_unit'])
     if steps_per_unit != 3048.16:
         steps_per_unit = 3048.16
@@ -234,9 +236,9 @@ def hardware3(gcodeSender, config, log, eeprom):
         
         feeder['steps_per_unit'] = steps_per_unit
         feeder['steps_per_angle'] = steps_per_angle
-        
-        updateFactoryFeeder(config, feeder)
-        config.save_feeder_info('built_in_feeder', feeder)
+    
+    updateFactoryFeeder(config, feeder)
+    config.save_feeder_info('built_in_feeder', feeder)
     
     log.info("Rev3")
     
@@ -249,7 +251,7 @@ def hardware4(gcodeSender, config, log, eeprom):
     #invert x endstop logic
     gcodeSender.send("M747 X1", group='bootstrap')
     #set maximum feedrate
-    gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E12.00", group='bootstrap')
+    gcodeSender.send("M203 X550.00 Y550.00 Z15.00", group='bootstrap')
     #save settings
     #gcodeSender.send("M500", group='bootstrap')
     
@@ -261,16 +263,16 @@ def hardware4(gcodeSender, config, log, eeprom):
     
     feeder = loadFctoryFeeder(config)
     steps_per_unit = float(feeder['steps_per_unit'])
+    feeder['max_feedrate'] = 12.00
     if steps_per_unit != 1524:
         steps_per_unit = 1524
         steps_per_angle = 88.888889
         
         feeder['steps_per_unit'] = steps_per_unit
         feeder['steps_per_angle'] = steps_per_angle
-        
-        updateFactoryFeeder(config, feeder)
-        config.save_feeder_info('built_in_feeder', feeder)
     
+    updateFactoryFeeder(config, feeder)
+    config.save_feeder_info('built_in_feeder', feeder)
     log.info("Rev4")
     
 def hardware5(gcodeSender, config, log, eeprom):
@@ -293,16 +295,16 @@ def hardware5(gcodeSender, config, log, eeprom):
     
     feeder = loadFctoryFeeder(config)
     steps_per_unit = float(feeder['steps_per_unit'])
+    feeder['max_feedrate'] = 23.00
     if steps_per_unit != 1524:
         steps_per_unit = 1524
         steps_per_angle = 88.888889
         
         feeder['steps_per_unit'] = steps_per_unit
         feeder['steps_per_angle'] = steps_per_angle
-        
-        updateFactoryFeeder(config, feeder)
-        config.save_feeder_info('built_in_feeder', feeder)
     
+    updateFactoryFeeder(config, feeder)
+    config.save_feeder_info('built_in_feeder', feeder)
     log.info("Rev5")
     
 def hardware6(gcodeSender, config, log, eeprom):
