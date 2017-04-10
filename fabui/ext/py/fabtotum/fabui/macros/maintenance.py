@@ -77,7 +77,7 @@ def unload_spool(app, args = None, lang='en_US.UTF-8'):
     app.macro("G90",                "ok", 10,   _("Setting abs position"), verbose=False)
     app.macro("M302 S0",            "ok", 10,   _("Extrusion prevention disabled"), verbose=False)
     app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), verbose=False)
-    app.macro("G0 Z150 F10000",     "ok", 100,   _("Moving to safe zone"), verbose=False) #right top corner Z=150mm
+    app.macro("G0 X102 Y117 Z150 F10000",     "ok", 100,   _("Moving to safe zone"), verbose=False) #right top corner Z=150mm
     app.macro("G91",                "ok", 2,    _("Setting rel position"), verbose=False)
     app.macro("G92 E0",             "ok", 5,    _("Setting extruder to zero"), verbose=False)
     app.macro("M92 E{0}".format(units_e), "ok", 30,   _("Setting extruder mode"), verbose=False)
@@ -103,7 +103,7 @@ def load_spool(app, args = None, lang='en_US.UTF-8'):
     app.trace( _("Loading Spool : Procedure Started.") )
     app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False)
     app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), verbose=False)
-    app.macro("G0 Z150 F10000",     "ok", 100,   _("Moving to safe zone"), verbose=False)
+    app.macro("G0 X102 Y117 Z150 F10000",     "ok", 100,   _("Moving to safe zone"), verbose=False)
     app.macro("M302 S0",            "ok", 5,    _("Enabling Cold extrusion"), verbose=False)
     app.macro("G91",                "ok", 2,    _("Setting rel position"), verbose=False)
     app.macro("G92 E0",             "ok", 5,    _("Setting extruder position to 0"), verbose=False)

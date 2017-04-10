@@ -28,7 +28,7 @@
 			
 			$.SmartMessageBox({
 				title : '<i class="fa fa-warning"></i>' + _("New head has been installed, it is recommended to repeat the Probe Calibration operation"),
-				buttons : '<?php echo '[<i class="fa fa-crosshairs"></i> '.  _("Calibrate") . '][' ._("Ignore") . ']'); ?>'
+				buttons : '<?php echo '[<i class="fa fa-crosshairs"></i> '.  _("Calibrate") . '][' ._("Ignore") . ']'; ?>'
 			}, function(ButtonPressed) {
 				if(ButtonPressed === _("Calibrate") ) {	
 						document.location.href="<?php echo site_url('maintenance/probe-length-calibration'); ?>";

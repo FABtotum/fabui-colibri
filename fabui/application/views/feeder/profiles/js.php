@@ -101,7 +101,7 @@
 			dataType: 'json'
 		}).done(function( data ) {
 			$(".alerts-container").find('div:first-child').remove();
-			$(".alerts-container").append('<div class="alert alert-success animated  fadeIn" role="alert"><i class="fa fa-check"></i> ' + _("Well done! Now your <strong>FABtotum Personal Fabricator</strong> is configured for the <strong>{0}</strong>".format(data.name) + '</div>');			
+			$(".alerts-container").append('<div class="alert alert-success animated  fadeIn" role="alert"><i class="fa fa-check"></i> ' + _("Well done! Now your <strong>FABtotum Personal Fabricator</strong> is configured for the <strong>{0}</strong>".format(data.name)) + '</div>');			
 			setTimeout(function(){
 					document.location.href =  '<?php echo site_url('feeder'); ?>?feeder_installed';
 					location.reload();

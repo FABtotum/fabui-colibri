@@ -253,7 +253,7 @@ def main():
     parser.add_argument("-T", "--task-id",                          help="Task ID.",default=0)
     parser.add_argument("-n", "--num_probes",                       help="Number of probings per screw.",     default=1, type=int)
     parser.add_argument("-s", "--skip_homing", action='store_true', help="Skip homing." )
-	parser.add_argument("--lang",                                   help="Output language",                   default='en_US.UTF-8' )
+    parser.add_argument("--lang",                                   help="Output language",                   default='en_US.UTF-8' )
 	
     # GET ARGUMENTS
     args = parser.parse_args()
