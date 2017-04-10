@@ -261,13 +261,22 @@
 	**/
 	function doAbort()
 	{
+		openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Aborting PID tune"), _("Please wait")+"...", false);
+		ga('send', 'event', 'pidtube', 'abort', 'pidtube aborted');
 		$.ajax({
             type: "POST",
             url: "<?php echo site_url("control/taskAction/abort") ?>",
             dataType: "json"
         }).done(function( data ) {
-           console.log(data);
-        });
+           //~ console.log(data);
+			/*setTimeout(function(){
+				closeWait();
+				location.reload();
+			}, 5000);*/
+           location.reload();
+        }).fail(function(jqXHR, textStatus){
+			location.reload();
+		});
 	}
 	/**
 	*

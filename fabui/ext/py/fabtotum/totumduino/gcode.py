@@ -721,6 +721,18 @@ class GCodeService:
                         self.__trigger_file_done(self.last_command)
                                     
             elif cmd == Command.ABORT:
+				
+                if self.active_cmd:
+					if self.active_cmd.data[:4] == 'M303':
+						self.active_cmd.notify(abort=True)
+						self.__trigger_callback('state_change', 'terminated')
+
+						self.__cleanup()
+						self.__terminate_all_running_tasks()
+						
+						os.system('/etc/init.d/fabui emergency &')
+						self.is_terminating = False
+				
                 self.__trigger_callback('state_change', 'aborted')
                 
                 if self.file_state > GCodeService.FILE_NONE:                

@@ -52,6 +52,18 @@ class PIDAutotune(GCodePusher):
         
         self.add_monitor_group('pid_tune', self.autotune_stats)
 
+    def state_change_callback(self, state):
+        if state == 'paused':
+            self.trace( _("PAUSED") )
+            
+        if state == 'resuming':    
+            self.trace( _("RESUMING") )
+            
+        if state == 'resumed':
+            self.trace( _("RESUMED") )
+        if state == 'aborted':
+            self.trace( _("ABORTED") )
+
     def run(self, task_id, extruder, temperature, cycles):
         
         self.send('M300')
@@ -76,20 +88,25 @@ class PIDAutotune(GCodePusher):
 #~ DEBUG :   >> [M303 E0 S200 C8] [ Kd: 131.57]
 #~ DEBUG :   >> [M303 E0 S200 C8] [PID Autotune finished! Put the last Kp, Ki and Kd constants from above into Configuration.h]        
         #Ku: 96.99 Tu: 18.09', u' Classic PID ', u' Kp: 58.19', u' Ki: 6.43', u' Kd: 131.57'
-        if len(reply) > 6:
-            Kp = reply[-4].split(':')[1].strip()
-            Ki = reply[-3].split(':')[1].strip()
-            Kd = reply[-2].split(':')[1].strip()
-            
-            self.autotune_stats['P'] = Kp
-            self.autotune_stats['I'] = Ki
-            self.autotune_stats['D'] = Kd
-            
-            self.trace( _('Result: P: {0}, I: {1}, D: {2}').format(Kp, Ki, Kd) )
-            print( _('Result: P: {0}, I: {1}, D: {2}').format(Kp, Ki, Kd) )
-            
+        
+        if reply:
+			if len(reply) > 6:
+				Kp = reply[-4].split(':')[1].strip()
+				Ki = reply[-3].split(':')[1].strip()
+				Kd = reply[-2].split(':')[1].strip()
+				
+				self.autotune_stats['P'] = Kp
+				self.autotune_stats['I'] = Ki
+				self.autotune_stats['D'] = Kd
+				
+				self.trace( _('Result: P: {0}, I: {1}, D: {2}').format(Kp, Ki, Kd) )
+				print( _('Result: P: {0}, I: {1}, D: {2}').format(Kp, Ki, Kd) )
+				
+			else:
+				self.trace( _('No results. Failed.') )
         else:
-            self.trace( _('No results. Failed.') )
+            self.trace( _('No results. Aborted.') )
+            
             
         
         self.send('M300')
