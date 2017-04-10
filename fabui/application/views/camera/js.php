@@ -1,4 +1,5 @@
 <script type="text/javascript">
+<?php if($camera_enabled):?>
 
     $(function () {
         $('#take_photo').on('click', take_photo);
@@ -85,5 +86,5 @@
         $( "#metering" ).val('average');
     }
     
-    
+<?php endif; ?>
 </script>

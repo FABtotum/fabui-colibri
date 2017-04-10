@@ -106,9 +106,10 @@ class Settings extends FAB_Controller {
 			unset($settingsToSave['feeder']); 
 			unset($settingsToSave['custom-invert_x_endstop_logic']);
 		}
+		$settingsToSave['hardware']['camera']['available'] = $settingsToSave['hardware']['camera']['available'] == 1;
 		//load settings
 		$loadedSettings = loadSettings();
-		$newSettings = array_replace ($loadedSettings, $settingsToSave);
+		$newSettings = array_replace_recursive($loadedSettings, $settingsToSave);
 		saveSettings($newSettings);
 		
 		//update settings on session

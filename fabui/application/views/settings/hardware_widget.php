@@ -38,10 +38,11 @@
 					</section>
 				</div>
 				<div class="row">
-					<section class="col col-12">
-						<div class="note">
-							<?php echo _('If you change values for extruder steps you have to restart the FABtotum so that can values take effect')?>
-						</div>
+					<section class="col col-6">
+						<label class="label"><?php echo _('Camera')?></label>
+						<label class="select">
+							<?php echo form_dropdown('hardware-camera-available', $yesNoOptions, isset($defaultSettings['hardware']['camera']['available']) ? $defaultSettings['hardware']['camera']['available'] : false, 'id="hardware-camera-available"'); ?> <i></i>
+						</label>
 					</section>
 				</div>
 				<section>
@@ -132,13 +133,13 @@
 				<section>
 					<label class="label"><?php echo _('Both Y endstops pressed')?></label>
 					<label class="select">
-						<?php echo form_dropdown('customized_actions-bothy', $customizeActionsOptions, $defaultSettings['customized_actions']['bothy'], 'id="customized_action-bothy"'); ?> <i></i>
+						<?php echo form_dropdown('customized_actions-bothy', $customizeActionsOptions, $defaultSettings['customized_actions']['bothy'], 'id="customized_actions-bothy"'); ?> <i></i>
 					</label>
 				</section>
 				<section>
 					<label class="label"><?php echo _('Both Z endstops pressed')?></label>
 					<label class="select">
-						<?php echo form_dropdown('customized_actions-bothz', $customizeActionsOptions, $defaultSettings['customized_actions']['bothz'], 'id="customized_action-bothz"'); ?> <i></i>
+						<?php echo form_dropdown('customized_actions-bothz', $customizeActionsOptions, $defaultSettings['customized_actions']['bothz'], 'id="customized_actions-bothz"'); ?> <i></i>
 					</label>
 				</section>
 			</fieldset>

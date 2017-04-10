@@ -153,10 +153,12 @@ def hardware1(gcodeSender, config, log, eeprom):
     
     config.set('settings', 'hardware.id', 1)
     config.set('settings', 'feeder.show', True)
+    config.set('settings', 'hardware.camera.available', True)
     config.save('settings')
     
     feeder = loadFctoryFeeder(config)
     steps_per_unit = float(feeder['steps_per_unit'])
+    feeder['max_feedrate'] = 12.00
     if steps_per_unit != 3048.16:
         steps_per_unit = 3048.16
         steps_per_angle = 177.777778
@@ -164,8 +166,8 @@ def hardware1(gcodeSender, config, log, eeprom):
         feeder['steps_per_unit'] = steps_per_unit
         feeder['steps_per_angle'] = steps_per_angle
         
-        updateFactoryFeeder(config, feeder)
-        config.save_feeder_info('built_in_feeder', feeder)
+    updateFactoryFeeder(config, feeder)
+    config.save_feeder_info('built_in_feeder', feeder)
     
     log.info("Rev1")
     
@@ -187,6 +189,7 @@ def hardware2(gcodeSender, config, log, eeprom):
     
     config.set('settings', 'hardware.id', 2)
     config.set('settings', 'feeder.show', True)
+    config.set('settings', 'hardware.camera.available', True)
     config.save('settings')
     
     feeder = loadFctoryFeeder(config)
@@ -225,6 +228,7 @@ def hardware3(gcodeSender, config, log, eeprom):
     
     config.set('settings', 'hardware.id', 3)
     config.set('settings', 'feeder.show', False)
+    config.set('settings', 'hardware.camera.available', True)
     config.save('settings')
     
     feeder = loadFctoryFeeder(config)
@@ -259,6 +263,7 @@ def hardware4(gcodeSender, config, log, eeprom):
     
     config.set('settings', 'hardware.id', 4)
     config.set('settings', 'feeder.show', False)
+    config.set('settings', 'hardware.camera.available', True)
     config.save('settings')
     
     feeder = loadFctoryFeeder(config)
@@ -291,6 +296,7 @@ def hardware5(gcodeSender, config, log, eeprom):
     
     config.set('settings', 'hardware.id', 5)
     config.set('settings', 'feeder.show', False)
+    config.set('settings', 'hardware.camera.available', True)
     config.save('settings')
     
     feeder = loadFctoryFeeder(config)
@@ -312,6 +318,8 @@ def hardware6(gcodeSender, config, log, eeprom):
     Rev6(CORE Lite): April 2017
     """
     log.info("Rev6 - Lite")
+    config.set('settings', 'hardware.camera.available', False)
+    config.save('settings')
  
 
 def configure_head(gcs, config, log):

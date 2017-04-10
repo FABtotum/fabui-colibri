@@ -20,7 +20,8 @@
 		
 		//data
 		$data = array();
-		$data['params'] = $this->camera->getParameterList();
+		$data['camera_enabled'] = isset($this->config->config['camera_enabled']) ? $this->config->config['camera_enabled'] : true;
+		$data['params']   = $this->camera->getParameterList();
 		$data['settings'] = $this->camera->get_default_settings();
 		
 		//~ $this->content = json_encode( $this->camera->getParameterList() ); 
@@ -34,7 +35,7 @@
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';
 		$widget->header = array('icon' => 'fa-video-camera', "title" => "<h2>"._("Camera")."</h2>");
-		$widget->body   = array('content' => $this->load->view('camera/main_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
+		$widget->body   = array('content' => $this->load->view('camera/main_widget', $data, true ), 'class'=>'no-padding');
 
 		$this->addJsInLine($this->load->view('camera/js', $data, true));
 		$this->content = $widget->print_html(true);

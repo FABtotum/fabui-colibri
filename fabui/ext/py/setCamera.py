@@ -6,7 +6,7 @@ __version__ = "1.0"
 
 
 # Import standard python module
-import os
+import os, re
 import ConfigParser
 import gettext
 
@@ -29,22 +29,36 @@ if os.path.exists(CAMERA_INI) == False:
     file.write("[camera]\n")
     file.close()
 
-camera_version = "v1"
 
-try:
-    # Try to set max resolution for v2 camera
-    camera = PiCamera()
-    camera.resolution = (3280, 2464)
-    camera_version = "v2"
-except:
-    # Ok, it failed so its a v1 camera
-    pass
+camera_version  = "v1"
+camera_detected = False
+
+raspistill_output = os.popen('raspistill -v')
+raspistill_output = raspistill_output.read()
+
+match_temp = re.search('Camera is not detected', raspistill_output, re.IGNORECASE)
+
+if match_temp != None:
+    camera_detected = True
+
+if camera_detected :
+    try:
+        # Try to set max resolution for v2 camera
+        camera = PiCamera()
+        camera.resolution = (3280, 2464)
+        camera_version = "v2"
+    except:
+        # Ok, it failed so its a v1 camera
+        pass
 
 config = ConfigParser.ConfigParser()
 config.read(CAMERA_INI)
 
+
+config.set('camera', 'enabled', camera_detected)
 config.set('camera', 'version', camera_version)
 with open(CAMERA_INI, 'w') as configfile:
     config.write(configfile)
-    
-print "Camera:", camera_version
+
+print "Camera enabled:", camera_detected
+print "Camera version:", camera_version

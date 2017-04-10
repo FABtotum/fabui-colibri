@@ -32,7 +32,12 @@ if ( !function_exists('createDefaultSettings'))
 			'zprobe'        	 => array('enable'=> 0, 'zmax'=> 241.5),
 			'z_max_offset'       => 241.5,
 			'settings_type' 	 => 'default',
-			'hardware'     	 	 => array('head' => 'printing_head_v2', 'feeder' => 'built_in_feeder', 'camera' => 'camera_v1', 'bed' => array('enable'=> true)),
+			'hardware'     	 	 => array(
+				'head'   => 'printing_head_v2', 
+				'feeder' => 'built_in_feeder', 
+				'camera' => array('version' => 'camera_v1', 'available' => false),
+				'bed'    => array('enable'=> true)
+			),
 			'print'         	 => array('pre_heating' => array('nozzle' => 150, 'bed'=>50), 'calibration' => 'homing'),
 			'stored_position'	 => array(),
 			'custom'             => array(

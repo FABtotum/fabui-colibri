@@ -1411,22 +1411,29 @@ fabApp = (function(app) {
 	**/
 	app.getSettings = function() {
 		$.get(control_url + '/getSettings', function(data, status){
-			app.analizeMenu(data.feeder.show);
+			app.analizeMenu(data);
 		});
 	}
 	/**
 	* analize menu to check if something must be hided
 	**/
-	app.analizeMenu = function (show_feeder)
+	app.analizeMenu = function (settings)
 	{
-		var item_to_hide = ['maintenance/feeder-engage', 'maintenance/4th-axis'];
+		var show_feeder = settings.feeder.show;
+		var camera_available = settings.hardware.camera.available;
+		console.log("camerae: " + camera_available);
+		var feeder_item_to_hide = ['maintenance/feeder-engage', 'maintenance/4th-axis'];
+		var camera_item_to_hide = ['settings/cam'];
 		var a = $("nav li > a");
 		a.each(function() {
 			var link = $(this);
 			var href = link.attr('data-href');
-			if(jQuery.inArray( href, item_to_hide ) >= 0 && show_feeder == false){
+			if(jQuery.inArray( href, feeder_item_to_hide ) >= 0 && show_feeder == false){
 				link.parent().addClass('hidden');
-			}else{
+			}else if(jQuery.inArray( href, camera_item_to_hide ) >= 0 && camera_available == false){
+				link.parent().addClass('hidden');
+			}
+			else{
 				link.parent().removeClass('hidden');
 			}
 		});

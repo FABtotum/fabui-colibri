@@ -139,7 +139,7 @@
 			closeWait();
 			button.html('<i class="fa fa-save"></i> <?php echo _('Save')?>');
 			button.removeClass('disabled');
-			fabApp.analizeMenu(response.feeder.show);
+			fabApp.analizeMenu(response);
 			$.smallBox({
 				title : "<?php echo _('Settings')?>",
 				content : '<?php echo _('Hardware settings saved')?>',
