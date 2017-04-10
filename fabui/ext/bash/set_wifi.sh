@@ -239,7 +239,10 @@ IP=
 NETMASK=
 GATEWAY=
 CHANNEL=1
-while getopts “hDSAi:s:p:k:a:n:g:r:M:” OPTION
+
+echo $@ > /tmp/args
+
+while getopts “hDSAi:s:c:p:k:a:n:g:r:M:” OPTION
 do
      case $OPTION in
          h)
@@ -259,6 +262,9 @@ do
          A)
              MODE="ap"
              ;;
+         c)
+			 CHANNEL="$OPTARG"
+			 ;;
          s)
              SSID="$OPTARG"
              ;;

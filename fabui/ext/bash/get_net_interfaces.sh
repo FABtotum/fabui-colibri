@@ -68,6 +68,11 @@ for iface in $(echo $IFACES); do
                 if [ -n "$HOSTAPD" ]; then
                     PASS=$(cat "$HOSTAPD" | grep wpa_passphrase| awk 'BEGIN{FS="="}{print $2;}')
                     echo "      \"passphrase\" : \"$PASS\","
+                    
+                    CHANNEL=$(cat /etc/hostapd/$iface.conf | awk -F '=' '/channel/{print $2}')
+                    if [ -n "CHANNEL" ]; then
+						echo "      \"channel\" : \"$CHANNEL\","
+                    fi
                 fi
                 
                 a=$(hostapd_cli -p /run/hostapd -i$iface get_config | sed -e 's@^@"@g; s@$@",@g; s@=@" : "@'; echo -n ",")

@@ -68,7 +68,7 @@ if(!function_exists('configureWireless'))
 	/**
 	 * Configure a wireless interface.
 	 */
-	function configureWireless($iface, $ssid, $password, $psk, $mode = 'dhcp', $address = '', $netmask = '', $gateway = '')
+	function configureWireless($iface, $ssid, $password, $psk, $mode = 'dhcp', $address = '', $netmask = '', $gateway = '', $channel = '1')
 	{
 		$CI =& get_instance();
 		$CI->load->helper('fabtotum');
@@ -91,7 +91,7 @@ if(!function_exists('configureWireless'))
 				$args .= ' -S -a '.$address.' -n '.$netmask.' -g'.$gateway;
 				break;
 			case "static-ap":
-				$args .= ' -A -a '.$address.' -n '.$netmask;
+				$args .= ' -A -a '.$address.' -n '.$netmask.' -c '.$channel;
 				break;
 			case "disabled":
 				$args .= ' -M disabled';

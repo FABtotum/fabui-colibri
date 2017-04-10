@@ -24,19 +24,7 @@ class Settings extends FAB_Controller {
 		if(!file_exists($this->config->item('settings'))){ // if default settings file doesn't exits, create it
 			createDefaultSettings();
  		}
- 		/*
-		if(!file_exists($this->config->item('custom_settings'))){
-			copy($this->config->item('default_settings'), $this->config->item('custom_settings'));
-		}*/
 		$data['defaultSettings'] = json_decode(file_get_contents($this->config->item('settings')), true);
-		/*
-		if($data['defaultSettings']['settings_type'] == 'custom')
-		{
-			$data['defaultSettings']  = json_decode(file_get_contents($this->config->item('custom_settings')), true);
-			$data['defaultSettings']['settings_type'] = 'custom';
-		}
-		*/
-		/*$data['customSettings']  = json_decode(file_get_contents($this->config->item('custom_settings')), true); */
 		
 		$data['yesNoOptions'] = array('1' => 'Yes', '0' => 'No');
 		$data['customizeActionsOptions'] = array('none' => 'None', 'shutdown' => 'Shutdown');
@@ -144,6 +132,19 @@ class Settings extends FAB_Controller {
 
 		$data = array();
 		$data['yesNoOptions'] = array('1' => 'Yes', '0' => 'No');
+		$wifiChannels = array(
+			'1'  => _('Channel'). ' 1 (2412 MHz)',
+			'2'  => _('Channel'). ' 2 (2417 MHz)',
+			'3'  => _('Channel'). ' 3 (2422 MHz)',
+			'4'  => _('Channel'). ' 4 (2427 MHz)',
+			'5'  => _('Channel'). ' 5 (2432 MHz)',
+			'6'  => _('Channel'). ' 6 (2437 MHz)',
+			'7'  => _('Channel'). ' 7 (2442 MHz)',
+			'8'  => _('Channel'). ' 8 (2447 MHz)',
+			'9'  => _('Channel'). ' 9 (2452 MHz)',
+			'10' => _('Channel').' 10 (2457 MHz)',
+			'11' => _('Channel').' 11 (2462 MHz)');
+			
 		$data['current_hostname'] = getHostName();
 		$data['current_name'] = getAvahiServiceName();
 		$data['preSelectedInterface'] = $preSelectedInterface;
@@ -225,12 +226,18 @@ class Settings extends FAB_Controller {
 					$interfaces[$iface]['do_scan'] = false;
 				}
 				
+				if(!isset($info['wireless']['channel']))
+				{
+					$info['wireless']['channel'] = 1;
+				}
+				
 				$if_type = 'wlan';
 				$title = 'Wireless';
 				$tab_data = array(
 					'iface' => $iface,
 					'info' => $info,
 					'addressModeWiFi' => $wifiModes,
+					'wifiChannels' => $wifiChannels,
 					'active' => $iface == $preSelectedInterface ? 'active' : ''
 				);
 				$tabs_content .= $this->load->view('settings/wireless_tab', $tab_data, true );
@@ -324,6 +331,7 @@ class Settings extends FAB_Controller {
 					$iface       = $postData['active'];
 					$ap_ssid     = $postData['ap-ssid'];
 					$ap_pass     = $postData['ap-password'];
+					$ap_channel  = $postData['ap-channel'];
 					$hidden_ssid = $postData['hidden-ssid'];
 					$hidden_pass = $postData['hidden-passphrase'];
 					$psk = $postData['hidden-psk'];
@@ -339,7 +347,7 @@ class Settings extends FAB_Controller {
 						$ssid = $hidden_ssid;
 						$password = $hidden_pass;
 					}
-					configureWireless($iface, $ssid, $password, $psk, $mode, $address, $netmask, $gateway);
+					configureWireless($iface, $ssid, $password, $psk, $mode, $address, $netmask, $gateway, $ap_channel);
 					storeNetworkSettings($net_type, $iface, $mode, $address, $netmask, $gateway, $ssid, $password, $psk);
 					//update social feeds
 					downloadBlogFeeds();

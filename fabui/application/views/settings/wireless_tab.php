@@ -65,7 +65,7 @@
 			<section id="ap-container" style="<?php if($info['address_mode'] != 'static-ap') echo 'display:none;';?>" class="col col-6">
 				<form id="apForm" class="apForm">
 					<div  class="form-group">
-						<label class="label"><?php echo _('Ssid')?></label>
+						<label class="label"><?php echo _('SSID')?></label>
 						<label class="input">
 						<div class="input-group">
 							<input type="text" id="ap-ssid" name="ssid" placeholder="FABtotum" class="form-control" value="<?php echo ($info['address_mode'] == 'static-ap')?$info['wireless']['ssid']:"FABtotum"; ?>"/>
@@ -85,8 +85,17 @@
 						<input type="checkbox" class="show-password" data-attribute="<?php echo $iface;?>"> <i></i> <?php echo _('Show password')?>
 						</label>
 					</div>
+					<hr class="simple">
+					<div class="form-group">
+						<label class="label"><?php echo _('Channel')?></label>
+						<label class="select">
+							<?php echo form_dropdown('ap-channel', $wifiChannels, $info['wireless']['channel'], array('id' => 'ap-channel', 'data-attribute' => $iface) ); ?> <i></i>
+						</label>
+					</div>
+					
 				</form>
 			</section>
+			
 		</fieldset>
 		<form id="hiddenWifiForm" style="display:none;">
 			<fieldset>
