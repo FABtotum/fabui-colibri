@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-07 15:30+0200\n"
+"POT-Creation-Date: 2017-04-10 16:04+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: FABTeam\n"
@@ -159,6 +159,7 @@ msgstr "Systeminformationen"
 #: fabui/application/views/install/wizard.php:139
 #: fabui/application/views/plugin/js.php:349
 #: fabui/application/views/settings/hardware_js.php:144
+#: fabui/application/views/camera/main_widget.php:48
 #: fabui/application/views/scan/wizard/main.php:18
 msgid "Settings"
 msgstr "Einstellungen"
@@ -340,45 +341,45 @@ msgstr "Bitte überprüfen Sie Ihre E-Mail oder Ihr Passwort"
 msgid "New user created successfully"
 msgstr "Neuer Benutzer wurde erfolgreich erstellt"
 
-#: fabui/application/controllers/Control.php:212
+#: fabui/application/controllers/Control.php:213
 msgid "running"
 msgstr "laufend"
 
-#: fabui/application/controllers/Control.php:213
+#: fabui/application/controllers/Control.php:214
 msgid "paused"
 msgstr "pausiert"
 
-#: fabui/application/controllers/Control.php:214
+#: fabui/application/controllers/Control.php:215
 msgid "aborted"
 msgstr "abgebrochen"
 
-#: fabui/application/controllers/Control.php:215
+#: fabui/application/controllers/Control.php:216
 msgid "aborting"
 msgstr "wird abbrechen"
 
-#: fabui/application/controllers/Control.php:216
+#: fabui/application/controllers/Control.php:217
 msgid "completed"
 msgstr "abgeschlossen"
 
-#: fabui/application/controllers/Control.php:217
+#: fabui/application/controllers/Control.php:218
 msgid "completing"
 msgstr "wird abgeschlossen"
 
-#: fabui/application/controllers/Control.php:235
+#: fabui/application/controllers/Control.php:236
 msgid "Being generated"
 msgstr "Wird generiert"
 
-#: fabui/application/controllers/Control.php:241
+#: fabui/application/controllers/Control.php:242
 msgid "task"
 msgstr "aufgabe"
 
-#: fabui/application/controllers/Control.php:274
+#: fabui/application/controllers/Control.php:275
 msgid "No running tasks"
 msgstr "Keine laufenden Aufgaben"
 
 #: fabui/application/controllers/Cam.php:36
 msgid "Camera"
-msgstr ""
+msgstr "Kamera"
 
 #: fabui/application/controllers/Spool.php:51
 #: fabui/application/controllers/Nozzle.php:59
@@ -439,6 +440,7 @@ msgstr "Löschen"
 #: fabui/application/controllers/Projectsmanager.php:78
 #: fabui/application/controllers/Projectsmanager.php:211
 #: fabui/application/controllers/Projectsmanager.php:1077
+#: fabui/application/views/camera/main_widget.php:34
 msgid "Download"
 msgstr "Herunterladen"
 
@@ -631,7 +633,7 @@ msgstr "Herunterladen"
 msgid "Upload custom"
 msgstr "Benutzer Version hochladen"
 
-#: fabui/application/helpers/layout_helper.php:273
+#: fabui/application/helpers/layout_helper.php:275
 msgid "Popular"
 msgstr "Beliebt"
 
@@ -742,6 +744,8 @@ msgid ""
 "<strong>Warning</strong> Seems that you still have not set the head your are "
 "using."
 msgstr ""
+"<Strong> Warnung </ strong> Es scheint, dass Sie noch nicht den Kopf gesetzt "
+"haben dass Sie verwenden werden."
 
 #: fabui/application/views/head/install.php:9
 #: fabui/application/views/feeder/profiles/widget.php:9
@@ -757,10 +761,14 @@ msgid ""
 "Make sure you removed the filament, milling bits and any other accessory on "
 "the head."
 msgstr ""
+"Vergewissern Sie sich, dass Sie den Faden, Fräsbits und jedes andere Zubehör "
+"auf dem Kopf entfernt haben."
 
 #: fabui/application/views/head/install.php:24
 msgid "See also <a href=\"maintenance/spool-management\">spool maintenance</a>"
 msgstr ""
+"Siehen Sie auch <a href=\"maintenance/spool-management\"> Spool-Verwaltung </"
+"a>"
 
 #: fabui/application/views/head/install.php:29
 msgid "Please select which head you want to install"
@@ -1610,6 +1618,7 @@ msgid "Desc"
 msgstr ""
 
 #: fabui/application/views/jog/widget.php:280
+#: fabui/application/views/camera/main_widget.php:62
 #: fabui/application/views/projectsmanager/edit/widget.php:52
 msgid "Type"
 msgstr "Typ"
@@ -2198,6 +2207,78 @@ msgstr "Aktuelle Nachrichten aus Entwicklungsblog sind nicht verfügbar"
 #: fabui/application/views/account/widget.php:38
 msgid "Language"
 msgstr "Sprache"
+
+#: fabui/application/views/camera/main_widget.php:23
+msgid "Take a picture"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:45
+msgid "Photo"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:67
+#: fabui/application/views/scan/settings/photogrammetry.php:35
+msgid "Size"
+msgstr "Größe"
+
+#: fabui/application/views/camera/main_widget.php:73
+#: fabui/application/views/scan/wizard/step4.php:46
+#: fabui/application/views/scan/settings/photogrammetry.php:26
+msgid "ISO"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:78
+msgid "Quality"
+msgstr "Qualität"
+
+#: fabui/application/views/camera/main_widget.php:84
+msgid "Effect"
+msgstr "Effekt"
+
+#: fabui/application/views/camera/main_widget.php:90
+msgid "Flip"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:111
+msgid "Brightness"
+msgstr "Helligkeit"
+
+#: fabui/application/views/camera/main_widget.php:117
+msgid "Contrast"
+msgstr "Kontrast"
+
+#: fabui/application/views/camera/main_widget.php:123
+msgid "Sharpness"
+msgstr "Schärfe"
+
+#: fabui/application/views/camera/main_widget.php:129
+msgid "Saturation"
+msgstr "Sättigung"
+
+#: fabui/application/views/camera/main_widget.php:135
+msgid "AWB"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:141
+msgid "EV Comp."
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:147
+msgid "Exposure"
+msgstr "Belichtung"
+
+#: fabui/application/views/camera/main_widget.php:153
+msgid "Rotation"
+msgstr "Drehung"
+
+#: fabui/application/views/camera/main_widget.php:159
+msgid "Metering"
+msgstr "Messen"
+
+#: fabui/application/views/camera/main_widget.php:175
+#, fuzzy
+msgid "Default All"
+msgstr "Voreinstellung"
 
 #: fabui/application/views/firmware/main_widget.php:7
 #, fuzzy
@@ -2871,11 +2952,6 @@ msgstr "Scheibe"
 msgid "Image resolution"
 msgstr "Bildauflösung"
 
-#: fabui/application/views/scan/wizard/step4.php:46
-#: fabui/application/views/scan/settings/photogrammetry.php:26
-msgid "ISO"
-msgstr ""
-
 #: fabui/application/views/scan/wizard/step4.php:52
 msgid "Cloud points"
 msgstr "Wolkenpunkte"
@@ -2955,10 +3031,6 @@ msgstr ""
 #: fabui/application/views/scan/settings/default.php:23
 msgid "Add to an existing object"
 msgstr ""
-
-#: fabui/application/views/scan/settings/photogrammetry.php:35
-msgid "Size"
-msgstr "Größe"
 
 #: fabui/application/views/scan/settings/photogrammetry.php:46
 msgid "Slices"
@@ -3293,20 +3365,45 @@ msgstr "Druck gestoppt"
 msgid "Update initialized."
 msgstr "Update initialisiert."
 
-#: fabui/ext/py/autotune.py:64
+#: fabui/ext/py/autotune.py:57
+#, fuzzy
+msgid "PAUSED"
+msgstr "Druck pausierte"
+
+#: fabui/ext/py/autotune.py:60
+#, fuzzy
+msgid "RESUMING"
+msgstr "Druck wird fortgesetzt"
+
+#: fabui/ext/py/autotune.py:63
+#, fuzzy
+msgid "RESUMED"
+msgstr "Druck wird fortgesetzt"
+
+#: fabui/ext/py/autotune.py:65
+#, fuzzy
+msgid "ABORTED"
+msgstr "Druck wurde abgebrochen"
+
+#: fabui/ext/py/autotune.py:76
 msgid "PID Autotune started."
 msgstr "PID Autotune wurde gestartet."
 
-#: fabui/ext/py/autotune.py:88 fabui/ext/py/autotune.py:89
+#: fabui/ext/py/autotune.py:102 fabui/ext/py/autotune.py:103
 #, python-brace-format
 msgid "Result: P: {0}, I: {1}, D: {2}"
 msgstr "Ergebnis: P: {0}, I: {1}, D: {2}"
 
-#: fabui/ext/py/autotune.py:92
+#: fabui/ext/py/autotune.py:106
 msgid "No results. Failed."
 msgstr "Keine Ergebnisse. Gescheitert."
 
-#: fabui/ext/py/autotune.py:96
+#: fabui/ext/py/autotune.py:108
+#, fuzzy
+msgid "No results. Aborted."
+msgstr "Keine Ergebnisse. Gescheitert."
+
+#: fabui/ext/py/autotune.py:113
 msgid "PID Autotune finished."
 msgstr "PID Autotune beendet."
 

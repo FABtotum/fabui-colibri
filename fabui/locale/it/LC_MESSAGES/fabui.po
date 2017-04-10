@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-07 15:30+0200\n"
+"POT-Creation-Date: 2017-04-10 16:04+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -159,6 +159,7 @@ msgstr "Informazioni del sistema"
 #: fabui/application/views/install/wizard.php:139
 #: fabui/application/views/plugin/js.php:349
 #: fabui/application/views/settings/hardware_js.php:144
+#: fabui/application/views/camera/main_widget.php:48
 #: fabui/application/views/scan/wizard/main.php:18
 msgid "Settings"
 msgstr "Impostazioni"
@@ -351,46 +352,46 @@ msgstr "Inserisci il tuo indirizzo email"
 msgid "New user created successfully"
 msgstr "Plugin installato correttamente"
 
-#: fabui/application/controllers/Control.php:212
+#: fabui/application/controllers/Control.php:213
 #, fuzzy
 msgid "running"
 msgstr "Attenzione"
 
-#: fabui/application/controllers/Control.php:213
+#: fabui/application/controllers/Control.php:214
 #, fuzzy
 msgid "paused"
 msgstr "Pausa"
 
-#: fabui/application/controllers/Control.php:214
+#: fabui/application/controllers/Control.php:215
 #, fuzzy
 msgid "aborted"
 msgstr "Scansione annullata"
 
-#: fabui/application/controllers/Control.php:215
+#: fabui/application/controllers/Control.php:216
 #, fuzzy
 msgid "aborting"
 msgstr "Stampa in corso"
 
-#: fabui/application/controllers/Control.php:216
+#: fabui/application/controllers/Control.php:217
 #, fuzzy
 msgid "completed"
 msgstr "Scansione completata"
 
-#: fabui/application/controllers/Control.php:217
+#: fabui/application/controllers/Control.php:218
 #, fuzzy
 msgid "completing"
 msgstr "Eliminazione"
 
-#: fabui/application/controllers/Control.php:235
+#: fabui/application/controllers/Control.php:236
 #, fuzzy
 msgid "Being generated"
 msgstr "Temperatura piatto impostata a {0}&deg;C"
 
-#: fabui/application/controllers/Control.php:241
+#: fabui/application/controllers/Control.php:242
 msgid "task"
 msgstr ""
 
-#: fabui/application/controllers/Control.php:274
+#: fabui/application/controllers/Control.php:275
 #, fuzzy
 msgid "No running tasks"
 msgstr "Completamento task"
@@ -462,6 +463,7 @@ msgstr "Elimina"
 #: fabui/application/controllers/Projectsmanager.php:78
 #: fabui/application/controllers/Projectsmanager.php:211
 #: fabui/application/controllers/Projectsmanager.php:1077
+#: fabui/application/views/camera/main_widget.php:34
 msgid "Download"
 msgstr "Scarica"
 
@@ -664,7 +666,7 @@ msgstr "Scarica"
 msgid "Upload custom"
 msgstr "Carica"
 
-#: fabui/application/helpers/layout_helper.php:273
+#: fabui/application/helpers/layout_helper.php:275
 msgid "Popular"
 msgstr ""
 
@@ -1642,6 +1644,7 @@ msgid "Desc"
 msgstr "Desc"
 
 #: fabui/application/views/jog/widget.php:280
+#: fabui/application/views/camera/main_widget.php:62
 #: fabui/application/views/projectsmanager/edit/widget.php:52
 msgid "Type"
 msgstr "Tipo"
@@ -2227,6 +2230,82 @@ msgstr ""
 #: fabui/application/views/account/widget.php:38
 msgid "Language"
 msgstr "Lingua"
+
+#: fabui/application/views/camera/main_widget.php:23
+msgid "Take a picture"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:45
+msgid "Photo"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:67
+#: fabui/application/views/scan/settings/photogrammetry.php:35
+msgid "Size"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:73
+#: fabui/application/views/scan/wizard/step4.php:46
+#: fabui/application/views/scan/settings/photogrammetry.php:26
+msgid "ISO"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:78
+msgid "Quality"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:84
+msgid "Effect"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:90
+msgid "Flip"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:111
+msgid "Brightness"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:117
+#, fuzzy
+msgid "Contrast"
+msgstr "Controlli"
+
+#: fabui/application/views/camera/main_widget.php:123
+msgid "Sharpness"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:129
+#, fuzzy
+msgid "Saturation"
+msgstr "Durata"
+
+#: fabui/application/views/camera/main_widget.php:135
+msgid "AWB"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:141
+msgid "EV Comp."
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:147
+#, fuzzy
+msgid "Exposure"
+msgstr "Supporto"
+
+#: fabui/application/views/camera/main_widget.php:153
+#, fuzzy
+msgid "Rotation"
+msgstr "Informazione"
+
+#: fabui/application/views/camera/main_widget.php:159
+msgid "Metering"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:175
+#, fuzzy
+msgid "Default All"
+msgstr "Azione standard"
 
 #: fabui/application/views/firmware/main_widget.php:7
 msgid "Select firmware version"
@@ -2890,11 +2969,6 @@ msgstr ""
 msgid "Image resolution"
 msgstr ""
 
-#: fabui/application/views/scan/wizard/step4.php:46
-#: fabui/application/views/scan/settings/photogrammetry.php:26
-msgid "ISO"
-msgstr ""
-
 #: fabui/application/views/scan/wizard/step4.php:52
 msgid "Cloud points"
 msgstr ""
@@ -2978,10 +3052,6 @@ msgstr "Crea nuovo"
 #, fuzzy
 msgid "Add to an existing object"
 msgstr "Errore durante l'eliminazione dell'oggetto"
-
-#: fabui/application/views/scan/settings/photogrammetry.php:35
-msgid "Size"
-msgstr ""
 
 #: fabui/application/views/scan/settings/photogrammetry.php:46
 msgid "Slices"
@@ -3326,20 +3396,41 @@ msgstr "Stampa fermata"
 msgid "Update initialized."
 msgstr "Aggiornamento inizializzato"
 
-#: fabui/ext/py/autotune.py:64
+#: fabui/ext/py/autotune.py:57
+msgid "PAUSED"
+msgstr ""
+
+#: fabui/ext/py/autotune.py:60
+msgid "RESUMING"
+msgstr ""
+
+#: fabui/ext/py/autotune.py:63
+msgid "RESUMED"
+msgstr ""
+
+#: fabui/ext/py/autotune.py:65
+msgid "ABORTED"
+msgstr ""
+
+#: fabui/ext/py/autotune.py:76
 msgid "PID Autotune started."
 msgstr ""
 
-#: fabui/ext/py/autotune.py:88 fabui/ext/py/autotune.py:89
+#: fabui/ext/py/autotune.py:102 fabui/ext/py/autotune.py:103
 #, python-brace-format
 msgid "Result: P: {0}, I: {1}, D: {2}"
 msgstr ""
 
-#: fabui/ext/py/autotune.py:92
+#: fabui/ext/py/autotune.py:106
 msgid "No results. Failed."
 msgstr ""
 
-#: fabui/ext/py/autotune.py:96
+#: fabui/ext/py/autotune.py:108
+#, fuzzy
+msgid "No results. Aborted."
+msgstr "Non supportato"
+
+#: fabui/ext/py/autotune.py:113
 msgid "PID Autotune finished."
 msgstr ""
 

@@ -106,8 +106,6 @@ class PIDAutotune(GCodePusher):
 				self.trace( _('No results. Failed.') )
         else:
             self.trace( _('No results. Aborted.') )
-            
-            
         
         self.send('M300')
         self.trace( _('PID Autotune finished.') )
