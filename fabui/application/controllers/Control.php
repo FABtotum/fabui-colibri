@@ -48,7 +48,8 @@
 	public function resetController()
 	{
 		//load helpers
-		$this->load->helper('fabtotum_helper');
+		$this->load->helper('fabtotum_helper'); 
+		$this->session->settings = loadSettings();
 		$this->output->set_content_type('application/json')->set_output(json_encode(resetController()));
 	}
 	
