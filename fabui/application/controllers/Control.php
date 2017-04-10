@@ -195,6 +195,21 @@
 		$settings = loadSettings();
 		$this->output->set_content_type('application/json')->set_output(json_encode($settings));
 	}
+	/**
+	 * 
+	 */
+	public function getNetworkInfo()
+	{
+		$this->load->helper('os_helper');
+		if(!file_exists($this->config->config['network_info_file'])){
+			writeNetworkInfo();
+		}
+		$networkInfo = getNetworkInfo();
+		if($networkInfo['internet'] == false){
+			$networkInfo['internet'] = isInternetAvaialable();
+		}
+		$this->output->set_content_type('application/json')->set_output(json_encode($networkInfo));
+	}
 	
 	/**
 	 * 
