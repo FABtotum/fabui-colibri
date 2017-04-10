@@ -31,7 +31,10 @@
   "hardware": {
     "head": "printing_head_v2",
     "feeder": "built_in_feeder",
-    "camera": "camera_v1",
+    "camera": {
+		"version" : "camera_v1",
+		"available": false
+	},
 	"bed": {
 		"enable": true
 	}
