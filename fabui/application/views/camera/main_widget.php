@@ -20,7 +20,7 @@
 						<button type="button" data-attribue-direction="up" class="btn btn-default btn-sm directions "> Y <i class="fa fa-arrow-up"></i></button>
 					</div>
 					<div class="btn-group">
-						<button type="button" class="btn btn-default btn-sm" id="take_photo"><i class="fa fa-camera"></i> <span class="hidden-mobile hidden-tablet">Take a picture</span></button>
+						<button type="button" class="btn btn-default btn-sm" id="take_photo"><i class="fa fa-camera"></i> <span class="hidden-mobile hidden-tablet"><?php echo _("Take a picture");?></span></button>
 					</div>
 					<div class="btn-group">
 						<button type="button" data-attribue-direction="down" class="btn btn-default btn-sm directions "> Y <i class="fa fa-arrow-down"></i></button>
@@ -31,7 +31,7 @@
 
 			<div class="col-sm-4 ">
 				<div class="btn-group btn-group-justified">
-					<a  href="cam/downloadPicture" class="btn btn-default btn-sm"><i class="fa fa-download"></i> <span class="hidden-mobile hidden-tablet"> Download </span></a>
+					<a  href="cam/downloadPicture" id="download_photo" class="btn btn-default btn-sm"><i class="fa fa-download"></i> <span class="hidden-mobile hidden-tablet"> <?php echo _("Download");?> </span></a>
 				</div>
 			</div>
 		</div>
@@ -42,10 +42,10 @@
 
 		<ul id="widget-cam-tab" class="nav nav-tabs bordered">
 			<li class="active">
-				<a href="#tab-photo" data-toggle="tab"><i class="fa fa-camera"></i> Photo</a>
+				<a href="#tab-photo" data-toggle="tab"><i class="fa fa-camera"></i> <?php echo _("Photo");?></a>
 			</li>
 			<li>
-				<a href="#tab-settings" data-toggle="tab"><i class="fa fa-cogs"></i> Settings</a>
+				<a href="#tab-settings" data-toggle="tab"><i class="fa fa-cogs"></i> <?php echo _("Settings");?></a>
 			</li>
 		</ul>
 
@@ -59,35 +59,35 @@
 						<div class="smart-form">
 							<fieldset>
 								<section class="col col-6">
-									<label class="label">Type</label>
+									<label class="label"><?php echo _("Type");?></label>
 									<label class="select">
 										<?php echo form_dropdown('encoding', $params['encoding'], $settings['encoding'], 'id="encoding"'); ?><i></i> </label>
 								</section>
 								<section class="col col-6">
-									<label class="label">Size</label>
+									<label class="label"><?php echo _("Size");?></label>
 									<label class="select">
 										<?php echo form_dropdown('size', $params['size'], $settings['width'].'x'.$settings['height'], 'id="size"'); ?><i></i> </label>
 								</section>
 
 								<section class="col col-6">
-									<label class="label">ISO</label>
+									<label class="label"><?php echo _("ISO");?></label>
 									<label class="select">
 										<?php echo form_dropdown('iso', $params['ISO'], $settings['ISO'], 'id="iso"'); ?><i></i> </label>
 								</section>
 								<section class="col col-6">
-									<label class="label">Quality %</label>
+									<label class="label"><?php echo _("Quality");?> %</label>
 									<label class="select">
 										<?php echo form_dropdown('quality', $params['quality'], $settings['quality'], 'id="quality"'); ?><i></i> </label>
 								</section>
 
 								<section class="col col-6">
-									<label class="label">Effect</label>
+									<label class="label"><?php echo _("Effect");?></label>
 									<label class="select">
 										<?php echo form_dropdown('imxfx', $params['imxfx'], $settings['imxfx'], 'id="imxfx" class="form-control"'); ?><i></i> </label>
 								</section>
 								
 								<section class="col col-6">
-									<label class="label">Flip</label>
+									<label class="label"><?php echo _("Flip");?></label>
 									<label class="select">
 										<?php echo form_dropdown('flip', $params['flip'], $settings['flip'], 'id="flip" class="form-control"'); ?><i></i> </label>
 								</section>
@@ -108,55 +108,55 @@
 						<div class="smart-form">
 							<fieldset>
 								<section class="col col-6">
-									<label class="label">Brightness</label>
+									<label class="label"><?php echo _("Brightness");?></label>
 									<label class="select">
 										<?php echo form_dropdown('brightness', $params['brightness'], $settings['brightness'], 'id="brightness"'); ?><i></i> </label>
 								</section>
 
 								<section class="col col-6">
-									<label class="label">Contrast</label>
+									<label class="label"><?php echo _("Contrast");?></label>
 									<label class="select">
 										<?php echo form_dropdown('contrast', $params['contrast'], $settings['contrast'], 'id="contrast"'); ?><i></i> </label>
 								</section>
 
 								<section class="col col-6">
-									<label class="label">Sharpness</label>
+									<label class="label"><?php echo _("Sharpness");?></label>
 									<label class="select">
 										<?php echo form_dropdown('sharpness', $params['contrast'], $settings['sharpness'], 'id="sharpness"'); ?><i></i> </label>
 								</section>
 
 								<section class="col col-6">
-									<label class="label">Saturation</label>
+									<label class="label"><?php echo _("Saturation");?></label>
 									<label class="select">
 										<?php echo form_dropdown('saturation', $params['contrast'], $settings['saturation'], 'id="saturation"'); ?><i></i> </label>
 								</section>
 
 								<section class="col col-6">
-									<label class="label">AWB</label>
+									<label class="label"><?php echo _("AWB");?></label>
 									<label class="select">
 										<?php echo form_dropdown('awb', $params['awb'], $settings['awb'], 'id="awb"'); ?><i></i> </label>
 								</section>
 
 								<section class="col col-6">
-									<label class="label">EV Comp.</label>
+									<label class="label"><?php echo _("EV Comp.");?></label>
 									<label class="select">
 										<?php echo form_dropdown('ev_comp', $params['ev_comp'], $settings['ev'], 'id="ev_comp"'); ?><i></i> </label>
 								</section>
 
 								<section class="col col-6">
-									<label class="label">Exposure</label>
+									<label class="label"><?php echo _("Exposure");?></label>
 									<label class="select">
 										<?php echo form_dropdown('exposure', $params['exposure'], $settings['exposure'], 'id="exposure"'); ?><i></i> </label>
 								</section>
 
 								<section class="col col-6">
-									<label class="label">Rotation</label>
+									<label class="label"><?php echo _("Rotation");?></label>
 									<label class="select">
 										<?php echo form_dropdown('rotation', $params['rotation'], $settings['rotation'], 'id="rotation"'); ?><i></i> </label>
 								</section>
 								
 								<section class="col col-6">
-									<label class="label">Metering</label>
+									<label class="label"><?php echo _("Metering");?></label>
 									<label class="select">
 										<?php echo form_dropdown('metering', $params['metering'], $settings['metering'], 'id="metering"'); ?><i></i> </label>
 								</section>
@@ -172,7 +172,7 @@
 		</div>
 		
 		<p>
-			<button type="button" class="btn btn-default btn-block set-default">Default All</button>
+			<button type="button" class="btn btn-default btn-block set-default"><?php echo _("Default All");?></button>
 		</p>
 
 	</div>

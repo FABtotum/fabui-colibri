@@ -4,6 +4,7 @@
         $('#take_photo').on('click', take_photo);
         $(".directions").on("click", directions);
         $(".set-default").on("click", default_all);
+        $("#download_photo").on('click', download_photo);
     });
 
     function take_photo()
@@ -30,7 +31,7 @@
         
         
         $('#take_photo').addClass('disabled');
-        $('#take_photo').html('<i class="fa fa-spinner fa-spin"></i> Taking picture...');
+        $('#take_photo').html('<i class="fa fa-spinner fa-spin"></i> ' + _("Taking picture") + "..." );
         $("#raspi_picture").addClass('sfumatura');
         $.ajax({
               url: "<?php echo site_url("cam/takePicture") ?>",
@@ -50,6 +51,12 @@
             $('#take_photo').html('<i class="fa fa-camera"></i> Take a pic');   
         });
     }
+    
+    function download_photo()
+    {
+		document.location.href = 'cam/downloadPicture';
+		return false;
+	}
     
     function directions()
     {

@@ -268,11 +268,6 @@
             url: "<?php echo site_url("control/taskAction/abort") ?>",
             dataType: "json"
         }).done(function( data ) {
-           //~ console.log(data);
-			/*setTimeout(function(){
-				closeWait();
-				location.reload();
-			}, 5000);*/
            location.reload();
         }).fail(function(jqXHR, textStatus){
 			location.reload();

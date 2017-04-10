@@ -80,6 +80,9 @@
 		
 		var format_date = 'DD/MM/YYYY';
 		 
+		 
+		console.log(start_date, end_date, format_date);
+		 
 		 $('#date-picker').daterangepicker({
 			format: format_date,
 			startDate: start_date,

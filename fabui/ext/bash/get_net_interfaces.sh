@@ -49,12 +49,18 @@ for iface in $(echo $IFACES); do
         if [ -e "/sys/class/net/$iface/wireless" ]; then
             echo ","
             echo "    \"wireless\" : {"
-            if [[ "$DRIVER" == "rtl8192cu" ]] || [[ "$DRIVER" == "brcmfmac_sdio" ]]; then
+            #~ if [[ "$DRIVER" == "rtl8192cu" ]] || [[ "$DRIVER" == "brcmfmac_sdio" ]]; then
+            if [[ "$DRIVER" == "brcmfmac_sdio" ]]; then
                 echo -n "      \"can_be_ap\" : \"yes\""
             else
                 echo -n "      \"can_be_ap\" : \"no\""
             fi
             MODE=$(iwconfig $iface | awk '/Mode/{print $1}')
+            
+            if [ x"$MODE" == x"$iface" ]; then
+				MODE=$(iwconfig $iface | awk '/Mode/{print $4}')
+            fi
+            
             if [ $MODE == "Mode:Master" ]; then
                 echo ","
                 echo "      \"mode\" : \"accesspoint\","
