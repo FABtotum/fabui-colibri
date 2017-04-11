@@ -114,6 +114,7 @@
 					</div>
 				</section>
 			</fieldset>
+			<!--  
 			<fieldset>
 				<div class="row">
 					<section class="col col-sm-12">
@@ -124,6 +125,7 @@
 					</section> 
 				</div>
 			</fieldset>
+			-->
 		</div>
 	</div>
 	<!-- customized actions tab -->
