@@ -8,29 +8,29 @@
 */
 ?>
 <p>
-	It is the most common filament used for 3D printing.<br> It is studied
-	to be bio-degradable as it comes from corn starch's sugar mainly.<br>
+	Es ist das häufigste verwendete Filament für 3D-Druck.<br> Es wird untersucht,
+	um biologisch abbaubar zu sein, wie es aus Maisstärke kommt, es ist hauptsächlich Zucker.<br>
 	It is completely made of renewable sources and has no footprint on
 	polluting.
 </p>
 
 <p>
-	<strong>PLA</strong> stands for PolyLactic Acid and it is a thermoplastic that today is
-	still considered the easiest material to be 3D printed. <br>It can be
-	extruded at lower temperatures: the standard range of FABtotum's one is
-	between <strong>185&deg;</strong> and <strong>195&deg;</strong>.
+	<strong>PLA</strong> Steht für PolyLactic Acid und es ist eine Thermoplastik, 
+	die heute noch als das einfachste Material betrachtet wird, das 3D gedruckt wird. 
+	<br>Es kann bei niedrigeren Temperaturen extrudiert werden: das Standardbereich von FABtotum ist eins
+	Zwischen <strong>185&deg;</strong> und <strong>195&deg;</strong>.
 </p>
-<p>Its major technical specs are:</p>
+<p>Seine wichtigsten technischen Spezifikationen sind:</p>
 <ul >
-	<li>it is hard and resists at high pressures but it is easy to chip and
-		break if hit;</li>
-	<li>it is easy to extrude at lower temperatures and it deforms at 60&deg;
-	<li>it cristalyze fast.</li>
+	<li>Es ist hart und widersteht bei hohen Drücken, aber es ist leicht zu abplatzen und brechen, wenn getroffen;</li>
+	<li>Es ist leicht, bei niedrigeren Temperaturen zu extrudieren, und es verformt sich bei 60&deg;
+	<li>Es kristallisiert schnell</li>
 </ul>
-<p><strong>Tips</strong></p>
-<p>PLA filament must be well stored and kept safe from humidity. Once
-	the package is open, add some silica dehumidifier inside; add a smooth
-	layer of hairspray on your heated bed.<br> Keep the fan of the Printing
-	Head on; always unspool it from the 3D printer to avoid it to
-	cristalyze inside the head; always use high quality filaments like
-	FABtotum's ones.</p>
+<p><strong>Tipps</strong></p>
+<p><li>PLA Filament muss gut gelagert und vor Feuchtigkeit geschützt gehalten 
+	werden. Einmal Das Paket ist offen, füge etwas Silica Luftentfeuchter hinein;</li>
+	<li>Fügen Sie eine glatte Schicht von Haarspray auf Ihrem beheizten Bett.</li>
+	<li>Halten Sie den Ventilator auf dem Druckkopf an</li>
+	<li>Immer Entfernen Sie es aus dem 3D-Drucker zu vermeiden dass es im Kopf kristallisiert</li>
+	<li>Wählen Sie immer hochwertige Filamente wie die von FABtotum.</li>
+</p>

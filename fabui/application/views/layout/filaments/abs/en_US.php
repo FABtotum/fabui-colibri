@@ -8,8 +8,8 @@
  */
 ?>
 <p>This material is easy to be extruded and is one of the most used in
-	3D printing to get very well finished objects.<br>It is not suistainable
-	and its smoke can be dangerous if inhalated. <br>The reason to prefer this
+	3D printing to get very well finished objects.<br>It is not sustainable 
+	and its smoke can be dangerous if inhaled. <br>The reason to prefer this
 	filament to PLA is mainly because of its precision and mechanical
 	specs.</p>
 	<p><strong>ABS</strong> (for plastic) stands for Acrylonitrile Butadiene Styrene and
@@ -21,7 +21,7 @@
 <ul>
 	<li>it is very hard and resists more to warps and damages;</li>
 	<li>it doesn't deform easily;</li>
-	<li>it is longlasting in performance and less subject to deteriorate if
+	<li>it is long lasting in performance and less subject to deteriorate if
 		exposed (to light, humidity and so on).</li>
 </ul>
 <p>

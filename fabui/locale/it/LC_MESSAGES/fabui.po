@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-11 11:29+0200\n"
+"POT-Creation-Date: 2017-04-11 15:00+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -155,6 +155,7 @@ msgid "System info"
 msgstr "Informazioni del sistema"
 
 #: fabui/application/config/menu.php:142
+#: fabui/application/controllers/Account.php:31
 #: fabui/application/views/install/wizard.php:31
 #: fabui/application/views/install/wizard.php:139
 #: fabui/application/views/plugin/js.php:349
@@ -232,6 +233,7 @@ msgstr "Stampa in corso"
 
 #: fabui/application/controllers/Settings.php:47
 #: fabui/application/controllers/Settings.php:286
+#: fabui/application/controllers/Account.php:34
 #: fabui/application/controllers/Projectsmanager.php:72
 #: fabui/application/controllers/Projectsmanager.php:205
 #: fabui/application/controllers/Projectsmanager.php:666
@@ -242,7 +244,7 @@ msgstr "Stampa in corso"
 #: fabui/application/views/settings/hardware_js.php:140
 #: fabui/application/views/settings/network_js.php:236
 #: fabui/application/views/feeder/profiles/widget.php:201
-#: fabui/application/views/projectsmanager/edit/js.php:83
+#: fabui/application/views/projectsmanager/edit/js.php:87
 msgid "Save"
 msgstr "Salva"
 
@@ -319,6 +321,15 @@ msgstr "Carica"
 #: fabui/application/controllers/Plugin.php:56
 msgid "Create New"
 msgstr "Crea nuovo"
+
+#: fabui/application/controllers/Account.php:30
+#: fabui/application/views/install/wizard.php:25
+msgid "Account"
+msgstr ""
+
+#: fabui/application/controllers/Account.php:38
+msgid "User"
+msgstr ""
 
 #: fabui/application/controllers/Feeder.php:68
 #, fuzzy
@@ -471,8 +482,8 @@ msgstr "Aggiungi nuovo progetto"
 #: fabui/application/controllers/Projectsmanager.php:31
 #: fabui/application/controllers/Projectsmanager.php:77
 #: fabui/application/controllers/Projectsmanager.php:210
-#: fabui/application/views/projectsmanager/index/js.php:169
-#: fabui/application/views/projectsmanager/edit/js.php:168
+#: fabui/application/views/projectsmanager/index/js.php:174
+#: fabui/application/views/projectsmanager/edit/js.php:172
 msgid "Delete"
 msgstr "Elimina"
 
@@ -739,16 +750,16 @@ msgstr ""
 #: fabui/application/views/feeder/profiles/js.php:266
 #: fabui/application/views/feeder/profiles/js.php:300
 #: fabui/application/views/feeder/profiles/js.php:315
-#: fabui/application/views/projectsmanager/index/js.php:135
-#: fabui/application/views/projectsmanager/index/js.php:141
-#: fabui/application/views/projectsmanager/index/js.php:180
+#: fabui/application/views/projectsmanager/index/js.php:140
+#: fabui/application/views/projectsmanager/index/js.php:146
 #: fabui/application/views/projectsmanager/index/js.php:185
-#: fabui/application/views/projectsmanager/edit/js.php:102
-#: fabui/application/views/projectsmanager/edit/js.php:109
-#: fabui/application/views/projectsmanager/edit/js.php:213
-#: fabui/application/views/projectsmanager/edit/js.php:219
-#: fabui/application/views/projectsmanager/edit/js.php:248
-#: fabui/application/views/projectsmanager/edit/js.php:254
+#: fabui/application/views/projectsmanager/index/js.php:190
+#: fabui/application/views/projectsmanager/edit/js.php:106
+#: fabui/application/views/projectsmanager/edit/js.php:113
+#: fabui/application/views/projectsmanager/edit/js.php:217
+#: fabui/application/views/projectsmanager/edit/js.php:223
+#: fabui/application/views/projectsmanager/edit/js.php:252
+#: fabui/application/views/projectsmanager/edit/js.php:258
 #: fabui/application/views/projectsmanager/add/widget.php:29
 msgid "No"
 msgstr "No"
@@ -766,16 +777,16 @@ msgstr "No"
 #: fabui/application/views/feeder/profiles/js.php:252
 #: fabui/application/views/feeder/profiles/js.php:300
 #: fabui/application/views/feeder/profiles/js.php:302
-#: fabui/application/views/projectsmanager/index/js.php:135
-#: fabui/application/views/projectsmanager/index/js.php:137
-#: fabui/application/views/projectsmanager/index/js.php:180
-#: fabui/application/views/projectsmanager/index/js.php:182
-#: fabui/application/views/projectsmanager/edit/js.php:102
-#: fabui/application/views/projectsmanager/edit/js.php:105
-#: fabui/application/views/projectsmanager/edit/js.php:213
-#: fabui/application/views/projectsmanager/edit/js.php:215
-#: fabui/application/views/projectsmanager/edit/js.php:248
-#: fabui/application/views/projectsmanager/edit/js.php:250
+#: fabui/application/views/projectsmanager/index/js.php:140
+#: fabui/application/views/projectsmanager/index/js.php:142
+#: fabui/application/views/projectsmanager/index/js.php:185
+#: fabui/application/views/projectsmanager/index/js.php:187
+#: fabui/application/views/projectsmanager/edit/js.php:106
+#: fabui/application/views/projectsmanager/edit/js.php:109
+#: fabui/application/views/projectsmanager/edit/js.php:217
+#: fabui/application/views/projectsmanager/edit/js.php:219
+#: fabui/application/views/projectsmanager/edit/js.php:252
+#: fabui/application/views/projectsmanager/edit/js.php:254
 #: fabui/application/views/projectsmanager/add/widget.php:26
 msgid "Yes"
 msgstr "Si"
@@ -827,7 +838,7 @@ msgstr ""
 #: fabui/application/views/head/install.php:35
 #: fabui/application/views/plugin/main_widget.php:31
 #: fabui/application/views/feeder/profiles/widget.php:35
-#: fabui/application/views/projectsmanager/edit/js.php:101
+#: fabui/application/views/projectsmanager/edit/js.php:105
 msgid "Remove"
 msgstr "Rimuovi"
 
@@ -1198,10 +1209,6 @@ msgstr "Riavvia stampa"
 
 #: fabui/application/views/install/js.php:138
 msgid "This may take a while, please wait"
-msgstr ""
-
-#: fabui/application/views/install/wizard.php:25
-msgid "Account"
 msgstr ""
 
 #: fabui/application/views/install/wizard.php:28
@@ -2013,36 +2020,36 @@ msgstr ""
 msgid "Use the z touch probe during homing"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:120
+#: fabui/application/views/settings/hardware_widget.php:121
 msgid "Z max home pos"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:134
+#: fabui/application/views/settings/hardware_widget.php:136
 msgid "Both Y endstops pressed"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:140
+#: fabui/application/views/settings/hardware_widget.php:142
 msgid "Both Z endstops pressed"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:154
+#: fabui/application/views/settings/hardware_widget.php:156
 msgid "Pre-heating nozzle temperature"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:162
+#: fabui/application/views/settings/hardware_widget.php:164
 msgid "Pre-heating bed temperature"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:170
+#: fabui/application/views/settings/hardware_widget.php:172
 #, fuzzy
 msgid "Calibration preference"
 msgstr "Selezione il tipo di calibrazione"
 
-#: fabui/application/views/settings/hardware_widget.php:185
+#: fabui/application/views/settings/hardware_widget.php:187
 msgid "Sacrificial layer thickness"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:207
+#: fabui/application/views/settings/hardware_widget.php:209
 msgid "Standby"
 msgstr ""
 
@@ -2090,7 +2097,7 @@ msgstr ""
 
 #: fabui/application/views/settings/hardware_js.php:125
 #: fabui/application/views/settings/network_js.php:153
-#: fabui/application/views/projectsmanager/edit/js.php:67
+#: fabui/application/views/projectsmanager/edit/js.php:71
 msgid "Saving"
 msgstr "Salvataggio"
 
@@ -2099,11 +2106,11 @@ msgstr "Salvataggio"
 #: fabui/application/views/std/task_wizard.php:23
 #: fabui/application/views/updates/index/js.php:292
 #: fabui/application/views/feeder/engage/js.php:23
-#: fabui/application/views/projectsmanager/index/js.php:133
-#: fabui/application/views/projectsmanager/index/js.php:178
-#: fabui/application/views/projectsmanager/edit/js.php:100
-#: fabui/application/views/projectsmanager/edit/js.php:211
-#: fabui/application/views/projectsmanager/edit/js.php:246
+#: fabui/application/views/projectsmanager/index/js.php:138
+#: fabui/application/views/projectsmanager/index/js.php:183
+#: fabui/application/views/projectsmanager/edit/js.php:104
+#: fabui/application/views/projectsmanager/edit/js.php:215
+#: fabui/application/views/projectsmanager/edit/js.php:250
 msgid "Warning"
 msgstr "Attenzione"
 
@@ -3180,39 +3187,39 @@ msgstr ""
 msgid "Apply a good amount of force when pushing"
 msgstr ""
 
-#: fabui/application/views/projectsmanager/index/js.php:95
-#: fabui/application/views/projectsmanager/index/js.php:114
+#: fabui/application/views/projectsmanager/index/js.php:100
+#: fabui/application/views/projectsmanager/index/js.php:119
 msgid "Please select at least 1 object"
 msgstr "Seleziona almeno 1 oggetto"
 
-#: fabui/application/views/projectsmanager/index/js.php:121
-#: fabui/application/views/projectsmanager/edit/js.php:198
+#: fabui/application/views/projectsmanager/index/js.php:126
+#: fabui/application/views/projectsmanager/edit/js.php:202
 msgid "Information"
 msgstr "Informazione"
 
-#: fabui/application/views/projectsmanager/index/js.php:123
-#: fabui/application/views/projectsmanager/index/js.php:125
-#: fabui/application/views/projectsmanager/edit/js.php:200
-#: fabui/application/views/projectsmanager/edit/js.php:202
+#: fabui/application/views/projectsmanager/index/js.php:128
+#: fabui/application/views/projectsmanager/index/js.php:130
+#: fabui/application/views/projectsmanager/edit/js.php:204
+#: fabui/application/views/projectsmanager/edit/js.php:206
 #: fabui/assets/js/fab.app.js:1001
 msgid "Ok"
 msgstr "Ok"
 
-#: fabui/application/views/projectsmanager/index/js.php:134
+#: fabui/application/views/projectsmanager/index/js.php:139
 #, fuzzy
 msgid "Do you really want to remove the selected objects?"
 msgstr "Vuoi davvero eliminare gli oggetti selezionati?"
 
-#: fabui/application/views/projectsmanager/index/js.php:151
-#: fabui/application/views/projectsmanager/edit/js.php:151
+#: fabui/application/views/projectsmanager/index/js.php:156
+#: fabui/application/views/projectsmanager/edit/js.php:155
 msgid "Deleting"
 msgstr "Eliminazione"
 
-#: fabui/application/views/projectsmanager/index/js.php:166
+#: fabui/application/views/projectsmanager/index/js.php:171
 msgid "Error deleting object"
 msgstr "Errore durante l'eliminazione dell'oggetto"
 
-#: fabui/application/views/projectsmanager/index/js.php:179
+#: fabui/application/views/projectsmanager/index/js.php:184
 #, fuzzy
 msgid "Do you really want download the selected objects?"
 msgstr "Vuoi davvero scaricare gli oggetti selezionati"
@@ -3222,28 +3229,28 @@ msgstr "Vuoi davvero scaricare gli oggetti selezionati"
 msgid "Date"
 msgstr "Data"
 
-#: fabui/application/views/projectsmanager/edit/js.php:86
+#: fabui/application/views/projectsmanager/edit/js.php:90
 msgid "Object saved with success"
 msgstr "Oggetto salvato con successo"
 
-#: fabui/application/views/projectsmanager/edit/js.php:119
+#: fabui/application/views/projectsmanager/edit/js.php:123
 msgid "Deleting file"
 msgstr "Eliminazione file"
 
-#: fabui/application/views/projectsmanager/edit/js.php:165
+#: fabui/application/views/projectsmanager/edit/js.php:169
 msgid "Error deleting file(s)"
 msgstr "Errore durante l'eliminazione dei file"
 
-#: fabui/application/views/projectsmanager/edit/js.php:190
+#: fabui/application/views/projectsmanager/edit/js.php:194
 msgid "Please select at least 1 file"
 msgstr "Selezione almeno 1 file"
 
-#: fabui/application/views/projectsmanager/edit/js.php:212
+#: fabui/application/views/projectsmanager/edit/js.php:216
 #, fuzzy
 msgid "Do you really want to remove the selected files?"
 msgstr "Vuoi davvero eliminare i file selezionati"
 
-#: fabui/application/views/projectsmanager/edit/js.php:247
+#: fabui/application/views/projectsmanager/edit/js.php:251
 #, fuzzy
 msgid "Do you really want download the selected files?"
 msgstr "Vuoi davvero scaricare i file selezionati"
@@ -4464,6 +4471,7 @@ msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:79
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:105
+#: fabui/ext/py/fabtotum/fabui/macros/scanning.py:127
 msgid "Checking panel door status and bed inserted"
 msgstr ""
 
@@ -4502,10 +4510,6 @@ msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:126
 msgid "Initializing Sweeping Laserscanner"
-msgstr ""
-
-#: fabui/ext/py/fabtotum/fabui/macros/scanning.py:127
-msgid "checking panel door status and bed inserted"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:130
