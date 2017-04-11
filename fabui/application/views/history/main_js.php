@@ -41,6 +41,10 @@
 		
 		
 		oTable = $("#history").dataTable({
+			"language": {
+                "url": "assets/js/plugin/datatables/lang/<?php echo getCurrentLanguage();?>"
+            },
+            
 			"aaSorting": [],
 			"sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+
 				"t"+

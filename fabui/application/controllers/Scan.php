@@ -41,7 +41,12 @@
 		
 		$this->config->load('fabtotum');
 		$settingsPath = $this->config->item('settings_path');
-		$scanconfiguration = json_decode(file_get_contents($settingsPath . 'scan_presets.json'), true);
+
+		// Load presets and apply translation
+		$data = array();
+		$scanconfiguration_raw = $this->load->view('scan/presets_json', $data, true );
+		$scanconfiguration = json_decode($scanconfiguration_raw, true);
+		
 		$res_map = $this->camera->getResolutionMapping();
 		
 		foreach($scanconfiguration['quality'] as $label => $values)
@@ -53,7 +58,7 @@
 		
 		
 		//data
-		$data = array();
+		
 		$data['runningTask'] = $this->runningTask;
 		if(!$this->runningTask){
 			$data['scanModes'] = $scanconfiguration['mode'];
@@ -88,7 +93,7 @@
 		$this->addCssFile('/assets/js/plugin/cropper/cropper.min.css');
 		$this->addCssFile('/assets/css/scan/style.css');
 		$this->addJsFile('/assets/js/controllers/scan/scan.js');
-		$this->addJsInLine($this->load->view('scan/js', $data, true),true);
+		$this->addJsInLine($this->load->view('scan/scan_js', $data, true),true);
 		if($this->runningTask) $this->addJsInLine('<script type="text/javascript">initScanPage(true);</script>');
 		else $this->addJsInLine('<script type="text/javascript">initScanPage(false);</script>');
 		

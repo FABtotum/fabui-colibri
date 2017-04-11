@@ -18,7 +18,7 @@ $size_default = '1920x1080';
 <div class="row">
 	<div class="col-sm-12">
 		<div class="smart-form">
-			<header>Camera settings</header>
+			<header><?php echo _("Camera settings");?></header>
 			<fieldset>
 				<div class="row">
 					<section class="col col-6">
@@ -51,7 +51,7 @@ $size_default = '1920x1080';
 					</section>
 				</div>
 			</fieldset>
-			<header>Desktop Server</header>
+			<header><?php echo _("Desktop Server");?></header>
 			<fieldset>
 				<div class="row">
 					<section class="col col-6">

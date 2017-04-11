@@ -38,7 +38,7 @@
 	function checkConnection(obj){
 		
 		$("#connection_test_button").addClass("disabled");
-		$("#connection_test_button").html("Checking connection...");
+		$("#connection_test_button").html( _("Checking connection...") );
 		
 		$('#btn-next').addClass('disabled');
 		$("#connection-note").html("");
@@ -55,14 +55,14 @@
 			if(response.connection == 'failed'){
 				
 				$("#connection_test_button").removeClass("disabled btn-primary btn-success").addClass("btn-warning");
-				$("#connection_test_button").html('<i class="fa fa-warning"></i> No connection.');
-				$("#connection-note").html("Please check the desktop server or that your firewall is not blocking the port and try again.");
+				$("#connection_test_button").html('<i class="fa fa-warning"></i> ' + _("No connection.") );
+				$("#connection-note").html( _("Please check the desktop server or that your firewall is not blocking the port and try again.") );
 				$('#btn-next').removeClass('disabled').addClass('disabled');
 				
 						
 			}else{
 				
-				$("#connection_test_button").html('<i class="fa fa-check"></i> Connection success!');
+				$("#connection_test_button").html('<i class="fa fa-check"></i> ' + _("Connection success!") );
 				$("#connection_test_button").removeClass("disabled btn-primary btn-warning").addClass("btn-success");
 				$("#connection-note").html("");
 				$('#btn-next').removeClass('disabled');

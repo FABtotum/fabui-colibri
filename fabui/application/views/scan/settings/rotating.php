@@ -21,21 +21,21 @@
 		<div class="row padding-10">
 			<!-- slider -->
 			<div class="col-sm-12">
-				<p class="font-sm">Slide to select quality</p>
+				<p class="font-sm"><?php echo _("Slide to select quality");?></p>
 				<div id="rotating-slider" class="noUiSlider"></div>
 			</div>
 		</div>
 		<hr class="simple">
 		<div class="row padding-10">
 			<div class="col-sm-12">
-				<h5>Quality: <span class="scan-quality-name"></span></h5>
+				<h5><?php echo _("Quality");?>: <span class="scan-quality-name"></span></h5>
 				<p class="font-sm scan-quality-description"></p>
 				<hr class="simple">
 				<div class="row margin-bottom-10">
 					<div class="col-sm-6 col-xs-6">
 						<div class="form-group">
 							<div class="input-group">
-								<span class="input-group-addon">Slices</span>
+								<span class="input-group-addon"><?php echo _("Slices");?></span>
 								<input type="text"  class="form-control quality-slices" readonly="readonly">   
 							</div>
 						</div>
@@ -43,7 +43,7 @@
 					<div class="col-sm-6 col-xs-6">
 						<div class="form-group">
 							<div class="input-group">
-								<span class="input-group-addon">ISO</span>
+								<span class="input-group-addon"><?php echo _("ISO");?></span>
 								<input type="text"  class="form-control quality-iso" readonly="readonly">  
 							</div>
 						</div>
@@ -53,7 +53,7 @@
 					<div class="col-sm-6 col-xs-6">
 						<div class="form-group">
 							<div class="input-group">
-								<span class="input-group-addon">Width</span>
+								<span class="input-group-addon"><?php echo _("Width");?></span>
 								<input type="text"  class="form-control quality-resolution-width" readonly="readonly">  
 							</div>
 						</div>
@@ -61,7 +61,7 @@
 					<div class="col-sm-6 col-xs-6">
 						<div class="form-group">
 							<div class="input-group">
-								<span class="input-group-addon">Width</span>
+								<span class="input-group-addon"><?php echo _("Height");?></span>
 								<input type="text" class="form-control quality-resolution-height" readonly="readonly">  
 							</div>
 						</div>

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-11 15:00+0200\n"
+"POT-Creation-Date: 2017-04-11 16:51+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -45,7 +45,7 @@ msgstr "Fresa"
 
 #: fabui/application/config/menu.php:31
 #: fabui/application/controllers/Settings.php:285
-#: fabui/application/controllers/Scan.php:81
+#: fabui/application/controllers/Scan.php:86
 #: fabui/application/views/settings/network_js.php:375
 #: fabui/application/views/history/main_widget.php:18
 #: fabui/application/views/scan/wizard/main.php:24
@@ -577,6 +577,7 @@ msgstr "Calibrazione altezza"
 #: fabui/application/controllers/Bed.php:48
 #: fabui/application/views/fourthaxis/main_widget.php:16
 #: fabui/application/views/nozzle/pidtune/js.php:230
+#: fabui/application/views/scan/settings/sweep.php:88
 #: fabui/application/views/feeder/engage/widget.php:13
 #, fuzzy
 msgid "Start"
@@ -1517,21 +1518,21 @@ msgstr ""
 msgid " and {0} degrees"
 msgstr ""
 
-#: fabui/application/views/jog/js.php:141
+#: fabui/application/views/jog/jog_js.php:141
 msgid "Search for a code"
 msgstr "Cerca codice"
 
-#: fabui/application/views/jog/js.php:141
+#: fabui/application/views/jog/jog_js.php:141
 msgid "Search in the description"
 msgstr "Cerca nella descrizione"
 
-#: fabui/application/views/jog/js.php:415
+#: fabui/application/views/jog/jog_js.php:415
 msgid ""
 "Turning the cold extrusion protection off might be dangerous if the filament "
 "has not been removed from the head already"
 msgstr ""
 
-#: fabui/application/views/jog/js.php:415
+#: fabui/application/views/jog/jog_js.php:415
 msgid "Do you want to disable cold extrusion?"
 msgstr ""
 
@@ -2219,6 +2220,127 @@ msgstr ""
 msgid "These DNS settings will be added after DNS which is acquired over DHCP"
 msgstr ""
 
+#: fabui/application/views/scan/presets_json.php:5
+msgid "Quick Draft"
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:6
+msgid ""
+"Use the quick draft mode only for testing the setup. It will not produce "
+"enough data to make a reconstruction possible but can be used to add more "
+"details as a second pass"
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:20
+#: fabui/application/views/scan/presets_json.php:122
+msgid "Low"
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:21
+msgid ""
+"Use this setting for very simple or small objects. Surface quality is "
+"increased and if used as a second-pass scan this setting will add more "
+"geometry features."
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:35
+#: fabui/application/views/scan/presets_json.php:131
+msgid "Medium"
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:36
+msgid ""
+"This setting can be used to reconstruct simple objects with a good amount of "
+"details, provided the object is not too big and has no cavities. If used as "
+"a second pass scan, this setting will increase drastically the geometry "
+"features."
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:50
+#: fabui/application/views/scan/presets_json.php:141
+msgid "High"
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:51
+msgid ""
+"This setting can be used to reconstruct objects with more details, or bigger "
+"objects, keeping the point cloud data density high. If used as a second pass "
+"scan, this setting will increase drastically the geometry features."
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:65
+msgid "Ultra"
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:66
+msgid ""
+"Use with caution, as it can create more data than needed and has a long "
+"processing time. Suitable for larger objects. It should not be used as a "
+"second-pass scan, unless the existing scans are lacking a lot of global "
+"geometry data or are localized scans. postprocessing will take up to 20 "
+"minutes."
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:82
+#, fuzzy
+msgid "Rotating"
+msgstr "Informazione"
+
+#: fabui/application/views/scan/presets_json.php:83
+msgid ""
+"Laser line is projected on an object placed on an incrementally rotating "
+"platform. A 3D model can be aquired when a full 360&deg; rotation is "
+"complete. It is the most common laser scanning method<br><br><b>Accuracy: "
+"medium</b><br><b>Time of acquitision: short</b>"
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:89
+msgid "Sweep"
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:90
+msgid ""
+"The laser is moved across the object with or without the object rotation. "
+"Use this method to fix holes and shadows of existing scans.Selective scan is "
+"possible.<br><br><b>Accuracy: low</b><br><b>Time of acquisition: short.</b>"
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:96
+msgid "Probing"
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:97
+msgid ""
+"Based on physical contact of the probe with an object, this method gives "
+"best results for flat and small surface features, e.g. a coin. Can be used "
+"on 3 or 4 axis. Localized probing is possible.<br><br><b>Accuracy: high</b> "
+"<br><b>Time of acquisition: long</b>"
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:103
+msgid "Photogrammetry"
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:104
+msgid ""
+"Structure from motion (SfM) is a range imaging technique; it refers to the "
+"process of estimating three-dimensional structures from two-dimensional "
+"image sequences which may be coupled with local motion signals. It is "
+"studied in the fields of computer vision and"
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:112
+msgid "Draft"
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:151
+msgid "Very High"
+msgstr ""
+
+#: fabui/application/views/scan/presets_json.php:161
+msgid "Ultra High"
+msgstr ""
+
 #: fabui/application/views/dashboard/twitter.php:22
 msgid "Twitter"
 msgstr ""
@@ -2268,11 +2390,16 @@ msgstr ""
 
 #: fabui/application/views/camera/main_widget.php:112
 #: fabui/application/views/scan/wizard/step4.php:46
+#: fabui/application/views/scan/settings/rotating.php:46
+#: fabui/application/views/scan/settings/sweep.php:52
 #: fabui/application/views/scan/settings/photogrammetry.php:26
 msgid "ISO"
 msgstr ""
 
 #: fabui/application/views/camera/main_widget.php:118
+#: fabui/application/views/scan/settings/rotating.php:31
+#: fabui/application/views/scan/settings/sweep.php:37
+#: fabui/application/views/scan/settings/probing.php:69
 msgid "Quality"
 msgstr ""
 
@@ -3075,8 +3202,44 @@ msgstr "Crea nuovo"
 msgid "Add to an existing object"
 msgstr "Errore durante l'eliminazione dell'oggetto"
 
+#: fabui/application/views/scan/settings/rotating.php:24
+#: fabui/application/views/scan/settings/sweep.php:30
+#: fabui/application/views/scan/settings/probing.php:63
+msgid "Slide to select quality"
+msgstr ""
+
+#: fabui/application/views/scan/settings/rotating.php:38
+#: fabui/application/views/scan/settings/sweep.php:44
 #: fabui/application/views/scan/settings/photogrammetry.php:46
 msgid "Slices"
+msgstr ""
+
+#: fabui/application/views/scan/settings/rotating.php:56
+#: fabui/application/views/scan/settings/sweep.php:62
+msgid "Width"
+msgstr ""
+
+#: fabui/application/views/scan/settings/rotating.php:64
+#: fabui/application/views/scan/settings/sweep.php:70
+#, fuzzy
+msgid "Height"
+msgstr "L'altezza della Z è"
+
+#: fabui/application/views/scan/settings/sweep.php:83
+msgid "Select scan area"
+msgstr ""
+
+#: fabui/application/views/scan/settings/sweep.php:98
+msgid "End"
+msgstr ""
+
+#: fabui/application/views/scan/settings/photogrammetry.php:21
+#, fuzzy
+msgid "Camera settings"
+msgstr "Rete"
+
+#: fabui/application/views/scan/settings/photogrammetry.php:54
+msgid "Desktop Server"
 msgstr ""
 
 #: fabui/application/views/scan/settings/photogrammetry.php:65
@@ -3094,6 +3257,39 @@ msgstr ""
 #, fuzzy
 msgid "Check Connection"
 msgstr "Connessione"
+
+#: fabui/application/views/scan/settings/probing.php:23
+#, fuzzy
+msgid "First point"
+msgstr "Nome"
+
+#: fabui/application/views/scan/settings/probing.php:43
+msgid "Second point"
+msgstr ""
+
+#: fabui/application/views/scan/settings/probing.php:70
+msgid "Probes per square millimeters"
+msgstr ""
+
+#: fabui/application/views/scan/settings/probing.php:77
+msgid "Z Jump (mm)"
+msgstr ""
+
+#: fabui/application/views/scan/settings/probing.php:81
+msgid ""
+"This is the maximum difference in height of the different portions of the "
+"object to probe"
+msgstr ""
+
+#: fabui/application/views/scan/settings/probing.php:86
+msgid "Detail threshold (mm)"
+msgstr ""
+
+#: fabui/application/views/scan/settings/probing.php:90
+msgid ""
+"If Z height change is minor than detail threshold adaptive auto skipping is "
+"automatically enabled. Lower values give finer details. 0 = disable"
+msgstr ""
 
 #: fabui/application/views/feeder/calibration/widget.php:4
 #, fuzzy
@@ -4571,70 +4767,31 @@ msgstr ""
 msgid "Bed target"
 msgstr "Target"
 
-#: fabui/assets/js/tours/0041_spool_unload.js:63
-#, fuzzy
-msgid "Some description"
-msgstr "Descrizione"
-
 #: fabui/application/views/std/task_execute_js.php:533
 msgid "Bed temp"
-msgstr ""
-
-#: fabui/application/views/settings/network_js.php:207
-#, fuzzy
-msgid "DNS settings saved"
-msgstr "L'altezza della Z è"
-
-#: fabui/application/views/std/task_execute_js.php:596
-msgid "Fan override changed to {0}"
-msgstr ""
-
-#: fabui/assets/js/tours/0010_head.js:41
-msgid "Click on this button"
 msgstr ""
 
 #: fabui/application/views/nozzle/height_js.php:213
 msgid "Old nozzle offset: {0}"
 msgstr ""
 
-#: fabui/assets/js/tours/0010_head.js:5
+#: fabui/application/views/scan/scan_js.php:65
 #, fuzzy
-msgid "Maintenance menu"
-msgstr "Manutenzione"
-
-#: fabui/assets/js/fab.app.js:11
-msgid "Go"
-msgstr ""
+msgid "Connection success!"
+msgstr "Connessione"
 
 #: fabui/application/views/std/task_execute_js.php:593
 msgid "Flow Rate override changed to {0}"
-msgstr ""
-
-#: fabui/application/views/std/task_finished_js.php:40
-#, fuzzy
-msgid "Z Height saved"
-msgstr "L'altezza della Z è"
-
-#: fabui/assets/js/fab.app.js:1501
-msgid "Note: 5 seconds after the beep it's safe to switch off your unit."
 msgstr ""
 
 #: fabui/application/views/nozzle/height_js.php:211
 msgid "Calibrating nozzle offset"
 msgstr ""
 
-#: fabui/assets/js/tours/0040_spool_load.js:60
-msgid "Spool"
-msgstr ""
-
-#: fabui/application/views/std/task_safety_check_js.php:58
+#: fabui/assets/js/tours/0010_head.js:13
 #, fuzzy
-msgid "Please install a laser head."
-msgstr "Inserisci un indirizzo email valido"
-
-#: fabui/assets/js/tours/0020_bed.js:22
-msgid "Click on the next button to start bed calibration"
-msgstr ""
+msgid "Head management"
+msgstr "Gestione filamento"
 
 #: fabui/assets/js/tours/0050_feeder.js:13
 #, fuzzy
@@ -4645,41 +4802,26 @@ msgstr "Rete"
 msgid "Checking safety measures..."
 msgstr ""
 
-#: fabui/assets/js/std/jogcontrols.js:568
-msgid "Restore XY"
+#: fabui/application/views/std/task_execute_js.php:596
+msgid "Fan override changed to {0}"
 msgstr ""
-
-#: fabui/application/views/head/install_js.php:68
-#, fuzzy
-msgid "Please select at least one capability"
-msgstr "Seleziona almeno 1 oggetto"
-
-#: fabui/application/views/std/task_execute_js.php:523
-#, fuzzy
-msgid "Ext target"
-msgstr "Target"
 
 #: fabui/assets/js/fab.app.js:1482
 msgid "Internet available"
 msgstr ""
 
-#: fabui/assets/js/fab.app.js:1395
+#: fabui/application/views/std/task_execute_js.php:608
 #, fuzzy
-msgid "You will be redirect to recovery page"
-msgstr "Reindirizzamento alla pagina dei plugin"
-
-#: fabui/assets/js/fab.app.js:18
-msgid "Logout"
-msgstr ""
+msgid "Unknown action: {0}"
+msgstr "Errore sconosciuto"
 
 #: fabui/assets/js/fab.app.js:981
 msgid "Front panel has been opened"
 msgstr ""
 
-#: fabui/assets/js/tours/0010_head.js:51
-#, fuzzy
-msgid "Install head"
-msgstr "Installato"
+#: fabui/assets/js/tours/0050_feeder.js:29
+msgid "Start extrude"
+msgstr ""
 
 #: fabui/application/views/std/jog_setup_js.php:328
 msgid "You need to home X/Y axis first"
@@ -4689,12 +4831,8 @@ msgstr ""
 msgid "Before proceed make sure the head is properly locked in place"
 msgstr ""
 
-#: fabui/application/views/std/task_execute_js.php:601
-msgid "Z height override changed to {0}mm"
-msgstr ""
-
-#: fabui/assets/js/fab.app.js:1500
-msgid "Now you can switch off the power"
+#: fabui/application/views/settings/network_js.php:194
+msgid "Saving new ethernet configuration"
 msgstr ""
 
 #: fabui/assets/js/tours/0041_spool_unload.js:62
@@ -4702,39 +4840,20 @@ msgstr ""
 msgid "Unload spool"
 msgstr "Carica"
 
-#: fabui/assets/js/tours/0010_head.js:26
-msgid "Select head"
-msgstr ""
-
-#: fabui/assets/js/tours/0020_bed.js:34
-msgid "To get the first layer right the bed must be well calibrated"
-msgstr ""
-
 #: fabui/assets/js/tours/0050_feeder.js:42
 msgid "This step can be skipped"
 msgstr ""
 
-#: fabui/assets/js/tours/0010_head.js:14
-msgid "<strong>Click</strong> on the menu item to continue"
+#: fabui/application/views/std/task_execute_js.php:601
+msgid "Z height override changed to {0}mm"
 msgstr ""
 
-#: fabui/application/views/settings/network_js.php:199
-msgid ""
-"It might take some time for the new address to become visible on the "
-"network. This page will be reloaded as soon as the new address is available."
+#: fabui/assets/js/tours/0020_bed.js:22
+msgid "Click on the next button to start bed calibration"
 msgstr ""
 
-#: fabui/application/views/std/task_execute_js.php:608
-#, fuzzy
-msgid "Unknown action: {0}"
-msgstr "Errore sconosciuto"
-
-#: fabui/application/views/settings/network_js.php:194
-msgid "Saving new ethernet configuration"
-msgstr ""
-
-#: fabui/application/views/std/jog_setup_js.php:347
-msgid "You need to home Z axis first"
+#: fabui/application/views/settings/network_js.php:168
+msgid "Failed to disable Wireless interface"
 msgstr ""
 
 #: fabui/application/views/head/install_js.php:30
@@ -4743,16 +4862,17 @@ msgid ""
 "Calibration operation"
 msgstr ""
 
+#: fabui/application/views/settings/network_js.php:213
+msgid "DNS-SD settings saved"
+msgstr ""
+
 #: fabui/application/views/settings/network_js.php:173
 msgid "Failed to connect to Wireless network"
 msgstr ""
 
-#: fabui/assets/js/tours/0040_spool_load.js:62
-msgid "Load spool"
-msgstr ""
-
-#: fabui/application/views/std/jog_setup_js.php:253
-msgid "X/Y position restored to {0}, {1}"
+#: fabui/assets/js/tours/0010_head.js:27
+msgid ""
+"Choose the installed head<br>Note: if the correct head is selected press Next"
 msgstr ""
 
 # fabui/application/views/std/jog_setup_js.php:190
@@ -4765,50 +4885,30 @@ msgstr ""
 msgid "Wifi connected"
 msgstr "Connessione"
 
-#: fabui/application/views/settings/network_js.php:208
-msgid "Failed to save DNS configuration"
-msgstr ""
-
-#: fabui/assets/js/fab.app.js:21
-msgid "Shutdown"
+#: fabui/assets/js/tours/0050_feeder.js:30
+msgid "Click on this button to start extruding filament"
 msgstr ""
 
 #: fabui/assets/js/fab.app.js:999
 msgid "Press OK to continue or Ignore to disable this warning"
 msgstr ""
 
-#: fabui/application/views/settings/network_js.php:195
-msgid "Failed to save ethernet configuration"
+#: fabui/assets/js/fab.app.js:11
+msgid "Go"
 msgstr ""
-
-#: fabui/application/views/std/task_execute_js.php:330
-#, fuzzy
-msgid "Extruder temperature set to {0} &deg;"
-msgstr "Temperatura piatto impostata a {0}&deg;C"
 
 #: fabui/assets/js/tours/0030_nozzle_assisted.js:41
 msgid "After bed is leveled the nozzle height needs to be adjusted"
 msgstr ""
 
-#: fabui/application/views/nozzle/height_js.php:216
-msgid "New nozzle offset: {0}"
+#: fabui/assets/js/tours/0010_head.js:26
+msgid "Select head"
 msgstr ""
-
-#: fabui/assets/js/fab.app.js:551
-#, fuzzy
-msgid "Restart in progress"
-msgstr "Riavvia stampa"
 
 #: fabui/application/views/std/task_execute_js.php:859
 #, fuzzy
 msgid "Aborting"
 msgstr "Stampa in corso"
-
-#: fabui/application/views/head/install_js.php:142
-msgid ""
-"Well done! Now your <strong>FABtotum Personal Fabricator</strong> is set for "
-"the <strong>{0}</strong>."
-msgstr ""
 
 #: fabui/application/views/nozzle/height_js.php:170
 #, fuzzy
@@ -4819,43 +4919,9 @@ msgstr "Calibrazione Probe"
 msgid "Override value: {0}"
 msgstr ""
 
-#: fabui/application/views/create/laser_js.php:52
-msgid "Engrave"
-msgstr ""
-
-#: fabui/assets/js/tours/0050_feeder.js:21
-#, fuzzy
-msgid "Step calibration menu"
-msgstr "Calibrazione piatto"
-
-#: fabui/application/views/head/install_js.php:132
-#, fuzzy
-msgid "Please select a Head"
-msgstr "Selezione almeno 1 file"
-
-#: fabui/application/views/settings/network_js.php:172
-msgid "Connecting to <strong>{0}</strong>"
-msgstr ""
-
 #: fabui/assets/js/fab.app.js:515
 msgid "Resetting controller"
 msgstr ""
-
-# fabui/application/views/std/jog_setup_js.php:184
-#: fabui/application/views/std/jog_setup_js.php:209
-msgid "Position {0}, {1}, {2} stored"
-msgstr ""
-
-#: fabui/assets/js/fab.app.js:967
-msgid ""
-"You have attempted to leave this page. The Fabtotum Personal Fabricator is "
-"still working. Are you sure you want to reload this page?"
-msgstr ""
-
-#: fabui/assets/js/fab.app.js:569
-#, fuzzy
-msgid "Shutdown in progress"
-msgstr "Riavvia stampa"
 
 #: fabui/application/views/std/task_execute_js.php:590
 msgid "Speed override changed to {0}"
@@ -4870,37 +4936,219 @@ msgstr ""
 msgid "Click on the menu item to continue"
 msgstr ""
 
-#: fabui/assets/js/tours/0040_spool_load.js:63
-msgid "To be able to print anything the filament needs to be loaded"
-msgstr ""
-
-#: fabui/application/views/settings/network_js.php:213
-msgid "DNS-SD settings saved"
-msgstr ""
-
 #: fabui/application/views/std/task_execute_js.php:599
 #, fuzzy
 msgid "Z height increased"
 msgstr "L'altezza della Z è"
 
-#: fabui/assets/js/fab.app.js:9
-msgid "Hi"
+#: fabui/application/views/std/jog_setup_js.php:243
+msgid "Z Position restored to {0}"
+msgstr ""
+
+#: fabui/application/views/settings/network_js.php:214
+msgid "Failed to save DNS-SD configuration"
+msgstr ""
+
+#: fabui/assets/js/tours/0050_feeder.js:21
+#, fuzzy
+msgid "Step calibration menu"
+msgstr "Calibrazione piatto"
+
+#: fabui/assets/js/fab.app.js:551
+#, fuzzy
+msgid "Restart in progress"
+msgstr "Riavvia stampa"
+
+#: fabui/assets/js/fab.app.js:981
+#, fuzzy
+msgid "Aborting all operations"
+msgstr "Calibrazione Angolo"
+
+#: fabui/application/views/std/task_execute_js.php:330
+#, fuzzy
+msgid "Extruder temperature set to {0} &deg;"
+msgstr "Temperatura piatto impostata a {0}&deg;C"
+
+#: fabui/application/views/nozzle/height_js.php:172
+msgid "New probe Length: {0}"
+msgstr ""
+
+#: fabui/application/views/std/task_safety_check_js.php:58
+#, fuzzy
+msgid "Please install a laser head."
+msgstr "Inserisci un indirizzo email valido"
+
+#: fabui/assets/js/tours/0050_feeder.js:41
+#, fuzzy
+msgid "Feeder calibration"
+msgstr "Calibrazione piatto"
+
+#: fabui/application/views/scan/scan_js.php:59
+msgid ""
+"Please check the desktop server or that your firewall is not blocking the "
+"port and try again."
+msgstr ""
+
+#: fabui/assets/js/tours/0041_spool_unload.js:63
+#, fuzzy
+msgid "Some description"
+msgstr "Descrizione"
+
+#: fabui/application/views/std/task_execute_js.php:513
+msgid "Ext temp"
+msgstr ""
+
+#: fabui/application/views/nozzle/height_js.php:216
+msgid "New nozzle offset: {0}"
+msgstr ""
+
+#: fabui/application/views/settings/network_js.php:207
+#, fuzzy
+msgid "DNS settings saved"
+msgstr "L'altezza della Z è"
+
+#: fabui/application/views/head/install_js.php:68
+#, fuzzy
+msgid "Please select at least one capability"
+msgstr "Seleziona almeno 1 oggetto"
+
+#: fabui/application/views/head/install_js.php:142
+msgid ""
+"Well done! Now your <strong>FABtotum Personal Fabricator</strong> is set for "
+"the <strong>{0}</strong>."
+msgstr ""
+
+#: fabui/application/views/std/task_execute_js.php:523
+#, fuzzy
+msgid "Ext target"
+msgstr "Target"
+
+#: fabui/assets/js/std/jogcontrols.js:568
+msgid "Restore XY"
+msgstr ""
+
+#: fabui/application/views/std/task_finished_js.php:40
+#, fuzzy
+msgid "Z Height saved"
+msgstr "L'altezza della Z è"
+
+#: fabui/assets/js/fab.app.js:1501
+msgid "Note: 5 seconds after the beep it's safe to switch off your unit."
+msgstr ""
+
+#: fabui/application/views/settings/network_js.php:167
+msgid "Disabling Wireless interface"
+msgstr ""
+
+#: fabui/assets/js/tours/0010_head.js:5
+#, fuzzy
+msgid "Maintenance menu"
+msgstr "Manutenzione"
+
+#: fabui/assets/js/tours/0040_spool_load.js:60
+msgid "Spool"
+msgstr ""
+
+#: fabui/assets/js/fab.app.js:1395
+#, fuzzy
+msgid "You will be redirect to recovery page"
+msgstr "Reindirizzamento alla pagina dei plugin"
+
+#: fabui/assets/js/fab.app.js:18
+msgid "Logout"
+msgstr ""
+
+#: fabui/assets/js/tours/0010_head.js:51
+#, fuzzy
+msgid "Install head"
+msgstr "Installato"
+
+#: fabui/application/views/std/task_execute_js.php:334
+#, fuzzy
+msgid "Bed temperature set to {0} &deg;"
+msgstr "Temperatura piatto impostata a {0}&deg;C"
+
+#: fabui/assets/js/tours/0020_bed.js:34
+msgid "To get the first layer right the bed must be well calibrated"
+msgstr ""
+
+#: fabui/application/views/settings/network_js.php:208
+msgid "Failed to save DNS configuration"
+msgstr ""
+
+#: fabui/application/views/std/jog_setup_js.php:253
+msgid "X/Y position restored to {0}, {1}"
+msgstr ""
+
+#: fabui/assets/js/fab.app.js:21
+msgid "Shutdown"
+msgstr ""
+
+#: fabui/application/views/settings/network_js.php:195
+msgid "Failed to save ethernet configuration"
+msgstr ""
+
+#: fabui/assets/js/tours/0010_head.js:41
+msgid "Click on this button"
+msgstr ""
+
+#: fabui/application/views/nozzle/height_js.php:173
+msgid "New Z max offset: {0}"
+msgstr ""
+
+#: fabui/application/views/scan/scan_js.php:41
+#, fuzzy
+msgid "Checking connection..."
+msgstr "Connessione"
+
+#: fabui/assets/js/tours/0010_head.js:14
+msgid "<strong>Click</strong> on the menu item to continue"
+msgstr ""
+
+# fabui/application/views/std/jog_setup_js.php:184
+#: fabui/application/views/std/jog_setup_js.php:209
+msgid "Position {0}, {1}, {2} stored"
+msgstr ""
+
+#: fabui/application/views/head/install_js.php:132
+#, fuzzy
+msgid "Please select a Head"
+msgstr "Selezione almeno 1 file"
+
+#: fabui/application/views/settings/network_js.php:172
+msgid "Connecting to <strong>{0}</strong>"
+msgstr ""
+
+#: fabui/application/views/create/laser_js.php:52
+msgid "Engrave"
+msgstr ""
+
+#: fabui/assets/js/fab.app.js:967
+msgid ""
+"You have attempted to leave this page. The Fabtotum Personal Fabricator is "
+"still working. Are you sure you want to reload this page?"
+msgstr ""
+
+#: fabui/assets/js/fab.app.js:569
+#, fuzzy
+msgid "Shutdown in progress"
+msgstr "Riavvia stampa"
+
+#: fabui/application/views/scan/scan_js.php:58
+#, fuzzy
+msgid "No connection."
+msgstr "Connessione"
+
+#: fabui/application/views/std/jog_setup_js.php:236
+msgid "Position restored to {0}, {1}, {2}"
 msgstr ""
 
 #: fabui/assets/js/fab.app.js:1395
 msgid "Oops.. An error occurred"
 msgstr ""
 
-#: fabui/application/views/std/jog_setup_js.php:243
-msgid "Z Position restored to {0}"
-msgstr ""
-
-#: fabui/application/views/settings/network_js.php:168
-msgid "Failed to disable Wireless interface"
-msgstr ""
-
-#: fabui/application/views/settings/network_js.php:214
-msgid "Failed to save DNS-SD configuration"
+#: fabui/application/views/std/jog_setup_js.php:347
+msgid "You need to home Z axis first"
 msgstr ""
 
 #: fabui/application/views/std/task_execute_js.php:868
@@ -4908,40 +5156,12 @@ msgstr ""
 msgid "Completing"
 msgstr "Eliminazione"
 
-#: fabui/assets/js/tours/0010_head.js:13
-#, fuzzy
-msgid "Head management"
-msgstr "Gestione filamento"
-
-#: fabui/assets/js/fab.app.js:981
-#, fuzzy
-msgid "Aborting all operations"
-msgstr "Calibrazione Angolo"
-
 #: fabui/assets/js/fab.app.js:1276
 msgid "Ethernet cable"
 msgstr ""
 
-#: fabui/assets/js/tours/0010_head.js:27
-msgid ""
-"Choose the installed head<br>Note: if the correct head is selected press Next"
-msgstr ""
-
-#: fabui/application/views/nozzle/height_js.php:173
-msgid "New Z max offset: {0}"
-msgstr ""
-
-#: fabui/application/views/settings/network_js.php:167
-msgid "Disabling Wireless interface"
-msgstr ""
-
-#: fabui/application/views/std/task_execute_js.php:334
-#, fuzzy
-msgid "Bed temperature set to {0} &deg;"
-msgstr "Temperatura piatto impostata a {0}&deg;C"
-
-#: fabui/application/views/nozzle/height_js.php:172
-msgid "New probe Length: {0}"
+#: fabui/assets/js/tours/0040_spool_load.js:63
+msgid "To be able to print anything the filament needs to be loaded"
 msgstr ""
 
 #: fabui/application/views/std/task_execute_js.php:600
@@ -4949,18 +5169,24 @@ msgstr ""
 msgid "Z height decreased"
 msgstr "L'altezza della Z è"
 
-#: fabui/application/views/std/task_execute_js.php:513
-msgid "Ext temp"
-msgstr ""
+#: fabui/assets/js/fab.app.js:559
+#, fuzzy
+msgid "You will be redirect to login page"
+msgstr "Reindirizzamento alla pagina dei plugin"
 
 #: fabui/application/views/std/jog_setup_js.php:323
 msgid "No X/Y position was stored"
 msgstr ""
 
-#: fabui/assets/js/tours/0050_feeder.js:41
-#, fuzzy
-msgid "Feeder calibration"
-msgstr "Calibrazione piatto"
+#: fabui/assets/js/tours/0040_spool_load.js:62
+msgid "Load spool"
+msgstr ""
+
+#: fabui/application/views/settings/network_js.php:199
+msgid ""
+"It might take some time for the new address to become visible on the "
+"network. This page will be reloaded as soon as the new address is available."
+msgstr ""
 
 #: fabui/application/views/settings/network_js.php:206
 msgid "Saving DNS configuration"
@@ -4975,31 +5201,22 @@ msgstr ""
 msgid "Restore Z"
 msgstr "Riavvia stampa"
 
-#: fabui/assets/js/tours/0050_feeder.js:30
-msgid "Click on this button to start extruding filament"
+#: fabui/assets/js/fab.app.js:9
+msgid "Hi"
+msgstr ""
+
+#: fabui/assets/js/fab.app.js:1500
+msgid "Now you can switch off the power"
 msgstr ""
 
 #: fabui/assets/js/tours/0010_head.js:52
 msgid "Before starting to use your FABtotum unit you need to install a head"
 msgstr ""
 
-#: fabui/application/views/std/jog_setup_js.php:236
-msgid "Position restored to {0}, {1}, {2}"
-msgstr ""
-
 #: fabui/application/views/head/install_js.php:66
 #, fuzzy
 msgid "Please enter head name"
 msgstr "Inserisci il nome dell'oggetto"
-
-#: fabui/assets/js/fab.app.js:559
-#, fuzzy
-msgid "You will be redirect to login page"
-msgstr "Reindirizzamento alla pagina dei plugin"
-
-#: fabui/assets/js/tours/0050_feeder.js:29
-msgid "Start extrude"
-msgstr ""
 
 #, fuzzy
 #~ msgid "Redirect to new address"

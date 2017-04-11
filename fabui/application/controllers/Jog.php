@@ -40,7 +40,7 @@
 		$widget->header = array('icon' => 'icon-fab-jog', "title" => "<h2>"._("Jog Panel")."</h2>");
 		$widget->body   = array('content' => $this->load->view('jog/widget', $data, true ), 'class'=>'');
 		
-		$this->addJsInLine($this->load->view('jog/js', $data, true));
+		$this->addJsInLine($this->load->view('jog/jog_js', $data, true));
 		//css
 		$this->addCssFile('/assets/css/jog/style.css');
 		$this->addCssFile('/assets/css/std/jogcontrols.css');
