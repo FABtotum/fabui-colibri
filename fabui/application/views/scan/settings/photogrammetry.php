@@ -62,7 +62,7 @@ $size_default = '1920x1080';
 							</label>
 						</div>
 						<div class="margin-top-10">
-						<span class="help-block"><?php echo _('<strong>Before proceeding start desktop server on your pc and check connection. If you don\'t have the desktop server you can download it <a target="_blank" href="/utilities/FabtotumDesktopServer.jar">here</a></strong>');?></span>
+						<span class="help-block"><strong><?php echo _('Before proceeding start the desktop server on your pc and check the connection. If you don\'t have the desktop server you can download it <a target="_blank" href="/utilities/FabtotumDesktopServer.jar">here</a>');?></strong></span>
 						</div>
 					</section>
 					

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-10 16:04+0200\n"
+"POT-Creation-Date: 2017-04-11 11:29+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -25,7 +25,7 @@ msgid "Make"
 msgstr ""
 
 #: fabui/application/config/menu.php:21
-#: fabui/application/controllers/Settings.php:55
+#: fabui/application/controllers/Settings.php:43
 #: fabui/application/controllers/Projectsmanager.php:1060
 #: fabui/application/controllers/Create.php:130
 #: fabui/application/views/install/wizard.php:201
@@ -44,7 +44,7 @@ msgid "Mill"
 msgstr "Fresa"
 
 #: fabui/application/config/menu.php:31
-#: fabui/application/controllers/Settings.php:277
+#: fabui/application/controllers/Settings.php:285
 #: fabui/application/controllers/Scan.php:81
 #: fabui/application/views/settings/network_js.php:375
 #: fabui/application/views/history/main_widget.php:18
@@ -159,14 +159,14 @@ msgstr "Informazioni del sistema"
 #: fabui/application/views/install/wizard.php:139
 #: fabui/application/views/plugin/js.php:349
 #: fabui/application/views/settings/hardware_js.php:144
-#: fabui/application/views/camera/main_widget.php:48
+#: fabui/application/views/camera/main_widget.php:86
 #: fabui/application/views/scan/wizard/main.php:18
 msgid "Settings"
 msgstr "Impostazioni"
 
 #: fabui/application/config/menu.php:146
+#: fabui/application/controllers/Settings.php:39
 #: fabui/application/controllers/Settings.php:51
-#: fabui/application/controllers/Settings.php:63
 #: fabui/application/views/systeminfo/widget.php:36
 msgid "Hardware"
 msgstr ""
@@ -196,42 +196,42 @@ msgstr "Supporto"
 msgid "Plugins"
 msgstr "Plugins"
 
-#: fabui/application/controllers/Settings.php:43
+#: fabui/application/controllers/Settings.php:31
 #: fabui/application/views/std/print_setup.php:92
 msgid "Simple homing"
 msgstr "Homing semplice"
 
-#: fabui/application/controllers/Settings.php:43
+#: fabui/application/controllers/Settings.php:31
 #: fabui/application/views/std/print_setup.php:114
 msgid "Auto bed leveling"
 msgstr "Auto bed leveling"
 
-#: fabui/application/controllers/Settings.php:52
+#: fabui/application/controllers/Settings.php:40
 msgid "Safety"
 msgstr ""
 
-#: fabui/application/controllers/Settings.php:53
+#: fabui/application/controllers/Settings.php:41
 msgid "Homing"
 msgstr ""
 
-#: fabui/application/controllers/Settings.php:54
+#: fabui/application/controllers/Settings.php:42
 msgid "Customized actions"
 msgstr ""
 
-#: fabui/application/controllers/Settings.php:56
+#: fabui/application/controllers/Settings.php:44
 #: fabui/application/controllers/Create.php:200
 #: fabui/application/controllers/Create.php:225
 #, fuzzy
 msgid "Milling"
 msgstr "Fresa"
 
-#: fabui/application/controllers/Settings.php:57
+#: fabui/application/controllers/Settings.php:45
 #, fuzzy
 msgid "Lighting"
 msgstr "Stampa in corso"
 
-#: fabui/application/controllers/Settings.php:59
-#: fabui/application/controllers/Settings.php:278
+#: fabui/application/controllers/Settings.php:47
+#: fabui/application/controllers/Settings.php:286
 #: fabui/application/controllers/Projectsmanager.php:72
 #: fabui/application/controllers/Projectsmanager.php:205
 #: fabui/application/controllers/Projectsmanager.php:666
@@ -246,40 +246,56 @@ msgstr "Stampa in corso"
 msgid "Save"
 msgstr "Salva"
 
-#: fabui/application/controllers/Settings.php:197
+#: fabui/application/controllers/Settings.php:136
+#: fabui/application/controllers/Settings.php:137
+#: fabui/application/controllers/Settings.php:138
+#: fabui/application/controllers/Settings.php:139
+#: fabui/application/controllers/Settings.php:140
+#: fabui/application/controllers/Settings.php:141
+#: fabui/application/controllers/Settings.php:142
+#: fabui/application/controllers/Settings.php:143
+#: fabui/application/controllers/Settings.php:144
+#: fabui/application/controllers/Settings.php:145
+#: fabui/application/controllers/Settings.php:146
+#: fabui/application/views/settings/wireless_tab.php:90
+#, fuzzy
+msgid "Channel"
+msgstr "Range"
+
 #: fabui/application/controllers/Settings.php:199
+#: fabui/application/controllers/Settings.php:201
 #, fuzzy
 msgid "Static"
 msgstr "Statistiche"
 
-#: fabui/application/controllers/Settings.php:197
 #: fabui/application/controllers/Settings.php:199
-#: fabui/application/controllers/Settings.php:244
+#: fabui/application/controllers/Settings.php:201
+#: fabui/application/controllers/Settings.php:252
 msgid "Automatic (DHCP)"
 msgstr ""
 
-#: fabui/application/controllers/Settings.php:197
+#: fabui/application/controllers/Settings.php:199
 msgid "Access Point"
 msgstr ""
 
-#: fabui/application/controllers/Settings.php:197
 #: fabui/application/controllers/Settings.php:199
+#: fabui/application/controllers/Settings.php:201
 msgid "Disable"
 msgstr ""
 
-#: fabui/application/controllers/Settings.php:240
+#: fabui/application/controllers/Settings.php:248
 msgid "Ethernet"
 msgstr ""
 
-#: fabui/application/controllers/Settings.php:267
+#: fabui/application/controllers/Settings.php:275
 msgid "DNS-SD"
 msgstr ""
 
-#: fabui/application/controllers/Settings.php:270
+#: fabui/application/controllers/Settings.php:278
 msgid "DNS"
 msgstr ""
 
-#: fabui/application/controllers/Settings.php:282
+#: fabui/application/controllers/Settings.php:290
 #: fabui/application/views/restore/wizard.php:90
 #, fuzzy
 msgid "Network settings"
@@ -352,51 +368,52 @@ msgstr "Inserisci il tuo indirizzo email"
 msgid "New user created successfully"
 msgstr "Plugin installato correttamente"
 
-#: fabui/application/controllers/Control.php:213
+#: fabui/application/controllers/Control.php:228
 #, fuzzy
 msgid "running"
 msgstr "Attenzione"
 
-#: fabui/application/controllers/Control.php:214
+#: fabui/application/controllers/Control.php:229
 #, fuzzy
 msgid "paused"
 msgstr "Pausa"
 
-#: fabui/application/controllers/Control.php:215
+#: fabui/application/controllers/Control.php:230
 #, fuzzy
 msgid "aborted"
 msgstr "Scansione annullata"
 
-#: fabui/application/controllers/Control.php:216
+#: fabui/application/controllers/Control.php:231
 #, fuzzy
 msgid "aborting"
 msgstr "Stampa in corso"
 
-#: fabui/application/controllers/Control.php:217
+#: fabui/application/controllers/Control.php:232
 #, fuzzy
 msgid "completed"
 msgstr "Scansione completata"
 
-#: fabui/application/controllers/Control.php:218
+#: fabui/application/controllers/Control.php:233
 #, fuzzy
 msgid "completing"
 msgstr "Eliminazione"
 
-#: fabui/application/controllers/Control.php:236
+#: fabui/application/controllers/Control.php:251
 #, fuzzy
 msgid "Being generated"
 msgstr "Temperatura piatto impostata a {0}&deg;C"
 
-#: fabui/application/controllers/Control.php:242
+#: fabui/application/controllers/Control.php:257
 msgid "task"
 msgstr ""
 
-#: fabui/application/controllers/Control.php:275
+#: fabui/application/controllers/Control.php:290
 #, fuzzy
 msgid "No running tasks"
 msgstr "Completamento task"
 
-#: fabui/application/controllers/Cam.php:36
+#: fabui/application/controllers/Cam.php:37
+#: fabui/application/views/settings/hardware_widget.php:42
 #, fuzzy
 msgid "Camera"
 msgstr "Versione cam"
@@ -463,7 +480,7 @@ msgstr "Elimina"
 #: fabui/application/controllers/Projectsmanager.php:78
 #: fabui/application/controllers/Projectsmanager.php:211
 #: fabui/application/controllers/Projectsmanager.php:1077
-#: fabui/application/views/camera/main_widget.php:34
+#: fabui/application/views/camera/main_widget.php:73
 msgid "Download"
 msgstr "Scarica"
 
@@ -1644,7 +1661,7 @@ msgid "Desc"
 msgstr "Desc"
 
 #: fabui/application/views/jog/widget.php:280
-#: fabui/application/views/camera/main_widget.php:62
+#: fabui/application/views/camera/main_widget.php:99
 #: fabui/application/views/projectsmanager/edit/widget.php:52
 msgid "Type"
 msgstr "Tipo"
@@ -1955,83 +1972,77 @@ msgstr ""
 msgid "Invert X Endstop Logic"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:43
-msgid ""
-"If you change values for extruder steps you have to restart the FABtotum so "
-"that can values take effect"
-msgstr ""
-
-#: fabui/application/views/settings/hardware_widget.php:48
+#: fabui/application/views/settings/hardware_widget.php:49
 msgid "Custom overrides"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:61
+#: fabui/application/views/settings/hardware_widget.php:62
 msgid "Door safety messages"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:64
-#: fabui/application/views/settings/hardware_widget.php:77
-#: fabui/application/views/settings/hardware_widget.php:108
+#: fabui/application/views/settings/hardware_widget.php:65
+#: fabui/application/views/settings/hardware_widget.php:78
+#: fabui/application/views/settings/hardware_widget.php:109
 msgid "Enable"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:67
-#: fabui/application/views/settings/hardware_widget.php:80
-#: fabui/application/views/settings/hardware_widget.php:111
+#: fabui/application/views/settings/hardware_widget.php:68
+#: fabui/application/views/settings/hardware_widget.php:81
+#: fabui/application/views/settings/hardware_widget.php:112
 msgid "Disabled"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:74
+#: fabui/application/views/settings/hardware_widget.php:75
 msgid "Machine limits collision warning"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:92
+#: fabui/application/views/settings/hardware_widget.php:93
 #, fuzzy
 msgid "Default Homing Direction"
 msgstr "Azione standard"
 
-#: fabui/application/views/settings/hardware_widget.php:95
+#: fabui/application/views/settings/hardware_widget.php:96
 msgid "Left"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:98
+#: fabui/application/views/settings/hardware_widget.php:99
 msgid "Right"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:105
+#: fabui/application/views/settings/hardware_widget.php:106
 msgid "Use the z touch probe during homing"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:119
+#: fabui/application/views/settings/hardware_widget.php:120
 msgid "Z max home pos"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:133
+#: fabui/application/views/settings/hardware_widget.php:134
 msgid "Both Y endstops pressed"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:139
+#: fabui/application/views/settings/hardware_widget.php:140
 msgid "Both Z endstops pressed"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:153
+#: fabui/application/views/settings/hardware_widget.php:154
 msgid "Pre-heating nozzle temperature"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:161
+#: fabui/application/views/settings/hardware_widget.php:162
 msgid "Pre-heating bed temperature"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:169
+#: fabui/application/views/settings/hardware_widget.php:170
 #, fuzzy
 msgid "Calibration preference"
 msgstr "Selezione il tipo di calibrazione"
 
-#: fabui/application/views/settings/hardware_widget.php:184
+#: fabui/application/views/settings/hardware_widget.php:185
 msgid "Sacrificial layer thickness"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:206
+#: fabui/application/views/settings/hardware_widget.php:207
 msgid "Standby"
 msgstr ""
 
@@ -2069,7 +2080,7 @@ msgid "Gateway"
 msgstr ""
 
 #: fabui/application/views/settings/wireless_tab.php:68
-msgid "Ssid"
+msgid "SSID"
 msgstr ""
 
 #: fabui/application/views/settings/wireless_tab.php:85
@@ -2231,78 +2242,82 @@ msgstr ""
 msgid "Language"
 msgstr "Lingua"
 
-#: fabui/application/views/camera/main_widget.php:23
+#: fabui/application/views/camera/main_widget.php:21
+msgid "Camera is not detected"
+msgstr ""
+
+#: fabui/application/views/camera/main_widget.php:56
 msgid "Take a picture"
 msgstr ""
 
-#: fabui/application/views/camera/main_widget.php:45
+#: fabui/application/views/camera/main_widget.php:84
 msgid "Photo"
 msgstr ""
 
-#: fabui/application/views/camera/main_widget.php:67
+#: fabui/application/views/camera/main_widget.php:105
 #: fabui/application/views/scan/settings/photogrammetry.php:35
 msgid "Size"
 msgstr ""
 
-#: fabui/application/views/camera/main_widget.php:73
+#: fabui/application/views/camera/main_widget.php:112
 #: fabui/application/views/scan/wizard/step4.php:46
 #: fabui/application/views/scan/settings/photogrammetry.php:26
 msgid "ISO"
 msgstr ""
 
-#: fabui/application/views/camera/main_widget.php:78
+#: fabui/application/views/camera/main_widget.php:118
 msgid "Quality"
 msgstr ""
 
-#: fabui/application/views/camera/main_widget.php:84
+#: fabui/application/views/camera/main_widget.php:125
 msgid "Effect"
 msgstr ""
 
-#: fabui/application/views/camera/main_widget.php:90
+#: fabui/application/views/camera/main_widget.php:132
 msgid "Flip"
 msgstr ""
 
-#: fabui/application/views/camera/main_widget.php:111
+#: fabui/application/views/camera/main_widget.php:154
 msgid "Brightness"
 msgstr ""
 
-#: fabui/application/views/camera/main_widget.php:117
+#: fabui/application/views/camera/main_widget.php:161
 #, fuzzy
 msgid "Contrast"
 msgstr "Controlli"
 
-#: fabui/application/views/camera/main_widget.php:123
+#: fabui/application/views/camera/main_widget.php:168
 msgid "Sharpness"
 msgstr ""
 
-#: fabui/application/views/camera/main_widget.php:129
+#: fabui/application/views/camera/main_widget.php:175
 #, fuzzy
 msgid "Saturation"
 msgstr "Durata"
 
-#: fabui/application/views/camera/main_widget.php:135
+#: fabui/application/views/camera/main_widget.php:182
 msgid "AWB"
 msgstr ""
 
-#: fabui/application/views/camera/main_widget.php:141
+#: fabui/application/views/camera/main_widget.php:189
 msgid "EV Comp."
 msgstr ""
 
-#: fabui/application/views/camera/main_widget.php:147
+#: fabui/application/views/camera/main_widget.php:196
 #, fuzzy
 msgid "Exposure"
 msgstr "Supporto"
 
-#: fabui/application/views/camera/main_widget.php:153
+#: fabui/application/views/camera/main_widget.php:203
 #, fuzzy
 msgid "Rotation"
 msgstr "Informazione"
 
-#: fabui/application/views/camera/main_widget.php:159
+#: fabui/application/views/camera/main_widget.php:210
 msgid "Metering"
 msgstr ""
 
-#: fabui/application/views/camera/main_widget.php:175
+#: fabui/application/views/camera/main_widget.php:223
 #, fuzzy
 msgid "Default All"
 msgstr "Azione standard"
@@ -3059,10 +3074,9 @@ msgstr ""
 
 #: fabui/application/views/scan/settings/photogrammetry.php:65
 msgid ""
-"<strong>Before proceeding start desktop server on your pc and check "
+"Before proceeding start the desktop server on your pc and check the "
 "connection. If you don't have the desktop server you can download it <a "
-"target=\"_blank\" href=\"/utilities/FabtotumDesktopServer.jar\">here</a></"
-"strong>"
+"target=\"_blank\" href=\"/utilities/FabtotumDesktopServer.jar\">here</a>"
 msgstr ""
 
 #: fabui/application/views/scan/settings/photogrammetry.php:71
@@ -3430,7 +3444,7 @@ msgstr ""
 msgid "No results. Aborted."
 msgstr "Non supportato"
 
-#: fabui/ext/py/autotune.py:113
+#: fabui/ext/py/autotune.py:111
 msgid "PID Autotune finished."
 msgstr ""
 
@@ -4597,7 +4611,7 @@ msgstr ""
 msgid "Z Height saved"
 msgstr "L'altezza della Z è"
 
-#: fabui/assets/js/fab.app.js:1494
+#: fabui/assets/js/fab.app.js:1501
 msgid "Note: 5 seconds after the beep it's safe to switch off your unit."
 msgstr ""
 
@@ -4641,7 +4655,7 @@ msgstr "Seleziona almeno 1 oggetto"
 msgid "Ext target"
 msgstr "Target"
 
-#: fabui/assets/js/fab.app.js:1475
+#: fabui/assets/js/fab.app.js:1482
 msgid "Internet available"
 msgstr ""
 
@@ -4675,7 +4689,7 @@ msgstr ""
 msgid "Z height override changed to {0}mm"
 msgstr ""
 
-#: fabui/assets/js/fab.app.js:1493
+#: fabui/assets/js/fab.app.js:1500
 msgid "Now you can switch off the power"
 msgstr ""
 
@@ -4742,7 +4756,7 @@ msgstr ""
 msgid "Z Position {0} stored"
 msgstr ""
 
-#: fabui/assets/js/fab.app.js:1467
+#: fabui/assets/js/fab.app.js:1474
 #, fuzzy
 msgid "Wifi connected"
 msgstr "Connessione"

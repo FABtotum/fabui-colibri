@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-10 16:04+0200\n"
+"POT-Creation-Date: 2017-04-11 11:29+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: FABTeam\n"
@@ -26,7 +26,7 @@ msgid "Make"
 msgstr "Herstellen"
 
 #: fabui/application/config/menu.php:21
-#: fabui/application/controllers/Settings.php:55
+#: fabui/application/controllers/Settings.php:43
 #: fabui/application/controllers/Projectsmanager.php:1060
 #: fabui/application/controllers/Create.php:130
 #: fabui/application/views/install/wizard.php:201
@@ -45,7 +45,7 @@ msgid "Mill"
 msgstr "Fräsen"
 
 #: fabui/application/config/menu.php:31
-#: fabui/application/controllers/Settings.php:277
+#: fabui/application/controllers/Settings.php:285
 #: fabui/application/controllers/Scan.php:81
 #: fabui/application/views/settings/network_js.php:375
 #: fabui/application/views/history/main_widget.php:18
@@ -159,14 +159,14 @@ msgstr "Systeminformationen"
 #: fabui/application/views/install/wizard.php:139
 #: fabui/application/views/plugin/js.php:349
 #: fabui/application/views/settings/hardware_js.php:144
-#: fabui/application/views/camera/main_widget.php:48
+#: fabui/application/views/camera/main_widget.php:86
 #: fabui/application/views/scan/wizard/main.php:18
 msgid "Settings"
 msgstr "Einstellungen"
 
 #: fabui/application/config/menu.php:146
+#: fabui/application/controllers/Settings.php:39
 #: fabui/application/controllers/Settings.php:51
-#: fabui/application/controllers/Settings.php:63
 #: fabui/application/views/systeminfo/widget.php:36
 msgid "Hardware"
 msgstr ""
@@ -196,40 +196,40 @@ msgstr "Unterstützung"
 msgid "Plugins"
 msgstr "Plugins"
 
-#: fabui/application/controllers/Settings.php:43
+#: fabui/application/controllers/Settings.php:31
 #: fabui/application/views/std/print_setup.php:92
 msgid "Simple homing"
 msgstr "Einfaches homing"
 
-#: fabui/application/controllers/Settings.php:43
+#: fabui/application/controllers/Settings.php:31
 #: fabui/application/views/std/print_setup.php:114
 msgid "Auto bed leveling"
 msgstr "Auto Bett Nivellierung"
 
-#: fabui/application/controllers/Settings.php:52
+#: fabui/application/controllers/Settings.php:40
 msgid "Safety"
 msgstr "Sicherheit"
 
-#: fabui/application/controllers/Settings.php:53
+#: fabui/application/controllers/Settings.php:41
 msgid "Homing"
 msgstr "Homing"
 
-#: fabui/application/controllers/Settings.php:54
+#: fabui/application/controllers/Settings.php:42
 msgid "Customized actions"
 msgstr "Benutzerdefinierte Aktionen"
 
-#: fabui/application/controllers/Settings.php:56
+#: fabui/application/controllers/Settings.php:44
 #: fabui/application/controllers/Create.php:200
 #: fabui/application/controllers/Create.php:225
 msgid "Milling"
 msgstr "Fräsen"
 
-#: fabui/application/controllers/Settings.php:57
+#: fabui/application/controllers/Settings.php:45
 msgid "Lighting"
 msgstr "Licht"
 
-#: fabui/application/controllers/Settings.php:59
-#: fabui/application/controllers/Settings.php:278
+#: fabui/application/controllers/Settings.php:47
+#: fabui/application/controllers/Settings.php:286
 #: fabui/application/controllers/Projectsmanager.php:72
 #: fabui/application/controllers/Projectsmanager.php:205
 #: fabui/application/controllers/Projectsmanager.php:666
@@ -244,39 +244,54 @@ msgstr "Licht"
 msgid "Save"
 msgstr "Speichern"
 
-#: fabui/application/controllers/Settings.php:197
+#: fabui/application/controllers/Settings.php:136
+#: fabui/application/controllers/Settings.php:137
+#: fabui/application/controllers/Settings.php:138
+#: fabui/application/controllers/Settings.php:139
+#: fabui/application/controllers/Settings.php:140
+#: fabui/application/controllers/Settings.php:141
+#: fabui/application/controllers/Settings.php:142
+#: fabui/application/controllers/Settings.php:143
+#: fabui/application/controllers/Settings.php:144
+#: fabui/application/controllers/Settings.php:145
+#: fabui/application/controllers/Settings.php:146
+#: fabui/application/views/settings/wireless_tab.php:90
+msgid "Channel"
+msgstr "Kanal"
+
 #: fabui/application/controllers/Settings.php:199
+#: fabui/application/controllers/Settings.php:201
 msgid "Static"
 msgstr "Statisch"
 
-#: fabui/application/controllers/Settings.php:197
 #: fabui/application/controllers/Settings.php:199
-#: fabui/application/controllers/Settings.php:244
+#: fabui/application/controllers/Settings.php:201
+#: fabui/application/controllers/Settings.php:252
 msgid "Automatic (DHCP)"
 msgstr "Automatisch (DHCP)"
 
-#: fabui/application/controllers/Settings.php:197
+#: fabui/application/controllers/Settings.php:199
 msgid "Access Point"
 msgstr "Zugangspunkt"
 
-#: fabui/application/controllers/Settings.php:197
 #: fabui/application/controllers/Settings.php:199
+#: fabui/application/controllers/Settings.php:201
 msgid "Disable"
 msgstr "Deaktivieren"
 
-#: fabui/application/controllers/Settings.php:240
+#: fabui/application/controllers/Settings.php:248
 msgid "Ethernet"
 msgstr ""
 
-#: fabui/application/controllers/Settings.php:267
+#: fabui/application/controllers/Settings.php:275
 msgid "DNS-SD"
 msgstr ""
 
-#: fabui/application/controllers/Settings.php:270
+#: fabui/application/controllers/Settings.php:278
 msgid "DNS"
 msgstr ""
 
-#: fabui/application/controllers/Settings.php:282
+#: fabui/application/controllers/Settings.php:290
 #: fabui/application/views/restore/wizard.php:90
 msgid "Network settings"
 msgstr "Netzwerkeinstellungen"
@@ -341,43 +356,44 @@ msgstr "Bitte überprüfen Sie Ihre E-Mail oder Ihr Passwort"
 msgid "New user created successfully"
 msgstr "Neuer Benutzer wurde erfolgreich erstellt"
 
-#: fabui/application/controllers/Control.php:213
+#: fabui/application/controllers/Control.php:228
 msgid "running"
 msgstr "laufend"
 
-#: fabui/application/controllers/Control.php:214
+#: fabui/application/controllers/Control.php:229
 msgid "paused"
 msgstr "pausiert"
 
-#: fabui/application/controllers/Control.php:215
+#: fabui/application/controllers/Control.php:230
 msgid "aborted"
 msgstr "abgebrochen"
 
-#: fabui/application/controllers/Control.php:216
+#: fabui/application/controllers/Control.php:231
 msgid "aborting"
 msgstr "wird abbrechen"
 
-#: fabui/application/controllers/Control.php:217
+#: fabui/application/controllers/Control.php:232
 msgid "completed"
 msgstr "abgeschlossen"
 
-#: fabui/application/controllers/Control.php:218
+#: fabui/application/controllers/Control.php:233
 msgid "completing"
 msgstr "wird abgeschlossen"
 
-#: fabui/application/controllers/Control.php:236
+#: fabui/application/controllers/Control.php:251
 msgid "Being generated"
 msgstr "Wird generiert"
 
-#: fabui/application/controllers/Control.php:242
+#: fabui/application/controllers/Control.php:257
 msgid "task"
 msgstr "aufgabe"
 
-#: fabui/application/controllers/Control.php:275
+#: fabui/application/controllers/Control.php:290
 msgid "No running tasks"
 msgstr "Keine laufenden Aufgaben"
 
-#: fabui/application/controllers/Cam.php:36
+#: fabui/application/controllers/Cam.php:37
+#: fabui/application/views/settings/hardware_widget.php:42
 msgid "Camera"
 msgstr "Kamera"
 
@@ -440,7 +456,7 @@ msgstr "Löschen"
 #: fabui/application/controllers/Projectsmanager.php:78
 #: fabui/application/controllers/Projectsmanager.php:211
 #: fabui/application/controllers/Projectsmanager.php:1077
-#: fabui/application/views/camera/main_widget.php:34
+#: fabui/application/views/camera/main_widget.php:73
 msgid "Download"
 msgstr "Herunterladen"
 
@@ -1618,7 +1634,7 @@ msgid "Desc"
 msgstr ""
 
 #: fabui/application/views/jog/widget.php:280
-#: fabui/application/views/camera/main_widget.php:62
+#: fabui/application/views/camera/main_widget.php:99
 #: fabui/application/views/projectsmanager/edit/widget.php:52
 msgid "Type"
 msgstr "Typ"
@@ -1935,83 +1951,75 @@ msgstr "Feeder Option"
 msgid "Invert X Endstop Logic"
 msgstr "X Endstop Logik umkehren"
 
-#: fabui/application/views/settings/hardware_widget.php:43
-msgid ""
-"If you change values for extruder steps you have to restart the FABtotum so "
-"that can values take effect"
-msgstr ""
-"Wenn Sie Werte für Extruderschritte ändern, müssen Sie das FABtotum neu "
-"starten, damit die Werte wirksam werden"
-
-#: fabui/application/views/settings/hardware_widget.php:48
+#: fabui/application/views/settings/hardware_widget.php:49
 msgid "Custom overrides"
 msgstr "Benutzerdefinierte Überschreibungen"
 
-#: fabui/application/views/settings/hardware_widget.php:61
+#: fabui/application/views/settings/hardware_widget.php:62
 msgid "Door safety messages"
 msgstr "Türsicherheitsmeldungen"
 
-#: fabui/application/views/settings/hardware_widget.php:64
-#: fabui/application/views/settings/hardware_widget.php:77
-#: fabui/application/views/settings/hardware_widget.php:108
+#: fabui/application/views/settings/hardware_widget.php:65
+#: fabui/application/views/settings/hardware_widget.php:78
+#: fabui/application/views/settings/hardware_widget.php:109
 msgid "Enable"
 msgstr "Aktiviert"
 
-#: fabui/application/views/settings/hardware_widget.php:67
-#: fabui/application/views/settings/hardware_widget.php:80
-#: fabui/application/views/settings/hardware_widget.php:111
+#: fabui/application/views/settings/hardware_widget.php:68
+#: fabui/application/views/settings/hardware_widget.php:81
+#: fabui/application/views/settings/hardware_widget.php:112
 msgid "Disabled"
 msgstr "Deaktiviert"
 
-#: fabui/application/views/settings/hardware_widget.php:74
+#: fabui/application/views/settings/hardware_widget.php:75
 msgid "Machine limits collision warning"
 msgstr "Maschine grenzt Kollisionswarnung"
 
-#: fabui/application/views/settings/hardware_widget.php:92
+#: fabui/application/views/settings/hardware_widget.php:93
 msgid "Default Homing Direction"
 msgstr "Standard Referenzfahrt Richtung"
 
-#: fabui/application/views/settings/hardware_widget.php:95
+#: fabui/application/views/settings/hardware_widget.php:96
 msgid "Left"
 msgstr "Links"
 
-#: fabui/application/views/settings/hardware_widget.php:98
+#: fabui/application/views/settings/hardware_widget.php:99
 msgid "Right"
 msgstr "Rechts"
 
-#: fabui/application/views/settings/hardware_widget.php:105
+#: fabui/application/views/settings/hardware_widget.php:106
 msgid "Use the z touch probe during homing"
 msgstr "Den Z-Tastsystem während der Referenzfahrt verwenden"
 
-#: fabui/application/views/settings/hardware_widget.php:119
+#: fabui/application/views/settings/hardware_widget.php:120
 msgid "Z max home pos"
 msgstr ""
 
-#: fabui/application/views/settings/hardware_widget.php:133
+#: fabui/application/views/settings/hardware_widget.php:134
 msgid "Both Y endstops pressed"
 msgstr "Beide Y-Endstopps gedrückt"
 
-#: fabui/application/views/settings/hardware_widget.php:139
+#: fabui/application/views/settings/hardware_widget.php:140
 msgid "Both Z endstops pressed"
 msgstr "Beide Z-Endstopps gedrückt"
 
-#: fabui/application/views/settings/hardware_widget.php:153
+#: fabui/application/views/settings/hardware_widget.php:154
 msgid "Pre-heating nozzle temperature"
 msgstr "Düsen Vorheizungstemperatur"
 
-#: fabui/application/views/settings/hardware_widget.php:161
+#: fabui/application/views/settings/hardware_widget.php:162
 msgid "Pre-heating bed temperature"
 msgstr "Bett Vorheizungstemperatur"
 
-#: fabui/application/views/settings/hardware_widget.php:169
+#: fabui/application/views/settings/hardware_widget.php:170
 msgid "Calibration preference"
 msgstr "Kalibriervorgabe"
 
-#: fabui/application/views/settings/hardware_widget.php:184
+#: fabui/application/views/settings/hardware_widget.php:185
 msgid "Sacrificial layer thickness"
 msgstr "Opferschichtdicke"
 
-#: fabui/application/views/settings/hardware_widget.php:206
+#: fabui/application/views/settings/hardware_widget.php:207
 msgid "Standby"
 msgstr "Bereithalten"
 
@@ -2047,7 +2055,7 @@ msgid "Gateway"
 msgstr ""
 
 #: fabui/application/views/settings/wireless_tab.php:68
-msgid "Ssid"
+msgid "SSID"
 msgstr ""
 
 #: fabui/application/views/settings/wireless_tab.php:85
@@ -2208,82 +2216,84 @@ msgstr "Aktuelle Nachrichten aus Entwicklungsblog sind nicht verfügbar"
 msgid "Language"
 msgstr "Sprache"
 
-#: fabui/application/views/camera/main_widget.php:23
+#: fabui/application/views/camera/main_widget.php:21
+msgid "Camera is not detected"
+msgstr "Kamera wird nicht erkannt"
+
+#: fabui/application/views/camera/main_widget.php:56
 msgid "Take a picture"
-msgstr ""
+msgstr "Ein Foto machen"
 
-#: fabui/application/views/camera/main_widget.php:45
+#: fabui/application/views/camera/main_widget.php:84
 msgid "Photo"
-msgstr ""
+msgstr "Foto"
 
-#: fabui/application/views/camera/main_widget.php:67
+#: fabui/application/views/camera/main_widget.php:105
 #: fabui/application/views/scan/settings/photogrammetry.php:35
 msgid "Size"
 msgstr "Größe"
 
-#: fabui/application/views/camera/main_widget.php:73
+#: fabui/application/views/camera/main_widget.php:112
 #: fabui/application/views/scan/wizard/step4.php:46
 #: fabui/application/views/scan/settings/photogrammetry.php:26
 msgid "ISO"
 msgstr ""
 
-#: fabui/application/views/camera/main_widget.php:78
+#: fabui/application/views/camera/main_widget.php:118
 msgid "Quality"
 msgstr "Qualität"
 
-#: fabui/application/views/camera/main_widget.php:84
+#: fabui/application/views/camera/main_widget.php:125
 msgid "Effect"
 msgstr "Effekt"
 
-#: fabui/application/views/camera/main_widget.php:90
+#: fabui/application/views/camera/main_widget.php:132
 msgid "Flip"
 msgstr ""
 
-#: fabui/application/views/camera/main_widget.php:111
+#: fabui/application/views/camera/main_widget.php:154
 msgid "Brightness"
 msgstr "Helligkeit"
 
-#: fabui/application/views/camera/main_widget.php:117
+#: fabui/application/views/camera/main_widget.php:161
 msgid "Contrast"
 msgstr "Kontrast"
 
-#: fabui/application/views/camera/main_widget.php:123
+#: fabui/application/views/camera/main_widget.php:168
 msgid "Sharpness"
 msgstr "Schärfe"
 
-#: fabui/application/views/camera/main_widget.php:129
+#: fabui/application/views/camera/main_widget.php:175
 msgid "Saturation"
 msgstr "Sättigung"
 
-#: fabui/application/views/camera/main_widget.php:135
+#: fabui/application/views/camera/main_widget.php:182
 msgid "AWB"
 msgstr ""
 
-#: fabui/application/views/camera/main_widget.php:141
+#: fabui/application/views/camera/main_widget.php:189
 msgid "EV Comp."
 msgstr ""
 
-#: fabui/application/views/camera/main_widget.php:147
+#: fabui/application/views/camera/main_widget.php:196
 msgid "Exposure"
 msgstr "Belichtung"
 
-#: fabui/application/views/camera/main_widget.php:153
+#: fabui/application/views/camera/main_widget.php:203
 msgid "Rotation"
 msgstr "Drehung"
 
-#: fabui/application/views/camera/main_widget.php:159
+#: fabui/application/views/camera/main_widget.php:210
 msgid "Metering"
 msgstr "Messen"
 
-#: fabui/application/views/camera/main_widget.php:175
-#, fuzzy
+#: fabui/application/views/camera/main_widget.php:223
 msgid "Default All"
 msgstr "Voreinstellung"
 
 #: fabui/application/views/firmware/main_widget.php:7
-#, fuzzy
 msgid "Select firmware version"
-msgstr "Firmware Version"
+msgstr "Firmware-Version auswählen"
 
 #: fabui/application/views/firmware/main_widget.php:23
 #: fabui/application/views/firmware/main_widget.php:31
@@ -2291,18 +2301,16 @@ msgid "Flash firmware"
 msgstr ""
 
 #: fabui/application/views/firmware/main_widget.php:40
-#, fuzzy
 msgid "Installed Firmware"
-msgstr "Installierter Kopf"
+msgstr "Installiertes Firmware"
 
 #: fabui/application/views/firmware/main_widget.php:51
-#, fuzzy
 msgid "Build-date"
 msgstr "Baudatum"
 
 #: fabui/application/views/history/stats_tab.php:6
 msgid "<strong>Info!</strong> No data available"
-msgstr ""
+msgstr "<strong>Info!</strong> Keine Daten verfügbar"
 
 #: fabui/application/views/history/main_widget.php:34
 msgid "Completed"
@@ -2565,11 +2573,12 @@ msgstr ""
 
 #: fabui/application/views/probe/angle_widget.php:3
 msgid "Set the Extended Angle (open position)"
-msgstr ""
+msgstr "Stellen Sie den ausgedehnten Winkel (offene Position)"
 
 #: fabui/application/views/probe/angle_widget.php:7
 msgid "Change the value until you find the one that is perfectly vertical"
 msgstr ""
+"Ändern Sie den Wert, bis Sie diejenigen finden, der perfekt vertikal ist"
 
 #: fabui/application/views/probe/angle_widget.php:14
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:34
@@ -2583,11 +2592,12 @@ msgstr "Zurücksetzen"
 
 #: fabui/application/views/probe/angle_widget.php:24
 msgid "Set the Retracted Angle (closed position)"
-msgstr ""
+msgstr "Stellen Sie den zurückgezogenen Winkel ein (geschlossene Position)"
 
 #: fabui/application/views/probe/angle_widget.php:28
 msgid "Change the value until you find the one that is perfectly horizontal"
 msgstr ""
+"Ändern Sie den Wert, bis Sie diejenigen finden, der perfekt horizontal ist"
 
 #: fabui/application/views/probe/angle_widget.php:36
 msgid "Close probe"
@@ -2595,32 +2605,34 @@ msgstr "Sonde schliesen"
 
 #: fabui/application/views/support/widget.php:14
 msgid "Quick start guide"
-msgstr ""
+msgstr "Schnellstartanleitung"
 
 #: fabui/application/views/support/widget.php:15
 msgid "This quick guide is a must read for getting started!"
-msgstr ""
+msgstr "Diese Kurzanleitung ist ein Muss für den Einstieg!"
 
 #: fabui/application/views/support/widget.php:22
 msgid "Knowledgebase"
-msgstr ""
+msgstr "Wissensdatenbank"
 
 #: fabui/application/views/support/widget.php:23
 msgid "All that you need to know is in the Knowledgebase"
-msgstr ""
+msgstr "Alles was du wissen musst, ist in der Wissensdatenbank"
 
 #: fabui/application/views/support/widget.php:30
 msgid "Slicing profiles  & configurations"
-msgstr ""
+msgstr "Slicing Profile und Konfigurationen"
 
 #: fabui/application/views/support/widget.php:31
 msgid ""
 "A public archive with the latest profiles for most commonly used slicing"
 msgstr ""
+"Ein öffentliches Archiv mit den neuesten Profilen für die am häufigsten "
+"verwendeten Slicing"
 
 #: fabui/application/views/support/widget.php:39
 msgid "Get in touch with our technical support team"
-msgstr ""
+msgstr "Nehmen Sie Kontakt mit unserem technischen Supportteam auf"
 
 #: fabui/application/views/create/print_js.php:71
 #: fabui/application/views/create/mill_js.php:78
@@ -2994,16 +3006,18 @@ msgid ""
 "Check if the LED light on the platform inside is off. <br>Then remove the "
 "building platform, exposing the A axis chuck"
 msgstr ""
+"Überprüfen Sie, ob das LED-Licht auf der Plattform innen aus ist. <br> Dann "
+"die Bauplattform entfernen so das A-Achsfutter ausgesetzt wird"
 
 #: fabui/application/views/scan/instructions/rotating.php:51
 #: fabui/application/views/scan/instructions/photogrammetry.php:51
 msgid "Attach the object"
-msgstr ""
+msgstr "Befestigen Sie das Objekt"
 
 #: fabui/application/views/scan/instructions/rotating.php:52
 #: fabui/application/views/scan/instructions/photogrammetry.php:52
 msgid "Attach the object to the chuck with screws, duct tape, wire etc."
-msgstr ""
+msgstr "Befestigen Sie das Objekt mit Schrauben, Klebeband, Draht usw."
 
 #: fabui/application/views/scan/instructions/rotating.php:68
 #: fabui/application/views/scan/instructions/photogrammetry.php:68
@@ -3013,24 +3027,28 @@ msgstr "Schließen Sie die Abdeckung"
 #: fabui/application/views/scan/instructions/sweep.php:20
 msgid "If you are ready click \"next\" to start scan"
 msgstr ""
+"Wenn Sie fertig sind, klicken Sie auf \"Weiter\", um den Scan zu starten"
 
 #: fabui/application/views/scan/instructions/probing.php:28
 msgid "Position the object"
-msgstr ""
+msgstr "Positionieren Sie das Objekt"
 
 #: fabui/application/views/scan/instructions/probing.php:30
 msgid ""
 "Position your object in the center of the platform when prompted. <br>Secure "
 "it with a double sided tape or use the fixture holes"
 msgstr ""
+"Positionieren Sie Ihr Objekt in die Mitte der Plattform, wenn Sie dazu "
+"aufgefordert werden. <br> Sichern Sie es mit einem doppelseitigen Klebeband "
+"oder verwenden Sie die Befestigungslöcher"
 
 #: fabui/application/views/scan/settings/default.php:20
 msgid "Create new object"
-msgstr ""
+msgstr "Neues Objekt erstellen"
 
 #: fabui/application/views/scan/settings/default.php:23
 msgid "Add to an existing object"
-msgstr ""
+msgstr "Zu einem vorhandenen Objekt hinzufügen"
 
 #: fabui/application/views/scan/settings/photogrammetry.php:46
 msgid "Slices"
@@ -3038,11 +3056,14 @@ msgstr "Scheiben"
 
 #: fabui/application/views/scan/settings/photogrammetry.php:65
 msgid ""
-"<strong>Before proceeding start desktop server on your pc and check "
+"Before proceeding start the desktop server on your pc and check the "
 "connection. If you don't have the desktop server you can download it <a "
-"target=\"_blank\" href=\"/utilities/FabtotumDesktopServer.jar\">here</a></"
-"strong>"
+"target=\"_blank\" href=\"/utilities/FabtotumDesktopServer.jar\">here</a>"
 msgstr ""
+"Bevor sie weitermachen und den Desktop-Server starten,  überprüfen sie die "
+"Verbindung. Falls Sie den Desktop-Server nicht haben, können Sie ihn <a "
+"target=\"_blank\" href=\"/utilities/FabtotumDesktopServer.jar\">hier</a> "
+"herunterladen."
 
 #: fabui/application/views/scan/settings/photogrammetry.php:71
 msgid "Port"
@@ -3101,6 +3122,8 @@ msgid ""
 "<strong>Warning</strong> Seems that you still have not set the feeder your "
 "are using."
 msgstr ""
+"<Strong>Warnung</ strong> Es scheint, dass Sie noch nicht den Feeder gesetzt "
+"haben dass Sie verwenden werden."
 
 #: fabui/application/views/feeder/profiles/widget.php:29
 msgid "Please select which feeder you want to configure"
@@ -3366,24 +3389,20 @@ msgid "Update initialized."
 msgstr "Update initialisiert."
 
 #: fabui/ext/py/autotune.py:57
-#, fuzzy
 msgid "PAUSED"
-msgstr "Druck pausierte"
+msgstr "Pausiert"
 
 #: fabui/ext/py/autotune.py:60
-#, fuzzy
 msgid "RESUMING"
-msgstr "Druck wird fortgesetzt"
+msgstr "wird fortgesetzt"
 
 #: fabui/ext/py/autotune.py:63
-#, fuzzy
 msgid "RESUMED"
-msgstr "Druck wird fortgesetzt"
+msgstr "fortgesetzt"
 
 #: fabui/ext/py/autotune.py:65
-#, fuzzy
 msgid "ABORTED"
-msgstr "Druck wurde abgebrochen"
+msgstr "abgebrochen"
 
 #: fabui/ext/py/autotune.py:76
 msgid "PID Autotune started."
@@ -3399,11 +3418,10 @@ msgid "No results. Failed."
 msgstr "Keine Ergebnisse. Gescheitert."
 
 #: fabui/ext/py/autotune.py:108
-#, fuzzy
 msgid "No results. Aborted."
-msgstr "Keine Ergebnisse. Gescheitert."
+msgstr "Keine Ergebnisse. Abgebrochen."
 
-#: fabui/ext/py/autotune.py:113
+#: fabui/ext/py/autotune.py:111
 msgid "PID Autotune finished."
 msgstr "PID Autotune beendet."
 
@@ -3602,7 +3620,7 @@ msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:264
 msgid "Task Started"
-msgstr ""
+msgstr "Aufgabe gestartet"
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:312
 #, python-brace-format
@@ -3967,7 +3985,7 @@ msgstr "Z Achse Referenzierung (schnell)"
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:165
 msgid "Setting correct Z"
-msgstr ""
+msgstr "Korrekte Z einstellen"
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:168
 msgid "Moving to start Z height"
@@ -3975,7 +3993,7 @@ msgstr "Umzug zum Z Startpunkt"
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:171
 msgid "Extend Probe"
-msgstr ""
+msgstr "Sonde offen"
 
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:44
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:48
@@ -4322,7 +4340,7 @@ msgstr "Spulenplatte kontrolle"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:206
 msgid "Engaging 3D-Printer Feeder"
-msgstr ""
+msgstr "Feeder wird eingerastet"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:211
 msgid "Set rel position"
@@ -4338,7 +4356,7 @@ msgstr "Motoren ausgeschaltet"
 
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:44
 msgid "Build plate needs to be flipped to the milling side"
-msgstr ""
+msgstr "Bauplatte muss zur Frässeite umgedreht werden"
 
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:45
 msgid "Building plate inserted correctly"
@@ -4400,26 +4418,26 @@ msgstr "Endstop überprüfung aktiviert"
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:64
 msgid "Moving to pre-scan position"
-msgstr ""
+msgstr "Umstellung auf Vor-Scan-Position"
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:78
 msgid "Initializing Rotative Laser scanner"
-msgstr ""
+msgstr "Initialisierung des Rotations-Laserscanners"
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:79
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:105
 msgid "Checking panel door status and bed inserted"
-msgstr ""
+msgstr "Überprüfung der Frontblende und bett status"
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:82
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:108
 msgid "Building plane (must be removed)"
-msgstr ""
+msgstr "Bauplattform (muss entfernt werden)"
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:83
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:109
 msgid "Spool panel closed"
-msgstr ""
+msgstr "Spulenplatte geschlossen"
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:84
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:85
@@ -4433,7 +4451,7 @@ msgstr "Lichter ausschalten"
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:88
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:114
 msgid "Moving to collimation position"
-msgstr ""
+msgstr "Umzug in die Kollimationsposition"
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:89
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:115
@@ -4442,11 +4460,11 @@ msgstr "Kaltextrusion aktiviert"
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:104
 msgid "Initializing Photogrammetry scanner"
-msgstr ""
+msgstr "Initialisierung des Photogrammetriescanners"
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:126
 msgid "Initializing Sweeping Laserscanner"
-msgstr ""
+msgstr "Initialisierung Sweeping Laserscanner"
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:127
 msgid "checking panel door status and bed inserted"
@@ -4454,7 +4472,7 @@ msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:130
 msgid "Building plane removed!"
-msgstr ""
+msgstr "Bauplattform entfernt!"
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:131
 msgid "Spool panel is not closed!"
@@ -4462,7 +4480,7 @@ msgstr "Spulenplatte ist nicht geschlossen!"
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:140
 msgid "Lowering the plane"
-msgstr ""
+msgstr "Die Bauplattform wird abgesenkt"
 
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:152
 msgid "Initializing Probing procedure"
@@ -4549,7 +4567,7 @@ msgstr "Durchflussrate überschrieben geändert auf {0}"
 msgid "Z Height saved"
 msgstr "Z Höhe erhöht"
 
-#: fabui/assets/js/fab.app.js:1494
+#: fabui/assets/js/fab.app.js:1501
 msgid "Note: 5 seconds after the beep it's safe to switch off your unit."
 msgstr ""
 "Hinweis: 5 Sekunden nach dem Signalton ist es sicher, das Gerät "
@@ -4591,7 +4609,7 @@ msgstr "Bitte wählen Sie mindestens eine Fähigkeit aus"
 msgid "Ext target"
 msgstr "Ext Ziel"
 
-#: fabui/assets/js/fab.app.js:1475
+#: fabui/assets/js/fab.app.js:1482
 msgid "Internet available"
 msgstr "Internet verfügbar"
 
@@ -4625,7 +4643,7 @@ msgstr ""
 msgid "Z height override changed to {0}mm"
 msgstr "Z-Höhen-Override auf {0} mm geändert"
 
-#: fabui/assets/js/fab.app.js:1493
+#: fabui/assets/js/fab.app.js:1500
 msgid "Now you can switch off the power"
 msgstr "Jetzt können Sie dem Strom ausschalten"
 
@@ -4693,7 +4711,7 @@ msgstr "X / Y-Position wiederhergestellt auf {0}, {1}"
 msgid "Z Position {0} stored"
 msgstr "Z Position {0} gespeichert"
 
-#: fabui/assets/js/fab.app.js:1467
+#: fabui/assets/js/fab.app.js:1474
 msgid "Wifi connected"
 msgstr "Wifi verbunden"
 
@@ -4926,6 +4944,13 @@ msgstr "Sie werden umgeleitet zur Login-Seite"
 #: fabui/assets/js/tours/0050_feeder.js:29
 msgid "Start extrude"
 msgstr ""
+
+#~ msgid ""
+#~ "If you change values for extruder steps you have to restart the FABtotum "
+#~ "so that can values take effect"
+#~ msgstr ""
+#~ "Wenn Sie Werte für Extruderschritte ändern, müssen Sie das FABtotum neu "
+#~ "starten, damit die Werte wirksam werden"
 
 #~ msgid "Redirect to new address"
 #~ msgstr "Umleiten auf neue Adresse"

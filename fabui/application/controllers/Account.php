@@ -27,15 +27,15 @@
 		
 		$headerToolbar = '
 			<ul class="nav nav-tabs pull-right">
-				<li class="active"><a data-toggle="tab" href="#account-tab"> Account</a></li>
-				<li><a data-toggle="tab" href="#settings-tab"> Settings</a></li>
+				<li class="active"><a data-toggle="tab" href="#account-tab"> ' . _("Account"). '</a></li>
+				<li><a data-toggle="tab" href="#settings-tab"> '._("Settings").'</a></li>
 			</ul>';
 		
-		$widgeFooterButtons = $this->smart->create_button('Save', 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		$widgeFooterButtons = $this->smart->create_button( _("Save"), 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'user-widget';
-		$widget->header = array('icon' => 'fa-user', "title" => "<h2>User</h2>");
+		$widget->header = array('icon' => 'fa-user', "title" => "<h2>". _("User"). "</h2>");
 		$widget->body   = array('content' => $this->load->view('account/widget', null, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		
 		$data['widget'] = $widget->print_html(true);

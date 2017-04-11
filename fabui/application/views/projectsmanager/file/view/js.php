@@ -78,7 +78,7 @@
 				}
 				else 
 				{
-					showErrorAlert('Error deleting file', response.message);
+					showErrorAlert('<?php echo _("Error deleting file");?>', response.message);
 				}
 				
 				

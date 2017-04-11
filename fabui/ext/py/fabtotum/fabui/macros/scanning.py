@@ -124,7 +124,7 @@ def sweep_scan(app, args = None, lang='en_US.UTF-8'):
         safety_door = 0
     
     app.trace( _("Initializing Sweeping Laserscanner") )
-    app.trace( _("checking panel door status and bed inserted") )
+    app.trace( _("Checking panel door status and bed inserted") )
     if(safety_door == 1):
         app.macro("M741",       "TRIGGERED", 2, _("Front panel door control") )
     app.macro("M744",           "TRIGGERED", 2,      _("Building plane removed!"), warning=True)
