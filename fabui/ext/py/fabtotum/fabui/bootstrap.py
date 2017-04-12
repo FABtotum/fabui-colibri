@@ -32,7 +32,7 @@ import os, re
 # Import internal modules
 from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config import ConfigService
-
+from fabtotum.fabui.hardware.all import PRESET_MAP
 
 def read_eeprom(gcodeSender):
         
@@ -90,238 +90,7 @@ def read_eeprom(gcodeSender):
             eeprom['batch_number'] = getBatchNumber(line)
     
     return eeprom
-
-def updateFactoryFeeder(config, info):
-    fabui_path = config.get('general', 'fabui_path')
     
-    feeder_file = os.path.join(fabui_path, 'feeders', 'built_in_feeder.json')
-    with open(feeder_file, 'w') as json_f:
-        json.dump(info, json_f, sort_keys=True, indent=4)
-
-def loadFctoryFeeder(config):
-    fabui_path = config.get('general', 'fabui_path')
-    
-    try:
-        feeder_file = os.path.join(fabui_path, 'feeders', 'built_in_feeder.json')
-        with open(feeder_file) as json_f:
-            info = json.load(json_f)
-            return info
-    except:
-        return {
-                "name": "Built-in feeder",
-                "description": "Built-in feeder (4th axis)",
-                "link": "",
-                "custom_gcode": "",
-                "tube_length": 770,
-                "steps_per_unit": 3048.16,
-                "steps_per_angle": 177.777778,
-                "max_acceleration": 100,
-                "max_feedrate": 12,
-                "max_jerk": 1,
-                "retract_acceleration": 100,
-                "retract_feedrate": 12,
-                "retract_amount": 4,
-                "factory": 1
-            }
-
-def customHardware(gcodeSender, config, log, eeprom):
-    """
-    Revision for customs edits
-    """
-    log.info("Custom Hardware")
-    
-    logic = 1 if int(config.get('settings', 'custom.invert_x_endstop_logic')) else 0
-
-    #set x endstop logic
-    gcodeSender.send("M747 X{0}".format(logic), group='bootstrap')
-    
-    # custom overrides
-    custom_overrides = config.get('settings', 'custom.overrides').strip().split('\n')
-     
-    for line in custom_overrides:
-        if line != "" :
-            log.info("Custom override: {0}".format(line))
-            gcodeSender.send(line, group='bootstrap')
-
-def hardware1(gcodeSender, config, log, eeprom):
-    """
-    Rev1: September 2014 - May 2015
-    - Original FABtotum
-    """
-    
-    #eeprom = read_eeprom(gcodeSender)
-    
-    config.set('settings', 'hardware.id', 1)
-    config.set('settings', 'feeder.show', True)
-    config.set('settings', 'hardware.camera.available', True)
-    config.save('settings')
-    
-    feeder = loadFctoryFeeder(config)
-    steps_per_unit = float(feeder['steps_per_unit'])
-    feeder['max_feedrate'] = 12.00
-    if steps_per_unit != 3048.16:
-        steps_per_unit = 3048.16
-        steps_per_angle = 177.777778
-        
-        feeder['steps_per_unit'] = steps_per_unit
-        feeder['steps_per_angle'] = steps_per_angle
-        
-    updateFactoryFeeder(config, feeder)
-    config.save_feeder_info('built_in_feeder', feeder)
-    
-    log.info("Rev1")
-    
-def hardware2(gcodeSender, config, log, eeprom):
-    """
-    Rev2: June 2015 - August 2015
-    - Simplified Feeder (Removed the disengagement and engagement procedure), if you want you can update it easily following this Tutorial: Feeder update.
-    - Bowden tube improvement (Added a protection external sleeve to avoid the bowden tube get stuck in the back panel).
-    - Endstops logic inverted.
-    """
-    #invert x endstop logic
-    gcodeSender.send("M747 X1", group='bootstrap')
-    #set maximum feedrate
-    gcodeSender.send("M203 X550.00 Y550.00 Z15.00", group='bootstrap')
-    #save settings
-    #gcodeSender.send("M500", group='bootstrap')
-    
-    #~ eeprom = read_eeprom(gcodeSender)
-    
-    config.set('settings', 'hardware.id', 2)
-    config.set('settings', 'feeder.show', True)
-    config.set('settings', 'hardware.camera.available', True)
-    config.save('settings')
-    
-    feeder = loadFctoryFeeder(config)
-    feeder['max_feedrate'] = 12.00
-    steps_per_unit = float(feeder['steps_per_unit'])
-    if steps_per_unit != 3048.16:
-        steps_per_unit = 3048.16
-        steps_per_angle = 177.777778
-        
-        feeder['steps_per_unit'] = steps_per_unit
-        feeder['steps_per_angle'] = steps_per_angle
-    
-    updateFactoryFeeder(config, feeder)
-    config.save_feeder_info('built_in_feeder', feeder)
-    
-    log.info("Rev2")
-    
-def hardware3(gcodeSender, config, log, eeprom):
-    """
-    Rev3: Aug 2015 - Jan 2016
-    - Back panel modified to minimize bowden tube collisions
-    - Hotplate V2 as standard duty hotplate
-    - Reed sensor (Contactless sensor for the frontal door)
-    - Head V1 (hybrid) discontinued
-    - Milling Head V2 (store.fabtotum.com/eu/store/milling-head-v2.html).
-    - Print head V2 (store.fabtotum.com/eu/store/printing-head-v2.html).
-    """
-    #invert x endstop logic
-    gcodeSender.send("M747 X1", group='bootstrap')
-    #set maximum feedrate
-    gcodeSender.send("M203 X550.00 Y550.00 Z15.00", group='bootstrap')
-    #save settings
-    #gcodeSender.send("M500", group='bootstrap')
-    
-    #eeprom = read_eeprom(gcodeSender)
-    
-    config.set('settings', 'hardware.id', 3)
-    config.set('settings', 'feeder.show', False)
-    config.set('settings', 'hardware.camera.available', True)
-    config.save('settings')
-    
-    feeder = loadFctoryFeeder(config)
-    feeder['max_feedrate'] = 12.00
-    steps_per_unit = float(feeder['steps_per_unit'])
-    if steps_per_unit != 3048.16:
-        steps_per_unit = 3048.16
-        steps_per_angle = 177.777778
-        
-        feeder['steps_per_unit'] = steps_per_unit
-        feeder['steps_per_angle'] = steps_per_angle
-    
-    updateFactoryFeeder(config, feeder)
-    config.save_feeder_info('built_in_feeder', feeder)
-    
-    log.info("Rev3")
-    
-    
-def hardware4(gcodeSender, config, log, eeprom):
-    """
-    Rev4(CORE): Jan 2016 - xxx
-    - TBA
-    """
-    #invert x endstop logic
-    gcodeSender.send("M747 X1", group='bootstrap')
-    #set maximum feedrate
-    gcodeSender.send("M203 X550.00 Y550.00 Z15.00", group='bootstrap')
-    #save settings
-    #gcodeSender.send("M500", group='bootstrap')
-    
-    #eeprom = read_eeprom(gcodeSender)
-    
-    config.set('settings', 'hardware.id', 4)
-    config.set('settings', 'feeder.show', False)
-    config.set('settings', 'hardware.camera.available', True)
-    config.save('settings')
-    
-    feeder = loadFctoryFeeder(config)
-    steps_per_unit = float(feeder['steps_per_unit'])
-    feeder['max_feedrate'] = 12.00
-    if steps_per_unit != 1524:
-        steps_per_unit = 1524
-        steps_per_angle = 88.888889
-        
-        feeder['steps_per_unit'] = steps_per_unit
-        feeder['steps_per_angle'] = steps_per_angle
-    
-    updateFactoryFeeder(config, feeder)
-    config.save_feeder_info('built_in_feeder', feeder)
-    log.info("Rev4")
-    
-def hardware5(gcodeSender, config, log, eeprom):
-    """
-    Rev5(CORE): Oct 2016 - xxx
-    - RPi3
-    """
-    #invert x endstop logic
-    gcodeSender.send("M747 X1", group='bootstrap')
-    #set maximum feedrate
-    gcodeSender.send("M203 X550.00 Y550.00 Z15.00 E23.00", group='bootstrap')
-    #save settings
-    #gcodeSender.send("M500", group='bootstrap')
-    
-    #eeprom = read_eeprom(gcodeSender)
-    
-    config.set('settings', 'hardware.id', 5)
-    config.set('settings', 'feeder.show', False)
-    config.set('settings', 'hardware.camera.available', True)
-    config.save('settings')
-    
-    feeder = loadFctoryFeeder(config)
-    steps_per_unit = float(feeder['steps_per_unit'])
-    feeder['max_feedrate'] = 23.00
-    if steps_per_unit != 1524:
-        steps_per_unit = 1524
-        steps_per_angle = 88.888889
-        
-        feeder['steps_per_unit'] = steps_per_unit
-        feeder['steps_per_angle'] = steps_per_angle
-    
-    updateFactoryFeeder(config, feeder)
-    config.save_feeder_info('built_in_feeder', feeder)
-    log.info("Rev5")
-    
-def hardware6(gcodeSender, config, log, eeprom):
-    """
-    Rev6(CORE Lite): April 2017
-    """
-    log.info("Rev6 - Lite")
-    config.set('settings', 'hardware.camera.available', False)
-    config.save('settings')
- 
-
 def configure_head(gcs, config, log):
 
     try:
@@ -482,24 +251,14 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     gcs.send("M714 S{0}".format(switch), group='bootstrap')
                 
     # Execute version specific intructions
-    HW_VERSION_CMDS = {
-        'custom' : customHardware,
-        '1'      : hardware1,
-        '2'      : hardware2,
-        '3'      : hardware3,
-        '4'      : hardware4,
-        '5'      : hardware5,
-        '6'      : hardware6,
-    }
-    
     if config.get('settings', 'settings_type') == 'custom':
-        customHardware(gcs, config, log, eeprom)
-    elif hardwareID in HW_VERSION_CMDS:
-        HW_VERSION_CMDS[hardwareID](gcs, config, log, eeprom)
+        PRESET_MAP["custom"](gcs, config, log, eeprom)
+    elif hardwareID in PRESET_MAP:
+        PRESET_MAP[hardwareID](gcs, config, log, eeprom)
     else:
         log.error("Unsupported hardware version: %s", hardwareID)
         log.error("Forced to hardware1")
-        hardware1(gcs, config, log, eeprom)
+        PRESET_MAP["1"](gcs, config, log, eeprom)
     
     configure_head(gcs, config, log)
     configure_feeder(gcs, config, log)
