@@ -125,7 +125,10 @@ class GCodePusher(object):
         
         # Pusher/File specific attributes
         self.pusher_stats = {
-            'filename'              : '',
+            'file': {
+                'full_path' : '',
+                'name'      : '',
+            },
             'line_total'            : 0,
             'line_current'          : 0,
             'type'                  : GCodeInfo.RAW,
@@ -585,11 +588,15 @@ class GCodePusher(object):
         
         if gcode_file:
             gfile = GCodeFile(gcode_file)
-            self.pusher_stats['filename']       = gcode_file
-            self.pusher_stats['line_total']     = gfile.info['line_count']
-            self.pusher_stats['line_current']   = 0
-            self.pusher_stats['type']           = gfile.info['type']
-            self.pusher_stats['first_move']     = False
+            task_db = self.get_task(task_id)
+            file = self.get_file(task_db['id_file'])
+            self.pusher_stats['file']['full_path'] = gcode_file
+            self.pusher_stats['file']['name']      = file['client_name']
+            self.pusher_stats['line_total']        = gfile.info['line_count']
+            self.pusher_stats['line_current']      = 0
+            self.pusher_stats['type']              = gfile.info['type']
+            self.pusher_stats['first_move']        = False
+            
             
             if gfile.info['type'] == GCodeInfo.PRINT:
                 engine = 'unknown'
