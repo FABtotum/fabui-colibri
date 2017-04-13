@@ -91,21 +91,29 @@
 		 
 		console.log(start_date, end_date, format_date);
 		 
+		 console.log(moment.weekdaysMin());
+		 console.log(moment.monthsShort());
+		 
 		 $('#date-picker').daterangepicker({
 			format: format_date,
 			startDate: start_date,
 			endDate: end_date,
 			locale: {
-      			format: format_date
+      			format: format_date,
+				applyLabel: _("Apply"),
+				cancelLabel: _("Cancel"),
+				customRangeLabel: _("Custom Range")
    			},
+			daysOfWeek: moment.weekdaysMin(),
+			monthNames: moment.monthsShort(),
 			ranges: {
-				'Today': [moment(), moment()],
-				'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-				'Last 7 days': [moment().subtract(6, 'days'), moment()],
-				'Last 30 Days': [moment().subtract(30, 'days'), moment()],
-				'This month': [moment().startOf('month'), moment().endOf('month')],
-				'Last month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-				'Since beginning': [min_date, moment()]
+				"<?php echo _("Today");?>": [moment(), moment()],
+				"<?php echo _("Yesterday");?>": [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+				"<?php echo _("Last 7 days");?>": [moment().subtract(6, 'days'), moment()],
+				"<?php echo _("Last 30 Days");?>": [moment().subtract(30, 'days'), moment()],
+				"<?php echo _("This month");?>": [moment().startOf('month'), moment().endOf('month')],
+				"<?php echo _("Last month");?>": [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+				"<?php echo _("Since the beginning");?>": [min_date, moment()]
 			}
 			
 		}, function(start, end) {

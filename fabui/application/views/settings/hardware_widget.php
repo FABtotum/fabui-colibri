@@ -129,6 +129,7 @@
 		</div>
 	</div>
 	<!-- customized actions tab -->
+	<!--
 	<div class="tab-pane fade in" id="customized-actions-tab">
 		<div class="smart-form">
 			<fieldset>
@@ -147,10 +148,12 @@
 			</fieldset>
 		</div>
 	</div>
+	-->
 	<!-- print tab -->
 	<div class="tab-pane fade in" id="print-tab">
 		<div class="smart-form">
 			<fieldset>
+				<!--
 				<div class="row">
 					<section class="col col-sm-12">
 						<label class="label"> <?php echo _('Pre-heating nozzle temperature')?></label>
@@ -167,6 +170,7 @@
 						</label>
 					</section>
 				</div>
+				-->
 				<div class="row">
 					<section class="col col-sm-12">
 						<label class="label"><?php echo _('Calibration preference')?></label>
@@ -179,6 +183,7 @@
 		</div>
 	</div>
 	<!-- milling tab -->
+	<!--
 	<div class="tab-pane fade in" id="milling-tab">
 		<div class="smart-form">
 			<fieldset>
@@ -193,7 +198,7 @@
 			</fieldset>
 		</div>
 	</div>
-	
+	-->
 	<!-- lighting-tab -->
 	<div class="tab-pane fade in" id="lighting-tab">
 		<fieldset style="display:none;">

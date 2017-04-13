@@ -39,9 +39,7 @@ class Settings extends FAB_Controller {
 				<li class="active"><a data-toggle="tab" href="#hardware-tab"> '._('Hardware').'</a></li>
 				<li><a data-toggle="tab" href="#safety-tab"> '._('Safety').'</a></li>
 				<li><a data-toggle="tab" href="#homing-tab"> '._('Homing').'</a></li>
-				<li><a data-toggle="tab" href="#customized-actions-tab"> '._('Customized actions').'</a></li>
 				<li><a data-toggle="tab" href="#print-tab"> '._('Print').'</a></li>
-				<li><a data-toggle="tab" href="#milling-tab"> '._('Milling').'</a></li>
 				<li><a data-toggle="tab" href="#lighting-tab"> '._('Lighting').'</a></li>
 			</ul>';
 		$widgeFooterButtons = $this->smart->create_button(_('Save'), 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
