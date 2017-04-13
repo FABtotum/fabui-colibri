@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html id="extr-page" class="animated fadeInDown">
 	<head>{head}</head>
-	<body>
+	<body class="smart-style-6">
 		{top}
 		<div id="main" role="main">
 			<div id="content">{content}</div>

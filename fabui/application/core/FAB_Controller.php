@@ -26,7 +26,7 @@
 	protected $css                 = array(); //css files inclusion
 	protected $menu                = array();
 	protected $isAjax              = false;
-	protected $noSessionNeeded     = array('Login', 'Install');
+	protected $noSessionNeeded     = array('Login', 'Install', 'Control');
 	
 	function __construct()
     {
@@ -127,6 +127,7 @@
 		$data['jsScripts'] = jScriptsInclusion($this->js);
 		$data['jsInLine'] = $this->jsInLine;
 		$data['mode'] = $mode;
+		$data['translations'] = $this->load->view('layout/translations_js', null, true);
 		
 		$this->template['head']    = $this->load-> view($this->layoutLogin.'/head', $data, true);
 		$this->template['top']     = $this->load-> view($this->layoutLogin.'/top', $data, true);
