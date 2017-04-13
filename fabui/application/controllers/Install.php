@@ -246,6 +246,7 @@ class Install extends FAB_Controller {
 			$this->configuration->store('timezone',      $postData['timezone']);
 			$this->configuration->store('serial_number', $postData['serial_number']);
 			$this->configuration->store('unit_name',     $postData['unit_name']);
+			$this->configuration->store('unit_color',    $postData['unit_color']);
 		}
 		
 		$language = $postData['language'];
@@ -258,6 +259,7 @@ class Install extends FAB_Controller {
 		unset($postData['browser-date']);
 		unset($postData['serial_number']);
 		unset($postData['unit_name']);
+		unset($postData['unit_color']);
 		//set user account data
 		$userData = $postData;
 		$userData['session_id'] = $this->session->session_id;

@@ -1369,4 +1369,37 @@ if(!function_exists('setSecure'))
 		return true;
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getAvailableColors'))
+{
+	/**
+	 * 
+	 */
+	function getAvailableColors()
+	{
+		return array(
+			'white' => _("White"),
+			"red"   => _("Red"),
+			"black" => _("Black")
+		);
+	}
+	
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('colors_menu'))
+{
+	/**
+	 * 
+	 */
+	function colors_menu($class = '', $name = 'colors', $attributes = '')
+	{
+		$colors = getAvailableColors();
+		$html = '<select class="'.$class.'" name="'.$name.'" '._stringify_attributes($attributes).'>';
+		foreach($colors as $key => $label){
+			$html .= '<option value="'.$key.'">'.$label.'</option>';
+		}
+		$html .= '</select>';
+		return $html;
+	}
+}
 ?>

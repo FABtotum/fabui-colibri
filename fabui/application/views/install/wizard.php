@@ -133,6 +133,17 @@
 							</div>
 						</div>
 					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label><?php echo _("What color is your FABtotum ")?> </label>
+								<div class="icon-addon addon-md">
+				                    <?php echo colors_menu('form-control', 'unit_color', 'id="unit_color"');?>
+				                    <label class="fa fa-tint"></label>
+				                </div>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="tab-pane" id="settings-tab">
 					<br>

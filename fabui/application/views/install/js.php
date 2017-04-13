@@ -116,7 +116,7 @@
 			  		}
 			},
 			'onPrevious': function(tab, navigation, index){
-				$(".next").find('a').html( _("Next") );
+				$(".next").find('a').html("<?php echo  _("Next"); ?>" );
 			},
 			'onLast': function(tab, navigation, inde){
 				console.log("last");
