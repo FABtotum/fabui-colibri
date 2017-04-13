@@ -14,15 +14,6 @@ At the same time as the official release we'll announce the winners of "The Coli
 ## Support & Contributing
 Please [open an issue](https://github.com/FABtotum/fabui-colibri/issues/new) for support
 
-### Issues reporting & Contest rules
-- Make sure you are running the latest [sdcard image](http://update.fabtotum.com/colibri/armhf/images/sdcard_latest.zip)  (a new sdcard image is released daily after 18.00 pm  (GMT+1))
-- 1 bug per issue
-- Check in closed issues that it's not a duplicate
-- Provide printer version
-- Write a short description about how the bug happened
-- Report OS version where sdcard was formatted
-- Report only **issues** (feature request will not be considered in this phase)
-
 ## Installation
   - Download the latest archive [here][latest-archive]
   - Use at least 4GB SD Card
