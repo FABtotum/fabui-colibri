@@ -2,14 +2,14 @@
 
 the first Operating System in the world completely developed for 3D printing.
 
-## Fabui-colibri beta is ready for testing
-The FABtotum Development Team is pleased to announce that the public beta release of **Fabui-colibri** is now available.
+## Fabui-colibri beta testing is closed
 
-This beta release is made available to allow a broad user base to test and evaluate the next major version, but is not recommended for production use at this stage.
+Thanks to all of you guys for your important and precious contribution, is time to go live now!
+From now the Development Team will temporarily ignore all new issues to focus on the official release
+At the same time as the official release we'll announce the winners of "The Colibri Effect" contest
 
-Beta will be available for 42 days from 23/02/2017 to 06/04/2017
+**Fabui-colibri 1.0** will be released soon
 
-Help us gathering bugs!
 
 ## Support & Contributing
 Please [open an issue](https://github.com/FABtotum/fabui-colibri/issues/new) for support
