@@ -24,6 +24,7 @@ usage()
     echo "  $(basename $0) test                - Check the totumduino connection"
     echo "  $(basename $0) backup <file.hex>   - Backup the flashed firmware "
     echo "  $(basename $0) update <file.hex>   - Update firmware"
+    echo "  $(basename $0) factory             - Restore factory firmware"
     exit 1
 }
 
@@ -64,8 +65,8 @@ case $CMD in
         exit $RETR
         ;;
     factory)
-        if [ -f "/mnt/live/mnt/boot/firmware.hex" ]; then
-            echo "TODO: factory reset"
+        if [ -e "/mnt/live/mnt/boot/firmware.zip" ]; then
+			sh $0 update /mnt/live/mnt/boot/firmware.zip
         fi
         ;;
     remote-update)

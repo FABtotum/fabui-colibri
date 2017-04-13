@@ -173,6 +173,23 @@ class ConfigService:
         """
         head_name = self.get('settings', 'hardware.head', 'hybrid_head')
         return self.get_head_info(head_name)
+    
+    def save_head_info(self, info, head_name):
+        """
+        """
+        head_file = os.path.join( self.get('hardware', 'heads'), head_name + '.json');
+        
+        if os.path.exists(head_file):
+            with open(head_file, 'w') as json_f:
+                json.dump(info, json_f, sort_keys=True, indent=4)
+            
+        return None
+
+    def save_current_head_info(self, info):
+        """
+        """
+        head_name = self.get('settings', 'hardware.head', 'hybrid_head')
+        self.save_head_info(info, head_name)
         
     def get_feeder_info(self, feeder_name):
         """

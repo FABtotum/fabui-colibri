@@ -595,23 +595,6 @@ fabApp = (function(app) {
 		
 	};
 	/*
-	 * check if there are updates avaialabe 
-	 */
-	app.checkUpdates = function () {
-		$.get($.update_check_url, function(data, status){
-			if(data.updates.updated == false){
-				$.number_updates++;
-				$(".update-list").find('span').html('	Updates (1) ');
-				$("nav li > a").each(function() {
-					if ($(this).attr('data-controller') == 'updates') {
-						$(this).append('<span class="badge bg-color-red pull-right inbox-badge animated fadeIn">1</span>');
-					}
-				});
-				app.updateNotificationBadge();
-			}
-		});
-	};
-	/*
 	 * update notification badge
 	 */
 	app.updateNotificationBadge = function () {
@@ -628,31 +611,31 @@ fabApp = (function(app) {
 		$("#activity").find('.badge').html(totalNotifications);
 		$(".updates-number").html( '(' + (number_updates + number_plugin_updates) + ')');
 		$(".tasks-number").html( '(' + number_tasks + ')');
-		if(number_updates > 0 ){
 			
-			var a = $("nav li > a");
-			a.each(function() {
-				var link = $(this);
-				var controller = link.attr('data-controller');
-				if(controller == 'updates'){
-					$("#update-menu-badge").remove();
+		var a = $("nav li > a");
+		a.each(function() {
+			var link = $(this);
+			var controller = link.attr('data-controller');
+			if(controller == 'updates'){
+				$("#update-menu-badge").remove();
+				if(number_updates > 0)
+				{
 					link.append('<span id="update-menu-badge" class="badge pull-right inbox-badge bg-color-red margin-right-13">'+number_updates+'</span>');
 				}
-			});
-		}
+			}
+		});
 		
-		if(number_plugin_updates > 0 ){
-			
-			var a = $("nav li > a");
-			a.each(function() {
-				var link = $(this);
-				var controller = link.attr('data-controller');
-				if(controller == 'plugin'){
-					$("#plugin-update-menu-badge").remove();
+		var a = $("nav li > a");
+		a.each(function() {
+			var link = $(this);
+			var controller = link.attr('data-controller');
+			if(controller == 'plugin'){
+				$("#plugin-update-menu-badge").remove();
+				if(number_plugin_updates > 0 ){
 					link.append('<span id="plugin-update-menu-badge" class="badge pull-right inbox-badge bg-color-red margin-right-13">'+number_plugin_updates+'</span>');
 				}
-			});
-		}
+			}
+		});
 	};
 	/*
 	 * refresh notification content (dropdown list)
@@ -918,31 +901,6 @@ fabApp = (function(app) {
 		
 		if (typeof window.updateTemperatures == 'function') window.updateTemperatures(ext_temp, ext_temp_target, bed_temp,bed_temp_target);
 	};
-	/*
-	 * display jog response
-	 */
-	/*
-	 * @tag: to_be_removed
-	 * app.writeJogResponse = function(data){
-		var added = false;
-		if($(".jogResponseContainer").length > 0){
-			$.each(data, function(i, item) {
-				if($(".consoleContainer .response_" + i).length == 0){
-					var html = '<i>' + item.code + '</i> :';
-					if(item.reply.length > 1){
-						$.each(item.reply, function(index, value){
-							html += '<p>' + value +'</p>';
-						});
-					}else{
-						html += item.reply[0];
-					}
-					$(".consoleContainer").append('<div class="jog_response response_' + i + '">' + html + '</div><hr class="simple">');
-					added = true;
-			    }
-			});
-			if(added) $(".jogResponseContainer").animate({ scrollTop: $('.jogResponseContainer').prop("scrollHeight")}, 1000);
-		}
-	}*/
 	/*
 	 * write serial replys to jog console
 	 */
@@ -1448,6 +1406,16 @@ fabApp = (function(app) {
 				temperaturesPlot =  JSON.parse(localStorage.getItem("temperaturesPlot"));
 			}
 		} 
+	}
+	
+	/**
+	 * get feeds
+	 **/
+	app.getFeeds = function ()
+	{
+		$.get(dashboard_url + '/updateFeeds', function(data, status){
+			
+		});
 	}
 	/**
 	* get network interfaces and show icon on ribbon

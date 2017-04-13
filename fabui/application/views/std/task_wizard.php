@@ -16,6 +16,9 @@ $steps = initializeSteps($steps);
 if( !isset($runningTask) ) $runningTask = 0;
 if( !isset($warning) ) $warning = '';
 if( !isset($safety_check) ) $safety_check = array("all_is_ok" => true);
+
+if($runningTask) $safety_check['all_is_ok'] = true;
+
 ?>
 
 <?php if($warning): ?>

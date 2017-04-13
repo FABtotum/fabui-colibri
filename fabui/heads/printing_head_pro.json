@@ -7,7 +7,7 @@
     "max_jerk": "1",
     "retract_acceleration": "525",
     "retract_feedrate": "40",
-    "retract_amoun": "0,5",
+    "retract_amoun": "0.5",
     "factory": "0"
   },
   "name": "Printing Head Pro",

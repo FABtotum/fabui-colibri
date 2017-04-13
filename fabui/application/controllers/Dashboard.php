@@ -213,6 +213,29 @@
 		}
 		$this->load->view('dashboard/instagram', $data);
 	}
+	
+	public function updateFeeds()
+	{
+		$this->load->helper('os_helper');
+		$this->config->load('fabtotum');
+		
+		$online = false;
+		
+		if(isInternetAvaialable())
+		{
+			if(!file_exists($this->config->item('blog_feed_file')))
+				downloadBlogFeeds();
+				
+			if(!file_exists($this->config->item('twitter_feed_file')))
+				downloadTwitterFeeds();
+				
+			if(!file_exists($this->config->item('instagram_feed_file')))
+				downloadInstagramFeeds();
+		}
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($online));
+	}
+	
 	/**
 	 * blank page just for first access
 	 */

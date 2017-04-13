@@ -18,14 +18,14 @@ if(!isset($task_jump_restart)) $task_jump_restart = 1;
 	$(document).ready(function() {
 		$(".new-task").on('click', function(){$('.wizard').wizard('selectedItem', { step: <?php echo $task_jump_new; ?> });});
 		$(".restart-task").on('click',restartPrint);
-		$(".save-z-height").on('click', saveZHeight);
+		//$(".save-z-height").on('click', saveZHeight);
 		$("input[name='quality']").on('click', qualityRating);
 	});
 	
 	/**
 	* save and override z height
 	*/
-	function saveZHeight()
+	/*function saveZHeight()
 	{
 		disableButton('.save-z-height');
 		if(zOverride == 0){
@@ -40,7 +40,7 @@ if(!isset($task_jump_restart)) $task_jump_restart = 1;
 			fabApp.showInfoAlert( _("Z Height saved") );
 			enableButton('.save-z-height');
 		});
-	}
+	}*/
 	
 	function qualityRating(e)
 	{

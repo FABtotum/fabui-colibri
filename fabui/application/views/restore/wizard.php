@@ -74,9 +74,17 @@
 						</div>
 						<div class="col-sm-6">
 							<div class="form-group">			
-								<label class="checkbox-inline" title="<?php echo _("Restore all previously uploaded and created objects and files.");?>">
+								<label class="checkbox-inline" title="<?php echo _("Restore all head settings.");?>">
 									 <input type="checkbox" class="checkbox" name="head_settings" id="head_settings" checked>
 									 <span><?php echo _("Head Settings");?></span>
+								</label>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group">			
+								<label class="checkbox-inline" title="<?php echo _("Restore all feeder settings.");?>">
+									 <input type="checkbox" class="checkbox" name="feeder_settings" id="feeder_settings" checked>
+									 <span><?php echo _("Feeder Settings");?></span>
 								</label>
 							</div>
 						</div>

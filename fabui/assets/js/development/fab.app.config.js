@@ -24,6 +24,7 @@ var set_secure_url              = base_url + '/control/setSecure';
 var set_recovery_url            = base_url + '/control/setRecovery';
 var websocket_fallback_url      = base_url + '/control/ws_fallback';
 var control_url                 = base_url + '/control';
+var dashboard_url               = base_url + '/dashboard';
 var install_head_url            = base_url + '/head/setHead/';
 var temperatures_file_url       = '/temp/temperature.json';
 var jog_response_file_url       = '/temp/jog_response.json';
