@@ -73,9 +73,8 @@ msgstr "Manutenzione"
 #: fabui/application/config/menu.php:57
 #: fabui/application/views/settings/network_widget.php:54
 #: fabui/assets/js/tours/0010_head.js:49
-#, fuzzy
 msgid "Head"
-msgstr "Testa/piatto"
+msgstr "Testa"
 
 #: fabui/application/config/menu.php:62
 msgid "Spool managment"
