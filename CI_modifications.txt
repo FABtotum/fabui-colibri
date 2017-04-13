@@ -10,3 +10,6 @@ fabui/system/libraries/Upload.php -  CI_Upload->do_upload
 465:    if ( ! $this->is_allowed_filetype(TRUE))
 
 -----------------------------------------------------------------
+fabui/system/libraries/Encrypt.php
+
+477    if(function_exists('hash'))
