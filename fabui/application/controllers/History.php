@@ -55,6 +55,8 @@ class History extends FAB_Controller {
 		$this->addJSFile('/assets/js/plugin/morris/raphael.min.js');
 		$this->addJSFile('/assets/js/plugin/morris/morris.min.js');
 		
+		$this->addCSSInLine('<style>.workaround-fix {opacity: 1 !important; transform: inherit !important;} </style>');
+		
 		$this->addJsInLine($this->load->view('history/main_js', $data, true));
 		$this->content = $widget->print_html(true);
 		$this->view();

@@ -16,6 +16,10 @@
 	var status;
 	
 	$(function() {
+
+		$("#date-picker").on('click', function(){
+			$(".daterangepicker").addClass("workaround-fix");
+		});
 		
 		$(".dropdown-menu > li > a").on('click', function(e){
 			
