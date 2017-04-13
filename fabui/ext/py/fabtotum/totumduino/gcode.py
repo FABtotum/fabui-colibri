@@ -998,7 +998,7 @@ class GCodeService:
     
     """ APIs *public* functions """
     
-    def start(self):
+    def start(self, atomic_group=None):
         """
         Start GCodeService threads.
         """
@@ -1026,6 +1026,9 @@ class GCodeService:
         self.ev_tx_started.wait()
         self.ev_rx_started.wait()
         
+        if atomic_group:
+			self.atomic_begin(group=atomic_group)
+        
         self.log.info("All threads started")
     
     def loop(self):
@@ -1040,13 +1043,12 @@ class GCodeService:
         
     def open_serial(self):
         self.released = False
-        self.start()
         
-        self.atomic_begin('bootstrap')
+        self.start(atomic_group='bootstrap')
         
         self.__cleanup()
-                
         time.sleep(5)
+        self.__cleanup()
         
         hardwareBootstrap(self, logger=self.log)
         

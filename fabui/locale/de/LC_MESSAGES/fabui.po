@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-11 16:51+0200\n"
+"POT-Creation-Date: 2017-04-13 11:01+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: FABTeam\n"
@@ -2073,6 +2073,7 @@ msgstr "Passwort anzeigen"
 
 #: fabui/application/views/settings/hardware_js.php:125
 #: fabui/application/views/settings/network_js.php:153
+#: fabui/application/views/account/js.php:74
 #: fabui/application/views/projectsmanager/edit/js.php:71
 msgid "Saving"
 msgstr "Wird gespeichert"
@@ -2376,6 +2377,10 @@ msgstr "Entwicklungs-Blog"
 #: fabui/application/views/dashboard/blog.php:26
 msgid "Latest news from Development blog aren't available"
 msgstr "Aktuelle Nachrichten aus Entwicklungsblog sind nicht verfügbar"
+
+#: fabui/application/views/account/js.php:87
+msgid "Account informations saved"
+msgstr ""
 
 #: fabui/application/views/account/widget.php:38
 msgid "Language"
@@ -3855,65 +3860,65 @@ msgstr ""
 msgid "Both Z endstops triggered"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/gpusher.py:250
+#: fabui/ext/py/fabtotum/fabui/gpusher.py:253
 msgid "Schutting down..."
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/gpusher.py:264
+#: fabui/ext/py/fabtotum/fabui/gpusher.py:267
 msgid "Task Started"
 msgstr "Aufgabe gestartet"
 
-#: fabui/ext/py/fabtotum/fabui/gpusher.py:312
+#: fabui/ext/py/fabtotum/fabui/gpusher.py:315
 #, python-brace-format
 msgid "Wait for nozzle temperature to reach {0}&deg;C"
 msgstr "Warten Sie bis die Düsentemperatur {0} & deg; C erreicht hat"
 
-#: fabui/ext/py/fabtotum/fabui/gpusher.py:314
+#: fabui/ext/py/fabtotum/fabui/gpusher.py:317
 #, python-brace-format
 msgid "Wait for bed temperature to reach {0}&deg;C"
 msgstr "Warten Sie, bis die Betttemperatur {0} & deg; C erreicht hat"
 
-#: fabui/ext/py/fabtotum/fabui/gpusher.py:316
+#: fabui/ext/py/fabtotum/fabui/gpusher.py:319
 #, python-brace-format
 msgid "Nozzle temperature set to {0}&deg;C"
 msgstr "Düsentemperatur auf {0}&deg;C eingestellt"
 
-#: fabui/ext/py/fabtotum/fabui/gpusher.py:318
+#: fabui/ext/py/fabtotum/fabui/gpusher.py:321
 #, python-brace-format
 msgid "Bed temperature set to {0}&deg;C"
 msgstr "Bett Temperatur auf {0}&deg;C eingestellt"
 
-#: fabui/ext/py/fabtotum/fabui/gpusher.py:324
+#: fabui/ext/py/fabtotum/fabui/gpusher.py:327
 #, python-brace-format
 msgid "Fan value set to {0}%"
 msgstr "Ventilator auf {0}% eingestellt"
 
-#: fabui/ext/py/fabtotum/fabui/gpusher.py:328
+#: fabui/ext/py/fabtotum/fabui/gpusher.py:331
 msgid "Fan off"
 msgstr "Ventilator ausgeschaltet"
 
-#: fabui/ext/py/fabtotum/fabui/gpusher.py:339
+#: fabui/ext/py/fabtotum/fabui/gpusher.py:342
 #, python-brace-format
 msgid "Speed factor set to {0}%"
 msgstr "Geschwindigkeitsfaktor auf {0}% eingestellt"
 
-#: fabui/ext/py/fabtotum/fabui/gpusher.py:344
+#: fabui/ext/py/fabtotum/fabui/gpusher.py:347
 #, python-brace-format
 msgid "Extruder flow set to {0}%"
 msgstr "Extruderströmung auf {0}% eingestellt"
 
-#: fabui/ext/py/fabtotum/fabui/gpusher.py:357
-#: fabui/ext/py/fabtotum/fabui/gpusher.py:362
+#: fabui/ext/py/fabtotum/fabui/gpusher.py:360
+#: fabui/ext/py/fabtotum/fabui/gpusher.py:365
 #, python-brace-format
 msgid "Milling motor RPM set to {0}"
 msgstr "Fräsmotor RPM auf {0} eingestellt"
 
-#: fabui/ext/py/fabtotum/fabui/gpusher.py:368
+#: fabui/ext/py/fabtotum/fabui/gpusher.py:371
 #, python-brace-format
 msgid "Laser power set to {0}%"
 msgstr "Laserleistung auf {0}% eingestellt"
 
-#: fabui/ext/py/fabtotum/fabui/gpusher.py:461
+#: fabui/ext/py/fabtotum/fabui/gpusher.py:464
 msgid "Task has been terminated"
 msgstr "Die Aufgabe wurde abgebrochen"
 

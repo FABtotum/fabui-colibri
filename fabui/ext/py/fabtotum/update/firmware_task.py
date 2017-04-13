@@ -44,7 +44,6 @@ class FirmwareTask(SubTask):
 
 	def install(self):
 		self.setStatus('installing')
-		print "TODO: firmware install"
 		
 		cmd = 'sh /usr/share/fabui/ext/bash/totumduino_manager.sh update ' + self.getFile("firmware").getLocal()
 		
@@ -54,6 +53,7 @@ class FirmwareTask(SubTask):
 		
 		self.factory.gcs.close_serial()
 		
+		# Execute firmware update
 		try:
 			install_output = subprocess.check_output( shlex.split(cmd) )
 		except subprocess.CalledProcessError as e:

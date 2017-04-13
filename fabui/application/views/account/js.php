@@ -71,7 +71,7 @@
 			jQuery.each( fields, function( index, object ) {
 				data[object.name] = object.value;
 			});
-			$("#save").html('<i class="fa fa-save"></i> Saving');
+			$("#save").html('<i class="fa fa-save"></i> <?php echo _("Saving") ?>');
 			disableButton('#save');
 			$.ajax({
 				type: 'post',
@@ -84,7 +84,7 @@
 
 				$.smallBox({
 					title : "Settings",
-					content : 'Account informations saved',
+					content : '<?php echo _("Account informations saved");?>',
 					color : "#5384AF",
 					timeout: 3000,
 					icon : "fa fa-check bounce animated"
