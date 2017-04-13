@@ -17,6 +17,7 @@
 		if(file_exists($this->config->item('autoinstall_file'))){
 			redirect('install');
 		}
+		$this->verifyCookie();
 		$data['alert'] = $this->session->flashdata('alert');
 		$this->content = $this->load->view('login/login_form', $data, true);
 		$this->addJsInLine($this->load->view('login/login_js', '', true));
@@ -31,7 +32,9 @@
 		$postData = $this->input->post();
 		if(count($postData) == 0) redirect('login'); //if post data is empty
 		
+		$remember = false;
 		if(isset($postData['remember'])){ // remember user?
+			$remember= $postData['remember'] == 'on';
 			unset($postData['remember']);
 			//TODO
 		}
@@ -55,6 +58,12 @@
 			redirect('login');
 		}
 		
+		if($remember == true){ //keep me logged in
+			$this->load->library('encrypt');
+			$cookieValue = $this->encrypt->encode($postData['email']).':'.$postData['password'];
+			$this->input->set_cookie('fab_cookie', $cookieValue, 86500);
+		}
+		
 		$user['settings'] = json_decode($user['settings'], true);
 		if(!isset($user['settings']['language'])) $user['settings']['language'] = 'en_US';
 		//create valid session for fabui
@@ -71,7 +80,9 @@
 	//log out
 	public function out()
 	{
-		//destroy session and redirect to login	
+		$this->load->helper('cookie');
+		delete_cookie("fab_cookie");
+		//destroy session and redirect to login
 		$this->session->loggedIn = false; 
 		$this->session->unset_userdata('user');
 		$this->session->unset_userdata('settings');
@@ -118,6 +129,33 @@
 	public function resetPassword()
 	{
 		//TODO
+	}
+	
+	/**
+	 * 
+	 */
+	public function verifyCookie()
+	{
+		if($this->input->cookie('fab_cookie')){
+			$this->load->library('encrypt');
+			$temp = explode(':', $this->input->cookie('fab_cookie'));
+			$email = $this->encrypt->decode($temp[0]);
+			$password = $temp[1];
+			$this->load->model('User', 'user');
+			$user = $this->user->get(array('email'=>$email, 'password'=>$password), 1);
+			if($user){
+				$user['settings'] = json_decode($user['settings'], true);
+				if(!isset($user['settings']['language'])) $user['settings']['language'] = 'en_US';
+				$this->session->loggedIn = true;
+				$this->session->user = $user;
+				//load hardware settings
+				$this->load->helpers('fabtotum_helper');
+				$hardwareSettings = loadSettings('default');
+				//save hardware settings on session
+				$this->session->settings = $hardwareSettings;
+				redirect('#dashboard');
+			}
+		}
 	}
  }
  

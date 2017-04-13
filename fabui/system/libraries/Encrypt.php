@@ -473,8 +473,9 @@ class CI_Encrypt {
 	 * @return	string
 	 */
 	public function hash($str)
-	{
-		return hash($this->_hash_type, $str);
+	{	
+		if(function_exists('hash'))
+			return hash($this->_hash_type, $str);
 	}
 
 }
