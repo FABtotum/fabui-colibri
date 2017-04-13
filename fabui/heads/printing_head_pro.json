@@ -5,7 +5,7 @@
     "max_acceleration": "300",
     "max_feedrate": "300",
     "max_jerk": "1",
-    "retract_acceleration": "300",
+    "retract_acceleration": "525",
     "retract_feedrate": "40",
     "retract_amoun": "0,5",
     "factory": "0"
@@ -13,7 +13,7 @@
   "name": "Printing Head Pro",
   "link": "http://www.fabtotum.com/printing-head-pro/",
   "description": "The <strong>Printing Head Pro</strong> ",
-  "custom_gcode": "M720",
+  "custom_gcode": "M720\nM204 S2000",
   "working_mode": "1",
   "fw_id": "6",
   "pid": "M301 P53.54 I9.08 D78.94",
