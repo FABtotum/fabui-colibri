@@ -70,9 +70,16 @@ class Cron extends CI_Controller {
 	public function getUpdateJSON()
 	{
 		//load helpers, config
+		$this->config->load('fabtotum');
+		//======================
+		if(file_exists($this->config->item('task_monitor'))){
+			$monitor = json_decode(file_get_contents($this->config->item('task_monitor')), true);
+			if(isset($monitor['task']['status']) && $monitor['task']['status'] == 'running') 
+				return; //avoid any gcode conflicts and interferances
+		}
+		//======================
 		$this->load->helper('update_helper');
 		$this->load->helper('file');
-		$this->config->load('fabtotum');
 		$updateJSON = json_encode(getUpdateStatus());
 		write_file($this->config->item('updates_json_file'), $updateJSON);
 	}
