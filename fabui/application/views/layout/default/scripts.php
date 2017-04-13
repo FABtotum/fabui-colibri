@@ -49,7 +49,6 @@
  TOUR includes: end -->
 
 <script type="text/javascript" src="/assets/js/fabtotum.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/demo.js?v=<?php echo FABUI_VERSION ?>"></script>
 
 <?php echo $jsScripts; ?>
 <script type="text/javascript">
