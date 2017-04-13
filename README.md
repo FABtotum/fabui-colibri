@@ -5,7 +5,9 @@ the first Operating System in the world completely developed for 3D printing.
 ## Fabui-colibri beta testing is closed
 
 Thanks to all of you guys for your important and precious contribution, is time to go live now!
+
 From now the Development Team will temporarily ignore all new issues to focus on the official release
+
 At the same time as the official release we'll announce the winners of "The Colibri Effect" contest
 
 **Fabui-colibri 1.0** will be released soon
