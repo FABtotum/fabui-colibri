@@ -125,7 +125,6 @@ function RefreshTable(tableId, urlData)
 */
 function pageCleanUp()
 {
-    
     console.log('=== pageCleanUp ===');
     
     if (typeof window.viewCleanUp == 'function') window.viewCleanUp();
@@ -135,21 +134,36 @@ function pageCleanUp()
     window.viewCleanUp = null;
     
 }
-
+/**
+ * 
+ */
 function pageLoadSuccess()
 {
     console.log("pageLoadSuccess");
-    //setTimeout(function(){
-    //startIntroduction();
-    //}, 5000);
     updateTour();
 }
-
-function pageLoadError()
+/**
+ * 
+ */
+function pageLoadError(url, container,  xhr, thrownError)
 {
     console.log("pageLoadError");
+    if(xhr.status == 403){
+    	showSessionExpired();
+    }else{
+    	container.html('<h4 class="ajax-loading-error"><i class="fa fa-warning txt-color-orangeDark"></i> Error requesting <span class="txt-color-red">' + url + '</span>: ' + xhr.status + ' <span style="text-transform: capitalize;">'  + thrownError + '</span></h4>');
+    }
 }
-
+/**
+ * 
+ */
+function showSessionExpired()
+{
+	openWait("<i class=\"fa fa-warning\"></i> " + _("Your session is expired"), _("You will be redirect to login page"), false);
+	setTimeout(function(){ 
+		window.location = logout_url; 
+	}, 5000);
+}
 
 /**
 * Base64 Object

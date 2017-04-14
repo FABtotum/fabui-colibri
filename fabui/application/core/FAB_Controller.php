@@ -51,8 +51,13 @@
 			$fabuiBundle = getLocalBundle('fabui');
 			define('FABUI_VERSION', $fabuiBundle['version']);
 			
-			if($this->session->loggedIn == false && !in_array(get_class($this), $this->noSessionNeeded)){
-				redirect('login/index');	
+			if($this->session->loggedIn == false && !in_array(get_class($this), $this->noSessionNeeded)){		
+				if($this->isAjax){
+					$this->output->set_status_header(403, 'Invalid session');
+					exit();
+				}else{
+					redirect('login/out');
+				}		
 			}
 			loadTranslation();
 			if(!$this->isAjax){ //for ajax request no need to load menu
@@ -62,8 +67,6 @@
 				$this->menu = $this->config->item('menu');
 			}
 		}
-		//Prevent Blocking Requests
-		//~ session_write_close();
     }
 	
 	/*
