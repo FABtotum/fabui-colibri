@@ -41,7 +41,7 @@ for iface in $(echo $IFACES); do
         
         # Get interface gataway if present
         if [ -z "$GATEWAY" ]; then
-            GATEWAY=$(ip route  | grep $iface | awk '/default/ {print $3;}')
+            GATEWAY=$(ip route  | grep $iface | awk '/default/ {print $3;}' | awk 'NR==1{print $1}')
         fi
         echo -n "    \"gateway\" : \"$GATEWAY\""
         
@@ -58,7 +58,7 @@ for iface in $(echo $IFACES); do
             MODE=$(iwconfig $iface | awk '/Mode/{print $1}')
             
             if [ x"$MODE" == x"$iface" ]; then
-				MODE=$(iwconfig $iface | awk '/Mode/{print $4}')
+                MODE=$(iwconfig $iface | awk '/Mode/{print $4}')
             fi
             
             if [ $MODE == "Mode:Master" ]; then
