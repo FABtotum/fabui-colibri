@@ -162,7 +162,7 @@
 	{
 		var locale = $(this).val();
 		$("#locale").val(locale);
+		openWait("<i class='fa fa-spin fa-spinner'></i> <?php echo _("Translating"); ?> ..", "<?php echo _("Please wait"); ?>", false);
 		$("#locale-form").submit();
-		console.log(locale);
 	}
 </script>
