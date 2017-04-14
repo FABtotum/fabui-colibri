@@ -118,7 +118,7 @@ class Head extends FAB_Controller {
 	{
 		$this->load->helper('fabtotum_helper');
 		$info = $this->input->post();
-		$result = saveHeadInfo($info, $head_filename);
+		$result = saveHeadInfo($info, $head_filename, false);
 		$this->output->set_content_type('application/json')->set_output(json_encode( $result ));
 	}
 	/**

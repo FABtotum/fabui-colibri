@@ -337,15 +337,22 @@ if(!function_exists('removeFeederInfo'))
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('saveHeadInfo'))
 {
-	function saveHeadInfo($info, $head_name)
+	function saveHeadInfo($info, $head_name, $restoreFactory = false)
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		$heads_dir = $CI->config->item('heads');
 		
 		$fn = $heads_dir.'/'.$head_name.'.json';
-		
-		$content = json_encode($info, JSON_PRETTY_PRINT);
+		if($restoreFactory == false){
+			
+			$currentInfo = json_decode(file_get_contents($fn), true);
+			if(!is_array($currentInfo)) $currentInfo = array();
+			$newInfo = array_replace_recursive($currentInfo, $info);
+		}else{
+			$newInfo = $info;
+		}
+		$content = json_encode($newInfo, JSON_PRETTY_PRINT);
 		return file_put_contents($fn, $content) > 0;
 	}
 }
@@ -473,7 +480,7 @@ if(!function_exists('restoreHeadFactorySettings'))
 		$factory_dir      = $CI->config->item('fabui_path').'heads/';
 		if(file_exists($factory_dir.$head_file_name.'.json')){
 			$factory_settings = json_decode(file_get_contents($factory_dir.$head_file_name.'.json'), true);
-			return saveHeadInfo($factory_settings, $head_file_name);
+			return saveHeadInfo($factory_settings, $head_file_name, true);
 		}
 		return false;
 	}
