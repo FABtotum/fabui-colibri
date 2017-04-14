@@ -167,8 +167,10 @@ def end_additive_safe_zone(app, args = None, lang='en_US.UTF-8'):
     
 def end_additive_aborted(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    app.macro("G91",                        "ok", 2,    _("Setting rel position") )
-    app.macro("G0 Z5 F10000",   "ok", 100,  _("Moving to safe zone") )
+    #app.macro("G91",                        "ok", 2,    _("Setting rel position") )
+    #app.macro("G0 Z5 F10000",   "ok", 100,  _("Moving to safe zone") )
+    app.macro("G27 Z0",                   "ok", 100,  _("Moving to safe zone") )
+    app.macro("G28 XY",                   "ok", 100,  _("Zeroing Z axis"), verbose=False )
     app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish") )
 
 def check_additive(app, args = None, lang='en_US.UTF-8'):
