@@ -22,20 +22,20 @@
 			<fieldset>
 				<div class="row">
 					<section class="col col-6">
-						<label class="label">XY <?php echo _("Step"); ?></label>
+						<label class="label">XY <?php echo _("Step"); ?> (mm)</label>
 						<label class="input">
-							<input type="number" min="0.1" step="0.1" value="1" id="xyStep">
+							<input type="number" min="0.1" step="0.1" value="10" id="xyStep">
 						</label>
 					</section>
 					<section class="col col-6">
 						<label class="label">Z <?php echo _("Step"); ?> (mm)</label>
 						<label class="input">
-							<input type="number" min="0.1" step="0.1" value="0.5" id="zStep">
+							<input type="number" min="0.1" step="0.1" value="5" id="zStep">
 						</label>
 					</section>
 				</div>
 				<section>
-					<label class="label">XYZ <?php echo _("Feedrate"); ?></label>
+					<label class="label">XYZ <?php echo _("Feedrate"); ?> (mm/s<sup>2</sup>)</label>
 					<label class="input">
 						<input type="number" min="1" value="1000" id="xyzFeed">
 					</label>

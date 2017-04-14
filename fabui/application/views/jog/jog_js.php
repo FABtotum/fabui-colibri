@@ -106,7 +106,7 @@ if(!isset($rpm_max)) 		$rpm_max = 14000;
 					return false;
 					
 				jog_busy = true;
-				fabApp.jogMdi('G90\nG0 X'+x+' Y'+y+' F5000\nM400', function(e){
+				fabApp.jogMdi('G90\nG0 X'+x+' Y'+y+' F'+$("#xyzFeed").val() +'\nM400', function(e){
 					writeJogResponse(e);
 					jog_busy = false;
 				});
