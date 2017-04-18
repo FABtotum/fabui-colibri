@@ -270,7 +270,11 @@ $(OS_COLIBRI_STAMP):
 		
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fixes.init \
 		$(BDATA_DIR)/etc/init.d/fixes
-	
+		
+	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/network/if-up.d
+	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/zz_default_gateway \
+		$(BDATA_DIR)/etc/network/if-up.d/zz_default_gateway	
+			
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/rc.d/rc.firstboot.d
 	$(FAKEROOT_ENV) ln -fs ../../firstboot.d/fabui \
 		$(BDATA_DIR)/etc/rc.d/rc.firstboot.d/S10fabui
