@@ -42,8 +42,13 @@
 					<h3><strong><?php echo _("Step")?> 1 </strong> - <?php echo _("Welcome")?></h3>
 					<div class="row">
 						<div class="col-sm-12">
-							<p class="font-md text-center"><?php echo _("Welcome to the installation wizard of the FABtotum User Interface")?>. 
-							<?php echo _("Follow the steps and enter the data as prompted")?></p>
+							<div class="form-group">
+								<label><?php echo _("Please select your language before proceeding with the installation")?> </label>
+								<div class="icon-addon addon-md">
+				                    <?php echo langauges_menu('form-control', 'language', 'id="language"', $this->input->post('locale'));?>
+				                    <label class="fa fa-flag"></label>
+				                </div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -149,15 +154,7 @@
 					<br>
 					<h3><strong><?php echo _("Step")?> 4 </strong> - <?php echo _("Settings")?></h3>
 					<div class="row">
-						<div class="col-sm-12">
-							<div class="form-group">
-								<label><?php echo _("Select your language")?> </label>
-								<div class="icon-addon addon-md">
-				                    <?php echo langauges_menu('form-control', 'language', 'id="language"');?>
-				                    <label class="fa fa-flag"></label>
-				                </div>
-							</div>
-						</div>
+						
 						<div class="col-sm-12">
 							<div class="form-group">
 								<label><?php echo _("What is your timezone?")?> </label>
@@ -194,6 +191,9 @@
 			</div>
 		</div>
 	</div>
+</form>
+<form method="post" id="locale-form">
+	<input type="hidden" name="locale" id="locale" value="">
 </form>
 <!-- TERMS & CONDITIONS MODAL -->
 <div class="modal fade" id="termsConditionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

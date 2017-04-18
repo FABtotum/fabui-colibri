@@ -14,6 +14,7 @@
 	
 	$(document).ready(function() {
 		runAllForms();
+		initLanguage();
 		initValidate();
 		initWizard();
 		initTimeZone();
@@ -26,6 +27,7 @@
 				$('#termsConditionModal').modal('toggle');
 			}
 		});
+		$("#language").on('change', setLocale);
 	});
 	/**
 	 * 
@@ -152,7 +154,15 @@
 	*/
 	function initLanguage()
 	{
-		var lang = navigator.language || navigator.userLanguage;
-		$("#language").val(lang);
+	}
+	/**
+	*
+	**/
+	function setLocale()
+	{
+		var locale = $(this).val();
+		$("#locale").val(locale);
+		openWait("<i class='fa fa-spin fa-spinner'></i> <?php echo _("Translating"); ?> ..", "<?php echo _("Please wait"); ?>", false);
+		$("#locale-form").submit();
 	}
 </script>

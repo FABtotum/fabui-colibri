@@ -36,21 +36,48 @@ if(!function_exists('langauges_menu'))
 	 * @param	mixed	attributes
 	 * @return	string
 	 */
-	function langauges_menu($class = '', $name = 'languages', $attributes = '')
+	function langauges_menu($class = '', $name = 'languages', $attributes = '', $selected = '')
 	{
 		$languages = getAvailableLanguages();		
 		$html = '<select class="'.$class.'" name="'.$name.'" '._stringify_attributes($attributes).'>';
 		foreach($languages as $name => $lang){
-			$html .= '<option value="'.$lang['code'].'">'.$lang['description'].'</option>';
+			$sel = $selected == $lang['code'] ? 'selected="selected"' : '';
+			$html .= '<option '.$sel.' value="'.$lang['code'].'">'.$lang['description'].'</option>';
 		}
 		$html .= '</select>';
 		return $html;
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('setLanguage'))
+{
+	/**
+	 * 
+	 */
+	function setLanguage($language_code)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		
+		putenv('LC_MESSAGES='.$language_code.'.UTF-8');
+		setlocale(LC_MESSAGES, $language_code.'.UTF-8');
+		
+		// Set numeric format to en_US as it uses dot '.' as decimal separator
+		putenv('LC_NUMERIC='.'en_US.UTF-8');
+		setlocale(LC_NUMERIC, 'en_US.UTF-8');
+		
+		bindtextdomain("fabui", $CI->config->item('locale_path'));
+		textdomain("fabui");
+		bind_textdomain_codeset("fabui", "UTF-8");
+		
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('getCurrentLanguage'))
 {
 	function getCurrentLanguage()
 	{
+		//echo locale_get_default();
 		$CI =& get_instance();
 		
 		if(isset($CI->session->user['settings']['language']))
@@ -66,24 +93,9 @@ if(!function_exists('loadTranslation'))
 	 * 
 	 */
 	function loadTranslation()
-	{
-		$CI =& get_instance();
-		$CI->config->load('fabtotum');
-		
+	{	
 		$language_code = getCurrentLanguage();
-		
-		putenv('LC_MESSAGES='.$language_code.'.UTF-8');
-		setlocale(LC_MESSAGES, $language_code.'.UTF-8');
-		
-		// Set numeric format to en_US as it uses dot '.' as decimal separator
-		putenv('LC_NUMERIC='.'en_US.UTF-8');
-		setlocale(LC_NUMERIC, 'en_US.UTF-8');
-		
-		
-		
-		bindtextdomain("fabui", $CI->config->item('locale_path'));
-		textdomain("fabui");
-		bind_textdomain_codeset("fabui", "UTF-8");
+		setLanguage($language_code);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
