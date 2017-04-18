@@ -9,8 +9,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Cron extends CI_Controller {
-	
-	
 	/**
 	 * exec all jobs
 	 */
@@ -92,6 +90,6 @@ class Cron extends CI_Controller {
 		$this->load->helper('os_helper');
 		writeNetworkInfo();
 	}
-	
+
 }
 ?>

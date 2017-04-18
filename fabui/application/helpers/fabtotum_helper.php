@@ -1402,4 +1402,89 @@ if(!function_exists('colors_menu'))
 		return $html;
 	}
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('send_via_noreply'))
+{
+	function send_via_noreply($email, $first_name, $last_name, $subject, $content)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		
+		$url = $CI->config->item('fabtotum_noreply_url');
+		
+		$fields = array();
+		$fields['email'] = $email;
+		$fields['subject'] = $subject;
+		$fields['content'] = $content;
+		$fields['first_name'] = $first_name;
+		$fields['last_name'] = $last_name;
+			
+		$fields_string = '';
+
+		foreach ($fields as $key => $value) {
+			$fields_string .= $key . '=' . $value . '&';
+		}
+		
+		rtrim($fields_string, '&');
+		
+		//return $url . ' ' . $fields_string;
+		
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, count($fields));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+		return curl_exec($ch) == "1";
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('send_password_reset'))
+{
+	function send_password_reset($email)
+	{
+		$CI =& get_instance();
+		$CI->load->model('User', 'user');
+		
+		$user = $CI->user->getByEmail($email);
+		
+		if($user)
+		{
+			$uid        = $user['id'];
+			$first_name = $user['first_name'];
+			$last_name  = $user['last_name'];
+			
+			$token = md5($uid . '-' . $email . '-' . time());
+			
+			$user_settings = json_decode($user['settings'], 1);
+			$user_settings['token'] = $token;
+		
+			$data_update['settings'] = json_encode($user_settings);
+			$CI->user->update( $uid, $data_update);
+			$complete_url = site_url().'login/resetPassword/'.$token;
+			
+			$subject = _("Password Reset");
+			$content = pyformat( _('Hi {0},<br><br>We\'ve generated a URL to reset your password. If you did not request to reset your password or if you\'ve changed your mind, simply ignore this email and nothing will happen.<br><br>You can reset your password by clicking the following URL:<br><a href="{1}">{1}</a><br><br>If clicking the URL above does not work, copy and paste the URL into a browser window. The URL will only be valid for a limited time and will expire.'), array($first_name, $complete_url) );
+			
+			return send_via_noreply($email, $first_name, $last_name, $subject, $content);
+		}
+		else
+			return false;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('send_task_completed'))
+{
+	function send_task_completed($task_id)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$CI->load->model('User', 'user');
+	}
+}
+
 ?>

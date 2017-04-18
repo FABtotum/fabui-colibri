@@ -67,5 +67,8 @@ firmware_endpoint = http://update.fabtotum.com/firmware/
 plugins_endpoint = http://update.fabtotum.com/plugins/
 updates_json_file = @FABUI_TEMP_PATH@updates.json
 
+[email]
+fabtotum_noreply_url = http://update.fabtotum.com/mail/noreply.php
+
 [analytics]
 ga_property_id = UA-42679362-4

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-13 17:56+0200\n"
+"POT-Creation-Date: 2017-04-17 14:21+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: FABTeam\n"
@@ -349,11 +349,11 @@ msgstr "Neueste Tweets"
 msgid "Instagram"
 msgstr ""
 
-#: fabui/application/controllers/Login.php:54
+#: fabui/application/controllers/Login.php:55
 msgid "Please check your email or password"
 msgstr "Bitte überprüfen Sie Ihre E-Mail oder Ihr Passwort"
 
-#: fabui/application/controllers/Login.php:110
+#: fabui/application/controllers/Login.php:127
 msgid "New user created successfully"
 msgstr "Neuer Benutzer wurde erfolgreich erstellt"
 
@@ -507,7 +507,7 @@ msgstr ""
 #: fabui/application/views/login/register_form.php:74
 #: fabui/application/views/settings/network_widget.php:143
 #: fabui/application/views/feeder/calibration/widget.php:72
-#: fabui/application/views/history/main_js.php:101
+#: fabui/application/views/history/main_js.php:104
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -667,6 +667,21 @@ msgstr "Bett"
 
 #: fabui/application/helpers/fabtotum_helper.php:1383
 msgid "Black"
+msgstr ""
+
+#: fabui/application/helpers/fabtotum_helper.php:1472
+#, fuzzy
+msgid "Password Reset"
+msgstr "Passwort"
+
+#: fabui/application/helpers/fabtotum_helper.php:1473
+msgid ""
+"Hi {0},<br><br>We've generated a URL to reset your password. If you did not "
+"request to reset your password or if you've changed your mind, simply ignore "
+"this email and nothing will happen.<br><br>You can reset your password by "
+"clicking the following URL:<br><a href=\"{1}\">{1}</a><br><br>If clicking "
+"the URL above does not work, copy and paste the URL into a browser window. "
+"The URL will only be valid for a limited time and will expire."
 msgstr ""
 
 #: fabui/application/helpers/layout_helper.php:275
@@ -2511,31 +2526,31 @@ msgstr "Installiertes Firmware"
 msgid "Build-date"
 msgstr "Baudatum"
 
-#: fabui/application/views/history/main_js.php:107
+#: fabui/application/views/history/main_js.php:110
 msgid "Today"
 msgstr "Heute"
 
-#: fabui/application/views/history/main_js.php:108
+#: fabui/application/views/history/main_js.php:111
 msgid "Yesterday"
 msgstr "Gestern"
 
-#: fabui/application/views/history/main_js.php:109
+#: fabui/application/views/history/main_js.php:112
 msgid "Last 7 days"
 msgstr "Letzten 7 Tage"
 
-#: fabui/application/views/history/main_js.php:110
+#: fabui/application/views/history/main_js.php:113
 msgid "Last 30 Days"
 msgstr "Letzte 30 Tage"
 
-#: fabui/application/views/history/main_js.php:111
+#: fabui/application/views/history/main_js.php:114
 msgid "This month"
 msgstr "Diesen Monat"
 
-#: fabui/application/views/history/main_js.php:112
+#: fabui/application/views/history/main_js.php:115
 msgid "Last month"
 msgstr "Im vergangenen Monat"
 
-#: fabui/application/views/history/main_js.php:113
+#: fabui/application/views/history/main_js.php:116
 msgid "Since the beginning"
 msgstr "Von Anfang an"
 
@@ -4004,7 +4019,6 @@ msgstr "Sondenposition"
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:108
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:140
 #: fabui/ext/py/fabtotum/fabui/macros/calibration.py:107
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:170
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:57
 msgid "Setting rel position"
 msgstr "Einstellung zur Relativ positionierung"
@@ -4122,7 +4136,7 @@ msgstr "Einstellung der Sondenlänge"
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:83
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:110
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:127
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:215
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:217
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:87
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:131
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:180
@@ -4177,7 +4191,8 @@ msgstr "Extrusionsprävention deaktiviert"
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:105
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:139
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:165
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:210
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:173
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:212
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:54
 msgid "Zeroing Z axis"
 msgstr "Z Achse Referenzieren"
@@ -4186,7 +4201,7 @@ msgstr "Z Achse Referenzieren"
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:106
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:58
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:164
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:171
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:172
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:54
 #: fabui/application/views/std/task_execute_js.php:868
 msgid "Moving to safe zone"
@@ -4260,8 +4275,8 @@ msgid "Manual bed leveling started."
 msgstr "Manuelle Bettnivellierung gestartet."
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:135
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:188
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:208
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:190
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:210
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:41
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:88
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:49
@@ -4323,8 +4338,8 @@ msgstr ""
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:128
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:147
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:166
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:172
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:213
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:174
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:215
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:81
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:36
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:72
@@ -4433,7 +4448,7 @@ msgid "Setting 4th axis mode"
 msgstr "Einstellung von 4. Achse modus"
 
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:146
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:212
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:214
 msgid "Setting Z position"
 msgstr "Einstellung der Z Position"
 
@@ -4442,7 +4457,7 @@ msgid "Check position"
 msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:149
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:217
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:219
 msgid "Play beep sound"
 msgstr "Piep Ton abspielen"
 
@@ -4625,39 +4640,39 @@ msgstr "Drücken abgeschollen"
 msgid "Force endstops"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:186
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:188
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:86
 msgid "Checking safety measures"
 msgstr "Sicherheitsmaßnahmen überprüfung"
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:190
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:192
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:43
 msgid "Checking building plate"
 msgstr "Bett wird überprüft "
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:192
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:194
 msgid "Build plate needs to be flipped to the printing side"
 msgstr "Bauplatte muss auf die Druckseite umgedreht werden"
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:194
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:209
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:196
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:211
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:51
 msgid "Spool panel control"
 msgstr "Spulenplatte kontrolle"
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:206
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:208
 msgid "Engaging 3D-Printer Feeder"
 msgstr "Feeder wird eingerastet"
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:211
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:213
 msgid "Set rel position"
 msgstr "Einstellung zur Relativ positionierung"
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:214
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:216
 msgid "Set abs position"
 msgstr "Einstellung zur Absolute positionierung"
 
-#: fabui/ext/py/fabtotum/fabui/macros/printing.py:216
+#: fabui/ext/py/fabtotum/fabui/macros/printing.py:218
 msgid "Stopping motors"
 msgstr "Motoren ausgeschaltet"
 
@@ -4998,7 +5013,7 @@ msgstr "Geschwindigkeitsüberschreitung wurde auf {0} geändert"
 msgid "X/Y Position {0}, {1} stored"
 msgstr "X/Y Position {0}, {1} gespeichert"
 
-#: fabui/application/views/history/main_js.php:103
+#: fabui/application/views/history/main_js.php:105
 msgid "Custom Range"
 msgstr "Benutzerdefinierten Bereich"
 
@@ -5274,7 +5289,7 @@ msgstr ""
 msgid "Please enter head name"
 msgstr "Bitte geben Sie den Kopfnamen ein"
 
-#: fabui/application/views/history/main_js.php:100
+#: fabui/application/views/history/main_js.php:103
 msgid "Apply"
 msgstr "Anwenden"
 

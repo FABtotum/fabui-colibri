@@ -132,9 +132,28 @@
 	/**
 	 * reset user password
 	 */
-	public function resetPassword()
+	public function resetPassword($token)
 	{
+		$this->load->model('User', 'user');
 		//TODO
+		
+		$result = false;
+		
+		$user = $this->user->getByToken($token);
+		if($user)
+		{
+			
+		}
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+	}
+	
+	public function sendResetEmail()
+	{
+		$email = '';
+		$this->load->helper('fabtotum_helper');
+		$result = send_password_reset($email);
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
 	
 	/**

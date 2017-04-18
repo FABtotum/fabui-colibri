@@ -120,6 +120,40 @@ class Std extends FAB_Controller {
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
 
+	public function email_test()
+	{
+		$this->load->helper('fabtotum_helper');
+		$this->load->model('User', 'user');
+		$this->load->database();
+		$this->load->library(array('session', 'parser'));
+		$this->load->helper(array('url', 'language', 'update'));
+		
+		$email = 'kesler.daniel@gmail.com';
+		
+		//~ $result = send_via_noreply('kesler.daniel@gmail.com', 'Daniel', 'Kessler', 'FABTotum email test', 'Some kind of <strong>HTML capable</strong> content');
+		//$user =  $this->user->getByEmail($email); //array();
+		
+		/*$token = md5($user['id'] . '-' . $email . '-' . time());
+		
+		$user_settings = json_decode($user['settings'], 1);
+		$user_settings['token'] = $token;
+		
+		$data_update['settings'] = json_encode($user_settings);
+		
+		//$this->user->update( $user['id'], $data_update);
+		
+		//$user =  $this->user->getByEmail($email);
+		$result['token'] = $token;
+		$result['email'] = $email;
+		$result['site_url'] = site_url();
+		$result['first_name'] = $user['first_name'];
+		$result['last_name'] = $user['last_name'];*/
+		
+		$result = send_password_reset($email);
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+	}
+
  }
  
 ?>

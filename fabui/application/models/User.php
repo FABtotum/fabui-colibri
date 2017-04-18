@@ -17,6 +17,33 @@
 		parent::__construct($this->tableName);
 	}
 	
+	public function getByEmail($email)
+	{
+		return $this->get( array('email' => $email), 1 );
+	}
+	
+	public function getByToken($token)
+	{
+		$query = $this->db->get($this->tableName);
+		$result = $query->result();
+				
+		$user = false;
+		
+		foreach($result as $row){
+			
+			$_settings = json_decode($row->settings, true);
+			
+			
+			if(isset($_settings['token']) && $_settings['token'] == $token){
+				
+				$user = $row;
+				break;
+				
+			}
+		}
+		
+		return $user;
+	}
  }
  
 ?>
