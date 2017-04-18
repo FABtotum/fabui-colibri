@@ -177,7 +177,7 @@
 		{
 			wait_title = _("Saving new ethernet configuration");
 			error_message = _("Failed to save ethernet configuration");
-			reload_timeout = 0;
+			reload_timeout = 3;
 			/** 
 			* if static ip address change
 			**/
@@ -214,12 +214,10 @@
 			error_message = _("Failed to save DNS-SD configuration");
 			reload_timeout = 0;
 		}
-		
 		if(wait_title)
 		{
 			openWait("<i class='fa fa-spin fa-spinner'></i> " + wait_title, wait_message, false );
 		}
-		
 		$.ajax({
 			type: 'post',
 			url: "<?php echo site_url('settings/saveNetworkSettings/connect'); ?>",
@@ -228,9 +226,7 @@
 			async: true,
 			timout: 20000, //timeout 1 minute,
 			error: function(request, status, err) {
-				
 				fabApp.showErrorAlert(error_message);
-				
 			}
 		}).done(function(response) {
 			button.html('<i class="fa fa-save"></i> <?php echo _('Save')?>');
@@ -260,6 +256,8 @@
 					}, reload_timeout
 				);
 			}
+
+			closeWait();
 						
 		}).fail(function(jqXHR, textStatus){
 			fabApp.showErrorAlert(error_message);
