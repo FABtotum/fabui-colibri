@@ -18,6 +18,7 @@
 <script src="/assets/js/plugin/fastclick/fastclick.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script src="/assets/js/plugin/jquery-validate/jquery.validate.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script src="/assets/js/app.min.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script src="/assets/js/fabtotum.js?v=<?php echo FABUI_VERSION ?>"></script>
 <?php echo $jsScripts; ?>
 <?php echo $jsInLine; ?>
 	

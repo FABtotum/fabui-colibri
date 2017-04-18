@@ -28,7 +28,7 @@
 						<a href="#printer-tab" data-toggle="tab"> <span class="step">3</span> <span class="title"><?php echo _("Printer")?></span> </a>
 					</li>
 					<li data-target="#settings-tab">
-						<a href="#settings-tab" data-toggle="tab"> <span class="step">4</span> <span class="title"><?php echo _("Settings")?></span> </a>
+						<a href="#network-tab" data-toggle="tab"> <span class="step">4</span> <span class="title"><?php echo _("Network")?></span> </a>
 					</li>
 					<li data-target="#finish-tab">
 						<a href="#finish-tab" data-toggle="tab"> <span class="step">5</span> <span class="title"><?php echo _("Finish")?></span> </a>
@@ -47,6 +47,17 @@
 								<div class="icon-addon addon-md">
 				                    <?php echo langauges_menu('form-control', 'language', 'id="language"', $this->input->post('locale'));?>
 				                    <label class="fa fa-flag"></label>
+				                </div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label><?php echo _("What is your timezone?")?> </label>
+								<div class="icon-addon addon-md">
+				                    <?php echo timezone_menu('form-control', 'timezone', 'id="timezone"');?>
+				                    <label class="fa fa-map-marker"></label>
 				                </div>
 							</div>
 						</div>
@@ -150,21 +161,10 @@
 						</div>
 					</div>
 				</div>
-				<div class="tab-pane" id="settings-tab">
+				<div class="tab-pane" id="network-tab">
 					<br>
-					<h3><strong><?php echo _("Step")?> 4 </strong> - <?php echo _("Settings")?></h3>
-					<div class="row">
-						
-						<div class="col-sm-12">
-							<div class="form-group">
-								<label><?php echo _("What is your timezone?")?> </label>
-								<div class="icon-addon addon-md">
-				                    <?php echo timezone_menu('form-control', 'timezone', 'id="timezone"');?>
-				                    <label class="fa fa-map-marker"></label>
-				                </div>
-							</div>
-						</div>
-					</div>
+					<h3><strong><?php echo _("Step")?> 4 </strong> - <?php echo _("Network")?></h3>
+					<div id="wlan-table-container" style="height: 300px; overflow:auto;"></div>
 				</div>
 				<div class="tab-pane" id="finish-tab">
 					<br>
@@ -192,26 +192,65 @@
 		</div>
 	</div>
 </form>
-<form method="post" id="locale-form">
-	<input type="hidden" name="locale" id="locale" value="">
-</form>
+<!-- LANGUAGE FORM -->
+<form method="post" id="locale-form"><input type="hidden" name="locale" id="locale" value=""></form>
+<!-- END LANGUAGE FORM -->
 <!-- TERMS & CONDITIONS MODAL -->
 <div class="modal fade" id="termsConditionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel"><?php echo _("Terms & Conditions")?></h4>
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title" id="myModalLabel"><?php echo _("Terms & Conditions")?></h4>
+		</div>
+			<div class="modal-body custom-scroll terms-body">
+				<div><?php echo termsAndConditions(); ?></div>
 			</div>
-				<div class="modal-body custom-scroll terms-body">
-					<div><?php echo termsAndConditions(); ?></div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _("Cancel")?></button>
-					<button type="button" class="btn btn-primary" id="i-agree"><i class="fa fa-check"></i> <?php echo _("I agree")?></button>
-					<button type="button" class="btn btn-danger pull-left" id="print"><i class="fa fa-print"></i> <?php echo _("Print")?></button>
-				</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _("Cancel")?></button>
+				<button type="button" class="btn btn-primary" id="i-agree"><i class="fa fa-check"></i> <?php echo _("I agree")?></button>
+				<button type="button" class="btn btn-danger pull-left" id="print"><i class="fa fa-print"></i> <?php echo _("Print")?></button>
 			</div>
 		</div>
 	</div>
-	
+</div>
+<!-- END TERMS & CONDITIONS MODAL -->
+<!-- PASSWORD MODAL -->
+<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><i class="fa fa-lock"></i> <span id="passwordModalTitle"></span> <i class="fa fa-wifi"></i></h4>
+			</div>
+			<div class="modal-body custom-scroll " id="progressModalBody">
+				<form class="smart-form" id="passwordModalForm">
+					<fieldset>
+						<section>
+							<label class="input"> <i class="icon-prepend fa fa-lock"></i>
+								<input type="password" data-inputmask-regex="[-_a-z A-Z0-9$@^`,|%;.~()/\{}:?\[\]=+_#!]*" class="input-password password" placeholder="insert password" id="wifiPassword" name="wifiPassword">
+							</label>
+						</section>
+						<section>
+							<label class="checkbox">
+								<input type="checkbox" data-attribute="modal" class="show-password"> <i></i> <?php echo _('Show password')?>
+							</label>
+						</section>
+					</fieldset>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Cancel')?></button>
+				<button type="button" class="btn btn-primary" id="modalConnectButton"><i class="fa fa-check"></i> <?php echo _('Connect')?> </button>
+			</div>
+		</div>
+	</div>
+</div>
+<form id="hiddenWifiForm" style="display:none;">
+	<fieldset>
+		<input type="text" id="address-mode"        name="address-mode" value="dhcp">
+		<input type="text" id="hidden-ssid"         name="hidden-ssid" value="">
+		<input type="text" id="hidden-bssid"        name="hidden-bssid" value="">
+		<input type="text" id="hidden-passphrase"   name="hidden-passphrase" value="">
+		<input type="text" id="hidden-psk"          name="hidden-psk" value="8e0f596ccbeb3fff85a4bbb14f193fecc1ca55a471df45a84df1b8f4ec33d426">
+	</fieldset>
+</form>

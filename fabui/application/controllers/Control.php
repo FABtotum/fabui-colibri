@@ -210,7 +210,99 @@
 		}
 		$this->output->set_content_type('application/json')->set_output(json_encode($networkInfo));
 	}
-	
+	/**
+	 * scan wifi networks
+	 * @return json all scanned networks
+	 */
+	public function scanWifi($interface = 'wlan0')
+	{
+		//load helpers
+		$this->load->helper('os_helper');
+		$nets = scanWlan($interface);
+		$this->output->set_content_type('application/json')->set_output(json_encode($nets));
+	}
+	/**
+	 * 
+	 */
+	public function saveNetworkSettings($action = 'connect')
+	{
+		//get data from post
+		$this->load->helper('os_helper');
+		$postData = $this->input->post();
+		$result = true;
+		$net_type = $postData['net_type'];
+		switch($net_type)
+		{
+			case "eth":
+				$address = $postData['ipv4'];
+				$netmask = $postData['netmask'];
+				$gateway = $postData['gateway'];
+				$mode = $postData['address-mode'];
+				$iface = $postData['active'];
+				configureEthernet($iface, $mode, $address, $netmask, $gateway);
+				storeNetworkSettings($net_type, $iface, $mode, $address, $netmask, $gateway);
+				
+				//update social feeds
+				downloadBlogFeeds();
+				downloadTwitterFeeds();
+				downloadInstagramFeeds();
+				break;
+			case "wlan":
+				if($action == 'connect')
+				{
+					$address     = isset($postData['ipv4'])    ? $postData['ipv4']    : '0.0.0.0';
+					$netmask     = isset($postData['netmask']) ? $postData['netmask'] : '255.255.255.0';
+					$gateway     = isset($postData['gateway']) ? $postData['gateway'] : '0.0.0.0';
+					$mode        = $postData['address-mode'];
+					$iface       = $postData['active'];
+					$ap_ssid     = $postData['ap-ssid'];
+					$ap_pass     = $postData['ap-password'];
+					$ap_channel  = isset($postData['ap-channel']) ? $postData['ap-channel'] : 1;
+					$hidden_ssid = $postData['hidden-ssid'];
+					$hidden_pass = $postData['hidden-passphrase'];
+					$psk = $postData['hidden-psk'];
+					
+					if($mode == 'static-ap')
+					{
+						$ssid = $ap_ssid;
+						$password = $ap_pass;
+						$psk = '';
+					}
+					else
+					{
+						$ssid = $hidden_ssid;
+						$password = $hidden_pass;
+					}
+					configureWireless($iface, $ssid, $password, $psk, $mode, $address, $netmask, $gateway, $ap_channel);
+					storeNetworkSettings($net_type, $iface, $mode, $address, $netmask, $gateway, $ssid, $password, $psk);
+					//update social feeds
+					downloadBlogFeeds();
+					downloadTwitterFeeds();
+					downloadInstagramFeeds();
+				}
+				else if($action == 'disconnect')
+				{
+					$iface = $postData['active'];
+					disconnectFromWireless($iface);
+				}
+				break;
+			case "dnssd":
+				$hostname = $postData['dnssd-hostname'];
+				$name = $postData['dnssd-name'];
+				// TODO: error handling
+				setHostName($hostname, $name);
+				storeNetworkSettings($net_type, '', '', '', '', '', '', '', '', $hostname, $name);
+				break;
+			case "dns":
+				// TODO
+				$dns = $postData['dns'];
+				configureDNS($dns);
+			default:
+				$result = false;
+		}
+		writeNetworkInfo();
+		$this->output->set_content_type('application/json')->set_output(json_encode(getInterfaces()));
+	}
 	/**
 	 * 
 	 */

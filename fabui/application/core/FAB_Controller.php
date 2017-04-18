@@ -51,7 +51,7 @@
 			$fabuiBundle = getLocalBundle('fabui');
 			define('FABUI_VERSION', $fabuiBundle['version']);
 			
-			if($this->session->loggedIn == false && !in_array(get_class($this), $this->noSessionNeeded)){		
+			if($this->session->loggedIn == false && !in_array(get_class($this), $this->noSessionNeeded)){
 				if($this->isAjax){
 					$this->output->set_status_header(403, 'Invalid session');
 					exit();
@@ -149,6 +149,7 @@
 		$data['jsInLine']  = $this->jsInLine;
 		$data['cssInLine'] = $this->cssInline;
 		$data['cssFiles']  = cssFilesInclusion($this->css);
+		$data['translations'] = $this->load->view('layout/translations_js', null, true);
 		
 		$this->template['head']    = $this->load-> view($this->layoutInstall.'/head',    $data, true);
 		//$this->template['top']     = $this->load-> view($this->layoutInstall.'/top',     $data, true);

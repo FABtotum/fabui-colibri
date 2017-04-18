@@ -46,7 +46,7 @@ class Settings extends FAB_Controller {
 							  
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'hardware-settings-widget';
-		$widget->header = array('icon' => 'fa-cog', "title" => "<h2>"._('Hardware')."</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-cog', "title" => "<h2>"._('Hardware')."</h2>", 'toolbar' => $headerToolbar);
 		$widget->body   = array('content' => $this->load->view('settings/hardware_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 		
 		$this->addJSInLine($this->load->view('settings/hardware_js', $data, true));
@@ -143,8 +143,8 @@ class Settings extends FAB_Controller {
 			'10' => _('Channel').' 10 (2457 MHz)',
 			'11' => _('Channel').' 11 (2462 MHz)');
 			
-		$data['current_hostname'] = getHostName();
-		$data['current_name'] = getAvahiServiceName();
+		$data['current_hostname']     = getHostName();
+		$data['current_name']         = getAvahiServiceName();
 		$data['preSelectedInterface'] = $preSelectedInterface;
 		
 		$ifaces_data = getInterfaces();
@@ -322,14 +322,14 @@ class Settings extends FAB_Controller {
 			case "wlan":
 				if($action == 'connect')
 				{
-					$address     = $postData['ipv4'];
-					$netmask     = $postData['netmask'];
-					$gateway     = $postData['gateway'];
+					$address     = isset($postData['ipv4'])    ? $postData['ipv4']    : '0.0.0.0';
+					$netmask     = isset($postData['netmask']) ? $postData['netmask'] : '255.255.255.0';
+					$gateway     = isset($postData['gateway']) ? $postData['gateway'] : '0.0.0.0';
 					$mode        = $postData['address-mode'];
 					$iface       = $postData['active'];
 					$ap_ssid     = $postData['ap-ssid'];
 					$ap_pass     = $postData['ap-password'];
-					$ap_channel  = $postData['ap-channel'];
+					$ap_channel  = isset($postData['ap-channel']) ? $postData['ap-channel'] : 1;
 					$hidden_ssid = $postData['hidden-ssid'];
 					$hidden_pass = $postData['hidden-passphrase'];
 					$psk = $postData['hidden-psk'];

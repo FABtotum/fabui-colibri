@@ -34,3 +34,4 @@
 <script src="/assets/js/libs/jquery-ui-1.10.3.min.js"></script>
 <?php echo $cssFiles; ?>
 <?php echo $cssInLine; ?>
+<?php echo $translations;?>
