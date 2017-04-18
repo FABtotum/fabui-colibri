@@ -71,12 +71,18 @@
 		openWait('<i class="fa fa-spinner fa-spin "></i>' + "<?php echo _('Preparing {0}');?>".format("<?php echo _(ucfirst($type)); ?>"), _("Checking safety measures...") );
 		
 		var calibration = $('input[name=calibration]:checked').val();
+		var send_email = $("#email-switch").is(":checked");
+		var auto_shutdown = $("#shutdown-switch").is(":checked");
 		
 		var data = {
 			idFile:idFile,
 			skipEngage:skipEngage,
-			calibration:calibration
+			calibration:calibration,
+			send_email:send_email,
+			auto_shutdown:auto_shutdown
 			};
+			
+		console.log('printArgs', data);
 			
 		$.ajax({
 			type: 'post',
@@ -84,6 +90,10 @@
 			url: '<?php echo site_url($start_task_url); ?>',
 			dataType: 'json'
 		}).done(function(response) {
+			
+			console.log(response);
+			
+			
 			if(response.start == false){
 				gotoWizardStep(2);
 				fabApp.showErrorAlert(response.message);

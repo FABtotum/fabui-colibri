@@ -12,15 +12,64 @@
 	$(document).ready(function() {
 		initValidate();
 		$("#login-form").on('submit', submitForm);
-		//$("#submit").on('click', submitForm);
+		$("#send-mail").on('click', sendResetEmail);
+		$("#forgot-password").on('click', showForgotPasswordModal);
+		$("#reload-page").on('click', reloadPage);
 	});
 	
+	function showForgotPasswordModal()
+	{
+		$('#password-modal').modal({
+			keyboard : false
+		});
+	}
+	
+	function reloadPage()
+	{
+		location.reload();
+	}
+	
+	function sendResetEmail() {
+
+		$("#error-message").hide();
+		$("#send-mail").addClass('disabled');
+		$("#send-mail").html( _("Sending...") );
+
+		$.ajax({
+			url : "/fabui/login/sendResetEmail",
+			data : {
+				email : $("#mail-for-reset").val()
+			},
+			type : 'POST',
+			dataType : 'json'
+		}).done(function(response) {
+
+			$("#send-mail").removeClass('disabled');
+			$("#send-mail").html('Send Mail');
+			if (!response.user) {
+				$("#error-message").show();
+				return false;
+			}
+			else{
+				$("#error-message").hide();
+				if (response.sent) {
+					$('#password-modal').modal('hide')
+					$.smallBox({
+						title : _("Success"),
+						content : "<i class='fa fa-check'></i>" + _("A message was be sent to that address containing a link to reset your password "),
+						color : "#659265",
+						iconSmall : "fa fa-thumbs-up bounce animated",
+						timeout : 4000
+					});
+				}
+			}
+		});
+	}
 	
 	function submitForm()
 	{
 		$("#browser-date").val(moment().format('YYYY-MM-DD HH:mm:ss'));
 	}
-	
 	
 	function initValidate()
 	{

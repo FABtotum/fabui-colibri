@@ -19,6 +19,7 @@
 		}
 		$this->verifyCookie();
 		$data['alert'] = $this->session->flashdata('alert');
+		$this->load->helper('os_helper');
 		$this->content = $this->load->view('login/login_form', $data, true);
 		$this->addJsInLine($this->load->view('login/login_js', '', true));
 		$this->addJSFile('/assets/js/plugin/moment/moment.min.js'); //moment
@@ -101,6 +102,7 @@
 	public function newAccount()
 	{
 		$this->load->helper('fabtotum_helper');
+		$this->load->helper('os_helper');
 		$this->content = $this->load->view('login/register_form', '', true);
 		$this->addJsInLine($this->load->view('login/register_js', '', true));
 		$this->loginLayout('register');
@@ -135,25 +137,71 @@
 	public function resetPassword($token)
 	{
 		$this->load->model('User', 'user');
-		//TODO
-		
-		$result = false;
 		
 		$user = $this->user->getByToken($token);
 		if($user)
 		{
+			$this->load->helper('fabtotum_helper');
+			$this->load->helper('os_helper');
 			
+			$data = array();
+			$data['user'] = $user;
+			$data['token'] = $token;
+			
+			$this->content = $this->load->view('login/reset_form', $data, true);
+			$this->addJsInLine($this->load->view('login/reset_js', $data, true));
+			$this->loginLayout('reset');
 		}
+		else
+		{
+			redirect('login');
+		}
+	}
+	
+	public function doReset()
+	{
+		$this->load->model('User', 'user');
 		
-		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		$token = $this->input->post('token');
+		$new_password = $this->input->post('password');
+		
+		$user = $this->user->getByToken($token);
+		if($user)
+		{
+			$user_settings = json_decode($user['settings'], true);
+			$user_settings['token'] = '';
+			
+			$data_update['password'] = md5($new_password);
+			$data_update['settings'] = json_encode($user_settings);
+			
+			$this->user->update($user['id'], $data_update);
+			
+			$_SESSION['new_reset'] = true;
+		}
+		redirect('login');
 	}
 	
 	public function sendResetEmail()
 	{
-		$email = '';
+		$email = $this->input->post('email');
+		
 		$this->load->helper('fabtotum_helper');
-		$result = send_password_reset($email);
-		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		$this->load->model('User', 'user');
+
+		$response = array();
+		$response['user'] = false;
+		$response['sent'] = false;
+		
+		$user = $this->user->getByEmail($email);
+		if($user)
+		{
+			$response['user'] = true;
+		}
+		
+		$sent = send_password_reset($email);
+		$response['sent'] = $sent;
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
 	
 	/**

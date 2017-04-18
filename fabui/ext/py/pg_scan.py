@@ -59,8 +59,8 @@ class PhotogrammetryScan(GCodePusher):
     def __init__(self, log_trace, monitor_file, scan_dir, host_address, host_port,
                 standalone = False, finalize = True,
                 width = 2592, height = 1944, rotation = 270, iso = 800, shutter_speed = 35000,
-                lang = 'en_US.UTF-8'):
-        super(PhotogrammetryScan, self).__init__(log_trace, monitor_file, use_stdout=standalone, lang=lang)
+                lang = 'en_US.UTF-8', send_email=False):
+        super(PhotogrammetryScan, self).__init__(log_trace, monitor_file, use_stdout=standalone, lang=lang, send_email=send_email)
         
         self.standalone = standalone
         self.finalize   = finalize
@@ -268,7 +268,9 @@ def main():
     parser.add_argument("--lang",           help="Output language", 		default='en_US.UTF-8' )
     parser.add_argument("--standalone", action='store_true',  help="Standalone operation. Does all preparations and cleanup." )
     parser.add_argument('--help', action='help', help="Show this help message and exit" )
-	
+    parser.add_argument("--email",             help="Send an email on task finish", action='store_true', default=False)
+    parser.add_argument("--shutdown",          help="Shutdown on task finish", action='store_true', default=False )
+    
     # GET ARGUMENTS
     args = parser.parse_args()
 
@@ -286,8 +288,9 @@ def main():
     a_offset        = float(args.a_offset)
     standalone      = args.standalone
     task_id         = int(args.task_id)
-	lang			= args.lang
-	
+    lang            = args.lang
+    send_email      = bool(args.email)
+
     monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
     log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
 
@@ -306,7 +309,7 @@ def main():
                     height=height,
                     iso=iso,
                     host_address=host_address,
-                    host_port=host_port, lang=lang)
+                    host_port=host_port, lang=lang, send_email=send_email)
 
     app_thread = Thread( 
             target = app.run, 

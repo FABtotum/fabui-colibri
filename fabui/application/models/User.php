@@ -24,7 +24,7 @@
 	
 	public function getByToken($token)
 	{
-		$query = $this->db->get($this->tableName);
+		$query = $this->db->get($this->tableName, 1);
 		$result = $query->result();
 				
 		$user = false;
@@ -36,7 +36,7 @@
 			
 			if(isset($_settings['token']) && $_settings['token'] == $token){
 				
-				$user = $row;
+				$user = get_object_vars($row);
 				break;
 				
 			}

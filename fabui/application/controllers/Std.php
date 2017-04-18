@@ -119,41 +119,93 @@ class Std extends FAB_Controller {
 		$result = safetyCheck($feature, ($bed_in_place == "yes") );
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
-
-	public function email_test()
+	
+	public function sendTaskEmail($taskID = 0)
 	{
 		$this->load->helper('fabtotum_helper');
 		$this->load->model('User', 'user');
+		$this->load->model('Files', 'files');
+		$this->load->model('Objects', 'objects');
+		$this->load->model('Tasks', 'tasks');
 		$this->load->database();
 		$this->load->library(array('session', 'parser'));
-		$this->load->helper(array('url', 'language', 'update'));
+		$this->load->helper(array('url', 'language', 'update', 'utility'));
 		
-		$email = 'kesler.daniel@gmail.com';
+		$task = $this->tasks->get($taskID, 1);
+		$user = false;
+		$file = false;
+		$object = false;
+		if($task)
+		{
+			$user = $this->user->get($task['user'], 1);
+			$file = $this->files->get($task['id_file'], 1);
+			$object = $this->objects->get($task['id_object'], 1);
+			
+			if($user)
+			{
+				$settings = json_decode($user['settings'], 1);
+				$lang_code = $settings['language'];
+				setLanguage($lang_code);
+				echo "Language: ".$lang_code.PHP_EOL;
+			}
+		}
 		
-		//~ $result = send_via_noreply('kesler.daniel@gmail.com', 'Daniel', 'Kessler', 'FABTotum email test', 'Some kind of <strong>HTML capable</strong> content');
-		//$user =  $this->user->getByEmail($email); //array();
+		$email      = $user['email'];
+		$first_name = $user['first_name'];
+		$last_name  = $user['last_name'];
+		$task_start = $task['start_date'];
+		$task_finish = $task['finish_date'];
+		$task_duration = "";
+		$task_status = $task['status'];
+		$task_type   = $task['type'];
+		$task_object = $object['name'];
+		$task_file   = $file['client_name'];
 		
-		/*$token = md5($user['id'] . '-' . $email . '-' . time());
+		$duration = dateDiff($task_finish, $task_start);
+		$time_labels = array('year', 'month', 'day', 'hour', 'minute', 'second');
+		foreach($time_labels as $label)
+		{
+			$found = false;
+			if( array_key_exists($label, $duration))
+			{
+				$found = true;
+			}
+			else if(array_key_exists($label.'s', $duration))
+			{
+				$label .= 's';
+				$found = true;
+			}
+			
+			if($found)
+			{
+				$task_duration .= $duration[$label] . ' ' . _($label) . ' ';
+			}
+		}
 		
-		$user_settings = json_decode($user['settings'], 1);
-		$user_settings['token'] = $token;
+		/*echo "Email: ".$user['email'].PHP_EOL;
+		echo "== Task ==".PHP_EOL;
+		echo "start: ". $task_start.PHP_EOL;
+		echo "finish: ". $task_finish.PHP_EOL;
+		echo "duration: ". $task_duration.PHP_EOL;
+		echo "status: ". $task_status.PHP_EOL;
+		echo "object: ". $task_object.PHP_EOL;
+		echo "file: ". $task_file.PHP_EOL;*/
 		
-		$data_update['settings'] = json_encode($user_settings);
+		$subject = _('Task') .' '. _($task_status);
+		$content = pyformat( _('Hello {0},<br><br> this e-mail is to inform you that the last {1} you started was just {2}.'), array($first_name, $task_type, $task_status) );
 		
-		//$this->user->update( $user['id'], $data_update);
+		$content .= '<br><br>';
 		
-		//$user =  $this->user->getByEmail($email);
-		$result['token'] = $token;
-		$result['email'] = $email;
-		$result['site_url'] = site_url();
-		$result['first_name'] = $user['first_name'];
-		$result['last_name'] = $user['last_name'];*/
+		$content .= '<h2>Info</h2>';
+		$content .= '<p>Started on: '.$task_start.'</p>';
+		$content .= '<p>Finished on: '.$task_start.'</p>';
+		$content .= '<p>Duration: '.$task_duration.'</p>';
+		$content .= '<p>File: '.$task_file.'</p>';
 		
-		$result = send_password_reset($email);
+		$result = send_via_noreply($email, $first_name, $last_name, $subject, $content);
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
-
  }
  
 ?>

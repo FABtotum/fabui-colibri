@@ -84,7 +84,7 @@
 
 				$.smallBox({
 					title : "Settings",
-					content : '<?php echo _("Account informations saved");?>',
+					content : '<?php echo _("Account information saved");?>',
 					color : "#5384AF",
 					timeout: 3000,
 					icon : "fa fa-check bounce animated"

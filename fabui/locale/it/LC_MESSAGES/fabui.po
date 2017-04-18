@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-17 14:21+0200\n"
+"POT-Creation-Date: 2017-04-18 12:31+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -156,7 +156,7 @@ msgstr "Informazioni del sistema"
 #: fabui/application/config/menu.php:142
 #: fabui/application/controllers/Account.php:31
 #: fabui/application/views/install/wizard.php:31
-#: fabui/application/views/install/wizard.php:150
+#: fabui/application/views/install/wizard.php:155
 #: fabui/application/views/plugin/js.php:349
 #: fabui/application/views/settings/hardware_js.php:144
 #: fabui/application/views/camera/main_widget.php:86
@@ -357,12 +357,12 @@ msgstr ""
 msgid "Instagram"
 msgstr "Installazione"
 
-#: fabui/application/controllers/Login.php:55
+#: fabui/application/controllers/Login.php:56
 #, fuzzy
 msgid "Please check your email or password"
 msgstr "Inserisci il tuo indirizzo email"
 
-#: fabui/application/controllers/Login.php:127
+#: fabui/application/controllers/Login.php:129
 #, fuzzy
 msgid "New user created successfully"
 msgstr "Plugin installato correttamente"
@@ -527,6 +527,8 @@ msgstr ""
 #: fabui/application/controllers/Projectsmanager.php:712
 #: fabui/application/views/install/wizard.php:210
 #: fabui/application/views/login/register_form.php:74
+#: fabui/application/views/login/login_form.php:89
+#: fabui/application/views/login/login_form.php:109
 #: fabui/application/views/settings/network_widget.php:143
 #: fabui/application/views/feeder/calibration/widget.php:72
 #: fabui/application/views/history/main_js.php:104
@@ -592,7 +594,7 @@ msgid ""
 msgstr ""
 
 #: fabui/application/controllers/Head.php:55
-#: fabui/application/views/install/js.php:109
+#: fabui/application/views/install/js.php:111
 #: fabui/application/views/plugin/js.php:93
 msgid "Install"
 msgstr "Installa"
@@ -689,24 +691,74 @@ msgstr "Scarica"
 msgid "Upload custom"
 msgstr "Carica"
 
-#: fabui/application/helpers/fabtotum_helper.php:1381
+#: fabui/application/helpers/utility_helper.php:102
+msgid "second"
+msgstr ""
+
+#: fabui/application/helpers/utility_helper.php:102
+msgid "seconds"
+msgstr ""
+
+#: fabui/application/helpers/utility_helper.php:103
+msgid "minute"
+msgstr ""
+
+#: fabui/application/helpers/utility_helper.php:103
+msgid "minutes"
+msgstr ""
+
+#: fabui/application/helpers/utility_helper.php:104
+msgid "hour"
+msgstr ""
+
+#: fabui/application/helpers/utility_helper.php:104
+msgid "hours"
+msgstr ""
+
+#: fabui/application/helpers/utility_helper.php:105
+msgid "day"
+msgstr ""
+
+#: fabui/application/helpers/utility_helper.php:105
+msgid "days"
+msgstr ""
+
+#: fabui/application/helpers/utility_helper.php:106
+#, fuzzy
+msgid "month"
+msgstr "Cognome"
+
+#: fabui/application/helpers/utility_helper.php:106
+#, fuzzy
+msgid "months"
+msgstr "Cognome"
+
+#: fabui/application/helpers/utility_helper.php:107
+msgid "year"
+msgstr ""
+
+#: fabui/application/helpers/utility_helper.php:107
+msgid "years"
+msgstr ""
+
+#: fabui/application/helpers/fabtotum_helper.php:1388
 msgid "White"
 msgstr ""
 
-#: fabui/application/helpers/fabtotum_helper.php:1382
+#: fabui/application/helpers/fabtotum_helper.php:1389
 #, fuzzy
 msgid "Red"
 msgstr "Piatto"
 
-#: fabui/application/helpers/fabtotum_helper.php:1383
+#: fabui/application/helpers/fabtotum_helper.php:1390
 msgid "Black"
 msgstr ""
 
-#: fabui/application/helpers/fabtotum_helper.php:1472
+#: fabui/application/helpers/fabtotum_helper.php:1476
 msgid "Password Reset"
 msgstr ""
 
-#: fabui/application/helpers/fabtotum_helper.php:1473
+#: fabui/application/helpers/fabtotum_helper.php:1477
 msgid ""
 "Hi {0},<br><br>We've generated a URL to reset your password. If you did not "
 "request to reset your password or if you've changed your mind, simply ignore "
@@ -732,6 +784,7 @@ msgstr "Installato"
 
 #: fabui/application/views/head/install_js.php:135
 #: fabui/application/views/debug/js.php:128
+#: fabui/application/views/install/js.php:165
 #: fabui/application/views/nozzle/height_js.php:129
 #: fabui/application/views/plugin/js.php:134
 #: fabui/application/views/spool/js.php:118
@@ -1103,9 +1156,9 @@ msgstr "Riavvia stampa"
 #: fabui/application/views/restore/wizard.php:36
 #: fabui/application/views/restore/wizard.php:45
 #: fabui/application/views/install/wizard.php:42
-#: fabui/application/views/install/wizard.php:52
-#: fabui/application/views/install/wizard.php:112
-#: fabui/application/views/install/wizard.php:150
+#: fabui/application/views/install/wizard.php:57
+#: fabui/application/views/install/wizard.php:117
+#: fabui/application/views/install/wizard.php:155
 #: fabui/application/views/jog/widget.php:25
 #: fabui/application/views/jog/widget.php:31
 #: fabui/application/views/jog/widget.php:89
@@ -1172,7 +1225,7 @@ msgid "Restore all previously installed plugins."
 msgstr ""
 
 #: fabui/application/views/restore/wizard.php:121
-#: fabui/application/views/install/wizard.php:177
+#: fabui/application/views/install/wizard.php:174
 msgid "You're almost done."
 msgstr ""
 
@@ -1181,7 +1234,7 @@ msgid "Click <strong>restore</strong> to complete"
 msgstr ""
 
 #: fabui/application/views/restore/wizard.php:130
-#: fabui/application/views/install/wizard.php:186
+#: fabui/application/views/install/wizard.php:183
 #: fabui/application/views/std/task_wizard.php:48
 #: fabui/application/views/std/task_wizard.php:113
 #: fabui/application/views/scan/wizard/main.php:33
@@ -1190,8 +1243,8 @@ msgid "Prev"
 msgstr "Vista file"
 
 #: fabui/application/views/restore/wizard.php:133
-#: fabui/application/views/install/js.php:119
-#: fabui/application/views/install/wizard.php:189
+#: fabui/application/views/install/js.php:121
+#: fabui/application/views/install/wizard.php:186
 #: fabui/application/views/std/task_wizard.php:51
 #: fabui/application/views/std/task_wizard.php:116
 #: fabui/application/views/scan/wizard/main.php:36
@@ -1204,122 +1257,120 @@ msgstr ""
 msgid "Applying new settings"
 msgstr ""
 
-#: fabui/application/views/install/js.php:40
-#: fabui/application/views/install/js.php:68
+#: fabui/application/views/install/js.php:42
+#: fabui/application/views/install/js.php:70
 msgid "Your email address must be in the format of name@domain.com"
 msgstr ""
 
-#: fabui/application/views/install/js.php:64
+#: fabui/application/views/install/js.php:66
 #: fabui/application/views/login/register_js.php:76
 #: fabui/application/views/account/js.php:50
 msgid "Please enter your first name"
 msgstr "Inserisci il tuo nome"
 
-#: fabui/application/views/install/js.php:65
+#: fabui/application/views/install/js.php:67
 #, fuzzy
 msgid "Please enter your lasts name"
 msgstr "Inserisci il tuo cognome"
 
-#: fabui/application/views/install/js.php:67
-#: fabui/application/views/login/login_js.php:43
+#: fabui/application/views/install/js.php:69
 #: fabui/application/views/login/register_js.php:65
+#: fabui/application/views/login/login_js.php:92
 #: fabui/application/views/login/login_form.php:33
 #: fabui/application/views/account/js.php:46
 msgid "Please enter your email address"
 msgstr "Inserisci il tuo indirizzo email"
 
-#: fabui/application/views/install/js.php:71
+#: fabui/application/views/install/js.php:73
 #: fabui/application/views/login/register_js.php:73
+#: fabui/application/views/login/reset_js.php:62
 #, fuzzy
 msgid "Please enter the same password as above"
 msgstr "Inserisci un indirizzo email valido"
 
-#: fabui/application/views/install/js.php:74
+#: fabui/application/views/install/js.php:76
 #: fabui/application/views/login/register_js.php:82
 msgid "You must agree with Terms and Conditions"
 msgstr ""
 
-#: fabui/application/views/install/js.php:138
+#: fabui/application/views/install/js.php:140
 #, fuzzy
 msgid "Installation in progress"
 msgstr "Riavvia stampa"
 
-#: fabui/application/views/install/js.php:138
+#: fabui/application/views/install/js.php:140
 msgid "This may take a while, please wait"
 msgstr ""
 
+#: fabui/application/views/install/js.php:165
+#, fuzzy
+msgid "Translating"
+msgstr "Stampa in corso"
+
 #: fabui/application/views/install/wizard.php:28
-#: fabui/application/views/install/wizard.php:112
+#: fabui/application/views/install/wizard.php:117
 #, fuzzy
 msgid "Printer"
 msgstr "Stampa"
 
-#: fabui/application/views/install/wizard.php:45
-msgid "Welcome to the installation wizard of the FABtotum User Interface"
-msgstr ""
-
 #: fabui/application/views/install/wizard.php:46
-msgid "Follow the steps and enter the data as prompted"
+msgid "Please select your language before proceeding with the installation"
 msgstr ""
 
-#: fabui/application/views/install/wizard.php:52
+#: fabui/application/views/install/wizard.php:57
 msgid "Create your personal account"
 msgstr ""
 
-#: fabui/application/views/install/wizard.php:58
+#: fabui/application/views/install/wizard.php:63
 #: fabui/application/views/login/register_form.php:38
 #: fabui/application/views/account/widget.php:16
 #: fabui/application/views/account/widget.php:19
 msgid "First name"
 msgstr "Nome"
 
-#: fabui/application/views/install/wizard.php:66
+#: fabui/application/views/install/wizard.php:71
 #: fabui/application/views/login/register_form.php:43
 #: fabui/application/views/account/widget.php:23
 #: fabui/application/views/account/widget.php:26
 msgid "Last name"
 msgstr "Cognome"
 
-#: fabui/application/views/install/wizard.php:104
+#: fabui/application/views/install/wizard.php:109
 #: fabui/application/views/login/register_form.php:50
 msgid "I agree with the"
 msgstr ""
 
-#: fabui/application/views/install/wizard.php:104
+#: fabui/application/views/install/wizard.php:109
 #: fabui/application/views/install/wizard.php:204
 #: fabui/application/views/login/register_form.php:50
 msgid "Terms & Conditions"
 msgstr ""
 
-#: fabui/application/views/install/wizard.php:116
+#: fabui/application/views/install/wizard.php:121
 msgid "Assign a name to your FABtotum"
 msgstr ""
 
-#: fabui/application/views/install/wizard.php:119
+#: fabui/application/views/install/wizard.php:124
 msgid "I'd like to have a name"
 msgstr ""
 
-#: fabui/application/views/install/wizard.php:127
+#: fabui/application/views/install/wizard.php:132
 msgid "Insert serial number"
 msgstr ""
 
-#: fabui/application/views/install/wizard.php:132
+#: fabui/application/views/install/wizard.php:137
 msgid "The unit's serial number can be found on the back cover."
 msgstr ""
 
-#: fabui/application/views/install/wizard.php:139
+#: fabui/application/views/install/wizard.php:144
 msgid "What color is your FABtotum "
 msgstr ""
 
-#: fabui/application/views/install/wizard.php:154
-msgid "Select your language"
-msgstr ""
-
-#: fabui/application/views/install/wizard.php:163
+#: fabui/application/views/install/wizard.php:160
 msgid "What is your timezone?"
 msgstr ""
 
-#: fabui/application/views/install/wizard.php:177
+#: fabui/application/views/install/wizard.php:174
 msgid "Click <strong>Install</strong> to complete"
 msgstr ""
 
@@ -1420,18 +1471,6 @@ msgstr ""
 msgid "Bundles"
 msgstr ""
 
-#: fabui/application/views/login/login_js.php:44
-#: fabui/application/views/login/register_js.php:66
-#: fabui/application/views/account/js.php:47
-msgid "Please enter a valid email address"
-msgstr "Inserisci un indirizzo email valido"
-
-#: fabui/application/views/login/login_js.php:47
-#: fabui/application/views/login/register_js.php:69
-#, fuzzy
-msgid "Please enter your password"
-msgstr "Inserisci il tuo nome qui"
-
 #: fabui/application/views/login/register_form.php:16
 msgid "Register new account"
 msgstr ""
@@ -1442,6 +1481,8 @@ msgstr ""
 
 #: fabui/application/views/login/register_form.php:26
 #: fabui/application/views/login/register_form.php:31
+#: fabui/application/views/login/reset_form.php:26
+#: fabui/application/views/login/reset_form.php:32
 msgid "Don't forget your password"
 msgstr ""
 
@@ -1454,7 +1495,20 @@ msgstr ""
 msgid "Please enter your login name"
 msgstr "Inserisci il tuo cognome"
 
+#: fabui/application/views/login/register_js.php:66
+#: fabui/application/views/login/login_js.php:93
+#: fabui/application/views/account/js.php:47
+msgid "Please enter a valid email address"
+msgstr "Inserisci un indirizzo email valido"
+
+#: fabui/application/views/login/register_js.php:69
+#: fabui/application/views/login/login_js.php:96
+#, fuzzy
+msgid "Please enter your password"
+msgstr "Inserisci il tuo nome qui"
+
 #: fabui/application/views/login/register_js.php:72
+#: fabui/application/views/login/reset_js.php:61
 #, fuzzy
 msgid "Please enter your password one more time"
 msgstr "Inserisci il tuo cognome"
@@ -1463,6 +1517,16 @@ msgstr "Inserisci il tuo cognome"
 #: fabui/application/views/account/js.php:53
 msgid "Please enter your last name"
 msgstr "Inserisci il tuo cognome"
+
+#: fabui/application/views/login/reset_form.php:18
+msgid "Hi {0}, below you can reset your password"
+msgstr ""
+
+#: fabui/application/views/login/reset_form.php:37
+#: fabui/application/views/probe/angle_widget.php:19
+#: fabui/application/views/probe/angle_widget.php:41
+msgid "Reset"
+msgstr ""
 
 #: fabui/application/views/login/login_form.php:27
 #: fabui/application/views/login/login_form.php:51
@@ -1490,6 +1554,39 @@ msgstr ""
 #: fabui/application/views/login/login_form.php:47
 msgid "Stay signed in"
 msgstr ""
+
+#: fabui/application/views/login/login_form.php:69
+#: fabui/application/views/login/login_form.php:97
+msgid "Don't panic"
+msgstr ""
+
+#: fabui/application/views/login/login_form.php:75
+msgid ""
+"Enter the email address you used when creating the account and click "
+"<strong>Send Email</strong>.<br>A message will be sent to that address "
+"containing a link to reset your password"
+msgstr ""
+
+#: fabui/application/views/login/login_form.php:83
+msgid ""
+"This email is not recognized by the printer, please insert a valid email"
+msgstr ""
+
+#: fabui/application/views/login/login_form.php:90
+#, fuzzy
+msgid "Send Email"
+msgstr "Invia"
+
+#: fabui/application/views/login/login_form.php:103
+msgid ""
+"To be able to send an email with a reset link you need to be connected to "
+"the internet."
+msgstr ""
+
+#: fabui/application/views/login/login_form.php:110
+#: fabui/application/views/projectsmanager/add/widget.php:66
+msgid "Reload"
+msgstr "Ricarica"
 
 #: fabui/application/views/bed/js.php:51
 #, fuzzy
@@ -2409,7 +2506,7 @@ msgid "Latest news from Development blog aren't available"
 msgstr ""
 
 #: fabui/application/views/account/js.php:87
-msgid "Account informations saved"
+msgid "Account information saved"
 msgstr ""
 
 #: fabui/application/views/account/widget.php:38
@@ -2819,11 +2916,6 @@ msgstr ""
 #: fabui/application/views/probe/angle_widget.php:14
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:34
 msgid "Open probe"
-msgstr ""
-
-#: fabui/application/views/probe/angle_widget.php:19
-#: fabui/application/views/probe/angle_widget.php:41
-msgid "Reset"
 msgstr ""
 
 #: fabui/application/views/probe/angle_widget.php:24
@@ -3583,10 +3675,6 @@ msgstr "Disco USB"
 #: fabui/application/views/projectsmanager/add/widget.php:65
 msgid "Please insert USB disk"
 msgstr "Inserire disco USB"
-
-#: fabui/application/views/projectsmanager/add/widget.php:66
-msgid "Reload"
-msgstr "Ricarica"
 
 #: fabui/application/views/projectsmanager/add/widget.php:77
 msgid "Upload progress"
@@ -4917,6 +5005,12 @@ msgstr ""
 msgid "Before proceed make sure the head is properly locked in place"
 msgstr ""
 
+#: fabui/application/views/login/login_js.php:59
+msgid ""
+"A message was be sent to that address containing a link to reset your "
+"password "
+msgstr ""
+
 #: fabui/application/views/settings/network_js.php:194
 msgid "Saving new ethernet configuration"
 msgstr ""
@@ -5123,6 +5217,10 @@ msgid ""
 "port and try again."
 msgstr ""
 
+#: fabui/application/views/login/login_js.php:36
+msgid "Sending..."
+msgstr ""
+
 #: fabui/assets/js/tours/0010_head.js:5
 #, fuzzy
 msgid "Maintenance menu"
@@ -5145,6 +5243,10 @@ msgstr ""
 #, fuzzy
 msgid "Install head"
 msgstr "Installato"
+
+#: fabui/application/views/login/login_js.php:58
+msgid "Success"
+msgstr ""
 
 #: fabui/application/views/std/task_execute_js.php:334
 #, fuzzy

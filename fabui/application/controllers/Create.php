@@ -124,10 +124,18 @@
 		);
 		
 		$widgeFooterButtons = '';
-
+		$headerToolbar = '<div class="widget-toolbar" id="switch-2" style="display: block;" role="menu">
+						<div class="smart-form">
+							<label class="toggle" title='. _("Send and email when the task is finished").'>
+								<input type="checkbox" id="email-switch" name="checkbox-toggle">
+								<i data-swchon-text="ON" data-swchoff-text="OFF"></i>
+								<em class="fa fa-envelope"></em> '._("Email").'</label>
+						</div>
+					</div>';
+		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';
-		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>"._("Print")."</h2>");
+		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>"._("Print")."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ), 'class'=>'fuelux', 'footer'=>$widgeFooterButtons);
 
 		$this->addCssFile('/assets/css/std/select_file.css');
@@ -238,10 +246,18 @@
 		);
 		
 		$widgeFooterButtons = '';
-
+		$headerToolbar = '<div class="widget-toolbar" id="switch-2" style="display: block;" role="menu">
+						<div class="smart-form">
+							<label class="toggle" title='. _("Send and email when the task is finished").'>
+								<input type="checkbox" id="email-switch" name="checkbox-toggle">
+								<i data-swchon-text="'._("ON").'" data-swchoff-text="'._("OFF").'"></i>
+								<em class="fa fa-envelope"></em> '._("Email").'</label>
+						</div>
+					</div>';
+					
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';
-		$widget->header = array('icon' => 'icon-fab-mill', "title" => "<h2>"._("Mill")."</h2>");
+		$widget->header = array('icon' => 'icon-fab-mill', "title" => "<h2>"._("Mill")."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ), 'class'=>'fuelux', 'footer'=>$widgeFooterButtons);
 
 		$this->addCssFile('/assets/css/std/select_file.css');
@@ -356,8 +372,12 @@
 		$printArgs = array(
 						'-T' => $taskId, 
 						'-F' => $fileToCreate['full_path'],
-						'--lang' => getCurrentLanguage() . 'UTF-8'
+						'--lang' => getCurrentLanguage() . '.UTF-8'
 						);
+						
+		if($data['send_email'] == "true") $printArgs['--email'] = '';
+		if($data['auto_shutdown'] == "true") $printArgs['--shutdown'] = '';
+		
 		startPyScript('print.py', $printArgs);
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId, 'temperatures' => $temperatures)));
@@ -399,7 +419,7 @@
 		$printArgs = array(
 				'-T' => $taskId,
 				'-F' => $fileToCreate['full_path'],
-				'--lang' => getCurrentLanguage() . 'UTF-8'
+				'--lang' => getCurrentLanguage() . '.UTF-8'
 		);
 		startPyScript('mill.py', $printArgs);
 		

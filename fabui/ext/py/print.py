@@ -41,8 +41,12 @@ class PrintApplication(GCodePusher):
     Additive print application.
     """
     
-    def __init__(self, log_trace, monitor_file, standalone = False, autolevel = False, finalize = True, lang = 'en_US.UTF-8'):
-        super(PrintApplication, self).__init__(log_trace, monitor_file, use_stdout=standalone, lang=lang)
+    def __init__(self, log_trace, monitor_file, standalone = False, 
+                    autolevel = False, finalize = True,
+                    lang = 'en_US.UTF-8', send_email=False):
+        super(PrintApplication, self).__init__(log_trace, monitor_file, 
+                use_stdout=standalone, lang=lang, send_email=send_email)
+                
         self.standalone = standalone
         self.autolevel = autolevel
         self.finalize = finalize
@@ -65,12 +69,12 @@ class PrintApplication(GCodePusher):
             
             z_override = float(self.override_stats['z_override'])
             if z_override:
-				self.trace( _("Saving Z override") )
-				info = self.config.get_current_head_info()
-				nozzle_offset = float(info['nozzle_offset'])
-				nozzle_offset += z_override
-				info['nozzle_offset'] = nozzle_offset
-				self.config.save_current_head_info(info)
+                self.trace( _("Saving Z override") )
+                info = self.config.get_current_head_info()
+                nozzle_offset = float(info['nozzle_offset'])
+                nozzle_offset += z_override
+                info['nozzle_offset'] = nozzle_offset
+                self.config.save_current_head_info(info)
             
             if self.is_aborted():
                 self.exec_macro("end_additive_aborted")
@@ -150,6 +154,8 @@ def main():
     parser.add_argument("-F", "--file-name",   help="File name.",    required=True)
     parser.add_argument("--autolevel",  action='store_true',  help="Auto bed leveling. Valid only when --standalone is used.", default=False)
     parser.add_argument("--lang",              help="Output language", default='en_US.UTF-8' )
+    parser.add_argument("--email",             help="Send an email on task finish", action='store_true', default=False)
+    parser.add_argument("--shutdown",          help="Shutdown on task finish", action='store_true', default=False )
     
     # GET ARGUMENTS
     args = parser.parse_args()
@@ -158,7 +164,9 @@ def main():
     gcode_file      = args.file_name     # GCODE FILE
     task_id         = args.task_id
     autolevel       = args.autolevel
-    lang		    = args.lang
+    lang            = args.lang
+    send_email      = bool(args.email)
+    
     if task_id == 0:
         standalone  = True
     else:
@@ -167,7 +175,7 @@ def main():
     monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
     log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
     
-    app = PrintApplication(log_trace, monitor_file, standalone, autolevel, lang=lang)
+    app = PrintApplication(log_trace, monitor_file, standalone, autolevel, lang=lang, send_email=send_email)
 
     app.run(task_id, gcode_file)
     app.loop()

@@ -98,7 +98,7 @@ class ExposeCommands:
         return self.gcs.send(code, block=block, timeout=timeout, async=async)
     
     def reload_config(self):
-		self.config.reload()
+        self.config.reload()
     
     def respond(self, reply, response='success', message=''):
         return {
@@ -160,6 +160,10 @@ class ExposeCommands:
         
     def set_auto_shutdown(self, value): # !shutdown:<on|off>
         self.gcs.push('config:shutdown', value)
+        return self.respond('ok')
+        
+    def set_send_email(self, value): # !email:<on|off>
+        self.gcs.push('config:email', value)
         return self.respond('ok')
     
     def set_rpm(self, value):

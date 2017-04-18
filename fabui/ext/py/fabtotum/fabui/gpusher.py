@@ -97,7 +97,7 @@ class GCodePusher(object):
     
     def __init__(self, log_trace = None, monitor_file = None, gcs = None, 
 				 config = None, use_callback = True, use_stdout = False, 
-				 update_period = 2, lang = 'en_US.UTF-8'):
+				 update_period = 2, lang = 'en_US.UTF-8', send_email=False, auto_shutdown=False):
                         
         self.monitor_lock = RLock()
         
@@ -118,8 +118,8 @@ class GCodePusher(object):
             'completed_time'        : 0,
             'duration'              : 0,
             'percent'               : 0.0,
-            'auto_shutdown'         : False,
-            'send_email'            : False,
+            'auto_shutdown'         : auto_shutdown,
+            'send_email'            : send_email,
             'message'               : ''
         }
         
@@ -188,6 +188,15 @@ class GCodePusher(object):
         self.progress_monitor = None
         self.db = Database(self.config)
     
+    def __send_task_email(self):
+        import shlex, subprocess
+        cmd = 'sudo -u www-data php /usr/share/fabui/index.php Std sendTaskEmail/{0}'.format( self.task_stats['id'] )
+        try:
+            output = subprocess.check_output( shlex.split(cmd) )
+            self.trace( _("Email sent") )
+        except subprocess.CalledProcessError as e:
+            self.trace( _("Email sending failed") )
+            
     def __self_destruct(self):
         import signal
         print 'Initiating SIGKILL'
@@ -395,8 +404,11 @@ class GCodePusher(object):
         with self.monitor_lock:        
             self.task_stats['percent'] = 100.0
             self.update_monitor_file()
-        
+                    
         self.file_done_callback()
+        
+        if self.task_stats['status'] == self.TASK_COMPLETED:
+            self.__send_task_email()
     
     def finish_task(self):
         self.gcs.finish()
@@ -499,14 +511,20 @@ class GCodePusher(object):
         # TODO: complete ERROR_MESSAGE
         self.error_callback(error_no, error_msg)
     
-    def __config_change_callback(id, data):
+    def __config_change_callback(self, id, data):
         if id == 'shutdown':
-            self.task_stats["auto_shutdown"] = (data == 'on')
+            with self.monitor_lock:
+                self.task_stats["auto_shutdown"] = (data == 'on')
+                self.update_monitor_file()
+        elif id == 'email':
+            with self.monitor_lock:
+                self.task_stats["send_email"] = (data == 'on')
+                self.update_monitor_file()
         elif id == 'reload':
             self.config.reload()
     
     def callback_handler(self, action, data):
-                
+
         if action == 'file_done':
             self.__file_done_callback(data)
         elif action == 'gcode_comment':
@@ -564,7 +582,7 @@ class GCodePusher(object):
 
             time.sleep(GCodePusher.UPDATE_PERIOD)
     
-    def prepare_task(self, task_id, task_type = 'unknown', task_controller = 'make', gcode_file = None, auto_shutdown = False, send_email = False):
+    def prepare_task(self, task_id, task_type = 'unknown', task_controller = 'make', gcode_file = None):
         
         self.task_stats['type']             = task_type
         self.task_stats['controller']       = task_controller
@@ -575,8 +593,8 @@ class GCodePusher(object):
         self.task_stats['estimated_time']   = 0
         self.task_stats['duration']         = 0
         self.task_stats['percent']          = 0.0
-        self.task_stats['auto_shutdown']    = auto_shutdown
-        self.task_stats['send_email']       = send_email
+        #~ self.task_stats['auto_shutdown']    = auto_shutdown # configured in __init __
+        #~ self.task_stats['send_email']       = send_email    # configured in __init __
         self.task_stats['message']          = ''
                 
         self.override_stats['z_override']   = 0.0

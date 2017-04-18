@@ -67,7 +67,23 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		<?php endif; ?>
 		$(".action").on('click', doAction);
 		$(".graph-line-selector").on('click', setGraphLines);
+		
+		$("#shutdown-switch").on('change', shutdownSwitchChange);
+		$("#email-switch").on('change', emailSwitchChange);
+		
 	});
+	
+	function emailSwitchChange()
+	{
+		console.log('send_email: ', $(this).is(':checked') );
+		sendActionRequest('sendEmail', $(this).is(':checked')?"on":"off");
+	}
+	
+	function shutdownSwitchChange()
+	{
+		console.log('auto_shutdown: ', $(this).is(':checked') );
+		sendActionRequest('autoShutdown', $(this).is(':checked')?"on":"off");
+	}
 	
 	/**
 	* freeze ui
@@ -603,6 +619,11 @@ if(!isset($bed_max)) 		$bed_max = 100;
 				case 'rpm':
 					// _( " is not a type, is there to prevent this string from being extracted by gettext
 					message = _( "<?php echo isset($rpm_message) ? $rpm_message : "RPM speed set to {0}"; ?>" ).format(value);
+					break;
+				case 'sendEmail':
+					message=_("Send email on task finish: {0}").format( _(value) );
+					break;
+				case 'autoShutdown':
 					break;
 				default:
 					message=_("Unknown action: {0}").format(action);

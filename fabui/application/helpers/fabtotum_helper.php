@@ -1035,6 +1035,28 @@ if(!function_exists('speed'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('sendEmail'))
+{
+	/**
+	 * 
+	 */
+	function sendEmail($value)
+	{
+		return sendToXmlrpcServer('set_send_email', $value);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('autoShutdown'))
+{
+	/**
+	 * 
+	 */
+	function autoShutdown($value)
+	{
+		return sendToXmlrpcServer('set_auto_shutdown', $value);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('zHeight'))
 {
 	/**
@@ -1480,17 +1502,6 @@ if(!function_exists('send_password_reset'))
 		}
 		else
 			return false;
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if(!function_exists('send_task_completed'))
-{
-	function send_task_completed($task_id)
-	{
-		$CI =& get_instance();
-		$CI->config->load('fabtotum');
-		$CI->load->model('User', 'user');
 	}
 }
 

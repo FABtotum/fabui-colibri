@@ -10,7 +10,7 @@
     "retract_acceleration": 100.0, 
     "retract_amount": 4.0, 
     "retract_feedrate": 12.0, 
-    "steps_per_angle": 177.777778, 
+    "steps_per_angle": 177.77777800000001, 
     "steps_per_unit": 3048.1599999999999, 
     "tube_length": 770.0
 }

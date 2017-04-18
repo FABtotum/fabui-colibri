@@ -38,7 +38,7 @@
 							<input type="password" name="password">
 							<b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> <?php echo _("Enter your password");?></b> </label>
 						<div class="note">
-							<a href="#"><?php echo _("Forgot password?");?></a>
+							<a href="#" id="forgot-password"><?php echo _("Forgot password?");?></a>
 						</div>
 					</section>
 					<section>
@@ -56,3 +56,61 @@
 	</div>
 	<div class="col-sm-3 hidden-xs hidden-sm"></div>
 </div>
+
+
+<div class="modal fade" id="password-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<?php if(isInternetAvaialable()): ?>
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel"><?php echo _("Don't panic");?></h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<p>
+							<?php echo _("Enter the email address you used when creating the account and click <strong>Send Email</strong>.<br>A message will be sent to that address containing a link to reset your password");?>
+						</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<input id="mail-for-reset" type="email" class="form-control invalid" placeholder="example@fabtotum.com" required />
+							<em id="error-message" style="margin-top:5px; color:#D56161; display: none;"><?php echo _("This email is not recognized by the printer, please insert a valid email");?></em>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _("Cancel");?></button>
+				<button type="button" id="send-mail" class="btn btn-primary"><?php echo _("Send Email");?></button>
+			</div>
+		<?php else: ?>
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel"><?php echo _("Don't panic");?></h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<p>
+							<?php echo _("To be able to send an email with a reset link you need to be connected to the internet.");?>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _("Cancel");?></button>
+				<button type="button" id="reload-page" class="btn btn-primary">M<?php echo _("Reload");?></button>
+			</div>
+		<?php endif; ?>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+

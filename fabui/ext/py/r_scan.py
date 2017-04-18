@@ -58,10 +58,10 @@ class RotaryScan(GCodePusher):
     QUEUE_SIZE      = 64
     
     def __init__(self, log_trace, monitor_file, scan_dir, standalone = False, 
-				finalize = True, width = 2592, height = 1944, rotation = 0, 
-				iso = 800, power = 230, shutter_speed = 35000,
-				lang = 'en_US.UTF-8'):
-        super(RotaryScan, self).__init__(log_trace, monitor_file, use_stdout=False, lang=lang)
+                finalize = True, width = 2592, height = 1944, rotation = 0, 
+                iso = 800, power = 230, shutter_speed = 35000,
+                lang = 'en_US.UTF-8', send_email=False):
+        super(RotaryScan, self).__init__(log_trace, monitor_file, use_stdout=False, lang=lang, send_email=send_email)
         
         self.standalone = standalone
         self.finalize   = finalize
@@ -382,6 +382,8 @@ def main():
     parser.add_argument("-a", "--a-offset", help="A offset/rotation.",      default=0)
     parser.add_argument("-o", "--output",   help="Output point cloud file.",default=os.path.join(destination, 'cloud.asc'))
     parser.add_argument("--lang",           help="Output language", 		default='en_US.UTF-8' )
+    parser.add_argument("--email",             help="Send an email on task finish", action='store_true', default=False)
+    parser.add_argument("--shutdown",          help="Shutdown on task finish", action='store_true', default=False )
 
     # GET ARGUMENTS
     args = parser.parse_args()
@@ -411,7 +413,8 @@ def main():
         standalone  = False
 
     cloud_file      = args.output
-	lang			= args.lang
+    lang            = args.lang
+    send_email      = bool(args.email)
     monitor_file    = config.get('general', 'task_monitor')
     log_trace       = config.get('general', 'trace')
 
@@ -450,7 +453,8 @@ def main():
                     height=height,
                     iso=iso,
                     power=power,
-                    lang=lang)
+                    lang=lang,
+                    send_email=send_email)
 
     app_thread = Thread( 
             target = app.run, 

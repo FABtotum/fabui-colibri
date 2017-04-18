@@ -98,6 +98,15 @@ if(!function_exists('dateDiff'))
 	// Time format is UNIX timestamp or
 	// PHP strtotime compatible strings
 	function dateDiff($time1, $time2, $precision = 6) {
+		
+		_("second"); _("seconds");
+		_("minute"); _("minutes");
+		_("hour"); _("hours");
+		_("day"); _("days");
+		_("month"); _("months");
+		_("year"); _("years");
+		
+		
 		// If not numeric then convert texts to unix timestamps
 		if (!is_int($time1)) {
 			$time1 = strtotime($time1);
