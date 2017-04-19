@@ -29,7 +29,7 @@
   },
   "settings_type": "default",
   "hardware": {
-    "head": "printing_head_v2",
+    "head": "printing_head_lite",
     "feeder": "built_in_feeder",
     "camera": {
 		"version" : "camera_v1",
