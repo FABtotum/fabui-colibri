@@ -33,30 +33,32 @@ if os.path.exists(CAMERA_INI) == False:
 camera_version  = "v1"
 camera_detected = False
 
-raspistill_output = os.popen('raspistill -v')
-raspistill_output = raspistill_output.read()
 
-match_temp = re.search('Camera is not detected', raspistill_output, re.IGNORECASE)
+os.popen('raspistill -v &> /tmp/raspistill.info')
+raspistill_content = open('/tmp/raspistill.info').read()
+
+match_temp = re.search('Camera is not detected', raspistill_content, re.IGNORECASE)
+
 
 
 if match_temp == None:
     camera_detected = True
 
 if camera_detected :
-	try:
-		# Try to set max resolution for v2 camera
-		camera = PiCamera()
-		camera.resolution = (3280, 2464)
-		camera_version = "v2"
-		camera_detected = True
-	except:
-		# Ok, it failed so its a v1 camera
-		try:
-			camera = PiCamera()
-			camera.resolution = (2592, 1944)
-			camera_version = "v1"
-		except:
-			pass
+    try:
+        # Try to set max resolution for v2 camera
+        camera = PiCamera()
+        camera.resolution = (3280, 2464)
+        camera_version = "v2"
+        camera_detected = True
+    except:
+        # Ok, it failed so its a v1 camera
+        try:
+            camera = PiCamera()
+            camera.resolution = (2592, 1944)
+            camera_version = "v1"
+        except:
+            pass
 
 config = ConfigParser.ConfigParser()
 config.read(CAMERA_INI)
