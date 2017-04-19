@@ -35,6 +35,8 @@
 <!-- FAVICONS -->
 <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon">
 <link rel="icon"          href="/assets/img/favicon/favicon.ico" type="image/x-icon">
+<!-- IE11 -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/third_party.css?v=<?php echo FABUI_VERSION;  ?>" >
 <!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->

@@ -258,6 +258,14 @@ class Install extends FAB_Controller {
 		
 		$language = $postData['language'];
 		
+		$installSamples = false;
+		
+		if( isset($postData['samples']) )
+		{
+			$installSamples = true;
+			unset($postData['samples']);
+		}
+		
 		unset($postData['timezone']);
 		unset($postData['passwordConfirm']);
 		unset($postData['terms']);
@@ -267,6 +275,7 @@ class Install extends FAB_Controller {
 		unset($postData['serial_number']);
 		unset($postData['unit_name']);
 		unset($postData['unit_color']);
+		
 		//set user account data
 		$userData = $postData;
 		$userData['session_id'] = $this->session->session_id;
@@ -276,7 +285,9 @@ class Install extends FAB_Controller {
 		//ADD USER ACCOUNT
 		$newUserID = $this->user->add($userData);
 		//Install samples
-		$this->installSamples($newUserID);
+		if($installSamples) {
+			$this->installSamples($newUserID);
+		}
 		//delete AUTOINSTALL
 		$this->deleteAutoInstallFile();
 		redirect('login');

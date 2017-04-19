@@ -247,7 +247,10 @@
         return this.options.multipliers[this.multiplier];
     },
     
-    __addButton: function (button, global_scale = 1.0) {
+    __addButton: function (button, global_scale) {
+      if(global_scale == undefined) global_scale = 1.0;
+
+
       var $this = this;
       var options = this.options;
       var paper = this.paper;
@@ -430,6 +433,7 @@
       
       if (Modernizr.touchevents) {
           // supported
+          console.log("touchevents detected");
           st.touchstart ( function(e) {
             set_active();
             clicked(button);
@@ -437,7 +441,7 @@
           st.touchend   (set_normal);
       } else {
           // not-supported
-          
+          console.log("NO touchevents detected");
           st.mouseover  (set_hover);
           st.mousedown  (function(e) {
               set_active();
@@ -451,7 +455,10 @@
       ui.push(st);
     },
     
-    initUI: function (scale = 1.0) {
+    initUI: function (scale) {
+      // IE11 compatibility
+      if(scale == undefined) scale = 1.0;
+      
       var options = this.options;
       var $this = this.$element;
       var $jogcontrols = this.$jogcontrols;

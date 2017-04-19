@@ -1156,7 +1156,11 @@ fabApp = (function(app) {
 	 * Jog serial function
 	 * Used to send individual gcode commands, move the jog or get temperature values
 	 */
-	app.serial = function(func, val, callback, step=0, feedrate=0, waitforfinish=false) {
+	app.serial = function(func, val, callback, step, feedrate, waitforfinish) {
+		// IE11 compatibility
+		if(step == undefined) step = 0;
+		if(feedrate == undefined) feedrate = 0;
+		if(waitforfinish == undefined) waitforfinish = false;
 		
 		if(debugState)
 			root.console.log("✔ app.serial: " + func + ', ' + val);

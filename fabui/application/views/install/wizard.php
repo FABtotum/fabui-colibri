@@ -169,11 +169,24 @@
 				<div class="tab-pane" id="finish-tab">
 					<br>
 					<br>
-					<div class="row margin-top-10">
+					<div class="row">
 						<div class="col-sm-12">
-							<p class="font-md text-center"><?php echo _("You're almost done.")?><br><?php echo _("Click <strong>Install</strong> to complete")?></p>
+							<div class="row margin-top-10">
+								<p class="font-md text-center">
+									<?php echo _("You're almost done.")?>
+									<br>
+									<?php echo _("Click <strong>Install</strong> to complete")?>
+								</p>
+								<p class="text-center">
+									<label class="checkbox-inline">
+										<input type="checkbox" class="checkbox" name="samples" id="samples" checked>
+										<span><?php echo _("Install gcode samples")?> </span>
+									</label>
+								</p>
+							</div>
 						</div>
 					</div>
+
 				</div>
 				<div class="form-actions">
 					<div class="row">
