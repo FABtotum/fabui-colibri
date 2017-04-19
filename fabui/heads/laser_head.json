@@ -11,7 +11,7 @@
     "nozzle_offset": "0",
     "min_rpm": "6000",
     "max_rpm": "0",
-	"tool": "M563 P0 D-1",
+	"tool": "M563 P0 D0",
     "feeder_step": "200",
     "capabilities": [
         "laser",
