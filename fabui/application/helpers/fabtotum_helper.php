@@ -191,6 +191,36 @@ if(!function_exists('getCameraVersion'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('detectCamera'))
+{
+	/**
+	 * 
+	 * 
+	 * 
+	 */
+	function detectCamera()
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		startPyScript('setCamera.py', '', false, true);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('isCameraPresent'))
+{
+	/**
+	 * 
+	 * Return true if camera was detected.
+	 * 
+	 */
+	function isCameraPresent()
+	{
+		$CI =& get_instance();
+		return isset($CI->config->config['camera_enabled']) ? $CI->config->config['camera_enabled'] : true;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('loadHeads'))
 {
 	/**

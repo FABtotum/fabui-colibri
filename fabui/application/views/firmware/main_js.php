@@ -82,7 +82,7 @@
 	
 	function doFirmwareUpload()
 	{
-		openWait('<i class="fa fa-spinner fa-spin"></i> Uploading and installing firmware...');
+		openWait('<i class="fa fa-spinner fa-spin"></i> ' + _("Uploading and installing firmware") + '...');
 		var hexFile = $('#hex-file').prop('files')[0];   
 		var form_data = new FormData();                  
 		form_data.append('hex-file', hexFile);

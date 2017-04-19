@@ -20,11 +20,10 @@
 		
 		//data
 		$data = array();
-		$data['camera_enabled'] = isset($this->config->config['camera_enabled']) ? $this->config->config['camera_enabled'] : true;
+		$data['camera_enabled'] = isCameraPresent();
 		$data['params']   = $this->camera->getParameterList();
 		$data['settings'] = $this->camera->get_default_settings();
 		
-		//~ $this->content = json_encode( $this->camera->getParameterList() ); 
 		$widgetOptions = array(
 			'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
 			'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
@@ -122,6 +121,14 @@
 		
 		header('Content-type: ' . $this->camera->getMimeType() );
 		echo readfile($filename);
+	}
+	
+	public function doDetectCamera()
+	{
+		$this->load->helper('fabtotum_helper');
+		detectCamera();
+		$result = isCameraPresent();
+		$this->output->set_content_type('application/json')->set_output(json_encode( array('camera' => $result) ));
 	}
  }
  

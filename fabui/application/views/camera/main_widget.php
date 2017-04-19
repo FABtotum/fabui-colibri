@@ -19,6 +19,8 @@
 				</span>
 			</h1>
 			<h4><strong><?php echo _("Camera is not detected");?></strong></h4>
+			<p><?php echo _('If you are sure the camera is present, run the detect procedure again by clicking "Detect"');?></p>
+			<p><button class="btn btn-default" id="detect_camera"><?php echo _("Detect");?></button></p>
 			<br>
 		</div>
 	</div>

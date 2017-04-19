@@ -7,6 +7,8 @@
         $(".set-default").on("click", default_all);
         $("#download_photo").on('click', download_photo);
     });
+    
+
 
     function take_photo()
     {
@@ -85,6 +87,32 @@
         $( "#rotation" ).val('90');
         $( "#metering" ).val('average');
     }
+
+<?php else: ?>
+    $(function () {
+        $("#detect_camera").on('click', detectCamera);
+    });
     
+    function detectCamera()
+    {
+        openWait('<i class="fa fa-spinner fa-spin"></i> ' + _("Detecting camera") + '...');
+        
+		$.ajax({
+			url: '<?php echo site_url('cam/doDetectCamera') ?>',
+			dataType: 'json',
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: {},                         
+			type: 'post',
+			success: function(response){
+                closeWait();
+                console.log(response);
+                location.reload();
+			}
+		 });
+         
+         return false;
+    }
 <?php endif; ?>
 </script>
