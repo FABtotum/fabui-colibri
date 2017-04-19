@@ -55,6 +55,7 @@ class Firmware extends FAB_Controller {
 		if($content)
 		{
 			$tmp = json_decode($content, true)['firmware'];
+			krsort($tmp);			
 			foreach($tmp as $key => $value)
 			{
 				if($key != 'latest')
