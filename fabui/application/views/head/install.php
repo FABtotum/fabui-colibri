@@ -206,7 +206,7 @@
 								</label>
 							</section>
 							
-							<input type="hidden" id="head-probe_offset" name="probe_offset" value="0"/>
+							<input type="hidden" id="head-nozzle_offset" name="nozzle_offset" value="0"/>
 						</div>
 					</fieldset>
 					
