@@ -22,10 +22,12 @@ class History extends FAB_Controller {
 		
 		$data = array();
 		$data['start_date'] = date('d/m/Y', strtotime('today - 30 days'));
-		$data['end_date'] = date('d/m/Y', strtotime('today'));
+		$data['end_date']   = date('d/m/Y', strtotime('today'));
 		
 		$data['min_date'] = date('d/m/Y', strtotime($this->tasks->getMinDate('make')));
-        
+		$data['makeList'] = getMakeTaskTypeList();
+		
+		
 		//main page widget
 		$widgetOptions = array(
 			'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
@@ -33,11 +35,11 @@ class History extends FAB_Controller {
 		);
 		
 		$headerToolbar = '';
-		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-bed-calibration';
 		$widget->header = array('icon' => 'fa-history', "title" => "<h2>"._("History")."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('history/main_widget', $data, true ), 'class'=>'fuelux');
+		
 		
 		// datatable
 		$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable

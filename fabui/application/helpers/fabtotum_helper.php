@@ -1534,5 +1534,38 @@ if(!function_exists('send_password_reset'))
 			return false;
 	}
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getMakeTaskTypeList'))
+{
+	function getMakeTaskTypeList()
+	{
+		$CI =& get_instance();
+		$CI->load->helper('plugin_helper');
+		
+		$defaultList = array(
+				'print' => _("Print"),
+				'mill'  => _("Mill"),
+				'scan'  => _("Scan")
+		);
+		
+		$plugins = getActivePlugins();
+		$pluginLists = array();
+		foreach($plugins as $plugin => $info){
+			foreach($info['hooks'] as $hook)
+			{
+				if(isset($hook['printtypes'])){
+					$pluginLists[$info['name']] = $hook['printtypes'];
+				}
+			}
+		}	
+		foreach($pluginLists as $label => $types){
+			foreach($types as $type){
+				if(!isset($defaultList[$type])){
+					$defaultList[$type] = $label;
+				}
+			}
+		}
+		return $defaultList;
+	}
+}
 ?>

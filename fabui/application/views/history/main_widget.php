@@ -8,19 +8,11 @@
 	<div class="btn-group">
 		<button class="btn btn-default dropdown-toggle" data-toggle="dropdown"> <span id="ajax-type"><?php echo _("Make");?></span> <span class="caret"></span></button>
 		<ul class="dropdown-menu">
-			<li>
-				<a data-type="type"  data-value="print" href="javascript:void(0);"><i class="icon-fab-print"></i> <?php echo _("Print");?></a>
-			</li>
-			<li>
-				<a  data-type="type" data-value="mill" href="javascript:void(0);"><i class="icon-fab-mill"></i> <?php echo _("Mill");?></a>
-			</li>
-			<li>
-				<a  data-type="type" data-value="scan" href="javascript:void(0);"><i class="icon-fab-scan"></i> <?php echo _("Scan");?></a>
-			</li>
-			<li class="divider"></li>
-			<li>
-				<a  data-type="type" data-value="" href="javascript:void(0);"> <?php echo _("Make");?></a>
-			</li>
+			<?php foreach($makeList as  $key => $label): ?>
+				<li>
+					<a data-type="type" data-value="<?php echo $key ?>" href="javascript:void(0);"><?php echo  $label;?></a>
+				</li>
+			<?php endforeach;?>
 		</ul>
 	</div>
 
