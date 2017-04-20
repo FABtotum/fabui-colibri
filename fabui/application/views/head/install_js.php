@@ -293,7 +293,13 @@
 			}
 		});
 		
-		settings['capabilities'] = capabilities;	
+		settings['capabilities'] = capabilities;
+		
+		if( capabilities.indexOf("feeder") == -1 )
+		{
+			settings['feeder'] = {};
+		}
+		
 		return settings;
 	}
 	
