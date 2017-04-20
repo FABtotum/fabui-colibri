@@ -87,10 +87,10 @@
 		
 		if(is_array($filters)){ // if filters are setted
 			if(isset($filters['start_date']) && $filters['start_date'] != ''){
-				$this->db->where("finish_date >=", DateTime::createFromFormat('d/m/Y',$filters['start_date'])->format('Y-m-d')." 00:00:00");
+				$this->db->where("start_date >=", DateTime::createFromFormat('d/m/Y',$filters['start_date'])->format('Y-m-d')." 00:00:00");
 			}
 			if(isset($filters['end_date']) && $filters['end_date'] != ''){	
-				$this->db->where("finish_date <=", DateTime::createFromFormat('d/m/Y',$filters['end_date'])->format('Y-m-d')." 00:00:00");
+				$this->db->where("finish_date <=", DateTime::createFromFormat('d/m/Y',$filters['end_date'])->format('Y-m-d')." 23:59:59");
 			}
 			if(isset($filters['type']) && $filters['type'] != ''){
 				$this->db->where('type', $filters['type']);
