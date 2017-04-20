@@ -718,6 +718,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 					handleTaskStatus(data.task.status, true);
 					elapsedTime = parseInt(data.task.duration);
 					estimatedTime = parseInt(data.task.estimated_time);
+					updateSendEmailCheckBox(data.task.send_email);
 				}
 					
 				setTemperaturesSlidersValue();
@@ -727,6 +728,10 @@ if(!isset($bed_max)) 		$bed_max = 100;
 					updateFlowRate(data.override.flow_rate);
 					updateFan(data.override.fan);
 					updateZOverride(data.override.z_override);
+				}
+				if(data.hasOwnProperty("gpusher"))
+				{
+					updateFileInfo(data.gpusher.file);
 				}
 				
 				timerInterval = setInterval(timer, 1000);
@@ -959,10 +964,8 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	function updateZOverride(value)
 	{	
 		zOverride = value;
-		console.log('updateZOverride: ', zOverride);
 		$(".z-height").html(value);
 	}
-	
 	/**
 	*
 	*/
@@ -992,7 +995,9 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			}
 		}
 	}
-	
+	/**
+	*
+	**/
 	function updateExtTarget(value)
 	{
 		if(!isExtSliderBusy){
@@ -1002,7 +1007,9 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			}
 		}
 	}
-	
+	/**
+	*
+	**/
 	function updateBedTarget(value)
 	{
 		if(!isBedSliderBusy){
@@ -1011,6 +1018,20 @@ if(!isset($bed_max)) 		$bed_max = 100;
 				bedSlider.noUiSlider.set(value);
 			}
 		}
+	}
+	/**
+	*
+	**/
+	function updateSendEmailCheckBox(bool)
+	{
+		$('#email-switch').prop('checked', bool);
+	}
+	/**
+	*
+	**/
+	function updateFileInfo(file)
+	{
+		$(".task-file-name").html('<b>' + file.name + '</b>');
 	}
 	
 </script>

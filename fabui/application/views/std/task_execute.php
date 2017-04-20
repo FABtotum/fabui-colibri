@@ -18,6 +18,17 @@ if( !isset($rpm_label) ) $rpm_label = _("RPM");
 <ul id="createFeed" class="nav nav-tabs bordered">
 	<li class="active"><a href="#live-feeds-tab" data-toggle="tab"><?php echo _("Live feeds")?></a></li>
 	<li><a href="#controls-tab" data-toggle="tab"><i class="fa fa-sliders"></i> <?php echo _("Controls");?></a></li>
+	<li class="pull-right">
+		<div class="widget-toolbar" id="switch-2" style="display: block;" role="menu">
+			<div class="smart-form">
+				<label class="toggle" title="<?php echo _("Send and email when the task is finished")?>" >
+					<input type="checkbox" id="email-switch" name="checkbox-toggle">
+					<i data-swchon-text="ON" data-swchoff-text="OFF"></i>
+					<em class="fa fa-envelope"></em> <span class="hidden-xs"><?php echo _("Email") ?></span>
+				</label>
+			</div>
+		</div>
+	</li>
 </ul>
 <div id="createFeedContent" class="tab-content padding-10">
 	<br>
@@ -70,6 +81,9 @@ if( !isset($rpm_label) ) $rpm_label = _("RPM");
 			<?php endif; ?>
 			<div class="col-sm-<?php echo $type == 'print' ? '6' : '12' ?> show-stats">
 				<div class="row ">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <span class="text"> <i class="fa fa-cube"></i> <?php echo _("File"); ?> <span class="pull-right"><span class="task-file-name"> (<?php echo _("Loading");?> ..)</span> </span> </span>
+						<div class="fake-progress"></div>
+					</div>
 					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> <?php echo _("Progress"); ?> <span class="pull-right task-progress"></span> </span>
 						<div class="progress">
 							<div class="progress-bar" id="task-progress-bar"></div>

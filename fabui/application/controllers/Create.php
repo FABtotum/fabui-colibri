@@ -124,18 +124,9 @@
 		);
 		
 		$widgeFooterButtons = '';
-		$headerToolbar = '<div class="widget-toolbar" id="switch-2" style="display: block;" role="menu">
-						<div class="smart-form">
-							<label class="toggle" title='. _("Send and email when the task is finished").'>
-								<input type="checkbox" id="email-switch" name="checkbox-toggle">
-								<i data-swchon-text="ON" data-swchoff-text="OFF"></i>
-								<em class="fa fa-envelope"></em> '._("Email").'</label>
-						</div>
-					</div>';
-		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';
-		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>"._("Print")."</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>"._("Print")."</h2>");
 		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ), 'class'=>'fuelux', 'footer'=>$widgeFooterButtons);
 
 		$this->addCssFile('/assets/css/std/select_file.css');
@@ -305,13 +296,12 @@
 		$this->load->helpers('fabtotum_helper');
 		$this->load->helpers('language_helper');
 		$this->load->model('Files', 'files');
-		
+		resetTaskMonitor();
 		$userID   = $this->session->user['id'];
 		session_write_close(); //avoid freezing page
 		
 		$fileToCreate = $this->files->get($data['idFile'], 1);
 		$temperatures = readInitialTemperatures($fileToCreate['full_path']);
-		resetTaskMonitor();
 		if($temperatures == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => 'File not found')));
 			return;

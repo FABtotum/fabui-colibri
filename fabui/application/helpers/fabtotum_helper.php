@@ -1210,8 +1210,8 @@ if(!function_exists('resetTaskMonitor'))
 		//it must exists, but if not
 		if(!file_exists($CI->config->item('task_monitor'))) write_file($CI->config->item('task_monitor'), json_encode(array()));
 		
-		$monitor = json_decode(file_get_contents($CI->config->item('task_monitor')), true); 
-		
+		$monitor = json_decode(file_get_contents($CI->config->item('task_monitor')), true);
+		unset($monitor['gpusher']);
 		if(!is_array($monitor)) $monitor = array();
 		
 		//override keys value
@@ -1232,6 +1232,7 @@ if(!function_exists('resetTaskMonitor'))
 		$default_monitor['task']['id']             = '';
 		$default_monitor['task']['type']           = '';
 		$default_monitor['task']['percent']        = 0;
+		
 		
 		$monitor = array_replace_recursive ($monitor, $default_monitor, $resetArray);
 		write_file($CI->config->item('task_monitor'), json_encode($monitor));
