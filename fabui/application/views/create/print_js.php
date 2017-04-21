@@ -16,6 +16,7 @@
 	var idFile <?php echo $file_id != '' ? ' = '.$file_id : ''; ?>; //file to create
 	<?php endif; ?>
 	var idTask <?php echo $runningTask ? ' = '.$runningTask['id'] : ''; ?>;
+	var fileFromDropzone = false;
 	
 	$(document).ready(function() {
 		$('[data-toggle="tooltip"]').tooltip();
@@ -83,7 +84,8 @@
 			skipEngage:skipEngage,
 			calibration:calibration,
 			send_email:send_email,
-			auto_shutdown:auto_shutdown
+			auto_shutdown:auto_shutdown,
+			dropzone_file:fileFromDropzone
 		};
 			
 		$.ajax({

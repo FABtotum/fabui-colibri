@@ -676,7 +676,7 @@ class Projectsmanager extends FAB_Controller {
 		$this->content  = $widget->print_html(true);
 		
 		//add needed scripts
-		$this->addJSFile('/assets/js/plugin/dropzone/dropzone.min.js'); //dropzpone
+		$this->addJSFile('/assets/js/plugin/dropzone/dropzone.js'); //dropzpone
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
 		$this->addJSFile('/assets/js/controllers/projectsmanager/usb.js');
 		$this->addJsInLine($this->load->view('projectsmanager/add/js',$data, true));
@@ -719,7 +719,7 @@ class Projectsmanager extends FAB_Controller {
 		$this->content  = $widget->print_html(true);
 		
 		//add needed scripts
-		$this->addJSFile('/assets/js/plugin/dropzone/dropzone.min.js'); //dropzpone
+		$this->addJSFile('/assets/js/plugin/dropzone/dropzone.js'); //dropzpone
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
 		$this->addJSFile('/assets/js/controllers/projectsmanager/usb.js');
 		$this->addJsInLine($this->load->view('projectsmanager/file/add/js', $data, true));

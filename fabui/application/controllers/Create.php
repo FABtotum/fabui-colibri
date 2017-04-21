@@ -50,6 +50,7 @@
 		$this->load->library('smart');
 		$this->load->helper('form');
 		$this->load->helper('fabtotum_helper');
+		$this->load->helper('upload_helper');
 		$this->load->model('Files', 'files');
 		
 		$data = array();
@@ -84,12 +85,17 @@
 		
 		$data['type']      = 'print';
 		$data['type_label'] = _("Printing");
+		$data['type_action'] = _("Print");
+		$this->config->load('upload');
+		
+		$data['accepted_files'] = allowedTypesToDropzoneAcceptedFiles( $this->config->item('allowed_types') );
 		
 		if(!$task_is_running){
 			
 			$data['safety_check'] = safetyCheck("print", true);
 			$data['safety_check']['url'] = 'std/safetyCheck/print/yes';
 			$data['safety_check']['content'] = $this->load->view( 'std/task_safety_check', $data, true );
+			$data['dropzone']['content'] = $this->load->view( 'std/task_dropzone', $data, true );
 			
 			// select_file
 			$data['get_files_url']   = 'std/getFiles/additive';
@@ -147,11 +153,13 @@
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.time.min.js');
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js');
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
+		$this->addJSFile('/assets/js/plugin/dropzone/dropzone.js'); //dropzpone
 
 		$this->addJsInLine($this->load->view( 'create/print_js', $data, true));
 		$this->addJsInLine($this->load->view( 'std/task_wizard_js',   $data, true));
 		
 		if(!$task_is_running) { // these files aren't needed if task is already running
+			$this->addJsInLine($this->load->view( 'std/task_dropzone_js', $data, true));
 			$this->addJsInLine($this->load->view( 'std/task_safety_check_js', $data, true));
 			$this->addJsInLine($this->load->view( 'std/select_file_js',   $data, true));
 			$this->addJsInLine($this->load->view( 'std/print_setup_js',   $data, true));
@@ -264,6 +272,8 @@
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.fillbetween.min.js');
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.time.min.js');
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js');
+		
+		
 
 		$this->addJsInLine($this->load->view( 'create/mill_js', $data, true));
 		
@@ -311,6 +321,16 @@
 		session_write_close(); //avoid freezing page
 		
 		$fileToCreate = $this->files->get($data['idFile'], 1);
+		if($data['dropzone_file'] == 'true'){ //crate an object an assoc new file
+			$this->load->model('Objects', 'objects');
+			$temp['name'] = $fileToCreate['client_name'];
+			$temp['description'] = 'Quick print';
+			$temp['user'] = $this->session->user['id'];
+			$temp['date_update'] = date('Y-m-d H:i:s');
+			$temp['date_insert'] = date('Y-m-d H:i:s');
+			$objectID = $this->objects->add($temp);
+			$this->objects->addFiles($objectID, $data['idFile']);
+		}
 		$temperatures = readInitialTemperatures($fileToCreate['full_path']);
 		if($temperatures == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => 'File not found')));

@@ -125,3 +125,6 @@ if($runningTask) $safety_check['all_is_ok'] = true;
 		</form>
 	</div>
 </div>
+<?php if(isset($dropzone)):?>
+<?php echo $dropzone['content'];?>
+<?php endif;?>
