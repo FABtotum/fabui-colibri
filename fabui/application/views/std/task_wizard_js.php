@@ -50,7 +50,6 @@ if( !isset($wizard_finish) ) $wizard_finish = end($steps)['number'];
 				$('#myWizard').wizard('next');
 			}
 		});
-
 		
 		<?php if(isset($wizard_jump_to)): ?>
 			$('.wizard').wizard('selectedItem', {
@@ -58,6 +57,7 @@ if( !isset($wizard_finish) ) $wizard_finish = end($steps)['number'];
 			});
 			gotoWizardStep(<?php echo $wizard_jump_to?>);
 			//enableButton('.button-prev');
+			disableCompleteSteps();
 		<?php else: ?>
 			console.log("ACTIVE-STEP", "<?php echo getActiveStep($steps);?>")
 			gotoWizardStep(<?php echo getActiveStep($steps);?>);
@@ -94,5 +94,12 @@ if( !isset($wizard_finish) ) $wizard_finish = end($steps)['number'];
 	{
 		return $('.wizard').wizard('selectedItem').step;
 	}
+
+	function disableCompleteSteps()
+	{
+		$(".steps .complete").css('cursor', 'default');
+		$(".steps .complete").on('click', function(){return false;});
+	}
+	
 	
 </script>

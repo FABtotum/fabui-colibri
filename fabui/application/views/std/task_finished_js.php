@@ -22,26 +22,6 @@ if(!isset($task_jump_restart)) $task_jump_restart = 1;
 		$("input[name='quality']").on('click', qualityRating);
 	});
 	
-	/**
-	* save and override z height
-	*/
-	/*function saveZHeight()
-	{
-		disableButton('.save-z-height');
-		if(zOverride == 0){
-			zOverride = $(".z-height").html();
-		}
-		$.ajax({
-			type: 'post',
-			url: '<?php echo site_url('nozzle/overrideOffset'); ?>/' + zOverride,
-			dataType: 'json'
-		}).done(function(response) {
-			console.log(response);
-			fabApp.showInfoAlert( _("Z Height saved") );
-			enableButton('.save-z-height');
-		});
-	}*/
-	
 	function qualityRating(e)
 	{
 		var element = $(this);
@@ -64,14 +44,18 @@ if(!isset($task_jump_restart)) $task_jump_restart = 1;
 	**/
 	function restartPrint()
 	{
-		window.location.href = '#make/<?php echo $type; ?>/' + idFile;
+		if(window.location.hash == '#make/<?php echo $type; ?>/' + idFile){
+			location.reload();
+		}else{
+			window.location.href = '#make/<?php echo $type; ?>/' + idFile;
+		}
+		
 	}
 	/**
 	*
 	**/
 	function newPrint()
 	{
-		 location.reload();
+		location.reload();
 	}
-	
 </script>

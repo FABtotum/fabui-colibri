@@ -103,12 +103,11 @@
 				$('.wizard').wizard('selectedItem', { step: 2 });
 				fabApp.showErrorAlert(response.message);
 			}else{
-				
 				idTask = response.id_task;
-				
+				updateFileInfo(response.file);
+				disableCompleteSteps();
 				initRunningTaskPage();
 				updateZOverride(0);
-
 				ga('send', 'event', 'laser', 'start', 'laser started');
 			}
 			closeWait();

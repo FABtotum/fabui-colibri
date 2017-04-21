@@ -84,27 +84,31 @@
 		
 		$data['type']      = 'print';
 		$data['type_label'] = _("Printing");
-
-		$data['safety_check'] = safetyCheck("print", true);
-		$data['safety_check']['url'] = 'std/safetyCheck/print/yes';
-		$data['safety_check']['content'] = $this->load->view( 'std/task_safety_check', $data, true );
 		
-		// select_file
-		$data['get_files_url'] = 'std/getFiles/additive';
-		$data['get_reacent_url'] = 'std/getRecentFiles/print';
+		if(!$task_is_running){
+			
+			$data['safety_check'] = safetyCheck("print", true);
+			$data['safety_check']['url'] = 'std/safetyCheck/print/yes';
+			$data['safety_check']['content'] = $this->load->view( 'std/task_safety_check', $data, true );
+			
+			// select_file
+			$data['get_files_url']   = 'std/getFiles/additive';
+			$data['get_reacent_url'] = 'std/getRecentFiles/print';
+		}
 		
 		// task_wizard
 		$data['start_task_url'] = 'create/startPrintTask';
 		
+		
 		$data['steps'] = array(
 				array('number'  => 1,
 				 'title'   => _("Choose file"),
-				 'content' => $this->load->view( 'std/select_file', $data, true ),
+				 'content' => !$task_is_running ? $this->load->view( 'std/select_file', $data, true ) : '',
 				 'active'  => !$file_is_ok && !$task_is_running
 			    ),
 				array('number'  => 2,
 				 'title'   => _("Get ready"),
-				 'content' => $this->load->view( 'std/print_setup', $data, true ),
+				 'content' => !$task_is_running ? $this->load->view( 'std/print_setup', $data, true ) : '',
 				 'active'  => $file_is_ok && !$task_is_running
 			    ),
 				array('number'  => 3,
@@ -123,11 +127,10 @@
 			'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
 		);
 		
-		$widgeFooterButtons = '';
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';
 		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>"._("Print")."</h2>");
-		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ), 'class'=>'fuelux', 'footer'=>$widgeFooterButtons);
+		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ), 'class'=>'fuelux');
 
 		$this->addCssFile('/assets/css/std/select_file.css');
 		$this->addCssFile('/assets/css/std/task_execute.css');
@@ -143,13 +146,16 @@
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.fillbetween.min.js');
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.time.min.js');
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js');
+		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
 
 		$this->addJsInLine($this->load->view( 'create/print_js', $data, true));
-		$this->addJsInLine($this->load->view( 'std/task_safety_check_js', $data, true));
-		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
 		$this->addJsInLine($this->load->view( 'std/task_wizard_js',   $data, true));
-		$this->addJsInLine($this->load->view( 'std/select_file_js',   $data, true));
-		$this->addJsInLine($this->load->view( 'std/print_setup_js',   $data, true));
+		
+		if(!$task_is_running) { // these files aren't needed if task is already running
+			$this->addJsInLine($this->load->view( 'std/task_safety_check_js', $data, true));
+			$this->addJsInLine($this->load->view( 'std/select_file_js',   $data, true));
+			$this->addJsInLine($this->load->view( 'std/print_setup_js',   $data, true));
+		}
 		$this->addJsInLine($this->load->view( 'std/task_execute_js',  $data, true));
 		$this->addJsInLine($this->load->view( 'std/task_finished_js', $data, true));
 
@@ -198,13 +204,17 @@
 		$data['type']      = 'mill';
 		$data['type_label'] = _("Milling");
 		
-		$data['safety_check'] = safetyCheck("mill", false);
-		$data['safety_check']['url'] = 'std/safetyCheck/mill/no';
-		$data['safety_check']['content'] = $this->load->view( 'std/task_safety_check', $data, true );
-				
-		// select_file
-		$data['get_files_url'] = 'std/getFiles/subtractive';
-		$data['get_reacent_url'] = 'std/getRecentFiles/mill';
+		if(!$task_is_running){
+			
+			$data['safety_check'] = safetyCheck("mill", false);
+			$data['safety_check']['url'] = 'std/safetyCheck/mill/no';
+			$data['safety_check']['content'] = $this->load->view( 'std/task_safety_check', $data, true );
+			
+			// select_file
+			$data['get_files_url'] = 'std/getFiles/subtractive';
+			$data['get_reacent_url'] = 'std/getRecentFiles/mill';
+			
+		}
 		
 		// task_wizard
 		$data['start_task_url'] = 'create/startMillTask';
@@ -212,12 +222,12 @@
 		$data['steps'] = array(
 				array('number'  => 1,
 				 'title'   => _("Choose file"),
-				 'content' => $this->load->view( 'std/select_file', $data, true ),
+				 'content' => !$task_is_running ? $this->load->view( 'std/select_file', $data, true ) : '',
 				 'active'  => !$file_is_ok && !$task_is_running
 			    ),
 				array('number'  => 2,
 				 'title'   => _("Get ready"),
-				 'content' => $this->load->view( 'std/jog_setup', $data, true ),
+				 'content' => !$task_is_running ? $this->load->view( 'std/jog_setup', $data, true ) : '',
 				 'active'  => $file_is_ok && !$task_is_running
 			    ),
 				array('number'  => 3,
@@ -236,26 +246,12 @@
 			'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
 		);
 		
-		$widgeFooterButtons = '';
-		$headerToolbar = '<div class="widget-toolbar" id="switch-2" style="display: block;" role="menu">
-						<div class="smart-form">
-							<label class="toggle" title='. _("Send and email when the task is finished").'>
-								<input type="checkbox" id="email-switch" name="checkbox-toggle">
-								<i data-swchon-text="'._("ON").'" data-swchoff-text="'._("OFF").'"></i>
-								<em class="fa fa-envelope"></em> '._("Email").'</label>
-						</div>
-					</div>';
-					
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';
-		$widget->header = array('icon' => 'icon-fab-mill', "title" => "<h2>"._("Mill")."</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ), 'class'=>'fuelux', 'footer'=>$widgeFooterButtons);
+		$widget->header = array('icon' => 'icon-fab-mill', "title" => "<h2>"._("Mill")."</h2>");
+		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ), 'class'=>'fuelux');
 
-		$this->addCssFile('/assets/css/std/select_file.css');
-		$this->addCssFile('/assets/css/std/task_execute.css');
-		$this->addCssFile('/assets/css/std/jog_setup.css');
-		$this->addCssFile('/assets/css/std/jogtouch.css');
-		$this->addCssFile('/assets/css/std/jogcontrols.css');
+		
 
 		$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
 		$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
@@ -270,18 +266,32 @@
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js');
 
 		$this->addJsInLine($this->load->view( 'create/mill_js', $data, true));
-
-		$this->addJSFile('/assets/js/std/raphael.js' ); //vector library
-		$this->addJSFile('/assets/js/std/modernizr-touch.js' ); //touch device detection
-		$this->addJSFile('/assets/js/std/jogcontrols.js' ); //jog controls
-		$this->addJSFile('/assets/js/std/jogtouch.js' ); //jog controls
-
-		$this->addJsInLine($this->load->view( 'std/task_safety_check_js', $data, true));
+		
+		if(!$task_is_running){
+			
+			$this->addCssFile('/assets/css/std/select_file.css');
+			$this->addCssFile('/assets/css/std/task_execute.css');
+			$this->addCssFile('/assets/css/std/jog_setup.css');
+			$this->addCssFile('/assets/css/std/jogtouch.css');
+			$this->addCssFile('/assets/css/std/jogcontrols.css');
+			
+			$this->addJSFile('/assets/js/std/raphael.js' ); //vector library
+			$this->addJSFile('/assets/js/std/modernizr-touch.js' ); //touch device detection
+			$this->addJSFile('/assets/js/std/jogcontrols.js' ); //jog controls
+			$this->addJSFile('/assets/js/std/jogtouch.js' ); //jog controls
+			$this->addJSFile('/assets/js/plugin/knob/jquery.knob.min.js');
+		}
+		
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
+		
+		
+		if(!$task_is_running) { // these files aren't needed if task is already running
+			$this->addJsInLine($this->load->view( 'std/task_safety_check_js', $data, true));
+			$this->addJsInLine($this->load->view( 'std/select_file_js', $data, true));
+			$this->addJsInLine($this->load->view( 'std/jog_setup_js', $data, true));
+		}
+		
 		$this->addJsInLine($this->load->view( 'std/task_wizard_js', $data, true));
-		$this->addJsInLine($this->load->view( 'std/select_file_js', $data, true));
-		$this->addJSFile('/assets/js/plugin/knob/jquery.knob.min.js');
-		$this->addJsInLine($this->load->view( 'std/jog_setup_js', $data, true));
 		$this->addJsInLine($this->load->view( 'std/task_execute_js', $data, true));
 		$this->addJsInLine($this->load->view( 'std/task_finished_js', $data, true));
 
@@ -365,12 +375,19 @@
 						'--lang' => getCurrentLanguage() . '.UTF-8'
 						);
 						
-		if($data['send_email'] == "true") $printArgs['--email'] = '';
+		if($data['send_email']    == "true") $printArgs['--email'] = '';
 		if($data['auto_shutdown'] == "true") $printArgs['--shutdown'] = '';
 		
 		startPyScript('print.py', $printArgs);
-		
-		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId, 'temperatures' => $temperatures)));
+		$output = array(
+			'start' => true,
+			'id_task' => $taskId,
+			'temperatures' =>  $temperatures,
+			'file' => array(
+				'name' =>  $fileToCreate['client_name']
+			)
+		);
+		$this->output->set_content_type('application/json')->set_output(json_encode($output));
 	}
 	
 	public function startMillTask()
@@ -380,10 +397,9 @@
 		$this->load->helpers('fabtotum_helper');
 		$this->load->helpers('language_helper');
 		$this->load->model('Files', 'files');
-		$fileToCreate = $this->files->get($data['idFile'], 1);
-		
 		//reset task monitor file
 		resetTaskMonitor();
+		$fileToCreate = $this->files->get($data['idFile'], 1);
 		$startSubtractive = doMacro('start_subtractive');
 		if($startSubtractive['response'] =! 'ok'){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $startSubtractive['message'])));
@@ -413,7 +429,14 @@
 		);
 		startPyScript('mill.py', $printArgs);
 		
-		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
+		$output = array(
+			'start' => true,
+			'id_task' => $taskId,
+			'file' => array(
+				'name' =>  $fileToCreate['client_name']
+			)
+		);
+		$this->output->set_content_type('application/json')->set_output(json_encode($output));
 	}
 
 }

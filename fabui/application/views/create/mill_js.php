@@ -30,10 +30,9 @@
 			<?php else: ?>
 				// send zero axis
 				startTask();
-				gotoWizardStep(3);
+				return false;
 			<?php endif; ?>
 		}
-		
 		return true;
 	}
 	
@@ -75,7 +74,7 @@
 	function startTask()
 	{
 		console.log('Starting task');
-		openWait('<i class="fa fa-spinner fa-spin "></i>' + "<?php echo _('Preparing {0}');?>".format("<?php echo _(ucfirst($type)); ?>"), _("Checking safety measures...") );
+		openWait('<i class="fa fa-spinner fa-spin "></i> ' + "<?php echo _('Preparing {0}');?>".format("<?php echo _(ucfirst($type)); ?>"), _("Checking safety measures...") );
 		
 		var data = {
 			idFile:idFile
@@ -91,9 +90,10 @@
 				$('.wizard').wizard('selectedItem', { step: 2 });
 				fabApp.showErrorAlert(response.message);
 			}else{
-				
+				gotoWizardStep(3);
+				disableCompleteSteps();
 				idTask = response.id_task;
-				
+				updateFileInfo(response.file);
 				initRunningTaskPage();
 				updateZOverride(0);
 

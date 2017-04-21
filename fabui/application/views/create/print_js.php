@@ -10,7 +10,11 @@
 
 <script type="text/javascript">
 
+	<?php if($runningTask): ?>
+	var idFile = <?php echo $runningTask['id_file']; ?>;
+	<?php else: ?>
 	var idFile <?php echo $file_id != '' ? ' = '.$file_id : ''; ?>; //file to create
+	<?php endif; ?>
 	var idTask <?php echo $runningTask ? ' = '.$runningTask['id'] : ''; ?>;
 	
 	$(document).ready(function() {
@@ -29,7 +33,7 @@
 			<?php else: ?>
 				// send zero axis
 				startTask();
-				gotoWizardStep(3);
+				return false;
 			<?php endif; ?>
 			return false;
 		}
@@ -68,7 +72,7 @@
 	
 	function startTask()
 	{
-		openWait('<i class="fa fa-spinner fa-spin "></i>' + "<?php echo _('Preparing {0}');?>".format("<?php echo _(ucfirst($type)); ?>"), _("Checking safety measures...") );
+		openWait('<i class="fa fa-spinner fa-spin "></i> ' + "<?php echo _('Preparing {0}');?>".format("<?php echo _(ucfirst($type)); ?>"), _("Checking safety measures...") );
 		
 		var calibration = $('input[name=calibration]:checked').val();
 		var send_email = $("#email-switch").is(":checked");
@@ -80,9 +84,7 @@
 			calibration:calibration,
 			send_email:send_email,
 			auto_shutdown:auto_shutdown
-			};
-			
-		console.log('printArgs', data);
+		};
 			
 		$.ajax({
 			type: 'post',
@@ -91,14 +93,14 @@
 			dataType: 'json'
 		}).done(function(response) {
 			
-			console.log(response);
-			
-			
 			if(response.start == false){
 				gotoWizardStep(2);
 				fabApp.showErrorAlert(response.message);
 			}else{
+				disableCompleteSteps();
+				gotoWizardStep(3);
 				idTask = response.id_task;
+				updateFileInfo(response.file);
 				fabApp.resetTemperaturesPlot(1);
 				setTimeout(initGraph, 1000);
 				updateZOverride(0);

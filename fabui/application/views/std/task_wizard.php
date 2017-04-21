@@ -37,7 +37,7 @@ if($runningTask) $safety_check['all_is_ok'] = true;
 		<div class="steps-container">
 			<ul class="steps">
 			<?php foreach($steps as $step):?>
-			<li data-step="<?php echo $step['number']; ?>" data-target="#step<?php echo $step['number']; ?>" class="<?php echo (!$runningTask && $step['number'] == 1) ? 'active' : ''; ?>">
+			<li data-step="<?php echo $step['number']; ?>" data-target="#step<?php echo $step['number']; ?>">
 				<span class="badge"><?php echo $step['number']; ?></span><?php echo $step['title']; ?><span class="chevron"></span>
 			</li>
 			<?php endforeach;?>
@@ -117,11 +117,8 @@ if($runningTask) $safety_check['all_is_ok'] = true;
 							</button>
 						</div>';
 						
-						echo '</ul></div></div>';
-						
-						
+						echo '</ul></div></div>';	
 					}
-					
 					echo '</div>';
 				}
 			?>
