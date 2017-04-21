@@ -10,7 +10,11 @@
 
 <script type="text/javascript">
 
+	<?php if($runningTask): ?>
+	var idFile = <?php echo $runningTask['id_file']; ?>;
+	<?php else: ?>
 	var idFile <?php echo $file_id != '' ? ' = '.$file_id : ''; ?>; //file to create
+	<?php endif; ?>
 	var idTask <?php echo $runningTask ? ' = '.$runningTask['id'] : ''; ?>;
 	
 	
