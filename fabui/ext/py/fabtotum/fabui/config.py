@@ -33,7 +33,7 @@ from watchdog.events import PatternMatchingEventHandler
 from watchdog.events import FileSystemEventHandler
 
 # Import internal modules
-from fabtotum.os.paths        import CONFIG_INI, SERIAL_INI
+from fabtotum.os.paths        import CONFIG_INI, SERIAL_INI, TEMP_PATH
 from fabtotum.utils.singleton import Singleton
 
 #####################################################
@@ -59,9 +59,15 @@ class ConfigService:
     def register_callback(self, handler):
         if handler not in self.reload_callback:
             self.reload_callback.append(handler)
-        
+    
     def unregister_callback(self, handler):
         self.reload_callback.remove(handler)
+    
+    def is_firstboot(self):
+        if os.path.exists( os.path.join(TEMP_PATH, 'firstboot') ):
+            return True
+            
+        return False
     
     def reload(self):
         """ Reload config files """

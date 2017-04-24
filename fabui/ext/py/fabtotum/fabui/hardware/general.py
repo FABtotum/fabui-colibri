@@ -31,7 +31,7 @@ import re
 from fabtotum.fabui.hardware.common import loadFactoryFeeder, updateFactoryFeeder
 from fabtotum.utils.translation import _, setLanguage
 
-def customHardware(gcodeSender, config, log, eeprom):
+def customHardware(gcodeSender, config, log, eeprom, factory):
     """
     Revision for customs edits
     """
@@ -51,7 +51,7 @@ def customHardware(gcodeSender, config, log, eeprom):
             gcodeSender.send(line, group='bootstrap')
 
             
-def hardware1(gcodeSender, config, log, eeprom):
+def hardware1(gcodeSender, config, log, eeprom, factory):
     """
     Rev1: September 2014 - May 2015
     - Original FABtotum
@@ -66,21 +66,27 @@ def hardware1(gcodeSender, config, log, eeprom):
     
     feeder = loadFactoryFeeder(config)
     steps_per_unit = float(feeder['steps_per_unit'])
+    steps_per_angle = float(feeder['steps_per_angle'])
     feeder['max_feedrate'] = 12.00
-    if steps_per_unit != 3048.16:
-        steps_per_unit = 3048.16
-        steps_per_angle = 177.777778
-        
+    
+    if config.is_firstboot():
+        if factory:
+            steps_per_unit = float(factory['feeder']['steps_per_unit'])
+            steps_per_angle = float(factory['feeder']['steps_per_angle'])
+        else:
+            steps_per_unit = 3048.16
+            steps_per_angle = 177.777778
+            
         feeder['steps_per_unit'] = steps_per_unit
         feeder['steps_per_angle'] = steps_per_angle
         
-    updateFactoryFeeder(config, feeder)
-    config.save_feeder_info('built_in_feeder', feeder)
+        updateFactoryFeeder(config, feeder)
+        config.save_feeder_info('built_in_feeder', feeder)
     
     log.info("Rev1")
     
 
-def hardware2(gcodeSender, config, log, eeprom):
+def hardware2(gcodeSender, config, log, eeprom, factory):
     """
     Rev2: June 2015 - August 2015
     - Simplified Feeder (Removed the disengagement and engagement procedure), if you want you can update it easily following this Tutorial: Feeder update.
@@ -102,22 +108,28 @@ def hardware2(gcodeSender, config, log, eeprom):
     config.save('settings')
     
     feeder = loadFactoryFeeder(config)
-    feeder['max_feedrate'] = 12.00
     steps_per_unit = float(feeder['steps_per_unit'])
-    if steps_per_unit != 3048.16:
-        steps_per_unit = 3048.16
-        steps_per_angle = 177.777778
-        
+    steps_per_angle = float(feeder['steps_per_angle'])
+    feeder['max_feedrate'] = 12.00
+    
+    if config.is_firstboot():
+        if factory:
+            steps_per_unit = float(factory['feeder']['steps_per_unit'])
+            steps_per_angle = float(factory['feeder']['steps_per_angle'])
+        else:
+            steps_per_unit = 3048.16
+            steps_per_angle = 177.777778
+            
         feeder['steps_per_unit'] = steps_per_unit
         feeder['steps_per_angle'] = steps_per_angle
-    
-    updateFactoryFeeder(config, feeder)
-    config.save_feeder_info('built_in_feeder', feeder)
+        
+        updateFactoryFeeder(config, feeder)
+        config.save_feeder_info('built_in_feeder', feeder)
     
     log.info("Rev2")
 
 
-def hardware3(gcodeSender, config, log, eeprom):
+def hardware3(gcodeSender, config, log, eeprom, factory):
     """
     Rev3: Aug 2015 - Jan 2016
     - Back panel modified to minimize bowden tube collisions
@@ -139,24 +151,30 @@ def hardware3(gcodeSender, config, log, eeprom):
     config.set('settings', 'hardware.id', 3)
     config.set('settings', 'feeder.show', False)
     config.set('settings', 'hardware.camera.available', True)
-    config.save('settings')
-    
-    feeder = loadFactoryFeeder(config)
-    feeder['max_feedrate'] = 12.00
-    steps_per_unit = float(feeder['steps_per_unit'])
-    if steps_per_unit != 3048.16:
-        steps_per_unit = 3048.16
-        steps_per_angle = 177.777778
+    config.save('settings')       
         
+    feeder = loadFactoryFeeder(config)
+    steps_per_unit = float(feeder['steps_per_unit'])
+    steps_per_angle = float(feeder['steps_per_angle'])
+    feeder['max_feedrate'] = 12.00
+    
+    if config.is_firstboot():
+        if factory:
+            steps_per_unit = float(factory['feeder']['steps_per_unit'])
+            steps_per_angle = float(factory['feeder']['steps_per_angle'])
+        else:
+            steps_per_unit = 3048.16
+            steps_per_angle = 177.777778
+            
         feeder['steps_per_unit'] = steps_per_unit
         feeder['steps_per_angle'] = steps_per_angle
-    
-    updateFactoryFeeder(config, feeder)
-    config.save_feeder_info('built_in_feeder', feeder)
+        
+        updateFactoryFeeder(config, feeder)
+        config.save_feeder_info('built_in_feeder', feeder)
     
     log.info("Rev3")
 
-def hardware4(gcodeSender, config, log, eeprom):
+def hardware4(gcodeSender, config, log, eeprom, factory):
     """
     Rev4(CORE): Jan 2016 - xxx
     """
@@ -176,20 +194,26 @@ def hardware4(gcodeSender, config, log, eeprom):
     
     feeder = loadFactoryFeeder(config)
     steps_per_unit = float(feeder['steps_per_unit'])
+    steps_per_angle = float(feeder['steps_per_angle'])
     feeder['max_feedrate'] = 12.00
-    if steps_per_unit != 1524:
-        steps_per_unit = 1524
-        steps_per_angle = 88.888889
-        
+    
+    if config.is_firstboot():
+        if factory:
+            steps_per_unit = float(factory['feeder']['steps_per_unit'])
+            steps_per_angle = float(factory['feeder']['steps_per_angle'])
+        else:
+            steps_per_unit = 1524
+            steps_per_angle = 88.888889
+            
         feeder['steps_per_unit'] = steps_per_unit
         feeder['steps_per_angle'] = steps_per_angle
-    
-    updateFactoryFeeder(config, feeder)
-    config.save_feeder_info('built_in_feeder', feeder)
+        
+        updateFactoryFeeder(config, feeder)
+        config.save_feeder_info('built_in_feeder', feeder)
     log.info("Rev4")
 
 
-def hardware5(gcodeSender, config, log, eeprom):
+def hardware5(gcodeSender, config, log, eeprom, factory):
     """
     Rev5(CORE): Oct 2016 - xxx
     - RPi3
@@ -210,14 +234,21 @@ def hardware5(gcodeSender, config, log, eeprom):
     
     feeder = loadFactoryFeeder(config)
     steps_per_unit = float(feeder['steps_per_unit'])
+    steps_per_angle = float(feeder['steps_per_angle'])
     feeder['max_feedrate'] = 23.00
-    if steps_per_unit != 1524:
-        steps_per_unit = 1524
-        steps_per_angle = 88.888889
-        
+    
+    if config.is_firstboot():
+        if factory:
+            steps_per_unit = float(factory['feeder']['steps_per_unit'])
+            steps_per_angle = float(factory['feeder']['steps_per_angle'])
+        else:
+            steps_per_unit = 1524
+            steps_per_angle = 88.888889
+            
         feeder['steps_per_unit'] = steps_per_unit
         feeder['steps_per_angle'] = steps_per_angle
-    
-    updateFactoryFeeder(config, feeder)
-    config.save_feeder_info('built_in_feeder', feeder)
+        
+        updateFactoryFeeder(config, feeder)
+        config.save_feeder_info('built_in_feeder', feeder)
+        
     log.info("Rev5")

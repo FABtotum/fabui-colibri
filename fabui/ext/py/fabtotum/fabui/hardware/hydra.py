@@ -32,7 +32,7 @@ from fabtotum.fabui.hardware.common import loadFactoryFeeder, updateFactoryFeede
 from fabtotum.utils.translation import _, setLanguage
 
 
-def hardware3000(gcodeSender, config, log, eeprom):
+def hardware3000(gcodeSender, config, log, eeprom, factory):
     """
     Rev3000 Hydra: TBA - xxx
     """

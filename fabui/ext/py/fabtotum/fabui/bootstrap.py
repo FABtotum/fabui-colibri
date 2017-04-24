@@ -226,6 +226,16 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     # read EEPROM
     eeprom = read_eeprom(gcs)
     
+    # read Factory settings
+    factory = None
+    if os.path.exists('/mnt/live/mnt/boot/factory.json'):
+        try:
+            with open('/mnt/live/mnt/boot/factory.json') as json_f:
+                factory = json.load(json_f)
+        except:
+            # Continue if the file is not there
+            pass
+    
     try:
         hardwareID = eeprom['batch_number']
     except Exception as e:
@@ -249,16 +259,16 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     gcs.send("M734 S{0}".format(collision_warning), group='bootstrap')
     # Set homing preferences
     gcs.send("M714 S{0}".format(switch), group='bootstrap')
-                
+    
     # Execute version specific intructions
     if config.get('settings', 'settings_type') == 'custom':
-        PRESET_MAP["custom"](gcs, config, log, eeprom)
+        PRESET_MAP["custom"](gcs, config, log, eeprom, factory)
     elif hardwareID in PRESET_MAP:
-        PRESET_MAP[hardwareID](gcs, config, log, eeprom)
+        PRESET_MAP[hardwareID](gcs, config, log, eeprom, factory)
     else:
         log.error("Unsupported hardware version: %s", hardwareID)
         log.error("Forced to hardware1")
-        PRESET_MAP["1"](gcs, config, log, eeprom)
+        PRESET_MAP["1"](gcs, config, log, eeprom, factory)
     
     configure_head(gcs, config, log)
     configure_feeder(gcs, config, log)
