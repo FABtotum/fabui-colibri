@@ -64,7 +64,7 @@ class ConfigService:
         self.reload_callback.remove(handler)
     
     def is_firstboot(self):
-        if os.path.exists( os.path.join(TEMP_PATH, 'firstboot') ):
+        if os.path.exists( os.path.join('/tmp', 'firstboot') ):
             return True
             
         return False
