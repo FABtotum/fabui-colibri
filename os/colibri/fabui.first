@@ -76,12 +76,12 @@ case "$1" in
     
     evaluate_retval
     
-    mkdir -p ${FABUI_TEMP_PATH}
-    chown 33:33 ${FABUI_TEMP_PATH}
-    touch ${FABUI_TEMP_PATH}/firstboot
+    mkdir -p ${TEMP_PATH}/fabui
+    chown 33:33 ${TEMP_PATH}/fabui
+    touch ${TEMP_PATH}/firstboot
     ;;
   post)
-    rm -f ${FABUI_TEMP_PATH}/firstboot &> /dev/null
+    rm -f ${TEMP_PATH}/firstboot &> /dev/null
     ;;
   *)
     echo "Usage: $0 {pre|post}"
