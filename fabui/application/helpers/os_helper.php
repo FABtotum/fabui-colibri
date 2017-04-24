@@ -577,4 +577,15 @@ if(!function_exists('getMACAddress'))
 		return false;
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getUploadMaxFileSize'))
+{
+	/**
+	 * return upload_max_filesize from php.ini
+	 */
+	function getUploadMaxFileSize()
+	{
+		return intval(str_replace("MB","", ini_get('upload_max_filesize')));
+	}
+}
 ?>

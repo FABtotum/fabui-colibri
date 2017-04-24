@@ -991,6 +991,7 @@ class Projectsmanager extends FAB_Controller {
 			$fileId = $this->files->add($data);
 			$response['upload'] = true;
 			$response['fileId'] = $fileId;
+			$response['type'] = $data['print_type'];
 			if( $data['print_type'] == 'additive' )
 			{
 				//startPyScript('gcode_analyzer.py', array($fileId), true);

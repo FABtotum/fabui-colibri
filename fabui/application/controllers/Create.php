@@ -49,8 +49,7 @@
 	{
 		$this->load->library('smart');
 		$this->load->helper('form');
-		$this->load->helper('fabtotum_helper');
-		$this->load->helper('upload_helper');
+		$this->load->helper( array('fabtotum_helper', 'upload_helper', 'os_helper') );
 		$this->load->model('Files', 'files');
 		
 		$data = array();
