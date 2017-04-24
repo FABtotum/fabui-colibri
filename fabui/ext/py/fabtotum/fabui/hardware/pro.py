@@ -32,7 +32,7 @@ from fabtotum.fabui.hardware.common import loadFactoryFeeder, updateFactoryFeede
 from fabtotum.utils.translation import _, setLanguage
 
 
-def hardware2000(gcodeSender, config, log, eeprom):
+def hardware2000(gcodeSender, config, log, eeprom, factory):
     """
     Rev1000 CORE PRO: TBA - xxx
     """

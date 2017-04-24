@@ -32,7 +32,7 @@ from fabtotum.fabui.hardware.common import loadFactoryFeeder, updateFactoryFeede
 from fabtotum.utils.translation import _, setLanguage
 
 
-def hardware1000(gcodeSender, config, log, eeprom):
+def hardware1000(gcodeSender, config, log, eeprom, factory):
     """
     Rev1000 CORE LITE: APRIL 2017 - xxx
     - RPi3
@@ -51,12 +51,19 @@ def hardware1000(gcodeSender, config, log, eeprom):
     
     feeder = loadFactoryFeeder(config)
     steps_per_unit = float(feeder['steps_per_unit'])
+    steps_per_angle = float(feeder['steps_per_angle'])
     feeder['max_feedrate'] = 23.00
-    if steps_per_unit != 1524:
-        steps_per_unit = 1524
-        steps_per_angle = 88.888889
+    
+    if config.is_firstboot():
+        if factory:
+            steps_per_unit = float(factory['feeder']['steps_per_unit'])
+            steps_per_angle = float(factory['feeder']['steps_per_angle'])
+        else:
+            steps_per_unit = 1524
+            steps_per_angle = 88.888889
+            
         feeder['steps_per_unit'] = steps_per_unit
         feeder['steps_per_angle'] = steps_per_angle
         
-    updateFactoryFeeder(config, feeder)
-    config.save_feeder_info('built_in_feeder', feeder)
+        updateFactoryFeeder(config, feeder)
+        config.save_feeder_info('built_in_feeder', feeder)

@@ -75,8 +75,13 @@ case "$1" in
     python ${PYTHON_PATH}/setCamera.py &> /var/log/fabui/setCamera.log
     
     evaluate_retval
+    
+    mkdir -p ${FABUI_TEMP_PATH}
+    chown 33:33 ${FABUI_TEMP_PATH}
+    touch ${FABUI_TEMP_PATH}/firstboot
     ;;
   post)
+    rm -f ${FABUI_TEMP_PATH}/firstboot &> /dev/null
     ;;
   *)
     echo "Usage: $0 {pre|post}"
