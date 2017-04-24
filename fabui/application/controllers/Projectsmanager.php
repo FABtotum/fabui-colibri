@@ -18,6 +18,7 @@ class Projectsmanager extends FAB_Controller {
 		//load libraries, helpers, model, config
 		$this->load->library('smart');
 		$this->load->helper('layout');
+		$this->config->load('fabtotum');
 		$data['alert'] = $this->session->flashdata('alert'); //show message if is present
 		
 		//main page widget
@@ -26,10 +27,16 @@ class Projectsmanager extends FAB_Controller {
 			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
 		);
 		
+		$installSamplesButton = '';
+		if(file_exists($this->config->item('samples_file'))){
+			$installSamplesButton = '<button id="install-samples" class="btn bg-color-magenta txt-color-white"><i class="fa fa-cubes"></i> <span class="hidden-xs">'._("Install samples").'</span> </button>';
+		}
+		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
 		<a class="btn btn-success" href="projectsmanager/add-project"><i class="fa fa-plus"></i> <span class="hidden-xs">'._("Add new project").'</span> </a>
 		<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> <span class="hidden-xs">'._("Delete").'</span> </button>
 		<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> <span class="hidden-xs">'._("Download").'</span> </button>
+		'.$installSamplesButton.'
 		</div>';
 		
 		$widget = $this->smart->create_widget($widgetOptions);

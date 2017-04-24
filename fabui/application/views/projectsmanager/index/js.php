@@ -23,6 +23,7 @@
 		});
 		
 		$(".bulk-button").on('click', bulk_actions);
+		$("#install-samples").on('click', askInstallSamples);
 	});
 	
 	/**
@@ -196,6 +197,40 @@
 	function download_objects(list){  	
 		document.location.href = '<?php echo site_url('projectsmanager/download/object/') ?>/' + list.join('-');
 	}
-    
+    /**
+    *
+    */
+    function installSamples()
+    {
+    	openWait('<i class="fa fa-spin fa-cog"></i> ' + "<?php echo _("Installing samples") ?>", "<?php echo _("Please wait") ?>", false);
 
+    	$.ajax({
+			type: "POST",
+			url: "<?php echo site_url('install/installSamples') ?>",
+			dataType: 'json',
+			data: {output: 'json'}
+		}).done(function(response) {
+			objectsTable._fnAjaxUpdate();
+			$("#install-samples").remove();
+			closeWait();		
+		});
+    }
+	/**
+	*
+	**/
+	function askInstallSamples()
+	{
+		$.SmartMessageBox({
+			title: "<i class='fa fa-warning txt-color-orangeDark'></i> <?php echo _("Warning") ?>!",
+			content: "<?php echo _("Do you really want to install samples?") ?>",
+			buttons: '[<?php echo _("No") ?>][<?php echo _("Yes") ?>]'
+		}, function(ButtonPressed) {
+			if (ButtonPressed === "<?php echo _("Yes") ?>") {
+				installSamples();
+			}
+			if (ButtonPressed === "<?php echo _("No") ?>") {
+	
+			}
+		});
+	}
 </script>

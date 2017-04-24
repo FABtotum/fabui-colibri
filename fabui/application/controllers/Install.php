@@ -296,10 +296,15 @@ class Install extends FAB_Controller {
 	/**
 	 * install gcode samples
 	 */
-	public function installSamples($userID)
+	public function installSamples($userID = '')
 	{
 		$this->load->model('Objects', 'objects');
 		$this->load->helpers('upload_helper');
+		$this->config->load('fabtotum');
+		
+		if($userID == ''){
+			$userID = $this->session->user['id'];
+		}
 		
 		$samples_path = '/usr/share/fabui/recovery/';
 		$samples_import = '/usr/share/fabui/recovery/import.json';
@@ -328,6 +333,15 @@ class Install extends FAB_Controller {
 				}
 				
 				$this->objects->addFiles($objectID, $fileIDs);
+			}
+			
+			$sample_file = $this->config->item('samples_file');
+			if(file_exists($sample_file)){
+				unlink($sample_file);
+			}
+			
+			if($this->input->post('output') == 'json'){
+				$this->output->set_content_type('application/json')->set_output(json_encode(array('installed' => true)));
 			}
 		}
 	}
