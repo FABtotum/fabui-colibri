@@ -79,15 +79,18 @@
         var button = $("#change-extruder-step-value-button");
         button.html('<i class="fa fa-spin fa-spinner"></i> ' + _("Storing...") );
         disableButton('.step-change-modal-cancel');
+        
+        var new_value = $("#feeder-step-new-value").val();
+        
         var data = {
             action : 'change',
-            new_step : $("#feeder-step-new-value").val()
+            new_step : new_value
         };
         
         $.ajax({
             type: "POST",
             url: "<?php echo site_url("feeder/changeStep") ?>/"
-                + $("#feeder-step-new-value").val(),
+                + new_value,
             dataType: 'json'
         }).done(function( data ) {
             var button = $("#change-extruder-step-value-button");

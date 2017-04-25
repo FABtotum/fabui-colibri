@@ -35,7 +35,7 @@
 					</section>
 				</div>
 				<section>
-					<label class="label">XYZ <?php echo _("Feedrate"); ?> (mm/s<sup>2</sup>)</label>
+					<label class="label">XYZ <?php echo _("Feedrate"); ?> (mm/s)</label>
 					<label class="input">
 						<input type="number" min="1" value="1000" id="xyzFeed">
 					</label>
