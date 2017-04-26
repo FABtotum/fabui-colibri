@@ -44,6 +44,7 @@
 			},
 			init: function() {
 				filesDropzone = this;
+				
 			 	this.on("addedfile", function(file) {});
 			 	this.on("uploadprogress", function(file, progress) { 
 				 	$(".dropzone-file-upload-percent").html(parseInt(progress) + " %");
@@ -109,8 +110,10 @@
 	* 
 	**/
 	function destroyDropZone()
-	{
-		filesDropzone.destroy();
+	{	
+		if (typeof(filesDropzone) !== "undefined"){
+			filesDropzone.destroy();
+		}
 	}
 	<?php if($type == 'print'):?>
 	/**
