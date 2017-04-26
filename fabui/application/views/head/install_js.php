@@ -10,14 +10,14 @@
 ?>
 <script type="text/javascript">
 	var selected_head = "<?php echo $head?>";
-	
+	heads = <?php echo json_encode($heads)?>;
 	$(function () {
 		
 		$("#heads").on('change', set_head_img);
 		$("#heads").trigger('change');
 		$("#heads").on('click', function(){
 			console.log("heads CLICK");
-			});
+		});
 		$("#heads").on('select', function(){
 			console.log("heads SELECT");
 			});
@@ -254,12 +254,13 @@
 		var settings = {};
 		
 		$("#head-settings :input").each(function (index, value) {
-			var name = $(this).attr('name');
-			var id = $(this).attr('id');
-			var type = $(this).attr('type');
+
+			
+			var name   = $(this).attr('name');
+			var id     = $(this).attr('id');
+			var type   = $(this).attr('type');
 			var feeder = id.startsWith("feeder-");
 			
-			console.log('store:', id, feeder);
 			
 			if( !settings.hasOwnProperty('feeder'))
 			{
