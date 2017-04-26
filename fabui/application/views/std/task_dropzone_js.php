@@ -25,7 +25,7 @@
 	function initDropZone()
 	{			
 		Dropzone.autoDiscover = false;
-		filesDropzone = $(document.body).dropzone({
+		$(document.body).dropzone({
 			url: "<?php echo site_url("projectsmanager/uploadFile") ?>", // Set the url,
 			parallelUploads: 1,
 			maxFiles: 1,
@@ -48,10 +48,8 @@
 			 	this.on("uploadprogress", function(file, progress) { 
 				 	$(".dropzone-file-upload-percent").html(parseInt(progress) + " %");
 				 	$(".dropzone-progress-bar").attr("style", "width:"+parseInt(progress)+"%");
-				 });
+				});
 			 	this.on("complete", function(file){
-				 	
-			 		
 				 	var response = jQuery.parseJSON(file.xhr.response);
 				 	if(response.upload == true){
 					 	
@@ -106,6 +104,13 @@
 		}).done(function(response) {
 			console.log(response);
 		})
+	}
+	/**
+	* 
+	**/
+	function destroyDropZone()
+	{
+		filesDropzone.destroy();
 	}
 	<?php if($type == 'print'):?>
 	/**

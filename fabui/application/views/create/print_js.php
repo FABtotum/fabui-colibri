@@ -99,6 +99,7 @@
 				gotoWizardStep(2);
 				fabApp.showErrorAlert(response.message);
 			}else{
+				destroyDropZone();
 				disableCompleteSteps();
 				gotoWizardStep(3);
 				idTask = response.id_task;

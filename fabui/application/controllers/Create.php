@@ -137,32 +137,34 @@
 		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>"._("Print")."</h2>");
 		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ), 'class'=>'fuelux');
 
-		$this->addCssFile('/assets/css/std/select_file.css');
+		
 		$this->addCssFile('/assets/css/std/task_execute.css');
 
-		$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
-		$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
-		$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
-		$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
-		$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
-		
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.cust.min.js'); 
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.resize.min.js');
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.fillbetween.min.js');
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.time.min.js');
 		$this->addJSFile('/assets/js/plugin/flot/jquery.flot.tooltip.min.js');
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
-		$this->addJSFile('/assets/js/plugin/dropzone/dropzone.js'); //dropzpone
+		
 
 		$this->addJsInLine($this->load->view( 'create/print_js', $data, true));
 		$this->addJsInLine($this->load->view( 'std/task_wizard_js',   $data, true));
 		
 		if(!$task_is_running) { // these files aren't needed if task is already running
+			$this->addCssFile('/assets/css/std/select_file.css');
+			$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
+			$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable
+			$this->addJSFile('/assets/js/plugin/datatables/dataTables.tableTools.min.js'); //datatable
+			$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
+			$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
+			$this->addJSFile('/assets/js/plugin/dropzone/dropzone.js'); //dropzpone	
 			$this->addJsInLine($this->load->view( 'std/task_dropzone_js', $data, true));
 			$this->addJsInLine($this->load->view( 'std/task_safety_check_js', $data, true));
 			$this->addJsInLine($this->load->view( 'std/select_file_js',   $data, true));
 			$this->addJsInLine($this->load->view( 'std/print_setup_js',   $data, true));
 		}
+		
 		$this->addJsInLine($this->load->view( 'std/task_execute_js',  $data, true));
 		$this->addJsInLine($this->load->view( 'std/task_finished_js', $data, true));
 
