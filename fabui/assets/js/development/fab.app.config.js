@@ -15,8 +15,10 @@ $.console = $(".console"); //where display trace content
 /*
  *  main url actions
  */
+
 var reboot_url_action           = base_url + '/control/reboot';
 var poweroff_url_action         = base_url + '/control/poweroff';
+var login_url                   = base_url + '/login/index';
 var logout_url                  = base_url + '/login/out';
 var reset_controller_url_action = base_url + '/control/resetController';
 var stop_all_url_action         = base_url + '/control/emergency';

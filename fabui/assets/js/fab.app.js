@@ -553,11 +553,11 @@ fabApp = (function(app) {
 			url: reboot_url_action,
 		}).done(function(data) {
 			waitContent( _("You will be redirect to login page") );
-			app.redirectToUrlWhenisReady(base_url);
+			app.redirectToUrlWhenisReady(login_url);
 		}).fail(function(jqXHR, textStatus){
 			//clear intervals
 			waitContent( _("You will be redirect to login page") );
-			app.redirectToUrlWhenisReady(base_url);
+			app.redirectToUrlWhenisReady(login_url);
 		});
 	};
 	/*
@@ -1343,6 +1343,10 @@ fabApp = (function(app) {
 				document.location.href = url;
 			})
 			.error(function(jqXHR, textStatus, errorThrown) {
+				
+				console.log(jqXHR);
+				console.log(jqXHR.status);
+				console.log(errorThrown);
 				setTimeout( function() {
 					app.redirectToUrlWhenisReady(url);
 				}, 500 );
