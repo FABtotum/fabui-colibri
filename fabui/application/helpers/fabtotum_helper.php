@@ -382,7 +382,7 @@ if(!function_exists('saveHeadInfo'))
 		}else{
 			$newInfo = $info;
 		}
-		$content = json_encode($newInfo, JSON_PRETTY_PRINT);
+		$content = json_encode($newInfo, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
 		return file_put_contents($fn, $content) > 0;
 	}
 }
@@ -398,6 +398,8 @@ if(!function_exists('saveFeederInfo'))
 		
 		$fn = $feeders_dir.'/'.$feeder_name.'.json';
 		
+		$oldInfo = json_decode(file_get_contents($fn), true);
+		
 		if( isFeederInHead($feeder_name) )
 		{
 			$heads = loadHeads();
@@ -412,7 +414,7 @@ if(!function_exists('saveFeederInfo'))
 		}
 		else
 		{
-			$content = json_encode($info, JSON_PRETTY_PRINT);
+			$content = json_encode(array_replace_recursive($oldInfo, $info), JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
 			return file_put_contents($fn, $content) > 0;
 		}
 	}
