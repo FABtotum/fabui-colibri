@@ -28,7 +28,7 @@
 						<label class="label"><?php echo _("Target temperature");?> </label>
 						<label class="input">
 							<i class="icon-prepend fa fa-thermometer-three-quarters"></i>
-							<input type="number" max="<?php echo $installed_head['max_temp']  ?>" value="<?php echo $installed_head['max_temp']  ?>" id="temperature_target">
+							<input type="number" max="<?php echo $installed_head['max_temp']  ?>" value="<?php echo intval($installed_head['max_temp']-20)  ?>" id="temperature_target">
 						</label>
 					</section>
 					<section class="col col-6">
