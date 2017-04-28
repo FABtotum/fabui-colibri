@@ -70,6 +70,14 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		
 		$("#shutdown-switch").on('change', shutdownSwitchChange);
 		$("#email-switch").on('change', emailSwitchChange);
+
+		<?php if($type=="print"): ?>
+		disableButton('.change-filament-button');
+		disableButton("#filament-start-button");
+		$(".change-filament-button").on('click', showChangeFilamentModal);
+		$(".filament-button-choose-action").on('click', filamentSetMode);
+		$("#filament-start-button").on('click', startFilamentAction);
+		<?php endif; ?>
 		
 	});
 	
@@ -676,9 +684,12 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		if(action == 'pause') {
 			element.attr('data-action', 'resume');
 			element.html('<i class="fa fa-play"></i> '+_("Resume "+taskType) );
+			enableButton('.change-filament-button');
 		}else if(action == 'resume'){
 			element.attr('data-action', 'pause');
 			element.html('<i class="fa fa-pause"></i> '+_("Pause "+taskType) );
+			
+			disableButton('.change-filament-button');
 		}
 		sendActionRequest(action);
 	}
@@ -826,6 +837,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 					var element = $(".isPaused-button");
 					element.html('<i class="fa fa-play"></i> '+_("Resume " + taskType) );
 					element.attr('data-action', 'resume');
+					enableButton('.change-filament-button');
 				}
 				break;
 			case 'started':
@@ -833,6 +845,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 					var element = $(".isPaused-button");
 					element.html('<i class="fa fa-pause"></i> '+_("Pause " +taskType) );
 					element.attr('data-action', 'pause');
+					disableButton('.change-filament-button');
 				}
 				break;
 			case 'aborting':
@@ -846,6 +859,9 @@ if(!isset($bed_max)) 		$bed_max = 100;
 				break;
 			case 'completed':
 				completeTask();
+				break;
+			default:
+				disableButton('.change-filament-button');
 				break;
 		}
 	}
@@ -1033,6 +1049,48 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	{
 		$(".task-file-name").html('<b>' + file.name + '</b>');
 	}
-	
+	<?php if($type=="print"): ?>
+	/**
+	*
+	**/
+	function showChangeFilamentModal()
+	{
+		$('#filament-change-modal').modal({
+			backdrop : 'static'
+		});
+	}
+	/**
+	*
+	**/
+	function filamentSetMode()
+	{
+		console.log($(this));
+		var action = $(this).attr('data-action');
+		$(".filament-button-choose-action").find('span').html('');
+		$(this).find('span').html('<i class="fa fa-check"></i>');
+		console.log(action);
+		$(".filament-action-descritpion").addClass("hidden");
+		$("#filament-" + action + "-description").removeClass("hidden");
+		$("#filament-start-button").attr('data-action', action);
+		enableButton("#filament-start-button");
+	}
+	/**
+	*
+	**/
+	function startFilamentAction()
+	{
+		var action = $(this).attr('data-action');
+		var filament = $("#filament").val();
+		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> <?php echo _("Please wait");?>", null, false);
+		$.ajax({
+			type: "POST",
+			url: "<?php echo site_url("spool") ?>/" + action + '/' + filament + '/1',
+			dataType: 'json'
+		}).done(function( response ) {
+			console.log(response);
+			closeWait();
+	  	});
+	}
+	<?php endif; ?>
 </script>
 

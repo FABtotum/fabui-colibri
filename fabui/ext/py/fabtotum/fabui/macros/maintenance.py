@@ -62,9 +62,8 @@ def pre_unload_spool(app, args = None, lang='en_US.UTF-8'):
     
     #~ ext_temp = float(args[0])
     ext_temp = args[0]
-    
     app.macro("M104 S{0}".format(ext_temp),  "ok", 5,    _("Pre-Heating Nozzle...") )
-    app.macro("M109 S{0}".format(ext_temp),  "*", 400,  _("Waiting for nozzle to reach temperature...") ) #heating and waiting.
+    app.macro("M109 S{0}".format(ext_temp),  "*", 400,  _("Waiting for nozzle to reach temperature (<span class='top-bar-nozzle-actual'>-</span> / {0}&deg;)".format(ext_temp)) ) #heating and waiting.
     
 def unload_spool(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
@@ -73,11 +72,14 @@ def unload_spool(app, args = None, lang='en_US.UTF-8'):
     units_e     = feeder['steps_per_unit']
     tube_length = feeder['tube_length']
     
+    task_running = int(args[0]) == 1
+    
     app.trace( _("Unloading Spool : Procedure Started.") )
     app.macro("G90",                "ok", 10,   _("Setting abs position"), verbose=False)
     app.macro("M302 S0",            "ok", 10,   _("Extrusion prevention disabled"), verbose=False)
-    app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), verbose=False)
-    app.macro("G0 X102 Y117 Z150 F10000",     "ok", 100,   _("Moving to safe zone"), verbose=False) #right top corner Z=150mm
+    if(task_running == False):
+        app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), verbose=False)
+        app.macro("G0 X102 Y117 Z150 F10000",     "ok", 100,   _("Moving to safe zone"), verbose=False) #right top corner Z=150mm
     app.macro("G91",                "ok", 2,    _("Setting rel position"), verbose=False)
     app.macro("G92 E0",             "ok", 5,    _("Setting extruder to zero"), verbose=False)
     app.macro("M92 E{0}".format(units_e), "ok", 30,   _("Setting extruder mode"), verbose=False)
@@ -88,7 +90,8 @@ def unload_spool(app, args = None, lang='en_US.UTF-8'):
     #app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
     app.macro("G0 E-200 F550",      "ok", 300,   _("Expelling filament"), verbose=False)
     #app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
-    app.macro("M104 S0",            "ok", 1,    _("Turning off heater") )
+    if(task_running == False):
+        app.macro("M104 S0",            "ok", 1,    _("Turning off heater") )
     app.macro("M302 S170",          "ok", 10,   _("Extrusion prevention enabled"), verbose=False)
     
 def load_spool(app, args = None, lang='en_US.UTF-8'):
@@ -99,11 +102,15 @@ def load_spool(app, args = None, lang='en_US.UTF-8'):
     
     #~ ext_temp = float(args[0])
     ext_temp = args[0]
+    task_running = int(args[1]) == 1
     
     app.trace( _("Loading Spool : Procedure Started.") )
-    app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False)
-    app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), verbose=False)
-    app.macro("G0 X102 Y117 Z150 F10000",     "ok", 100,   _("Moving to safe zone"), verbose=False)
+    if (task_running == False) :
+        app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False)
+        app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), verbose=False)
+        app.macro("G0 X102 Y117 Z150 F10000",     "ok", 100,   _("Moving to safe zone"), verbose=False)
+    else:
+        app.macro("M17", "ok", 5,  _("Enable power to all stepper motors"), verbose=False)
     app.macro("M302 S0",            "ok", 5,    _("Enabling Cold extrusion"), verbose=False)
     app.macro("G91",                "ok", 2,    _("Setting rel position"), verbose=False)
     app.macro("G92 E0",             "ok", 5,    _("Setting extruder position to 0"), verbose=False)
@@ -112,10 +119,11 @@ def load_spool(app, args = None, lang='en_US.UTF-8'):
     app.macro("M300",               "ok", 5,    _("<b>Start pushing!</b>") )
     app.macro("G0 E110 F500",       "ok", 300,    _("Loading filament") )
     app.macro("G0 E{0} F700".format(tube_length),       "ok", 300,    _("Loading filament (fast)") )
-    app.macro("M109 S{0}".format(ext_temp),          "*", 400,  _("Waiting to get to temperature...") ) #heating and waiting.
+    app.macro("M109 S{0}".format(ext_temp),          "*", 400,  _("Waiting to get to temperature (<span class='top-bar-nozzle-actual'>-</span> / {0}&deg;)".format(ext_temp)) ) #heating and waiting.
     app.macro("G0 E100 F200",       "ok", 100,    _("Entering the hotend (slow)") )
     #app.macro("M400",               "ok", 300,  _("Wait for move to finish"), verbose=False)
-    app.macro("M104 S0",            "ok", 1,    _("Turning off heater") )
+    if (task_running == False) :
+        app.macro("M104 S0",            "ok", 1,    _("Turning off heater") )
     app.macro("M302 S170",          "ok", 1,    _("Disabling Cold Extrusion Prevention"), verbose=False)
 
 def manual_bed_leveling(app, args = None, lang='en_US.UTF-8'):

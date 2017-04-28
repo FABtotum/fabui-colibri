@@ -85,6 +85,7 @@
 		$data['type']      = 'print';
 		$data['type_label'] = _("Printing");
 		$data['type_action'] = _("Print");
+		$data['filamentsOptions'] = array('pla' => 'PLA', 'abs' => 'ABS', 'nylon' => 'Nylon');
 		$this->config->load('upload');
 		
 		$data['accepted_files'] = allowedTypesToDropzoneAcceptedFiles( $this->config->item('allowed_types') );

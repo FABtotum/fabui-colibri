@@ -11,6 +11,7 @@
 /* variable initialization */
 if( !isset($z_height_values) ) $z_height_values = array('0.1' => '0.1', '0.01' => '0.01');
 if( !isset($rpm_label) ) $rpm_label = _("RPM");
+$stats_button_size = $type == 'print' ? 4 : 6;
  
 ?>
 
@@ -115,12 +116,17 @@ if( !isset($rpm_label) ) $rpm_label = _("RPM");
 						<div class="fake-progress"></div>
 					</div>
 					<span class="show-stat-buttons"> 
-						<span class="col-xs-6 col-sm-6 col-md-6 col-lg-6"> 
+						<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?>"> 
 							<button type="button" data-action="abort"  class="btn btn-default btn-block  action"><i class="fa fa-stop"></i> <?php echo _("Abort"); ?> </button> 
 						</span> 
-						<span class="col-xs-6 col-sm-6 col-md-6 col-lg-6"> 
+						<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?>"> 
 							<button type="button" data-action="pause"  class="btn btn-default btn-block  action isPaused-button"><i class="fa fa-pause"></i> <?php echo _("Pause"); ?> </button> 
-						</span> 
+						</span>
+						<?php if($type=="print"):?>
+						<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?>"> 
+							<button type="button" class="btn btn-default btn-block change-filament-button"><i class="fa fa-circle-o-notch"></i> <?php echo _("Change filament"); ?> </button> 
+						</span>
+						<?php endif;?> 
 					</span>
 				</div>
 			</div>
@@ -199,3 +205,58 @@ if( !isset($rpm_label) ) $rpm_label = _("RPM");
 		</div>
 	</div>
 </div>
+<?php if($type=="print"):?>
+<div class="modal fade" id="filament-change-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><i class="fa fa-circle-o-notch"></i> <?php echo _("Change filament");?></h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="smart-form">
+							<fieldset>
+								<section>
+									<label class="label"><?php echo _("Filament");?></label>
+									<label class="select">
+										<?php echo form_dropdown('filament', $filamentsOptions, 'large', 'id="filament"');?> <i></i>
+									</label>
+								</section>
+							</fieldset>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<span class=""> 
+							<span class="col-xs-6 col-sm-6 col-md-6 col-lg-6"> 
+								<button type="button" data-action="load"  class="btn btn-default btn-block filament-button-choose-action"><span></span> <?php echo _("Load");?> </button> 
+							</span> 
+							<span class="col-xs-6 col-sm-6 col-md-6 col-lg-6"> 
+								<button type="button" data-action="unload"  class="btn btn-default btn-block filament-button-choose-action"><span></span> <?php echo _("Unload");?> </button> 
+							</span>
+						</span>
+					</div>
+				</div>
+				<div class="row">
+					<div id="filament-load-description"   class="col-sm-12  filament-action-descritpion hidden">
+						<div class="well well-sm well-ligth">
+							<p>Load instructions</p>
+						</div>
+					</div>
+					<div id="filament-unload-description" class="col-sm-12 filament-action-descritpion hidden">
+						<div class="well well-sm well-ligth">
+							<p>Unload instructions</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"> <?php echo _("Cancel");?></button>
+				<button type="button" id="filament-start-button" class="btn btn-success" data-action=""> <?php echo _("Start");?></button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<?php endif;?>

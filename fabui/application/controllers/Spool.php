@@ -91,11 +91,11 @@ class Spool extends FAB_Controller {
 	/**
 	 * 
 	 */
-	public function load($filament_type = 'pla')
+	public function load($filament_type = 'pla', $task_running = 0)
 	{
 		$this->load->helpers('fabtotum_helper');
-		$filament = getFilament($filament_type);	
-		$result = doMacro('load_spool', '', [$filament['temperatures']['extrusion']]);
+		$filament = getFilament($filament_type);
+		$result = doMacro('load_spool', '', [$filament['temperatures']['extrusion'], $task_running]);
 		if($result['response'] == 'success'){
 			setFilament($filament_type, true);
 		}
@@ -113,7 +113,7 @@ class Spool extends FAB_Controller {
 	/**
 	 * 
 	 */
-	public function unload($filament_type = 'pla')
+	public function unload($filament_type = 'pla', $task_running = 0)
 	{
 		$this->load->helpers('fabtotum_helper');
 		$filament = getFilament($filament_type);
@@ -124,7 +124,7 @@ class Spool extends FAB_Controller {
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $resultPreUnLoad['message'])));
 			exit();
 		}
-		$resultUnload = doMacro('unload_spool');
+		$resultUnload = doMacro('unload_spool', '', [$task_running]);
 		
 		if($resultUnload['response'] == 'success'){
 			setFilament($filament_type, false);

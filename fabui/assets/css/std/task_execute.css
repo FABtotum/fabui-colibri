@@ -77,3 +77,9 @@
 .border-black {
 	border-color: #333 !important;
 }
+
+.filament-action-descritpion {
+	padding-right: 25px;
+	padding-left: 25px;
+	margin-top:10px;
+}
