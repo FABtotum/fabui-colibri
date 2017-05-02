@@ -683,11 +683,11 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		var taskType = "<?php echo isset($type_label) ? $type_label : ucfirst($type); ?>";
 		if(action == 'pause') {
 			element.attr('data-action', 'resume');
-			element.html('<i class="fa fa-play"></i> '+_("Resume "+taskType) );
+			element.html('<i class="fa fa-play"></i> <span class="hidden-xs">'+_("Resume "+taskType)+"</span>" );
 			enableButton('.change-filament-button');
 		}else if(action == 'resume'){
 			element.attr('data-action', 'pause');
-			element.html('<i class="fa fa-pause"></i> '+_("Pause "+taskType) );
+			element.html('<i class="fa fa-pause"></i> <span class="hidden-xs">'+_("Pause "+taskType)+"</span>" );
 			
 			disableButton('.change-filament-button');
 		}
@@ -787,6 +787,12 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			<?php if($type == "print"): ?>
 			updateFlowRate(data.override.flow_rate);
 			updateFan(data.override.fan);
+			if(data.hasOwnProperty("print") && 
+			   data.print.hasOwnProperty("layer_current") && 
+			   data.print.hasOwnProperty("layer_total"))
+			{
+				updateLayer(data.print.layer_current, data.print.layer_total);
+			}
 			<?php endif; ?>
 			<?php if($type == "mill" || $type == "laser"): ?>
 			updateRPM(data.override.rpm);
@@ -940,7 +946,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	 */
 	function updateProgress(value)
 	{
-		$(".task-progress").html(parseInt(value) + " %");
+		$(".task-progress").html(parseFloat(value).toFixed(1) + " %");
 		$("#task-progress-bar").attr("style", "width:" +value +"%;");
 	}
 	/**
@@ -1090,6 +1096,15 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			console.log(response);
 			closeWait();
 	  	});
+	}
+	/**
+	*
+	**/
+	function updateLayer(current, total)
+	{
+		$(".task-layer-current").html((parseInt(current)+1));
+		$(".task-layer-total").html(parseInt(total));
+		$(".layer-info").removeClass("hidden");
 	}
 	<?php endif; ?>
 </script>

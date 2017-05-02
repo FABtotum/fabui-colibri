@@ -85,6 +85,11 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <span class="text"> <i class="fa fa-cube"></i> <?php echo _("File"); ?> <span class="pull-right"><span class="task-file-name"> (<?php echo _("Loading");?> ..)</span> </span> </span>
 						<div class="fake-progress"></div>
 					</div>
+					<?php if( $type =="print"): ?>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 layer-info hidden"> <span class="text"> <i class="fa fa-database"></i> <?php echo _("Layer"); ?> <span class="pull-right"><span title="<?php echo _("Current layer");?>" class="task-layer-current"></span> <?php echo _("of")?> <span title="<?php echo _("Total layers");?>" class="task-layer-total"></span> </span> </span>
+						<div class="fake-progress"></div>
+					</div>
+					<?php endif; ?>
 					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> <?php echo _("Progress"); ?> <span class="pull-right task-progress"></span> </span>
 						<div class="progress">
 							<div class="progress-bar" id="task-progress-bar"></div>
@@ -117,14 +122,14 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 					</div>
 					<span class="show-stat-buttons"> 
 						<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?>"> 
-							<button type="button" data-action="abort"  class="btn btn-default btn-block  action"><i class="fa fa-stop"></i> <?php echo _("Abort"); ?> </button> 
+							<button type="button" data-action="abort"  class="btn btn-default btn-block  action"><i class="fa fa-stop"></i> <span class="hidden-xs"><?php echo _("Abort"); ?></span> </button> 
 						</span> 
 						<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?>"> 
-							<button type="button" data-action="pause"  class="btn btn-default btn-block  action isPaused-button"><i class="fa fa-pause"></i> <?php echo _("Pause"); ?> </button> 
+							<button type="button" data-action="pause"  class="btn btn-default btn-block  action isPaused-button"><i class="fa fa-pause"></i> <span class="hidden-xs"><?php echo _("Pause"); ?></span> </button> 
 						</span>
 						<?php if($type=="print"):?>
 						<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?>"> 
-							<button type="button" class="btn btn-default btn-block change-filament-button"><i class="fa fa-circle-o-notch"></i> <?php echo _("Change filament"); ?> </button> 
+							<button type="button" class="btn btn-default btn-block change-filament-button"><i class="fa fa-circle-o-notch"></i> <span class="hidden-xs hidden-sm"><?php echo _("Change filament"); ?></span> </button> 
 						</span>
 						<?php endif;?> 
 					</span>

@@ -1214,6 +1214,7 @@ if(!function_exists('resetTaskMonitor'))
 		
 		$monitor = json_decode(file_get_contents($CI->config->item('task_monitor')), true);
 		unset($monitor['gpusher']);
+		unset($monitor['print']);
 		if(!is_array($monitor)) $monitor = array();
 		
 		//override keys value
