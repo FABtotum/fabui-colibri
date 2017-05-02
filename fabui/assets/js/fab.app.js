@@ -1256,17 +1256,17 @@ fabApp = (function(app) {
 	 * handle trace content from task/macro
 	 */
 	app.handleTrace = function(content) {
-		if($(".trace-console").length > 0){
-			var contentSplitted = content.split('\n');
-			var html = '';
-			$.each(contentSplitted, function( index, value ) {
+		var contentSplitted = content.split('\n');
+		var html = '';
+		$.each(contentSplitted, function( index, value ) {
 				if(value != '')
 					html += '<p>'+ value +'</p>';
-			});
+		});
+		if($(".trace-console").length > 0){
 			$(".trace-console").html(html).scrollTop(1E10);
 			$(".trace-console").parent().scrollTop(1E10);
 		}
-		waitContent(content);
+		waitContent(html);
 	}
 	/**
 	 * reset temperatures plot

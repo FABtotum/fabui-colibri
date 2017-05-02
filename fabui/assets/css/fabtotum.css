@@ -550,7 +550,11 @@ body.smart-style-6 .top-bed-target-temp, body.smart-style-6 .top-ext-target-temp
  
 .MessageBoxMiddle .pre {
 	margin-top: 10px;
-	white-space: pre;
+	/*white-space: pre;*/
+}
+
+.MessageBoxMiddle .pre p {
+	margin: 0 0 1px;
 }
 
 .fancybox-overlay {
