@@ -348,9 +348,6 @@ class GCodeService:
         # Must be defined before any thread is created
         self.cq = queue.Queue() # Command Queue
         self.rq = queue.Queue(self.REPLY_QUEUE_SIZE) # Reply Queue
-        
-        self.position_stored = False
-        self.position = {'x': 0.0, 'y': 0.0, 'z': 0.0}
 
         self.ev_tx_started = Event()
         self.ev_rx_started = Event()
@@ -375,7 +372,7 @@ class GCodeService:
             ch.setFormatter(formatter)
             self.log.addHandler(ch)
             
-        self.state = {
+        self.gcode_state = {
             "axis_relative_mode" : {
                 'x' : False,
                 'y' : False,
@@ -421,6 +418,7 @@ class GCodeService:
         self.last_command = None
         self.first_move = False
         self.gcode_count = 0
+        self.printer_halted = False
     
     @staticmethod
     def __is_number(s):
@@ -502,7 +500,7 @@ class GCodeService:
             raise AttributeError
         
         for hook in HOOKS:
-            trigger, callback_name, callback_data = hook.process_command(gcode_raw)
+            trigger, callback_name, callback_data = hook.process_command(self, gcode_raw)
             if trigger:
                 self.__trigger_callback(callback_name, callback_data)
         
@@ -635,6 +633,10 @@ class GCodeService:
                 time.sleep(1)
                 continue
 
+            self.log.debug('get command from queue: %s', str(cmd))
+            if cmd is None:
+                continue
+
             if cmd == Command.GCODE:
                 # Synchronisation with atomic start/end
                 self.atomic_sync_lock.acquire()
@@ -722,18 +724,18 @@ class GCodeService:
                         self.__trigger_file_done(self.last_command)
                                     
             elif cmd == Command.ABORT:
-				
+                
                 if self.active_cmd:
-					if self.active_cmd.data[:4] == 'M303':
-						self.active_cmd.notify(abort=True)
-						self.__trigger_callback('state_change', 'terminated')
+                    if self.active_cmd.data[:4] == 'M303':
+                        self.active_cmd.notify(abort=True)
+                        self.__trigger_callback('state_change', 'terminated')
 
-						self.__cleanup()
-						self.__terminate_all_running_tasks()
-						
-						os.system('/etc/init.d/fabui emergency &')
-						self.is_terminating = False
-				
+                        self.__cleanup()
+                        self.__terminate_all_running_tasks()
+                        
+                        os.system('/etc/init.d/fabui emergency &')
+                        self.is_terminating = False
+                
                 self.__trigger_callback('state_change', 'aborted')
                 
                 if self.file_state > GCodeService.FILE_NONE:                
@@ -750,6 +752,7 @@ class GCodeService:
             
             elif cmd == Command.TERMINATE:
                 
+                self.log.info("TERMINATING...")
                 self.__trigger_callback('state_change', 'terminated')
                 self.__cleanup()
                 self.__terminate_all_running_tasks()
@@ -850,7 +853,13 @@ class GCodeService:
                 if cmd.reply[-1].startswith('Error:Printer halted.') or cmd.reply[-1].startswith('Printer stopped due to errors.'):
                     self.log.info("Printer halted [%s]", cmd.data)
                     cmd.notify(abort=True)
-                    self.terminate()
+                    #~ self.printer_halted = True
+                    if self.file_state > GCodeService.FILE_NONE:
+                        self.file_state = GCodeService.FILE_NONE
+                    # self.terminate()
+                    # Note: was a fallback for gpiomonitor, not it can trigger a termination (emergency restart)
+                    # and leave gpiomonitor frozen for a moment in M730 check so that it does not send the notification
+                    # over ws and UI does not detect it
                 
                 else:
                 
@@ -1028,7 +1037,7 @@ class GCodeService:
         self.ev_rx_started.wait()
         
         if atomic_group:
-			self.atomic_begin(group=atomic_group)
+            self.atomic_begin(group=atomic_group)
         
         self.log.info("All threads started")
     
@@ -1146,10 +1155,15 @@ class GCodeService:
         Terminated current file push and it's parent script. In case no file is being pushed this command
         has no effect.
         """
+        
+        self.log.error("Termination request")
+        
         if self.is_resetting or self.released:
+            self.log.info("Termination request ignored (already in reset)")
             return
         
         if not self.is_terminating:
+            self.log.info("Termination request put on QUEUE")
             self.is_terminating = True
             self.cq.put( Command.terminate() )
     

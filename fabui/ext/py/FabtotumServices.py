@@ -133,7 +133,7 @@ else:
     ch = logging.FileHandler(logging_facility)
 
 #~ formatter = logging.Formatter("%(name)s - %(levelname)s : %(message)s")
-formatter = logging.Formatter("%(levelname)s : %(message)s")
+formatter = logging.Formatter("[%(asctime)s]: %(message)s")
 ch.setFormatter(formatter)
 ch.setLevel(logging.DEBUG)
 #~ ch.setLevel(logging.INFO)
@@ -203,6 +203,7 @@ if do_bootstrap:
 #~ gpioMonitor.start()
 
 gpiomon_exe = os.path.join(PYTHON_PATH, 'fabtotum/os/monitor/gpiomonitor.py')
+#~ os.system('python {0} -p {1} -L /var/log/fabui/gpiomonitor.log > /var/log/fabui/stdout.log 2>&1 &'.format(gpiomon_exe, gpio_pidfile) )
 os.system('python {0} -p {1} -L /var/log/fabui/gpiomonitor.log &'.format(gpiomon_exe, gpio_pidfile) )
 
 ## Stats monitor

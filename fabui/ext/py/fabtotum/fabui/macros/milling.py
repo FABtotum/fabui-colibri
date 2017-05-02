@@ -85,7 +85,7 @@ def check_subtractive(app, args = None, lang='en_US.UTF-8'):
         
     app.trace( _("Checking safety measures") )
     if safety_door == 1:
-        app.macro("M741",   "TRIGGERED", 2, _("Front panel door control") )
+        app.macro("M741",   "TRIGGERED", 2, _("Front panel door opened") )
     
     if bed_enabled == True:
         app.macro("M744",       "open", 1, _("Building plane inserted correctly"))

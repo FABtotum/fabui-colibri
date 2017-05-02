@@ -187,7 +187,7 @@ def check_additive(app, args = None, lang='en_US.UTF-8'):
     
     app.trace( _("Checking safety measures") )
     if safety_door == 1:
-        app.macro("M741",   "TRIGGERED", 2, _("Front panel door control") )
+        app.macro("M741",   "TRIGGERED", 2, _("Front panel door opened") )
         
     app.trace( _("Checking building plate") )
     if bed_enabled == True:

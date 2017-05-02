@@ -22,7 +22,7 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 	<li class="pull-right">
 		<div class="widget-toolbar" id="switch-2" style="display: block;" role="menu">
 			<div class="smart-form">
-				<label class="toggle" title="<?php echo _("Send and email when the task is finished")?>" >
+				<label class="toggle" title="<?php echo _("Send an email when the task is finished")?>" >
 					<input type="checkbox" id="email-switch" name="checkbox-toggle">
 					<i data-swchon-text="ON" data-swchoff-text="OFF"></i>
 					<em class="fa fa-envelope"></em> <span class="hidden-xs"><?php echo _("Email") ?></span>

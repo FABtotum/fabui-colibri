@@ -42,7 +42,7 @@ class GCodeServiceServerPyroWrapper(object):
         self.callback_list = []
     
     def terminate(self):
-        self.gcs.abort()
+        self.gcs.terminate()
     
     def finish(self):
         self.gcs.finish()

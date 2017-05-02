@@ -90,6 +90,7 @@ PRESET_MAP = {
     "end_scan"                      : scan_macros.end_scan,
     
     # Calibration
+    "check_measure_probe"           : calib_macros.check_measure_probe,
     "measure_probe_offset"          : calib_macros.measure_probe_offset,
     "measure_nozzle_prepare"        : calib_macros.measure_nozzle_prepare,
     "measure_nozzle_offset"         : calib_macros.measure_nozzle_offset,

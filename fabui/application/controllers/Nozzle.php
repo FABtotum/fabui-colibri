@@ -128,10 +128,24 @@ class Nozzle extends FAB_Controller {
 	public function calibrateHeight()
 	{
 		$this->load->helper('fabtotum_helper');
+		
+		$preparingResult = doMacro('check_measure_probe');
+		
+		if($preparingResult['response'] != 'success'){
+			$this->output->set_content_type('application/json')->set_output(
+				json_encode(
+					array('success' => false, 
+						  'message' => $preparingResult['message'])
+				)
+			);
+			return;
+		}
+		
 		$_result = doMacro('measure_nozzle_offset');
 		
 		$this->output->set_content_type('application/json')->set_output(
 			json_encode( array(
+				'success'			  => true,
 				'nozzle_z_offset'     => $_result['reply']['nozzle_z_offset'],
 				) )
 			);
@@ -142,6 +156,13 @@ class Nozzle extends FAB_Controller {
 	public function prepare()
 	{
 		$this->load->helper('fabtotum_helper');
+		$safety = doMacro('check_measure_probe');
+		if($safety['response'] != 'success')
+		{
+			$this->output->set_content_type('application/json')->set_output(json_encode( $safety ));
+			return;
+		}
+		
 		$offset = doMacro('measure_probe_offset');
 		$result = doMacro('measure_nozzle_prepare');
 		$this->output->set_content_type('application/json')->set_output(json_encode( $offset ));

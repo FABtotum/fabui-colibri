@@ -62,26 +62,28 @@ class GPIOMonitor:
             GPIO_STATUS = GPIO.input(self.ACTION_PIN)
             self.log.debug('GPIO STATUS: %s', str(GPIO_STATUS))
             
-            if GPIO_STATUS == 0:
-                reply = self.gcs.send("M730", group='*')
-                #print 'M730:', reply
-                print "Checking"
-                if reply:
-                    if len(reply) > 1:
-                        search = re.search('ERROR\s:\s(\d+)', reply[-2])
-                        if search != None:
-                            errorNumber = int(search.group(1))
-                            self.log.warning("Totumduino error no.: %s", errorNumber)
-                            self.manageErrorNumber(errorNumber)
-                        else:
-                            self.log.error("Totumduino unrecognized error: %s", reply[0])
+            #if GPIO_STATUS == 0:
+            self.gcs.atomic_begin(group='emergency')
+            reply = self.gcs.send("M730", group='emergency')
+            self.gcs.atomic_end()
+            
+            if reply:
+                if len(reply) > 1:
+                    #~ self.log.debug('M730: reply[-2] is ', reply[-2])
+                    search = re.search('ERROR\s:\s(\d+)', reply[-2])
+                    if search != None:
+                        errorNumber = int(search.group(1))
+                        self.log.warning("Totumduino error no.: %s", errorNumber)
+                        self.manageErrorNumber(errorNumber)
+                    else:
+                        self.log.error("Totumduino unrecognized error: %s", reply[0])
 
             #GPIO_STATUS = GPIO.HIGH
             GPIO_STATUS = GPIO.input(self.ACTION_PIN)
             self.log.debug('GPIO STATUS on EXIT: %s', str(GPIO_STATUS))
             self.log.debug("======= EXIT ============")
-        except:
-            pass
+        except Exception as e:
+            self.log.error('GPIOMonitor ERROR: %s', str(e) )
 
     def manageErrorNumber(self, error):
         alertErrors = [110]
@@ -95,11 +97,14 @@ class GPIOMonitor:
             # TODO: trigger shutdown
             return None
         elif error in alertErrors:
+            self.log.info("alert")
             errorType = 'alert'
             self.gcs.send('M999', block=False, group='*')
         elif error in terminateErrors:
+            self.log.info("terminate")
             self.ns.notify(errorType, {'code': error} )
             self.gcs.terminate()
+            return None
         
         self.ns.notify(errorType, {'code': error} )
 
@@ -119,17 +124,19 @@ class GPIOMonitor:
             GPIO_STATUS = GPIO.input(self.ACTION_PIN)
             self.log.debug('GPIO STATUS on STARTUP: %s', str(GPIO_STATUS))
             
-            if GPIO_STATUS == 0:
-                reply = self.gcs.send("M730", group='*')
-                if reply:
-                    if len(reply) > 1:
-                        search = re.search('ERROR\s:\s(\d+)', reply[-2])
-                        if search != None:
-                            errorNumber = int(search.group(1))
-                            self.log.warning("Totumduino error no.: %s", errorNumber)
-                            self.manageErrorNumber(errorNumber)
-                        else:
-                            self.log.error("Totumduino unrecognized error: %s", reply[0])
+            #if GPIO_STATUS == 0:
+            #~ self.log.debug('M730 check started')
+            #~ reply = self.gcs.send("M730", group='*')
+            #~ self.log.debug('M730 on startup:', reply)
+            #~ if reply:
+                #~ if len(reply) > 1:
+                    #~ search = re.search('ERROR\s:\s(\d+)', reply[-2])
+                    #~ if search != None:
+                        #~ errorNumber = int(search.group(1))
+                        #~ self.log.warning("Totumduino error no.: %s", errorNumber)
+                        #~ self.manageErrorNumber(errorNumber)
+                    #~ else:
+                        #~ self.log.error("Totumduino unrecognized error: %s", reply[0])
         except:
             pass
             

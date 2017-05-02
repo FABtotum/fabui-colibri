@@ -50,7 +50,7 @@ def parse_gcode(raw_code):
     
     return code, fields
 
-def process_command(line):
+def process_command(gcs, line):
     """
     Process command line and decide whether a trigger action should be taken.
     
@@ -70,7 +70,28 @@ def process_command(line):
     
     callback_data = [code]
     
-    if (code == 'M0' or # Unconditional stop 
+    if (code == 'G0' or 
+        code == 'G1'):
+        # @TODO: monitor feedrate
+        pass
+        
+    elif code == 'G90': # Abs XYZ mode
+        gcs.gcode_state['axis_relative_mode']['x'] = False
+        gcs.gcode_state['axis_relative_mode']['y'] = False
+        gcs.gcode_state['axis_relative_mode']['z'] = False
+        
+    elif code == 'G91': # Rel XYZ mode
+        gcs.gcode_state['axis_relative_mode']['x'] = True
+        gcs.gcode_state['axis_relative_mode']['y'] = True
+        gcs.gcode_state['axis_relative_mode']['z'] = True
+    
+    elif code == 'M82': # Abs E mode
+        gcs.gcode_state['axis_relative_mode']['e'] = False
+        
+    elif code == 'M83': # Rel E mode
+        gcs.gcode_state['axis_relative_mode']['e'] = True
+    
+    elif (code == 'M0' or # Unconditional stop 
         code == 'M1' or # Same as M0
         code == 'M3' or # Spindle CounterClocwise
         code == 'M4' or # Spindle Clocwise
