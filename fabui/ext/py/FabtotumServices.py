@@ -116,7 +116,7 @@ GPIO_PIN    = config.get('gpio', 'pin')
 
 # Prepare files with correct permissions
 create_file(TRACE)
-create_file(TASK_MONITOR, '{"task":{"status":"completed"}}')
+create_file(TASK_MONITOR, '{"task":{"status":"terminated"}}')
 create_file(TEMP_MONITOR_FILE, '{}')
 create_file(NOTIFY_FILE, '{}')
 

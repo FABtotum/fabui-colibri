@@ -189,6 +189,10 @@ class GCodePusher(object):
         self.db = Database(self.config)
     
     def __send_task_email(self):
+        
+        if not self.task_stats["send_email"]:
+            return
+        
         import shlex, subprocess
         cmd = 'sudo -u www-data php /usr/share/fabui/index.php Std sendTaskEmail/{0}'.format( self.task_stats['id'] )
         try:

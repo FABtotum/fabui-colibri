@@ -59,6 +59,8 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	
 	var zOverrideTimeoout = null;
 	var zOverrideValue = 0;
+	// internal state
+	var local_task_state = '';
 	
 	$(document).ready(function() {
 		initSliders();
@@ -857,6 +859,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			case 'aborting':
 				aborting();
 				break;
+			case 'terminated':
 			case 'aborted':
 				aborted();
 				break;

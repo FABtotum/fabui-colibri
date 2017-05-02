@@ -726,13 +726,16 @@ class GCodeService:
             elif cmd == Command.ABORT:
                 
                 if self.active_cmd:
-                    if self.active_cmd.data[:4] == 'M303':
+                    if (self.active_cmd.data[:4] == 'M303' or
+                        self.active_cmd.data[:4] == 'M109' or
+                        self.active_cmd.data[:4] == 'M190'):
                         self.active_cmd.notify(abort=True)
                         self.__trigger_callback('state_change', 'terminated')
 
                         self.__cleanup()
                         self.__terminate_all_running_tasks()
                         
+                        self.__trigger_callback('state_change', 'aborted')
                         os.system('/etc/init.d/fabui emergency &')
                         self.is_terminating = False
                 
