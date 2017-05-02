@@ -739,3 +739,9 @@ video::-webkit-media-controls-enclosure {
 video::-webkit-media-controls-panel {
     width: calc(100% + 30px); /* Adjust as needed */
 }
+/***
+*
+**/
+select.input-sm {
+	line-height: 10px !important;
+}
