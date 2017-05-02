@@ -128,7 +128,8 @@
 	public function getTemperatures($id_stamp = '')
 	{
 		$this->setResponseType('temperatures');
-		$this->temperatures = json_decode(file_get_contents($this->CI->config->item('temperature')), true);
+		if(file_exists($this->CI->config->item('temperature')))
+			$this->temperatures = json_decode(file_get_contents($this->CI->config->item('temperature')), true);
 		return $this->response('temperatures');
 	}
 	/***
