@@ -13,9 +13,7 @@
 	<div class="logo text-center">
 		<img src="/assets/img/fabui_v1.png">
 	</div>
-	
-	
-		<div id="bootstrap-wizard-1" class="col-sm-12">
+	<div id="bootstrap-wizard-1" class="col-sm-12">
 			<div class="form-bootstrapWizard">
 				<ul class="bootstrapWizard form-wizard">
 					<li class="active" data-target="#welcome-tab">
@@ -202,6 +200,13 @@
 					</div>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div id="install-animation" style="display:none;" class="col-sm-12 install-animation">
+		<div class="text-center">
+			<h1 class="font-xl"><span><i class="fa fa-cog fa-spin fa-2x"></i></span></h1>
+			<h2><?php echo _("Installation in progress"); ?></h2>
+			<p class="lead semi-bold"><?php echo _("This may take a while, please wait"); ?></p>
 		</div>
 	</div>
 </form>
