@@ -122,23 +122,14 @@
 		      			$validator.focusInvalid();
 		      			return false;
 		      		} else {
-		      			
+			      		
 		        		$('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).addClass('complete');
 		        		$('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).find('.step').html('<i class="fa fa-check"></i>');
-		        		
-		        		if(index == 4){
-		        			$(".next").find('a').attr('style', 'cursor: pointer !important;');
-                       		$(".next").find('a').html( "<?php echo _("Install") ?>" );
-		        		}
-		        		
-		        		if(index == 5){
-		        			install();
-		        		}
-		        		
+		        		handleStep(index);
 			  		}
 			},
 			'onPrevious': function(tab, navigation, index){
-				$(".next").find('a').html("<?php echo  _("Next"); ?>" );
+				handleStep(index);
 			},
 			'onLast': function(tab, navigation, inde){
 				console.log("last");
@@ -149,16 +140,42 @@
 			
 		});
 	}
-	
+
+	function handleStep(step)
+	{
+		switch(step)
+		{
+			case 1:
+				$(".next").find('a').html( "<?php echo _("Next") ?>" );
+				break;
+			case 2:
+    		case 3:
+				$(".next").find('a').html( "<?php echo _("Skip") ?>" );
+				break;
+			case 4:
+				$(".next").find('a').attr('style', 'cursor: pointer !important;');
+				$(".next").find('a').html( "<?php echo _("Install") ?>" );
+				break;
+			case 5:
+    			install();
+    			break;
+		}
+	}
 	/**
 	 * 
 	 */
 	function install()
 	{
+		/*
 		$(".next").find('a').html('Installing...');
 		$("#browser-date").val(moment().format('YYYY-MM-DD HH:mm:ss'));
 		openWait("<i class='fa fa-spin fa-spinner'></i> <?php echo _("Installation in progress"); ?>", "<?php echo _("This may take a while, please wait"); ?>", false);
+		*/
+		$(".form-bootstrapWizard").addClass("hidden");
+		$(".tab-content").addClass("hidden");
+		$("#install-animation").slideDown();
 		$("#install-form").submit();
+		
 	}
 	/**
 	* detect and select timezone

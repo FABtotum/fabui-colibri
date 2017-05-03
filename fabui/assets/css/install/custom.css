@@ -12,3 +12,11 @@
 .bootstrapWizard li {
 	width: 20% !important;
 }
+
+.install-animation {
+	background: #FFF;
+    box-shadow: -31px 32px 53px rgba(0,0,0,.2);
+    overflow: hidden;
+    padding: 13px;
+    position: relative;
+}
