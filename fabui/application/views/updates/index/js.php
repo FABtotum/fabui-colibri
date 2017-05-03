@@ -8,6 +8,8 @@
  */
 ?>
 <script type="text/javascript">
+	var local_data_copy = {};
+	
 	$(document).ready(function() {
 		<?php if($runningTask): ?>
 		resumeTask();
@@ -15,6 +17,7 @@
 		checkUpdateStatus();
 		<?php endif; ?>
 	});
+	
 	/**
 	* ============================================================
 	**/
@@ -74,16 +77,87 @@
 			$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-check');
 		}
 
+		local_data_copy = object;
+
 		createBundlesTable(object);
 		createFirmwareTable(object);
 		createBootFilesTable(object);
+		
+		$(".show-changelog").on('click', findChangelog);
+		
 		buttons += '<button class="btn btn-default  action-buttons" id="do-update"><i class="fa fa-refresh"></i> <?php echo _("Update") ?></button> ';
 		buttons += '<button class="btn btn-default  action-buttons" id="bundle-details"><i class="fa fa-reorder"></i> <?php echo _("View details"); ?></button> ';
 		$(".button-container").html(buttons);
 		$("#bundle-details").on('click', showHideBundlesDetails);
 		$("#do-update").on('click', doUpdate);
 	}
-
+	
+	function findChangelog()
+	{
+		var subtype = $(this).attr('data-type');
+		var id = $(this).attr('data-attr');
+		var latest = $(this).attr('data-latest');
+		
+		var changelog = "";
+		var title = "Changelog";
+		
+		console.log('Changelog:', subtype, id);
+		
+		if(local_data_copy)
+		{
+			switch(subtype)
+			{
+				case "bundle":
+					changelog = "";
+					if(latest)
+						showChangelog(title, changelog, "<?php echo site_url('updates/getChangelog')?>/" + subtype + "/" + id + "/v" + latest);
+					break;
+				case "boot":
+					changelog = "";
+					if(latest)
+						showChangelog(title, changelog, "<?php echo site_url('updates/getChangelog')?>/" + subtype + "/bootfiles/" + latest);
+					break;
+				case "firmware":
+					changelog = local_data_copy.firmware.remote.changelog;
+					showChangelog(title, changelog);
+					break;
+			}
+			//console.log(local_data_copy);
+			
+		}
+		
+	}
+	
+	function showChangelog(title, changelog, url)
+	{
+		$("#changelog-title").html(title);
+		$("#changelog-content").html('Loading...');
+		
+		if(url)
+		{
+			
+			$("#changelogModal").modal('show');
+			
+			$.get(url, function(data){
+				var converter = new showdown.Converter(),
+				html = converter.makeHtml(data);
+				console.log('HTML', html);
+				$("#changelog-content").html(html);
+				
+			});
+		}
+		else
+		{
+			var converter = new showdown.Converter(),
+			html = converter.makeHtml(changelog);
+			
+			console.log('HTML', html);
+			
+			console.log(changelog, title);
+			$("#changelog-content").html(html);
+			$("#changelogModal").modal('show');
+		}
+	}
 
 	function createBundlesTable(data, show_check)
 	{
@@ -109,7 +183,7 @@
 
 				html += '<tr id="tr-' + bundle_name + '" class="' + tr_class + '">' +
 		        	'<td  class="text-center" style="width:40px;"><i id="icon-'+ bundle_name +'" class="'+ icon + '"></i></td>' +
-		        	'<td><h4><a href="javascript:void(0)">' + bundle_name.capitalize() + '</a> <small></small>' + 
+		        	'<td><h4><a href="javascript:void(0)" class="show-changelog" data-type="bundle" data-attr="'+bundle_name+'" data-latest="'+object.latest+'">' + bundle_name.capitalize() + '</a> <small></small>' + 
 		        	'<small id="small-'+ bundle_name +'"><?php echo _("Installed version") ?>: ' + object.local +' | <?php echo _("Build date") ?>: ' + object.info.build_date + '</small>' +
 		        	'</h4></td>' + 
 		        	/*'<td class="text-center">' + object.local + '</td>'+*/
@@ -127,7 +201,7 @@
 
 				html += '<tr id="tr-' + bundle_name + '" class="' + tr_class + '">' +
 		        	'<td  class="text-center" style="width:40px;"><i id="icon-'+ bundle_name +'" class="'+ icon + '"></i></td>' +
-		        	'<td><h4><a href="javascript:void(0)">' + bundle_name.capitalize() + '</a> <small></small>' + 
+		        	'<td><h4><a href="javascript:void(0)" class="show-changelog" data-type="bundle" data-attr="'+bundle_name+'" data-latest="'+object.latest+'">' + bundle_name.capitalize() + '</a> <small></small>' + 
 		        	'<small id="small-'+ bundle_name +'"><?php echo _("Installed version") ?>: ' + object.local +' | <?php echo _("Build date") ?>: ' + object.info.build_date + '</small>' +
 		        	'</h4></td>' + 
 		        	/*'<td class="text-center">' + object.local + '</td>'+*/
@@ -177,7 +251,7 @@
 						'<td style="width:40px;"><i class="' + icon + '"></i></td>'+
 						'<td>'+
 							'<h4>'+
-								'<a href="javascript:void(0);"> Fablin </a>' + 
+								'<a href="javascript:void(0);" class="show-changelog" data-type="firmware" data-attr="fablin"> Fablin </a>' + 
 								'<small><?php echo _("Installed version") ?>: ' + object.firmware.installed  + '</small>' +
 							'</h4>'+
 						'</td>'+
@@ -221,7 +295,7 @@
 						'<td style="width:40px;"><i class="' + icon + '"></i></td>'+
 						'<td>'+
 							'<h4>'+
-								'<a href="javascript:void(0);"> Boot files </a>' + 
+								'<a href="javascript:void(0);" class="show-changelog" data-type="boot" data-attr="bootfiles" data-latest="'+object.boot.remote.version+'"> Boot files </a>' + 
 								'<small><?php echo _("Installed version") ?>: ' + object.boot.installed  + '</small>' +
 							'</h4>'+
 						'</td>'+

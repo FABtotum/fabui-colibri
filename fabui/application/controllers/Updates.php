@@ -47,6 +47,7 @@
  		$this->addJsInLine($this->load->view('updates/index/js','', true));
  		$this->addCssFile('/assets/css/updates/style.css');
  		$this->addJSFile('/assets/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js'); //datatable
+ 		$this->addJSFile('/assets/js/plugin/showdown/showdown.min.js');
  		$this->view();
  	}
 	
@@ -162,6 +163,55 @@
 			echo '<div class="alert alert-transparent">
 					<h4 class="text-center">'._("Great! Your FABtotum Personal Fabricator is up to date").'</h4>
 				</div>';
+		}
+	}
+	
+	function getChangelog($subtype, $name = '', $version = '')
+	{
+		$this->load->helper('os_helper');
+		$this->config->load('fabtotum');
+		$bundlesEndpoint = $this->config->item('colibri_endpoint').getArchitecture();
+		$fwEndpoint      = $this->config->item('firmware_endpoint').'fablin/atmega1280/';
+		
+		switch($subtype)
+		{
+			case "bundle":
+				$changelog_url = $bundlesEndpoint.'/bundles/'.$name.'/changelog.json';
+				$content = getRemoteFile($changelog_url, true);
+				$json = json_decode($content, 1);
+				if($json)
+				{
+					if( array_key_exists($version, $json) )
+					{
+						echo $json[$version];
+					}
+				}
+				else
+				{
+					echo "No data";
+				}
+				break;
+			case "boot":
+				$changelog_url = $bundlesEndpoint.'/boot/changelog.json';
+				$content = getRemoteFile($changelog_url, true);
+				$json = json_decode($content, 1);
+				if($json)
+				{
+					if( array_key_exists($version, $json) )
+					{
+						echo $json[$version];
+					}
+				}
+				else
+				{
+					echo "No data";
+				}
+				break;
+			case "firmware":
+				$changelog_url = $fwEndpoint.'/latest/changelog.txt';
+				break;
+			default:
+				return;
 		}
 	}
 

@@ -32,6 +32,16 @@ from fabtotum.utils.translation import _, setLanguage
 
 def extrude(app, args, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
+    
+    try:
+        safety_door = app.config.get('settings', 'safety')['door']
+    except KeyError:
+        safety_door = 0
+    
+    app.trace( _("Checking safety measures") )
+    if safety_door == 1:
+        app.macro("M741",   "TRIGGERED", 2, _("Front panel door opened"), verbose=False )
+    
     filamentToExtrude = float(args[0])
     
     feeder = app.config.get_current_feeder_info();

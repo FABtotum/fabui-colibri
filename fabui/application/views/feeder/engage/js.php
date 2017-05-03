@@ -13,22 +13,18 @@
               url: "<?php echo site_url("feeder/engage") ?>",
               dataType: 'json'
         }).done(function( data ) { 
+            closeWait();
+            
             if(data.response == 'success'){
                 $(".step-1").hide();
                 $(".step-2").show();
             }
             else
             {
-                $.smallBox({
-                    title : <?php echo _("Warning");?>,
-                    content: data.trace,
-                    color : "#C46A69",
-                    icon : "fa fa-warning",
-                    timeout: 15000
-                });
+                showErrorAlert('<?php echo _("Error") ?>', data.message);
             }
             
-            closeWait();
+            
 
         });
         

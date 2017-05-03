@@ -138,8 +138,9 @@ def engage_4axis(app, args = None, lang='en_US.UTF-8'):
     if safety_door == 1:
         app.macro("M741",   "TRIGGERED", 2, _("Front panel door opened"), verbose=False )
     
-    feeder = get_feeder_info('built_in_feeder')
+    feeder = app.config.get_feeder_info('built_in_feeder')
     units_a = feeder['steps_per_angle']
+    
     try:
         feeder_disengage_offset = app.config.get('settings', 'feeder')['disengage_offset']
     except KeyError:

@@ -148,7 +148,6 @@ if(!function_exists('getBundlesStatus'))
 			$remoteMeta        = getSystemRemoteVersions();
 			$remoteBundles     = $remoteMeta['bundles'];
 			$remoteBootfiles   = $remoteMeta['boot'];
-			$remoteBundles     = getRemoteBundles();
 			$firmwareRemote    = getRemoteFwVersions();
 			$remotePlugins     = getOnlinePlugins();
 			
@@ -192,6 +191,7 @@ if(!function_exists('getBundlesStatus'))
 				$latestVersion = str_replace('v', '', $remoteBundle['latest']);
 				$needUpdate = version_compare($localBundleData['version'], $latestVersion) == -1 ? true : false;
 				$changelog = '';
+				$changelog_url = $bundlesEndpoint.'/bundles/'.$bundleName.'/changelog.json';
 				if($needUpdate) {
 					$remoteContent = getRemoteFile($bundlesEndpoint.'/bundles/'.$bundleName.'/changelog.json', false);
 					if($remoteContent != false){
@@ -202,6 +202,7 @@ if(!function_exists('getBundlesStatus'))
 				}
 			}else{
 				$latestVersion = $changelog =  'unknown';
+				$changelog_url = '';
 				$needUpdate = false;
 			}
  			$status['bundles'][$bundleName] = array(
@@ -209,6 +210,7 @@ if(!function_exists('getBundlesStatus'))
 				'local'       => $localBundleData['version'],
 				'need_update' => $needUpdate,
  				'changelog'   => $changelog,
+ 				'changelog_url'   => $changelog_url,
  				'info'        => $localBundleData['info'],
  				'licenses'    => $localBundleData['licenses'],
  				'packages'    => $localBundleData['packages'],

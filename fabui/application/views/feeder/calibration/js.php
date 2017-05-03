@@ -24,9 +24,15 @@
         }).done(function( data ) {
             enableButton('.extrude');
             enableButton('.step-change-modal-open');
-            $(".calc-row").slideDown(function(){
+            if(data.response == 'success')
+            {
+                $(".calc-row").slideDown(function(){
+                    $('.extrude').html('<i class="fab-lg fab-fw icon-fab-e"></i> ' + _("Start to extrude") );
+                });
+            }else{
                 $('.extrude').html('<i class="fab-lg fab-fw icon-fab-e"></i> ' + _("Start to extrude") );
-            });
+                showErrorAlert('<?php echo _("Error") ?>', data.message);
+            }
         });
         
     }
