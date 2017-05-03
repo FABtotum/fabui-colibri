@@ -86,6 +86,13 @@ class Bed extends FAB_Controller {
 		resetTaskMonitor();
 		resetTrace();
 		
+		$safety = doMacro("check_measure_probe");
+		if($safety['response'] != 'success')
+		{
+			$this->output->set_content_type('application/json')->set_output(json_encode( $safety ));
+			return;
+		}
+		
 		$arguments = array(
 				'-n' => $num_probes //number of probes
 		);
@@ -101,7 +108,7 @@ class Bed extends FAB_Controller {
 		
 		$html = $content;
 		//$json_data = array(true);
-		$this->output->set_content_type('application/json')->set_output(json_encode( array('html' => $html) ));
+		$this->output->set_content_type('application/json')->set_output(json_encode( array('response' => 'success', 'html' => $html) ));
 	}
 }
  

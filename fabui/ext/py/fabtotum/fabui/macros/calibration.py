@@ -46,7 +46,7 @@ def check_measure_probe(app, args = None, lang='en_US.UTF-8'):
     
     app.trace( _("Checking safety measures") )
     if safety_door == 1:
-        app.macro("M741",   "TRIGGERED", 2, _("Front panel door opened") )
+        app.macro("M741",   "TRIGGERED", 2, _("Front panel door opened"), verbose=False )
         
     app.trace( _("Checking building plate") )
     if bed_enabled == True:

@@ -56,7 +56,13 @@
                 + skipHoming,
             dataType: "json"
         }).done(function( data ) {
-			processResponse(data);
+			if(data.response == 'success')
+			{
+				processResponse(data);
+			}else{
+				showErrorAlert('<?php echo _("Error") ?>', data.message);
+				closeWait();
+			}
         });
 	}
 	/**
