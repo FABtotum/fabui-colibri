@@ -17,8 +17,13 @@
             url : "<?php echo site_url("fourthaxis/engage") ?>/"+ now,
             dataType: "json"
         }).done(function( data ) {
-            
             closeWait();
+            if(data.response == 'success')
+            {
+            }else{
+                showErrorAlert('<?php echo _("Error") ?>', data.message);
+            }
+            
             
         });
     }

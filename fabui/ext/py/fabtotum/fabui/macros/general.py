@@ -128,6 +128,16 @@ def safe_zone(app, args = None, lang='en_US.UTF-8'):
 
 def engage_4axis(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
+    
+    try:
+        safety_door = app.config.get('settings', 'safety')['door']
+    except KeyError:
+        safety_door = 0
+    
+    app.trace( _("Checking safety measures") )
+    if safety_door == 1:
+        app.macro("M741",   "TRIGGERED", 2, _("Front panel door opened"), verbose=False )
+    
     feeder = get_feeder_info('built_in_feeder')
     units_a = feeder['steps_per_angle']
     try:
@@ -188,3 +198,14 @@ def clear_errors(app, args = None, lang='en_US.UTF-8'):
 def read_eeprom(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     return getEeprom(app, lang)
+
+def door_safety(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    try:
+        safety_door = app.config.get('settings', 'safety')['door']
+    except KeyError:
+        safety_door = 0
+    
+    app.trace( _("Checking safety measures") )
+    if safety_door == 1:
+        app.macro("M741",   "TRIGGERED", 2, _("Front panel door opened"), verbose=False )

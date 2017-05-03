@@ -60,6 +60,15 @@ def change_step(app, args, lang='en_US.UTF-8'):
 def pre_unload_spool(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
+    try:
+        safety_door = app.config.get('settings', 'safety')['door']
+    except KeyError:
+        safety_door = 0
+    
+    app.trace( _("Checking safety measures") )
+    if safety_door == 1:
+        app.macro("M741",   "TRIGGERED", 2, _("Front panel door opened"), verbose=False )
+    
     #~ ext_temp = float(args[0])
     ext_temp = args[0]
     app.macro("M104 S{0}".format(ext_temp),  "ok", 5,    _("Pre-Heating Nozzle...") )
@@ -67,6 +76,15 @@ def pre_unload_spool(app, args = None, lang='en_US.UTF-8'):
     
 def unload_spool(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
+    
+    try:
+        safety_door = app.config.get('settings', 'safety')['door']
+    except KeyError:
+        safety_door = 0
+    
+    app.trace( _("Checking safety measures") )
+    if safety_door == 1:
+        app.macro("M741",   "TRIGGERED", 2, _("Front panel door opened"), verbose=False )
     
     feeder      = app.config.get_current_feeder_info();
     units_e     = feeder['steps_per_unit']
@@ -96,6 +114,16 @@ def unload_spool(app, args = None, lang='en_US.UTF-8'):
     
 def load_spool(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
+    
+    try:
+        safety_door = app.config.get('settings', 'safety')['door']
+    except KeyError:
+        safety_door = 0
+    
+    app.trace( _("Checking safety measures") )
+    if safety_door == 1:
+        app.macro("M741",   "TRIGGERED", 2, _("Front panel door opened"), verbose=False )
+    
     feeder      = app.config.get_current_feeder_info();
     tube_length = feeder['tube_length']
     units_e     = feeder['steps_per_unit']

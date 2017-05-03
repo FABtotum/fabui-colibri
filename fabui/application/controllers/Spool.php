@@ -122,7 +122,7 @@ class Spool extends FAB_Controller {
 		
 		if($resultPreUnLoad['response'] != 'success'){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $resultPreUnLoad['message'])));
-			exit();
+			return;
 		}
 		$resultUnload = doMacro('unload_spool', '', [$task_running]);
 		

@@ -47,6 +47,7 @@ PRESET_MAP = {
     "install_head"                  : general_macros.install_head,
     "install_feeder"                : general_macros.install_feeder,
     "clear_errors"                  : general_macros.clear_errors,
+    "door_safety"                   : general_macros.door_safety,
     
     # Print
     "prepare_additive"              : print_macros.prepare_additive,
