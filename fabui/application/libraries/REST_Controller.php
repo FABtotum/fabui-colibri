@@ -632,14 +632,22 @@ abstract class REST_Controller extends CI_Controller {
                     $this->config->item('rest_message_field_name') => $this->lang->line('text_rest_unsupported')
                 ], self::HTTP_FORBIDDEN);
         }
-
+		
+		
         // Remove the supported format from the function name e.g. index.json => index
         $object_called = preg_replace('/^(.*)\.(?:'.implode('|', array_keys($this->_supported_formats)).')$/', '$1', $object_called);
 
         $controller_method = $object_called.'_'.$this->request->method;
-	    // Does this method exist? If not, try executing an index method
+        
+	    // Does this method exist? If not, try executing with a different request method
 	    if (!method_exists($this, $controller_method)) {
-		    $controller_method = "index_" . $this->request->method;
+	    	if($this->request->method == 'get'){
+	    		$new_method = 'post';
+	    	}else{
+	    		$new_method = 'get';
+	    	}
+		    //$controller_method = "index_" . $this->request->method;
+	    	$controller_method = str_replace($this->request->method, $new_method, $controller_method);
 		    array_unshift($arguments, $object_called);
 	    }
 
@@ -731,7 +739,6 @@ abstract class REST_Controller extends CI_Controller {
         {
             $this->_log_request($authorized = TRUE);
         }
-
         // Call the controller method and passed arguments
         try
         {

@@ -73,3 +73,7 @@ fabtotum_noreply_url = http://update.fabtotum.com/mail/noreply.php
 
 [analytics]
 ga_property_id = UA-42679362-4
+
+[my.fabtotum.com]
+myfabtotum_url = https://my.fabtotum.com/myfabtotum/default/call/jsonrpc2
+myfabtotum_api_version = 1

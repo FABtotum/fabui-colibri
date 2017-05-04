@@ -119,15 +119,16 @@
 	public function jsonrpc($method)
 	{
 		//load jog factory class
-		$init['url'] = 'https://my.fabtotum.com/myfabtotum/default/call/jsonrpc2';
-		$this->load->library('JsonRPC', $init, 'jsonRPC');
+		//$init['url'] = 'https://my.fabtotum.com/myfabtotum/default/call/jsonrpc2';
+		//$this->load->library('JsonRPC', $init, 'jsonRPC');
 		
 		$this->load->helpers('os_helper');
 		$this->load->helpers('fabtotum_helper');
+		$this->load->helpers('myfabtotum_helper');
 		
-		$params['serialno']   = getSerialNumber();
-		$params['mac']        = getMACAddres();
-		$params['apiversion'] = 1;
+		//$params['serialno']   = getSerialNumber();
+		//$params['mac']        = getMACAddres();
+		//$params['apiversion'] = 1;
 		
 		
 		$result_codes[200]  = 'SERVICE_SUCCESS';
@@ -139,32 +140,21 @@
 		
 		switch($method){
 			case 'fab_register_printer':
-				$params['fabid']      = 'fabtest@fabtotum.com';
+				//$params['fabid'] = 'fabtest@fabtotum.com';
+				$result = fab_register_printer('fabtest@fabtotum.com');
 				break;
 			case 'fab_info_update':
-				$macroResponse = doMacro('version');
-				if($macroResponse['response']){
-					$versions = $macroResponse['reply'];
-				}
-				$head       = getInstalledHeadInfo();
-				$interfaces = getInterfaces();
-				
-				$data['name']      = getUnitName();
-				$data['model']     = $versions['production']['batch'];
-				$data['head']      = $head['name'];
-				$data['fwversion'] = $versions['firmware']['version'];
-				$data['iplan']     = $interfaces['wlan0']['ipv4_address'];
-				$params['data']    = $data;
+				$result = fab_info_update();
 				break;
 			case 'fab_polling':
-				//$params['state'] = "BUSY";
+				$result = fab_polling();
 				break;
 		}
-		$result = $this->jsonRPC->execute($method, $params);
+		
 		if(isset($result['status_code'])){
 			$result['status_description'] = $result_codes[$result['status_code']];
 		}
-		$this->output->set_content_type('application/json')->set_output(json_encode(array('method'=>$method, 'params'=>$params, 'result'=>$result)));
+		$this->output->set_content_type('application/json')->set_output(json_encode(array('method'=>$method, 'result'=>$result)));
 	}
 	/**
 	 * 

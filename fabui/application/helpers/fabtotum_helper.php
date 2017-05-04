@@ -1572,4 +1572,16 @@ if(!function_exists('getMakeTaskTypeList'))
 		return $defaultList;
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getState'))
+{
+	/**
+	 * return the state of the printer: IDLE, BUSY, PAUSED, LOCKED
+	 * 
+	 */
+	function getState()
+	{
+		//@TO DO
+	}
+}
 ?>

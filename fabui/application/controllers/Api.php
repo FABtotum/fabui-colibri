@@ -35,7 +35,7 @@
  		}
  		$this->set_response(array(
  			'status' => $status,
- 			'message' => $message,
+ 			'data' => $message,
  		), $http_code);
  		
  	}
@@ -57,8 +57,27 @@
  		}
  		$this->set_response(array(
  				'status' => $status,
- 				'message' => $message,
+ 				'data' => $message,
  		), $http_code);
+ 	}
+ 	/**
+ 	 * 
+ 	 */
+ 	public function discover_get()
+ 	{
+ 		$this->load->helpers('os_helper');
+ 		$this->load->helpers('fabtotum_helper');
+ 		
+ 		$message['serialno']   = getSerialNumber();
+ 		$message['mac']        = getMACAddres();
+ 		$message['apiversion'] = 1;
+ 		$message['state']      = getState();
+ 		
+ 		$this->set_response(array(
+ 				'status' => true,
+ 				'data' => $message,
+ 		), REST_Controller::HTTP_OK);
+ 		
  	}
  	/**
  	 * 
