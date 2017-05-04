@@ -25,6 +25,7 @@ var emergency_descriptions = {
 	108 : '<?php echo _("Y max Endstop hit: Move the carriage to the center and reset"); ?>',
 	109 : '<?php echo _("Y min Endstop hit: Move the carriage to the center and reset"); ?>',
 	110 : '<?php echo _("The FABtotum has been idling for more than 10 minutes. Temperatures and Motors have been turned off"); ?>',
+	111 : '<?php echo _("Out of filament detected"); ?>',
 	120 : '<?php echo _("Both Y Endstops hit at the same time"); ?>',
 	121 : '<?php echo _("Both Z Endstops hit at the same time"); ?>',
 	122 : '<?php echo _("Ambient temperature is less then 15&deg;C. Cannot continue"); ?>',

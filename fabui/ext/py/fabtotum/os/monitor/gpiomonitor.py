@@ -86,7 +86,7 @@ class GPIOMonitor:
             self.log.error('GPIOMonitor ERROR: %s', str(e) )
 
     def manageErrorNumber(self, error):
-        alertErrors = [110]
+        alertErrors = [110, 111]
         shutdownErrors = [120, 121]
         #~ terminateErrors = [100, 101, 102, 106, 107, 108, 109]
         terminateErrors = [100, 101, 102]
@@ -106,6 +106,7 @@ class GPIOMonitor:
             self.gcs.terminate()
             return None
         
+        self.gcs.trigger('error', [error])
         self.ns.notify(errorType, {'code': error} )
 
     def start(self):

@@ -92,6 +92,9 @@ class GCodeServiceServerPyroWrapper(object):
     def send_file(self, filename):
         return self.gcs.send_file(filename)
     
+    def trigger(self, callback_name, data):
+        return self.gcs.trigger(callback_name, data)
+    
     def __callback_handler(self, action, data):
         if self.callback_list:
             for tup in self.callback_list:

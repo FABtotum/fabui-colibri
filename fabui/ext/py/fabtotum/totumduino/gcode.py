@@ -43,25 +43,6 @@ from fabtotum.database import Database
 from fabtotum.database.task import Task
 #############################################
 
-ERROR_CODES = {
-    #error codes
-    '0' : 'NO_ERROR',
-    '100' : 'ERROR_KILLED',
-    '101' : 'ERROR_STOPPED',
-    '102' : 'ERROR_DOOR_OPEN',
-    '103' : 'ERROR_MIN_TEMP',
-    '104' : 'ERROR_MAX_TEMP',
-    '105' : 'ERROR_MAX_BED_TEMP',
-    '106' : 'ERROR_X_MAX_ENDSTOP',
-    '107' : 'ERROR_X_MIN_ENDSTOP',
-    '108' : 'ERROR_Y_MAX_ENDSTOP',
-    '109' : 'ERROR_Y_MIN_ENDSTOP',
-    '110' : 'ERROR_IDLE_SAFETY',
-    #error codes for FABUI configurable functionalities
-    '120' : 'ERROR_Y_BOTH_TRIGGERED',
-    '121' : 'ERROR_Z_BOTH_TRIGGERED'
-}
-
 HOOKS = [
     action_hook
 ]
@@ -469,6 +450,11 @@ class GCodeService:
                 args=( [callback_name, data] ) 
                 )
         callback_thread.start()
+    
+    """ APIs *public* functions """
+    def trigger(self, callback_name, data):
+        """ Trigger callback function """
+        self.__trigger_callback(callback_name, data)
     
     def __reset_thread(self, trigger_file_done = False, destroy_scripts=True):
         if destroy_scripts:

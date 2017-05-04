@@ -65,7 +65,8 @@ ERROR_MESSAGE = {
     'ERROR_IDLE_SAFETY'         : _('Idle safety'),
     #error codes for FABUI configurable functionalities
     'ERROR_Y_BOTH_TRIGGERED'    : _('Both Y endstops triggered'),
-    'ERROR_Z_BOTH_TRIGGERED'    : _('Both Z endstops triggered')
+    'ERROR_Z_BOTH_TRIGGERED'    : _('Both Z endstops triggered'),
+    'OUT_OF_FILAMENT'           : _('Out of filament detected')
 }
 
 ################################################################################
@@ -499,7 +500,7 @@ class GCodePusher(object):
         """
         pass
     
-    def error_callback(self, error_no, error_msg):
+    def error_callback(self, error_no):
         """ 
         Triggered when an error occures.
         
@@ -508,12 +509,15 @@ class GCodePusher(object):
         :type error_no: int
         :type error_msg: string
         """
-        pass
+        if(error_no == 111):
+            if(self.is_paused() == False):
+                self.pause()
+                self.task_stats['message'] = 'Out of filament detected'
     
-    def __error_callback(self, error_no, error_msg):
+    def __error_callback(self, error_no):
         # TODO: process errors
         # TODO: complete ERROR_MESSAGE
-        self.error_callback(error_no, error_msg)
+        self.error_callback(error_no)
     
     def __config_change_callback(self, id, data):
         if id == 'shutdown':
@@ -544,7 +548,7 @@ class GCodePusher(object):
         elif action.startswith('config:'):
             self.__config_change_callback(action.split(':')[1], data)
         elif action == 'error':
-            self.__error_callback(data[0], data[1])
+            self.__error_callback(data[0])
         elif action == 'self_descruct':
             print 'Self Descruct sequence activated...'
             self.__self_destruct()
@@ -800,4 +804,10 @@ class GCodePusher(object):
                     os.remove(f)
                 except Exception as e: 
                     pass
+    
+    def pause(self):
+        self.gcs.pause()
+    
+    def resume(self):
+        self.gcs.resume()
 

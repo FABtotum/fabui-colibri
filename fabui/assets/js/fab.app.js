@@ -312,7 +312,6 @@ fabApp = (function(app) {
 	    	document.getElementById('ext-target-temp').noUiSlider.set([parseInt(e[0])]);
 	    }
 	}
-	
 	/**
 	 * 
 	 */
@@ -942,6 +941,9 @@ fabApp = (function(app) {
 				//TODO
 				app.showInstallHeadModal();
 				break;
+			case 111:
+				app.showWarningAlert(emergency_descriptions[code]);
+				break;
 			default:
 				app.showEmergencyAlert(code);
 		}
@@ -1084,7 +1086,7 @@ fabApp = (function(app) {
 		var code = parseInt(data.code);
 		$.smallBox({
 			title : "Message",
-			content : $.emergency_descriptions[code],
+			content : emergency_descriptions[code],
 			color : "#5384AF",
 			timeout : 10000,
 			icon : "fa fa-warning"
