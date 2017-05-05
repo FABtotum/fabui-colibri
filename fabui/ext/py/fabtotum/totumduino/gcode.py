@@ -619,9 +619,11 @@ class GCodeService:
                 time.sleep(1)
                 continue
 
-            self.log.debug('get command from queue: %s', str(cmd))
-            if cmd is None:
+            if cmd == Command.NONE:
+                #~ time.sleep(1)
                 continue
+                
+            self.log.debug('get command from queue: %s', str(cmd))
 
             if cmd == Command.GCODE:
                 # Synchronisation with atomic start/end
