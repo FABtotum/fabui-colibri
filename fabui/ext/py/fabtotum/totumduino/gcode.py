@@ -813,15 +813,10 @@ class GCodeService:
                 # TODO: should a lost command be resent?
                 if len(cmd.reply) > 1:
                     if cmd.reply[-2].startswith("Resend:") and cmd.data[:4]: # Second to last line of reply
-                        
-                        resend, line_no = cmd.reply[-2].split(':')
-                        
-                        self.line_number = int(line_no) -1
-                        
-                        self.log.error("Communication error. Need to resend command [{0}]".format(cmd.data))
-                        
                         if cmd.data[:4] != 'M999' and cmd.data[:4] != 'M998':
-                            pass
+                            resend, line_no = cmd.reply[-2].split(':')
+                            self.line_number = int(line_no) -1
+                            self.log.error("Communication error. Need to resend command [{0}]".format(cmd.data))
                         
                 cmd.notify()
                 
