@@ -941,9 +941,6 @@ fabApp = (function(app) {
 				//TODO
 				app.showInstallHeadModal();
 				break;
-			case 111:
-				app.showWarningAlert(emergency_descriptions[code]);
-				break;
 			default:
 				app.showEmergencyAlert(code);
 		}

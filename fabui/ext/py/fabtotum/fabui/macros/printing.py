@@ -33,6 +33,8 @@ from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.macros.common import getPosition
 
 def pause_additive(app, args=None, lang='en_US.UTF-8'):
+    #app.macro("M999",   "ok", 1,    _("Clearing error state"))
+    #app.macro("M756",   "ok", 1,    _("Clearing error state"))
     app.macro("M400",   "ok", 240,    _("Waiting for all moves to finish"), verbose=False)
     position = getPosition(app, lang)
     
@@ -58,9 +60,8 @@ def pause_additive(app, args=None, lang='en_US.UTF-8'):
     app.macro("G0 X210 Y210 F6000", "ok", 100,  _("Moving to safe zone"), verbose=False )
     
 def resume_additive(app, args=None, lang='en_US.UTF-8'):
-    
+    app.macro("M805 S1",   "ok", 1,    _("Enable wire endstop"), verbose=False)
     # restore position
-    
     if os.path.exists('/var/lib/fabui/settings/stored_task.json'):
         content = {}
         with open('/var/lib/fabui/settings/stored_task.json') as f:

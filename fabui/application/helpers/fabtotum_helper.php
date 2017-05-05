@@ -1426,6 +1426,7 @@ if(!function_exists('setSecure'))
 		$CI =& get_instance();
 		$CI->load->config('fabtotum');
 		$CI->load->helper('file');
+		doMacro('clear_errors');
 		$notify = json_decode( file_get_contents( $CI->config->item('notify_file') ), true);
 		$notify['last_event']['seen'] = true;
 		write_file($CI->config->item('notify_file'), json_encode($notify, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK));

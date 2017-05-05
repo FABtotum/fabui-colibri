@@ -509,10 +509,7 @@ class GCodePusher(object):
         :type error_no: int
         :type error_msg: string
         """
-        if(error_no == 111):
-            if(self.is_paused() == False):
-                self.pause()
-                self.task_stats['message'] = 'Out of filament detected'
+        pass
     
     def __error_callback(self, error_no):
         # TODO: process errors

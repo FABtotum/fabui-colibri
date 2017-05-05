@@ -115,6 +115,16 @@ class PrintApplication(GCodePusher):
     
     def temp_change_callback(self, action, data):
         print action, data
+    
+    def error_callback(self, error_no):
+        """ 
+        Triggered when an error occures.
+        :param error_no: Error number
+        """
+        if(error_no == 111):
+            if(self.is_paused() == False):
+                self.pause()
+                self.task_stats['message'] = 'Out of filament detected'
         
     def run(self, task_id, gcode_file):
         """
