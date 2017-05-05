@@ -60,7 +60,14 @@ def pause_additive(app, args=None, lang='en_US.UTF-8'):
     app.macro("G0 X210 Y210 F6000", "ok", 100,  _("Moving to safe zone"), verbose=False )
     
 def resume_additive(app, args=None, lang='en_US.UTF-8'):
-    app.macro("M805 S1",   "ok", 1,    _("Enable wire endstop"), verbose=False)
+    
+    try:
+        wire_end = app.config.get('settings', 'wire_end', 0)
+    except KeyError:
+        wire_end = 0
+    
+    if(wire_end == 1):
+        app.macro("M805 S1",   "ok", 1,    _("Enable wire endstop"), verbose=False)
     # restore position
     if os.path.exists('/var/lib/fabui/settings/stored_task.json'):
         content = {}

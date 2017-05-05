@@ -55,5 +55,6 @@
   "filament" : {
 	"type" : "pla",
 	"inserted" : false
-  }
+  },
+  "wire_end" : 0
 }

@@ -217,7 +217,13 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         collision_warning = config.get('settings', 'safety.collision_warning')
     except KeyError:
         collision_warning = 0
-
+    
+      
+    try:
+        wire_end = config.get('settings', 'wire_end', 0)
+    except KeyError:
+        wire_end = 0
+        
     gcs.atomic_begin(group='bootstrap')
 
     # clean output
@@ -259,6 +265,9 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     gcs.send("M734 S{0}".format(collision_warning), group='bootstrap')
     # Set homing preferences
     gcs.send("M714 S{0}".format(switch), group='bootstrap')
+    
+    #set wire_end enabled/disabled
+    gcs.send("M805 S{0}".format(wire_end), group='bootstrap')
     
     # Execute version specific intructions
     if config.get('settings', 'settings_type') == 'custom':

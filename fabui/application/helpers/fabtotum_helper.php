@@ -44,7 +44,8 @@ if ( !function_exists('createDefaultSettings'))
 				'overrides' => '',
 				'invert_x_endstop_logic' =>false
 			),
-			'filament' 			 => array('type'=>'pla', 'inserted' => false)
+			'filament' 			 => array('type'=>'pla', 'inserted' => false),
+			'wire_end'           => 0
 		);
 		write_file($CI->config->item('settings'), json_encode($settings, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK));
 	}	
@@ -1583,6 +1584,45 @@ if(!function_exists('getState'))
 	function getState()
 	{
 		//@TO DO
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getUnitType'))
+{
+	/**
+	 * return unit type [UNKNWON, GENERAL, LITE, PRO, HYDRA]
+	 */
+	function getUnitType($hardware_version = '')
+	{
+		if($hardware_version == ''){
+			$macroResponse = doMacro('version');
+			if($macroResponse['response']){
+				$versions = $macroResponse['reply'];
+			}
+			$hardware_version= isset($versions['production']['batch']) ? $versions['production']['batch'] : -1;
+		}
+		switch(true)
+		{
+			case ($hardware_version== -1):
+				$type = 'UNKNOWN';
+				break;
+			case ($hardware_version >= 0 && $hardware_version < 1000):
+				$type = 'GENERAL';
+				break;
+			case ($hardware_version >= 1000 && $hardware_version < 2000):
+				$type = 'LITE';
+				break;
+			case ($hardware_version >= 2000 && $hardware_version < 3000):
+				$type = 'PRO';
+				break;
+			case ($hardware_version >= 3000 && $hardware_version< 4000):
+				$type= 'HYDRA';
+				break;
+			default:
+				$type = 'UNKNOWN';
+				break;
+		}
+		return $type;
 	}
 }
 ?>

@@ -25,6 +25,7 @@ class Settings extends FAB_Controller {
 			createDefaultSettings();
  		}
 		$data['defaultSettings'] = json_decode(file_get_contents($this->config->item('settings')), true);
+		$data['unitType'] = getUnitType();
 		
 		$data['yesNoOptions'] = array('1' => 'Yes', '0' => 'No');
 		$data['customizeActionsOptions'] = array('none' => 'None', 'shutdown' => 'Shutdown');

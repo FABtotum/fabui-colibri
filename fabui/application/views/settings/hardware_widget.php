@@ -83,6 +83,19 @@
 					</div>
 				</section>
 			</fieldset>
+			<fieldset class="hidden">
+				<section>
+					<label class="label"> <?php echo _('Wire endstop')?></label>
+					<div class="inline-group">
+						<label class="radio">
+							<input type="radio" id="wire_end" name="wire_end" value="1" <?php if(isset($defaultSettings['wire_end']) && $defaultSettings['wire_end'] == 1) echo 'checked="checked"'; ?>><i></i><?php echo _('Enable')?>
+						</label>
+						<label class="radio">
+							<input type="radio" id="wire_end" name="wire_end" value="0" <?php if(isset($defaultSettings['wire_end']) && $defaultSettings['wire_end'] == 0) echo 'checked="checked"'; ?>><i></i><?php echo _('Disabled')?>
+						</label>
+					</div>
+				</section>
+			</fieldset>
 		</div>
 	</div>
 	<!-- homing tab -->
