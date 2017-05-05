@@ -92,6 +92,9 @@ class GPIOMonitor:
         terminateErrors = [100, 101, 102]
         errorType = 'emergency'
         
+        if error == 0:
+            return None
+        
         if error in shutdownErrors:
             self.log.info("shutdown")
             # TODO: trigger shutdown
@@ -99,6 +102,8 @@ class GPIOMonitor:
         elif error in alertErrors:
             self.log.info("alert")
             errorType = 'alert'
+            if error == 111:
+                self.gcs.send('M805 S0', block=False, group='*')
             self.gcs.send('M999', block=False, group='*')
         elif error in terminateErrors:
             self.log.info("terminate")

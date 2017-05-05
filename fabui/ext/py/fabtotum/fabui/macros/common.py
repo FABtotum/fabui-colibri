@@ -55,7 +55,7 @@ def zProbe(app, lang='en_US.UTF-8'):
 def getPosition(app, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
-    data = app.macro("M114", "ok", 2, _("Get position"), verbose=False)
+    data = app.macro("M114", "ok", 120, _("Get position"), verbose=False)
     reply = data[0]
     position = None
     match = re.search('X:([-|+0-9.]+)\sY:([-|+0-9.]+)\sZ:([-|+0-9.]+)\sE:([-|+0-9.]+)\sCount\sX:\s([-|+0-9.]+)\sY:([-|+0-9.]+)\sZ:([-|+0-9.]+)', reply, re.IGNORECASE)

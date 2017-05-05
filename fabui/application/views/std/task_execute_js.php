@@ -841,12 +841,12 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		console.log("TASK STATUS = ", status);
 		switch(status){
 			case 'paused':
-				if(firstCall){
+				//if(firstCall){
 					var element = $(".isPaused-button");
 					element.html('<i class="fa fa-play"></i> '+_("Resume " + taskType) );
 					element.attr('data-action', 'resume');
 					enableButton('.change-filament-button');
-				}
+				//}
 				break;
 			case 'started':
 				if(firstCall){
