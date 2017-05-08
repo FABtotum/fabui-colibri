@@ -1491,6 +1491,25 @@ fabApp = (function(app) {
 			app.manageEmergency(object.data.notify.data.last_event.data);
 		}
 	}
+	/**
+	 * return unit type [UNKNWON, GENERAL, LITE, PRO, HYDRA]
+	 */
+	app.getUnitType = function(id)
+	{
+		id = parseInt(id);
+		var type = 'UNKNOWN';
+		
+		if(id>=3000 && id<4000){
+			type = 'HYDRA';
+		}else if(id>=2000 && id<3000){
+			type = 'PRO';
+		}else if(id>= 1000 && id<2000){
+			type = 'LITE';
+		}else if(id>= 0 && id<1000){
+			type = 'GENERAL';
+		}
+		return type;
+	}
 	return app;
 })({});
 

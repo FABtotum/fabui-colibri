@@ -68,13 +68,11 @@
 			var type = $(this).filter(':checked').val();
 			if(type == 'custom'){
 				$(".custom_settings").slideDown();
-				<?php if($unitType == 'PRO'): ?>
-				$(".wire_end").removeClass("hidden");
-				<?php endif; ?>
+				$(".pro").removeClass("hidden");
 			}else{
 				$(".custom_settings").slideUp();
 				<?php if($unitType != 'PRO'): ?>
-				$(".wire_end").addClass("hidden");
+				$(".pro").addClass("hidden");
 				<?php endif; ?>
 			}
 		});

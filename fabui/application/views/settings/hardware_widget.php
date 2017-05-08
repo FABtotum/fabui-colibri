@@ -83,7 +83,7 @@
 					</div>
 				</section>
 			</fieldset>
-			<fieldset class="<?php echo ($unitType == 'PRO' || $defaultSettings['settings_type'] == 'custom') ? '' : 'hidden'?> wire_end">
+			<fieldset class="<?php echo ($unitType == 'PRO' || $defaultSettings['settings_type'] == 'custom') ? '' : 'hidden'?> pro">
 				<section>
 					<label class="label"> <?php echo _('Wire endstop')?></label>
 					<div class="inline-group">
