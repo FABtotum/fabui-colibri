@@ -314,7 +314,7 @@ class GCodeService:
     ENCODING = 'utf-8'
     UNICODE_HANDLING = 'replace'
     
-    REPLY_QUEUE_SIZE = 1
+    REPLY_QUEUE_SIZE = 1 
         
     def __init__(self, serial_port, serial_baud, serial_timeout = 5, use_checksum = False, logger = None):
         self.running = False
@@ -650,7 +650,8 @@ class GCodeService:
                 self.log.debug("ZMODIFY: %f", z_offset)
                 self.__send_gcode_command("G91", group="override", modify=False)
                 self.__send_gcode_command("G0 Z{0}".format(z_offset), group="override", modify=False)
-                self.__send_gcode_command("G90", group="override", modify=False)
+                self.__send_gcode_command("G90",  group="override", modify=False)
+                self.__send_gcode_command("M400", group="override", modify=False)
                 self.__send_gcode_command("M300", group="override", modify=False)
                 
                 self.__trigger_callback('gcode_action:z_override', [ str( round(self.z_override,5) ) ] )
