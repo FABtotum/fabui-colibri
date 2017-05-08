@@ -430,7 +430,8 @@ if(!isset($rpm_max)) 		$rpm_max = 14000;
 		}
 		else
 		{
-			fabApp.jogMdi("M302 S175", writeJogResponse);
+			fabApp.jogMdi("M302 S<?php echo $head_min_temp; ?>", writeJogResponse);
+			cold_extrustion_enabled = false;
 		}
 	}
 	
