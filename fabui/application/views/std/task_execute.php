@@ -14,8 +14,6 @@ if( !isset($rpm_label) ) $rpm_label = _("RPM");
 $stats_button_size = $type == 'print' ? 4 : 6;
  
 ?>
-
-<hr class="simple">
 <ul id="createFeed" class="nav nav-tabs bordered">
 	<li class="active"><a href="#live-feeds-tab" data-toggle="tab"><?php echo _("Live feeds")?></a></li>
 	<li><a href="#controls-tab" data-toggle="tab"><i class="fa fa-sliders"></i> <?php echo _("Controls");?></a></li>

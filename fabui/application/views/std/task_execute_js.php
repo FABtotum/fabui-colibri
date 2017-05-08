@@ -123,10 +123,10 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			noUiSlider.create(document.getElementById('create-ext-target-slider'), {
 				start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp_target") : <?php echo $extruder_min; ?>,
 				connect: "lower",
-				range: {'min': <?php echo isset($extruder_min) ? $extruder_min : 0; ?>, 'max' : <?php echo $extruder_max; ?>},
+				range: {'min': 0, 'max' : <?php echo $extruder_max; ?>},
 				pips: {
 					mode: 'values',
-					values: [0, 175, 250],
+					values: [0, <?php echo $extruder_min == 0 ? 175 : $extruder_min; ?>, 250],
 					density: 4,
 					format: wNumb({
 						postfix: '&deg;'
