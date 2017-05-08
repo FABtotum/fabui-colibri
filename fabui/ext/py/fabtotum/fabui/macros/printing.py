@@ -147,8 +147,16 @@ def end_additive(app, args=None, lang='en_US.UTF-8'):
             'b' : 255,
         }
     
+    try:
+        wire_end = app.config.get('settings', 'wire_end', 0)
+    except KeyError:
+        wire_end = 0
+        
     #note: movement here is done so it works with AUTO positioning (additive mode).
     app.trace( _("Terminating...") )
+    
+    if(wire_end == 1):
+        app.macro("M805 S1",   "ok", 1,    _("Enable wire endstop"), verbose=False)
     #macro("G90","ok",100,"Set Absolute movement",0.1,verbose=False)
     #macro("G90","ok",2,"Set Absolute movement",1)
     #macro("G0 X210 Y210 Z200 F10000","ok",100,"Moving to safe zone",0.1,verbose=False) #right top, normally Z=240mm
@@ -193,7 +201,13 @@ def check_additive(app, args = None, lang='en_US.UTF-8'):
     except KeyError:
         bed_enabled = True
     
+    try:
+        wire_end = app.config.get('settings', 'wire_end', 0)
+    except KeyError:
+        wire_end = 0
+
     app.trace( _("Checking safety measures") )
+    
     if safety_door == 1:
         app.macro("M741",   "TRIGGERED", 2, _("Front panel door opened") )
         
@@ -202,6 +216,9 @@ def check_additive(app, args = None, lang='en_US.UTF-8'):
         app.macro("M744",       "TRIGGERED", 1, _("Build plate needs to be flipped to the printing side"), verbose=False )
     
     app.macro("M742",       "TRIGGERED", 1, _("Spool panel control"), verbose=False, warning=True)
+    
+    if(wire_end == 1):
+        app.macro("M740", "TRIGGERED", 1, _("Filament not inserted"), verbose=False)
 
 def engage_feeder(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)

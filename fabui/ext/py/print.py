@@ -31,8 +31,12 @@ from watchdog.events import PatternMatchingEventHandler
 from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
+# import general constants
+from fabtotum.fabui.constants import ERROR_WIRE_END
+#import needed macros 
 import fabtotum.fabui.macros.general as general_macros
 import fabtotum.fabui.macros.printing as print_macros
+
 
 ################################################################################
 
@@ -121,10 +125,12 @@ class PrintApplication(GCodePusher):
         Triggered when an error occures.
         :param error_no: Error number
         """
-        if(error_no == 111):
+        if(error_no == ERROR_WIRE_END):
             if(self.is_paused() == False):
+                self.trace( _("Warning: filament is about to end") )
+                self.task_stats['message'] = 'Warning: filament is about to end'
                 self.pause()
-                self.task_stats['message'] = 'Out of filament detected'
+                
         
     def run(self, task_id, gcode_file):
         """
