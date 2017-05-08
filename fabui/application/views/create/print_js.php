@@ -100,7 +100,6 @@
 				fabApp.showErrorAlert(response.message);
 			}else{
 				destroyDropZone();
-				disableCompleteSteps();
 				gotoWizardStep(3);
 				idTask = response.id_task;
 				updateFileInfo(response.file);
@@ -108,6 +107,7 @@
 				setTimeout(initGraph, 1000);
 				updateZOverride(0);
 				initRunningTaskPage();
+				disableCompleteSteps();
 				ga('send', 'event', 'print', 'start', 'print started');
 			}
 			closeWait();

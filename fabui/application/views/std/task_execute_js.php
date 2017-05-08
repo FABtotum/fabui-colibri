@@ -710,6 +710,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		fabApp.freezeMenu('<?php echo $type ?>');
 		freezeUI();
 		getTrace();
+		disableCompleteSteps();
 		
 		<?php if($type=="print"): ?>
 		initGraph();
