@@ -1615,7 +1615,7 @@ if(!function_exists('getUnitType'))
 			case ($hardware_version >= 2000 && $hardware_version < 3000):
 				$type = 'PRO';
 				break;
-			case ($hardware_version >= 3000 && $hardware_version< 4000):
+			case ($hardware_version >= 3000 && $hardware_version < 4000):
 				$type= 'HYDRA';
 				break;
 			default:

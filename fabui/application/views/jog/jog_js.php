@@ -418,12 +418,13 @@ if(!isset($rpm_max)) 		$rpm_max = 14000;
 			   
 				if (ButtonPressed === "Yes")
 				{
-					fabApp.jogMdi("M302", writeJogResponse);
+					fabApp.jogMdi("M302 S0", writeJogResponse);
 					cold_extrustion_enabled = true;
 				}
 				if (ButtonPressed === "No")
-				{
-					/* do nothing */
+				{	
+					fabApp.jogMdi("M302 S<?php echo $head_min_temp; ?>", writeJogResponse);
+					cold_extrustion_enabled = false;
 				}
 			});
 		}

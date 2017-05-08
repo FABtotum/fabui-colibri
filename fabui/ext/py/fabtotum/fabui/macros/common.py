@@ -253,6 +253,7 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     offset       = float(head.get('nozzle_offset', 0))
     fw_id        = int(head.get('fw_id',0))
     max_temp     = int(head.get('max_temp',230)) + 15
+    min_temp     = int(head.get('min_temp', 0))
     probe_length = float(app.config.get('settings', 'zprobe.length', 0))
     tool         = head.get('tool', '')
     
@@ -275,6 +276,10 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     if max_temp > 25:
         #~ gcs.send( "M801 S{0}".format( max_temp ), group='bootstrap' )
         app.macro( "M801 S{0}".format( max_temp ),   "ok", 2, _("Setting MAX temperature to {0}".format(max_temp)) )
+    
+    # Set min_temp
+    if min_temp > 0:
+        app.macro(  "M302 S{0}".format( min_temp ),   "ok", 2, _("Setting MIN temperature to {0}".format(min_temp)) )
 
     # Set nozzle offset
     #~ if offset:

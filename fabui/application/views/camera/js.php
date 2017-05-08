@@ -106,7 +106,6 @@
 			data: {},                         
 			type: 'post',
 			success: function(response){
-                closeWait();
                 console.log(response);
                 location.reload();
 			}

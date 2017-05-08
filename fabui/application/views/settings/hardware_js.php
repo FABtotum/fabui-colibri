@@ -59,7 +59,6 @@
 			sliders[i].noUiSlider.on('slide', showColor);
 			sliders[i].noUiSlider.on('change', setColor);
 		}
-		
 	}
 	
 	//
@@ -69,8 +68,14 @@
 			var type = $(this).filter(':checked').val();
 			if(type == 'custom'){
 				$(".custom_settings").slideDown();
+				<?php if($unitType == 'PRO'): ?>
+				$(".wire_end").removeClass("hidden");
+				<?php endif; ?>
 			}else{
 				$(".custom_settings").slideUp();
+				<?php if($unitType != 'PRO'): ?>
+				$(".wire_end").addClass("hidden");
+				<?php endif; ?>
 			}
 		});
 		

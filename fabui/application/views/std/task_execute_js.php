@@ -55,7 +55,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	var wasExtSliderMoved       = false;
 	var wasBedSliderMoved       = false;
 	//
-	var soft_extruder_min  = 175;
+	var soft_extruder_min  = <?php echo $extruder_min; ?>;
 	
 	var zOverrideTimeoout = null;
 	var zOverrideValue = 0;

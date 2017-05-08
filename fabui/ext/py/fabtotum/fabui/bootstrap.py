@@ -107,6 +107,7 @@ def configure_head(gcs, config, log):
         offset       = float(head.get('nozzle_offset', 0))
         fw_id        = int(head.get('fw_id',0))
         max_temp     = int(head.get('max_temp',0)) + 15
+        min_temp     = int(head.get('min_temp', 0))
         custom_gcode = head.get('custom_gcode','')
         tool         = head.get('tool', '')
         
@@ -126,6 +127,10 @@ def configure_head(gcs, config, log):
         # Set max_temp
         if max_temp > 25:
             gcs.send( "M801 S{0}".format( max_temp ), group='bootstrap' )
+            
+        # Set min_temp
+        if min_temp > 0:
+            gcs.send( "M302 S{0}".format( min_temp ), group='bootstrap' )
         
         # Set nozzle offset
         #~ if offset:
