@@ -29,6 +29,8 @@ case "$1" in
     mkdir -p ${BIGTEMP_PATH}/fabui
     chown 33:33 ${BIGTEMP_PATH}/fabui
     chown 33:33 ${BIGTEMP_PATH}
+	
+	mkdir -p ${TEMP_PATH}/lighttpdcompress
     
     boot_msg "Starting ${SERVICE_NAME}."
 

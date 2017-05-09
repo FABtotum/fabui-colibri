@@ -1,8 +1,8 @@
 server.max-request-size = 134217728
 
-server.modules += ( "mod_rewrite", "mod_expire" , "mod_setenv")
+server.modules += ( "mod_rewrite", "mod_expire" , "mod_setenv", "mod_compress")
 
-expire.url = ("/assets/" => "access plus 1 years")
+
 
 # Migration of APACHE2 /var/www/fabui/.htaccess to lighttpd syntax
 
@@ -13,3 +13,75 @@ expire.url = ("/assets/" => "access plus 1 years")
 url.rewrite-once = ("^/fabui/(?!index\.php|assets|application|down|robots|upload|ajax|temp|slic3r|\.txt\.json).*" => "/fabui/index.php/$1")
 
 setenv.add-response-header = ( "Access-Control-Allow-Origin" => "*" )
+
+compress.cache-dir = "/tmp/lighttpd/compress/"
+compress.filetype = (
+    "application/atom+xml",
+    "application/javascript",
+    "application/json",
+    "application/ld+json",
+    "application/manifest+json",
+    "application/rdf+xml",
+    "application/rss+xml",
+    "application/schema+json",
+    "application/vnd.geo+json",
+    "application/vnd.ms-fontobject",
+    "application/x-font-ttf",
+    "application/x-javascript",
+    "application/x-web-app-manifest+json",
+    "application/xhtml+xml",
+    "application/xml",
+    "font/eot",
+    "font/opentype",
+    "image/bmp",
+    "image/svg+xml",
+    "image/vnd.microsoft.icon",
+    "image/x-icon",
+    "text/cache-manifest",
+    "text/css",
+    "text/html",
+    "text/javascript",
+    "text/plain",
+    "text/vcard",
+    "text/vnd.rim.location.xloc",
+    "text/vtt",
+    "text/x-component",
+    "text/x-cross-domain-policy",
+    "text/xml",
+)
+
+# CSS
+$HTTP["url"] =~ ".css" {
+    expire.url = ( "" => "access plus 1 years" )
+}
+
+# Data interchange
+$HTTP["url"] =~ ".(json|xml)" {
+    expire.url = ( "" => "access plus 0 seconds" )
+}
+
+# Favicon
+$HTTP["url"] =~ ".ico" {
+    expire.url = ( "" => "access plus 1 years" )
+}
+
+# JavaScript
+$HTTP["url"] =~ ".js" {
+    expire.url = ( "" => "access plus 1 years" )
+}
+
+# Media
+$HTTP["url"] =~ ".(gif|jpg|jpeg|png|m4a|f4a|f4b|oga|ogg|webm)" {
+    expire.url = ( "" => "access plus 1 years" )
+}
+
+# Web feeds
+$HTTP["url"] =~ ".(atom|rss)" {
+    expire.url = ( "" => "access plus 1 hours" )
+}
+
+# Web fonts
+$HTTP["url"] =~ ".(eot|otf|svg|svgz|ttf|ttc|woff)" {
+    expire.url = ( "" => "access plus 1 years" )
+}
+
