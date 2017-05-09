@@ -125,8 +125,7 @@ function RefreshTable(tableId, urlData)
 */
 function pageCleanUp()
 {
-    console.log('=== pageCleanUp ===');
-    
+    if(debugState) console.log('=== pageCleanUp ===');
     if (typeof window.viewCleanUp == 'function') window.viewCleanUp();
     
     window.manageMonitor = null;
@@ -139,7 +138,7 @@ function pageCleanUp()
  */
 function pageLoadSuccess()
 {
-    console.log("pageLoadSuccess");
+	if(debugState) console.log("pageLoadSuccess");
     updateTour();
 }
 /**
@@ -147,7 +146,7 @@ function pageLoadSuccess()
  */
 function pageLoadError(url, container,  xhr, thrownError)
 {
-    console.log("pageLoadError");
+	if(debugState) console.log("pageLoadError");
     if(xhr.status == 403){
     	showSessionExpired();
     }else{
@@ -188,7 +187,7 @@ String.prototype.replaceAll = function(search, replacement) {
 String.prototype.format = function() {
     var str = this;   
     var num = arguments.length; 
-    console.log('pyformat', arguments, 'str:', str);
+    if(debugState) console.log('pyformat', arguments, 'str:', str);
     
     var matches = str.match(/{[0-9]}/g);
     if( !matches || matches.length !== num ) 
@@ -199,8 +198,9 @@ String.prototype.format = function() {
 	
     return str;
 };
-
-// IE11 compatibility
+/**
+ * IE11 compatibility
+ */
 if (!String.prototype.startsWith) {
   String.prototype.startsWith = function(searchString, position) {
     position = position || 0;

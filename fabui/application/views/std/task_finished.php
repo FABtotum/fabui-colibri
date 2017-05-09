@@ -12,7 +12,6 @@
 if( !isset($z_height_save_message) ) $z_height_save_message = _("Z height is <strong><span class=\"z-height\"></span></strong>. Do you want to save it and override the value for the next prints?");
 
 ?>
-<hr class="simple">
 <div class="row">
 	<div class="col-sm-6">
 		<div class="text-center">

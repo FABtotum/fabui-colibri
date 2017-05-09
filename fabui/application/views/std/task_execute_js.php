@@ -55,7 +55,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	var wasExtSliderMoved       = false;
 	var wasBedSliderMoved       = false;
 	//
-	var soft_extruder_min  = 175;
+	var soft_extruder_min  = <?php echo $extruder_min; ?>;
 	
 	var zOverrideTimeoout = null;
 	var zOverrideValue = 0;
@@ -123,10 +123,10 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			noUiSlider.create(document.getElementById('create-ext-target-slider'), {
 				start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp_target") : <?php echo $extruder_min; ?>,
 				connect: "lower",
-				range: {'min': <?php echo isset($extruder_min) ? $extruder_min : 0; ?>, 'max' : <?php echo $extruder_max; ?>},
+				range: {'min': 0, 'max' : <?php echo $extruder_max; ?>},
 				pips: {
 					mode: 'values',
-					values: [0, 175, 250],
+					values: [0, <?php echo $extruder_min == 0 ? 175 : $extruder_min; ?>, 250],
 					density: 4,
 					format: wNumb({
 						postfix: '&deg;'
@@ -710,6 +710,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		fabApp.freezeMenu('<?php echo $type ?>');
 		freezeUI();
 		getTrace();
+		disableCompleteSteps();
 		
 		<?php if($type=="print"): ?>
 		initGraph();

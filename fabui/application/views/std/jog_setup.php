@@ -14,9 +14,6 @@ if( !isset($jog_message) ) $jog_message = _("Jog the endmill to the desired orig
 if( !isset($fourth_axis) ) $fourth_axis = False;
  
 ?>
-
-<hr class="simple">
-
 <div class="row">
 	
 	<div class="col-sm-6 col-md-6" style="margin-top:42px">

@@ -10,7 +10,6 @@
  * 
  */
 ?>
-<hr class="simple">
 <div class="" style="<?php echo ($this->session->settings['feeder']['show'] == true)?"":"display:none;"; ?>" >
 	<h4 class="text-center"><?php echo _('Engage feeder'); ?></h4>
 	<div class="row">

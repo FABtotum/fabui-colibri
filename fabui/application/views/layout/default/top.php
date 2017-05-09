@@ -79,18 +79,21 @@
 	<!-- TEMPERATURES CONTROL BUTTONS -->
 	<div class="pull-right pad-container hidden-xs" style="position: relative;border:0px;padding-right:0px;">
 		<div class="btn-header transparent">
-			<span id="top-temperatures">
+			<span id="top-temperatures" class="hidden">
 				<a href="javascript:void(0)" style="cursor: pointer !important;" rel="tooltip" data-placement="left" data-html="true" data-original-title="<?php echo _("Temperature<br> controls");?>">
 					<i class="icon-fab-term"></i>  
-					<span class="hidden-xs" id="top-temperatures-info"><strong>N</strong>: <span class="top-bar-nozzle-actual font-md"></span> - <strong>B</strong>: <span class="top-bar-bed-actual font-md" ></span>&nbsp;</span>
+					<span class="hidden-xs" id="top-temperatures-info">
+						<strong class="head-working-mode-1">N:</strong> <span class="top-bar-nozzle-actual font-md head-working-mode-1"></span> <span class="head-working-mode-1">-</span> 
+						<strong>B:</strong> <span class="top-bar-bed-actual font-md" ></span>&nbsp;
+					</span>
 				</a>
 			</span>
 			<div class="top-ajax-temperatures-dropdown">
-					<h4><i class=" icon-fab-term"></i> <?php echo _("Nozzle");?>  <small> (<span class="top-bar-nozzle-actual"></span> /<span class="top-bar-nozzle-target"></span> &deg; )</small></h4>
-					<div id="top-act-ext-temp"  class="noUiSlider top-act-ext-temp"></div>
-					<div id="top-ext-target-temp" class="noUiSlider top-ext-target-temp top-extruder-range"></div>
+					<h4 class="head-working-mode-1"><i class="icon-fab-term"></i> <?php echo _("Nozzle");?>  <small> (<span class="top-bar-nozzle-actual"></span> /<span class="top-bar-nozzle-target"></span> &deg; )</small></h4>
+					<div id="top-act-ext-temp"    class="noUiSlider top-act-ext-temp head-working-mode-1"></div>
+					<div id="top-ext-target-temp" class="noUiSlider top-ext-target-temp top-extruder-range head-working-mode-1"></div>
 					<h4 class="margin-top-50"><i class=" icon-fab-term"></i> <?php echo _("Bed");?> <small>( <span class="top-bar-bed-actual" ></span>/<span class="top-bar-bed-target" ></span> &deg;)</small></h4>
-					<div id="top-act-bed-temp" class="noUiSlider top-act-bed-temp"></div>
+					<div id="top-act-bed-temp"    class="noUiSlider top-act-bed-temp"></div>
 					<div id="top-bed-target-temp" class="noUiSlider top-bed-target-temp top-bed-range"></div>
 				</div>
 		</div>

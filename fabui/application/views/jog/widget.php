@@ -142,32 +142,28 @@
 			<div class="tab-pane fade in active" id="functions-tab">
 				<div class="padding-10"></div>
 				
+				<?php if($headPrintSupport): ?>
 				<div class="col-sm-12 margin-bottom-50">
-					<?php if($headPrintSupport): ?>
 					<h4><i class="icon-fab-term"></i> <span><?php echo _("Nozzle"); ?></span> <span class="pull-right"><span rel="tooltip" data-placement="top" data-original-title="<?php echo _("Extruder current temperature");?>"  class="extruder-temp"></span> / <strong><span rel="tooltip" data-placement="top" data-original-title="<?php echo _("Extruder target temperature");?>" class="slider-extruder-target">0</span></strong> &deg;C</span></h4>
 					<div id="create-ext-target-slider" class="noUiSlider sliders"></div>
-					<?php else: ?>
-					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> <?php echo _("Head does not have a heater"); ?></h4></div>
-					<?php endif; ?>
 				</div>
+				<?php endif; ?>
 				
-				<div class="col-sm-12 margin-bottom-50">
-					<?php if($headFanSupport): ?>
+				<?php if($headFanSupport): ?>
+				<div class="col-sm-12 margin-bottom-50">	
 					<h4><?php echo _("Fan"); ?> <span class="pull-right"><strong><span class="slider-task-fan">0</span></strong>%</span></h4>
 					<div id="create-fan-slider" class="noUiSlider sliders"></div>
-					<?php else: ?>
-					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> <?php echo _("Head does not have a fan"); ?> </h4></div>
-					<?php endif; ?>
+					<!-- <div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> <?php echo _("Head does not have a fan"); ?> </h4></div> -->
 				</div>
+				<?php endif; ?>
 				
+				<?php if($headMillSupport): ?>
 				<div class="col-sm-12 margin-bottom-50">
-					<?php if($headMillSupport): ?>
 					<h4><?php echo _("RPM"); ?> <span class="pull-right"><strong><span class="slider-task-rpm"><?php echo _("Off"); ?></span></strong></span></h4>
 					<div id="create-rpm-slider" class="noUiSlider sliders"></div>
-					<?php else: ?>
-					<div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> <?php echo _("Head does not have a milling motor"); ?></h4></div>
-					<?php endif; ?>
+					<!--  <div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> <?php echo _("Head does not have a milling motor"); ?></h4></div>-->
 				</div>
+				<?php endif; ?>
 				
 				<div class="col-sm-12 margin-bottom-50">
 					<?php if($haveBed): ?>

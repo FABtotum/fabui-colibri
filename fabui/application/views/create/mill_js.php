@@ -95,12 +95,11 @@
 				fabApp.showErrorAlert(response.message);
 			}else{
 				gotoWizardStep(3);
-				disableCompleteSteps();
 				idTask = response.id_task;
 				updateFileInfo(response.file);
 				initRunningTaskPage();
 				updateZOverride(0);
-
+				disableCompleteSteps();
 				ga('send', 'event', 'mill', 'start', 'mill started');
 			}
 			closeWait();

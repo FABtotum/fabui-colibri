@@ -27,6 +27,8 @@ import json
 import re
 import gettext
 import time
+# import general constants
+from fabtotum.fabui.constants import ERROR_WIRE_END, ERROR_IDLE_SAFETY, ERROR_Y_BOTH_TRIGGERED, ERROR_Z_BOTH_TRIGGERED, ERROR_KILLED, ERROR_STOPPED, ERROR_DOOR_OPEN
 
 # Import external modules
 try:
@@ -86,10 +88,10 @@ class GPIOMonitor:
             self.log.error('GPIOMonitor ERROR: %s', str(e) )
 
     def manageErrorNumber(self, error):
-        alertErrors = [110, 111]
-        shutdownErrors = [120, 121]
+        alertErrors = [ERROR_IDLE_SAFETY, ERROR_WIRE_END]
+        shutdownErrors = [ERROR_Y_BOTH_TRIGGERED, ERROR_Z_BOTH_TRIGGERED]
         #~ terminateErrors = [100, 101, 102, 106, 107, 108, 109]
-        terminateErrors = [100, 101, 102]
+        terminateErrors = [ERROR_KILLED, ERROR_STOPPED, ERROR_DOOR_OPEN]
         errorType = 'emergency'
         
         if error == 0:
@@ -102,7 +104,7 @@ class GPIOMonitor:
         elif error in alertErrors:
             self.log.info("alert")
             errorType = 'alert'
-            if error == 111:
+            if error == ERROR_WIRE_END:
                 self.gcs.send('M805 S0', block=False, group='*')
             self.gcs.send('M999', block=False, group='*')
         elif error in terminateErrors:

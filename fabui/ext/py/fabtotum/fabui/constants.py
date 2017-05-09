@@ -18,28 +18,28 @@
 # You should have received a copy of the GNU General Public License
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
 
-__authors__ = "Krios Mane, Daniel Kesler"
+__authors__ = "Daniel Kesler - Krios Mane"
 __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
-
-# Import standard python module
-import re
-
-# Import external modules
-
-# Import internal modules
-from fabtotum.fabui.hardware.common import loadFactoryFeeder, updateFactoryFeeder
-from fabtotum.utils.translation import _, setLanguage
-
-
-def hardware2000(gcodeSender, config, log, eeprom, factory):
-    """
-    Rev1000 CORE PRO: TBA - xxx
-    """
-    log.info("Rev2000 - PRO")
-    config.set('settings', 'hardware.id', 2000)
-    config.set('settings', 'feeder.show', False)
-    config.set('settings', 'hardware.camera.available', False)
-    config.save('settings')
-    #invert x endstop logic
-    gcodeSender.send("M747 X1", group='bootstrap')
+############################
+#      ERROR CODES         #
+############################
+ERROR_KILLED           = 100
+ERROR_STOPPED          = 101
+ERROR_DOOR_OPEN        = 102 
+ERROR_MIN_TEMP         = 103
+ERROR_MAX_TEMP         = 104
+ERROR_MAX_BED_TEMP     = 105
+ERROR_X_MAX_ENDSTOP    = 106
+ERROR_X_MIN_ENDSTOP    = 107
+ERROR_Y_MAX_ENDSTOP    = 108
+ERROR_Y_MIN_ENDSTOP    = 109
+ERROR_IDLE_SAFETY      = 110
+ERROR_WIRE_END         = 111
+ERROR_Y_BOTH_TRIGGERED = 120
+ERROR_Z_BOTH_TRIGGERED = 121
+ERROR_AMBIENT_TEMP     = 122
+ERROR_EXTRUDE_MINTEMP  = 123
+ERROR_LONG_EXTRUSION   = 124
+ERROR_HEAD_ABSENT      = 125
+ERROR_PWR_OFF          = 999

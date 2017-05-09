@@ -9,7 +9,7 @@
 ?>
 <title> .: FABUI :. </title>
 <meta name="description" content="FABtotum User Web Interface">
-<meta name="author"      content="Krios Mane - FABteam">
+<meta name="author"      content="FABtotum Development Team">
 <meta name="viewport"    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="robots"      content="noindex,nofollow">
 <meta charset="UTF-8">
@@ -37,7 +37,6 @@
 <link rel="icon"          href="/assets/img/favicon/favicon.ico" type="image/x-icon">
 <!-- IE11 -->
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/third_party.css?v=<?php echo FABUI_VERSION;  ?>" >
 <!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->
 <meta name="apple-mobile-web-app-capable" content="yes">

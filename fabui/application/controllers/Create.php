@@ -82,9 +82,12 @@
 			$task_is_running = True;
 		}
 		
+		$head_info = getInstalledHeadInfo();
+		
 		$data['type']      = 'print';
 		$data['type_label'] = _("Printing");
 		$data['type_action'] = _("Print");
+		$data['extruder_min'] = isset($head_info['min_temp']) ? ($head_info['min_temp'] + 5) : 180;
 		$data['filamentsOptions'] = array('pla' => 'PLA', 'abs' => 'ABS', 'nylon' => 'Nylon');
 		$this->config->load('upload');
 		

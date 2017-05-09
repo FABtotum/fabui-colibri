@@ -183,14 +183,14 @@
 					
 					<fieldset class="nozzle-settings" style="display:none">
 						<div class="row">
-							<section class="col col-4">
+							<section class="col col-6">
 								<label class="label"><?php echo _('PID')?></label>
 								<label class="input">
 									<input type="text" id="head-pid" name="pid" value="M301 P20 I3.5 D30">
 								</label>
 							</section>
 							
-							<section class="col col-4">
+							<section class="col col-6">
 								<label class="label"><?php echo _("Thermistor");?></label>
 								<label class="select">
 									<select id="head-thermistor_index" name="thermistor_index">
@@ -198,11 +198,18 @@
 										<option value="1">Standard 100k</option>
 									</select> <i></i> </label>
 							</section>
-							
-							<section class="col col-4">
+						</div>
+						<div class="row">
+							<section class="col col-6">
 								<label class="label"><?php echo _('Max temperature')?></label>
 								<label class="input">
 									<input type="number" id="head-max_temp" name="max_temp" min="180" max="300" value="250">
+								</label>
+							</section>
+							<section class="col col-6">
+								<label class="label"><?php echo _('Min temperature')?></label>
+								<label class="input">
+									<input type="number" id="head-min_temp" name="min_temp" min="100" max="300" value="175">
 								</label>
 							</section>
 							

@@ -17,7 +17,7 @@
 		if(file_exists($this->config->item('autoinstall_file'))){
 			redirect('install');
 		}
-		$this->verifyCookie();
+		verify_keep_me_logged_in_cookie();
 		$data['alert'] = $this->session->flashdata('alert');
 		$this->load->helper('os_helper');
 		$this->content = $this->load->view('login/login_form', $data, true);
@@ -58,18 +58,9 @@
 		}
 		
 		if($remember == true){ //keep me logged in
-			$this->load->library('encrypt');
-			$encryptData = array(
-				'fab',
-				$this->input->ip_address(),
-				$this->input->server('SERVER_ADDR'),
-				$postData['email']
-			);
-			$cookieName  = 'fabkml';
-			$cookieValue = $this->encrypt->encode(implode(':',$encryptData)).':'.$postData['password'];
-			$expire = (86400*7); //7days
-			$this->input->set_cookie($cookieName, $cookieValue, $expire);
+			set_keep_me_looged_in_cookie($postData['email'], $postData['password']);
 		}
+		
 		
 		$user['settings'] = json_decode($user['settings'], true);
 		if(!isset($user['settings']['language'])) $user['settings']['language'] = 'en_US';
@@ -87,7 +78,6 @@
 	//log out
 	public function out()
 	{
-		$this->load->helper('cookie');
 		delete_cookie("fabkml");
 		//destroy session and redirect to login
 		$this->session->loggedIn = false; 
@@ -204,42 +194,6 @@
 		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
 	
-	/**
-	 * verify cookie credentials
-	 * redirect to dashboard if cookie and credentials exist
-	 */
-	public function verifyCookie()
-	{
-		if($this->input->cookie('fabkml')){
-			$this->load->library('encrypt');
-			
-			$cookieValueExploded = explode(':', $this->input->cookie('fabkml'));
-			$userInfo = $this->encrypt->decode($cookieValueExploded[0]);
-			$password = $cookieValueExploded[1];
-			$userInfoExploed = explode(':', $userInfo);
-			
-			if($userInfoExploed[0] == 'fab' && 
-			   $userInfoExploed[1] == $this->input->ip_address() && 
-			   $userInfoExploed[2] == $this->input->server('SERVER_ADDR')){
-				
-			   	$this->load->model('User', 'user');
-			   	$user = $this->user->get(array('email'=>$userInfoExploed[3], 'password'=>$password), 1);
-			   	
-			   	if($user){
-			   		$user['settings'] = json_decode($user['settings'], true);
-			   		if(!isset($user['settings']['language'])) $user['settings']['language'] = 'en_US';
-			   		$this->session->loggedIn = true;
-			   		$this->session->user = $user;
-			   		//load hardware settings
-			   		$this->load->helpers('fabtotum_helper');
-			   		$hardwareSettings = loadSettings('default');
-			   		//save hardware settings on session
-			   		$this->session->settings = $hardwareSettings;
-			   		redirect('#dashboard');
-			   	}	
-			}
-		}
-	}
  }
  
 ?>

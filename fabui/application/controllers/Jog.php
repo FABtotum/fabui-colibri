@@ -34,6 +34,7 @@
 		if( isset($info['max_temp']) ) {
 			$data['extruder_max'] = $info['max_temp'];
 		}
+		$data['head_min_temp'] = isset($info['min_temp']) ? $info['min_temp'] : 175;
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'jog-widget';

@@ -12,7 +12,6 @@
  
 ?>
 <?php if(!$runningTask): ?>
-	<hr class="simple">
 	<ul id="filesTab"  class="nav nav-tabs bordered">
 		<li class="active">
 			<a href="#files-tab" data-toggle="tab"><?php echo _("All files")?></a>

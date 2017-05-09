@@ -6,20 +6,13 @@
  * @license https://opensource.org/licenses/GPL-3.0
  * 
  */
-?>
 
-<?php 
 // Load tour js files
 foreach($available_tours as $tour_file) {
     echo '<script type="text/javascript" src="/assets/js/tours/'.$tour_file.'.js?v='.FABUI_VERSION.'"></script>'.PHP_EOL;
 }
-
-// http://preview.codecanyon.net/item/tour-tip-guide/full_screen_preview/10922922?ref=jqueryrain
-
 ?>
-
-<script type="text/javascript">
-    
+<script type="text/javascript">  
 var active_tour = false;
 var active_tour_name = "";
 var available_tours = {
@@ -43,12 +36,15 @@ function hasTourEnded(name)
 		return false;
 	}
 }
-
+/***
+ * @TODO 
+ */
 function onTourEnd(tour)
 {
-	
 }
-
+/***
+ * 
+ */
 function endTour()
 {
     if(active_tour != false)
@@ -57,7 +53,9 @@ function endTour()
         active_tour = false;
     }
 }
-
+/***
+ * 
+ */
 function updateTour()
 {
     if(active_tour != false)
@@ -73,7 +71,6 @@ function updateTour()
 
 function startTour(name)
 {
-
     steps = [];
     var firstStep = 0;
         
@@ -132,9 +129,7 @@ function startTour(name)
     active_tour.init();
     //tour.restart();
     active_tour.start(true);
-    active_tour.goTo(firstStep);
-    
+    active_tour.goTo(firstStep);   
     return true;
 }
-
 </script>

@@ -7,7 +7,7 @@
  * 
  */
 ?>
-<!--<script data-pace-options='{"restartOnRequestAfter":true}' src="assets/js/plugin/pace/pace.min.js"></script>-->
+<!--<script data-pace-options='{"restartOnRequestAfter":true}' src="/assets/js/plugin/pace/pace.min.js"></script> -->
 <script type="text/javascript" src="/assets/js/<?php echo ENVIRONMENT ?>/app.config.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script type="text/javascript" src="/assets/js/<?php echo ENVIRONMENT ?>/fab.app.config.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script type="text/javascript" src="/assets/js/plugin/jquery-touch/jquery.ui.touch-punch.min.js?v=<?php echo FABUI_VERSION ?>"></script>
@@ -25,13 +25,9 @@
 <script type="text/javascript" src="/assets/js/std/jogcontrols.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script type="text/javascript" src="/assets/js/app.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script type="text/javascript" src="/assets/js/fab.app.js?v=<?php echo FABUI_VERSION ?>"></script>
-
 <script type="text/javascript" src="/assets/js/plugin/bootstrap-tour/bootstrap-tour.js?v=<?php echo FABUI_VERSION ?>"></script>
-
 <?php echo $tours; ?>
-
 <script type="text/javascript" src="/assets/js/fabtotum.js?v=<?php echo FABUI_VERSION ?>"></script>
-
 <?php echo $jsScripts; ?>
 <script type="text/javascript">
 	var heads = <?php echo json_encode($heads)?>;
