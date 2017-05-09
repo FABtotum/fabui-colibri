@@ -685,11 +685,11 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		var taskType = "<?php echo isset($type_label) ? $type_label : ucfirst($type); ?>";
 		if(action == 'pause') {
 			element.attr('data-action', 'resume');
-			element.html('<i class="fa fa-play"></i> <span class="hidden-xs">'+_("Resume "+taskType)+"</span>" );
+			element.html('<i class="fa fa-play"></i> <span class="hidden-xs">'+_("Resume")+"</span>" );
 			enableButton('.change-filament-button');
 		}else if(action == 'resume'){
 			element.attr('data-action', 'pause');
-			element.html('<i class="fa fa-pause"></i> <span class="hidden-xs">'+_("Pause "+taskType)+"</span>" );
+			element.html('<i class="fa fa-pause"></i> <span class="hidden-xs">'+_("Pause")+"</span>" );
 			
 			disableButton('.change-filament-button');
 		}
@@ -841,17 +841,17 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		console.log("TASK STATUS = ", status);
 		switch(status){
 			case 'paused':
-				//if(firstCall){
+				{
 					var element = $(".isPaused-button");
-					element.html('<i class="fa fa-play"></i> '+_("Resume " + taskType) );
+					element.html('<i class="fa fa-play"></i> '+_("Resume") );
 					element.attr('data-action', 'resume');
 					enableButton('.change-filament-button');
-				//}
+				}
 				break;
 			case 'started':
 				if(firstCall){
 					var element = $(".isPaused-button");
-					element.html('<i class="fa fa-pause"></i> '+_("Pause " +taskType) );
+					element.html('<i class="fa fa-pause"></i> '+_("Pause") );
 					element.attr('data-action', 'pause');
 					disableButton('.change-filament-button');
 				}
@@ -868,6 +868,17 @@ if(!isset($bed_max)) 		$bed_max = 100;
 				break;
 			case 'completed':
 				completeTask();
+				break;
+			case 'running': 
+				{
+					var element = $(".isPaused-button");
+					if( element.attr('data-action') == 'resume' )
+					{
+						element.html('<i class="fa fa-pause"></i> '+_("Pause") );
+						element.attr('data-action', 'pause');
+						disableButton('.change-filament-button');
+					}
+				} 
 				break;
 			default:
 				disableButton('.change-filament-button');

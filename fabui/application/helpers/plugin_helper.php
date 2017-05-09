@@ -113,7 +113,7 @@ if ( !function_exists('getOnlinePlugins'))
 		$CI =& get_instance();
 		$CI->load->helper('os_helper');
 		$CI->config->load('fabtotum');
-		$repo = getRemoteFile($CI->config->item('plugins_endpoint').'cached.json');
+		$repo = getRemoteFile($CI->config->item('plugins_endpoint').'cached.json', false);
 		if($repo != false){
 			return json_decode($repo, true);
 		}else{
@@ -160,7 +160,8 @@ if ( !function_exists('extendMenuWithPlugins'))
 		// and merge them into one array
 		foreach($active as $plugin => $info)
 		{
-			$items = array_merge($items, $info['menu'] );
+			if(isset($info['menu']))
+				$items = array_merge($items, $info['menu'] );
 		}
 		
 		foreach($items as $item => $content)
@@ -397,6 +398,40 @@ if(!function_exists('startPluginBashScript'))
 		if($sudo)
 			$cmd = 'sudo ' . $cmd;
 			return doCommandLine($cmd, $extPath.'bash/'.$script, $params, $background);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('startPluginScript'))
+{
+	/**
+	 * start script from sub-directory
+	 */
+	function startPluginScript($script, $subdir='bash', $params = '', $background = true, $sudo = false)
+	{
+		$CI =& get_instance();
+		$CI->load->helper('fabtotum_helper');
+		$CI->config->load('fabtotum');
+		//~ $extPath = $CI->config->item('ext_path');
+		$extPath = plugin_path() . '/scripts/';
+		// TODO: check trailing /
+		switch($subdir)
+		{
+			case 'bash':
+				$cmd = 'bash';
+				break;
+			case 'py':
+				$cmd = 'python';
+				break;
+			case 'php':
+				$cmd = 'php';
+				break;
+			default:
+				return 'Unknown script type';
+		}
+		
+		if($sudo)
+			$cmd = 'sudo ' . $cmd;
+			return doCommandLine($cmd, $extPath.$subdir.'/'.$script, $params, $background);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
