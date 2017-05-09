@@ -42,7 +42,7 @@
 			//if not redirect to login page
 			//load needed libraries, helpers
 			$this->load->library(array('session', 'parser'));
-			$this->load->helper(array('url', 'layout', 'language', 'update'));
+			$this->load->helper(array('url', 'layout', 'language', 'update', 'cookie'));
 			$this->load->database();
 			
 			/**
@@ -56,7 +56,8 @@
 					$this->output->set_status_header(403, 'Invalid session');
 					exit();
 				}else{
-					redirect('login/out');
+					if(!verify_keep_me_logged_in_cookie())
+						redirect('login/out');
 				}		
 			}
 			loadTranslation();
