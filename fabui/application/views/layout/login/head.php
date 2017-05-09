@@ -7,18 +7,20 @@
  * 
  */
 ?>
-<title> FABUI </title>
-<meta name="description" content="">
-<meta name="author"      content="Krios Mane - FABtotum Software Development Team">
+<title> .: FABUI :. </title>
+<meta name="description" content="FABtotum User Web Interface">
+<meta name="author"      content="FABtotum Development Team">
 <meta name="viewport"    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots"      content="noindex,nofollow">
+<meta charset="UTF-8">
 <!-- Basic Styles -->
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/line-icons-pro/styles.css">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/bootstrap.min.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/font-awesome.min.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/line-icons-pro/styles.css?v=<?php echo FABUI_VERSION ?>">
 <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-production-plugins.min.css">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-production.min.css">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-skins.min.css">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-production-plugins.min.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-production.min.css?v=<?php echo FABUI_VERSION ?>">
+<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-skins.min.css?v=<?php echo FABUI_VERSION ?>">
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/third_party.css?v=<?php echo FABUI_VERSION;  ?>" >
 <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/fabtotum.css?v=<?php echo FABUI_VERSION ?>">
 <!-- FAVICONS -->

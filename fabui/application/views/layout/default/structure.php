@@ -8,7 +8,7 @@
  */
 ?>
 <!DOCTYPE html>
-<html lang="it">
+<html>
 	<head>{head}</head>
 	<body class="smart-style-6">
 		{ga}

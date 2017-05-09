@@ -1,7 +1,15 @@
+/*                  ______________________________________
+           ________|                                      |_______
+           \       |           fabui-colibri WebApp       |      /
+            \      |      Copyright © 2017 FABteam        |     /
+            /      |______________________________________|     \
+           /__________)                                (_________\
+ *
+ * =======================================================================
+ * =======================================================================
+**/
 fabApp = (function(app) {
-	
 	app.rebooting = false; //is the unit rebooting?
-	
 	app.FabActions = function(){
 		var fabActions = {
 			userLogout: function($this){
@@ -70,7 +78,9 @@ fabApp = (function(app) {
 		});
 		
 	};
-		
+	/**
+	 * 
+	 */
 	app.jogActionHandler = function(e) {
 		
 		var mul          = e.multiplier;
@@ -494,7 +504,7 @@ fabApp = (function(app) {
 	 *  check for first setup wizard
 	 */
 	app.checkForFirstSetupWizard = function(){
-		$.get($.first_setup_url_action, function(data, status){
+		$.get(first_setup_url_action, function(data, status){
 			if(data.response == true){
 				setTimeout(function() {
 						$.smallBox({
@@ -702,7 +712,7 @@ fabApp = (function(app) {
 	**/
 	app.ws_onerror = function(e)
 	{
-		console.log ('Error with WebSocket', ws.readyState);
+		if(debugState) console.log ('Error with WebSocket', ws.readyState);
 		if(app.rebooting == false){ //reconnect only if the unit is not rebooting
 			app.ws_callbacks = {};
 			socket_connected = false;
@@ -719,7 +729,7 @@ fabApp = (function(app) {
 	**/
 	app.ws_onclose = function(e)
 	{
-		console.log ('WebSocket onClose',ws.readyState);
+		if(debugState) console.log ('WebSocket onClose',ws.readyState);
 		if(app.rebooting == false){ //reconnect only if the unit is not rebooting
 			app.ws_callbacks = {};	
 			socket_connected = false;
@@ -761,8 +771,7 @@ fabApp = (function(app) {
 		// if connection is opened => start opening a pipe (multiplexing)
 		ws.onopen = function () {
 			socket_connected = true;
-			if(debugState)
-				root.console.log("WebSocket opened as" , socket.fallback?"fallback":"native" );
+			if(debugState) root.console.log("WebSocket opened as" , socket.fallback?"fallback":"native" );
 			app.afterSocketConnect();
 		};  
 		/**
@@ -771,8 +780,7 @@ fabApp = (function(app) {
 		ws.onmessage = function (e) {
 			try {
 				var obj = jQuery.parseJSON(e.data);
-				if(debugState)
-					console.log("✔ WebSocket received message: %c [" + obj.type + "]", debugStyle);
+				if(debugState) console.log("✔ WebSocket received message: %c [" + obj.type + "]", debugStyle);
 				switch(obj.type){
 					case 'temperatures':
 						app.updateTemperatures(obj.data);
@@ -821,8 +829,7 @@ fabApp = (function(app) {
 		}
 		if(ws.readyState == 1){
 			socket_connected = true;
-			if(debugState)
-				root.console.log("✔  WebSocket connected as" , socket.fallback?"fallback":"native");
+			if(debugState) root.console.log("✔  WebSocket connected as" , socket.fallback?"fallback":"native");
 		}
 	}
 	/*
@@ -853,13 +860,17 @@ fabApp = (function(app) {
 		}
 		
 		//update top bar
-		$(".top-bar-nozzle-actual").html(parseInt(ext_temp));
-		$(".top-bar-nozzle-target").html(parseInt(ext_temp_target));
+		if($(".top-bar-nozzle-actual").length > 0) $(".top-bar-nozzle-actual").html(parseInt(ext_temp));
+		if($(".top-bar-nozzle-target").length > 0) $(".top-bar-nozzle-target").html(parseInt(ext_temp_target));
+		
+		
+		
 		$(".top-bar-bed-actual").html(parseInt(bed_temp));
 		$(".top-bar-bed-target").html(parseInt(bed_temp_target));
 		//top bar sliders
 		document.getElementById('top-act-bed-temp').noUiSlider.set([parseInt(bed_temp)]);
 		document.getElementById('top-bed-target-temp').noUiSlider.set([parseInt(bed_temp_target)]);
+		
 		if($("#top-act-ext-temp").length > 0){
 			document.getElementById('top-act-ext-temp').noUiSlider.set([parseInt(ext_temp)]);
 			document.getElementById('top-ext-target-temp').noUiSlider.set([parseInt(ext_temp_target)]);
@@ -893,10 +904,10 @@ fabApp = (function(app) {
 		}
 		
 		//just for create controller
-		if($(".extruder-temp").length > 0) $(".extruder-temp").html(parseFloat(ext_temp).toFixed(0));
+		if($(".extruder-temp").length > 0)   $(".extruder-temp").html(parseFloat(ext_temp).toFixed(0));
 		if($(".extruder-target").length > 0) $(".extruder-target").html(parseFloat(ext_temp_target).toFixed(0));
-		if($(".bed-temp").length > 0) $(".bed-temp").html(parseFloat(bed_temp).toFixed(0));
-		if($(".bed-target").length > 0) $(".bed-target").html(parseFloat(bed_temp_target).toFixed(0));
+		if($(".bed-temp").length > 0)        $(".bed-temp").html(parseFloat(bed_temp).toFixed(0));
+		if($(".bed-target").length > 0)      $(".bed-target").html(parseFloat(bed_temp_target).toFixed(0));
 		
 		if (typeof window.updateTemperatures == 'function') window.updateTemperatures(ext_temp, ext_temp_target, bed_temp,bed_temp_target);
 	};
@@ -920,7 +931,7 @@ fabApp = (function(app) {
 	 * check if are some operations before leaving the page
 	 */
 	app.checkExit = function(){
-		if($.is_stopping_all == false && $.is_macro_on == true){
+		if(is_stopping_all == false && is_macro_on == true){
 			return _("You have attempted to leave this page. The Fabtotum Personal Fabricator is still working. Are you sure you want to reload this page?");
 		}
 	};
@@ -963,16 +974,14 @@ fabApp = (function(app) {
 	*
 	**/
 	app.showInstallHeadModal = function ()
-	{
-		error_code = 103;	
-		var options = '';
-		
+	{	
+		var options = '';	
 		$.each(heads, function(i, item) {
 			options += '['+item.name +']';
 		});
 		
 		$.SmartMessageBox({
-			title : '<i class="fa fa-warning txt-color-orangeDark"></i> ' + emergency_descriptions[error_code],
+			title : '<i class="fa fa-warning txt-color-orangeDark"></i> ' + emergency_descriptions[ERROR_MIN_TEMP],
 			content : _("Before proceed make sure the head is properly locked in place"),
 			buttons : "[" + _("Install head")  + "]["+ _("Ignore") +"]",
 			input : "select",
@@ -988,62 +997,12 @@ fabApp = (function(app) {
 				});
 			}
 		});
-		/*
-		//create modal if not exists
-		if($("#installHeadMoal").length <= 0){
-			var heads_options_html = '';
-			$.each(heads, function(i, item) {
-				heads_options_html += '<option>'+item.name +'</option>';
-				
-			});
-			var html_modal = '<div class="modal fade" id="installHeadMoal" tabindex="-1" role="dialog">'+
-				'<div class="modal-dialog" role="document">' +
-					'<div class="modal-content">' + 
-						'<div class="modal-header">' + 
-							'<h4 class="modal-title" id="myModalLabel"><i class="fa fa-warning"></i> '+ emergency_descriptions[error_code] +'</h4>' +
-						'</div>' +
-						'<div class="modal-body">'+
-							'<div class="smart-form">'+
-								'<fieldset>'+
-									'<section>'+
-										'<label class="label"> Select head </label>'+
-										'<label class="select">'+
-											'<select>'+heads_options_html+'</select>'+
-											'<i></i>'+
-										'</label>'+
-									'</section>'+
-								'</fieldset>'+
-							'</div>'+
-						'</div>' +
-						'<div class="modal-footer">' + 
-							'<button type="button" class="btn btn-primary"><i class="fa fa-wrench"></i> Install</button>' +
-						'</div>' +
-					'</div>'+
-				'</div>'+
-			'</div>';
-			$("#main").append(html_modal);
-		}
-		$("#installHeadMoal").modal({
-			backdrop: 'static'
-		});
-		$('#installHeadMoal').modal('show');
-		*/
-
-		
 	}
 	/*
 	 * alive the fabtotum after an emergency
 	 */
 	app.setSecure = function(bool){
 		is_macro_on = true;
-		/*
-		if(socket_connected == true){
-			//socket.send('message', '{"function": "serial", "data":{"mode":' + bool + ' } }');
-			app.serial('emergency', bool);
-			is_emergency = false;
-			is_macro_on  = false;
-			return;
-		}*/
 		$.ajax({
 			type : "POST",
 			url : set_secure_url + '/'+bool,
@@ -1068,7 +1027,7 @@ fabApp = (function(app) {
 			location.reload();
 		});
 	}
-	/*
+	/**
 	 * redirect to new head installation page
 	 */
 	app.goToInstallNewHead = function(){
@@ -1076,7 +1035,7 @@ fabApp = (function(app) {
 		document.location.href = new_head_url_action;
 		location.reload();
 	};
-	/*
+	/**
 	 * manage upcoming alerts from the printer
 	 */
 	app.manageAlert = function(data){
@@ -1109,8 +1068,8 @@ fabApp = (function(app) {
 	 */
 	app.setTasks = function(data){
 		number_tasks = data.number;
-		$.is_task_on = number_tasks > 0;
-		if($.is_task_on == true){
+		is_task_on = number_tasks > 0;
+		if(is_task_on == true){
 			$.each(data.items, function() {
 				var row = this;
 				controller = row.controller;
@@ -1138,8 +1097,7 @@ fabApp = (function(app) {
 	 * read temperatures
 	 */
 	app.getTemperatures = function(){
-		if(debugState)
-			root.console.log("✔ getTemperatures");
+		if(debugState) root.console.log("✔ getTemperatures");
 		//TODO new version
 		if(socket_connected) { 
 			app.serial('getTemperatures', '');
@@ -1161,8 +1119,7 @@ fabApp = (function(app) {
 		if(feedrate == undefined) feedrate = 0;
 		if(waitforfinish == undefined) waitforfinish = false;
 		
-		if(debugState)
-			root.console.log("✔ app.serial: " + func + ', ' + val);
+		if(debugState) root.console.log("✔ app.serial: " + func + ', ' + val);
 		
 		var stamp = Date.now();
 		
@@ -1197,8 +1154,7 @@ fabApp = (function(app) {
 	 * check if internet connection is available
 	 */
 	app.isInternetAvailable = function(){
-		if(debugState)
-			root.console.log("✔ app.isInternetAvailable");
+		if(debugState) root.console.log("✔ app.isInternetAvailable");
 		$.get(check_internet_url_action + '?' + jQuery.now(), function(data){
 			app.showConnected(data == 1);
 		});
@@ -1342,10 +1298,6 @@ fabApp = (function(app) {
 				document.location.href = url;
 			})
 			.error(function(jqXHR, textStatus, errorThrown) {
-				
-				console.log(jqXHR);
-				console.log(jqXHR.status);
-				console.log(errorThrown);
 				setTimeout( function() {
 					app.redirectToUrlWhenisReady(url);
 				}, 500 );
@@ -1376,6 +1328,7 @@ fabApp = (function(app) {
 	**/
 	app.getSettings = function() {
 		$.get(control_url + '/getSettings', function(data, status){
+			app.analizeTopBar(data);
 			app.analizeMenu(data);
 		});
 	}
@@ -1386,7 +1339,6 @@ fabApp = (function(app) {
 	{
 		var show_feeder = settings.feeder.show;
 		var camera_available = settings.hardware.camera.available;
-		console.log("camerae: " + camera_available);
 		var feeder_item_to_hide = ['maintenance/feeder-engage', 'maintenance/4th-axis'];
 		var camera_item_to_hide = ['settings/cam'];
 		var a = $("nav li > a");
@@ -1402,6 +1354,21 @@ fabApp = (function(app) {
 				link.parent().removeClass('hidden');
 			}
 		});
+	}
+	/**
+	 * analize topbar depending on settings
+	 */
+	app.analizeTopBar = function(settings)
+	{
+		var installed_head = heads[settings.hardware.head];
+		if(installed_head.working_mode == HEAD_WORKING_MODE_LASER || installed_head.working_mode == HEAD_WORKING_MODE_CNC ){
+			$(".top-ajax-temperatures-dropdown .head-working-mode-"+HEAD_WORKING_MODE_FFF).remove();
+			$(".top-ajax-temperatures-dropdown .head-working-mode-"+HEAD_WORKING_MODE_HYBRID).remove();
+			$(".top-ajax-temperatures-dropdown").find('h4').removeClass('margin-top-50');
+			$(".top-ajax-temperatures-dropdown").attr('style', 'min-height: 130px; height:130px;');
+			$("#top-temperatures .head-working-mode-"+HEAD_WORKING_MODE_FFF).remove();
+		}
+		$("#top-temperatures").removeClass('hidden');
 	}
 	/**
 	* initi vars from localstorage if it is enabled

@@ -10,9 +10,9 @@
  */
 ?>
 <script type="text/javascript">
-/**
+/********************************
  *  Emergency Errors Description
- */
+ ********************************/
 var emergency_descriptions = {
 	100 : '<?php echo _("General Safety Lockdown"); ?>',
 	101 : '<?php echo _("Printer stopped due to errors"); ?>',
@@ -32,10 +32,9 @@ var emergency_descriptions = {
 	123 : '<?php echo _("Cannot extrude filament: the nozzle temperature is too low"); ?>',
 	124 : '<?php echo _("Cannot extrude so much filament!"); ?>'
 }
-
-/**
+/***********
  * GETTEXT
- */
+ **********/
 var gettext_data = <?php echo getJsonTranslation(); ?>;
 function _(msgid)
 {
