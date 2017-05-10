@@ -27,10 +27,10 @@
 	<li>Es kristallisiert schnell</li>
 </ul>
 <p><strong>Tipps</strong></p>
-<p><li>PLA Filament muss gut gelagert und vor Feuchtigkeit geschützt gehalten 
+<ul><li>PLA Filament muss gut gelagert und vor Feuchtigkeit geschützt gehalten 
 	werden. Einmal Das Paket ist offen, füge etwas Silica Luftentfeuchter hinein;</li>
 	<li>Fügen Sie eine glatte Schicht von Haarspray auf Ihrem beheizten Bett.</li>
 	<li>Halten Sie den Ventilator auf dem Druckkopf an</li>
 	<li>Immer Entfernen Sie es aus dem 3D-Drucker zu vermeiden dass es im Kopf kristallisiert</li>
 	<li>Wählen Sie immer hochwertige Filamente wie die von FABtotum.</li>
-</p>
+</ul>

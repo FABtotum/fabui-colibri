@@ -28,10 +28,11 @@
 	<li>it crystallizes fast.</li>
 </ul>
 <p><strong>Tips</strong></p>
-<p><li>PLA filament must be well stored and kept safe from humidity. Once
+<ul>
+<li>PLA filament must be well stored and kept safe from humidity. Once
 	the package is open, add some silica dehumidifier inside; add a smooth
 	layer of hairspray on your heated bed.</li>
 	<li>Keep the fan on the Printing Head on;</li>
 	<li>Always unspool it from the 3D printer to avoid it to crystallize inside the head</li>
 	<li>Always use high quality filaments like
-	FABtotum's ones.</li></p>
+	FABtotum's ones.</li></ul>

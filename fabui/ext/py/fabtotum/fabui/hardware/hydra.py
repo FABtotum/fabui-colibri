@@ -28,7 +28,7 @@ import re
 # Import external modules
 
 # Import internal modules
-from fabtotum.fabui.hardware.common import loadFactoryFeeder, updateFactoryFeeder
+from fabtotum.fabui.hardware.common import loadFactoryFeeder, updateFactoryFeeder, defaultHydraSettings
 from fabtotum.utils.translation import _, setLanguage
 
 
@@ -37,8 +37,6 @@ def hardware3000(gcodeSender, config, log, eeprom, factory):
     Rev3000 Hydra: TBA - xxx
     """
     log.info("Rev3000 - Hydra")
+    defaultHydraSettings(gcodeSender, config, log, eeprom, factory)
     config.set('settings', 'hardware.id', 3000)
-    config.set('settings', 'feeder.show', False)
-    config.set('settings', 'hardware.camera.available', False)
-    config.set('settings', 'hardware.bed.enable', False)
     config.save('settings')

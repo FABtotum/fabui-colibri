@@ -33,7 +33,7 @@ from watchdog.events import PatternMatchingEventHandler
 from watchdog.events import FileSystemEventHandler
 
 # Import internal modules
-from fabtotum.os.paths        import CONFIG_INI, SERIAL_INI, TEMP_PATH
+from fabtotum.os.paths        import CONFIG_INI, SERIAL_INI, TEMP_PATH, CAMERA_INI
 from fabtotum.utils.singleton import Singleton
 
 #####################################################
@@ -48,6 +48,9 @@ class ConfigService:
 
         self.serialconfig = ConfigParser.ConfigParser()
         self.serialconfig.read(SERIAL_INI)
+        
+        self.cameraconfig = ConfigParser.ConfigParser()
+        self.cameraconfig.read(CAMERA_INI)
         
         self.HW_DEFAULT_SETTINGS = self.config.get('hardware', 'settings')
         
@@ -74,6 +77,7 @@ class ConfigService:
         
         self.config.read(CONFIG_INI)
         self.serialconfig.read(SERIAL_INI)
+        self.cameraconfig.read(CAMERA_INI)
 
         self.HW_DEFAULT_SETTINGS = self.config.get('hardware', 'settings')
         
@@ -144,6 +148,8 @@ class ConfigService:
                 value = self.serialconfig.get('serial', key)
             elif section == 'settings':
                 value = self.__get_dict_value(self.settings, key, default)
+            elif section == 'camera':
+                value = self.cameraconfig.get('camera', key)
             else:
                 value = self.config.get(section, key)
         except Exception:

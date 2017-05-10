@@ -1,15 +1,15 @@
 <?php
 /**
  *
-* @author Krios Mane
-* @version 0.1
-* @license https://opensource.org/licenses/GPL-3.0
-*
-*/
+ * @author Krios Mane
+ * @version 0.1
+ * @license https://opensource.org/licenses/GPL-3.0
+ *
+ */
 ?>
 <p>
-	It is the most common filament used for 3D printing.<br> It is studied
-	to be bio-degradable as it comes from corn starch's sugar mainly.<br>
+	It is the most common filament used for 3D printing.<br> It is studied 
+	to be biodegradable as it comes from corn starch it is mainly sugar.<br>
 	It is completely made of renewable sources and has no footprint on
 	polluting.
 </p>
@@ -25,12 +25,14 @@
 	<li>it is hard and resists at high pressures but it is easy to chip and
 		break if hit;</li>
 	<li>it is easy to extrude at lower temperatures and it deforms at 60&deg;
-	<li>it cristalyze fast.</li>
+	<li>it crystallizes fast.</li>
 </ul>
 <p><strong>Tips</strong></p>
-<p>PLA filament must be well stored and kept safe from humidity. Once
+<ul>
+<li>PLA filament must be well stored and kept safe from humidity. Once
 	the package is open, add some silica dehumidifier inside; add a smooth
-	layer of hairspray on your heated bed.<br> Keep the fan of the Printing
-	Head on; always unspool it from the 3D printer to avoid it to
-	cristalyze inside the head; always use high quality filaments like
-	FABtotum's ones.</p>
+	layer of hairspray on your heated bed.</li>
+	<li>Keep the fan on the Printing Head on;</li>
+	<li>Always unspool it from the 3D printer to avoid it to crystallize inside the head</li>
+	<li>Always use high quality filaments like
+	FABtotum's ones.</li></ul>

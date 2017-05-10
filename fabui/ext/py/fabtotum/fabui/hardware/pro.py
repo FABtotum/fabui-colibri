@@ -28,7 +28,7 @@ import re
 # Import external modules
 
 # Import internal modules
-from fabtotum.fabui.hardware.common import loadFactoryFeeder, updateFactoryFeeder
+from fabtotum.fabui.hardware.common import loadFactoryFeeder, updateFactoryFeeder, defaultProSettings
 from fabtotum.utils.translation import _, setLanguage
 
 
@@ -37,9 +37,6 @@ def hardware2000(gcodeSender, config, log, eeprom, factory):
     Rev1000 CORE PRO: TBA - xxx
     """
     log.info("Rev2000 - PRO")
+    defaultProSettings(gcodeSender, config, log, eeprom, factory)
     config.set('settings', 'hardware.id', 2000)
-    config.set('settings', 'feeder.show', False)
-    config.set('settings', 'hardware.camera.available', False)
     config.save('settings')
-    #invert x endstop logic
-    gcodeSender.send("M747 X1", group='bootstrap')

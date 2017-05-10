@@ -61,3 +61,34 @@ def updateFactoryFeeder(config, info):
     feeder_file = os.path.join(fabui_path, 'feeders', 'built_in_feeder.json')
     with open(feeder_file, 'w') as json_f:
         json.dump(info, json_f, sort_keys=True, indent=4)
+        
+""" CORE LITE Default settings """
+def defaultLiteSettings(gcodeSender, config, log, eeprom, factory):
+    log.info("Applying default settings for CORE LITE version")
+    #invert x endstop logic
+    gcodeSender.send("M747 X1", group='bootstrap')
+    #set maximum feedrate
+    gcodeSender.send("M203 X550.00 Y550.00 Z15.00", group='bootstrap')
+    config.set('settings', 'feeder.show', False)
+    config.set('settings', 'hardware.camera.available', False)
+    config.set('settings', 'scan.available', False)
+    config.save('settings')
+    
+""" CORE PRO Default settings """
+def defaultProSettings(gcodeSender, config, log, eeprom, factory):
+    log.info("Applying default settings for CORE PROV version")
+    #invert x endstop logic
+    gcodeSender.send("M747 X1", group='bootstrap')
+    config.set('settings', 'feeder.show', False)
+    config.set('settings', 'hardware.camera.available', False)
+    config.set('settings', 'scan.available', False)
+    config.save('settings')
+
+""" CORE HYDRA Default settings """
+def defaultHydraSettings(gcodeSender, config, log, eeprom, factory):
+    log.info("Applying default settings for CORE PROV version")
+    config.set('settings', 'feeder.show', False)
+    config.set('settings', 'hardware.camera.available', False)
+    config.set('settings', 'hardware.bed.enable', False)
+    config.set('settings', 'scan.available', False)
+    config.save('settings')

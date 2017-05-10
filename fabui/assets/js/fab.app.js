@@ -536,7 +536,7 @@ fabApp = (function(app) {
 			waitContent(_("Reloading page"));
 			setTimeout(function(){ 
 				location.reload(); 
-			}, 5000);
+			}, 7000);
 		});
 	}
 	/*
@@ -1336,22 +1336,29 @@ fabApp = (function(app) {
 	* analize menu to check if something must be hided
 	**/
 	app.analizeMenu = function (settings)
-	{
-		var show_feeder = settings.feeder.show;
-		var camera_available = settings.hardware.camera.available;
-		var feeder_item_to_hide = ['maintenance/feeder-engage', 'maintenance/4th-axis'];
-		var camera_item_to_hide = ['settings/cam'];
+	{	
 		var a = $("nav li > a");
+		var unit_type = app.getUnitType(settings.hardware.id);
 		a.each(function() {
 			var link = $(this);
 			var href = link.attr('data-href');
-			if(jQuery.inArray( href, feeder_item_to_hide ) >= 0 && show_feeder == false){
-				link.parent().addClass('hidden');
-			}else if(jQuery.inArray( href, camera_item_to_hide ) >= 0 && camera_available == false){
-				link.parent().addClass('hidden');
-			}
-			else{
-				link.parent().removeClass('hidden');
+			var controller = link.attr('data-controller');
+			link.parent().removeClass('hidden');
+			switch(href){
+				case 'maintenance/feeder-engage':
+				case 'maintenance/4th-axis':
+					if(settings.feeder.show == false) link.parent().addClass('hidden');
+					break;
+				case 'settings/cam':
+					if(settings.hardware.camera.available == false) link.parent().addClass('hidden');
+					break;
+				case 'scan':
+					if(settings.scan.available == false) link.parent().addClass('hidden');
+					break;
+				case 'maintenance/feeder-profiles':
+					if(unit_type == UNIT_PRO || unit_type == UNIT_LITE || unit_type == UNIT_HYDRA) link.parent().addClass('hidden');
+					break;
+				default:
 			}
 		});
 	}
@@ -1464,16 +1471,15 @@ fabApp = (function(app) {
 	app.getUnitType = function(id)
 	{
 		id = parseInt(id);
-		var type = 'UNKNOWN';
-		
+		var type = UNIT_UNKNOWN;
 		if(id>=3000 && id<4000){
-			type = 'HYDRA';
+			type = UNIT_HYDRA;
 		}else if(id>=2000 && id<3000){
-			type = 'PRO';
+			type = UNIT_PRO;
 		}else if(id>= 1000 && id<2000){
-			type = 'LITE';
+			type = UNIT_LITE ;
 		}else if(id>= 0 && id<1000){
-			type = 'GENERAL';
+			type = UNIT_GENERAL;
 		}
 		return type;
 	}
