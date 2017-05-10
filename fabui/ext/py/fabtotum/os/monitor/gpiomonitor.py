@@ -64,10 +64,12 @@ class GPIOMonitor:
             GPIO_STATUS = GPIO.input(self.ACTION_PIN)
             self.log.debug('GPIO STATUS: %s', str(GPIO_STATUS))
             
-            #if GPIO_STATUS == 0:
-            self.gcs.atomic_begin(group='emergency')
-            reply = self.gcs.send("M730", group='emergency')
-            self.gcs.atomic_end()
+            if GPIO_STATUS == 0:
+                self.gcs.atomic_begin(group='emergency')
+                reply = self.gcs.send("M730", group='emergency')
+                self.gcs.atomic_end()
+            else:
+                return
             
             if reply:
                 if len(reply) > 1:

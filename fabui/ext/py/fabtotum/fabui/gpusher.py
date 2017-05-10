@@ -180,6 +180,7 @@ class GCodePusher(object):
         ch.setLevel(logging.INFO)
         self.trace_logger.addHandler(ch)
         
+        self.temperatres_file = self.config.get('general', 'temperature')
         
         if use_callback:
             self.gcs.register_callback(self.callback_handler)
@@ -549,6 +550,14 @@ class GCodePusher(object):
         elif action == 'self_descruct':
             print 'Self Descruct sequence activated...'
             self.__self_destruct()
+        else:
+            self.custom_action_callback(action, data)
+
+    def custom_action_callback(self, action, data):
+        """
+        Handle user defined action
+        """
+        pass
 
     def get_progress(self):
         """ 
@@ -740,6 +749,17 @@ class GCodePusher(object):
         When the file has been completely sent `file_done_callback` will be called.
         """
         return self.gcs.send_file(filename)
+ 
+    def get_temperature_history(self):
+        """
+        Return temperature history data.
+        """
+        try:
+            json_f = open(self.temperatres_file, 'r')
+            return json.load(json_f)
+        except:
+            return {}
+            
  
     #### Object related API ####
  

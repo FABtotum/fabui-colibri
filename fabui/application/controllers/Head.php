@@ -73,6 +73,8 @@ class Head extends FAB_Controller {
 	public function setHead($new_head)
 	{
 		$this->load->helper('fabtotum_helper');
+		setSecure();
+		
 		$heads  = loadHeads();
 		$_data = loadSettings();
 		$settings_type = $_data['settings_type'];
@@ -97,7 +99,6 @@ class Head extends FAB_Controller {
 		}
 		
 		saveSettings($_data, $settings_type);
-		setSecure();
 		// reset totumduino
 		resetController();
 		$this->output->set_content_type('application/json')->set_output(json_encode( $head_info ));

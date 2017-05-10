@@ -193,8 +193,8 @@ def install_feeder(app, args, lang='en_US.UTF-8'):
     return result
     
 def clear_errors(app, args = None, lang='en_US.UTF-8'):
-    app.macro("M999",   "ok", 1,    _("Clearing error state"), verbose=False)
-    app.macro("M728",   "ok", 1,    _("Awaken"), verbose=False)
+    app.macro("M999",   "ok", 5,    _("Clearing error state"), verbose=False)
+    app.macro("M728",   "ok", 5,    _("Awaken"), verbose=False)
 
 def read_eeprom(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
