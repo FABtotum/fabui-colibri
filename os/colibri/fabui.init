@@ -31,6 +31,7 @@ case "$1" in
     chown 33:33 ${BIGTEMP_PATH}
 	 
 	mkdir -p ${TEMP_PATH}/lighttpd/compress
+	chown 33:33 ${TEMP_PATH}/lighttpd/compress
     
     boot_msg "Starting ${SERVICE_NAME}."
 
