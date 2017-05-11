@@ -100,7 +100,7 @@ class ExposeCommands:
     def reload_config(self):
         self.config.reload()
     
-    def respond(self, reply, response='success', message=''):
+    def __respond(self, reply, response='success', message=''):
         return {
             'reply' : reply,
             'response' : response,
@@ -121,54 +121,58 @@ class ExposeCommands:
         self.log.debug("Macro: " + result) 
         
         return result
+    
+    def do_trigger(self, name, data):
+        self.gcs.trigger(name, data)
+        return self.__respond('ok')
         
     def do_abort(self):
         """ Send abort request """
         self.gcs.abort()
-        return self.respond('ok')
+        return self.__respond('ok')
         
     def do_pause(self):
         """ Send pause request """
         self.gcs.pause()
-        return self.respond('ok')
+        return self.__respond('ok')
         
     def do_resume(self):
         """ Send resume request """
         self.gcs.resume()
-        return self.respond('ok')
+        return self.__respond('ok')
         
     def do_reset(self):
         """ Send reset request """
         self.gcs.reset()
-        return self.respond('ok')
+        return self.__respond('ok')
 
     def set_z_modify(self, value):
         self.gcs.z_modify(float(value))
-        return self.respond('ok')
+        return self.__respond('ok')
         
     def set_speed(self, value):
         self.gcs.send('M220 S{0}\r\n'.format(value))
-        return self.respond('ok')
+        return self.__respond('ok')
         
     def set_fan(self, value):
         self.gcs.send('M106 S{0}\r\n'.format(value))
-        return self.respond('ok')
+        return self.__respond('ok')
         
     def set_flow_rate(self, value):
         self.gcs.send('M221 S{0}\r\n'.format(value))
-        return self.respond('ok')
+        return self.__respond('ok')
         
     def set_auto_shutdown(self, value): # !shutdown:<on|off>
         self.gcs.push('config:shutdown', value)
-        return self.respond('ok')
+        return self.__respond('ok')
         
     def set_send_email(self, value): # !email:<on|off>
         self.gcs.push('config:email', value)
-        return self.respond('ok')
+        return self.__respond('ok')
     
     def set_rpm(self, value):
         self.gcs.send('M3 S{0}\r\n'.format(value))
-        return self.respond('ok')
+        return self.__respond('ok')
 
 def create(gcs, config, log_type='<stdout>'):
     # Setup logger

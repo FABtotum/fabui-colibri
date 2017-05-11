@@ -48,17 +48,27 @@ class NotifyService(object):
     fallback in case websocket is not supported.
     """
     
-    def __init__(self, WebSocket, notify_file, config = None):
+    def __init__(self, WebSocket = None, notify_file = None, config = None):
         
         self.notify_lock = RLock()
-        self.ws = WebSocket
-        
-        self.notify_file = notify_file
         
         if not config:
             self.config = ConfigService()
         else:
             self.config = config
+        
+        if not notify_file:
+            notify_file = self.config.get('general', 'notify_file')
+        
+        if not WebSocket:
+            SOCKET_HOST         = self.config.get('socket', 'host')
+            SOCKET_PORT         = self.config.get('socket', 'port')
+            self.ws = WebSocketClient('ws://'+SOCKET_HOST +':'+SOCKET_PORT+'/')
+            self.ws.connect();
+        else:
+            self.ws = WebSocket
+        
+        self.notify_file = notify_file
         
         self.backtrack = int(self.config.get('notify', 'backtrack', 30))
         self.event_id = 0

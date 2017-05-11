@@ -812,6 +812,8 @@ fabApp = (function(app) {
 					default:
 						break;
 				}
+				
+				app.manageCustomNotifications(obj);
 			}catch(e){
 				return;
 			}
@@ -1085,6 +1087,13 @@ fabApp = (function(app) {
 	 */
 	app.manageTaskMonitor = function(data){
 		if (typeof manageMonitor == 'function') manageMonitor(data.content);
+	};
+	
+	/*
+	 * manage custom notifications
+	 */
+	app.manageCustomNotifications = function(data){
+		if (typeof customNotificationsHandler == 'function') customNotificationsHandler(data);
 	};
 	
 	/*

@@ -86,6 +86,14 @@
 		$this->output->set_content_type('application/json')->set_output(json_encode($action($value)));
 	}
 	
+	public function trigger($name)
+	{
+		$this->load->helper('fabtotum_helper');
+		$value = $this->input->post('data');
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode(trigger($name, array($value) )));
+	}
+	
 	
 	public function ws_fallback()
 	{
