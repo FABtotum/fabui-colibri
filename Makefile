@@ -251,7 +251,9 @@ endif
 #|username |uid |group |gid |password |home |shell |groups |comment
 	$(FAKEROOT_ENV) echo "$(WWW_DATA_NAME) $(WWW_DATA_UID) $(WWW_DATA_NAME) $(WWW_DATA_GID) * /var/www /bin/sh $(WWW_DATA_GROUPS) Web Data" > $(BDATA_DIR)$(METADATA_PATH)/user_table
 #	Minify 
+	sed -e "s@/var/log/fabui/@./temp@" -i $(BDATA_DIR)/usr/share/fabui/application/config/config.php
 	$(FAKEROOT_ENV) php $(BDATA_DIR)/usr/share/fabui/index.php control minify 
+	sed -e "s@./temp@/var/log/fabui/@" -i $(BDATA_DIR)/usr/share/fabui/application/config/config.php
 # 	Create a stamp file
 	touch $@
 
@@ -335,3 +337,8 @@ $(FABUI_BUNDLE): $(BDATA_STAMP) $(OS_COMMON_STAMP) $(OS_STAMP)
 	md5sum $@ > $@.md5sum
 
 include Makefile.locale
+
+minify:
+	sed -e "s@/var/log/fabui/@./temp@" -i $(BDATA_DIR)/usr/share/fabui/application/config/config.php
+	$(FAKEROOT_ENV) php $(BDATA_DIR)/usr/share/fabui/index.php control minify 
+	sed -e "s@./temp@/var/log/fabui/@" -i $(BDATA_DIR)/usr/share/fabui/application/config/config.php
