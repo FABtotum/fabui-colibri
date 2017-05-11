@@ -1,15 +1,15 @@
 <?php
 /**
- * 
+ *
  * @author Krios Mane
  * @version 0.1
  * @license https://opensource.org/licenses/GPL-3.0
- * 
+ *
  */
- defined('BASEPATH') OR exit('No direct script access allowed');
- 
- class Control extends FAB_Controller {
- 	
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Control extends FAB_Controller {
+	
 	public function index(){
 		
 	}
@@ -48,7 +48,7 @@
 	public function resetController()
 	{
 		//load helpers
-		$this->load->helper('fabtotum_helper'); 
+		$this->load->helper('fabtotum_helper');
 		$this->session->settings = loadSettings();
 		$this->output->set_content_type('application/json')->set_output(json_encode(resetController()));
 	}
@@ -78,7 +78,7 @@
 	/**
 	 * Task flow control used by javascript ajax calls.
 	 * @param $action {abort | pause | resume...}
-	 * @param $value action related value 
+	 * @param $value action related value
 	 */
 	public function taskAction($action, $value = '')
 	{
@@ -100,7 +100,7 @@
 		$method = $this->input->method(true);
 		
 		$response = array("type" => "unknown", "data" => "");
-
+		
 		if($method == "GET")
 		{
 			$request = $this->input->get("data");
@@ -112,42 +112,42 @@
 			
 			// notify.json
 			$notify = array(
-				'data' => json_decode( file_get_contents( $this->config->item('notify_file') ), true),
-				'type' => 'trace'
+					'data' => json_decode( file_get_contents( $this->config->item('notify_file') ), true),
+					'type' => 'trace'
 			);
 			
 			// task_monitor.json
 			$task = array(
-				'data' => json_decode( file_get_contents( $this->config->item('task_monitor') ), true),
-				'type' => 'trace'
+					'data' => json_decode( file_get_contents( $this->config->item('task_monitor') ), true),
+					'type' => 'trace'
 			);
 			
 			// trace
 			$trace = array(
-				'data' => file_get_contents($this->config->item('trace')),
-				'type' => 'trace'
+					'data' => file_get_contents($this->config->item('trace')),
+					'type' => 'trace'
 			);
 			
 			// read usb status
 			$usb = array(
-				'data' => array('status' => getUsbStatus(), 'alert' => false),
-				'type' => 'usb'
-				);
+					'data' => array('status' => getUsbStatus(), 'alert' => false),
+					'type' => 'usb'
+			);
 			
 			$response['type'] = 'poll';
 			
 			$response['data'] = array(
-				'notify' => $notify,
-				'trace'  => $trace,
-				'task'   => $task,
-				'usb'    => $usb
+					'notify' => $notify,
+					'trace'  => $trace,
+					'task'   => $task,
+					'usb'    => $usb
 			);
-		} 
+		}
 		else if($method == "POST")
 		{
 			$request = $this->input->post("data");
 			$requestData = json_decode($request, true);
-
+			
 			if(isset($requestData['function'])){
 				$function       = $requestData['function'];
 				$functionParams = isset($requestData['params']) ? $requestData['params'] : '';
@@ -204,7 +204,7 @@
 		$this->output->set_content_type('application/json')->set_output(json_encode($settings));
 	}
 	/**
-	 * 
+	 *
 	 */
 	public function getNetworkInfo()
 	{
@@ -230,7 +230,7 @@
 		$this->output->set_content_type('application/json')->set_output(json_encode($nets));
 	}
 	/**
-	 * 
+	 *
 	 */
 	public function saveNetworkSettings($action = 'connect')
 	{
@@ -312,7 +312,7 @@
 		$this->output->set_content_type('application/json')->set_output(json_encode(getInterfaces()));
 	}
 	/**
-	 * 
+	 *
 	 */
 	public function runningTasks()
 	{
@@ -341,33 +341,33 @@
 			$task_url = $task_controller;
 			if($task_type)
 				$task_url .= '/' . $task_type;
-			
-			$task_filename = '';
-			
-			if($task_file_id != ""){
-				$file = $this->files->get($task_file_id, 1);
-				if($file){
-					if($task_type == 'scan')
-						$task_filename = _("Being generated") . '...';
-					else
-						$task_filename = $file['client_name'];
+				
+				$task_filename = '';
+				
+				if($task_file_id != ""){
+					$file = $this->files->get($task_file_id, 1);
+					if($file){
+						if($task_type == 'scan')
+							$task_filename = _("Being generated") . '...';
+							else
+								$task_filename = $file['client_name'];
+					}
 				}
-			}
-			
-			$task_label = _(ucfirst($task_type)).' '._("task");
-			
-			switch($task_type){
-				case 'pid_tune':
-					$task_label = 'PID tune';
-					$task_url   = $task_controller.'/nozzle-pid-tune';
-					break;
-				case 'update':
-					$task_label = 'Update';
-					$task_url   = $task_controller;
-					break;
-			}
-			
-			echo '<ul class="notification-body">';
+				
+				$task_label = _(ucfirst($task_type)).' '._("task");
+				
+				switch($task_type){
+					case 'pid_tune':
+						$task_label = 'PID tune';
+						$task_url   = $task_controller.'/nozzle-pid-tune';
+						break;
+					case 'update':
+						$task_label = 'Update';
+						$task_url   = $task_controller;
+						break;
+				}
+				
+				echo '<ul class="notification-body">';
 				echo '
 					<li>
 						<span class="padding-10 unread">
@@ -381,7 +381,7 @@
 						</span>
 					</li>
 				';
-			echo '</ul>';
+				echo '</ul>';
 		}
 		else
 		{
@@ -391,11 +391,11 @@
 				</div>
 			';
 		}
-
+		
 	}
 	
 	/**
-	 * 
+	 *
 	 */
 	public function notifications()
 	{
@@ -407,6 +407,37 @@
 				<i class="fa fa-lock fa-4x fa-border"></i>
 			';
 	}
- }
- 
+	
+	/***
+	 *
+	 */
+	public function minify($folder = '')
+	{
+		$this->load->library('Minifier', null, 'minifier');
+		$this->load->config('layout');
+		
+		if(count( func_get_args()) > 0){
+			$folder = '/'.implode('/', func_get_args());
+		}
+		
+		
+		$javascript = $this->config->item('javascript');
+		$css        = $this->config->item('css');
+		
+		foreach($javascript['mandatory'] as $script){
+			$this->minifier->addJS(FCPATH.$script);
+		}
+		
+		foreach($css['mandatory'] as $script){
+			$this->minifier->addCSS(FCPATH.$script);
+		}
+		
+		$exportPathJS  = $folder != '' ? $folder : FCPATH.'/assets/js/';
+		$exportPathCSS = $folder != '' ? $folder : FCPATH.'/assets/css/';
+		
+		$this->minifier->minifyJS($exportPathJS.'/mandatory.js');
+		$this->minifier->minifyCSS($exportPathCSS.'/mandatory.css');
+	}
+}
+
 ?>

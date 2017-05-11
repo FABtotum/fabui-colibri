@@ -28,6 +28,9 @@
 	protected $isAjax              = false;
 	protected $noSessionNeeded     = array('Login', 'Install', 'Control');
 	
+	public $js_mandatory  = array();
+	public $css_mandatory = array();
+	
 	function __construct()
     {
 		/**
@@ -65,7 +68,18 @@
 				//load menu
 				$this->load->helper('utility_helper');
 				$this->config->load('menu');
+				$this->config->load('layout');
+				
 				$this->menu = $this->config->item('menu');
+				
+				$javascript = $this->config->item('javascript');
+				$css        = $this->config->item('css');
+				
+				$this->js_mandatory = $javascript['mandatory'];
+				$this->css_mandatory = $css['mandatory'];
+				
+				unset($javascript);
+				unset($css);
 			}
 		}
     }

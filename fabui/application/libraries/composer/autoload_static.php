@@ -6,7 +6,66 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitc069c47a864f912d50ef02c26a76cc19
 {
+    public static $prefixLengthsPsr4 = array (
+        'Z' => 
+        array (
+            'Zend\\Validator\\' => 15,
+            'Zend\\Uri\\' => 9,
+            'Zend\\Stdlib\\' => 12,
+            'Zend\\Loader\\' => 12,
+            'Zend\\Http\\' => 10,
+            'Zend\\Escaper\\' => 13,
+        ),
+        'M' => 
+        array (
+            'MatthiasMullie\\PathConverter\\' => 29,
+            'MatthiasMullie\\Minify\\' => 22,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Zend\\Validator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zendframework/zend-validator/src',
+        ),
+        'Zend\\Uri\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zendframework/zend-uri/src',
+        ),
+        'Zend\\Stdlib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zendframework/zend-stdlib/src',
+        ),
+        'Zend\\Loader\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zendframework/zend-loader/src',
+        ),
+        'Zend\\Http\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zendframework/zend-http/src',
+        ),
+        'Zend\\Escaper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zendframework/zend-escaper/src',
+        ),
+        'MatthiasMullie\\PathConverter\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/matthiasmullie/path-converter/src',
+        ),
+        'MatthiasMullie\\Minify\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/matthiasmullie/minify/src',
+        ),
+    );
+
     public static $prefixesPsr0 = array (
+        'S' => 
+        array (
+            'SimpleJsonRpcClient\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/jalle19/simple-json-rpc-client/src',
+            ),
+        ),
         'J' => 
         array (
             'JsonRPC' => 
@@ -19,6 +78,8 @@ class ComposerStaticInitc069c47a864f912d50ef02c26a76cc19
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInitc069c47a864f912d50ef02c26a76cc19::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitc069c47a864f912d50ef02c26a76cc19::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInitc069c47a864f912d50ef02c26a76cc19::$prefixesPsr0;
 
         }, null, ClassLoader::class);

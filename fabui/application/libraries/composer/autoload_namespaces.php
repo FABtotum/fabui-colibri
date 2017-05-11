@@ -6,5 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'SimpleJsonRpcClient\\' => array($vendorDir . '/jalle19/simple-json-rpc-client/src'),
     'JsonRPC' => array($vendorDir . '/fguillot/json-rpc/src'),
 );

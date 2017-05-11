@@ -10,24 +10,16 @@
 <!--<script data-pace-options='{"restartOnRequestAfter":true}' src="/assets/js/plugin/pace/pace.min.js"></script> -->
 <script type="text/javascript" src="/assets/js/<?php echo ENVIRONMENT ?>/app.config.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script type="text/javascript" src="/assets/js/<?php echo ENVIRONMENT ?>/fab.app.config.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/plugin/jquery-touch/jquery.ui.touch-punch.min.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/bootstrap/bootstrap.min.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/notification/SmartNotification.min.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/notification/FabtotumNotification.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/smartwidgets/jarvis.widget.min.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/plugin/msie-fix/jquery.mb.browser.min.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/plugin/fastclick/fastclick.min.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/plugin/noUiSlider.8.2.1/nouislider.min.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/plugin/wNumb/wNumb.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/plugin/jquery-websocket/jquery.WebSocket.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/std/raphael.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/std/modernizr-touch.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/std/jogcontrols.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/app.min.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/fab.app.js?v=<?php echo FABUI_VERSION ?>"></script>
-<script type="text/javascript" src="/assets/js/plugin/bootstrap-tour/bootstrap-tour.js?v=<?php echo FABUI_VERSION ?>"></script>
+
+<?php if(ENVIRONMENT == 'production' && file_exists(FCPATH.'/assets/js/mandatory.js')): ?>
+	<script type="text/javascript" src="/assets/js/mandatory.js?v=<?php echo FABUI_VERSION ?>"></script>
+<?php else: ?>
+	<?php foreach($this->js_mandatory as $js):?>
+		<script type="text/javascript" src="<?php echo $js;?>?v=<?php echo FABUI_VERSION ?>"></script>
+	<?php endforeach; ?>
+<?php endif; ?>
 <?php echo $tours; ?>
-<script type="text/javascript" src="/assets/js/fabtotum.js?v=<?php echo FABUI_VERSION ?>"></script>
+
 <?php echo $jsScripts; ?>
 <script type="text/javascript">
 	var heads = <?php echo json_encode($heads)?>;
