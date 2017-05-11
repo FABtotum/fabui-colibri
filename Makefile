@@ -154,6 +154,8 @@ check-tools:
 	@echo "Looking for pojson: FOUND"
 	which sqlite3
 	@echo "Looking for sqlite3: FOUND"
+	which php
+	@echo "Looking for php: FOUND"
 	
 bundle: check-tools distclean $(FABUI_BUNDLE)
 
@@ -248,6 +250,8 @@ endif
 	$(FAKEROOT_ENV) cp LICENSE $(BDATA_DIR)/usr/share/licenses/$(NAME)
 #|username |uid |group |gid |password |home |shell |groups |comment
 	$(FAKEROOT_ENV) echo "$(WWW_DATA_NAME) $(WWW_DATA_UID) $(WWW_DATA_NAME) $(WWW_DATA_GID) * /var/www /bin/sh $(WWW_DATA_GROUPS) Web Data" > $(BDATA_DIR)$(METADATA_PATH)/user_table
+#	Minify 
+	$(FAKEROOT_ENV) php $(BDATA_DIR)/usr/share/fabui/index.php control minify 
 # 	Create a stamp file
 	touch $@
 
