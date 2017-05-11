@@ -45,7 +45,8 @@ if ( !function_exists('createDefaultSettings'))
 				'invert_x_endstop_logic' =>false
 			),
 			'filament' 			 => array('type'=>'pla', 'inserted' => false),
-			'wire_end'           => 0
+			'wire_end'           => 0,
+			'scan'               => array('available' => false)
 		);
 		write_file($CI->config->item('settings'), json_encode($settings, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK));
 	}	

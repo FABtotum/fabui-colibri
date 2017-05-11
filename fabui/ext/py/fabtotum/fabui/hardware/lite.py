@@ -28,7 +28,7 @@ import re
 # Import external modules
 
 # Import internal modules
-from fabtotum.fabui.hardware.common import loadFactoryFeeder, updateFactoryFeeder
+from fabtotum.fabui.hardware.common import loadFactoryFeeder, updateFactoryFeeder, defaultLiteSettings
 from fabtotum.utils.translation import _, setLanguage
 
 
@@ -38,15 +38,9 @@ def hardware1000(gcodeSender, config, log, eeprom, factory):
     - RPi3
     """
     log.info("Rev1000 - Lite")
-    
-    #invert x endstop logic
-    gcodeSender.send("M747 X1", group='bootstrap')
-    #set maximum feedrate
-    gcodeSender.send("M203 X550.00 Y550.00 Z15.00", group='bootstrap')
+    defaultLiteSettings(gcodeSender, config, log, eeprom, factory)
     
     config.set('settings', 'hardware.id', 1000)
-    config.set('settings', 'feeder.show', False)
-    config.set('settings', 'hardware.camera.available', False)
     config.save('settings')
     
     feeder = loadFactoryFeeder(config)

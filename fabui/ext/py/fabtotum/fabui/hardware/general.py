@@ -38,7 +38,8 @@ def customHardware(gcodeSender, config, log, eeprom, factory):
     log.info("Custom Hardware")
     
     logic = 1 if int(config.get('settings', 'custom.invert_x_endstop_logic')) else 0
-
+    
+    config.set('settings', 'hardware.id', eeprom['batch_number'])
     #set x endstop logic
     gcodeSender.send("M747 X{0}".format(logic), group='bootstrap')
     
@@ -49,6 +50,8 @@ def customHardware(gcodeSender, config, log, eeprom, factory):
         if line != "" :
             log.info("Custom override: {0}".format(line))
             gcodeSender.send(line, group='bootstrap')
+    
+    config.save('settings')
 
             
 def hardware1(gcodeSender, config, log, eeprom, factory):
@@ -61,6 +64,7 @@ def hardware1(gcodeSender, config, log, eeprom, factory):
     
     config.set('settings', 'hardware.id', 1)
     config.set('settings', 'feeder.show', True)
+    config.set('settings', 'scan.available', True)
     config.set('settings', 'hardware.camera.available', True)
     config.save('settings')
     
@@ -105,6 +109,7 @@ def hardware2(gcodeSender, config, log, eeprom, factory):
     config.set('settings', 'hardware.id', 2)
     config.set('settings', 'feeder.show', True)
     config.set('settings', 'hardware.camera.available', True)
+    config.set('settings', 'scan.available', True)
     config.save('settings')
     
     feeder = loadFactoryFeeder(config)
@@ -151,6 +156,7 @@ def hardware3(gcodeSender, config, log, eeprom, factory):
     config.set('settings', 'hardware.id', 3)
     config.set('settings', 'feeder.show', False)
     config.set('settings', 'hardware.camera.available', True)
+    config.set('settings', 'scan.available', True)
     config.save('settings')       
         
     feeder = loadFactoryFeeder(config)
@@ -190,6 +196,7 @@ def hardware4(gcodeSender, config, log, eeprom, factory):
     config.set('settings', 'hardware.id', 4)
     config.set('settings', 'feeder.show', False)
     config.set('settings', 'hardware.camera.available', True)
+    config.set('settings', 'scan.available', True)
     config.save('settings')
     
     feeder = loadFactoryFeeder(config)
@@ -230,6 +237,7 @@ def hardware5(gcodeSender, config, log, eeprom, factory):
     config.set('settings', 'hardware.id', 5)
     config.set('settings', 'feeder.show', False)
     config.set('settings', 'hardware.camera.available', True)
+    config.set('settings', 'scan.available', True)
     config.save('settings')
     
     feeder = loadFactoryFeeder(config)

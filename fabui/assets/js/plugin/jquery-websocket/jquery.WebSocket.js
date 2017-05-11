@@ -768,9 +768,6 @@
                     isNative = false;
                     ws       = new WebSocket(url);
                 }
-
-                console.log('jquery.ws = ', ws);
-
                 // extend it with our additions and return
                 return _extend(
                     _getWebSocketSkeleton(url, isNative),

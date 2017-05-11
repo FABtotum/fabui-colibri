@@ -44,6 +44,12 @@
 							<?php echo form_dropdown('hardware-camera-available', $yesNoOptions, isset($defaultSettings['hardware']['camera']['available']) ? $defaultSettings['hardware']['camera']['available'] : false, 'id="hardware-camera-available"'); ?> <i></i>
 						</label>
 					</section>
+					<section class="col col-6">
+						<label class="label"><?php echo _('Scan')?> (<?php echo _('available') ?>)</label>
+						<label class="select">
+							<?php echo form_dropdown('scan-available', $yesNoOptions, isset($defaultSettings['scan']['available']) ? $defaultSettings['scan']['available'] : false, 'id="scan-available"'); ?> <i></i>
+						</label>
+					</section>
 				</div>
 				<section>
 					<label class="label"><?php echo _('Custom overrides')?></label>

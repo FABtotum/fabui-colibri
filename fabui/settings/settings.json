@@ -56,5 +56,8 @@
 	"type" : "pla",
 	"inserted" : false
   },
-  "wire_end" : 0
+  "wire_end" : 0,
+  "scan" : {
+	"available": false
+  }
 }

@@ -117,3 +117,11 @@ ERROR_EXTRUDE_MINTEMP  = 123
 ERROR_LONG_EXTRUSION   = 124
 ERROR_HEAD_ABSENT      = 125
 ERROR_PWR_OFF          = 999
+/***************************
+*  UNIT TYPE
+***************************/
+UNIT_GENERAL = 'GENERAL';
+UNIT_LITE    = 'LITE';
+UNIT_PRO     = 'PRO';
+UNIT_HYDRA   = 'HYDRA';
+UNIT_UNKNOWN = 'UNKNOWN';
