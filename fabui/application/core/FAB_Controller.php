@@ -44,7 +44,7 @@
 			//check if user is logged
 			//if not redirect to login page
 			//load needed libraries, helpers
-			$this->load->library(array('session', 'parser'));
+			$this->load->library(array('session', 'parser', 'database'));
 			$this->load->helper(array('url', 'layout', 'language', 'update', 'cookie'));
 			$this->load->database();
 			
