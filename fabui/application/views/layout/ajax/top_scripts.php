@@ -14,4 +14,4 @@
 	ga('send', 'pageview');
 	pageCleanUp();
 </script>
-<?php echo $jsInlineTop; ?>
+<?php echo $this->jsInLineTop; ?>

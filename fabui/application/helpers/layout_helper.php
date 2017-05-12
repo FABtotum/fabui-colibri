@@ -74,7 +74,7 @@ function ajaxJSInline($javascript, $initFunction = true, $function = 'pagefuncti
 	if($initFunction == true) // if need to init the pagefunction
 		return 'var '.$function.' = function() { '.$javascript.' }'.PHP_EOL.$function.'();';
 	else
-		return 'var '.$function.' = function() { '.$javascript.' }';
+		return 'var '.$function.' = function() { '.$javascript.' }'.PHP_EOL;
 }
 
 function buildMenu($menu_array, $is_sub = FALSE, $parent = '') {

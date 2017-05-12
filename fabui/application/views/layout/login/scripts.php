@@ -31,7 +31,7 @@
                 content: "",
                 buttons: "[" + _("No") + "][" + _("Yes") + "]"
             }, function(ButtonPressed) {
-               if(ButtonPressed == _("Yes")) fabApp.poweroff(); //yes
+               if(ButtonPressed == _("Yes")) fabApp.poweroff();
            });
 		});		
 	});

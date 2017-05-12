@@ -207,3 +207,18 @@ if (!String.prototype.startsWith) {
     return this.indexOf(searchString, position) === position;
   };
 }
+/***
+*
+**/
+function loginLogOut()
+{
+	$(".power-off").on('click', function() {
+		$.SmartMessageBox({
+            title: "<i class='fa fa-power-off'></i> <span class='txt-color-orangeDark'><strong>Shutd down now?</strong></span> ",
+            content: "",
+            buttons: "[" + _("No") + "][" + _("Yes") + "]"
+        }, function(ButtonPressed) {
+           if(ButtonPressed == _("Yes")) fabApp.poweroff();
+       });
+	});	
+}

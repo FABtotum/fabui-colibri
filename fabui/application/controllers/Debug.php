@@ -45,7 +45,7 @@
 		$this->addCssFile('/assets/js/plugin/jsoneditor/jsoneditor.css'); //datatable */
 		
 		$this->addJsInLine($this->load->view('debug/js', $data, true));
-		$this->addCSSInLine('<style>hr{margin-top:0px;margin-bottom:0px;}#trace{overflow:auto; height:500px;}</style>'); 
+		$this->addCSSInLine('<style>#main{margin-left:0px !important;} hr{margin-top:0px;margin-bottom:0px;}#trace{overflow:auto; height:500px;}</style>'); 
 		
 		$this->debugLayout();
 	}

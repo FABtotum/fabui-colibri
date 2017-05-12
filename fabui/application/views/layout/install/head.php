@@ -8,32 +8,33 @@
  */
 ?>
 <title> .: FABUI :. </title>
-<meta name="description" content="FABtotum User Web Interface">
-<meta name="author"      content="FABtotum Development Team">
-<meta name="viewport"    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="robots"      content="noindex,nofollow">
+<?php foreach($this->meta_tags as $name => $value): ?>
+<meta name="<?php echo $name ?>" content="<?php echo $value; ?>">
+<?php endforeach; ?>
 <meta charset="UTF-8">
 <!-- Basic Styles -->
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/bootstrap.min.css?v=<?php echo FABUI_VERSION;  ?>">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/font-awesome.min.css?v=<?php echo FABUI_VERSION;  ?>">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/line-icons-pro/styles.css?v=<?php echo FABUI_VERSION;  ?>">
-<!-- SmartAdmin Styles : Caution! DO NOT change the order -->
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-production-plugins.min.css?v=<?php echo FABUI_VERSION;  ?>">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-production.min.css?v=<?php echo FABUI_VERSION;  ?>">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/smartadmin-skins.min.css?v=<?php echo FABUI_VERSION;  ?>">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/fabtotum.css?v=<?php echo FABUI_VERSION ?>"
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/demo.min.css?v=<?php echo FABUI_VERSION;  ?>">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/lockscreen.min.css?v=<?php echo FABUI_VERSION;  ?>">
-<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/third_party.css?v=<?php echo FABUI_VERSION;  ?>" >
+<?php if(ENVIRONMENT == 'production' && file_exists(FCPATH.'/assets/css/mandatory.css')): ?>
+	<link rel="stylesheet" type="text/css" media="screen" href="/assets/css/mandatory.css?v=<?php echo FABUI_VERSION ?>">
+<?php else:?>
+	<?php foreach($this->css_mandatory as $css):?>
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $css ?>?v=<?php echo FABUI_VERSION ?>">
+	<?php endforeach;?>
+<?php endif?>
+<!-- PAGE RELATED CSS FILES -->
+<?php echo $cssFiles; ?>
 <!-- FAVICONS -->
 <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon">
 <link rel="icon"          href="/assets/img/favicon/favicon.ico" type="image/x-icon">
+<!-- IE11 -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <!-- HEADERD JAVASCRIPTS -->
-<script src="/assets/js/libs/jquery-2.1.1.min.js"></script>
-<script src="/assets/js/libs/jquery-ui-1.10.3.min.js"></script>
-<?php echo $cssFiles; ?>
+<script src="/assets/js/libs/jquery-2.1.1.min.js?v=<?php echo FABUI_VERSION ?>"></script>
+<script src="/assets/js/libs/jquery-ui-1.10.3.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <?php echo $cssInLine; ?>
-<?php echo $translations;?>
+<!--  TRANSLATIONS -->
+<?php echo $translations; ?>
+<!-- END TRANSLATIONS -->
+<?php echo $jsInlineTop; ?>

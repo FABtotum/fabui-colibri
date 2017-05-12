@@ -8,10 +8,9 @@
  */
 ?>
 <title> .: FABUI :. </title>
-<meta name="description" content="FABtotum User Web Interface">
-<meta name="author"      content="FABtotum Development Team">
-<meta name="viewport"    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="robots"      content="noindex,nofollow">
+<?php foreach($this->meta_tags as $name => $value): ?>
+<meta name="<?php echo $name ?>" content="<?php echo $value; ?>">
+<?php endforeach; ?>
 <meta charset="UTF-8">
 <!-- Basic Styles -->
 <?php if(ENVIRONMENT == 'production' && file_exists(FCPATH.'/assets/css/mandatory.css')): ?>
@@ -22,7 +21,7 @@
 	<?php endforeach;?>
 <?php endif?>
 <!-- PAGE RELATED CSS FILES -->
-<?php echo $cssFiles; ?>
+<?php echo cssFilesInclusion($this->css); ?>
 <!-- FAVICONS -->
 <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon">
 <link rel="icon"          href="/assets/img/favicon/favicon.ico" type="image/x-icon">
@@ -34,8 +33,8 @@
 <!-- HEADERD JAVASCRIPTS -->
 <script src="/assets/js/libs/jquery-2.1.1.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script src="/assets/js/libs/jquery-ui-1.10.3.min.js?v=<?php echo FABUI_VERSION ?>"></script>
-<?php echo $cssInLine; ?>
+<?php echo $this->cssInline; ?>
 <!--  TRANSLATIONS -->
-<?php echo $translations; ?>
+<?php if(isset($translations)) echo $translations; ?>
 <!-- END TRANSLATIONS -->
-<?php echo $jsInlineTop; ?>
+<?php echo $this->jsInLineTop; ?>

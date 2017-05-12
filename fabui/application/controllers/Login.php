@@ -22,6 +22,7 @@
 		$this->load->helper('os_helper');
 		$this->content = $this->load->view('login/login_form', $data, true);
 		$this->addJsInLine($this->load->view('login/login_js', '', true));
+		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js');
 		$this->addJSFile('/assets/js/plugin/moment/moment.min.js'); //moment
 		$this->loginLayout();
 	}
@@ -94,6 +95,7 @@
 		$this->load->helper('fabtotum_helper');
 		$this->load->helper('os_helper');
 		$this->content = $this->load->view('login/register_form', '', true);
+		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js');
 		$this->addJsInLine($this->load->view('login/register_js', '', true));
 		$this->loginLayout('register');
 	}

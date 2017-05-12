@@ -18,6 +18,6 @@
 			</a>
 		</span>
 	</div>
-	<nav><?php echo $menu; ?></nav>
+	<nav><?php echo buildMenu($this->menu); ?></nav>
 	<span class="minifyme" data-action="minifyMenu"> <i class="fa fa-arrow-circle-left hit"></i> </span>
 </aside>

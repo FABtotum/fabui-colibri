@@ -11,7 +11,6 @@
 <script type="text/javascript">
 	pageSetUp();
 	transformLinks();
-	<?php echo $jsInLine; ?>
-	//page related scripts
-	<?php echo $jsScripts; ?>
+	<?php echo ajaxJSInline($this->jsInLine, count($this->js) == 0); ?>
+	<?php echo ajaxJScriptsInclusion($this->js); ?> 
 </script>

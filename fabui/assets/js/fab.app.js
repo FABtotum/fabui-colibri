@@ -135,60 +135,72 @@ fabApp = (function(app) {
 		}
 		
 		//bed target
-		noUiSlider.create(document.getElementById('top-bed-target-temp'), {
-			start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp_target") : 0,
-			connect: "lower",
-			range: {'min': 0, 'max' : 100},
-			pips: {
-				mode: 'positions',
-				values: [0,25,50,75,100],
-				density: 5,
-				format: wNumb({
-					postfix: '&deg;'
-				})
-			}
-		});
+		if($("#top-bed-target-temp").length > 0) {
+			noUiSlider.create(document.getElementById('top-bed-target-temp'), {
+				start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp_target") : 0,
+				connect: "lower",
+				range: {'min': 0, 'max' : 100},
+				pips: {
+					mode: 'positions',
+					values: [0,25,50,75,100],
+					density: 5,
+					format: wNumb({
+						postfix: '&deg;'
+					})
+				}
+			});
+		}
 		//bet actual
-		noUiSlider.create(document.getElementById('top-act-bed-temp'), {
-			start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp") : 0,
-			connect: "lower",
-			range: {'min': 0, 'max' : 100},
-			behaviour: 'none'
-		});
-		$("#top-act-bed-temp .noUi-handle").remove();
+		if($("#top-act-bed-temp").length > 0) {
+			noUiSlider.create(document.getElementById('top-act-bed-temp'), {
+				start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp") : 0,
+				connect: "lower",
+				range: {'min': 0, 'max' : 100},
+				behaviour: 'none'
+			});
+			$("#top-act-bed-temp .noUi-handle").remove();
+		}
 		
 		//nozzle target
-		noUiSlider.create(document.getElementById('top-ext-target-temp'), {
-			start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp_target") : 0,
-			connect: "lower",
-			range: {'min': 0, 'max' : 250},
-			pips: {
-				mode: 'positions',
-				values: [0,25,50,75,100],
-				density: 5,
-				format: wNumb({
-					postfix: '&deg;'
-				})
-			}
-		});
+		if($("#top-ext-target-temp").length > 0) {
+			noUiSlider.create(document.getElementById('top-ext-target-temp'), {
+				start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp_target") : 0,
+				connect: "lower",
+				range: {'min': 0, 'max' : 250},
+				pips: {
+					mode: 'positions',
+					values: [0,25,50,75,100],
+					density: 5,
+					format: wNumb({
+						postfix: '&deg;'
+					})
+				}
+			});
+		}
 		//nozzle actual
-		noUiSlider.create(document.getElementById('top-act-ext-temp'), {
-			start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp") : 0,
-			connect: "lower",
-			range: {'min': 0, 'max' : 250},
-			behaviour: 'none'
-		});
-		$("#top-act-ext-temp .noUi-handle").remove();
+		if($("#top-act-ext-temp").length > 0) {
+			noUiSlider.create(document.getElementById('top-act-ext-temp'), {
+				start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp") : 0,
+				connect: "lower",
+				range: {'min': 0, 'max' : 250},
+				behaviour: 'none'
+			});
+			$("#top-act-ext-temp .noUi-handle").remove();
+		}
 		//bed events
-		document.getElementById("top-bed-target-temp").noUiSlider.on('slide',  app.topBedTempSlide);
-		document.getElementById("top-bed-target-temp").noUiSlider.on('change', app.topBedTempChange);
-		document.getElementById("top-bed-target-temp").noUiSlider.on('start',  app.blockSliders);
-		document.getElementById("top-bed-target-temp").noUiSlider.on('end',    app.enableSliders);
+		if($("#top-bed-target-temp").length > 0) {
+			document.getElementById("top-bed-target-temp").noUiSlider.on('slide',  app.topBedTempSlide);
+			document.getElementById("top-bed-target-temp").noUiSlider.on('change', app.topBedTempChange);
+			document.getElementById("top-bed-target-temp").noUiSlider.on('start',  app.blockSliders);
+			document.getElementById("top-bed-target-temp").noUiSlider.on('end',    app.enableSliders);
+		}
 		//nozzle events
-		document.getElementById("top-ext-target-temp").noUiSlider.on('slide',  app.topExtTempSlide);
-		document.getElementById("top-ext-target-temp").noUiSlider.on('change', app.topExtTempChange);
-		document.getElementById("top-ext-target-temp").noUiSlider.on('start',  app.blockSliders);
-		document.getElementById("top-ext-target-temp").noUiSlider.on('end',    app.enableSliders);
+		if($("#top-ext-target-temp").length > 0) {
+			document.getElementById("top-ext-target-temp").noUiSlider.on('slide',  app.topExtTempSlide);
+			document.getElementById("top-ext-target-temp").noUiSlider.on('change', app.topExtTempChange);
+			document.getElementById("top-ext-target-temp").noUiSlider.on('start',  app.blockSliders);
+			document.getElementById("top-ext-target-temp").noUiSlider.on('end',    app.enableSliders);
+		}
 		
 		
 		//jog 

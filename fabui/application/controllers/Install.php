@@ -41,11 +41,14 @@ class Install extends FAB_Controller {
 		$this->content = $this->load->view('install/wizard', null, true );
 		$this->addJsInLine($this->load->view('install/js', '', true));
 		//add js file
+		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js');
 		$this->addJSFile('/assets/js/plugin/masked-input/jquery.maskedinput.min.js');
 		$this->addJSFile('/assets/js/plugin/bootstrap-wizard/jquery.bootstrap.wizard.min.js'); //wizard
 		$this->addJSFile('/assets/js/plugin/moment/moment.min.js'); //moment
 		$this->addJSFile('/assets/js/plugin/tzdetection/jstz.min.js'); //timezonedetection
+		$this->addCSSFile('/assets/css/lockscreen.min.css');
 		$this->addCSSFile('/assets/css/install/custom.css');
+		
 		//show page
 		$this->installLayout();
 	}
@@ -57,6 +60,8 @@ class Install extends FAB_Controller {
 		$this->content = $this->load->view('restore/wizard', null, true );
 		$this->addJsInLine($this->load->view('restore/js', '', true));
 		//add js file
+		$this->addCSSFile('/assets/css/lockscreen.min.css');
+		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js');
 		$this->addJSFile('/assets/js/plugin/bootstrap-wizard/jquery.bootstrap.wizard.min.js'); //wizard
 		$this->addJSFile('/assets/js/plugin/moment/moment.min.js'); //moment
 		$this->addJSFile('/assets/js/plugin/tzdetection/jstz.min.js'); //timezonedetection
