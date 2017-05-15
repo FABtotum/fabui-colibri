@@ -97,7 +97,7 @@
 		if($firmware == "true") $updateArgs['--firmware'] = '';
 		if($boot == "true") $updateArgs['--boot'] = '';
 
-		startPyScript('update.py', $updateArgs, true, true);
+		startPyScript('update.py', $updateArgs, true, true, 'update_task.log');
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => true, 'id_task' => $taskId)));
 	}
 	

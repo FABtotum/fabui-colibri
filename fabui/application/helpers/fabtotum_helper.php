@@ -707,7 +707,7 @@ if(!function_exists('doCommandLine'))
 	 * @param args Arguments
 	 * @param background Run script in the background an return control
 	 */
-	function doCommandLine($bin, $scriptPath, $args = '', $background = false)
+	function doCommandLine($bin, $scriptPath, $args = '', $background = false, $log_file = 'doCommandLine.log')
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
@@ -742,9 +742,9 @@ if(!function_exists('doCommandLine'))
 		
 		/* Note to myself: DO NOT PLAY WITH THESE COMMANDS !!!!! */
 		if($background) 
-			$command .= ' &> /tmp/fabui/doCommandLine.log &';
+			$command .= ' &> /tmp/fabui/'.$log_file.' 2>&1 &';
 		else
-			$command .= ' | tee /tmp/fabui/doCommandLine.log';
+			$command .= ' | tee /tmp/fabui/'.$log_file;
 		/* Note to myself: DO NOT PLAY WITH THESE COMMANDS !!!!! */
 		
 		log_message('debug', $command);
@@ -1021,7 +1021,16 @@ if(!function_exists('trigger'))
 	 */
 	function trigger($name, $data)
 	{
-		return sendToXmlrpcServer('do_trigger', array($name, $data) );
+		$args = array($name, $data);
+		
+		if( is_array($data) )
+		{
+			$args = array( array($name, 'string'),
+						   array($data, 'array')
+			);
+		}
+		
+		return sendToXmlrpcServer('do_trigger', $args );
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1180,7 +1189,7 @@ if(!function_exists('startPyScript'))
 	/**
 	 * start python task
 	 */
-	function startPyScript($script, $params = '', $background = true, $sudo = false)
+	function startPyScript($script, $params = '', $background = true, $sudo = false, $log_file = 'doCommandLine.log')
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
@@ -1189,7 +1198,7 @@ if(!function_exists('startPyScript'))
 		$cmd = 'python';
 		if($sudo)
 			$cmd = 'sudo ' . $cmd;
-		return doCommandLine($cmd, $extPath.'py/'.$script, $params, $background);
+		return doCommandLine($cmd, $extPath.'py/'.$script, $params, $background, $log_file);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1198,7 +1207,7 @@ if(!function_exists('startBashScript'))
 	/**
 	 * start bash script
 	 */
-	function startBashScript($script, $params = '', $background = true, $sudo = false)
+	function startBashScript($script, $params = '', $background = true, $sudo = false, $log_file = 'doCommandLine.log')
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
@@ -1207,7 +1216,7 @@ if(!function_exists('startBashScript'))
 		$cmd = 'sh';
 		if($sudo)
 			$cmd = 'sudo ' . $cmd;
-		return doCommandLine($cmd, $extPath.'bash/'.$script, $params, $background);
+		return doCommandLine($cmd, $extPath.'bash/'.$script, $params, $background, $log_file);
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

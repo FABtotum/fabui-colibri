@@ -31,6 +31,7 @@ usage()
 log_header()
 {
     echo "============ cmd = $CMD ============"  >> /var/log/fabui/avrdude.log
+    pwd
     echo "$@" >> /var/log/fabui/avrdude.log
 }
 
@@ -53,15 +54,22 @@ case $CMD in
         [ "x${HEXFILE}" == "x" ] && usage
         
         if [ x"$EXT" == x"zip" ]; then
-            unzip -o ${HEXFILE}
-            HEXFILE=$(find -name "*.hex")
-            echo $HEXFILE
+            TMPDIR=$(mktemp -d)
+            echo "temp-dir: $TMPDIR"
+            unzip -o ${HEXFILE} -d $TMPDIR
+            HEXFILE=$(find ${TMPDIR} -name "*.hex")
+            echo "hex-file: $HEXFILE"
         fi
         
         log_header "${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i"
         ${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i >> /var/log/fabui/avrdude.log 
         RETR=$?
         log_footer ${RETR}
+        
+        if [ x"$TMPDIR" != x"" ]; then
+            rm -rf $TMPDIR
+        fi
+        
         exit $RETR
         ;;
     factory)
