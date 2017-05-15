@@ -41,7 +41,8 @@ SERIAL_BAUD		?= 250000
 # OS paths
 PHP_CONFIG_FILE_SCANDIR ?= /etc/php/conf.d/
 CRON_FOLDER ?= /var/spool/cron/crontabs/
-
+# Logging
+LOG_LEVEL ?= INFO
 ########################## Input Files #################################
 # File paths of local files taht will be installed to the configured
 # paths according to their type
@@ -179,7 +180,8 @@ bundle: check-tools distclean $(FABUI_BUNDLE)
 		SERIAL_PORT=$(SERIAL_PORT) \
 		SERIAL_BAUD=$(SERIAL_BAUD) \
 		COLIBRI_LIB_PATH=$(COLIBRI_LIB_PATH) \
-		LOCALE_PATH=$(LOCALE_PATH)
+		LOCALE_PATH=$(LOCALE_PATH) \ 
+		LOG_LEVEL=$(LOG_LEVEL)
 
 $(TEMP_DIR):
 	mkdir -p $@

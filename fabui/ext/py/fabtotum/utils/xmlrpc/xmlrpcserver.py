@@ -51,7 +51,7 @@ def signal_handler(signal, frame):
 
 class ExposeCommands:
     
-    def __init__(self, gcs, config, log_trace, logger):
+    def __init__(self, gcs, config, log_trace, logger = None):
         self.gcs = gcs
         self.config = config
         self.macro_warning = 0
@@ -174,20 +174,21 @@ class ExposeCommands:
         self.gcs.send('M3 S{0}\r\n'.format(value))
         return self.__respond('ok')
 
-def create(gcs, config, log_type='<stdout>'):
+def create(gcs, config, log_type='<stdout>', logger = None):
     # Setup logger
-    logger = logging.getLogger('XML-RPC')
-    logger.setLevel(logging.DEBUG)
+    if not logger:
+        logger = logging.getLogger('XML-RPC')
+        logger.setLevel(logging.DEBUG)
 
-    if log_type == '<stdout>':
-        ch = logging.StreamHandler()
-    else:
-        ch = logging.FileHandler(log_type)
+        if log_type == '<stdout>':
+            ch = logging.StreamHandler()
+        else:
+            ch = logging.FileHandler(log_type)
 
-    formatter = logging.Formatter("%(levelname)s : %(message)s")
-    ch.setFormatter(formatter)
-    ch.setLevel(logging.DEBUG)
-    logger.addHandler(ch)
+        formatter = logging.Formatter("%(levelname)s : %(message)s")
+        ch.setFormatter(formatter)
+        ch.setLevel(logging.DEBUG)
+        logger.addHandler(ch)
     
     SOCKET_HOST         = config.get('xmlrpc', 'xmlrpc_host')
     SOCKET_PORT         = config.get('xmlrpc', 'xmlrpc_port')

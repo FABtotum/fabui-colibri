@@ -51,7 +51,7 @@ class ServerContainer:
         self.server = SimpleXMLRPCServer(
                             (self.host, self.port),
                             requestHandler=self.RequestHandler,
-                            logRequests=True)
+                            logRequests=False)
                                     
         self.server.register_introspection_functions()
         

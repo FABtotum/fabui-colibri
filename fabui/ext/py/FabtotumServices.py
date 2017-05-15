@@ -95,11 +95,11 @@ with open(pidfile, 'w') as f:
 config = ConfigService()
 
 # Load configuration
-LOCK_FILE           = config.get('general', 'lock')
 TRACE               = config.get('general', 'trace')
 TASK_MONITOR        = config.get('general', 'task_monitor')
 TEMP_MONITOR_FILE   = config.get('general', 'temperature')
 NOTIFY_FILE         = config.get('general', 'notify_file')
+LOG_LEVEL           = config.get('general', 'log_level', 'INFO')
 ##################################################################
 SOCKET_HOST         = config.get('socket', 'host')
 SOCKET_PORT         = config.get('socket', 'port')
@@ -121,8 +121,13 @@ create_file(TEMP_MONITOR_FILE, '{}')
 create_file(NOTIFY_FILE, '{}')
 
 # Setup logger
+if LOG_LEVEL == 'INFO':
+    LOG_LEVEL = logging.INFO
+elif LOG_LEVEL == 'DEBUG':
+    LOG_LEVEL = logging.DEBUG
+
 logger = logging.getLogger('FabtotumService')
-logger.setLevel(logging.DEBUG)
+logger.setLevel(LOG_LEVEL)
 
 if logging_facility == '<stdout>':
     ch = logging.StreamHandler()
@@ -135,8 +140,7 @@ else:
 #~ formatter = logging.Formatter("%(name)s - %(levelname)s : %(message)s")
 formatter = logging.Formatter("[%(asctime)s]: %(message)s")
 ch.setFormatter(formatter)
-ch.setLevel(logging.DEBUG)
-#~ ch.setLevel(logging.INFO)
+ch.setLevel(LOG_LEVEL)
 logger.addHandler(ch)
 
 if do_reset:
@@ -223,7 +227,7 @@ if soc_id == 'BCM2709':
     os.system('python {0} -p {1} -L /var/log/fabui/xmlrpc.log &'.format(xmlrpc_exe, xmlrpc_pidfile) )
 else:
     from fabtotum.utils.xmlrpc.xmlrpcserver import create as rpc_create
-    rpc = rpc_create(gcservice, config)
+    rpc = rpc_create(gcservice, config, logging_facility, logger)
     rpc.start()
 
 # Wait for all threads to finish
