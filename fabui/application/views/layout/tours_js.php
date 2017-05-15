@@ -7,9 +7,10 @@
  * 
  */
 
-// Load tour js files
-foreach($available_tours as $tour_file) {
-    echo '<script type="text/javascript" src="/assets/js/tours/'.$tour_file.'.js?v='.FABUI_VERSION.'"></script>'.PHP_EOL;
+if(ENVIRONMENT == 'development' ){
+	foreach($available_tours as $tour_file) {
+	    echo '<script type="text/javascript" src="/assets/js/tours/'.$tour_file.'.js?v='.FABUI_VERSION.'"></script>'.PHP_EOL;
+	}
 }
 ?>
 <script type="text/javascript">  
