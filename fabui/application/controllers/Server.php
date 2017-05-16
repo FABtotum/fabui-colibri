@@ -22,15 +22,9 @@
 	public function webSocket()
 	{
 		$this->config->load('fabtotum');
-		$this->load->library('SocketServer', array('address' => $this->config->item('host'), 'port' =>$this->config->item('port')), 'ws');
-		
-		try{
-			$this->ws->run();
-		}catch(Exception $e){
-			$this->ws->stdout($e->getMessage());
-		}
+		$this->load->library('WebSocketServer', array('port' => $this->config->item('port')), 'ws');
+		$this->ws->run();
 	}
-	
 	
  }
  

@@ -464,7 +464,12 @@ abstract class WebSocketServer {
             'hasmask' => $message[1] & chr(128),
             'length'  => 0,
             'mask'    => "");
-    $header['length'] = (ord($message[1]) >= 128) ? ord($message[1]) - 128 : ord($message[1]);
+    
+    if(isset($message[1]))
+    	$header['length'] = (ord($message[1]) >= 128) ? ord($message[1]) - 128 : ord($message[1]);
+   	else
+   		$header['length'] = 0;
+    
     if ($header['length'] == 126) {
       if ($header['hasmask']) {
         $header['mask'] = $message[4] . $message[5] . $message[6] . $message[7];
