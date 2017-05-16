@@ -359,7 +359,7 @@
 				}, 3000);
 			}else{
 				closeWait();
-				showErrorAlert(_('Connection failed'), _('Please check the password'));
+				showErrorAlert( _('Please check the password'), _('Connection failed'));
 			}
 		});
 	}

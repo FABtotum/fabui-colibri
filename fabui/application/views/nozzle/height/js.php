@@ -104,7 +104,7 @@
 				$("#assisted-row").removeClass("hidden");
 				gotoWizardStep(2);
 			}else{
-				showErrorAlert('<?php echo _("Error") ?>', response.message);
+				fabApp.showErrorAlert(response.message);
 			}
 		});
 	}

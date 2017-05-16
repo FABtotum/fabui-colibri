@@ -217,7 +217,7 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 					}
 					else
 					{
-						fabApp.showErrorAlert('Failed to store position');
+						fabApp.showErrorAlert( _("Failed to store position") );
 					}
 				})
 			}

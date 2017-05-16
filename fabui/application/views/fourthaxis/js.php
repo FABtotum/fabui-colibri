@@ -24,7 +24,7 @@
             {
                
             }else{
-                showErrorAlert('<?php echo _("Error") ?>', data.message);
+                fabApp.showErrorAlert(data.message);
             }
             
              

@@ -1,3 +1,13 @@
+/** @file fab.app.js
+ *  @brief FABUI-colibri WebApp implementation
+ *
+ *
+ *  @author Krios Mane (km@fabtotum.com)
+ *  @author Daniel Kesler (dk@fabtotum.com)
+ * 
+ *  @bug No known bugs.
+ */
+
 /*                  ______________________________________
            ________|                                      |_______
            \       |           fabui-colibri WebApp       |      /
@@ -8,6 +18,11 @@
  * =======================================================================
  * =======================================================================
 **/
+
+/**
+ * fabApp is a variable holding fabApp object instance.
+ * @class
+ */
 fabApp = (function(app) {
 	app.rebooting = false; //is the unit rebooting?
 	app.FabActions = function(){
@@ -342,67 +357,80 @@ fabApp = (function(app) {
 	}
 	
 	/**
-	 * Move the head or bead
-	 * @action   Movement directio (right,left,up,down,z-up,z-down...)
-	 * @step     Movement step in mm
-	 * @feedrate Movement feedrate in mm/min
-	 * @waitforfinish Add M400 to sync the finish callback to end of movement
-	 * @callback Callback function on execution finish
+	 * Move the head and/or bed.
+	 * @memberof fabApp
+	 * 
+	 * @param action   Movement directio (right,left,up,down,z-up,z-down...)
+	 * @param step     Movement step in mm
+	 * @param feedrate Movement feedrate in mm/min
+	 * @param waitforfinish Add M400 to sync the finish callback to end of movement
+	 * @param {Function} callback Callback function on execution finish
 	 */
 	app.jogMove = function (action, step, feedrate, waitforfinish, callback) {
 		return app.serial("move", action, callback, step, feedrate, waitforfinish);
 	}
 	
 	/**
-	 * Set current position of all axis to zero
-	 * @callback Callback function on execution finish
+	 * Set extruder mode.
+	 * @memberof fabApp
+	 * 
+	 * @param mode   Operation mode (extruder, 4th-axis)
+	 * @param {Function} callback Callback function on execution finish
 	 */
-	app.jogExtrude = function (action, step, feedrate, waitforfinish, callback) {
-		//return app.serial("zeroAll", true, callback);
-	}
-	
 	app.jogSetExtruderMode = function (mode, callback) {
 		return app.serial("setExtruderMode", mode, callback);
 	}
-	
 	/**
-	 * Set current position of all axis to zero
-	 * @callback Callback function on execution finish
+	 * Set current position of all axis to zero.
+	 * @memberof fabApp
+	 * 
+	 * @param {Function} callback Callback function on execution finish
 	 */
 	app.jogZeroAll = function (callback) {
 		return app.serial("zeroAll", true, callback);
 	}
 	/**
-	 * Home XY axis
-	 * @callback Callback function on execution finish
+	 * Home XY axis.
+	 * @memberof fabApp
+	 * 
+	 * @param {Function} callback Callback function on execution finish
 	 */
 	app.jogHomeXY = function (callback) {
 		return app.serial("home", "home-xy", callback);
 	}
 	/**
-	 * Home all axis and Z using z-min endstop
-	 * @callback Callback function on execution finish
+	 * Home all axis. Z homing is done using z-min endstop.
+	 * @memberof fabApp
+	 * 
+	 * @param {Function} callback Callback function on execution finish
 	 */
 	app.jogHomeXYZ = function (callback) {
 		return app.serial("home", "home-xyz-min", callback);
 	}
 	/**
-	 * Home Z axis using z-min endstop
-	 * @callback Callback function on execution finish
+	 * Home Z axis using z-min endstop.
+	 * @memberof fabApp
+	 * 
+	 * @param {Function} callback Callback function on execution finish
 	 */
 	app.jogHomeZ = function (callback) {
 		return app.serial("home", "home-z-min", callback);
 	}
 	/**
 	 * Get current jog position
-	 * @callback Callback function on execution finish
+	 * @memberof fabApp
+	 * 
+	 * @param {Function} callback Callback function on execution finish
+	 * @returns {Object}
 	 */
 	app.jogGetPosition = function (callback) {
 		return app.serial("getPosition", true, callback);
 	}
 	/**
 	 * Send gcode commands to jog handler.
-	 * @callback Callback function on execution finish
+	 * @memberof fabApp
+	 * 
+	 * @param {Function} callback Callback function on execution finish
 	 */
 	app.jogMdi = function(value, callback) {
 		
@@ -425,8 +453,11 @@ fabApp = (function(app) {
 			bread_crumb.append($("<li></li>").html($.trim($(this).clone().children(".badge").remove().end().text()))), --b || (document.title = 'FABUI - ' + bread_crumb.find("li:last-child").text())
 		});
 	};
-	/*
-	 * freeze menu whene tasks are running
+	/**
+	 * Freeze menu whene tasks are running.
+	 * @memberof fabApp
+	 * 
+	 * @param except Menu item(s) to keep unfrozen.
 	 */
 	app.freezeMenu = function(except){
 		var excepet_item_menu = new Array();
@@ -455,8 +486,9 @@ fabApp = (function(app) {
 		});
 		app.updateNotificationBadge();
 	};
-	/*
-	 * 
+	/**
+	 * Unfreeze all menu items.
+	 * @memberof fabApp
 	 */
 	app.unFreezeMenu = function () {
 		var a = $("nav li > a");
@@ -477,11 +509,15 @@ fabApp = (function(app) {
 		//TODO
 	}
 	/**
-	* show error message 
-	*/
-	app.showWarningAlert = function (message) {
+	 * Show warning message.
+	 * @memberof fabApp
+	 * 
+	 * @param {String} message Message text
+	 * @param {String} title   Message title. (default: Warning)
+	 */
+	app.showWarningAlert = function (message, title=_("Warning")) {
 		$.smallBox({
-			title : "Warning",
+			title : title,
 			content : message,
 			color : "#C46A69",
 			timeout: 10000,
@@ -489,11 +525,15 @@ fabApp = (function(app) {
 		});
 	}
 	/**
-	* show error message 
-	*/
-	app.showErrorAlert = function (message) {
+	 * Show error message.
+	 * @memberof fabApp
+	 * 
+	 * @param {String} message Message text
+	 * @param {String} title   Message title. (default: Error)
+	 */
+	app.showErrorAlert = function (message, title=_("Error") ) {
 		$.smallBox({
-			title : "Error",
+			title : title,
 			content : message,
 			color : "#C46A69",
 			timeout: 10000,
@@ -501,11 +541,15 @@ fabApp = (function(app) {
 		});
 	}
 	/**
-	* show info message
-	*/
-	app.showInfoAlert = function(message) {
+	 * Show info message.
+	 * @memberof fabApp
+	 * 
+	 * @param {String} message Message text
+	 * @param {String} title   Message title. (default: Info)
+	 */
+	app.showInfoAlert = function(message, title=_("Info")) {
 		$.smallBox({
-			title : "Info",
+			title : title,
 			content : message,
 			color : "#5384AF",
 			timeout: 3000,
@@ -529,8 +573,9 @@ fabApp = (function(app) {
 			}
 		});
 	};
-	/*
-	 * launch reset controller command
+	/**
+	 * Launch reset controller command.
+	 * @memberof fabApp
 	 */
 	app.resetController = function() {
 		openWait("<i class=\"fa fa-circle-o-notch fa-spin\"></i> " + _("Resetting controller"), _("Please wait"), false);
@@ -538,8 +583,9 @@ fabApp = (function(app) {
 			closeWait();
 		});
 	}
-	/*
-	 * stop all operations and task on the fabtotum and refresh the page after 3 seconds
+	/**
+	 * Stop all operations and tasks on the fabtotum and refresh the page after 3 seconds.
+	 * @memberof fabApp
 	 */
 	app.stopAll = function(message) {
 		message = message || _("Aborting all operations") ;
@@ -551,8 +597,11 @@ fabApp = (function(app) {
 			}, 7000);
 		});
 	}
-	/*
-	 * show a message and refresh the page after 3 seconds
+	/**
+	 * Show a message and refresh the page after 3 seconds
+	 * @memberof fabApp
+	 * 
+	 * @param {String} message Message text.
 	 */
 	app.refreshPage = function(message) {
 		message = message || _("Aborting all operations");
@@ -562,8 +611,9 @@ fabApp = (function(app) {
 			location.reload();
 		}, 3000);
 	}
-	/*
-	 * launch reboot command and refresh the page after 21 seconds
+	/**
+	 * Launch reboot command and refresh the page when it's ready again.
+	 * @memberof fabApp
 	 */
 	app.reboot = function() {
 		app.rebooting = true;
@@ -581,8 +631,9 @@ fabApp = (function(app) {
 			app.redirectToUrlWhenisReady(login_url);
 		});
 	};
-	/*
-	 * launch poweroff command and show popup with instructions after 5 seconds
+	/**
+	 * Launch poweroff command and show popup with instructions.
+	 * @memberof fabApp
 	 */
 	app.poweroff = function() {
 		clearInterval(temperatures_interval);
@@ -596,8 +647,9 @@ fabApp = (function(app) {
 			app.showAlertToPowerOff();
 		});
 	};
-	/*
-	 *  logout from fabui
+	/**
+	 * Logout from fabui.
+	 * @memberof fabApp
 	 */
 	app.logout = function() {
 		$.root_.addClass('animated fadeOutUp');
@@ -605,8 +657,9 @@ fabApp = (function(app) {
 			window.location = logout_url;
 		}, 1000);
 	};
-	/*
-	 * lock screen
+	/**
+	 * Lock fabui screen.
+	 * @memberof fabApp
 	 */
 	app.lockScreen = function(){
 		$.root_.addClass('animated fadeOutUp');
@@ -942,7 +995,7 @@ fabApp = (function(app) {
 	};
 
 	/*
-	 * check if are some operations before leaving the page
+	 * Check if there are some operations before leaving the page
 	 */
 	app.checkExit = function(){
 		if(is_stopping_all == false && is_macro_on == true){
@@ -1162,17 +1215,15 @@ fabApp = (function(app) {
 		{
 			app.ws_callbacks[stamp] = callback;
 		}
-		/*else
-		{
-			console.log("no callback");
-		}*/
 		
 		socket.send( JSON.stringify(messageToSend) );
 		
 		return stamp;
 	};
 	/**
-	 * check if internet connection is available
+	 * Check if internet connection is available
+	 * @memberof fabApp
+	 * @returns {Boolean}
 	 */
 	app.isInternetAvailable = function(){
 		if(debugState) root.console.log("✔ app.isInternetAvailable");
@@ -1196,7 +1247,7 @@ fabApp = (function(app) {
 		else if(status == 'removed') $(".usb-ribbon").remove();
 		$("[rel=tooltip], [data-rel=tooltip]").tooltip();
 		if(notify == true){
-			var message = 'USB Disk';
+			var message = _("USB Disk");
 			message += ' ' + status;
 			$.smallBox({
 				title : "FABtotum Personal Fabricator",
@@ -1245,8 +1296,10 @@ fabApp = (function(app) {
 		waitContent(html);
 	}
 	/**
-	 * reset temperatures plot
-	 * @param (int) elements - how many elements to keep. 0 reset all
+	 * Reset temperatures plot
+	 * @memberof fabApp
+	 * 
+	 * @param {Integer} elements How many elements to keep. 0 reset all.
 	 */
 	app.resetTemperaturesPlot = function(elements)
 	{
@@ -1272,9 +1325,9 @@ fabApp = (function(app) {
 		}
 	}
 	/**
-	* check if there are running tasks, and more
-	* init true | false (if is first loading time)
-	*/
+	 * check if there are running tasks, and more
+	 * @param {Boolean} init // @TODO: check what its used for
+	 */
 	app.getState = function(init)
 	{
 		var freezing_status = ['running', 'aborting', 'completing'];
@@ -1310,8 +1363,11 @@ fabApp = (function(app) {
 		
 	}
 	/**
-	* redirect to a specific url only when the url responds 200
-	**/
+	 * Redirect to a specific url only when the url responds 200
+	 * @memberof fabApp
+	 * 
+	 * @param {String} url URL to redirect to
+	 **/
 	app.redirectToUrlWhenisReady = function (url)
 	{
 		$.get(url)
@@ -1325,8 +1381,9 @@ fabApp = (function(app) {
 			});
 	}
 	/**
-	*
-	**/
+	 * Force recovery mode on next boot.
+	 * @memberof fabApp
+	 **/
 	app.forceRecovery = function (){
 		
 		setTimeout(function(){
@@ -1469,7 +1526,6 @@ fabApp = (function(app) {
 				setTimeout(function() {
 					waitTitle(_("Now you can switch off the power"));
 					waitContent(_("Note: 5 seconds after the beep it's safe to switch off your unit."));
-					//is_macro_on = false;
 				}, 10000);
 			});
 	}
@@ -1487,7 +1543,10 @@ fabApp = (function(app) {
 		}
 	}
 	/**
-	 * return unit type [UNKNWON, GENERAL, LITE, PRO, HYDRA]
+	 * Get Unit type from version ID.
+	 * 
+	 * @param {Integer} id Unit version ID
+	 * @returns {String} Unit type (UNKNWON, GENERAL, LITE, PRO, HYDRA)
 	 */
 	app.getUnitType = function(id)
 	{

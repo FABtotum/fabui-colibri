@@ -166,7 +166,7 @@
 				}
 				else 
 				{
-					showErrorAlert("<?php echo _("Error deleting file(s)") ?>", response.message);
+					fabApp.showErrorAlert(response.message, "<?php echo _("Error deleting file(s)") ?>");
 				}
 				
 				$(".bulk-button[data-action='delete']").html("<i class='fa fa-trash'></i> <?php echo _("Delete") ?>");

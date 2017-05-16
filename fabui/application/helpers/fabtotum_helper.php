@@ -1,20 +1,19 @@
 <?php
 /**
+ * @file fabtotum_helper.php
+ * @brief FABtotum helper function
  * 
- * @author Krios Mane
+ * @author Krios Mane <km@fabtotum.com>
+ * @author Daniel Kesler <dk@fabtotum.com>
  * @version 0.1
- * @license https://opensource.org/licenses/GPL-3.0
+ * @copyright https://opensource.org/licenses/GPL-3.0
  * 
  */
- 
+
+// Create /var/lib/fabui/settings/default_settings.json with default data
 if ( !function_exists('createDefaultSettings'))
 {
-	/**
-	 * 
-	 * Create /var/lib/fabui/settings/default_settings.json with default data
-	 * 
-	 * 
-	 */
+
 	function createDefaultSettings()
 	{
 		$CI =& get_instance();

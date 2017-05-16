@@ -169,7 +169,7 @@
 				}
 				else
 				{
-					showErrorAlert("<?php echo _("Error deleting object") ?>", response.message);
+					fabApp.showErrorAlert(response.message, "<?php echo _("Error deleting object") ?>");
 				}
 				
 				$(".bulk-button[data-action='delete']").html("<i class='fa fa-trash'></i> <?php echo _("Delete") ?>");

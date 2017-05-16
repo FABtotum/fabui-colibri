@@ -31,7 +31,7 @@
                 });
             }else{
                 $('.extrude').html('<i class="fab-lg fab-fw icon-fab-e"></i> ' + _("Start to extrude") );
-                showErrorAlert('<?php echo _("Error") ?>', data.message);
+                fabApp.showErrorAlert(data.message);
             }
         });
         

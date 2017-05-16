@@ -97,6 +97,13 @@ $.FabWaitBox = function(settings, callback) {
 
 }
 
+/**
+ * Open long wait message box.
+ * 
+ * @param {string} title Message box title
+ * @param {string} content Message box content
+ * @param {boolean} stopButton Show stop button
+ **/
 function openWait(title, content, stopButton){
 		
 	if(title == undefined){
@@ -127,16 +134,24 @@ function openWait(title, content, stopButton){
 	});
 
 }
-
-
-
+/**
+ * Change long wait message box title.
+ * 
+ * @param {string} title Message box title
+ * 
+ **/
 function waitTitle(title){
 	
 	if(FabMSGboxCount > 0){
 		$(".MsgTitle").html(title);
 	}
 }
-
+/**
+ * Change long wait message box content.
+ * 
+ * @param {string} content Message box content
+ * 
+ **/
 function waitContent(content){
 
 	if(FabMSGboxCount > 0){
@@ -145,6 +160,9 @@ function waitContent(content){
 	}
 }
 
+/**
+ * Close long wait message box.
+ **/
 function closeWait(){
 	
 	/*if(STOPPING_ALL) return;*/
@@ -163,6 +181,11 @@ function closeWait(){
 		
 }
 
+/**
+ * Show/hide long wait message box stop button.
+ * 
+ * @param {boolean} bool Show/Hide button
+ **/
 function waitStopButton(bool){
 	
 	if(bool) $(".wait-button").show();
