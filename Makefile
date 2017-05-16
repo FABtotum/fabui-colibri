@@ -132,7 +132,7 @@ MKSQUASHFS		?= mksquashfs
 BUNDLE_COMP		?= lzo
 ########################### Makefile rules #############################
 
-.PHONY: locale clean distclean bundle check-tools fabui/locale/*.pot
+.PHONY: locale clean distclean bundle check-tools fabui/locale/*.pot docs
 
 all: check-tools $(FABUI_BUNDLE)
 
@@ -339,6 +339,7 @@ $(FABUI_BUNDLE): $(BDATA_STAMP) $(OS_COMMON_STAMP) $(OS_STAMP)
 	md5sum $@ > $@.md5sum
 
 include Makefile.locale
+include Makefile.docs
 
 minify:
 	sed -e "s@/var/log/fabui/@./temp@" -i $(BDATA_DIR)/usr/share/fabui/application/config/config.php

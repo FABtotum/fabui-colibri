@@ -128,7 +128,7 @@
 			}
 			gotoWizardFinish();
 		}else{
-			showErrorAlert('<?php echo _("Error") ?>', response.message);
+			fabApp.showErrorAlert(response.message);
 		}
 	  });
 	}

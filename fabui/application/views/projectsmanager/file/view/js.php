@@ -78,7 +78,7 @@
 				}
 				else 
 				{
-					showErrorAlert('<?php echo _("Error deleting file");?>', response.message);
+					fabApp.showErrorAlert(response.message, '<?php echo _("Error deleting file");?>');
 				}
 				
 				
