@@ -2,7 +2,7 @@
 use JsonRPC\Client;
 use JsonRPC\HttpClient;
 
-require_once 'autoload.php';
+require_once APPPATH.'/third_party/vendor/autoload.php';
 
 
 class JsonRPC {

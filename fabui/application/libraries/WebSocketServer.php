@@ -4,7 +4,7 @@ use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 
 require_once 'FabWebSocketServer.php';
-require_once 'autoload.php';
+require_once APPPATH.'/third_party/vendor/autoload.php';
 
 class WebSocketServer {
 	

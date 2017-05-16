@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="./tests/bootstrap.php">
+	<testsuites>
+		<testsuite name="Standard unit tests">
+			<directory>./tests</directory>
+		</testsuite>
+	</testsuites>
+	<php>
+		<const name="WEB_SERVER_HOST" value="localhost" />
+		<const name="WEB_SERVER_PORT" value="8585" />
+		<const name="WEB_SERVER_DOCROOT" value="./tests/MockServer" />
+		<const name="WEB_SERVER_USER" value="username" />
+		<const name="WEB_SERVER_PASS" value="password" />
+	</php>
+</phpunit>

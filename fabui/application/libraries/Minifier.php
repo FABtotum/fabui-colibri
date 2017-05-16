@@ -2,7 +2,7 @@
 
 use MatthiasMullie\Minify;
 
-require_once 'autoload.php';
+require_once APPPATH.'/third_party/vendor/autoload.php';
 
 class Minifier {
 	
