@@ -13,6 +13,7 @@
 	public function index(){
 			
 		//load libraries, helpers, model, config
+		$this->load->library('JogFactory', null, 'jogFactory');
 		$this->load->library('smart');
 		$this->load->helper('fabtotum_helper');
 		
@@ -25,6 +26,7 @@
 		$data['gcodes'] = loadGCodeInfo();
 		$data['haveHead'] = isHeadInPlace();
 		$data['haveBed'] = isBedInPlace();
+		$data['shortcuts'] = $this->jogFactory->getShortcuts();
 		$data['headPrintSupport'] = canHeadSupport("print");
 		$data['headFanSupport'] = canHeadSupport("fan");
 		$data['headMillSupport'] = canHeadSupport("mill");
@@ -49,7 +51,8 @@
 		$this->addJsFile('/assets/js/std/jogtouch.js');
 		
 		$this->addJsFile('/assets/js/plugin/knob/jquery.knob.min.js');
-		//$this->addJsFile('/assets/js/std/jquery.knob.js');
+		$this->addJsFile('/assets/js/jquery.textcomplete.min.js');
+		
 		$this->content = $widget->print_html(true);
 		$this->view();
 	}
@@ -89,20 +92,21 @@
 	
 	public function test()
 	{
-		$this->load->helper('fabtotum_helper');
+		$data = $this->input->post();
+		$this->config->load('fabtotum');
 		
-		$data = array();
+		//prepare JogFactory init args
+		$method      = 'manualDataInput';
+		$methodParam = '!firmware';
 		
-		$data['bedInPlace'] = isBedinPlace();
+		//load jog factory class
+		$this->load->library('JogFactory', $data, 'jogFactory');
 		
-		$data['headPrintSupport'] = canHeadSupport("print");
-		$data['headFanSupport'] = canHeadSupport("fan");
-		$data['headMillSupport'] = canHeadSupport("mill");
-		$data['headLaserSupport'] = canHeadSupport("laser");
-		
-		$data['info'] = getInstalledHeadInfo();
-		
-		$this->output->set_content_type('application/json')->set_output(json_encode($data));
+		if(method_exists($this->jogFactory, $method)){ //if method exists than do it
+			$messageData = $this->jogFactory->$method($methodParam);
+			$messageType = $this->jogFactory->getResponseType();
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('type' => $messageType, 'data' =>$messageData)));
+		}
 	}	
  }
  

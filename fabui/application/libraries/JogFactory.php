@@ -11,15 +11,21 @@
  class JogFactory {
 	
 	protected $CI; //code igniter instance
-	//protected $serial; //serial class
 	protected $feedrate     = 0;
 	protected $step         = 0;
 	protected $waitforfinish = false;
 	protected $responseType = 'jog'; //type of response (temperature, gcode, serial)
 	protected $responseData;
 	protected $temperatures = array();
-	protected $xmlrpc       = null;
 	protected $commands     = array();
+	
+	protected $shortcuts = array(
+		'!TEMPERATURES' => 'M105',
+		'!EEPROM'       => 'M503',
+		'!POSITION'     => 'M114',
+		'!FIRMWARE'     => array('M765', 'M766', 'M767'),
+		'!ENDSTOP'      => 'M119'
+	);
 	
 	/**
 	 * class constructor
@@ -32,13 +38,13 @@
 		}
 		$this->CI =& get_instance(); //init ci instance
 		$this->CI->config->load('fabtotum');
-		
 		$this->CI->load->helper('fabtotum_helper');
 		
   	}
   	/**
   	 * build list commands
-  	 * @param array commands or string
+  	 * @param array|string $commands
+  	 * @param int $id_stamp
   	 */
   	function buildCommands($commands, $id_stamp = '')
   	{	
@@ -62,7 +68,7 @@
   	/**
   	 * @param string $type ['array', 'text']
   	 * return commands lists
-  	 */
+  	 
   	function getCommands($type = 'array')
   	{	
   		if($type == 'array')
@@ -74,7 +80,7 @@
   			}
   			return $text;
   		}
-  	}
+  	}*/
 	/***
 	 * send gcode
 	 * @param array|string $commands
@@ -82,13 +88,16 @@
 	function sendCommands($commands, $id_stamp= '')
 	{	
 		$this->buildCommands($commands, $id_stamp);
+		
 		foreach($this->commands as $timestamp => $data){
 			$responseTemp = sendToXmlrpcServer('send', $data['code']);
+			
 			if(!is_array($responseTemp['reply'])){
 				$tmp = $responseTemp['reply'];
 				$responseTemp['reply'] = array();
 				$responseTemp['reply'][0] = $tmp;
 			}
+			
 			$data['response'] = $responseTemp['response'];
 			$data['message']  = $responseTemp['message'];
 			$data['reply'] = $responseTemp['reply'];
@@ -180,7 +189,9 @@
 			$this->sendCommands(array('G91', sprintf($actions[$action], $this->step, $this->feedrate), 'G90'), $id_stamp);
 		return $this->response();
 	}
-	
+	/**
+	 * 
+	 */
 	public function home($action, $id_stamp)
 	{
 		$actions['home-xy']      = 'G28 X Y';
@@ -259,19 +270,34 @@
 	/**
 	 * Manual Data Input (MDI)
 	 */
-	function manualDataInput($inputCommands, $id_stamp= '')
+	function manualDataInput($inputCommands, $id_stamp = '')
 	{
-		//TODO
-		$commandsToSend = array();
-		$list = explode(PHP_EOL, $inputCommands);
-		foreach($list as $command){
-			$cleanCommand = trim(strtoupper($command));
-			if($cleanCommand != '') $commandsToSend[] = $cleanCommand;
-			
+		$commandsToSend = array();	
+		$commands = explode(PHP_EOL, $inputCommands);
+		foreach($commands as $com){
+			$cmd = trim(strtoupper($com));
+			if($cmd != ''){
+				if(substr($com, 0, 1) === '!' && isset($this->shortcuts[$cmd])){
+					if(is_array($this->shortcuts[$cmd])){
+						foreach($this->shortcuts[$cmd] as $sub){
+							$commandsToSend[] = $sub;
+						}
+					}else{
+						$commandsToSend[] = $this->shortcuts[$cmd];
+					}
+				}else{
+					$commandsToSend[] = $cmd ;
+				}
+			}
 		}
 		$this->sendCommands($commandsToSend, $id_stamp);
 		return $this->response();
 	}
+	/**
+	 * @return $array shortcuts
+	 */
+	public function getShortcuts(){
+		return $this->shortcuts;
+	}
 }
- 
 ?>

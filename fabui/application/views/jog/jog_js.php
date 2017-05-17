@@ -46,7 +46,36 @@ if(!isset($rpm_max)) 		$rpm_max = 14000;
 	var search_filter = 'gcode';
 	var extruder_mode = 'none';
 
+	var waitForAutoComplete = false;
+
 	$(document).ready(function() {
+
+		$('#mdiCommands').textcomplete([
+			{
+				id: 'shortcuts',
+		       	words: [<?php foreach($shortcuts as $key => $value):?>"<?php echo str_replace('!', '', $key) ?>",<?php endforeach;?>],
+		       	match: /\B!([\-+\w]*)$/,
+		        search: function (term, callback) {
+		        	term = term.toUpperCase();
+		            callback($.map(this.words, function (word) {
+		                return word.indexOf(term) === 0 ? word : null;
+		            }));
+		        },
+		        index: 1,
+		        replace: function (word) {
+		            return '!' + word;
+		        }
+		    }],
+		    {
+				debounce : 10,
+		    	onKeydown: function (e, commands) {
+			    	waitForAutoComplete = true;
+			        if (e.ctrlKey && e.keyCode === 74) {
+			            return commands.KEY_ENTER;
+			        }
+		    	}
+			});
+		
 		$(".cold-extrusion").on("click", changeColdExtrusion);
 		$(".extrude").on("click", extrude);
 		
@@ -58,7 +87,6 @@ if(!isset($rpm_max)) 		$rpm_max = 14000;
 				rotation(value);
 			},
 			cancel: function () {
-				console.log("cancel : ", this);
 			}
 		});
 		
@@ -336,7 +364,6 @@ if(!isset($rpm_max)) 		$rpm_max = 14000;
 	 */
 	function onChange(element, value)
 	{
-		console.log(element);
 		switch(element){
 			case 'extruder-target':
 				fabApp.serial("setExtruderTemp", parseInt(value[0]), writeJogResponse);
@@ -347,12 +374,10 @@ if(!isset($rpm_max)) 		$rpm_max = 14000;
 			case 'fan':
 				//sendActionRequest('fan', parseInt(value[0]) );
 				var pwm = Math.round( (parseInt(value[0]) * 255)/100);
-				console.log("pwm", pwm);
 				if(pwm == 0)
 					fabApp.jogMdi("M107", writeJogResponse);
 				else
 					fabApp.jogMdi("M106 S"+pwm, writeJogResponse);
-					
 				break;
 			case 'rpm':
 				var rpm = parseInt(value[0]);
@@ -477,7 +502,6 @@ if(!isset($rpm_max)) 		$rpm_max = 14000;
 	function writeJogResponse(e)
 	{
 		if($(".jogResponseContainer2").length > 0){
-			console.log(e);
 			var html = '';
 			$.each(e, function(i, item) {
 				html += '<span class="jog_response code">' + item.code + '</span>';
@@ -582,7 +606,14 @@ if(!isset($rpm_max)) 		$rpm_max = 14000;
 	 */
 	function sendMdiCommands()
 	{
-		fabApp.jogMdi( $("#mdiCommands").val(), writeJogResponse);
+		if(waitForAutoComplete == true){
+			setTimeout(function(){
+				fabApp.jogMdi( $("#mdiCommands").val(), writeJogResponse);
+			}, 10);
+		}else{
+			fabApp.jogMdi( $("#mdiCommands").val(), writeJogResponse);
+			waitForAutoComplete = false;
+		}
 	}
 	/**
 	 * clear jog response file
