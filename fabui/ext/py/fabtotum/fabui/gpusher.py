@@ -48,26 +48,7 @@ from fabtotum.database.file import File
 from fabtotum.database.object  import Object
 from fabtotum.database.obj_file import ObjFile
 
-ERROR_MESSAGE = {
-    #error codes
-    'UNKNOWN_ERROR'             : _('Unknown error'),
-    'NO_ERROR'                  : _('No error'),
-    'ERROR_KILLED'              : _('Killed'),
-    'ERROR_STOPPED'             : _('Stopped'),
-    'ERROR_DOOR_OPEN'           : _('External door opened'),
-    'ERROR_MIN_TEMP'            : _('Extruder temperature below minimal.'),
-    'ERROR_MAX_TEMP'            : _('Extruder temperature above maximal.'),
-    'ERROR_MAX_BED_TEMP'        : _('Bed temperature above maximal.'),
-    'ERROR_X_MAX_ENDSTOP'       : _('X max end-stop triggered.'),
-    'ERROR_X_MIN_ENDSTOP'       : _('X min end-stop triggered.'),
-    'ERROR_Y_MAX_ENDSTOP'       : _('Y max end-stop triggered.'),
-    'ERROR_Y_MIN_ENDSTOP'       : _('Y min end-stop triggered.'),
-    'ERROR_IDLE_SAFETY'         : _('Idle safety'),
-    #error codes for FABUI configurable functionalities
-    'ERROR_Y_BOTH_TRIGGERED'    : _('Both Y endstops triggered'),
-    'ERROR_Z_BOTH_TRIGGERED'    : _('Both Z endstops triggered'),
-    'OUT_OF_FILAMENT'           : _('Out of filament detected')
-}
+from fabtotum.fabui.constants import FAN_MAX_VALUE
 
 ################################################################################
 def parse_temperature(line):
@@ -338,9 +319,15 @@ class GCodePusher(object):
             elif action == 'cooling':
                 
                 if data[0] == 'M106':
-                    value = int((float( data[1] ) / 255) * 100)
-                    self.trace( _("Fan value set to {0}%").format(value) )
-                    self.override_stats['fan'] = float(data[1])
+                    
+                    if(len(data) > 1) :
+                        s_value = data[1]
+                    else:
+                        s_value = FAN_MAX_VALUE
+                        
+                    value = int((float( s_value ) / FAN_MAX_VALUE) * 100)
+                    self.trace( _("Fan value set to {0}%").format(value))
+                    self.override_stats['fan'] = float(s_value)
                     monitor_write = True
                 elif data[0] == 'M107':
                     self.trace( _("Fan off") )

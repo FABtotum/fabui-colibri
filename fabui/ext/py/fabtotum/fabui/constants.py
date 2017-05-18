@@ -43,3 +43,8 @@ ERROR_EXTRUDE_MINTEMP  = 123
 ERROR_LONG_EXTRUSION   = 124
 ERROR_HEAD_ABSENT      = 125
 ERROR_PWR_OFF          = 999
+############################
+#      GCODE               #
+############################
+FAN_MAX_VALUE          = 255
+FAN_MIN_VAlUE          = 0
