@@ -24,7 +24,11 @@
 		'!EEPROM'       => 'M503',
 		'!POSITION'     => 'M114',
 		'!FIRMWARE'     => array('M765', 'M766', 'M767'),
-		'!ENDSTOP'      => 'M119'
+		'!ENDSTOP'      => 'M119',
+		'!MOTOR ON'     => 'M17',
+		'!MOTOR OFF'    => 'M18',
+		'!FAN ON'       => 'M106 S255',
+		'!FAN OFF'      => 'M107'
 	);
 	
 	/**
