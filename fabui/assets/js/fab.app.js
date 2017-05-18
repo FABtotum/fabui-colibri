@@ -247,13 +247,26 @@ fabApp = (function(app) {
 	*
 	**/
 	app.disableTopBarControls = function () {
+		
+		app.disableTopBarTempsControls();
+		app.disableTopBarJogControls();
+	}
+	/**
+	 * 
+	 */
+	app.disableTopBarTempsControls = function(){
 		$("#top-temperatures").off();
+	}
+	/**
+	 * 
+	 */
+	app.disableTopBarJogControls = function() {
 		$("#jog-shortcut").off();
 	}
 	/**
-	*
-	**/
-	app.enableTopBarControls = function ()
+	 * 
+	 */
+	app.enableTopBarTempsControls = function()
 	{
 		$("#top-temperatures").click(function(a) {
 			var b = $(this);
@@ -261,13 +274,26 @@ fabApp = (function(app) {
 		   	var c = b.next(".top-ajax-temperatures-dropdown").find(".btn-group > .active > input").attr("id");
 		   	b = null, c = null, a.preventDefault()
        	});
-		
+	}
+	/**
+	 * 
+	 */
+	app.enableTopBarJogControls = function ()
+	{
 		$("#jog-shortcut").click(function(a) {
         	var b = $(this);
             b.next(".top-ajax-jog-dropdown").is(":visible") ? (b.next(".top-ajax-jog-dropdown").fadeOut(150), b.removeClass("active")) : (b.next(".top-ajax-jog-dropdown").fadeIn(150), b.addClass("active"));
             var c = b.next(".top-ajax-jog-dropdown").find(".btn-group > .active > input").attr("id");
             b = null, c = null, a.preventDefault()
         });
+	}
+	/**
+	*
+	**/
+	app.enableTopBarControls = function ()
+	{
+		app.enableTopBarTempsControls();
+		app.enableTopBarJogControls();
 	}
 	/**
 	*

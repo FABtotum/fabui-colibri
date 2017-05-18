@@ -687,10 +687,11 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			element.attr('data-action', 'resume');
 			element.html('<i class="fa fa-play"></i> <span class="hidden-xs">'+_("Resume")+"</span>" );
 			enableButton('.change-filament-button');
+			fabApp.enableTopBarTempsControls();
 		}else if(action == 'resume'){
+			freezeUI();
 			element.attr('data-action', 'pause');
 			element.html('<i class="fa fa-pause"></i> <span class="hidden-xs">'+_("Pause")+"</span>" );
-			
 			disableButton('.change-filament-button');
 		}
 		sendActionRequest(action);
@@ -847,6 +848,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 					element.html('<i class="fa fa-play"></i> '+_("Resume") );
 					element.attr('data-action', 'resume');
 					enableButton('.change-filament-button');
+					if(firstCall) fabApp.enableTopBarTempsControls();
 				}
 				break;
 			case 'started':

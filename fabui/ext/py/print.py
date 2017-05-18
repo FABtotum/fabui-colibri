@@ -32,7 +32,7 @@ from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
 # import general constants
-from fabtotum.fabui.constants import ERROR_WIRE_END
+from fabtotum.fabui.constants import ERROR_WIRE_END, ERROR_EXTRUDE_MINTEMP, ERROR_AMBIENT_TEMP, ERROR_LONG_EXTRUSION, ERROR_MAX_TEMP
 #import needed macros 
 import fabtotum.fabui.macros.general as general_macros
 import fabtotum.fabui.macros.printing as print_macros
@@ -125,12 +125,21 @@ class PrintApplication(GCodePusher):
         Triggered when an error occures.
         :param error_no: Error number
         """
-        if(error_no == ERROR_WIRE_END):
-            if(self.is_paused() == False):
-                self.trace( _("Warning: filament is about to end") )
-                self.task_stats['message'] = 'Warning: filament is about to end'
-                self.pause()
-                
+        message = _("Warning: print paused due to error {0}".format(error_no))
+        if(self.is_paused() == False):
+            if(error_no == ERROR_WIRE_END):
+                message = _("Warning: filament is about to end")
+            elif(error_no == ERROR_EXTRUDE_MINTEMP):
+                message = _("Warning: cannot extrude filament: the nozzle temperature is too low")
+            elif(error_no == ERROR_AMBIENT_TEMP):
+                 message = _("Warning: ambient temperature is less then 15&deg;C. Cannot continue")
+            elif(error_no == ERROR_LONG_EXTRUSION):
+                message = _("Warning: cannot extrude so much filament!")
+            elif(error_no == ERROR_MAX_TEMP):
+                message = _("Warning: extruder Temperature critical, shutting down")
+            self.trace(message)
+            self.task_stats['message'] = message
+            self.pause()
         
     def run(self, task_id, gcode_file):
         """

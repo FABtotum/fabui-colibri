@@ -37,7 +37,7 @@ class Control extends FAB_Controller {
 	public function emergency()
 	{
 		//load helper
-		$this->load->model('Tasks', 'tasks');
+		//$this->load->model('Tasks', 'tasks');
 		$this->load->helper('fabtotum_helper');
 		emergency();
 	}
@@ -69,8 +69,12 @@ class Control extends FAB_Controller {
 	{
 		//if is called from fabui
 		if($this->input->is_ajax_request()){
-			$this->load->helper('fabtotum_helper');
-			setSecure($mode);
+			$this->load->model('Tasks', 'tasks');
+			$tasks = $this->tasks->getRunning();
+			if(!$tasks){
+				$this->load->helper('fabtotum_helper');
+				setSecure($mode);
+			}
 			$this->output->set_content_type('application/json')->set_output(json_encode(true));
 		}
 	}

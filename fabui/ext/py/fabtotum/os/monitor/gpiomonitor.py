@@ -28,7 +28,7 @@ import re
 import gettext
 import time
 # import general constants
-from fabtotum.fabui.constants import ERROR_WIRE_END, ERROR_IDLE_SAFETY, ERROR_Y_BOTH_TRIGGERED, ERROR_Z_BOTH_TRIGGERED, ERROR_KILLED, ERROR_STOPPED, ERROR_DOOR_OPEN
+from fabtotum.fabui.constants import ERROR_WIRE_END, ERROR_IDLE_SAFETY, ERROR_Y_BOTH_TRIGGERED, ERROR_Z_BOTH_TRIGGERED, ERROR_KILLED, ERROR_STOPPED, ERROR_DOOR_OPEN, ERROR_EXTRUDE_MINTEMP
 
 # Import external modules
 try:
@@ -108,6 +108,7 @@ class GPIOMonitor:
             errorType = 'alert'
             if error == ERROR_WIRE_END:
                 self.gcs.send('M805 S0', block=False, group='*')
+            
             self.gcs.send('M999', block=False, group='*')
         elif error in terminateErrors:
             self.log.info("terminate")
