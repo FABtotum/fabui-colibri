@@ -24,7 +24,7 @@ if ( !function_exists('createDefaultSettings'))
 			'color'         	 => array('r'=>255, 'g'=>255, 'b'=>255),
 			'safety'        	 => array('door'=>1, 'collision_warning'=>1),
 			'switch'        	 => 0,
-			'feeder'        	 => array('disengage_offset'=> 2, 'show' => true),
+			'feeder'        	 => array('disengage_offset'=> 2, 'available' => true, 'engage' => false),
 			'milling'       	 => array('layer_offset' => 12),
 			'customized_actions' => array('bothy' => 'none', 'bothz' => 'none'),
 			'api'                => array('keys' => array()),

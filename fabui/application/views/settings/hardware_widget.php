@@ -23,13 +23,23 @@
 				</section>
 			</fieldset>
 			<fieldset class="custom_settings" <?php if($defaultSettings['settings_type'] == 'default'): ?> style="display: none;" <?php endif;?> >
+				<!-- BUILT-IN FEEDER -->
 				<div class="row">
 					<section class="col col-6">
-						<label class="label"><?php echo _('Engage')?>/<?php echo _('Disengage')?> <?php echo _('Feeder option')?></label>
+						<label class="label"><?php echo _('Built-in feeder')?></label>
 						<label class="select">
-							<?php echo form_dropdown('feeder-show', $yesNoOptions, $defaultSettings['feeder']['show'], 'id="feeder-show"'); ?> <i></i>
+							<?php echo form_dropdown('feeder-available', $yesNoOptions, isset($defaultSettings['feeder']['available']) ? $defaultSettings['feeder']['available'] : true, 'id="feeder-available"'); ?> <i></i>
 						</label>
 					</section>
+					<section class="col col-6 disengage-feeder-option">
+						<label class="label"><?php echo _('Engage')?>/<?php echo _('Disengage')?> <?php echo _('Feeder option')?></label>
+						<label class="select">
+							<?php echo form_dropdown('feeder-engage', $yesNoOptions, isset($defaultSettings['feeder']['engage']) ? $defaultSettings['feeder']['engage'] : false, 'id="feeder-engage"'); ?> <i></i>
+						</label>
+					</section>
+				</div>
+				<!-- BUILT-IN FEEDER END -->
+				<div class="row">
 					<section class="col col-6">
 						<label class="label"><?php echo _('Invert X Endstop Logic')?></label>
 						<label class="select">

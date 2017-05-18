@@ -40,6 +40,7 @@ PRESET_MAP = {
     
     #PRO
     "2000"   : pro_hardware.hardware2000,
+    "2500"   : pro_hardware.hardware2500,
     
     #HYDRA
     "3000"   : hydra_hardware.hardware3000

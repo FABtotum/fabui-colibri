@@ -11,7 +11,8 @@
   "switch": 0,
   "feeder": {
     "disengage_offset": 2,
-    "show": true
+    "available": true,
+	"engage": false
   },
   "milling": {
     "layer_offset": 12

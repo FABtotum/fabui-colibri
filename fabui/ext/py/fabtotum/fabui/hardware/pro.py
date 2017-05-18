@@ -34,9 +34,20 @@ from fabtotum.utils.translation import _, setLanguage
 
 def hardware2000(gcodeSender, config, log, eeprom, factory):
     """
-    Rev1000 CORE PRO: TBA - xxx
+    Rev2000 CORE PRO: TBA - xxx
     """
     log.info("Rev2000 - PRO")
     defaultProSettings(gcodeSender, config, log, eeprom, factory)
     config.set('settings', 'hardware.id', 2000)
+    config.save('settings')
+    
+def hardware2500(gcodeSender, config, log, eeprom, factory):
+    """
+    Rev2500 CORE PRO with built-in feeder installed
+    """
+    log.info("Rev2500 - PRO")
+    defaultProSettings(gcodeSender, config, log, eeprom, factory)
+    config.set('settings', 'hardware.id', 2500)
+    config.set('settings', 'feeder.engage', False)
+    config.set('settings', 'feeder.available', True)
     config.save('settings')

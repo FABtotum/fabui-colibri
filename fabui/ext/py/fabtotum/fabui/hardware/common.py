@@ -69,7 +69,8 @@ def defaultLiteSettings(gcodeSender, config, log, eeprom, factory):
     gcodeSender.send("M747 X1", group='bootstrap')
     #set maximum feedrate
     gcodeSender.send("M203 X550.00 Y550.00 Z15.00", group='bootstrap')
-    config.set('settings', 'feeder.show', False)
+    config.set('settings', 'feeder.engage', False)
+    config.set('settings', 'feeder.available', True)
     config.set('settings', 'hardware.camera.available', False)
     config.set('settings', 'scan.available', False)
     config.save('settings')
@@ -79,7 +80,8 @@ def defaultProSettings(gcodeSender, config, log, eeprom, factory):
     log.info("Applying default settings for CORE PROV version")
     #invert x endstop logic
     gcodeSender.send("M747 X1", group='bootstrap')
-    config.set('settings', 'feeder.show', False)
+    config.set('settings', 'feeder.engage', False)
+    config.set('settings', 'feeder.available', False)
     config.set('settings', 'hardware.camera.available', False)
     config.set('settings', 'scan.available', False)
     config.save('settings')
@@ -87,7 +89,8 @@ def defaultProSettings(gcodeSender, config, log, eeprom, factory):
 """ CORE HYDRA Default settings """
 def defaultHydraSettings(gcodeSender, config, log, eeprom, factory):
     log.info("Applying default settings for CORE PROV version")
-    config.set('settings', 'feeder.show', False)
+    config.set('settings', 'feeder.engage', False)
+    config.set('settings', 'feeder.available', False)
     config.set('settings', 'hardware.camera.available', False)
     config.set('settings', 'hardware.bed.enable', False)
     config.set('settings', 'scan.available', False)

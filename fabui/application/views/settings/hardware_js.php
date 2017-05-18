@@ -78,6 +78,8 @@
 		});
 		
 		$("#save").on('click', saveSettings);
+		if($("#feeder-available").val() == 0) $(".disengage-feeder-option").hide();
+		$("#feeder-available").on('change', feederOption);
 	}
 	
 	function showColor()
@@ -118,8 +120,9 @@
 		  
 		});
 	}
-	
-	//
+	/**
+	*
+	**/
 	function saveSettings()
 	{
 		openWait("<i class='fa fa-spin fa-spinner'></i> <?php echo _("Applying new settings"); ?>", "<?php echo _("Please wait"); ?>...", false );
@@ -152,5 +155,16 @@
 			});
 			
 		});
+	}
+	/**
+	*
+	*/
+	function feederOption(){
+		
+		if($(this).val() == 0){
+			$(".disengage-feeder-option").hide();
+		}else{
+			$(".disengage-feeder-option").show();
+		}
 	}
 </script>

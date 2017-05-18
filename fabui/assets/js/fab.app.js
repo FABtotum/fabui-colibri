@@ -1425,16 +1425,16 @@ fabApp = (function(app) {
 			switch(href){
 				case 'maintenance/feeder-engage':
 				case 'maintenance/4th-axis':
-					if(settings.feeder.show == false) link.parent().addClass('hidden');
+					if(settings.feeder.engage == false) link.parent().addClass('hidden');
+					break;
+				case 'maintenance/feeder-profiles':
+					if(settings.feeder.available == false) link.parent().addClass('hidden');
 					break;
 				case 'settings/cam':
 					if(settings.hardware.camera.available == false) link.parent().addClass('hidden');
 					break;
 				case 'scan':
 					if(settings.scan.available == false) link.parent().addClass('hidden');
-					break;
-				case 'maintenance/feeder-profiles':
-					if(unit_type == UNIT_PRO || unit_type == UNIT_LITE || unit_type == UNIT_HYDRA) link.parent().addClass('hidden');
 					break;
 				default:
 			}

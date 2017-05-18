@@ -63,7 +63,8 @@ def hardware1(gcodeSender, config, log, eeprom, factory):
     #eeprom = read_eeprom(gcodeSender)
     
     config.set('settings', 'hardware.id', 1)
-    config.set('settings', 'feeder.show', True)
+    config.set('settings', 'feeder.engage', True)
+    config.set('settings', 'feeder.available', True)
     config.set('settings', 'scan.available', True)
     config.set('settings', 'hardware.camera.available', True)
     config.save('settings')
@@ -107,7 +108,8 @@ def hardware2(gcodeSender, config, log, eeprom, factory):
     #~ eeprom = read_eeprom(gcodeSender)
     
     config.set('settings', 'hardware.id', 2)
-    config.set('settings', 'feeder.show', True)
+    config.set('settings', 'feeder.engage', True)
+    config.set('settings', 'feeder.available', True)
     config.set('settings', 'hardware.camera.available', True)
     config.set('settings', 'scan.available', True)
     config.save('settings')
@@ -154,7 +156,8 @@ def hardware3(gcodeSender, config, log, eeprom, factory):
     #eeprom = read_eeprom(gcodeSender)
     
     config.set('settings', 'hardware.id', 3)
-    config.set('settings', 'feeder.show', False)
+    config.set('settings', 'feeder.engage', False)
+    config.set('settings', 'feeder.available', True)
     config.set('settings', 'hardware.camera.available', True)
     config.set('settings', 'scan.available', True)
     config.save('settings')       
@@ -194,7 +197,8 @@ def hardware4(gcodeSender, config, log, eeprom, factory):
     #eeprom = read_eeprom(gcodeSender)
     
     config.set('settings', 'hardware.id', 4)
-    config.set('settings', 'feeder.show', False)
+    config.set('settings', 'feeder.engage', False)
+    config.set('settings', 'feeder.available', True)
     config.set('settings', 'hardware.camera.available', True)
     config.set('settings', 'scan.available', True)
     config.save('settings')
@@ -235,7 +239,8 @@ def hardware5(gcodeSender, config, log, eeprom, factory):
     #eeprom = read_eeprom(gcodeSender)
     
     config.set('settings', 'hardware.id', 5)
-    config.set('settings', 'feeder.show', False)
+    config.set('settings', 'feeder.engage', False)
+    config.set('settings', 'feeder.available', True)
     config.set('settings', 'hardware.camera.available', True)
     config.set('settings', 'scan.available', True)
     config.save('settings')

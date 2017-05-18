@@ -87,14 +87,17 @@ class Settings extends FAB_Controller {
 		//create settings array
 		$settingsToSave = arrayFromPost($postData);
 		
+		$settingsToSave['hardware']['camera']['available'] = $settingsToSave['hardware']['camera']['available'] == 1;
+		$settingsToSave['scan']['available']               = $settingsToSave['scan']['available'] == 1;
+		$settingsToSave['feeder']['available']             = $settingsToSave['feeder']['available'] == 1;
+		$settingsToSave['feeder']['engage']                = $settingsToSave['feeder']['engage'] == 1;
+		
 		if($postData['settings_type'] == 'default'){ //don't override those vaules for default settings
 			unset($settingsToSave['e']);
 			unset($settingsToSave['a']);
 			unset($settingsToSave['feeder']); 
 			unset($settingsToSave['custom-invert_x_endstop_logic']);
 		}
-		$settingsToSave['hardware']['camera']['available'] = $settingsToSave['hardware']['camera']['available'] == 1;
-		$settingsToSave['scan']['available'] = $settingsToSave['scan']['available'] == 1;
 		//load settings
 		$loadedSettings = loadSettings();
 		$newSettings = array_replace_recursive($loadedSettings, $settingsToSave);
