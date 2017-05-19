@@ -10,7 +10,7 @@
  * 
  */
 ?>
-<div class="" style="<?php echo ($this->session->settings['feeder']['show'] == true)?"":"display:none;"; ?>" >
+<div class="" style="<?php echo ($this->session->settings['feeder']['engage'] == true)?"":"display:none;"; ?>" >
 	<h4 class="text-center"><?php echo _('Engage feeder'); ?></h4>
 	<div class="row">
 		<div class="col-sm-12 col-md-12">

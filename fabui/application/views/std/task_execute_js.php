@@ -33,7 +33,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	var speedSlider;
 	var fanSlider;
 	var zOverride = 0;
-	var skipEngage = <?php echo $this->session->settings['feeder']['show'] == false ? 'true' : 'false' ?>; //force true if feeder engage is hidden
+	var skipEngage = <?php echo $this->session->settings['feeder']['engage'] == false ? 'true' : 'false' ?>; //force true if feeder engage is hidden
 	//graph
 	var temperaturesGraph;
 	var showExtActual = true;

@@ -10,7 +10,7 @@
 ?>
 <script type="text/javascript">
 	
-	<?php if($this->session->settings['feeder']['show'] == true): ?>
+	<?php if($this->session->settings['feeder']['engage'] == true): ?>
 	
 	$(document).ready(function() {
 		$(".engage-feeder").on('click', engageFeeder);
