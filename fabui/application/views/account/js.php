@@ -43,14 +43,14 @@
 			// Messages for form validation
 			messages : {
 				email : {
-					required : '<?php echo _("Please enter your email address");?>',
-					email : '<?php echo _("Please enter a valid email address") ?>'
+					required : "<?php echo _("Please enter your email address");?>",
+					email : "<?php echo _("Please enter a valid email address") ?>"
 				},
 				first_name : {
-					required : '<?php echo _("Please enter your first name")?>'
+					required : "<?php echo _("Please enter your first name")?>"
 				},
 				last_name : {
-					required : '<?php echo _("Please enter your last name")?>'
+					required : "<?php echo _("Please enter your last name")?>"
 				}
 			},
 			// Do not change code below
