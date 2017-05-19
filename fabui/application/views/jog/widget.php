@@ -194,7 +194,7 @@
 				<span class="pull-right smart-form" style="margin-top: 3px; margin-right: 10px;"> <label class="checkbox pull-right">
 					<input type="checkbox" name="enterSend" id="enterSend" checked="checked">
 					<i></i><?php echo _("Press <strong>Enter</strong> to"); ?></label> </span> 
-					<a href="#" data-toggle="modal" data-target="#gcodeHelp" class="pull-left btn btn-primary btn-circle"><i class="fa fa-question" aria-hidden="true"></i> </a> 
+					<a href="#" rel="tooltip" title="<?php echo _("Help");?>" data-toggle="modal" data-target="#gcodeHelp" class="pull-left btn btn-primary btn-circle"><i class="fa fa-question" aria-hidden="true"></i> </a> 
 			</span>
 		</div>
 	</div>
@@ -221,102 +221,105 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title"><?php echo _("Supported GCodes"); ?></h4>
       </div>
-      <div class="modal-body">
-		<div class="row">
-			<div class="col-sm-12">
-				<div class="well well-sm">
-				   <div class="input-group">
-					  <input class="form-control " type="text" id="fa-icon-search" placeholder="Search for a code..." >
-					  <div class="input-group-btn">
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-fw  fa-search"></i><span class="caret"></span></button>
-						<ul class="dropdown-menu dropdown-menu-right">
-						  <li><a class="filter-select" data-attr="gcode"><?php echo _("GCode"); ?></a></li>
-						  <li><a class="filter-select" data-attr="desc"><?php echo _("Description"); ?></a></li>
-						</ul>
-					  </div><!-- /btn-group -->
-					</div><!-- /input-group -->
+     	<div class="modal-body no-padding">
+			<div class="row margin-bottom-10 margin-top-10">
+				<div class="col-sm-12" style="padding-left:20px;padding-right:20px;">
+					<div class="input-group">
+						<input class="form-control" type="text" id="fa-icon-search" placeholder="<?php echo  _("Search for a code");?>..." >
+						<div class="input-group-btn">
+							<button type="button" class="btn btn-default" tabindex="-1"><i class="fa fa-fw  fa-search"></i></button>
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex="-1" aria-expanded="false">
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu pull-right" role="menu">
+								<li><a class="filter-select" data-attr="gcode"><?php echo _("GCode"); ?></a></li>
+								<li><a class="filter-select" data-attr="desc"><?php echo _("Description"); ?></a></li>
+								<li class="divider"></li>
+								<li><a href="javascript:void(0);"><?php echo _("Cancel")?></a></li>
+							</ul>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-12">
-				<div class="well well-sm no-padding" style="overflow: auto; height: 300px;">
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th><?php echo _("Code"); ?></th>
-								<th><?php echo _("Description"); ?></th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach($gcodes as $code => $info): ?>
-								<?php if( isset($info['unused']) ) continue; ?>
-								<?php if( array_key_exists('ref',$info) ) { 
-										$desc = $info['desc'];
-										$ref  = $info['ref'];
-										$info = $gcodes[$ref]; 
-										$info['desc'] = $desc;
-									} ?>
-								
-								<tr data-toggle="collapse" data-target="#<?php echo $code; ?>-extra" class="clickable code" data-attr="<?php echo $code; ?>">
-									<td width="150px;"><strong><?php echo $code; ?></strong></td>
-									<td><p class="description" id="<?php echo $code; ?>-desc"><?php echo $info['desc']; ?></p></td>
+
+			<div class="row" style="padding-left:5px;">
+				<div class="col-sm-12">
+					<div style="overflow: auto; height: 300px;padding:1px;">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th><?php echo _("Code"); ?></th>
+									<th><?php echo _("Description"); ?></th>
 								</tr>
-								<tr id="<?php echo $code; ?>-extra" class="collapse"  data-attr="<?php echo $code; ?>">
-									<td colspan="2" class="code-extra">
-										<?php if( array_key_exists('params',$info) ): ?>
-										<div class="row">
-											<div class="col-sm-1 help-param-header"><?php echo _("Param"); ?></div>
-											<div class="col-sm-7 help-param-header"><?php echo _("Desc"); ?></div>
-											<div class="col-sm-1 help-param-header"><?php echo _("Type"); ?></div>
-											<div class="col-sm-1 help-param-header"><?php echo _("Unit"); ?></div>
-											<div class="col-sm-2 help-param-header"><?php echo _("Range"); ?></div>
-										</div>
-										
-											<?php foreach($info['params'] as $param => $info): ?>
+							</thead>
+							<tbody>
+								<?php foreach($gcodes as $code => $info): ?>
+									<?php if( isset($info['unused']) ) continue; ?>
+									<?php if( array_key_exists('ref',$info) ) { 
+											$desc = $info['desc'];
+											$ref  = $info['ref'];
+											$info = $gcodes[$ref]; 
+											$info['desc'] = $desc;
+										} ?>
+									
+									<tr data-toggle="collapse" data-target="#<?php echo $code; ?>-extra" class="clickable code" data-attr="<?php echo $code; ?>">
+										<td width="150px;"><strong><?php echo $code; ?></strong></td>
+										<td><p class="description" id="<?php echo $code; ?>-desc"><?php echo $info['desc']; ?></p></td>
+									</tr>
+									<tr id="<?php echo $code; ?>-extra" class="collapse"  data-attr="<?php echo $code; ?>">
+										<td colspan="2" class="code-extra">
+											<?php if( array_key_exists('params',$info) ): ?>
 											<div class="row">
-												<div class="col-sm-1 code-extra-content"><?php echo $param;?></div>
-												<div class="col-sm-7"><?php echo $info['desc'];?></div>
-												
-												<div class="col-sm-1"><?php echo $info['type'];?></div>
-												<?php if(isset($info['unit'])): ?>
-													<div class="col-sm-1"><?php echo $info['unit'];?></div>
-												<?php else: ?>
-													<div class="col-sm-1">&nbsp;</div>
-												<?php endif; ?>
-												
-												<?php if( isset($info['range']) ): ?>
-													<div class="col-sm-2"> <?php echo $info['range'][0]." .. ".$info['range'][1];?></div>
-												<?php endif; ?>
+												<div class="col-sm-1 help-param-header"><?php echo _("Param"); ?></div>
+												<div class="col-sm-7 help-param-header"><?php echo _("Desc"); ?></div>
+												<div class="col-sm-1 help-param-header"><?php echo _("Type"); ?></div>
+												<div class="col-sm-1 help-param-header"><?php echo _("Unit"); ?></div>
+												<div class="col-sm-2 help-param-header"><?php echo _("Range"); ?></div>
 											</div>
 											
-											<?php endforeach; ?>
-										<?php else: ?>
-											<span class="description"><?php echo _("No parameters"); ?>.</span>
-										<?php endif; ?>
-
-											<?php if( isset($info['reply']) ): ?>
-											<div class="row">
-												<div class="col-sm-12 help-param-header"><?php echo _("Reply"); ?></div>
+												<?php foreach($info['params'] as $param => $info): ?>
+												<div class="row">
+													<div class="col-sm-1 code-extra-content"><?php echo $param;?></div>
+													<div class="col-sm-7"><?php echo $info['desc'];?></div>
+													
+													<div class="col-sm-1"><?php echo $info['type'];?></div>
+													<?php if(isset($info['unit'])): ?>
+														<div class="col-sm-1"><?php echo $info['unit'];?></div>
+													<?php else: ?>
+														<div class="col-sm-1">&nbsp;</div>
+													<?php endif; ?>
+													
+													<?php if( isset($info['range']) ): ?>
+														<div class="col-sm-2"> <?php echo $info['range'][0]." .. ".$info['range'][1];?></div>
+													<?php endif; ?>
+												</div>
+												
+												<?php endforeach; ?>
+											<?php else: ?>
+												<span class="description"><?php echo _("No parameters"); ?>.</span>
+											<?php endif; ?>
+	
+												<?php if( isset($info['reply']) ): ?>
+												<div class="row">
+													<div class="col-sm-12 help-param-header"><?php echo _("Reply"); ?></div>
+												</div>
+												<div class="row">
+													<div class="col-sm-12 code-extra-content"><?php echo $info['reply'];?> </div>
+												</div>
+												<?php endif;?>
 											</div>
-											<div class="row">
-												<div class="col-sm-12 code-extra-content"><?php echo $info['reply'];?> </div>
-											</div>
-											<?php endif;?>
-										</div>
-									</td>
-								</tr>
-
-							<?php endforeach; ?>
-						</tbody>
-					</table>
-				</div>
-			</div>	
-		</div>
-      
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _("Close"); ?></button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+										</td>
+									</tr>
+	
+								<?php endforeach; ?>
+							</tbody>
+						</table>
+					</div>
+				</div>	
+			</div>
+      		<div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _("Close"); ?></button>
+      		</div>
+    	</div><!-- /.modal-content -->
+  	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
