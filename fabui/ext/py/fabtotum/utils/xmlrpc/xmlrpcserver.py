@@ -177,8 +177,15 @@ class ExposeCommands:
 def create(gcs, config, log_type='<stdout>', logger = None):
     # Setup logger
     if not logger:
+        LOG_LEVEL = config.get('general', 'log_level', 'INFO')
+        
+        if LOG_LEVEL == 'INFO':
+            LOG_LEVEL = logging.INFO
+        elif LOG_LEVEL == 'DEBUG':
+            LOG_LEVEL = logging.DEBUG
+        
         logger = logging.getLogger('XML-RPC')
-        logger.setLevel(logging.DEBUG)
+        logger.setLevel(LOG_LEVEL)
 
         if log_type == '<stdout>':
             ch = logging.StreamHandler()
