@@ -232,9 +232,12 @@ if ( ! function_exists('extendAllowedTypesWithPlugins'))
 		
 		foreach($plugins as $plugin => $info)
 		{
-			foreach($info['filetypes'] as $ext)
+			if(isset($info['menu']))
 			{
-				$allowed_types[] = $ext;
+				foreach($info['filetypes'] as $ext)
+				{
+					$allowed_types[] = $ext;
+				}
 			}
 		}
 		

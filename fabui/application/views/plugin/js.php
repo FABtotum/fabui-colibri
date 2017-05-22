@@ -55,6 +55,9 @@
 	
 	function loadOnlinePlugins()
 	{
+		var loading = '<h2 class="text-center"><i class="fa fa-cog fa-spin fa-fw" aria-hidden="true"></i> <?php echo _('Checking online repository');?>...</h2>';
+		$("#online-table").html(loading);
+		
 		$.get("<?php echo site_url('plugin/getOnline') ?>", function(data, status){
 			if(data)
 			{
@@ -62,7 +65,13 @@
 			}
 			else
 			{
-				$("#online-table").html(_("No Internet connection."));
+				var html = '<div class="text-center"><h2><i class="fa fa-exclamation-circle"></i> <?php echo _("No internet connection found") ?></h2>\
+				<button class="btn btn-default" id="check-again"> <?php echo _("Check again") ?></button></div>';
+				
+				$("#online-table").html(html);
+				
+				$("#check-again").unbind('click');
+				$("#check-again").on('click', loadOnlinePlugins);
 			}
 		});
 		

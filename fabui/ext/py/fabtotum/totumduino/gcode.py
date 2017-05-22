@@ -328,7 +328,7 @@ class GCodeService:
         # Inter-thread communication
         # Must be defined before any thread is created
         self.cq = queue.Queue() # Command Queue
-        self.rq = queue.Queue(self.REPLY_QUEUE_SIZE) # Reply Queue
+        self.rq = queue.PriorityQueue(self.REPLY_QUEUE_SIZE) # Reply Queue
 
         self.ev_tx_started = Event()
         self.ev_rx_started = Event()
@@ -485,6 +485,8 @@ class GCodeService:
             self.log.info("Unknown command")
             raise AttributeError
         
+        gcode_label = gcode_raw.split()[0]
+        
         for hook in HOOKS:
             trigger, callback_name, callback_data = hook.process_command(self, gcode_raw)
             if trigger:
@@ -504,7 +506,8 @@ class GCodeService:
                     self.log.debug('MODIFIED [%s] -> [%s]', gcode_raw[:-2], new_cmd )
                     
                     gcode_raw = new_cmd + '\r\n'
-                    
+        
+        priority = 1
                                 
         # Note: experimental feature
         if self.use_checksum:
@@ -528,7 +531,7 @@ class GCodeService:
             
             self.log.debug("<< %s [RQ: %d]", gcode_complete[:-2], self.rq.qsize() )
             
-            self.rq.put(gcode_command)
+            self.rq.put( (priority, gcode_command) )
             self.serial.write(gcode_complete)
         else:
             self.log.debug("FILE_WAIT in progress, ignorig command [%s]", gcode_complete[:-2])
@@ -610,7 +613,10 @@ class GCodeService:
                 except queue.Empty as e:
                     # No queued commands, send a line from the file
                     cmd = Command.NONE
-                    self.__push_line()
+                    
+                    # Push 8 commands from gcode file with little delay
+                    for i in xrange(8):
+                        self.__push_line()
                     
             else:
                 cmd = self.cq.get()
@@ -786,9 +792,9 @@ class GCodeService:
         if not self.active_cmd:
             try:
                 if self.rq.qsize() > 0:
-                    self.active_cmd = self.rq.get()
+                    priority, self.active_cmd = self.rq.get()
                 else:
-                    self.active_cmd = self.rq.get_nowait()
+                    priority, self.active_cmd = self.rq.get_nowait()
             except queue.Empty as e:
                 pass
         
@@ -972,7 +978,7 @@ class GCodeService:
         while not self.rq.empty:
             #print "reply queue is not empty"
             try:
-                cmd = self.rq.get_nowait()
+                priority, cmd = self.rq.get_nowait()
                 cmd.notify(abort=True)
                 print "notifing ", cmd
             except queue.Empty as e:
