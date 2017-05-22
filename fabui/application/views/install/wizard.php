@@ -16,21 +16,11 @@
 	<div id="bootstrap-wizard-1" class="col-sm-12">
 			<div class="form-bootstrapWizard">
 				<ul class="bootstrapWizard form-wizard">
-					<li class="active" data-target="#welcome-tab">
-						<a href="#welcome-tab" data-toggle="tab"> <span class="step">1</span> <span class="title"><?php echo _("Welcome")?></span> </a>
+					<?php foreach($steps as $index => $step): ?>
+					<li class="<?php echo $step['active'] ? 'active' : '' ?>" style="width:<?php echo count($steps) == 5 ? '20' : '25' ?>%" data-target="#<?php echo $step['id'] ?>">
+						<a href="#<?php echo $step['id'] ?>" data-toggle="tab"> <span class="step"><?php echo ($index+1) ?></span> <span class="title"><?php echo $step['title'] ?></span> </a>
 					</li>
-					<li data-target="#account-tab">
-						<a href="#account-tab" data-toggle="tab"> <span class="step">2</span> <span class="title"><?php echo _("Account")?></span> </a>
-					</li>
-					<li data-target="#printer-tab">
-						<a href="#printer-tab" data-toggle="tab"> <span class="step">3</span> <span class="title"><?php echo _("Printer")?></span> </a>
-					</li>
-					<li data-target="#settings-tab">
-						<a href="#network-tab" data-toggle="tab"> <span class="step">4</span> <span class="title"><?php echo _("Network")?></span> </a>
-					</li>
-					<li data-target="#finish-tab">
-						<a href="#finish-tab" data-toggle="tab"> <span class="step">5</span> <span class="title"><?php echo _("Finish")?></span> </a>
-					</li>
+					<?php endforeach;?>
 				</ul>
 				<div class="clearfix"></div>
 			</div>

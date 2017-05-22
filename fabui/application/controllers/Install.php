@@ -36,10 +36,19 @@ class Install extends FAB_Controller {
 			setLanguage($this->input->post('locale'));
 		}
 		
-		$interfaces = getInterfaces();
+		$interfaces = getInterfaces();	
+		$wizard_steps = array();
+		$wizard_steps[] = array('id'=>'welcome-tab', 'title' => _("Welcome"), 'active' => true);
+		$wizard_steps[] = array('id'=>'account-tab', 'title' => _("Account"), 'active' => false);
+		$wizard_steps[] = array('id'=>'printer-tab', 'title' => _("Printer"), 'active' => false);
+		if(isset($interfaces['wlan0']) || isset($interfaces['wlan1'])){
+			$wizard_steps[] = array('id'=> 'settings-tab', 'title' => _("Settings"), 'active' => false);
+		}
+		$wizard_steps[] = array( 'id'=>'finish-tab', 'title' => _("Finish"), 'active' => false);
 		
-		$this->content = $this->load->view('install/wizard', null, true );
-		$this->addJsInLine($this->load->view('install/js', '', true));
+		$data['steps'] = $wizard_steps;
+		$this->content = $this->load->view('install/wizard', $data, true );
+		$this->addJsInLine($this->load->view('install/js', $data, true));
 		//add js file
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js');
 		$this->addJSFile('/assets/js/plugin/masked-input/jquery.maskedinput.min.js');

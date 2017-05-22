@@ -9,10 +9,6 @@
 	.lockscreen { top: 0 !important; }
 }
 
-.bootstrapWizard li {
-	width: 20% !important;
-}
-
 .install-animation {
 	background: #FFF;
     box-shadow: -31px 32px 53px rgba(0,0,0,.2);
