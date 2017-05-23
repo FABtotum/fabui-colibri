@@ -16,6 +16,7 @@
 		$this->load->library('JogFactory', null, 'jogFactory');
 		$this->load->library('smart');
 		$this->load->helper('fabtotum_helper');
+		$this->load->helper('text');
 		
 		$widgetOptions = array(
 			'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
@@ -24,6 +25,9 @@
 		
 		$data = array();
 		$data['gcodes'] = loadGCodeInfo();
+		
+	
+		
 		$data['haveHead'] = isHeadInPlace();
 		$data['haveBed'] = isBedInPlace();
 		$data['shortcuts'] = $this->jogFactory->getShortcuts();

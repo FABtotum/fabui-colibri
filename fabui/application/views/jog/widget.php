@@ -222,7 +222,7 @@
         <h4 class="modal-title"><?php echo _("Supported GCodes"); ?></h4>
       </div>
      	<div class="modal-body no-padding">
-			<div class="row margin-bottom-10 margin-top-10">
+     		<div class="row margin-bottom-10 margin-top-10">
 				<div class="col-sm-12" style="padding-left:20px;padding-right:20px;">
 					<div class="input-group">
 						<input class="form-control" type="text" id="fa-icon-search" placeholder="<?php echo  _("Search for a code");?>..." >
@@ -241,7 +241,49 @@
 					</div>
 				</div>
 			</div>
-
+     	
+     		<div class="row">
+     			<div class="col-sm-12">
+     				<div style="overflow: auto; height: 300px;padding:1px;">
+			     		<div class="panel-group smart-accordion-default" id="accordion">
+			     			<?php foreach($gcodes as $code => $info): ?>
+			     			<div class="panel panel-default code" data-attr="<?php echo $code; ?>">
+			     				<div class="panel-heading">
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo $code?>" class="no-ajax collapsed">
+										<i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> 
+										<strong><?php echo $code?></strong> 
+										<?php echo isset($info['desc']) ? '<span style="margin-left: 10px">'.word_limiter($info['desc'], 10, ' ...').'</span>' : ''; ?> </a>
+									</h4>
+								</div>
+								<div id="collapse<?php echo $code?>" class="panel-collapse collapse">
+									<div class="panel-body">
+										<?php if(isset($info['desc'])): ?>
+										<p class="description" id="<?php echo $code; ?>-desc"><?php echo $info['desc'] ?></p>
+										<?php endif; ?>
+										<?php if(isset($info['params'])): ?>
+										<p><b><?php echo _("Parameters") ?></b></p>
+										<ul class="list-unstyled">
+										<?php foreach($info['params'] as $p => $details): ?>
+											<li>
+												<code><?php echo $p;?></code>
+												<?php if(isset($details['type'])): ?>  <small>(<?php echo $details['type']?>)</small> <?php endif;?>
+												<?php if(isset($details['unit'])): ?>  <small>(<?php echo $details['unit']?>)</small> <?php endif;?>
+												<?php if(isset($details['range'])): ?> <small>[<?php echo $details['range'][0]." .. ".$details['range'][1];?>]</small> <?php endif;?>
+												<span><?php echo $details['desc'] ?></span>
+											</li>
+										<?php endforeach; ?>
+										</ul>
+										<?php endif; ?>
+									</div>
+								</div>
+			     			</div>
+			     			<?php endforeach; ?>
+			     		</div>
+		     		</div>
+	     		</div>
+   			</div>
+			<!-- 
 			<div class="row" style="padding-left:5px;">
 				<div class="col-sm-12">
 					<div style="overflow: auto; height: 300px;padding:1px;">
@@ -315,7 +357,7 @@
 							</tbody>
 						</table>
 					</div>
-				</div>	
+				</div> -->	
 			</div>
       		<div class="modal-footer">
         		<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _("Close"); ?></button>
