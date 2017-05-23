@@ -42,7 +42,7 @@ class Install extends FAB_Controller {
 		$wizard_steps[] = array('id'=>'account-tab', 'title' => _("Account"), 'active' => false);
 		$wizard_steps[] = array('id'=>'printer-tab', 'title' => _("Printer"), 'active' => false);
 		if(isset($interfaces['wlan0']) || isset($interfaces['wlan1'])){
-			$wizard_steps[] = array('id'=> 'settings-tab', 'title' => _("Settings"), 'active' => false);
+			$wizard_steps[] = array('id'=> 'network-tab', 'title' => _("Network"), 'active' => false);
 		}
 		$wizard_steps[] = array( 'id'=>'finish-tab', 'title' => _("Finish"), 'active' => false);
 		
