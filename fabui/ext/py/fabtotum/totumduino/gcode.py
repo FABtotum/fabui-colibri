@@ -541,54 +541,63 @@ class GCodeService:
 
     def __push_line(self):
         try:
-            if self.file_state == GCodeService.FILE_PUSH:
-                line, attrs = self.file_iter.next()
-                
-                line = line.rstrip()
+            # Push 8 commands from gcode file with little delay
+            for i in xrange(8):
+                if self.file_state == GCodeService.FILE_PUSH:
+                    line, attrs = self.file_iter.next()
+                    
+                    line = line.rstrip()
 
-                if attrs:
-                    self.__trigger_callback('gcode_comment', attrs)
-                
-                if not self.first_move:
-                    if ( line[:2] == 'G0' or 
-                         line[:2] == 'G1'):
-                        """ If there was not movement yet, this is identified as the first move """
-                        self.__trigger_callback('first_move', None)
-                        self.first_move = True
-                
-                self.current_line_number += 1
-                
-                self.progress = 100 * float(self.group_ack['file']) / float(self.gcode_count)
-                
-                if line:
-                    self.last_command = self.__send_gcode_command(line, group='file')
+                    # Access optimization
+                    line2 = line[:2]
+                    line3 = line[:3]
+                    line4 = line[:4]
+
+                    if attrs:
+                        self.__trigger_callback('gcode_comment', attrs)
                     
-                    if ( line[:4] == 'M109' or
-                         line[:4] == 'M190' or
-                         line[:3] == 'G28'  or
-                         line[:3] == 'G27'):
-                        """ 
-                        Goto wait state as those commands can take a while and 
-                        no push operation must be done before they are executed.
-                        """
-                        self.file_state = GCodeService.FILE_WAIT
+                    if not self.first_move:
+                        if ( line2 == 'G0' or 
+                             line2 == 'G1'):
+                            """ If there was not movement yet, this is identified as the first move """
+                            self.__trigger_callback('first_move', None)
+                            self.first_move = True
                     
-            elif ( self.file_state == GCodeService.FILE_WAIT or 
-                   self.file_state == GCodeService.FILE_PAUSED_WAIT):
-                """ Wait for reply before continuing (M109, M190, G28, G27) """
-                
-                if self.last_command.wait(1): # Wait for one second and give the context back
-                    if self.file_state == GCodeService.FILE_WAIT:
-                        self.file_state = GCodeService.FILE_PUSH
-                    elif self.file_state == GCodeService.FILE_PAUSED_WAIT:
-                        self.file_state = GCodeService.FILE_PAUSED
+                    self.current_line_number += 1
                     
+                    self.progress = 100 * float(self.group_ack['file']) / float(self.gcode_count)
+                    
+                    if line:
+                        self.last_command = self.__send_gcode_command(line, group='file')
+                        
+                        if ( line4 == 'M109' or
+                             line4 == 'M190' or
+                             line3 == 'G28'  or
+                             line3 == 'G27'):
+                            """ 
+                            Goto wait state as those commands can take a while and 
+                            no push operation must be done before they are executed.
+                            """
+                            self.file_state = GCodeService.FILE_WAIT
+                        
+                elif ( self.file_state == GCodeService.FILE_WAIT or 
+                       self.file_state == GCodeService.FILE_PAUSED_WAIT):
+                    """ Wait for reply before continuing (M109, M190, G28, G27) """
+                    
+                    if self.last_command.wait(1): # Wait for one second and give the context back
+                        if self.file_state == GCodeService.FILE_WAIT:
+                            self.file_state = GCodeService.FILE_PUSH
+                        elif self.file_state == GCodeService.FILE_PAUSED_WAIT:
+                            self.file_state = GCodeService.FILE_PAUSED
+        
         except StopIteration:
             # Create a new thread that is waiting for the last command 
             # to get it's reply and call the callback function if one
             # was specified.
             self.file_state = GCodeService.FILE_NONE
             self.__trigger_file_done(self.last_command)
+            
+            return False
 
     def __sender_thread(self):
         """
@@ -613,10 +622,7 @@ class GCodeService:
                 except queue.Empty as e:
                     # No queued commands, send a line from the file
                     cmd = Command.NONE
-                    
-                    # Push 8 commands from gcode file with little delay
-                    for i in xrange(8):
-                        self.__push_line()
+                    self.__push_line()
                     
             else:
                 cmd = self.cq.get()
