@@ -803,16 +803,35 @@ fabApp = (function(app) {
 	**/
 	app.ws_onerror = function(e)
 	{
+		if(ws == null)
+			return;
+		
 		if(debugState) console.log ('Error with WebSocket', ws.readyState);
 		if(app.rebooting == false){ //reconnect only if the unit is not rebooting
 			app.ws_callbacks = {};
 			socket_connected = false;
 			app.ws_reconnecting = true;
 			
-			setTimeout(function(e){
-				app.ws_reconnecting = false;
-				app.webSocket(true);
-				}, 1000);
+			app.ws_failed++;
+			
+			console.log('WS FAIL:', app.ws_failed);
+			
+			if( app.ws_failed < 50 )
+			{
+				setTimeout(function(e){
+					app.ws_reconnecting = false;
+					app.webSocket(true);
+					}, 1000);
+			}
+			else
+			{
+				if(ws != null)
+				{
+					ws.close();
+				}
+				socket = ws = null;
+				app.ws_reconnecting = true;
+			}
 		}
 	}
 	/**
@@ -820,11 +839,17 @@ fabApp = (function(app) {
 	**/
 	app.ws_onclose = function(e)
 	{
+		if(ws == null)
+			return;
+			
 		if(debugState) console.log ('WebSocket onClose',ws.readyState);
 		if(app.rebooting == false){ //reconnect only if the unit is not rebooting
 			app.ws_callbacks = {};	
 			socket_connected = false;
 			socket = null;
+			
+			if( app.ws_failed > 50 )
+				return;
 			
 			if(app.ws_reconnecting == false)
 			{
@@ -840,12 +865,16 @@ fabApp = (function(app) {
 	*
 	*/
 	app.ws_reconnecting = false;
+	app.ws_failed = 0;
 	/**
 	* WebSocket for faster communications
 	* it goes automatically with ajax pulling method if WebSocket is not supported
 	*/
 	app.webSocket = function(force_fallback)
 	{
+		if( app.ws_failed > 50 )
+			return;
+		
 		force_fallback = force_fallback || false;
 		
 		options = {
@@ -909,7 +938,7 @@ fabApp = (function(app) {
 				return;
 			}
 		}
-		setTimeout(app.checkWebSocketStatus, 1000);		
+		setTimeout(app.checkWebSocketStatus, 1000);
 	};
 	/**
 	 *  check websocket availability
@@ -917,6 +946,9 @@ fabApp = (function(app) {
 	 */
 	app.checkWebSocketStatus = function()
 	{
+		if( ws == null )
+			return;
+		
 		if(app.ws_reconnecting == false && ws.readyState == 3){
 			app.ws_onerror();
 		}
@@ -1222,6 +1254,9 @@ fabApp = (function(app) {
 		if(debugState) root.console.log("✔ app.serial: " + func + ', ' + val);
 		
 		var stamp = Date.now();
+		
+		if(ws == null)
+			return stamp;
 		
 		var data = {
 			'method'           : func,

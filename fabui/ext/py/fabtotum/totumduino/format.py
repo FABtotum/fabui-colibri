@@ -269,7 +269,7 @@ def parseM105(reply):
     except:
         return {}
 
-def parseShortTemp(reply):
+def partialTemp(line):
     """
         Short temperature format appended to regular 'ok' responses
         >> T: 100.0 B: 40.0
