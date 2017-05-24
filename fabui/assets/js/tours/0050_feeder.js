@@ -37,7 +37,7 @@ feeder_tour_info = {
 	],
 	show: true,
 	name: _("Feeder"),
-	icon: '<i class="fa fa-cog" aria-hidden="true"></i>',
+	icon: '<i class="fabui-feeder" aria-hidden="true"></i>',
 	title: _("Feeder calibration"),
 	description: _("This step can be skipped")
 }

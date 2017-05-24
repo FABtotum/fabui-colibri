@@ -58,7 +58,7 @@ spool_load_tour_info = {
 	],
 	show: true,
 	name: _("Spool"),
-	icon: '',
+	icon: '<i class="fabui-spool-vert" aria-hidden="true"></i>',
 	title: _("Load spool"),
 	description: _("To be able to print anything the filament needs to be loaded")
 }

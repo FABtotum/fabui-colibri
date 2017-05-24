@@ -79,7 +79,7 @@ class Spool extends FAB_Controller {
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'main-widget-spool-management';
 		
-		$widget->header = array('icon' => 'fa-circle-o-notch', "title" => "<h2>" . _("Spool management") . "</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fabui-spool-vert', "title" => "<h2>" . _("Spool management") . "</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ),'class'=>'fuelux');
 		
 		$this->content = $widget->print_html(true);

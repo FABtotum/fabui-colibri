@@ -15,21 +15,21 @@ $config['menu'] = array(
 	),
 	'make' => array(
 		'title' => _("Make"),
-		'icon' => 'fa-play fa-rotate-90',
+		'icon' => 'fabui-core',
 		'sub' => array(
 			'print' => array(
 				'title' => _("Print"),
-				'icon' => 'icon-fab-print',
+				'icon' => 'fabui-print',
 				'url' => 'make/print'
 			),
 			'mill' => array(
 				'title' => _("Mill"),
-				'icon' => 'icon-fab-mill',
+				'icon' => 'fabui-subtractive',
 				'url' => 'make/mill'
 			),
 			'scan' => array(
 				'title' => _("Scan"),
-				'icon' => 'icon-fab-scan',
+				'icon' => 'fabui-scan',
 				'url' => 'scan'
 			),
 			'history' => array(
@@ -41,7 +41,7 @@ $config['menu'] = array(
 	),
 	'jog' => array(
 		'title' => _("Jog"),
-		'icon' => 'icon-fab-jog',
+		'icon' => 'fabui-jog',
 		'url' => 'jog'
 	),
 	'projectsmanager' => array(
@@ -55,22 +55,22 @@ $config['menu'] = array(
 		'sub' => array(
 			'head' => array(
 				'title' => _("Head"),
-				'icon' => 'fa-toggle-down',
+				'icon' => 'fabui-head-2',
 				'url' => 'maintenance/head'
 			),
 			'spool' => array(
 				'title' => _("Spool managment"),
-				'icon' => 'fa-circle-o-notch',
+				'icon' => 'fabui-spool-front',
 				'url' => 'maintenance/spool-management'
 			),
 			'bedcalibration' => array(
 				'title' => _("Bed calibration"),
-				'icon' => 'fa-arrows-h',
+				'icon' => 'fabui-bed',
 				'url' => 'maintenance/bed-calibration'
 			),
 			'nozzle' => array (
 				'title' => _("Nozzle"),
-				'icon' => 'fa-thumb-tack',
+				'icon' => 'fabui-nozzle',
 				'sub' => array(
 					'height' => array(
 						'title' => _("Height calibration"),
@@ -97,7 +97,7 @@ $config['menu'] = array(
 			),
 			'feedercalibration' => array(
 				'title' => _("Feeder"),
-				'icon' => 'fa-cog',
+				'icon' => 'fabui-feeder',
 				'sub'  => array(
 					'profiles' => array(
 						'title' => _("Profiles"),
@@ -106,7 +106,7 @@ $config['menu'] = array(
 					),
 					'length' => array(
 						'title' => _("Step calibration"),
-						'icon' => 'icon-fab-e',
+						'icon' => 'fabui-e-mode',
 						'url' => 'maintenance/feeder-calibration'
 					),
 					'angle' => array(

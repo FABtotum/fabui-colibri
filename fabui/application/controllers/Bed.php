@@ -65,7 +65,7 @@ class Bed extends FAB_Controller {
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'main-widget-bed-calibration';
 	
-		$widget->header = array('icon' => 'fa-arrows-h', "title" => "<h2>" . _("Bed calibration") . "</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fabui-bed', "title" => "<h2>" . _("Bed calibration") . "</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ),'class'=>'fuelux');
 		$this->content = $widget->print_html(true);
 	

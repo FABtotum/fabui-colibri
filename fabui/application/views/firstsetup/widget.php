@@ -1,6 +1,5 @@
 <div class="circular-layout">
-	<img class="logo" src="assets/img/controllers/firstsetup/fab_red.png">
-	
+	<span class="big-icon"><i class="fabui-core"></i></span>
 	<div id="tours-container">
 	</div>
 

@@ -41,7 +41,7 @@ $config['css']['mandatory'] = array(
 	'/assets/css/smartadmin-production-plugins.min.css',
 	'/assets/css/smartadmin-production.min.css',
 	'/assets/css/smartadmin-skins.min.css',
-	'/assets/css/font-fabtotum.css',
+//	'/assets/css/font-fabtotum.css',
 	'/assets/css/fonts.css',
 	'/assets/css/demo.min.css',
 	'/assets/css/bootstrap-tour/bootstrap-tour.min.css',
@@ -49,6 +49,7 @@ $config['css']['mandatory'] = array(
 	'/assets/js/plugin/noUiSlider.8.2.1/nouislider.min.css',
 	'/assets/js/plugin/noUiSlider.8.2.1/nouislider.pips.css',
 	'/assets/js/plugin/fancybox/jquery.fancybox.css',
-	'/assets/css/third_party.css'
+	'/assets/css/third_party.css',
+	'/assets/css/fabui-font.css',
 );
 ?>

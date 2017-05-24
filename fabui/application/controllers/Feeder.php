@@ -113,7 +113,7 @@ class Feeder extends FAB_Controller {
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-feeder-calibration';
-		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>"._("Step Calibration")."</h2>");
+		$widget->header = array('icon' => 'fabui-e-mode', "title" => "<h2>"._("Step Calibration")."</h2>");
 		$widget->body   = array('content' => $this->load->view('feeder/calibration/widget', $data, true ), 'class'=>'fuelux');
 		
 		$this->addJsInLine($this->load->view('feeder/calibration/js', $data, true));

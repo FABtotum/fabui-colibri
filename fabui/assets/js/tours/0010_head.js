@@ -47,7 +47,8 @@ head_tour_info = {
 	],
 	show: true,
 	name: _("Head"),
-	icon: '<i class="fa fa-toggle-down" aria-hidden="true"></i>',
+	//icon: '<i class="fa fa-toggle-down" aria-hidden="true"></i>',
+	icon: '<i class="fabui-head-2" aria-hidden="true"></i>',
 	title: _("Install head"),
 	description: _("Before starting to use your FABtotum unit you need to install a head")
 }

@@ -100,3 +100,10 @@ div.circular-layout .logo {
     left: 50% !important;
     top: 50% !important;
 }
+
+.big-icon {
+	font-size: 200px;
+    position: absolute;
+    left: 35% !important;
+    top: 25%;
+}

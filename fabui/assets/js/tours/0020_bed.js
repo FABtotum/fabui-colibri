@@ -29,7 +29,8 @@ bed_tour_info = {
 	],
 	show: true,
 	name: _("Bed"),
-	icon: '<i class="fa fa-square-o" aria-hidden="true"></i>',
+	//icon: '<i class="fa fa-square-o" aria-hidden="true"></i>',
+	icon: '<i class="fabui-bed" aria-hidden="true"></i>',
 	title: _("Bed calibration"),
 	description: _("To get the first layer right the bed must be well calibrated")
 }

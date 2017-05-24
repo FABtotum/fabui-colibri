@@ -36,7 +36,8 @@ nozzle_assisted_tour_info = {
 	],
 	show: true,
 	name: _("Nozzle"),
-	icon: '<i class="fa fa-thumb-tack" aria-hidden="true"></i>',
+	//icon: '<i class="fa fa-thumb-tack" aria-hidden="true"></i>',
+	icon: '<i class="fabui-nozzle" aria-hidden="true"></i>',
 	title: _("Nozzle height calibration"),
 	description: _("After bed is leveled the nozzle height needs to be adjusted")
 }

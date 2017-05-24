@@ -58,7 +58,7 @@ spool_unload_tour_info = {
 	],
 	show: false,
 	name: _("Spool"),
-	icon: '',
+	icon: '<i class="fabui-spool-vert" aria-hidden="true"></i>',
 	title: _("Unload spool"),
 	description: _("Some description")
 }

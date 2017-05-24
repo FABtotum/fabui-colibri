@@ -34,7 +34,7 @@ class FirstSetup extends FAB_Controller {
 
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-firstsetup';
-		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>"._("First setup")."</h2>");
+		$widget->header = array('icon' => 'fa-magic', "title" => "<h2>"._("First setup")."</h2>");
 		$widget->body   = array('content' => $this->load->view('firstsetup/widget', $data, true ), 'class'=>'fuelux');
 		
 		$this->addJsInLine($this->load->view( 'firstsetup/js', $data, true));

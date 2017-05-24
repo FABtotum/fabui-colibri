@@ -1,0 +1,97 @@
+@charset "UTF-8";
+
+@font-face {
+  font-family: "fabui";
+  src:url("/assets/fonts/fabui.eot");
+  src:url("/assets/fonts/fabui.eot?#iefix") format("embedded-opentype"),
+    url("/assets/fonts/fabui.woff") format("woff"),
+    url("/assets/fonts/fabui.ttf") format("truetype"),
+    url("/assets/fonts/fabui.svg#fabui") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+[data-icon]:before {
+  font-family: "fabui" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="fabui-"]:before,
+[class*=" fabui-"]:before {
+  font-family: "fabui" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.fabui-a-mode:before {
+  content: "\61";
+}
+.fabui-e-mode:before {
+  content: "\64";
+}
+.fabui-home:before {
+  content: "\66";
+}
+.fabui-jog:before {
+  content: "\67";
+}
+.fabui-print:before {
+  content: "\6a";
+}
+.fabui-print-layer:before {
+  content: "\6b";
+}
+.fabui-scan:before {
+  content: "\6d";
+}
+.fabui-subtractive:before {
+  content: "\6e";
+}
+.fabui-bed:before {
+  content: "\70";
+}
+.fabui-bed-prsct1:before {
+  content: "\71";
+}
+.fabui-nozzle:before {
+  content: "\72";
+}
+.fabui-bed-prsct2:before {
+  content: "\73";
+}
+.fabui-core:before {
+  content: "\74";
+}
+.fabui-spool-front:before {
+  content: "\75";
+}
+.fabui-feeder:before {
+  content: "\76";
+}
+.fabui-spool-hor:before {
+  content: "\77";
+}
+.fabui-spool-vert:before {
+  content: "\78";
+}
+.fabui-head:before {
+  content: "\79";
+}
+.fabui-head-2:before {
+  content: "\7a";
+}

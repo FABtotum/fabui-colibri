@@ -78,7 +78,7 @@ class Nozzle extends FAB_Controller {
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'main-widget-nozzl-height-calibration';
 		
-		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>" . _("Nozzle height calibration") . "</h2>");
+		$widget->header = array('icon' => 'fabui-nozzle', "title" => "<h2>" . _("Nozzle height calibration") . "</h2>");
 		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ),'class'=>'fuelux');
 		$this->content = $widget->print_html(true);
 		

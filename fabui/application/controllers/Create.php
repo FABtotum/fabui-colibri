@@ -138,7 +138,7 @@
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';
-		$widget->header = array('icon' => 'icon-fab-print', "title" => "<h2>"._("Print")."</h2>");
+		$widget->header = array('icon' => 'fabui-print', "title" => "<h2>"._("Print")."</h2>");
 		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ), 'class'=>'fuelux');
 
 		
@@ -261,7 +261,7 @@
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';
-		$widget->header = array('icon' => 'icon-fab-mill', "title" => "<h2>"._("Mill")."</h2>");
+		$widget->header = array('icon' => 'fabui-subtractive', "title" => "<h2>"._("Mill")."</h2>");
 		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ), 'class'=>'fuelux');
 
 		
