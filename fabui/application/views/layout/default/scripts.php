@@ -35,6 +35,7 @@
 		fabApp.getNetworkInfo();
 		fabApp.getUpdates();
 		fabApp.getFeeds();
+		fabApp.checkForFirstSetupWizard();
 		//start intervals
 		temperatures_interval = setInterval(fabApp.getTemperatures, temperatures_interval_timer);
 	});

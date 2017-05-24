@@ -443,6 +443,24 @@ class Control extends FAB_Controller {
 		$this->minifier->minifyJS($exportPathJS.'/mandatory.js');
 		$this->minifier->minifyCSS($exportPathCSS.'/mandatory.css');
 	}
+	/**
+	 * 
+	 */
+	public function firstSetup($action = '')
+	{
+		if($action == ''){
+			$exists = file_exists($this->config->config['wizard_file']);
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('exists' => $exists)));
+		}
+		else if($action == 'finalize'){
+			$this->load->helper('fabtotum_helper');
+			if(file_exists($this->config->config['wizard_file'])){
+				doCommandLine('sudo rm /etc/init.d/fabui', $this->config->config['wizard_file']);
+			}
+			
+		}
+		
+	}
 }
 
 ?>

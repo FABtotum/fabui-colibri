@@ -49,7 +49,8 @@ var update_check_url            = '/fabui/updates/check';
 var new_head_url_action         = '#maintenance/head?warning=1';
 var emergency_json_url          = '/tmp/emergency.json';
 var serial_exec_url_action      = base_url + '/jog/exec';
-var first_setup_url_action      = '/#controller/first_setup';
+//var first_setup_url_action      = '/#controller/first_setup';
+var first_setup_url_action      = base_url + '/control/firstSetup';
 var check_internet_url_action   = '/temp/internet';
 /*
 * xmlrpc
