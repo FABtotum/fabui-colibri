@@ -41,6 +41,7 @@ except ImportError:
 from fabtotum.fabui.config import ConfigService
 #~ from fabtotum.utils.gcodefile import GCodeFile, GCodeInfo
 from fabtotum.utils.pyro.gcodeclient import GCodeServiceClient
+from fabtotum.totumduino.format import parseM105
 
 # Set up message catalog access
 tr = gettext.translation('gpusher', 'locale', fallback=True)
@@ -90,7 +91,7 @@ class StatsMonitor:
         self.last_update_time   = time.time()
         
         # re
-        self.re_temp = re.compile('ok\sT:(?P<T>[0-9]+\.[0-9]+)\s\/(?P<TT>[0-9]+\.[0-9]+)\sB:(?P<B>[0-9]+\.[0-9]+)\s\/(?P<BT>[0-9]+\.[0-9]+)\s')
+        #~ self.re_temp = re.compile('ok\sT:(?P<T>[0-9]+\.[0-9]+)\s\/(?P<TT>[0-9]+\.[0-9]+)\sB:(?P<B>[0-9]+\.[0-9]+)\s\/(?P<BT>[0-9]+\.[0-9]+)\s')
         
         self.config.register_callback(self.__reload_config)
     
@@ -109,10 +110,10 @@ class StatsMonitor:
             self.delta              = [0] * self.backtrack
             self.last_update_time   = time.time()
     
-    def __parse_temperature(self, line):
-        match = self.re_temp.search(line)
-        if match:
-            return ( match.group('T'), match.group('TT'), match.group('B'), match.group('BT') )
+    #~ def __parse_temperature(self, line):
+        #~ match = self.re_temp.search(line)
+        #~ if match:
+            #~ return ( match.group('T'), match.group('TT'), match.group('B'), match.group('BT') )
     
     @staticmethod
     def __rotate_values(value_list, new_value = None):
@@ -171,8 +172,14 @@ class StatsMonitor:
             reply = self.gcs.send('M105', group = 'monitor', block=True)
             if reply != None: # No timeout occured
                 try:
-                    a, b, c, d = self.__parse_temperature(reply[0])
-                    self.__update_values(a,b,c,d)
+                    #a, b, c, d = self.__parse_temperature(reply[0])
+                    temps = parseM105(reply)
+                    if temps:
+                        a = temps['T']
+                        b = temps['target']['T']
+                        c = temps['B']
+                        d = temps['target']['B']
+                        self.__update_values(a,b,c,d)
                     
                     # with this one there is too much callback threads on the queue
                     # self.gcs.push("temp_change:all", [a, b, c, d])
@@ -192,16 +199,15 @@ class StatsMonitor:
         """
         if action == 'ext_bed':
             self.log.debug("Ext: %f, Bed: %f", float(data[0]), float(data[1]) )
-            #self.ext_temp = self.__rotate_values(self.ext_temp, float(data[0]))
-            #self.bed_temp = self.__rotate_values(self.bed_temp, float(data[1]))
             self.__update_values(ext_temp=float(data[0]), bed_temp=float(data[1]))
+        elif action == 'all':
+            self.log.debug("Ext: %f/%f, Bed: %f/%f", float(data[0]), float(data[1]), float(data[2]), float(data[3]) )
+            self.__update_values(float(data[0]), float(data[1]), float(data[2]), float(data[3]) )
         elif action == 'bed':
             self.log.debug("Bed: %f", float(data[0]) )
-            #~ self.bed_temp = self.__rotate_values(self.bed_temp, float(data[0]))
             self.__update_values(bed_temp=float(data[0]))
         elif action == 'ext':
             self.log.debug("Ext: %f", float(data[0]) )
-            #~ self.ext_temp = self.__rotate_values(self.ext_temp, float(data[0]))
             self.__update_values(ext_temp=float(data[0]))
         
     def __gcode_action_callback(self, action, data):
@@ -211,24 +217,12 @@ class StatsMonitor:
         if action == 'heating':
 
             if data[0] == 'M109':
-                #~ pass
-                #self.trace( _("Wait for nozzle temperature to reach {0}&deg;C").format(data[1]) )
-                #self.ext_temp_target = self.__rotate_values(self.ext_temp_target, float(data[1]))
-                #~ self.ev_update.set()
                 self.__update_values(ext_temp_target=float(data[1]))
             elif data[0] == 'M190':
-                #pass
-                #self.trace( _("Wait for bed temperature to reach {0}&deg;C").format(data[1]) )
-                #~ self.bed_temp_target = self.__rotate_values(self.bed_temp_target, float(data[1]))
-                #~ self.ev_update.set()
                 self.__update_values(bed_temp_target=float(data[1]))
             elif data[0] == 'M104':
-                #self.trace( _("Nozzle temperature set to {0}&deg;C").format(data[1]) )
-                #~ self.ext_temp_target = self.__rotate_values(self.ext_temp_target, float(data[1]))
                 self.__update_values(ext_temp_target=float(data[1]))
             elif data[0] == 'M140':
-                #self.trace( _("Bed temperature set to {0}&deg;C").format(data[1]) )
-                #~ self.bed_temp_target = self.__rotate_values(self.bed_temp_target, float(data[1]))
                 self.__update_values(bed_temp_target=float(data[1]))
 
     def __callback_handler(self, action, data):

@@ -35,7 +35,7 @@ import numpy as np
 from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
-
+from fabtotum.totumduino.format import parseG30
 ################################################################################
 
 class ProbeScan(GCodePusher):
@@ -90,14 +90,9 @@ class ProbeScan(GCodePusher):
         self.send('M400')
         
         reply = self.send('G30', expected_reply = 'echo:', timeout = 200)
-        if reply:
-            #print reply
-            
-            z = float( reply[-1].split("Z:")[1].strip() )
-            z = round(z, 3)  # round to 3 decimanl points
-            
-            #self.trace( _("Probed {0},{1} / {2} degrees = {3}").format(x, y, 0.0, z))
-            
+        result = parseG30(reply)
+        if result:
+            z = result['z']            
             return [x,y,z,1]
             
         return None

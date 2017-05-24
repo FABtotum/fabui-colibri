@@ -34,6 +34,7 @@ from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
 import fabtotum.fabui.macros.general as general_macros
 import fabtotum.fabui.macros.printing as print_macros
+from fabtotum.totumduino.format import parseG30
 
 ################################################################################
 
@@ -86,11 +87,12 @@ class ManualBedLeveling(GCodePusher):
         """
         self.send('G0 X{0} Y{1} F{2}'.format(x, y, self.XY_FEEDRATE) )
         reply = self.send('G30', timeout = timeout)
-        if reply:
-            match = re.search("Feedrate: ([-|+0-9.]+)\sBed\sX:\s([-|+0-9.]+)\sY:\s([-|+0-9.]+)\sZ:\s([-|+0-9.]+)", reply[0], re.IGNORECASE)
-            #~ z = float( reply[-1].split("Z:")[1].strip() )
-            z = float( match.group(4) )
-            z = round(z, 3)  # round to 3 decimanl points
+        
+        position = parseG30(reply)
+        if position:
+            x = position['x']
+            y = position['y']
+            z = position['z']
             return [x,y,z,1]
             
         return None
@@ -139,14 +141,6 @@ class ManualBedLeveling(GCodePusher):
 
         probe_height    = 50.0
         milling_offset  = self.MILLING_OFFSET
-        
-        # Get probe length
-        #~ data = self.send("M503")
-        #~ for line in data:
-            #~ if line.startswith("echo:Z Probe Length:"):
-                #~ probe_length = abs(float(line.split("Z Probe Length: ")[1]))
-                #~ probe_height = (probe_length + 1) + self.PROBE_SECURE_OFFSET
-        
         
         result = self.exec_macro('manual_bed_leveling', [skip_homing]);
         

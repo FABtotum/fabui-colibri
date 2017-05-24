@@ -27,8 +27,6 @@ import json
 import re
 import gettext
 import time
-# import general constants
-from fabtotum.fabui.constants import ERROR_WIRE_END, ERROR_IDLE_SAFETY, ERROR_Y_BOTH_TRIGGERED, ERROR_Z_BOTH_TRIGGERED, ERROR_KILLED, ERROR_STOPPED, ERROR_DOOR_OPEN, ERROR_EXTRUDE_MINTEMP
 
 # Import external modules
 try:
@@ -37,7 +35,10 @@ except:
     pass
 
 # Import internal modules
-
+from fabtotum.fabui.constants import ERROR_WIRE_END, ERROR_IDLE_SAFETY, \
+        ERROR_Y_BOTH_TRIGGERED, ERROR_Z_BOTH_TRIGGERED, ERROR_KILLED, \
+        ERROR_STOPPED, ERROR_DOOR_OPEN, ERROR_EXTRUDE_MINTEMP
+from fabtotum.totumduino.format import parseM730
 
 # Set up message catalog access
 tr = gettext.translation('gpio_monitor', 'locale', fallback=True)
@@ -73,10 +74,9 @@ class GPIOMonitor:
             
             if reply:
                 if len(reply) > 1:
-                    #~ self.log.debug('M730: reply[-2] is ', reply[-2])
-                    search = re.search('ERROR\s:\s(\d+)', reply[-2])
-                    if search != None:
-                        errorNumber = int(search.group(1))
+                    result = parseM730(reply)
+                    if result:
+                        errorNumber = int(result['error_num'])
                         self.log.warning("Totumduino error no.: %s", errorNumber)
                         self.manageErrorNumber(errorNumber)
                     else:
@@ -135,19 +135,6 @@ class GPIOMonitor:
             GPIO_STATUS = GPIO.input(self.ACTION_PIN)
             self.log.debug('GPIO STATUS on STARTUP: %s', str(GPIO_STATUS))
             
-            #if GPIO_STATUS == 0:
-            #~ self.log.debug('M730 check started')
-            #~ reply = self.gcs.send("M730", group='*')
-            #~ self.log.debug('M730 on startup:', reply)
-            #~ if reply:
-                #~ if len(reply) > 1:
-                    #~ search = re.search('ERROR\s:\s(\d+)', reply[-2])
-                    #~ if search != None:
-                        #~ errorNumber = int(search.group(1))
-                        #~ self.log.warning("Totumduino error no.: %s", errorNumber)
-                        #~ self.manageErrorNumber(errorNumber)
-                    #~ else:
-                        #~ self.log.error("Totumduino unrecognized error: %s", reply[0])
         except:
             pass
             

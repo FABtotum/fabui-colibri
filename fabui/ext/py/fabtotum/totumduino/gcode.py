@@ -41,6 +41,7 @@ from fabtotum.totumduino.hardware import reset as totumduino_reset
 from fabtotum.fabui.bootstrap import hardwareBootstrap
 from fabtotum.database import Database
 from fabtotum.database.task import Task
+from fabtotum.totumduino.format import partialM109, partialM190, partialM303
 #############################################
 
 HOOKS = [
@@ -864,27 +865,38 @@ class GCodeService:
                 
                     if cmd.data[:4] == 'M109': # Extruder
                         # [T:27.4 E:0 W:?]
-                        temps = line.split()
-                        T = temps[0].replace("T:","").strip()
-                        self.__trigger_callback('temp_change:ext', [T])
+                        #~ temps = line.split()
+                        #~ T = temps[0].replace("T:","").strip()
+                        temps = partialM109(line)
+                        if temps:
+                            T = temps['T']
+                            self.__trigger_callback('temp_change:ext', [T])
                             
                     elif cmd.data[:4] == 'M190': # Bed
                         # [T:27.38 E:0 B:54.9]
-                        temps = line.split()
-                        T = temps[0].replace("T:","").strip()
-                        B = temps[2].replace("B:","").strip()
-                        self.__trigger_callback('temp_change:ext_bed', [T,B])
+                        temps = partialM190(line)
+                        if temps:
+                            T = temps['T']
+                            B = temps['B']
+                            #temps = line.split()
+                            #T = temps[0].replace("T:","").strip()
+                            #B = temps[2].replace("B:","").strip()
+                            self.__trigger_callback('temp_change:ext_bed', [T,B])
                         
                     elif cmd.data[:4] == 'M303': # PID autotune
                         # [ok T:200.57 @:26]
                         #if not line.startswith("PID Autotune failed"):
-                        temps = line.split()
-                        try:
-                            if temps[0][:2] == 'ok':
-                                T = temps[1].replace("T:","").strip()
-                                self.__trigger_callback('temp_change:ext', [T])
-                        except:
-                            pass
+                        temps = partialM303(line)
+                        if temps:
+                            T = temps['T']
+                            self.__trigger_callback('temp_change:ext', [T])
+                        #~ temps = line.split()
+                        #~ try:
+                            #~ if temps[0][:2] == 'ok':
+                                #~ T = temps[1].replace("T:","").strip()
+                                #~ self.__trigger_callback('temp_change:ext', [T])
+                        #~ except:
+                            #~ pass
     
     def __receiver_thread(self):
         """

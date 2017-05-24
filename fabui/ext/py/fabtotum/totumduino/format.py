@@ -37,13 +37,13 @@ def parseG30(reply):
         >> Feedrate: 200.00 Bed X: 10.00 Y: 10.00 Z: 38.53 
         >> ok
     """
-    match = re.search("Feedrate: ([-|+0-9.]+)\sBed\sX:\s([-|+0-9.]+)\sY:\s([-|+0-9.]+)\sZ:\s([-|+0-9.]+)", reply, re.IGNORECASE)
     
     try:
+        match = re.search("Feedrate: ([-|+0-9.]+)\sBed\sX:\s([-|+0-9.]+)\sY:\s([-|+0-9.]+)\sZ:\s([-|+0-9.]+)", reply[0], re.IGNORECASE)
         return {
-            "x" : match.group(2),
-            "y" : match.group(3),
-            "z" : match.group(4)
+            "x" : float(match.group(2)),
+            "y" : float(match.group(3)),
+            "z" : float(match.group(4))
             }
     except:
         return {}
@@ -59,14 +59,14 @@ def parseM114(reply):
     
     try:
         return {
-            "x" : match.group(1),
-            "y" : match.group(2),
-            "z" : match.group(3),
-            "e" : match.group(4),
+            "x" : float(match.group(1)),
+            "y" : float(match.group(2)),
+            "z" : float(match.group(3)),
+            "e" : float(match.group(4)),
             "count": {
-                "x" : match.group(5),
-                "y" : match.group(6),
-                "z" : match.group(7),
+                "x" : float(match.group(5)),
+                "y" : float(match.group(6)),
+                "z" : float(match.group(7)),
             }
         }
     except:
@@ -164,6 +164,19 @@ def parseM503(reply):
     except:
         return {}
 
+def parseM730(reply):
+    """
+        Parse M730, error code
+        >> ERROR: 102
+    """
+    try:
+        search = re.search('ERROR\s:\s(\d+)', reply[-2])
+        return {
+            'error_num' : search.group(1)
+        }
+    except:
+        return {}
+    
 def partialM109(line):
     """
         Parse M109 partial reply, wait for Nozzle Temp
@@ -213,6 +226,30 @@ def partialM303(line):
         
     return {}
 
+def parseM303(reply):
+    """
+        Parse M303 result
+        >> bias: 150 d: 104 min: 198.88 max: 201.61
+        >> Ku: 96.99 Tu: 18.09
+        >> Classic PID
+        >> Kp: 58.19
+        >> Ki: 6.43
+        >> Kd: 131.57
+        >> PID Autotune finished! Put the last Kp, Ki and Kd constants from above into Configuration.h
+    """
+    try:
+        Kp = reply[-4].split(':')[1].strip()
+        Ki = reply[-3].split(':')[1].strip()
+        Kd = reply[-2].split(':')[1].strip()
+
+        return {
+            'Kp' : float(Kp),
+            'Ki' : float(Ki),
+            'Kd' : float(Kd)
+        }
+    except:
+        return {}
+
 def parseM105(reply):
     """
         Parse M105 reply
@@ -221,15 +258,20 @@ def parseM105(reply):
     try:
         line = reply[0]
         match = re.search('ok\sT:(?P<T>[0-9]+\.[0-9]+)\s\/(?P<TT>[0-9]+\.[0-9]+)\sB:(?P<B>[0-9]+\.[0-9]+)\s\/(?P<BT>[0-9]+\.[0-9]+)\s', line)
-        match.group('T'), match.group('TT'), match.group('B'), match.group('BT') )
         return {
             'T' : match.group('T'),
             'B' : match.group('B'),
-            'TT': match.group('TT'),
-            'BT': match.group('BT')
+            'target' : {
+                'T': match.group('TT'),
+                'B': match.group('BT')
+            }
         }
     except:
         return {}
 
 def parseShortTemp(reply):
+    """
+        Short temperature format appended to regular 'ok' responses
+        >> T: 100.0 B: 40.0
+    """
     pass
