@@ -455,7 +455,7 @@ class Control extends FAB_Controller {
 		else if($action == 'finalize'){
 			$this->load->helper('fabtotum_helper');
 			if(file_exists($this->config->config['wizard_file'])){
-				doCommandLine('sudo rm /etc/init.d/fabui', $this->config->config['wizard_file']);
+				doCommandLine('sudo rm ', $this->config->config['wizard_file']);
 			}
 			
 		}
