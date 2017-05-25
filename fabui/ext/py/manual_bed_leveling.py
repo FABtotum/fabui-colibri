@@ -89,7 +89,9 @@ class ManualBedLeveling(GCodePusher):
         reply = self.send('G30', timeout = timeout)
         
         position = parseG30(reply)
+        print "Position:", position
         if position:
+            
             x = position['x']
             y = position['y']
             z = position['z']

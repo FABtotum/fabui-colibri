@@ -818,11 +818,11 @@ class GCodeService:
                 # TODO: async mode
                 pass
             
-            if cmd.data[:4] == 'M303':
-                if line[:2] != 'ok':
-                    cmd.reply.append( line )
-            else:
-                cmd.reply.append( line )
+            #~ if cmd.data[:4] == 'M303':
+                #~ if line[:2] != 'ok':
+                    #~ cmd.reply.append( line )
+            #~ else:
+            cmd.reply.append( line )
 
             if cmd.hasExpectedReply(line):
                 

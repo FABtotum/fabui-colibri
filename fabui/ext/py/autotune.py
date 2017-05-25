@@ -32,7 +32,7 @@ from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
 import fabtotum.fabui.macros.general as general_macros
 import fabtotum.fabui.macros.printing as print_macros
-
+from fabtotum.totumduino.format import parseM303
 ################################################################################
 
 class PIDAutotune(GCodePusher):
@@ -78,7 +78,7 @@ class PIDAutotune(GCodePusher):
         # needed to keep UI updated
         self.send('M104 S{0}'.format(temperature))
         
-        reply = self.send('M303 E{0} S{1} C{2}'.format(extruder, temperature, cycles), expected_reply = 'PID Autotune finished!' )
+        reply = self.send('M303 E{0} S{1} C{2}'.format(extruder, temperature, cycles) )
         
         if reply:
             result = parseM303(reply)

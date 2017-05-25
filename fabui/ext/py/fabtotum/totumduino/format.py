@@ -40,12 +40,12 @@ def parseG30(reply):
     """
     
     try:
-        match = re.search("Feedrate: ([-|+0-9.]+)\sBed\sX:\s([-|+0-9.]+)\sY:\s([-|+0-9.]+)\sZ:\s([-|+0-9.]+)", reply[0], re.IGNORECASE)
+        values = reply[-2].split()
         return {
-            "x" : float(match.group(2)),
-            "y" : float(match.group(3)),
-            "z" : float(match.group(4))
-            }
+            'x' : float(values[1]),
+            'y' : float(values[3]),
+            'z' : float(values[5])
+        }
     except:
         return {}
 
