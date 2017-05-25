@@ -683,6 +683,9 @@
                             $(_emulation).trigger(
                                 _ErrorEvent(data)
                             );
+                            
+                            clearTimeout(_handler);
+                            clearInterval(_interval);
                         }
                     });
 
