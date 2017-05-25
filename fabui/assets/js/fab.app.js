@@ -591,7 +591,7 @@ fabApp = (function(app) {
 				setTimeout(function() {
 						$.smallBox({
 							title : "Wizard Setup",
-							content : _("It seems that you still did not complete the first recommended setup")+ ": <ul><li>" + _("Install head") + "</li> <li>"+ _("Manual Bed Calibration") + "</li><li>" + _("Nozzle height calibration") +" </li></ul><br>" + _("Without a proper calibration you will not be able to use the FABtotum correctly") + "<br>" + _("Do you want to do it now?") + " <br><br><p class='text-align-right'><a href='#maintenance/first-setup' class='btn btn-primary btn-sm'>" + _("Yes") + "</a> <a href='javascript:dont_ask_wizard();' class='btn btn-danger btn-sm'>"+ _("No") + "</a> <a href='javascript:fabApp.finalizeWizard();' class='btn btn-warning btn-sm'>" + _("Don't ask me anymore") + "</a> </p>",
+							content : _("It seems that you still did not complete the first recommended setup")+ ": <ul><li>" + _("Install head") + "</li> <li>"+ _("Manual Bed Calibration") + "</li><li>" + _("Nozzle height calibration") +" </li></ul><br>" + _("Without a proper calibration you will not be able to use the FABtotum correctly") + "<br>" + _("Do you want to do it now?") + " <br><br><p class='text-align-right'><a href='#maintenance/first-setup' class='btn btn-primary btn-sm'>" + _("Yes") + "</a> <a href='javascript:javascript:void(0);' class='btn btn-danger btn-sm'>"+ _("No") + "</a> <a href='javascript:fabApp.finalizeWizard();' class='btn btn-warning btn-sm'>" + _("Don't ask me anymore") + "</a> </p>",
 							color : "#296191",
 							icon : "fa fa-warning swing animated"
 						});
@@ -819,7 +819,8 @@ fabApp = (function(app) {
 			
 			app.ws_failed++;
 			
-			console.log('WS FAIL:', app.ws_failed);
+			if(debugState)
+				console.log('wesocket error counter:'+ app.ws_failed);
 			
 			if( app.ws_failed < 50 )
 			{
@@ -836,6 +837,9 @@ fabApp = (function(app) {
 				}
 				socket = ws = null;
 				app.ws_reconnecting = true;
+				socket_connected = false;
+				clearInterval(temperatures_interval);
+				app.checkConnectivity();
 			}
 		}
 	}
@@ -877,6 +881,7 @@ fabApp = (function(app) {
 	*/
 	app.webSocket = function(force_fallback)
 	{
+		
 		if( app.ws_failed > 50 )
 			return;
 		
@@ -1628,6 +1633,20 @@ fabApp = (function(app) {
 			type = UNIT_GENERAL;
 		}
 		return type;
+	}
+	/**
+	 * check if we are connected to the printer
+	 */
+	app.checkConnectivity = function()
+	{
+		$.get(base_url)
+		.success(function(result) {				
+			console.log("CONNECTED");
+		})
+		.error(function(jqXHR, textStatus, errorThrown) {
+			console.log("NOT CONNECTED");
+			openWait('<i class="fa fa-warning"></i> ' + _("No connection detected"), _("Unable to connect to the FABtotum Personal Fabricator") + '<br>' + _("Please check ethernet cable or wifi connection and then reload the page"), false); 
+		});
 	}
 	return app;
 })({});
