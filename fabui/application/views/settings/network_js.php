@@ -225,9 +225,9 @@
 			dataType: 'json',
 			async: true,
 			timout: 20000, //timeout 1 minute,
-			error: function(request, status, err) {
+			/*error: function(request, status, err) {
 				fabApp.showErrorAlert(error_message);
-			}
+			}*/
 		}).done(function(response) {
 			button.html('<i class="fa fa-save"></i> <?php echo _('Save')?>');
 			button.removeClass('disabled');
@@ -260,10 +260,19 @@
 			closeWait();
 						
 		}).fail(function(jqXHR, textStatus){
-			fabApp.showErrorAlert(error_message);
+			waitContent("<?php echo _("Reloading page") ?>...");
+			setTimeout(function(){
+					if(window.location.href ==  ('<?php echo site_url('#settings/network/') ?>/' + data['active'])){
+						location.reload(); 
+					}else{
+						window.location.href = '<?php echo site_url('#settings/network/') ?>/' + data['active'];
+					}
+				}, 10000  
+			);
+			
 		});
 	}
-
+ 
 	function tab_change(e)
 	{
 		var target = $(e.target).attr("href");
@@ -472,6 +481,17 @@
 						window.location.href = complete_url;
 					}
 				}, 5000
+			);
+			
+		}).fail(function(jqXHR, textStatus){
+			waitContent("<?php echo _("Reloading page") ?>...");
+			setTimeout(function(){
+					if(window.location.href ==  complete_url){
+						location.reload(); 
+					}else{
+						window.location.href = complete_url ;
+					}
+				}, 10000  
 			);
 			
 		});

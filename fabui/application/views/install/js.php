@@ -353,9 +353,7 @@
 			data: data,
 			dataType: 'json'
 		}).done(function(response) {
-
-			console.log(response);
-			
+						
 			if(response.wlan0.wireless.ssid == data['ap-ssid']){
 				waitContent('<i class="fa fa-check"></i> ' + _("Connected"));
 				setTimeout(function(){
@@ -368,6 +366,15 @@
 				closeWait();
 				showErrorAlert( _('Please check the password'), _('Connection failed'));
 			}
-		});
+		}).fail(function(jqXHR, textStatus){
+			
+			setTimeout(function(){
+				$(".tr-" + data['ap-ssid']).addClass('success');
+				$("." + data['ap-ssid'] +"-td-button").html("<i class='fa fa-check'></i>");
+				$(".next").trigger('click');
+				closeWait();
+			}, 3000);
+			
+		});;
 	}
 </script>
