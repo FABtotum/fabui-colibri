@@ -28,7 +28,7 @@ import re
 import json
 
 from fabtotum.utils.translation import _, setLanguage
-from fabtotum.totumduino.format import parseG30
+from fabtotum.totumduino.format import parseG30, parseM114
 
 def zProbe(app, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
@@ -46,25 +46,28 @@ def zProbe(app, lang='en_US.UTF-8'):
 def getPosition(app, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
-    data = app.macro("M114", "ok", 120, _("Get position"), verbose=False)
-    reply = data[0]
-    position = None
-    match = re.search('X:([-|+0-9.]+)\sY:([-|+0-9.]+)\sZ:([-|+0-9.]+)\sE:([-|+0-9.]+)\sCount\sX:\s([-|+0-9.]+)\sY:([-|+0-9.]+)\sZ:([-|+0-9.]+)', reply, re.IGNORECASE)
+    reply = app.macro("M114", "ok", 120, _("Get position"), verbose=False)
+    #~ reply = data[0]
+    #~ position = None
+    #~ match = re.search('X:([-|+0-9.]+)\sY:([-|+0-9.]+)\sZ:([-|+0-9.]+)\sE:([-|+0-9.]+)\sCount\sX:\s([-|+0-9.]+)\sY:([-|+0-9.]+)\sZ:([-|+0-9.]+)', reply, re.IGNORECASE)
+    result = parseM114(reply)
+    if result:
+        return result
+
+    #~ if match != None:
+        #~ position = {
+            #~ "x" : match.group(1),
+            #~ "y" : match.group(2),
+            #~ "z" : match.group(3),
+            #~ "e" : match.group(4),
+            #~ "count": {
+                #~ "x" : match.group(5),
+                #~ "y" : match.group(6),
+                #~ "z" : match.group(7),
+            #~ }
+        #~ }
     
-    if match != None:
-        position = {
-            "x" : match.group(1),
-            "y" : match.group(2),
-            "z" : match.group(3),
-            "e" : match.group(4),
-            "count": {
-                "x" : match.group(5),
-                "y" : match.group(6),
-                "z" : match.group(7),
-            }
-        }
-    
-    return position
+    #~ return position
 
 def getEeprom(app, lang='en_US.UTF-8'):
     _ = setLanguage(lang)

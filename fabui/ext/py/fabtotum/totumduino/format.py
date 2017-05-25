@@ -35,6 +35,7 @@ def parseG30(reply):
     """ 
         Parse reply of G30 / G38
         >> Feedrate: 200.00 Bed X: 10.00 Y: 10.00 Z: 38.53 
+        [new]>> X: 10.00 Y: 10.00 Z: 38.53 
         >> ok
     """
     
@@ -52,22 +53,18 @@ def parseM114(reply):
     """
         Parse reply of M114
         >> X:0.00 Y:0.00 Z:0.00 E:0.00 Count X: 0.00 Y:0.00 Z:0.00
+        [new] >> X: 0.00 Y: 0.00 Z: 0.00 E: 0.00
         >> ok
     """
-    position = {}
-    match = re.search('X:([-|+0-9.]+)\sY:([-|+0-9.]+)\sZ:([-|+0-9.]+)\sE:([-|+0-9.]+)\sCount\sX:\s([-|+0-9.]+)\sY:([-|+0-9.]+)\sZ:([-|+0-9.]+)', reply, re.IGNORECASE)
-    
+    position = {}    
     try:
+        parts = reply[-2].split()
+        
         return {
-            "x" : float(match.group(1)),
-            "y" : float(match.group(2)),
-            "z" : float(match.group(3)),
-            "e" : float(match.group(4)),
-            "count": {
-                "x" : float(match.group(5)),
-                "y" : float(match.group(6)),
-                "z" : float(match.group(7)),
-            }
+            "x" : float(parts[1]),
+            "y" : float(parts[3]),
+            "z" : float(parts[5]),
+            "e" : float(parts[7])
         }
     except:
         return {}
@@ -75,7 +72,7 @@ def parseM114(reply):
 def parseM503(reply):
     """
         Parse reply of M503
-        
+        ...
         >> ok
     """
     def serialize(string_source, regex_to_serach, keys):
@@ -168,11 +165,11 @@ def parseM730(reply):
     """
         Parse M730, error code
         >> ERROR: 102
+        [new] >> 102
     """
     try:
-        search = re.search('ERROR\s:\s(\d+)', reply[-2])
         return {
-            'error_num' : search.group(1)
+            'error_num' : float(reply[-2])
         }
     except:
         return {}
@@ -181,50 +178,25 @@ def partialM109(line):
     """
         Parse M109 partial reply, wait for Nozzle Temp
         >> T:27.4 E:0 W:?
+        [new]>> T: 200.57 B: 26
     """
-    try:
-        temps = line.split()
-        T = temps[0].replace("T:","").strip()
-        
-        return {
-            'T' : T
-        }
-    except:
-        return {}
+    return partialTemp(line)
     
 def partialM190(line):
     """
         Parse M109 partial reply, wait for Bed Temp
         >> T:27.38 E:0 B:54.9
+        [new]>> T: 200.57 B: 26
     """
-    try:
-        temps = line.split()
-        T = temps[0].replace("T:","").strip()
-        B = temps[2].replace("B:","").strip()
-        return {
-            'T' : T,
-            'B' : B
-        }
-    except:
-        return {}
+    return partialTemp(line)
     
 def partialM303(line):
     """
         Parse M303 partial reply, PID tune
         >> ok T:200.57 @:26
+        [new]>> T: 200.57 B: 26
     """
-    temps = line.split()
-    try:
-        if temps[0][:2] == 'ok':
-            T = temps[1].replace("T:","").strip()
-            
-            return {
-                'T' : T
-            }
-    except:
-        return {}
-        
-    return {}
+    return partialTemp(line)
 
 def parseM303(reply):
     """
@@ -236,11 +208,18 @@ def parseM303(reply):
         >> Ki: 6.43
         >> Kd: 131.57
         >> PID Autotune finished! Put the last Kp, Ki and Kd constants from above into Configuration.h
+        
+        [new]>> ok Kp: 58.19 Ki: 6.43 Kd: 131.57
     """
     try:
-        Kp = reply[-4].split(':')[1].strip()
-        Ki = reply[-3].split(':')[1].strip()
-        Kd = reply[-2].split(':')[1].strip()
+        #Kp = reply[-4].split(':')[1].strip()
+        #Ki = reply[-3].split(':')[1].strip()
+        #Kd = reply[-2].split(':')[1].strip()
+        
+        values = reply[-1].split()
+        Kp = values[2]
+        Ki = values[4]
+        Kd = values[6]
 
         return {
             'Kp' : float(Kp),
@@ -254,16 +233,26 @@ def parseM105(reply):
     """
         Parse M105 reply
         >> ok T:27.2 /0.0 B:27.8 /0.0 T0:27.2 /0.0 A:25 @:0 B@:0
+        [new]>> ok T: 27.2/0.0 B: 27.8/0.0 T0: 27.2/0.0 A: 25 @: 0 B@: 0
     """
     try:
-        line = reply[0]
-        match = re.search('ok\sT:(?P<T>[0-9]+\.[0-9]+)\s\/(?P<TT>[0-9]+\.[0-9]+)\sB:(?P<B>[0-9]+\.[0-9]+)\s\/(?P<BT>[0-9]+\.[0-9]+)\s', line)
+        temps = reply[0].split()
+        T = temps[2].split('/')
+        B = temps[4].split('/')
+        T0 = temps[6].split('/')
+        PT = temps[8]
+        PB = temps[10]
+
         return {
-            'T' : match.group('T'),
-            'B' : match.group('B'),
+            'T' : T[0],
+            'B' : B[0],
             'target' : {
-                'T': match.group('TT'),
-                'B': match.group('BT')
+                'T' : T[1],
+                'B' : B[1]
+            },
+            'power' : {
+                'T' : PT,
+                'B' : PB
             }
         }
     except:
@@ -274,4 +263,17 @@ def partialTemp(line):
         Short temperature format appended to regular 'ok' responses
         >> T: 100.0 B: 40.0
     """
-    pass
+    try:
+        temps = line.split()
+        if temps[0] == 'ok':
+            return {
+                'T': float(temps[2]),
+                'B': float(temps[4])
+            }
+        else:
+            return {
+                'T': float(temps[1]),
+                'B': float(temps[3])
+            }
+    except:
+        return {}

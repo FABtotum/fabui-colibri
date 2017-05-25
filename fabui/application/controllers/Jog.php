@@ -10,6 +10,16 @@
  
  class Jog extends FAB_Controller {
  	
+ 	
+	/**
+	 *
+	 */
+	function __construct()
+	{
+		parent::__construct();
+		session_write_close(); //avoid freezing page
+	}
+ 	
 	public function index(){
 			
 		//load libraries, helpers, model, config
