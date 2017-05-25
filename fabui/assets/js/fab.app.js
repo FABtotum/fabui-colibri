@@ -1132,6 +1132,14 @@ fabApp = (function(app) {
 				});
 			}
 		});
+		
+		$("#txt1").on("change", function() {
+			
+			console.log($(this).find("option:selected").text());
+			var selected_head = $(this).find("option:selected").text();
+			if(selected_head == 'Laser Head') $(".MessageBoxButtonSection").append('<span class="pull-left margin-top-10 laser-head-plugin-note font-xs">'+ _("Please make sure") +' <a target="_blank" href="#plugin">Laser Plugin</a> ' + _("is active") +' </span>');
+			else $(".laser-head-plugin-note").remove();
+		});
 	}
 	/*
 	 * alive the fabtotum after an emergency
