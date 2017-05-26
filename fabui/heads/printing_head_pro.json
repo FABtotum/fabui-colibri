@@ -1,6 +1,6 @@
 {
   "feeder": {
-    "steps_per_unit": "98.30",
+    "steps_per_unit": "91",
     "tube_length": "0",
     "max_acceleration": "300",
     "max_feedrate": "300",
