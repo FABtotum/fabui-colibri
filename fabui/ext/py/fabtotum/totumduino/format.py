@@ -49,6 +49,40 @@ def parseG30(reply):
     except:
         return {}
 
+def parseM119(reply):
+    """
+        Parse reply of M1119, endstop status
+        >> Reporting endstop status
+        >> x_min: open
+        >> x_max: open
+        >> y_max: open
+        >> y_min: open
+        >> z_min: open
+        >> external_z_min: open
+        >> z_max: open
+        >> ok
+    """
+    try:
+        
+        endstops = {
+            'x_min': False,
+            'x_max': False,
+            'y_min': False,
+            'y_max': False,
+            'z_min': False,
+            'z_max': False,
+            'external_z_min' : False
+        }
+        
+        for line in reply:
+            tmp = line.split(':')
+            if tmp[0] in endstops:
+                endstops[ tmp[0] ] = (tmp[1].strip() == 'TRIGGERED')
+        
+        return endstops
+    except:
+        return {}
+
 def parseM114(reply):
     """
         Parse reply of M114

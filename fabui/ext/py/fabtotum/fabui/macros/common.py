@@ -47,27 +47,9 @@ def getPosition(app, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
     reply = app.macro("M114", "ok", 120, _("Get position"), verbose=False)
-    #~ reply = data[0]
-    #~ position = None
-    #~ match = re.search('X:([-|+0-9.]+)\sY:([-|+0-9.]+)\sZ:([-|+0-9.]+)\sE:([-|+0-9.]+)\sCount\sX:\s([-|+0-9.]+)\sY:([-|+0-9.]+)\sZ:([-|+0-9.]+)', reply, re.IGNORECASE)
     result = parseM114(reply)
     if result:
         return result
-
-    #~ if match != None:
-        #~ position = {
-            #~ "x" : match.group(1),
-            #~ "y" : match.group(2),
-            #~ "z" : match.group(3),
-            #~ "e" : match.group(4),
-            #~ "count": {
-                #~ "x" : match.group(5),
-                #~ "y" : match.group(6),
-                #~ "z" : match.group(7),
-            #~ }
-        #~ }
-    
-    #~ return position
 
 def getEeprom(app, lang='en_US.UTF-8'):
     _ = setLanguage(lang)

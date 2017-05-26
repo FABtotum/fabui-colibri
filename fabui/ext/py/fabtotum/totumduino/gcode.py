@@ -1231,8 +1231,7 @@ class GCodeService:
         code = code.encode('latin-1')
         if self.running:
             sent_timestamp = time.time()
-            # QUESTION: should this be handled or not?
-            if code == 'M25':
+            if code == 'M25' or code == 'M0':
                 self.pause()
                 return ['ok']
             elif code == 'M24':
