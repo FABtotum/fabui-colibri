@@ -251,8 +251,8 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         hardwareID = eeprom['batch_number']
     except Exception as e:
         log.error("cannot read batch number")
-        log.error("batch number set to 1")
-        hardwareID = 1
+        hardwareID = config.get('settings', 'hardware.id', 1)
+        log.error("batch number set to {0}".format(hardwareID))
     
     # Raise probe
     gcs.send('M402', group='bootstrap')
