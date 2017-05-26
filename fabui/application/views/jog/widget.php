@@ -64,15 +64,18 @@
 			<li class="pull-right">
 				<a href="#fourthaxis-tab" data-toggle="tab"><?php echo _("4th axis"); ?></a>
 			</li>
+			<?php if($headPrintSupport): ?>
 			<li class="pull-right">
 				<a href="#extruder-tab" data-toggle="tab"><?php echo _("Nozzle"); ?></a>
 			</li>
+			<?php endif; ?>
 			<li class="active pull-right">
 				<a href="#functions-tab" data-toggle="tab"><?php echo _("Head/bed"); ?></a>
 			</li>
 		</ul>
 		
 		<div id="myTabContent3" class="tab-content">
+		<?php if($headPrintSupport): ?>
 			<div class="tab-pane fade in" id="extruder-tab">
 				<div class="smart-form">
 					<fieldset>
@@ -112,6 +115,7 @@
 					</fieldset>
 				</div>
 			</div>
+			<?php endif; ?>
 			<div class="tab-pane fade in" id="fourthaxis-tab">
 				<div class="knobs-container text-center" id="mode-a">
 					<input value="0" class="knob" data-displayPrevious="true" data-width="170" data-height="170" data-cursor="true" data-step="0.5" data-min="0" data-max="360" data-thickness=".3" data-fgColor="#A0CFEC" data-displayInput="true">
