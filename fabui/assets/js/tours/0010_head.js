@@ -11,7 +11,7 @@ head_tour_info = {
       {
         element: "#menu-item-maintenance-head",
         title: _("Head management"),
-        content: _("<strong>Click</strong> on the menu item to continue"),
+        content: _("Click on the menu item to continue"),
         reflex: true,
         backdrop: true,
         backdropContainer : '#left-panel',

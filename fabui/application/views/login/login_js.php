@@ -56,7 +56,7 @@
 					$('#password-modal').modal('hide')
 					$.smallBox({
 						title : _("Success"),
-						content : "<i class='fa fa-check'></i>" + _("A message was be sent to that address containing a link to reset your password "),
+						content : "<i class='fa fa-check'></i>" + _("A message was sent to that address containing a link to reset your password "),
 						color : "#659265",
 						iconSmall : "fa fa-thumbs-up bounce animated",
 						timeout : 4000
