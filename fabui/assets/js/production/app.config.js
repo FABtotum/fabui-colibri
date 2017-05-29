@@ -35,7 +35,7 @@
  * GLOBAL: Your left nav in your app will no longer fire ajax calls, set 
  * it to false for HTML version
  */	
-	$.navAsAjax = false; 
+	$.navAsAjax = true; 
 /*
  * GLOBAL: Sound Config (define sound path, enable or disable all sounds)
  */
@@ -51,7 +51,7 @@
  * debugState = true; will spit all debuging message inside browser console.
  * The colors are best displayed in chrome browser.
  */
-	debugState = false,	
+	debugState = true,	
 	debugStyle = 'font-weight: bold; color: #00f;',
 	debugStyle_green = 'font-weight: bold; font-style:italic; color: #46C246;',
 	debugStyle_red = 'font-weight: bold; color: #ed1c24;',
