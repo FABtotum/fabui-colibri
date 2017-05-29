@@ -229,13 +229,15 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     except KeyError:
         wire_end = 0
         
+    ## MANDATORY - AFTER THAT LINE YOU CAN SEND COMMANDS
     gcs.atomic_begin(group='bootstrap')
 
-    # clean output
-    #reply = gcs.send('G1', group='bootstrap')
-    
     # read EEPROM
     eeprom = read_eeprom(gcs)
+    
+    # reset EEPROM (to prevent any mysterious bug)
+    log.info("Reset EEPROM")
+    gcs.send('M502', group='bootstrap')
     
     # read Factory settings
     factory = None
