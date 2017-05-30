@@ -228,6 +228,10 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         wire_end = config.get('settings', 'wire_end', 0)
     except KeyError:
         wire_end = 0
+    
+    probe = {}  
+    probe['extend']  = config.get('settings', 'probe.e', 127)
+    probe['retract'] = config.get('settings', 'probe.r', 25)
         
     ## MANDATORY - AFTER THAT LINE YOU CAN SEND COMMANDS
     gcs.atomic_begin(group='bootstrap')
@@ -256,6 +260,16 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         hardwareID = config.get('settings', 'hardware.id', 1)
         log.error("batch number set to {0}".format(hardwareID))
     
+    
+    if config.is_firstboot():
+        if factory:
+            probe['extend']  = factory['probe']['e']
+            probe['retract'] = factory['probe']['r']
+            
+            config.set('settings', 'probe.e', probe['extend'])
+            config.set('settings', 'probe.r', probe['retract'])
+            config.save('settings')
+    
     # Raise probe
     gcs.send('M402', group='bootstrap')
     # Send ALIVE
@@ -272,9 +286,12 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     gcs.send("M734 S{0}".format(collision_warning), group='bootstrap')
     # Set homing preferences
     gcs.send("M714 S{0}".format(switch), group='bootstrap')
-    
     #set wire_end enabled/disabled
     gcs.send("M805 S{0}".format(wire_end), group='bootstrap')
+    #set probe extend angle
+    gcs.send("M711 S{0}".format(probe['extend']), group='bootstrap')
+    #set probe retract angle
+    gcs.send("M712 S{0}".format(probe['retract']), group='bootstrap')
     
     # Execute version specific intructions
     if config.get('settings', 'settings_type') == 'custom':
@@ -288,5 +305,5 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     
     configure_head(gcs, config, log)
     configure_feeder(gcs, config, log)
-
+    
     gcs.atomic_end()
