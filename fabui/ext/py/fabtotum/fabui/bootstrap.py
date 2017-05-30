@@ -252,7 +252,7 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         except:
             # Continue if the file is not there
             pass
-    
+        
     try:
         hardwareID = eeprom['batch_number']
     except Exception as e:
@@ -262,12 +262,19 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     
     
     if config.is_firstboot():
+        log.info("First Boot")
+        
         if factory:
+            
             probe['extend']  = factory['probe']['e']
             probe['retract'] = factory['probe']['r']
+            hardwareID = factory['hardware']['id']
+            
+            log.info("Factory settings applied")
             
             config.set('settings', 'probe.e', probe['extend'])
             config.set('settings', 'probe.r', probe['retract'])
+            config.set('settings', 'hardware.id', hardwareID)
             config.save('settings')
     
     # Raise probe
