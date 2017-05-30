@@ -60,5 +60,9 @@
   "wire_end" : 0,
   "scan" : {
 	"available": false
+  },
+  "probe":{
+	"e" : 127,
+	"r" : 25
   }
 }

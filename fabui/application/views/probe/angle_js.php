@@ -45,7 +45,7 @@
     
     /* */
     function doCommand(action, value)
-    {
+    { 
         var gCodeCommand = 'M711';
         var probeCommand = 'M401';
         
@@ -55,7 +55,16 @@
         }
         var gcode = gCodeCommand+' S'+value+'\n'+probeCommand;
         
-        fabApp.jogMdi(gcode);
+        //fabApp.jogMdi(gcode);
+       
+        $.ajax({
+            type: "POST",
+            url: "<?php echo site_url("probe") ?>/" + action  + '/' + value,
+            dataType: "json"
+        }).done(function( data ) {
+                    
+        });
+        
     }
     
 </script>

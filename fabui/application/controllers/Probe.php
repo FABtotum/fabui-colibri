@@ -71,6 +71,9 @@ class Probe extends FAB_Controller {
 	public function open($value = 132)
 	{
 		$this->load->helper('fabtotum_helper');
+		$settings = loadSettings();
+		$settings['probe']['e'] = $value;
+		saveSettings($settings);
 		doGCode( array('M711 S'.$value, 'M401') );
 		$this->output->set_content_type('application/json')->set_output(
 			json_encode( array(true) )
@@ -85,6 +88,9 @@ class Probe extends FAB_Controller {
 	public function close($value = 26)
 	{
 		$this->load->helper('fabtotum_helper');
+		$settings = loadSettings();
+		$settings['probe']['r'] = $value;
+		saveSettings($settings);
 		doGCode( array('M712 S'.$value, 'M402') );
 		$this->output->set_content_type('application/json')->set_output(
 			json_encode( array(true) )
@@ -102,7 +108,6 @@ class Probe extends FAB_Controller {
 				json_encode( array('probe_length' => $probe_length) )
 			);
 	}
-
 }
  
 ?>
