@@ -294,6 +294,10 @@
 			console.log('ddns', target);
 			$("#scanButton").hide();
 		}
+		else if( target.startsWith("#ssh") )
+		{
+			$("#scanButton").hide();
+		}
 	}
 
 	function address_mode_change()

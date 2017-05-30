@@ -114,6 +114,11 @@
 		</form>
 	</div><!-- DNS -->
 	
+	<!--
+	<div class="tab-pane fade in <?php echo $preSelectedInterface == 'ssh'? 'active' : '' ?>" id="ssh-tab"  data-attribute="ssh">
+	</div>
+	-->
+	
 </div>
 
 <!-- PASSWORD MODAL -->

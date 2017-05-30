@@ -279,10 +279,10 @@ class Settings extends FAB_Controller {
 		
 		$dnsActive = $preSelectedInterface == 'dns' ? 'active': '';
 		$tabs_title .= '<li data-attribute="dns" class="tab '.$dnsActive.' "><a data-toggle="tab" href="#dns-tab"> '._('DNS').'</a></li>';
-		/*
-		$sshActive = $preSelectedInterface == 'ssh' ? 'active': '';
-		$tabs_title .= '<li data-attribute="ssh" class="tab '.$sshActive.' "><a data-toggle="tab" href="#ssh-tab"> '._('SSH').'</a></li>';
-		*/
+		
+		//$sshActive = $preSelectedInterface == 'ssh' ? 'active': '';
+		//$tabs_title .= '<li data-attribute="ssh" class="tab '.$sshActive.' "><a data-toggle="tab" href="#ssh-tab"> '._('SSH').'</a></li>';
+		
 		$headerToolbar = '<ul class="nav nav-tabs network-tabs pull-right">' . $tabs_title .'</ul>';
 		
 		$widgeFooterButtons = $this->smart->create_button(_('Scan'), 'primary')->attr(array('id' => 'scanButton', 'style' => 'display:none'))->attr('data-action', 'exec')->icon('fa-search')->print_html(true)
