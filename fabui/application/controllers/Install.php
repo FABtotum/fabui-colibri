@@ -264,10 +264,16 @@ class Install extends FAB_Controller {
 			unset($postData['browser-date']);
 			//set time zone
 			setTimeZone($postData['timezone']);
+			
 			$this->configuration->store('timezone',      $postData['timezone']);
 			$this->configuration->store('serial_number', $postData['serial_number']);
 			$this->configuration->store('unit_name',     $postData['unit_name']);
 			$this->configuration->store('unit_color',    $postData['unit_color']);
+			
+			if($postData['unit_name'] != ''){
+				setHostName($postData['unit_name'], 'Fabtotum Personal Fabricator 3D Printer');
+				storeNetworkSettings('dnssd', '', '', '', '', '', '', '', '', $postData['unit_name'], 'Fabtotum Personal Fabricator 3D Printer');
+			}
 		}
 		
 		$language = $postData['language'];

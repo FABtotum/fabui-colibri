@@ -568,7 +568,13 @@ if(!function_exists('safetyCheck'))
 			'bed_enabled'   => $bed_enabled
 		);
 		
-		$result['head_is_ok'] = $result['all_is_ok'] = canHeadSupport($feature) && $head_in_place;
+		$result['head_is_ok'] = canHeadSupport($feature);
+		$result['all_is_ok'] = $result['head_is_ok']  && $head_in_place;
+		
+		if($feature == 'mill'){
+			if($result['head_is_ok'] == true && $head_in_place == false)
+				$result['all_is_ok'] = true;
+		}
 		
 		if($bed_enabled){
 			$bed_in_place  = isBedInPlace();
@@ -576,16 +582,6 @@ if(!function_exists('safetyCheck'))
 			$result['bed_is_ok'] = $heated_bed == $bed_in_place;
 			$result['all_is_ok']  = $result['head_is_ok'] && $result['bed_is_ok'];
 		}
-		
-		/*
-		$result = array(	
-			'head_is_ok'    => false,
-			'head_info'     => getInstalledHeadInfo(),
-			'head_in_place' => $head_in_place,
-			'bed_is_ok'     => false,
-			'bed_in_place'  => $bed_in_place,
-			'bed_enabled'   => isBedEnabled()
-		);*/
 		
 		return $result;
 	}
