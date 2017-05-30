@@ -1650,11 +1650,12 @@ fabApp = (function(app) {
 	app.checkConnectivity = function()
 	{
 		$.get(base_url)
-		.success(function(result) {				
-			console.log("CONNECTED");
+		.success(function(result) {
+			/**
+			 * @TODO
+			 */
 		})
 		.error(function(jqXHR, textStatus, errorThrown) {
-			console.log("NOT CONNECTED");
 			openWait('<i class="fa fa-warning"></i> ' + _("No connection detected"), _("Unable to connect to the FABtotum Personal Fabricator") + '<br>' + _("Please check ethernet cable or wifi connection and then reload the page"), false); 
 		});
 	}
