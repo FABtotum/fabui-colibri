@@ -95,7 +95,7 @@ class PrintApplication(GCodePusher):
         self.trace( _("Print STARTED") )
         
         with self.monitor_lock:
-            self.print_stats['first_move'] = True
+            #~ self.pusher_stats['first_move'] = True
             self.set_task_status(GCodePusher.TASK_RUNNING)
             self.update_monitor_file()
 
