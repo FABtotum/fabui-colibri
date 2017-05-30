@@ -27,9 +27,7 @@
 
 	function start_fw_flashing()
 	{
-		// doUploadFirmware
 		var version = $("#fw-version").val();
-		console.log(version);
 		if(version == 'upload')
 		{
 			doFirmwareUpload();
@@ -51,31 +49,11 @@
 			processData: false,                       
 			type: 'post',
 			success: function(response){
-				console.log(response);
-				
-				
 				setTimeout(function(){
-						closeWait();
+						waitContent("<?php echo _("Reloading page"); ?>");
 						location.reload();
 					}, 10000
 				);
-				/*if(response.installed == true){
-					waitContent('Plugin installed successfully<br>Redirecting to plugins page...');
-					setTimeout(function(){
-							window.location = '<?php echo site_url("#plugin");?>';
-					}, 3000);
-				}
-				else
-				{
-					closeWait();
-					$.smallBox({
-						title : "Error",
-						content : 'Uploaded zip file is not a plugin archive.',
-						color : "#C46A69",
-						timeout: 10000,
-						icon : "fa fa-warning"
-					});
-				}*/
 			}
 		 });
 	}
@@ -96,29 +74,12 @@
 			data: form_data,                         
 			type: 'post',
 			success: function(response){
-				console.log(response);
+				
 				setTimeout(function(){
-						closeWait();
+						waitContent("<?php echo _("Reloading page"); ?>");
 						location.reload();
 					}, 10000
 				);
-				/*if(response.installed == true){
-					waitContent('Plugin installed successfully<br>Redirecting to plugins page...');
-					setTimeout(function(){
-							window.location = '<?php echo site_url("#plugin");?>';
-					}, 3000);
-				}
-				else
-				{
-					closeWait();
-					$.smallBox({
-						title : "Error",
-						content : 'Uploaded zip file is not a plugin archive.',
-						color : "#C46A69",
-						timeout: 10000,
-						icon : "fa fa-warning"
-					});
-				}*/
 			}
 		 });
 	}
