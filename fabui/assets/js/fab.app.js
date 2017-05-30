@@ -505,6 +505,7 @@ fabApp = (function(app) {
 			}else{
 				if(!link.next().is('ul')){ // disable only is not a parent link
 					link.addClass('menu-disabled');
+					link.attr('style', 'color: #bfbfbf !important');
 					link.removeAttr('href');
 					link.click(function () {return false;});
 				}
@@ -521,6 +522,7 @@ fabApp = (function(app) {
 		a.each(function() {
 			var link = $(this);
 			link.removeClass('menu-disabled');
+			link.removeAttr("style");
 			link.attr('href', $(this).attr('data-href'));
 			if(!link.next().is('ul')){
 				link.unbind('click');
