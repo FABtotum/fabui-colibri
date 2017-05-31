@@ -64,6 +64,7 @@
   "probe":{
 	"e" : 127,
 	"r" : 25,
-	"length" : 32
+	"length" : 32,
+	"enable" : 0
   }
 }
