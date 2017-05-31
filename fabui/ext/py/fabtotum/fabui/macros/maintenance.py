@@ -210,6 +210,8 @@ def manual_bed_leveling(app, args = None, lang='en_US.UTF-8'):
         app.macro("G27",           "ok",   100,    _("Homing Z - Fast") )
         app.macro("G92 Z241.2",    "ok",   5,      _("Setting correct Z"), verbose=False)
         app.macro("M402",          "ok",   2,      _("Retracting Probe (safety)"), verbose=False)
+    else:
+        app.macro("M733 S0", "ok", 2, _("Disbaleb home check"), verbose=False)
 
     app.macro("G0 Z{0} F5000".format(probe_height),    "ok",   99,  _("Moving to start Z height")) #mandatory!
     #app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), verbose=False )

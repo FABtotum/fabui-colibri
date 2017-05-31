@@ -234,7 +234,8 @@ class ManualBedLeveling(GCodePusher):
         
         # Make sure the new data is written to the monitor file
         self.update_monitor_file()
-        
+        #enable homeing check
+        self.send("M733 S1")
         self.send("M300")
         self.trace( _("Manual bed leveling finished.") )
         self.set_task_status(GCodePusher.TASK_COMPLETED)
