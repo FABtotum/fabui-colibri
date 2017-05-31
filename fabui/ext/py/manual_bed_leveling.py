@@ -144,6 +144,8 @@ class ManualBedLeveling(GCodePusher):
         probe_height    = 50.0
         milling_offset  = self.MILLING_OFFSET
         
+        #disble homing check for probing
+        self.send("M733 S0")
         result = self.exec_macro('manual_bed_leveling', [skip_homing]);
         
         if result['response'] != 'success':

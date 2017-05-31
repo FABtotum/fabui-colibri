@@ -283,12 +283,12 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     gcs.send('M402', group='bootstrap')
     # Send ALIVE
     gcs.send('M728', group='bootstrap')
-
+    #enable homing check
+    gcs.send('M733 S1', group='bootstrap')
     # Set ambient colors
     gcs.send("M701 S{0}".format(color['r']), group='bootstrap')
     gcs.send("M702 S{0}".format(color['g']), group='bootstrap')
     gcs.send("M703 S{0}".format(color['b']), group='bootstrap')
-    
     # Set safety door open warnings: enabled/disabled
     gcs.send("M732 S{0}".format(safety_door), group='bootstrap')
     # Set collision warning: enabled/disabled
