@@ -85,6 +85,7 @@ def measure_probe_offset(app, args = None, lang='en_US.UTF-8'):
         app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False)
         app.macro("G0 Z50 F1000",       "ok", 100,  _("Moving the bed 50mm away from nozzle"), verbose=False)
         app.macro("G0 X86 Y58 F6000",   "ok", 100,  _("Moving the probe to the center"), verbose=False)
+        app.macro("M733 S0", "ok", 2, _("Disable homing check"), verbose=False)
         probe_length = 0.0
         for i in range(0,4):
             app.trace( _("Measurement ({0}/4)").format(i+1) )
@@ -92,8 +93,8 @@ def measure_probe_offset(app, args = None, lang='en_US.UTF-8'):
             probe_length = probe_length + float(zprobe['z'])
             
         probe_length = probe_length / 4
-        
         app.macro("M710 S{0}".format(probe_length), "ok", 2, _("Write config to EEPROM"), verbose=False)
+        app.macro("M733 S1", "ok", 2, _("Enable homing check"), verbose=False)
     else:
         probe_length = 38.0
     
