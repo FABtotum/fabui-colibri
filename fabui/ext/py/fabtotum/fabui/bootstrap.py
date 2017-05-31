@@ -111,7 +111,7 @@ def configure_head(gcs, config, log):
         custom_gcode = head.get('custom_gcode','')
         tool         = head.get('tool', '')
         
-        probe_length  = float(config.get('settings', 'zprobe.length', 0))
+        probe_length  = float(config.get('settings', 'probe.length', 0))
         
         # Set installed head
         if fw_id is not None:
@@ -268,12 +268,14 @@ def hardwareBootstrap(gcs, config = None, logger = None):
             
             probe['extend']  = factory['probe']['e']
             probe['retract'] = factory['probe']['r']
+            probe['length']  = factory['probe']['length']
             hardwareID = factory['hardware']['id']
             
             log.info("Factory settings applied")
             
             config.set('settings', 'probe.e', probe['extend'])
             config.set('settings', 'probe.r', probe['retract'])
+            config.set('settings', 'probe.length', probe['length'])
             config.set('settings', 'hardware.id', hardwareID)
             config.save('settings')
     

@@ -64,7 +64,7 @@ def measure_probe_offset(app, args = None, lang='en_US.UTF-8'):
     default_probe_length = 38
     eeprom = getEeprom(app)
     curret_probe_length = abs(float(eeprom["probe_length"]))
-    zprobe_disabled = int(app.config.get('settings', 'zprobe.enable')) == 0
+    zprobe_disabled = int(app.config.get('settings', 'probe.enable')) == 0
     
     if(curret_probe_length > max_probe_length):
         app.macro("M710 S{0}".format(default_probe_length), "ok", 2, _("Write config to EEPROM"), verbose=False)
@@ -102,7 +102,7 @@ def measure_probe_offset(app, args = None, lang='en_US.UTF-8'):
     app.macro("G0 X103 Y119.5 Z20 F1000",  "ok", 100,  _("Moving the bed 20mm away from nozzle"), verbose=False)
     
     app.config.set('settings', 'z_max_offset', float(zmax['z']))
-    app.config.set('settings', 'zprobe.length', float(probe_length))
+    app.config.set('settings', 'probe.length', float(probe_length))
     app.config.save('settings')
     
     return {

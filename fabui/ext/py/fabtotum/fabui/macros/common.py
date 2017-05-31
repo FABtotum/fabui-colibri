@@ -230,7 +230,7 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     fw_id        = int(head.get('fw_id',0))
     max_temp     = int(head.get('max_temp',230)) + 15
     min_temp     = int(head.get('min_temp', 0))
-    probe_length = float(app.config.get('settings', 'zprobe.length', 0))
+    probe_length = float(app.config.get('settings', 'probe.length', 0))
     tool         = head.get('tool', '')
     
     # Set installed head ID

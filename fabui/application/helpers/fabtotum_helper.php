@@ -46,7 +46,7 @@ if ( !function_exists('createDefaultSettings'))
 			'filament' 			 => array('type'=>'pla', 'inserted' => false),
 			'wire_end'           => 0,
 			'scan'               => array('available' => false),
-			'probe'              => array('e' => 127, 'r' => 25)
+			'probe'              => array('e' => 127, 'r' => 25, 'enable' => 0)
  		);
 		write_file($CI->config->item('settings'), json_encode($settings, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK));
 	}	

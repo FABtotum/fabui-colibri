@@ -180,7 +180,7 @@ def manual_bed_leveling(app, args = None, lang='en_US.UTF-8'):
     if safety_door == 1:
         app.macro("M741",           "TRIGGERED", 2, _("Front panel door opened"), verbose=False )
     
-    zprobe = app.config.get('settings', 'zprobe')
+    zprobe = app.config.get('settings', 'probe')
     zprobe_disabled = (zprobe['enable'] == 0)
     zmax_home_pos   = float(app.config.get('settings', 'z_max_offset'))
     

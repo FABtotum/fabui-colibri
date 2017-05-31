@@ -35,7 +35,7 @@ def home_all(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
     try:
-        zprobe_disabled = int(app.config.get('settings', 'zprobe.enable')) == 0
+        zprobe_disabled = int(app.config.get('settings', 'probe.enable')) == 0
         z_max_offset    = app.config.get('settings', 'z_max_offset')
     except KeyError:
         z_max_offset = 241.5

@@ -135,10 +135,10 @@
 					<label class="label"><?php echo _('Use the z touch probe during homing')?></label>
 					<div class="inline-group">
 						<label class="radio">
-							<input type="radio" id="zprobe-enable" name="zprobe-enable" value="1" <?php if($defaultSettings['zprobe']['enable'] == 1) echo 'checked="checked"'; ?>><i></i><?php echo _('Enable')?>
+							<input type="radio" id="probe-enable" name="probe-enable" value="1" <?php if(isset($defaultSettings['probe']['enable']) && $defaultSettings['probe']['enable'] == 1) echo 'checked="checked"'; ?>><i></i><?php echo _('Enable')?>
 						</label>
 						<label class="radio">
-							<input type="radio" id="zprobe-enable" name="zprobe-enable" value="0" <?php if($defaultSettings['zprobe']['enable'] == 0) echo 'checked="checked"'; ?>><i></i><?php echo _('Disabled')?>
+							<input type="radio" id="probe-enable" name="probe-enable" value="0" <?php if(isset($defaultSettings['probe']['enable']) && $defaultSettings['probe']['enable'] == 0) echo 'checked="checked"'; ?>><i></i><?php echo _('Disabled')?>
 						</label>
 					</div>
 				</section>
