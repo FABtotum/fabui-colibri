@@ -30,7 +30,7 @@ import json
 
 # Import internal modules
 from fabtotum.utils.translation import _, setLanguage
-from fabtotum.fabui.macros.common import getPosition
+from fabtotum.fabui.macros.common import getPosition, configure_head
 
 def pause_additive(app, args=None, lang='en_US.UTF-8'):
     app.macro("M999",   "ok", 1,    _("Clearing error state"), verbose=False)
@@ -105,6 +105,8 @@ def start_additive(app, args = None, lang='en_US.UTF-8'):
     units_e = feeder['steps_per_unit']
     
     head_file = os.path.join( app.config.get('hardware', 'heads'), app.config.get('settings', 'hardware.head') + '.json');
+    
+    configure_head(app, app.config.get('settings', 'hardware.head'))
 
     with open(head_file) as json_f:
         head = json.load(json_f)

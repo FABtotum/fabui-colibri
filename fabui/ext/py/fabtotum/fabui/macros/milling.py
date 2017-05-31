@@ -30,7 +30,7 @@ import json
 
 # Import internal modules
 from fabtotum.utils.translation import _, setLanguage
-from fabtotum.fabui.macros.common import getPosition
+from fabtotum.fabui.macros.common import getPosition, configure_head
 
 def pause_subtractive(app, args=None, lang='en_US.UTF-8'):
     app.macro("M400",   "ok", 240,    _("Waiting for all moves to finish"), verbose=False)
@@ -95,6 +95,8 @@ def start_subtractive(app, args = None, lang='en_US.UTF-8'):
     
     feeder = app.config.get_feeder_info('built_in_feeder')
     units_a = feeder['steps_per_angle']
+    
+    configure_head(app, app.config.get('settings', 'hardware.head'))
     
     app.macro("G92 X0 Y0 Z0 E0", "ok", 1,       _("Setting Origin Point"), verbose=False)
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th Axis mode"), verbose=False)
