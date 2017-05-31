@@ -920,7 +920,17 @@
 			}
 		}
 	},
-
+	"M733": {
+		"desc": "Enable/disable needed homing check",
+		"params":{
+			"S":{
+				"desc": "<strong>S0</strong> -> disable check, <strong>S1</strong> -> enable check",
+				"type": "bool",
+				"range": [0,1]
+			}
+		}
+	},
+	
 	"M734": {
 		"desc": "Enable/Disable endstop warnings",
 		"ref": "M804"
