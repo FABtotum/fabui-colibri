@@ -135,6 +135,7 @@ def start_additive(app, args = None, lang='en_US.UTF-8'):
     app.macro("M220 S100",              "ok", 1,    _("Reset Speed factor override"),     verbose=False)
     app.macro("M221 S100",              "ok", 1,    _("Reset Extruder factor override"),  verbose=False)
     app.macro("M92 E"+str(units_e),     "ok", 1,    _("Setting extruder mode"),           verbose=False)
+    app.macro("M82",                    "ok", 1,    _("Setting E codes absolute"),        verbose=False)
     app.macro("M400",                   "ok", 60,   _("Waiting for all moves to finish"), verbose=False)
 
 def end_additive(app, args=None, lang='en_US.UTF-8'):
