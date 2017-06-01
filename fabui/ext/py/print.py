@@ -32,7 +32,7 @@ from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
 # import general constants
-from fabtotum.fabui.constants import ERROR_WIRE_END, ERROR_EXTRUDE_MINTEMP, ERROR_AMBIENT_TEMP, ERROR_LONG_EXTRUSION, ERROR_MAX_TEMP
+from fabtotum.fabui.constants import ERROR_WIRE_END, ERROR_EXTRUDE_MINTEMP, ERROR_AMBIENT_TEMP, ERROR_LONG_EXTRUSION, ERROR_MAX_TEMP, ERROR_IDLE_SAFETY
 #import needed macros 
 import fabtotum.fabui.macros.general as general_macros
 import fabtotum.fabui.macros.printing as print_macros
@@ -54,6 +54,8 @@ class PrintApplication(GCodePusher):
         self.standalone = standalone
         self.autolevel = autolevel
         self.finalize = finalize
+        self.ext_target = 0.0
+        self.bed_target = 0.0
     
     # Only for development
     #~ def trace(selg, msg):
@@ -104,13 +106,16 @@ class PrintApplication(GCodePusher):
         
     def state_change_callback(self, state):
         if state == 'paused':
+            temps = self.get_temperature_history()
+            self.ext_target = temps['ext_temp_target'][-1]
+            self.bed_target = temps['bed_temp_target'][-1]
             self.trace( _("Print PAUSED") )
             self.trace( _("Please wait until the buffered moves in totumduino are finished") )
             self.exec_macro("pause_additive")
             
         if state == 'resuming':    
             self.trace( _("RESUMING Print") )
-            self.exec_macro("resume_additive")
+            self.exec_macro("resume_additive", [self.ext_target, self.bed_target])
             
         if state == 'resumed':
             self.trace( _("Print RESUMED") )
@@ -137,6 +142,8 @@ class PrintApplication(GCodePusher):
                 message = _("Warning: cannot extrude so much filament!")
             elif(error_no == ERROR_MAX_TEMP):
                 message = _("Warning: extruder Temperature critical, shutting down")
+            elif(error_no == ERROR_IDLE_SAFETY):
+                message = _("The FABtotum has been idling for more than 10 minutes. Temperatures and Motors have been turned off")
             self.trace(message)
             self.task_stats['message'] = message
             self.pause()

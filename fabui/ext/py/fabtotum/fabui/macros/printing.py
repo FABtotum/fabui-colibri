@@ -61,6 +61,15 @@ def pause_additive(app, args=None, lang='en_US.UTF-8'):
     
 def resume_additive(app, args=None, lang='en_US.UTF-8'):
     
+    
+    ext_temp = args[0]
+    bed_temp = args[1]
+    
+    app.macro("M104 S{0}".format(ext_temp),  "ok", 5,   _("Heating Nozzle"), verbose=False)
+    app.macro("M140 S{0}".format(bed_temp),  "ok", 5,   _("Heating Bed"), verbose=False)
+    app.macro("M109 S{0}".format(ext_temp),  "*", 400,  _("Waiting for nozzle to reach temperature {0}&deg;".format(ext_temp)) ) #heating and waiting.
+    app.macro("M190 S{0}".format(bed_temp),  "*", 400,  _("Waiting for bed to reach temperature {0}&deg;".format(bed_temp)) ) #heating and waiting.
+    
     try:
         wire_end = app.config.get('settings', 'wire_end', 0)
     except KeyError:
