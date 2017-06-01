@@ -121,7 +121,8 @@ def process_command(gcs, line):
         trigger = True
          
     elif (code == 'M220' or # Set speed factor
-          code == 'M221' ): # Set extruder factor
+          code == 'M221' or # Set extruder factor 
+          code == 'M25' ): #Pause
         """ Printing action """
         callback_name += ':printing'
         if 'S' in fields:
