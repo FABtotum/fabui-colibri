@@ -252,6 +252,9 @@
 	"M31": {
 		"desc": "Time since last M109"
 	},
+	"M25":{
+		"desc": "Pause print"
+	},
 	"M42": {
 		"desc": "Change pin value. If P is ommited, led pin will be used.",
 		"params": {
