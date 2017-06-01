@@ -28,9 +28,11 @@ class Projectsmanager extends FAB_Controller {
 		);
 		
 		$installSamplesButton = '';
+		/*
 		if(file_exists($this->config->item('samples_file'))){
 			$installSamplesButton = '<button id="install-samples" class="btn bg-color-magenta txt-color-white"><i class="fa fa-cubes"></i> <span class="hidden-xs">'._("Install samples").'</span> </button>';
 		}
+		*/
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
 		<a class="btn btn-success" href="projectsmanager/add-project"><i class="fa fa-plus"></i> <span class="hidden-xs">'._("Add new project").'</span> </a>

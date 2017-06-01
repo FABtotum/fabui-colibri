@@ -281,9 +281,10 @@ class Install extends FAB_Controller {
 		$installSamples = false;
 		
 		if( isset($postData['samples']) )
-		{
+		{   /*
 			$installSamples = true;
 			unset($postData['samples']);
+			*/
 		}
 		
 		unset($postData['timezone']);

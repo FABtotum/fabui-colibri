@@ -165,12 +165,14 @@
 									<br>
 									<?php echo _("Click <strong>Install</strong> to complete")?>
 								</p>
+								<!--  
 								<p class="text-center">
 									<label class="checkbox-inline">
 										<input type="checkbox" class="checkbox" name="samples" id="samples" checked>
 										<span><?php echo _("Install gcode samples")?> </span>
 									</label>
 								</p>
+								-->
 							</div>
 						</div>
 					</div>

@@ -224,7 +224,7 @@ endif
 #	The autoinstall flag file is created at compile time
 	$(FAKEROOT_ENV) touch $(BDATA_DIR)/$(WWW_PATH)/AUTOINSTALL
 #	The sample flag file is created at compile time
-	$(FAKEROOT_ENV) touch $(BDATA_DIR)/$(WWW_PATH)/SAMPLES
+#	$(FAKEROOT_ENV) touch $(BDATA_DIR)/$(WWW_PATH)/SAMPLES
 #	Public runtime directories
 #~ 	$(FAKEROOT_ENV) $(INSTALL) -d -g $(WWW_DATA_GID) -m 0775 $(BDATA_DIR)/$(TEMP_PATH)
 #	$(FAKEROOT_ENV) $(INSTALL) -d -g $(WWW_DATA_GID) -m 0775 $(BDATA_DIR)$(LIB_PATH)/plugins
