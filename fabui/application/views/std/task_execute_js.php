@@ -1119,9 +1119,11 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	**/
 	function updateLayer(current, total)
 	{
-		$(".task-layer-current").html((parseInt(current)+1));
-		$(".task-layer-total").html(parseInt(total));
-		$(".layer-info").removeClass("hidden");
+		if(total > 0){
+			$(".task-layer-current").html((parseInt(current)+1));
+			$(".task-layer-total").html(parseInt(total));
+			$(".layer-info").removeClass("hidden");
+		}
 	}
 	<?php endif; ?>
 </script>
