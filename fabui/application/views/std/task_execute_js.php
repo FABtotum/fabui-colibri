@@ -61,6 +61,9 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	var zOverrideValue = 0;
 	// internal state
 	var local_task_state = '';
+	//reloading state
+	var isAborted = false;
+	var isAboting = false;
 	
 	$(document).ready(function() {
 		initSliders();
@@ -909,19 +912,25 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	*/
 	function aborted()
 	{
-		var taskType = "<?php echo ucfirst($type); ?>";
-		openWait('<i class="fa fa-check "></i> '+ _(taskType + " aborted"), _("Reloading page")+"...", false);
-		setTimeout(function(){
-			location.reload();
-		}, 5000);
+		if(isAborted == false){
+			var taskType = "<?php echo ucfirst($type); ?>";
+			openWait('<i class="fa fa-check "></i> '+ _(taskType + " aborted"), _("Reloading page")+"...", false);
+			isAborted = true;
+			setTimeout(function(){
+				location.reload();
+			}, 5000);
+		}
 	}
 	/**
 	*
 	*/
 	function aborting()
 	{
-		var taskType = "<?php echo $type; ?>";
-		openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Aborting")+' '+_(taskType), _("Please wait")+"...", false);
+		if(isAborting == false ){
+			var taskType = "<?php echo $type; ?>";
+			openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Aborting")+' '+_(taskType), _("Please wait")+"...", false);
+			isAborting = true;
+		}
 	}
 	
 	/**
