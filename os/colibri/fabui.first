@@ -68,6 +68,35 @@ case "$1" in
         rm -rf ${PLUGINS_PATH}
         sudo -uwww-data ln -sf /mnt/userdata/plugins ${LIB_PATH}
         
+        
+        if [ -d "/mnt/live/mnt/boot/factory" ]; then
+        
+			# copy heads files
+			if [ -d "/mnt/live/mnt/boot/factory/heads" ]; then
+				
+				cp -f /mnt/live/mnt/boot/factory/heads/* ${LIB_PATH}heads/
+				cp -f /mnt/live/mnt/boot/factory/heads/* ${FABUI_PATH}heads/
+				
+			fi
+			
+			# copy feeders files
+			if [ -d "/mnt/live/mnt/boot/factory/feeders" ]; then
+				
+				cp -f /mnt/live/mnt/boot/factory/feeders/* ${LIB_PATH}feeders/
+				cp -f /mnt/live/mnt/boot/factory/feeders/* ${FABUI_PATH}feeders/
+				
+			fi
+			
+			# copy feeders files
+			if [ -d "/mnt/live/mnt/boot/factory/settings" ]; then
+				
+				cp -f /mnt/live/mnt/boot/factory/settings/* ${LIB_PATH}settings/
+				cp -f /mnt/live/mnt/boot/factory/settings/* ${FABUI_PATH}settings/
+				
+			fi
+        
+        
+        fi
         sudo chown -R 33.33 /mnt/userdata
     fi
     
