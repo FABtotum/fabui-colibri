@@ -245,9 +245,9 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     
     # read Factory settings
     factory = None
-    if os.path.exists('/mnt/live/mnt/boot/factory.json'):
+    if os.path.exists('/mnt/live/mnt/boot/factory/settings/settings.json'):
         try:
-            with open('/mnt/live/mnt/boot/factory.json') as json_f:
+            with open('/mnt/live/mnt/boot/factory/settings/settings.json') as json_f:
                 factory = json.load(json_f)
         except:
             # Continue if the file is not there
