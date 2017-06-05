@@ -91,8 +91,7 @@ def process_command(gcs, line):
     elif code == 'M83': # Rel E mode
         gcs.gcode_state['axis_relative_mode']['e'] = True
     
-    elif (code == 'M0' or # Unconditional stop 
-        code == 'M1' or # Same as M0
+    elif ( code == 'M1' or # Same as M0
         code == 'M3' or # Spindle CounterClocwise
         code == 'M4' or # Spindle Clocwise
         code == 'M6' ): # Laser
@@ -121,8 +120,7 @@ def process_command(gcs, line):
         trigger = True
          
     elif (code == 'M220' or # Set speed factor
-          code == 'M221' or # Set extruder factor 
-          code == 'M25' ): #Pause
+          code == 'M221' ): # Set extruder factor 
         """ Printing action """
         callback_name += ':printing'
         if 'S' in fields:
@@ -143,6 +141,13 @@ def process_command(gcs, line):
         """ UI action """
         callback_name += ':message'
         callback_data = line.split("M117")[1].strip()
+        trigger = True
+    
+    elif (code == 'M0' or
+          code == 'M25' or
+          code == 'M226' ):
+        """ PAUSE ACTION """
+        callback_name += ':pause'
         trigger = True
         
     return trigger, callback_name, callback_data

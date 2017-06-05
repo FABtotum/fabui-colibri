@@ -348,9 +348,7 @@ class GCodePusher(object):
                     value = float( data[1] )
                     self.trace( _("Extruder flow set to {0}%").format(value) )
                     self.override_stats['flow_rate'] = float(data[1])
-                    monitor_write = True
-                elif data[0] == 'M25':
-                    self.pause()              
+                    monitor_write = True           
                     
             elif action == 'milling':
                 if data[0] == 'M0':
@@ -376,6 +374,9 @@ class GCodePusher(object):
                     self.override_stats['laser'] = float(data[1])
                     monitor_write = True
                     
+            elif action == 'pause':
+                self.pause()
+            
             elif action == 'message':
                 self.task_stats['message'] = data
                 self.trace( data )

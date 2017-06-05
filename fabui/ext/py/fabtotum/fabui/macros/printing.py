@@ -33,7 +33,7 @@ from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.macros.common import getPosition, configure_head
 
 def pause_additive(app, args=None, lang='en_US.UTF-8'):
-    app.macro("M999",   "ok", 1,    _("Clearing error state"), verbose=False)
+    app.macro("M999",   "ok", 5,    _("Clearing error state"), verbose=False)
     #app.macro("M756",   "ok", 1,    _("Clearing error state"))
     app.macro("M400",   "ok", 240,    _("Waiting for all moves to finish"), verbose=False)
     position = getPosition(app, lang)
