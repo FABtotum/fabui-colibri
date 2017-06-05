@@ -61,12 +61,21 @@ if(!function_exists('loadSettings'))
 	 *  @return settings configuration
 	 * 
 	 */
-	function loadSettings()
+	function loadSettings($factory = false)
 	{
 		$CI =& get_instance();
 		$CI->load->helper('file');
 		$CI->config->load('fabtotum');
-		$settings = json_decode(file_get_contents($CI->config->item('settings')), true);
+		
+		if($factory){
+			$factory_file = $CI->config->item('fabui_path').'settings/settings.json';
+			if(file_exists($factory_file))
+				$settings = json_decode(file_get_contents($factory_file), true);
+			else
+				$settings = json_decode(file_get_contents($CI->config->item('settings')), true);
+		}else{
+			$settings = json_decode(file_get_contents($CI->config->item('settings')), true);
+		}
 		return $settings;
 	}
 }
@@ -264,6 +273,20 @@ if(!function_exists('loadHeads'))
 		}
 
 		return $heads;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('loadHead')){
+	/**
+	 * 
+	 */
+	function loadHead($head_name)
+	{
+		$heads = loadHeads();
+		if(array_key_exists ($head_name, $heads)){
+			return $heads[$head_name];
+		}
+		return false;
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
