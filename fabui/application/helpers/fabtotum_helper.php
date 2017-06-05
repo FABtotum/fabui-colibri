@@ -350,6 +350,21 @@ if(!function_exists('loadFeeders'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('loadFeeder'))
+{	
+	/***
+	 * 
+	 */
+	function loadFeeder($feeder_name)
+	{
+		$feeders = loadFeeders();
+		if(array_key_exists ($feeder_name, $feeders)){
+			return $feeders[$feeder_name];
+		}
+		return false;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('removeHeadInfo'))
 {
 	function removeHeadInfo($head_filename)
