@@ -59,7 +59,7 @@ $config['menu'] = array(
 				'url' => 'maintenance/head'
 			),
 			'spool' => array(
-				'title' => _("Spool managment"),
+				'title' => _("Spool management"),
 				'icon' => 'fabui-spool-front',
 				'url' => 'maintenance/spool-management'
 			),
