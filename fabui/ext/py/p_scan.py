@@ -89,10 +89,13 @@ class ProbeScan(GCodePusher):
         self.send('G0 X{0} Y{1} F{2}'.format(x, y, self.XY_FEEDRATE) )
         self.send('M400')
         
-        reply = self.send('G30', expected_reply = 'echo:', timeout = 200)
+        #reply = self.send('G30', expected_reply = 'echo:', timeout = 200)
+        reply = self.send('G30', timeout = 200)
         result = parseG30(reply)
         if result:
-            z = result['z']            
+            x = result['x']
+            y = result['y']
+            z = result['z']
             return [x,y,z,1]
             
         return None
@@ -207,6 +210,9 @@ class ProbeScan(GCodePusher):
         skipping = 0
         # Number of skips left to do
         to_skip = 0
+        
+        #disble homing check for probing
+        self.send("M733 S0")
 
         for x_idx in xrange(0, x_num):
             x_pos = x1 + step*x_idx
@@ -295,6 +301,8 @@ class ProbeScan(GCodePusher):
         
         self.progress = ( float(probe_num) / float(total_num) ) * 100.0
         
+        #enable homeing check
+        self.send("M733 S1")
         if not self.is_aborted():
             self.trace( _("Saving point cloud to file {0}").format(cloud_file) )
             self.save_as_cloud(points, cloud_file)
