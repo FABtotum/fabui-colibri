@@ -581,7 +581,7 @@ function handleRotatingScan()
 	var action = button.attr('data-action');
 	
 	if(action == 'prepare'){
-		openWait('<i class="fa fa-spinner fa-spin"></i> Preaparing Scan');
+		openWait('<i class="fa fa-spinner fa-spin"></i> Preparing Scan');
 		$.ajax({
 			type: 'get',
 			url: '/fabui/scan/prepareScan',
@@ -734,7 +734,7 @@ function handlePhotogrammetry()
 	var action = button.attr('data-action');
 	
 	if(action == 'prepare'){
-		openWait('<i class="fa fa-spinner fa-spin"></i> Preaparing Scan');
+		openWait('<i class="fa fa-spinner fa-spin"></i> Preparing Scan');
 		$.ajax({
 			type: 'get',
 			url: '/fabui/scan/prepareScan',
