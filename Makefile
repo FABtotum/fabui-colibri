@@ -328,6 +328,8 @@ $(OS_COMMON_STAMP):
 # CRON file
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)$(CRON_FOLDER)
 	$(FAKEROOT_ENV) install -D $(OS_FILES_DIR)/common/cron/root $(BDATA_DIR)$(CRON_FOLDER)
+# DHCPCD config
+	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/dhcpcd.conf $(BDATA_DIR)/etc/dhcpcd.conf
 # 	Create a stamp file
 	touch $@
 	
