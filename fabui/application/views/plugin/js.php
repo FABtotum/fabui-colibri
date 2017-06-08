@@ -55,10 +55,10 @@
 	
 	function loadOnlinePlugins()
 	{
-		var loading = '<h2 class="text-center"><i class="fa fa-cog fa-spin fa-fw" aria-hidden="true"></i> <?php echo _('Checking online repository');?>...</h2>';
+		var loading = "<h2 class=\"text-center\"><i class=\"fa fa-cog fa-spin fa-fw\" aria-hidden=\"true\"></i> <?php echo _("Checking online repository");?>...</h2>";
 		$("#online-table").html(loading);
 		
-		$.get("<?php echo site_url('plugin/getOnline') ?>", function(data, status){
+		$.get("<?php echo site_url('plugin/getOnline') ?>", function(data, status){ 
 			if(data)
 			{
 				populateOnlineTable(data);
