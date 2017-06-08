@@ -270,13 +270,14 @@ def hardwareBootstrap(gcs, config = None, logger = None):
             probe['retract'] = factory['probe']['r']
             probe['length']  = factory['probe']['length']
             hardwareID = factory['hardware']['id']
-            
+            wire_end = factory['wire_end']
             log.info("Factory settings applied")
             
             config.set('settings', 'probe.e', probe['extend'])
             config.set('settings', 'probe.r', probe['retract'])
             config.set('settings', 'probe.length', probe['length'])
             config.set('settings', 'hardware.id', hardwareID)
+            config.set('settings', 'wire_end', wire_end)
             config.save('settings')
     
     # Raise probe
