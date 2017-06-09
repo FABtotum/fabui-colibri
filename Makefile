@@ -277,6 +277,8 @@ $(OS_COLIBRI_STAMP):
 		$(BDATA_DIR)/etc/default/fabui
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fabui.first \
 		$(BDATA_DIR)/etc/firstboot.d/fabui	
+	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/network.first \
+		$(BDATA_DIR)/etc/firstboot.d/network	
 		
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fixes.init \
 		$(BDATA_DIR)/etc/init.d/fixes
@@ -288,6 +290,8 @@ $(OS_COLIBRI_STAMP):
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/rc.d/rc.firstboot.d
 	$(FAKEROOT_ENV) ln -fs ../../firstboot.d/fabui \
 		$(BDATA_DIR)/etc/rc.d/rc.firstboot.d/S10fabui
+	$(FAKEROOT_ENV) ln -fs ../../firstboot.d/network \
+		$(BDATA_DIR)/etc/rc.d/rc.firstboot.d/S09network
 	
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/rc.d/rc.startup.d	
 	$(FAKEROOT_ENV) ln -fs ../../init.d/fabtotum \
@@ -330,6 +334,15 @@ $(OS_COMMON_STAMP):
 	$(FAKEROOT_ENV) install -D $(OS_FILES_DIR)/common/cron/root $(BDATA_DIR)$(CRON_FOLDER)
 # DHCPCD config
 	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/dhcpcd.conf $(BDATA_DIR)/etc/dhcpcd.conf
+# Network manager
+	$(FAKEROOT_ENV) install -d -m 0775 $(BDATA_DIR)/etc/default
+	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/network.default $(BDATA_DIR)/etc/default/network
+	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/ifplugd.default $(BDATA_DIR)/etc/default/ifplugd
+	
+#~ 	$(FAKEROOT_ENV) install -d -m 0775 $(BDATA_DIR)/var/lib/connman
+#~ 	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/connman/ethernet.config $(BDATA_DIR)/var/lib/connman/ethernet.config
+	$(FAKEROOT_ENV) install -d -m 0775 $(BDATA_DIR)/etc/connman
+	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/connman/main.conf $(BDATA_DIR)/etc/connman/main.conf
 # 	Create a stamp file
 	touch $@
 	

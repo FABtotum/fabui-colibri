@@ -10,14 +10,28 @@
 ##                                                                       ##
 ###########################################################################
 
+test -r /etc/default/network && source /etc/default/network
+[ -z $NETWORK_MANAGER ] && NETWORK_MANAGER=ifupdown
+
 INTERFACESD=/etc/network/interfaces.d
 
-set_static()
+ifupdown_cleanup()
 {
+	IFACE=${1}
+	ifdown --force $IFACE
+	ip addr flush dev $IFACE
+}
+
+set_static_ifupdown()
+{
+	
     IFACE=${1}
     IP=${2}
     NETMASK=${3}
     GATEWAY=${4}
+    
+    ifupdown_cleanup $IFACE
+    
 cat <<EOF > $INTERFACESD/$IFACE
 # Automatically generated, do not edit
 
@@ -28,11 +42,28 @@ iface $IFACE inet static
   netmask  $NETMASK
   gateway  $GATEWAY
 EOF
+
+	/etc/init.d/network restart
 }
 
-set_dhcp()
+set_static_connman()
+{
+	IFACE=${1}
+    IP=${2}
+    NETMASK=${3}
+    GATEWAY=${4}
+    
+	ETH_SRV=$(ip link show dev $IFACE | grep link/ether | awk '{print $2}' | sed -e s@:@@g )
+	
+	connmanctl config $ETH_SRV ipv4 manual $IP $NETMASK $GATEWAY
+}
+
+set_dhcp_ifupdown()
 {
     IFACE=${1}
+    
+    ifupdown_cleanup $IFACE
+    
 cat <<EOF > $INTERFACESD/$IFACE
 # Automatically generated, do not edit
 
@@ -40,6 +71,17 @@ allow-hotplug $IFACE
 auto $IFACE
 iface $IFACE inet dhcp
 EOF
+
+	/etc/init.d/network restart
+}
+
+set_dhcp_connman()
+{
+	IFACE=${1}
+	
+	ETH_SRV=$(ip link show dev $IFACE | grep link/ether | awk '{print $2}' | sed -e s@:@@g )
+	
+	connmanctl config $ETH_SRV ipv4 dhcp
 }
 
 usage()
@@ -111,23 +153,29 @@ if [[ $MODE == "static" ]]; then
     fi
 fi
 
-ifdown --force $IFACE
-ip addr flush dev $IFACE
-
 case $MODE in
     dhcp)
-        set_dhcp $IFACE
+		if [ $NETWORK_MANAGER == "ifupdown" ]; then
+			set_dhcp_ifupdown $IFACE
+		elif [ $NETWORK_MANAGER == "connman" ]; then
+			set_dhcp_connman $IFACE
+		else
+			echo "error: Unsupported network manager \'$NETWORK_MANAGER\'"
+			exit 1
+		fi
         ;;
     static)
-        set_static $IFACE $IP $NETMASK $GATEWAY
+		if [ $NETWORK_MANAGER == "ifupdown" ]; then
+			set_static_ifupdown $IFACE $IP $NETMASK $GATEWAY
+		elif [ $NETWORK_MANAGER == "connman" ]; then
+			set_static_connman $IFACE $IP $NETMASK $GATEWAY
+		else
+			echo "error: Unsupported network manager \'$NETWORK_MANAGER\'"
+			exit 1
+		fi
         ;;
     *)
         echo "error: unknown mode \'$MODE\'"
         usage
         ;;
 esac
-
-#~ /etc/init.d/network restart
-#ifup $IFACE
-
-/etc/init.d/network restart
