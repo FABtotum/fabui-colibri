@@ -48,6 +48,7 @@ def extrude(app, args, lang='en_US.UTF-8'):
     units_e = feeder['steps_per_unit']
     
     app.macro("M92 E{0}".format(units_e), "ok", 2, _("Setting extruder mode") )
+    app.macro("G92 E0", "ok", 2, _("Reset position"), verbose=False)
     app.macro("M302",  "ok", 1,    _("Allowing cold extrusion") )
     app.macro("G91",   "ok", 1,    _("Setting rel position") )
     app.macro("G0 E{0} F400".format(filamentToExtrude),    "ok", 300,    _("Extruding...") )

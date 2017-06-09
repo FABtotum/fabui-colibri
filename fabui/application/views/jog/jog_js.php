@@ -486,7 +486,7 @@ if(!isset($rpm_max)) 		$rpm_max = 14000;
 			extruder_mode = 'extruder';
 		}
 		
-		fabApp.jogMdi("M83\nG0 E"+sign+""+extruderStep+" F"+extruderFeed, writeJogResponse);
+		fabApp.jogMdi("G91\nG0 E"+sign+""+extruderStep+" F"+extruderFeed, writeJogResponse);
 	}
 	
 	function unlock_touch()
