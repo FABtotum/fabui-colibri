@@ -119,6 +119,8 @@ class UpdateApplication(GCodePusher):
                 boot = BootTask("boot", remote_boot)
                 self.factory.addTask(boot)
 
+		self.send('M105 R0 U255 B0 S50')
+
         self.factory.setStatus('downloading')
         for task in self.factory.getTasks():
             self.factory.setCurrentTask( task.getName() )
@@ -129,7 +131,9 @@ class UpdateApplication(GCodePusher):
         for task in self.factory.getTasks():
             self.factory.setCurrentTask( task.getName() )
             self.factory.update()
+            self.send('M105 R0 U255 B0 S100')
             task.install()
+            self.send('M105 R0 U255 B0 S100')
 
         print "finishing task"
         self.finish_task()
