@@ -135,6 +135,7 @@ class UpdateApplication(GCodePusher):
             task.install()
             self.send('M105 R0 U255 B0 S100')
 
+		self.playBeep()
         print "finishing task"
         self.finish_task()
 
