@@ -1489,6 +1489,7 @@ fabApp = (function(app) {
 		$.get(control_url + '/getSettings', function(data, status){
 			app.analizeTopBar(data);
 			app.analizeMenu(data);
+			app.setInstalledHeadInfo(data);
 		});
 	}
 	/**
@@ -1537,6 +1538,13 @@ fabApp = (function(app) {
 		$("#top-temperatures").removeClass('hidden');
 	}
 	/**
+	 * get installed head from settings and print head name to top bar
+	 */
+	app.setInstalledHeadInfo = function(settings)
+	{
+		$(".installead-head-name").html(heads[settings.hardware.head].name);	
+	}
+	/**
 	* initi vars from localstorage if it is enabled
 	**/
 	app.initFromLocalStorage = function ()
@@ -1547,15 +1555,12 @@ fabApp = (function(app) {
 			}
 		} 
 	}
-	
 	/**
 	 * get feeds
 	 **/
 	app.getFeeds = function ()
 	{
-		$.get(dashboard_url + '/updateFeeds', function(data, status){
-			
-		});
+		$.get(dashboard_url + '/updateFeeds', function(data, status){});
 	}
 	/**
 	* get network interfaces and show icon on ribbon

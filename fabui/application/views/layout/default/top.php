@@ -39,6 +39,7 @@
 		</div>
 		<!-- END AJAX-DROPDOWN -->
 	</div>
+	
 	<!-- pulled right: nav area -->
 	<div class="pull-right top-bar">
 		<!-- collapse menu button -->
@@ -68,10 +69,8 @@
 				<a href="javascript:void(0)" style="cursor: pointer !important;" title="Jog" rel="tooltip" data-placement="left" data-html="true" data-original-title="Jog"><i class="fa fa-gamepad"></i></a>
 			</span>
 			<div class="top-ajax-jog-dropdown">
-
 					<!-- jog controls placeholder -->
 					<div class="top-ajax-jog-controls-holder"></div>
-
 			</div>
 		</div>
 	</div>
@@ -99,5 +98,12 @@
 		</div>
 	</div>
 	<!-- END TEMPERATURES CONTROL BUTTONS -->
+	<!-- INSTALLED HEAD INFO NAME -->
+	<div style="padding:0 13px;" class="hidden-xs pull-right">
+		<span>
+			<a href="<?php echo site_url('#maintenance/head'); ?>" style="display: inline-block; margin: 18px 0; font-weight: 70; color:white;"><span class="installead-head-name"></span></a>
+		</span>
+	</div>
+	<!-- END INSTALLED HEAD INFO NAME -->
 	<!-- end pulled right: nav area -->
 </header>
