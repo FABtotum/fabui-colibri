@@ -74,24 +74,24 @@ case "$1" in
 			# copy heads files
 			if [ -d "/mnt/live/mnt/boot/factory/heads" ]; then
 				
-				cp -f /mnt/live/mnt/boot/factory/heads/* ${LIB_PATH}heads/
-				cp -f /mnt/live/mnt/boot/factory/heads/* ${FABUI_PATH}heads/
+				cp -f /mnt/live/mnt/boot/factory/heads/* ${LIB_PATH}heads/ &> /dev/null
+				cp -f /mnt/live/mnt/boot/factory/heads/* ${FABUI_PATH}heads/ &> /dev/null
 				
 			fi
 			
 			# copy feeders files
 			if [ -d "/mnt/live/mnt/boot/factory/feeders" ]; then
 				
-				cp -f /mnt/live/mnt/boot/factory/feeders/* ${LIB_PATH}feeders/
-				cp -f /mnt/live/mnt/boot/factory/feeders/* ${FABUI_PATH}feeders/
+				cp -f /mnt/live/mnt/boot/factory/feeders/* ${LIB_PATH}feeders/ &> /dev/null
+				cp -f /mnt/live/mnt/boot/factory/feeders/* ${FABUI_PATH}feeders/ &> /dev/null
 				
 			fi
 			
 			# copy feeders files
 			if [ -d "/mnt/live/mnt/boot/factory/settings" ]; then
 				
-				cp -f /mnt/live/mnt/boot/factory/settings/* ${LIB_PATH}settings/
-				cp -f /mnt/live/mnt/boot/factory/settings/* ${FABUI_PATH}settings/
+				cp -f /mnt/live/mnt/boot/factory/settings/* ${LIB_PATH}settings/ &> /dev/null
+				cp -f /mnt/live/mnt/boot/factory/settings/* ${FABUI_PATH}settings/ &> /dev/null
 				
 			fi
         
