@@ -31,7 +31,7 @@ set_static_ifupdown()
     GATEWAY=${4}
     
     ifupdown_cleanup $IFACE
-    
+    if [ x"$GATEWAY" != x"" ]; then
 cat <<EOF > $INTERFACESD/$IFACE
 # Automatically generated, do not edit
 
@@ -43,6 +43,18 @@ iface $IFACE inet static
   gateway  $GATEWAY
 EOF
 
+	else
+	
+cat <<EOF > $INTERFACESD/$IFACE
+# Automatically generated, do not edit
+
+allow-hotplug $IFACE
+auto $IFACE
+iface $IFACE inet static
+  address  $IP
+  netmask  $NETMASK
+EOF
+	fi
 	/etc/init.d/network restart
 }
 
@@ -146,7 +158,8 @@ then
 fi
 
 if [[ $MODE == "static" ]]; then
-    if [[ -z $IP ]] || [[ -z $NETMASK ]] || [[ -z $GATEWAY ]]; then
+    #~ if [[ -z $IP ]] || [[ -z $NETMASK ]] || [[ -z $GATEWAY ]]; then
+    if [[ -z $IP ]] || [[ -z $NETMASK ]]; then
         echo "error: In STATIC mode you must provide ip, netmask and gateway"
         usage
         exit 1

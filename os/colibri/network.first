@@ -35,25 +35,25 @@ config_connman()
 
 config_ifupdown()
 {
-	#~ sh /usr/share/fabui/ext/bash/set_ethernet.sh -i$IFACE -S -a $IP -g $GATEWAY -n $NETMASK &> /dev/null
-cat <<EOF > $INTERFACESD/$IFACE
-# Automatically generated, do not edit
+	sh /usr/share/fabui/ext/bash/set_ethernet.sh -i$IFACE -S -a $IP -n $NETMASK &> /dev/null
+#~ cat <<EOF > $INTERFACESD/$IFACE
+#~ # Automatically generated, do not edit
 
-allow-hotplug $IFACE
-auto $IFACE
-iface $IFACE inet static
-  address  $IP
-  netmask  $NETMASK
-#  gateway  $GATEWAY
-EOF
-	/etc/init.d/network restart
+#~ allow-hotplug $IFACE
+#~ auto $IFACE
+#~ iface $IFACE inet static
+  #~ address  $IP
+  #~ netmask  $NETMASK
+#~ #  gateway  $GATEWAY
+#~ EOF
+	#~ #/etc/init.d/network restart
+	#~ ifdown $IFACE
+	#~ ifup $IFACE
 }
 
 case "$1" in
   pre)
-    boot_msg "Configuring network."
-    
-    echo "Network Manager: $NETWORK_MANAGER"
+    boot_msg "Configuring: $NETWORK_MANAGER"
     
     if [ "$NETWORK_MANAGER" == "connman" ]; then
 		config_connman
