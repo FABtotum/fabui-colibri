@@ -22,7 +22,7 @@
 		<div class="panel panel-default">
 			<div class="panel-body status">
 				<div class="who clearfix">
-					<h4 class="text-center"><?php echo _("Assited calibration"); ?></h4>
+					<h4 class="text-center"><?php echo _("Assisted calibration"); ?></h4>
 				</div>
 				<div class="text hidden-xs text-center">
 					<p><?php echo _("Helps you correct the nozzle height during prints. Each time you swap heads you should re-calibrate"); ?></p>
