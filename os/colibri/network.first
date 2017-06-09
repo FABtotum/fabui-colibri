@@ -35,7 +35,18 @@ config_connman()
 
 config_ifupdown()
 {
-	sh /usr/share/fabui/ext/bash/set_ethernet.sh -i$IFACE -S -a $IP -g $GATEWAY -n $NETMASK &> /dev/null
+	#~ sh /usr/share/fabui/ext/bash/set_ethernet.sh -i$IFACE -S -a $IP -g $GATEWAY -n $NETMASK &> /dev/null
+cat <<EOF > $INTERFACESD/$IFACE
+# Automatically generated, do not edit
+
+allow-hotplug $IFACE
+auto $IFACE
+iface $IFACE inet static
+  address  $IP
+  netmask  $NETMASK
+#  gateway  $GATEWAY
+EOF
+	/etc/init.d/network restart
 }
 
 case "$1" in

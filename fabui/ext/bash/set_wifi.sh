@@ -11,8 +11,18 @@
 ##                                                                      ##
 ##########################################################################
 
+test -r /etc/default/network && source /etc/default/network
+[ -z $NETWORK_MANAGER ] && NETWORK_MANAGER=ifupdown
+
 INTERFACESD=/etc/network/interfaces.d
 MAX_STATIONS=10
+
+ifupdown_cleanup()
+{
+	IFACE=${1}
+	ifdown --force $IFACE
+	ip addr flush dev $IFACE
+}
 
 set_wpa_supplicant_default()
 {
@@ -320,37 +330,80 @@ fi
 HOSTAPD_CONF=/etc/hostapd/${IFACE}.conf
 WPA_CONF=/etc/wpa_supplicant/${IFACE}.conf
 
-ifdown --force $IFACE
-ip addr flush dev $IFACE
-
 case $MODE in
     dhcp)
         if [ -n "$PSK" ]; then
             PASS="-"
         fi
-        set_wpa_supplicant_conf "$SSID" "$PASS" "$PSK"
-        set_dhcp "$IFACE"
+        
+        if [ $NETWORK_MANAGER == "ifupdown" ]; then	
+			ifupdown_cleanup "$IFACE"
+			set_wpa_supplicant_conf "$SSID" "$PASS" "$PSK"
+			set_dhcp "$IFACE"
+			/etc/init.d/network restart
+		elif [ $NETWORK_MANAGER == "connman" ]; then
+			true
+		else
+			echo "error: Unsupported network manager \'$NETWORK_MANAGER\'"
+			exit 1
+		fi
         ;;
     static)
-        set_wpa_supplicant_conf "$SSID" "$PASS"
-        set_static "$IFACE" "$IP" "$NETMASK" "$GATEWAY"
+        if [ -n "$PSK" ]; then
+            PASS="-"
+        fi
+        
+        if [ $NETWORK_MANAGER == "ifupdown" ]; then	
+			ifupdown_cleanup "$IFACE"
+			set_wpa_supplicant_conf "$SSID" "$PASS"
+			set_static "$IFACE" "$IP" "$NETMASK" "$GATEWAY"
+			/etc/init.d/network restart
+		elif [ $NETWORK_MANAGER == "connman" ]; then
+			true
+		else
+			echo "error: Unsupported network manager \'$NETWORK_MANAGER\'"
+			exit 1
+		fi	
         ;;
     ap)
-        set_hostapd_conf "$IFACE" "$SSID" "$PASS" "$CHANNEL"
-        set_static_ap "$IFACE" "$IP" "$NETMASK"
+		if [ $NETWORK_MANAGER == "ifupdown" ]; then
+			ifupdown_cleanup "$IFACE"
+			set_hostapd_conf "$IFACE" "$SSID" "$PASS" "$CHANNEL"
+			set_static_ap "$IFACE" "$IP" "$NETMASK"
+			/etc/init.d/network restart
+		elif [ $NETWORK_MANAGER == "connman" ]; then
+			true
+		else
+			echo "error: Unsupported network manager \'$NETWORK_MANAGER\'"
+			exit 1
+		fi
         ;;
     default)
-        set_wpa_supplicant_default
-        set_default "$IFACE"
+		if [ $NETWORK_MANAGER == "ifupdown" ]; then
+			ifupdown_cleanup "$IFACE"
+			set_wpa_supplicant_default
+			set_default "$IFACE"
+			/etc/init.d/network restart
+		elif [ $NETWORK_MANAGER == "connman" ]; then
+			true
+		else
+			echo "error: Unsupported network manager \'$NETWORK_MANAGER\'"
+			exit 1
+        fi
         ;;
     disabled)
-        set_disabled "$IFACE"
+		if [ $NETWORK_MANAGER == "ifupdown" ]; then
+			ifupdown_cleanup "$IFACE"
+			set_disabled "$IFACE"
+		elif [ $NETWORK_MANAGER == "connman" ]; then
+			true
+		else
+			echo "error: Unsupported network manager \'$NETWORK_MANAGER\'"
+			exit 1
+		fi
         ;;
     *)
         echo "error: unknown mode \'$MODE\'"
         usage
         ;;
 esac
-
-#ifup $IFACE
-/etc/init.d/network restart
