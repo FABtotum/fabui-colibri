@@ -54,7 +54,7 @@
 		
 		$widget = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'jog-widget';
-		$widget->header = array('icon' => 'icon-fab-jog', "title" => "<h2>"._("Jog Panel")."</h2>");
+		$widget->header = array('icon' => 'fabui-jog', "title" => "<h2>"._("Jog")."</h2>");
 		$widget->body   = array('content' => $this->load->view('jog/widget', $data, true ), 'class'=>'');
 		
 		$this->addJsInLine($this->load->view('jog/jog_js', $data, true));
