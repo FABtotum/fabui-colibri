@@ -125,7 +125,7 @@
 				//highlitght mentions
 				$mentions = $temporaryFeed['entities']['user_mentions'];
 				foreach($mentions as $mention){
-					$temporaryFeed['text'] = highlight_phrase($temporaryFeed['text'], $mention['screen_name'], '<a target="_blank" href="https://twitter.com/'.$mention['screen_name'].'">', '</a>');
+					$temporaryFeed['text'] = highlight_phrase($temporaryFeed['text'], '@'.$mention['screen_name'], '<a target="_blank" href="https://twitter.com/'.$mention['screen_name'].'">', '</a>');
 				}
 				//highlight urls
 				$urls = $temporaryFeed['entities']['urls'];
