@@ -224,7 +224,7 @@ if(!function_exists('displayTwitterFeedItem'))
 			<div class="panel-body status">
 				<div class="who clearfix">
 					<img src="{$feed['user']['profile_image_url']}" />
-					<span class="name"><b>{$feed['user']['screen_name']}</b>
+					<span class="name"><b><a target="_blank" href="https://twitter.com/{$feed['user']['screen_name']}">{$feed['user']['screen_name']}</a></b>
 					<span class="pull-right"><a href="{$post_url}" target="_blank" title="View on Twitter"><i class="fa fa-twitter"></i></a></span></span>
 					<span class="from">{$date}
 						{$place}
