@@ -14,6 +14,8 @@
 test -r /etc/default/network && source /etc/default/network
 [ -z $NETWORK_MANAGER ] && NETWORK_MANAGER=ifupdown
 
+test -r /usr/share/fabui/ext/bash/connman_functions.sh && source /usr/share/fabui/ext/bash/connman_functions.sh
+
 INTERFACESD=/etc/network/interfaces.d
 MAX_STATIONS=10
 
@@ -342,7 +344,7 @@ case $MODE in
 			set_dhcp "$IFACE"
 			/etc/init.d/network restart
 		elif [ $NETWORK_MANAGER == "connman" ]; then
-			true
+			create_connman_wifi_config dhcp "$SSID" "$PASS"
 		else
 			echo "error: Unsupported network manager \'$NETWORK_MANAGER\'"
 			exit 1
@@ -372,7 +374,9 @@ case $MODE in
 			set_static_ap "$IFACE" "$IP" "$NETMASK"
 			/etc/init.d/network restart
 		elif [ $NETWORK_MANAGER == "connman" ]; then
-			true
+			disconnect_connman_wifi
+			cleanup_connman_wifi_config
+			ap_mode_connman "$SSID" "$PASS"
 		else
 			echo "error: Unsupported network manager \'$NETWORK_MANAGER\'"
 			exit 1
@@ -385,7 +389,7 @@ case $MODE in
 			set_default "$IFACE"
 			/etc/init.d/network restart
 		elif [ $NETWORK_MANAGER == "connman" ]; then
-			true
+			cleanup_connman_wifi_config
 		else
 			echo "error: Unsupported network manager \'$NETWORK_MANAGER\'"
 			exit 1

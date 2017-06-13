@@ -65,7 +65,8 @@ set_static_connman()
     NETMASK=${3}
     GATEWAY=${4}
     
-	ETH_SRV=$(ip link show dev $IFACE | grep link/ether | awk '{print $2}' | sed -e s@:@@g )
+	ETH_MAC=$(ip link show dev $IFACE | grep link/ether | awk '{print $2}' | sed -e s@:@@g )
+	ETH_SRV="ethernet_${ETH_MAC}_cable"
 	
 	connmanctl config $ETH_SRV ipv4 manual $IP $NETMASK $GATEWAY
 }
@@ -91,7 +92,8 @@ set_dhcp_connman()
 {
 	IFACE=${1}
 	
-	ETH_SRV=$(ip link show dev $IFACE | grep link/ether | awk '{print $2}' | sed -e s@:@@g )
+	ETH_MAC=$(ip link show dev $IFACE | grep link/ether | awk '{print $2}' | sed -e s@:@@g )
+	ETH_SRV="ethernet_${ETH_MAC}_cable"
 	
 	connmanctl config $ETH_SRV ipv4 dhcp
 }

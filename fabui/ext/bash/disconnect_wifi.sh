@@ -2,6 +2,7 @@
 
 test -r /etc/default/network && source /etc/default/network
 [ -z $NETWORK_MANAGER ] && NETWORK_MANAGER=ifupdown
+test -r /usr/share/fabui/ext/bash/connman_functions.sh && source /usr/share/fabui/ext/bash/connman_functions.sh
 
 usage()
 {
@@ -23,7 +24,7 @@ if [ $NETWORK_MANAGER == "ifupdown" ]; then
 	wpa_cli -p /run/wpa_supplicant -i$IFACE disconnect
 	sh /usr/share/fabui/ext/bash/set_wifi.sh -i "${IFACE}" -M "default"
 elif [ $NETWORK_MANAGER == "connman" ]; then
-	true
+	disconnect_connman_wifi
 else
 	echo "error: Unsupported network manager \'$NETWORK_MANAGER\'"
 	exit 1

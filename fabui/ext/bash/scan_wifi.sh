@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Note: this script is unused
+
 usage()
 {
 cat << EOF

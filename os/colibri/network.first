@@ -31,6 +31,7 @@ config_connman()
 	ETH_SRV=$(connmanctl services | grep Wired | awk '{print $3}')
 	
 	connmanctl config $ETH_SRV ipv4 manual $IP $NETMASK $GATEWAY
+	connmanctl enable wifi
 }
 
 config_ifupdown()
