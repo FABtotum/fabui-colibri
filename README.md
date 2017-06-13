@@ -10,10 +10,6 @@ FABUI colibri comes pre-installed on all FABtotum CORE Lite and PRO units shippe
 ### Important 
 Even if you’ve been using FABUI Colibri and testing its beta, a reflash of the SD will be needed on this particular occasion. Make sure to have the latest update!
 
-
-## Support & Contributing
-Please [open an issue](https://github.com/FABtotum/fabui-colibri/issues/new) for support
-
 ## Installation
   - Download the latest archive [here][latest-archive]
   - Use at least 4GB SD Card
@@ -58,6 +54,7 @@ Please [open an issue](https://github.com/FABtotum/fabui-colibri/issues/new) for
   - GCode help supports search by code and description
   - Milling and laser engraving jog support position storing/restoring, useful for multi-step manufacturing or laser height calibration
 
-
+## Support & Contributing
+Please [open an issue](https://github.com/FABtotum/fabui-colibri/issues/new) for support
    
    [latest-archive]: <http://update.fabtotum.com/colibri/armhf/images/sdcard_latest.zip>
