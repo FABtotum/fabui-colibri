@@ -9,6 +9,7 @@ We worked hard, we asked an helping hand to the community, got it, worked hard a
 FABUI colibri comes pre-installed on all FABtotum CORE Lite and PRO units shipped from today on, but is also retrocompatible with all FABtotum personal fabricators out there!
 ### Important 
 Even if you’ve been using FABUI Colibri and testing its beta, a reflash of the SD will be needed on this particular occasion. Make sure to have the latest update!
+
 Once done, make sure to:
 - run a 1.1.x firmware version or above
 - run the first setup
