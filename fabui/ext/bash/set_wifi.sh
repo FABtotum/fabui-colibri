@@ -65,7 +65,7 @@ EOF
 	cat <<EOF >> $WPA_CONF
 network={
   ssid="$SSID"
-  psk=$PSK
+  psk="$PSK"
 }
 EOF
 			else
@@ -357,7 +357,7 @@ case $MODE in
         
         if [ $NETWORK_MANAGER == "ifupdown" ]; then	
 			ifupdown_cleanup "$IFACE"
-			set_wpa_supplicant_conf "$SSID" "$PASS"
+			set_wpa_supplicant_conf "$SSID" "$PASS" "$PSK"
 			set_static "$IFACE" "$IP" "$NETMASK" "$GATEWAY"
 			/etc/init.d/network restart
 		elif [ $NETWORK_MANAGER == "connman" ]; then
