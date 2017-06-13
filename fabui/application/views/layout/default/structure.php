@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 	<head>{head}</head>
-	<body class="smart-style-6">
+	<body class="smart-style-6 fixed-header fixed-navigation">
 		{ga}
 		{top}
 		{sidebar}
