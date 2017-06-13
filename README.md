@@ -2,15 +2,11 @@
 
 the first Operating System in the world completely developed for 3D printing.
 
-## Fabui-colibri beta testing is closed
+## Fabui-colibri 1.0 released!
 
-Thanks to all of you guys for your important and precious contribution, is time to go live now!
+We worked hard, we asked an helping hand to the community, got it, worked hard again and…here we are! The first release of FABUI Colibri  is ready for everyone. No beta test anymore, but the first official release of our User interface and Operating System developed from the ground up for 3D printing and multipurpose personal fabrication.
 
-From now the Development Team will temporarily ignore all new issues to focus on the official release
-
-At the same time as the official release we'll announce the winners of "The Colibri Effect" contest
-
-**Fabui-colibri 1.0** will be released soon
+FABUI colibri comes pre-installed on all FABtotum CORE Lite and PRO units shipped from today on, but is also retrocompatible with all FABtotum personal fabricators out there!
 
 
 ## Support & Contributing
