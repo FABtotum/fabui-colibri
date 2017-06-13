@@ -27,7 +27,7 @@
 	function checkUpdateStatus()
 	{
 		$(".button-container").html('');
-		$('.fabtotum-icon .badge').html('<i class="fa fa-refresh fa-spin"></i>');
+		/*$('.fabtotum-icon .badge').html('<i class="fa fa-refresh fa-spin"></i>');*/
 		$(".status").html('<i class="fa fa-spinner fa-spin"></i> <?php echo _("Checking for updates") ?>');
 		$.ajax({
 			type: "POST",
@@ -48,7 +48,7 @@
 	function noInternetAvailable()
 	{
 		$(".status").html('<i class="fa fa-exclamation-circle"></i><br><?php echo _("No internet connection found") ?><br><?php echo _("Check your connection and try again") ?>');
-		$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-exclamation-circle');
+		/*$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-exclamation-circle');*/
 
 		buttons = '<button class="btn btn-default  action-buttons" id="check-again"> <?php echo _("Check again") ?></button> ';
 		$(".button-container").html(buttons);
@@ -71,10 +71,10 @@
 		
 		if(object.update.available){
 			$(".status").html('<i class="fa fa-exclamation-circle"></i> <?php echo _("New important software updates are now available") ?>');
-			$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-exclamation-circle');
+			/*$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-exclamation-circle');*/
 		}else{
 			$(".status").html('<?php echo _("Great! Your FABtotum Personal Fabricator is up to date") ?>');
-			$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-check');
+			/*$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-check');*/
 		}
 
 		local_data_copy = object;
@@ -439,7 +439,7 @@
 				break;
 			case 'completed':
 				$(".status").html('<i class="fa fa-check"></i> Update completed');
-				$('.fabtotum-icon .badge').addClass('check').find('i').removeClass('fa-spin fa-refresh').addClass('fa-check');
+				/*$('.fabtotum-icon .badge').addClass('check').find('i').removeClass('fa-spin fa-refresh').addClass('fa-check');*/
 				$("#do-abort").remove();
 				fabApp.unFreezeMenu();
 				$(".small").html('<?php echo _("A reboot is needed to apply new features") ?>');
@@ -533,7 +533,7 @@
 		$(".tabs-container").slideUp(function() {
 			$(".fabtotum-icon").slideDown(function(){
 				$(".fabtotum-icon").css( "display", "inline" );
-				$('.fabtotum-icon .badge').find('i').removeClass('fa-exclamation-circle').addClass('fa-spin fa-refresh');
+				/*$('.fabtotum-icon .badge').find('i').removeClass('fa-exclamation-circle').addClass('fa-spin fa-refresh');*/
 
 				var buttons = '';
 				buttons += '<button class="btn btn-default  action-buttons" id="update-details"><i class="fa fa-reorder"></i> <?php echo _("View details") ?></button> ';
