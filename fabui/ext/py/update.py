@@ -118,8 +118,8 @@ class UpdateApplication(GCodePusher):
                 print "+ boot"
                 boot = BootTask("boot", remote_boot)
                 self.factory.addTask(boot)
-
-		self.send('M105 R0 U255 B0 S50')
+        
+        self.send('M105 R0 U255 B0 S50')
 
         self.factory.setStatus('downloading')
         for task in self.factory.getTasks():
@@ -135,7 +135,7 @@ class UpdateApplication(GCodePusher):
             task.install()
             self.send('M105 R0 U255 B0 S100')
 
-		self.playBeep()
+        self.playBeep()
         print "finishing task"
         self.finish_task()
 
@@ -161,7 +161,7 @@ def main():
         bundles     = []
     firmware    = args.firmware
     boot        = args.boot
-    lang		= args.lang
+    lang        = args.lang
     
     app = UpdateApplication(lang=lang)
 
