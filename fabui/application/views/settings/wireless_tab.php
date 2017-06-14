@@ -86,7 +86,7 @@
 						</label>
 					</div>
 					<hr class="simple">
-					<div class="form-group">
+					<div class="form-group" style="<?php if($info['wireless']['support_ap_channel'] == 'no') echo 'display:none;';?>" >
 						<label class="label"><?php echo _('Channel')?></label>
 						<label class="select">
 							<?php echo form_dropdown('ap-channel', $wifiChannels, $info['wireless']['channel'], array('id' => 'ap-channel', 'data-attribute' => $iface) ); ?> <i></i>

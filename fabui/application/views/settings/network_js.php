@@ -280,7 +280,7 @@
 		if( target.startsWith("#wlan") )
 		{
 			var mode = $(target + ' #address-mode').val();
-			if(mode != 'static-ap' && mode != 'disabled')
+			if(mode != 'static-ap' && mode != 'auto-ap' && mode != 'disabled')
 				$("#scanButton").show();
 			else
 				$("#scanButton").hide();
@@ -331,6 +331,14 @@
 				break;
 			case "static-ap":
 				$("#"+iface+"-tab #address-container").slideDown('slow');
+				$("#"+iface+"-tab #ap-container").slideDown('slow');
+				$("#"+iface+"-tab #gateway-container").slideUp('slow');
+				$("#"+iface+"-tab #dhcp-address-container").slideUp('slow');
+				$("#"+iface+"-table-container").slideUp('slow');
+				$("#scanButton").hide();
+				break;
+			case "auto-ap":
+				$("#"+iface+"-tab #address-container").slideUp('slow');
 				$("#"+iface+"-tab #ap-container").slideDown('slow');
 				$("#"+iface+"-tab #gateway-container").slideUp('slow');
 				$("#"+iface+"-tab #dhcp-address-container").slideUp('slow');

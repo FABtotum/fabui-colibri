@@ -194,6 +194,14 @@ class Settings extends FAB_Controller {
 			
 			$interfaces[$iface] = array('do_scan' => false);
 			
+			if(isset($info['address_mode']))
+			{
+				if($info['address_mode'] == "manual")
+				{
+					$info['address_mode'] == "static";
+				}
+			}
+			
 			if(array_key_exists('wireless', $info) )
 			{
 				$interfaces[$iface]['do_scan'] = true;
@@ -206,6 +214,16 @@ class Settings extends FAB_Controller {
 				if(!isset($info['wireless']['bssid']) && $info['address_mode'] == 'static')
 				{
 					$info['address_mode'] = 'dhcp';
+				}
+				
+				if(isset($info['wireless']['support_ap_channel']))
+				{
+					$info['wireless']['support_ap_channel'] = 'no';
+				}
+				
+				if(isset($info['wireless']['support_ap_custom_address']))
+				{
+					$info['wireless']['support_ap_custom_address'] = 'no';
 				}
 				
 				$info['wireless']['bssid'] = isset($info['wireless']['bssid']) ? $info['wireless']['bssid'] : "";

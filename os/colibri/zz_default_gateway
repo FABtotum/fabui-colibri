@@ -14,7 +14,7 @@ do_post_up()
         IFACE=$( echo ${i} | awk -F "=" '{print $1}' )
 
         if [ "x$DEFAULT" != x"wlan0" ]; then
-            if [ x"$IFACE" == "wlan0" ]; then
+            if [ x"$IFACE" == x"wlan0" ]; then
                 hostapd_cli -p /run/hostapd -i$IFACE get_config &> /dev/null
                 if [ "$?" == "0" ]; then
                     continue

@@ -4,12 +4,33 @@ CONNMAN_SERVICES_DIR="/var/lib/connman"
 CONNMAN_WIFI_CONFIG_FILE="user_wifi.config"
 
 ##
+# Translate interface name to service name
+#
+# $1 - interface (ex: wlan0)
+#
+connman_iface2service()
+{
+    IFACE="$1"
+    IF_MAC=$(ip link show dev $IFACE | grep link/ether | awk '{print $2}' | sed -e s@:@@g )
+    IF_SRV=""
+    
+    if [ x"$IFACE" == x"eth0" ]; then
+        IF_SRV="ethernet_${IF_MAC}_cable"
+    elif [ x"$IFACE" == x"wlan0" ]; then
+        IF_SRV=$(find /var/lib/connman -name  wifi_${IF_MAC}_*)
+        [ -n "$IF_SRV" ] && IF_SRV=$(basename $IF_SRV)
+    fi
+    
+    echo "$IF_SRV"
+}
+
+##
 # Remove current wifi configuration
 #
 connman_cleanup_wifi_config()
 {
-	rm -rf ${CONNMAN_SERVICES_DIR}/wifi_*
-	rm ${CONNMAN_SERVICES_DIR}/${CONNMAN_WIFI_CONFIG_FILE}
+	rm -rf ${CONNMAN_SERVICES_DIR}/wifi_* &> /dev/null
+	rm ${CONNMAN_SERVICES_DIR}/${CONNMAN_WIFI_CONFIG_FILE} &> /dev/null
 }
 
 ##
@@ -30,6 +51,27 @@ connman_service_by_ssid()
 	WIFI_SRV=$(connmanctl services | grep wifi | grep $SSID | awk '{print $NF}')
 	echo $WIFI_SRV
 }
+
+##
+# Get nameservers from resolv.conf.tail and convert to connman format
+#
+connman_get_dns_tail()
+{
+	if [ -f /etc/resolv.conf.tail ]; then
+		cat /etc/resolv.conf.tail | awk '{print $2}' | sed -n '1{x;d};${H;x;s/\n/,/g;p};{H}'
+	fi
+}
+
+##
+# Get nameservers from resolv.conf.head and convert to connman format
+#
+connman_get_dns_head()
+{
+	if [ -f /etc/resolv.conf.head ]; then
+		cat /etc/resolv.conf.head | awk '{print $2}' | sed -n '1{x;d};${H;x;s/\n/,/g;p};{H}'
+	fi
+}
+
 
 ##
 # Scan wifi network and return results
@@ -66,6 +108,7 @@ Name = ${SSID}
 Passphrase = ${PASS}
 IPv4 = dhcp
 EOF
+	connmanctl tether wifi off
 	
 	return 0
 }
@@ -90,7 +133,8 @@ config_wifi_static()
 	IP="$4"
 	NETMASK="$5"
 	GATEWAY="$6"
-	
+	NS=$(connman_get_dns_tail)
+
 	connman_cleanup_wifi_config
 	
 cat <<EOF > ${CONNMAN_SERVICES_DIR}/${CONNMAN_WIFI_CONFIG_FILE}
@@ -99,9 +143,11 @@ cat <<EOF > ${CONNMAN_SERVICES_DIR}/${CONNMAN_WIFI_CONFIG_FILE}
 Type = wifi
 Name = ${SSID}
 Passphrase = ${PASS}
-IPv4 = ${IP}/${NETMASK}/${GW}
+IPv4 = ${IP}/${NETMASK}/${GATEWAY}
+Nameservers = ${NS}
 EOF
-
+	connmanctl tether wifi off
+	
 	return 0
 }
 
@@ -126,9 +172,9 @@ config_wifi_ap()
 	IP="$5"      # Is not configurable
 	NETMASK="$6" # Is not configurable
 	
-	disconnect_wifi "$IFACE"
+	#~ disconnect_wifi "$IFACE"
 	connman_cleanup_wifi_config
-	connman tether wifi on "$SSID" "$PASS"
+	connmanctl tether wifi on "$SSID" "$PASS"
 	
 	return $?
 }
@@ -143,9 +189,9 @@ config_wifi_default()
 {
 	IFACE="$1"
 	
-	disconnect_wifi "$IFACE"
+	#~ disconnect_wifi "$IFACE"
 	connman_cleanup_wifi_config
-	connman tether wifi off
+	connmanctl tether wifi off
 	
 	return 0
 }
@@ -164,7 +210,7 @@ connect_wifi()
 	SSID="$2"
 
 	SRV=$(connmanctl services | grep "$SSID" | awk '{print $NF}')
-	connmanctl scan
+	connmanctl scan wifi
 	connmanctl connect $SRV
 	return 0
 }
@@ -217,10 +263,11 @@ config_ethernet_static()
 	IP="$2"
 	NETMASK="$3"
 	GATEWAY="$4"
+	NS=$(connman_get_dns_tail)
 	
 	ETH_MAC=$(ip link show dev $IFACE | grep link/ether | awk '{print $2}' | sed -e s@:@@g )
 	ETH_SRV="ethernet_${ETH_MAC}_cable"
-	connmanctl config $ETH_SRV ipv4 manual $IP $NETMASK $GATEWAY
+	connmanctl config $ETH_SRV ipv4 manual $IP $NETMASK $GATEWAY nameservers $NS
 	
 	return 0
 }
@@ -248,7 +295,7 @@ get_internet_state()
 #  {
 #    "interface" : {
 #        "driver"       : "Linux kernel driver used by this interface",
-#		 "mac_address"  : "00:00:00:00:00:00",
+#        "mac_address"  : "00:00:00:00:00:00",
 #        "ipv4_address" : "0.0.0.0",
 #        "ipv6_address" : "...",
 #        "gateway"      : "0.0.0.0",
@@ -265,9 +312,137 @@ get_internet_state()
 #
 get_interface_state()
 {
+	if [ -z "$1" ]; then
+		IFACES=$(ls /sys/class/net)
+	else
+		IFACES=$1
+	fi
+
 	echo "{"
-	# for IFACE in list of interfaces
-	# ...
+	PREV=
+	TETHER="no"
+	for iface in $(echo $IFACES); do
+		if [ "$iface" != "lo" ]; then
+		
+			if [ "$iface" == "tether" ]; then
+				TETHER="yes"
+				continue
+			fi
+		
+			# Get driver used by this interface
+			DRIVER_DIR="/sys/class/net/$iface/device/driver"
+			DRIVER=""
+			[ -e "$DRIVER_DIR" ] && DRIVER=$(basename $(readlink $DRIVER_DIR) )
+			SERVICE=$(connman_iface2service $iface)
+			
+			if [ -n "$PREV" ]; then
+				echo -e "  },"
+			fi
+			
+			MAC=$(ip link show dev $iface | grep link/ether | awk '{print $2}')
+			IPv4=""
+			IPv6=""
+			GATEWWAY=""
+			MODE="unknown"
+			PASSPHRASE=""
+			
+			echo "  \"$iface\" : {"
+			echo "    \"driver\" : \"$DRIVER\", "
+			
+			# Get interface addresses
+			if [ -n "$SERVICE" ]; then
+				A=$(connmanctl services $SERVICE | grep "IPv4 " | sed -e 's@IPv4 = \[@@g' -e 's@\]@@g' -e 's@,@@g')
+				B=$(connmanctl services $SERVICE | grep IPv4.Configuration | sed -e 's@IPv4.Configuration = \[@@g' -e 's@\]@@g' -e 's@,@@g')
+				for SEGMENT in $(echo $A $B); do
+					KEY=$(echo $SEGMENT | awk -F= '{print $1}' | sed -e 's@\.@_@g' )
+					VALUE=$(echo $SEGMENT | awk -F= '{print $2}')
+					case $KEY in
+						Method)
+							MODE="$VALUE"
+							;;
+						Address)
+							IPv4="$VALUE"
+							;;
+						Netmask)
+							NETMASK="$VALUE"
+							;;
+						Gateway)
+							GATEWAY="$VALUE"
+							;;
+					esac
+				done
+				
+				SETTINGS_FILE="${CONNMAN_SERVICES_DIR}/${SERVICE}/settings"
+				
+				if [ -e "$SETTINGS_FILE" ]; then
+					PASSPHRASE=$(cat "$SETTINGS_FILE" |  grep Passphrase | awk -F= '{print $2}')
+				fi
+			fi
+			
+			[ $TETHER == "yes" ] && MODE="static-ap"
+			
+			echo "    \"address_mode\" : \"$MODE\","
+			
+			echo "    \"mac_address\" : \"$MAC\","
+			if [ -n "$NETMASK" ]; then
+				eval $(ipcalc -p $NETMASK)
+				echo "    \"ipv4_address\" : \"$IPv4/$PREFIX\","
+			else
+				echo "    \"ipv4_address\" : \"$IPv4\","
+			fi
+			echo "    \"ipv6_address\" : \"$IPv6\","
+			echo -n "    \"gateway\" : \"$GATEWAY\""
+			
+			# Check if the interface has wireless capabilities
+			if [ -e "/sys/class/net/$iface/wireless" ]; then
+				echo ","
+				echo "    \"wireless\" : {"
+				#~ if [[ "$DRIVER" == "rtl8192cu" ]] || [[ "$DRIVER" == "brcmfmac_sdio" ]]; then
+				if [ "$DRIVER" == "brcmfmac_sdio" ] || [ $TETHER == "yes" ] ; then
+					echo "      \"can_be_ap\" : \"yes\","
+				else
+					echo "      \"can_be_ap\" : \"no\","
+				fi
+				echo "      \"support_ap_channel\" : \"no\","
+				echo -n "      \"support_ap_custom_address\" : \"no\""
+				
+				MODE=$(iwconfig $iface | awk '/Mode/{print $1}')
+				
+				if [ x"$MODE" == x"$iface" ]; then
+					MODE=$(iwconfig $iface | awk '/Mode/{print $4}')
+				fi
+				
+				if [ $MODE == "Mode:Master" ] || [ $TETHER == "yes" ]; then
+					echo ","
+					echo "      \"mode\" : \"accesspoint\","
+					SSID=$(connmanctl technologies | grep TetheringIdentifier | awk '{print $NF}')
+					PASSPHRASE=$(connmanctl technologies | grep TetheringPassphrase | awk '{print $NF}')
+					
+					echo "      \"ssid\" : \"$SSID\","
+					echo "      \"passphrase\" : \"$PASSPHRASE\""
+				elif [ $MODE == "Mode:Managed" ]; then
+					echo ","
+					echo "    \"passphrase\" : \"$PASSPHRASE\","
+					a=$(wpa_cli -p /run/wpa_supplicant -i$iface status | sed -e 's@^@"@g; s@$@",@g; s@=@" : "@'; echo -n ",")
+					echo $a | sed -e 's@, ,@@g'
+					
+				elif [ $MODE == "Mode:Auto" ]; then
+					echo ","
+					echo "      \"mode\" : \"auto\""
+				else
+					echo ""
+				fi
+				
+				echo "    }"
+			else
+				echo ""
+			fi
+			
+			#~ echo "  }"
+			PREV=yes
+		fi
+	done
+	echo "  }"
 	echo "}"
 }
 
