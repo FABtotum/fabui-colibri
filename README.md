@@ -15,6 +15,8 @@ Once done, make sure to:
 - run the first setup
 - run a probe calibration (Maintenance -> Probe Calibration -> Angle Calibration)
 
+#### Updating FABUI Colibri from version 1.0.0 to 1.X.X need a reflash of the SD Card
+
 ## Installation
   - Download the latest archive [here][latest-archive]
   - Use at least 4GB SD Card
