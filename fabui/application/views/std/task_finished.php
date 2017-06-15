@@ -15,10 +15,9 @@ if( !isset($z_height_save_message) ) $z_height_save_message = _("Z height is <st
 <div class="row">
 	<div class="col-sm-6">
 		<div class="text-center">
-			<h1 class="tada animated">
-				<span style="position: relative;">
-					<i class="fa fa-play fa-rotate-90 fa-border border-black fa-4x"></i>
-					<span><b style="position:absolute; right: -30px; top:-10" class="badge bg-color-green font-md"><i class="fa fa-check txt-color-black"></i> </b></span>
+			<h1>
+				<span class="fabtotum-icon">
+				<i style="font-size:200px;" class="fabui-core"></i>
 				</span>
 			</h1>
 		</div>
