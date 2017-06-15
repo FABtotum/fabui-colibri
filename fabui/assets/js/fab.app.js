@@ -1567,13 +1567,24 @@ fabApp = (function(app) {
 	**/
 	app.getNetworkInfo = function ()
 	{
+		var hotstname = window.location.hostname;
+		var connectionType = '';
+		
 		$.get(network_info_url + '?' + jQuery.now(), function(data, status){
 			$(".wifi-ribbon-icon").remove();
 			$(".internet-ribbon-icon").remove();
 			if(data.interfaces != null){
+				
+				if(data.interfaces.hasOwnProperty('eth0')){
+					if(data.interfaces.eth0.ipv4_address.replace("/16", "") == hotstname) connectionType = 'eth';
+				}
+				
 				if(data.interfaces.hasOwnProperty('wlan0')){
 					if(data.interfaces.wlan0.wireless.hasOwnProperty('ssid')){
 						$(".ribbon-button-alignment").prepend('<span data-title="' + _("Wifi connected") + ' <br> ' + data.interfaces.wlan0.wireless.ssid  + '<br>'+data.interfaces.wlan0.wireless.ip_address +'"  rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="fa fa-wifi"></i></span>');	
+					}
+					if(data.interfaces.wlan0.wireless.ip_address == hotstname) {
+						connectionType = 'wlan';
 					}
 				}
 				if(data.interfaces.hasOwnProperty('wlan1')){
@@ -1581,10 +1592,19 @@ fabApp = (function(app) {
 					if(data.interfaces.wlan1.wireless.hasOwnProperty('ssid')){
 						$(".ribbon-button-alignment").prepend('<span data-title="' + _("Wifi connected") + ' <br> ' + data.interfaces.wlan1.wireless.ssid  + '<br>'+data.interfaces.wlan1.wireless.ip_address +'"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="fa fa-wifi"></i></span>');	
 					}
+					
+					if(data.interfaces.wlan1.wireless.ip_address == hotstname) {
+						connectionType = 'wlan';
+					}
 				}
 			}
 			if(data.internet){
 				$(".ribbon-button-alignment").prepend('<span data-title="' + _("Internet available") + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon internet-ribbon-icon"><i class="fa fa-globe"></i></span>');
+			}
+			if(connectionType == 'eth') {
+				$(".ribbon-button-alignment").prepend('<span style="padding-top:2px;" data-title="' + _("Connected with ethernet cable") + '<br> ' +data.interfaces.eth0.ipv4_address.replace("/16", "") +'" rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon"><i class="icon-communication-088 "></i></span>');	
+			}else if(connectionType == 'wlan'){
+				$(".wifi-ribbon-icon").find('i').addClass('txt-color-blue');
 			}
 			pageSetUp();
 		});

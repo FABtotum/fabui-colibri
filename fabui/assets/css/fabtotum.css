@@ -749,3 +749,9 @@ video::-webkit-media-controls-panel {
 select.input-sm {
 	line-height: 10px !important;
 }
+
+.btn.btn-ribbon {
+	background-color: white !important;
+	color: black !important;
+	background-image: none !important;
+}
