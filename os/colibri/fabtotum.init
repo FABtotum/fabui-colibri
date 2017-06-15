@@ -17,10 +17,24 @@
 
 test -r /etc/default/fabtotum && source /etc/default/fabtotum
 
+[ -n "$FABTOTUM_UPGRADE_DIR" ] && FABTOTUM_UPGRADE_DIR="/var/lib/fabui/upgrade.d"
+
 SERVICE_NAME=FABtotum
 
 case "$1" in
   start)
+  
+    if [ -e "$FABTOTUM_UPGRADE_DIR" ]; then
+		boot_msg "Starting upgrade scripts."
+		
+		for upgrade in $(ls $FABTOTUM_UPGRADE_DIR); do
+			${FABTOTUM_UPGRADE_DIR}/${upgrade} 2>&1 > /var/lib/fabui/${upgrade}.log
+		done
+		
+		evaluate_retval
+		rm -rf /var/lib/fabui/upgrade.d
+    fi
+  
     boot_msg "Starting ${SERVICE_NAME}."
     evaluate_retval
     

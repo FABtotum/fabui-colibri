@@ -1,1 +1,2 @@
 FABTOTUM_PORT_NAME=/dev/ttyAMA0
+FABTOTUM_UPGRADE_DIR=/var/lib/fabui/upgrade.d

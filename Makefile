@@ -252,6 +252,20 @@ endif
 	$(FAKEROOT_ENV) cp LICENSE $(BDATA_DIR)/usr/share/licenses/$(NAME)
 #|username |uid |group |gid |password |home |shell |groups |comment
 	$(FAKEROOT_ENV) echo "$(WWW_DATA_NAME) $(WWW_DATA_UID) $(WWW_DATA_NAME) $(WWW_DATA_GID) * /var/www /bin/sh $(WWW_DATA_GROUPS) Web Data" > $(BDATA_DIR)$(METADATA_PATH)/user_table
+#   Install/Remove helper scripts
+
+#   pre_deactivate
+#   post_deactivate
+#   pre_remove
+#   postpone
+	$(FAKEROOT_ENV) cp $(OS_FILES_DIR)/colibri/postpone.sh $(BDATA_DIR)$(METADATA_PATH)/postpone.sh
+#   post_remove
+#   pre_install
+#   post_install
+#	$(FAKEROOT_ENV) cp $(OS_FILES_DIR)/colibri/post_install.sh $(BDATA_DIR)$(METADATA_PATH)/post_install.sh
+#   pre_activate
+#   post_activate
+
 #	Minify 
 	sed -e "s@/var/log/fabui/@./temp@" -i $(BDATA_DIR)/usr/share/fabui/application/config/config.php
 	$(FAKEROOT_ENV) php $(BDATA_DIR)/usr/share/fabui/index.php control minify 
