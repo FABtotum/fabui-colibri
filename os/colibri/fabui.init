@@ -32,6 +32,10 @@ case "$1" in
 	 
 	mkdir -p ${TEMP_PATH}/lighttpd/compress
 	chown 33:33 ${TEMP_PATH}/lighttpd/compress
+	
+	### fix file permissions
+	chown -R 33:33 /mnt/userdata/*
+	chown -R 33:33 /var/lib/fabui/*
     
     boot_msg "Starting ${SERVICE_NAME}."
 
