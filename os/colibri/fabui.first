@@ -92,12 +92,14 @@ case "$1" in
 				
 				cp -f /mnt/live/mnt/boot/factory/settings/* ${LIB_PATH}settings/ &> /dev/null
 				cp -f /mnt/live/mnt/boot/factory/settings/* ${FABUI_PATH}settings/ &> /dev/null
+				rm ${LIB_PATH}settings/settings.json
+				sudo -uwww-data ln -s /mnt/userdata/settings/settings.json ${LIB_PATH}settings
 				
 			fi
         
         
         fi
-        sudo chown -R 33.33 /mnt/userdata
+        chown -R 33:33 /mnt/userdata/*
     fi
     
     # Detect camera version
