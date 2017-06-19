@@ -68,7 +68,7 @@ if ( !function_exists('get_make_default_action'))
 			}
 			else
 			{
-				$default_action = $builtin_actions[0];
+				if(isset($builtin_actions[0])) $default_action = $builtin_actions[0];
 				unset($builtin_actions[0]);
 			}
 		}

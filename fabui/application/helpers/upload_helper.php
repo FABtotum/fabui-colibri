@@ -32,7 +32,7 @@ if ( ! function_exists('uploadFromFileSystem'))
 	/**
 	 * Upload files from FileSystem
 	 */
-	function uploadFromFileSystem($file, $note = '')
+	function uploadFromFileSystem($file, $name = '', $note = '')
 	{
 		$CI =& get_instance();
 		$CI->load->helper('file');
@@ -49,7 +49,10 @@ if ( ! function_exists('uploadFromFileSystem'))
 		if( !file_exists($upload_path . $file_extension)) 
 			createFolder($upload_path . $file_extension);
 		
-		$client_name = basename($file);
+		if($name == ''){
+			$name = basename($file);
+		}
+		//$client_name = basename($file);
 		
 		$file_information = get_file_info($file);
 		$folder_destination = $upload_path . $file_extension . '/';
@@ -75,8 +78,8 @@ if ( ! function_exists('uploadFromFileSystem'))
 		$data['file_path'] = $folder_destination;
 		$data['full_path'] = $folder_destination . $file_name;
 		$data['raw_name'] = str_replace('.'.$file_extension, '', $file_name);
-		$data['orig_name'] = $client_name;
-		$data['client_name'] = $client_name;
+		$data['orig_name'] = $name;
+		$data['client_name'] = $name;
 		$data['file_ext'] = '.' . $file_extension;
 		$data['file_type'] = $file_type;
 		$data['file_size'] = $file_information['size'];

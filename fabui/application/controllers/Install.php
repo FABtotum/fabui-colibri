@@ -320,6 +320,7 @@ class Install extends FAB_Controller {
 	public function installSamples($userID = '')
 	{
 		$this->load->model('Objects', 'objects');
+		$this->load->model('Files', 'files');
 		$this->load->helpers('upload_helper');
 		$this->config->load('fabtotum');
 		
@@ -327,33 +328,45 @@ class Install extends FAB_Controller {
 			$userID = $this->session->user['id'];
 		}
 		
+		
 		$samples_path = '/usr/share/fabui/recovery/';
 		$samples_import = '/usr/share/fabui/recovery/import.json';
 		
 		if(file_exists($samples_import))
 		{
 			$samples = json_decode( file_get_contents($samples_import), true);
+			
 			foreach($samples['objects'] as $object)
 			{
-				$data = array();
-				$data['name'] = $object['name'];
-				$data['description'] = $object['description'];
-				$data['user'] = $userID;
-				$data['date_insert'] = date('Y-m-d H:i:s');
-				$data['date_update'] = date('Y-m-d H:i:s');
 				
-				$objectID = $this->objects->add($data);
-				$fileIDs = array();
-				
-				foreach($object['files'] as $file)
-				{
-					$file_note = $file['note'];
-					$file_fullpath = $samples_path . $file['path'];
-					$fileID = uploadFromFileSystem($file_fullpath, $file_note);
-					$fileIDs[] = $fileID;
+				$data = $this->objects->get(array('name'=>$object['name']), 1);
+				if(!$data){
+					$data['name'] = $object['name'];
+					$data['description'] = $object['description'];
+					$data['user'] = $userID;
+					$data['date_insert'] = date('Y-m-d H:i:s');
+					$data['date_update'] = date('Y-m-d H:i:s');
+					$objectID = $this->objects->add($data);
+				}else{
+					$objectID = $data['id'];
 				}
 				
-				$this->objects->addFiles($objectID, $fileIDs);
+				$fileIDs = array();
+				foreach($object['files'] as $file)
+				{
+					$fileTemp = $this->files->get(array('client_name' => $file['name']),1);
+					if(!$fileTemp){
+						$file_note = $file['note'];
+						$file_name = $file['name'];
+						$file_fullpath = $samples_path . $file['path'];
+						$fileID = uploadFromFileSystem($file_fullpath, $file_name, $file_note);
+						$fileIDs[] = $fileID;
+					}
+				}
+				if(count($fileIDs)>0){
+					$this->objects->addFiles($objectID, $fileIDs);
+				}
+				
 			}
 			
 			$sample_file = $this->config->item('samples_file');

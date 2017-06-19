@@ -27,12 +27,12 @@ class Projectsmanager extends FAB_Controller {
 			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
 		);
 		
-		$installSamplesButton = '';
-		/*
-		if(file_exists($this->config->item('samples_file'))){
-			$installSamplesButton = '<button id="install-samples" class="btn bg-color-magenta txt-color-white"><i class="fa fa-cubes"></i> <span class="hidden-xs">'._("Install samples").'</span> </button>';
-		}
-		*/
+		//$installSamplesButton = '';
+		
+		//if(file_exists($this->config->item('samples_file'))){
+		$installSamplesButton = '<button id="install-samples" class="btn bg-color-magenta txt-color-white"><i class="fa fa-cubes"></i> <span class="hidden-xs">'._("Install samples").'</span> </button>';
+		//}
+		
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
 		<a class="btn btn-success" href="projectsmanager/add-project"><i class="fa fa-plus"></i> <span class="hidden-xs">'._("Add new project").'</span> </a>
@@ -154,7 +154,7 @@ class Projectsmanager extends FAB_Controller {
 		$this->config->load('upload');
 		//load db model
 		$this->load->model('Files', 'files');
-		$make_action = get_make_default_action($fileId);
+		$make_action = get_make_default_action($fileId);	
 		$data['file'] = $this->files->get($fileId, 1);
 		$data['upload_path'] = $this->config->item('upload_path');
 		$data['is_editable'] = True;
@@ -215,9 +215,14 @@ class Projectsmanager extends FAB_Controller {
 			</label>' .
 			$this->smart->create_button(_("Save"), 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
+		$make_button = '';
+		if(!empty($make_action)){
+			$make_button  = '<a class="btn btn-success" href="'.$make_action['url'].'"><i class="fa fa fa-rotate-90 fa-play"></i> <span class="hidden-xs">'.$make_action['title'].'</span> </a>';
+		}
+		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
 		<a class="btn btn-default" href="projectsmanager/project/'.$objectId.'"><i class="fa fa-arrow-left"></i> <span class="hidden-xs">'._("Back").'</span> </a>
-		<a class="btn btn-success" href="'.$make_action['url'].'"><i class="fa fa fa-rotate-90 fa-play"></i> <span class="hidden-xs">'.$make_action['title'].'</span> </a>
+		'.$make_button.'
 		<a class="btn btn-info" href="projectsmanager/file/'.$fileId.'/stats"><i class="fa fa-area-chart"></i> <span class="hidden-xs">'._("Stats").'</span> </a>
 		<button class="btn btn-danger button-action" data-action="delete"><i class="fa fa-trash"></i> <span class="hidden-xs">'._("Delete").'</span> </button>
 		<button class="btn btn-info button-action" data-action="download"><i class="fa fa-download"></i> <span class="hidden-xs">'._("Download").'</span> </button>
