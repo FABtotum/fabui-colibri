@@ -212,6 +212,9 @@ connect_wifi()
 	SRV=$(connmanctl services | grep "$SSID" | awk '{print $NF}')
 	connmanctl scan wifi
 	connmanctl connect $SRV
+	connmanctl disable wifi
+	sleep 2
+	connmanctl enable wifi
 	return 0
 }
 
