@@ -349,30 +349,53 @@ get_interface_state()
 			echo "  \"$iface\" : {"
 			echo "    \"driver\" : \"$DRIVER\", "
 			
+			if [ "$iface" == "eth0" ]; then
+				CABLE_PLUGGED_IN=$(ethtool eth0 | grep "Link detected" | awk '{print $NF}')
+				echo "    \"cable\" : \"$CABLE_PLUGGED_IN\","
+			fi
+			
 			# Get interface addresses
 			if [ -n "$SERVICE" ]; then
-				A=$(connmanctl services $SERVICE | grep "IPv4 " | sed -e 's@IPv4 = \[@@g' -e 's@\]@@g' -e 's@,@@g')
-				B=$(connmanctl services $SERVICE | grep IPv4.Configuration | sed -e 's@IPv4.Configuration = \[@@g' -e 's@\]@@g' -e 's@,@@g')
-				for SEGMENT in $(echo $A $B); do
-					KEY=$(echo $SEGMENT | awk -F= '{print $1}' | sed -e 's@\.@_@g' )
-					VALUE=$(echo $SEGMENT | awk -F= '{print $2}')
-					case $KEY in
-						Method)
-							MODE="$VALUE"
-							;;
-						Address)
-							IPv4="$VALUE"
-							;;
-						Netmask)
-							NETMASK="$VALUE"
-							;;
-						Gateway)
-							GATEWAY="$VALUE"
-							;;
-					esac
-				done
-				
 				SETTINGS_FILE="${CONNMAN_SERVICES_DIR}/${SERVICE}/settings"
+			
+				LIVE_SERVICE=$(connmanctl services | grep $SERVICE | awk '{print $NF}')
+				if [ -n "$LIVE_SERVICE" ]; then
+			
+					A=$(connmanctl services $SERVICE | grep "IPv4 " | sed -e 's@IPv4 = \[@@g' -e 's@\]@@g' -e 's@,@@g')
+					B=$(connmanctl services $SERVICE | grep IPv4.Configuration | sed -e 's@IPv4.Configuration = \[@@g' -e 's@\]@@g' -e 's@,@@g')
+					for SEGMENT in $(echo $A $B); do
+						KEY=$(echo $SEGMENT | awk -F= '{print $1}' | sed -e 's@\.@_@g' )
+						VALUE=$(echo $SEGMENT | awk -F= '{print $2}')
+						case $KEY in
+							Method)
+								MODE="$VALUE"
+								;;
+							Address)
+								IPv4="$VALUE"
+								;;
+							Netmask)
+								NETMASK="$VALUE"
+								;;
+							Gateway)
+								GATEWAY="$VALUE"
+								;;
+						esac
+					done
+				else
+					if [ x"$iface" == x"eth0" ]; then
+						if [ -e "$SETTINGS_FILE" ]; then
+							# fallback, read addresses from settings
+							MODE=$(cat "$SETTINGS_FILE" |  grep "IPv4.method" | awk -F= '{print $2}')
+							PREFIX=$(cat "$SETTINGS_FILE" |  grep "IPv4.netmask_prefixlen" | awk -F= '{print $2}')
+							IPv4=$(cat "$SETTINGS_FILE" |  grep "IPv4.local_address" | awk -F= '{print $2}')
+							eval $(ipcalc $IPv4/$PREFIX -m)
+							
+							GATEWAY=$(cat "$SETTINGS_FILE" |  grep "IPv4.gateway" | awk -F= '{print $2}')
+						fi
+					fi
+				fi
+				
+				
 				
 				if [ -e "$SETTINGS_FILE" ]; then
 					PASSPHRASE=$(cat "$SETTINGS_FILE" |  grep Passphrase | awk -F= '{print $2}')

@@ -507,6 +507,11 @@ get_interface_state()
             echo "  \"$iface\" : {"
             echo "    \"driver\" : \"$DRIVER\", "
             
+            if [ "$iface" == "eth0" ]; then
+                CABLE_PLUGGED_IN=$(ethtool eth0 | grep "Link detected" | awk '{print $NF}')
+                echo "    \"cable\" : \"$CABLE_PLUGGED_IN\","
+            fi
+            
             # Get interface addresses
             IPADDR=$(ip addr show $iface | awk '/(link|inet)/ {print $2;}')
             MAC=$(echo $IPADDR | awk '{print $1;}')
