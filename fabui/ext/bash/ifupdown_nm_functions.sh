@@ -379,6 +379,21 @@ connect_wifi()
 }
 
 ##
+# Disable wireless hardware
+#
+disable_wifi()
+{
+    true
+}
+
+##
+# Enable wireless hardware
+enable_wifi()
+{
+    true
+}
+
+##
 # Disconnect wifi from a network
 # 
 # $1 - interface (ex: wlan0)

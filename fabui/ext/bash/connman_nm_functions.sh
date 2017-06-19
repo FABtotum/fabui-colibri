@@ -4,6 +4,40 @@ CONNMAN_SERVICES_DIR="/var/lib/connman"
 CONNMAN_WIFI_CONFIG_FILE="user_wifi.config"
 
 ##
+#
+# $1 - filename
+# $2 - section
+# $3 - key
+#
+parse_ini()
+{
+	INI_FILE="$1"
+	INI_SECTION="$2"
+	INI_KEY="$3"
+	
+	CUR_SECTION=""
+	
+	for line in $(cat $INI_FILE); do
+	
+		SECTION=$(echo $line | awk -F'[\]\[]' '{print $2}')
+	
+		[ -n "$SECTION" ] && CUR_SECTION="$SECTION"
+		
+		if [ x"$CUR_SECTION" == x"$INI_SECTION" ]; then
+			KEY=$(echo $line | awk -F= '{print $1}')
+			VALUE=$(echo $line | awk -F= '{print $2}')
+			
+			echo "[$line]" $KEY  $VALUE
+			
+			if [ x"$KEY" == x"$INI_KEY" ]; then
+				echo $VALUE
+				return
+			fi
+		fi
+	done
+}
+
+##
 # Translate interface name to service name
 #
 # $1 - interface (ex: wlan0)
@@ -232,6 +266,21 @@ disconnect_wifi()
 	return $?
 }
 
+
+##
+# Disable wireless hardware
+#
+disable_wifi()
+{
+    connmanctl disable wifi
+}
+
+##
+# Enable wireless hardware
+enable_wifi()
+{
+    connmanctl enable wifi
+}
 ##
 # Configure ethernet interface for dhcp address
 # 
@@ -395,6 +444,12 @@ get_interface_state()
 							
 							GATEWAY=$(cat "$SETTINGS_FILE" |  grep "IPv4.gateway" | awk -F= '{print $2}')
 						fi
+					elif [ x"$iface" == x"wlan0" ]; then
+						MODE="disabled"
+						STATE=$(parse_ini "${CONNMAN_SERVICES_DIR}/settings" WiFi Enable)
+						if [ x"$STATE" == x"false" ]; then
+							MODE="manual"
+						fi
 					fi
 				fi
 				
@@ -432,31 +487,35 @@ get_interface_state()
 				echo "      \"support_ap_channel\" : \"no\","
 				echo -n "      \"support_ap_custom_address\" : \"no\""
 				
-				MODE=$(iwconfig $iface | awk '/Mode/{print $1}')
+				if [ x"$MODE" != x"disabled" ]; then
 				
-				if [ x"$MODE" == x"$iface" ]; then
-					MODE=$(iwconfig $iface | awk '/Mode/{print $4}')
-				fi
+					MODE=$(iwconfig $iface | awk '/Mode/{print $1}')
+					
+					if [ x"$MODE" == x"$iface" ] && [ x"$MODE" != x"disabled" ]; then
+						MODE=$(iwconfig $iface | awk '/Mode/{print $4}')
+					fi
+					
+					if [ $MODE == "Mode:Master" ] || [ $TETHER == "yes" ]; then
+						echo ","
+						echo "      \"mode\" : \"accesspoint\","
+						SSID=$(connmanctl technologies | grep TetheringIdentifier | awk '{print $NF}')
+						PASSPHRASE=$(connmanctl technologies | grep TetheringPassphrase | awk '{print $NF}')
+						
+						echo "      \"ssid\" : \"$SSID\","
+						echo "      \"passphrase\" : \"$PASSPHRASE\""
+					elif [ $MODE == "Mode:Managed" ]; then
+						echo ","
+						echo "    \"passphrase\" : \"$PASSPHRASE\","
+						a=$(wpa_cli -p /run/wpa_supplicant -i$iface status | sed -e 's@^@"@g; s@$@",@g; s@=@" : "@'; echo -n ",")
+						echo $a | sed -e 's@, ,@@g'
+						
+					elif [ $MODE == "Mode:Auto" ]; then
+						echo ","
+						echo "      \"mode\" : \"auto\""
+					else
+						echo ""
+					fi
 				
-				if [ $MODE == "Mode:Master" ] || [ $TETHER == "yes" ]; then
-					echo ","
-					echo "      \"mode\" : \"accesspoint\","
-					SSID=$(connmanctl technologies | grep TetheringIdentifier | awk '{print $NF}')
-					PASSPHRASE=$(connmanctl technologies | grep TetheringPassphrase | awk '{print $NF}')
-					
-					echo "      \"ssid\" : \"$SSID\","
-					echo "      \"passphrase\" : \"$PASSPHRASE\""
-				elif [ $MODE == "Mode:Managed" ]; then
-					echo ","
-					echo "    \"passphrase\" : \"$PASSPHRASE\","
-					a=$(wpa_cli -p /run/wpa_supplicant -i$iface status | sed -e 's@^@"@g; s@$@",@g; s@=@" : "@'; echo -n ",")
-					echo $a | sed -e 's@, ,@@g'
-					
-				elif [ $MODE == "Mode:Auto" ]; then
-					echo ","
-					echo "      \"mode\" : \"auto\""
-				else
-					echo ""
 				fi
 				
 				echo "    }"

@@ -244,6 +244,10 @@ class Settings extends FAB_Controller {
 				if( $info['address_mode'] == 'manual' )
 				{
 					$info['address_mode'] = 'disabled';
+				}
+				
+				if( $info['address_mode'] == 'disabled' )
+				{
 					$interfaces[$iface]['do_scan'] = false;
 				}
 				

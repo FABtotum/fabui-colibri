@@ -24,6 +24,9 @@ if len(sys.argv) > 1:
 else:
     iface = 'wlan0'
 
+# Make sure wifi is enabled
+shell_exec('sh /usr/share/fabui/ext/bash/set_wifi.sh -i {0} -M enabled'.format(iface))
+
 raw_results = shell_exec('iwlist {0} scan'.format(iface))
 
 results = {}

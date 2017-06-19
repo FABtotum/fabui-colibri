@@ -113,6 +113,21 @@ disconnect_wifi()
 }
 
 ##
+# Disable wireless hardware
+#
+disable_wifi()
+{
+    true
+}
+
+##
+# Enable wireless hardware
+enable_wifi()
+{
+    true
+}
+
+##
 # Configure ethernet interface for dhcp address
 # 
 # $1 - interface (ex: eth0)

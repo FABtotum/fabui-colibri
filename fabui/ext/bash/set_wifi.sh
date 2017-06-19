@@ -139,9 +139,15 @@ case $MODE in
         config_wifi_ap "$IFACE" "$SSID" "$PASS" "$CHANNEL" "$IP" "$NETMASK"
         ;;
     default)
+        disconnect_wifi "$IFACE"
         config_wifi_default "$IFACE"
+        enable_wifi
+        ;;
+    enabled)
+        enable_wifi
         ;;
     disabled)
+        disable_wifi
         ;;
     *)
         echo "error: unknown mode \'$MODE\'"
