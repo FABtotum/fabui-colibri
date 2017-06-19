@@ -1,0 +1,2 @@
+WPA_SUPPLICANT_PIDFILE=/run/wpa_supplicant.pid
+WPA_SUPPLICANT_ARGS="-O/run/wpa_supplicant"
