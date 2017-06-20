@@ -24,6 +24,7 @@
  * @class
  */
 fabApp = (function(app) {
+	app.installed_head = '';
 	app.rebooting = false; //is the unit rebooting?
 	app.FabActions = function(){
 		var fabActions = {
@@ -1467,20 +1468,19 @@ fabApp = (function(app) {
 	 **/
 	app.forceRecovery = function (){
 		
-		setTimeout(function(){
-			openWait("<i class='fa fa-warning'></i> " + _("Oops.. An error occurred"), _("You will be redirect to recovery page"), false);
-			
+		app.rebooting = true;
+			openWait("<i class='fa fa-warning'></i> " + _("Entering recovery mode"), _("You will be redirect to recovery page"), false);
 			$.get(set_recovery_url + '/activate', function(data){ 
 				$.ajax({
 					url: reboot_url_action,
 				}).done(function(data) {
+					app.redirectToUrlWhenisReady('http://'+ location.hostname);
 				}).fail(function(jqXHR, textStatus){
 					//clear intervals
 					app.redirectToUrlWhenisReady('http://'+ location.hostname);
 				});
 			});
-			
-		}, 5000);
+
 	}
 	/**
 	* get hardware settings
@@ -1542,7 +1542,8 @@ fabApp = (function(app) {
 	 */
 	app.setInstalledHeadInfo = function(settings)
 	{
-		$(".installead-head-name").html(heads[settings.hardware.head].name);	
+		$(".installead-head-name").html(heads[settings.hardware.head].name);
+		app.installed_head = heads[settings.hardware.head].name;
 	}
 	/**
 	* initi vars from localstorage if it is enabled
@@ -1666,15 +1667,15 @@ fabApp = (function(app) {
 	 */
 	app.checkConnectivity = function()
 	{
-		$.get(base_url)
-		.success(function(result) {
-			/**
-			 * @TODO
-			 */
-		})
-		.error(function(jqXHR, textStatus, errorThrown) {
-			openWait('<i class="fa fa-warning"></i> ' + _("No connection detected"), _("Unable to connect to the FABtotum Personal Fabricator") + '<br>' + _("Please check ethernet cable or wifi connection and then reload the page"), false); 
-		});
+		if(app.rebooting == false){
+			$.get(base_url).success(function(result) {
+				/**
+				 * @TODO
+				 */
+			}).error(function(jqXHR, textStatus, errorThrown) {
+				openWait('<i class="fa fa-warning"></i> ' + _("No connection detected"), _("Unable to connect to the FABtotum Personal Fabricator") + '<br>' + _("Please check ethernet cable or wifi connection and then reload the page"), false); 
+			});
+		}
 	}
 	return app;
 })({});

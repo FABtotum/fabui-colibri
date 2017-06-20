@@ -12,7 +12,7 @@
  $endpoint = '/fabui/#dashboard';
  
  if(file_exists('AUTOINSTALL')){
- 	$endpoint .= 'install';
+ 	$endpoint = '/fabui/install';
  }
  
  header("Location: http://".$_SERVER['SERVER_NAME'].$endpoint);

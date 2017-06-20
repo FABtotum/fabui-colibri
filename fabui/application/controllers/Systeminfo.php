@@ -41,12 +41,18 @@ class SystemInfo extends FAB_Controller {
 				'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
 				'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
 		);
+		
+		$headerToolbar = '<div class="widget-toolbar" role="menu">
+		<a rel="tooltip" data-title="'._("Enter recovery mode").'" id="recovery-button" class="btn btn-default" href="javascript:void(0);"><i class="fa fa-heartbeat "></i> <span class="hidden-xs">'._("Recovery").'</span> </a>
+		</div>';
+		
 		$widget     = $this->smart->create_widget($widgetOptions);
 		$widget->id = 'main-widget-systeminfo';
-		$widget->header = array('icon' => 'fa-info-circle', "title" => "<h2>System Info</h2>");
+		$widget->header = array('icon' => 'fa-info-circle', "title" => "<h2>System Info</h2>", 'toolbar' => $headerToolbar);
 		$widget->body   = array('content' => $this->load->view('systeminfo/widget', $data, true ), 'class'=>'');
 		$this->content = $widget->print_html(true);
 		$this->addCSSInLine('<style> @media (min-width: 768px){ .big dt {width:300px !important;} .big dd {margin-left:310px !important;} }</style>');
+		$this->addJsInLine($this->load->view('systeminfo/js', null, true));
 		$this->view();
 	}
 }
