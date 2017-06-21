@@ -487,6 +487,17 @@
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($response_array));
 	}
+	/**
+	 * 
+	 */
+	public function downloadPhotogrammetryMissingImages()
+	{
+		if(file_exists('/tmp/fabui/images/')){
+			$this->load->library('zip');
+			$this->zip->read_dir('/tmp/fabui/images/', false);
+			$this->zip->download('photogrammetry.zip');
+		}
+	}
 }
  
 ?>
