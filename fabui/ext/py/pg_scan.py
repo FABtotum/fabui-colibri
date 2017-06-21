@@ -84,6 +84,7 @@ class PhotogrammetryScan(GCodePusher):
             'width'         : width,
             'height'        : height,
             'iso'           : iso,
+			'resending'     : False
         }
         
         self.add_monitor_group('scan', self.scan_stats)
@@ -103,49 +104,50 @@ class PhotogrammetryScan(GCodePusher):
         
         return scanfile
     
-    def manage(self, action, file = '', slices = 0):        
+    def manage(self, action, file = '', slices = 0, index=0, resend=False):        
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(1)
             sock.connect((self.host_address, self.host_port))
-            SOCK_CONNECTED = True
         except Exception as e:
             self.trace( _("Connection error: {0}").format( str(e)) )
-            SOCK_CONNECTED = False
-            if file:
-                self.skipped_images.append(file)
+            if (file and resend == False):
+                self.trace(_("Image {0} skipped, will be resend later".format(index)))			
+                self.skipped_images.append({'index': index, 'file' : file})
                 return
-        
-        print "action:", action, "file:", file, "slices:", slices
-        
-        if(action == self.START):
-            sock.send(str(self.START) + '\n')
-            sock.send(str(slices) + '\n')
-            
-        elif(action == self.CREATE):
-            time.sleep(2)
-            try:
+        #print "action:", action, "file:", file, "slices:", slices
+        try:
+            if(action == self.START):
+                ''' SEND START to DESKTOP SERVER '''
+                sock.send(str(self.START) + '\n')
+                sock.send(str(slices) + '\n')
+            elif(action == self.CREATE):
+                ''' SEND IMAGE to DESKTOP SERVER '''
+                time.sleep(2)
                 os.chmod(file, 0777)
                 sock.send(str(self.CREATE) + '\n')
                 sock.send(file + '\n')
-                
                 data = sock.recv(4096)
                 if(data.strip() == 'DELETE'):
                     os.remove(file)
-            except Exception as e:
-                self.trace( _("Unexpected error: {0}").format( str(e)) )
-                self.skipped_images.append(file)
-                
-        elif(action == self.FINISH):
-            sock.send(str(self.FINISH) + '\n')
+            elif(action == self.FINISH):
+                ''' SEND FINISH to DESKTOP SERVER '''
+                sock.send(str(self.FINISH) + '\n')
+        except Exception as e:
+            if(action == self.CREATE and resend == False):
+                self.trace(_("Image {0} skipped, will be resend later".format(index)))
+                self.skipped_images.append({'index': index, 'file' : file})
+            else:
+                self.trace( _("Connection error: {0}").format( str(e)) )
+                return
         
         sock.close();
     
     def start_transfer(self, slices):
         self.manage(self.START, slices=slices)
         
-    def transfer_file(self, filename):
-        self.manage(self.CREATE, file=filename)
+    def transfer_file(self, filename, count, resend = False):
+        self.manage(self.CREATE, file=filename, index=count, resend=resend)
         
     def finish_transfer(self):
         self.manage(self.FINISH)
@@ -158,7 +160,8 @@ class PhotogrammetryScan(GCodePusher):
         """
         Run the photogrammetry scan.
         """
-        
+        self.resetTrace()
+		
         self.prepare_task(task_id, task_type='scan')
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
@@ -171,12 +174,12 @@ class PhotogrammetryScan(GCodePusher):
         if start_a != 0:
             # If an offset is set .
             self.send('G0 E{0} F{1}'.format(start_a, self.E_FEEDRATE) )
-            self.send('M400')
+            self.send('M400',timeout=60)
             
         if y_offset != 0:
             #if an offset for Z (Y in the rotated reference space) is set, moves to it.
             self.send('G0 Y{0} F{1}'.format(y_offset, self.XY_FEEDRATE))  #go to y offset
-            self.send('M400')
+            self.send('M400',timeout=60)
         
         deg = abs((float(end_a)-float(start_a))/float(slices))  #degrees to move each slice
         
@@ -189,10 +192,10 @@ class PhotogrammetryScan(GCodePusher):
             print str(i) + "/" + str(slices) +" (" + str(deg*i) + "/" + str(deg*slices) +")"
             
             self.send('G0 E{0} F{1}'.format(position, self.E_FEEDRATE))
-            self.send('M400')
+            self.send('M400', timeout=60)
 
-            filename = self.take_a_picture(i)
-            self.transfer_file(filename)
+            filename = self.take_a_picture((i+1))
+            self.transfer_file(filename, (i+1))
             
             position += deg
             
@@ -211,11 +214,16 @@ class PhotogrammetryScan(GCodePusher):
             if self.is_aborted():
                 break
         
+        if(len(self.skipped_images) > 0):
+            self.scan_stats['resending'] = True
+            self.trace(_("Sending skipped images"))
+
         for image in self.skipped_images:
-            print _("Resending:"), image
-            self.transfer_file(image)
+            self.trace(_("Resending image {0}".format(image['index'])))
+            self.transfer_file(image['file'], count=image['index'], resend=True)
         
         self.finish_transfer()
+        self.resetTrace()
         
         if self.standalone or self.finalize:
             if self.is_aborted():
@@ -243,6 +251,14 @@ def makedirs(path):
             pass
         else:
             raise
+
+def cleandirs(path):
+    try:
+        filelist = [ f for f in os.listdir(path)]
+        for f in filelist:
+            os.remove(path + '/' +f)
+    except Exception as e:
+        print e
 
 def main():
     config = ConfigService()
@@ -297,7 +313,10 @@ def main():
     scan_dir        = os.path.join(destination, "images")
 
     if not os.path.exists(scan_dir):
-        makedirs(scan_dir)
+        makedirs('scan_dir')
+    
+    ##### delete files
+    cleandirs(scan_dir)
 
     ################################################################################
 

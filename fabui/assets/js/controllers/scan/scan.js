@@ -759,8 +759,6 @@ function handlePhotogrammetry()
 			'address' : $("#pc-host-address").val(), 
 			'port' : $("#pc-host-port").val(), 
 		};
-		
-		console.log('start');
 		openWait('Start');
 		$.ajax({
 			type: 'post',
@@ -787,7 +785,6 @@ function initScanPage(running)
 	$(".abort").on('click', abortScan);
 	$(".pause").on('click', pauseScan);
 	if(running){
-		console.log("running");
 		initRunningTaskPage();
 	}else{
 		$(".mode-choise").on('click', setScanMode);
@@ -811,6 +808,8 @@ function startTask()
 	fabApp.disableTopBarControls();
 	setInterval(timer, 1000);
 	ga('send', 'event', 'scan', 'start', 'Started scan: ' + scanMode);
+	disableCompleteSteps();
+	
 }  
 
 /**
@@ -975,10 +974,18 @@ function completeTask()
 		/**
 		*
 		**/
-		var projectsManagerURL = '/fabui/projectsmanager/project/' + objectID;
-		var downloadURL = '/fabui/projectsmanager/download/file/' + fileID;
-		$("#got-to-projects-manager").attr('href', projectsManagerURL);
-		$("#download-file").attr('href', downloadURL);
+		console.log(scanMode);
+		if(scanMode != "photogrammetry"){
+			var projectsManagerURL = '/fabui/projectsmanager/project/' + objectID;
+			var downloadURL = '/fabui/projectsmanager/download/file/' + fileID;
+			$("#got-to-projects-manager").attr('href', projectsManagerURL);
+			$("#download-file").attr('href', downloadURL);
+			$("#download-missing-images").hide();
+		}else{
+			$("#download-file").hide();
+			$("#got-to-projects-manager").hide();
+		}
+		
 		transformLinks();
 		
 	}
@@ -1013,4 +1020,13 @@ function abortTask()
 function gotoWizardFinish()
 {
 	$('.wizard').wizard('selectedItem', { step: 5 });
+}
+
+/**
+ * 
+*/
+function disableCompleteSteps()
+{
+	$(".steps .complete").css('cursor', 'default');
+	$(".steps .complete").on('click', function(){return false;});
 }

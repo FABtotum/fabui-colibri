@@ -72,6 +72,17 @@
 					</div>
 				</div>
 			</div>
+			
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="textarea-div">
+						<div class="typearea">
+							<div class="custom-scroll trace-console" ></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 		</div>
 	</div>
 </div>

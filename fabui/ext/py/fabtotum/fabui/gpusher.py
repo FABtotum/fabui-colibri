@@ -242,8 +242,9 @@ class GCodePusher(object):
         
     def resetTrace(self):
         """ Reset trace file """
-        with open(self.trace_file, 'w'):
-            pass
+        #with open(self.trace_file, 'w'):
+         #   pass
+        open(self.trace_file, 'w').close()
     
     def __shutdown_procedure(self):
         self.trace( _("Schutting down...") )

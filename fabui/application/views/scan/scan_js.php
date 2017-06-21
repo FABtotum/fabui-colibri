@@ -100,6 +100,7 @@
 			handleTaskStatus(data.task.status);
 			objectID = data.scan.object_id;
 			fileID = data.scan.file_id;
+			scanMode = data.scan.type;
 		};
 	/*}*/
 	
