@@ -17,7 +17,7 @@
 		</div>
 		<button type="button" class="btn btn-default btn-sm btn-block" data-skip-homing="false" id="test-area-button"><?php echo _("Test area");?> <i class="fa fa-level-down"></i> </button>
 		<div class="note">
-			<p>Press to test the selected area</p>
+			<p><?php echo _("Press to test the selected area"); ?></p>
 		</div>
 	</div>
 	<div class="col-sm-9">
