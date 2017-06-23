@@ -49,7 +49,7 @@ def parseG30(reply):
     except:
         return {}
 
-def parseG38(reply)
+def parseG38(reply):
     """
         Same format as G30
     """
