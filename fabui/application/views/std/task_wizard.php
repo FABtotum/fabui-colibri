@@ -52,8 +52,8 @@ if($runningTask) $safety_check['all_is_ok'] = true;
 			</button>
 		</div>
 	</div>
-	<div class="step-content">
-		<form class="form-horizontal" id="fuelux-wizard" method="post">
+	<div class="step-content" id="fuelux-wizard">
+		<!--form class="form-horizontal" id="fuelux-wizard" method="post"-->
 			<?php 
 				foreach($steps as $step)
 				{
@@ -122,7 +122,7 @@ if($runningTask) $safety_check['all_is_ok'] = true;
 					echo '</div>';
 				}
 			?>
-		</form>
+		<!--/form-->
 	</div>
 </div>
 <?php if(isset($dropzone)):?>

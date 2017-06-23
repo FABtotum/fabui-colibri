@@ -49,6 +49,12 @@ def parseG30(reply):
     except:
         return {}
 
+def parseG38(reply)
+    """
+        Same format as G30
+    """
+    return parseG30(reply)
+
 def parseM119(reply):
     """
         Parse reply of M1119, endstop status

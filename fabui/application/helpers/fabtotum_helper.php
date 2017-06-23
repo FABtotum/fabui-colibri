@@ -591,9 +591,9 @@ if(!function_exists('safetyCheck'))
 	/**
 	 * Check whether the installed head supports a specific feature and bed is flipped to heater side
 	 * @param feature Feature to look for (print, mill, laser...)
-	 * @param heated_bed true|false
+	 * @param heated_bed true|false|'any'
 	 */
-	function safetyCheck($feature, $heated_bed)
+	function safetyCheck($feature, $heated_bed = 'any')
 	{
 		
 		$head_in_place = isHeadInPlace();
@@ -617,7 +617,7 @@ if(!function_exists('safetyCheck'))
 		if($bed_enabled){
 			$bed_in_place  = isBedInPlace();
 			$result['bed_in_place'] = $bed_in_place;
-			$result['bed_is_ok'] = $heated_bed == $bed_in_place;
+			$result['bed_is_ok'] = ($heated_bed == $bed_in_place) || ($heated_bed == 'any');
 			$result['all_is_ok']  = $result['head_is_ok'] && $result['bed_is_ok'];
 		}
 		
