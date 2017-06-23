@@ -498,6 +498,28 @@
 			$this->zip->download('photogrammetry.zip');
 		}
 	}
+	/**
+	 * 
+	 */
+	public function testProbingArea()
+	{
+		$params = $this->input->post();
+		
+		$scanArgs = array(
+				'-x' => $params['x1'],
+				'-y' => $params['y1'],
+				'-i' => $params['x2'],
+				'-j' => $params['y2']
+		);
+		
+		if($params['skip_homing'] == 'true')  $scanArgs['-s'] = '';
+		
+		$this->load->helpers('fabtotum_helper');
+		
+		startPyScript('testing_probing_area.py', $scanArgs, false, true);
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode(array(true)));
+	}
 }
  
 ?>

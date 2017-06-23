@@ -15,6 +15,10 @@
 		<div>
 			<img style="max-width: 100%;" id="image" class="" src="/assets/img/controllers/scan/working_plane_v2.jpg">
 		</div>
+		<button type="button" class="btn btn-default btn-sm btn-block" data-skip-homing="false" id="test-area-button"><?php echo _("Test area");?> <i class="fa fa-level-down"></i> </button>
+		<div class="note">
+			<p>Press to test the selected area</p>
+		</div>
 	</div>
 	<div class="col-sm-9">
 		<div class="row">
@@ -101,5 +105,6 @@ $(document).ready(function() {
 	initProbingSlider();
 	setProbingQuality(probingQualities[0], 0);
 	$(".button-next").attr('data-scan', 'probing');
+	$("#test-area-button").on('click', testArea);
 });
 </script>

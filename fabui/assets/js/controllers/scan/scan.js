@@ -1021,7 +1021,6 @@ function gotoWizardFinish()
 {
 	$('.wizard').wizard('selectedItem', { step: 5 });
 }
-
 /**
  * 
 */
@@ -1029,4 +1028,43 @@ function disableCompleteSteps()
 {
 	$(".steps .complete").css('cursor', 'default');
 	$(".steps .complete").on('click', function(){return false;});
+}
+/**
+*
+*/
+function testArea(e)
+{
+	var button = $(e.toElement);
+
+	var skip_homing = true;
+	
+	if(button.attr('data-skip-homing')){
+		skip_homing = false;
+		button.removeAttr('data-skip-homing');
+	}
+	
+	var offsetX = buildPlateDimensions.probe.offsetX;
+	var offsetY = buildPlateDimensions.probe.offsetY;
+	
+	
+	var data = {
+		'x1' : ( parseInt($(".probing-x1").val()) + offsetX), 
+		'y1' : ( parseInt($(".probing-y1").val()) + offsetY), 
+		'x2' : ( parseInt($(".probing-x2").val()) + offsetX), 
+		'y2' : ( parseInt($(".probing-y2").val()) + offsetY),
+		'skip_homing' : skip_homing
+	};
+		
+	openWait(_("Probing selected area"));
+	$.ajax({
+		type: 'post',
+		url: '/fabui/scan/testProbingArea/',
+		data: data,
+		dataType: 'json'
+	}).done(function(response) {
+		closeWait();
+	});
+	
+	
+	
 }

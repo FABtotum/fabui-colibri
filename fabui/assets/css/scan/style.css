@@ -11,6 +11,6 @@
 	background-color: #fff !important;
 }
 
-.prova {
-	width: 100px;
-} 
+body.smart-style-6 .input-group-addon + .form-control[type="number"] {
+	padding-left:10px !important;
+}
