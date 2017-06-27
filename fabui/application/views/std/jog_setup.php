@@ -12,16 +12,20 @@
 if( !isset($jog_image) ) $jog_image = "/assets/img/controllers/create/subtractive/1.png";
 if( !isset($jog_message) ) $jog_message = _("Jog the endmill to the desired origin point, press <i class=\"fa fa-bullseye\" ></i> and when you are ready press \"Next\"");
 if( !isset($fourth_axis) ) $fourth_axis = False;
+if( !isset($is_laser)    ) $is_laser = false;
  
 ?>
 <div class="row">
 	
+	
 	<div class="col-sm-6 col-md-6" style="margin-top:42px">
+		
+		<?php if(!$is_laser): ?>
 		<div class="product-content product-wrap clearfix">
 			<div class="row">
 				<div class="col-sm-4 hidden-xs">
 					<div class="product-image medium text-center">
-						<img class="img-responsive" src="/assets/img/controllers/create/additive/2.png" style="max-width: 50%; margin-top:10px;"/>
+						<img class="img-responsive" src="/assets/img/controllers/create/additive/2.png" style="max-width: 50%; margin-top:10px; display:inline;"/>
 					</div>
 				</div>
 				<div class="col-sm-8">
@@ -32,21 +36,38 @@ if( !isset($fourth_axis) ) $fourth_axis = False;
 				</div>
 			</div>
 		</div>
+		<?php endif; ?>
 		
 		<div class="product-content product-wrap clearfix">
 			<div class="row">
 				<div class="col-sm-4 hidden-xs">
 					<div class="product-image medium text-center">
-						<img class="img-responsive" src="<?php echo $jog_image;?>" style="max-width: 100%; margin-top:10px;"/>
+						<img class="img-responsive" src="<?php echo $jog_image;?>" style="width: 90%; display:inline; margin-top:10px;"/>
 					</div>
 				</div>
 				<div class="col-sm-8">
 					<div class="description text-center">
-						<h1><span class="badge bg-color-blue txt-color-white">2</span></h1>
-						<p class="font-md"><?php echo _($jog_message); ?></p>
+						<?php if(!$is_laser):?>
+							<h1><span class="badge bg-color-blue txt-color-white">2</span></h1>
+						<?php endif; ?>
+						<p class="font-md margin-top-30"><?php echo _($jog_message); ?></p>
 					</div>
 				</div>
 			</div>
+			<?php if($is_laser):?>
+			<div class="row" id="laser-calibrate-z-focus-row" style="display:none;">
+				<div class="col-sm-4 hidden-xs">
+					<div class="product-image medium text-center">
+						<img class="img-responsive" src="<?php echo plugin_assets_url('img/fabui_laser_03a.png');?>" style="width:50%;display:inline;  margin-top:10px;"/>
+					</div>
+				</div>
+				<div class="col-sm-8">
+					<div class="description text-center">
+						<p class="font-md margin-top-30"><?php echo _("Lower the Z so that the laser head is max 1 mm away from the stock material, then press continue");?></p>
+					</div>
+				</div>
+			</div>
+			<?php endif; ?>
 		</div>
 		
 		<div class="note">Note: If you home the axis, the jog position will be saved for future use.</div>
@@ -65,11 +86,19 @@ if( !isset($fourth_axis) ) $fourth_axis = False;
 				</ul>
 			</div>
 			
-			<div class="text-center">
-				<div class="tab-content padding-10 well">
+			<div class="">
+				<div class="tab-content padding-10">
 					<div class="tab-pane fade in active" id="jog-tab">
-						<!-- jog step and feedrate inputs -->
 						<div class="smart-form">
+							<?php if($is_laser):?>
+							<fieldset>
+								<section>
+									<label class="checkbox">
+										<input type="checkbox" name="focus-point" id="focus-point">
+										<i></i>Calibrate Z focusing point</label>
+								</section>
+							</fieldset>
+							<?php endif;?>
 							<fieldset style="background: none !important;">
 								<div class="row">
 									<section class="col col-4">
@@ -94,7 +123,7 @@ if( !isset($fourth_axis) ) $fourth_axis = False;
 							</fieldset>
 						</div>
 						<!-- jog controls placeholder -->
-						<div class="jog-controls-holder"></div>
+						<div class="jog-controls-holder text-center"></div>
 					</div><!-- id="jog-tab" -->
 				
 					<div class="tab-pane fade in" id="touch-tab">
