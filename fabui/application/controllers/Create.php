@@ -107,7 +107,7 @@
 		
 		// task_wizard
 		$data['start_task_url'] = 'create/startPrintTask';
-		
+		$data['restart_task_url_file'] = 'make/print';
 		
 		$data['steps'] = array(
 				array('number'  => 1,
@@ -231,6 +231,7 @@
 		
 		// task_wizard
 		$data['start_task_url'] = 'create/startMillTask';
+		$data['restart_task_url_file'] = 'make/mill';
 		
 		$data['steps'] = array(
 				array('number'  => 1,

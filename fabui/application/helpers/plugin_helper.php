@@ -333,11 +333,14 @@ if ( ! function_exists('getObjectActionList'))
 
 if ( ! function_exists('plugin_url'))
 {
-	function plugin_url($url)
+	function plugin_url($url, $ajax_firendly=false)
 	{
 		$CI =& get_instance();
 		$plugin_name = str_replace('plugin_', '', $CI->router->class);
-		return '/plugin/'.$plugin_name.'/'.$url;
+		if($ajax_firendly)
+			return 'plugin/'.$plugin_name.'/'.$url;
+		else
+			return '/plugin/'.$plugin_name.'/'.$url;
 	}
 }
 
