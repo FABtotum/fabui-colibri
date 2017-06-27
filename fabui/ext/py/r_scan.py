@@ -262,7 +262,7 @@ class RotaryScan(GCodePusher):
         Run the rotary scan.
         """
         
-        self.prepare_task(task_id, task_type='scan')
+        self.prepare_task(task_id, task_type='scan', task_controller='scan')
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
         head_y   = y_offset

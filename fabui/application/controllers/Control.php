@@ -344,49 +344,49 @@ class Control extends FAB_Controller {
 			$task_file_id    = $tasks['id_file'];
 			
 			$task_url = $task_controller;
-			if($task_type)
-				$task_url .= '/' . $task_type;
+			//if($task_type)
+				//$task_url .= '/' . $task_type;
 				
-				$task_filename = '';
-				
-				if($task_file_id != ""){
-					$file = $this->files->get($task_file_id, 1);
-					if($file){
-						if($task_type == 'scan')
-							$task_filename = _("Being generated") . '...';
-							else
-								$task_filename = $file['client_name'];
-					}
+			$task_filename = '';
+			
+			if($task_file_id != ""){
+				$file = $this->files->get($task_file_id, 1);
+				if($file){
+					if($task_type == 'scan')
+						$task_filename = _("Being generated") . '...';
+						else
+							$task_filename = $file['client_name'];
 				}
-				
-				$task_label = _(ucfirst($task_type)).' '._("task");
-				
-				switch($task_type){
-					case 'pid_tune':
-						$task_label = 'PID tune';
-						$task_url   = $task_controller.'/nozzle-pid-tune';
-						break;
-					case 'update':
-						$task_label = 'Update';
-						$task_url   = $task_controller;
-						break;
-				}
-				
-				echo '<ul class="notification-body">';
-				echo '
-					<li>
-						<span class="padding-10 unread">
-							<em class=" padding-5 no-border-radius  pull-left margin-right-5 ">
-								<i class="fa fa-tablet fa-2x "></i>
-							</em>
-							<span>
-								<strong><a class="display-normal" href="#'.$task_url.'">'.$task_label.' <i class="font-xs txt-color-orangeDark">('.$task_status.')</i></a></strong>
-								<p>'.$task_filename.'</p>
-							</span>
+			}
+			
+			$task_label = _(ucfirst($task_type)).' '._("task");
+			
+			switch($task_type){
+				case 'pid_tune':
+					$task_label = 'PID tune';
+					//$task_url   = $task_controller.'/nozzle-pid-tune';
+					break;
+				case 'update':
+					$task_label = 'Update';
+					//$task_url   = $task_controller;
+					break;
+			}
+			
+			echo '<ul class="notification-body">';
+			echo '
+				<li>
+					<span class="padding-10 unread">
+						<em class=" padding-5 no-border-radius  pull-left margin-right-5 ">
+							<i class="fa fa-tablet fa-2x "></i>
+						</em>
+						<span>
+							<strong><a class="display-normal" href="#'.$task_url.'">'.$task_label.' <i class="font-xs txt-color-orangeDark">('.$task_status.')</i></a></strong>
+							<p>'.$task_filename.'</p>
 						</span>
-					</li>
-				';
-				echo '</ul>';
+					</span>
+				</li>
+			';
+			echo '</ul>';
 		}
 		else
 		{

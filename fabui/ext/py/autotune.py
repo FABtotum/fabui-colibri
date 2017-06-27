@@ -70,7 +70,7 @@ class PIDAutotune(GCodePusher):
         self.autotune_stats['target'] = temperature
         self.add_monitor_group('pid_tune', self.autotune_stats)
         
-        self.prepare_task(task_id, task_type='pid_tune', task_controller='maintenance')
+        self.prepare_task(task_id, task_type='pid_tune', task_controller='maintenance/nozzle-pid-tune')
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
         self.trace( _('PID Autotune started.') )

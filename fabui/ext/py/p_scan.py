@@ -182,7 +182,7 @@ class ProbeScan(GCodePusher):
         Run the probe scan.
         """
                 
-        self.prepare_task(task_id, 'scan')
+        self.prepare_task(task_id, task_type='scan', task_controller='scan')
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
         if self.standalone:

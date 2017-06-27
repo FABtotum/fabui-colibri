@@ -89,7 +89,7 @@ class UpdateApplication(GCodePusher):
         """
         """
 
-        self.prepare_task(task_id, task_type="", task_controller='updates')
+        self.prepare_task(task_id, task_type='update', task_controller='updates')
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
         self.trace( _("Update initialized.") )

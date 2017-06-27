@@ -158,7 +158,7 @@ class PrintApplication(GCodePusher):
         :type task_id: int
         """
 
-        self.prepare_task(task_id, task_type='print', gcode_file=gcode_file)
+        self.prepare_task(task_id, task_type='print', task_controller='make/print', gcode_file=gcode_file)
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
         #~ if self.standalone:

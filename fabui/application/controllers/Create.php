@@ -383,7 +383,7 @@
 		$this->load->model('Tasks', 'tasks');
 		$taskData = array(
 			'user'       => $this->session->user['id'],
-			'controller' => 'make',
+			'controller' => 'make/print',
 			'type'       => 'print',
 			'status'     => 'running',
 			'id_file'    => $data['idFile'],
@@ -437,7 +437,7 @@
 		$this->load->model('Tasks', 'tasks');
 		$taskData = array(
 				'user'       => $this->session->user['id'],
-				'controller' => 'make',
+				'controller' => 'make/mill',
 				'type'       => 'mill',
 				'status'     => 'running',
 				'id_file'    => $data['idFile'],

@@ -268,7 +268,7 @@
 		$this->load->model('Tasks', 'tasks');
 		$taskData = array(
 			'user'       => $this->session->user['id'],
-			'controller' => 'create',
+			'controller' => 'scan',
 			'type'       => 'scan',
 			'status'     => 'running',
 			'start_date' => date('Y-m-d H:i:s')
@@ -317,7 +317,7 @@
 		$this->load->model('Tasks', 'tasks');
 		$taskData = array(
 				'user'       => $this->session->user['id'],
-				'controller' => 'create',
+				'controller' => 'scan',
 				'type'       => 'scan',
 				'status'     => 'running',
 				'start_date' => date('Y-m-d H:i:s')
@@ -368,7 +368,7 @@
 		$this->load->model('Tasks', 'tasks');
 		$taskData = array(
 				'user'       => $this->session->user['id'],
-				'controller' => 'create',
+				'controller' => 'scan',
 				'type'       => 'scan',
 				'status'     => 'running',
 				'start_date' => date('Y-m-d H:i:s')
@@ -422,7 +422,7 @@
 		$this->load->model('Tasks', 'tasks');
 		$taskData = array(
 				'user'       => $this->session->user['id'],
-				'controller' => 'create',
+				'controller' => 'scan',
 				'type'       => 'scan',
 				'status'     => 'running',
 				'start_date' => date('Y-m-d H:i:s')

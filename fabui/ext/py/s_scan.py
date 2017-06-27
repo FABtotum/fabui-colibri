@@ -267,7 +267,7 @@ class SweepScan(GCodePusher):
         Run the sweep scan.
         """
         
-        self.prepare_task(task_id, task_type='scan')
+        self.prepare_task(task_id, task_type='scan', task_controller='scan')
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
         self.post_processing_thread = Thread(

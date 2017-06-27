@@ -99,7 +99,7 @@ class MillApplication(GCodePusher):
         :type task_id: int
         """
 
-        self.prepare_task(task_id, task_type='mill', gcode_file=gcode_file)
+        self.prepare_task(task_id, task_type='mill', task_controller='make/mill', gcode_file=gcode_file)
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
         #if self.standalone:
