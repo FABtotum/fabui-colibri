@@ -17,5 +17,6 @@
   "capabilities": [
     "print",
     "fan"
-  ]
+  ],
+  "plugins": []
 }

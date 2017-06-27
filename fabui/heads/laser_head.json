@@ -16,5 +16,8 @@
     "capabilities": [
         "laser",
         "fan"
-    ]
+    ],
+	"plugins": [
+		"fab_laser"
+	]
 }

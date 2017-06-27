@@ -28,6 +28,7 @@ import re
 import json
 
 from fabtotum.utils.translation import _, setLanguage
+from fabtotum.utils.plugin import activate_plugin
 from fabtotum.totumduino.format import parseG30, parseM114
 
 def zProbe(app, lang='en_US.UTF-8'):
@@ -232,6 +233,7 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     min_temp     = int(head.get('min_temp', 0))
     probe_length = float(app.config.get('settings', 'probe.length', 0))
     tool         = head.get('tool', '')
+    plugins      = head.get('plugins', False)
     
     # Set installed head ID
     if fw_id is not None:
@@ -278,4 +280,10 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     
     # Save settings
     #~ gcs.send( "M500", group='bootstrap' )
+    if plugins:
+        app.trace( _("Activating required plugins") )
+        for plugin in plugins:
+            app.trace( _("Activating {0} plugin".format(plugin)) )
+            activate_plugin(plugin)
+        
     return True

@@ -14,5 +14,6 @@
   "max_rpm": "14000",
   "capabilities": [
     "mill"
-  ]
+  ],
+  "plugins": []
 }

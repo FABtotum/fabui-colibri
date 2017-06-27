@@ -31,6 +31,8 @@ import os, re
 
 # Import internal modules
 from fabtotum.utils.translation import _, setLanguage
+from fabtotum.utils.common import shell_exec
+from fabtotum.utils.plugin import activate_plugin
 from fabtotum.fabui.config import ConfigService
 from fabtotum.fabui.hardware.all import PRESET_MAP
 
@@ -110,6 +112,7 @@ def configure_head(gcs, config, log):
         min_temp     = int(head.get('min_temp', 0))
         custom_gcode = head.get('custom_gcode','')
         tool         = head.get('tool', '')
+        plugins      = head.get('plugins', False)
         
         probe_length  = float(config.get('settings', 'probe.length', 0))
         
@@ -152,6 +155,12 @@ def configure_head(gcs, config, log):
                 code = line.split(';')[0]
                 if code:
                     gcs.send( code, group='bootstrap' )
+        
+        if plugins : 
+            log.info("Activating required plugins")
+            for plugin in plugins:
+                log.info("Activating {0} plugin".format(plugin))
+                activate_plugin(plugin, config)
         
     except Exception as e:
         print log.error("head configuration failed: {0}".format(str(e)))

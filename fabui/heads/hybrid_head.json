@@ -18,5 +18,6 @@
         "print",
         "mill",
         "fan"
-    ]
+    ],
+	"plugins": []
 }

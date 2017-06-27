@@ -34,17 +34,11 @@ from threading import Event, Thread
 from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.utils.pyro.gcodeclient import GCodeServiceClient
+from fabtotum.utils.common import shell_exec
 from fabtotum.database      import Database, TableItem
 from fabtotum.database.sysconfig import SysConfig
 
 ################################################################################
-
-def shell_exec(cmd):
-    stdin,stdout = os.popen2(cmd)
-    stdin.close()
-    lines = stdout.readlines(); 
-    stdout.close()
-    return lines
 
 def get_rx_tx_bytes(iface):
     with open('/sys/class/net/{0}/statistics/rx_bytes'.format(iface), 'r') as f:

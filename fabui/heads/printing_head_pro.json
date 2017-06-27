@@ -28,5 +28,6 @@
     "print",
     "fan",
     "feeder"
-  ]
+  ],
+  "plugins": []
 }
