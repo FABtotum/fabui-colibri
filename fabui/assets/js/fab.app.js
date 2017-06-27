@@ -1603,7 +1603,8 @@ fabApp = (function(app) {
 				$(".ribbon-button-alignment").prepend('<span data-title="' + _("Internet available") + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon internet-ribbon-icon"><i class="fa fa-globe"></i></span>');
 			}
 			if(connectionType == 'eth') {
-				$(".ribbon-button-alignment").prepend('<span style="padding-top:2px;" data-title="' + _("Connected with ethernet cable") + '<br> ' +data.interfaces.eth0.ipv4_address.replace("/16", "") +'" rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon"><i class="icon-communication-088 "></i></span>');	
+				$(".eth-ribbon").remove();
+				$(".ribbon-button-alignment").prepend('<span style="padding-top:2px;" data-title="' + _("Connected with ethernet cable") + '<br> ' +data.interfaces.eth0.ipv4_address.replace("/16", "") +'" rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon eth-ribbon"><i class="icon-communication-088 "></i></span>');	
 			}else if(connectionType == 'wlan'){
 				$(".wifi-ribbon-icon").find('i').addClass('txt-color-blue');
 			}
