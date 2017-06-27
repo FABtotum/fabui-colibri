@@ -65,7 +65,6 @@ $route['make/mill/(\d+)']  = 'create/index/mill/$1';
 $route['make/laser/(\d+)']  = 'create/index/laser/$1';
 $route['make/print'] = 'create/index/print';
 $route['make/mill']  = 'create/index/mill';
-$route['make/laser']  = 'create/index/laser';
 $route['make/scan']  = 'scan';
 //file manager
 $route['projectsmanager/add-project']  = 'projectsmanager/newProject';

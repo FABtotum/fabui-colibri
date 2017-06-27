@@ -17,7 +17,7 @@ if(!isset($task_jump_restart)) $task_jump_restart = 1;
 	
 	$(document).ready(function() {
 		$(".new-task").on('click', function(){$('.wizard').wizard('selectedItem', { step: <?php echo $task_jump_new; ?> });});
-		$(".restart-task").on('click',restartPrint);
+		$(".restart-task").on('click', restartTask);
 		//$(".save-z-height").on('click', saveZHeight);
 		$("input[name='quality']").on('click', qualityRating);
 	});
@@ -39,18 +39,29 @@ if(!isset($task_jump_restart)) $task_jump_restart = 1;
 			console.log('save quality rating', response);
 		});
 	}
+	
 	/**
-	*
-	**/
-	function restartPrint()
+	 *
+	 **/
+	function restartTask()
 	{
-		if(window.location.hash == '#make/<?php echo $type; ?>/' + idFile){
-			location.reload();
-		}else{
-			window.location.href = '#make/<?php echo $type; ?>/' + idFile;
-		}
-		
+		<?php if($restart_task_url_file): ?>
+			if(window.location.hash == '#<?php echo $restart_task_url_file; ?>/' + idFile){
+				location.reload();
+			}else{
+				window.location.href = '#<?php echo $restart_task_url_file; ?>/' + idFile;
+			}
+		<?php elseif($restart_task_url_object): ?>
+			if(window.location.hash == '#<?php echo $restart_task_url_object; ?>/' + idObject){
+				location.reload();
+			}else{
+				window.location.href = '#<?php echo $restart_task_url_object; ?>/' + idObject;
+			}
+		<?php else: ?>
+			$('.wizard').wizard('selectedItem', { step: <?php echo $task_jump_new; ?> });
+		<?php endif; ?>
 	}
+	
 	/**
 	*
 	**/
