@@ -132,7 +132,7 @@
 	 		alert( _("Please select a Head") );
 	 		return false;
 	 	}
-	 	openWait('<i class="fa fa-circle-o-notch fa-spin"></i> <?php echo _("Installing head"); ?>', '<?php echo _("Please wait"); ?>...');
+	 	openWait('<i class="fa fa-gear fa-spin"></i> <?php echo _("Installing head"); ?>', '<?php echo _("Please wait"); ?>...');
 	 	$.ajax({
 			type: "POST",
 			url: "<?php echo site_url("head/setHead") ?>/"+ $("#heads").val(),
