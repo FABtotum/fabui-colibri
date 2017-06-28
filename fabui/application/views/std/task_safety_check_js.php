@@ -8,12 +8,14 @@
  */
 
 /* variable initialization */
-if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_is_ok' => false, 'bed_is_ok' => false , 'bed_enabled' => true );
+if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_is_ok' => false, 'bed_is_ok' => false , 'bed_enabled' => true, 'url' => '' );
 ?>
 
 <?php if(!$safety_check['all_is_ok']): ?>
 
 <script type="text/javascript">
+	
+	window.safety_check_url = "<?php echo $safety_check['url']?>";
 	
 	$(document).ready(function() {
 		setTimeout(checkSafety, 2000);
@@ -21,16 +23,16 @@ if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_i
 	
 	function checkSafety()
 	{
-		console.log("update safety");
+		// safety measure to stop the periodic check if the view was changed
+		// ensure that only one safety check can be active at a time
+		if( safety_check_url != "<?php echo $safety_check['url']?>")
+			return;
 		
 		$.ajax({
 			  type: "POST",
 			  url: "<?php echo site_url($safety_check['url']) ?>",
 			  dataType: 'json'
 		}).done(function( data ) {
-			// safety measure to stop the periodic check if the view was changed
-			
-			console.log(data);
 			
 			if($('#safety-check-bed-image').length === 0)
 				return;
@@ -72,18 +74,7 @@ if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_i
 				setTimeout(checkSafety, 1500);
 			}
 		});
-		
-		/*fabApp.jogMdi("M744\nM745", function(e){
-			data.bed_in_place =  e[0].reply[0] == 'TRIGGERED' );
-			console.log('HEAD', e[1].reply[0] == 'TRIGGERED' );
-		});
-		
-		setTimeout(checkSafety, 1500);*/
-		
-	}
-	
-	function updateSafety()
-	{
+
 		
 	}
 

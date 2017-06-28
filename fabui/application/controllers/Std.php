@@ -116,22 +116,19 @@ class Std extends FAB_Controller {
 	public function safetyCheck($feature, $bed_in_place)
 	{
 		$this->load->helper('fabtotum_helper');
-		switch($bed_in_place)
+		/*switch($bed_in_place)
 		{
 			case "yes":
-				$bed_check = true;
+				$bed_check = 'true';
 				break;
 			case "no":
 				$bed_check = false;
 				break;
-			case "any":
+			default:
 				$bed_check = 'any';
 				break;
-			default:
-				$bed_check = "false";
-				break;
-		}
-		$result = safetyCheck($feature, $bed_check );
+		}*/
+		$result = safetyCheck($feature, $bed_in_place);
 		$this->output->set_content_type('application/json')->set_output(json_encode($result));
 	}
 	

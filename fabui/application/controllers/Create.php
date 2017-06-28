@@ -95,7 +95,7 @@
 		
 		if(!$task_is_running){
 			
-			$data['safety_check'] = safetyCheck("print", true);
+			$data['safety_check'] = safetyCheck("print", "yes");
 			$data['safety_check']['url'] = 'std/safetyCheck/print/yes';
 			$data['safety_check']['content'] = $this->load->view( 'std/task_safety_check', $data, true );
 			$data['dropzone']['content'] = $this->load->view( 'std/task_dropzone', $data, true );
@@ -219,7 +219,7 @@
 		
 		if(!$task_is_running){
 			
-			$data['safety_check'] = safetyCheck("mill", false);
+			$data['safety_check'] = safetyCheck("mill", "no");
 			$data['safety_check']['url'] = 'std/safetyCheck/mill/no';
 			$data['safety_check']['content'] = $this->load->view( 'std/task_safety_check', $data, true );
 			
