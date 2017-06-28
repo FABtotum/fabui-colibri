@@ -87,6 +87,7 @@ class MillApplication(GCodePusher):
         if state == 'resumed':
             self.trace( _("Milling RESUMED") )
         if state == 'aborted':
+            self.resetTrace()
             self.trace( _("Milling ABORTED") )
         
     def run(self, task_id, gcode_file):
