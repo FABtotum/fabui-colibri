@@ -56,8 +56,9 @@ def pause_additive(app, args=None, lang='en_US.UTF-8'):
     
     app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False )
     app.macro("G0 Z{0} F5000".format(safe_z),        "ok", 100,  _("Moving to Z safe zone"), verbose=False )
-    
     app.macro("G0 X210 Y210 F6000", "ok", 100,  _("Moving to safe zone"), verbose=False )
+    #block stepper motor for 5min => 60*5=300
+    app.macro("M84 S300", "ok", 2, _("Block stepper motor"), verbose=False)
     
 def resume_additive(app, args=None, lang='en_US.UTF-8'):
     
@@ -65,10 +66,13 @@ def resume_additive(app, args=None, lang='en_US.UTF-8'):
     ext_temp = args[0]
     bed_temp = args[1]
     
+    #block stepper motor for 1min => 60*1=60
+    app.macro("M84 S60", "ok", 2, _("Block stepper motor"), verbose=False)
     app.macro("M104 S{0}".format(ext_temp),  "ok", 5,   _("Heating Nozzle"), verbose=False)
     app.macro("M140 S{0}".format(bed_temp),  "ok", 5,   _("Heating Bed"), verbose=False)
     app.macro("M109 S{0}".format(ext_temp),  "*", 400,  _("Waiting for nozzle to reach temperature {0}&deg;".format(ext_temp)) ) #heating and waiting.
     app.macro("M190 S{0}".format(bed_temp),  "*", 400,  _("Waiting for bed to reach temperature {0}&deg;".format(bed_temp)) ) #heating and waiting.
+    app.macro("M84", "ok", 2, _("Unlock stepper motor"), verbose=False)
     
     try:
         wire_end = app.config.get('settings', 'wire_end', 0)

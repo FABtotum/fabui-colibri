@@ -52,10 +52,12 @@ def pause_subtractive(app, args=None, lang='en_US.UTF-8'):
     app.macro("G0 Z{0} F5000".format(safe_z),        "ok", 100,  _("Moving to Z safe zone"), verbose=False )
     
     app.macro("G0 X210 Y210 F6000", "ok", 100,  _("Moving to safe zone"), verbose=False )
+    #block stepper motor for 5min => 60*5=300
+    app.macro("M84 S300", "ok", 2, _("Block stepper motor"), verbose=False)
 
 def resume_subtractive(app, args=None, lang='en_US.UTF-8'):
+    app.macro("M84", "ok", 2, _("Unlock stepper motor"), verbose=False)
     # restore position
-    
     if os.path.exists('/var/lib/fabui/settings/stored_task.json'):
         content = {}
         with open('/var/lib/fabui/settings/stored_task.json') as f:
