@@ -49,22 +49,18 @@
 			processData: false,                       
 			type: 'post',
 			success: function(response){
-				setTimeout(function(){
-						waitContent("<?php echo _("Reloading page"); ?>");
-						location.reload();
-					}, 10000
-				);
+				handle_response(response);
 			}
 		 });
 	}
 	
 	function doFirmwareUpload()
 	{
-		openWait('<i class="fa fa-spinner fa-spin"></i> ' + _("Uploading and installing firmware") + '...');
+		openWait('<i class="fa fa-cog fa-spin"></i> ' + _("Uploading and installing firmware") + '...');
 		var hexFile = $('#hex-file').prop('files')[0];   
 		var form_data = new FormData();                  
 		form_data.append('hex-file', hexFile);
-		console.log(form_data);                             
+		                           
 		$.ajax({
 			url: '<?php echo site_url('firmware/doUploadFirmware') ?>',
 			dataType: 'json',
@@ -74,14 +70,33 @@
 			data: form_data,                         
 			type: 'post',
 			success: function(response){
-				
-				setTimeout(function(){
-						waitContent("<?php echo _("Reloading page"); ?>");
-						location.reload();
-					}, 10000
-				);
+				handle_response(response);
 			}
 		 });
+	}
+	/**
+	*
+	**/
+	function handle_response(response)
+	{
+		if(response.result == false) {
+			closeWait();
+			$.SmartMessageBox({
+				title: "<i class='fa fa-warning txt-color-orangeDark'></i> " + _("Warning"),
+				content : '<br><span >' + _("Firmware was not flashed") + '</span><br><span >'+_("Please try again")+'</span><br><span >'+_("If the problem remain please contact support")+'</span>',
+				buttons: "[" + _("Ok") + "]",
+			}, function(ButtonPressed, Option) {
+				if(ButtonPressed == _("Ok")){
+					location.reload();
+				}
+			});
+		}else{
+			waitContent( _("Firmware flashed coorectly") + '<br>' + _("Reloading page"));
+			setTimeout(function(){
+				location.reload();
+				}, 7000
+			);
+		}
 	}
 	
 </script>

@@ -264,7 +264,11 @@ if(!function_exists('flashFirmware'))
 		$CI =& get_instance();
 		$CI->load->helper('fabtotum');
 		$args = '';
-
+		
+		$avrdude_logfile = '/var/log/fabui/avrdude.log';
+		$error_1 = '/stk500_recv\(\): programmer is not responding/';
+		$error_2 = '/stk500_getsync\(\)/';
+		
 		switch($type)
 		{
 			case "factory":
@@ -280,7 +284,18 @@ if(!function_exists('flashFirmware'))
 				return false;
 		}
 
-		return startBashScript('totumduino_manager.sh', $args, false, true);
+		startBashScript('totumduino_manager.sh', $args, false, true);
+		
+		$result = file_get_contents($avrdude_logfile);
+		
+		preg_match_all($error_1, $result, $matches_error1, PREG_SET_ORDER, 0);
+		preg_match_all($error_2, $result, $matches_error2, PREG_SET_ORDER, 0);
+		
+		if(count($matches_error1) > 0 || count($matches_error2) > 0){
+			return false;
+		}else{
+			return true;
+		}		
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

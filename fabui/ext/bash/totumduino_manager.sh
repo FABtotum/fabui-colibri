@@ -16,6 +16,7 @@ AVRDUDE_PORT="/dev/ttyAMA0"
 AVRDUDE_BAUD="57600"
 AVRDUDE_PART="atmega1280"
 AVRDUDE_ARGS="-D -q -V -p ${AVRDUDE_PART} -C /etc/avrdude.conf -c arduino -b ${AVRDUDE_BAUD} -P ${AVRDUDE_PORT}"
+LOGFILE="/var/log/fabui/avrdude.log"
 
 usage()
 {
@@ -30,45 +31,66 @@ usage()
 
 log_header()
 {
-    echo "============ cmd = $CMD ============"  >> /var/log/fabui/avrdude.log
-    pwd
-    echo "$@" >> /var/log/fabui/avrdude.log
+    echo "============ cmd = $CMD ============"  >> ${LOGFILE}
+    echo "$@" >> ${LOGFILE}
 }
 
 log_footer()
 {
-    echo "============ result = $RETR ============"  >> /var/log/fabui/avrdude.log
+    echo "============ result = $RETR ============"  >> ${LOGFILE}
+}
+
+clear_log()
+{
+	cp /dev/null ${LOGFILE}
 }
 
 dump_eeprom()
 {
 	HEXDUMPFILE=$1
+	MESSAGE="OK"
 	if [ -f "$HEXDUMPFILE" ]; then
 		rm ${HEXDUMPFILE}
 	fi
-	echo "============ DUMP EEPROM ============"  >> /var/log/fabui/avrdude.log
-	echo "${AVRDUDE} ${AVRDUDE_ARGS} -F -U eeprom:r:${HEXDUMPFILE}:i" >> /var/log/fabui/avrdude.log
-	${AVRDUDE} ${AVRDUDE_ARGS} -F -U eeprom:r:${HEXDUMPFILE}:i >> /var/log/fabui/avrdude.log 2>&1
+	echo "============ DUMP EEPROM ============"  >> ${LOGFILE}
+	echo "${AVRDUDE} ${AVRDUDE_ARGS} -F -U eeprom:r:${HEXDUMPFILE}:i" >> ${LOGFILE}
+	${AVRDUDE} ${AVRDUDE_ARGS} -F -U eeprom:r:${HEXDUMPFILE}:i >> ${LOGFILE} 2>&1
+	RETR=$?
+	if [ $RETR -eq 1 ]; then
+		MESSAGE="KO"
+	fi
+	echo "============ DUMP EEPROM: ${MESSAGE} ============"  >> ${LOGFILE}
+	return $RETR
+	
 }
 
 write_eeprom()
 {
 	HEXDUMPFILE=$1
 	if [ -f "$HEXDUMPFILE" ]; then
-		echo "============ WRITE EEPROM ============"  >> /var/log/fabui/avrdude.log
-		echo "${AVRDUDE} ${AVRDUDE_ARGS} -F -U eeprom:w:${HEXDUMPFILE}:i" >> /var/log/fabui/avrdude.log
-		${AVRDUDE} ${AVRDUDE_ARGS} -F -U eeprom:w:${HEXDUMPFILE}:i >> /var/log/fabui/avrdude.log 2>&1
+		MESSAGE="OK"
+		echo "============ WRITE EEPROM ============"  >> ${LOGFILE}
+		echo "${AVRDUDE} ${AVRDUDE_ARGS} -F -U eeprom:w:${HEXDUMPFILE}:i" >> ${LOGFILE}
+		${AVRDUDE} ${AVRDUDE_ARGS} -F -U eeprom:w:${HEXDUMPFILE}:i >> ${LOGFILE} 2>&1
+		RETR=$?
 		rm ${HEXDUMPFILE}
+		if [ $RETR -eq 1 ]; then
+			MESSAGE="KO"
+		fi
+		echo "============ WRITE EEPROM: ${MESSAGE} ============"  >> ${LOGFILE}
+		return $RETR
 	fi
 	
 }
+
+clear_log
 
 case $CMD in
     backup)
         [ "x${HEXFILE}" == "x" ] && usage
         
         log_header "${AVRDUDE} ${AVRDUDE_ARGS} -F -U flash:r:${HEXFILE}:i"
-        ${AVRDUDE} ${AVRDUDE_ARGS} -F -U flash:r:${HEXFILE}:i >> /var/log/fabui/avrdude.log 2>&1
+        ${AVRDUDE} ${AVRDUDE_ARGS} -F -U flash:r:${HEXFILE}:i >> ${LOGFILE} 2>&1
         RETR=$?
         log_footer ${RETR}
         exit $RETR
@@ -84,16 +106,21 @@ case $CMD in
             echo "hex-file: $HEXFILE"
         fi
         
-		
 		dump_eeprom "/tmp/fabui/dumped_eeprom.hex"
+		
+		DUMP_RETR=$?
+		if [ $DUMP_RETR -eq 1 ]; then
+			log_footer ${DUMP_RETR}
+			exit $DUMP_RETR
+		fi
         log_header "${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i"
-        ${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i >> /var/log/fabui/avrdude.log 2>&1
+        ${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i >> ${LOGFILE} 2>&1
         RETR=$?
 		write_eeprom "/tmp/fabui/dumped_eeprom.hex"
         log_footer ${RETR}
         
         if [ x"$TMPDIR" != x"" ]; then
-            rm -rf $TMPDIR
+            rm -rf $TMPDIR 
         fi
         
         exit $RETR
@@ -104,25 +131,37 @@ case $CMD in
         fi
         ;;
     remote-update)
+		
         FW_REPO_URL=$(cat /var/lib/fabui/config.ini | grep firmware_endpoint | awk 'BEGIN{FS="="}{print $2}')
         FILE_URL="${FW_REPO_URL}fablin/atmega1280/$2/firmware.zip"
         TMP_DIR="/tmp/fabui/firmware"
+		
+		if [ -d "$TMP_DIR" ]; then
+			rm -rvf ${TMP_DIR}
+		fi
+		
+		
         mkdir -p $TMP_DIR
-
-        wget -P $TMP_DIR $FILE_URL
-        wget -P $TMP_DIR ${FILE_URL}.md5sum
+        wget -P $TMP_DIR $FILE_URL 
+        wget -P $TMP_DIR ${FILE_URL}.md5sum 
         
         cd $TMP_DIR
         
         md5sum -c firmware.zip.md5sum
-        RETR="$?"
-        if [ "$RETR" == "0" ]; then
+        RETR=$?
+        if [ $RETR == "0" ]; then
             unzip -o firmware.zip
             HEXFILE=$(find -name "*.hex")
-            echo $HEXFILE
+			
             dump_eeprom "/tmp/fabui/dumped_eeprom.hex"
+			DUMP_RETR=$?
+			if [ $DUMP_RETR -eq 1 ]; then
+				log_footer 1
+				exit 1
+			fi
+			
             log_header "${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i"
-            ${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i >> /var/log/fabui/avrdude.log 2>&1
+            ${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i >> ${LOGFILE} 2>&1
             RETR=$?
 			write_eeprom "/tmp/fabui/dumped_eeprom.hex"
             log_footer ${RETR}
@@ -147,14 +186,14 @@ case $CMD in
 		;;
     test)
         log_header "${AVRDUDE} ${AVRDUDE_ARGS}"
-        ${AVRDUDE} ${AVRDUDE_ARGS} >> /var/log/fabui/avrdude.log 2>&1
+        ${AVRDUDE} ${AVRDUDE_ARGS} >> ${LOGFILE} 2>&1
         RETR=$?
         log_footer ${RETR}
         
         if [ "$RETR" == "0" ]; then
             echo "OK"
         else
-            echo "Error, check /var/log/fabui/avrdude.log"
+            echo "Error, check ${LOGFILE}"
         fi
         exit $RETR
         ;;

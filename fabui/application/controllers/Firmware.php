@@ -134,7 +134,7 @@ class Firmware extends FAB_Controller {
 			$result = false;
 			
 			stopServices();
-			flashFirmware('custom', $upload_data['full_path']);
+			$result = flashFirmware('custom', $upload_data['full_path']);
 			startServices();
 			
 			$data['result'] = $result;
