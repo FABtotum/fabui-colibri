@@ -40,6 +40,29 @@ log_footer()
     echo "============ result = $RETR ============"  >> /var/log/fabui/avrdude.log
 }
 
+dump_eeprom()
+{
+	HEXDUMPFILE=$1
+	if [ -f "$HEXDUMPFILE" ]; then
+		rm ${HEXDUMPFILE}
+	fi
+	echo "============ DUMP EEPROM ============"  >> /var/log/fabui/avrdude.log
+	echo "${AVRDUDE} ${AVRDUDE_ARGS} -F -U eeprom:r:${HEXDUMPFILE}:i" >> /var/log/fabui/avrdude.log
+	${AVRDUDE} ${AVRDUDE_ARGS} -F -U eeprom:r:${HEXDUMPFILE}:i >> /var/log/fabui/avrdude.log 2>&1
+}
+
+write_eeprom()
+{
+	HEXDUMPFILE=$1
+	if [ -f "$HEXDUMPFILE" ]; then
+		echo "============ WRITE EEPROM ============"  >> /var/log/fabui/avrdude.log
+		echo "${AVRDUDE} ${AVRDUDE_ARGS} -F -U eeprom:w:${HEXDUMPFILE}:i" >> /var/log/fabui/avrdude.log
+		${AVRDUDE} ${AVRDUDE_ARGS} -F -U eeprom:w:${HEXDUMPFILE}:i >> /var/log/fabui/avrdude.log 2>&1
+		rm ${HEXDUMPFILE}
+	fi
+	
+}
+
 case $CMD in
     backup)
         [ "x${HEXFILE}" == "x" ] && usage
@@ -61,9 +84,12 @@ case $CMD in
             echo "hex-file: $HEXFILE"
         fi
         
+		
+		dump_eeprom "/tmp/fabui/dumped_eeprom.hex"
         log_header "${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i"
-        ${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i >> /var/log/fabui/avrdude.log 
+        ${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i >> /var/log/fabui/avrdude.log 2>&1
         RETR=$?
+		write_eeprom "/tmp/fabui/dumped_eeprom.hex"
         log_footer ${RETR}
         
         if [ x"$TMPDIR" != x"" ]; then
@@ -94,10 +120,11 @@ case $CMD in
             unzip -o firmware.zip
             HEXFILE=$(find -name "*.hex")
             echo $HEXFILE
-            
+            dump_eeprom "/tmp/fabui/dumped_eeprom.hex"
             log_header "${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i"
-            ${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i >> /var/log/fabui/avrdude.log 
+            ${AVRDUDE} ${AVRDUDE_ARGS} -U flash:w:${HEXFILE}:i >> /var/log/fabui/avrdude.log 2>&1
             RETR=$?
+			write_eeprom "/tmp/fabui/dumped_eeprom.hex"
             log_footer ${RETR}
         fi
         
@@ -106,6 +133,18 @@ case $CMD in
         
         exit $RETR
         ;;
+	dump-eeprom)
+		echo "dump eeprom"
+		dump_eeprom "/tmp/fabui/dumped_eeprom.hex"
+		RETR=$?
+		exit $RETR
+		;;
+	write-eeprom)
+		echo "write eeprom"
+		write_eeprom "/tmp/fabui/dumped_eeprom.hex"
+		RETR=$?
+		exit $RETR
+		;;
     test)
         log_header "${AVRDUDE} ${AVRDUDE_ARGS}"
         ${AVRDUDE} ${AVRDUDE_ARGS} >> /var/log/fabui/avrdude.log 2>&1
