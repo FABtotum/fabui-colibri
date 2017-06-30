@@ -85,19 +85,20 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		<?php endif; ?>
 		
 	});
-	
+	/**
+	*
+	**/
 	function emailSwitchChange()
 	{
-		console.log('send_email: ', $(this).is(':checked') );
 		sendActionRequest('sendEmail', $(this).is(':checked')?"on":"off");
 	}
-	
+	/**
+	*
+	**/
 	function shutdownSwitchChange()
 	{
-		console.log('auto_shutdown: ', $(this).is(':checked') );
 		sendActionRequest('autoShutdown', $(this).is(':checked')?"on":"off");
 	}
-	
 	/**
 	* freeze ui
 	*/
@@ -818,7 +819,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	 */
 	function jsonMonitor()
 	{
-		if(!socket_connected) getTaskMonitor(false);
+		 if(!socket_connected || socket.fallback) getTaskMonitor(false);
 	}
 	/**
 	 *  trace interval if websocket is not available
@@ -843,7 +844,6 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	function handleTaskStatus(status, firstCall)
 	{
 		var taskType = "<?php echo isset($type_label) ? $type_label : ucfirst($type); ?>";
-		console.log("TASK STATUS = ", status);
 		switch(status){
 			case 'paused':
 				{
@@ -1096,11 +1096,9 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	**/
 	function filamentSetMode()
 	{
-		console.log($(this));
 		var action = $(this).attr('data-action');
 		$(".filament-button-choose-action").find('span').html('');
 		$(this).find('span').html('<i class="fa fa-check"></i>');
-		console.log(action);
 		$(".filament-action-descritpion").addClass("hidden");
 		$("#filament-" + action + "-description").removeClass("hidden");
 		$("#filament-start-button").attr('data-action', action);
@@ -1119,7 +1117,6 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			url: "<?php echo site_url("spool") ?>/" + action + '/' + filament + '/1',
 			dataType: 'json'
 		}).done(function( response ) {
-			console.log(response);
 			closeWait();
 	  	});
 	}

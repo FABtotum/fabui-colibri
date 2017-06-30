@@ -74,11 +74,13 @@
 		$this->load->helpers('fabtotum_helper');
 		//load model
 		$this->load->model('Tasks', 'tasks');
+		//reset task json monitor
+		resetTaskMonitor();
 		//get data from post
-		$data = $this->input->post();
-		$bundles = $this->input->post('bundles');
+		$data     = $this->input->post();
+		$bundles  = $this->input->post('bundles');
 		$firmware = $data['firmware'];
-		$boot = $data['boot'];
+		$boot     = $data['boot'];
 		
 		//add task record to db
 		$taskData = array(

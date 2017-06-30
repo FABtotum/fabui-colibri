@@ -9,6 +9,7 @@
 ?>
 <script type="text/javascript">
 	var local_data_copy = {};
+	var checkInterval;
 	
 	$(document).ready(function() {
 		<?php if($runningTask): ?>
@@ -101,8 +102,6 @@
 		var changelog = "";
 		var title = "Changelog";
 		
-		console.log('Changelog:', subtype, id);
-		
 		if(local_data_copy)
 		{
 			switch(subtype)
@@ -122,8 +121,6 @@
 					showChangelog(title, changelog);
 					break;
 			}
-			//console.log(local_data_copy);
-			
 		}
 		
 	}
@@ -141,7 +138,6 @@
 			$.get(url, function(data){
 				var converter = new showdown.Converter(),
 				html = converter.makeHtml(data);
-				console.log('HTML', html);
 				$("#changelog-content").html(html);
 				
 			});
@@ -150,10 +146,6 @@
 		{
 			var converter = new showdown.Converter(),
 			html = converter.makeHtml(changelog);
-			
-			console.log('HTML', html);
-			
-			console.log(changelog, title);
 			$("#changelog-content").html(html);
 			$("#changelogModal").modal('show');
 		}
@@ -172,8 +164,6 @@
 							'</tr>' + 
 						'</thead>' + 
 						'<tbody>';
-
-		console.log("BUNDLES", data.bundles);
 
 		$.each(data.bundles, function(bundle_name, object) {
 			if(object.need_update){
@@ -410,10 +400,7 @@
 	**/
 	if(typeof manageMonitor != 'function'){
 		window.manageMonitor = function(data){
-			console.log("=======================");
-			console.log("UPDATE - MANAGEMONITOR");
 			handleTask(data);
-			
 		}
 	}
 	/**
@@ -446,6 +433,9 @@
 				if($("#do-reboot").length == 0) $(".button-container").append('<button class="btn btn-default  action-buttons" id="do-reboot"> <?php echo _("Reboot now") ?></button>')
 				$('.fabtotum-icon').parent().removeClass().addClass('tada animated');
 				$("#do-reboot").on('click', fabApp.reboot);
+				clearInterval(checkInterval);
+				number_tasks -= 1;
+				fabApp.updateNotificationBadge();
 				break;
 		}
 
@@ -527,6 +517,9 @@
 	**/
 	function initTask()
 	{
+
+		checkInterval = setInterval(jsonMonitor, 1000);
+		
 		fabApp.freezeMenu('updates');
 		$(".small").html("<?php echo _("Please don't turn off the printer until the operation is completed") ?>");
 		
@@ -542,6 +535,22 @@
 				$("#update-details").on('click', showHideUpdateDetails);
 				
 			});
+		});
+	}
+	/**
+	*
+	**/
+	function jsonMonitor()
+	{
+		if(!socket_connected || socket.fallback) getTaskMonitor();
+	}
+	/**
+	*
+	**/
+	function getTaskMonitor()
+	{
+		$.get('/temp/task_monitor.json'+ '?' + jQuery.now(), function(data, status){
+			handleTask(data);
 		});
 	}
 </script>
