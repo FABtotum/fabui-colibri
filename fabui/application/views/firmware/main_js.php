@@ -11,7 +11,6 @@
 
 	 function set_flash_section(){
 		var version = $(this).val();
-		console.log(version);
 		
 		if(version == 'upload')
 		{
@@ -40,7 +39,7 @@
 	
 	function doFlashFirmware(version)
 	{
-		openWait('<i class="fa fa-spinner fa-spin"></i> Installing <strong>'+version+'</strong> firmware...');                          
+		openWait('<i class="fa fa-cog fa-spin"></i> Installing <strong>'+version+'</strong> firmware...');                          
 		$.ajax({
 			url: '<?php echo site_url('firmware/doFlashFirmware') ?>/'+version,
 			dataType: 'json',
@@ -83,7 +82,7 @@
 			closeWait();
 			$.SmartMessageBox({
 				title: "<i class='fa fa-warning txt-color-orangeDark'></i> " + _("Warning"),
-				content : '<br><span >' + _("Firmware was not flashed") + '</span><br><span >'+_("Please try again")+'</span><br><span >'+_("If the problem remain please contact support")+'</span>',
+				content : '<br><span >' + _("Firmware was not flashed") + '</span><br><span >'+_("Please try again")+'</span><br><span >'+_("If the problem persists please contact support")+'</span>',
 				buttons: "[" + _("Ok") + "]",
 			}, function(ButtonPressed, Option) {
 				if(ButtonPressed == _("Ok")){

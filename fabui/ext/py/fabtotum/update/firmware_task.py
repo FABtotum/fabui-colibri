@@ -19,7 +19,7 @@
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
 
 import shlex, subprocess
-import time
+import time, re
 
 from fabtotum.update.subtask  import SubTask
 
@@ -47,6 +47,8 @@ class FirmwareTask(SubTask):
 		
 		cmd = 'sh /usr/share/fabui/ext/bash/totumduino_manager.sh update ' + self.getFile("firmware").getLocal()
 		
+		avrdude_log = '/var/log/fabui/avrdude.log'
+		
 		errorcode = 0
 		success = [0]
 		install_output = ""
@@ -62,12 +64,18 @@ class FirmwareTask(SubTask):
 		
 		self.factory.gcs.open_serial()
 		
-		print cmd
-		print install_output
+		install_output = open(avrdude_log, 'r').read()
+		
+		match_error1 = re.search('stk500_recv\(\): programmer is not responding', install_output, re.IGNORECASE)
+		match_error2 = re.search('stk500_getsync\(\)', install_output, re.IGNORECASE)
+		
+		if ((match_error1 != None) or ( match_error2 != None)):
+			errorcode = 1
 		
 		time.sleep(2)
 		
 		cmd = 'cp ' + self.getFile("gcodes").getLocal() + ' /var/lib/fabui/settings/gcodes.json';
+		
 		try:
 			subprocess.check_output( shlex.split(cmd) )
 		except subprocess.CalledProcessError as e:
@@ -79,4 +87,4 @@ class FirmwareTask(SubTask):
 		else:
 			print "Firmware not installed"
 			self.setStatus('error')
-			self.setMessage(install_output)
+			self.setMessage('Firmware was not flashed\nPlease try again\nIf the problem persists please contact support\n\n' + install_output)
