@@ -31,7 +31,7 @@ class Spool extends FAB_Controller {
 		
 		$data = array();
 		$data['settings'] = loadSettings();
-		
+		$data['head']     = getInstalledHeadInfo();
 		//main page widget
 		$widgetOptions = array(
 			'sortable'         => false, 

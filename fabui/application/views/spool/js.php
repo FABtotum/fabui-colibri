@@ -11,6 +11,7 @@
 <script type="text/javascript">
 	var mode;
 	var filament;
+	var is_pro_head = <?php echo isset($head['feeder']) ? 'true' : 'false' ?>;
 	
 	$(document).ready(function() {
 		setFilamentDescription('<?php echo isset($settings['filament']['type']) ? $settings['filament']['type'] : 'pla' ?>');
@@ -25,8 +26,7 @@
 	function handleStep()
 	{
 		var step = $('.wizard').wizard('selectedItem').step;
-		console.log('handleStep', step);
-		
+
 		if(step == 3)
 		{
 			doSpoolAction();
@@ -47,6 +47,7 @@
 			case 1: // Choose mode
 				disableButton('.button-prev');
 				disableButton('.button-next');
+				$("#main-widget-spool-management").find('header').find('h2').html(_("Spool management"));
 				break;
 			case 2: // Filament
 				enableButton('.button-prev');
@@ -84,9 +85,11 @@
 		{
 			case 'load':
 				$("#filament-title").html('<?php echo _('Select filament to load')?>');
+				$("#main-widget-spool-management").find('header').find('h2').html(_("Spool management") + " > " + _("Load spool"));
 				break;
 			case 'unload':
 				$("#filament-title").html('<?php echo _('What filament are you going to unload?')?>');
+				$("#main-widget-spool-management").find('header').find('h2').html(_("Spool management") + " > " + _("Unload spool"));
 				break;
 		}
 		gotoWizardStep(2);
@@ -124,6 +127,9 @@
 		closeWait();
 		if(response.response == 'success'){
 			if(mode == 'unload'){
+				if(is_pro_head == true){
+					$(".printing-head-pro-unload-final-step").show();
+				}
 				$("#restart-button").removeClass('hidden');
 			}
 			gotoWizardFinish();
