@@ -9,7 +9,7 @@
  */
  
 /* variable initialization */
-if( !isset($z_height_values) ) $z_height_values = array('0.1' => '0.1', '0.01' => '0.01');
+if( !isset($z_height_values) ) $z_height_values = array('0.1' => '0.1 mm', '0.01' => '0.01 mm');
 if( !isset($rpm_label) ) $rpm_label = _("RPM");
 $stats_button_size = $type == 'print' ? 4 : 6;
  
@@ -149,7 +149,11 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 		<div class="row margin-bottom-20">
 			<div class="col-sm-6 col-xs-12">
 				<span class="col-xs-12 col-sm-12 margin-bottom-10">
-					<label><?php echo _("Override Z height"); ?>: <strong><span class="z-height"></span></strong></label>
+					<?php if($type == 'print'): ?>
+					<label class="text-center" data-original-title="<i class='fa fa-info-circle'></i> <?php echo _("Override Z height"); ?>" data-html="true"  rel="popover-hover" data-placement="top"  data-content="<?php echo _("If first layers are too high or too close to the bed, use this function to finely calibrate the distance from the nozzle and the bed"); ?><br><?php echo _("Usually 0.05mm increments are enough to make a difference");?>"><i class='fabui-nozzle'></i> <?php echo _("Override Z height"); ?> : <strong><span class="z-height"></span> mm</strong></label>
+					<?php else: ?>
+					<label><?php echo _("Override Z height"); ?>: <strong><span class="z-height"></span> mm</strong></label>
+					<?php endif; ?>
 				</span>
 				<span class="show-stat-buttons"> 
 					<span class="col-xs-4 col-sm-4 col-md-4 col-lg-4"> 
