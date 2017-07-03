@@ -569,12 +569,12 @@ class GCodeService:
                     self.progress = 100 * float(self.group_ack['file']) / float(self.gcode_count)
                     
                     if line:
+                        if( line3 in ['G29', 'G28', 'G27'] ) : # homing gcodes not nedeed during a print
+                            return False
+                        
                         self.last_command = self.__send_gcode_command(line, group='file')
                         
-                        if ( line4 == 'M109' or
-                             line4 == 'M190' or
-                             line3 == 'G28'  or
-                             line3 == 'G27'):
+                        if ( line4 == 'M109' or line4 == 'M190') :
                             """ 
                             Goto wait state as those commands can take a while and 
                             no push operation must be done before they are executed.
@@ -583,13 +583,15 @@ class GCodeService:
                         
                 elif ( self.file_state == GCodeService.FILE_WAIT or 
                        self.file_state == GCodeService.FILE_PAUSED_WAIT):
-                    """ Wait for reply before continuing (M109, M190, G28, G27) """
+                    """ Wait for reply before continuing (M109, M190) """
                     
                     if self.last_command.wait(1): # Wait for one second and give the context back
                         if self.file_state == GCodeService.FILE_WAIT:
                             self.file_state = GCodeService.FILE_PUSH
                         elif self.file_state == GCodeService.FILE_PAUSED_WAIT:
                             self.file_state = GCodeService.FILE_PAUSED
+                
+                return True
         
         except StopIteration:
             # Create a new thread that is waiting for the last command 
