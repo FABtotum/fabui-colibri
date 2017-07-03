@@ -24,7 +24,7 @@
  * @class
  */
 fabApp = (function(app) {
-	app.installed_head = '';
+	app.installed_head =  null;
 	app.rebooting = false; //is the unit rebooting?
 	app.FabActions = function(){
 		var fabActions = {
@@ -150,74 +150,8 @@ fabApp = (function(app) {
 			$(".top-bar-bed-target").html(parseInt(localStorage.getItem("bed_temp_target")));
 		}
 		
-		//bed target
-		if($("#top-bed-target-temp").length > 0) {
-			noUiSlider.create(document.getElementById('top-bed-target-temp'), {
-				start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp_target") : 0,
-				connect: "lower",
-				range: {'min': 0, 'max' : 100},
-				pips: {
-					mode: 'positions',
-					values: [0,25,50,75,100],
-					density: 5,
-					format: wNumb({
-						postfix: '&deg;'
-					})
-				}
-			});
-		}
-		//bet actual
-		if($("#top-act-bed-temp").length > 0) {
-			noUiSlider.create(document.getElementById('top-act-bed-temp'), {
-				start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp") : 0,
-				connect: "lower",
-				range: {'min': 0, 'max' : 100},
-				behaviour: 'none'
-			});
-			$("#top-act-bed-temp .noUi-handle").remove();
-		}
-		
-		//nozzle target
-		if($("#top-ext-target-temp").length > 0) {
-			noUiSlider.create(document.getElementById('top-ext-target-temp'), {
-				start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp_target") : 0,
-				connect: "lower",
-				range: {'min': 0, 'max' : 250},
-				pips: {
-					mode: 'positions',
-					values: [0,25,50,75,100],
-					density: 5,
-					format: wNumb({
-						postfix: '&deg;'
-					})
-				}
-			});
-		}
-		//nozzle actual
-		if($("#top-act-ext-temp").length > 0) {
-			noUiSlider.create(document.getElementById('top-act-ext-temp'), {
-				start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp") : 0,
-				connect: "lower",
-				range: {'min': 0, 'max' : 250},
-				behaviour: 'none'
-			});
-			$("#top-act-ext-temp .noUi-handle").remove();
-		}
-		//bed events
-		if($("#top-bed-target-temp").length > 0) {
-			document.getElementById("top-bed-target-temp").noUiSlider.on('slide',  app.topBedTempSlide);
-			document.getElementById("top-bed-target-temp").noUiSlider.on('change', app.topBedTempChange);
-			document.getElementById("top-bed-target-temp").noUiSlider.on('start',  app.blockSliders);
-			document.getElementById("top-bed-target-temp").noUiSlider.on('end',    app.enableSliders);
-		}
-		//nozzle events
-		if($("#top-ext-target-temp").length > 0) {
-			document.getElementById("top-ext-target-temp").noUiSlider.on('slide',  app.topExtTempSlide);
-			document.getElementById("top-ext-target-temp").noUiSlider.on('change', app.topExtTempChange);
-			document.getElementById("top-ext-target-temp").noUiSlider.on('start',  app.blockSliders);
-			document.getElementById("top-ext-target-temp").noUiSlider.on('end',    app.enableSliders);
-		}
-		
+		app._createExtruderTemperaturesTopSliders(250);
+		app._createBedTemperaturesTopSliders(100);
 		
 		//jog 
 		$("#jog-shortcut").click(function(a) {
@@ -236,12 +170,103 @@ fabApp = (function(app) {
 		
 		var $jog_controls_top = $('.top-ajax-jog-controls-holder').jogcontrols(controls_options).on('action', app.jogActionHandler);
 		
-		
 		$(document).mouseup(function(a) {
             $(".top-ajax-temperatures-dropdown").is(a.target) || 0 !== $(".top-ajax-temperatures-dropdown").has(a.target).length || ($(".top-ajax-temperatures-dropdown").fadeOut(150), $(".top-ajax-temperatures-dropdown").prev().removeClass("active"))
             $(".top-ajax-jog-dropdown").is(a.target) || 0 !== $(".top-ajax-jog-dropdown").has(a.target).length || ($(".top-ajax-jog-dropdown").fadeOut(150), $(".top-ajax-jog-dropdown").prev().removeClass("active"))
         });
 		
+		
+	}
+	/**
+	 * 
+	 */
+	app._createExtruderTemperaturesTopSliders = function (max_temp){
+		//nozzle target		
+		if($("#top-ext-target-temp").length > 0) {
+			
+			if(document.getElementById('top-ext-target-temp').noUiSlider != null)
+				document.getElementById('top-ext-target-temp').noUiSlider.destroy();
+			
+			app.topExtruderTargetSlider = noUiSlider.create(document.getElementById('top-ext-target-temp'), {
+				start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp_target") : 0,
+				connect: "lower",
+				range: {'min': 0, 'max' : max_temp},
+				pips: {
+					mode: 'positions',
+					values: [0,25,50,75,100],
+					density: 5,
+					format: wNumb({
+						postfix: '&deg;'
+					})
+				}
+			});
+			//events
+			document.getElementById("top-ext-target-temp").noUiSlider.on('slide',  app.topExtTempSlide);
+			document.getElementById("top-ext-target-temp").noUiSlider.on('change', app.topExtTempChange);
+			document.getElementById("top-ext-target-temp").noUiSlider.on('start',  app.blockSliders);
+			document.getElementById("top-ext-target-temp").noUiSlider.on('end',    app.enableSliders);
+		}
+		
+		//nozzle actual
+		if($("#top-act-ext-temp").length > 0) {
+			if(document.getElementById('top-act-ext-temp').noUiSlider != null)
+				document.getElementById('top-act-ext-temp').noUiSlider.destroy();
+			
+			app.topExtruderActualSlider = noUiSlider.create(document.getElementById('top-act-ext-temp'), {
+				start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp") : 0,
+				connect: "lower",
+				range: {'min': 0, 'max' : max_temp},
+				behaviour: 'none'
+			});
+			$("#top-act-ext-temp .noUi-handle").remove();
+		}
+	}
+	/**
+	 * 
+	 */
+	app._createBedTemperaturesTopSliders = function (max_temp){
+		
+		//bed target
+		if($("#top-bed-target-temp").length > 0) {
+			
+			if(document.getElementById('top-bed-target-temp').noUiSlider != null)
+				document.getElementById('top-bed-target-temp').noUiSlider.destroy();
+			
+			noUiSlider.create(document.getElementById('top-bed-target-temp'), {
+				start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp_target") : 0,
+				connect: "lower",
+				range: {'min': 0, 'max' : max_temp},
+				pips: {
+					mode: 'positions',
+					values: [0,25,50,75,100],
+					density: 5,
+					format: wNumb({
+						postfix: '&deg;'
+					})
+				}
+			});
+			//events
+			document.getElementById("top-bed-target-temp").noUiSlider.on('slide',  app.topBedTempSlide);
+			document.getElementById("top-bed-target-temp").noUiSlider.on('change', app.topBedTempChange);
+			document.getElementById("top-bed-target-temp").noUiSlider.on('start',  app.blockSliders);
+			document.getElementById("top-bed-target-temp").noUiSlider.on('end',    app.enableSliders);
+			
+		}
+		
+		//bet actual
+		if($("#top-act-bed-temp").length > 0) {
+			
+			if(document.getElementById('top-act-bed-temp').noUiSlider != null)
+				document.getElementById('top-act-bed-temp').noUiSlider.destroy();
+			
+			noUiSlider.create(document.getElementById('top-act-bed-temp'), {
+				start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp") : 0,
+				connect: "lower",
+				range: {'min': 0, 'max' : max_temp},
+				behaviour: 'none'
+			});
+			$("#top-act-bed-temp .noUi-handle").remove();
+		}
 		
 	}
 	/**
@@ -1543,7 +1568,8 @@ fabApp = (function(app) {
 	app.setInstalledHeadInfo = function(settings)
 	{
 		$(".installead-head-name").html(heads[settings.hardware.head].name);
-		app.installed_head = heads[settings.hardware.head].name;
+		app.installed_head = heads[settings.hardware.head];
+		app._createExtruderTemperaturesTopSliders(app.installed_head['max_temp']);
 	}
 	/**
 	* initi vars from localstorage if it is enabled
