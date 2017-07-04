@@ -137,13 +137,15 @@ def start_additive(app, args = None, lang='en_US.UTF-8'):
     oozing_z = 60.0
     oozing_z_adjusted = 60.0 + offset
     
+    app.trace("oozing_z_adjusted:" + str(oozing_z_adjusted))
+    
     if switch == 0:
-        app.macro("G0 X5 Y5 Z{0} F1500".format(oozing_z_adjusted),     "ok", 10,    _("Moving to oozing point") )
+        app.macro("G0 X5 Y5 Z{0:.16f} F1500".format(oozing_z_adjusted),     "ok", 10,    _("Moving to oozing point") )
         app.macro("G92 Z{0}".format(oozing_z),  "ok" , 10, _("Adjusting nozzle offset"), verbose=False );
     else:
-        app.macro("G0 X209 Y5 Z{0} F1500".format(oozing_z_adjusted),     "ok", 10,    _("Moving to oozing point") )
+        app.macro("G0 X209 Y5 Z{0:.16f} F1500".format(oozing_z_adjusted),     "ok", 10,    _("Moving to oozing point") )
         app.macro("G92 Z{0}".format(oozing_z),  "ok" , 10, _("Adjusting nozzle offset"), verbose=False );
-    
+        
     #~ # Pre-heating (dismissed)
     app.macro("M220 S100",              "ok", 1,    _("Reset Speed factor override"),     verbose=False)
     app.macro("M221 S100",              "ok", 1,    _("Reset Extruder factor override"),  verbose=False)

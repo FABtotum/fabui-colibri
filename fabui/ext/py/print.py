@@ -71,16 +71,17 @@ class PrintApplication(GCodePusher):
             else:
                 self.set_task_status(GCodePusher.TASK_COMPLETING)
             
-            self.exec_macro("end_additive")
-            
             z_override = float(self.override_stats['z_override'])
-            if z_override:
-                self.trace( _("Saving Z override") )
-                info = self.config.get_current_head_info()
-                nozzle_offset = float(info['nozzle_offset'])
-                nozzle_offset += z_override
-                info['nozzle_offset'] = nozzle_offset
-                self.config.save_current_head_info(info)
+            #if z_override:
+            self.trace( _("Saving Z override") )
+            info = self.config.get_current_head_info()
+            nozzle_offset = float(info['nozzle_offset'])
+            nozzle_offset += z_override
+            info['nozzle_offset'] = nozzle_offset
+            self.config.save_current_head_info(info)
+            self.config.reload()
+            
+            self.exec_macro("end_additive")
             
             if self.is_aborted():
                 self.exec_macro("end_additive_aborted")
