@@ -81,6 +81,7 @@ PRESET_MAP = {
     "extrude"                       : maint_macros.extrude,
     "change_step"                   : maint_macros.change_step,
     "manual_bed_leveling"           : maint_macros.manual_bed_leveling,
+    "heats"                         : maint_macros.heats,
     
     # Scanning    
     "check_pre_scan"                : scan_macros.check_pre_scan, 

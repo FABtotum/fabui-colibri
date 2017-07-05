@@ -247,3 +247,19 @@ def manual_bed_leveling(app, args = None, lang='en_US.UTF-8'):
     app.macro("M401",          "ok",   2,      _("Extend Probe"), verbose=False)
 
     return {'probe_height' : probe_height}
+
+
+def heats(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    
+    what        = args[0]
+    temperature = float(args[1])
+    
+    CODES = {
+        "nozzle" : "M109",
+        "bed" : "M190"
+    }
+    
+    app.macro("{0} S{1}".format(CODES[what], temperature),  "*", 400,  _("Waiting for {0} to reach temperature (<span class='top-bar-{1}-actual'>-</span> / {2}&deg;)".format(what, what, temperature)) ) #heating and waiting.
+    app.trace( _("Please wait...") )
+     

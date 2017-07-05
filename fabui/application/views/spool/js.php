@@ -25,14 +25,19 @@
 	**/
 	function handleStep()
 	{
-		var step = $('.wizard').wizard('selectedItem').step;
 
-		if(step == 3)
+		var step = $('.wizard').wizard('selectedItem').step;
+		if(step == 2){
+			if(is_pro_head && mode == 'load'){
+				heatsNozzle();
+				return false;
+			}
+		}else if(step == 3)
 		{
 			doSpoolAction();
 			return false;
 		}
-		
+
 		return true;
 	}
 	
@@ -129,6 +134,7 @@
 			if(mode == 'unload'){
 				if(is_pro_head == true){
 					$(".printing-head-pro-unload-final-step").show();
+					$("#pro_head_unload_spool_gif").attr('src', '/assets/img/controllers/spool/pro_head_unload_filament_2.gif');
 				}
 				$("#restart-button").removeClass('hidden');
 			}
@@ -144,5 +150,25 @@
 	function restartAction()
 	{
 		setMode('load')
+	}
+	/**
+	*
+	**/
+	function heatsNozzle()
+	{
+		openWait("<i class='fa fa-gear-notch fa-spin'></i> <?php echo _("Heating nozzle");?>");
+		$.ajax({
+			type: "POST",
+			url: "<?php echo site_url("spool") ?>/heatsNozzle/" + filament,
+			dataType: 'json'
+		}).done(function( response ) {
+			closeWait();
+			if(response.response == 'success'){
+				gotoWizardStep(3);
+				$("#pro_head_load_spool_gif").attr('src', '/assets/img/controllers/spool/pro_head_load_filament.gif');
+			}else{
+				fabApp.showErrorAlert(response.message);
+			}
+	  });
 	}
 </script>

@@ -503,9 +503,7 @@ class GCodeService:
                     new_z = float(num_orig)+float(self.z_override)
                     str_new = 'Z' + str(new_z) # Safer to use 'Z{num}' then just '{num}'
                     new_cmd = gcode_raw[:-2].replace(str_orig, str_new)
-                    
                     self.log.debug('MODIFIED [%s] -> [%s]', gcode_raw[:-2], new_cmd )
-                    
                     gcode_raw = new_cmd + '\r\n'
         
         priority = 1
@@ -665,9 +663,9 @@ class GCodeService:
                 self.log.debug("ZMODIFY: %f", z_offset)
                 self.__send_gcode_command("G91", group="override", modify=False)
                 self.__send_gcode_command("G0 Z{0}".format(z_offset), group="override", modify=False)
-                self.__send_gcode_command("G90",  group="override", modify=False)
                 self.__send_gcode_command("M400", group="override", modify=False)
                 self.__send_gcode_command("M300", group="override", modify=False)
+                self.__send_gcode_command("G90",  group="override", modify=False)
                 
                 self.__trigger_callback('gcode_action:z_override', [ str( round(self.z_override,5) ) ] )
             

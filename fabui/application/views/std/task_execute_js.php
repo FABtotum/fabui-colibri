@@ -721,6 +721,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		initGraph();
 		<?php endif; ?>
 		traceMonitor();
+		setInterval(traceMonitor, 1000);
 		getTaskMonitor(true)
 	}
 	
@@ -775,10 +776,14 @@ if(!isset($bed_max)) 		$bed_max = 100;
 		elapsedTime++;
 		remainingTime = estimatedTime - elapsedTime;
 		$(".elapsed-time").html(transformSeconds(elapsedTime));
+		var estimatedTimeLeft = transformSeconds(remainingTime);
+		
 		if(estimatedTime == 0)
-			$(".estimated-time-left").html( "<?php echo _("Waiting for first move");?>...");
-		else
-			$(".estimated-time-left").html(transformSeconds(remainingTime));
+			estimatedTimeLeft = "<?php echo _("Waiting for first move");?>...";
+		else if(estimatedTime < 0)
+			estimatedTimeLeft = 0;
+		
+		$(".estimated-time-left").html(estimatedTimeLeft);
 	}
 	
 	window.manageMonitor = function(data){
@@ -826,7 +831,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	 */
 	function traceMonitor()
 	{
-		if(!socket_connected) getTrace();
+		 if(!socket_connected || socket.fallback) getTrace();
 	}
 	/**
 	* get trace

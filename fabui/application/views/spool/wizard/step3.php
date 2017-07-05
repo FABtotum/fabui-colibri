@@ -71,12 +71,12 @@
 		</div>
 	<?php else: ?>
 		<!--  -->
-		<div class="col-sm-4">
+		<div class="col-sm-6">
 			<div class="product-content product-wrap clearfix">
 				<div class="row">
 					<div class="col-sm-6 hidden-xs">
 						<div class="product-image medium text-center">
-							<img class="img-responsive" src="/assets/img/controllers/spool/filament_cut_spool.png">
+							<img style="width: 80%;" class="img-responsive" src="/assets/img/controllers/spool/filament_cut_spool.png">
 						</div>
 					</div>
 					<div class="col-sm-6">
@@ -91,43 +91,28 @@
 		</div>
 		<!--  -->
 		<!--  -->
-		<div class="col-sm-4">
+		<div class="col-sm-6">
 			<div class="product-content product-wrap clearfix">
 				<div class="row">
 					<div class="col-sm-6 hidden-xs">
 						<div class="product-image medium text-center">
-							<img class="img-responsive" src="">
+							<img id="pro_head_load_spool_gif" class="img-responsive" src="">
 						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="description text-center">
 							<h1><span class="badge bg-color-blue txt-color-white">2</span></h1>
 							<p><?php echo _("Pull the release lever on the back of the Printing Head PRO."); ?></p>
+							<p><?php echo _("Insert the filament until it starts coming out from the nozzle");  ?></p>
+							<p><?php echo _("Release the release lever ") ?></p>
+							<p><?php echo _("Lock the feeding tube in place ") ?></p>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--  -->
-		<!--  -->
-		<div class="col-sm-4">
-			<div class="product-content product-wrap clearfix">
-				<div class="row">
-					<div class="col-sm-6 hidden-xs">
-						<div class="product-image medium text-center">
-							<img class="img-responsive" src="">
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="description text-center">
-							<h1><span class="badge bg-color-blue txt-color-white">3</span></h1>
-							<p><?php echo _("Insert the filament in the head."); ?></p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--  -->
+	
 	<?php endif; ?>
 </div>
 <!-- UNLOAD ROW  -->
@@ -140,24 +125,27 @@
 		</div>
 	<?php else: ?>
 		<!--  -->
-		<div class="col-sm-6">
-			<div class="product-content product-wrap clearfix">
+		<div class="col-sm-12">
+			<div class="well well-light">
 				<div class="row">
-					<div class="col-sm-6 hidden-xs">
-						<div class="product-image medium text-center">
-							<img class="img-responsive" src="">
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="description text-center">
-							<h1><span class="badge bg-color-blue txt-color-white">1</span></h1>
-							<p><?php echo _("Remove the Feeding tube by pushing down the black cap and then pulling the tube itself."); ?></p>
+					<div class="col-sm-12">
+						<div class="row prohead-spool-instructions-box">
+							<div class="col-sm-6">
+								<div class="text-center hidden-xs">
+									<img class="img-responsive" src="/assets/img/controllers/spool/pro_head_unload_filament_1.gif">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="description text-center">
+									<h1><span class="badge bg-color-blue txt-color-white">1</span></h1>
+									<p class="font-md"><?php echo _("Remove the Feeding tube by pushing down the black cap and then pulling the tube itself."); ?></p>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!--  -->
 	<?php endif; ?>
 </div>
 

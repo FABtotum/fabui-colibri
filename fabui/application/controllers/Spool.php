@@ -84,6 +84,7 @@ class Spool extends FAB_Controller {
 		
 		$this->content = $widget->print_html(true);
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
+		$this->addCSSFile('/assets/css/spool/style.css');
 		$this->addJsInLine($this->load->view( 'std/task_wizard_js',   $data, true));
 		$this->addJsInLine($this->load->view('spool/js', $data, true));
 		$this->view();
@@ -131,6 +132,17 @@ class Spool extends FAB_Controller {
 		}
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($resultUnload));
+	}
+	/**
+	 * 
+	 */
+	public function heatsNozzle($filament_type = 'pla')
+	{
+		$this->load->helpers('fabtotum_helper');
+		$filament = getFilament($filament_type);
+		$resultHeat = doMacro('heats', '', ['nozzle', $filament['temperatures']['extrusion']]);
+		$this->output->set_content_type('application/json')->set_output(json_encode($resultHeat));
+		
 	}
 	
 }
