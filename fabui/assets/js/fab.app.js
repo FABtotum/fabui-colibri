@@ -190,7 +190,7 @@ fabApp = (function(app) {
 			app.topExtruderTargetSlider = noUiSlider.create(document.getElementById('top-ext-target-temp'), {
 				start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp_target") : 0,
 				connect: "lower",
-				range: {'min': 0, 'max' : max_temp},
+				range: {'min': 0, 'max' : parseInt(max_temp)},
 				pips: {
 					mode: 'positions',
 					values: [0,25,50,75,100],
@@ -215,7 +215,7 @@ fabApp = (function(app) {
 			app.topExtruderActualSlider = noUiSlider.create(document.getElementById('top-act-ext-temp'), {
 				start: typeof (Storage) !== "undefined" ? localStorage.getItem("nozzle_temp") : 0,
 				connect: "lower",
-				range: {'min': 0, 'max' : max_temp},
+				range: {'min': 0, 'max' : parseInt(max_temp)},
 				behaviour: 'none'
 			});
 			$("#top-act-ext-temp .noUi-handle").remove();
@@ -235,7 +235,7 @@ fabApp = (function(app) {
 			noUiSlider.create(document.getElementById('top-bed-target-temp'), {
 				start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp_target") : 0,
 				connect: "lower",
-				range: {'min': 0, 'max' : max_temp},
+				range: {'min': 0, 'max' : parseInt(max_temp)},
 				pips: {
 					mode: 'positions',
 					values: [0,25,50,75,100],
@@ -262,7 +262,7 @@ fabApp = (function(app) {
 			noUiSlider.create(document.getElementById('top-act-bed-temp'), {
 				start: typeof (Storage) !== "undefined" ? localStorage.getItem("bed_temp") : 0,
 				connect: "lower",
-				range: {'min': 0, 'max' : max_temp},
+				range: {'min': 0, 'max' : parseInt(max_temp)},
 				behaviour: 'none'
 			});
 			$("#top-act-bed-temp .noUi-handle").remove();
