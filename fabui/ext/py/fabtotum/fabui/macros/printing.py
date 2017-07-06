@@ -66,6 +66,11 @@ def resume_additive(app, args=None, lang='en_US.UTF-8'):
     ext_temp = args[0]
     bed_temp = args[1]
     
+    try:
+        wire_end = app.config.get('settings', 'wire_end', 0)
+    except KeyError:
+        wire_end = 0
+        
     #block stepper motor for 1min => 60*1=60
     app.macro("M84 S60", "ok", 2, _("Block stepper motor"), verbose=False)
     app.macro("M104 S{0}".format(ext_temp),  "ok", 5,   _("Heating Nozzle"), verbose=False)
@@ -73,11 +78,6 @@ def resume_additive(app, args=None, lang='en_US.UTF-8'):
     app.macro("M109 S{0}".format(ext_temp),  "*", 400,  _("Waiting for nozzle to reach temperature {0}&deg;".format(ext_temp)) ) #heating and waiting.
     app.macro("M190 S{0}".format(bed_temp),  "*", 400,  _("Waiting for bed to reach temperature {0}&deg;".format(bed_temp)) ) #heating and waiting.
     app.macro("M84", "ok", 2, _("Unlock stepper motor"), verbose=False)
-    
-    try:
-        wire_end = app.config.get('settings', 'wire_end', 0)
-    except KeyError:
-        wire_end = 0
     
     if(wire_end == 1):
         app.macro("M805 S1",   "ok", 1,    _("Enable wire endstop"), verbose=False)
@@ -224,6 +224,11 @@ def check_additive(app, args = None, lang='en_US.UTF-8'):
 
     app.trace( _("Checking safety measures") )
     
+    
+    if(wire_end == 1):
+        app.macro("M805 S1", "ok", 1, _("Enable wire end check"), verbose=False)
+        app.macro("M740", "TRIGGERED", 1, _("Filament not inserted"), verbose=False)
+    
     if safety_door == 1:
         app.macro("M741",   "TRIGGERED", 2, _("Front panel door opened") )
         
@@ -233,8 +238,6 @@ def check_additive(app, args = None, lang='en_US.UTF-8'):
     
     app.macro("M742",       "TRIGGERED", 1, _("Spool panel control"), verbose=False, warning=True)
     
-    if(wire_end == 1):
-        app.macro("M740", "TRIGGERED", 1, _("Filament not inserted"), verbose=False)
 
 def engage_feeder(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)

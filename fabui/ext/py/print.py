@@ -32,7 +32,7 @@ from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
 # import general constants
-from fabtotum.fabui.constants import ERROR_WIRE_END, ERROR_EXTRUDE_MINTEMP, ERROR_AMBIENT_TEMP, ERROR_LONG_EXTRUSION, ERROR_MAX_TEMP, ERROR_IDLE_SAFETY
+from fabtotum.fabui.constants import ERROR_WIRE_END, ERROR_EXTRUDE_MINTEMP, ERROR_AMBIENT_TEMP, ERROR_LONG_EXTRUSION, ERROR_MAX_TEMP, ERROR_IDLE_SAFETY, ERROR_X_MIN_ENDSTOP
 #import needed macros 
 import fabtotum.fabui.macros.general as general_macros
 import fabtotum.fabui.macros.printing as print_macros
@@ -114,7 +114,7 @@ class PrintApplication(GCodePusher):
             self.trace( _("Please wait until the buffered moves in totumduino are finished") )
             self.exec_macro("pause_additive")
             
-        if state == 'resuming':    
+        if state == 'resuming':  
             self.trace( _("RESUMING Print") )
             self.exec_macro("resume_additive", [self.ext_target, self.bed_target])
             
@@ -146,6 +146,8 @@ class PrintApplication(GCodePusher):
                 message = _("Warning: extruder Temperature critical, shutting down")
             elif(error_no == ERROR_IDLE_SAFETY):
                 message = _("The FABtotum has been idling for more than 10 minutes. Temperatures and Motors have been turned off")
+            elif(error_no == ERROR_X_MIN_ENDSTOP):
+                message = _("X min Endstop hit: Move the carriage to the center or check Settings > Hardware > Custom Settings >Invert X Endstop Logic")
             self.trace(message)
             self.task_stats['message'] = message
             self.pause()
@@ -206,7 +208,7 @@ def main():
     else:
         standalone  = False
         
-    monitor_file    = config.get('general', 'task_monitor')      # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
+    monitor_file    = config.get('general', 'task_monitor') # TASK MONITOR FILE (write stats & task info, es: temperatures, speed, etc
     log_trace       = config.get('general', 'trace')        # TASK TRACE FILE 
     
     app = PrintApplication(log_trace, monitor_file, standalone, autolevel, lang=lang, send_email=send_email)
