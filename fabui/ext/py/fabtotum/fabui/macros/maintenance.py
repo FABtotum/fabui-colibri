@@ -157,9 +157,7 @@ def load_spool(app, args = None, lang='en_US.UTF-8'):
             
     #~ ext_temp = float(args[0])
     ext_temp = args[0]
-    task_running = False
-    if 1 in args:
-        task_running = int(args[1]) == 1
+    task_running = int(args[1]) == 1
     
     app.trace( _("Loading Spool : Procedure Started.") )
     app.macro("M104 S{0}".format(ext_temp),  "ok", 5,    _("Pre-Heating Nozzle..."), verbose=False)

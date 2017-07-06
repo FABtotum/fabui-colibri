@@ -266,7 +266,7 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal"> <?php echo _("Cancel");?></button>
+				<button type="button" class="btn btn-default" data-dismiss="modal"> <?php echo _("Close");?></button>
 				<button type="button" id="filament-start-button" class="btn btn-success" data-action=""> <?php echo _("Start");?></button>
 			</div>
 		</div><!-- /.modal-content -->
