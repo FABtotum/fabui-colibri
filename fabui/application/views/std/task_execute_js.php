@@ -687,15 +687,16 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	function pauseResume(action, element)
 	{
 		var taskType = "<?php echo isset($type_label) ? $type_label : ucfirst($type); ?>";
+		var element = $(".action-pause");
 		if(action == 'pause') {
 			element.attr('data-action', 'resume');
-			element.html('<i class="fa fa-play"></i> <span class="hidden-xs">'+_("Resume")+"</span>" );
+			element.html('<i class="fa fa-play"></i> <span class="hidden-xs">'+_("Resume")+" </span>" );
 			enableButton('.change-filament-button');
 			fabApp.enableTopBarTempsControls();
 		}else if(action == 'resume'){
 			freezeUI();
 			element.attr('data-action', 'pause');
-			element.html('<i class="fa fa-pause"></i> <span class="hidden-xs">'+_("Pause")+"</span>" );
+			element.html('<i class="fa fa-pause"></i> <span class="hidden-xs">'+_("Pause")+" </span>" );
 			disableButton('.change-filament-button');
 		}
 		sendActionRequest(action);
@@ -853,7 +854,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			case 'paused':
 				{
 					var element = $(".isPaused-button");
-					element.html('<i class="fa fa-play"></i> '+_("Resume") );
+					element.html('<i class="fa fa-play"></i> <span class="hidden-xs">'+_("Resume") + '</span>' );
 					element.attr('data-action', 'resume');
 					enableButton('.change-filament-button');
 					if(firstCall) fabApp.enableTopBarTempsControls();
@@ -862,7 +863,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			case 'started':
 				if(firstCall){
 					var element = $(".isPaused-button");
-					element.html('<i class="fa fa-pause"></i> '+_("Pause") );
+					element.html('<i class="fa fa-pause"></i> <span class="hidden-xs">'+_("Pause") + '</span>' );
 					element.attr('data-action', 'pause');
 					disableButton('.change-filament-button');
 				}
@@ -885,7 +886,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 					var element = $(".isPaused-button");
 					if( element.attr('data-action') == 'resume' )
 					{
-						element.html('<i class="fa fa-pause"></i> '+_("Pause") );
+						element.html('<i class="fa fa-pause"></i> <span class="hidden-xs">'+_("Pause") + '</span>' );
 						element.attr('data-action', 'pause');
 						disableButton('.change-filament-button');
 					}

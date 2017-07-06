@@ -83,3 +83,12 @@
 	padding-left: 25px;
 	margin-top:10px;
 }
+
+body.smart-style-6 .widget-toolbar {
+	border-left: 1px solid rgba(0,0,0,.09) !important;
+	height: 38px !important;
+	line-height: 38px !important;
+}
+.widget-toolbar >.smart-form {
+	margin-top: 5px !important;
+}

@@ -1,3 +1,9 @@
 .pagination li{
 	display:inline !important
-} 
+}
+/**
+*
+**/
+.smart-form .radio {
+	line-height: 15px !important;
+}

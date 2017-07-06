@@ -27,6 +27,12 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 				</label>
 			</div>
 		</div>
+		<div class="widget-toolbar" role="menu">
+			<div class="btn-group">
+				<button type="button" data-action="abort" class="btn btn-default action action-abort"><i class="fa fa-stop"></i> <span class="hidden-xs"> <?php echo _("Abort") ?></span></button>
+				<button type="button" data-action="pause" class="btn btn-default action isPaused-button action-pause isPaused-button"><i class="fa fa-pause"></i> <span class="hidden-xs"> <?php echo _("Pause") ?></span></button>
+			</div>
+		</div>
 	</li>
 </ul>
 <div id="createFeedContent" class="tab-content padding-10">
@@ -123,7 +129,7 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 							<button type="button" data-action="abort"  class="btn btn-default btn-block  action"><i class="fa fa-stop"></i> <span class="hidden-xs"><?php echo _("Abort"); ?></span> </button> 
 						</span> 
 						<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?>"> 
-							<button type="button" data-action="pause"  class="btn btn-default btn-block  action isPaused-button"><i class="fa fa-pause"></i> <span class="hidden-xs"><?php echo _("Pause"); ?></span> </button> 
+							<button type="button" data-action="pause"  class="btn btn-default btn-block  action isPaused-button action-pause"><i class="fa fa-pause"></i> <span class="hidden-xs"><?php echo _("Pause"); ?></span> </button> 
 						</span>
 						<?php if($type=="print"):?>
 						<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?>"> 
