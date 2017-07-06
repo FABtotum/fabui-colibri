@@ -10,9 +10,11 @@
 ?>
 <div class="row">
 	<div class="col-sm-12">
-		<div class="alert alert-warning animated fadeIn">
-			<i class="fa-fw fa fa-warning"></i>
-			<strong><?php echo _("Warning"); ?></strong> <?php echo _("Before proceed make sure nozzle is clean"); ?>
+		<div class="well well-light well-sm margin-bottom-10">
+			<ul class="list-unstyled">
+				<li><i class="fa fa-warning"></i> <?php echo _("Before proceed make sure nozzle is clean"); ?></li>
+	            <li><i class="fa fa-warning"></i> <?php echo _("Operate according to safety instructions provided. Nozzle and bed can be hot, exercise caution accordingly");?></li>
+         	</ul>
 		</div>
 	</div>
 </div>
