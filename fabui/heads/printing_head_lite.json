@@ -7,7 +7,7 @@
   "fw_id": "2",
   "pid": "M301 P20 I3.5 D30",
   "thermistor_index": "0",
-  "max_temp": "250",
+  "max_temp": "260",
   "min_temp": "175",
   "nozzle_offset": "5.3",
   "min_rpm": "6000",
