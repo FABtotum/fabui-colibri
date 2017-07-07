@@ -2,9 +2,8 @@
 
 The FABUI (FABtotum User Interface) Colibri is the first Operating System completely developed by the Team to control all the FABtotum Personal Fabricator functionalities, including 3D printing, Milling, Engraving, Network Management, Diagnostic and File Management.
 
-More than a 3D printing software, it is preinstalled onboard: this means no download and no required space on your computer. Just run the first setup and in a minute you’ll be ready. Once it is connected to the WiFi there is no need to be phisically linked to the FABtotum!
-
-#### Updating FABUI Colibri from version 1.0.0 to 1.X.X need a reflash of the SD Card
+More than a 3D printing software, it is preinstalled onboard: this means no download and no required space on your computer. Just run the first setup and in a minute you’ll be ready.
+Once it is connected to the WiFi there is no need to be phisically linked to the FABtotum!
 
 ## Installation
   - Download the latest archive [here][latest-archive]
