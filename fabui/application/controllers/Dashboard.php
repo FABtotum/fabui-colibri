@@ -120,7 +120,11 @@
 				//highlitght hashtags
 				$hashtags = $temporaryFeed['entities']['hashtags'];
 				foreach($hashtags as $hash){
-					$temporaryFeed['text'] = highlight_phrase($temporaryFeed['text'], '#'.$hash['text'], '<a target="_blank" href="https://twitter.com/search?q='.$hash['text'].'">', '</a>');
+					//$temporaryFeed['text'] = highlight_phrase($temporaryFeed['text'], '#'.$hash['text'], '<a target="_blank" href="https://twitter.com/search?q='.$hash['text'].'">', '</a>');
+					$string_without_hash= str_replace('#', '', $hash['text']);
+					$hash_re = '/(\#'.$string_without_hash.'+\b)/';
+					$temporaryFeed['text']  = preg_replace($hash_re, '<a target="_blank" href="https://twitter.com/search?q='.$string_without_hash.'">#'.$hash['text'].'</a>', $temporaryFeed['text']);
+					
 				}
 				//highlitght mentions
 				$mentions = $temporaryFeed['entities']['user_mentions'];

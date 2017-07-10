@@ -319,6 +319,16 @@ if(!function_exists('instaSort')){
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('sortByStringLength')){
+	/**
+	 * 
+	 */
+	function sortByStringLength($a, $b)
+	{
+		return strlen($b)-strlen($a);
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('highlightInstagramPost')){
 	
 	/**
@@ -333,29 +343,33 @@ if(!function_exists('highlightInstagramPost')){
 		foreach($feeds as $feed){
 			$caption = $feed['caption']['text'];
 			//highligth links
-			preg_match_all($re_link, $caption, $matches);
-
+			$matches = preg_match_all($re_link, $caption, $matches);
+			
 			if(isset($matches[0][0])){
 				$caption =  highlight_phrase($caption, $matches[0][0], '<b><a target="_blank" href="'.$matches[0][0].'">', '</a></b>');
 			}
 			//higlithgt entities
 			preg_match_all($re, $caption, $matches);
+
 			foreach($matches[0] as $match){
-				
+								
 				switch($match[0]){
 					case '#':
-						$caption =  highlight_phrase($caption, $match, '<a target="_blank" href="https://www.instagram.com/explore/tags/'.str_replace('#', '', $match).'">', '</a>');
+						$string_without_hash= str_replace('#', '', $match);
+						$hash_re = '/(\#'.$string_without_hash.'+\b)/';
+						$caption =  preg_replace($hash_re, '<a target="_blank" href="https://www.instagram.com/explore/tags/'.$string_without_hash.'">'.$match.'</a>', $caption);
 						break;
 					case '@':
-						$caption = highlight_phrase($caption, $match, '<a target="_blank" href="https://www.instagram.com/'.str_replace('@', '', $match).'"><strong>', '</strong></a>');
+						$string_without_at = str_replace('@', '', $match);
+						$at_re = '/(\@'.$string_without_at.'+\b)/';
+						$caption =  preg_replace($at_re, '<a target="_blank" href="https://www.instagram.com/'.$string_without_at.'">'.$match.'</a>', $caption);
 						break; 
 				}
-			}
+			}	
 			$temp = $feed;
 			$temp['caption']['text'] = $caption;
 			$new_feeds[] = $temp;
 		}
-		
 		return $new_feeds;
 	}
 }
