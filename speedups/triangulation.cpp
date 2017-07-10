@@ -44,6 +44,26 @@ float average(cv::Mat &a, cv::Mat &w)
     return avg / avg_w;
 }
 
+cv::Mat process_slice_fast( const std::string img_fn )
+{
+    int subrange = 15;
+    unsigned img_height = 0;
+    unsigned img_width = 0;
+    unsigned failed = 0;
+    unsigned dil    = 4;
+    unsigned thr2   = 12;
+     
+    cv::Mat domain(1, subrange*2, CV_8UC1);
+    
+    for(unsigned i=0; i<subrange*2; i++)
+        domain.at<uint8_t>(i) = i;
+        
+    cv::Mat img0;
+
+    img0 = cv::imread(img_fn, CV_LOAD_IMAGE_COLOR);
+    
+}
+
 cv::Mat process_slice(  const std::string img_fn, const std::string img_l_fn, 
                         const cv::Mat& cam_m, const cv::Mat& dist_coefs,
                         const int width, const int height)
@@ -382,6 +402,8 @@ namespace pbcvt {
         
         py::def("process_slice",        process_slice);
         py::def("laser_line_to_xyz",    laser_line_to_xyz);
+        
+        py::def("process_slice_fast",        process_slice_fast);
 
     }
 

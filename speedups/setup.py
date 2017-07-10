@@ -54,7 +54,7 @@ def pkgconfig(*packages, **kw):
 # Ensure C++ compiler is used
 os.environ["CC"] = os.environ["CXX"]
 
-pkgcfg_args = pkgconfig('opencv')
+#~ pkgcfg_args = pkgconfig('opencv')
 
 # Add NumPY include path
 sysroot = os.environ.get('_python_sysroot')
@@ -62,14 +62,19 @@ vi = sys.version_info
 python_subdir = "python{0}.{1}".format(vi.major, vi.minor)
 numpy_inc = os.path.join(sysroot, 'usr/lib', python_subdir, 'site-packages/numpy/core/include')
 
-pkgcfg_args['include_dirs'].append(numpy_inc)
-pkgcfg_args['libraries'].append('boost_python')
+#~ pkgcfg_args['include_dirs'].append(numpy_inc)
+#~ pkgcfg_args['libraries'].append('boost_python')
+#~ pkgcfg_args['extra_link_args'].append('-DMY_FLAG')
+
+extra_compile_args = sysconfig.get_config_var('CFLAGS').split()
+extra_compile_args += ["-std=c++11", "-Wall", "-Wextra"]
 
 hello_ext = Extension('fabtotum.speedups.triangulation',
                     sources=["triangulation.cpp", 
                              "pyboost_cv2_converter.cpp", 
                              "pyboost_cv3_converter.cpp"],
-                    **pkgcfg_args
+                    extra_compile_args=extra_compile_args,
+                    #~ **pkgcfg_args
                  )
 
 setup (
