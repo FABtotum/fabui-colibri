@@ -89,7 +89,6 @@
 			</div><!-- /.modal-header -->
 
 			<div class="modal-body">
-				
 				<form action="" class="smart-form" id="head-settings">
 					<fieldset>
 						<div class="row">
@@ -142,7 +141,6 @@
 										<label class="checkbox">
 											<input type="checkbox" id="cap-scan" name="capability[]" data-attr="scan" class="capability">
 											<i></i>Scan</label>
-
 									</div>
 								</div>
 							</section>
@@ -180,7 +178,7 @@
 							</section>
 						</div>
 					</fieldset>
-					
+
 					<fieldset class="nozzle-settings" style="display:none">
 						<div class="row">
 							<section class="col col-6">
@@ -214,6 +212,7 @@
 							</section>
 							
 							<input type="hidden" id="head-nozzle_offset" name="nozzle_offset" value="0"/>
+				
 						</div>
 					</fieldset>
 					
@@ -236,35 +235,20 @@
 					</fieldset>
 					
 					<fieldset class="feeder-settings" style="display:none">
-						<!-- <div class="row">
-							<section class="col col-6">
-								<label class="label"><?php echo _('Feeder step')?></label>
-								<label class="input">
-									<input type="number" id="head-feeder_step" name="feeder_step" min="1" max="50000" step="0.1" value="200">
-								</label>
-							</section>
-						</div>
-						-->
 						<div class="row">
 							<section class="col col-6">
-								
 								<label class="label"><?php echo _('Steps per unit');?></label>
 								<label class="input">
 									<input type="number" id="feeder-steps_per_unit" name="steps_per_unit" min="1" max="5000" value="3048.16" step=0.1>
 								</label>
-								
 							</section>
-							
 							<section class="col col-6">
-								
 								<label class="label"><?php echo _('Tube length (mm)');?></label>
 								<label class="input">
 									<input type="number" id="feeder-tube_length" name="tube_length" min="0" max="2000" value="0">
 								</label>
-								
 							</section>
 						</div>
-						
 						<div class="row">
 							<section class="col col-6">
 								<label class="label"><?php echo _('Max E acceleration (mm/s<sup>2</sup>)')?></label>
@@ -272,21 +256,18 @@
 									<input type="number" id="feeder-max_acceleration" name="max_acceleration" min="0" max="10000" value="100">
 								</label>
 							</section>
-							
 							<section class="col col-6">
 								<label class="label"><?php echo _('Max E feedrate (mm/s)')?></label>
 								<label class="input">
 									<input type="number" id="feeder-max_feedrate" name="max_feedrate" min="0" max="500" value="100">
 								</label>
 							</section>
-							
 							<section class="col col-6">
 								<label class="label"><?php echo _('Max E jerk (mm)')?></label>
 								<label class="input">
 									<input type="number" id="feeder-max_jerk" name="max_jerk" min="0" max="200" value="100">
 								</label>
 							</section>
-							
 							<section class="col col-6">
 								<label class="label"><?php echo _('Retract acceleration (mm/s<sup>2</sup>)')?></label>
 								<label class="input">
@@ -294,7 +275,6 @@
 								</label>
 							</section>
 						</div>
-
 						<div class="row">
 							<section class="col col-6">
 								<label class="label"><?php echo _('Retraction speed (mm/s)')?></label>
@@ -302,7 +282,6 @@
 									<input type="number" id="feeder-retract_feedrate" name="retract_feedrate" min="1" max="500" value="12">
 								</label>
 							</section>
-							
 							<section class="col col-6">
 								<label class="label"><?php echo _('Retraction amount (mm)')?></label>
 								<label class="input">
@@ -310,23 +289,21 @@
 								</label>
 							</section>
 						</div>
-						
 						<input type="hidden" id="feeder-factory" name="factory" value="0"/>
 					</fieldset>
 					<input type="hidden" id="tool" name="tool" value="" />
+					<input type="hidden" id="plugins" name="plugins" value="">
 				</form>
-				
-				
 			</div><!-- /.modal-body -->
 
 			<div class="modal-footer">
-			<input id="inputId" type="file" style="display:none" accept=".json">
-			<button type="button" class="btn btn-default settings-action pull-left factory-head-button" data-action="factory-reset" title="<?php echo _("Restore factory settings")?>"><i class="fa fa-refresh"></i> <?php echo _("Factory reset");?></button>
-			<button type="button" class="btn btn-default settings-action custom-head-button" data-action="import" title="<?php echo _("Import from file")?>"><i class="fa fa-upload"></i> <?php echo _("Import");?></button>
-			<button type="button" class="btn btn-default settings-action" data-action="export" title="<?php echo _("Export to file")?>"><i class="fa fa-download"></i> <?php echo _("Export");?></button>
-			<button type="button" class="btn btn-primary settings-action" data-action="save" data-dismiss="modal"><i class="fa fa-save"></i> <?php echo _("Save");?></button>
+				<input id="inputId" type="file" style="display:none" accept=".json">
+				<button type="button" class="btn btn-default settings-action pull-left factory-head-button" data-action="factory-reset" title="<?php echo _("Restore factory settings")?>"><i class="fa fa-refresh"></i> <?php echo _("Factory reset");?></button>
+				<button type="button" class="btn btn-default settings-action custom-head-button" data-action="import" title="<?php echo _("Import from file")?>"><i class="fa fa-upload"></i> <?php echo _("Import");?></button>
+				<button type="button" class="btn btn-default settings-action" data-action="export" title="<?php echo _("Export to file")?>"><i class="fa fa-download"></i> <?php echo _("Export");?></button>
+				<button type="button" class="btn btn-primary settings-action" data-action="save" data-dismiss="modal"><i class="fa fa-save"></i> <?php echo _("Save");?></button>
+				<button type="button" class="btn btn-success settings-action" data-action="save-install" data-dismiss="modal"><i class="fa fa-wrench"></i> <?php echo _("Save & Install");?></button>
 			</div><!-- /.modal-footer -->
-
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

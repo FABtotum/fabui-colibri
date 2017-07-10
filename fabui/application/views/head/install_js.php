@@ -16,31 +16,11 @@
 		$("#heads").on('change', set_head_img);
 		$("#heads").trigger('change');
 		$("#heads").on('click', function(){
-			console.log("heads CLICK");
 		});
 		$("#heads").on('select', function(){
-			console.log("heads SELECT");
-			});
-		$("#set-head").on('click', set_head);
-		
-		
-		<?php if(isset($_REQUEST['head_installed']) && $units['hardware']['head'] != 'mill_v2'): ?>
 			
-			$.SmartMessageBox({
-				title : '<i class="fa fa-warning"></i>' + _("New head has been installed, it is recommended to repeat the Probe Calibration operation"),
-				buttons : '<?php echo '[<i class="fa fa-crosshairs"></i> '.  _("Calibrate") . '][' ._("Ignore") . ']'; ?>'
-			}, function(ButtonPressed) {
-				if(ButtonPressed === _("Calibrate") ) {	
-						document.location.href="<?php echo site_url('maintenance/probe-length-calibration'); ?>";
-						location.reload();
-				}
-				if (ButtonPressed === _("Ignore") ) {
-					
-				}
-		
-			});
-		
-		<?php endif; ?>
+		});
+		$("#set-head").on('click', set_head);
 		
 		$('.settings-action').on('click', buttonAction);
 		$('.capability').on('change', capability_change);
@@ -68,7 +48,6 @@
 				'capability[]':  _("Please select at least one capability")
 			},
 			  submitHandler: function(form) {
-				console.log("FORM SUBMIT");
 			},
 			errorPlacement : function(error, element) {
 				if(element[0].name == "capability[]")
@@ -79,7 +58,6 @@
 					error.insertAfter(element.parent());
 			}
 		});
-		
 		$("#head-name").inputmask("Regex");
 	}
 	/**
@@ -140,6 +118,7 @@
 		}).done(function( data ) {
 			$(".alerts-container").find('div:first-child').remove();
 			$(".alerts-container").append( '<div class="alert alert-success animated  fadeIn" role="alert"><i class="fa fa-check"></i> ' + _("Well done! Now your <strong>FABtotum Personal Fabricator</strong> is set for the <strong>{0}</strong>.").format(data.name) + '</div>' );			
+
 			setTimeout(function(){
 					document.location.href =  '<?php echo site_url('head'); ?>?head_installed';
 					location.reload();
@@ -228,7 +207,7 @@
 				break;
 			case "save":
 				if($("#head-settings").valid())
-					saveHeadSettings();
+					saveHeadSettings(true);
 				break;
 			case "import":
 				$("#inputId").trigger('click');
@@ -240,6 +219,9 @@
 			case "factory-reset":
 				factoryReset(selected_head);
 				break;
+			case "save-install":
+				if($("#head-settings").valid())
+					saveHeadSettings(set_head);
 		}
 		
 		return false;
@@ -250,12 +232,12 @@
 	function getHeadSettings()
 	{
 		var capabilities = [];
+		var plugins = [];
 		
 		var settings = {};
 		
 		$("#head-settings :input").each(function (index, value) {
 
-			
 			var name   = $(this).attr('name');
 			var id     = $(this).attr('id');
 			var type   = $(this).attr('type');
@@ -291,6 +273,14 @@
 					else
 						settings[name] = settings[name].toUpperCase();
 				}
+				if(name=="plugins")
+				{
+					if($(this).val() == ""){
+						settings['plugins'] = new Array();
+					}else{
+						settings['plugins'] = $(this).val().split(",");
+					}
+				}
 			}
 		});
 		
@@ -300,7 +290,7 @@
 		{
 			settings['feeder'] = {};
 		}
-		
+				
 		return settings;
 	}
 	
@@ -334,6 +324,10 @@
 						$(id).prop('checked', true);
 					}
 				}
+				if(key == "plugins")
+				{
+					$("#plugins").val(value.toString());
+				}
 			}
 			else if(isObject(value))
 			{
@@ -344,7 +338,6 @@
 						var fvalue = value[fkey];
 						var id = "#feeder-"+fkey;
 						$(id).val(fvalue);
-						console.log('try to', id);
 					}
 				}
 			}
@@ -352,7 +345,6 @@
 			{
 				var id = "#head-"+key;
 				$(id).val(value);
-				console.log('try to', id);
 			}
 		}
 		capability_change(false);
@@ -369,8 +361,9 @@
 	/**
 	*
 	**/
-	function saveHeadSettings()
+	function saveHeadSettings(callback)
 	{
+		openWait('<i class="fa fa-save"></i> <?php echo _("Saving head settings"); ?>', '<?php echo _("Please wait"); ?>...');
 		var settings = getHeadSettings();
 		var filename = settings['name'].replace(/ /g, "_").replace(/-/g, "_").toLowerCase();
 		$.ajax({
@@ -379,10 +372,13 @@
 			data : settings,
 			dataType: 'json'
 		}).done(function(response) {
-			console.log(response);
 			fabApp.showInfoAlert('<strong>{0}</strong> saved'.format(settings.name));
 			setTimeout(function(){
-				location.reload();
+				if($.isFunction(callback)){
+					callback();
+				}else{
+					location.reload();
+				}				
 			}, 1000);
 		});
 	}
@@ -430,7 +426,6 @@
 					url: '<?php echo site_url('head/removeHead'); ?>/' + selected_head,
 					dataType: 'json'
 				}).done(function(response) {
-					console.log(response);
 					fabApp.showInfoAlert('<strong>{0}</strong> removed'.format(heads[selected_head].name));
 					setTimeout(function(){
 						location.reload();
