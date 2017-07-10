@@ -18,8 +18,8 @@
 		</div>
 	</div>
 </div>
-<div class="row">
+<div class="row margin-bottom-20">
 	<div class="col-sm-12">
-		<div class="well file-content-small" id="editor" style="display:none;"></div>
+		<div class="well well-light file-content-small" id="editor" style="display:none;"></div>
 	</div>
 </div>

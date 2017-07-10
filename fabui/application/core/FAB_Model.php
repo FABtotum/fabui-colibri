@@ -11,14 +11,19 @@
  	
 	private $tableName; //table name
 	
-	//init class
+	/**
+	 * 
+	 */
 	public function __construct($tableName = '')
 	{
 		parent::__construct();
 		$this->tableName = $tableName;
 	}
-	
-	//get record
+	/***
+	 * get row
+	 * @param array||string||int $data
+	 * @param string||int $numRowsExpected
+	 */
 	public function get($data = '', $numRowsExpected = '')
 	{	
 		if(is_array($data)){ //if parameter is an associative array
@@ -38,8 +43,11 @@
 		}
 		return false;
 	}
-	
-	//update
+	/***
+	 * update row
+	 * @param int||array $id
+	 * $param array $data
+	 */
 	public function update($id, $data)
 	{
 		if(is_array($id)){
@@ -51,7 +59,6 @@
 		}
 		$this->db->update($this->tableName, $data);
 	}
-	
 	/**
 	 * @param $data (data to insert)
 	 * @return int $ID (last insert id)
@@ -61,7 +68,10 @@
 		$this->db->insert($this->tableName, $data);
 		return $this->db->insert_id();
 	}
-	
+	/***
+	 *  delete
+	 *  @param array||int $data
+	 */
 	public function delete($data)
 	{
 		if(is_array($data))
@@ -73,7 +83,6 @@
 			$this->db->delete($this->tableName, array('id' => $data) );
 		}
 	}
-	
 	/**
 	 *  delete all data from table
 	 */
@@ -81,9 +90,5 @@
 	{
 		$this->db->truncate($this->tableName);
 	}
-	
-	
-	
  } 
-
 ?>
