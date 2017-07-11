@@ -56,6 +56,10 @@
 		$data['runningTask'] = $this->runningTask;
 		$data['file_id'] = '';
 		
+		$data['head'] = getInstalledHeadInfo();
+		
+		
+		
 		// Skip file selection step if fileID is provided
 		$file = $this->files->get($fileId, 1);
 		$file_is_ok = False;

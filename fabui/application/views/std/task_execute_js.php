@@ -1105,6 +1105,8 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	**/
 	function filamentSetMode()
 	{
+		$(".filament-button-choose-action").removeClass('btn-primary');
+		$(this).addClass('btn-primary');
 		var action = $(this).attr('data-action');
 		$(".filament-button-choose-action").find('span').html('');
 		$(this).find('span').html('<i class="fa fa-check"></i>');

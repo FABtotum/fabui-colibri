@@ -240,7 +240,7 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 </div>
 <?php if($type=="print"):?>
 <div class="modal fade" id="filament-change-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title"><i class="fa fa-circle-o-notch"></i> <?php echo _("Change filament");?></h4>
@@ -272,16 +272,73 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 						</span>
 					</div>
 				</div>
+				<hr class="simple">
 				<div class="row">
 					<div id="filament-load-description"   class="col-sm-12  filament-action-descritpion hidden">
-						<div class="well well-sm well-ligth">
-							<p>Load instructions</p>
-						</div>
+					
+						<?php if(in_array('feeder', $head['capabilities'])):?>
+							<div class="row">
+								<div class="col-sm-6 margin-bottom-10">
+									<div class="well well-light text-center">
+										<h1><span class="badge bg-color-blue txt-color-white">1</span></h1>
+										<p><?php echo _("Prepare the filament by cutting it at an angle. This helps the insertion of the filament."); ?></p>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="well well-light text-center">
+										<h1><span class="badge bg-color-blue txt-color-white">2</span></h1>
+										<p><?php echo _("Pull the release lever on the back of the Printing Head PRO."); ?></p>
+										<p><?php echo _("Insert the filament until it starts coming out from the nozzle");  ?></p>
+										<p><?php echo _("Release the release lever ") ?></p>
+										<p><?php echo _("Lock the feeding tube in place ") ?></p>
+									</div>
+								</div> 
+							</div>
+						<?php else:?>
+							<div class="row">
+								<div class="col-sm-4 margin-bottom-10">
+									<div class="well well-light text-center">
+										<h1><span class="badge bg-color-blue txt-color-white">1</span></h1>
+										<p><?php echo _("The Side cover is magnetically locked. Pull the panel confidently in order to access to the spool compartment."); ?></p>
+									</div>
+								</div>
+								<div class="col-sm-4 margin-bottom-10">
+									<div class="well well-light text-center">
+										<h1><span class="badge bg-color-blue txt-color-white">2</span></h1>
+										<p><?php echo _("Prepare the filament by cutting it at an angle. This helps the insertion of the filament."); ?></p>
+									</div>
+								</div>								
+								<div class="col-sm-4 margin-bottom-10">
+									<div class="well well-light text-center">
+										<h1><span class="badge bg-color-blue txt-color-white">3</span></h1>
+										<p><?php echo _("Insert the filament in the PTFE tube until you reach the feeder (you can feel it: last cm becomes harder and then you cannot push further)"); ?></p>
+									</div>
+								</div>
+							</div>
+						<?php endif; ?>
 					</div>
 					<div id="filament-unload-description" class="col-sm-12 filament-action-descritpion hidden">
-						<div class="well well-sm well-ligth">
-							<p>Unload instructions</p>
-						</div>
+						
+						<?php if(in_array('feeder', $head['capabilities'])):?>
+							<div class="row">
+								<div class="col-sm-6 margin-bottom-10">
+									<div class="well well-light text-center">
+										<h1><span class="badge bg-color-blue txt-color-white">1</span></h1>
+										<p><?php echo _("Remove the Feeding tube by pushing down the black cap and then pulling the tube itself."); ?></p>
+										<p><?php echo _("Press start to begin procedure"); ?></p>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="well well-light text-center">
+										<h1><span class="badge bg-color-blue txt-color-white">2</span></h1>
+										<p><?php echo _("After the filament was pulled out from the nozzle");?></p>
+										<p><?php echo _("Pull the release lever on the back of the Printing Head PRO."); ?></p>
+										<p><?php echo _("Pull the filament out of the head"); ?></p>
+									</div>
+								</div>
+							</div>
+						<?php else: ?>
+						<?php endif;?>
 					</div>
 				</div>
 			</div>
