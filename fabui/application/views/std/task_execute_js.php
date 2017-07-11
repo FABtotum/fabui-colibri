@@ -115,7 +115,6 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	{
 		fabApp.enableTopBarControls();
 	}
-	
 	/**
 	 * init sliders
 	 */
@@ -436,6 +435,11 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	 */
 	function initGraph()
 	{
+
+		if ($('#temperatures-chart').is(":visible") == false) {
+			return
+		}
+		
 		temperaturesGraph = $.plot("#temperatures-chart", getPlotTemperatures(), {
 			series : {
 				lines : {
@@ -482,7 +486,6 @@ if(!isset($bed_max)) 		$bed_max = 100;
 				
 			},
 		});
-
 		//init updateGraph interval
 		setInterval(updateGraph, 1000);
 	}

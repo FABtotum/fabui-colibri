@@ -16,7 +16,7 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 ?>
 <ul id="createFeed" class="nav nav-tabs bordered">
 	<li class="active"><a href="#live-feeds-tab" data-toggle="tab"><?php echo _("Live feeds")?></a></li>
-	<li><a href="#controls-tab" data-toggle="tab"><i class="fa fa-sliders"></i> <?php echo _("Controls");?></a></li>
+	<li><a href="#controls-tab" data-toggle="tab"><i class="fa fa-sliders"></i> <span class="hidden-xs"><?php echo _("Controls");?></span></a></li>
 	<li class="pull-right">
 		<div class="widget-toolbar" id="switch-2" style="display: block;" role="menu">
 			<div class="smart-form">
@@ -42,10 +42,16 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 			<?php if($type == 'print'): ?>
 			<div class="col-sm-6">
 				
-				<div class="row">
+				<div class="row hidden-xs">
 					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-6">
 						<button type="button" class="btn btn-default btn-block dropdown-toggle" data-toggle="dropdown">
-							<span><i class="fab-lg fab-fw icon-fab-term"></i> <span class="hidden-xs"><?php echo _("Nozzle"); ?></span> <span class="hidden-md hidden-sm hidden-lg font-md">N</span> <span class="extruder-temp"></span> / <span class="extruder-target"></span> <span class="pull-right"><i class="fa fa-caret-down"></i></span></span>
+							<span>
+								<span class="pull-right"><i class="fa fa-caret-down"></i></span>
+								<i class="fab-lg fab-fw icon-fab-term"></i> 
+								<span class="hidden-xs"><?php echo _("Nozzle"); ?></span> 
+								<span class="extruder-temp"></span> / 
+								<span class="extruder-target"></span> 
+							</span>
 						</button>
 						<ul class="dropdown-menu">
 							<li>
@@ -62,7 +68,13 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 					</div>
 					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-6">
 						<button type="button" class="btn btn-default btn-sm btn-block dropdown-toggle" data-toggle="dropdown">
-							<span><i class="fab-lg fab-fw icon-fab-term"></i> <span class="hidden-xs"><?php echo _("Bed"); ?></span> <span class="hidden-md hidden-sm hidden-lg font-md">B</span> <span class="bed-temp"></span> / <span class="bed-target"></span><span class="pull-right"><i class="fa fa-caret-down"></i></span></span>
+							<span>
+								<span class="pull-right"><i class="fa fa-caret-down"></i></span>
+								<i class="fab-lg fab-fw icon-fab-term"></i> 
+								<span class="hidden-xs"><?php echo _("Bed"); ?></span>  
+								<span class="bed-temp"></span> / 
+								<span class="bed-target"></span>
+							</span>
 						</button>
 						<ul class="dropdown-menu">
 							<li>
@@ -79,7 +91,7 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 					</div>
 				</div>
 
-				<div class="row">
+				<div class="row hidden-xs">
 					<div id="temperatures-chart" class="chart"> </div>
 				</div>
 			</div>
@@ -93,6 +105,14 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 layer-info hidden"> <span class="text"> <i class="fa fa-database"></i> <?php echo _("Layer"); ?> <span class="pull-right"><span title="<?php echo _("Current layer");?>" class="task-layer-current"></span> <?php echo _("of")?> <span title="<?php echo _("Total layers");?>" class="task-layer-total"></span> </span> </span>
 						<div class="fake-progress"></div>
 					</div>
+					
+					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 hidden-sm hidden-md hidden-lg"> <span class="text"> <?php echo _("Nozzle"); ?> <span class="pull-right"> <span class="extruder-temp"></span> / <span class="extruder-target"></span></span> </span>
+						<div class="fake-progress"></div>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 hidden-sm hidden-md hidden-lg"> <span class="text"> <?php echo _("Bed"); ?> <span class="pull-right"><span class="bed-temp"></span> / <span class="bed-target"></span> </span>
+						<div class="fake-progress"></div>
+					 </div>
+					
 					<?php endif; ?>
 					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> <?php echo _("Progress"); ?> <span class="pull-right task-progress"></span> </span>
 						<div class="progress">
@@ -121,7 +141,7 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> <?php echo _("Elapsed time"); ?> <span class="pull-right"><span class="elapsed-time"></span> </span> </span>
 						<div class="fake-progress"></div>
 					</div>
-					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> <?php echo _("Estimated time left"); ?> <span class="pull-right"><span class="estimated-time-left"></span> </span> </span>
+					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> <?php echo _("Est. time left"); ?> <span class="pull-right"><span class="estimated-time-left"></span> </span> </span>
 						<div class="fake-progress"></div>
 					</div>
 					<span class="show-stat-buttons"> 
