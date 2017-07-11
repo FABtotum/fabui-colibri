@@ -55,7 +55,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" id="dropzone-cancel" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> <?php echo _("Cancel");?></button>
-				<button type="button" id="dropzone-make"   class="btn btn-primary"><?php echo $type_action; ?></button>
+				<button type="button" id="dropzone-make"   class="btn btn-primary"><?php echo _("Wait");?>...</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

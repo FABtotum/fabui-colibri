@@ -20,7 +20,6 @@ if( !isset($wizard_finish) ) $wizard_finish = end($steps)['number'];
 	var wizard; //wizard object
 	
 	$(document).ready(function() {
-		console.log('task_wizard_js: ready');
 		initWizard();
 	});
 	
@@ -59,7 +58,6 @@ if( !isset($wizard_finish) ) $wizard_finish = end($steps)['number'];
 			//enableButton('.button-prev');
 			disableCompleteSteps();
 		<?php else: ?>
-			console.log("ACTIVE-STEP", "<?php echo getActiveStep($steps);?>")
 			gotoWizardStep(<?php echo getActiveStep($steps);?>);
 			//enableButton('.button-prev');
 		<?php endif; ?>
@@ -76,7 +74,6 @@ if( !isset($wizard_finish) ) $wizard_finish = end($steps)['number'];
 	function canWizardNext()
 	{
 		var step = $('.wizard').wizard('selectedItem').step;
-		console.log('Can Wizard Next: ' + step);
 		return false;
 	}
 	

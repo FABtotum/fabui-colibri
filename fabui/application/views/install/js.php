@@ -149,11 +149,11 @@
 				$(".next").find('a').html( "<?php echo _("Next") ?>" );
 				break;
 			case 2:
-				$(".next").find('a').html( "<?php echo _("Skip") ?>" );
+				//$(".next").find('a').html( "<?php echo _("Skip") ?>" );
 				break;
     		case 3:
         		<?php if(count($steps) == 5): ?>
-					$(".next").find('a').html( "<?php echo _("Skip") ?>" );
+					//$(".next").find('a').html( "<?php echo _("Skip") ?>" );
 					break;
 				<?php else: ?>
 					$(".next").find('a').attr('style', 'cursor: pointer !important;');

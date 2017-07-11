@@ -25,8 +25,6 @@
 	function handleStep()
 	{
 		var step = $('.wizard').wizard('selectedItem').step;
-		console.log('handleStep', step);
-		
 		if(step == 2)
 		{
 			<?php if($runningTask): ?>;
@@ -38,14 +36,12 @@
 			<?php endif; ?>
 			return false;
 		}
-		
 		return true;
 	}
 	
 	function checkWizard()
 	{
 		var step = $('.wizard').wizard('selectedItem').step;
-		console.log(step);
 		switch(step){
 			case 1: // Select file
 				disableButton('.button-prev');
@@ -54,7 +50,6 @@
 				else
 					disableButton('.button-next');
 				$('.button-next').find('span').html(_("Next"));
-				
 				break;
 			case 2: // Get Ready
 				enableButton('.button-prev');
@@ -62,11 +57,9 @@
 				enableButton('.button-next');
 				$('.button-next').find('span').html(_("Print"));
 				break;
-				
 			case 3: // Execution
 				break;
 			case 4:
-				
 				$('.button-next').find('span').html('');
 		}
 	}

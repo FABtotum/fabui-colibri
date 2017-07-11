@@ -10,8 +10,10 @@
 <script type="text/javascript">
 	var filesDropzone;
 	var fileAccepted = false;
-
+	var fileType = '<?php echo $print_type?>';
+	
 	$(document).ready(function() {
+		destroyDropZone();		
 		initDropZone();
 		$("#dropzone-make").on('click', dropzoneMakeButton);
 		$("#dropzone-cancel").on('click', cancelFileUpload);
@@ -23,8 +25,15 @@
 	* gotoWizardStep(2);
 	**/
 	function initDropZone()
-	{			
+	{
+		/*
+		if(dropZoneInitialized == true) {
+			return;
+		}
+		if(typeof safety_result != "undefined" && safety_result == false) return;
+		*/
 		Dropzone.autoDiscover = false;
+		
 		$(document.body).dropzone({
 			url: "<?php echo site_url("projectsmanager/uploadFile") ?>", // Set the url,
 			parallelUploads: 1,
@@ -37,29 +46,39 @@
 					fabApp.showErrorAlert("<?php echo _("You can't upload files of this type.") ?>");
 					return false;
 				}else{
-					$(".dropzone-file-name").html(file.name);
+					$(".dropzone-file-name").html('<strong>' + file.name + '</strong> <small>(' + humanFileSize(file.size) + ')</small> ');
 					showDropzoneModal();
 					done();
 				}
 			},
 			init: function() {
-				filesDropzone = this;
+				fabApp.dropZoneList.push(this);
 				
-			 	this.on("addedfile", function(file) {});
-			 	this.on("uploadprogress", function(file, progress) { 
+			 	this.on("addedfile", function(file) {
+				});
+
+			 	this.on("uploadprogress", function(file, progress) {
+				 					 	
 				 	$(".dropzone-file-upload-percent").html(parseInt(progress) + " %");
 				 	$(".dropzone-progress-bar").attr("style", "width:"+parseInt(progress)+"%");
 				});
 			 	this.on("complete", function(file){
 				 	var response = jQuery.parseJSON(file.xhr.response);
-				 	if(response.upload == true){
-					 	
-				 		$(".dropzone-upload-label").html("<?php echo _("Uploaded"); ?>");
-				 		$(".dropzone-file-upload-percent").html('<i class="fa fa-check"></i>');
-				 		idFile = response.fileId;
-				 		enableButton("#dropzone-make");
-				 		enableButton("#dropzone-cancel");
-				 		fileFromDropzone = true;
+					if(response.type == fileType ){
+					 	if(response.upload == true){
+					 		fileFromDropzone = true;
+					 		idFile = response.fileId;
+					 		setTimeout(function(){
+						 		$(".dropzone-upload-label").html("<?php echo _("Uploaded"); ?>");
+						 		$(".dropzone-file-upload-percent").html('<i class="fa fa-check"></i>');
+						 		$("#dropzone-make").html("<?php echo $type_action; ?>");
+						 		enableButton("#dropzone-make");
+						 		enableButton("#dropzone-cancel");
+					 		}, 1000);
+						}
+					}else{
+						hideDropzoneModal();
+						fabApp.showErrorAlert("<?php echo _("Invalid file.") ?>");
 					}
 				 	this.removeFile(file);
 			 	})
@@ -71,6 +90,7 @@
 	**/
 	function showDropzoneModal()
 	{
+		$("#dropzone-make").html(_("Wait") + '...');
 		disableButton("#dropzone-make");
 		disableButton("#dropzone-cancel");
 		$(".dropzone-progress-bar").attr("style", "width:0%");
@@ -79,6 +99,13 @@
 			backdrop : 'static'
 		});
 	}
+	/***
+	*
+	**/
+	function hideDropzoneModal()
+	{
+		$('#dropzone-modal').modal('hide');
+	}
 	/**
 	* 
 	**/
@@ -86,8 +113,10 @@
 	{
 		<?php if($type == 'print'):?>
 		startTask();
+		<?php elseif($type == 'mill'): ?>
+		gotoWizardStep(2);
 		<?php endif; ?>
-		$('#dropzone-modal').modal('hide')
+		$('#dropzone-modal').modal('hide');
 	}
 	/**
 	* delte uploaded file
@@ -103,17 +132,17 @@
 			url: '<?php echo site_url("projectsmanager/deleteFiles") ?>',
 			dataType: 'json'
 		}).done(function(response) {
-			console.log(response);
+			fileFromDropzone = false;
 		})
 	}
 	/**
-	* 
+	*
 	**/
 	function destroyDropZone()
 	{	
-		if (typeof(filesDropzone) !== "undefined"){
-			filesDropzone.destroy();
-		}
+		$.each(fabApp.dropZoneList, function( index, value ) {
+			value.destroy();
+		});
 	}
 	<?php if($type == 'print'):?>
 	/**

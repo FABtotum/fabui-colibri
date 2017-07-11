@@ -26,6 +26,7 @@
 fabApp = (function(app) {
 	app.installed_head =  null;
 	app.rebooting = false; //is the unit rebooting?
+	app.dropZoneList = new Array();
 	app.FabActions = function(){
 		var fabActions = {
 			userLogout: function($this){
@@ -1703,6 +1704,19 @@ fabApp = (function(app) {
 				openWait('<i class="fa fa-warning"></i> ' + _("No connection detected"), _("Unable to connect to the FABtotum Personal Fabricator") + '<br>' + _("Please check ethernet cable or wifi connection and then reload the page"), false); 
 			});
 		}
+	}
+	/**
+	 * 
+	 */
+	app.getNotify = function()
+	{
+		$.get(notify_json_url + '?' + jQuery.now(), function(data, status){
+			if(data && data.hasOwnProperty('last_event')){
+				if(data.last_event.hasOwnProperty('type') && data.last_event.type == 'emergency'){
+					app.manageEmergency(data.last_event.data);
+				}
+			}
+		});
 	}
 	return app;
 })({});

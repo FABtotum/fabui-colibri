@@ -55,11 +55,10 @@
 		$data = array();
 		$data['runningTask'] = $this->runningTask;
 		$data['file_id'] = '';
+		$data['print_type'] = 'additive';
 		
 		$data['head'] = getInstalledHeadInfo();
-		
-		
-		
+
 		// Skip file selection step if fileID is provided
 		$file = $this->files->get($fileId, 1);
 		$file_is_ok = False;
@@ -86,12 +85,10 @@
 			$task_is_running = True;
 		}
 		
-		$head_info = getInstalledHeadInfo();
-		
 		$data['type']      = 'print';
 		$data['type_label'] = _("Printing");
 		$data['type_action'] = _("Print");
-		$data['extruder_min'] = isset($head_info['min_temp']) ? ($head_info['min_temp'] + 5) : 180;
+		$data['extruder_min'] = isset($data['head']['min_temp']) ? ($data['head']['min_temp'] + 5) : 180;
 		$data['filamentsOptions'] = array('pla' => 'PLA', 'abs' => 'ABS', 'nylon' => 'Nylon');
 		$this->config->load('upload');
 		
@@ -115,7 +112,7 @@
 		
 		$data['steps'] = array(
 				array('number'  => 1,
-				 'title'   => _("Choose file"),
+				 'title'   => _("Choose file or drope here"),
 				 'content' => !$task_is_running ? $this->load->view( 'std/select_file', $data, true ) : '',
 				 'active'  => !$file_is_ok && !$task_is_running
 			    ),
@@ -167,8 +164,8 @@
 			$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
 			$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
 			$this->addJSFile('/assets/js/plugin/dropzone/dropzone.js'); //dropzpone	
-			$this->addJsInLine($this->load->view( 'std/task_dropzone_js', $data, true));
 			$this->addJsInLine($this->load->view( 'std/task_safety_check_js', $data, true));
+			$this->addJsInLine($this->load->view( 'std/task_dropzone_js', $data, true)); //important dropzone after safety check
 			$this->addJsInLine($this->load->view( 'std/select_file_js',   $data, true));
 			$this->addJsInLine($this->load->view( 'std/print_setup_js',   $data, true));
 		}
@@ -184,13 +181,13 @@
 	{
 		$this->load->library('smart');
 		$this->load->helper('form');
-		$this->load->helper('fabtotum_helper');
-		$this->load->helper('plugin_helper');
+		$this->load->helper( array('fabtotum_helper', 'plugin_helper', 'upload_helper', 'os_helper') );
 		$this->load->model('Files', 'files');
 		
 		$data = array();
 		$data['runningTask'] = $this->runningTask;
 		$data['file_id'] = '';
+		$data['print_type'] = 'subtractive';
 		
 		// Skip file selection step if fileID is provided
 		$file = $this->files->get($fileId, 1);
@@ -220,12 +217,17 @@
 		
 		$data['type']      = 'mill';
 		$data['type_label'] = _("Milling");
+		$data['type_action'] = _("Mill");
 		
 		if(!$task_is_running){
+			
+			$this->config->load('upload');
+			$data['accepted_files'] = allowedTypesToDropzoneAcceptedFiles( $this->config->item('allowed_types') );
 			
 			$data['safety_check'] = safetyCheck("mill", "no");
 			$data['safety_check']['url'] = 'std/safetyCheck/mill/no';
 			$data['safety_check']['content'] = $this->load->view( 'std/task_safety_check', $data, true );
+			$data['dropzone']['content'] = $this->load->view( 'std/task_dropzone', $data, true );
 			
 			// select_file
 			$data['get_files_url'] = 'std/getFiles/subtractive';
@@ -239,7 +241,7 @@
 		
 		$data['steps'] = array(
 				array('number'  => 1,
-				 'title'   => _("Choose file"),
+				 'title'   => _("Choose file or drope here"),
 				 'content' => !$task_is_running ? $this->load->view( 'std/select_file', $data, true ) : '',
 				 'active'  => !$file_is_ok && !$task_is_running
 			    ),
@@ -300,6 +302,7 @@
 			$this->addJSFile('/assets/js/std/jogcontrols.js' ); //jog controls
 			$this->addJSFile('/assets/js/std/jogtouch.js' ); //jog controls
 			$this->addJSFile('/assets/js/plugin/knob/jquery.knob.min.js');
+			$this->addJSFile('/assets/js/plugin/dropzone/dropzone.js'); //dropzpone	
 		}
 		
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
@@ -307,6 +310,7 @@
 		
 		if(!$task_is_running) { // these files aren't needed if task is already running
 			$this->addJsInLine($this->load->view( 'std/task_safety_check_js', $data, true));
+			$this->addJsInLine($this->load->view( 'std/task_dropzone_js', $data, true));
 			$this->addJsInLine($this->load->view( 'std/select_file_js', $data, true));
 			$this->addJsInLine($this->load->view( 'std/jog_setup_js', $data, true));
 		}
@@ -322,6 +326,12 @@
 	public function startPrintTask()
 	{
 		$data = $this->input->post();
+		
+		if(!isset($data['idFile'])){
+			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => 'File not selected')));
+			return;
+		}
+		
 		//load helpers
 		$this->load->helpers('fabtotum_helper');
 		$this->load->helpers('language_helper');
@@ -331,6 +341,7 @@
 		session_write_close(); //avoid freezing page
 		
 		$fileToCreate = $this->files->get($data['idFile'], 1);
+		
 		if($data['dropzone_file'] == 'true'){ //crate an object an assoc new file
 			$this->load->model('Objects', 'objects');
 			$temp['name'] = $fileToCreate['client_name'];
@@ -341,12 +352,12 @@
 			$objectID = $this->objects->add($temp);
 			$this->objects->addFiles($objectID, $data['idFile']);
 		}
+		
 		$temperatures = readInitialTemperatures($fileToCreate['full_path']);
 		if($temperatures == false){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => 'File not found')));
 			return;
 		}
-		
 		
 		$preparingResult = doMacro("check_additive");
 		if($preparingResult['response'] != 'success'){
@@ -397,13 +408,12 @@
 		);
 		$taskId   = $this->tasks->add($taskData);
 		
-		
 		//start print
 		$printArgs = array(
-						'-T' => $taskId, 
-						'-F' => $fileToCreate['full_path'],
-						'--lang' => getCurrentLanguage() . '.UTF-8'
-						);
+			'-T' => $taskId, 
+			'-F' => $fileToCreate['full_path'],
+			'--lang' => getCurrentLanguage() . '.UTF-8'
+		);
 						
 		if($data['send_email']    == "true") $printArgs['--email'] = '';
 		if($data['auto_shutdown'] == "true") $printArgs['--shutdown'] = '';
@@ -430,6 +440,20 @@
 		//reset task monitor file
 		resetTaskMonitor();
 		$fileToCreate = $this->files->get($data['idFile'], 1);
+		
+		
+		if($data['dropzone_file'] == 'true'){ //crate an object an assoc new file
+			$this->load->model('Objects', 'objects');
+			$temp['name'] = $fileToCreate['client_name'];
+			$temp['description'] = 'Quick print';
+			$temp['user'] = $this->session->user['id'];
+			$temp['date_update'] = date('Y-m-d H:i:s');
+			$temp['date_insert'] = date('Y-m-d H:i:s');
+			$objectID = $this->objects->add($temp);
+			$this->objects->addFiles($objectID, $data['idFile']);
+		}
+		
+		
 		$startSubtractive = doMacro('start_subtractive');
 		if($startSubtractive['response'] =! 'ok'){
 			$this->output->set_content_type('application/json')->set_output(json_encode(array('start' => false, 'message' => $startSubtractive['message'])));

@@ -16,7 +16,7 @@
 	var idFile <?php echo $file_id != '' ? ' = '.$file_id : ''; ?>; //file to create
 	<?php endif; ?>
 	var idTask <?php echo $runningTask ? ' = '.$runningTask['id'] : ''; ?>;
-	
+	var fileFromDropzone = false;
 	
 	$(document).ready(function() {
 		$('[data-toggle="tooltip"]').tooltip();
@@ -25,7 +25,6 @@
 	function handleStep()
 	{
 		var step = $('.wizard').wizard('selectedItem').step;
-		console.log('handleStep', step);
 		
 		if(step == 2)
 		{
@@ -42,9 +41,7 @@
 	
 	function checkWizard()
 	{
-		console.log('check Wizard');
 		var step = $('.wizard').wizard('selectedItem').step;
-		console.log(step);
 		switch(step){
 			case 1: // Select file
 				disableButton('.button-prev');
@@ -70,19 +67,17 @@
 	
 	function jogSetAsZero()
 	{
-		console.log('set as zero');
 		enableButton('.button-next');
 		return false;
 	}
 	
 	function startTask()
 	{
-		console.log('Starting task');
-		openWait('<i class="fa fa-spinner fa-spin "></i> ' + "<?php echo _('Preparing {0}');?>".format("<?php echo _(ucfirst($type)); ?>"), _("Checking safety measures...") );
-		
+		openWait('<i class="fa fa-spinner fa-spin "></i> ' + "<?php echo _('Preparing {0}');?>".format("<?php echo _(ucfirst($type)); ?>"), _("Checking safety measures...") );	
 		var data = {
-			idFile:idFile
-			};
+			idFile:idFile,
+			dropzone_file:fileFromDropzone
+		};
 			
 		$.ajax({
 			type: 'post',
