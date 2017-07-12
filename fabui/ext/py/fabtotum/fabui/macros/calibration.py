@@ -63,10 +63,10 @@ def measure_probe_offset(app, args = None, lang='en_US.UTF-8'):
     max_probe_length = 45
     default_probe_length = 38
     eeprom = getEeprom(app)
-    curret_probe_length = abs(float(eeprom["probe_length"]))
+    probe_length = abs(float(eeprom["probe_length"]))
     zprobe_disabled = int(app.config.get('settings', 'probe.enable')) == 0
     
-    if(curret_probe_length > max_probe_length):
+    if(probe_length > max_probe_length):
         app.macro("M710 S{0}".format(default_probe_length), "ok", 2, _("Write config to EEPROM"), verbose=False)
             
     app.macro("M104 S"+str(ext_temp),   "ok", 3,    _("Pre Heating Nozzle ({0}&deg;) (fast)").format(str(ext_temp)))
@@ -95,8 +95,6 @@ def measure_probe_offset(app, args = None, lang='en_US.UTF-8'):
         probe_length = probe_length / 4
         app.macro("M710 S{0}".format(probe_length), "ok", 2, _("Write config to EEPROM"), verbose=False)
         app.macro("M733 S1", "ok", 2, _("Enable homing check"), verbose=False)
-    else:
-        probe_length = 38.0
     
     # Move closer to nozzle
     app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False)
@@ -135,7 +133,8 @@ def measure_nozzle_offset(app, args = None, lang='en_US.UTF-8'):
     with open(head_file) as json_f:
         head_info = json.load(json_f)
         
-    head_info['nozzle_offset'] = str(round(nozzle,2))
+    #head_info['nozzle_offset'] = str(round(nozzle,2))
+    head_info['nozzle_offset'] = nozzle
     
     with open(head_file, 'w') as outfile:
         json.dump(head_info, outfile, sort_keys=True, indent=4)
