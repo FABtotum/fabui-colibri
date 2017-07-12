@@ -142,19 +142,10 @@
 						</label>
 					</div>
 				</section>
-			</fieldset>
-			<!--  
-			<fieldset>
-				<div class="row">
-					<section class="col col-sm-12">
-						<label class="label"><?php echo _('Z max home pos')?> (mm)</label>
-						<label class="input">
-							<input type="number" id="zprobe-zmax" name="zprobe-zmax" value="<?php echo $defaultSettings['z_max_offset']; ?>">
-						</label>
-					</section> 
+				<div class="note">
+					<p class="font-md"><i class="fa fa-warning"></i> <?php echo _("Please perform a new nozzle height calibration when switching between the two options above");?> </p>
 				</div>
 			</fieldset>
-			-->
 		</div>
 	</div>
 	<!-- customized actions tab -->
