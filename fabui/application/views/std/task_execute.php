@@ -138,10 +138,10 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 							<div class="progress-bar" id="task-rpm-bar"></div>
 						</div> </div>
 					<?php endif; ?>
-					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> <?php echo _("Elapsed time"); ?> <span class="pull-right"><span class="elapsed-time"></span> </span> </span>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"> <span class="text"> <?php echo _("Elapsed time"); ?> <span class="pull-right"><span class="elapsed-time"></span> </span> </span>
 						<div class="fake-progress"></div>
 					</div>
-					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> <?php echo _("Est. time left"); ?> <span class="pull-right"><span class="estimated-time-left"></span> </span> </span>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"> <span class="text"> <?php echo _("Est. time left"); ?> <span class="pull-right"><span class="estimated-time-left"></span> </span> </span>
 						<div class="fake-progress"></div>
 					</div>
 					<span class="show-stat-buttons"> 
