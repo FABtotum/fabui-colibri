@@ -23,12 +23,12 @@ __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
 # Import standard python module
-import os
+import os, time
 import re
 import json
 
 from fabtotum.utils.translation import _, setLanguage
-from fabtotum.utils.plugin import activate_plugin
+from fabtotum.utils.plugin import activate_plugin, get_active_plugins, get_installed_plugins
 from fabtotum.totumduino.format import parseG30, parseM114
 
 def zProbe(app, lang='en_US.UTF-8'):
@@ -235,29 +235,31 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     tool         = head.get('tool', '')
     plugins      = head.get('plugins', False)
     
+    app.trace( _("Setting values..."))
+    
     # Set installed head ID
     if fw_id is not None:
         #~ gcs.send( "M793 S{0}".format( fw_id ), group='bootstrap' )
-        app.macro( "M793 S{0}".format( fw_id ),   "ok", 2, _("Setting soft ID to {0}").format(fw_id) )
+        app.macro( "M793 S{0}".format( fw_id ),   "ok", 2, _("Setting soft ID to {0}").format(fw_id), verbose=False)
     
     # Working mode
-    app.macro( "M450 S{0}".format( mode ),   "ok", 2, _("Configuring working mode"))
+    app.macro( "M450 S{0}".format( mode ),   "ok", 2, _("Configuring working mode"), verbose=False)
     
     # Set head PID
     if pid != "":
-        app.macro(head['pid'],   "ok *", 2, _("Configuring PID"))
+        app.macro(head['pid'],   "ok *", 2, _("Configuring PID"), verbose=False)
         
     # Set Thermistor index
-    app.macro( "M800 S{0}".format( th_idx ),   "ok", 2, _("Setting thermistor index to {0}").format(th_idx) )
+    app.macro( "M800 S{0}".format( th_idx ),   "ok", 2, _("Setting thermistor index to {0}").format(th_idx), verbose=False)
     
     # Set max_temp
     if max_temp > 25:
         #~ gcs.send( "M801 S{0}".format( max_temp ), group='bootstrap' )
-        app.macro( "M801 S{0}".format( max_temp ),   "ok", 2, _("Setting MAX temperature to {0}".format(max_temp)) )
+        app.macro( "M801 S{0}".format( max_temp ),   "ok", 2, _("Setting MAX temperature to {0}".format(max_temp)), verbose=False)
     
     # Set min_temp
     if min_temp > 0:
-        app.macro(  "M302 S{0}".format( min_temp ),   "ok", 2, _("Setting MIN temperature to {0}".format(min_temp)) )
+        app.macro(  "M302 S{0}".format( min_temp ),   "ok", 2, _("Setting MIN temperature to {0}".format(min_temp)), verbose=False)
 
     # Set nozzle offset
     #~ if offset:
@@ -265,14 +267,14 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
         
     # Set TOOL
     if tool != "":
-        app.macro(head['tool'],   "ok", 2, _("Configuring tool"))
+        app.macro(head['tool'],   "ok", 2, _("Configuring tool"), verbose=False)
     
     # Set probe offset
     if probe_length:
-        app.macro( "M710 S{0}".format( probe_length ),   "ok", 2, _("Configuring probe offset"))
+        app.macro( "M710 S{0}".format( probe_length ),   "ok", 2, _("Configuring probe offset"), verbose=False)
     
     # Custom initialization code
-    app.trace( _("Custom initialization") )
+    app.trace( _("Custom initialization"))
     for line in head.get('custom_gcode', '').split('\n'):
         if line:
             code = line.split(';')[0]
@@ -281,9 +283,15 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     # Save settings
     #~ gcs.send( "M500", group='bootstrap' )
     if plugins:
-        app.trace( _("Activating required plugins") )
+        activated_plugins = get_active_plugins()
+        installed_plugins = get_installed_plugins()
+        app.trace( _("Check for plugins..") )
         for plugin in plugins:
-            app.trace( _("Activating {0} plugin".format(plugin)) )
-            activate_plugin(plugin)
-        
+            
+            if (plugin not in installed_plugins):
+                app.trace( _("Please install <strong>{0}</strong> plugin".format(plugin)) )
+            elif (plugin not in activated_plugins):
+                app.trace( _("Activating <strong>{0}</strong> plugin".format(plugin)) )
+                activate_plugin(plugin)
+            
     return True

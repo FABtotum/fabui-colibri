@@ -32,7 +32,7 @@ import os, re
 # Import internal modules
 from fabtotum.utils.translation import _, setLanguage
 from fabtotum.utils.common import shell_exec
-from fabtotum.utils.plugin import activate_plugin
+from fabtotum.utils.plugin import activate_plugin, get_active_plugins, get_installed_plugins
 from fabtotum.fabui.config import ConfigService
 from fabtotum.fabui.hardware.all import PRESET_MAP
 
@@ -156,11 +156,17 @@ def configure_head(gcs, config, log):
                 if code:
                     gcs.send( code, group='bootstrap' )
         
-        if plugins : 
-            log.info("Activating required plugins")
+        if plugins:
+            activated_plugins = get_active_plugins()
+            installed_plugins = get_installed_plugins()
+            log.info( _("Check for plugins..") )
             for plugin in plugins:
-                log.info("Activating {0} plugin".format(plugin))
-                activate_plugin(plugin, config)
+                
+                if (plugin not in installed_plugins):
+                    log.info( _("Please install {0} plugin".format(plugin)) )
+                elif (plugin not in activated_plugins):
+                    log.info( _("Activating {0} plugin".format(plugin)) )
+                    activate_plugin(plugin)
         
     except Exception as e:
         print log.error("head configuration failed: {0}".format(str(e)))
