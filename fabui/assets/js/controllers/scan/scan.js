@@ -809,6 +809,8 @@ function startTask()
 	setInterval(timer, 1000);
 	ga('send', 'event', 'scan', 'start', 'Started scan: ' + scanMode);
 	disableCompleteSteps();
+	setInterval(traceMonitor, 1000);
+	setInterval(jsonMonitor, 1000);
 	
 }  
 
@@ -820,6 +822,9 @@ function initRunningTaskPage()
 	console.log("init running task");
 	fabApp.disableTopBarControls();
 	getTaskMonitor(true);
+	getTrace();
+	setInterval(traceMonitor, 1000);
+	setInterval(jsonMonitor, 1000);
 }
 /**
 *
@@ -833,6 +838,29 @@ function getTaskMonitor(firstCall)
 			setInterval(timer, 1000);
 		}
 	});
+}
+/**
+ * 
+ */
+function getTrace()
+{
+	$.get('/temp/trace'+ '?' + jQuery.now(), function(data, status){
+		fabApp.handleTrace(data);
+	});
+}
+/**
+ * 
+ */
+function traceMonitor()
+{
+	if(!socket_connected || socket.fallback) getTrace();
+}
+/**
+ * 
+ */
+function jsonMonitor()
+{
+	if(!socket_connected || socket.fallback) getTaskMonitor(false);
 }
 /**
 *

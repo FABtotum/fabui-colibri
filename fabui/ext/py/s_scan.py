@@ -55,7 +55,7 @@ class SweepScan(GCodePusher):
     XY_FEEDRATE     = 10000
     Z_FEEDRATE      = 1500
     E_FEEDRATE      = 800
-    QUEUE_SIZE      = 64
+    QUEUE_SIZE      = 16
     
     def __init__(self, log_trace, monitor_file, scan_dir, standalone = False, 
 				finalize = True, width = 2592, height = 1944, rotation = 0, 
@@ -109,6 +109,7 @@ class SweepScan(GCodePusher):
     def take_a_picture(self, number = 0, suffix = ''):
         """ Camera control wrapper """
         scanfile = os.path.join(self.scan_dir, "{0}{1}.jpg".format(number, suffix) )
+        print scanfile
         self.camera.capture(scanfile, quality=100)
     
     def __post_processing(self, camera_path, camera_version, 
@@ -154,6 +155,8 @@ class SweepScan(GCodePusher):
         
         asc = ASCFile(cloud_file)
         
+        self.trace( _("Post-processing started") )
+        
         while True:
             img_idx = self.imq.get()
             
@@ -193,7 +196,8 @@ class SweepScan(GCodePusher):
             
             if self.is_aborted():
                 break
-            
+        
+        self.trace( _("Post-processin completed") )
         print "close post processing"
         asc.close()
         self.store_object(task_id, object_id, object_name, cloud_file, file_name)
@@ -267,6 +271,8 @@ class SweepScan(GCodePusher):
         Run the sweep scan.
         """
         
+        self.trace( _("Initializing scan") )
+        
         self.prepare_task(task_id, task_type='scan', task_controller='scan')
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
@@ -279,6 +285,9 @@ class SweepScan(GCodePusher):
         
         if self.standalone:
             self.exec_macro("start_sweep_scan")
+            
+            
+        self.trace( _("Scan started") )
         
         LASER_ON  = 'M700 S{0}'.format(self.laser_power)
         LASER_OFF = 'M700 S0'
@@ -316,7 +325,6 @@ class SweepScan(GCodePusher):
 
             self.send(LASER_ON) #turn laser ON
             self.take_a_picture(i, '_l')
-            
             self.send(LASER_OFF) #turn laser ON
             self.take_a_picture(i)
             
@@ -359,6 +367,15 @@ class SweepScan(GCodePusher):
                 self.set_task_status(GCodePusher.TASK_COMPLETED)
         
         self.stop()
+
+def cleandirs(path):
+    try:
+        filelist = [ f for f in os.listdir(path)]
+        for f in filelist:
+            os.remove(path + '/' +f)
+    except Exception as e:
+        print e
+
 
 def makedirs(path):
     """ python implementation of `mkdir -p` """
@@ -439,6 +456,9 @@ def main():
 
     if not os.path.exists(scan_dir):
         makedirs(scan_dir)
+        
+    ##### delete files
+    cleandirs(scan_dir)
 
     camera_path = os.path.join( config.get('hardware', 'cameras') )
 
@@ -484,6 +504,6 @@ def main():
     # app.loop() must be started to allow callbacks
     app.loop()
     app_thread.join()
-
+        
 if __name__ == "__main__":
     main()

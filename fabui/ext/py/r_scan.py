@@ -55,7 +55,7 @@ class RotaryScan(GCodePusher):
     XY_FEEDRATE     = 5000
     Z_FEEDRATE      = 1500
     E_FEEDRATE      = 800
-    QUEUE_SIZE      = 64
+    QUEUE_SIZE      = 16
     
     def __init__(self, log_trace, monitor_file, scan_dir, standalone = False, 
                 finalize = True, width = 2592, height = 1944, rotation = 0, 
@@ -142,6 +142,8 @@ class RotaryScan(GCodePusher):
         
         asc = ASCFile(cloud_file)
         
+        self.trace( _("Post-processing started") )
+        
         while True:
             img_idx = self.imq.get()
             
@@ -190,9 +192,9 @@ class RotaryScan(GCodePusher):
             
             if self.is_aborted():
                 break
-            
-        asc.close()
         
+        self.trace( _("Post-processin completed") )
+        asc.close()
         self.store_object(task_id, object_id, object_name, cloud_file, file_name)
         
     def store_object(self, task_id, object_id, object_name, cloud_file, file_name):
@@ -262,6 +264,8 @@ class RotaryScan(GCodePusher):
         Run the rotary scan.
         """
         
+        self.trace( _("Initializing scan") )
+        
         self.prepare_task(task_id, task_type='scan', task_controller='scan')
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
@@ -279,6 +283,9 @@ class RotaryScan(GCodePusher):
         if self.standalone:
             self.exec_macro("check_pre_scan")
             self.exec_macro("start_rotary_scan")
+            
+        
+        self.trace( _("Scan started") )
         
         LASER_ON  = 'M700 S{0}'.format(self.laser_power)
         LASER_OFF = 'M700 S0'
@@ -343,6 +350,14 @@ class RotaryScan(GCodePusher):
                 self.set_task_status(GCodePusher.TASK_COMPLETED)
         
         self.stop()
+
+def cleandirs(path):
+    try:
+        filelist = [ f for f in os.listdir(path)]
+        for f in filelist:
+            os.remove(path + '/' +f)
+    except Exception as e:
+        print e
 
 def makedirs(path):
     """ python implementation of `mkdir -p` """
@@ -422,6 +437,9 @@ def main():
 
     if not os.path.exists(scan_dir):
         makedirs(scan_dir)
+        
+    ##### delete files
+    cleandirs(scan_dir)
 
     camera_path = os.path.join( config.get('hardware', 'cameras') )
 

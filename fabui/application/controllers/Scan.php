@@ -284,7 +284,7 @@
 			//'-e' => $params['end'],
 			'-W' => $params['width'],
 			'-H' => $params['height'],
-			'-d' => '/tmp/fabui',
+			'-d' => '/mnt/bigtemp/fabui',
 			'-F' => $params['file_name'],
 			'-C' => getCameraVersion()
 		);
@@ -333,7 +333,7 @@
 			'-e' => $params['end'],
 			'-W' => $params['width'],
 			'-H' => $params['height'],
-			'-d' => '/tmp/fabui',
+			'-d' => '/mnt/bigtemp/fabui',
 			'-F' => $params['file_name'],
 			'-C' => getCameraVersion()
 		);
@@ -380,7 +380,7 @@
 		$scanArgs = array(
 			'-T' => $taskId,
 			'-U' => $this->session->user['id'],
-			'-d' => '/tmp/fabui',
+			'-d' => '/mnt/bigtemp/fabui',
 			'-n' => $params['density'],
 			'-x' => $params['x1'],
 			'-y' => $params['y1'],
@@ -444,7 +444,7 @@
 			'-H' => $height,
 			'-s' => $params['slices'],
 			'-i' => $params['iso'],
-			'-d' => "/var/www/temp/"
+			'-d' => "/mnt/bigtemp/fabui/"
 		);
 		
 		// "/var/www/temp/" is directly accessible from outside
@@ -492,9 +492,9 @@
 	 */
 	public function downloadPhotogrammetryMissingImages()
 	{
-		if(file_exists('/tmp/fabui/images/')){
+		if(file_exists('/mnt/bigtemp/fabui/images/')){
 			$this->load->library('zip');
-			$this->zip->read_dir('/tmp/fabui/images/', false);
+			$this->zip->read_dir('/mnt/bigtemp/fabui/images/', false);
 			$this->zip->download('photogrammetry.zip');
 		}
 	}
