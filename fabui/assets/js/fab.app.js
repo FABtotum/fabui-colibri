@@ -1610,17 +1610,36 @@ fabApp = (function(app) {
 				}
 				
 				if(data.interfaces.hasOwnProperty('wlan0')){
+					
+					var icon = 'fa fa-wifi';
+					var title = _("Wifi connected");
+					var wifi_ip_address = data.interfaces.wlan0.wireless.ip_address ;
+					if(data.interfaces.wlan0.wireless.mode == 'accesspoint'){
+						icon = 'icon-communication-035';
+						title = _("Access Point");
+						wifi_ip_address = '';
+					}
+					
 					if(data.interfaces.wlan0.wireless.hasOwnProperty('ssid')){
-						$(".ribbon-button-alignment").prepend('<span data-title="' + _("Wifi connected") + ' <br> ' + data.interfaces.wlan0.wireless.ssid  + '<br>'+data.interfaces.wlan0.wireless.ip_address +'"  rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="fa fa-wifi"></i></span>');	
+						$(".ribbon-button-alignment").prepend('<span data-title="' + title + ' <br> ' + data.interfaces.wlan0.wireless.ssid  + '<br>' + wifi_ip_address+'"  rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="' + icon + '"></i></span>');	
 					}
 					if(data.interfaces.wlan0.wireless.ip_address == hotstname) {
 						connectionType = 'wlan';
 					}
 				}
 				if(data.interfaces.hasOwnProperty('wlan1')){
-				
+					
+					var icon = 'fa fa-wifi';
+					var title = _("Wifi connected");
+					var wifi_ip_address = data.interfaces.wlan1.wireless.ip_address ;
+					if(data.interfaces.wlan1.wireless.mode == 'accesspoint'){
+						icon = 'icon-communication-035';
+						title = _("Access Point");
+						wifi_ip_address = '';
+					}
+					
 					if(data.interfaces.wlan1.wireless.hasOwnProperty('ssid')){
-						$(".ribbon-button-alignment").prepend('<span data-title="' + _("Wifi connected") + ' <br> ' + data.interfaces.wlan1.wireless.ssid  + '<br>'+data.interfaces.wlan1.wireless.ip_address +'"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="fa fa-wifi"></i></span>');	
+						$(".ribbon-button-alignment").prepend('<span data-title="' + title + ' <br> ' + data.interfaces.wlan0.wireless.ssid  + '<br>' + wifi_ip_address+'"  rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="' + icon + '"></i></span>');	
 					}
 					
 					if(data.interfaces.wlan1.wireless.ip_address == hotstname) {
