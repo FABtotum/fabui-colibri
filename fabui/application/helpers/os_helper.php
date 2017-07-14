@@ -540,13 +540,15 @@ if(!function_exists('downloadInstagramFeeds'))
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('writeNetworkInfo'))
 {
-	function writeNetworkInfo(){
+	function writeNetworkInfo($interfaces = array()){
 		$CI =& get_instance();
 		//load config, helpers
 		$CI->config->load('fabtotum');
 		$CI->load->helper('file');
 		
-		$data['interfaces'] = getInterfaces();
+		if(empty($interfaces)) $interfaces = getInterfaces();
+		
+		$data['interfaces'] = $interfaces;
 		$data['internet'] = isInternetAvaialable();
 		write_file($CI->config->item('network_info_file'), json_encode($data));
 	}

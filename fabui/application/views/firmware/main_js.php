@@ -90,7 +90,7 @@
 				}
 			});
 		}else{
-			waitContent( _("Firmware flashed coorectly") + '<br>' + _("Reloading page"));
+			waitContent( _("Firmware flashed correctly") + '<br>' + _("Reloading page"));
 			setTimeout(function(){
 				location.reload();
 				}, 7000

@@ -32,6 +32,7 @@
 		initFieldValidator();
 		triggerPreSelected();
 		initEthCurrentIPV4();
+		fabApp.getNetworkInfo();
 	});
 
 	function do_save()

@@ -153,6 +153,7 @@ class Settings extends FAB_Controller {
 		$data['preSelectedInterface'] = $preSelectedInterface;
 		
 		$ifaces_data = getInterfaces();
+		writeNetworkInfo($ifaces_data);
 		
 		//main page widget
 		$widgetOptions = array(
