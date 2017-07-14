@@ -102,7 +102,7 @@ class Nozzle extends FAB_Controller {
 			);
 	}
 	/**
-	 * 
+	 * Store relative nozzle offset modification to installed head
 	 */
 	public function overrideOffset($override_by)
 	{
@@ -120,6 +120,24 @@ class Nozzle extends FAB_Controller {
 					'nozzle_offset' => $new_nozzle_offset,
 					'old_nozzle_offset' => $old_nozzle_offset,
 					'over' => $override_by) )
+			);
+	}
+	/**
+	 * Store absolute value of nozzle offset to installed head
+	 */
+	public function storeNozzleOffset($new_nozzle_offset)
+	{
+		$this->load->helper('fabtotum_helper');
+		
+		$info = getInstalledHeadInfo();
+		$old_nozzle_offset = $info['nozzle_offset'];
+		$info['nozzle_offset'] = $new_nozzle_offset;
+		$result = saveInfoToInstalledHead($info);
+		
+		$this->output->set_content_type('application/json')->set_output(
+				json_encode( array(
+					'nozzle_offset' => $new_nozzle_offset,
+					'old_nozzle_offset' => $old_nozzle_offset) )
 			);
 	}
 	/**

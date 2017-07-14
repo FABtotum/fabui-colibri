@@ -429,6 +429,8 @@ class GCodeService:
                 cb('file_done', None)
         
         self.progress = 0.0
+        # Make sure z_override is reset
+        self.z_override = 0.0
     
     def __trigger_file_done(self, last_command):
         self.log.debug("trigger_callback %s %s", 'file_done', str(last_command) )
@@ -754,6 +756,9 @@ class GCodeService:
                     else:
                         self.file_state = GCodeService.FILE_NONE
                         self.__trigger_file_done(self.last_command)
+                
+                # Make sure z_override is reset
+                self.z_override = 0.0
             
             elif cmd == Command.TERMINATE:
                 

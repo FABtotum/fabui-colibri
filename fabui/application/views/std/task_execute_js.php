@@ -59,6 +59,9 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	
 	var zOverrideTimeoout = null;
 	var zOverrideValue = 0;
+	<?php if($type=="print"): ?>
+	var nozzleOffset = parseFloat(<?php echo $head['nozzle_offset']; ?>);
+	<?php endif;?>
 	// internal state
 	var local_task_state = '';
 	//reloading state
@@ -595,6 +598,16 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	{
 		zOverrideTimeoout = null;
 		sendActionRequest('zHeight', zOverrideValue);
+		<?php if($type=="print"): ?>
+		var newNozzleOffset = parseFloat(nozzleOffset) + parseFloat(zOverrideValue);
+		$.ajax({
+			type: 'post',
+			url: '<?php echo site_url('nozzle/storeNozzleOffset/') ?>/' + newNozzleOffset,
+			dataType: 'json'
+		}).done(function(response) {
+			console.log('new nozzle offset stored');
+		});
+		<?php endif; ?>
 	}
 	
 	/**

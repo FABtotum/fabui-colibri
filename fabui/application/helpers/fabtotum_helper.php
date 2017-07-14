@@ -422,7 +422,7 @@ if(!function_exists('saveHeadInfo'))
 		}else{
 			$newInfo = $info;
 		}
-		$content = json_encode($newInfo, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
+		$content = json_encode($newInfo, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES);
 		return file_put_contents($fn, $content) > 0;
 	}
 }
@@ -1159,10 +1159,6 @@ if(!function_exists('zHeight'))
 	 */
 	function zHeight($value)
 	{
-		//$sign = substr($value, 0,1);
-		//$value = str_replace($sign, '' , $value);
-		//$command = $sign == '-' ? '!z_minus' : '!z_plus';
-		//return sendToXmlrpcServer('set_z_modify', $sign.$value);
 		return sendToXmlrpcServer('set_z_modify', $value);
 	}
 }
