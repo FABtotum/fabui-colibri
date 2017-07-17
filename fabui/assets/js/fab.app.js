@@ -277,6 +277,7 @@ fabApp = (function(app) {
 		
 		app.disableTopBarTempsControls();
 		app.disableTopBarJogControls();
+		$("#top-installed-head").attr("href", "javascript:void(0)");
 	}
 	/**
 	 * 
@@ -321,6 +322,7 @@ fabApp = (function(app) {
 	{
 		app.enableTopBarTempsControls();
 		app.enableTopBarJogControls();
+		$("#top-installed-head").attr("href", head_page_ajax_url);
 	}
 	/**
 	*

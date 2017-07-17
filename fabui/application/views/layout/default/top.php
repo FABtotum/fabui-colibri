@@ -101,7 +101,7 @@
 	<!-- INSTALLED HEAD INFO NAME -->
 	<div style="padding:0 13px;" class="hidden-xs pull-right">
 		<span>
-			<a href="<?php echo site_url('#maintenance/head'); ?>" style="display: inline-block; margin: 18px 0; font-weight: 70; color:white;"><span class="installead-head-name"></span></a>
+			<a href="<?php echo site_url('#maintenance/head'); ?>" id="top-installed-head" style="display: inline-block; margin: 18px 0; font-weight: 70; color:white;"><span class="installead-head-name"></span></a>
 		</span>
 	</div>
 	<!-- END INSTALLED HEAD INFO NAME -->
