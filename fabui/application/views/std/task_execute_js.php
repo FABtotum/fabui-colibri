@@ -921,7 +921,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	{
 		var taskType = "<?php echo $type; ?>";
 		ga('send', 'event', '<?php echo $type; ?>', 'abort', '<?php echo $type; ?> aborted');
-		openWait('<i class="fa fa-spinner fa-spin "></i> '+_( "Aborting " + taskType), _("Please wait")+"...", false);
+		openWait('<i class="fa fa-spinner fa-spin "></i> '+_( "Aborting {0}".format(taskType)), _("Please wait")+"...", false);
 		$.ajax({
 			type: 'post',
 			url: '<?php echo site_url('control/taskAction/abort') ?>',
@@ -936,7 +936,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	{
 		if(isAborted == false){
 			var taskType = "<?php echo ucfirst($type); ?>";
-			openWait('<i class="fa fa-check "></i> '+ _(taskType + " aborted"), _("Reloading page")+"...", false);
+			openWait('<i class="fa fa-check "></i> '+ _("{0} aborted".format(taskType)), _("Reloading page")+"...", false);
 			isAborted = true;
 			setTimeout(function(){
 				location.reload();
@@ -950,7 +950,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	{
 		if(isAborting == false ){
 			var taskType = "<?php echo $type; ?>";
-			openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Aborting")+' '+_(taskType), _("Please wait")+"...", false);
+			openWait('<i class="fa fa-spinner fa-spin "></i> '+_( "Aborting {0}".format(taskType)), _("Please wait")+"...", false);
 			isAborting = true;
 		}
 	}
@@ -961,7 +961,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	function completingTask()
 	{
 		var taskType = "<?php echo $type; ?>";
-		openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Completing") + ' ' + _(taskType), _("Please wait") + "...\r\n" + _("Moving to safe zone"), false);
+		openWait('<i class="fa fa-spinner fa-spin "></i> '+_("Completing {0}".format(taskType)) , _("Please wait") + "...\r\n" + _("Moving to safe zone"), false);
 	}
 	/**
 	* complete task
@@ -969,7 +969,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	function completeTask()
 	{	
 		var taskType = "<?php echo ucfirst($type); ?>";
-		openWait('<i class="fa fa-check "></i> '+ _( taskType + " completed !" ), null, false);
+		openWait('<i class="fa fa-check "></i> '+ _("{0} completed !".format(taskType) ), null, false);
 	
 		setTimeout(function(){
 			closeWait();
