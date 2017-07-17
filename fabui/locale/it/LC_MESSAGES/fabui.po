@@ -1758,12 +1758,12 @@ msgstr "Sicurezza estrusione a freddo"
 #: fabui/application/views/jog/widget.php:109
 #: fabui/application/views/jog/widget.php:136
 msgid "Turn on"
-msgstr "Accendere"
+msgstr "Abilita"
 
 #: fabui/application/views/jog/widget.php:112
 #: fabui/application/views/jog/widget.php:139
 msgid "Turn off"
-msgstr "Spegnere"
+msgstr "Disablita"
 
 #: fabui/application/views/jog/widget.php:151
 msgid "Extruder current temperature"
@@ -2488,7 +2488,7 @@ msgstr "Invia una email al termie delle operazioni"
 #: fabui/application/views/nozzle/pidtune/js.php:193
 #: fabui/application/views/scan/wizard/step4.php:70
 msgid "Abort"
-msgstr "Abbandonare"
+msgstr "Annulla"
 
 #: fabui/application/views/std/task_execute.php:33
 #: fabui/application/views/std/task_execute.php:152
@@ -2550,7 +2550,6 @@ msgid "Elapsed time"
 msgstr "Tempo trascorso"
 
 #: fabui/application/views/std/task_execute.php:144
-#, fuzzy
 msgid "Est. time left"
 msgstr "Tempo rimanente stimato"
 
@@ -5331,9 +5330,8 @@ msgid "Head management"
 msgstr "Gestione testa"
 
 #: fabui/application/views/std/task_execute_js.php:860
-#, fuzzy
 msgid "Resume"
-msgstr "Riprendendo"
+msgstr "Riprendi"
 
 #: fabui/assets/js/tours/0050_feeder.js:13
 msgid "Feeder menu"

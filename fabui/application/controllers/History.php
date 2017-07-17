@@ -87,6 +87,7 @@ class History extends FAB_Controller {
 		
 		$tasks = $this->tasks->getMakeTasks($filters);
 		
+		
 		// @TODO: this is a temporary fix as it only covers the extra laser plugin scenario
 		$data['icons'] = array('print' => 'icon-fab-print', 'mill' => 'icon-fab-mill', 'scan' => 'icon-fab-scan', 'laser' => 'icon-communication-143');
 
@@ -142,6 +143,8 @@ class History extends FAB_Controller {
 			}
 		}
 		
+		
+		
 		$content = $this->load->view('history/stats_tab', $data, true );
 		echo $content;
 	}
@@ -166,6 +169,8 @@ class History extends FAB_Controller {
 		$data['status_label'] = array('completed' => '<span class="label label-success">COMPLETED</span>', 'aborted' => '<span class="label label-warning">ABORTED</span>', 'terminated' => '<span class="label label-danger">TERMINATED</span>');
 		
 		$aaData = array();
+		
+	
 
 		foreach ($tasks as $task) {
 

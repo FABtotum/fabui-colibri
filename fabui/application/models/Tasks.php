@@ -27,7 +27,7 @@
 	public function getRunning($controller = '')
 	{
 		if($controller != ''){
-			$this->db->where('controller', $controller);
+			$this->db->like('controller', $controller);
 		}
 		$this->db->where('status', self::STATUS_RUNNING);
 		$this->db->order_by('start_date', 'DESC');
@@ -61,7 +61,7 @@
 		$this->db->select('MIN(finish_date) as min', false);
 		
 		if($controller != ''){
-			$this->db->where('controller', $controller);
+			$this->db->like('controller', $controller);
 		}
 		$query = $this->db->get($this->tableName);
 		
@@ -79,7 +79,7 @@
 						 sys_tasks.id_file as id_file, sys_tasks.start_date as start_date, sys_tasks.finish_date as finish_date, sys_objects.name as object_name, sys_files.file_name as file_name,
 						 sys_tasks.attributes as task_attributes, sys_files.client_name as client_name,
 						 time(cast(( strftime(\'%s\', sys_tasks.finish_date)-strftime(\'%s\', sys_tasks.start_date)) AS real ), \'unixepoch\') as duration,', false)
-				->where('controller', 'make')
+				->like('controller', 'make')
 				->where('sys_tasks.user', $_SESSION['user']['id'])
 				->join('sys_objects', 'sys_objects.id = sys_tasks.id_object', 'left')
 				->join('sys_files', 'sys_files.id = sys_tasks.id_file', 'left')
@@ -99,6 +99,7 @@
 				$this->db->where('status', $filters['status']);
 			}
 		}
+		
 		return $this->db->get($this->tableName)->result_array();
 	}
 	
@@ -109,7 +110,7 @@
 	{
 		//$this->db->select('SEC_TO_TIME(SUM(TIME_TO_SEC((TIMEDIFF(finish_date, start_date))))) as total_time', false)
 		$this->db->select('time(SUM (cast(( strftime(\'%s\', finish_date)-strftime(\'%s\', start_date)) AS real )), \'unixepoch\') total_time', false)
-							->where('controller', $controller)
+							->like('controller', $controller)
 							->where('type', $type)
 							->where('sys_tasks.user', $_SESSION['user']['id']);
 		
@@ -130,7 +131,7 @@
 	function getTotalTasks($controller, $type, $status, $from_date, $to_date)
 	{	
 		$this->db->select('count(*) as total', false)
-							->where('controller', $controller)
+							->like('controller', $controller)
 							->where('type', $type)
 							->where('status', $status)
 							->where('sys_tasks.user', $_SESSION['user']['id']);
