@@ -176,10 +176,10 @@ def end_additive(app, args=None, lang='en_US.UTF-8'):
     #macro("G90","ok",100,"Set Absolute movement",0.1,verbose=False)
     #macro("G90","ok",2,"Set Absolute movement",1)
     #macro("G0 X210 Y210 Z200 F10000","ok",100,"Moving to safe zone",0.1,verbose=False) #right top, normally Z=240mm
-    app.macro("M400",       "ok", 100,  _("Waiting for all moves to finish") )
-    app.macro("M104 S0",    "ok", 50,   _("Shutting down Extruder") )
-    app.macro("M140 S0",    "ok", 50,   _("Shutting down Heated Bed") )
-    app.macro("M220 S100",  "ok", 20,   _("Reset Speed factor override") )
+    app.macro("M400",       "ok", 100,  _("Waiting for all moves to finish"), verbose=False )
+    app.macro("M104 S0",    "ok", 50,   _("Shutting down Extruder"), verbose=False)
+    app.macro("M140 S0",    "ok", 50,   _("Shutting down Heated Bed"), verbose=False)
+    app.macro("M220 S100",  "ok", 20,   _("Reset Speed factor override"), verbose=False)
     app.macro("M221 S100",  "ok", 20,   _("Reset Extruder factor override"), verbose=False)
     app.macro("M107",       "ok", 50,   _("Turning Fan off"))       #should be moved to firmware
     app.macro("M18",        "ok", 10,   _("Motor Off"))             #should be moved to firmware
@@ -192,9 +192,9 @@ def end_additive(app, args=None, lang='en_US.UTF-8'):
 def end_additive_safe_zone(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     app.macro("M121",                     "ok", 2,    _("Force endstops"), verbose=False )
-    app.macro("G90",                      "ok", 2,    _("Setting abs position") )
-    app.macro("G0 X210 Y210 Z240 F10000", "ok", 100,  _("Moving to safe zone") )
-    app.macro("G27 Z0",                   "ok", 100,  _("Zeroing Z axis") )
+    app.macro("G90",                      "ok", 2,    _("Setting abs position"), verbose=False)
+    app.macro("G0 X210 Y210 Z240 F10000", "ok", 100,  _("Moving to safe zone"), verbose=False)
+    app.macro("G27 Z0",                   "ok", 100,  _("Zeroing Z axis"), verbose=False)
     app.macro("M400",       "ok", 200,   _("Waiting for all moves to finish") )
     
 def end_additive_aborted(app, args = None, lang='en_US.UTF-8'):

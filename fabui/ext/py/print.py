@@ -73,7 +73,7 @@ class PrintApplication(GCodePusher):
             
             z_override = float(self.override_stats['z_override'])
             #if z_override:
-            self.trace( _("Saving Z override") )
+            #self.trace( _("Saving Z override") )
             info = self.config.get_current_head_info()
             nozzle_offset = float(info['nozzle_offset'])
             nozzle_offset += z_override

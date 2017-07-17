@@ -206,13 +206,15 @@ def configure_feeder(app, feeder_name, lang='en_US.UTF-8'):
     max_acceleration     = float(feeder['max_acceleration'])
     max_jerk             = float(feeder['max_jerk'])
     retract_acceleration = float(feeder['retract_acceleration'])
-
-    app.macro("M92 E{0}".format(steps_per_unit),            "ok", 1,   _("Setting E steps_per_unit to {0}").format(steps_per_unit) )
+    
+    app.trace( _("Setting feeder values..."))
+    
+    app.macro("M92 E{0}".format(steps_per_unit),            "ok", 1,   _("Setting E steps_per_unit to {0}").format(steps_per_unit), verbose=False)
     app.macro("G92 E0",              						"ok", 1,   _("Setting E position to 0"), verbose=False )
-    app.macro("M201 E{0}".format(max_acceleration),         "ok", 1,   _("Setting E acceleration to {0}").format(max_acceleration) )
-    app.macro("M203 E{0}".format(max_feedrate),             "ok", 1,   _("Setting E max feedrate to {0}").format(max_feedrate) )
-    app.macro("M205 E{0}".format(max_jerk),                 "ok", 1,   _("Setting E max jerk to {0}").format(max_jerk) )
-    app.macro("M204 T{0}".format(retract_acceleration),     "ok", 1,   _("Setting retract acceleration {0}").format(retract_acceleration) )
+    app.macro("M201 E{0}".format(max_acceleration),         "ok", 1,   _("Setting E acceleration to {0}").format(max_acceleration), verbose=False)
+    app.macro("M203 E{0}".format(max_feedrate),             "ok", 1,   _("Setting E max feedrate to {0}").format(max_feedrate), verbose=False)
+    app.macro("M205 E{0}".format(max_jerk),                 "ok", 1,   _("Setting E max jerk to {0}").format(max_jerk), verbose=False)
+    app.macro("M204 T{0}".format(retract_acceleration),     "ok", 1,   _("Setting retract acceleration {0}").format(retract_acceleration), verbose=False)
     
     return True
     
@@ -235,7 +237,7 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     tool         = head.get('tool', '')
     plugins      = head.get('plugins', False)
     
-    app.trace( _("Setting values..."))
+    app.trace( _("Setting head values..."))
     
     # Set installed head ID
     if fw_id is not None:

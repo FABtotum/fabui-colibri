@@ -183,7 +183,7 @@ def load_spool(app, args = None, lang='en_US.UTF-8'):
         tube_length = 150 ## entering hot end
         
     app.macro("M109 S{0}".format(ext_temp),       "*",  400, _("Waiting to get to temperature (<span class='top-bar-nozzle-actual'>-</span> / {0}&deg;)".format(ext_temp)) ) #heating and waiting.
-    app.macro("G0 E{0} F200".format(tube_length), "ok", 100, _("Entering the hotend (slow)") )
+    app.macro("G0 E{0} F450".format(tube_length), "ok", 100, _("Entering the hotend (slow)") )
     
     if (task_running == False) :
         app.macro("M104 S0",            "ok", 1,    _("Turning off heater") )
