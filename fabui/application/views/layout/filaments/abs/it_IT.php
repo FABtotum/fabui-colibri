@@ -1,42 +1,51 @@
 <?php
 /**
  *
-* @author Krios Mane
-* @version 0.1
-* @license https://opensource.org/licenses/GPL-3.0
-*
-*/
+ * @author Krios Mane
+ * @version 0.1
+ * @license https://opensource.org/licenses/GPL-3.0
+ *
+ */
 ?>
-<p>This material is easy to be extruded and is one of the most used in
-	3D printing to get very well finished objects.<br>It is not suistainable
-	and its smoke can be dangerous if inhalated. <br>The reason to prefer this
-	filament to PLA is mainly because of its precision and mechanical
-	specs.</p>
-	<p><strong>ABS</strong> (for plastic) stands for Acrylonitrile Butadiene Styrene and
-	it is a thermoplastic which is widely used in everyday objects. <br>It can
-	be printed with any FFF 3D printer which can get to high temperatures
-	as it must be extruded in a range between <strong>220&deg;</strong> and <strong>245&deg;</strong>, such as
-	FABtotum.</p>
-<p>Its major technical specs are:</p>
+<p>
+	L'<strong>ABS</strong> &egrave; un materiale facile da estrudere e uno
+	dei pi&ugrave; utilizzati dalla stampa 3D odierna, poich&egrave;
+	garantisce oggetti finiti di alta qualit&agrave;. Tuttavia, l'ABS
+	&egrave; un materiale non sostenibile e i fumi prodotti dalla sua
+	estrusione se inalati possono essere pericolosi. La ragione per cui
+	&egrave; preferibile questo filamento al PLA &egrave; principalmente
+	dovuto alla sua precisione e alle sue specifiche meccaniche.
+</p>
+<p>
+	L'ABS (riferito alla plastica), sta per Acrilonitrile Butadiene Stirene
+	ed &egrave; una termoplastica ampiamente utilizzata per i prodotti di
+	uso quotidiano.<br>Deve essere estruso a temperature relativamente alte: le
+	temperature di fusione standard vanno dai <strong>220</strong> e i <strong>245&deg;</strong>.
+</p>
+
+
+
+<p>Le principali caratteristiche tecniche sono:</p>
 <ul>
-	<li>it is very hard and resists more to warps and damages;</li>
-	<li>it doesn't deform easily;</li>
-	<li>it is longlasting in performance and less subject to deteriorate if
-		exposed (to light, humidity and so on).</li>
+	<li>&egrave; molto robusto ed &egrave; pi&ugrave; resistente alle
+		torsioni e in danni accidentali;</li>
+	<li>non si deforma facilmente;</li>
+	<li>le sue performance sono pi&ugrave; durature ed &egrave; meno
+		soggetto alla deteriorazione se esposto agli agenti atmosferici.</li>
 </ul>
 <p>
-	<strong>Tips</strong>
+	<strong>Consigli</strong>
 </p>
 <ul>
-	<li>ABS filament, when extruded, tends to curl up: use an heated
-		platform like FABtotum's Hybrid Bed at least at <strong>60&deg;/70&deg;C</strong> to avoid
-		this. Apply a small amount of hairspray to stick the object on the
-		surface;</li>
-	
-	<li>fan should be off to avoid the cold end of the Printing Head to
-		warm;</li>
-	
-	<li>ABS can be smoky and smelly: use it in a well ventilated area/room;</li>
-	<li>always choose high quality filaments like FABtotum's ones.</li>
-
+	<li>i filamenti in ABS, quando estrusi, tendono ad arricciarsi: usa un
+		piatto riscaldato come il FABtotum Hybrid Bed riscaldato ad almeno
+		60&deg;/70&deg; per evitarlo.</li>
+	<li>Applica una piccola quantit&agrave; di lacca per capelli per
+		fissare l'oggetto alla superficie;</li>
+	<li>la ventola dovr&agrave; essere spenta per evitare che il cold end
+		della Printing Head si riscaldi;</li>
+	<li>l'ABS pu&ograve; emettere fumo e odori chimici: usalo in una stanza
+		ben ventilata;</li>
+	<li>utilizza sempre filamenti in ABS di alta qualit&agrave; come quelli
+		di FABtotum.</li>
 </ul>

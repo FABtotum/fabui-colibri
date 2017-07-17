@@ -8,31 +8,38 @@
  */
 ?>
 <p>
-	It is the most common filament used for 3D printing.<br> It is studied 
-	to be biodegradable as it comes from corn starch it is mainly sugar.<br>
-	It is completely made of renewable sources and has no footprint on
-	polluting.
+	Il <strong>PLA</strong> &egrave; il filamento pi&ugrave; comune
+	utilizzato nella stampa 3D. <br>Il PLA &egrave; una bioplastica
+	composta, per la maggior parte, da amido di mais e pertanto &egrave;
+	studiato per essere biodegradabile. &egrave; completamente prodotto a
+	partire da risorse rinnovabili e la sua produzione non genera
+	inquinamento. L'acronimo PLA sta per Acido Polilattico, una
+	termoplastica che ancora oggi viene considerato il materiale pi&ugrave;
+	semplice da stampare in 3D.<br>Pu&ograve; essere estruso a temperature
+	relativamente basse: le temperature di fusione standard vanno dai
+	185&deg; ai 195&deg;.
 </p>
 
-<p>
-	<strong>PLA</strong> stands for PolyLactic Acid and it is a thermoplastic that today is
-	still considered the easiest material to be 3D printed. <br>It can be
-	extruded at lower temperatures: the standard range of FABtotum's one is
-	between <strong>185&deg;</strong> and <strong>195&deg;</strong>.
-</p>
-<p>Its major technical specs are:</p>
-<ul >
-	<li>it is hard and resists at high pressures but it is easy to chip and
-		break if hit;</li>
-	<li>it is easy to extrude at lower temperatures and it deforms at 60&deg;
-	<li>it crystallizes fast.</li>
-</ul>
-<p><strong>Tips</strong></p>
+<p>Le principali caratteristiche tecniche sono:</p>
 <ul>
-<li>PLA filament must be well stored and kept safe from humidity. Once
-	the package is open, add some silica dehumidifier inside; add a smooth
-	layer of hairspray on your heated bed.</li>
-	<li>Keep the fan on the Printing Head on;</li>
-	<li>Always unspool it from the 3D printer to avoid it to crystallize inside the head</li>
-	<li>Always use high quality filaments like
-	FABtotum's ones.</li></ul>
+	<li>&egrave; robusto e resiste alle alte pressioni, ma si scheggia o
+		rompe facilmente se colpito;</li>
+	<li>&egrave; facile da estrudere alle basse temperature e si deforma ai
+		60&deg;;</li>
+	<li>si cristallizza velocemente.</li>
+</ul>
+
+
+
+<p><strong>Consigli:</strong></p>
+<ul>
+	<li>i filamenti PLA devono essere conservati bene e tenuti lontano
+		dall'umidit&agrave;. Una volta che la bobina viene aperta, aggiungi il
+		deumidificante a base di silicio;</li>
+	<li>aggiungi un leggero strato di lacca per capelli sul piatto di
+		stampa riscaldato e tieni accesa la ventola della Printing Head;</li>
+	<li>scarica sempre la bobina dalla stampante 3D per evitare che si
+		possa cristallizzare all'interno della testina;</li>
+	<li>utilizza sempre filamenti in PLA di alta qualit&agrave; come quelli
+		di FABtotum.</li>
+</ul>
