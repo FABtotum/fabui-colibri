@@ -258,7 +258,8 @@ class Settings extends FAB_Controller {
 				}
 				
 				$if_type = 'wlan';
-				$title = 'Wireless';
+				$title = '<span class="hidden-xs"> '._("Wireless").' </span>';
+				$icon = '<i class="fa fa-wifi"></i> ';
 				$tab_data = array(
 					'iface' => $iface,
 					'info' => $info,
@@ -271,7 +272,8 @@ class Settings extends FAB_Controller {
 			else
 			{
 				$if_type = 'eth';
-				$title = _('Ethernet');
+				$title = '<span class="hidden-xs"> '. _('Ethernet').'</span>';
+				$icon = '<i class="icon-communication-088"></i> ';
 				$tab_data = array(
 					'iface' => $iface,
 					'info' => $info,
@@ -287,7 +289,7 @@ class Settings extends FAB_Controller {
 			
 			$is_active = $iface == $preSelectedInterface ? 'active' : '';
 			
-			$tabs_title .= '<li data-net-type="'.$if_type.'" data-attribute="'.$iface.'" class="tab '.$is_active.'"><a data-toggle="tab" href="'.$iface.'-tab"> '.$title.'</a></li>';
+			$tabs_title .= '<li data-net-type="'.$if_type.'" data-attribute="'.$iface.'" class="tab '.$is_active.'"><a data-toggle="tab" href="'.$iface.'-tab">'.$icon.'  '.$title.'</a></li>';
 			//$is_active = '';
 		}
 		$data['iface_tabs'] = $tabs_content;
