@@ -12,7 +12,7 @@ var base_url = '/fabui/';
 /**
  * 
  */
-var debugState = true;
+var debugState = false;
 /*
  * general
  */
