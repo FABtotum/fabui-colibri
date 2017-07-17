@@ -21,7 +21,7 @@
 		
 		//main page widget
 		$widgetOptions = array(
-				'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
+				'sortable' => false, 'fullscreenbutton' => false,'refreshbutton' => false,'togglebutton' => false,
 				'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
 		);
 		

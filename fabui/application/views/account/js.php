@@ -64,7 +64,6 @@
 	**/
 	function saveUser()
 	{
-		console.log($("#user-form").valid());
 		if($("#user-form").valid()){
 			var fields = $( "#user-form :input" ).serializeArray();
 			var data = {};
@@ -84,7 +83,7 @@
 
 				$.smallBox({
 					title : "Settings",
-					content : '<?php echo _("Account information saved");?>',
+					content : "<?php echo _("Account information saved");?>",
 					color : "#5384AF",
 					timeout: 3000,
 					icon : "fa fa-check bounce animated"
