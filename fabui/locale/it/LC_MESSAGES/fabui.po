@@ -122,8 +122,7 @@ msgstr "Calibrazione Probe"
 msgid "Angle calibration"
 msgstr "Calibrazione Angolo"
 
-#: fabui/application/config/menu.php:99
-#: fabui/assets/js/tours/0050_feeder.js:39
+#: fabui/application/config/menu.php:99 fabui/assets/js/tours/0050_feeder.js:39
 msgid "Feeder"
 msgstr "Estrusore"
 
@@ -288,9 +287,8 @@ msgid "Disable"
 msgstr "Disabilita"
 
 #: fabui/application/controllers/Settings.php:261
-#, fuzzy
 msgid "Wireless"
-msgstr "Fine filo endstop"
+msgstr "Wireless"
 
 #: fabui/application/controllers/Settings.php:275
 msgid "Ethernet"
@@ -432,7 +430,7 @@ msgstr "task"
 
 #: fabui/application/controllers/Control.php:395
 msgid "No running tasks"
-msgstr "Non ci sono operazioni in corso"
+msgstr "Non ci sono task in corso"
 
 #: fabui/application/controllers/Bed.php:48
 #: fabui/application/controllers/Nozzle.php:217
@@ -641,7 +639,7 @@ msgstr ""
 #: fabui/application/views/install/js.php:166
 #: fabui/application/views/plugin/js.php:102
 msgid "Install"
-msgstr "Installare"
+msgstr "Installa"
 
 #: fabui/application/controllers/Head.php:59
 msgid "Heads"
@@ -724,7 +722,7 @@ msgstr "Nero"
 
 #: fabui/application/helpers/fabtotum_helper.php:1592
 msgid "Password Reset"
-msgstr "Re-imposta password"
+msgstr "Password reset"
 
 #: fabui/application/helpers/fabtotum_helper.php:1593
 msgid ""
@@ -1569,7 +1567,7 @@ msgstr "Posizione menù"
 
 #: fabui/application/views/plugin/main_widget.php:168
 msgid "Github Repository"
-msgstr "Archivio Github"
+msgstr "Github Repository"
 
 #: fabui/application/views/plugin/main_widget.php:181
 msgid "Generate Plugin"
@@ -1581,7 +1579,7 @@ msgstr "Registrare un nuovo account"
 
 #: fabui/application/views/login/register_form.php:21
 msgid "Needed to enter the fabui"
-msgstr "Bisogno per accedere alla FABui"
+msgstr "Necessario per accedere alla FABui"
 
 #: fabui/application/views/login/register_form.php:26
 #: fabui/application/views/login/register_form.php:31
@@ -1863,11 +1861,11 @@ msgstr "Codice"
 
 #: fabui/application/views/jog/widget.php:319
 msgid "Param"
-msgstr "Parametro"
+msgstr "Param"
 
 #: fabui/application/views/jog/widget.php:320
 msgid "Desc"
-msgstr "Descizione"
+msgstr "Desc"
 
 #: fabui/application/views/jog/widget.php:321
 #: fabui/application/views/camera/main_widget.php:101
@@ -1881,7 +1879,7 @@ msgstr "Unità"
 
 #: fabui/application/views/jog/widget.php:323
 msgid "Range"
-msgstr "Gamma"
+msgstr "Range"
 
 #: fabui/application/views/jog/widget.php:345
 msgid "No parameters"
@@ -2038,7 +2036,7 @@ msgstr "Opzioni Estrusore"
 
 #: fabui/application/views/settings/hardware_widget.php:44
 msgid "Invert X Endstop Logic"
-msgstr "Inverti la logica degli Endstop X"
+msgstr "Inverti la logica degli Endstop asse X"
 
 #: fabui/application/views/settings/hardware_widget.php:58
 msgid "available"
@@ -2129,7 +2127,7 @@ msgstr "Standby"
 #: fabui/application/views/settings/wireless_tab.php:5
 #: fabui/application/views/settings/ethernet_tab.php:5
 msgid "Address mode"
-msgstr "Modo indirizzo"
+msgstr "Modalità"
 
 #: fabui/application/views/settings/wireless_tab.php:19
 #: fabui/application/views/settings/ethernet_tab.php:15
@@ -2150,7 +2148,7 @@ msgstr "Indirizzo"
 #: fabui/application/views/settings/wireless_tab.php:45
 #: fabui/application/views/settings/ethernet_tab.php:40
 msgid "Netmask"
-msgstr "Maschera di rete"
+msgstr "Netmask"
 
 #: fabui/application/views/settings/wireless_tab.php:54
 #: fabui/application/views/settings/ethernet_tab.php:49
@@ -2188,7 +2186,7 @@ msgstr "Ricaricando la pagina"
 
 #: fabui/application/views/settings/network_js.php:382
 msgid "Scanning"
-msgstr "Scansione"
+msgstr "Scansionando"
 
 #: fabui/application/views/settings/network_js.php:418
 msgid "Disconnect"
@@ -2212,7 +2210,7 @@ msgstr "Si prega di inserire un indirizzo IP valido"
 
 #: fabui/application/views/settings/network_js.php:597
 msgid "Please insert a valid netmask"
-msgstr "Si prega di inserire una maschera di rete valida"
+msgstr "Si prega di inserire un netmask valido"
 
 #: fabui/application/views/settings/network_js.php:600
 msgid "Please insert a valid gateway address"
@@ -2316,7 +2314,7 @@ msgstr ""
 #: fabui/application/views/std/jog_setup.php:34
 #: fabui/application/views/std/print_setup.php:68
 msgid "Close the cover"
-msgstr "Chiudere la cover"
+msgstr "Chiudi la cover"
 
 #: fabui/application/views/std/jog_setup.php:66
 msgid ""
@@ -2358,7 +2356,7 @@ msgstr "Controllo di sicurezza"
 #: fabui/application/views/std/task_safety_check.php:27
 #: fabui/application/views/std/task_safety_check_js.php:64
 msgid "Correct head installed"
-msgstr "Testa corretta installata"
+msgstr "Testa installata corretta"
 
 #: fabui/application/views/std/task_safety_check.php:29
 #: fabui/application/views/std/task_safety_check_js.php:59
@@ -2394,7 +2392,7 @@ msgstr "Tutti i files"
 
 #: fabui/application/views/std/select_file.php:21
 msgid "Recent"
-msgstr "Recente"
+msgstr "Recenti"
 
 #: fabui/application/views/std/select_file.php:32
 #: fabui/application/views/std/select_file.php:49
@@ -2423,7 +2421,7 @@ msgstr "Durata"
 #: fabui/application/views/std/task_finished.php:67
 #: fabui/assets/js/fab.app.js:49
 msgid "Restart"
-msgstr "Ricomincia"
+msgstr "Riavvia"
 
 #: fabui/application/views/std/task_finished.php:68
 msgid "New"
@@ -2451,7 +2449,7 @@ msgstr ""
 
 #: fabui/application/views/std/print_setup.php:38
 msgid "Follow the instructions"
-msgstr "Seguire le istruzioni"
+msgstr "Segui le istruzioni"
 
 #: fabui/application/views/std/print_setup.php:51
 msgid "Make sure that the working plane is clean and free to use"
@@ -2507,7 +2505,7 @@ msgstr "Pausa"
 #: fabui/application/views/std/task_execute.php:59
 #: fabui/application/views/std/task_execute.php:82
 msgid "Actual"
-msgstr "Attuale"
+msgstr "Corrente"
 
 #: fabui/application/views/std/task_execute.php:64
 #: fabui/application/views/std/task_execute.php:87
@@ -2632,7 +2630,7 @@ msgstr "Rilascia la levetta"
 #: fabui/application/views/std/task_execute.php:293
 #: fabui/application/views/spool/wizard/step3.php:108
 msgid "Lock the feeding tube in place "
-msgstr "Blocca"
+msgstr ""
 
 #: fabui/application/views/std/task_execute.php:302
 #: fabui/application/views/spool/wizard/step3.php:28
@@ -2649,6 +2647,9 @@ msgid ""
 "Insert the filament in the PTFE tube until you reach the feeder (you can "
 "feel it: last cm becomes harder and then you cannot push further)"
 msgstr ""
+"Inserisci il filamento nel tubo PTFE fino a raggiungere il feeder (lo si può "
+"sentire: gli ultimi cm diventano più difficili e non si riesce più a "
+"spingere ulteriormente)"
 
 #: fabui/application/views/std/task_execute.php:327
 #: fabui/application/views/spool/wizard/step3.php:141
@@ -2667,7 +2668,7 @@ msgstr "Dopo che il filamento è stato estratto dal nozzle"
 
 #: fabui/application/views/std/task_execute.php:336
 msgid "Pull the filament out of the head"
-msgstr "Tira il filamento fuori dalla testa"
+msgstr "Estrai il filamento fuori dalla testa"
 
 #: fabui/application/views/std/laser_safety.php:26
 msgid ""
@@ -3013,11 +3014,11 @@ msgstr "Inizializzazione personalizzata"
 
 #: fabui/application/views/head/install.php:161
 msgid "Working mode"
-msgstr "Software ID"
+msgstr "Modalità lavoro"
 
 #: fabui/application/views/head/install.php:174
 msgid "Soft ID"
-msgstr "ID debole"
+msgstr "Software ID"
 
 #: fabui/application/views/head/install.php:185
 msgid "PID"
@@ -3029,11 +3030,11 @@ msgstr "Termistore"
 
 #: fabui/application/views/head/install.php:202
 msgid "Max temperature"
-msgstr "Temperatura massima"
+msgstr "Temp max"
 
 #: fabui/application/views/head/install.php:208
 msgid "Min temperature"
-msgstr "Temperatura Minima"
+msgstr "Temp min"
 
 #: fabui/application/views/head/install.php:222
 msgid "Min RPM"
@@ -3218,7 +3219,7 @@ msgstr "Chiudi la Probe"
 
 #: fabui/application/views/support/widget.php:14
 msgid "Quick start guide"
-msgstr "Guida Quick start"
+msgstr "Guida rapida"
 
 #: fabui/application/views/support/widget.php:15
 msgid "This quick guide is a must read for getting started!"
@@ -3398,7 +3399,7 @@ msgstr ""
 #: fabui/application/views/layout/default/top.php:82
 #: fabui/application/views/layout/debug/top.php:83
 msgid "Temperature<br> controls"
-msgstr "Controlli Temperature <br>"
+msgstr "Controlli<br> Temperature"
 
 #: fabui/application/views/bed/wizard/start.php:14
 msgid ""
@@ -3536,8 +3537,7 @@ msgstr "Override"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
@@ -4075,11 +4075,11 @@ msgstr "Completamento operazione"
 
 #: fabui/ext/py/mill.py:68
 msgid "Milling STARTED"
-msgstr "Fresatura INIZIATA"
+msgstr "Fresatura iniziata"
 
 #: fabui/ext/py/mill.py:80
 msgid "Milling PAUSED"
-msgstr "Fresatura IN PAUSA"
+msgstr "Fresatura in pausa"
 
 #: fabui/ext/py/mill.py:81 fabui/ext/py/print.py:114
 msgid "Please wait until the buffered moves in totumduino are finished"
@@ -4089,15 +4089,15 @@ msgstr ""
 
 #: fabui/ext/py/mill.py:85 fabui/ext/py/print.py:118
 msgid "RESUMING Print"
-msgstr "RIPRENDENDO la stampa"
+msgstr "La stampa sta ripartendo"
 
 #: fabui/ext/py/mill.py:88
 msgid "Milling RESUMED"
-msgstr "Fresatura RIPRESA"
+msgstr "La fresatura è ripartita"
 
 #: fabui/ext/py/mill.py:91
 msgid "Milling ABORTED"
-msgstr "Fresatura ANNULLATA"
+msgstr "Fresatura annullata"
 
 #: fabui/ext/py/mill.py:112
 msgid "Milling Initialized."
@@ -4109,22 +4109,21 @@ msgstr "Comando."
 
 #: fabui/ext/py/print.py:98
 msgid "Print STARTED"
-msgstr "Stampa INIZIATA"
+msgstr "Stampa  iniziata"
 
 #: fabui/ext/py/print.py:113
 msgid "Print PAUSED"
-msgstr "Stampa IN PAUSA"
+msgstr "Stampa in pause"
 
 #: fabui/ext/py/print.py:122
 msgid "Print RESUMED"
-msgstr "Stampa RIPRESA"
+msgstr "Stampa ripartita"
 
 #: fabui/ext/py/print.py:125
 msgid "Print ABORTED"
-msgstr "Stampa ANNULLATA"
+msgstr "Stampa annullata"
 
 #: fabui/ext/py/print.py:135
-#, fuzzy
 msgid "Warning: print paused due to error {0}"
 msgstr "Stampa interrotta a causa di errori"
 
@@ -4133,24 +4132,20 @@ msgid "Warning: filament is about to end"
 msgstr "Attenzione: il filamento sta per esaurire"
 
 #: fabui/ext/py/print.py:140
-#, fuzzy
 msgid "Warning: cannot extrude filament: the nozzle temperature is too low"
 msgstr ""
 "Non è possibile estrudere il filamento: la temperatura del nozzle è troppo "
 "bassa"
 
 #: fabui/ext/py/print.py:142
-#, fuzzy
 msgid "Warning: ambient temperature is less then 15&deg;C. Cannot continue"
-msgstr "La temperatura dell'ambiente è meno di 15°. Non si può continuare"
+msgstr "La temperatura dell'ambiente è meno di 15&deg;. Non si può continuare"
 
 #: fabui/ext/py/print.py:144
-#, fuzzy
 msgid "Warning: cannot extrude so much filament!"
 msgstr "Non è possibile estrudere così tanto filamento!"
 
 #: fabui/ext/py/print.py:146
-#, fuzzy
 msgid "Warning: extruder Temperature critical, shutting down"
 msgstr "Temperatura critica dell'estrusore, spegnimento"
 
@@ -4208,7 +4203,7 @@ msgstr "Calcolo di {0} eseguito."
 
 #: fabui/ext/py/update.py:80
 msgid "Print STOPPED"
-msgstr "Stampa FERMATA"
+msgstr "Stampa fermata"
 
 #: fabui/ext/py/update.py:95
 msgid "Update initialized."
@@ -4223,7 +4218,6 @@ msgid "Homing all axes"
 msgstr "Homing di tutti gli assi"
 
 #: fabui/ext/py/testing_probing_area.py:81
-#, fuzzy
 msgid "Probing points"
 msgstr "Sondando"
 
@@ -4253,7 +4247,7 @@ msgstr "In pausa"
 
 #: fabui/ext/py/pg_scan.py:212
 msgid "Resuming"
-msgstr "Riprendendo"
+msgstr "Ripartendo"
 
 #: fabui/ext/py/pg_scan.py:219
 msgid "Sending skipped images"
@@ -4285,7 +4279,7 @@ msgstr "Spegnendo..."
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:264
 msgid "Task Started"
-msgstr "Operazione iniziata"
+msgstr "Task iniziato"
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:312
 msgid "Wait for nozzle temperature to reach {0}&deg;C"
@@ -4418,9 +4412,8 @@ msgid "Firmware author"
 msgstr "Autore del firmware"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:210
-#, fuzzy
 msgid "Setting feeder values..."
-msgstr "Impostando i valori"
+msgstr "Impostando i valori dell'estrusore"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:212
 msgid "Setting E steps_per_unit to {0}"
@@ -4447,9 +4440,8 @@ msgid "Setting retract acceleration {0}"
 msgstr "Impostando la velocità di retrazione {0}"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:240
-#, fuzzy
 msgid "Setting head values..."
-msgstr "Impostando i valori"
+msgstr "Impostando i valori della testa"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:245
 msgid "Setting soft ID to {0}"
@@ -4865,9 +4857,8 @@ msgid "Setting correct Z"
 msgstr "Impostare correttamente Z"
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:240
-#, fuzzy
 msgid "Disbaleb home check"
-msgstr "Disabilitare il controllo degli endstop"
+msgstr "Disabilitare il controllo dell'homing"
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:242
 msgid "Moving to start Z height"
@@ -4910,7 +4901,7 @@ msgstr "Controllo del pannello bobina"
 #: fabui/ext/py/fabtotum/fabui/macros/calibration.py:70
 #: fabui/ext/py/fabtotum/fabui/macros/calibration.py:96
 msgid "Write config to EEPROM"
-msgstr "Scrivere le configurazioni per EEPROM"
+msgstr "Scrilttura configurazioni su EEPROM"
 
 #: fabui/ext/py/fabtotum/fabui/macros/calibration.py:72
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:109
@@ -5323,7 +5314,6 @@ msgid "Bed temp"
 msgstr "Temperatura del piatto"
 
 #: fabui/application/views/firmware/main_js.php:93
-#, fuzzy
 msgid "Firmware flashed correctly"
 msgstr "Firmware flashato correttamente"
 
@@ -5360,9 +5350,8 @@ msgid "Checking safety measures..."
 msgstr "Verificando le misure di sicurezza..."
 
 #: fabui/application/views/std/task_execute_js.php:972
-#, fuzzy
 msgid "{0} completed !"
-msgstr "completato"
+msgstr "{0} completato !"
 
 #: fabui/application/views/head/install_js.php:48
 msgid "Please select at least one capability"
@@ -5385,9 +5374,10 @@ msgid "Start extrude"
 msgstr "Inizio estrusione"
 
 #: fabui/assets/js/fab.app.js:1727
-#, fuzzy
 msgid "Please check ethernet cable or wifi connection and then reload the page"
-msgstr "Si prega di verificare la connessione a internet e riprovare"
+msgstr ""
+"Si prega di verificare il cavo ethernet o la connessione wifi e poi "
+"ricaricare la pagina"
 
 #: fabui/application/views/std/jog_setup_js.php:328
 msgid "You need to home X/Y axis first"
@@ -5549,7 +5539,7 @@ msgstr "Menù di calibrazione Step"
 
 #: fabui/assets/js/fab.app.js:607
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: fabui/assets/js/fab.app.js:1115
 msgid "Aborting all operations"
@@ -5597,7 +5587,7 @@ msgstr "Temperatura nozzle"
 
 #: fabui/assets/js/tours/0041_spool_unload.js:63
 msgid "Some description"
-msgstr "Alcune descrizioni"
+msgstr "Descrizione"
 
 #: fabui/assets/js/fab.app.js:625
 msgid "Do you want to do it now?"
@@ -5612,9 +5602,8 @@ msgid "Fan override changed to {0}"
 msgstr "Valori della ventola cambiati a {0}"
 
 #: fabui/application/views/std/task_execute_js.php:964
-#, fuzzy
 msgid "Completing {0}"
-msgstr "Completando"
+msgstr "Completando {0}"
 
 #: fabui/assets/js/tours/0010_head.js:41
 msgid "Click on this button"
@@ -5805,7 +5794,7 @@ msgid ""
 "A message was sent to that address containing a link to reset your password "
 msgstr ""
 "Un messaggio è stato mandato a quell'indirizzo contenente il link per "
-"reimpostare la tua passowrd"
+"reimpostare la tua password"
 
 #: fabui/assets/js/fab.app.js:692
 msgid "You will be redirect to login page"
