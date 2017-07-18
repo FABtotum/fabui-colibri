@@ -101,7 +101,9 @@
 				updateZOverride(0);
 				initRunningTaskPage();
 				disableCompleteSteps();
-				ga('send', 'event', 'print', 'start', 'print started');
+				if (typeof ga !== 'undefined') {
+					ga('send', 'event', 'print', 'start', 'print started');
+				}
 			}
 			closeWait();
 		})

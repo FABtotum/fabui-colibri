@@ -807,7 +807,9 @@ function startTask()
 	fabApp.freezeMenu('scan');
 	fabApp.disableTopBarControls();
 	setInterval(timer, 1000);
-	ga('send', 'event', 'scan', 'start', 'Started scan: ' + scanMode);
+	if (typeof ga !== 'undefined') {
+		ga('send', 'event', 'scan', 'start', 'Started scan: ' + scanMode);
+	}
 	disableCompleteSteps();
 	setInterval(traceMonitor, 1000);
 	setInterval(jsonMonitor, 1000);
@@ -996,7 +998,9 @@ function completeTask()
 	if(isCompleted == false) {
 		closeWait();
 		//openWait('Scan completed');
-		ga('send', 'event', 'scan', 'complete', 'Completed scan: ' + scanMode);
+		if (typeof ga !== 'undefined') {
+			ga('send', 'event', 'scan', 'complete', 'Completed scan: ' + scanMode);
+		}
 		gotoWizardFinish();
 		fabApp.unFreezeMenu();
 		/**
@@ -1033,7 +1037,9 @@ function abortingTask()
 function abortTask()
 {
 	if(isAborted == false){
-		ga('send', 'event', 'scan', 'abort', 'Aborted scan: ' + scanMode);
+		if (typeof ga !== 'undefined') {
+			ga('send', 'event', 'scan', 'abort', 'Aborted scan: ' + scanMode);
+		}
 		openWait('Scan aborted');
 		waitContent('refreshing page');
 		setTimeout(function () {

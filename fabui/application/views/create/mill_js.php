@@ -95,7 +95,9 @@
 				initRunningTaskPage();
 				updateZOverride(0);
 				disableCompleteSteps();
-				ga('send', 'event', 'mill', 'start', 'mill started');
+				if (typeof ga !== 'undefined') {
+					ga('send', 'event', 'mill', 'start', 'mill started');
+				}
 			}
 			closeWait();
 		})

@@ -920,7 +920,9 @@ if(!isset($bed_max)) 		$bed_max = 100;
 	function abort()
 	{
 		var taskType = "<?php echo $type; ?>";
-		ga('send', 'event', '<?php echo $type; ?>', 'abort', '<?php echo $type; ?> aborted');
+		if (typeof ga !== 'undefined') {
+			ga('send', 'event', '<?php echo $type; ?>', 'abort', '<?php echo $type; ?> aborted');
+		}
 		openWait('<i class="fa fa-spinner fa-spin "></i> '+_( "Aborting {0}").format(taskType), _("Please wait")+"...", false);
 		$.ajax({
 			type: 'post',
@@ -981,7 +983,9 @@ if(!isset($bed_max)) 		$bed_max = 100;
 			clearInterval(timerInterval);
 			elapsedTime = 0;
 			estimatedTime = 0;
-			ga('send', 'event', '<?php echo $type; ?>', 'complete', '<?php echo $type; ?> completed');
+			if (typeof ga !== 'undefined') {
+				ga('send', 'event', '<?php echo $type; ?>', 'complete', '<?php echo $type; ?> completed');
+			}
 			
 		}, 3000);
 		

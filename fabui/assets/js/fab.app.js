@@ -1654,7 +1654,7 @@ fabApp = (function(app) {
 			}
 			if(connectionType == 'eth') {
 				$(".eth-ribbon").remove();
-				$(".ribbon-button-alignment").prepend('<span style="padding-top:2px;" data-title="' + _("Connected with ethernet cable") + '<br> ' +eth_address[0] +'" rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon eth-ribbon"><i class="icon-communication-088 "></i></span>');	
+				$(".ribbon-button-alignment").prepend('<span style="padding-top:2px;" data-title="' + _("Connected with ethernet cable") + '<br> ' +eth_address[0] +'" rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon eth-ribbon txt-color-blue"><i class="icon-communication-088 "></i></span>');	
 			}else if(connectionType == 'wlan'){
 				$(".wifi-ribbon-icon").find('i').addClass('txt-color-blue');
 			}

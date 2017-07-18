@@ -9,9 +9,11 @@
  
 ?>
 <script type="text/javascript">
-	var page = location.pathname + location.hash;
-	ga('set', { page: (page)});
-	ga('send', 'pageview');
+	<?php if(ENVIRONMENT == 'production'): ?>
+		var page = location.pathname + location.hash;
+		ga('set', { page: (page)});
+		ga('send', 'pageview');
+	<?php endif; ?>
 	pageCleanUp();
 </script>
 <?php echo $this->jsInLineTop; ?>
