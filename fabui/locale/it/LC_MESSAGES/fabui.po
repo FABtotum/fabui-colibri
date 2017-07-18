@@ -122,8 +122,7 @@ msgstr "Calibrazione Probe"
 msgid "Angle calibration"
 msgstr "Calibrazione Angolo"
 
-#: fabui/application/config/menu.php:99
-#: fabui/assets/js/tours/0050_feeder.js:39
+#: fabui/application/config/menu.php:99 fabui/assets/js/tours/0050_feeder.js:39
 msgid "Feeder"
 msgstr "Estrusore"
 
@@ -3306,9 +3305,8 @@ msgid "Press Next to proceed"
 msgstr "Premere Avanti per proseguire"
 
 #: fabui/application/views/spool/wizard/step2.php:27
-#, fuzzy
 msgid "Extrusion temperature"
-msgstr "Temp min"
+msgstr "Temperatura d'estrusione"
 
 #: fabui/application/views/spool/wizard/step4.php:30
 msgid " Pull the release lever on the back of the Printing Head PRO."
@@ -3543,8 +3541,7 @@ msgstr "Override"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
