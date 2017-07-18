@@ -117,6 +117,7 @@
 		$("." + filament).addClass('bg-color-blueLight txt-color-white').removeClass('btn-default').find('span').html('<i class="fa fa-check"></i>');
 		var html = $("#"+ filament +"_description").html();
 		$("#filament-description").html(html);
+		$(".extrusion-temperature").html($("#"+ filament +"_description").attr("data-temperature"));
 	}
 	/**
 	*

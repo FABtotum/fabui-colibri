@@ -28,6 +28,7 @@ class Spool extends FAB_Controller {
 		$this->load->library('smart');
 		$this->load->helper('form');
 		$this->load->helper('fabtotum_helper');
+		$this->config->load('filaments');
 		
 		$data = array();
 		$data['settings'] = loadSettings();
@@ -44,7 +45,8 @@ class Spool extends FAB_Controller {
 			'collapsed'        => false
 		);
 		
-		$data['filamentsOptions'] = array('pla' => 'PLA', 'abs' => 'ABS', 'nylon' => 'Nylon');
+		
+		$data['filamentsOptions'] = $this->config->item('filaments');
 		
 		$data['steps'] = array(
 				array(
