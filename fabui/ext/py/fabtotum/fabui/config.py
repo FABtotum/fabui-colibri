@@ -186,6 +186,16 @@ class ConfigService:
         head_name = self.get('settings', 'hardware.head', 'hybrid_head')
         return self.get_head_info(head_name)
     
+    def is_pro_head(self, id):
+        """
+        """
+        pro_heads = [6]
+        
+        if int(id) in pro_heads:
+            return True
+        else:
+            return False
+    
     def save_head_info(self, info, head_name):
         """
         """

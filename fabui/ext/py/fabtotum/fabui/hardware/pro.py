@@ -43,11 +43,24 @@ def hardware2000(gcodeSender, config, log, eeprom, factory):
     
 def hardware2500(gcodeSender, config, log, eeprom, factory):
     """
-    Rev2500 CORE PRO with built-in feeder installed
+    Rev2500 CORE PRO with mobile built-in feeder installed
     """
     log.info("Rev2500 - PRO")
     defaultProSettings(gcodeSender, config, log, eeprom, factory)
     config.set('settings', 'hardware.id', 2500)
     config.set('settings', 'feeder.engage', False)
     config.set('settings', 'feeder.available', True)
+    config.save('settings')
+
+def hardware2600(gcodeSender, config, log, eeprom, factory):
+    """
+    Rev2500 CORE PRO with mobile built-in feeder installed + camera + scan
+    """
+    log.info("Rev2600 - PRO")
+    defaultProSettings(gcodeSender, config, log, eeprom, factory)
+    config.set('settings', 'hardware.id', 2600)
+    config.set('settings', 'feeder.engage', False)
+    config.set('settings', 'feeder.available', True)
+    config.set('settings', 'hardware.camera.available', False)
+    config.set('settings', 'scan.available', False)
     config.save('settings')

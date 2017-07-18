@@ -71,15 +71,24 @@ def resume_additive(app, args=None, lang='en_US.UTF-8'):
     except KeyError:
         wire_end = 0
         
+    
+    head = app.config.get_current_head_info()
+    is_pro_head = app.config.is_pro_head(head['fw_id'])
+    
+    #if(is_pro_head == True and wire_end == 1):
+        #app.macro("M805 S1", "ok", 1, _("Enable wire end check"), verbose=False)
+        #app.macro("M740", "TRIGGERED", 1, _("Filament not inserted"), verbose=False)
+        
     #block stepper motor for 1min => 60*1=60
-    app.macro("M84 S60", "ok", 2, _("Block stepper motor"), verbose=False)
-    app.macro("M104 S{0}".format(ext_temp),  "ok", 5,   _("Heating Nozzle"), verbose=False)
-    app.macro("M140 S{0}".format(bed_temp),  "ok", 5,   _("Heating Bed"), verbose=False)
-    app.macro("M109 S{0}".format(ext_temp),  "*", 400,  _("Waiting for nozzle to reach temperature {0}&deg;".format(ext_temp)) ) #heating and waiting.
-    app.macro("M190 S{0}".format(bed_temp),  "*", 400,  _("Waiting for bed to reach temperature {0}&deg;".format(bed_temp)) ) #heating and waiting.
+    app.macro("M84 S60",                     "ok", 2,   _("Block stepper motor"), verbose=False)
+    app.macro("M82",                         "ok", 1,  _(" Set extruder to absolute mode"),  verbose=False)
+    app.macro("M104 S{0}".format(ext_temp),  "ok", 5,  _("Heating Nozzle"), verbose=False)
+    app.macro("M140 S{0}".format(bed_temp),  "ok", 5,  _("Heating Bed"), verbose=False)
+    app.macro("M109 S{0}".format(ext_temp),  "*", 400, _("Waiting for nozzle to reach temperature {0}&deg;".format(ext_temp)) ) #heating and waiting.
+    app.macro("M190 S{0}".format(bed_temp),  "*", 400, _("Waiting for bed to reach temperature {0}&deg;".format(bed_temp)) ) #heating and waiting.
     app.macro("M84", "ok", 2, _("Unlock stepper motor"), verbose=False)
     
-    if(wire_end == 1):
+    if(is_pro_head == True and wire_end == 1):
         app.macro("M805 S1",   "ok", 1,    _("Enable wire endstop"), verbose=False)
     # restore position
     if os.path.exists('/var/lib/fabui/settings/stored_task.json'):
@@ -93,10 +102,12 @@ def resume_additive(app, args=None, lang='en_US.UTF-8'):
             x = float(content['position']['x'])
             y = float(content['position']['y'])
             z = float(content['position']['z'])
+            e = float(content['position']['e'])
             
-            app.macro("G90",                            "ok", 2,  _("Setting abs position"), verbose=False )
-            app.macro("G0 X{0} Y{1} F6000".format(x,y), "ok", 60,  _("Restore XY position"), verbose=False )
-            app.macro("G0 Z{0} F5000".format(z),        "ok", 60,  _("Restore Z position"), verbose=False )
+            app.macro("G92 E{0:.16f}".format(e),        "ok", 2,    _("Set extuder length"), verbose=False)
+            app.macro("G90",                            "ok", 2,    _("Setting abs position"), verbose=False )
+            app.macro("G0 X{0} Y{1} F6000".format(x,y), "ok", 60,   _("Restore XY position"), verbose=False )
+            app.macro("G0 Z{0} F5000".format(z),        "ok", 60,   _("Restore Z position"), verbose=False )
             app.macro("M400",                           "ok", 120,  _("Waiting for all moves to finish"), verbose=False)
             #app.macro("G0 E{0} F{1}".format(feeder['retract_amount'], feeder['retract_feedrate']),  "ok", 20,    _("Restore fillament") )
 
@@ -145,11 +156,12 @@ def start_additive(app, args = None, lang='en_US.UTF-8'):
         app.macro("G92 Z{0}".format(oozing_z),  "ok" , 10, _("Adjusting nozzle offset"), verbose=False );
         
     #~ # Pre-heating (dismissed)
-    app.macro("M220 S100",              "ok", 1,    _("Reset Speed factor override"),     verbose=False)
-    app.macro("M221 S100",              "ok", 1,    _("Reset Extruder factor override"),  verbose=False)
-    app.macro("M92 E"+str(units_e),     "ok", 1,    _("Setting extruder mode"),           verbose=False)
-    app.macro("M82",                    "ok", 1,    _("Setting E codes absolute"),        verbose=False)
-    app.macro("M400",                   "ok", 60,   _("Waiting for all moves to finish"), verbose=False)
+    app.macro("M220 S100",              "ok", 1,  _("Reset Speed factor override"),     verbose=False)
+    app.macro("M221 S100",              "ok", 1,  _("Reset Extruder factor override"),  verbose=False)
+    app.macro("M92 E"+str(units_e),     "ok", 1,  _("Setting extruder mode"),           verbose=False)
+    app.macro("M82",                    "ok", 1,  _("Set extruder to absolute mode"),   verbose=False)
+    app.macro("G92 E0",                 "ok", 1,  _("Zero the extruder length"),        verbose=False)
+    app.macro("M400",                   "ok", 60, _("Waiting for all moves to finish"), verbose=False)
 
 def end_additive(app, args=None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
@@ -188,6 +200,7 @@ def end_additive(app, args=None, lang='en_US.UTF-8'):
     app.macro("M702 S"+str(color['g']), "ok", 2,    _("Turning on lights"), verbose=False)
     app.macro("M703 S"+str(color['b']), "ok", 2,    _("Turning on lights"), verbose=False)
     app.macro("M300",                   "ok", 1,    _("Printing completed!"), verbose=False)  #end print signal
+    app.macro("M18",                    "ok", 2,    _("Motors off"), verbose=False    )
 
 def end_additive_safe_zone(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
@@ -195,15 +208,17 @@ def end_additive_safe_zone(app, args = None, lang='en_US.UTF-8'):
     app.macro("G90",                      "ok", 2,    _("Setting abs position"), verbose=False)
     app.macro("G0 X210 Y210 Z240 F10000", "ok", 100,  _("Moving to safe zone"), verbose=False)
     app.macro("G27 Z0",                   "ok", 100,  _("Zeroing Z axis"), verbose=False)
-    app.macro("M400",       "ok", 200,   _("Waiting for all moves to finish") )
-    
+    app.macro("M400",                     "ok", 200,   _("Waiting for all moves to finish") )
+    app.macro("M18",                      "ok", 2,    _("Motors off"), verbose=False    )
+        
 def end_additive_aborted(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     #app.macro("G91",                        "ok", 2,    _("Setting rel position") )
     #app.macro("G0 Z5 F10000",   "ok", 100,  _("Moving to safe zone") )
-    app.macro("G27 Z0",                   "ok", 100,  _("Moving to safe zone") )
-    app.macro("G28 XY",                   "ok", 100,  _("Zeroing Z axis"), verbose=False )
-    app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish") )
+    app.macro("G27 Z0", "ok", 100,  _("Moving to safe zone") )
+    app.macro("G28 XY", "ok", 100,  _("Zeroing Z axis"), verbose=False )
+    app.macro("M400",   "ok", 200,  _("Waiting for all moves to finish") )
+    app.macro("M18",    "ok", 2,    _("Motors off"), verbose=False    )
 
 def check_additive(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
@@ -222,12 +237,17 @@ def check_additive(app, args = None, lang='en_US.UTF-8'):
     except KeyError:
         wire_end = 0
 
+
+    head = app.config.get_current_head_info()
+    is_pro_head = app.config.is_pro_head(head['fw_id'])
+    
     app.trace( _("Checking safety measures") )
     
-    
-    if(wire_end == 1):
+    if(is_pro_head == True and wire_end == 1):
         app.macro("M805 S1", "ok", 1, _("Enable wire end check"), verbose=False)
         app.macro("M740", "TRIGGERED", 1, _("Filament not inserted"), verbose=False)
+    else:
+        app.macro("M805 S0", "ok", 1, _("Disable wire end check"), verbose=False)
     
     if safety_door == 1:
         app.macro("M741",   "TRIGGERED", 2, _("Front panel door opened") )

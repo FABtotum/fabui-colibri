@@ -82,7 +82,7 @@ def read_eeprom(gcodeSender):
            eeprom["advanced_variables"] = serialize(line,'(M205\sS[0-9.]+\sT0[0-9.]+\sB[0-9.]+\sX[0-9.]+\sZ[0-9.]+\sE[0-9.]+)', ['s', 't', 'b', 'x', 'z', 'e'])
         elif line.startswith('M206'):
             eeprom["home_offset"] = serialize(line,'(M206\sX[0-9.]+\sY[0-9.]+\sZ[0-9.]+)', ['x', 'y', 'z'])
-        elif line.startswith('M31'):
+        elif line.startswith('M301'):
             eeprom["pid"] = serialize(line,'(M301\sP[0-9.]+\sI[0-9.]+\sD[0-9.]+)', ['p', 'i', 'd'])
         elif line.startswith('Z Probe Length') or line.startswith('Probe Length'):
             eeprom["probe_length"] = line.split(':')[1].strip()

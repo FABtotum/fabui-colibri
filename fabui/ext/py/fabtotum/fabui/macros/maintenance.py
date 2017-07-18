@@ -111,13 +111,15 @@ def unload_spool(app, args = None, lang='en_US.UTF-8'):
     
     task_running = int(args[0]) == 1
     
-    app.trace( _("Unloading Spool : Procedure Started.") )
-    app.macro("G90",                "ok", 10,   _("Setting abs position"), verbose=False)
+    app.trace( _("Unloading Spool : procedure Started.") )
+    #app.macro("G90",                "ok", 10,   _("Setting abs position"), verbose=False)
     app.macro("M302 S0",            "ok", 10,   _("Extrusion prevention disabled"), verbose=False)
     if(task_running == False and has_feeder == False ):
+        app.macro("G90",                "ok", 10,   _("Setting abs position"), verbose=False)
         app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), verbose=False)
         app.macro("G0 X102 Y117 Z150 F10000",     "ok", 100,   _("Moving to safe zone"), verbose=False) #right top corner Z=150mm
-    app.macro("G91",                "ok", 2,    _("Setting rel position"), verbose=False)
+    #app.macro("G91",                "ok", 2,    _("Setting rel position"), verbose=False)
+    app.macro("M83",                "ok", 1, _("set the extruder to relative modee"),        verbose=False)
     app.macro("G92 E0",             "ok", 5,    _("Setting extruder to zero"), verbose=False)
     app.macro("M92 E{0}".format(units_e), "ok", 30,   _("Setting extruder mode"), verbose=False)
     app.macro("M300",               "ok", 2,    _("<b>Start Pulling!</b>"), verbose=False)
@@ -159,10 +161,10 @@ def load_spool(app, args = None, lang='en_US.UTF-8'):
     ext_temp = args[0]
     task_running = int(args[1]) == 1
     
-    app.trace( _("Loading Spool : Procedure Started.") )
+    app.trace( _("Loading Spool : procedure Started.") )
     app.macro("M104 S{0}".format(ext_temp),  "ok", 5,    _("Pre-Heating Nozzle..."), verbose=False)
     
-    if (task_running == False) :
+    if ((task_running == False) and (has_feeder == False)) :
         app.macro("G90",                "ok", 2,    _("Setting abs position"), verbose=False)
         app.macro("G27",                "ok", 100,  _("Zeroing Z axis"), verbose=False)
         app.macro("G0 X102 Y117 Z150 F10000",     "ok", 100,   _("Moving to safe zone"), verbose=False)
@@ -170,7 +172,8 @@ def load_spool(app, args = None, lang='en_US.UTF-8'):
         app.macro("M17", "ok", 5,  _("Enable power to all stepper motors"), verbose=False)
     
     app.macro("M302 S0",                    "ok", 5, _("Enabling Cold extrusion"), verbose=False)
-    app.macro("G91",                        "ok", 2, _("Setting rel position"), verbose=False)
+    #app.macro("G91",                        "ok", 2, _("Setting rel position"), verbose=False)
+    app.macro("M83",                        "ok", 1, _("set the extruder to relative modee"),        verbose=False)
     app.macro("G92 E0",                     "ok", 5, _("Setting extruder position to 0"), verbose=False)
     app.macro("M92 E{0}".format(units_e),   "ok", 5, _("Setting extruder mode"), verbose=False)
     app.macro("M104 S{0}".format(ext_temp), "ok", 5, _("Pre-Heating Nozzle. Get ready to push... ") ) #heating and waiting.

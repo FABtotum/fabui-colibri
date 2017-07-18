@@ -297,3 +297,4 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
                 activate_plugin(plugin)
             
     return True
+

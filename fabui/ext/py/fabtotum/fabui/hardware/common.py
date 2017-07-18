@@ -77,7 +77,7 @@ def defaultLiteSettings(gcodeSender, config, log, eeprom, factory):
     
 """ CORE PRO Default settings """
 def defaultProSettings(gcodeSender, config, log, eeprom, factory):
-    log.info("Applying default settings for CORE PROV version")
+    log.info("Applying default settings for CORE PRO version")
     #invert x endstop logic
     gcodeSender.send("M747 X1", group='bootstrap')
     config.set('settings', 'feeder.engage', False)
@@ -88,7 +88,7 @@ def defaultProSettings(gcodeSender, config, log, eeprom, factory):
 
 """ CORE HYDRA Default settings """
 def defaultHydraSettings(gcodeSender, config, log, eeprom, factory):
-    log.info("Applying default settings for CORE PROV version")
+    log.info("Applying default settings for CORE HYDRA version")
     config.set('settings', 'feeder.engage', False)
     config.set('settings', 'feeder.available', False)
     config.set('settings', 'hardware.camera.available', False)

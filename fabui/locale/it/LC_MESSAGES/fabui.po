@@ -3186,7 +3186,7 @@ msgstr "Stato"
 #: fabui/application/views/layout/debug/top.php:22
 #: fabui/assets/js/fab.app.js:1252
 msgid "Tasks"
-msgstr "Operazione"
+msgstr "Task"
 
 #: fabui/application/views/history/main_widget.php:57
 msgid "When"
@@ -4740,7 +4740,7 @@ msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:114
 msgid "Unloading Spool : Procedure Started."
-msgstr "Scaricando la bobina: Procedura Iniziata."
+msgstr "Scaricamento filamento: procedura Iniziata."
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:116
 msgid "Extrusion prevention disabled"
@@ -4780,7 +4780,7 @@ msgstr "Prevenzione di estrusione abilitata"
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:162
 msgid "Loading Spool : Procedure Started."
-msgstr "Ccaricando la bobina: Procedura Iniziata."
+msgstr "Caricamento filamento: procedura Iniziata."
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:170
 msgid "Enable power to all stepper motors"

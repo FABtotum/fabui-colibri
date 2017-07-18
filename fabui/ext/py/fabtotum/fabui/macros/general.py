@@ -28,7 +28,7 @@ import re
 # Import external modules
 
 # Import internal modules
-from fabtotum.fabui.macros.common import getEeprom, configure_head, configure_feeder, get_versions
+from fabtotum.fabui.macros.common import getEeprom, configure_head, configure_feeder, get_versions, getPosition
 from fabtotum.utils.translation import _, setLanguage
 
 def home_all(app, args = None, lang='en_US.UTF-8'):
@@ -199,6 +199,10 @@ def clear_errors(app, args = None, lang='en_US.UTF-8'):
 def read_eeprom(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     return getEeprom(app, lang)
+
+def read_position(app, args = None,  lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    return getPosition(app, lang)
 
 def door_safety(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
