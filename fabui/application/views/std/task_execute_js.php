@@ -132,7 +132,7 @@ if(!isset($bed_max)) 		$bed_max = 100;
 				range: {'min': 0, 'max' : <?php echo $extruder_max; ?>},
 				pips: {
 					mode: 'values',
-					values: [0, <?php echo $extruder_min == 0 ? 175 : $extruder_min; ?>, 250],
+					values: [0, <?php echo $extruder_min == 0 ? 175 : $extruder_min; ?>, <?php echo $extruder_max; ?>],
 					density: 4,
 					format: wNumb({
 						postfix: '&deg;'

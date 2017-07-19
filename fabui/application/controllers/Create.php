@@ -58,7 +58,7 @@
 		$data['print_type'] = 'additive';
 		
 		$data['head'] = getInstalledHeadInfo();
-
+		$data['extruder_max'] = $data['head']['max_temp'];
 		// Skip file selection step if fileID is provided
 		$file = $this->files->get($fileId, 1);
 		$file_is_ok = False;
