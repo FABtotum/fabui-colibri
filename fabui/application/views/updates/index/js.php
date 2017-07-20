@@ -250,7 +250,8 @@
 					var cb_id = "checkbox-bundle-" + object.name;
 					$("#" + cb_id).prop("checked", is_selected );
 					$("#" + cb_id).attr("disabled", !is_selected);
-					$("#" + cb_id).attr("title", "Requires by " + bundle_name);
+					//$("#" + cb_id).attr("title", "Requires by " + bundle_name);
+					$("#" + cb_id).trigger('change');
 				}
 			});
 		}
