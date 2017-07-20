@@ -11,6 +11,9 @@
 	var local_data_copy = {};
 	var checkInterval;
 	
+	var selected_by = {};
+	var requires = {};
+	
 	$(document).ready(function() {
 		<?php if($runningTask): ?>
 		resumeTask();
@@ -165,6 +168,7 @@
 						'</thead>' + 
 						'<tbody>';
 
+		// separated into two section so the updates go on the top
 		$.each(data.bundles, function(bundle_name, object) {
 			if(object.need_update){
 				var tr_class = 'warning';
@@ -178,7 +182,7 @@
 		        	'</h4></td>' + 
 		        	/*'<td class="text-center">' + object.local + '</td>'+*/
 		        	'<td class="text-center">' + object.latest + ' </td>' +
-		        	'<td class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px;"><label><input value="'+bundle_name +'" type="checkbox" '+checked +' class="checkbox"><span></span></label></div></td>' + 
+		        	'<td class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px;"><label><input id="checkbox-bundle-'+bundle_name+'" value="'+bundle_name +'" type="checkbox" class="checkbox checkbox-action"><span></span></label></div></td>' + 
 		        '</tr>';
 			}
 		});
@@ -196,7 +200,7 @@
 		        	'</h4></td>' + 
 		        	/*'<td class="text-center">' + object.local + '</td>'+*/
 		        	'<td class="text-center">' + object.latest + ' </td>' +
-		        	'<td class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px;"><label><input value="'+bundle_name +'" type="checkbox" '+checked +' class="checkbox"><span></span></label></div></td>' + 
+		        	'<td class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px;"><label><input id="checkbox-bundle-'+bundle_name+'" value="'+bundle_name +'" type="checkbox" '+checked +' class="checkbox checkbox-action"><span></span></label></div></td>' + 
 		        '</tr>';
 			}
 		});
@@ -213,7 +217,60 @@
 				this.checked = that.checked;
 			});
 		});
+		
+		$(".checkbox-action").off('change');
+		$(".checkbox-action").on('change', checkboxChanged);
+		
+		$.each(data.bundles, function(bundle_name, object) {
+			if(object.need_update){
+				// select the updates
+				var cb_id = "checkbox-bundle-" + bundle_name;
+				$("#" + cb_id).prop("checked", true );
+				$("#" + cb_id).trigger('change');
+			}
+		});
 	}
+	
+	function checkboxChanged()
+	{
+		var bundle_name = $(this).val();
+		var is_selected = $(this).is(":checked");
+		var bundle_info = local_data_copy.bundles[bundle_name];
+		
+		console.log('cb', bundle_name, is_selected );
+		console.log( requires[bundle_name] );
+		
+		if(bundle_info.requires.hasOwnProperty("bundle"))
+		{
+			$.each(bundle_info.requires.bundle, function(index, object) {
+				//console.log(object.name, object.min_version);
+				var localBundle = local_data_copy.bundles[object.name];
+				if( versionCompare(object.min_version,  localBundle.local) )
+				{
+					var cb_id = "checkbox-bundle-" + object.name;
+					$("#" + cb_id).prop("checked", is_selected );
+					$("#" + cb_id).attr("disabled", !is_selected);
+					$("#" + cb_id).attr("title", "Requires by " + bundle_name);
+				}
+			});
+		}
+		
+		/*if(bundle_info.requires.hasOwnProperty("firmware"))
+		{
+			$.each(bundle_info.requires.bundle, function(index, object) {
+				//console.log(object.name, object.min_version);
+				//var localBundle = local_data_copy.bundles[object.name];
+				if( versionCompare(object.min_version,  localBundle.local) )
+				{
+					var cb_id = "checkbox-firmware-" + object.name;
+					$("#" + cb_id).prop("checked", is_selected );
+					$("#" + cb_id).attr("disabled", !is_selected);
+					$("#" + cb_id).attr("title", "Requires by " + bundle_name);
+				}
+			});
+		}*/
+	}
+	
 	/**
 	*
 	**/
@@ -246,7 +303,7 @@
 							'</h4>'+
 						'</td>'+
 						'<td class="text-center">'+ object.firmware.remote.version  +'</td>'+
-						'<td class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px;"><label><input value="firmware" type="checkbox" '+checked +' class="checkbox"><span></span></label></div></td>' + 
+						'<td class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px;"><label><input  id="checkbox-firmware-fablin" value="fablin" type="checkbox" '+checked +' class="checkbox"><span></span></label></div></td>' + 
 					'</tr>' + 
 					'<tr><td></td><td></td><td></td><td></td></tr>' +
 				'</tbody>';	
@@ -290,7 +347,7 @@
 							'</h4>'+
 						'</td>'+
 						'<td class="text-center">'+ object.boot.remote.version  +'</td>'+
-						'<td class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px;"><label><input value="firmware" type="checkbox" '+checked +' class="checkbox"><span></span></label></div></td>' + 
+						'<td class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px;"><label><input  id="checkbox-bool" value="boot" type="checkbox" '+checked +' class="checkbox"><span></span></label></div></td>' + 
 					'</tr>' + 
 					'<tr><td></td><td></td><td></td><td></td></tr>' +
 				'</tbody>';	
@@ -553,4 +610,46 @@
 			handleTask(data);
 		});
 	}
+	
+	/**
+	 * Simply compares two string version values.
+	 * 
+	 * Example:
+	 * versionCompare('1.1', '1.2') => -1
+	 * versionCompare('1.1', '1.1') =>  0
+	 * versionCompare('1.2', '1.1') =>  1
+	 * versionCompare('2.23.3', '2.22.3') => 1
+	 * 
+	 * Returns:
+	 * -1 = left is LOWER than right
+	 *  0 = they are equal
+	 *  1 = left is GREATER = right is LOWER
+	 *  And FALSE if one of input versions are not valid
+	 *
+	 * @function
+	 * @param {String} left  Version #1
+	 * @param {String} right Version #2
+	 * @return {Integer|Boolean}
+	 * @author Alexey Bass (albass)
+	 * @since 2011-07-14
+	 */
+	function versionCompare(left, right) {
+		if (typeof left + typeof right != 'stringstring')
+			return false;
+		
+		var a = left.split('.')
+		,   b = right.split('.')
+		,   i = 0, len = Math.max(a.length, b.length);
+			
+		for (; i < len; i++) {
+			if ((a[i] && !b[i] && parseInt(a[i]) > 0) || (parseInt(a[i]) > parseInt(b[i]))) {
+				return 1;
+			} else if ((b[i] && !a[i] && parseInt(b[i]) > 0) || (parseInt(a[i]) < parseInt(b[i]))) {
+				return -1;
+			}
+		}
+		
+		return 0;
+	}
+	
 </script>

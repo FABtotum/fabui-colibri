@@ -184,11 +184,17 @@ if(!function_exists('getBundlesStatus'))
 			'date' => date("Y-m-d H:i:s")
 		);
 		
+		//$requiredBundleVersions = array();
+		//$requiredFirmwareVersions = array();
+		
 		foreach($localBundles as $bundleName => $localBundleData)
 		{
+			$requires = array();
+			
 			if($remoteBundles){ //retrieve remote bundle info
 				$remoteBundle = $remoteBundles[$bundleName];
 				$latestVersion = str_replace('v', '', $remoteBundle['latest']);
+				$latestInfo = $remoteBundle[$remoteBundle['latest']];
 				$needUpdate = version_compare($localBundleData['version'], $latestVersion) == -1 ? true : false;
 				$changelog = '';
 				$changelog_url = $bundlesEndpoint.'/bundles/'.$bundleName.'/changelog.json';
@@ -200,6 +206,12 @@ if(!function_exists('getBundlesStatus'))
 						$status['update']['bundles'] += 1;
 					}
 				}
+				
+				if(isset($latestInfo['requires']))
+				{
+					$requires = $latestInfo['requires'];
+				}
+				
 			}else{
 				$latestVersion = $changelog =  'unknown';
 				$changelog_url = '';
@@ -209,6 +221,7 @@ if(!function_exists('getBundlesStatus'))
 				'latest'      => $latestVersion,
 				'local'       => $localBundleData['version'],
 				'need_update' => $needUpdate,
+				'requires'    => $requires,
  				'changelog'   => $changelog,
  				'changelog_url'   => $changelog_url,
  				'info'        => $localBundleData['info'],
