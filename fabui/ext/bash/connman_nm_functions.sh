@@ -371,6 +371,7 @@ get_interface_state()
 	fi
 
 	echo "{"
+	echo "  \"hostname\":\"$HOSTNAME.local\"",
 	PREV=
 	TETHER="no"
 	for iface in $(echo $IFACES); do

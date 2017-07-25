@@ -509,6 +509,7 @@ get_interface_state()
 	fi
     
     echo "{"
+	echo "  \"hostname\":\"$HOSTNAME.local\"",
     PREV=
     for iface in $(echo $IFACES); do
         if [ "$iface" != "lo" ]; then
