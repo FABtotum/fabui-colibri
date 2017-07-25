@@ -59,11 +59,12 @@
 
 	</div> 
 	<div class="col-sm-4">
-		
 		<ul id="myTab3" class="nav nav-tabs tabs-pull-right ">
+			<?php if($settings['feeder']['available'] == true): ?>
 			<li class="pull-right">
 				<a href="#fourthaxis-tab" data-toggle="tab"><?php echo _("4th axis"); ?></a>
 			</li>
+			<?php endif; ?>
 			<?php if($headPrintSupport): ?>
 			<li class="pull-right">
 				<a href="#extruder-tab" data-toggle="tab"><?php echo _("Nozzle"); ?></a>
@@ -73,7 +74,6 @@
 				<a href="#functions-tab" data-toggle="tab"><?php echo _("Head/bed"); ?></a>
 			</li>
 		</ul>
-		
 		<div id="myTabContent3" class="tab-content">
 		<?php if($headPrintSupport): ?>
 			<div class="tab-pane fade in" id="extruder-tab">

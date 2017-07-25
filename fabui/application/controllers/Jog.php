@@ -35,7 +35,7 @@
 		
 		$data = array();
 		$data['gcodes'] = loadGCodeInfo();
-		
+		$data['settings'] = loadSettings();
 	
 		
 		$data['haveHead'] = isHeadInPlace();
