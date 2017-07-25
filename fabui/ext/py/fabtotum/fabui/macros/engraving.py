@@ -62,6 +62,9 @@ def start_engraving(app, args = None, lang='en_US.UTF-8'):
     app.macro("G92 X0 Y0 Z0 E0", "ok", 1,       _("Setting Origin Point"), verbose=False)
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th Axis mode"), verbose=False)
     app.macro("M106 S255", "ok", 1,             _ ("Turning fan on"), verbose=False)
+    app.macro("M701 S0",  "ok", 2,            _("Turning off lights"), verbose=False)
+    app.macro("M702 S0",  "ok", 2,            _("Turning off lights"), verbose=False)
+    app.macro("M703 S0",  "ok", 2,            _("Turning off lights"), verbose=False)
     
     
 def end_engraving(app, args = None, lang='en_US.UTF-8'):
@@ -86,7 +89,8 @@ def end_engraving_aborted(app, args = None, lang='en_US.UTF-8'):
             'g' : 255,
             'b' : 255,
         }
-
+        
+    
     app.macro("M400",       "ok", 200,   _("Waiting for all moves to finish") )
     app.macro("M62",        "ok", 10,    _("Shutting down the laser") ) #should be moved to firmware       
     app.macro("M220 S100",  "ok", 50,    _("Reset Speed factor override") )
