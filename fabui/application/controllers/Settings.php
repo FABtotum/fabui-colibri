@@ -153,6 +153,9 @@ class Settings extends FAB_Controller {
 		$data['preSelectedInterface'] = $preSelectedInterface;
 		
 		$ifaces_data = getInterfaces();
+		
+		
+		
 		writeNetworkInfo($ifaces_data);
 		
 		//main page widget
@@ -166,6 +169,8 @@ class Settings extends FAB_Controller {
 		$if_number = array('eth' => 0, 'wlan' => 0);
 		foreach($ifaces_data as $iface => $info)
 		{
+			if(!is_array($info)) continue;
+			
 			if(array_key_exists('wireless', $info) )
 				$if_number['wlan'] += 1;
 			else
@@ -177,8 +182,10 @@ class Settings extends FAB_Controller {
 		
 		$interfaces = array();
 		
+		
 		foreach($ifaces_data as $iface => $info)
 		{
+			if(!is_array($info)) continue;
 			/* Convert <ip>/<prefix> format to <ip> & <netmask> */
 			if( $info['ipv4_address'] != '' )
 			{
