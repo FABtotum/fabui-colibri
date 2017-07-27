@@ -90,8 +90,8 @@ class Projectsmanager extends FAB_Controller {
 			}
 			
 			$headerToolbar = '<div class="widget-toolbar" role="menu">
-			<a class="btn btn-default" href="projectsmanager"><i class="fa fa-arrow-left"></i> <span class="hidden-xs">'._("Back").'</span> </a>'.
-			$addFilesTopButton.$deleteTopButton.'
+			<a class="btn btn-default" href="projectsmanager"><i class="fa fa-arrow-left"></i> <span class="hidden-xs">'._("Back").'</span> </a> '.
+			$addFilesTopButton.' '.$deleteTopButton.'
 			<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> <span class="hidden-xs">'._("Download").'</span> </button>
 			</div>';
 			
@@ -240,8 +240,8 @@ class Projectsmanager extends FAB_Controller {
 		
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
 		<a class="btn btn-default" href="projectsmanager/project/'.$objectId.'"><i class="fa fa-arrow-left"></i> <span class="hidden-xs">'._("Back").'</span> </a>
-		'.$make_button.'
-		<a class="btn btn-info" href="projectsmanager/file/'.$fileId.'/stats"><i class="fa fa-area-chart"></i> <span class="hidden-xs">'._("Stats").'</span> </a>'.
+		 '.$make_button.'
+		 <a class="btn btn-info" href="projectsmanager/file/'.$fileId.'/stats"><i class="fa fa-area-chart"></i> <span class="hidden-xs">'._("Stats").'</span> </a> '.
 		$deleteTopButton.'
 		<button class="btn btn-info button-action" data-action="download"><i class="fa fa-download"></i> <span class="hidden-xs">'._("Download").'</span> </button>
 		</div>';
