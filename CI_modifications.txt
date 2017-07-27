@@ -13,3 +13,6 @@ fabui/system/libraries/Upload.php -  CI_Upload->do_upload
 fabui/system/libraries/Encrypt.php
 
 477    if(function_exists('hash'))
+
+-----------------------------------------------------------------
+27/07/2017 Updated to version 3.1.5
