@@ -8,6 +8,15 @@
  */
  
 ?>
+<?php if(!$isOwner): ?>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="alert alert-warning fade in">
+				<i class="fa-fw fa fa-lock"></i> <?php echo _("You don't have permissions to edit this project"); ?>
+			</div>
+		</div>
+	</div>
+<?php endif; ?>
 <div class="row">
 	<div class="col-sm-12">
 		<div class="smart-form">
@@ -16,10 +25,11 @@
 					<section class="col col-6">
 						<label class="label"><?php echo _("Name") ?></label>
 						<label class="input">
-							<input type="text" name="name" id="obj_name" value="<?php echo $object['name'] ?>">
+							<input <?php if(!$isOwner): ?> readonly="readonly" <?php endif;?> type="text" name="name" id="obj_name" value="<?php echo $object['name'] ?>">
 						</label>
 					</section>
 					<section class="col col-6">
+						<?php if($isOwner): ?>
 						<label class="label"><?php echo _("Public") ?></label>
 						<div class="inline-group">
 							<label class="radio">
@@ -29,12 +39,13 @@
 								<input type="radio" <?php echo $object['public'] == 0 ? 'checked="checked"' : ''; ?> name="public" value="0"><i></i> No
 							</label>
 						</div>
+						<?php endif; ?>
 					</section>
 				</div>
 				<section>
 					<label class="label"><?php echo _("Description") ?></label>
 					<label class="textarea textarea-resizable">
-						<textarea id="obj_description" rows="5" class="custom-scroll"><?php echo $object['description'] ?></textarea> 
+						<textarea <?php if(!$isOwner): ?> readonly="readonly" <?php endif;?> id="obj_description" rows="5" class="custom-scroll"><?php echo $object['description'] ?></textarea> 
 					</label>
 				</section>
 			</fieldset>

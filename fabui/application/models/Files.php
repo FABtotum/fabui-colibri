@@ -72,7 +72,7 @@
 	 */
 	function getObject($fileId)
 	{
-		$this->db->select('to.id as id, to.name as obj_name, to.description as obj_description, to.date_insert as date_insert');
+		$this->db->select('to.id as id, to.name as obj_name, to.user as user, to.description as obj_description, to.date_insert as date_insert');
 		$this->db->where('tof.id_file',$fileId);
 		$this->db->join('sys_objects as to', 'to.id = tof.id_obj');
 		$query = $this->db->get($this->objFilesTable.' as tof');

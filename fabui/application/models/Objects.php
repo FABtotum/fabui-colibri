@@ -25,7 +25,7 @@
 	 */
 	public function getUserObjects($userID, $date_order = 'DESC')
 	{
-		$this->db->select('to.id as id, name, description, date_insert, count(id_file) as num_files');
+		$this->db->select('to.id as id, user, name, description, date_insert, count(id_file) as num_files');
 		$this->db->where('user', $userID);
 		$this->db->or_where('public', 1);
 		$this->db->join($this->objFilesTable.' as tof', 'tof.id_obj = to.id', 'left');

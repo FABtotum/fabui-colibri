@@ -78,12 +78,20 @@ class Projectsmanager extends FAB_Controller {
 				'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
 			);
 			
-			$widgeFooterButtons = $this->smart->create_button("<span class='hidden-xs'>"._("Save")."</span>", 'primary')->attr(array('id' => 'save-object'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+			$data['isOwner'] = $this->session->user['id'] == $data['object']['user'];
+			$widgeFooterButtons = '';
+			$deleteTopButton = '';
+			$addFilesTopButton = '';
+			
+			if($data['isOwner']){
+				$deleteTopButton = '<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> <span class="hidden-xs">'._("Delete").'</span> </button>';
+				$addFilesTopButton = '<a class="btn btn-success" href="projectsmanager/add-file/'.$objectId.'"><i class="fa fa-plus"></i> <span class="hidden-xs">'._("Add files").'</span> </a>';	
+				$widgeFooterButtons = $this->smart->create_button("<span class='hidden-xs'>"._("Save")."</span>", 'primary')->attr(array('id' => 'save-object'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+			}
 			
 			$headerToolbar = '<div class="widget-toolbar" role="menu">
-			<a class="btn btn-default" href="projectsmanager"><i class="fa fa-arrow-left"></i> <span class="hidden-xs">'._("Back").'</span> </a>
-			<a class="btn btn-success" href="projectsmanager/add-file/'.$objectId.'"><i class="fa fa-plus"></i> <span class="hidden-xs">'._("Add files").'</span> </a>
-			<button class="btn btn-danger bulk-button" data-action="delete"><i class="fa fa-trash"></i> <span class="hidden-xs">'._("Delete").'</span> </button>
+			<a class="btn btn-default" href="projectsmanager"><i class="fa fa-arrow-left"></i> <span class="hidden-xs">'._("Back").'</span> </a>'.
+			$addFilesTopButton.$deleteTopButton.'
 			<button class="btn btn-info bulk-button" data-action="download"><i class="fa fa-download"></i> <span class="hidden-xs">'._("Download").'</span> </button>
 			</div>';
 			
@@ -156,6 +164,7 @@ class Projectsmanager extends FAB_Controller {
 		$this->load->model('Files', 'files');
 		$make_action = get_make_default_action($fileId);	
 		$data['file'] = $this->files->get($fileId, 1);
+		
 		$data['upload_path'] = $this->config->item('upload_path');
 		$data['is_editable'] = True;
 		
@@ -169,8 +178,10 @@ class Projectsmanager extends FAB_Controller {
 		$data['number_of_layers'] = '';
 			
 		$data['object'] = $this->files->getObject($fileId);
+		
 		$objectId = $data['object']['id'];
-	
+		$data['isOwner'] = $this->session->user['id'] == $data['object']['user'];
+		
 		$attributes = json_decode($data['file']['attributes'], true);
 		
 		$data['dimesions'] = '-';
@@ -207,13 +218,20 @@ class Projectsmanager extends FAB_Controller {
 			'deletebutton' => false, 'editbutton' => false, 'colorbutton' => false, 'collapsed' => false
 		);
 		
-		$widgeFooterButtons =
-			'<button class="btn btn-default pull-left" type="button" id="load-content"><i class="fa fa-angle-double-down"></i> view content </button>
+		$widgeFooterButtons= '';
+		$deleteTopButton = '';
+		
+		if($data['isOwner'] == true){
+			$widgeFooterButtons = '<button class="btn btn-default pull-left" type="button" id="load-content"><i class="fa fa-angle-double-down"></i> view content </button>
 				<label class="checkbox-inline" style="padding-top:0px;">
 				 <input type="checkbox" class="checkbox" disabled="disabled" id="also-content">
 				 <span>Save content also </span>
-			</label>' .
-			$this->smart->create_button(_("Save"), 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+			</label>' .$this->smart->create_button(_("Save"), 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+			$deleteTopButton = '<button class="btn btn-danger button-action" data-action="delete"><i class="fa fa-trash"></i> <span class="hidden-xs">'._("Delete").'</span> </button>';
+		}else{
+			$widgeFooterButtons = '<button class="btn btn-default" type="button" id="load-content"><i class="fa fa-angle-double-down"></i> view content </button>';
+		}
+		
 		
 		$make_button = '';
 		if(!empty($make_action)){
@@ -223,8 +241,8 @@ class Projectsmanager extends FAB_Controller {
 		$headerToolbar = '<div class="widget-toolbar" role="menu">
 		<a class="btn btn-default" href="projectsmanager/project/'.$objectId.'"><i class="fa fa-arrow-left"></i> <span class="hidden-xs">'._("Back").'</span> </a>
 		'.$make_button.'
-		<a class="btn btn-info" href="projectsmanager/file/'.$fileId.'/stats"><i class="fa fa-area-chart"></i> <span class="hidden-xs">'._("Stats").'</span> </a>
-		<button class="btn btn-danger button-action" data-action="delete"><i class="fa fa-trash"></i> <span class="hidden-xs">'._("Delete").'</span> </button>
+		<a class="btn btn-info" href="projectsmanager/file/'.$fileId.'/stats"><i class="fa fa-area-chart"></i> <span class="hidden-xs">'._("Stats").'</span> </a>'.
+		$deleteTopButton.'
 		<button class="btn btn-info button-action" data-action="download"><i class="fa fa-download"></i> <span class="hidden-xs">'._("Download").'</span> </button>
 		</div>';
 		
@@ -758,7 +776,8 @@ class Projectsmanager extends FAB_Controller {
 		$aaData = array();
 		foreach($objects as $object){
 			$temp = array();
-			$temp[] = '<label class="checkbox-inline"><input type="checkbox" id="check_'.$object['id'].'" name="checkbox-inline" class="checkbox"><span></span> </label>';
+			$isOwner = $object['user'] == $this->session->user['id'];
+			$temp[] = '<label class="checkbox-inline"><input data-attribute-owner="'.$isOwner.'" type="checkbox" id="check_'.$object['id'].'" name="checkbox-inline" class="checkbox"><span></span> </label>';
 			$temp[] = '<i class="fa fa-cubes"></i> <a href="projectsmanager/project/'.$object['id'].'">'.$object['name'].'</a>';
 			$temp[] = $object['description'];
 			
@@ -918,23 +937,26 @@ class Projectsmanager extends FAB_Controller {
 		$response['message'] = '';
 		
 		$ids = $this->input->post("ids");
-		foreach($ids as $objectID)
-		{
-			$files = $this->files->getByObject($objectID);
-			
-			$fileIDs = array();
-			foreach($files as $file)
+		
+		if(is_array($ids)){
+			foreach($ids as $objectID)
 			{
-				$fileID = $file['id'];
-				$fileIDs[] = $fileID;
+				$files = $this->files->getByObject($objectID);
 				
-				$file = $this->files->get($fileID, True);
-				shell_exec('sudo rm '.$file['full_path']);
-				$this->files->delete( $fileID );
+				$fileIDs = array();
+				foreach($files as $file)
+				{
+					$fileID = $file['id'];
+					$fileIDs[] = $fileID;
+					
+					$file = $this->files->get($fileID, True);
+					shell_exec('sudo rm '.$file['full_path']);
+					$this->files->delete( $fileID );
+				}
+				
+				$this->objects->deleteFiles($objectID, $fileIDs);
+				$this->objects->delete( $objectID );
 			}
-			
-			$this->objects->deleteFiles($objectID, $fileIDs);
-			$this->objects->delete( $objectID );
 		}
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode( $response ));

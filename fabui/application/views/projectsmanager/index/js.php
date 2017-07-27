@@ -92,7 +92,13 @@
 		
 		if(boxes.length > 0){
 			boxes.each(function() {
-				ids.push($(this).attr("id").replace("check_", ""));
+
+				console.log($(this).attr("data-attribute-owner"));
+
+				if(parseInt($(this).attr("data-attribute-owner")) == 1)
+				{
+					ids.push($(this).attr("id").replace("check_", ""));
+				}
 			});
 			bulk_ask_delete(ids);
 		}
