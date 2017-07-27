@@ -96,12 +96,16 @@
 		$("#passwordModalForm").validate({
 			rules:{
 				wifiPassword:{
-					required: true
+					required: true,
+					minlength: (function () {
+					    return parseInt($("#wifiPasswordMinLength").val());
+					})
 				}
 			},
 			messages: {
 				wifiPassword: {
-					required: '<?php echo _('Please insert valid password')?>'
+					required: '<?php echo _('Please insert valid password')?>',
+					minlength: jQuery.validator.format("<?php echo _('Please enter at least {0} characters')?>"),
 				}
 			},
 			errorPlacement : function(error, element) {
@@ -251,7 +255,7 @@
 			//html += '<div class="hidden-xs progress progress-sm progress-striped active"><div class="progress-bar  bg-color-blue" aria-valuetransitiongoal="'+ net.quality +'" style="width:'+net.quality+'%"></div></div>';
 			html += '<br><small class="hidden-xs note">'+ protected  + ' / ' + net.mode + ' / ' + frequency + ' / ' + net.encryption +' </small>';
 			html += '</td>';
-			html += '<td class="va-middle text-center '+net.essid+'-td-button" style="width: 100px" class="text-right va-middle"><button type="button" data-attribute-essid="'+net.essid+'" data-attribute-iface="'+iface+'" data-attribute-action="'+buttonAttributeAction+'" data-attribute-protected="'+buttonAttributeProtected+'" class="btn btn-default btn-sm btn-block  connect">'+buttonLabel+'</button></td></td>';
+			html += '<td class="va-middle text-center '+net.essid+'-td-button" style="width: 100px" class="text-right va-middle"><button type="button" data-attribute-encryption="'+net.encryption+'" data-attribute-essid="'+net.essid+'" data-attribute-iface="'+iface+'" data-attribute-action="'+buttonAttributeAction+'" data-attribute-protected="'+buttonAttributeProtected+'" class="btn btn-default btn-sm btn-block  connect">'+buttonLabel+'</button></td></td>';
 			html += '</tr>';
 
 		});
@@ -268,18 +272,19 @@
 		var element   = $(this);
 		wifiSelected  = element.attr('data-attribute-essid');
 		wifiIface  	  = element.attr('data-attribute-iface');
+		var encryption = element.attr('data-attribute-encryption');
 		var action    = element.attr('data-attribute-action');
 		var protected = eval(element.attr('data-attribute-protected'));
 
-		connectToWifi(wifiIface, wifiSelected, protected);
+		connectToWifi(wifiIface, wifiSelected, protected, encryption);
 	}
 	/**
 	*
 	**/
-	function connectToWifi(iface, essid, isProtected)
+	function connectToWifi(iface, essid, isProtected, encryption)
 	{
 		if(isProtected){
-			showPasswordModal(essid);
+			showPasswordModal(essid, encryption);
 		}else{
 			sendActionRequest('connect', essid);
 		}
@@ -287,17 +292,38 @@
 	/**
 	*
 	**/
-	function showPasswordModal(essid)
+	function showPasswordModal(essid, encryption)
 	{
 		resetForms();
+		$("#wifiPasswordMinLength").val(getWifiPasswordLength(encryption));
 		$("#passwordModalTitle").html('<?php echo _('Password for')?> <strong>' + essid + '</strong>');
 		$('#passwordModal').modal({});
 	}
 	/**
 	*
 	**/
+	function getWifiPasswordLength(encryption)
+	{
+		var length = 0;		
+		switch (encryption) {
+		    case "802.11i/WPA2":
+		    	length = 8;
+		        break;
+		    case "WPA2":
+		    	length = 8;
+		        break;
+		    default:
+			    length = 8;
+		        break;
+		}
+		return length;
+	}
+	/**
+	*
+	**/
 	function resetForms()
 	{	
+		$("#wifiPasswordMinLength").val('');
 		$("#wifiPassword").val('');
 		$(".show-password").attr('checked', false);
 		$(".input-password").attr('type', 'password');

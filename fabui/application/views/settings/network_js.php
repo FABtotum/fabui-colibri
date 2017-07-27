@@ -576,12 +576,7 @@
 				wifiPassword:{
 					required: true,
 					minlength: (function () {
-					    if($("#wifiPasswordMinLength").val() == 8 ) {
-					        return 8;
-					    }
-					    else{
-					         return 5;
-					    }
+					    return parseInt($("#wifiPasswordMinLength").val());
 					})
 				}
 			},
