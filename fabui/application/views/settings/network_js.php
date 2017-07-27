@@ -16,13 +16,12 @@
 		<?php 
 			foreach($interfaces as $iface => $value)
 			{
-				echo 'console.log("'.$iface.'", \''.json_encode($value).'\');'.PHP_EOL;
-				echo '$("#'.$iface.'-tab #address-mode").trigger("change");'.PHP_EOL;
 				if($value['do_scan'])
 				{
 					echo 'scan("'.$iface.'");'.PHP_EOL;
 				}
 			}
+			echo '$("#'.$preSelectedInterface.'-tab #address-mode").trigger("change");'.PHP_EOL;
 		?>
 
 		$("#scanButton").on('click', do_scan);
@@ -159,8 +158,9 @@
 		var error_message = _("Unknown error");
 		var reload_timeout = 5000;
 
-		console.log(data);
 
+		
+		
 		if(data.hasOwnProperty('hidden-ssid') && data['net_type'] == 'wlan') 
 		{
 			if(data['address-mode'] == 'disabled')
@@ -215,7 +215,7 @@
 			error_message = _("Failed to save DNS-SD configuration");
 			reload_timeout = 0;
 		}
-		if(wait_title)
+		if(wait_title != "")
 		{
 			openWait("<i class='fa fa-spin fa-spinner'></i> " + wait_title, wait_message, false );
 		}
@@ -243,8 +243,7 @@
 				waitContent(finish_message);
 			}
 			
-			fabApp.getNetworkInfo();
-			
+			//fabApp.getNetworkInfo();
 			// With reload_timeout=0 we can skip this as some reloads are handled with fabApp.redirectToUrlWhenisReady
 			if(reload_timeout)
 			{
@@ -256,10 +255,9 @@
 						}
 					}, reload_timeout
 				);
+			}else{
+				closeWait();
 			}
-
-			closeWait();
-						
 		}).fail(function(jqXHR, textStatus){
 			waitContent("<?php echo _("Reloading page") ?>...");
 			setTimeout(function(){
@@ -292,7 +290,6 @@
 		}
 		else if( target.startsWith("#dnssd") )
 		{
-			console.log('ddns', target);
 			$("#scanButton").hide();
 		}
 		else if( target.startsWith("#ssh") )
@@ -386,11 +383,8 @@
 			url: "<?php echo site_url('settings/scanWifi'); ?>/"+iface,
 			dataType: 'json'
 		}).done(function(response) {
-			console.log('scan results', response);
 			if(response)
 				buildTable(iface, response);
-			else
-				console.log('no scan results');
 			$("#"+iface+"-table-container").css('opacity', '1');
 			$("#scanButton").html('<i class="fa fa-search"></i> <?php echo _("Scan") ?>');
 			enableButton("#scanButton");
@@ -425,7 +419,7 @@
 			table += '<div class="hidden-xs progress progress-sm progress-striped active"><div class="progress-bar  bg-color-blue" aria-valuetransitiongoal="'+ net.quality +'" style="width:'+net.quality+'%"></div></div>';
 			table += '<small class="hidden-xs note">'+ protected  + ' / ' + net.mode + ' / ' + frequency + ' / ' + net.encryption +' </small>';
 			table += '</td>';
-			table += '<td class="hidden-xs va-middle" style="width: 100px" class="text-right va-middle"><button data-attribute-essid="'+net.essid+'" data-attribute-iface="'+iface+'" data-attribute-action="'+buttonAttributeAction+'" data-attribute-protected="'+buttonAttributeProtected+'" class="btn btn-default btn-sm btn-block  connect">'+buttonLabel+'</button></td></td>';
+			table += '<td class="hidden-xs va-middle" style="width: 100px" class="text-right va-middle"><button data-attribute-encryption="'+net.encryption+'" data-attribute-essid="'+net.essid+'" data-attribute-iface="'+iface+'" data-attribute-action="'+buttonAttributeAction+'" data-attribute-protected="'+buttonAttributeProtected+'" class="btn btn-default btn-sm btn-block  connect">'+buttonLabel+'</button></td></td>';
 			table += '</tr>';
 		});
 		table += '</tbody></table>';
@@ -437,20 +431,20 @@
 	function connectionManager()
 	{
 		var element   = $(this);
-		console.log(element);
 		wifiSelected  = element.attr('data-attribute-essid');
 		wifiIface  	  = element.attr('data-attribute-iface');
+		var encryption = element.attr('data-attribute-encryption');
 		var action    = element.attr('data-attribute-action');
 		var protected = eval(element.attr('data-attribute-protected'));
 		
-		if(action == 'connect') connectToWifi(wifiIface, wifiSelected, protected);
+		if(action == 'connect') connectToWifi(wifiIface, wifiSelected, protected, encryption);
 		else askForDisconnectFromWifi(wifiSelected, wifiIface);
 	}
 	
-	function connectToWifi(iface, essid, isProtected)
+	function connectToWifi(iface, essid, isProtected, encryption)
 	{
 		if(isProtected){
-			showPasswordModal(essid);
+			showPasswordModal(essid, encryption);
 		}else{
 			sendActionRequest('connect', essid);
 		}
@@ -513,18 +507,37 @@
 	/**
 	 * show modal form to insert password if is requested
 	 */
-	function showPasswordModal(essid)
+	function showPasswordModal(essid, encryption)
 	{	
 		resetForms();
+		$("#wifiPasswordMinLength").val(getWifiPasswordLength(encryption));
 		$("#passwordModalTitle").html('<?php echo _('Password for')?> <strong>' + essid + '</strong>');
 		$('#passwordModal').modal({});
+	}
+	/**
+	*
+	**/
+	function getWifiPasswordLength(encryption)
+	{
+		var length = 0;		
+		switch (encryption) {
+		    case "802.11i/WPA2":
+		    	length = 8;
+		        break;
+		    case "WPA2":
+		    	length = 8;
+		        break;
+		    default:
+			    length = 8;
+		        break;
+		}
+		return length;
 	}
 	/**
 	 * called from "connect" button on password modal
 	 */
 	function passwordModalConnect()
 	{
-		console.log("passwordModalConnect:save");
 		if($("#passwordModalForm").valid()){
 			$("#"+wifiIface+"-tab #hidden-ssid").val(wifiSelected);
 			$("#"+wifiIface+"-tab #hidden-passphrase").val($("#wifiPassword").val());
@@ -561,12 +574,21 @@
 		$("#passwordModalForm").validate({
 			rules:{
 				wifiPassword:{
-					required: true
+					required: true,
+					minlength: (function () {
+					    if($("#wifiPasswordMinLength").val() == 8 ) {
+					        return 8;
+					    }
+					    else{
+					         return 5;
+					    }
+					})
 				}
 			},
 			messages: {
 				wifiPassword: {
-					required: '<?php echo _('Please insert valid password')?>'
+					required: "<?php echo _('Please insert valid password')?>",
+					minlength: jQuery.validator.format("<?php echo _('Please enter at least {0} characters')?>"),
 				}
 			},
 			errorPlacement : function(error, element) {
@@ -648,6 +670,7 @@
 	 */
 	function resetForms()
 	{	
+		$("#wifiPasswordMinLength").val('');
 		$("#wifiPassword").val('');
 		$(".show-password").attr('checked', false);
 		$(".input-password").attr('type', 'password');
@@ -665,6 +688,5 @@
 	function initEthCurrentIPV4()
 	{
 		currentEthIPV4 = $("#ipv4").val();
-		console.log(currentEthIPV4);
 	}
 </script>

@@ -142,6 +142,7 @@
 							</label>
 						</section>
 					</fieldset>
+					<input type="hidden" id="wifiPasswordMinLength">
 				</form>
 			</div>
 			<div class="modal-footer">

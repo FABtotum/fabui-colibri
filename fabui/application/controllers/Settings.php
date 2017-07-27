@@ -301,6 +301,7 @@ class Settings extends FAB_Controller {
 		}
 		$data['iface_tabs'] = $tabs_content;
 		$data['interfaces'] = $interfaces;
+		$data['preSelectedInterface'] = $preSelectedInterface;
 		
 		$dns = getDNS();
 		$data['dns'] = getDNS();
