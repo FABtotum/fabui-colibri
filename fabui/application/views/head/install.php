@@ -120,7 +120,7 @@
 							<section class="col col-6">
 								<label class="label"><?php echo _('Capabilities');?></label>
 								<div class="row" id="capabilities-container">
-									<div class="col col-6">
+									<div class="col col-4">
 										<label class="checkbox">
 											<input type="checkbox" id="cap-print" name="capability[]" data-attr="print" class="capability">
 											<i></i>Print</label>
@@ -131,16 +131,21 @@
 											<input type="checkbox" id="cap-laser" name="capability[]" data-attr="laser" class="capability">
 											<i></i>Laser</label>
 									</div>
-									<div class="col col-6">
+									<div class="col col-4">
+										<label class="checkbox">
+											<input type="checkbox" id="cap-scan" name="capability[]" data-attr="scan" class="capability">
+											<i></i>Scan</label>
 										<label class="checkbox">
 											<input type="checkbox" id="cap-fan" name="capability[]" data-attr="fan" class="capability">
 											<i></i>Fan</label>
+									</div>
+									<div class="col col-4">
 										<label class="checkbox">
 											<input type="checkbox" id="cap-feeder" name="capability[]" data-attr="feeder" class="capability">
 											<i></i>Feeder</label>
 										<label class="checkbox">
-											<input type="checkbox" id="cap-scan" name="capability[]" data-attr="scan" class="capability">
-											<i></i>Scan</label>
+											<input type="checkbox" id="cap-4thaxis" name="capability[]" data-attr="4thaxis" class="capability">
+											<i></i>4th axis</label>
 									</div>
 								</div>
 							</section>
@@ -179,7 +184,20 @@
 						</div>
 					</fieldset>
 
-					<fieldset class="nozzle-settings" style="display:none">
+					<fieldset>
+						<div class="row">
+							<ul class="nav nav-tabs pull-left">
+								<li class="active print-settings" style="display:none"><a id="print-tab-button" data-toggle="tab" href="#print-tab"><?php echo _('Print')?></a></li>
+								<li class="mill-settings" style="display:none"><a id="mill-tab-button" data-toggle="tab" href="#mill-tab"><?php echo _('Mill')?></a></li>
+								<li class="feeder-settings" style="display:none"><a id="feeder-tab-button" data-toggle="tab" href="#feeder-tab"><?php echo _('Feeder')?></a></li>
+								<li  class="4thaxis-settings" style="display:none"><a id="4thaxis-tab-button" data-toggle="tab" href="#4thaxis-tab"><?php echo _('4th axis')?></a></li>
+							</ul>
+						</div>
+					</fieldset>
+					
+					<div class="tab-content padding-10">
+					
+					<fieldset class="tab-pane fade in" id="print-tab">
 						<div class="row">
 							<section class="col col-6">
 								<label class="label"><?php echo _('PID')?></label>
@@ -216,7 +234,7 @@
 						</div>
 					</fieldset>
 					
-					<fieldset class="motor-settings" style="display:none">
+					<fieldset class="tab-pane fade in" id="mill-tab">
 						<div class="row">
 							<section class="col col-6">
 								<label class="label"><?php echo _('Min RPM')?></label>
@@ -234,7 +252,7 @@
 						</div>
 					</fieldset>
 					
-					<fieldset class="feeder-settings" style="display:none">
+					<fieldset class="tab-pane fade in" id="feeder-tab">
 						<div class="row">
 							<section class="col col-6">
 								<label class="label"><?php echo _('Steps per unit');?></label>
@@ -291,6 +309,41 @@
 						</div>
 						<input type="hidden" id="feeder-factory" name="factory" value="0"/>
 					</fieldset>
+					
+					<fieldset class="tab-pane fade in" id="4thaxis-tab">
+						<div class="row">
+							<section class="col col-6">
+								<label class="label"><?php echo _('Steps per degree');?></label>
+								<label class="input">
+									<input type="number" id="4thaxis-steps_per_angle" name="steps_per_angle" min="1" max="5000" value="200" step=0.1>
+								</label>
+							</section>
+						</div>
+						<div class="row">
+							<section class="col col-6">
+								<label class="label"><?php echo _('Max Aacceleration (mm/s<sup>2</sup>)')?></label>
+								<label class="input">
+									<input type="number" id="4thaxis-max_acceleration" name="max_acceleration" min="0" max="10000" value="100">
+								</label>
+							</section>
+							<section class="col col-6">
+								<label class="label"><?php echo _('Max A feedrate (mm/s)')?></label>
+								<label class="input">
+									<input type="number" id="4thaxis-max_feedrate" name="max_feedrate" min="0" max="500" value="100">
+								</label>
+							</section>
+							<section class="col col-6">
+								<label class="label"><?php echo _('Max A jerk (mm)')?></label>
+								<label class="input">
+									<input type="number" id="4thaxis-max_jerk" name="max_jerk" min="0" max="200" value="100">
+								</label>
+							</section>
+						</div>
+						<input type="hidden" id="4thaxis-factory" name="factory" value="0"/>
+					</fieldset>
+					
+					</div><!-- <div class="tab-content padding-10"> -->
+					
 					<input type="hidden" id="tool" name="tool" value="" />
 					<input type="hidden" id="plugins" name="plugins" value="">
 				</form>

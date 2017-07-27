@@ -245,6 +245,39 @@ class ConfigService:
                 return None
                 
         return None
+        
+    def get_4thaxis_info(self, feeder_name):
+        """
+        Return feeder info.
+        """
+        head_file = os.path.join( self.get('hardware', 'heads'), feeder_name + '.json');
+        feeder_file = os.path.join( self.get('hardware', 'feeders'), feeder_name + '.json');
+        
+        if os.path.exists(head_file):
+            # Load Head feeder
+            try:
+                with open(head_file) as json_f:
+                    head = json.load(json_f)
+                    
+                fourthaxis = head['4thaxis']
+                fourthaxis['name'] = head['name']
+                fourthaxis['description'] = head['description']
+                fourthaxis['link'] = head['link']
+                return fourthaxis
+                
+            except Exception as e:
+                return None
+
+        if os.path.exists(feeder_file):
+            # Load Feeder
+            try:
+                with open(feeder_file) as json_f:
+                    feeder = json.load(json_f)
+                return feeder
+            except Exception as e:
+                return None
+                
+        return None
     
     def get_current_feeder_info(self):
         """
@@ -252,6 +285,13 @@ class ConfigService:
         """
         feeder_name = self.get('settings', 'hardware.feeder', 'built_in_feeder')
         return self.get_feeder_info(feeder_name)
+        
+    def get_current_4thaxis_info(self):
+        """
+        Return feeder info of current feeder.
+        """
+        feeder_name = self.get('settings', 'hardware.feeder', 'built_in_feeder')
+        return self.get_4thaxis_info(feeder_name)
     
     def save_feeder_info(self, feeder_name, info):
         head_file = os.path.join( self.get('hardware', 'heads'), feeder_name + '.json');

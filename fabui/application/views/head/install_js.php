@@ -131,7 +131,12 @@
 	function capability_change(update_working_mode=true)
 	{
 		var capabilities = [];
+		var print = false;
+		var mill = false;
+		var laser = false;
+		var scan = false;
 		var feeder = false;
+		var fourthaxis = false;
 		
 		$(".capability").each(function (index, value) {
 			if($(this).is(":checked"))
@@ -144,24 +149,26 @@
 		
 		if(capabilities.indexOf("print") > -1)
 		{
-			$(".nozzle-settings").slideDown();
+			$(".print-settings").slideDown();
 			working_mode = 1;
+			print = true;
 		}
 		else
-			$(".nozzle-settings").slideUp();
+			$(".print-settings").slideUp();
 			
 		if(capabilities.indexOf("mill") > -1)
 		{
-			$(".motor-settings").slideDown();
+			$(".mill-settings").slideDown();
+			mill = true;
 			if(working_mode == 1)
 				working_mode = 0;
 			else
 				working_mode = 3;
 		}
 		else
-			$(".motor-settings").slideUp();
+			$(".mill-settings").slideUp();
 			
-		if(capabilities.indexOf("feeder") > -1){
+		if(capabilities.indexOf("feeder") > -1 ){
 			$(".feeder-settings").slideDown();
 			feeder = true;
 		}
@@ -169,19 +176,75 @@
 			$(".feeder-settings").slideUp();
 			feeder = false;
 		}
-			
+		
+		if(capabilities.indexOf("4thaxis") > -1){
+			$(".4thaxis-settings").slideDown();
+			fourthaxis = true;
+		}
+		else{
+			$(".4thaxis-settings").slideUp();
+			fourthaxis = false;
+		}
 		
 		if(capabilities.indexOf("laser") > -1)
+		{
 			working_mode = 2;
+			laser = true;
+		}
 			
 		if(capabilities.indexOf("scan") > -1)
+		{
 			working_mode = 4;
+			scan = false;
+		}
 		
 		if(update_working_mode)
 			$("#head-working_mode").val(working_mode);
 
-		updateTool(working_mode, feeder);
+		updateTool(working_mode, feeder, fourthaxis);
 
+
+		if( $(this).is("input") )
+		{
+
+			var state = $(this).is(":checked");
+			var tab_name =  $(this).attr('data-attr');
+			
+			if(state)
+			{
+				$("#"+tab_name+"-tab-button").trigger('click');
+				if(capabilities.length == 1)
+					$("#"+tab_name+"-tab").addClass("active");
+			}
+			else
+			{
+				$("#"+tab_name+"-tab").removeClass("active");
+				if(capabilities.length > 0)
+				{
+					var last_idx = capabilities.length -1;
+					$("#"+capabilities[last_idx]+"-tab-button").trigger('click');
+					if(capabilities.length == 1)
+					{
+						$("#"+capabilities[last_idx]+"-tab").addClass("active");
+					}
+				}
+			}
+		}
+		else // first time show scenario
+		{
+			var available_tabs = ['print', 'mill', 'feeder', '4thaxis'];
+			
+			for(var i=0; i<capabilities.length; i++)
+			{
+				var capability = capabilities[i];
+				if(available_tabs.indexOf(capability) > -1)
+				{
+					$("#"+capability+"-tab-button").trigger('click');
+					$("#"+capability+"-tab").addClass("active");
+					break;
+				}
+			}
+		}
 	}
 	/**
 	*
@@ -242,11 +305,16 @@
 			var id     = $(this).attr('id');
 			var type   = $(this).attr('type');
 			var feeder = id.startsWith("feeder-");
+			var fourthaxis = id.startsWith("4thaxis-");
 			
 			
 			if( !settings.hasOwnProperty('feeder'))
 			{
 				settings['feeder'] = {};
+			}
+			if( !settings.hasOwnProperty('4thaxis'))
+			{
+				settings['4thaxis'] = {};
 			}
 			
 			if(name)
@@ -260,10 +328,13 @@
 				}
 				else
 				{
-					if(feeder)
+					if(feeder) {
 						settings['feeder'][name] = $(this).val();
-					else
+					} else if(fourthaxis) {
+						settings['4thaxis'][name] = $(this).val();
+					} else {
 						settings[name] = $(this).val();
+					}
 				}
 				
 				if(name == "custom_gcode")
@@ -290,7 +361,12 @@
 		{
 			settings['feeder'] = {};
 		}
-				
+		
+		if( capabilities.indexOf("4thaxis") == -1 )
+		{
+			settings['4thaxis'] = {};
+		}
+		
 		return settings;
 	}
 	
@@ -490,21 +566,25 @@
 	/**
 	*
 	**/
-	function updateTool(working_mode, hasFeeder)
+	function updateTool(working_mode, hasFeeder, hasFourthAxis)
 	{
-		var tool = 'M563';
+		var tool = '';
 		switch(working_mode){
 			case 0: //hybrid
 			case 1: //FFF
-				tool += ' P0 D0';
+				tool = 'M563 P0 D0';
 				break;
 			case 2: //laser
 			case 3: //CNC
-				tool += ' P0 D-1';
+				tool = 'M563 P0 D-1';
+				break;
+			case 4: // Scan
 				break;
 		}
 		if(hasFeeder){
 			tool = 'M563 P2 D0';
+		}else if(hasFourthAxis && working_mode == 4){
+			tool = 'M563 P0 D3';
 		}
 		$("#tool").val(tool);
 	}

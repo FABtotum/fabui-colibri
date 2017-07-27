@@ -192,6 +192,11 @@ def install_feeder(app, args, lang='en_US.UTF-8'):
     result = configure_feeder(app, feeder_name, lang)
     return result
     
+def install_4thaxis(app, args, lang='en_US.UTF-8'):
+    fourthaxis_name = args[0]
+    result = configure_4thaxis(app, fourthaxis_name, lang)
+    return result
+    
 def clear_errors(app, args = None, lang='en_US.UTF-8'):
     app.macro("M999",   "ok", 5,    _("Clearing error state"), verbose=False)
     app.macro("M728",   "ok", 5,    _("Awaken"), verbose=False)

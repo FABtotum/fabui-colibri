@@ -257,6 +257,7 @@
 	{
 		$settings = loadSettings();
 		$feeders = loadFeeders();
+		$head = getInstalledHeadInfo();
 		
 		$builtin = $feeders['built_in_feeder'];
 		$feeder = getInstalledFeederInfo();
@@ -267,7 +268,14 @@
 		}
 		else if($mode == "4thaxis")
 		{
-			$this->sendCommands(array('M92 E'.$builtin['steps_per_angle'], 'G92 E0'), $id_stamp);
+			if(canHeadSupport('4thaxis'))
+			{
+				$this->sendCommands(array('M92 E'.$head['feeder']['steps_per_angle'], 'G92 E0'), $id_stamp);
+			}
+			else
+			{
+				$this->sendCommands(array('M92 E'.$builtin['steps_per_angle'], 'G92 E0'), $id_stamp);
+			}
 		}
 		return $this->response();
 	}

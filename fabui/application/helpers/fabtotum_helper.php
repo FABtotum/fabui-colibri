@@ -657,6 +657,18 @@ if(!function_exists('isFeederInHead'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('is4thaxisInHead'))
+{
+	/**
+	 * Check whether the 4th-axis is part of the head.
+	 */
+	function is4thaxisInHead($fourthaxis_name)
+	{
+		$heads = loadHeads();
+		return array_key_exists($fourthaxis_name, $heads);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('isHeadInPlace'))
 {
 	function isHeadInPlace()

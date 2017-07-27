@@ -217,6 +217,32 @@ def configure_feeder(app, feeder_name, lang='en_US.UTF-8'):
     app.macro("M204 T{0}".format(retract_acceleration),     "ok", 1,   _("Setting retract acceleration {0}").format(retract_acceleration), verbose=False)
     
     return True
+
+def configure_4thaxis(app, fourthaxis_name, lang='en_US.UTF-8'):
+    """
+    """
+    _ = setLanguage(lang)
+    
+    feeder = app.config.get_feeder_info(feeder_name)
+    
+    if feeder == None:
+        return False
+    
+    steps_per_unit       = float(feeder['steps_per_angle'])
+    max_feedrate         = float(feeder['max_feedrate'])
+    max_acceleration     = float(feeder['max_acceleration'])
+    max_jerk             = float(feeder['max_jerk'])
+    retract_acceleration = float(feeder['retract_acceleration'])
+    
+    app.trace( _("Setting 4th-axis values..."))
+    
+    app.macro("M92 E{0}".format(steps_per_unit),            "ok", 1,   _("Setting A steps_per_unit to {0}").format(steps_per_unit), verbose=False)
+    app.macro("G92 E0",              						"ok", 1,   _("Setting A position to 0"), verbose=False )
+    app.macro("M201 E{0}".format(max_acceleration),         "ok", 1,   _("Setting A acceleration to {0}").format(max_acceleration), verbose=False)
+    app.macro("M203 E{0}".format(max_feedrate),             "ok", 1,   _("Setting A max feedrate to {0}").format(max_feedrate), verbose=False)
+    app.macro("M205 E{0}".format(max_jerk),                 "ok", 1,   _("Setting A max jerk to {0}").format(max_jerk), verbose=False)
+    
+    return True
     
 def configure_head(app, head_name, lang='en_US.UTF-8'):
     _ = setLanguage(lang)

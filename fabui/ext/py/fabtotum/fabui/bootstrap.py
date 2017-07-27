@@ -174,6 +174,14 @@ def configure_head(gcs, config, log):
 def configure_feeder(gcs, config, log):
     try:
         
+        head = config.get_current_head_info()
+        if head == None:
+            log.error("Failed to read head configuration")
+            return
+            
+        if '4thaxis' in head['capabilities']:
+            return
+        
         log.info("Initializing FEEDER")
         
         feeder = config.get_current_feeder_info()
@@ -188,7 +196,7 @@ def configure_feeder(gcs, config, log):
         retract_acceleration = float(feeder['retract_acceleration'])
 
         gcs.send("M92 E{0}".format(steps_per_unit),        group='bootstrap' )
-        gcs.send("G92 E0".format(steps_per_unit),          group='bootstrap' )
+        gcs.send("G92 E0",                                 group='bootstrap' )
         gcs.send("M201 E{0}".format(max_acceleration),     group='bootstrap' )
         gcs.send("M203 E{0}".format(max_feedrate),         group='bootstrap' )
         gcs.send("M205 E{0}".format(max_jerk),             group='bootstrap' )
@@ -196,13 +204,45 @@ def configure_feeder(gcs, config, log):
             
     except Exception as e:
         print log.error("Feeder configuration failed: {0}".format(str(e)))
+    
+def configure_4thaxis(gcs, config, log):
+    try:
+        
+        head = config.get_current_head_info()
+        if head == None:
+            log.error("Failed to read head configuration")
+            return
+        
+        if not ( '4thaxis' in head['capabilities'] ):
+            return
+        
+        log.info("Initializing 4TH-AXIS")
+        
+        fourthaxis = config.get_current_4thaxis_info()
+        if fourthaxis == None:
+            log.error("Failed to read 4th-axis configuration")
+            return
+            
+        steps_per_unit       = float(fourthaxis['steps_per_angle'])
+        max_feedrate         = float(fourthaxis['max_feedrate'])
+        max_acceleration     = float(fourthaxis['max_acceleration'])
+        max_jerk             = float(fourthaxis['max_jerk'])
+
+        gcs.send("M92 E{0}".format(steps_per_unit),        group='bootstrap' )
+        gcs.send("G92 E0",                                 group='bootstrap' )
+        gcs.send("M201 E{0}".format(max_acceleration),     group='bootstrap' )
+        gcs.send("M203 E{0}".format(max_feedrate),         group='bootstrap' )
+        gcs.send("M205 E{0}".format(max_jerk),             group='bootstrap' )
+            
+    except Exception as e:
+        print log.error("4th-axis configuration failed: {0}".format(str(e)))
 
 def hardwareBootstrap(gcs, config = None, logger = None):
     if not config:
         config = ConfigService()
     
     if logger:
-       log = logger
+        log = logger
     else:
         log = logging.getLogger('GCodeService')
         ch = logging.StreamHandler()
@@ -330,5 +370,6 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     
     configure_head(gcs, config, log)
     configure_feeder(gcs, config, log)
+    configure_4thaxis(gcs, config, log)
     
     gcs.atomic_end()

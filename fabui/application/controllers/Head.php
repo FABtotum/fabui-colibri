@@ -89,6 +89,11 @@ class Head extends FAB_Controller {
 			$_data['hardware']['feeder'] = $new_head;
 			doMacro('install_feeder', '', [$new_head]);
 		}
+		else if(in_array('4thaxis', $head_info['capabilities']))
+		{
+			$_data['hardware']['feeder'] = $new_head;
+			doMacro('install_4thaxis', '', [$new_head]);
+		}
 		else
 		{
 			if( isFeederInHead($_data['hardware']['feeder']) )

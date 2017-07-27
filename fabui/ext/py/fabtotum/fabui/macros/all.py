@@ -47,6 +47,7 @@ PRESET_MAP = {
     "version"                       : general_macros.version,  
     "install_head"                  : general_macros.install_head,
     "install_feeder"                : general_macros.install_feeder,
+    "install_4thaxis"               : general_macros.install_4thaxis,
     "clear_errors"                  : general_macros.clear_errors,
     "door_safety"                   : general_macros.door_safety,
     
