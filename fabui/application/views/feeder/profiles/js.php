@@ -22,7 +22,7 @@
 		$("#inputId").on('change', importFeederSettings);
 		initFieldValidation();
         
-        console.log('feeders', feeders);
+        console.log('feeder', selected_feeder, 'feeders', feeders);
 		
 	});
 
@@ -180,6 +180,17 @@
 			var id = "#feeder-"+key;
 			$(id).val(value);
 			console.log('try to', id);
+		}
+
+		if(feeder.is_4thaxis)
+		{
+			$(".4thaxis-settings").show();
+			$(".feeder-settings").hide();
+		}
+		else
+		{
+			$(".4thaxis-settings").hide();
+			$(".feeder-settings").show();
 		}
 
 		/**

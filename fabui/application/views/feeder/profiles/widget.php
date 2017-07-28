@@ -104,7 +104,9 @@
 								<textarea id="feeder-description" name="description" rows="3" placeholder="Feeder description"></textarea>
 							</label>
 						</section>
-
+					</fieldset>
+					
+					<fieldset class="feeder-settings">
 						<div class="row">
 							
 							<section class="col col-6">
@@ -128,7 +130,22 @@
 						</div>
 					</fieldset>
 					
-					<fieldset>
+					<fieldset class="4thaxis-settings" style="display:none">
+						<div class="row">
+							
+							<section class="col col-6">
+								
+								<label class="label"><?php echo _('Steps per degree');?></label>
+								<label class="input">
+									<input type="number" id="feeder-steps_per_angle" name="steps_per_angle" min="1" max="5000" value="3048.16" step=0.1>
+								</label>
+								
+							</section>
+							
+						</div>
+					</fieldset>
+					
+					<fieldset class="speed-settings">
 						
 						<div class="row">
 							
@@ -153,16 +170,10 @@
 								</label>
 							</section>
 							
-							<section class="col col-6">
-								<label class="label"><?php echo _('Retract acceleration (mm/s<sup>2</sup>)')?></label>
-								<label class="input">
-									<input type="number" id="feeder-retract_acceleration" name="retract_acceleration" min="0" max="10000" value="100">
-								</label>
-							</section>
 						</div>
 					</fieldset>
 					
-					<fieldset>
+					<fieldset class="feeder-settings">
 						<div class="row">
 							<section class="col col-6">
 								<label class="label"><?php echo _('Retraction speed (mm/s)')?></label>
@@ -171,6 +182,15 @@
 								</label>
 							</section>
 							
+							<section class="col col-6">
+								<label class="label"><?php echo _('Retract acceleration (mm/s<sup>2</sup>)')?></label>
+								<label class="input">
+									<input type="number" id="feeder-retract_acceleration" name="retract_acceleration" min="0" max="10000" value="100">
+								</label>
+							</section>
+						</div>
+						
+						<div class="row">
 							<section class="col col-6">
 								<label class="label"><?php echo _('Retraction amount (mm)')?></label>
 								<label class="input">

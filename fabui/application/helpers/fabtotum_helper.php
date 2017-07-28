@@ -327,10 +327,12 @@ if(!function_exists('loadFeeders'))
 			$content = file_get_contents($feeder_file);
 			// UTF-8 safety
 			$content = iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($content));
-			$feeders[$key] = json_decode($content , true);
+			$info = json_decode($content , true);
+			$info['is_4thaxis'] = false;
+			$feeders[$key] = $info;
 		}
 		
-		if( canHeadSupport('feeder') )
+		if( canHeadSupport('feeder') && !canHeadSupport('4thaxis'))
 		{
 			$head = getInstalledHeadInfo();
 			$_data = loadSettings();
@@ -339,6 +341,25 @@ if(!function_exists('loadFeeders'))
 			$info['name'] = $head['name'];
 			$info['description'] = $head['description'];
 			$info['link'] = $head['link'];
+			$info['is_4thaxis'] = false;
+			$fw_id = (int)$head['fw_id'];
+			if($fw_id){
+				$info['factory'] = 1;
+			}
+			$feeders[$key] = $info;
+		}
+		
+		if( canHeadSupport('4thaxis') && !canHeadSupport('feeder'))
+		{
+			$head = getInstalledHeadInfo();
+			$_data = loadSettings();
+			$key = $_data['hardware']['head'];
+			$info = $head['4thaxis'];
+			$info['name'] = $head['name'];
+			$info['description'] = $head['description'];
+			$info['link'] = $head['link'];
+			$info['is_4thaxis'] = true;
+			
 			$fw_id = (int)$head['fw_id'];
 			if($fw_id){
 				$info['factory'] = 1;
@@ -445,13 +466,35 @@ if(!function_exists('saveFeederInfo'))
 			unset($info['name']);
 			unset($info['description']);
 			unset($info['link']);
+			unset($info['is_4thaxis']);
 			
 			$heads[$feeder_name]['feeder'] = $info;
 			
 			saveHeadInfo($heads[$feeder_name], $feeder_name);
 		}
+		else if( is4thaxisInHead($feeder_name) )
+		{
+			$heads = loadHeads();
+			
+			unset($info['name']);
+			unset($info['description']);
+			unset($info['link']);
+			unset($info['is_4thaxis']);
+			// Remove feeder related attributes
+			unset($info['steps_per_unit']);
+			unset($info['retract_amount']);
+			unset($info['retract_feedrate']);
+			unset($info['retract_acceleration']);
+			unset($info['tube_length']);
+			
+			$heads[$feeder_name]['4thaxis'] = $info;
+			
+			saveHeadInfo($heads[$feeder_name], $feeder_name);
+		}
 		else
 		{
+			unset($info['is_4thaxis']);
+			
 			if( file_exists($fn) )
 			{
 				$oldInfo = json_decode(file_get_contents($fn), true);
@@ -653,7 +696,17 @@ if(!function_exists('isFeederInHead'))
 	function isFeederInHead($feeder_name)
 	{
 		$heads = loadHeads();
-		return array_key_exists($feeder_name, $heads);
+		if( array_key_exists($feeder_name, $heads) )
+		{
+			$info = loadHead($feeder_name);
+			if(isset($info['capabilities']))
+			{
+				return in_array('feeder', $info['capabilities']);
+			}
+			
+		}
+		
+		return false;
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -665,7 +718,17 @@ if(!function_exists('is4thaxisInHead'))
 	function is4thaxisInHead($fourthaxis_name)
 	{
 		$heads = loadHeads();
-		return array_key_exists($fourthaxis_name, $heads);
+		if( array_key_exists($fourthaxis_name, $heads) )
+		{
+			$info = loadHead($fourthaxis_name);
+			if(isset($info['capabilities']))
+			{
+				return in_array('4thaxis', $info['capabilities']);
+			}
+			
+		}
+		
+		return false;
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

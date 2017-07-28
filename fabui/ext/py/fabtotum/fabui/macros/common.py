@@ -209,7 +209,7 @@ def configure_feeder(app, feeder_name, lang='en_US.UTF-8'):
     
     app.trace( _("Setting feeder values..."))
     
-    app.macro("M92 E{0}".format(steps_per_unit),            "ok", 1,   _("Setting E steps_per_unit to {0}").format(steps_per_unit), verbose=False)
+    app.macro("M92 E{0}".format(steps_per_unit),            "ok", 1,   _("Setting E steps per unit to {0}").format(steps_per_unit), verbose=False)
     app.macro("G92 E0",              						"ok", 1,   _("Setting E position to 0"), verbose=False )
     app.macro("M201 E{0}".format(max_acceleration),         "ok", 1,   _("Setting E acceleration to {0}").format(max_acceleration), verbose=False)
     app.macro("M203 E{0}".format(max_feedrate),             "ok", 1,   _("Setting E max feedrate to {0}").format(max_feedrate), verbose=False)
@@ -218,7 +218,7 @@ def configure_feeder(app, feeder_name, lang='en_US.UTF-8'):
     
     return True
 
-def configure_4thaxis(app, fourthaxis_name, lang='en_US.UTF-8'):
+def configure_4thaxis(app, feeder_name, lang='en_US.UTF-8'):
     """
     """
     _ = setLanguage(lang)
@@ -228,7 +228,7 @@ def configure_4thaxis(app, fourthaxis_name, lang='en_US.UTF-8'):
     if feeder == None:
         return False
     
-    steps_per_unit       = float(feeder['steps_per_angle'])
+    steps_per_angle      = float(feeder['steps_per_angle'])
     max_feedrate         = float(feeder['max_feedrate'])
     max_acceleration     = float(feeder['max_acceleration'])
     max_jerk             = float(feeder['max_jerk'])
@@ -236,7 +236,7 @@ def configure_4thaxis(app, fourthaxis_name, lang='en_US.UTF-8'):
     
     app.trace( _("Setting 4th-axis values..."))
     
-    app.macro("M92 E{0}".format(steps_per_unit),            "ok", 1,   _("Setting A steps_per_unit to {0}").format(steps_per_unit), verbose=False)
+    app.macro("M92 E{0}".format(steps_per_angle),            "ok", 1,   _("Setting A steps per degree to {0}").format(steps_per_angle), verbose=False)
     app.macro("G92 E0",              						"ok", 1,   _("Setting A position to 0"), verbose=False )
     app.macro("M201 E{0}".format(max_acceleration),         "ok", 1,   _("Setting A acceleration to {0}").format(max_acceleration), verbose=False)
     app.macro("M203 E{0}".format(max_feedrate),             "ok", 1,   _("Setting A max feedrate to {0}").format(max_feedrate), verbose=False)

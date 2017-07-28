@@ -28,7 +28,7 @@ import re
 # Import external modules
 
 # Import internal modules
-from fabtotum.fabui.macros.common import getEeprom, configure_head, configure_feeder, get_versions, getPosition
+from fabtotum.fabui.macros.common import getEeprom, configure_head, configure_feeder, configure_4thaxis, get_versions, getPosition
 from fabtotum.utils.translation import _, setLanguage
 
 def home_all(app, args = None, lang='en_US.UTF-8'):
