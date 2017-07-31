@@ -59,8 +59,8 @@ if ( ! function_exists('verify_keep_me_logged_in_cookie'))
 	{
 		$CI =& get_instance();
 		if($CI->input->cookie('fabkml')){
-			
 			$CI->load->library('encrypt');
+			$CI->load->helper('os_helper');
 			$cookieValueExploded = explode(':', $CI->input->cookie('fabkml'));
 			$userInfo = $CI->encrypt->decode($cookieValueExploded[0]);
 			
@@ -70,7 +70,7 @@ if ( ! function_exists('verify_keep_me_logged_in_cookie'))
 			if($userInfoExploed[0] == 'fab' &&
 				$userInfoExploed[1] == $CI->input->ip_address() &&
 				$userInfoExploed[2] == $CI->input->server('HTTP_HOST') &&
-				$userInfoExploed[4] == getMACAddres() ){
+			    $userInfoExploed[4] == str_replace(":", "", getMACAddres())){
 				
 					$CI->load->model('User', 'user');
 					$user = $CI->user->get(array('email'=>$userInfoExploed[3], 'password'=>$password), 1);
@@ -108,7 +108,7 @@ if ( ! function_exists('set_keep_me_looged_in_cookie'))
 		$CI->load->library('encrypt');
 		$CI->load->helper('os_helper');
 		
-		$encryptData = array( 'fab', $CI->input->ip_address(), $CI->input->server('HTTP_HOST'), $email, getMACAddres());
+		$encryptData = array( 'fab', $CI->input->ip_address(), $CI->input->server('HTTP_HOST'), $email, str_replace(":", "", getMACAddres()));
 		$cookieName  = 'fabkml';//fabkeepmelogged
 		$cookieValue = $CI->encrypt->encode(implode(':',$encryptData)).':'.$password;
 		$CI->input->set_cookie($cookieName, $cookieValue, $expire, $CI->input->server('HTTP_HOST'));
