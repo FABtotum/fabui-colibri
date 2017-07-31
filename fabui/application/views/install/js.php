@@ -185,7 +185,31 @@
 		$(".form-bootstrapWizard").addClass("hidden");
 		$(".tab-content").addClass("hidden");
 		$("#install-animation").slideDown();
+		/*
 		$("#install-form").submit();
+		*/
+		var data = {};
+		$("#install-form :input").each(function (index, value) {
+			if($(this).is('input:text') || $(this).is('textarea') || $(this).is('select') || $(this).is(':input[type="number"]') || ($(this).is('input:radio') && $(this).is(':checked')) ){
+				data[$(this).attr('id')] = $(this).val();
+			}
+		});
+
+		$.ajax({
+			type: 'post',
+			url: '<?php echo site_url('install/do');?>',
+			data : data,
+			dataType: 'json',
+			timeout: 10000,
+			error: function(jqXHR, textStatus, errorThrown) {
+				var time = textStatus=="timeout" ? 1000 : 5000;
+				setTimeout(function() {
+					location.href="<?php echo site_url('login'); ?>";
+				}, time);
+			}
+		}).done(function(response) {
+		});
+		
 		
 	}
 	/**

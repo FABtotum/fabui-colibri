@@ -590,4 +590,18 @@ if(!function_exists('getUploadMaxFileSize'))
 		return intval(str_replace("MB","", ini_get('upload_max_filesize')));
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('restartLighttpd'))
+{
+	/**
+	 * 
+	 */
+	function restartLighttpd()
+	{
+		$CI =& get_instance();
+		$CI->load->helper('fabtotum');
+		log_message('debug', 'Restart Lighttpd');
+		startBashScript('restart_lighttpd.sh', null, false, true);
+	}
+}
 ?>

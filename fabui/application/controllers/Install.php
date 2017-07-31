@@ -264,7 +264,6 @@ class Install extends FAB_Controller {
 			unset($postData['browser-date']);
 			//set time zone
 			setTimeZone($postData['timezone']);
-			
 			$this->configuration->store('timezone',      $postData['timezone']);
 			$this->configuration->store('serial_number', $postData['serial_number']);
 			$this->configuration->store('unit_name',     $postData['unit_name']);
@@ -311,7 +310,8 @@ class Install extends FAB_Controller {
 		}
 		//delete AUTOINSTALL
 		$this->deleteAutoInstallFile();
-		redirect('login');
+		restartLighttpd();
+		/*redirect('login');*/
 	}
 	
 	/**

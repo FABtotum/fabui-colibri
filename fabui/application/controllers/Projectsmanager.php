@@ -978,7 +978,7 @@ class Projectsmanager extends FAB_Controller {
 		foreach($ids as $fileID)
 		{
 			$objectID = $this->files->getObject($fileID)['id'];
-			$this->objects->deleteFiles($objectID, $fileID);
+			//$this->objects->deleteFiles($objectID, $fileID);
 			$file = $this->files->get($fileID, True);
 			shell_exec('sudo rm '.$file['full_path']);
 			$this->files->delete($fileID);

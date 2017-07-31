@@ -26,8 +26,10 @@
 	public function getUserObjects($userID, $date_order = 'DESC')
 	{
 		$this->db->select('to.id as id, user, name, description, date_insert, count(id_file) as num_files');
-		$this->db->where('user', $userID);
-		$this->db->or_where('public', 1);
+		//$this->db->where('user', $userID);
+		$this->db->where('(to.user = '.$userID.' or to.public = 1)');
+		$this->db->where('to.deleted', 0);
+		//$this->db->or_where('public', 1);
 		$this->db->join($this->objFilesTable.' as tof', 'tof.id_obj = to.id', 'left');
 		$this->db->group_by('to.id');
 		$this->db->order_by('date_insert', $date_order);
@@ -105,6 +107,16 @@
 			$dropdown[$object['id']] = $object['name'];
 		}
 		return $dropdown;
+	}
+	/**
+	 * @param int $id
+	 * set deleted flag to 1
+	 */
+	function delete($id)
+	{
+		$data = array('deleted' => 1);
+		$this->db->where('id', $id);
+		$this->db->update($this->tableName, $data);
 	}
  }
  

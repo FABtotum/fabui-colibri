@@ -79,6 +79,7 @@
 				$('td', row).eq(9).addClass('hidden');
 				$('td', row).eq(10).addClass('hidden');
 				$('td', row).eq(11).addClass('hidden');
+				$('td', row).eq(12).addClass('hidden');
 			},
 			"fnDrawCallback" : fnCallBack,
 			
@@ -88,13 +89,7 @@
 		
 		var format_date = 'DD/MM/YYYY';
 		 
-		 
-		console.log(start_date, end_date, format_date);
-		 
-		 console.log(moment.weekdaysMin());
-		 console.log(moment.monthsShort());
-		 
-		 $('#date-picker').daterangepicker({
+		$('#date-picker').daterangepicker({
 			format: format_date,
 			startDate: start_date,
 			endDate: end_date,
@@ -130,9 +125,7 @@
 		 
 		function fnFormatDetails(oTable, nTr)
 		{
-			
 			var aData = oTable.fnGetData(nTr);
-			
 			var start_date = aData[6];
 			var finish_date = aData[7];
 			var rating = (aData[12] > 0)?'<i class="fa fa-star"></i>'.repeat(aData[12]):'Not rated';
@@ -140,7 +133,8 @@
 			var type =aData[9];
 			var id_file = aData[10];
 			var id_object = aData[11];
-			
+			var deleted   = parseInt(aData[13]) == 1;
+	
 			var table = '<table style="margin-bottom:1px !important;" cellpadding="5" cellspacing="0" border="0" class="table table-hover table-condensed">';
 			
 			table += '<tr><td width="100px">Started </td><td>'+start_date +'</td></tr>';
@@ -154,17 +148,17 @@
 			
 			if(type == 'print' || type == 'mill')
 			{
-				var action_url = '#make/'+type+'/' + id_file;
-				var action_button = '<a class="btn btn-xs btn-default" href="'+action_url+'"><i class="fa fa-play fa-rotate-90"></i> ' + type[0].toUpperCase() + type.slice(1) +' it again</a>';
-				var stats_button = '<a style="margin-left:5px;" class="btn btn-xs btn-default" href="#projectsmanager/file/'+id_file+'/stats"><i class="fa fa-area-chart"></i> Stats</a>';
-				
-				table += '<tr style="border:0px;">';
-				table += '<td width="100px"></td><td>' + action_button + stats_button + '</td>';
-				table += '</tr>';
+				if(!deleted){
+					var action_url = '#make/'+type+'/' + id_file;
+					var action_button = '<a class="btn btn-xs btn-default" href="'+action_url+'"><i class="fa fa-play fa-rotate-90"></i> ' + type[0].toUpperCase() + type.slice(1) +' it again</a>';
+					var stats_button = '<a style="margin-left:5px;" class="btn btn-xs btn-default" href="#projectsmanager/file/'+id_file+'/stats"><i class="fa fa-area-chart"></i> Stats</a>';
+
+					table += '<tr style="border:0px;">';
+					table += '<td width="100px"></td><td>' + action_button + stats_button + '</td>';
+					table += '</tr>';
+				}
 			}
-			
 			table += '</table>';
-			
 			return table;
 		}
 		

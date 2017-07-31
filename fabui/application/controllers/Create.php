@@ -22,6 +22,8 @@
 			//$this->tasks->truncate();
 			$this->runningTask = $this->tasks->getRunning();
 		}
+		
+		
 	}
 	
 	//controller router
@@ -404,7 +406,7 @@
 			'status'     => 'running',
 			'id_file'    => $data['idFile'],
 			'id_object'  => $object['id'],
-			'start_date' => date('Y-m-d H:i:s')
+			'start_date' => date('Y-m-d H:i:s') 
 		);
 		$taskId   = $this->tasks->add($taskData);
 		
@@ -492,7 +494,11 @@
 		);
 		$this->output->set_content_type('application/json')->set_output(json_encode($output));
 	}
-
+	
+	public function test()
+	{
+		phpinfo();
+	}
 }
  
 ?>
