@@ -43,7 +43,7 @@
 					</section>
 					<section>
 						<label class="checkbox">
-							<input type="checkbox" name="remember" checked="">
+							<input type="checkbox" name="remember">
 							<i></i><?php echo _("Stay signed in");?></label>
 					</section>
 				</fieldset>
