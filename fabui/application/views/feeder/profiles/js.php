@@ -94,7 +94,7 @@
 	*
 	**/
 	function setFeeder(){
-	 	openWait('<i class="fa fa-circle-o-notch fa-spin"></i> <?php echo _("Configuring feeder"); ?>', '<?php echo _("Please wait"); ?>...');
+	 	openWait("<i class=\"fa fa-circle-o-notch fa-spin\"></i> <?php echo _("Configuring feeder"); ?>", "<?php echo _("Please wait"); ?>...");
 	 	$.ajax({
 			type: "POST",
 			url: "<?php echo site_url("feeder/setFeeder") ?>/"+ $("#feeders").val(),
