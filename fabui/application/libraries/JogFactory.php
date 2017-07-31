@@ -270,12 +270,13 @@
 		{
 			if(canHeadSupport('4thaxis'))
 			{
-				$this->sendCommands(array('M92 E'.$head['feeder']['steps_per_angle'], 'G92 E0'), $id_stamp);
+				$this->sendCommands(array('M92 E'.$feeder['steps_per_angle'], 'G92 E0'), $id_stamp);
 			}
 			else
 			{
 				$this->sendCommands(array('M92 E'.$builtin['steps_per_angle'], 'G92 E0'), $id_stamp);
 			}
+			//~ $this->sendCommands(array('M92 E'.$builtin['steps_per_angle'], 'G92 E0'), $id_stamp);
 		}
 		return $this->response();
 	}
