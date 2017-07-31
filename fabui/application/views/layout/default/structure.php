@@ -8,7 +8,7 @@
  */
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="<?php echo $lang; ?>">
 	<head>{head}</head>
 	<body class="smart-style-6 fixed-header fixed-navigation">
 		{ga}

@@ -37,7 +37,10 @@
 		'description' => 'FABtotum User Web Interface',
 		'author'      => 'FABtotum Development Team',
 		'viewport'    => 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
-		'robots'      => 'noindex,nofollow' 
+		'robots'      => 'noindex,nofollow',
+		'theme-color' => '#2196F3',
+		'apple-mobile-web-app-capable' => "yes",
+		'apple-mobile-web-app-status-bar-style' => "black"
 	);
 	/***
 	 * 
@@ -121,6 +124,8 @@
 		$data['tours']          = $this->load->view('layout/tours_js', array('available_tours' => getTours()), true);
 		$data['ga_property_id'] = $this->config->config['ga_property_id'];
 		$data['heads']          = loadHeads();
+		$data['lang']           = getCurrentLanguage();
+		
 		
 		$this->template['head']    = $this->load->view($this->layoutDefaultFolder.'/head',    $data, true);
 		$this->template['top']     = $this->load->view($this->layoutDefaultFolder.'/top',     $data, true);

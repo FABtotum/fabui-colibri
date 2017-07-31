@@ -27,9 +27,8 @@
 <link rel="icon"          href="/assets/img/favicon/favicon.ico" type="image/x-icon">
 <!-- IE11 -->
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<!-- WEB MANIFEST -->
+<link rel="manifest" href="/assets/manifest.json">
 <!-- HEADERD JAVASCRIPTS -->
 <script src="/assets/js/libs/jquery-2.1.1.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script src="/assets/js/libs/jquery-ui-1.10.3.min.js?v=<?php echo FABUI_VERSION ?>"></script>
