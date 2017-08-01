@@ -685,11 +685,11 @@ fabApp = (function(app) {
 		$.ajax({
 			url: reboot_url_action,
 		}).done(function(data) {
-			waitContent( _("You will be redirect to login page") );
+			waitContent( _("You will be redirected to login page") );
 			app.redirectToUrlWhenisReady(login_url);
 		}).fail(function(jqXHR, textStatus){
 			//clear intervals
-			waitContent( _("You will be redirect to login page") );
+			waitContent( _("You will be redirected to login page") );
 			app.redirectToUrlWhenisReady(login_url);
 		});
 	};
@@ -1497,7 +1497,7 @@ fabApp = (function(app) {
 	app.forceRecovery = function (){
 		
 		app.rebooting = true;
-			openWait("<i class='fa fa-warning'></i> " + _("Entering recovery mode"), _("You will be redirect to recovery page"), false);
+			openWait("<i class='fa fa-warning'></i> " + _("Entering recovery mode"), _("You will be redirected to recovery page"), false);
 			$.get(set_recovery_url + '/activate', function(data){ 
 				$.ajax({
 					url: reboot_url_action,
