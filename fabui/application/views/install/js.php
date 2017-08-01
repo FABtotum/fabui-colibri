@@ -190,7 +190,7 @@
 		*/
 		var data = {};
 		$("#install-form :input").each(function (index, value) {
-			if($(this).is('input:text') || $(this).is('textarea') || $(this).is('select') || $(this).is(':input[type="number"]') || ($(this).is('input:radio') && $(this).is(':checked')) ){
+			if($(this).is('input:text') || $(this).is('textarea') || $(this).is('select') || $(this).is(':input[type="number"]') || $(this).is(':input[type="password"]') || ($(this).is('input:radio') && $(this).is(':checked')) ){
 				data[$(this).attr('id')] = $(this).val();
 			}
 		});
