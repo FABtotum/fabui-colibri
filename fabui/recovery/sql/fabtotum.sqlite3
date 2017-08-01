@@ -8,7 +8,7 @@ CREATE TABLE "sys_tasks" ( "id" INTEGER, "user" int(11) NOT NULL, "controller" v
 
 -- Table: sys_files
 DROP TABLE IF EXISTS sys_files;
-CREATE TABLE sys_files (id INTEGER PRIMARY KEY AUTOINCREMENT, file_name varchar (255) NOT NULL, file_type varchar (255) DEFAULT NULL, file_path varchar (255) NOT NULL, full_path varchar (255) NOT NULL, raw_name varchar (255) DEFAULT NULL, orig_name varchar (255) DEFAULT NULL, client_name varchar (255) DEFAULT NULL, file_ext varchar (255) DEFAULT NULL, file_size int (11) DEFAULT NULL, print_type varchar (255) DEFAULT NULL, is_image int (1) DEFAULT NULL, image_width int (11) DEFAULT NULL, image_height int (11) DEFAULT NULL, image_type int (255) DEFAULT NULL, image_size_str varchar (255) DEFAULT NULL, insert_date datetime NOT NULL, update_date datetime DEFAULT NULL, note text DEFAULT '', tags text DEFAULT '', attributes text NOT NULL DEFAULT '{}');
+CREATE TABLE sys_files (id INTEGER PRIMARY KEY AUTOINCREMENT, file_name varchar (255) NOT NULL, file_type varchar (255) DEFAULT NULL, file_path varchar (255) NOT NULL, full_path varchar (255) NOT NULL, raw_name varchar (255) DEFAULT NULL, orig_name varchar (255) DEFAULT NULL, client_name varchar (255) DEFAULT NULL, file_ext varchar (255) DEFAULT NULL, file_size int (11) DEFAULT NULL, print_type varchar (255) DEFAULT NULL, is_image int (1) DEFAULT NULL, image_width int (11) DEFAULT NULL, image_height int (11) DEFAULT NULL, image_type int (255) DEFAULT NULL, image_size_str varchar (255) DEFAULT NULL, insert_date datetime NOT NULL, update_date datetime DEFAULT NULL, note text DEFAULT '', tags text DEFAULT '', attributes text NOT NULL DEFAULT '{}', deleted  INTEGER NOT NULL DEFAULT 0);
 
 -- Table: sys_themes
 DROP TABLE IF EXISTS sys_themes;
@@ -184,7 +184,7 @@ INSERT INTO sys_configuration (id, "key", value) VALUES (5, 'network', '{"interf
 
 -- Table: sys_objects
 DROP TABLE IF EXISTS sys_objects;
-CREATE TABLE sys_objects (id INTEGER PRIMARY KEY AUTOINCREMENT, user int (11) NOT NULL, name varchar (255) DEFAULT NULL, description text, date_insert datetime DEFAULT NULL, date_update datetime DEFAULT NULL, public int (1) NOT NULL DEFAULT '1', tags text DEFAULT '');
+CREATE TABLE sys_objects (id INTEGER PRIMARY KEY AUTOINCREMENT, user int (11) NOT NULL, name varchar (255) DEFAULT NULL, description text, date_insert datetime DEFAULT NULL, date_update datetime DEFAULT NULL, public int (1) NOT NULL DEFAULT '1', tags text DEFAULT '', deleted  INTEGER NOT NULL DEFAULT 0);
 -- Table: sys_plugins
 DROP TABLE IF EXISTS sys_plugins;
 CREATE TABLE sys_plugins (id INTEGER PRIMARY KEY AUTOINCREMENT, name text NOT NULL, attributes text NOT NULL);
