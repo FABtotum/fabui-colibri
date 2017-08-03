@@ -28,7 +28,7 @@ case "$1" in
 		boot_msg "Starting upgrade scripts."
 		
 		for upgrade in $(ls $FABTOTUM_UPGRADE_DIR); do
-			${FABTOTUM_UPGRADE_DIR}/${upgrade} 2>&1 > /var/lib/fabui/${upgrade}.log
+			${FABTOTUM_UPGRADE_DIR}/${upgrade} 2>&1 > /var/log/fabui/${upgrade}.log
 		done
 		
 		evaluate_retval
