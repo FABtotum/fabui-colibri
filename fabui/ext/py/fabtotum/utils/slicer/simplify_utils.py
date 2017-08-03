@@ -41,11 +41,14 @@ class Parser:
     def process_line(self, line):
         attrs = {}
         line = line.lower()
-        if line[0] == ';':       
-            tags = line.strip().split(';')
-            if len(tags) == 2:
-                if self.simplify_layer.search(tags[1]):
-                    tag, value = tags[1].strip().split(',')[0].split(' ')
-                    if(self._is_number(value.strip())):
-                        attrs['layer'] = value.strip()
+        try:
+            if line[0] == ';':       
+                tags = line.strip().split(';')
+                if len(tags) == 2:
+                    if self.simplify_layer.search(tags[1]):
+                        tag, value = tags[1].strip().split(',')[0].split(' ')
+                        if(self._is_number(value.strip())):
+                            attrs['layer'] = value.strip()
+        except Exception, e:
+            print str(e)
         return attrs

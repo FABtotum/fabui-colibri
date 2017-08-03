@@ -34,7 +34,7 @@ from threading import Event, Thread
 from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.utils.pyro.gcodeclient import GCodeServiceClient
-from fabtotum.utils.common import shell_exec
+from fabtotum.utils.common import shell_exec, rpi_version
 from fabtotum.database      import Database, TableItem
 from fabtotum.database.sysconfig import SysConfig
 
@@ -73,13 +73,15 @@ def main():
     # BCM2709 RPi2/RPi3
     # BCM2708 RPi1
     # Raspberry Pi version
-    soc_id = shell_exec('</proc/cpuinfo grep Hardware | awk \'{print $3}\'')[0].strip()
-    name_id = ''
-    soc_name = {'BCM2708' : 'Raspberry Pi Model B', 'BCM2709' : 'Raspberry Pi 3 Model B' }
-    if soc_id in soc_name:
-        data['rpi_version'] = soc_name[soc_id]
-    else:
-        data['rpi_version'] = soc_id;
+    #soc_id = shell_exec('</proc/cpuinfo grep Hardware | awk \'{print $3}\'')[0].strip()
+    #name_id = ''
+    #soc_name = {'BCM2708' : 'Raspberry Pi Model B', 'BCM2709' : 'Raspberry Pi 3 Model B' }
+    #if soc_id in soc_name:
+    #    data['rpi_version'] = soc_name[soc_id]
+    #else:
+    #    data['rpi_version'] = soc_id
+    
+    data['rpi_version'] = rpi_version()
     
     # Storage
     tmp = shell_exec('df -Ph');

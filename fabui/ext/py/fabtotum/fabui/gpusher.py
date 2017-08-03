@@ -609,8 +609,13 @@ class GCodePusher(object):
         self.override_stats['flow_rate']    = 100.0
         self.override_stats['speed']        = 100.0
         
+        self.resetTrace()
+        
         if gcode_file:
+            self.trace( _("Processing file") )
+            self.trace( _("This may take a while, please wait"))
             gfile = GCodeFile(gcode_file)
+            self.trace( _("File processed") )
             task_db = self.get_task(task_id)
             file = self.get_file(task_db['id_file'])
             self.pusher_stats['file']['full_path'] = gcode_file
@@ -654,8 +659,6 @@ class GCodePusher(object):
                     #~ }
                     #~ self.add_monitor_group('laser', self.laser_stats)
                     
-        self.resetTrace()
-        
         if self.monitor_file:            
             self.progress_monitor = Thread( target=self.__progress_monitor_thread )
             self.progress_monitor.start() 

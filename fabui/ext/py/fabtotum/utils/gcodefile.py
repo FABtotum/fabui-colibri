@@ -27,6 +27,7 @@ import os
 from fabtotum.utils.slicer.cura_utils import Parser as CuraParser
 from fabtotum.utils.slicer.slic3r_utils import Parser as Slic3rParser
 from fabtotum.utils.slicer.simplify_utils import Parser as SimplifyParser
+from fabtotum.utils.common import rpi_version
 
 class GCodeFileIter:
     
@@ -79,6 +80,8 @@ class GCodeInfo:
 
 class GCodeFile:
     
+    MAX_FILE_SIZE = 30 #MB - limit for lite_parsing to be triggered
+    
     def __init__(self, filename, lite_parsing=False):
         self.info = GCodeInfo(filename)
         self.cura_p   = CuraParser()
@@ -116,6 +119,15 @@ class GCodeFile:
         lines = stdout.readlines(); 
         stdout.close()
         return lines
+    
+    @staticmethod
+    def __size(f):
+        stdin,stdout = os.popen2('wc -c < "{0}"'.format(f))
+        stdin.close()
+        size = stdout.readline()
+        stdout.close()
+        return size #return byte size
+    
 
     def process_file(self, filename, lite_parsing):
         """
@@ -132,9 +144,14 @@ class GCodeFile:
         
         head_lines = self.__head(filename, 50)
         tail_lines = self.__tail(filename, 50)
+        file_size  = float(self.__size(filename))/1000000
+        rpi        = rpi_version()
         
         lines = head_lines + tail_lines
         
+        if(rpi == "Raspberry Pi Model B" and file_size > self.MAX_FILE_SIZE):
+            lite_parsing = True # On Rasperry Pi Model B it would take too much time to process the file
+            
         # Check GCode profile (deduce slicer)
         for line in lines:
             if self.cura_p.is_cura(line):
@@ -193,8 +210,7 @@ class GCodeFile:
                             layer = int(attrs['layer'])
                             if layer > max_layer:
                                 max_layer = layer
-                            
-        
+                                
                 if line[0] != ';':
                     gcode_count += 1
                         

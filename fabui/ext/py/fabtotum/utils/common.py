@@ -34,3 +34,16 @@ def shell_exec(cmd):
     lines = stdout.readlines(); 
     stdout.close()
     return lines
+
+#######################################################################
+# Define on wich Raspberry im running on
+########################################################################
+def rpi_version():
+    soc_id = shell_exec('</proc/cpuinfo grep Hardware | awk \'{print $3}\'')[0].strip()
+    name_id = ''
+    soc_name = {'BCM2708' : 'Raspberry Pi Model B', 'BCM2709' : 'Raspberry Pi 3 Model B' }
+    if soc_id in soc_name:
+        return soc_name[soc_id]
+    else:
+        return soc_id
+    

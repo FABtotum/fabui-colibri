@@ -176,7 +176,6 @@ class PrintApplication(GCodePusher):
             #~ self.exec_macro("start_print")
         
         self.send_file(gcode_file)
-        
         self.trace( _("Print initialized.") )
 
 def main():
