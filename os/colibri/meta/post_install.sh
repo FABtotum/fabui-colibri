@@ -10,6 +10,7 @@ SUB_DIR="${EXEC_NAME%.*}.d"
 SCRIPT_PATH="${BASE_DIR}/${SUB_DIR}"
 
 # Look for *.sh scripts in SUB_DIR and don't go into sub-folders
-for script in $(find ${SCRIPT_PATH} -maxdepth 1 -mindepth 1 -name "*.sh"); do
+for script in $(find ${SCRIPT_PATH} -maxdepth 1 -mindepth 1 -name "*.sh" | sort); do
 	sh $script
+	echo "$script, RET=$?" >> /tmp/${EXEC_NAME}.log
 done
