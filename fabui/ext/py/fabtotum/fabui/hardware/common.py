@@ -62,9 +62,9 @@ def updateFactoryFeeder(config, info):
     with open(feeder_file, 'w') as json_f:
         json.dump(info, json_f, sort_keys=True, indent=4)
         
-""" CORE LITE Default settings """
-def defaultLiteSettings(gcodeSender, config, log, eeprom, factory):
-    log.info("Applying default settings for CORE LITE version")
+""" CORE Default settings """
+def defaultCoreSettings(gcodeSender, config, log, eeprom, factory):
+    log.info("Applying default settings for CORE version")
     #invert x endstop logic
     gcodeSender.send("M747 X1", group='bootstrap')
     #set maximum feedrate

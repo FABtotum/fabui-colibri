@@ -124,7 +124,7 @@ ERROR_PWR_OFF          = 999
 *  UNIT TYPE
 ***************************/
 UNIT_GENERAL = 'GENERAL';
-UNIT_LITE    = 'LITE';
+UNIT_CORE    = 'CORE';
 UNIT_PRO     = 'PRO';
 UNIT_HYDRA   = 'HYDRA';
 UNIT_UNKNOWN = 'UNKNOWN';

@@ -1696,7 +1696,7 @@ fabApp = (function(app) {
 	 * Get Unit type from version ID.
 	 * 
 	 * @param {Integer} id Unit version ID
-	 * @returns {String} Unit type (UNKNWON, GENERAL, LITE, PRO, HYDRA)
+	 * @returns {String} Unit type (UNKNWON, GENERAL, CORE, PRO, HYDRA)
 	 */
 	app.getUnitType = function(id)
 	{
@@ -1707,7 +1707,7 @@ fabApp = (function(app) {
 		}else if(id>=2000 && id<3000){
 			type = UNIT_PRO;
 		}else if(id>= 1000 && id<2000){
-			type = UNIT_LITE ;
+			type = UNIT_CORE ;
 		}else if(id>= 0 && id<1000){
 			type = UNIT_GENERAL;
 		}

@@ -28,17 +28,17 @@ import re
 # Import external modules
 
 # Import internal modules
-from fabtotum.fabui.hardware.common import loadFactoryFeeder, updateFactoryFeeder, defaultLiteSettings
+from fabtotum.fabui.hardware.common import loadFactoryFeeder, updateFactoryFeeder, defaultCoreSettings
 from fabtotum.utils.translation import _, setLanguage
 
 
 def hardware1000(gcodeSender, config, log, eeprom, factory):
     """
-    Rev1000 CORE LITE: APRIL 2017 - xxx
+    Rev1000 CORE: APRIL 2017 - xxx
     - RPi3
     """
-    log.info("Rev1000 - Lite")
-    defaultLiteSettings(gcodeSender, config, log, eeprom, factory)
+    log.info("Rev1000 - Core")
+    defaultCoreSettings(gcodeSender, config, log, eeprom, factory)
     
     config.set('settings', 'hardware.id', 1000)
     config.save('settings')

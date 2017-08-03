@@ -1723,7 +1723,7 @@ if(!function_exists('getState'))
 if(!function_exists('getUnitType'))
 {
 	/**
-	 * return unit type [UNKNWON, GENERAL, LITE, PRO, HYDRA]
+	 * return unit type [UNKNWON, GENERAL, CORE, PRO, HYDRA]
 	 */
 	function getUnitType($hardware_version = '')
 	{
@@ -1743,7 +1743,7 @@ if(!function_exists('getUnitType'))
 				$type = 'GENERAL';
 				break;
 			case ($hardware_version >= 1000 && $hardware_version < 2000):
-				$type = 'LITE';
+				$type = 'CORE';
 				break;
 			case ($hardware_version >= 2000 && $hardware_version < 3000):
 				$type = 'PRO';

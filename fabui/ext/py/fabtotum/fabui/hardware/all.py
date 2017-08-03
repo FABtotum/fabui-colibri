@@ -23,8 +23,8 @@ __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
 import fabtotum.fabui.hardware.general as general_hardware
-import fabtotum.fabui.hardware.lite    as lite_hardware
-import fabtotum.fabui.hardware.pro     as pro_hardware
+import fabtotum.fabui.hardware.core    as core_hardware
+import fabtotum.fabui.hardware.pro     as core_pro_hardware
 import fabtotum.fabui.hardware.hydra   as hydra_hardware
 
 PRESET_MAP = {
@@ -35,13 +35,13 @@ PRESET_MAP = {
     "4"      : general_hardware.hardware4,
     "5"      : general_hardware.hardware5,
     
-    # LITE
-    "1000"   : lite_hardware.hardware1000,
+    #CORE
+    "1000"   : core_hardware.hardware1000,
     
-    #PRO
-    "2000"   : pro_hardware.hardware2000,
-    "2500"   : pro_hardware.hardware2500,
-    "2600"   : pro_hardware.hardware2600,
+    #CORE PRO
+    "2000"   : core_pro_hardware.hardware2000,
+    "2500"   : core_pro_hardware.hardware2500,
+    "2600"   : core_pro_hardware.hardware2600,
 
     #HYDRA
     "3000"   : hydra_hardware.hardware3000
