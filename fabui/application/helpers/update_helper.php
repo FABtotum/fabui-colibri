@@ -154,11 +154,13 @@ if(!function_exists('getBundlesStatus'))
 			//retrieve remote firmware info
 			$latestFirmwareRemote            = $firmwareRemote['firmware']['latest'];
 			$firmware['need_update']         = version_compare($installedFirmware['firmware']['version'], $firmwareRemote['firmware']['latest']) == -1 ? true : false;
+			$firmware['is_priority']         = false;
 			$firmware['remote']              = $firmwareRemote['firmware'][$firmwareRemote['firmware']['latest']];
 			$firmware['remote']['changelog'] = getRemoteFile($fwEndpoint.'/latest/changelog.txt', false);
 
 			//retrieve remote bootfiles info
 			$bootfiles['need_update']        = version_compare($installedBootfiles, $remoteBootfiles['latest']) == -1 ? true : false;
+			$bootfiles['is_priority']        = false;
 			$bootfiles['remote']             = array();
 			$bootfiles['remote']['version']  = $remoteBootfiles['latest'];
 		}
@@ -178,7 +180,8 @@ if(!function_exists('getBundlesStatus'))
 				'endpoint'  => array(
 					'bundles' =>$bundlesEndpoint,
 					'fimware' => $fwEndpoint
-				)
+				),
+				'priority' => array()
 			),
 			'remote_connection' =>  $remoteBundles ? true : false,
 			'date' => date("Y-m-d H:i:s")
@@ -195,7 +198,7 @@ if(!function_exists('getBundlesStatus'))
 				$remoteBundle = $remoteBundles[$bundleName];
 				$latestVersion = str_replace('v', '', $remoteBundle['latest']);
 				$latestInfo = $remoteBundle[$remoteBundle['latest']];
-				$needUpdate = version_compare($localBundleData['version'], $latestVersion) == -1 ? true : false;
+				$needUpdate = version_compare($localBundleData['version'], $latestVersion, '<');
 				$changelog = '';
 				$changelog_url = $bundlesEndpoint.'/bundles/'.$bundleName.'/changelog.json';
 				if($needUpdate) {
@@ -210,6 +213,18 @@ if(!function_exists('getBundlesStatus'))
 				if(isset($latestInfo['requires']))
 				{
 					$requires = $latestInfo['requires'];
+					
+					foreach($latestInfo['requires']['bundle'] as $index => $bundleInfo)
+					{
+						// Check if this bundle requires the CORE bundle to be updated
+						// and if the installed CORE bundle meets the requirements
+						if( $bundleInfo['name'] == 'core' && version_compare($localBundles['core']['version'], $bundleInfo['min_version'], '<') )
+						{
+							// CORE needs and update so make it a priority
+							if( !in_array('core', $status['update']['priority']) )
+								$status['update']['priority'][] = 'core';
+						}
+					}
 				}
 				
 			}else{
@@ -260,6 +275,12 @@ if(!function_exists('getBundlesStatus'))
 				'changelog'   => $changelog,
 				'info'        => $pluginData
 			);
+		}
+		
+		foreach($status['update']['priority'] as $index => $priorityUpdate)
+		{
+			$status['bundles'][$priorityUpdate]['need_update'] = true;
+			$status['bundles'][$priorityUpdate]['is_priority'] = true;
 		}
 		
 		$status['update']['available'] = $status['update']['bundles'] > 0 || $status['update']['plugins'] > 0 || $firmware['need_update'] || $bootfiles['need_update'] ? true : false;
