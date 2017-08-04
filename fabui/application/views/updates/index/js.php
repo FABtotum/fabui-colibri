@@ -157,6 +157,8 @@
 	function createBundlesTable(data, show_check)
 	{
 		
+		var have_priority_updates = data.update.priority.length > 0;
+		
 		var html = '<table id="bundles-table" class="table  table-forum">' + 
 		 				'<thead>' +
 							'<tr>' +
@@ -170,13 +172,14 @@
 
 		// separated into two section so the updates go on the top
 		$.each(data.bundles, function(bundle_name, object) {
-			if(object.need_update){
+			if( (!have_priority_updates && object.need_update) || (have_priority_updates && object.is_priority) ){
 				var tr_class = 'warning';
-				var icon = 'fa fa-exclamation-circle text-muted';
+				var icon = object.is_priority?'fa fa-exclamation-circle text-danger fa-2x':'fa fa-exclamation-circle';
 				var checked = 'checked="checked"';
+				var tooltip = object.is_priority ? 'Critical Update' : '';
 
 				html += '<tr id="tr-' + bundle_name + '" class="' + tr_class + '">' +
-		        	'<td  class="text-center" style="width:40px;"><i id="icon-'+ bundle_name +'" class="'+ icon + '"></i></td>' +
+		        	'<td  class="text-center" style="width:40px;"><i id="icon-'+ bundle_name +'" class="'+ icon + '" title="' + tooltip + '"></i></td>' +
 		        	'<td><h4><a href="javascript:void(0)" class="show-changelog" data-type="bundle" data-attr="'+bundle_name+'" data-latest="'+object.latest+'">' + bundle_name.capitalize() + '</a> <small></small>' + 
 		        	'<small id="small-'+ bundle_name +'"><?php echo _("Installed version") ?>: ' + object.local +' | <?php echo _("Build date") ?>: ' + object.info.build_date + '</small>' +
 		        	'</h4></td>' + 
@@ -188,7 +191,7 @@
 		});
 
 		$.each(data.bundles, function(bundle_name, object) {
-			if(!object.need_update){
+			if( (!have_priority_updates && !object.need_update) || (have_priority_updates && !object.is_priority)){
 				var tr_class = '';
 				var icon = 'fa fa-check text-muted';
 				var checked = '';
@@ -229,6 +232,24 @@
 				$("#" + cb_id).trigger('change');
 			}
 		});
+		
+		prioritySelect(data.update.priority);
+	}
+	
+	function prioritySelect(priority_bundles)
+	{
+		if(priority_bundles.length == 0)
+			return
+			
+		$(".checkbox-action").attr("disabled", true);
+		$(".checkbox-action").attr("checked", false);
+			
+		$.each(priority_bundles, function(index, bundle_name) {
+			var cb_id = "checkbox-bundle-" + bundle_name;
+			$("#" + cb_id).prop("checked", true );
+		});
+		
+		//~ $("#" + cb_id).attr("disabled", true);
 	}
 	
 	function checkboxChanged()
@@ -238,14 +259,14 @@
 		var bundle_info = local_data_copy.bundles[bundle_name];
 		
 		console.log('cb', bundle_name, is_selected );
-		console.log( requires[bundle_name] );
 		
 		if(bundle_info.requires.hasOwnProperty("bundle"))
 		{
 			$.each(bundle_info.requires.bundle, function(index, object) {
 				//console.log(object.name, object.min_version);
 				var localBundle = local_data_copy.bundles[object.name];
-				if( versionCompare(object.min_version,  localBundle.local) )
+				//console.log(object.name, object.min_version, localBundle.local, versionCompare(object.min_version, localBundle.local));
+				if( versionCompare(localBundle.local, object.min_version ) == -1 )
 				{
 					var cb_id = "checkbox-bundle-" + object.name;
 					$("#" + cb_id).prop("checked", is_selected );
