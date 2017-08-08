@@ -175,6 +175,8 @@ def configure_feeder(gcs, config, log):
     try:
         
         head = config.get_current_head_info()
+        #hw_id = int(config.get('settings', 'hardware.id'))
+        
         if head == None:
             log.error("Failed to read head configuration")
             return
@@ -188,12 +190,14 @@ def configure_feeder(gcs, config, log):
         if feeder == None:
             log.error("Failed to read feeder configuration")
             return
+        
             
         steps_per_unit       = float(feeder['steps_per_unit'])
         max_feedrate         = float(feeder['max_feedrate'])
         max_acceleration     = float(feeder['max_acceleration'])
         max_jerk             = float(feeder['max_jerk'])
         retract_acceleration = float(feeder['retract_acceleration'])
+        custom_gcode         = feeder.get('custom_gcode','')
 
         gcs.send("M92 E{0}".format(steps_per_unit),        group='bootstrap' )
         gcs.send("G92 E0",                                 group='bootstrap' )
@@ -201,6 +205,12 @@ def configure_feeder(gcs, config, log):
         gcs.send("M203 E{0}".format(max_feedrate),         group='bootstrap' )
         gcs.send("M205 E{0}".format(max_jerk),             group='bootstrap' )
         gcs.send("M204 T{0}".format(retract_acceleration), group='bootstrap' )
+        
+        for line in custom_gcode.split('\n'):
+            if line:
+                code = line.split(';')[0]
+                if code:
+                    gcs.send( code, group='bootstrap' )
             
     except Exception as e:
         print log.error("Feeder configuration failed: {0}".format(str(e)))
@@ -367,6 +377,8 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         log.error("Unsupported hardware version: %s", hardwareID)
         log.error("Forced to hardware1")
         PRESET_MAP["1"](gcs, config, log, eeprom, factory)
+
+    config.reload()
     
     configure_head(gcs, config, log)
     configure_feeder(gcs, config, log)

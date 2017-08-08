@@ -516,13 +516,12 @@ msgid "Missing argument"
 msgstr "Parametri mancanti"
 
 #: fabui/application/controllers/History.php:183
-#, fuzzy
 msgid "Go to file page"
-msgstr "Esporta a file"
+msgstr "Vai alla pagina del file"
 
 #: fabui/application/controllers/History.php:183
 msgid "File deleted"
-msgstr ""
+msgstr "File eliminato"
 
 #: fabui/application/controllers/Projectsmanager.php:33
 msgid "Install samples"
@@ -848,9 +847,8 @@ msgstr "Si prega di inserire una password valida"
 
 #: fabui/application/views/install/js.php:108
 #: fabui/application/views/settings/network_js.php:586
-#, fuzzy
 msgid "Please enter at least {0} characters"
-msgstr "Prego inserire l'indirizzo email"
+msgstr "Inserire almeno {0} caratteri"
 
 #: fabui/application/views/install/js.php:153
 #: fabui/application/views/install/wizard.php:189
@@ -3104,24 +3102,20 @@ msgstr "Ammontare della retrazione (mm)"
 
 #: fabui/application/views/head/install.php:316
 #: fabui/application/views/feeder/profiles/widget.php:138
-#, fuzzy
 msgid "Steps per degree"
-msgstr "Step per unità"
+msgstr "Step per angolo"
 
 #: fabui/application/views/head/install.php:324
-#, fuzzy
 msgid "Max Aacceleration (mm/s<sup>2</sup>)"
 msgstr "Accellerazione massima (mm/s<sup>2</sup>)"
 
 #: fabui/application/views/head/install.php:330
-#, fuzzy
 msgid "Max A feedrate (mm/s)"
-msgstr "Max E feedrate (mm/s)"
+msgstr "Max A feedrate (mm/s)"
 
 #: fabui/application/views/head/install.php:336
-#, fuzzy
 msgid "Max A jerk (mm)"
-msgstr "Max E jerk (mm)"
+msgstr "Max A jerk (mm)"
 
 #: fabui/application/views/head/install.php:354
 #: fabui/application/views/feeder/profiles/widget.php:218
@@ -3583,8 +3577,7 @@ msgstr "Override"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
@@ -3956,7 +3949,7 @@ msgstr "Vuoi veramente scaricare i file selezionati?"
 
 #: fabui/application/views/projectsmanager/edit/widget.php:15
 msgid "You don't have permissions to edit this project"
-msgstr ""
+msgstr "Non hai i permessi per modificare questo progetto"
 
 #: fabui/application/views/projectsmanager/edit/widget.php:33
 #: fabui/application/views/projectsmanager/add/widget.php:23
@@ -4378,13 +4371,12 @@ msgid "Task has been terminated"
 msgstr "L'operazione è stata terminata"
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:615
-#, fuzzy
 msgid "Processing file"
-msgstr "Post processing"
+msgstr "Processione del file"
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:618
 msgid "File processed"
-msgstr ""
+msgstr "Il file è stato processato"
 
 #: fabui/ext/py/fabtotum/fabui/bootstrap.py:162
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:316
@@ -4474,9 +4466,8 @@ msgid "Setting feeder values..."
 msgstr "Impostando i valori dell'estrusore"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:212
-#, fuzzy
 msgid "Setting E steps per unit to {0}"
-msgstr "Impostando gli step per unità di E a {0}"
+msgstr "Imposto gli step per unità di E a {0}"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:213
 msgid "Setting E position to 0"
@@ -4499,42 +4490,36 @@ msgid "Setting retract acceleration {0}"
 msgstr "Impostando la velocità di retrazione {0}"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:237
-#, fuzzy
 msgid "Setting 4th-axis values..."
-msgstr "Impostando i valori della testa"
+msgstr "Imposto i valori del 4° asse"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:239
-#, fuzzy
 msgid "Setting A steps per degree to {0}"
-msgstr "Impostando la temperatura massima a {0}"
+msgstr "Imposto gli step per angolo di A a {0}"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:240
-#, fuzzy
 msgid "Setting A position to 0"
-msgstr "Impostando la posizione di E a 0"
+msgstr "Imposto la posizione di A a 0"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:241
-#, fuzzy
 msgid "Setting A acceleration to {0}"
-msgstr "Impostando l'accellerazione di E a {0}"
+msgstr "Imposto l'accelerazione di E a {0}"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:242
-#, fuzzy
 msgid "Setting A max feedrate to {0}"
-msgstr "Impostando max feederate di E a {0}"
+msgstr "Imposto max feederate di E a {0}"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:243
-#, fuzzy
 msgid "Setting A max jerk to {0}"
-msgstr "Impostando max jerk di E a {0}"
+msgstr "Imposto max jerk di E a {0}"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:266
 msgid "Setting head values..."
-msgstr "Impostando i valori della testa"
+msgstr "Impostoi valori della testa"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:271
 msgid "Setting soft ID to {0}"
-msgstr "Impostando il software ID a {0}"
+msgstr "Imposto il software ID a {0}"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:274
 msgid "Configuring working mode"
@@ -4828,7 +4813,6 @@ msgstr ""
 "actual'>-</span> / 200&deg;)"
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:114
-#, fuzzy
 msgid "Unloading Spool : procedure Started."
 msgstr "Scaricamento filamento: procedura Iniziata."
 
@@ -4848,9 +4832,8 @@ msgstr "Muovendo verso la zona di sicurezza"
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:122
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:176
-#, fuzzy
 msgid "set the extruder to relative modee"
-msgstr "Imposta modalità relativa"
+msgstr "Imposto estrusore in modalità relativa"
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:123
 msgid "Setting extruder to zero"
@@ -4875,7 +4858,6 @@ msgid "Extrusion prevention enabled"
 msgstr "Prevenzione di estrusione abilitata"
 
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:164
-#, fuzzy
 msgid "Loading Spool : procedure Started."
 msgstr "Caricamento filamento: procedura Iniziata."
 
@@ -5082,9 +5064,8 @@ msgid "Block stepper motor"
 msgstr "Motori bloccati"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:84
-#, fuzzy
 msgid " Set extruder to absolute mode"
-msgstr "Impostando l'estrusore a zero"
+msgstr "Impostando l'estrusore in modalità assoluta"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:85
 msgid "Heating Nozzle"
@@ -5113,9 +5094,8 @@ msgid "Enable wire endstop"
 msgstr "Abilita controllo fine filo"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:107
-#, fuzzy
 msgid "Set extuder length"
-msgstr "Configura modalità estrusione"
+msgstr "Configuro lunghezza estrusore"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:109
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:72
@@ -5166,13 +5146,12 @@ msgid "Reset Extruder factor override"
 msgstr "Reimpostazione override d'estrusione"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:162
-#, fuzzy
 msgid "Set extruder to absolute mode"
-msgstr "Configura modalità estrusione"
+msgstr "Configuro l'estrusore in modalità assoluta"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:163
 msgid "Zero the extruder length"
-msgstr ""
+msgstr "Azzero la lunghezza dell'estrusore"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:184
 msgid "Terminating..."
@@ -5205,9 +5184,8 @@ msgstr "Stampa completata!"
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:203
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:212
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:221
-#, fuzzy
 msgid "Motors off"
-msgstr "Motore spento"
+msgstr "Motori spenti"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:207
 msgid "Force endstops"
@@ -5222,7 +5200,6 @@ msgid "Filament not inserted"
 msgstr "Filamento non inserito"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:250
-#, fuzzy
 msgid "Disable wire end check"
 msgstr "Abilita controllo fine filo"
 
@@ -5779,7 +5756,6 @@ msgid "Logout"
 msgstr "Termina la sessione"
 
 #: fabui/assets/js/fab.app.js:692
-#, fuzzy
 msgid "You will be redirected to login page"
 msgstr "Sarai re-indirizzato alla pagina di login"
 
@@ -5828,7 +5804,6 @@ msgid "X/Y position restored to {0}, {1}"
 msgstr "Posizione di X/Y ripristinata a {0}, {1}"
 
 #: fabui/assets/js/fab.app.js:1500
-#, fuzzy
 msgid "You will be redirected to recovery page"
 msgstr "Sarai re-indirizzato alla pagina di recovery"
 
