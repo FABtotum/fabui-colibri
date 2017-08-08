@@ -34,10 +34,11 @@ def loadFactoryFeeder(config):
     
     try:
         feeder_file = os.path.join(fabui_path, 'feeders', 'built_in_feeder.json')
+        
         with open(feeder_file) as json_f:
             info = json.load(json_f)
             
-            if config.is_firstboot(): ### ONLY At FIRST BOOT CHECK FOR  UNIT STEPS
+            if config.is_firstboot() and os.path.exists('/mnt/live/mnt/boot/factory/feeders/built_in_feeder.json') == False: ### ONLY At FIRST BOOT CHECK FOR  UNIT STEPS
                 hw_id =  int(config.get('settings', 'hardware.id'))
                 if(hw_id < 4):
                     steps_per_unit = 3048.16

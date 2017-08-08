@@ -377,6 +377,8 @@ def hardwareBootstrap(gcs, config = None, logger = None):
         log.error("Unsupported hardware version: %s", hardwareID)
         log.error("Forced to hardware1")
         PRESET_MAP["1"](gcs, config, log, eeprom, factory)
+
+    config.reload()
     
     configure_head(gcs, config, log)
     configure_feeder(gcs, config, log)
