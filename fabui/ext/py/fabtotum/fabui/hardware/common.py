@@ -36,18 +36,46 @@ def loadFactoryFeeder(config):
         feeder_file = os.path.join(fabui_path, 'feeders', 'built_in_feeder.json')
         with open(feeder_file) as json_f:
             info = json.load(json_f)
+            
+            if config.is_firstboot(): ### ONLY At FIRST BOOT CHECK FOR  UNIT STEPS
+                hw_id =  int(config.get('settings', 'hardware.id'))
+                if(hw_id < 4):
+                    steps_per_unit = 3048.16
+                    steps_per_angle = 177.777778
+                    max_feedrate = 12
+                else:
+                    steps_per_unit = 1524
+                    steps_per_angle = 88.888889
+                    max_feedrate = 23
+                    
+                info['steps_per_unit'] = steps_per_unit
+                info['steps_per_angle'] = steps_per_angle
+                info['max_feedrate'] = max_feedrate
+            
             return info
     except:
+        
+        hw_id =  int(config.get('settings', 'hardware.id'))
+        
+        if(hw_id < 4):
+            steps_per_unit = 3048.16
+            steps_per_angle = 177.777778
+            max_feedrate = 12
+        else:
+            steps_per_unit = 1524
+            steps_per_angle = 88.888889
+            max_feedrate = 23
+            
         return {
                 "name": "Built-in feeder",
                 "description": "Built-in feeder (4th axis)",
                 "link": "",
                 "custom_gcode": "",
                 "tube_length": 770,
-                "steps_per_unit": 3048.16,
-                "steps_per_angle": 177.777778,
+                "steps_per_unit": steps_per_unit,
+                "steps_per_angle": steps_per_angle,
                 "max_acceleration": 100,
-                "max_feedrate": 12,
+                "max_feedrate": max_feedrate,
                 "max_jerk": 1,
                 "retract_acceleration": 100,
                 "retract_feedrate": 12,
@@ -68,11 +96,17 @@ def defaultCoreSettings(gcodeSender, config, log, eeprom, factory):
     #invert x endstop logic
     gcodeSender.send("M747 X1", group='bootstrap')
     #set maximum feedrate
-    gcodeSender.send("M203 X550.00 Y550.00 Z15.00", group='bootstrap')
+    gcodeSender.send("M203 X250.00 Y250.00 Z15.00", group='bootstrap')
     config.set('settings', 'feeder.engage', False)
     config.set('settings', 'feeder.available', True)
     config.set('settings', 'hardware.camera.available', False)
     config.set('settings', 'scan.available', False)
+    
+    if config.is_firstboot():
+        feeder = loadFactoryFeeder(config)
+        updateFactoryFeeder(config, feeder)
+        config.save_feeder_info('built_in_feeder', feeder)
+    
     config.save('settings')
     
 """ CORE PRO Default settings """
@@ -80,6 +114,8 @@ def defaultProSettings(gcodeSender, config, log, eeprom, factory):
     log.info("Applying default settings for CORE PRO version")
     #invert x endstop logic
     gcodeSender.send("M747 X1", group='bootstrap')
+    #set maximum feedrate
+    gcodeSender.send("M203 X250.00 Y250.00 Z15.00", group='bootstrap')
     config.set('settings', 'feeder.engage', False)
     config.set('settings', 'feeder.available', False)
     config.set('settings', 'hardware.camera.available', False)

@@ -39,25 +39,5 @@ def hardware1000(gcodeSender, config, log, eeprom, factory):
     """
     log.info("Rev1000 - Core")
     defaultCoreSettings(gcodeSender, config, log, eeprom, factory)
-    
     config.set('settings', 'hardware.id', 1000)
     config.save('settings')
-    
-    feeder = loadFactoryFeeder(config)
-    steps_per_unit = float(feeder['steps_per_unit'])
-    steps_per_angle = float(feeder['steps_per_angle'])
-    feeder['max_feedrate'] = 23.00
-    
-    if config.is_firstboot():
-        if factory:
-            steps_per_unit = float(factory['feeder']['steps_per_unit'])
-            steps_per_angle = float(factory['feeder']['steps_per_angle'])
-        else:
-            steps_per_unit = 1524
-            steps_per_angle = 88.888889
-            
-        feeder['steps_per_unit'] = steps_per_unit
-        feeder['steps_per_angle'] = steps_per_angle
-        
-        updateFactoryFeeder(config, feeder)
-        config.save_feeder_info('built_in_feeder', feeder)

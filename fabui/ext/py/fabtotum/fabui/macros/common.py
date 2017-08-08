@@ -206,6 +206,7 @@ def configure_feeder(app, feeder_name, lang='en_US.UTF-8'):
     max_acceleration     = float(feeder['max_acceleration'])
     max_jerk             = float(feeder['max_jerk'])
     retract_acceleration = float(feeder['retract_acceleration'])
+    custom_gcode         = feeder.get('custom_gcode','')
     
     app.trace( _("Setting feeder values..."))
     
@@ -215,6 +216,12 @@ def configure_feeder(app, feeder_name, lang='en_US.UTF-8'):
     app.macro("M203 E{0}".format(max_feedrate),             "ok", 1,   _("Setting E max feedrate to {0}").format(max_feedrate), verbose=False)
     app.macro("M205 E{0}".format(max_jerk),                 "ok", 1,   _("Setting E max jerk to {0}").format(max_jerk), verbose=False)
     app.macro("M204 T{0}".format(retract_acceleration),     "ok", 1,   _("Setting retract acceleration {0}").format(retract_acceleration), verbose=False)
+    
+    for line in custom_gcode.split('\n'):
+            if line:
+                code = line.split(';')[0]
+                if code:
+                    app.macro( code, "ok*", 50, "hidden message", verbose=False)
     
     return True
 

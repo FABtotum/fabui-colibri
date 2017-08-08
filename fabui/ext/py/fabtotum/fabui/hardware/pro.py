@@ -50,6 +50,12 @@ def hardware2500(gcodeSender, config, log, eeprom, factory):
     config.set('settings', 'hardware.id', 2500)
     config.set('settings', 'feeder.engage', False)
     config.set('settings', 'feeder.available', True)
+    
+    if config.is_firstboot():
+        feeder = loadFactoryFeeder(config)
+        updateFactoryFeeder(config, feeder)
+        config.save_feeder_info('built_in_feeder', feeder)
+    
     config.save('settings')
 
 def hardware2600(gcodeSender, config, log, eeprom, factory):
@@ -63,4 +69,10 @@ def hardware2600(gcodeSender, config, log, eeprom, factory):
     config.set('settings', 'feeder.available', True)
     config.set('settings', 'hardware.camera.available', True)
     config.set('settings', 'scan.available', True)
+
+    if config.is_firstboot():
+        feeder = loadFactoryFeeder(config)
+        updateFactoryFeeder(config, feeder)
+        config.save_feeder_info('built_in_feeder', feeder)
+        
     config.save('settings')
