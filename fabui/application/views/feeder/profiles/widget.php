@@ -11,9 +11,7 @@
 <?php endif; ?>
 	</div>
 </div>
-
 <style>.jumbotron{padding:20px;} .jumbotron p {font-size: 15px;} </style>
-
 <div class="row">
 	<div class="col-sm-12">
 		<div class="well well-light">
@@ -38,7 +36,6 @@
 							</section>
 						</fieldset>
 					</div>
-					
 					<div class="row" style="margin-top:-30px">
 						<div class="col-sm-12">
 							<div class="smart-form">
@@ -71,12 +68,28 @@
 		<div class="modal-content">
 
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<span class="pull-right">
+					<span class="onoffswitch-title"><?php echo _("Advanced settings");?></span> 
+					<span class="onoffswitch">
+						<input type="checkbox"  name="advanced_settings_switch" class="onoffswitch-checkbox" id="advanced_settings_switch">
+						<label class="onoffswitch-label" for="advanced_settings_switch"> 
+							<span class="onoffswitch-inner" data-swchon-text="ON" data-swchoff-text="OFF"></span> 
+							<span class="onoffswitch-switch"></span> 
+						</label> 
+					</span> 										
+				</span>
 				<h4 class="modal-title"><?php echo _("Feeder settings");?></h4>
 			</div><!-- /.modal-header -->
 
 			<div class="modal-body">
-				
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="alert alert-warning fade in">
+							<i class="fa-fw fa fa-warning"></i>
+							<strong><?php echo _("Warning");?></strong> <?php echo _("changing these settings may affect the proper functioning of the printer"); ?>
+						</div>
+					</div>
+				</div>
 				<form action="" class="smart-form" id="feeder-settings">
 					<fieldset>
 						<div class="row">
@@ -108,62 +121,47 @@
 					
 					<fieldset class="feeder-settings">
 						<div class="row">
-							
 							<section class="col col-6">
-								
 								<label class="label"><?php echo _('Steps per unit');?></label>
 								<label class="input">
 									<input type="number" id="feeder-steps_per_unit" name="steps_per_unit" min="1" max="5000" value="3048.16" step=0.1>
 								</label>
-								
 							</section>
-							
 							<section class="col col-6">
-								
 								<label class="label"><?php echo _('Tube length (mm)');?></label>
 								<label class="input">
 									<input type="number" id="feeder-tube_length" name="tube_length" min="0" max="2000" value="0">
 								</label>
-								
 							</section>
-							
 						</div>
 					</fieldset>
 					
 					<fieldset class="4thaxis-settings" style="display:none">
 						<div class="row">
-							
 							<section class="col col-6">
-								
 								<label class="label"><?php echo _('Steps per degree');?></label>
 								<label class="input">
 									<input type="number" id="feeder-steps_per_angle" name="steps_per_angle" min="1" max="5000" value="3048.16" step=0.1>
 								</label>
-								
 							</section>
-							
 						</div>
 					</fieldset>
 					
-					<fieldset class="speed-settings">
-						
+					<fieldset class="advanced-settings">
 						<div class="row">
-							
-							<section class="col col-6">
+							<section class="col col-4">
 								<label class="label"><?php echo _('Max acceleration (mm/s<sup>2</sup>)')?></label>
 								<label class="input">
 									<input type="number" id="feeder-max_acceleration" name="max_acceleration" min="0" max="10000" value="100">
 								</label>
 							</section>
-							
-							<section class="col col-6">
+							<section class="col col-4">
 								<label class="label"><?php echo _('Max feedrate (mm/s)')?></label>
 								<label class="input">
 									<input type="number" id="feeder-max_feedrate" name="max_feedrate" min="0" max="500" value="100">
 								</label>
 							</section>
-							
-							<section class="col col-6">
+							<section class="col col-4">
 								<label class="label"><?php echo _('Max jerk (mm)')?></label>
 								<label class="input">
 									<input type="number" id="feeder-max_jerk" name="max_jerk" min="0" max="200" value="100">
@@ -172,26 +170,22 @@
 							
 						</div>
 					</fieldset>
-					
-					<fieldset class="feeder-settings">
+					<fieldset class="advanced-settings">
 						<div class="row">
-							<section class="col col-6">
+							<section class="col col-4 feeder-settings">
 								<label class="label"><?php echo _('Retraction speed (mm/s)')?></label>
 								<label class="input">
 									<input type="number" id="feeder-retract_feedrate" name="retract_feedrate" min="1" max="500" value="12">
 								</label>
 							</section>
 							
-							<section class="col col-6">
+							<section class="col col-4 feeder-settings">
 								<label class="label"><?php echo _('Retract acceleration (mm/s<sup>2</sup>)')?></label>
 								<label class="input">
 									<input type="number" id="feeder-retract_acceleration" name="retract_acceleration" min="0" max="10000" value="100">
 								</label>
 							</section>
-						</div>
-						
-						<div class="row">
-							<section class="col col-6">
+							<section class="col col-4">
 								<label class="label"><?php echo _('Retraction amount (mm)')?></label>
 								<label class="input">
 									<input type="number" id="feeder-retract_amount" name="retract_amount" min="0" max="20" value="4">
@@ -199,8 +193,7 @@
 							</section>
 						</div>
 					</fieldset>
-					
-					<fieldset>
+					<fieldset class="advanced-settings">
 						<section>
 							<label class="label"><?php echo _('Custom initialization');?></label>
 							<label class="textarea">
@@ -209,8 +202,6 @@
 						</section>
 					</fieldset>
 				</form>
-				
-				
 			</div><!-- /.modal-body -->
 
 			<div class="modal-footer">
@@ -219,6 +210,7 @@
 			<button type="button" class="btn btn-default settings-action custom-feeder-button" data-action="import" title="<?php echo _("Import from file")?>"><i class="fa fa-upload"></i> <?php echo _("Import");?></button>
 			<button type="button" class="btn btn-default settings-action" data-action="export" title="<?php echo _("Export to file")?>"><i class="fa fa-download"></i> <?php echo _("Export");?></button>
 			<button type="button" class="btn btn-primary settings-action" data-action="save" data-dismiss="modal"><i class="fa fa-save"></i> <?php echo _("Save");?></button>
+			<button type="button" class="btn btn-success settings-action" data-action="save-install" data-dismiss="modal"><i class="fa fa-wrench"></i> <?php echo _("Save & Configure");?></button>
 			</div><!-- /.modal-footer -->
 
 		</div><!-- /.modal-content -->

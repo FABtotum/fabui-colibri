@@ -26,6 +26,7 @@
 		$('.capability').on('change', capability_change);
 		$("#inputId").on('change', importHeadSettings);
 		initFieldValidation();
+		$("#advanced_settings_switch").on('click', clickShowHideSettings);
 		
 	});
 
@@ -258,9 +259,13 @@
 				{
 					populateHeadSettings(heads[selected_head]);
 				}
+				$("#advanced_settings_switch").prop('checked', false);
+				showHideSettings(false);
 				$('#settingsModal').modal('show');
 				break;
 			case "add":
+				$("#advanced_settings_switch").prop('checked', true);
+				showHideSettings(true);
 				document.getElementById("head-settings").reset();
 				showHideInputsForOfficialHeads('show');
 				$('#settingsModal').modal('show');
@@ -587,5 +592,23 @@
 			tool = 'M563 P0 D3';
 		}
 		$("#tool").val(tool);
+	}
+	/**
+	*
+	*/
+	function clickShowHideSettings()
+	{
+		showHideSettings($(this).prop('checked'));
+	}
+	/**
+	*
+	**/
+	function showHideSettings(bool)
+	{
+		if (bool) {
+			$(".advanced-settings").removeClass('advanced-settings').addClass("all-settings");
+		} else {
+			$(".all-settings").removeClass('all-settings').addClass("advanced-settings");
+		}
 	}
 </script>

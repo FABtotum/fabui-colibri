@@ -17,6 +17,7 @@
 		$("#feeders").on('change', setFeederImg);
 		$("#feeders").trigger('change');
 		$("#set-feeder").on('click', setFeeder);
+		$("#advanced_settings_switch").on('click', showHideSettings);
 		
 		$('.settings-action').on('click', buttonAction);
 		$("#inputId").on('change', importFeederSettings);
@@ -144,6 +145,12 @@
 			case "factory-reset":
 				factoryReset(selected_feeder);
 				break;
+			case "save-install":
+				console.log("SAVE INSTALL");
+				if($("#feeder-settings").valid()){
+					saveFeederSettings(setFeeder);
+				}
+				break;
 		}
 		
 		return false;
@@ -194,7 +201,7 @@
 		}
 
 		/**
-		* only for fabtotums official heads
+		* only for fabtotums official feeders
 		*/
 		if( parseInt(feeder.factory) == 1 ){
 			showHideInputsForOfficialFeeders('hide');
@@ -206,7 +213,7 @@
 	/**
 	*
 	**/
-	function saveFeederSettings()
+	function saveFeederSettings(callback)
 	{
 		var settings = getFeederSettings();	
 		var filename = settings['name'].replace(/ /g, "_").replace(/-/g, "_").toLowerCase();
@@ -219,7 +226,11 @@
 			console.log(response);
 			fabApp.showInfoAlert('<strong>{0}</strong> saved'.format(settings.name));
 			setTimeout(function(){
-				location.reload();
+				if($.isFunction(callback)){
+					callback();
+				}else{
+					location.reload();
+				}	
 			}, 1000);
 		});
 	}
@@ -328,5 +339,16 @@
 			}
 		});
 		
+	}
+	/**
+	*
+	**/
+	function showHideSettings()
+	{
+		if ($(this).prop('checked')) {
+			$(".advanced-settings").removeClass('advanced-settings').addClass("all-settings");
+		} else {
+			$(".all-settings").removeClass('all-settings').addClass("advanced-settings");
+		}
 	}
 </script>

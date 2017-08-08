@@ -1,3 +1,7 @@
 .gcodearea {
 		text-transform: uppercase !important;
 }
+
+.advanced-settings {
+	display: none !important;
+}
