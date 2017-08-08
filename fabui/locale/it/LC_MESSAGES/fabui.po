@@ -3016,9 +3016,8 @@ msgstr "Dettagli"
 
 #: fabui/application/views/head/install.php:88
 #: fabui/application/views/feeder/profiles/widget.php:72
-#, fuzzy
 msgid "Advanced settings"
-msgstr "Impostazioni della testa"
+msgstr "Impostazioni avanzate"
 
 #: fabui/application/views/head/install.php:97
 msgid "Head settings"
@@ -3029,6 +3028,8 @@ msgstr "Impostazioni della testa"
 msgid ""
 "changing these settings may affect the proper functioning of the printer"
 msgstr ""
+"la modifica di queste impostazioni potrebbe influenzare il corretto "
+"funzionamento della stampante"
 
 #: fabui/application/views/head/install.php:120
 #: fabui/application/views/feeder/profiles/widget.php:104
@@ -3591,8 +3592,7 @@ msgstr "Override"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
@@ -3871,9 +3871,8 @@ msgid "Max jerk (mm)"
 msgstr "Max jerk (mm)"
 
 #: fabui/application/views/feeder/profiles/widget.php:213
-#, fuzzy
 msgid "Save & Configure"
-msgstr "Configura"
+msgstr "Salva & Configura"
 
 #: fabui/application/views/feeder/engage/js.php:9
 msgid "Preparing procedure"
