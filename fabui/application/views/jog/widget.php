@@ -163,10 +163,16 @@
 				
 				<?php if($headMillSupport): ?>
 				<div class="col-sm-12 margin-bottom-50">
-					<h4><?php echo _("RPM"); ?> <span class="pull-right"><strong><span class="slider-task-rpm"><?php echo _("Off"); ?></span></strong></span></h4>
+					<h4><?php echo _("RPM"); ?> <small><?php echo _("Clockwise"); ?></small> <span class="pull-right"><strong><span class="slider-task-rpm"><?php echo _("Off"); ?></span></strong></span></h4>
 					<div id="create-rpm-slider" class="noUiSlider sliders"></div>
 					<!--  <div class="feature-warning"><h4><i class="fa fa-ban" aria-hidden="true"></i> <?php echo _("Head does not have a milling motor"); ?></h4></div>-->
 				</div>
+				<!--  
+				<div class="col-sm-12 margin-bottom-50">
+					<h4><?php echo _("RPM"); ?> <small><?php echo _("Counter-clockwise"); ?></small> <span class="pull-right"><strong><span class="slider-task-counter-rpm"><?php echo _("Off"); ?></span></strong></span></h4>
+					<div id="create-counter-rpm-slider" class="noUiSlider sliders"></div>
+				</div>
+				-->
 				<?php endif; ?>
 				
 				<div class="col-sm-12 margin-bottom-50">

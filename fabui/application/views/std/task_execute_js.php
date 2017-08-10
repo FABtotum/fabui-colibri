@@ -10,10 +10,10 @@
 
 /* variable initialization */
 
-if(!isset($extruder_min)) 	$extruder_min = 0;
-if(!isset($extruder_max)) 	$extruder_max = 250;
-if(!isset($bed_min)) 		$bed_min = 10;
-if(!isset($bed_max)) 		$bed_max = 100;
+if(!isset($extruder_min) || $extruder_min == 0) $extruder_min = 0;
+if(!isset($extruder_max) || $extruder_max == 0) $extruder_max = 250;
+if(!isset($bed_min)      || $bed_min == 0)      $bed_min = 10;
+if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 
 ?>
 <script type="text/javascript">

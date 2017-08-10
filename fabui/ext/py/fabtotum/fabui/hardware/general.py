@@ -59,9 +59,7 @@ def hardware1(gcodeSender, config, log, eeprom, factory):
     Rev1: September 2014 - May 2015
     - Original FABtotum
     """
-    
-    #eeprom = read_eeprom(gcodeSender)
-    
+    gcodeSender.send("M203 X250.00 Y250.00 Z15.00", group='bootstrap')
     config.set('settings', 'hardware.id', 1)
     config.set('settings', 'feeder.engage', True)
     config.set('settings', 'feeder.available', True)
@@ -88,7 +86,7 @@ def hardware2(gcodeSender, config, log, eeprom, factory):
     #invert x endstop logic
     gcodeSender.send("M747 X1", group='bootstrap')
     #set maximum feedrate
-    gcodeSender.send("M203 X550.00 Y550.00 Z15.00", group='bootstrap')
+    gcodeSender.send("M203 X250.00 Y250.00 Z15.00", group='bootstrap')
     #save settings
     #gcodeSender.send("M500", group='bootstrap')
     
@@ -122,7 +120,7 @@ def hardware3(gcodeSender, config, log, eeprom, factory):
     #invert x endstop logic
     gcodeSender.send("M747 X1", group='bootstrap')
     #set maximum feedrate
-    gcodeSender.send("M203 X550.00 Y550.00 Z15.00", group='bootstrap')
+    gcodeSender.send("M203 X250.00 Y250.00 Z15.00", group='bootstrap')
     #save settings
     #gcodeSender.send("M500", group='bootstrap')
     

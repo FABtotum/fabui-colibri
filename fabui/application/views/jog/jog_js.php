@@ -26,8 +26,11 @@ if(!isset($rpm_max)) 		$rpm_max = 14000;
 	var wasFanSliderMoved = false;
 	
 	var rpmSlider;
+	var counterRpmSlider;
 	var isRpmSliderBusy = false;
+	var isCounterRpmSliderBusy = false;
 	var wasRpmSliderMoved = false;
+	var wasCounterRpmSliderMoved = false;
 	
 	var bedSlider;
 	var isBedSliderBusy = false;
@@ -329,6 +332,39 @@ if(!isset($rpm_max)) 		$rpm_max = 14000;
 				wasRpmSliderMoved = true;
 			});
 		}
+		/*
+		if(typeof counterRpmSlider == "undefined")
+		{
+			noUiSlider.create(document.getElementById('create-counter-rpm-slider'), {
+				start: 0,
+				connect: "lower",
+				step: 100,
+				range: {'min': 0, 'max' : <?php echo $rpm_max; ?>},
+				pips: {
+					mode: 'values',
+					values: [6000,8000,10000,12000,<?php echo $rpm_max; ?>],
+					density: 10,
+					format: wNumb({})
+				}
+			});
+			counterRpmSlider = document.getElementById('create-counter-rpm-slider');
+			
+			counterRpmSlider.noUiSlider.on('change', function(e){
+				onChange('counter-rpm', e);
+			});
+			counterRpmSlider.noUiSlider.on('slide', function(e){
+				onSlide('counter-rpm', e);
+				wasCounterRpmSliderMoved = true;
+			});
+			counterRpmSlider.noUiSlider.on('end', function(e){
+				isCounterRpmSliderBusy = false;
+			});
+			counterRpmSlider.noUiSlider.on('start', function(e){
+				isCounterRpmSliderBusy = true;
+				wasCounterRpmSliderMoved = true;
+			});
+		}
+		*/
 		<?php endif; ?>
 
 	}
@@ -355,6 +391,12 @@ if(!isset($rpm_max)) 		$rpm_max = 14000;
 					$('.slider-task-rpm').html("Off");
 				else
 					$('.slider-task-rpm').html(parseInt(value));
+				break;
+			case 'counter-rpm':
+				if(parseInt(value) < <?php echo isset($rpm_min) ? $rpm_min : 6000; ?>)
+					$('.slider-task-counter-rpm').html("Off");
+				else
+					$('.slider-task-counter-rpm').html(parseInt(value));
 				break;
 			
 		}
@@ -385,6 +427,13 @@ if(!isset($rpm_max)) 		$rpm_max = 14000;
 					fabApp.jogMdi("M5", writeJogResponse);
 				else
 					fabApp.jogMdi("M3 S"+rpm, writeJogResponse);
+				break;
+			case 'counter-rpm':
+				var rpm = parseInt(value[0]);
+				if(rpm < <?php echo isset($rpm_min) ? $rpm_min : 6000; ?>)
+					fabApp.jogMdi("M5", writeJogResponse);
+				else
+					fabApp.jogMdi("M4 S"+rpm, writeJogResponse);
 					
 				break;
 		}

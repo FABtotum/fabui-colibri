@@ -47,7 +47,7 @@ def loadFactoryFeeder(config):
                 else:
                     steps_per_unit = 1524
                     steps_per_angle = 88.888889
-                    max_feedrate = 23
+                    max_feedrate = 12
                     
                 info['steps_per_unit'] = steps_per_unit
                 info['steps_per_angle'] = steps_per_angle
@@ -65,7 +65,7 @@ def loadFactoryFeeder(config):
         else:
             steps_per_unit = 1524
             steps_per_angle = 88.888889
-            max_feedrate = 23
+            max_feedrate = 12
             
         return {
                 "name": "Built-in feeder",
