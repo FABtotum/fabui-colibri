@@ -36,7 +36,11 @@ class Install extends FAB_Controller {
 			setLanguage($this->input->post('locale'));
 		}
 		
-		$interfaces = getInterfaces();	
+		$interfaces = getInterfaces();
+		if(!isset($interfaces['wlan0'])){ //maybe wlan is not ready yet, so better wait 5 seconds and try again
+			sleep(5);
+			$interfaces = getInterfaces();
+		}
 		$wizard_steps = array();
 		$wizard_steps[] = array('id'=>'welcome-tab', 'title' => _("Welcome"), 'active' => true);
 		$wizard_steps[] = array('id'=>'account-tab', 'title' => _("Account"), 'active' => false);
