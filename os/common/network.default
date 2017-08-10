@@ -1,2 +1,2 @@
-NETWORK_MANAGER=ifupdown
-#NETWORK_MANAGER=connman
+#NETWORK_MANAGER=ifupdown
+NETWORK_MANAGER=connman

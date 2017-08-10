@@ -8,7 +8,7 @@ test -r /etc/default/network && source /etc/default/network
 
 INTERFACESD=/etc/network/interfaces.d
 CONNMAN_UPGRADE_FILE="/var/lib/fabui/upgrade.d/001_connman.sh"
-UPGRADE_TO_CONNMAN="no"
+UPGRADE_TO_CONNMAN="yes"
 
 ########################################################################
 
