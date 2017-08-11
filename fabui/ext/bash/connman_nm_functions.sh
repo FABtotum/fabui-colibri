@@ -38,6 +38,31 @@ parse_ini()
 }
 
 ##
+# Function calculates number of bit in a netmask
+# 
+# $1 - netmask
+#
+mask2cidr() {
+    nbits=0
+    IFS=.
+    for dec in $1 ; do
+        case $dec in
+            255) let nbits+=8;;
+            254) let nbits+=7;;
+            252) let nbits+=6;;
+            248) let nbits+=5;;
+            240) let nbits+=4;;
+            224) let nbits+=3;;
+            192) let nbits+=2;;
+            128) let nbits+=1;;
+            0);;
+            *) echo "Error: $dec is not recognised"; exit 1
+        esac
+    done
+    echo "$nbits"
+}
+
+##
 # Translate interface name to service name
 #
 # $1 - interface (ex: wlan0)
@@ -396,6 +421,7 @@ get_interface_state()
 			IPv4=""
 			IPv6=""
 			GATEWWAY=""
+			NETMASK_PREFIX=24
 			MODE="unknown"
 			PASSPHRASE=""
 			
@@ -413,7 +439,6 @@ get_interface_state()
 			
 				LIVE_SERVICE=$(connmanctl services | grep $SERVICE | awk '{print $NF}')
 				if [ -n "$LIVE_SERVICE" ]; then
-			
 					A=$(connmanctl services $SERVICE | grep "IPv4 " | sed -e 's@IPv4 = \[@@g' -e 's@\]@@g' -e 's@,@@g')
 					B=$(connmanctl services $SERVICE | grep IPv4.Configuration | sed -e 's@IPv4.Configuration = \[@@g' -e 's@\]@@g' -e 's@,@@g')
 					for SEGMENT in $(echo $A $B); do
@@ -434,14 +459,16 @@ get_interface_state()
 								;;
 						esac
 					done
+					NETMASK_PREFIX=$(mask2cidr ${NETMASK})
 				else
 					if [ x"$iface" == x"eth0" ]; then
 						if [ -e "$SETTINGS_FILE" ]; then
+							echo "Reading settings from file"
 							# fallback, read addresses from settings
 							MODE=$(cat "$SETTINGS_FILE" |  grep "IPv4.method" | awk -F= '{print $2}')
-							PREFIX=$(cat "$SETTINGS_FILE" |  grep "IPv4.netmask_prefixlen" | awk -F= '{print $2}')
+							NETMASK_PREFIX=$(cat "$SETTINGS_FILE" |  grep "IPv4.netmask_prefixlen" | awk -F= '{print $2}')
 							IPv4=$(cat "$SETTINGS_FILE" |  grep "IPv4.local_address" | awk -F= '{print $2}')
-							eval $(ipcalc $IPv4/$PREFIX -m)
+							eval $(ipcalc $IPv4/$NETMASK_PREFIX -m)
 							
 							GATEWAY=$(cat "$SETTINGS_FILE" |  grep "IPv4.gateway" | awk -F= '{print $2}')
 						fi
@@ -468,7 +495,7 @@ get_interface_state()
 			echo "    \"mac_address\" : \"$MAC\","
 			if [ -n "$NETMASK" ]; then
 				eval $(ipcalc -p $NETMASK)
-				echo "    \"ipv4_address\" : \"$IPv4/$PREFIX\","
+				echo "    \"ipv4_address\" : \"$IPv4/${NETMASK_PREFIX}\","
 			else
 				echo "    \"ipv4_address\" : \"$IPv4\","
 			fi
