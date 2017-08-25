@@ -597,19 +597,5 @@ connman_migrate_settings()
 	else
 		echo "- configured: NO"
 		rm -rf ${CONNMAN_SERVICES_DIR}/wifi_* &> /dev/null
-		#~ for cfg in $(ls ${CONNMAN_SERVICES_DIR}/wifi_* -d); do
-			#~ if [ x"${CONNMAN_SERVICES_DIR}/$WLAN_SER" != x"$cfg" ]; then
-				#~ echo "-- Migrating $cfg ..."
-				#~ SETTINGS_FILE="$cfg/settings"
-				#~ if 
-				#~ OLD_MAC=$(cat $SETTINGS_FILE | grep "\[" | awk -F '_' '{print $2}')
-				#~ NEW_MAC=$(echo $WLAN_SER | awk -F '_' '{print $2}')
-				#~ echo "$OLD_MAC -> $NEW_MAC"
-				#~ sed -e "s/$OLD_MAC/$NEW_MAC/g" -i $SETTINGS_FILE
-				#~ mv "$cfg" "${CONNMAN_SERVICES_DIR}/${WLAN_SER}"
-				#~ break
-			#~ fi
-			rm -rf $cfg
-		#~ done
 	fi
 }
