@@ -59,6 +59,7 @@ def pause_additive(app, args=None, lang='en_US.UTF-8'):
     app.macro("G0 X210 Y210 F6000", "ok", 100,  _("Moving to safe zone"), verbose=False )
     #block stepper motor for 5min => 60*5=300
     app.macro("M84 S300", "ok", 2, _("Block stepper motor"), verbose=False)
+    app.macro("M732 S0", "ok", 2, _("Disabling door safety"))
     
 def resume_additive(app, args=None, lang='en_US.UTF-8'):
     
@@ -70,7 +71,9 @@ def resume_additive(app, args=None, lang='en_US.UTF-8'):
         wire_end = app.config.get('settings', 'wire_end', 0)
     except KeyError:
         wire_end = 0
-        
+    
+    
+    safety_door = app.config.get('settings', 'safety.door', 0)
     
     head = app.config.get_current_head_info()
     is_pro_head = app.config.is_pro_head(head['fw_id'])
@@ -87,6 +90,7 @@ def resume_additive(app, args=None, lang='en_US.UTF-8'):
     app.macro("M109 S{0}".format(ext_temp),  "*", 400, _("Waiting for nozzle to reach temperature {0}&deg;".format(ext_temp)) ) #heating and waiting.
     app.macro("M190 S{0}".format(bed_temp),  "*", 400, _("Waiting for bed to reach temperature {0}&deg;".format(bed_temp)) ) #heating and waiting.
     app.macro("M84", "ok", 2, _("Unlock stepper motor"), verbose=False)
+    app.macro("M732 S{0}".format(safety_door), "ok", 2, _("Set door safety"))
     
     if(is_pro_head == True and wire_end == 1):
         app.macro("M805 S1",   "ok", 1,    _("Enable wire endstop"), verbose=False)
