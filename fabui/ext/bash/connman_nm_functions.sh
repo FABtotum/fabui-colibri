@@ -76,7 +76,7 @@ connman_iface2service()
     if [ x"$IFACE" == x"eth0" ]; then
         IF_SRV="ethernet_${IF_MAC}_cable"
     elif [ x"$IFACE" == x"wlan0" ]; then
-        IF_SRV=$(find /var/lib/connman -name  wifi_${IF_MAC}_*)
+        IF_SRV=$(find ${CONNMAN_SERVICES_DIR} -name  wifi_${IF_MAC}_*)
         [ -n "$IF_SRV" ] && IF_SRV=$(basename $IF_SRV)
     fi
     
@@ -565,4 +565,51 @@ get_interface_state()
 get_dns_config()
 {
 	echo ""
+}
+
+connman_migrate_settings()
+{
+	ETH_SER=$(connman_iface2service eth0)
+	echo "HW ETH: $ETH_SER"
+	if [ -e "${CONNMAN_SERVICES_DIR}/$ETH_SER" ]; then
+		echo "- configured: YES"
+	else
+		echo "- configured: NO"
+		for cfg in $(ls ${CONNMAN_SERVICES_DIR}/ethernet_* -d); do
+			if [ x"${CONNMAN_SERVICES_DIR}/$ETH_SER" != x"$cfg" ]; then
+				echo "-- Migrating $cfg ..."
+				SETTINGS_FILE="$cfg/settings"
+				OLD_MAC=$(cat $SETTINGS_FILE | grep "\[" | awk -F '_' '{print $2}')
+				NEW_MAC=$(echo $ETH_SER | awk -F '_' '{print $2}')
+				echo "$OLD_MAC -> $NEW_MAC"
+				sed -e "s/$OLD_MAC/$NEW_MAC/g" -i $SETTINGS_FILE
+				mv "$cfg" "${CONNMAN_SERVICES_DIR}/${ETH_SER}"
+				break
+			fi
+		done
+	fi
+
+
+	WLAN_SER=$(connman_iface2service wlan0)
+	echo "HW WLAN: $WLAN_SER"
+	if [ -e "${CONNMAN_SERVICES_DIR}/$WLAN_SER" ] && [ -n "$WLAN_SER" ]; then
+		echo "- configured: YES"
+	else
+		echo "- configured: NO"
+		rm -rf ${CONNMAN_SERVICES_DIR}/wifi_* &> /dev/null
+		#~ for cfg in $(ls ${CONNMAN_SERVICES_DIR}/wifi_* -d); do
+			#~ if [ x"${CONNMAN_SERVICES_DIR}/$WLAN_SER" != x"$cfg" ]; then
+				#~ echo "-- Migrating $cfg ..."
+				#~ SETTINGS_FILE="$cfg/settings"
+				#~ if 
+				#~ OLD_MAC=$(cat $SETTINGS_FILE | grep "\[" | awk -F '_' '{print $2}')
+				#~ NEW_MAC=$(echo $WLAN_SER | awk -F '_' '{print $2}')
+				#~ echo "$OLD_MAC -> $NEW_MAC"
+				#~ sed -e "s/$OLD_MAC/$NEW_MAC/g" -i $SETTINGS_FILE
+				#~ mv "$cfg" "${CONNMAN_SERVICES_DIR}/${WLAN_SER}"
+				#~ break
+			#~ fi
+			rm -rf $cfg
+		#~ done
+	fi
 }

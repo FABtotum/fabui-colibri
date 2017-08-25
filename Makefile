@@ -266,6 +266,10 @@ endif
 
 $(OS_COLIBRI_STAMP):
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/init.d
+	
+#	Connman iface migration fix
+	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/connman.init \
+		$(BDATA_DIR)/etc/init.d/connman
 		
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fabtotum.init \
 		$(BDATA_DIR)/etc/init.d/fabtotum
@@ -297,7 +301,7 @@ $(OS_COLIBRI_STAMP):
 		$(BDATA_DIR)/etc/rc.d/rc.firstboot.d/S10fabui
 	$(FAKEROOT_ENV) ln -fs ../../firstboot.d/network \
 		$(BDATA_DIR)/etc/rc.d/rc.firstboot.d/S09network
-	
+		
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/rc.d/rc.startup.d	
 	$(FAKEROOT_ENV) ln -fs ../../init.d/fabtotum \
 		$(BDATA_DIR)/etc/rc.d/rc.startup.d/S30fabtotum
