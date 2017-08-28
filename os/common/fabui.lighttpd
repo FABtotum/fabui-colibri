@@ -14,7 +14,7 @@ url.rewrite-once = ("^/fabui/(?!index\.php|assets|application|down|robots|upload
 
 setenv.add-response-header = ( "Access-Control-Allow-Origin" => "*" )
 
-compress.cache-dir = "/tmp/lighttpd/compress/"
+compress.cache-dir = "/mnt/bigtemp/lighttpd/compress/"
 compress.filetype = (
     "application/atom+xml",
     "application/javascript",
