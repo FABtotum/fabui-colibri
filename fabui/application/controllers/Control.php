@@ -264,7 +264,7 @@ class Control extends FAB_Controller {
 				if($action == 'connect')
 				{
 					$address     = isset($postData['ipv4'])    ? $postData['ipv4']    : '0.0.0.0';
-					$netmask     = isset($postData['netmask']) ? $postData['netmask'] : '255.255.255.0';
+					$netmask     = isset($postData['netmask']) ? $postData['netmask'] : '255.255.0.0';
 					$gateway     = isset($postData['gateway']) ? $postData['gateway'] : '0.0.0.0';
 					$mode        = $postData['address-mode'];
 					$iface       = $postData['active'];
