@@ -93,6 +93,30 @@
 		    }
 		});
 		
+		$("#printer-form").validate({
+			rules:{
+				serial_number:{
+					required: true,
+				}
+			},
+			messages: {
+				serial_number: {
+					required: '<?php echo _('Please insert serial number')?>',
+				}
+			},
+			highlight: function (element) {
+		   		$(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+		    },
+		    unhighlight: function (element) {
+		    	$(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+		    },
+		    errorElement: 'span',
+		    errorClass: 'help-block',
+		    errorPlacement: function (error, element) {
+		    	error.insertAfter(element.parent());
+		    }
+		});
+		
 		$("#passwordModalForm").validate({
 			rules:{
 				wifiPassword:{
@@ -112,6 +136,7 @@
 				error.insertAfter(element.parent());
 			}
 		});
+		
 	}
 	/**
 	 * 
@@ -121,25 +146,31 @@
 		$('#bootstrap-wizard-1').bootstrapWizard({
 			'tabClass': 'form-wizard',
 			'onNext': function (tab, navigation, index) {
-		    	var $valid = $("#install-form").valid();
-		      		if (!$valid) {
-		      			$validator.focusInvalid();
+
+				if(index == 2){
+					var $valid = $("#install-form").valid();
+					if (!$valid) {
+						$validator.focusInvalid();
 		      			return false;
-		      		} else {
-			      		
-		        		$('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).addClass('complete');
-		        		$('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).find('.step').html('<i class="fa fa-check"></i>');
-		        		handleStep(index);
-			  		}
+					}
+				}else if(index == 3){
+					var $valid = $("#printer-form").valid();
+					if (!$valid) {
+						$validator.focusInvalid();
+		      			return false;
+					}
+				}else{
+					$('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).addClass('complete');
+	        		$('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).find('.step').html('<i class="fa fa-check"></i>');
+	        		handleStep(index);
+				}
 			},
 			'onPrevious': function(tab, navigation, index){
 				handleStep(index);
 			},
 			'onLast': function(tab, navigation, inde){
-				console.log("last");
 			},
 			'onFinish': function(tab, navigation, inde){
-				console.log("finish");
 			}
 			
 		});
@@ -194,7 +225,14 @@
 				data[$(this).attr('id')] = $(this).val();
 			}
 		});
+		
+		$("#printer-form :input").each(function (index, value) {
+			if($(this).is('input:text') || $(this).is('textarea') || $(this).is('select') || $(this).is(':input[type="number"]') || $(this).is(':input[type="password"]') || ($(this).is('input:radio') && $(this).is(':checked')) ){
+				data[$(this).attr('id')] = $(this).val();
+			}
+		});
 
+		
 		$.ajax({
 			type: 'post',
 			url: '<?php echo site_url('install/do');?>',
@@ -251,8 +289,6 @@
 		}).done(function(response) {
 			if(response)
 				buildWifiTable(iface, response);
-			else
-				console.log("NO WIFI");
 		});
 	}
 	/**

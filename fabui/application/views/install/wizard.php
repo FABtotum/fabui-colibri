@@ -8,8 +8,8 @@
  */
  
 ?>
-<form class="lockscreen animated flipInY" method="POST" action="<?php echo site_url('install/do');?>" id="install-form">
-	<input type="hidden" name="browser-date" id="browser-date" />
+<div class="lockscreen animated flipInY">
+	
 	<div class="logo text-center">
 		<img src="/assets/img/fabui_v1.png">
 	</div>
@@ -54,100 +54,105 @@
 				<div class="tab-pane" id="account-tab">
 					<br>
 					<h3><strong><?php echo _("Step")?> 2 </strong> - <?php echo _("Create your personal account")?></h3>
-					<div class="row">
-						<div class="col-sm-6">
-							<div class="form-group">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-user  fa-fw"></i></span>
-									<input class="form-control " placeholder="<?php echo _("First name")?>" type="text" name="first_name" id="first_name">
+					<form id="install-form">
+						<input type="hidden" name="browser-date" id="browser-date" />
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-addon"><i class="fa fa-user  fa-fw"></i></span>
+										<input class="form-control " placeholder="<?php echo _("First name")?>" type="text" name="first_name" id="first_name">
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-addon"><i class="fa fa-user  fa-fw"></i></span>
+										<input class="form-control " placeholder="<?php echo _("Last name")?>" type="text" name="last_name" id="last_name">
+									</div>
 								</div>
 							</div>
 						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-user  fa-fw"></i></span>
-									<input class="form-control " placeholder="<?php echo _("Last name")?>" type="text" name="last_name" id="last_name">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-addon"><i class="fa fa-envelope  fa-fw"></i></span>
+										<input class="form-control " placeholder="email@address.com" type="text" name="email" id="email">
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="form-group">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-envelope  fa-fw"></i></span>
-									<input class="form-control " placeholder="email@address.com" type="text" name="email" id="email">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-addon"><i class="fa fa-lock  fa-fw"></i></span>
+										<input class="form-control " placeholder="Password" type="password" name="password" id="password">
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-addon"><i class="fa fa-lock  fa-fw"></i></span>
+										<input class="form-control " placeholder="Confirm password" type="password" name="confirmPassword" id="confirmPassword">
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="form-group">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-lock  fa-fw"></i></span>
-									<input class="form-control " placeholder="Password" type="password" name="password" id="password">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group">			
+									<label class="checkbox-inline">
+										 <input type="checkbox" class="checkbox" name="terms" id="terms">
+										 <span><?php echo _("I agree with the")?> <a href="#" data-toggle="modal" data-target="#termsConditionModal"> <?php echo _("Terms & Conditions")?> </a></span>
+									</label>
 								</div>
 							</div>
 						</div>
-						<div class="col-sm-12">
-							<div class="form-group">
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-lock  fa-fw"></i></span>
-									<input class="form-control " placeholder="Confirm password" type="password" name="confirmPassword" id="confirmPassword">
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="form-group">			
-								<label class="checkbox-inline">
-									 <input type="checkbox" class="checkbox" name="terms" id="terms">
-									 <span><?php echo _("I agree with the")?> <a href="#" data-toggle="modal" data-target="#termsConditionModal"> <?php echo _("Terms & Conditions")?> </a></span>
-								</label>
-							</div>
-						</div>
-					</div>
+					</form>
 				</div>
 				<div class="tab-pane" id="printer-tab">
 					<br>
 					<h3><strong><?php echo _("Step")?> 3 </strong> - <?php echo _("Printer")?></h3>
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="form-group">
-								<label><?php echo _("Assign a name to your FABtotum"); ?></label>
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-play fa-rotate-90  fa-fw"></i></span>
-									<input class="form-control " placeholder="<?php echo _("I'd like to have a name");?>" type="text" name="unit_name" id="unit_name">
+					<form id="printer-form">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group">
+									<label><?php echo _("Assign a name to your FABtotum"); ?></label>
+									<div class="input-group">
+										<span class="input-group-addon"><i class="fa fa-play fa-rotate-90  fa-fw"></i></span>
+										<input class="form-control " placeholder="<?php echo _("I'd like to have a name");?>" type="text" name="unit_name" id="unit_name">
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="form-group">
-								<label><?php echo _("Insert serial number"); ?></label>
-								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-play fa-key  fa-fw"></i></span>
-									<input class="form-control uppercase" data-mask="*****-***-*****" data-mask-placeholder= "_" type="text" name="serial_number" id="serial_number">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group">
+									<label><?php echo _("Insert serial number"); ?></label>
+									<div class="input-group">
+										<span class="input-group-addon"><i class="fa fa-play fa-key  fa-fw"></i></span>
+										<input class="form-control uppercase" data-mask="*****-***-*****" data-mask-placeholder= "_" type="text" name="serial_number" id="serial_number">
+									</div>
+									<p class="note"><?php echo _("The unit's serial number can be found on the back cover."); ?></p>
 								</div>
-								<p class="note"><?php echo _("The unit's serial number can be found on the back cover."); ?></p>
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="form-group">
-								<label><?php echo _("What color is your FABtotum ")?> </label>
-								<div class="icon-addon addon-md">
-				                    <?php echo colors_menu('form-control', 'unit_color', 'id="unit_color"');?>
-				                    <label class="fa fa-tint"></label>
-				                </div>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group">
+									<label><?php echo _("What color is your FABtotum ")?> </label>
+									<div class="icon-addon addon-md">
+					                    <?php echo colors_menu('form-control', 'unit_color', 'id="unit_color"');?>
+					                    <label class="fa fa-tint"></label>
+					                </div>
+								</div>
 							</div>
 						</div>
-					</div>
+					</form>
 				</div>
 				<div class="tab-pane" id="network-tab">
 					<br>
@@ -264,4 +269,4 @@
 		<input type="text" id="hidden-passphrase"   name="hidden-passphrase" value="">
 		<input type="text" id="hidden-psk"          name="hidden-psk" value="8e0f596ccbeb3fff85a4bbb14f193fecc1ca55a471df45a84df1b8f4ec33d426">
 	</fieldset>
-</form>
+</div>
