@@ -137,6 +137,7 @@
 		$result_codes[500]  = 'SERVICE_SERVER_ERROR';
 		$result_codes[1001] = 'SERVICE_INVALID_PARAMETER';
 		$result_codes[1002] = 'SERVICE_ALREADY_REGISTERED';
+		$result_codes[1003] = 'SERVICE_PRINTER_UNKNOWN';
 		
 		switch($method){
 			case 'fab_register_printer':
@@ -149,11 +150,19 @@
 			case 'fab_polling':
 				$result = fab_polling();
 				break;
+			case 'fab_is_printer_registered':
+				$result = fab_is_printer_registered();
+				break;
 		}
 		
-		if(isset($result['status_code'])){
-			$result['status_description'] = $result_codes[$result['status_code']];
+		if(is_array($result)){
+			if(isset($result['status_code'])){
+				$result['status_description'] = $result_codes[$result['status_code']];
+			}
+		}else{
+			$result = $result->getMessage();
 		}
+		
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('method'=>$method, 'result'=>$result)));
 	}
 	/**

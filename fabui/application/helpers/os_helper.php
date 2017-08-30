@@ -288,7 +288,6 @@ if(!function_exists('scanWlan'))
 	{
 		$CI =& get_instance();
 		$CI->load->helper('fabtotum');
-		#$scanCommand = 'sudo python '.$CI->config->item('ext_path').'py/scan_wifi.py '.$interface;
 		
 		$data = getInterfaces();
 		if( $data[$interface]['address_mode'] == 'manual' )
@@ -299,7 +298,9 @@ if(!function_exists('scanWlan'))
 		
 		$result = startPyScript('scan_wifi.py', $interface, false, true);
 		$nets = json_decode( $result, true);
-		
+
+		//order nets
+		uasort($nets, 'wlanSort');
 		return $nets;
 	}
 }
@@ -379,7 +380,8 @@ if(!function_exists('downloadRemoteFile'))
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
 		$downloadedFile = curl_exec($curl); //make call
 		$info = curl_getinfo($curl);
-		if(isset($info['http_code']) && $info['http_code'] == 200){ //if response is OK
+		if(isset($info['http_code']) && $info['http_code'] == 200 && $downloadedFile != ""){ //if response is OK and response is not empty
+			
 			$CI =& get_instance();
 			$CI->load->helper('file_helper');
 			write_file($path, $downloadedFile, 'w+');
@@ -602,6 +604,20 @@ if(!function_exists('restartLighttpd'))
 		$CI->load->helper('fabtotum');
 		log_message('debug', 'Restart Lighttpd');
 		startBashScript('restart_lighttpd.sh', null, false, true);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists("wlanSort"))
+{
+	/**
+	 * order network by quality
+	 */
+	function wlanSort($netA, $netB){
+		
+		if ($netA['quality'] == $netB['quality']) {
+			return 0;
+		}
+		return ($netA['quality'] > $netB['quality']) ? -1 : 1;
 	}
 }
 ?>

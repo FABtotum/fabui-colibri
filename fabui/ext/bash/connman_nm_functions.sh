@@ -357,7 +357,15 @@ config_ethernet_static()
 get_internet_state()
 {
 	STATE=$(connmanctl state | grep State | awk '{print $NF}')
-	if [ x"$STATE" == x"online" ]; then
+	
+	if [ x"$STATE" == x"ready" ]; then
+	    echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 -w 5 > /dev/null 2>&1
+		if [ $? -eq 0 ]; then
+		    echo "online"
+		else
+		   echo "offline"
+		fi
+	elif [ x"$STATE" == x"online" ]; then
 		echo "online"
 	else
 		echo "offline"

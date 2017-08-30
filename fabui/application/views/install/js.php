@@ -32,6 +32,12 @@
 		$("#language").on('change', setLocale);
 		$(".show-password").on('change', show_password);
 		$("#modalConnectButton").on('click', passwordModalConnect);
+
+		$("#wifiPassword").keypress(function(e) {
+			if(e.which == 13){
+				passwordModalConnect();
+			}
+		});
 	});
 	/**
 	 * 
@@ -432,7 +438,7 @@
 		};
 
 		openWait("<i class='fa fa-spin fa-spinner'></i> " + _("Connecting to <strong>{0}</strong>").format(data['hidden-ssid']) + ' <i class="fa fa-wifi"></i>', _("Please wait"), false );
-		
+		scrollToTop();
 		$.ajax({
 			type: 'post',
 			url: "<?php echo site_url('control/saveNetworkSettings'); ?>/connect/",
@@ -440,7 +446,7 @@
 			dataType: 'json'
 		}).done(function(response) {
 						
-			if(response.wlan0.wireless.ssid == data['ap-ssid']){
+			if(response.wlan0.wireless.ssid == data['ap-ssid'] && response.wlan0.wireless.wpa_state == "COMPLETED"){
 				waitContent('<i class="fa fa-check"></i> ' + _("Connected"));
 				setTimeout(function(){
 					$(".tr-" + data['ap-ssid']).addClass('success');
@@ -450,7 +456,7 @@
 				}, 3000);
 			}else{
 				closeWait();
-				showErrorAlert( _('Please check the password'), _('Connection failed'));
+				fabApp.showErrorAlert( _('Please check the password'), _('Connection failed'));
 			}
 		}).fail(function(jqXHR, textStatus){
 			

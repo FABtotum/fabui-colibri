@@ -212,7 +212,6 @@ class HttpClient
      */
     public function withoutSslVerification()
     {	
-		echo "COIAO";
         $this->verifySslCertificate = false;
         return $this;
     }

@@ -196,7 +196,7 @@ class Settings extends FAB_Controller {
 			else
 			{
 				$info['ipv4_address'] = '0.0.0.0';
-				$info['netmask_address'] = '255.255.255.0';
+				$info['netmask_address'] = '255.255.0.0';
 				$info['gateway'] = '0.0.0.0';
 			}
 			
@@ -323,7 +323,7 @@ class Settings extends FAB_Controller {
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'network-settings-widget';
-		$widget->header = array('icon' => 'fa-globe', "title" => "<h2>"._('Network settings')."</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fa-globe', "title" => "<h2 class='hidden-xs'>"._('Network settings')."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('settings/network_widget', $data, true ), 'class'=>'no-padding', 'footer'=>$widgeFooterButtons);
 		
 		$this->addJsInLine($this->load->view('settings/network_js', $data, true));
@@ -361,7 +361,7 @@ class Settings extends FAB_Controller {
 				if($action == 'connect')
 				{
 					$address     = isset($postData['ipv4'])    ? $postData['ipv4']    : '0.0.0.0';
-					$netmask     = isset($postData['netmask']) ? $postData['netmask'] : '255.255.255.0';
+					$netmask     = isset($postData['netmask']) ? $postData['netmask'] : '255.255.0.0';
 					$gateway     = isset($postData['gateway']) ? $postData['gateway'] : '0.0.0.0';
 					$mode        = $postData['address-mode'];
 					$iface       = $postData['active'];
@@ -411,7 +411,8 @@ class Settings extends FAB_Controller {
 				$result = false;
 		}
 		writeNetworkInfo();
-		$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		//$this->output->set_content_type('application/json')->set_output(json_encode($result));
+		$this->output->set_content_type('application/json')->set_output(json_encode(getInterfaces())); 
 	}
 	
 	

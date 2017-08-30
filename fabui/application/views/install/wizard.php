@@ -206,7 +206,7 @@
 			<p class="lead semi-bold"><?php echo _("This may take a while, please wait"); ?></p>
 		</div>
 	</div>
-</form>
+</div>
 <!-- LANGUAGE FORM -->
 <form method="post" id="locale-form"><input type="hidden" name="locale" id="locale" value=""></form>
 <!-- END LANGUAGE FORM -->
@@ -238,7 +238,7 @@
 				<h4 class="modal-title"><i class="fa fa-lock"></i> <span id="passwordModalTitle"></span> <i class="fa fa-wifi"></i></h4>
 			</div>
 			<div class="modal-body custom-scroll " id="progressModalBody">
-				<form class="smart-form" id="passwordModalForm">
+				<form class="smart-form" id="passwordModalForm" onsubmit="return false;">
 					<fieldset>
 						<section>
 							<label class="input"> <i class="icon-prepend fa fa-lock"></i>

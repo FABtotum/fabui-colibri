@@ -4,7 +4,7 @@
 			<section class="col col-6">
 				<label class="label"><?php echo _('Address mode')?></label>
 				<label class="select">
-					<?php echo form_dropdown('address-show', $addressModeWiFi, $info['address_mode'], array('id' => 'address-mode', 'class' => "address-mode", 'data-attribute' => $iface) ); ?> <i></i>
+					<?php echo form_dropdown('address-show', $addressModeWiFi, $info['address_mode'] == 'unknown' ? 'dhcp' : $info['address_mode'], array('id' => 'address-mode', 'class' => "address-mode", 'data-attribute' => $iface) ); ?> <i></i>
 				</label>
 			</section>
 			
@@ -12,7 +12,7 @@
 				<table class="table ">
 					<tbody>
 						<tr>
-							<td style="border:0px;" width="200px">Connected to</td>
+							<td style="border:0px;" width="200px"><?php echo _("Connected to") ?></td>
 							<td style="border:0px;"><strong><?php echo $info['wireless']['ssid']; ?></strong></td>
 						</tr>
 						<tr>

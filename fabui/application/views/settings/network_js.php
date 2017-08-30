@@ -28,10 +28,17 @@
 		$("#modalConnectButton").on('click', passwordModalConnect);
 		
 		$('a[data-toggle="tab"]').on('shown.bs.tab', tab_change);
+		
 		initFieldValidator();
 		triggerPreSelected();
 		initEthCurrentIPV4();
 		fabApp.getNetworkInfo();
+
+		$("#wifiPassword").keypress(function(e) {
+			if(e.which == 13){
+				passwordModalConnect();
+			}
+		});
 	});
 
 	function do_save()
@@ -147,6 +154,7 @@
 
 	function post_data(data)
 	{
+		scrollToTop();
 		var button = $("#saveButton");
 		disableButton("#saveButton");
 		button.addClass('disabled');
@@ -157,9 +165,6 @@
 		var finish_message = _("Reloading page");
 		var error_message = _("Unknown error");
 		var reload_timeout = 5000;
-
-
-		
 		
 		if(data.hasOwnProperty('hidden-ssid') && data['net_type'] == 'wlan') 
 		{
@@ -178,7 +183,7 @@
 		{
 			wait_title = _("Saving new ethernet configuration");
 			error_message = _("Failed to save ethernet configuration");
-			reload_timeout = 3;
+			reload_timeout = 3000;
 			/** 
 			* if static ip address change
 			**/
@@ -187,33 +192,33 @@
 				setTimeout(function(){
 					waitContent( _("Redirect to new address..." ));
 					fabApp.redirectToUrlWhenisReady('http://'+ data['ipv4'] + '/fabui/#settings/network/eth0');
-				}, 3000);
+				}, reload_timeout);
 			}
 		} 
 		else if(data['net_type'] == 'eth' && data['address-mode'] == 'dhcp')
 		{
 			wait_title = _("Saving new ethernet configuration");
 			error_message = _("Failed to save ethernet configuration");
-			reload_timeout = 0;
+			reload_timeout = 3000;
 			
 			setTimeout(function(){
 				waitContent( _("It might take some time for the new address to become visible on the network. This page will be reloaded as soon as the new address is available.") );
 				var dnssd_hostname = $("#dnssd-hostname").val() + ".local";
 				fabApp.redirectToUrlWhenisReady('http://'+ dnssd_hostname + '/fabui/#settings/network/eth0');
-			}, 3000);
+			}, reload_timeout);
 		}
 		else if(data['net_type'] == 'dns')
 		{
 			//~ wait_title = _("Saving DNS configuration");
 			finish_message = _("DNS settings saved");
 			error_message = _("Failed to save DNS configuration");
-			reload_timeout = 0;
+			reload_timeout = 3000;
 		}
 		else if(data['net_type'] == 'dnssd')
 		{
 			finish_message = _("DNS-SD settings saved");
 			error_message = _("Failed to save DNS-SD configuration");
-			reload_timeout = 0;
+			reload_timeout = 3000;
 		}
 		if(wait_title != "")
 		{
@@ -225,50 +230,37 @@
 			data : data,
 			dataType: 'json',
 			async: true,
-			timout: 20000, //timeout 1 minute,
-			/*error: function(request, status, err) {
-				fabApp.showErrorAlert(error_message);
-			}*/
+			timout: 20000,
 		}).done(function(response) {
 			button.html('<i class="fa fa-save"></i> <?php echo _('Save')?>');
 			button.removeClass('disabled');
 			enableButton("#saveButton");
-			
-			if( (wait_title == "") && (finish_message != ""))
-			{
-				fabApp.showInfoAlert(finish_message);
+
+			if(data['net_type'] == 'wlan'){
+				active = response[data["active"]];
+				if(data['address-mode'] == 'dhcp' || data['address-mode'] == 'static'){
+					
+					if(active.wireless.ssid == data["hidden-ssid"] && active.wireless.wpa_state == "COMPLETED"){
+						waitContent("<i class='fa fa-check'></i> " + _("Connected"));
+					}else{
+						closeWait();
+						fabApp.showErrorAlert( _('Please check the password'), _('Connection failed'));
+						return;
+					}
+				}
+				
 			}
-			else
-			{
-				waitContent(finish_message);
-			}
 			
-			//fabApp.getNetworkInfo();
-			// With reload_timeout=0 we can skip this as some reloads are handled with fabApp.redirectToUrlWhenisReady
-			if(reload_timeout)
-			{
-				setTimeout(function(){
-						if(window.location.href ==  ('<?php echo site_url('#settings/network/') ?>/' + data['active'])){
-							location.reload(); 
-						}else{
-							window.location.href = '<?php echo site_url('#settings/network/') ?>/' + data['active'];
-						}
-					}, reload_timeout
-				);
+			if(data['net_type'] == 'wlan' || data['net_type'] == 'eth'){
+				waitContent(_("Configuration saved"));
+				reloadPage(data["active"], reload_timeout);
 			}else{
-				closeWait();
+				fabApp.showInfoAlert( _('Configuration saved'));
 			}
+		
 		}).fail(function(jqXHR, textStatus){
 			waitContent("<?php echo _("Reloading page") ?>...");
-			setTimeout(function(){
-					if(window.location.href ==  ('<?php echo site_url('#settings/network/') ?>/' + data['active'])){
-						location.reload(); 
-					}else{
-						window.location.href = '<?php echo site_url('#settings/network/') ?>/' + data['active'];
-					}
-				}, 10000  
-			);
-			
+			reloadPage(data['active'], 10000);
 		});
 	}
  
@@ -544,6 +536,7 @@
 			$("#"+wifiIface+"-tab #hidden-psk").val('');
 			do_save();
 			$('#passwordModal').modal('hide');
+			
 			//sendActionRequest('connect', wifiIface, wifiSelected, $("#wifiPassword").val());
 		}
 	}
@@ -608,13 +601,13 @@
 				},
 				messages : {
 					ipv4 : {
-						isIPaddress : '<?php echo _('Please insert a valid IP address')?>'
+						isIPaddress : "<?php echo _('Please insert a valid IP address')?>"
 					},
 					netmask : {
-						isIPaddress : '<?php echo _('Please insert a valid netmask')?>'
+						isIPaddress : "<?php echo _('Please insert a valid netmask')?>"
 					},
 					gateway : {
-						isIPaddress : '<?php echo _('Please insert a valid gateway address')?>'
+						isIPaddress : "<?php echo _('Please insert a valid gateway address')?>"
 					},
 				},
 				errorPlacement : function(error, element) {
@@ -641,14 +634,14 @@
 				},
 				messages : {
 					ssid : {
-						required : '<?php echo _('Please specify an SSID')?>',
-						minlength : '<?php echo _('Please specify an SSID that is between 4 and 63 characters')?>',
-						maxlength : '<?php echo _('Please specify an SSID that is between 4 and 63 characters')?>'
+						required : "<?php echo _('Please specify an SSID')?>",
+						minlength : "<?php echo _('Please specify an SSID that is between 4 and 63 characters')?>",
+						maxlength : "<?php echo _('Please specify an SSID that is between 4 and 63 characters')?>"
 					},
 					password : {
-						required : '<?php echo _('Please specify a password')?>',
-						minlength : '<?php echo _('Please specify a password between 8 and 63 characters')?>',
-						maxlength : '<?php echo _('Please specify a password between 8 and 63 characters')?>'
+						required : "<?php echo _('Please specify a password')?>",
+						minlength : "<?php echo _('Please specify a password between 8 and 63 characters')?>",
+						maxlength : "<?php echo _('Please specify a password between 8 and 63 characters')?>"
 					},
 				},
 				errorPlacement : function(error, element) {
@@ -683,5 +676,19 @@
 	function initEthCurrentIPV4()
 	{
 		currentEthIPV4 = $("#ipv4").val();
+	}
+	/**
+	*
+	**/
+	function reloadPage(active_tab, reload_timeout)
+	{
+		waitContent(_("Reloading page"));
+		setTimeout(function(){
+			if(window.location.href ==  ('<?php echo site_url('#settings/network/') ?>/' + active_tab)){
+				location.reload(); 
+			}else{
+				window.location.href = '<?php echo site_url('#settings/network/') ?>/' + active_tab;
+			}
+		}, reload_timeout );
 	}
 </script>

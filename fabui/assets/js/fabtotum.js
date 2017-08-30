@@ -238,3 +238,11 @@ function loginLogOut()
     });
 }
 
+/**
+ *  scroll to the top of the page
+ */
+function scrollToTop()
+{
+	window.scrollTo(0, 0);
+}
+

@@ -9,7 +9,6 @@
  
 ?>
 <div class="tab-content padding-10">
-	
 	<?php echo $iface_tabs ?>
 	<div class="tab-pane fade in <?php echo $preSelectedInterface == 'dnssd'? 'active' : '' ?>" id="dnssd-tab"  data-attribute="dnssd">
 		<form class="smart-form" id="hostname-form">
@@ -129,7 +128,7 @@
 				<h4 class="modal-title"><i class="fa fa-lock"></i> <span id="passwordModalTitle"></span> <i class="fa fa-wifi"></i></h4>
 			</div>
 			<div class="modal-body custom-scroll " id="progressModalBody">
-				<form class="smart-form" id="passwordModalForm">
+				<form class="smart-form" id="passwordModalForm" onsubmit="return false;">
 					<fieldset>
 						<section>
 							<label class="input"> <i class="icon-prepend fa fa-lock"></i>

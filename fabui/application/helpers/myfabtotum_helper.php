@@ -108,8 +108,27 @@ if (!function_exists('fab_polling'))
 		$args['serialno'] = getSerialNumber();
 		$args['mac']      = getMACAddres();
 		$args['state']    = getState();
-		$args['data']     = array();
+		//$args['data']     = array();
 		
 		return callMyFabtotum('fab_polling', $args);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('fab_is_printer_registered'))
+{
+	/**
+	 * check if the printer is registered to my.fabtotum.com
+	 */
+	function fab_is_printer_registered()
+	{
+		$CI =& get_instance();
+		$CI->load->helpers(array('fabtotum_helper', 'os_helper'));
+		
+		$args = array();
+		$args['serialno'] = getSerialNumber();
+		$args['serialno'] = 'AAAAAAAAAAAAAAAAA';
+		$args['mac']      = getMACAddres();
+		
+		return callMyFabtotum('fab_is_printer_registered', $args);
 	}
 }
