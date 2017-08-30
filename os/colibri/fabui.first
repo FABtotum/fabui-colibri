@@ -101,6 +101,9 @@ case "$1" in
         fi
         chown -R 33:33 /mnt/userdata/*
     fi
+	
+	mkdir -p /mnt/bigtemp/lighttpd/compress
+	chown -R 33:33 /mnt/bigtemp/lighttpd/compress
     
     # Detect camera version
     python ${PYTHON_PATH}/setCamera.py &> /var/log/fabui/setCamera.log
