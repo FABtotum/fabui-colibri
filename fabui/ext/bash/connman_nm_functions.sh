@@ -2,6 +2,7 @@
 
 CONNMAN_SERVICES_DIR="/var/lib/connman"
 CONNMAN_WIFI_CONFIG_FILE="user_wifi.config"
+CONNMAN_ETH_CONFIG_FILE="user_ethernet.config"
 
 ##
 #
@@ -90,6 +91,15 @@ connman_cleanup_wifi_config()
 {
 	rm -rf ${CONNMAN_SERVICES_DIR}/wifi_* &> /dev/null
 	rm ${CONNMAN_SERVICES_DIR}/${CONNMAN_WIFI_CONFIG_FILE} &> /dev/null
+}
+
+##
+# Remove current ethernet configuration
+#
+connman_cleanup_ethernet_config()
+{
+	rm -rf ${CONNMAN_SERVICES_DIR}/ethernet* &> /dev/null
+	rm ${CONNMAN_SERVICES_DIR}/${CONNMAN_ETH_CONFIG_FILE} &> /dev/null
 }
 
 ##
@@ -317,9 +327,16 @@ config_ethernet_dhcp()
 {
 	IFACE="$1"
 	
-	ETH_MAC=$(ip link show dev $IFACE | grep link/ether | awk '{print $2}' | sed -e s@:@@g )
-	ETH_SRV="ethernet_${ETH_MAC}_cable"
-	connmanctl config $ETH_SRV ipv4 dhcp
+	#ETH_MAC=$(ip link show dev $IFACE | grep link/ether | awk '{print $2}' | sed -e s@:@@g )
+	#ETH_SRV="ethernet_${ETH_MAC}_cable"
+	#connmanctl config $ETH_SRV ipv4 dhcp
+cat <<EOF > ${CONNMAN_SERVICES_DIR}/${CONNMAN_ETH_CONFIG_FILE}
+# Automatically generated, do not edit \n
+[service_ethernet_wifi]
+Type = ethernet
+IPv4 = dhcp
+IPv6 = Off
+EOF
 	
 	return $?
 }
@@ -342,9 +359,33 @@ config_ethernet_static()
 	GATEWAY="$4"
 	NS=$(connman_get_dns_tail)
 	
-	ETH_MAC=$(ip link show dev $IFACE | grep link/ether | awk '{print $2}' | sed -e s@:@@g )
-	ETH_SRV="ethernet_${ETH_MAC}_cable"
-	connmanctl config $ETH_SRV ipv4 manual $IP $NETMASK $GATEWAY nameservers $NS
+	#~ ETH_MAC=$(ip link show dev $IFACE | grep link/ether | awk '{print $2}' | sed -e s@:@@g )
+	#~ ETH_SRV="ethernet_${ETH_MAC}_cable"
+	#~ connmanctl config $ETH_SRV ipv4 manual $IP $NETMASK $GATEWAY nameservers $NS
+	
+	if [ -n "$GATEWAY" ]; then
+	
+cat <<EOF > ${CONNMAN_SERVICES_DIR}/${CONNMAN_ETH_CONFIG_FILE}
+# Automatically generated, do not edit \n
+[service_ethernet_wifi]
+Type = ethernet
+IPv4 = $IP/$NETMASK/$GATEWAY
+Nameservers = $NS
+IPv6 = Off
+EOF
+
+	else
+	
+cat <<EOF > ${CONNMAN_SERVICES_DIR}/${CONNMAN_ETH_CONFIG_FILE}
+# Automatically generated, do not edit \n
+[service_ethernet_wifi]
+Type = ethernet
+IPv4 = $IP/$NETMASK
+Nameservers = $NS
+IPv6 = Off
+EOF
+	
+	fi
 	
 	return 0
 }
@@ -583,18 +624,19 @@ connman_migrate_settings()
 		echo "- configured: YES"
 	else
 		echo "- configured: NO"
-		for cfg in $(ls ${CONNMAN_SERVICES_DIR}/ethernet_* -d); do
-			if [ x"${CONNMAN_SERVICES_DIR}/$ETH_SER" != x"$cfg" ]; then
-				echo "-- Migrating $cfg ..."
-				SETTINGS_FILE="$cfg/settings"
-				OLD_MAC=$(cat $SETTINGS_FILE | grep "\[" | awk -F '_' '{print $2}')
-				NEW_MAC=$(echo $ETH_SER | awk -F '_' '{print $2}')
-				echo "$OLD_MAC -> $NEW_MAC"
-				sed -e "s/$OLD_MAC/$NEW_MAC/g" -i $SETTINGS_FILE
-				mv "$cfg" "${CONNMAN_SERVICES_DIR}/${ETH_SER}"
-				break
-			fi
-		done
+		rm -rf ${CONNMAN_SERVICES_DIR}/ethernet_* &> /dev/null
+		#~ for cfg in $(ls ${CONNMAN_SERVICES_DIR}/ethernet_* -d); do
+			#~ if [ x"${CONNMAN_SERVICES_DIR}/$ETH_SER" != x"$cfg" ]; then
+				#~ echo "-- Migrating $cfg ..."
+				#~ SETTINGS_FILE="$cfg/settings"
+				#~ OLD_MAC=$(cat $SETTINGS_FILE | grep "\[" | awk -F '_' '{print $2}')
+				#~ NEW_MAC=$(echo $ETH_SER | awk -F '_' '{print $2}')
+				#~ echo "$OLD_MAC -> $NEW_MAC"
+				#~ sed -e "s/$OLD_MAC/$NEW_MAC/g" -i $SETTINGS_FILE
+				#~ mv "$cfg" "${CONNMAN_SERVICES_DIR}/${ETH_SER}"
+				#~ break
+			#~ fi
+		#~ done
 	fi
 
 

@@ -26,27 +26,27 @@ IP=$(echo $NETWORK_IPV4 | awk -F / '{print $1}')
 GATEWAY=$NETWORK_GW
 export eval $(ipcalc -m $IP)
 
-config_connman()
-{
-    ETH_SRV=$(connmanctl services | grep Wired | awk '{print $3}')
+#~ config_connman()
+#~ {
+    #~ ETH_SRV=$(connmanctl services | grep Wired | awk '{print $3}')
 
-    connmanctl config $ETH_SRV ipv4 manual $IP $NETMASK $GATEWAY
-    connmanctl enable wifi
-}
+    #~ #connmanctl config $ETH_SRV ipv4 manual $IP $NETMASK $GATEWAY
+    #~ #connmanctl enable wifi
+    #~ sh /usr/share/fabui/ext/bash/set_ethernet.sh -i$IFACE -S -a $IP -n $NETMASK &> /dev/null
+#~ }
 
-config_ifupdown()
-{
-    sh /usr/share/fabui/ext/bash/set_ethernet.sh -i$IFACE -S -a $IP -n $NETMASK &> /dev/null
-}
+#~ config_ifupdown()
+#~ {
+    #~ sh /usr/share/fabui/ext/bash/set_ethernet.sh -i$IFACE -S -a $IP -n $NETMASK &> /dev/null
+#~ }
 
 case "$1" in
   pre)
     boot_msg "Configuring: $NETWORK_MANAGER"
     
+    sh /usr/share/fabui/ext/bash/set_ethernet.sh -i$IFACE -S -a $IP -n $NETMASK &> /dev/null
     if [ "$NETWORK_MANAGER" == "connman" ]; then
-        config_connman
-    else
-        config_ifupdown
+		connmanctl enable wifi
     fi
     
     evaluate_retval
