@@ -1515,9 +1515,9 @@ fabApp = (function(app) {
 	**/
 	app.getSettings = function() {
 		$.get(control_url + '/getSettings', function(data, status){
+			app.setInstalledHeadInfo(data);
 			app.analizeTopBar(data);
 			app.analizeMenu(data);
-			app.setInstalledHeadInfo(data);
 		});
 	}
 	/**
@@ -1555,24 +1555,30 @@ fabApp = (function(app) {
 	 */
 	app.analizeTopBar = function(settings)
 	{
-		var installed_head = heads[settings.hardware.head];
-		if(installed_head.working_mode == HEAD_WORKING_MODE_LASER || installed_head.working_mode == HEAD_WORKING_MODE_CNC ){
-			$(".top-ajax-temperatures-dropdown .head-working-mode-"+HEAD_WORKING_MODE_FFF).remove();
-			$(".top-ajax-temperatures-dropdown .head-working-mode-"+HEAD_WORKING_MODE_HYBRID).remove();
-			$(".top-ajax-temperatures-dropdown").find('h4').removeClass('margin-top-50');
-			$(".top-ajax-temperatures-dropdown").attr('style', 'min-height: 130px; height:130px;');
-			$("#top-temperatures .head-working-mode-"+HEAD_WORKING_MODE_FFF).remove();
+		if(app.installed_head != null){
+			if(app.installed_head.working_mode == HEAD_WORKING_MODE_LASER || app.installed_head.working_mode == HEAD_WORKING_MODE_CNC ){
+				$(".top-ajax-temperatures-dropdown .head-working-mode-"+HEAD_WORKING_MODE_FFF).remove();
+				$(".top-ajax-temperatures-dropdown .head-working-mode-"+HEAD_WORKING_MODE_HYBRID).remove();
+				$(".top-ajax-temperatures-dropdown").find('h4').removeClass('margin-top-50');
+				$(".top-ajax-temperatures-dropdown").attr('style', 'min-height: 130px; height:130px;');
+				$("#top-temperatures .head-working-mode-"+HEAD_WORKING_MODE_FFF).remove();
+			}
+			$("#top-temperatures").removeClass('hidden');
 		}
-		$("#top-temperatures").removeClass('hidden');
 	}
 	/**
 	 * get installed head from settings and print head name to top bar
 	 */
 	app.setInstalledHeadInfo = function(settings)
-	{
-		$(".installead-head-name").html(heads[settings.hardware.head].name);
-		app.installed_head = heads[settings.hardware.head];
-		app._createExtruderTemperaturesTopSliders(app.installed_head['max_temp']);
+	{	
+		
+		if(typeof(heads[settings.hardware.head]) !== "undefined"){
+			app.installed_head = heads[settings.hardware.head];
+			$(".installead-head-name").html(heads[settings.hardware.head].name);
+			app._createExtruderTemperaturesTopSliders(app.installed_head['max_temp']);
+		}else{
+			$(".installead-head-name").html(_("No head installed"));
+		}
 	}
 	/**
 	* initi vars from localstorage if it is enabled

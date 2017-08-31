@@ -432,11 +432,14 @@ if(!function_exists('saveHeadInfo'))
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
+		$CI->load->helper("file");
 		$heads_dir = $CI->config->item('heads');
 		
 		$fn = $heads_dir.'/'.$head_name.'.json';
 		if($restoreFactory == false){
-			
+			if(!file_exists($fn)){
+				write_file($fn, "");
+			}
 			$currentInfo = json_decode(file_get_contents($fn), true);
 			if(!is_array($currentInfo)) $currentInfo = array();
 			$newInfo = array_replace_recursive($currentInfo, $info);

@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-sm-12 alerts-container">
-<?php if(!isset($units['hardware']['head']) || $units['hardware']['head'] == ''): ?>
+<?php if(!isset($units['hardware']['head']) || $units['hardware']['head'] == '' || !isset($heads[$head])): ?>
 		<div class="alert alert-warning animated  fadeIn" role="alert">
 			<i class="fa fa-warning"></i><?php echo _("<strong>Warning</strong> Seems that you still have not set the head your are using.");?>
 		</div>
@@ -194,7 +194,7 @@
 							<section class="col col-6">
 								<label class="label"><?php echo _('Soft ID')?></label>
 								<label class="input">
-									<input type="number" id="head-fw_id" name="fw_id" min="0" max="255" value="100">
+									<input type="number" id="head-fw_id" name="fw_id" min="100" max="255" value="100">
 								</label>
 							</section>
 						</div>
@@ -218,7 +218,7 @@
 							<section class="col col-6">
 								<label class="label"><?php echo _('PID')?></label>
 								<label class="input">
-									<input type="text" id="head-pid" name="pid" value="M301 P20 I3.5 D30">
+									<input type="text" id="head-pid" name="pid" value="">
 								</label>
 							</section>
 							

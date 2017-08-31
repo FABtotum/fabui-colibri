@@ -11,6 +11,7 @@
 <script type="text/javascript">
 	var selected_head = "<?php echo $head?>";
 	heads = <?php echo json_encode($heads)?>;
+	var official_heads_id_limit = 100;
 	$(function () {
 		
 		$("#heads").on('change', set_head_img);
@@ -20,7 +21,9 @@
 		$("#heads").on('select', function(){
 			
 		});
-		$("#set-head").on('click', set_head);
+		$("#set-head").click(function() {
+			set_head();
+		});
 		
 		$('.settings-action').on('click', buttonAction);
 		$('.capability').on('change', capability_change);
@@ -40,6 +43,9 @@
 				'capability[]': {
 					required: true,
 					minlength: 1
+				},
+				fw_id: {
+					required: true
 				}
 			},
 			messages: {
@@ -73,7 +79,7 @@
 			$("#edit-button").show();
 			$("#remove-button").show();
 			var head = heads[selected_head];
-			if( head.fw_id < 100 )
+			if( head.fw_id < official_heads_id_limit )
 				$("#remove-button").hide();
 		}
 		else
@@ -106,21 +112,19 @@
 	/**
 	*
 	**/
-	function set_head(selected_head=''){
+	function set_head(headToInstall){		
+		
+		headToInstall = headToInstall || $("#heads").val();
+		
 	 	if($("#heads").val() == 'head_shape'){
 	 		alert( _("Please select a Head") );
 	 		return false;
 	 	}
 	 	
-	 	if(selected_head == '')
-	 	{
-			selected_head = $("#heads").val();
-		}
-	 	
 	 	openWait('<i class="fa fa-gear fa-spin"></i> <?php echo _("Installing head"); ?>', '<?php echo _("Please wait"); ?>...');
 	 	$.ajax({
 			type: "POST",
-			url: "<?php echo site_url("head/setHead") ?>/"+ selected_head,
+			url: "<?php echo site_url("head/setHead") ?>/"+ headToInstall,
 			dataType: 'json'
 		}).done(function( data ) {
 			$(".alerts-container").find('div:first-child').remove();
@@ -274,6 +278,7 @@
 				showHideSettings(true);
 				document.getElementById("head-settings").reset();
 				showHideInputsForOfficialHeads('show');
+				$("#head-fw_id").attr("min", official_heads_id_limit);
 				$('#settingsModal').modal('show');
 				break;
 			case "remove":
@@ -295,9 +300,7 @@
 				break;
 			case "save-install":
 				if($("#head-settings").valid())
-				{
 					saveHeadSettings(set_head);
-				}
 		}
 		
 		return false;
@@ -397,8 +400,10 @@
 	/**
 	*
 	**/
-	function populateHeadSettings(head)
+	function populateHeadSettings(head, isImport)
 	{
+		isImport = isImport || false ;
+		
 		document.getElementById("head-settings").reset();
 		for (var key in head) {
 			var value = head[key];
@@ -440,10 +445,16 @@
 		/**
 		* only for fabtotums official heads
 		*/
-		if(head.fw_id < 100){
-			showHideInputsForOfficialHeads('hide');
+		if(!isImport){
+			$("#head-fw_id").attr("min", 1);
+			if(head.fw_id < official_heads_id_limit){
+				showHideInputsForOfficialHeads('hide');
+			}else{
+				showHideInputsForOfficialHeads('show');
+				$("#head-fw_id").attr("min", official_heads_id_limit);
+			}
 		}else{
-			showHideInputsForOfficialHeads('show');
+			$("#head-fw_id").attr("min", official_heads_id_limit);
 		}
 
 	}
@@ -462,6 +473,7 @@
 			dataType: 'json'
 		}).done(function(response) {
 			fabApp.showInfoAlert('<strong>{0}</strong> saved'.format(settings.name));
+
 			setTimeout(function(){
 				if($.isFunction(callback)){
 					callback(filename);
@@ -493,7 +505,7 @@
 			var text = reader.result;
 			
 			content = jQuery.parseJSON(text);
-			populateHeadSettings(content);
+			populateHeadSettings(content, true);
 		}
 		reader.readAsText(input.files[0]);
 		return false;
