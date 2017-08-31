@@ -106,15 +106,21 @@
 	/**
 	*
 	**/
-	function set_head(){
+	function set_head(selected_head=''){
 	 	if($("#heads").val() == 'head_shape'){
 	 		alert( _("Please select a Head") );
 	 		return false;
 	 	}
+	 	
+	 	if(selected_head == '')
+	 	{
+			selected_head = $("#heads").val();
+		}
+	 	
 	 	openWait('<i class="fa fa-gear fa-spin"></i> <?php echo _("Installing head"); ?>', '<?php echo _("Please wait"); ?>...');
 	 	$.ajax({
 			type: "POST",
-			url: "<?php echo site_url("head/setHead") ?>/"+ $("#heads").val(),
+			url: "<?php echo site_url("head/setHead") ?>/"+ selected_head,
 			dataType: 'json'
 		}).done(function( data ) {
 			$(".alerts-container").find('div:first-child').remove();
@@ -289,7 +295,9 @@
 				break;
 			case "save-install":
 				if($("#head-settings").valid())
+				{
 					saveHeadSettings(set_head);
+				}
 		}
 		
 		return false;
@@ -456,7 +464,7 @@
 			fabApp.showInfoAlert('<strong>{0}</strong> saved'.format(settings.name));
 			setTimeout(function(){
 				if($.isFunction(callback)){
-					callback();
+					callback(filename);
 				}else{
 					location.reload();
 				}				

@@ -26,7 +26,7 @@ CONNMAN_ARGS="$CONNMAN_ARGS -n"
 
 # Workaround for swapping rpi board
 source /usr/share/fabui/ext/bash/${NETWORK_MANAGER}_nm_functions.sh
-connman_migrate_settings
+connman_migrate_settings &> /var/log/connman_migration.log
 
 
 DAEMON=/usr/sbin/connmand
