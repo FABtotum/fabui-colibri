@@ -1,0 +1,4 @@
+CONNMAN_PIDFILE=/run/connman.pid
+#CONNMAN_ARGS="--nodnsproxy"
+CONNMAN_ARGS=""
+

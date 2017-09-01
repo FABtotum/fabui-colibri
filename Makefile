@@ -348,6 +348,7 @@ $(OS_COMMON_STAMP):
 	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/wpa_supplicant.default $(BDATA_DIR)/etc/default/wpa_supplicant
 	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/network.default $(BDATA_DIR)/etc/default/network
 	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/ifplugd.default $(BDATA_DIR)/etc/default/ifplugd
+	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/connman.default $(BDATA_DIR)/etc/default/connman
 	
 #~ 	$(FAKEROOT_ENV) install -d -m 0775 $(BDATA_DIR)/var/lib/connman
 #~ 	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/connman/ethernet.config $(BDATA_DIR)/var/lib/connman/ethernet.config
