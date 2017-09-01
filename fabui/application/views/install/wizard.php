@@ -156,7 +156,9 @@
 				</div>
 				<div class="tab-pane" id="network-tab">
 					<br>
-					<h3><strong><?php echo _("Step")?> 4 </strong> - <?php echo _("Network")?></h3>
+					<h3><strong><?php echo _("Step")?> 4 </strong> - <?php echo _("Network")?> 
+						<button id="wifi-scan" class="btn btn-default btn-xs pull-right"><i class="fa fa-search"></i> <span class="hidden-xs"><?php echo _("Scan");?></span></button>
+					</h3>
 					<div id="wlan-table-container" style="height: 300px; overflow:auto;"></div>
 				</div>
 				<div class="tab-pane" id="finish-tab">

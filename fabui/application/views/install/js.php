@@ -19,6 +19,8 @@
 		initWizard();
 		initTimeZone();
 		scanWifi();
+
+		$("#wifi-scan").on("click", scanWifi);
 		
 		$("#i-agree").click(function(){
 			$this=$("#terms");
@@ -38,6 +40,8 @@
 				passwordModalConnect();
 			}
 		});
+
+		
 	});
 	/**
 	 * 
@@ -286,8 +290,10 @@
 	*/
 	function scanWifi()
 	{
-
 		var iface = 'wlan0';
+		$("#wlan-table-container").css('opacity', '0.1');
+		$("#wifi-scan").html('<i class="fa fa-search"></i> <?php echo _("Scanning") ?>..')
+		disableButton("#wifi-scan");
 		$.ajax({
 			type: 'get',
 			url: "<?php echo site_url('control/scanWifi'); ?>/"+iface,
@@ -295,6 +301,9 @@
 		}).done(function(response) {
 			if(response)
 				buildWifiTable(iface, response);
+			$("#wlan-table-container").css('opacity', '1')
+			$("#wifi-scan").html('<i class="fa fa-search"></i> <span class="hidden-xs"><?php echo _("Scan") ?></span>');
+			enableButton("#wifi-scan");
 		});
 	}
 	/**
