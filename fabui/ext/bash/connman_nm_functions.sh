@@ -372,7 +372,7 @@ config_ethernet_static()
 	
 cat <<EOF > ${CONNMAN_SERVICES_DIR}/${CONNMAN_ETH_CONFIG_FILE}
 # Automatically generated, do not edit \n
-[service_ethernet_wifi]
+[service_ethernet]
 Type = ethernet
 IPv4 = $IP/$NETMASK/$GATEWAY
 $NS
@@ -383,7 +383,7 @@ EOF
 	
 cat <<EOF > ${CONNMAN_SERVICES_DIR}/${CONNMAN_ETH_CONFIG_FILE}
 # Automatically generated, do not edit \n
-[service_ethernet_wifi]
+[service_ethernet]
 Type = ethernet
 IPv4 = $IP/$NETMASK
 $NS
