@@ -357,11 +357,16 @@ config_ethernet_static()
 	IP="$2"
 	NETMASK="$3"
 	GATEWAY="$4"
-	NS=$(connman_get_dns_tail)
+	NO_NAMESERVER="$5"
+	NS="Nameservers = $(connman_get_dns_tail)"
 	
 	#~ ETH_MAC=$(ip link show dev $IFACE | grep link/ether | awk '{print $2}' | sed -e s@:@@g )
 	#~ ETH_SRV="ethernet_${ETH_MAC}_cable"
 	#~ connmanctl config $ETH_SRV ipv4 manual $IP $NETMASK $GATEWAY nameservers $NS
+	
+	if [ x"$NO_NAMESERVER" == x"yes" ]; then
+		NS=""
+	fi
 	
 	if [ -n "$GATEWAY" ]; then
 	
@@ -370,7 +375,7 @@ cat <<EOF > ${CONNMAN_SERVICES_DIR}/${CONNMAN_ETH_CONFIG_FILE}
 [service_ethernet_wifi]
 Type = ethernet
 IPv4 = $IP/$NETMASK/$GATEWAY
-Nameservers = $NS
+$NS
 IPv6 = Off
 EOF
 
@@ -381,7 +386,7 @@ cat <<EOF > ${CONNMAN_SERVICES_DIR}/${CONNMAN_ETH_CONFIG_FILE}
 [service_ethernet_wifi]
 Type = ethernet
 IPv4 = $IP/$NETMASK
-Nameservers = $NS
+$NS
 IPv6 = Off
 EOF
 	

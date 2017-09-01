@@ -32,8 +32,10 @@ config_connman()
 
     #connmanctl config $ETH_SRV ipv4 manual $IP $NETMASK $GATEWAY
     
-    sh /usr/share/fabui/ext/bash/set_ethernet.sh -i$IFACE -S -a $IP -n $NETMASK -g $GATEWAY &> /dev/null
+    sh /usr/share/fabui/ext/bash/set_ethernet.sh -i$IFACE -S -a $IP -n $NETMASK -g $GATEWAY -N &> /dev/null
+    connmanctl disable ethernet
     connmanctl enable wifi
+    connmanctl enable ethernet
 }
 
 config_ifupdown()

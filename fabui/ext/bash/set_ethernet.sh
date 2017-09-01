@@ -29,6 +29,7 @@ OPTIONS:
    -a      IP address   (ex: 192.168.0.15)
    -n      Netmask      (ex: 255.255.255.0)
    -g      Gateway      (ex: 192.168.0.1)
+   -N      No nameservers
 EOF
 }
 
@@ -37,7 +38,8 @@ MODE=
 IP=
 NETMASK=
 GATEWAY=
-while getopts “hDSAi:a:n:g:” OPTION
+NO_NAMESERVER="no"
+while getopts “hDSNAi:a:n:g:” OPTION
 do
      case $OPTION in
          h)
@@ -49,6 +51,9 @@ do
              ;;
          S)
              MODE="static"
+             ;;
+         N)
+             NO_NAMESERVER="yes"
              ;;
          a)
              IP=$OPTARG
@@ -89,7 +94,7 @@ case $MODE in
         config_ethernet_dhcp "$IFACE"
         ;;
     static)
-        config_ethernet_static "$IFACE" "$IP" "$NETMASK" "$GATEWAY"
+        config_ethernet_static "$IFACE" "$IP" "$NETMASK" "$GATEWAY" "$NO_NAMESERVER"
         ;;
     *)
         echo "error: unknown mode \'$MODE\'"
