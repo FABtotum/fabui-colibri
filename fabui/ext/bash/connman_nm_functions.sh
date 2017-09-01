@@ -544,6 +544,13 @@ get_interface_state()
 			
 			[ $TETHER == "yes" ] && MODE="static-ap"
 			
+			if [ x"$iface" == x"wlan0" ]; then
+				POWERED=$(connmanctl technologies | awk '/^$/{f=0} f{print} /\/net\/connman\/technology\/wifi/{f=1}' | grep -m 1 Powered | awk  '{print $3}')
+				if [ x"$POWERED" == x"False" ]; then
+					MODE="disabled"
+				fi
+			fi
+			
 			echo "    \"address_mode\" : \"$MODE\","
 			
 			echo "    \"mac_address\" : \"$MAC\","
@@ -587,8 +594,12 @@ get_interface_state()
 						echo "      \"passphrase\" : \"$PASSPHRASE\""
 					elif [ $MODE == "Mode:Managed" ]; then
 						echo ","
-						echo "    \"passphrase\" : \"$PASSPHRASE\","
-						a=$(wpa_cli -p /run/wpa_supplicant -i$iface status | sed -e 's@^@"@g; s@$@",@g; s@=@" : "@'; echo -n ",")
+						echo "    \"passphrase\" : \"$PASSPHRASE\""
+						POWERED=$(connmanctl technologies | awk '/^$/{f=0} f{print} /\/net\/connman\/technology\/wifi/{f=1}' | grep -m 1 Powered | awk  '{print $3}')
+						if [ x"$POWERED" == x"True" ]; then
+							echo ","
+							a=$(wpa_cli -p /run/wpa_supplicant -i$iface status | sed -e 's@^@"@g; s@$@",@g; s@=@" : "@'; echo -n ",")
+						fi
 						echo $a | sed -e 's@, ,@@g'
 						
 					elif [ $MODE == "Mode:Auto" ]; then
