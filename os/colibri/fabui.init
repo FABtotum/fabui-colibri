@@ -35,7 +35,14 @@ case "$1" in
 	
 	### fix file permissions
 	chown -R 33:33 /mnt/userdata/*
-	chown -R 33:33 /var/lib/fabui/*
+	#~ chown -R 33:33 /var/lib/fabui/*
+	chown 33:33 /var/lib/fabui/serial.ini
+	chown 33:33 /var/lib/fabui/camera.ini
+	chown 33:33 /var/lib/fabui/fabtotum.db
+	chown 33:33 /var/lib/fabui/heads
+	chown 33:33 /var/lib/fabui/plugins
+	chown 33:33 /var/lib/fabui/feeders
+	chown -R 33:33 /var/lib/fabui/settings
     
     boot_msg "Starting ${SERVICE_NAME}."
 
