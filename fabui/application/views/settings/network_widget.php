@@ -76,10 +76,10 @@
 						<div class="form-group">
 							<label class="label"><?php echo _('Current')?></label>
 							<label class="input">
-								<input type="text" data-attr="current" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo isset($dns['current'][0])?$dns['current'][0]:''; ?>" readonly/>
+								<input type="text" data-attr="current" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo (isset($dns['current'][0]) and (strpos($dns['current'][0], ':') === false))? $dns['current'][0]:''; ?>" readonly/>
 							</label>
 							<label class="input">
-								<input type="text" data-attr="current" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo isset($dns['current'][1])?$dns['current'][1]:''; ?>" readonly/>
+								<input type="text" data-attr="current" data-inputmask="'alias': 'ip'" class="form-control ip" value="<?php echo (isset($dns['current'][1]) and (strpos($dns['current'][1], ':') === false))? $dns['current'][1]:''; ?>" readonly/>
 							</label>
 						</div>
 					</section>
