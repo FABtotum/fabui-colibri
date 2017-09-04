@@ -75,7 +75,7 @@ def getEeprom(app, lang='en_US.UTF-8'):
             return object
         
     def getProbeLength(string_source):
-        match = re.search('Z\sProbe\sLength:\s([-|+][0-9.]+)', string_source, re.IGNORECASE)
+        match = re.search('Z\sProbe\sLength:\s([-|+]?[0-9.]+)', string_source, re.IGNORECASE)
         if match != None:
             value = match.group(1)
             return value
