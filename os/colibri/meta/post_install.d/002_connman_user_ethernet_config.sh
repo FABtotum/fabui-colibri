@@ -70,7 +70,7 @@ EOF
 				;;
 		esac
 		
-		rm -rf ${CONNMAN_SERVICES_DIR}/${SERVICE}
+		#rm -rf ${CONNMAN_SERVICES_DIR}/${SERVICE}
 		/etc/init.d/connman restart
 		
 		#echo "rm -rf ${CONNMAN_SERVICES_DIR}/${SERVICE}" >> ${CONNMAN_UPGRADE_FILE}
