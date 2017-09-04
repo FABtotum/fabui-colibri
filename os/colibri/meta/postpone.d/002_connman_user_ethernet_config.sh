@@ -3,9 +3,12 @@
 source /mnt/live/mnt/boot/earlyboot/earlyboot.conf
 source /usr/share/fabui/ext/bash/connman_nm_functions.sh
 
+
+
 ########################################################################
 
 CONNMAN_UPGRADE_FILE="/var/lib/fabui/upgrade.d/002_connman_user_ethernet.sh"
+CONNMAN_ETH_CONFIG_FILE="user_ethernet.config"
 
 ########################################################################
 
