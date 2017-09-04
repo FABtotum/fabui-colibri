@@ -20,7 +20,7 @@ source /usr/share/fabui/ext/bash/connman_nm_functions.sh
 # Ethernet configuration upgrade
 EOF
 
-	SERVICE = $(connman_iface2service eth0)
+	SERVICE=$(connman_iface2service eth0)
 	SETTINGS_FILE="${CONNMAN_SERVICES_DIR}/${SERVICE}/settings"
 	IPv4=$(echo $NETWORK_IPV4 | awk -F / '{print $1}')
 	# Generate netmask based on prefix
