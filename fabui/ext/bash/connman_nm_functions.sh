@@ -517,7 +517,7 @@ get_interface_state()
 				else
 					if [ x"$iface" == x"eth0" ]; then
 						if [ -e "$SETTINGS_FILE" ]; then
-							echo "Reading settings from file"
+							#echo "Reading settings from file"
 							# fallback, read addresses from settings
 							MODE=$(cat "$SETTINGS_FILE" |  grep "IPv4.method" | awk -F= '{print $2}')
 							NETMASK_PREFIX=$(cat "$SETTINGS_FILE" |  grep "IPv4.netmask_prefixlen" | awk -F= '{print $2}')
