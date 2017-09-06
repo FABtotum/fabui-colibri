@@ -69,10 +69,13 @@ class ManualBedLeveling(GCodePusher):
         super(ManualBedLeveling, self).__init__(log_trace, monitor_file, config=config, use_stdout=False, lang=lang)
         
         self.bed_leveling_stats = {
-            'screw_1' : [0.0, 0.0, 0.0], # [turns, degree, height]
-            'screw_2' : [0.0, 0.0, 0.0],
-            'screw_3' : [0.0, 0.0, 0.0],
-            'screw_4' : [0.0, 0.0, 0.0],
+            'screws' : {
+                'screw_1' : [0.0, 0.0, 0.0], # [turns, degree, height]
+                'screw_2' : [0.0, 0.0, 0.0],
+                'screw_3' : [0.0, 0.0, 0.0],
+                'screw_4' : [0.0, 0.0, 0.0],
+            },
+            'status' : 'ok'  
         }
         
         self.add_monitor_group('bed_leveling', self.bed_leveling_stats)
@@ -165,8 +168,8 @@ class ManualBedLeveling(GCodePusher):
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
         probed_points = np.array(self.PROBE_POINTS)            
-        print probed_points
-
+        
+        probe_errors = 0
         for (p,point) in enumerate(self.PROBE_POINTS):        
             self.trace( _("Measuring point {0} of {1} ({2} times)").format( str(p+1), len(self.PROBE_POINTS), num_probes) )
         
@@ -177,21 +180,25 @@ class ManualBedLeveling(GCodePusher):
             probed_points[p,2] = 0.0
             probes = 0
             
+            error = False
             for i in range(0, num_probes):
                 #self.trace("x: {0}, y: {1} / {2}".format(x,y, i))
                 new_point = self.probe(x, y, timeout = 20)
                 if new_point:
                     probes += 1
                     probed_points[p,2] += new_point[2]
+                    error = False
                 else:
                     print "Error probing"
+                    error = True
+                    probe_errors += 1
+                    self.trace( _("Probe failed"))
                 
                 self.send("G0 Z{0} F5000".format(probe_height))
                 self.send("M400")
-                
+            
+            #if(error == False):    
             probed_points[p,2] /= probes
-        
-            print probed_points[p,2]
         
         # Retract probe
         self.send("M402")
@@ -201,38 +208,45 @@ class ManualBedLeveling(GCodePusher):
         # Offset from the first calibration screw (lower left)
         probed_points = np.add(probed_points, self.SCREW_OFFSET)
         
-        # Math
-        Fit = self.fitplane(probed_points)
-        coeff = Fit[0:3]
-        d = Fit[3]
+        print probe_errors
         
-        # Calibration Points of the screws
-        cal_point = np.array([
-                    [0.0-8.726, 0.0-10.579,     0.0],
-                    [0.0-8.726, 257.5-10.579,   0.0],
-                    [223-8.726, 257.5-10.579,   0.0],
-                    [223-8.726, 0.0-10.579,     0.0]
-                ])
-        
-        for p,point in enumerate(cal_point):
-            z = (-coeff[0]*point[0] - coeff[1]*point[1] +d)/coeff[2]
+        if(probe_errors == 0) :
+            print probed_points
+            
+            # Math
+            Fit = self.fitplane(probed_points)
+            coeff = Fit[0:3]
+            d = Fit[3]
+            
+            # Calibration Points of the screws
+            cal_point = np.array([
+                        [0.0-8.726, 0.0-10.579,     0.0],
+                        [0.0-8.726, 257.5-10.579,   0.0],
+                        [223-8.726, 257.5-10.579,   0.0],
+                        [223-8.726, 0.0-10.579,     0.0]
+                    ])
+            
+            for p,point in enumerate(cal_point):
+                z = (-coeff[0]*point[0] - coeff[1]*point[1] +d)/coeff[2]
+                    
+                # Difference from titled plane to straight plane
+                # Distance = P2-P1
+                diff = abs(d)-abs(z)
                 
-            # Difference from titled plane to straight plane
-            # Distance = P2-P1
-            diff = abs(d)-abs(z)
-            
-            # Number of screw turns, pitch 0.5mm
-            turns   = round(diff/0.5, 2) #
-            degrees = turns*360
-            # Lets round to upper 5 degrees
-            degrees = int(5 * round(float(degrees)/5))
-            
-            screw_label = 'screw_{0}'.format(p+1)
-            self.bed_leveling_stats[screw_label][0] = str(turns)
-            self.bed_leveling_stats[screw_label][1] = str(degrees)
-            self.bed_leveling_stats[screw_label][2] = str( round(diff, 5) )
-            
-            print "Calculated=" + str(z) + " Difference " + str(diff) +" Turns: "+ str(turns) + " deg: " + str(degrees)
+                # Number of screw turns, pitch 0.5mm
+                turns   = round(diff/0.5, 2) #
+                degrees = turns*360
+                # Lets round to upper 5 degrees
+                degrees = int(5 * round(float(degrees)/5))
+                
+                screw_label = 'screw_{0}'.format(p+1)
+                self.bed_leveling_stats['screws'][screw_label][0] = str(turns)
+                self.bed_leveling_stats['screws'][screw_label][1] = str(degrees)
+                self.bed_leveling_stats['screws'][screw_label][2] = str( round(diff, 5) )
+                
+                print "Calculated=" + str(z) + " Difference " + str(diff) +" Turns: "+ str(turns) + " deg: " + str(degrees)
+        else:
+             self.bed_leveling_stats['status'] = 'ko'
         
         # Make sure the new data is written to the monitor file
         self.update_monitor_file()

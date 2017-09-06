@@ -1,27 +1,27 @@
 <?php
 
-if(is_array($_response) && isset($_response['bed_leveling'])){ // if there is a valid response
-
-	$screws = array();	
+if(is_array($_response) && isset($_response['bed_leveling']) && $_response['bed_leveling']['status'] == 'ok'){ // if there is a valid response
+	
+	$screws = array();
 	$greens = 0;
 	
-	$screws[0] = array('t' => $_response['bed_leveling']['screw_1'][0], 's' => $_response['bed_leveling']['screw_1'][2]);
-	$screws[1] = array('t' => $_response['bed_leveling']['screw_2'][0], 's' => $_response['bed_leveling']['screw_2'][2]);
-	$screws[2] = array('t' => $_response['bed_leveling']['screw_3'][0], 's' => $_response['bed_leveling']['screw_3'][2]);
-	$screws[3] = array('t' => $_response['bed_leveling']['screw_4'][0], 's' => $_response['bed_leveling']['screw_4'][2]);
-
+	$screws[0] = array('t' => $_response['bed_leveling']['screws']['screw_1'][0], 's' => $_response['bed_leveling']['screws']['screw_1'][2]);
+	$screws[1] = array('t' => $_response['bed_leveling']['screws']['screw_2'][0], 's' => $_response['bed_leveling']['screws']['screw_2'][2]);
+	$screws[2] = array('t' => $_response['bed_leveling']['screws']['screw_3'][0], 's' => $_response['bed_leveling']['screws']['screw_3'][2]);
+	$screws[3] = array('t' => $_response['bed_leveling']['screws']['screw_4'][0], 's' => $_response['bed_leveling']['screws']['screw_4'][2]);
+	
 	$elaboreted_screws = array();
-
+	
 	foreach($screws as $screw){
 		$elaborated = elaborate_screw($screw);
 		array_push($elaboreted_screws, $elaborated);
 		
 		if($elaborated['color'] == 'green'){
 			$greens++;
-		}	
+		}
 	}
 	
-?>
+	?>
 	<h4 class="text-center hidden-xs">
 	<?php echo _("Screw or unscrew following the indication given for each point")?><br>
 	<?php echo _("Green points are optimally leveled.")?><br>
@@ -50,10 +50,15 @@ if(is_array($_response) && isset($_response['bed_leveling'])){ // if there is a 
 	
 <?php	
 }else{ //else there is something wrong need to do it again
-
- echo '<h4 class="text-center">
-		'._("Well this is embarrassing, during measurements something went wrong").'<br>'._("Try again").'
-	</h4>';
+echo '<div class="row">
+	<div class="col-sm-12">
+		<div class="alert alert-block alert-warning">
+			<h4 class="alert-heading"><i class="fa fa-warning"></i> Warning!</h4>
+			'._("Well this is embarrassing, during measurements something went wrong").'<br>
+			'._("Check probe lenght and try again").'
+		</div>
+	</div>
+</div>';
 }
 
 function elaborate_screw($data){
