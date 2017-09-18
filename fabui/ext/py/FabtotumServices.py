@@ -78,16 +78,18 @@ parser.add_argument("-L", "--log", help="Use logfile to store log messages.",   
 parser.add_argument("-p", "--pidfile", help="File to store process pid.",                   default=os.path.join(RUN_PATH,'fabtotumservices.pid') )
 parser.add_argument("-x", "--xmlrpc_pidfile", help="File to store xmlrpc process pid.",     default=os.path.join(RUN_PATH,'xmlrpcserver.pid') )
 parser.add_argument("-g", "--gpio_pidfile", help="File to store gpio monitor process pid.",     default=os.path.join(RUN_PATH,'gpiomonitor.pid') )
+parser.add_argument("-m", "--myfabtotumcom_pidfile", help="File to store myfatoumcom process pid", default=os.path.join(RUN_PATH,'myfabtotumcom.pid'))
 
 # Get arguments
 args = parser.parse_args()
 
-do_bootstrap        = args.bootstrap
-do_reset            = args.reset
-logging_facility    = args.log
-pidfile             = args.pidfile
-xmlrpc_pidfile      = args.xmlrpc_pidfile
-gpio_pidfile        = args.gpio_pidfile
+do_bootstrap          = args.bootstrap
+do_reset              = args.reset
+logging_facility      = args.log
+pidfile               = args.pidfile
+xmlrpc_pidfile        = args.xmlrpc_pidfile
+gpio_pidfile          = args.gpio_pidfile
+myfabtotumcom_pidfile = args.myfabtotumcom_pidfile
 
 with open(pidfile, 'w') as f:
     f.write( str(os.getpid()) )
@@ -210,6 +212,7 @@ gpiomon_exe = os.path.join(PYTHON_PATH, 'fabtotum/os/monitor/gpiomonitor.py')
 #~ os.system('python {0} -p {1} -L /var/log/fabui/gpiomonitor.log > /var/log/fabui/stdout.log 2>&1 &'.format(gpiomon_exe, gpio_pidfile) )
 os.system('python {0} -p {1} -L /var/log/fabui/gpiomonitor.log &'.format(gpiomon_exe, gpio_pidfile) )
 
+
 ## Stats monitor
 statsMonitor = StatsMonitor(TEMP_MONITOR_FILE, gcservice, config, logger=logger)
 statsMonitor.start()
@@ -223,8 +226,13 @@ soc_id = shell_exec('</proc/cpuinfo grep Hardware | awk \'{print $3}\'')[0].stri
 rpc = None
 
 if soc_id == 'BCM2709':
+    
     xmlrpc_exe = os.path.join(PYTHON_PATH, 'fabtotum/utils/xmlrpc/xmlrpcserver.py')
     os.system('python {0} -p {1} -L /var/log/fabui/xmlrpc.log &'.format(xmlrpc_exe, xmlrpc_pidfile) )
+    
+    myfabtotumcom_exe = os.path.join(PYTHON_PATH, 'MyFabtotumCom.py')
+    os.system('python {0} -p {1} -L /var/log/fabui/myfabtotumcom.log &'.format(myfabtotumcom_exe, myfabtotumcom_pidfile))
+    
 else:
     from fabtotum.utils.xmlrpc.xmlrpcserver import create as rpc_create
     rpc = rpc_create(gcservice, config, logging_facility, logger)

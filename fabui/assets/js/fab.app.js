@@ -572,7 +572,10 @@ fabApp = (function(app) {
 	 * @param {String} message Message text
 	 * @param {String} title   Message title. (default: Warning)
 	 */
-	app.showWarningAlert = function (message, title=_("Warning")) {
+	app.showWarningAlert = function (message, title) {
+		
+		title = title || _("Warning") ;
+		
 		$.smallBox({
 			title : title,
 			content : message,
@@ -588,7 +591,9 @@ fabApp = (function(app) {
 	 * @param {String} message Message text
 	 * @param {String} title   Message title. (default: Error)
 	 */
-	app.showErrorAlert = function (message, title=_("Error") ) {
+	app.showErrorAlert = function (message, title ) {
+		
+		title = title || _("Error") ;
 		$.smallBox({
 			title : title,
 			content : message,
@@ -604,7 +609,8 @@ fabApp = (function(app) {
 	 * @param {String} message Message text
 	 * @param {String} title   Message title. (default: Info)
 	 */
-	app.showInfoAlert = function(message, title=_("Info")) {
+	app.showInfoAlert = function(message, title) {
+		title = title || _("Info") ;
 		$.smallBox({
 			title : title,
 			content : message,
