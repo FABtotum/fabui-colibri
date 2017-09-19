@@ -244,7 +244,7 @@
 					<fieldset>
 						<section>
 							<label class="input"> <i class="icon-prepend fa fa-lock"></i>
-								<input type="password" data-inputmask-regex="[-_a-z A-Z0-9$@^`,|%;.~()/\{}:?\[\]=+_#!]*" class="input-password password" placeholder="insert password" id="wifiPassword" name="wifiPassword">
+								<input type="password" data-inputmask-regex="[-_a-z A-Z0-9$@^`,|%;.~()/\{}:?\[\]=+_#!\'\*]*" class="input-password password" placeholder="insert password" id="wifiPassword" name="wifiPassword">
 							</label>
 						</section>
 						<section>
