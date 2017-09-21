@@ -56,6 +56,7 @@ class User(TableItem):
         attribs['last_login']   = ""
         attribs['session_id']   = ""
         attribs['settings']     = "{}"
+        attribs['role']         = ""
         
         # 1970-01-01 00:00:00
         # %Y-%m-%d %H:%M:%S

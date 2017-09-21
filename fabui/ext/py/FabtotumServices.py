@@ -38,7 +38,7 @@ from fabtotum.fabui.config              import ConfigService
 from fabtotum.fabui.bootstrap           import hardwareBootstrap
 from fabtotum.fabui.monitor             import StatsMonitor
 from fabtotum.fabui.notify              import NotifyService
-from fabtotum.fabui.myfabtotum          import MyFabtotumCom
+#from fabtotum.fabui.myfabtotum          import MyFabtotumCom
 from fabtotum.totumduino.gcode          import GCodeService
 from fabtotum.totumduino.hardware       import reset as totumduino_reset
 from fabtotum.utils.pyro.gcodeserver    import GCodeServiceServer
@@ -163,6 +163,9 @@ for row in cursor:
    t['status'] = 'terminated'
    t.write()
 
+
+#myFabototumCom = MyFabtotumCom(gcservice, config, logger)
+
 # Start gcode service
 gcservice = GCodeService(SERIAL_PORT, SERIAL_BAUD, logger=logger)
 gcservice.start()
@@ -218,8 +221,8 @@ os.system('python {0} -p {1} -L /var/log/fabui/gpiomonitor.log &'.format(gpiomon
 statsMonitor = StatsMonitor(TEMP_MONITOR_FILE, gcservice, config, logger=logger)
 statsMonitor.start()
 
-myFabototumCom = MyFabtotumCom(gcservice, config, logger)
-myFabototumCom.start()
+#myFabototumCom = MyFabtotumCom(gcservice, config, logger)
+#myFabototumCom.start()
 
 # Ensure CTRL+C detection to gracefully stop the server.
 signal.signal(signal.SIGINT, signal_handler)
@@ -247,7 +250,7 @@ gcserver.loop()
 gcservice.loop()
 logger.info("Server stopped.")
 statsMonitor.loop()
-myFabototumCom.loop()
+#myFabototumCom.loop()
 observer.join()
 #usbMonitor.join()
 #gpioMonitor.join()

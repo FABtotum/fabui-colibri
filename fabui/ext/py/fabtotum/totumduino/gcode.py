@@ -42,6 +42,7 @@ from fabtotum.fabui.bootstrap import hardwareBootstrap
 from fabtotum.database import Database
 from fabtotum.database.task import Task
 from fabtotum.totumduino.format import partialM109, partialM190, partialM303
+from fabtotum.fabui.myfabtotum          import MyFabtotumCom
 #############################################
 
 HOOKS = [
@@ -326,6 +327,8 @@ class GCodeService:
         self.SERIAL_BAUD = serial_baud
         self.SERIAL_TIMEOUT = serial_timeout
         
+        
+        
         # Inter-thread communication
         # Must be defined before any thread is created
         self.cq = queue.Queue() # Command Queue
@@ -353,6 +356,8 @@ class GCodeService:
             formatter = logging.Formatter("%(levelname)s : %(message)s")
             ch.setFormatter(formatter)
             self.log.addHandler(ch)
+            
+        self.mfc = MyFabtotumCom(self, logger)
             
         self.gcode_state = {
             "axis_relative_mode" : {
@@ -1038,6 +1043,9 @@ class GCodeService:
         self.ev_tx_started.wait()
         self.ev_rx_started.wait()
         
+        # MyFabtotumCom Thread
+        self.mfc.start()
+        
         if atomic_group:
             self.atomic_begin(group=atomic_group)
         
@@ -1049,6 +1057,7 @@ class GCodeService:
         """
         self.sender.join()
         self.receiver.join()
+        self.mfc.loop()
     
     def close_serial(self):
         self.stop(release_only=True)
@@ -1177,6 +1186,10 @@ class GCodeService:
             return
         
         self.cq.put( Command.zmodify(z) )
+    
+    def reload_mfc(self):
+        """ reload my.fabtotum.com """
+        self.mfc.reload()
     
     def register_callback(self, callback_fun):
         """

@@ -16,12 +16,16 @@
 	{
 		parent::__construct($this->tableName);
 	}
-	
+	/**
+	 * 
+	 */
 	public function getByEmail($email)
 	{
 		return $this->get( array('email' => $email), 1 );
 	}
-	
+	/**
+	 * 
+	 */
 	public function getByToken($token)
 	{
 		$query = $this->db->get($this->tableName, 1);
@@ -33,15 +37,11 @@
 			
 			$_settings = json_decode($row->settings, true);
 			
-			
-			if(isset($_settings['token']) && $_settings['token'] == $token){
-				
+			if(isset($_settings['token']) && $_settings['token'] == $token){	
 				$user = get_object_vars($row);
 				break;
-				
 			}
 		}
-		
 		return $user;
 	}
  }

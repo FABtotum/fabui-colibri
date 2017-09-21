@@ -75,6 +75,12 @@ if ( ! function_exists('verify_keep_me_logged_in_cookie'))
 					$CI->load->model('User', 'user');
 					$user = $CI->user->get(array('email'=>$userInfoExploed[3], 'password'=>$password), 1);
 					if($user){
+						
+						//update user last login column
+						$last_login = date('Y-m-d H:i:s');
+						$CI->user->update($user['id'], array('last_login' => $last_login));
+						$user['last_login'] = $last_login;
+						
 						$user['settings'] = json_decode($user['settings'], true);
 						if(!isset($user['settings']['language'])) $user['settings']['language'] = 'en_US';
 						$CI->session->loggedIn = true;
@@ -88,6 +94,7 @@ if ( ! function_exists('verify_keep_me_logged_in_cookie'))
 					}
 			}	
 		}
+		
 		return false;
 	}
 }

@@ -34,8 +34,10 @@ import os, sys
 from threading import Event, Thread
 from fabtotum.database import Database
 from fabtotum.database.sysconfig import SysConfig
+from fabtotum.database.user import User
 from fabtotum.utils.common import shell_exec
 from fabtotum.os.paths import TEMP_PATH, BASH_PATH
+from fabtotum.fabui.config  import ConfigService
 
 # Set up message catalog access
 tr = gettext.translation('my_fabtotum_com', 'locale', fallback=True)
@@ -62,9 +64,14 @@ class MyFabtotumCom:
     }
     
     
-    def __init__(self, gcs, config, logger):
+    def __init__(self, gcs, logger, config=None ):
         
-        self.config = config
+        
+        if config:
+            self.config = config
+        else:
+            self.config = ConfigService()
+        
         self.gcs    = gcs
         self.db     = Database(self.config)
         self.log    = logger
@@ -81,6 +88,7 @@ class MyFabtotumCom:
         self.id_counter       = 0
         self.mac_address      = self.getMACAddres()
         self.serial_number    = self.getSerialNumber()
+        self.fab_id           = self.getFabID()
         
     
     def call(self, method, params):
@@ -109,6 +117,17 @@ class MyFabtotumCom:
             
         except requests.exceptions.RequestException as e:
             self.log.debug("MyFabtotumCom - {0}".format(e))
+            return False
+        
+    def getFabID(self):
+        """ """
+        user = User(self.db)
+        user.query_by('role', 'administrator')
+        settings = json.loads(user['settings'])
+        
+        if "fabid" in settings:
+            return settings['fabid']['email']
+        else:
             return False
     
     def getMACAddres(self):
@@ -247,12 +266,15 @@ class MyFabtotumCom:
         """ reload settings """
         self.mac_address   = self.getMACAddres()
         self.serial_number = self.getSerialNumber()
+        self.fab_id        = self.getFabID()
+        self.log.debug("MyFabtotumCom - Settings reloaded")
     
     def __thread_polling(self):
         """ polling thread """
         self.log.debug("MyFabtotumCom Polling_thread: started")
         while self.running:
-            self.fab_polling()
+            if self.fab_id:
+                self.fab_polling()
             time.sleep(self.polling_interval)
             
     def __thread_update(self):

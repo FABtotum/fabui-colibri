@@ -19,6 +19,14 @@
 		$this->load->helper('form');
 		$this->config->load('fabtotum');
 		
+		//reload user info
+		$this->load->model('User', 'user');
+		$user = $this->user->get($this->session->user['id'], 1);
+		$user['settings'] = json_decode($user['settings'], true);
+		
+		$this->session->user = $user;
+		$data['user'] = $user;
+		
 		//main page widget
 		$widgetOptions = array(
 				'sortable' => false, 'fullscreenbutton' => false,'refreshbutton' => false,'togglebutton' => false,
@@ -35,8 +43,8 @@
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'user-widget';
-		$widget->header = array('icon' => 'fa-user', "title" => "<h2>". _("User"). "</h2>");
-		$widget->body   = array('content' => $this->load->view('account/widget', null, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
+		$widget->header = array('icon' => 'fa-user', "title" => "<h2>". _("Your account"). "</h2>");
+		$widget->body   = array('content' => $this->load->view('account/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		
 		$data['widget'] = $widget->print_html(true);
 		
@@ -79,7 +87,104 @@
 		$this->output->set_content_type('application/json')->set_output(json_encode( $this->session->user ));
 		
 	}
+	/**
+	 *  connect to FABID
+	 */
+	public function connectFABID()
+	{
+		$postData = $this->input->post();
+		$this->load->helper('myfabtotum_helper');
+		$this->load->helper('fabtotum_helper');
+		
+		$response = array();
+		
+		//check if is a valid fabid account
+		$result = fab_is_fabid_registered($postData['fabid_email'], $postData['fabid_password']);
+		
+		if(is_array($result)){ // call to my.fabtotum.com executed
 			
+			if(isset($result['status_code'])){
+				
+				//user exists in my.fabtotum.com
+				if($result['status_code'] == 200){
+					
+					//check if printer is already registered
+					$checkPrinterResult = fab_is_printer_registered();
+					
+					if(is_array($checkPrinterResult)){ // call to my.fabtotum.com executed
+						
+						if($checkPrinterResult['status_code'] == 1003){ //SERVICE_PRINTER_UNKNOWN - printer is not registered
+							//registering printer
+							$registerPrinterResult = fab_register_printer($postData['fabid_email']);
+							
+							if(is_array($registerPrinterResult)){ // call to my.fabtotum.com executed
+								
+								if($registerPrinterResult['status_code'] == 200){ //printer registered correctly
+									$response['status'] = true;
+									$response['message'] = _("Connected to your FABID account");
+								}else{
+									$response['status'] = false;
+								}
+								
+							}else{ //something failed
+								$response['status'] = false;
+								$response['message'] = $registerPrinterResult;
+							}
+							
+						}else{ //printer is already registered
+							$response['status'] = true;
+							$response['message'] = _("Connected to your FABID account");
+						}
+						
+					}else{ //something failed
+						$response['status'] = false;
+						$response['message'] = $checkPrinterResult;
+					}
+					
+				}else{ //user doesn't exists in my.fabtotum.com
+					$response['status'] = false;
+					$response['message'] = _("Your sign in details were not recognized, please check and try again");
+				}
+			}
+		}else{ //something failed
+			$response['status'] = false;
+			$response['message'] = $result;
+		}
+		
+		if($response['status'] == true){ //save fabid infos tu db
+			
+			$this->load->model('User', 'user');
+			$user = $this->user->get($this->session->user['id'], 1);
+			
+			$user['settings'] = json_decode($user['settings'], true);
+			$user['settings']['fabid']['email'] = $postData['fabid_email'];
+			$this->session->user = $user;
+			$this->user->update($user['id'], array('settings' => json_encode($user['settings'])));
+			reload_myfabtotum();
+		}
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode( $response));
+	}
+	
+	/**
+	 * 
+	 */
+	public function disconnectFABID()
+	{
+		$this->load->model('User', 'user');
+		$this->load->helper('myfabtotum_helper');
+		
+		$user = $this->user->get($this->session->user['id'], 1);
+		
+		$user['settings'] = json_decode($user['settings'], true);
+		unset($user['settings']['fabid']);
+		
+		$this->user->update($user['id'], array('settings' => json_encode($user['settings'])));
+		$this->session->user = $user;
+		
+		$this->output->set_content_type('application/json')->set_output(true);
+	}
+	
  }
  
 ?>

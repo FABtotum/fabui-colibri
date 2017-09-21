@@ -13,13 +13,21 @@
 		initLanguage();
 		initFormValidator();
 		$("#save").on('click', saveUser);
+		$("#fabid-connect-button").on('click', fabIDConnect);
+		$("#fabid-disconnect-button").on('click', askFabIDDisconnect);
+		
+		$("#fabidModalButton").click(function(e){
+	    	$('#fabidModal').modal({});
+	    });
 	});
 	/**
 	*
 	*/
 	function initLanguage()
 	{
+		<?php if(isset($this->session->user['settings']['language'])): ?>
 		$("#settings-language").val('<?php echo $this->session->user['settings']['language'] ?>');
+		<?php endif; ?>
 	}
 	/**
 	*
@@ -58,6 +66,36 @@
 				error.insertAfter(element.parent());
 			}
 		});
+
+
+		$("#fabid-form").validate({
+			// Rules for form validation
+			rules : {
+				fabid_email : {
+					required : true,
+					email : true
+				},
+				fabid_password : {
+					required : true
+				}
+			},
+			// Messages for form validation
+			messages : {
+				email : {
+					required : "<?php echo _("Please enter your email address");?>",
+					email : "<?php echo _("Please enter a valid email address") ?>"
+				},
+				fabid_password : {
+					required : "<?php echo _("Please enter the password")?>"
+				}
+			},
+			// Do not change code below
+			errorPlacement : function(error, element) {
+				error.insertAfter(element.parent());
+			}
+		});
+
+		
 	}
 	/**
 	*
@@ -95,5 +133,72 @@
 				
 			});
 		}
+	}
+	/**
+	*
+	**/
+	function fabIDConnect()
+	{
+		if($("#fabid-form").valid()){
+			var fields = $( "#fabid-form :input" ).serializeArray();
+			var data = {};
+			jQuery.each( fields, function( index, object ) {
+				data[object.name] = object.value;
+			});
+
+			openWait('<i class="fa fa-spinner fa-spin "></i> <?php echo _("Connecting to FABID") ?>', _("Please wait"), false);
+
+			$.ajax({
+				type: 'post',
+				url: '<?php echo site_url('account/connectFABID'); ?>',
+				data : data,
+				dataType: 'json'
+			}).done(function(response) {
+				
+				if(response.status == false){
+					closeWait();
+					fabApp.showErrorAlert(response.message, 'FABID');
+				}else{
+					$('#fabidModal').modal('hide');
+					openWait('<i class="fa fa-check"></i> ' + response.message, _("Reloading page"), false);
+					setTimeout(function() {
+						location.reload();
+					}, 2500);
+				}
+			});
+		}
+	}
+	/**
+	*
+	**/
+	function askFabIDDisconnect()
+	{
+		$.SmartMessageBox({
+			title : "<?php echo _("Warning"); ?>",
+			content : "<?php echo _("Are sure you want to disconnect?"); ?>",
+			buttons : '[<?php echo _("No");?>][<?php echo _("Yes");?>]'
+		}, function(ButtonPressed) {
+			if (ButtonPressed === "<?php echo _("Yes");?>") {
+				fabIDDisconnect();
+			}
+		});
+		
+	}
+	/**
+	*
+	*/
+	function fabIDDisconnect()
+	{
+		openWait('<i class="fa fa-spinner fa-spin "></i> <?php echo _("Disconnecting from FABID") ?>', _("Please wait"), false);
+		$.ajax({
+			type: 'post',
+			url: '<?php echo site_url('account/disconnectFABID'); ?>',
+			dataType: 'json'
+		}).done(function(response) {
+			openWait('<i class="fa fa-check"></i> <?php echo _("Disconnected");?>', _("Reloading page"), false);
+			setTimeout(function() {
+				location.reload();
+			}, 2500);
+		});
 	}
 </script>

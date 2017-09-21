@@ -71,6 +71,9 @@ class GCodeServiceServerPyroWrapper(object):
     def z_modify(self, value):
         return self.gcs.z_modify(value)
     
+    def reload_mfc(self):
+        self.gcs.reload_mfc()
+    
     def push(self, id, data):
         return self.gcs.push(id, data)
     

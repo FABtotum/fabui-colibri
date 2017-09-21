@@ -145,6 +145,11 @@ class ExposeCommands:
         """ Send reset request """
         self.gcs.reset()
         return self.__respond('ok')
+    
+    def do_mfc_reload(self):
+        """ reload my.fabtotum.com """
+        self.gcs.reload_mfc()
+        return self.__respond('ok')
 
     def set_z_modify(self, value):
         self.gcs.z_modify(float(value))

@@ -62,8 +62,13 @@
 			set_keep_me_looged_in_cookie($postData['email'], $postData['password']);
 		}
 		
+		//update user last login column
+		$last_login = date('Y-m-d H:i:s');
+		$this->user->update($user['id'], array('last_login' => $last_login));
 		
 		$user['settings'] = json_decode($user['settings'], true);
+		$user['last_login'] = $last_login;
+		
 		if(!isset($user['settings']['language'])) $user['settings']['language'] = 'en_US';
 		//create valid session for fabui
 		$this->session->loggedIn = true;
