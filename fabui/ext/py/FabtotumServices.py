@@ -38,6 +38,7 @@ from fabtotum.fabui.config              import ConfigService
 from fabtotum.fabui.bootstrap           import hardwareBootstrap
 from fabtotum.fabui.monitor             import StatsMonitor
 from fabtotum.fabui.notify              import NotifyService
+from fabtotum.fabui.myfabtotum          import MyFabtotumCom
 from fabtotum.totumduino.gcode          import GCodeService
 from fabtotum.totumduino.hardware       import reset as totumduino_reset
 from fabtotum.utils.pyro.gcodeserver    import GCodeServiceServer
@@ -217,6 +218,9 @@ os.system('python {0} -p {1} -L /var/log/fabui/gpiomonitor.log &'.format(gpiomon
 statsMonitor = StatsMonitor(TEMP_MONITOR_FILE, gcservice, config, logger=logger)
 statsMonitor.start()
 
+myFabototumCom = MyFabtotumCom(gcservice, config, logger)
+myFabototumCom.start()
+
 # Ensure CTRL+C detection to gracefully stop the server.
 signal.signal(signal.SIGINT, signal_handler)
 
@@ -230,8 +234,8 @@ if soc_id == 'BCM2709':
     xmlrpc_exe = os.path.join(PYTHON_PATH, 'fabtotum/utils/xmlrpc/xmlrpcserver.py')
     os.system('python {0} -p {1} -L /var/log/fabui/xmlrpc.log &'.format(xmlrpc_exe, xmlrpc_pidfile) )
     
-    myfabtotumcom_exe = os.path.join(PYTHON_PATH, 'MyFabtotumCom.py')
-    os.system('python {0} -p {1} -L /var/log/fabui/myfabtotumcom.log &'.format(myfabtotumcom_exe, myfabtotumcom_pidfile))
+    #myfabtotumcom_exe = os.path.join(PYTHON_PATH, 'MyFabtotumCom.py')
+    #os.system('python {0} -p {1} -L /var/log/fabui/myfabtotumcom.log &'.format(myfabtotumcom_exe, myfabtotumcom_pidfile))
     
 else:
     from fabtotum.utils.xmlrpc.xmlrpcserver import create as rpc_create
@@ -243,6 +247,7 @@ gcserver.loop()
 gcservice.loop()
 logger.info("Server stopped.")
 statsMonitor.loop()
+myFabototumCom.loop()
 observer.join()
 #usbMonitor.join()
 #gpioMonitor.join()

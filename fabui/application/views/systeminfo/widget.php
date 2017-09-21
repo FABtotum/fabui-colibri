@@ -22,6 +22,9 @@
 			        <dt><?php echo _("Os");?></dt>
 			        <dd><?php echo $os_info; ?></dd>
 			        
+			        <dt><?php echo _("Date");?></dt>
+			        <dd><a href="javascript:void(0);" class="system-date-time" style="border-bottom: dashed 1px #0088cc;"><?php  echo trim(shell_exec('date +"%b %a %d %H:%M %Y"')); //echo date('d/m/Y G:i');?></a></dd>
+			        
 			        <dt><?php echo _("Fabui");?></dt>
 			        <dd><?php echo $bundles['fabui']['version']?></dd>
 			        
@@ -150,7 +153,7 @@
 			<h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" class="collapsed"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> <?php echo _("Bundles"); ?> </a></h4>
 		</div>
 		<div id="collapseFour" class="panel-collapse collapse">
-			<div class="panel-body">
+			<div class="panel-body" style="height: 250px; overflow: auto;">
 				<dl class="dl-horizontal">
 				<?php foreach ($bundles as $bundle):?>
 					<dt><?php echo ucfirst($bundle['info']['name']);?></dt>
@@ -163,4 +166,65 @@
 		</div>
 	</div>
 </div>
-
+<!-- DATETIME MODAL -->
+<div class="modal fade" id="dateTimeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo _("Set system date and time") ?></h4>
+			</div>
+			<div class="modal-body" >
+				<div class="row">
+					<div class="col-sm-12">
+						<form class="smart-form" id="date-time-form">
+							<fieldset>
+								<div class="row">
+									<section class="col col-2">
+										<label class="label">Day</label>
+										<label class="select">
+											<?php echo days_menu('day', date('d'), 'id="day"');?> <i></i> 
+										</label>
+									</section> 
+									<section class="col col-4">
+										<label class="label">Month</label>
+										<label class="select">
+											<?php echo months_menu('month', date('m'), 'id="month"');?> <i></i>
+										</label>
+									</section>
+									<section class="col col-2">
+										<label class="label">Year</label>
+										<label class="select">
+											<?php echo years_menu('year', date('Y'), 1975, date('Y'), 'id="year"');?> <i></i> 
+										</label>
+									</section>
+									<section class="col col-2">
+										<label class="label">Hour</label>
+										<label class="select">
+											<?php echo hours_menu('hour', date('H'), 'id="hour"');?> <i></i> 
+										</label>
+									</section>
+									<section class="col col-2">
+										<label class="label">Minute</label>
+										<label class="select">
+											<?php echo minutes_menu('minute', date('i'), 'id="minute"');?> <i></i> 
+										</label>
+									</section> 
+								</div>
+								<section>
+									<label class="label"><?php echo _("Timezone");?></label>
+									<label class="select">
+										<?php echo timezone_menu('timezone', $current_timezone, 'id="timezone"');?> <i></i>
+									</label>
+								</section>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Cancel')?></button>
+				<button type="button" class="btn btn-primary" id="dateTimeSave"><i class="fa fa-save"></i> <?php echo _('Save')?> </button>
+			</div>
+		</div>
+	</div>
+</div>
