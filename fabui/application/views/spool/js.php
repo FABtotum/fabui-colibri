@@ -47,7 +47,6 @@
 	function checkWizard()
 	{
 		var step = $('.wizard').wizard('selectedItem').step;
-		console.log('Check', step);
 		switch(step){
 			case 1: // Choose mode
 				disableButton('.button-prev');

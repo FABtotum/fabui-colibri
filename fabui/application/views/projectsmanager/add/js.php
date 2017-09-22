@@ -25,7 +25,6 @@
 	
 	function initDropzone()
 	{
-		console.log("accepted_files", "<?php echo $accepted_files; ?>");
 		
 		$("div#newObjectDropzone").dropzone({ 
 			url: "<?php echo site_url('projectsmanager/uploadFile/') ?>",
@@ -104,7 +103,6 @@
 	{
 		if($("#object-form").valid()){
 
-			console.log(filesDropzone.getQueuedFiles().length);
 			if(filesDropzone.getQueuedFiles().length > 0){
 				crateProgressBars();
 				$('#progressModal').modal({

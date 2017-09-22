@@ -35,8 +35,6 @@ if(!isset($task_jump_restart)) $task_jump_restart = 1;
 			url: '<?php echo site_url('std/saveQualityRating'); ?>/' + idTask + '/' + rating,
 			dataType: 'json'
 		}).done(function(response) {
-			// do nothing
-			console.log('save quality rating', response);
 		});
 	}
 	

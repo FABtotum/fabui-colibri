@@ -608,7 +608,6 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 			url: '<?php echo site_url('nozzle/storeNozzleOffset/') ?>/' + newNozzleOffset,
 			dataType: 'json'
 		}).done(function(response) {
-			console.log('new nozzle offset stored');
 		});
 		<?php endif; ?>
 	}

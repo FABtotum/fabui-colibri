@@ -65,7 +65,6 @@
 	}
 	
 	function bulk_actions(){
-		console.log('bulk_actions');
 		
 		var action = $( this ).attr('data-action');
 		
@@ -92,8 +91,6 @@
 		
 		if(boxes.length > 0){
 			boxes.each(function() {
-
-				console.log($(this).attr("data-attribute-owner"));
 
 				if(parseInt($(this).attr("data-attribute-owner")) == 1)
 				{

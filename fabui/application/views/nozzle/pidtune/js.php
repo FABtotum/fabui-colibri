@@ -173,7 +173,6 @@
 	**/
 	function  initRunningTaskPage()
 	{
-		console.log("initRunningTaskPage");
 		fabApp.freezeMenu('pidtune');
 		fabApp.disableTopBarControls();
 		disableInputs();

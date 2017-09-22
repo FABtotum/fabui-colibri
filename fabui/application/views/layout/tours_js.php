@@ -84,7 +84,6 @@ function startTour(name)
     {
         steps = available_tours[name].steps;
         active_tour_name = name;
-        console.log('startTour', name);
     }
         
     // Skip steps for open menu-items

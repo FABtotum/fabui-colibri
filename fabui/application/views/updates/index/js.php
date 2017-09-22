@@ -258,14 +258,13 @@
 		var is_selected = $(this).is(":checked");
 		var bundle_info = local_data_copy.bundles[bundle_name];
 		
-		console.log('cb', bundle_name, is_selected );
 		
 		if(bundle_info.requires.hasOwnProperty("bundle"))
 		{
 			$.each(bundle_info.requires.bundle, function(index, object) {
-				//console.log(object.name, object.min_version);
+
 				var localBundle = local_data_copy.bundles[object.name];
-				//console.log(object.name, object.min_version, localBundle.local, versionCompare(object.min_version, localBundle.local));
+
 				if( versionCompare(localBundle.local, object.min_version ) == -1 )
 				{
 					var cb_id = "checkbox-bundle-" + object.name;
@@ -277,20 +276,7 @@
 			});
 		}
 		
-		/*if(bundle_info.requires.hasOwnProperty("firmware"))
-		{
-			$.each(bundle_info.requires.bundle, function(index, object) {
-				//console.log(object.name, object.min_version);
-				//var localBundle = local_data_copy.bundles[object.name];
-				if( versionCompare(object.min_version,  localBundle.local) )
-				{
-					var cb_id = "checkbox-firmware-" + object.name;
-					$("#" + cb_id).prop("checked", is_selected );
-					$("#" + cb_id).attr("disabled", !is_selected);
-					$("#" + cb_id).attr("title", "Requires by " + bundle_name);
-				}
-			});
-		}*/
+
 	}
 	
 	/**

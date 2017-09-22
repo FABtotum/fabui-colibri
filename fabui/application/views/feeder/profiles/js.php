@@ -22,8 +22,6 @@
 		$('.settings-action').on('click', buttonAction);
 		$("#inputId").on('change', importFeederSettings);
 		initFieldValidation();
-        
-        console.log('feeder', selected_feeder, 'feeders', feeders);
 		
 	});
 
@@ -46,7 +44,6 @@
 				'capability[]':  _("Please select at least one capability")
 			},
 			  submitHandler: function(form) {
-				console.log("FORM SUBMIT");
 			},
 			errorPlacement : function(error, element) {
 				if(element[0].name == "capability[]")
@@ -146,7 +143,6 @@
 				factoryReset(selected_feeder);
 				break;
 			case "save-install":
-				console.log("SAVE INSTALL");
 				if($("#feeder-settings").valid()){
 					saveFeederSettings(setFeeder);
 				}
@@ -186,7 +182,6 @@
 			var value = feeder[key];
 			var id = "#feeder-"+key;
 			$(id).val(value);
-			console.log('try to', id);
 		}
 
 		if(feeder.is_4thaxis)
@@ -223,7 +218,6 @@
 			data : settings,
 			dataType: 'json'
 		}).done(function(response) {
-			console.log(response);
 			fabApp.showInfoAlert('<strong>{0}</strong> saved'.format(settings.name));
 			setTimeout(function(){
 				if($.isFunction(callback)){
@@ -278,7 +272,6 @@
 					url: '<?php echo site_url('feeder/removeFeeder'); ?>/' + selected_feeder,
 					dataType: 'json'
 				}).done(function(response) {
-					console.log(response);
 					fabApp.showInfoAlert('<strong>{0}</strong> removed'.format(feeders[selected_feeder].name));
 					setTimeout(function(){
 						location.reload();

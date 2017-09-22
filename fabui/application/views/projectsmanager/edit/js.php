@@ -268,8 +268,6 @@
 	
 	function do_file_action(){
 		var url = $(this).attr("data-action");
-		
-		console.log('do_file_action', $(this).attr("data-action"));
 		document.location.href = $(this).attr("data-action");
 		//~ location.reload();
 	}
