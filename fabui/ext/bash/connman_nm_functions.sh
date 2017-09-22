@@ -576,7 +576,7 @@ get_interface_state()
 				echo "      \"support_ap_channel\" : \"no\","
 				echo -n "      \"support_ap_custom_address\" : \"no\""
 				
-				if [ x"$MODE" != x"disabled" ]; then
+				if [ x"$MODE" != x"disabled" ] && [ x"$MODE" != x"unknown" ]; then
 				
 					MODE=$(iwconfig $iface | awk '/Mode/{print $1}')
 					
