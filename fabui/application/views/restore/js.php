@@ -55,10 +55,8 @@
 				$(".next").find('a').html( _("Next") );
 			},
 			'onLast': function(tab, navigation, inde){
-				console.log("last");
 			},
 			'onFinish': function(tab, navigation, inde){
-				console.log("finish");
 			}
 			
 		});

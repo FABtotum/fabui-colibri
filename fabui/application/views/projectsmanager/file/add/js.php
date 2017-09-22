@@ -25,7 +25,6 @@
 	
 	function initDropzone()
 	{
-		console.log("accepted_files", "<?php echo $accepted_files; ?>");
 		
 		$("div#newObjectDropzone").dropzone({ 
 			url: "<?php echo site_url('projectsmanager/uploadFile/') ?>",
@@ -41,8 +40,6 @@
 			init: function(){
 				filesDropzone = this;
 				this.on("complete", function (file) {
-					
-					console.log("complete:", file);
 					
 					if(file.status == 'error') return;
 					var response = jQuery.parseJSON(file.xhr.response);
@@ -60,22 +57,15 @@
 				}); 
 				this.on("addedfile", function(file){
 					
-					console.log("addedfile:", file);
-					
 					if(numFiles == 0 && $("#name").val() == ''){
 						$("#name").val(file.name);
 					}
 					numFiles ++;
 				});
 				this.on("removedfile", function(file){
-					console.log("removedfile:", file);
-					
 					numFiles --;
 				});
 				this.on("uploadprogress", function(file, progress) {
-					console.log("uploadprogress:", file, progress);
-					// class name invalid characters removal 
-					// invalid: ~ ! @ $ % ^ & * ( ) + = , . / ' ; : " ? > < [ ] \ { } | ` #
 					$("." + file.name.replace(/[^a-z0-9\-_:]|^[^a-z]+/gi, "")).attr('style', 'width:' + progress + '%');
 				});
 			}

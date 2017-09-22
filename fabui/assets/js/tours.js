@@ -41,14 +41,12 @@ function startTour(name)
     
     if( !available_tours.hasOwnProperty(name) )
     {
-        console.log('tour not found', name);
         return false;
     }
     else
     {
         steps = available_tours[name];
         tour_name = name;
-        console.log('startTour', name);
     }
     
     // @TODO: make this automatic based on steps data

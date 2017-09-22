@@ -43,7 +43,6 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 				rotation(value);
 			},
 			cancel: function () {
-				console.log("cancel : ", this);
 			}
 		});
 		
@@ -84,9 +83,8 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 				return true;
 			}
 		 };
-		 
-		console.log('jog_touch[prev]:', jog_touch);
-		 
+
+		 		 
 		 jog_touch =  $('.bed-image').jogtouch(touch_options);
 		 
 		 $('.touch-home-xy').on('click', function(e) {
@@ -154,17 +152,12 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 	}
 	
 	function jogStorePosition()
-	{
-		
-		console.log("Store Position");
-		
+	{	
 		fabApp.jogGetPosition( function(e) {
 			var tmp = e[0].reply[0].split(" ");
 			var x = tmp[0].replace("X:","");
 			var y = tmp[1].replace("Y:","");
 			var z = tmp[2].replace("Z:","");
-			
-			console.log('position', x, y, z);
 			
 			var store = false;
 			
@@ -200,7 +193,7 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 					url: '<?php echo site_url($store_position_url); ?>',
 					dataType: 'json'
 				}).done(function(data) {
-					//~ console.log(response);
+					
 					if(data.result)
 					{
 						if(jog_is_xy_homed)
@@ -273,8 +266,6 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 		var extruderFeed = $("#4thaxis-feedrate").length > 0 ? $("#4thaxis-feedrate").val() : 300;
 		var waitForFinish= true;
 		
-		console.log(e.action);
-		
 		switch(e.action)
 		{
 			case "zero":
@@ -318,7 +309,6 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 					var have_y = stored_position.y != "undefined";
 					if(have_x && have_y)
 					{
-						console.log('restore:', stored_position);
 						jogRestoreTo(stored_position.x, stored_position.y);
 					}
 					else
@@ -337,7 +327,6 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 					var have_z = stored_position.z != "undefined";
 					if(have_z)
 					{
-						console.log('restore:', stored_position);
 						jogRestoreTo('', '', stored_position.z);
 					}
 					else

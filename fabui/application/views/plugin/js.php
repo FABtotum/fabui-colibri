@@ -104,7 +104,6 @@
 				else
 				{
 					var idx = installed_plugins.indexOf(plugin.slug);
-					console.log(installed_plugins_version);
 					if( cmpVersions(installed_plugins_version[idx], plugin.latest) < 0 )
 						table_html += '<button class="btn btn-xs btn-primary action-button" data-action="update" data-title="'+plugin.slug+'" " title="Update">' + "<?php echo _("Update");?>" + '</button>&nbsp;';
 					else
@@ -123,7 +122,6 @@
 	function doAction(action, plugin_slug)
 	{
 		$(".action-button").addClass("disabled");
-		console.log('ACTION', action, plugin_slug);
 		
 		var message = '';
 		switch(action)
@@ -147,8 +145,6 @@
 				url: "plugin/"+action+"/"+plugin_slug,
 				dataType: 'json',
 			}).done(function(response){
-				
-				console.log("doAction", response);
 				
 				$(".action-button").addClass("disabled");
 				
@@ -200,7 +196,7 @@
 		var pluginFile = $('#plugin-file').prop('files')[0];   
 		var form_data = new FormData();                  
 		form_data.append('plugin-file', pluginFile);
-		console.log(form_data);                             
+		                     
 		$.ajax({
 			url: '<?php echo site_url('plugin/doUpload') ?>',
 			dataType: 'json',
@@ -210,7 +206,7 @@
 			data: form_data,                         
 			type: 'post',
 			success: function(response){
-				console.log(response);
+				
 				if(response.installed == true){
 					waitContent("<?php echo _("Plugin installed successfully");?><br><?php echo _("Redirecting to plugins page");?>...");
 					setTimeout(function(){
@@ -266,7 +262,7 @@
 	
 	function initFieldValidation()
 	{
-		console.log('initFieldValidation');
+		
 		
 		jQuery.validator.addMethod("slugChecker", function(value, element, param) {
 			if(!param)
@@ -323,7 +319,7 @@
 		var name = $(this).attr('name');
 		var value = $(this).val();
 		
-		console.log(id, name, value);
+		
 		if(id == "plugin-name")
 		{
 			var slug="my_new_plugin";
@@ -342,8 +338,7 @@
 	function createNewPlugin()
 	{
 		var meta = getNewPluginMeta();
-		console.log('META', meta);
-		console.log('Form Submit handler');
+		
 		
 		var data = {meta: meta};
 		
@@ -353,7 +348,7 @@
 			data : data,
 			dataType: 'json'
 		}).done(function(response) {
-			console.log(response);
+			
 			/*$.smallBox({
 				title : "<?php echo _('Settings')?>",
 				content : '<?php echo _('Hardware settings saved')?>',

@@ -20,7 +20,6 @@ if( !isset($wizard_finish) ) $wizard_finish = end($steps)['number'];
 	var wizard; //wizard object
 	
 	$(document).ready(function() {
-		console.log('task_wizard_js: ready');
 		initWizard();
 	});
 
