@@ -387,8 +387,11 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 	/**
 	 * set initial target for temperatures sliders and temperatures labels
 	 */
-	function setTemperaturesSlidersValue(ext_temp_target = 0, bed_temp_target = 0)
+	function setTemperaturesSlidersValue(ext_temp_target, bed_temp_target)
 	{	
+		ext_temp_target = ext_temp_target || 0;
+		bed_temp_target = bed_temp_target || 0;
+		
 		$.get(temperatures_file_url + '?' + jQuery.now(), function(data){
 
 			/**

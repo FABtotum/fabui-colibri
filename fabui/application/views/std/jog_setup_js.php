@@ -225,8 +225,11 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 		});
 	}
 	
-	function jogRestoreTo(x = '', y = '', z = '')
+	function jogRestoreTo(x , y, z)
 	{
+		x = x || '';
+		y = y || '';
+		z = z || '';
 		jog_busy = true;
 		if( (z != '') && (z != null) && (z != undefined) )
 		{

@@ -7,6 +7,10 @@
  * 
  */
 ?>
+<!-- IE11 -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- WEB MANIFEST -->
+<link rel="manifest" href="/assets/manifest.json">
 <title> .: FABUI :. </title>
 <?php foreach($this->meta_tags as $name => $value): ?>
 <meta name="<?php echo $name ?>" content="<?php echo $value; ?>">
@@ -25,10 +29,6 @@
 <!-- FAVICONS -->
 <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon">
 <link rel="icon"          href="/assets/img/favicon/favicon.ico" type="image/x-icon">
-<!-- IE11 -->
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!-- WEB MANIFEST -->
-<link rel="manifest" href="/assets/manifest.json">
 <!-- HEADERD JAVASCRIPTS -->
 <script src="/assets/js/libs/jquery-2.1.1.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script src="/assets/js/libs/jquery-ui-1.10.3.min.js?v=<?php echo FABUI_VERSION ?>"></script>

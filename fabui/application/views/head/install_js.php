@@ -139,8 +139,9 @@
 	/**
 	*
 	**/
-	function capability_change(update_working_mode=true)
+	function capability_change(update_working_mode)
 	{
+		update_working_mode = update_working_mode || true;
 		var capabilities = [];
 		var print = false;
 		var mill = false;
