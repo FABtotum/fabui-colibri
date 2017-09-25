@@ -9,6 +9,16 @@
  * 
  * 
  */
+
+define("SERVICE_SUCCESS",            200);
+define("SERVICE_UNAUTHORIZED",       401);
+define("SERVICE_FORBIDDEN",          403);
+define("SERVICE_SERVER_ERROR",       500);
+define("SERVICE_INVALID_PARAMETER",  1001);
+define("SERVICE_ALREADY_REGISTERED", 1002);
+define("SERVICE_PRINTER_UNKNOWN",    1003);
+define("SERVICE_USER_UNKNOWN",       1004);
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * MY.FABTOTUM.COM Helper
@@ -53,18 +63,37 @@ if (!function_exists('fab_register_printer'))
 	 * @param string $fabid email used for my.fabtotum.com account
 	 * @return 
 	 */
-	function fab_register_printer($fabid)
+	function fab_register_printer($fabid, $serialno = "")
 	{
 		$CI =& get_instance();
 		$CI->load->helpers(array('fabtotum_helper', 'os_helper'));
+		$CI->load->database();
 		
 		$args = array();
 		
+		if($serialno == '') getSerialNumber();
+		
 		$args['fabid']    = $fabid;
-		$args['serialno'] = getSerialNumber();
+		$args['serialno'] = $serialno;
 		$args['mac']      = getMACAddres();
 		
-		return callMyFabtotum('fab_register_printer', $args);
+		$return = array(
+			'status' => false,
+			'message' => ''
+		);
+		
+		$response = callMyFabtotum('fab_register_printer', $args);
+		
+		if(is_array($response)){
+			if($response['status_code'] == SERVICE_SUCCESS){
+				$return['status'] = true;
+			}
+			$return['message'] = fab_get_status_description($response['status_code']);
+		}else{
+			$return['message'] = $response;
+		}
+		
+		return $return;
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -161,12 +190,71 @@ if(!function_exists('fab_is_fabid_registered'))
 if(!function_exists('reload_myfabtotum'))
 {
 	/**
-	 * reload myfabtotumcom
+	 * reload my.fabtotum.com 
+	 * credentials and settings
 	 */
 	function reload_myfabtotum()
 	{
 		$CI =& get_instance();
 		$CI->load->helpers(array('fabtotum_helper'));
 		return sendToXmlrpcServer('do_mfc_reload');
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('myfabtotum_connect'))
+{
+	/**
+	 * 
+	 */
+	function myfabtotum_connect($fabid, $password)
+	{
+		$response = fab_is_fabid_registered($fabid, $password);
+		
+		$return = array(
+				'status' => false,
+				'message' => ''
+		);
+		
+		if(is_array($response)){
+			if($response['status_code'] == SERVICE_SUCCESS){
+				$return['status'] = true;
+			}
+			$return['message'] = fab_get_status_description($response['status_code']);
+		}else{
+			$return['message'] = $response;
+		}
+		
+		return $return;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('fab_get_status_description'))
+{
+	/**
+	 * 
+	 */
+	function fab_get_status_description($code)
+	{
+		switch($code)
+		{
+			case SERVICE_SUCCESS : 
+				return 'OK';
+			case SERVICE_UNAUTHORIZED:
+				return _('Service unauthorized');
+			case SERVICE_FORBIDDEN:
+				return _('Service forbidden');
+			case SERVICE_SERVER_ERROR:
+				return _('Service server error');
+			case SERVICE_INVALID_PARAMETER:
+				return _('Service invalid parameter');
+			case SERVICE_ALREADY_REGISTERED:
+				return _('Printer already registered');
+			case SERVICE_PRINTER_UNKNOWN:
+				return _('Printer unknown');
+			case SERVICE_USER_UNKNOWN:
+				return _('Your sign in details were not recognized, please check and try again');
+			default:
+				return 'UNKNOWN';
+		}
 	}
 }

@@ -9,7 +9,7 @@
 ?>
 <div class="row">
 	<div class="col-sm-12">
-		<form class="smart-form" id="user-form" action="<?php echo site_url('user') ?>" method="post">
+		<form class="smart-form" id="user-form" method="post">
 			<fieldset>
 				<legend><?php echo _("Personal info"); ?></legend>
 				<div class="row">
@@ -38,7 +38,7 @@
 				<section>
 					<label class="label"><?php echo _("Language")?></label>
 					<label class="select">
-						<?php echo langauges_menu('form-control', 'settings-language', 'id="settings-language"');?> <i></i>
+						<?php echo langauges_menu('form-control', 'settings-locale', 'id="settings-locale"');?> <i></i>
 					</label>
 				</section>
 			</fieldset>
@@ -65,7 +65,7 @@
 	</div>
 </div>
 <?php if(!isset($user['settings']['fabid']['email'])):?>
-<!-- DATETIME MODAL -->
+<!-- FABID MODAL -->
 <div class="modal fade" id="fabidModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">

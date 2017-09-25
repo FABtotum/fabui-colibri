@@ -25,8 +25,8 @@
 	*/
 	function initLanguage()
 	{
-		<?php if(isset($this->session->user['settings']['language'])): ?>
-		$("#settings-language").val('<?php echo $this->session->user['settings']['language'] ?>');
+		<?php if(isset($this->session->user['settings']['locale'])): ?>
+		$("#settings-locale").val('<?php echo $this->session->user['settings']['locale'] ?>');
 		<?php endif; ?>
 	}
 	/**
@@ -127,7 +127,7 @@
 					icon : "fa fa-check bounce animated"
 				});
 
-				if("<?php echo $this->session->user['settings']['language'] ?>" != $("#settings-language").val()){
+				if("<?php echo $this->session->user['settings']['locale'] ?>" != $("#settings-locale").val()){
 					location.reload();
 				}
 				
@@ -147,23 +147,23 @@
 			});
 
 			openWait('<i class="fa fa-spinner fa-spin "></i> <?php echo _("Connecting to FABID") ?>', _("Please wait"), false);
-
+			var saveToDB = true;
 			$.ajax({
 				type: 'post',
-				url: '<?php echo site_url('account/connectFABID'); ?>',
+				url: '<?php echo site_url('myfabtotum/connect/'); ?>' + saveToDB,
 				data : data,
 				dataType: 'json'
 			}).done(function(response) {
-				
-				if(response.status == false){
-					closeWait();
-					fabApp.showErrorAlert(response.message, 'FABID');
-				}else{
+
+				if(response.connect.status == true){
 					$('#fabidModal').modal('hide');
-					openWait('<i class="fa fa-check"></i> ' + response.message, _("Reloading page"), false);
+					openWait('<i class="fa fa-check"></i> <?php echo _("Connected to your FABID account"); ?>', _("Reloading page"), false);
 					setTimeout(function() {
 						location.reload();
 					}, 2500);
+				}else{
+					closeWait();
+					fabApp.showErrorAlert(response.connect.message, 'FABID');
 				}
 			});
 		}
@@ -192,7 +192,7 @@
 		openWait('<i class="fa fa-spinner fa-spin "></i> <?php echo _("Disconnecting from FABID") ?>', _("Please wait"), false);
 		$.ajax({
 			type: 'post',
-			url: '<?php echo site_url('account/disconnectFABID'); ?>',
+			url: '<?php echo site_url('myfabtotum/disconnect'); ?>',
 			dataType: 'json'
 		}).done(function(response) {
 			openWait('<i class="fa fa-check"></i> <?php echo _("Disconnected");?>', _("Reloading page"), false);

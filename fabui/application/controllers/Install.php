@@ -255,6 +255,7 @@ class Install extends FAB_Controller {
 		$this->load->model('User', 'user');
 		$this->load->model('Configuration', 'configuration');
 		$this->load->helper('os_helper');
+		$this->load->helper('myfabtotum_helper');
 		//load configs
 		$this->config->load('fabtotum');
 		
@@ -279,41 +280,47 @@ class Install extends FAB_Controller {
 			}
 		}
 		
-		$language = $postData['language'];
+		$locale = $postData['locale'];
+		$fabid  = $postData['fabid'];
 		
 		$installSamples = false;
-		
-		if( isset($postData['samples']) )
-		{   /*
-			$installSamples = true;
-			unset($postData['samples']);
-			*/
-		}
 		
 		unset($postData['timezone']);
 		unset($postData['passwordConfirm']);
 		unset($postData['terms']);
 		unset($postData['confirmPassword']);
-		unset($postData['language']);
+		unset($postData['locale']);
 		unset($postData['browser-date']);
 		unset($postData['serial_number']);
 		unset($postData['unit_name']);
 		unset($postData['unit_color']);
+		unset($postData['fabid']);
+		
+		
+		//preparing user settings
+		$userSettings = array(
+			'locale' => $locale	
+		);
+		if($fabid != ""){
+			$userSettings['fabid']['email'] = $fabid;
+		}
 		
 		//set user account data
 		$userData = $postData;
 		$userData['session_id'] = $this->session->session_id;
 		$userData['role']       = 'administrator';
-		$userData['settings']   = json_encode(array('language' => $language ));
+		$userData['settings']   = json_encode($userSettings);
 		$userData['password']   = md5($userData['password']);
+		
 		//ADD USER ACCOUNT
-		$newUserID = $this->user->add($userData);
+		$newUserID = $this->user->add($userData);	
 		//Install samples
 		if($installSamples) {
 			$this->installSamples($newUserID);
 		}
 		//delete AUTOINSTALL
 		$this->deleteAutoInstallFile();
+		reload_myfabtotum();
 		restartLighttpd();
 		/*redirect('login');*/
 	}

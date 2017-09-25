@@ -58,6 +58,7 @@
 					<h3><strong><?php echo _("Step")?> 2 </strong> - <?php echo _("Create your personal account")?></h3>
 					<form id="install-form">
 						<input type="hidden" name="browser-date" id="browser-date" />
+						<input type="hidden" name="fabid"        id="fabid" />
 						<div class="row">
 							<div class="col-sm-6">
 								<div class="form-group">
@@ -161,6 +162,7 @@
 					<h3><strong><?php echo _("Step")?> 4 </strong> - <?php echo _("Network")?> 
 						<button id="wifi-scan" class="btn btn-default btn-xs pull-right"><i class="fa fa-search"></i> <span class="hidden-xs"><?php echo _("Scan");?></span></button>
 					</h3>
+					<p><?php echo _("For a better experience connect your printer to internet"); ?></p>
 					<div id="wlan-table-container" style="height: 300px; overflow:auto;"></div>
 				</div>
 				<div class="tab-pane" id="finish-tab">
@@ -171,17 +173,13 @@
 							<div class="row margin-top-10">
 								<p class="font-md text-center">
 									<?php echo _("You're almost done.")?>
-									<br>
-									<?php echo _("Click <strong>Install</strong> to complete")?>
 								</p>
-								<!--  
-								<p class="text-center">
-									<label class="checkbox-inline">
-										<input type="checkbox" class="checkbox" name="samples" id="samples" checked>
-										<span><?php echo _("Install gcode samples")?> </span>
-									</label>
-								</p>
-								-->
+								<hr>
+								<div class="text-center">
+									<button id="fabidModalButton" class="btn btn-default"><i class="fa fa-link"></i> <?php echo _("Connect to your FABID account");?></button>
+								</div>
+								<hr>
+								<p class="font-md text-center"><?php echo _("Click <strong>Install</strong> to complete")?></p>
 							</div>
 						</div>
 					</div>
@@ -212,7 +210,7 @@
 	</div>
 </div>
 <!-- LANGUAGE FORM -->
-<form method="post" id="locale-form"><input type="hidden" name="locale" id="locale" value=""></form>
+<form method="post" id="locale-form"><input type="hidden" name="locale" id="locale" value="<?php echo $this->input->post('locale') == "" ? "en_US" : $this->input->post('locale');?>"></form>
 <!-- END LANGUAGE FORM -->
 <!-- TERMS & CONDITIONS MODAL -->
 <div class="modal fade" id="termsConditionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -273,4 +271,46 @@
 		<input type="text" id="hidden-passphrase"   name="hidden-passphrase" value="">
 		<input type="text" id="hidden-psk"          name="hidden-psk" value="8e0f596ccbeb3fff85a4bbb14f193fecc1ca55a471df45a84df1b8f4ec33d426">
 	</fieldset>
+</form>
+<!-- FABID MODAL -->
+<div class="modal fade" id="fabidModal"  >
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo _("Connect to your FABID account") ?></h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<form class="smart-form" id="fabid-form">
+							<fieldset>
+								<section>
+									<label class="label"><?php echo _("Email"); ?></label>
+									<label class="input">
+										<input type="email" id="fabid_email" name="fabid_email">
+									</label>
+								</section>
+								<section>
+									<label class="label"><?php echo _("Password"); ?></label>
+									<label class="input">
+										<input type="password" id="fabid_password" name="fabid_password">
+									</label>
+								</section>
+								<section>
+									<div class="note">
+										<a target="_blank" href="https://my.fabtotum.com/myfabtotum" class="no-ajax"><?php echo _("Need an account?"); ?></a>
+									</div>
+								</section>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Cancel')?></button>
+				<button type="button" class="btn btn-primary" id="fabid-connect-button"><i class="fa fa-link"></i> <?php echo _('Connect')?> </button>
+			</div>
+		</div>
+	</div>
 </div>
+

@@ -40,7 +40,9 @@
 				passwordModalConnect();
 			}
 		});
-
+		
+		$("#fabidModalButton").on('click', openFABIDModal);
+		$("#fabid-connect-button").on('click', fabIDConnect);
 		
 	});
 	/**
@@ -146,6 +148,33 @@
 				error.insertAfter(element.parent());
 			}
 		});
+
+		$("#fabid-form").validate({
+			// Rules for form validation
+			rules : {
+				fabid_email : {
+					required : true,
+					email : true
+				},
+				fabid_password : {
+					required : true
+				}
+			},
+			// Messages for form validation
+			messages : {
+				email : {
+					required : "<?php echo _("Please enter your email address");?>",
+					email : "<?php echo _("Please enter a valid email address") ?>"
+				},
+				fabid_password : {
+					required : "<?php echo _("Please enter the password")?>"
+				}
+			},
+			// Do not change code below
+			errorPlacement : function(error, element) {
+				error.insertAfter(element.parent());
+			}
+		});
 		
 	}
 	/**
@@ -230,22 +259,25 @@
 		$("#install-form").submit();
 		*/
 		var data = {};
-		$("#install-form :input").each(function (index, value) {
-			if($(this).is('input:text') || $(this).is('textarea') || $(this).is('select') || $(this).is(':input[type="number"]') || $(this).is(':input[type="password"]') || ($(this).is('input:radio') && $(this).is(':checked')) ){
-				data[$(this).attr('id')] = $(this).val();
-			}
+		var installFields  = $( "#install-form :input" ).serializeArray();
+		var printerFields  = $( "#printer-form :input" ).serializeArray();
+		var timeZoneFields = $( "#tz-form :input" ).serializeArray();
+		var localFields = $( "#locale-form :input" ).serializeArray();
+
+		jQuery.each( installFields, function( index, object ) {
+			data[object.name] = object.value;
 		});
-		
-		$("#printer-form :input").each(function (index, value) {
-			if($(this).is('input:text') || $(this).is('textarea') || $(this).is('select') || $(this).is(':input[type="number"]') || $(this).is(':input[type="password"]') || ($(this).is('input:radio') && $(this).is(':checked')) ){
-				data[$(this).attr('id')] = $(this).val();
-			}
+
+		jQuery.each( printerFields, function( index, object ) {
+			data[object.name] = object.value;
 		});
-		
-		$("#tz-form :input").each(function (index, value) {
-			if($(this).is('input:text') || $(this).is('textarea') || $(this).is('select') || $(this).is(':input[type="number"]') || $(this).is(':input[type="password"]') || ($(this).is('input:radio') && $(this).is(':checked')) ){
-				data[$(this).attr('id')] = $(this).val();
-			}
+
+		jQuery.each( timeZoneFields, function( index, object ) {
+			data[object.name] = object.value;
+		});
+
+		jQuery.each( localFields, function( index, object ) {
+			data[object.name] = object.value;
 		});
 
 		
@@ -256,11 +288,12 @@
 			dataType: 'json',
 			timeout: 10000,
 			error: function(jqXHR, textStatus, errorThrown) {
+				
 				var time = textStatus=="timeout" ? 1000 : 5000;
 				setTimeout(function() {
 					location.href="<?php echo site_url('login'); ?>";
-				}, time);
-			}
+				}, time); 
+			} 
 		}).done(function(response) {
 		});
 		
@@ -483,5 +516,50 @@
 			}, 3000);
 			
 		});;
+	}
+	/**
+	/*
+	**/
+	function openFABIDModal()
+	{
+		$("#fabid_email").val($("#email").val());
+		$('#fabidModal').modal({});
+	}
+	/**
+	*
+	**/
+	function fabIDConnect()
+	{
+		if($("#fabid-form").valid()){
+			var fields = $( "#fabid-form :input" ).serializeArray();
+			var data = {};
+			jQuery.each( fields, function( index, object ) {
+				data[object.name] = object.value;
+			});
+			
+			data['fabid_serial_number'] = $("#serial_number").val();
+			
+			openWait('<i class="fa fa-spinner fa-spin "></i> <?php echo _("Connecting to FABID") ?>', _("Please wait"), false);
+
+			$.ajax({
+				type: 'post',
+				url: '<?php echo site_url('myfabtotum/connect/0'); ?>',
+				data : data,
+				dataType: 'json'
+			}).done(function(response) {
+
+				closeWait();
+				if(response.connect.status == true){
+					$("#fabid").val(response.fabid);
+					$("#fabidModalButton").addClass('btn-success').html('<i class="fa fa-check"></i> <?php echo _("Connected via FABID"); ?> (' + response.fabid +')');
+					$('#fabidModal').modal('hide');
+				}else{
+					fabApp.showErrorAlert(response.connect.message, 'FABID');
+				}
+
+				
+				
+			});
+		}
 	}
 </script>

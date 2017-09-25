@@ -69,12 +69,16 @@
 		$user['settings'] = json_decode($user['settings'], true);
 		$user['last_login'] = $last_login;
 		
-		if(!isset($user['settings']['language'])) $user['settings']['language'] = 'en_US';
+		if(!isset($user['settings']['locale'])) $user['settings']['locale'] = 'en_US';
 		//create valid session for fabui
 		$this->session->loggedIn = true;
 		$this->session->user = $user;
 		//load hardware settings
 		$this->load->helpers('fabtotum_helper');
+		$this->load->helpers('language_helper');
+		if($user['role'] = 'administrator'){
+			setLanguage($user['settings']['locale']);
+		}
 		$hardwareSettings = loadSettings('default');
 		//save hardware settings on session
 		$this->session->settings = $hardwareSettings;
@@ -119,6 +123,7 @@
 		unset($postData['terms']);
 		$postData['session_id'] = $this->session->session_id;
 		$postData['settings'] = '{}';
+		$postData['role']     = 'user';
 		$postData['password'] = md5($postData['password']);
 		//load libraries, models, helpers
 		$this->load->model('User', 'user');

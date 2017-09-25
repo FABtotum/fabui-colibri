@@ -36,13 +36,24 @@
 		foreach($result as $row){
 			
 			$_settings = json_decode($row->settings, true);
-			
 			if(isset($_settings['token']) && $_settings['token'] == $token){	
 				$user = get_object_vars($row);
 				break;
 			}
 		}
 		return $user;
+	}
+	/**
+	 * return user by fabid
+	 */
+	public function getByFABID($fabid)
+	{
+		$this->db->like('settings', '"fabid":{"email":"'.$fabid.'"}');
+		$query = $this->db->get($this->tableName, 1);
+		$result = $query->result_array();
+		
+		return isset($result[0]) ? $result[0] : false;
+
 	}
  }
  
