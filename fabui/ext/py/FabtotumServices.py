@@ -154,14 +154,15 @@ if do_reset:
 from fabtotum.database import Database
 from fabtotum.database.task import Task
 
+
+# Clear unfinished tasks
+from fabtotum.database import Database
+from fabtotum.database.task import Task
 db = Database()
 conn = db.get_connection()
-cursor = conn.execute("SELECT * from sys_tasks where status!='completed' and status!='aborted' and status!='terminated' ")
-for row in cursor:
-   id = row[0]
-   t = Task(db, id)
-   t['status'] = 'terminated'
-   t.write()
+cursor = conn.execute("UPDATE sys_tasks SET status='terminated' where status!='completed' and status!='aborted' and status!='terminated'")
+conn.commit()
+conn.close()
 
 
 #myFabototumCom = MyFabtotumCom(gcservice, config, logger)
