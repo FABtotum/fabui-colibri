@@ -32,26 +32,24 @@ import logging
 import os, sys
 
 from threading import Event, Thread
+
+#import internal modules
 from fabtotum.database import Database
 from fabtotum.database.sysconfig import SysConfig
 from fabtotum.database.user import User
 from fabtotum.utils.common import shell_exec
 from fabtotum.os.paths import TEMP_PATH, BASH_PATH
 from fabtotum.fabui.config  import ConfigService
+from fabtotum.fabui.constants import SERVICE_SUCCESS, SERVICE_UNAUTHORIZED, SERVICE_FORBIDDEN,\
+        SERVICE_SERVER_ERROR, SERVICE_INVALID_PARAMETER, SERVICE_ALREADY_REGISTERED, SERVICE_PRINTER_UNKNOWN
+
+
 
 # Set up message catalog access
 tr = gettext.translation('my_fabtotum_com', 'locale', fallback=True)
 _ = tr.ugettext
 
 class MyFabtotumCom:
-    
-    SERVICE_SUCCESS            = 200
-    SERVICE_UNAUTHORIZED       = 401
-    SERVICE_FORBIDDEN          = 403
-    SERVICE_SERVER_ERROR       = 500
-    SERVICE_INVALID_PARAMETER  = 1001
-    SERVICE_ALREADY_REGISTERED = 1002
-    SERVICE_PRINTER_UNKNOWN    = 1003
     
     RESPONSE_CODES_DESCRIPTION = {
         SERVICE_SUCCESS            : 'SERVICE_SUCCESS',
@@ -63,10 +61,8 @@ class MyFabtotumCom:
         SERVICE_PRINTER_UNKNOWN    : 'SERVICE_PRINTER_UNKNOWN'
     }
     
-    
     def __init__(self, gcs, logger, config=None ):
-        
-        
+            
         if config:
             self.config = config
         else:
@@ -213,7 +209,7 @@ class MyFabtotumCom:
         result =  self.call('fab_polling', params)
         
         if result:
-            if result["status_code"] == self.SERVICE_SUCCESS:     
+            if result["status_code"] == SERVICE_SUCCESS:     
                 if "command" in result:
                     try:
                         getattr(self, result["command"].lower())()

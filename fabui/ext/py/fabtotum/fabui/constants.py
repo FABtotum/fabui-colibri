@@ -21,6 +21,7 @@
 __authors__ = "Daniel Kesler - Krios Mane"
 __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
+
 ############################
 #      ERROR CODES         #
 ############################
@@ -48,3 +49,13 @@ ERROR_PWR_OFF          = 999
 ############################
 FAN_MAX_VALUE          = 255
 FAN_MIN_VAlUE          = 0
+################################
+# MY.FABTOTUM.COM
+################################
+SERVICE_SUCCESS            = 200
+SERVICE_UNAUTHORIZED       = 401
+SERVICE_FORBIDDEN          = 403
+SERVICE_SERVER_ERROR       = 500
+SERVICE_INVALID_PARAMETER  = 1001
+SERVICE_ALREADY_REGISTERED = 1002
+SERVICE_PRINTER_UNKNOWN    = 1003
