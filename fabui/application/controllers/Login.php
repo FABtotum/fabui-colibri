@@ -88,11 +88,12 @@
 	//log out
 	public function out()
 	{
-		delete_cookie("fabkml");
+		delete_cookie("fabkml", $this->input->server('HTTP_HOST'));
 		//destroy session and redirect to login
 		$this->session->loggedIn = false; 
 		$this->session->unset_userdata('user');
 		$this->session->unset_userdata('settings');
+		
 		redirect('login');
 	}
 	
