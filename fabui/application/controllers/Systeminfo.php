@@ -21,6 +21,7 @@ class SystemInfo extends FAB_Controller {
 		$this->load->helper('os_helper');
 		$this->load->helper('date_helper');
 		$this->config->load('fabtotum');
+		
 		//
 		$data = json_decode(startPyScript('systeminfo.py', '', false), true);
 		$data['bundles'] = getLocalBundles();
@@ -60,24 +61,11 @@ class SystemInfo extends FAB_Controller {
 		
 		//$this->addJsFile('/assets/js/plugin/x-editable/moment.min.js');
 		//$this->addJsFile('/assets/js/plugin/x-editable/x-editable.min.js');
-		$this->addCSSInLine('<style> @media (min-width: 768px){ .big dt {width:300px !important;} .big dd {margin-left:310px !important;} }</style>');
+		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js');
+		$this->addJSFile('/assets/js/plugin/masked-input/jquery.maskedinput.min.js');
+		$this->addCSSInLine('<style> @media (min-width: 768px){ .big dt {width:300px !important;} .big dd {margin-left:310px !important;} } .edit-field{border-bottom: dashed 1px #0088cc;}</style>');
 		$this->addJsInLine($this->load->view('systeminfo/js', null, true));
 		$this->view();
-	}
-	
-	/**
-	 * 
-	 */
-	function saveDateTime()
-	{
-		$postData = $this->input->post();
-		$this->load->helper('os_helper');
-		
-		setTimeZone($postData['timezone']);
-		//set system date format = YYYY-MM-DD HH:mm:ss
-		setSystemDate($postData['year'].'-'.$postData['month'].'-'.$postData['day'].' '.$postData['hour'].':'.$postData['minute']);
-		
-		restartLighttpd();
 	}
 }
  

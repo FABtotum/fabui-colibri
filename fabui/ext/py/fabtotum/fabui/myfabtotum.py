@@ -115,6 +115,21 @@ class MyFabtotumCom:
             self.log.debug("MyFabtotumCom - {0}".format(e))
             return False
         
+    
+    def __getSystemConfig(self, value):
+        """ get value from system config table """
+        sysconfig = SysConfig(self.db)
+        sysconfig.query_by('key', value)
+        return sysconfig['text']
+    
+    
+    def __getInterfaces(self):
+        shell_exec('sh {0} > {1}'.format(os.path.join(BASH_PATH, 'get_net_interfaces.sh'), os.path.join(TEMP_PATH, 'interfaces.json')))
+        interfaces = {}
+        with open(os.path.join(TEMP_PATH, 'interfaces.json')) as data_file:    
+            interfaces = json.load(data_file)
+        return interfaces
+        
     def getFabID(self):
         """ """
         user = User(self.db)
@@ -134,15 +149,15 @@ class MyFabtotumCom:
     
     def getSerialNumber(self):
         """ get printer serial number """
-        sysconfig = SysConfig(self.db)
-        sysconfig.query_by('key', 'serial_number')
-        return sysconfig['text']
+        return self.__getSystemConfig('serial_number')
     
     def getUnitName(self):
         """ get unit name """
-        sysconfig = SysConfig(self.db)
-        sysconfig.query_by('key', 'unit_name')
-        return sysconfig['text']
+        return self.__getSystemConfig('unit_name')
+    
+    def getUnitColor(self):
+        """ get unit color """
+        return self.__getSystemConfig('unit_color')
     
     def getBatchNumer(self):
         """ get batch number """
@@ -153,13 +168,6 @@ class MyFabtotumCom:
         """ get firmware version """
         reply = self.gcs.send("M765", group='gcode')
         return reply[0].strip()
-    
-    def __getInterfaces(self):
-        shell_exec('sh {0} > {1}'.format(os.path.join(BASH_PATH, 'get_net_interfaces.sh'), os.path.join(TEMP_PATH, 'interfaces.json')))
-        interfaces = {}
-        with open(os.path.join(TEMP_PATH, 'interfaces.json')) as data_file:    
-            interfaces = json.load(data_file)
-        return interfaces
     
     def getIPLan(self):
         """ return valid ip for local network """
@@ -235,7 +243,8 @@ class MyFabtotumCom:
                 "model"     : self.getBatchNumer(),
                 "head"      : head["name"],
                 "fwversion" : self.getFwVersion(),
-                "iplan"     : self.getIPLan()
+                "iplan"     : self.getIPLan(),
+                'color'     : self.getUnitColor()
             },
             "apiversion" : self.api_version,
         }

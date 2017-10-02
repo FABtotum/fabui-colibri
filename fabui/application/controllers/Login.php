@@ -74,12 +74,12 @@
 		$this->session->loggedIn = true;
 		$this->session->user = $user;
 		//load hardware settings
-		$this->load->helpers('fabtotum_helper');
-		$this->load->helpers('language_helper');
+		$this->load->helper(array('fabtotum_helper', 'language_helper', 'myfabtotum_helper'));
 		if($user['role'] = 'administrator'){
 			setLanguage($user['settings']['locale']);
 		}
 		$hardwareSettings = loadSettings('default');
+		reload_myfabtotum();
 		//save hardware settings on session
 		$this->session->settings = $hardwareSettings;
 		redirect('#dashboard');

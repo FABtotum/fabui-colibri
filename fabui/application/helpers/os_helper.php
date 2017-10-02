@@ -363,7 +363,7 @@ if(!function_exists('downloadRemoteFile'))
 	/**
 	 * download remote file 
 	 */
-	function downloadRemoteFile($remoteUrl, $path, $timeout=3, $do_internet_check=true)
+	function downloadRemoteFile($remoteUrl, $path, $timeout=30, $do_internet_check=true)
 	{	
 		if($do_internet_check)
 		{
@@ -409,7 +409,7 @@ if(!function_exists('getRemoteFile'))
 		}
 		
 		$curl = curl_init($url);
-		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 3);
+		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 30);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		$content = curl_exec($curl); //make call
 		$info = curl_getinfo($curl);

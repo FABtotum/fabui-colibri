@@ -48,7 +48,6 @@
 		
 		$data['widget'] = $widget->print_html(true);
 		
-		
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js');
 		$this->addJSInLine($this->load->view('account/js', $data, true));
 		

@@ -246,3 +246,16 @@ function scrollToTop()
 	window.scrollTo(0, 0);
 }
 
+/**
+ * get all fields of a form
+ * 
+**/
+function getDataFromForm(form)
+{
+	var fields = $( form + " :input" ).serializeArray();
+	var data = {};
+	jQuery.each( fields, function( index, object ) {
+		data[object.name] = object.value;
+	});
+	return data;
+}

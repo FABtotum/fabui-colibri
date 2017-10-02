@@ -456,11 +456,34 @@ class Control extends FAB_Controller {
 			$this->load->helper('fabtotum_helper');
 			if(file_exists($this->config->config['wizard_file'])){
 				doCommandLine('sudo rm ', $this->config->config['wizard_file']);
-			}
-			
+			}	
 		}
-		
 	}
+	/**
+	 *
+	 */
+	function saveDateTime()
+	{
+		$postData = $this->input->post();
+		$this->load->helper('os_helper');
+		
+		setTimeZone($postData['timezone']);
+		//set system date format = YYYY-MM-DD HH:mm:ss
+		setSystemDate($postData['year'].'-'.$postData['month'].'-'.$postData['day'].' '.$postData['hour'].':'.$postData['minute']);
+		restartLighttpd();
+	}
+	/**
+	 * 
+	 */
+	function saveSystemInfo($column, $value)
+	{
+		$this->load->model('Configuration', 'configuration');
+		$this->configuration->store($column,  $value);
+		$this->load->helper('myfabtotum_helper');
+		reload_myfabtotum();
+		$this->output->set_content_type('application/json')->set_output(true);
+	}
+	
 }
 
 ?>

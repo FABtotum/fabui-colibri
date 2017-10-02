@@ -16,14 +16,22 @@
 		<div id="collapseOne" class="panel-collapse collapse in">
 			<div class="panel-body ">
 				 <dl class="dl-horizontal">
+				 	
+				 	<dt><?php echo _("Name");?></dt>
+			        <dd><?php echo getHostName(); ?> - <?php echo getAvahiServiceName(); ?></dd>
+				 	
 				 	<dt><?php echo _("Serial number");?></dt>
-			        <dd><?php echo strtoupper(getSerialNumber()); ?></dd>
+			        <dd><a href="javascript:void(0);" class="unit-serial-number edit-field"><?php echo strtoupper(getSerialNumber()); ?></a></dd>
 			        
+			        <dt><?php echo _("Color");?></dt>
+			        <dd><a href="javascript:void(0);" class="unit-color edit-field"><?php echo ucfirst(_(getUnitColor())); ?></a></dd>
+			   		
+			   		
 			        <dt><?php echo _("Os");?></dt>
 			        <dd><?php echo $os_info; ?></dd>
 			        
 			        <dt><?php echo _("Date");?></dt>
-			        <dd><a href="javascript:void(0);" class="system-date-time" style="border-bottom: dashed 1px #0088cc;"><?php  echo trim(shell_exec('date +"%b %a %d %H:%M %Y"')); //echo date('d/m/Y G:i');?></a></dd>
+			        <dd><a href="javascript:void(0);" class="system-date-time edit-field"><?php  echo trim(shell_exec('date +"%b %a %d %H:%M %Y"')); //echo date('d/m/Y G:i');?></a></dd>
 			        
 			        <dt><?php echo _("Fabui");?></dt>
 			        <dd><?php echo $bundles['fabui']['version']?></dd>
@@ -40,7 +48,7 @@
 			        <dd><?php echo isset($versions['production']['batch']) ? $versions['production']['batch'] : _("n.a.") ?></dd>
 			        
 			        <dt><?php echo _("Installed head");?></dt>
-			        <dd><?php echo $installed_head['name']; ?></dd>
+			        <dd><a href="maintenance/head"><?php echo $installed_head['name']; ?></a></dd>
       			</dl>
 			</div>
 		</div>
@@ -166,6 +174,7 @@
 		</div>
 	</div>
 </div>
+<?php if($this->session->user['role'] == 'administrator'):?>
 <!-- DATETIME MODAL -->
 <div class="modal fade" id="dateTimeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -228,3 +237,62 @@
 		</div>
 	</div>
 </div>
+<!-- UNIT COLOR MODAL -->
+<div class="modal fade" id="unitColorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo _("Set unit color") ?></h4>
+			</div>
+			<div class="modal-body" >
+				<div class="row">
+					<div class="col-sm-12">
+						<form class="smart-form" id="unit-color-form">
+							<fieldset>
+								<section>
+									<label class="select">
+										<?php echo colors_menu('unit_color', _(getUnitColor()), 'id="unit_color"');?> <i></i> 
+									</label>
+								</section>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Cancel')?></button>
+				<button type="button" class="btn btn-primary" id="unitColorSave"><i class="fa fa-save"></i> <?php echo _('Save')?> </button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- SERIAL NUMBER MODAL -->
+<div class="modal fade" id="unitSerialNumberModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo _("Set serial number") ?></h4>
+			</div>
+			<div class="modal-body" >
+				<div class="row">
+					<div class="col-sm-12">
+						<form class="smart-form" id="unit-serial-number-form">
+							<fieldset>
+								<section>
+									<label class="input">
+										<input class="uppercase" data-mask="*****-***-*****" data-mask-placeholder= "_" type="text" name="unit_serial_number" id="unit_serial_number" value="<?php echo getSerialNumber();?>">
+									</label>
+								</section>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Cancel')?></button>
+				<button type="button" class="btn btn-primary" id="unitSerialNumberSave"><i class="fa fa-save"></i> <?php echo _('Save')?> </button>
+			</div>
+		</div>
+	</div>
+</div>
+<?php endif; ?>

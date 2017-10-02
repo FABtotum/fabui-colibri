@@ -149,7 +149,7 @@
 								<div class="form-group">
 									<label><?php echo _("What color is your FABtotum ")?> </label>
 									<div class="icon-addon addon-md">
-					                    <?php echo colors_menu('form-control', 'unit_color', 'id="unit_color"');?>
+					                    <?php echo colors_menu('unit_color', '', 'class="form-control" id="unit_color"');?>
 					                    <label class="fa fa-tint"></label>
 					                </div>
 								</div>

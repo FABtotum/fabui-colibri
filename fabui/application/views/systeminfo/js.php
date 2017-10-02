@@ -16,41 +16,129 @@
 			});
 			e.preventDefault();
 		});
-	    $(".system-date-time").click(function(e){
-	    	$('#dateTimeModal').modal({});
-	    });
 
-	    $("#dateTimeSave").on('click', saveDateTime);
+		<?php if($this->session->user['role'] == 'administrator'): ?>
+
+			initFormValidator();
+		
+		    $(".system-date-time").click(function(e){
+		    	$('#dateTimeModal').modal({});
+		    });
+
+		    $(".unit-color").click(function(e){
+		    	$('#unitColorModal').modal({});
+		    });
+
+		    $(".unit-serial-number").click(function(e){
+		    	$('#unitSerialNumberModal').modal({});
+		    });
+		    
+	    	$("#dateTimeSave").on('click', saveDateTime);
+	    	$("#unitColorSave").on('click', saveUnitColor);
+	    	$("#unitSerialNumberSave").on('click', saveSerialNumber);
+	    <?php endif; ?>
 		
 	 });
-	 /**
-	 *
-	 **/
-	function saveDateTime()
-	{
-		var data = {};
-		$("#date-time-form :input").each(function (index, value) {
-			if($(this).is('input:text') || $(this).is('textarea') || $(this).is('select') || $(this).is(':input[type="number"]') || $(this).is(':input[type="password"]') || ($(this).is('input:radio') && $(this).is(':checked')) ){
-				data[$(this).attr('id')] = $(this).val();
-			}
-		});
 
-		openWait('<i class="fa fa-cog fa-spin "></i> <?php echo _("Applying new settings") ?>', _("Please wait"), false);
-		$("#dateTimeSave").html('<i class="fa fa-save"></i> <?php echo _('Saving')?> ...');
-		$('#dateTimeModal').modal('hide');
+	 <?php if($this->session->user['role'] == 'administrator'):?>
+		/**
+		*
+		**/
+	 	function initFormValidator()
+	 	{
+	 		$("#unit-serial-number-form").validate({
+				// Rules for form validation
+				rules : {
+					unit_serial_number : {
+						required : true,
+						minlength: 13,
+					}
+				},
+				// Messages for form validation
+				messages : {
+					unit_serial_number : {
+						required : "<?php echo _("Please enter serial number")?>",
+						minlength : "<?php echo _("Serial number has 13 characters") ?>",
+					}
+				},
+				// Do not change code below
+				errorPlacement : function(error, element) {
+					error.insertAfter(element.parent());
+				}
+			});
+	 	}
+		 /**
+		 *
+		 **/
+		function saveDateTime()
+		{
+			
+			var data = getDataFromForm("#date-time-form");
+			openWait('<i class="fa fa-cog fa-spin "></i> <?php echo _("Applying new settings") ?>', _("Please wait"), false);
+			$("#dateTimeSave").html('<i class="fa fa-save"></i> <?php echo _('Saving')?> ...');
+			$('#dateTimeModal').modal('hide');
+	
+			$.ajax({
+				type: 'post',
+				url: '<?php echo site_url('control/saveDateTime');?>',
+				data : data,
+				error: function(jqXHR, textStatus, errorThrown) {
+					openWait('<i class="fa fa-check "></i> <?php echo _("Settings applied") ?>', _("Reloading page"), false);
+					setTimeout(function() {
+						location.reload();
+					}, 5000);
+				}
+			}).done(function(response) {
+			});
+		 }
+		 /**
+		 **
+		 **/
+		 function saveUnitColor()
+		 {
+			 var data = getDataFromForm("#unit-color-form");
+			 openWait('<i class="fa fa-cog fa-spin "></i> <?php echo _("Setting unit color") ?>', _("Please wait"), false);
+			 $("#unitColorSave").html('<i class="fa fa-save"></i> <?php echo _('Saving')?> ...');
+			 $('#unitColorModal').modal('hide');
 
-		$.ajax({
-			type: 'post',
-			url: '<?php echo site_url('systeminfo/saveDateTime');?>',
-			data : data,
-			error: function(jqXHR, textStatus, errorThrown) {
-				openWait('<i class="fa fa-check "></i> <?php echo _("Settings applied") ?>', _("Reloading page"), false);
+			 $.ajax({
+				type: 'post',
+				url: '<?php echo site_url('control/saveSystemInfo/unit_color');?>/' + $("#unit_color").val(),
+				data : data,
+			}).done(function(response) {
+				openWait('<i class="fa fa-check "></i> <?php echo _("Settings applied") ?>', '', false);
 				setTimeout(function() {
-					location.reload();
-				}, 5000);
-			}
-		}).done(function(response) {
-		});
-	 }
-	 
+					$(".unit-color").html($("#unit_color").val().capitalize());
+					$("#unitColorSave").html('<i class="fa fa-save"></i> <?php echo _('Save')?>');
+					closeWait();
+				}, 1500);
+			});
+		 }
+		 /**
+		 *
+		 **/
+		 function saveSerialNumber()
+		 {
+			if(!$("#unit-serial-number-form").valid()){
+
+				return false;
+			} 
+			openWait('<i class="fa fa-cog fa-spin "></i> <?php echo _("Setting serial number") ?>', _("Please wait"), false);
+			$("#unitSerialNumberSave").html('<i class="fa fa-save"></i> <?php echo _('Saving')?> ...');
+			$('#unitSerialNumberModal').modal('hide');
+
+			$.ajax({
+				type: 'post',
+				url: '<?php echo site_url('control/saveSystemInfo/serial_number');?>/' + $("#unit_serial_number").val().toUpperCase(),
+			}).done(function(response) {
+				openWait('<i class="fa fa-check "></i> <?php echo _("Settings applied") ?>', '', false);
+				setTimeout(function() {
+					$(".unit-serial-number").html($("#unit_serial_number").val().toUpperCase());
+					$("#unitSerialNumberSave").html('<i class="fa fa-save"></i> <?php echo _('Save')?>');
+					closeWait();
+				}, 1500);
+			});
+			 
+		 }
+	 <?php endif; ?>
 </script>
