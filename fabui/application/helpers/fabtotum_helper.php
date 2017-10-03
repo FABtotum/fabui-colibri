@@ -1472,6 +1472,21 @@ if(!function_exists('getUnitName'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getUnitColor'))
+{
+	/**
+	 * return unit color
+	 *
+	 * @todo
+	 */
+	function getUnitColor()
+	{
+		$CI =& get_instance();
+		$CI->load->model('Configuration', 'configuration');
+		return $CI->configuration->load('unit_color');
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('getFilamentDescription'))
 {
 	/**
@@ -1592,15 +1607,13 @@ if(!function_exists('colors_menu'))
 	/**
 	 * 
 	 */
-	function colors_menu($class = '', $name = 'colors', $attributes = '')
+	function colors_menu($name = 'colors', $selected = '', $attributes = '')
 	{
+		$CI =& get_instance();
+		$CI->load->helper('form');
 		$colors = getAvailableColors();
-		$html = '<select class="'.$class.'" name="'.$name.'" '._stringify_attributes($attributes).'>';
-		foreach($colors as $key => $label){
-			$html .= '<option value="'.$key.'">'.$label.'</option>';
-		}
-		$html .= '</select>';
-		return $html;
+		
+		return form_dropdown($name, $colors, $selected, $attributes);
 	}
 }
 
