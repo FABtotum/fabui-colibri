@@ -82,16 +82,6 @@
 					required : '<?php echo _("You must agree with Terms and Conditions");?>'
 				}
 			},
-
-			// Ajax form submition
-			submitHandler : function(form) {
-				$(form).ajaxSubmit({
-					success : function() {
-						$("#smart-form-register").addClass('submited');
-					}
-				});
-			},
-
 			// Do not change code below
 			errorPlacement : function(error, element) {
 				error.insertAfter(element.parent());

@@ -84,6 +84,7 @@ class Settings extends FAB_Controller {
 		//load libraries, helpers, model, config
 		$this->load->helpers('utility_helper');
 		$this->load->helpers('fabtotum_helper');
+		$this->load->helpers('myfabtotum_helper');
 		//create settings array
 		$settingsToSave = arrayFromPost($postData);
 		
@@ -106,6 +107,7 @@ class Settings extends FAB_Controller {
 		//update settings on session
 		$this->session->settings = $newSettings;
 		//reload configuration settings
+		reload_myfabtotum();
 		resetController();
 		$this->output->set_content_type('application/json')->set_output(json_encode(loadSettings()));
 	}
@@ -338,6 +340,7 @@ class Settings extends FAB_Controller {
 	{
 		//get data from post
 		$this->load->helper('os_helper');
+		$this->load->helper('myfabtotum_helper');
 		$postData = $this->input->post();
 		$result = true;
 		$net_type = $postData['net_type'];
@@ -402,6 +405,8 @@ class Settings extends FAB_Controller {
 				// TODO: error handling
 				setHostName($hostname, $name);
 				storeNetworkSettings($net_type, '', '', '', '', '', '', '', '', $hostname, $name);
+				$this->load->model('Configuration', 'configuration');
+				$this->configuration->store('unit_name', $hostname);
 				break;
 			case "dns":
 				// TODO
@@ -411,6 +416,7 @@ class Settings extends FAB_Controller {
 				$result = false;
 		}
 		writeNetworkInfo();
+		reload_myfabtotum();
 		//$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		$this->output->set_content_type('application/json')->set_output(json_encode(getInterfaces())); 
 	}

@@ -18,7 +18,7 @@
 				 <dl class="dl-horizontal">
 				 	
 				 	<dt><?php echo _("Name");?></dt>
-			        <dd><?php echo getHostName(); ?> - <?php echo getAvahiServiceName(); ?></dd>
+			        <dd><a href="javascript:void(0);" class="host-name edit-field"><?php echo getHostName(); ?> - <?php echo getAvahiServiceName(); ?></a></dd>
 				 	
 				 	<dt><?php echo _("Serial number");?></dt>
 			        <dd><a href="javascript:void(0);" class="unit-serial-number edit-field"><?php echo strtoupper(getSerialNumber()); ?></a></dd>
@@ -182,7 +182,7 @@
 			<div class="modal-header">
 				<h4 class="modal-title"><?php echo _("Set system date and time") ?></h4>
 			</div>
-			<div class="modal-body" >
+			<div class="modal-body no-padding" >
 				<div class="row">
 					<div class="col-sm-12">
 						<form class="smart-form" id="date-time-form">
@@ -244,7 +244,7 @@
 			<div class="modal-header">
 				<h4 class="modal-title"><?php echo _("Set unit color") ?></h4>
 			</div>
-			<div class="modal-body" >
+			<div class="modal-body no-padding" >
 				<div class="row">
 					<div class="col-sm-12">
 						<form class="smart-form" id="unit-color-form">
@@ -273,7 +273,7 @@
 			<div class="modal-header">
 				<h4 class="modal-title"><?php echo _("Set serial number") ?></h4>
 			</div>
-			<div class="modal-body" >
+			<div class="modal-body no-padding" >
 				<div class="row">
 					<div class="col-sm-12">
 						<form class="smart-form" id="unit-serial-number-form">
@@ -291,6 +291,42 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Cancel')?></button>
 				<button type="button" class="btn btn-primary" id="unitSerialNumberSave"><i class="fa fa-save"></i> <?php echo _('Save')?> </button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- HOST NAME MODAL -->
+<div class="modal fade" id="hostNameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo _("Change a name to your FABtotum") ?></h4>
+			</div>
+			<div class="modal-body no-padding" >
+				<div class="row">
+					<div class="col-sm-12">
+						<form class="smart-form" id="unit-serial-number-form">
+							<fieldset>
+								<section>
+									<label class="label"><?php echo _("Name");?></label>
+									<label class="input">
+										<input type="text" id="dnssd-hostname" value="<?php echo getHostName(); ?>">
+									</label>
+								</section>
+								<section>
+									<label class="label"><?php echo _("Description");?></label>
+									<label class="input">
+										<input type="text" id="dnssd-name" value="<?php echo getAvahiServiceName(); ?>">
+									</label>
+								</section>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Cancel')?></button>
+				<button type="button" class="btn btn-primary" id="hostNameSave"><i class="fa fa-save"></i> <?php echo _('Save')?> </button>
 			</div>
 		</div>
 	</div>

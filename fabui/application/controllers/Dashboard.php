@@ -63,9 +63,16 @@
 		//load configs
 		$this->config->load('fabtotum');
 		$this->load->helper('layout_helper');
+		$this->load->helper('text');
 		$data = array();
 		if(file_exists($this->config->item('blog_feed_file'))){
-			$xml = simplexml_load_file($this->config->item('blog_feed_file'),'SimpleXMLElement', LIBXML_NOCDATA); 
+			
+			$xml = file_get_contents($this->config->item('blog_feed_file'));
+			$xml= str_replace("content:encoded>","content>",$xml);
+			$xml = simplexml_load_string($xml,'SimpleXMLElement', LIBXML_NOCDATA );
+			
+			
+			
 			$data["blogTitle"] = $xml->channel->title;
 			$data["blogUrl"]   = $xml->channel->link;
 			$feeds             = $xml->channel->item;
@@ -74,10 +81,7 @@
 			foreach($feeds as $feed){
 				$imageSrc = null;
 				$html = new DOMDocument();
-				//print_r($feed); exit();
-				$description = str_replace('[&#8230;]', '...', $feed->description);
-				$html->loadHTML(mb_convert_encoding($description, 'HTML-ENTITIES', 'UTF-8'));
-				
+				$html->loadHTML(mb_convert_encoding($feed->content, 'HTML-ENTITIES', 'UTF-8'));
 				$images = $html->getElementsByTagName('img');
 				foreach($images as $imgTag){
 					$imageSrc = $imgTag->getAttribute('src');
@@ -88,7 +92,7 @@
 					'link' => $feed->guid,
 					'date' => date('j M, Y',strtotime($feed->pubDate)),
 					'img_src' => $imageSrc,
-					'text' => str_replace('[…]', '...', $html->textContent)
+					'text' => word_limiter($html->textContent, 50, '...')
 				);
 			}
 			$data['feeds'] = $processedFeeds;

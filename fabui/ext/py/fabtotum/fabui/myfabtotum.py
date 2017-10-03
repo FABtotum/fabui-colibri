@@ -278,7 +278,7 @@ class MyFabtotumCom:
                 "head"      : head["name"],
                 "fwversion" : self.getFwVersion(),
                 "iplan"     : self.ip_lan,
-                'color'     : self.unit_color
+            #    'color'     : self.unit_color
             },
             "apiversion" : self.api_version,
         }
@@ -311,6 +311,8 @@ class MyFabtotumCom:
         #self.batch_number  = self.getBatchNumer()
         #self.fw_version    = self.getFwVersion()
         self.unit_color    = self.getUnitColor()
+        #### update info 
+        self.fab_info_update()
         self.log.debug("MyFabtotumCom - Settings reloaded")
     
     def __thread_polling(self):

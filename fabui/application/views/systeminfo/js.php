@@ -32,10 +32,15 @@
 		    $(".unit-serial-number").click(function(e){
 		    	$('#unitSerialNumberModal').modal({});
 		    });
+
+		    $(".host-name").click(function(e){
+		    	$('#hostNameModal').modal({});
+		    });
 		    
 	    	$("#dateTimeSave").on('click', saveDateTime);
 	    	$("#unitColorSave").on('click', saveUnitColor);
 	    	$("#unitSerialNumberSave").on('click', saveSerialNumber);
+	    	$("#hostNameSave").on('click', saveHostName);
 	    <?php endif; ?>
 		
 	 });
@@ -139,6 +144,35 @@
 				}, 1500);
 			});
 			 
+		 }
+		 /**
+		 *
+		 **/
+		 function saveHostName()
+		 {
+			var data = {
+				"dnssd-hostname" : $("#dnssd-hostname").val(),
+				"dnssd-name" : $("#dnssd-name").val(),
+				"active" : "dnssd",
+				"net_type" : "dnssd"
+			};
+			
+			$("#hostNameSave").html('<i class="fa fa-save"></i> <?php echo _('Saving')?> ...');
+			openWait('<i class="fa fa-cog fa-spin "></i> <?php echo _("Setting new host name") ?>', _("Please wait"), false);
+			$('#hostNameModal').modal('hide');
+			
+			$.ajax({
+				type: 'post',
+				url: '<?php echo site_url('settings/saveNetworkSettings/connect');?>',
+				data : data
+			}).done(function(response) {
+				setTimeout(function() {
+					$(".host-name").html($("#dnssd-hostname").val() + " - " + $("#dnssd-name").val());
+					$("#hostNameSave").html('<i class="fa fa-save"></i> <?php echo _('Save')?>');
+					closeWait();
+				}, 1500);
+				
+			});
 		 }
 	 <?php endif; ?>
 </script>

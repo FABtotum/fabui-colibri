@@ -45,6 +45,7 @@
 		</form>	
 	</div>
 </div>
+<?php if($user['role'] == 'administrator'):?>
 <div class="row">
 	<div class="col-sm-12 margin-bottom-10">
 		<?php if(!isset($user['settings']['fabid']['email'])):?>
@@ -64,7 +65,6 @@
 		<?php endif;?>
 	</div>
 </div>
-<?php if(!isset($user['settings']['fabid']['email'])):?>
 <!-- FABID MODAL -->
 <div class="modal fade" id="fabidModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">

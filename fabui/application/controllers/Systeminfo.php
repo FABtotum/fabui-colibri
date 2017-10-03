@@ -58,12 +58,13 @@ class SystemInfo extends FAB_Controller {
 		$widget->body   = array('content' => $this->load->view('systeminfo/widget', $data, true ), 'class'=>'');
 		$this->content = $widget->print_html(true);
 		
+		$extra_css = $this->session->user['role'] != 'administrator' ? 'cursor:default;' : 'cursor:pointer;';
 		
 		//$this->addJsFile('/assets/js/plugin/x-editable/moment.min.js');
 		//$this->addJsFile('/assets/js/plugin/x-editable/x-editable.min.js');
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js');
 		$this->addJSFile('/assets/js/plugin/masked-input/jquery.maskedinput.min.js');
-		$this->addCSSInLine('<style> @media (min-width: 768px){ .big dt {width:300px !important;} .big dd {margin-left:310px !important;} } .edit-field{border-bottom: dashed 1px #0088cc;}</style>');
+		$this->addCSSInLine('<style> @media (min-width: 768px){ .big dt {width:300px !important;} .big dd {margin-left:310px !important;} } .edit-field{border-bottom: dashed 1px #0088cc;'.$extra_css.'}</style>');
 		$this->addJsInLine($this->load->view('systeminfo/js', null, true));
 		$this->view();
 	}

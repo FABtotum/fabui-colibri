@@ -168,23 +168,30 @@ if(!function_exists('displayBlogFeedItem'))
 	 */
 	function displayBlogFeedItem($feed)
 	{
+		$share_title = _("Share on facebook");
 		return <<<EOT
 		<div class="panel panel-default">
 			<div class="panel-body status">
 				<div class="who clearfix">
-					<img src="{$feed['img_src']}" />
+					<img src="{$feed['img_src']}" alt="{$feed['title']}" title="{$feed['title']}" />
 					<span class="name font-sm">
 						<a target="_blank" href="{$feed['link']}">{$feed['title']}</a>
 						<br>
 						<span class="text-muted">{$feed['date']}</span>
 					</span>
 				</div>
+				<div class="image padding-top-0 padding-10">
+					<a target="_blank" href="{$feed['link']}"><img title="{$feed['title']}" alt="{$feed['title']}" src="{$feed['img_src']}" /></a>
+				</div>
 				<div class="text hidden-xs">
 					<p>{$feed['text']}</p>
 				</div>
-				<ul class="links text-right hidden-xs">
+				<ul class="links  hidden-xs">
 					<li class="">
-						<a target="_blank" href="{$feed['link']}"> Read More <i class="fa fa-arrow-right"></i></a>
+						<a class="btn btn-default btn-circle btn-xs txt-color-blue" title="{$share_title}" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={$feed['link']}"><i class="fa fa-facebook"></i></a>
+					</li>
+					<li class="">
+						<a class="pull-right" target="_blank" href="{$feed['link']}"> Read More <i class="fa fa-arrow-right"></i></a>
 					</li>
 				</ul>
 			</div>
