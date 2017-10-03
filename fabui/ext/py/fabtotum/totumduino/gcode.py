@@ -319,6 +319,7 @@ class GCodeService:
     REPLY_QUEUE_SIZE = 1 
         
     def __init__(self, serial_port, serial_baud, serial_timeout = 5, use_checksum = False, logger = None):
+        
         self.running = False
         self.released = False
         self.is_resetting = False
@@ -375,12 +376,15 @@ class GCodeService:
     def __terminate_all_running_tasks():
         db = Database()
         conn = db.get_connection()
-        cursor = conn.execute("SELECT * from sys_tasks where status!='completed' and status!='aborted' and status!='terminated' ")
-        for row in cursor:
-           id = row[0]
-           t = Task(db, id)
-           t['status'] = 'terminated'
-           t.write()
+        #cursor = conn.execute("SELECT * from sys_tasks where status!='completed' and status!='aborted' and status!='terminated' ")
+        cursor = conn.execute("UPDATE sys_tasks SET status='terminated' where status!='completed' and status!='aborted' and status!='terminated'")
+        conn.commit()
+        conn.close()
+        #for row in cursor:
+           #id = row[0]
+           #t = Task(db, id)
+           #t['status'] = 'terminated'
+           #t.write()
     
     
     def __init_state(self):
@@ -1014,6 +1018,9 @@ class GCodeService:
         
     
     """ APIs *public* functions """
+    
+    def getState(self):
+        return self.file_state
     
     def start(self, atomic_group=None):
         """

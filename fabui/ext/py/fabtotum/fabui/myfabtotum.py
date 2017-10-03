@@ -61,6 +61,15 @@ class MyFabtotumCom:
         SERVICE_PRINTER_UNKNOWN    : 'SERVICE_PRINTER_UNKNOWN'
     }
     
+    STATUS = {
+        0 : 'AVAILABLE',
+        1 : 'BUSY',
+        2 : 'BUSY',
+        3 : 'PAUSED',
+        4 : 'PAUSED',
+        
+    }
+    
     def __init__(self, gcs, logger, config=None ):
             
         if config:
@@ -82,9 +91,26 @@ class MyFabtotumCom:
         self.polling_interval = 5
         self.info_interval    = (60*30) #30 minutes
         self.id_counter       = 0
-        self.mac_address      = self.getMACAddres()
-        self.serial_number    = self.getSerialNumber()
-        self.fab_id           = self.getFabID()
+        #self.mac_address      = None
+        #self.serial_number    = None
+        #self.fab_id           = None
+        #self.unit_name        = None
+        #self.batch_number     = None
+        #self.fw_version       = None
+        
+        self.__init_vars()
+    
+    
+    def __init_vars(self):
+        """ init vars """
+        self.mac_address   = self.getMACAddres()
+        self.ip_lan        = self.getIPLan()
+        self.serial_number = self.getSerialNumber()
+        self.fab_id        = self.getFabID()
+        self.unit_name     = self.getUnitName()
+        #self.batch_number  = self.getBatchNumer()
+        #self.fw_version    = self.getFwVersion()
+        self.unit_color    = self.getUnitColor()
         
     
     def call(self, method, params):
@@ -135,7 +161,6 @@ class MyFabtotumCom:
         user = User(self.db)
         user.query_by('role', 'administrator')
         settings = json.loads(user['settings'])
-        
         if "fabid" in settings:
             return settings['fabid']['email']
         else:
@@ -161,13 +186,19 @@ class MyFabtotumCom:
     
     def getBatchNumer(self):
         """ get batch number """
-        reply = self.gcs.send("M763", group='gcode')
-        return reply[0].strip()
+        try:
+            reply = self.gcs.send("M763", group='gcode')
+            return reply[0].strip()
+        except:
+            return 0
     
     def getFwVersion(self):
         """ get firmware version """
-        reply = self.gcs.send("M765", group='gcode')
-        return reply[0].strip()
+        try:
+            reply = self.gcs.send("M765", group='gcode')
+            return reply[0].strip()
+        except:
+            return "N.D."
     
     def getIPLan(self):
         """ return valid ip for local network """
@@ -178,6 +209,10 @@ class MyFabtotumCom:
             return interfaces['wlan1']['ipv4_address'].split('/')[0]
         else:
             return interfaces['eth0']['ipv4_address'].split('/')[0]
+    
+    def getState(self):
+        """ printer's state """
+        return self.STATUS[self.gcs.getState()]
     
     def identify(self):
         """ remote command identify printer"""
@@ -211,12 +246,11 @@ class MyFabtotumCom:
         params = {
             "serialno"   : self.serial_number,
             "mac"        : self.mac_address,
-            "state"      : "",
-            "apiversion" : self.api_version,
+            "state"      : self.getState(),
+            "apiversion" : self.api_version
         }
         result =  self.call('fab_polling', params)
-        
-        if result:
+        if result: 
             if result["status_code"] == SERVICE_SUCCESS:     
                 if "command" in result:
                     try:
@@ -239,12 +273,12 @@ class MyFabtotumCom:
             "serialno"   : self.serial_number,
             "mac"        : self.mac_address,
             "data"       : {
-                "name"      : self.getUnitName(),
+                "name"      : self.unit_name,
                 "model"     : self.getBatchNumer(),
                 "head"      : head["name"],
                 "fwversion" : self.getFwVersion(),
-                "iplan"     : self.getIPLan(),
-                'color'     : self.getUnitColor()
+                "iplan"     : self.ip_lan,
+                'color'     : self.unit_color
             },
             "apiversion" : self.api_version,
         }
@@ -252,7 +286,7 @@ class MyFabtotumCom:
         result =  self.call('fab_info_update', params)
         
         if result:
-            self.log.debug("MyFabtotumCom - fab_info_update: {0}".format(self.RESPONSE_CODES_DESCRIPTION[result["status_code"]]))
+            self.log.debug("MyFabtotumCom - fab_info_update: {0} - {1}".format(self.RESPONSE_CODES_DESCRIPTION[result["status_code"]], params))
        
     def start(self):
         """ start server """
@@ -270,8 +304,13 @@ class MyFabtotumCom:
     def reload(self):
         """ reload settings """
         self.mac_address   = self.getMACAddres()
+        self.ip_lan        = self.getIPLan()
         self.serial_number = self.getSerialNumber()
         self.fab_id        = self.getFabID()
+        self.unit_name     = self.getUnitName()
+        #self.batch_number  = self.getBatchNumer()
+        #self.fw_version    = self.getFwVersion()
+        self.unit_color    = self.getUnitColor()
         self.log.debug("MyFabtotumCom - Settings reloaded")
     
     def __thread_polling(self):
@@ -291,5 +330,8 @@ class MyFabtotumCom:
         
         
     def loop(self):
-        if self.thread:
-            self.thread.join()
+        if self.thread_polling:
+            self.thread_polling.join()
+        
+        if self.thread_update:
+            self.thread_update.join()
