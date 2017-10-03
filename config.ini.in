@@ -60,7 +60,7 @@ blog_feed_file = @BIGTEMP_PATH@fabui/blog_feed.xml
 blog_post_categories = 5,6,887
 twitter_feed_url = https://www.fabtotum.com/twitter_feed.json
 twitter_feed_file = @BIGTEMP_PATH@fabui/twitter_feed.json
-instagram_feed_url = http://www.fabtotum.com/instagram.json
+instagram_feed_url = https://www.fabtotum.com/instagram.json
 instagram_feed_file = @BIGTEMP_PATH@fabui/instagram.json
 
 [updates]
