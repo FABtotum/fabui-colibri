@@ -373,7 +373,7 @@ if(!function_exists('downloadRemoteFile'))
 				return false;
 			}
 		}
-
+		
 		$curl = curl_init($remoteUrl);
 		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $timeout);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -397,7 +397,7 @@ if(!function_exists('getRemoteFile'))
 	/**
 	 * 
 	 */
-	function getRemoteFile($url, $do_internet_check=true)
+	function getRemoteFile($url, $do_internet_check=true, $headers = array())
 	{
 		if($do_internet_check)
 		{
@@ -409,10 +409,16 @@ if(!function_exists('getRemoteFile'))
 		}
 		
 		$curl = curl_init($url);
+	
 		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 30);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+		if(!empty($headers)){
+			curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+		}
 		$content = curl_exec($curl); //make call
 		$info = curl_getinfo($curl);
+		
 		if(isset($info['http_code']) && $info['http_code'] == 200){ //if response is OK
 			return $content;
 		}else{
@@ -436,6 +442,17 @@ if(!function_exists('setTimeZone'))
 			log_message('debug', 'set_time_zone.sh' .' '.$timeZone);
 			return true;
 		}
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getTimeZone'))
+{
+	/**
+	 * get time zone
+	 */
+	function getTimeZone()
+	{
+		return trim(shell_exec('cat /etc/timezone'));
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -475,68 +492,6 @@ if(!function_exists('humanFileSize'))
 			$ret = "$bytes bytes";
 		}
 		return $ret;
-	}
-}
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if(!function_exists('downloadBlogFeeds'))
-{
-	/**
-	 * 
-	 */
-	function downloadBlogFeeds()
-	{
-		$CI =& get_instance();
-		$CI->config->load('fabtotum');
-		
-		$xmlEndPoint = $CI->config->item('blog_feed_url').'?cat='.$CI->config->item('blog_post_categories');
-		
-		if(downloadRemoteFile($xmlEndPoint, $CI->config->item('blog_feed_file'), 5)){
-			log_message('debug', 'Blog feeds updated');
-			return true;
-		}else{
-			log_message('debug', 'Blog feeds unavailable');
-			return false;
-		}
-	}
-}
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if(!function_exists('downloadTwitterFeeds'))
-{
-	/**
-	 *
-	 */
-	function downloadTwitterFeeds()
-	{
-		$CI =& get_instance();
-		$CI->config->load('fabtotum');
-
-		if(downloadRemoteFile($CI->config->item('twitter_feed_url'), $CI->config->item('twitter_feed_file'))){
-			log_message('debug', 'Twitter feeds updated');
-			return true;
-		}else{
-			log_message('debug', 'Twitter feeds unavailable');
-			return false;
-		}
-	}
-}
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if(!function_exists('downloadInstagramFeeds'))
-{
-	/**
-	 *
-	 */
-	function downloadInstagramFeeds()
-	{
-		$CI =& get_instance();
-		$CI->config->load('fabtotum');
-
-		if(downloadRemoteFile($CI->config->item('instagram_feed_url'), $CI->config->item('instagram_feed_file'))){
-			log_message('debug', 'Instagram feeds updated');
-			return true;
-		}else{
-			log_message('debug', 'Instagram feeds unavailable');
-			return false;
-		}
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -82,7 +82,10 @@ class Spool extends FAB_Controller {
 		$widget->id = 'main-widget-spool-management';
 		
 		$widget->header = array('icon' => 'fabui-spool-vert', "title" => "<h2>" . _("Spool management") . "</h2>", 'toolbar'=>$headerToolbar);
-		$widget->body   = array('content' => $this->load->view('std/task_wizard', $data, true ),'class'=>'fuelux');
+		
+		$data['wizard'] = $this->load->view('std/task_wizard', $data, true);
+		
+		$widget->body   = array('content' => $this->load->view('spool/main_widget', $data, true));
 		
 		$this->content = $widget->print_html(true);
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
@@ -146,7 +149,13 @@ class Spool extends FAB_Controller {
 		$this->output->set_content_type('application/json')->set_output(json_encode($resultHeat));
 		
 	}
-	
+	/**
+	 * 
+	 */
+	public function shop()
+	{
+		
+	}	
 }
  
 ?>

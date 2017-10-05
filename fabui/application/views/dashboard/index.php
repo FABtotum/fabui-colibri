@@ -10,8 +10,8 @@
 ?>
 <section id="widget-grid">
 	<div class="row">
-		<div class="col-sm-3"><?php echo $blogWidget;?></div>
-		<div class="col-sm-3"><?php echo $twitterWidget;?></div>
-		<div class="col-sm-6"><?php echo $instagramWidget;?></div>
+		<div class="col-sm-3" id="blog-container"></div>
+		<div class="col-sm-3" id="twitter-container"></div>
+		<div class="col-sm-6" id="instagram-container"></div>
 	</div>
 </section>

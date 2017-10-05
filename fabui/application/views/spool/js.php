@@ -18,6 +18,10 @@
 		$(".mode-choise").on('click', clickSetMode);
 		$(".filament").on('click', filamentButtonClick);
 		$("#restart-button").on('click', restartAction);
+
+		loadShopFilaments();
+
+		
 	});
 	
 	/**
@@ -170,5 +174,57 @@
 				fabApp.showErrorAlert(response.message);
 			}
 	  });
+	}
+	/**
+	*
+	**/
+	function loadShopFilaments()
+	{
+		$.get("/fabui/shop/filaments", function(data, status){
+			if(data){
+				var html = '';
+				counter = 0;
+				var currency = getCurrency(data.store);
+				$.each(data.items, function(i, item) {
+					if(item.is_saleable){
+						counter++;
+						var cssclass = counter == 1 ? 'active' : '';
+						html += '<div class="item '+cssclass+'"> ' + 
+										'<div class="col-xs-12 col-sm-6 col-md-2"> ' +
+											'<a rel="tooltip" title="'+item.short_description+'" target="_blank" href="'+item.url+'"><img src="'+item.image_url+'" class="img-responsive center-block"></a> ' +
+											'<h4 class="text-center">'+item.name.trim()+'</h4> ' +
+											//'<h5 class="text-center">'+item.final_price_without_tax+' '+currency+'</h5> ' +
+										'</div>' +
+								'</div>';
+					}
+				});
+				$("#product-container").removeClass("hidden");
+				$(".carousel-inner").html(html);
+				$('.carousel-showmanymoveone .item').each(function(){
+					var itemToClone = $(this);
+					for (var i=1;i<6;i++) {
+						itemToClone = itemToClone.next();
+						if (!itemToClone.length) {
+							itemToClone = $(this).siblings(':first');
+						}
+					itemToClone.children(':first-child').clone().addClass("cloneditem-"+(i)).appendTo($(this));
+					}
+				});
+			}
+		});
+		/**
+		*
+		**/
+		function getCurrency(store, website)
+		{
+			switch(store){
+				case 'eu': 
+				case 'it':
+					return '&euro;';
+					break; 
+				case 'intl':
+					return '&dollar;';
+			}
+		}
 	}
 </script>

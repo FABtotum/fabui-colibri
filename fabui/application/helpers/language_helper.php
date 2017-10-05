@@ -79,7 +79,6 @@ if(!function_exists('getCurrentLanguage'))
 	{
 		//echo locale_get_default();
 		$CI =& get_instance();
-		
 		if(isset($CI->session->user['settings']['locale']))
 			return $CI->session->user['settings']['locale'];
 		

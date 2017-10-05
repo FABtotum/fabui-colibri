@@ -26,7 +26,7 @@ class Cron extends CI_Controller {
 	public function blogFeeds()
 	{	
 		//load helpers, config
-		$this->load->helper('os_helper');
+		$this->load->helper('social_helper');
 		downloadBlogFeeds();
 	}
 	/** 
@@ -35,7 +35,7 @@ class Cron extends CI_Controller {
 	public function twitterFeeds()
 	{
 		//load helpers, config
-		$this->load->helper('os_helper');
+		$this->load->helper('social_helper');
 		downloadTwitterFeeds();
 	}
 	/**
@@ -44,7 +44,7 @@ class Cron extends CI_Controller {
 	public function instagramFeeds()
 	{
 		//load helpers, config
-		$this->load->helper('os_helper');
+		$this->load->helper('social_helper');
 		downloadInstagramFeeds();
 	}
 	/**
@@ -89,6 +89,15 @@ class Cron extends CI_Controller {
 		//load helpers, config
 		$this->load->helper('os_helper');
 		writeNetworkInfo();
+	}
+	/**
+	 * 
+	 */
+	public function shopFilaments()
+	{
+		//load helpers
+		$this->load->helper("shop_helper");
+		downloadAllFilamentsFeeds();
 	}
 
 }
