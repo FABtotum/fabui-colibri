@@ -78,3 +78,12 @@ ga_property_id = UA-42679362-4
 [my.fabtotum.com]
 myfabtotum_url = https://my.fabtotum.com/myfabtotum/default/call/jsonrpc2
 myfabtotum_api_version = 1
+
+[store]
+store_api_endpoint = https://store.fabtotum.com/api/rest/
+store_homepage_it_feed = @BIGTEMP_PATH@fabui/store_it.json
+store_homepage_eu_feed = @BIGTEMP_PATH@fabui/store_eu.json
+store_homepage_intl_feed = @BIGTEMP_PATH@fabui/store_intl.json
+store_filament_it_feed = @BIGTEMP_PATH@fabui/filament_it.json
+store_filament_eu_feed = @BIGTEMP_PATH@fabui/filament_eu.json
+store_filament_intl_feed = @BIGTEMP_PATH@fabui/filament_intl.json
