@@ -270,6 +270,7 @@ if(!function_exists('loadHeads'))
 			// UTF-8 safety
 			$content = iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($content));
 			$heads[$key] = json_decode($content , true);
+			$heads[$key]['filename'] = $key;
 		}
 
 		return $heads;
@@ -566,6 +567,8 @@ if(!function_exists('getInstalledHeadInfo'))
 		
 		if(!isset($info['nozzle_offset']))
 			$info['nozzle_offset'] = 0;
+		
+		$info['filename'] = basename($head_filename, '.json');
 		
 		return $info;
 	}

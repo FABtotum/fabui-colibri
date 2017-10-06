@@ -5,3 +5,17 @@
 .advanced-settings {
 	display: none !important;
 }
+
+.center-justified {
+    text-align: justify;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+.installed  {
+	font-weight: 700 !important;
+}
+
+.not-installed {
+	opacity: 0.3;
+}

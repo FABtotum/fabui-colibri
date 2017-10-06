@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 class Head extends FAB_Controller {
 	
-	public function index()
+	public function old_index()
 	{
 		//load libraries, helpers, model
 		$this->load->library('smart');
@@ -136,6 +136,51 @@ class Head extends FAB_Controller {
 		$this->load->helper('fabtotum_helper');
 		$result = restoreHeadFactorySettings($head_filename);
 		$this->output->set_content_type('application/json')->set_output(json_encode( $result ));
+	}
+	/**
+	 * 
+	 */
+	public function index(){
+		$this->load->library('smart');
+		$this->load->helper('form');
+		$this->load->helper('fabtotum_helper');
+		
+		$data = array();
+		
+		$data['heads'] = loadHeads();
+		$data['installed_head'] = getInstalledHeadInfo();
+		
+		$headerToolbar = '
+		<div class="widget-toolbar" role="menu">
+			<a class="btn btn-success settings-action" data-action="add" href=""><i class="fa fa-plus"></i> '._("Add new head").' </a>
+			<a class="btn btn-default no-ajax" target="_blank" href="http://store.fabtotum.com/"><i class="fa fa-cart-plus"></i> <span class="hidden-xs">'._("Get more heads").'</span> </a>
+		</div>';
+		
+		//main page widget
+		$widgetOptions = array(
+				'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
+				'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
+		);
+		
+		$widget         = $this->smart->create_widget($widgetOptions);
+		$widget->id     = 'main-widget-head-installation';
+		$widget->class = '';
+		$widget->header = array('icon' => 'fabui-head-2', "title" => "<h2>"._("Heads")."</h2>", 'toolbar'=>$headerToolbar);
+		$widget->body   = array('content' => $this->load->view('head/index', $data, true ), 'class'=>'');
+		
+		$this->addJsInLine($this->load->view('head/js', $data, true));
+		$this->addCssFile('/assets/css/head/style.css');
+		
+		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
+		$this->addJSFile('/assets/js/plugin/inputmask/jquery.inputmask.bundle.js');
+		$this->addJSFile('/assets/js/plugin/FileSaver.min.js');
+		$this->addCssFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.carousel.min.css');
+		$this->addCssFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.theme.default.css');
+		$this->addJSFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.carousel.min.js');
+		
+		$this->content = $widget->print_html(true);
+		$this->view();
+		
 	}
 }
  
