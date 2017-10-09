@@ -257,6 +257,7 @@
 		var bundle_name = $(this).val();
 		var is_selected = $(this).is(":checked");
 		var bundle_info = local_data_copy.bundles[bundle_name];
+
 		
 		
 		if(bundle_info.requires.hasOwnProperty("bundle"))
@@ -265,6 +266,9 @@
 
 				var localBundle = local_data_copy.bundles[object.name];
 
+				if(typeof localBundle == 'undefined'){
+				    
+				}else
 				if( versionCompare(localBundle.local, object.min_version ) == -1 )
 				{
 					var cb_id = "checkbox-bundle-" + object.name;

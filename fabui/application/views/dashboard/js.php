@@ -11,7 +11,8 @@
 	function loadFeed(url, callback)
 	{
 		$.get(url, function(data, status){
-			callback(data)
+			callback(data);
+			$(".check-again").on('click', checkAgain);
 		});
 	}
 	
@@ -22,34 +23,38 @@
 	{
 		//showLatestPost(data[0]);
 		var html = '';
-		$.each(data, function(i, item) {
-			html += '<div class="panel panel-default">' +
-						'<div class="panel-body status">' +
-							'<div class="who clearfix">' +
-								'<img src="'+item['img_src']+'" alt="'+item['title'][0]+'" title="'+item['title'][0]+'" />' +
-								'<span class="name font-sm">' +
-									'<a target="_blank" href="'+item['link'][0]+'">'+item['title'][0]+'</a>' +
-									'<br>' +
-									'<span class="text-muted">'+item['date']+'</span>' +
-								'</span>' +
+		if(data.length > 0){
+			$.each(data, function(i, item) {
+				html += '<div class="panel panel-default">' +
+							'<div class="panel-body status">' +
+								'<div class="who clearfix">' +
+									'<img src="'+item['img_src']+'" alt="'+item['title'][0]+'" title="'+item['title'][0]+'" />' +
+									'<span class="name font-sm">' +
+										'<a target="_blank" href="'+item['link'][0]+'">'+item['title'][0]+'</a>' +
+										'<br>' +
+										'<span class="text-muted">'+item['date']+'</span>' +
+									'</span>' +
+								'</div>' +
+								'<div class="image padding-top-0 padding-10">' +
+									'<a target="_blank" href="'+item['link'][0]+'"><img title="'+item['title'][0]+'" alt="'+item['title'][0]+'" src="'+item['img_src']+'" /></a>' +
+								'</div>' +
+								'<div class="text hidden-xs">' +
+									'<p>'+item['text']+'</p>' +
+								'</div>' +
+								'<ul class="links  hidden-xs">' +
+									'<li class="">' +
+										'<a class="btn btn-default btn-circle btn-xs txt-color-blue" title="{$share_title}" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u='+item['link'][0]+'"><i class="fa fa-facebook"></i></a>' +
+									'</li>' +
+									'<li class="">' +
+										'<a class="pull-right" target="_blank" href="'+item['link'][0]+'"> Read More <i class="fa fa-arrow-right"></i></a>' +
+									'</li>' +
+								'</ul>' +
 							'</div>' +
-							'<div class="image padding-top-0 padding-10">' +
-								'<a target="_blank" href="'+item['link'][0]+'"><img title="'+item['title'][0]+'" alt="'+item['title'][0]+'" src="'+item['img_src']+'" /></a>' +
-							'</div>' +
-							'<div class="text hidden-xs">' +
-								'<p>'+item['text']+'</p>' +
-							'</div>' +
-							'<ul class="links  hidden-xs">' +
-								'<li class="">' +
-									'<a class="btn btn-default btn-circle btn-xs txt-color-blue" title="{$share_title}" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u='+item['link'][0]+'"><i class="fa fa-facebook"></i></a>' +
-								'</li>' +
-								'<li class="">' +
-									'<a class="pull-right" target="_blank" href="'+item['link'][0]+'"> Read More <i class="fa fa-arrow-right"></i></a>' +
-								'</li>' +
-							'</ul>' +
-						'</div>' +
-					'</div>';
-		});
+						'</div>';
+			});
+		}else{
+			html = noFeedAvailable("<i class='fa fa-rss'></i> <?php echo _("Latest blog posts"); ?>", 'blog');
+		}
 		$("#blog-container").html(html);
 	}
 	/**
@@ -58,43 +63,47 @@
 	function buildTwitterFeeds(data)
 	{
 		var html = '';
-		$.each(data, function(i, item) {
-			
-			var post_url  = 'http://www.twitter.com/statuses/' + item['id_str'];
-			var retweet = '';
-			var favourite = '';
-			var place = '';
-			var date = item['created_at'];
-			var images = '';
-
-			
-			if(item.place) place += '<br><i class="fa fa-map-marker"></i> '+item['place']['full_name'];
-			if(item.retweet_count>0) retweet += '<li class="txt-color-green"><i class="fa fa-retweet"></i> ('+ item['retweet_count']+')</li>';
-			if(item.favorite_count>0) favourite += '<li class="txt-color-red"><i class="fa fa-heart"></i> ('+item['favorite_count']+')</li>';
-
-			if(item.entities.media){
-				$.each(item.entities.media, function(j, media){
-					if(media.type == 'photo') images += '<div class="image padding-top-0 padding-10"><img title="'+item.original_text+'" src="'+media['media_url']+'" /></div>';
-				});
-			}
-			
-			html += '<div class="panel panel-default">'+
-						'<div class="panel-body status">'+
-							'<div class="who clearfix">'+
-								'<img src="'+item['user']['profile_image_url']+'" />'+
-								'<span class="name"><b><a target="_blank" href="https://twitter.com/'+item['user']['screen_name']+'">'+item['user']['screen_name']+'</a></b>'+
-								'<span class="pull-right"><a href="'+post_url+'" target="_blank" title="View on Twitter"><i class="fa fa-twitter"></i></a></span></span>'+
-								'<span class="from">'+ date + place + '</span>'+
-								'</span>'+
+		if(data.length > 0){
+			$.each(data, function(i, item) {
+				
+				var post_url  = 'http://www.twitter.com/statuses/' + item['id_str'];
+				var retweet = '';
+				var favourite = '';
+				var place = '';
+				var date = item['created_at'];
+				var images = '';
+	
+				
+				if(item.place) place += '<br><i class="fa fa-map-marker"></i> '+item['place']['full_name'];
+				if(item.retweet_count>0) retweet += '<li class="txt-color-green"><i class="fa fa-retweet"></i> ('+ item['retweet_count']+')</li>';
+				if(item.favorite_count>0) favourite += '<li class="txt-color-red"><i class="fa fa-heart"></i> ('+item['favorite_count']+')</li>';
+	
+				if(item.entities.media){
+					$.each(item.entities.media, function(j, media){
+						if(media.type == 'photo') images += '<div class="image padding-top-0 padding-10"><img title="'+item.original_text+'" src="'+media['media_url']+'" /></div>';
+					});
+				}
+				
+				html += '<div class="panel panel-default">'+
+							'<div class="panel-body status">'+
+								'<div class="who clearfix">'+
+									'<img src="'+item['user']['profile_image_url']+'" />'+
+									'<span class="name"><b><a target="_blank" href="https://twitter.com/'+item['user']['screen_name']+'">'+item['user']['screen_name']+'</a></b>'+
+									'<span class="pull-right"><a href="'+post_url+'" target="_blank" title="View on Twitter"><i class="fa fa-twitter"></i></a></span></span>'+
+									'<span class="from">'+ date + place + '</span>'+
+									'</span>'+
+								'</div>'+
+								'<div class="text">'+
+									'<p>'+item['text']+'</p>'+
+								'</div>'+images+
+								'<ul class="links">' + retweet + favourite +
+								'</ul>'+
 							'</div>'+
-							'<div class="text">'+
-								'<p>'+item['text']+'</p>'+
-							'</div>'+images+
-							'<ul class="links">' + retweet + favourite +
-							'</ul>'+
-						'</div>'+
-					'</div>';
-		});
+						'</div>';
+			});
+		}else{
+			html = noFeedAvailable("<i class='fa fa-twitter'></i> <?php echo _("Latest tweets"); ?>", 'twitter');
+		}
 		$("#twitter-container").html(html);
 		
 	}
@@ -103,16 +112,20 @@
 	**/
 	function buildInstagramFeeds(data)
 	{
-		var html = '<div class="row"><div class="col-sm-6 col-xs-6 col-b">';
-		$.each(data.feeds_a, function(i, item) {
-			html += instagramPost(item);
-		});
-		html += '</div><div class="col-sm-6 col-xs-6 col-a">';
-
-		$.each(data.feeds_b, function(i, item) {
-			html += instagramPost(item);
-		});
-
+		var html = '';
+		if(data){
+			html += '<div class="row"><div class="col-sm-6 col-xs-6 col-b">';
+			$.each(data.feeds_a, function(i, item) {
+				html += instagramPost(item);
+			});
+			html += '</div><div class="col-sm-6 col-xs-6 col-a">';
+	
+			$.each(data.feeds_b, function(i, item) {
+				html += instagramPost(item);
+			});
+		}else{
+			html = noFeedAvailable("<i class='fa fa-instagram'></i> <?php echo _("Latest instragm posts"); ?>", 'instagram');
+		}
 		html += '</div>';
 		$("#instagram-container").html(html);
 	}
@@ -214,8 +227,50 @@
 					'<a class="btn btn-warning" href="javascript:void(0);"> Edit </a>'+
 					'<a class="btn btn-success" href="javascript:void(0);"> Publish </a>'+
 				'</div>';
-
 		$("#last-post").html(html);
+	}
+	/**
+	*
+	**/
+	function noFeedAvailable(message, type)
+	{
+		var html = '<div class="panel panel-default ">'+
+						'<div class="panel-body status">'+
+							'<div class="who clearfix"><h4>'+message+'</h4></div>'+
+							'<div class="text text-center">'+
+								'<h2><i class="fa fa-frown-o"></i></h2>' +
+								'<p><?php echo _("Feeds are not available") ?></p>'+
+								'<p><?php echo _("Check your connection and try again") ?></p>'+
+							'</div>'+
+							'<ul class="links text-center">' +
+								'<li class="text-center">' +
+									'<button data-type='+type+' class="btn btn-default check-again"><?php echo _("Check again");?></button>' +
+								'</li>' +
+							'</ul>' +
+						'</div>'+
+					'</div>';
+		return html;
+	}
+	/**
+	*
+	**/
+	function checkAgain()
+	{
+		var button = $(this);
+		var type   = button.attr("data-type");
 
+		button.html("<i class='fa fa-spin fa-spinner'></i> Downloading...");
+			
+		switch(type){
+			case 'blog':
+				loadFeed('/fabui/social/load/blog/1', buildBlogFeeds);
+				break;
+			case 'twitter':
+				loadFeed('/fabui/social/load/twitter/1', buildTwitterFeeds);
+				break;
+			case 'instagram':
+				loadFeed('/fabui/social/load/instagram/1', buildInstagramFeeds);
+				break;
+		}		
 	}
 </script>

@@ -23,17 +23,18 @@ class Social extends CI_Controller {
 	/**
 	 * 
 	 */
-	public function load($social)
+	public function load($social, $download = 0)
 	{
+		$download == 1 ? true : false;
 		switch($social){
 			case 'blog':
-				$feed = loadBlog();
+				$feed = loadBlog($download);
 				break;
 			case 'twitter':
-				$feed = loadTwitter();
+				$feed = loadTwitter($download);
 				break;
 			case 'instagram':
-				$feed = loadInstagram();
+				$feed = loadInstagram($download);
 				break;
 		}
 		$this->output->set_content_type('application/json')->set_output(json_encode($feed));

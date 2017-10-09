@@ -397,7 +397,7 @@ if(!function_exists('getRemoteFile'))
 	/**
 	 * 
 	 */
-	function getRemoteFile($url, $do_internet_check=true, $headers = array())
+	function getRemoteFile($url, $do_internet_check=true, $headers = array(), $timeout=30)
 	{
 		if($do_internet_check)
 		{
@@ -410,7 +410,7 @@ if(!function_exists('getRemoteFile'))
 		
 		$curl = curl_init($url);
 	
-		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 30);
+		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $timeout);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
 		if(!empty($headers)){
@@ -573,6 +573,19 @@ if(!function_exists("wlanSort"))
 			return 0;
 		}
 		return ($netA['quality'] > $netB['quality']) ? -1 : 1;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists("fix_folder_permissions"))
+{
+	/**
+	 * 
+	 */
+	function fix_folder_permissions($folder, $owner, $group = '')
+	{
+		if($group == '') $group = $owner;
+		//example sudo chown -R www-data:www-data /tmp/fabui/
+		shell_exec('sudo chown -R '.$owner.':'.$group.' '.$folder);
 	}
 }
 ?>

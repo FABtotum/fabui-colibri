@@ -146,7 +146,7 @@ if(!function_exists('downloadHomePageFeed'))
 		
 		$url_endpoint = $CI->config->item('store_api_endpoint').'products/store/'.$store.'/category/'.$category.'?limit=100';
 		
-		$remote_feed = getRemoteFile($url_endpoint, false, array('Content-Type: application/json'));
+		$remote_feed = getRemoteFile($url_endpoint, false, array('Content-Type: application/json'), 15);
 		
 		if($remote_feed){
 			$remote_decoded = json_decode($remote_feed, true);

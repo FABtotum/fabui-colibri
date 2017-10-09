@@ -14,10 +14,16 @@ class Cron extends CI_Controller {
 	 */
 	public function all()
 	{
+		//fix evenutally permissions issues
+		$this->load->helper('os_helper');
+		$this->config->load('fabtotum');
+		fix_folder_permissions($this->config->item('bigtemp_path'), 'www-data');
+		//download feeds
 		$this->blogFeeds();
 		$this->twitterFeeds();
 		$this->instagramFeeds();
 		$this->instagramHashFeeds();
+		$this->shopFilaments();
 	}
 	
 	/**

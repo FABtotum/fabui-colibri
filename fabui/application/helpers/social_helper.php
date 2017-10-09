@@ -8,6 +8,17 @@
  * @license https://opensource.org/licenses/GPL-3.0
  * 
  */
+
+if(!function_exists('downloadAllFeeds'))
+{
+	function downloadAllFeeds()
+	{
+		downloadInstagramFeeds();
+		downloadTwitterFeeds();
+		downloadBlogFeeds();
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('loadJsonFile'))
 {
 	function loadJsonFile($file)
@@ -21,8 +32,11 @@ if(!function_exists('loadJsonFile'))
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('loadBlog'))
 {
-	function loadBlog()
+	function loadBlog($download = false)
 	{
+		if($download){
+			downloadBlogFeeds();
+		}
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		return loadJsonFile($CI->config->item("blog_feed_file"));
@@ -31,8 +45,11 @@ if(!function_exists('loadBlog'))
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('loadTwitter'))
 {
-	function loadTwitter()
+	function loadTwitter($download = false)
 	{
+		if($download){
+			downloadTwitterFeeds();
+		}
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		return loadJsonFile($CI->config->item("twitter_feed_file"));
@@ -41,8 +58,11 @@ if(!function_exists('loadTwitter'))
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('loadInstagram'))
 {
-	function loadInstagram()
+	function loadInstagram($download = false)
 	{
+		if($download){
+			downloadInstagramFeeds();
+		}
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		return loadJsonFile($CI->config->item("instagram_feed_file"));
@@ -64,7 +84,7 @@ if(!function_exists('downloadInstagramFeeds'))
 		$fabtotum_max_post = 5;
 		$hashtag_max_post  = 10;
 		
-		$instagram_feeds = getRemoteFile($CI->config->item('instagram_feed_url'));
+		$instagram_feeds = getRemoteFile($CI->config->item('instagram_feed_url'), true, null, 10);
 		
 		if($instagram_feeds){
 			
@@ -218,7 +238,7 @@ if(!function_exists('downloadTwitterFeeds'))
 		$CI->config->load('fabtotum');
 		$CI->load->helper(array('file', 'os_helper'));
 		
-		$twitter_feed = getRemoteFile($CI->config->item('twitter_feed_url'));
+		$twitter_feed = getRemoteFile($CI->config->item('twitter_feed_url'), true, null, 10);
 		
 		if($twitter_feed){
 			
@@ -299,39 +319,43 @@ if(!function_exists('downloadBlogFeeds'))
 		
 		$xmlEndPoint = $CI->config->item('blog_feed_url').'?cat='.$CI->config->item('blog_post_categories');
 		
-		$xml = getRemoteFile($xmlEndPoint);
-		
-		$xml = str_replace("content:encoded>","content>",$xml);
-		$xml = simplexml_load_string($xml,'SimpleXMLElement', LIBXML_NOCDATA );
-		
-		libxml_use_internal_errors(true);
-		
-		$feeds = $xml->channel->item;
-		$processedFeeds    = array();
-		
-		foreach($feeds as $feed){
-			$imageSrc = null;
-			$html= new DOMDocument();
+		$xml = getRemoteFile($xmlEndPoint, true, null, 10);
+		if($xml){
+			$xml = str_replace("content:encoded>","content>",$xml);
+			$xml = simplexml_load_string($xml,'SimpleXMLElement', LIBXML_NOCDATA );
 			
-			$content = $feed->content;
-			$html->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
-			$images = $html->getElementsByTagName('img');
-			foreach($images as $imgTag){
-				$imageSrc = $imgTag->getAttribute('src');
-				$imgTag->parentNode->removeChild($imgTag);
+			libxml_use_internal_errors(true);
+			
+			$feeds = $xml->channel->item;
+			$processedFeeds    = array();
+			
+			foreach($feeds as $feed){
+				$imageSrc = null;
+				$html= new DOMDocument();
+				
+				$content = $feed->content;
+				$html->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
+				$images = $html->getElementsByTagName('img');
+				foreach($images as $imgTag){
+					$imageSrc = $imgTag->getAttribute('src');
+					$imgTag->parentNode->removeChild($imgTag);
+				}
+				$processedFeeds[] = array(
+						'title' => $feed->title,
+						'link' => $feed->guid,
+						'date' => date('j M, Y',strtotime($feed->pubDate)),
+						'img_src' => $imageSrc,
+						'text' => word_limiter($html->textContent, 50, '...')
+				);
 			}
-			$processedFeeds[] = array(
-					'title' => $feed->title,
-					'link' => $feed->guid,
-					'date' => date('j M, Y',strtotime($feed->pubDate)),
-					'img_src' => $imageSrc,
-					'text' => word_limiter($html->textContent, 50, '...')
-			);
+			
+			write_file($CI->config->item('blog_feed_file'), json_encode($processedFeeds), 'w+');
+			log_message('debug', 'Blog feeds updated');
+			return true;
+		}else{
+			log_message('debug', 'Blog feeds unavailable');
+			return false;
 		}
-		
-		write_file($CI->config->item('blog_feed_file'), json_encode($processedFeeds), 'w+');
-		log_message('debug', 'Twitter feeds updated');
-		return true;
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////

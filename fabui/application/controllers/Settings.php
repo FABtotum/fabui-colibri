@@ -339,7 +339,7 @@ class Settings extends FAB_Controller {
 	public function saveNetworkSettings($action = 'connect')
 	{
 		//get data from post
-		$this->load->helper('os_helper');
+		$this->load->helper(array('os_helper', 'social_helper'));
 		$this->load->helper('myfabtotum_helper');
 		$postData = $this->input->post();
 		$result = true;
@@ -356,9 +356,7 @@ class Settings extends FAB_Controller {
 				storeNetworkSettings($net_type, $iface, $mode, $address, $netmask, $gateway);
 				
 				//update social feeds
-				downloadBlogFeeds();
-				downloadTwitterFeeds();
-				downloadInstagramFeeds();
+				downloadAllFeeds();
 				break;
 			case "wlan":
 				if($action == 'connect')
@@ -389,9 +387,7 @@ class Settings extends FAB_Controller {
 					configureWireless($iface, $ssid, $password, $psk, $mode, $address, $netmask, $gateway, $ap_channel);
 					storeNetworkSettings($net_type, $iface, $mode, $address, $netmask, $gateway, $ssid, $password, $psk);
 					//update social feeds
-					downloadBlogFeeds();
-					downloadTwitterFeeds();
-					downloadInstagramFeeds();
+					downloadAllFeeds();
 				}
 				else if($action == 'disconnect')
 				{
