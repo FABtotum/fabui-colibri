@@ -311,10 +311,10 @@ if(!function_exists('downloadBlogFeeds'))
 		
 		foreach($feeds as $feed){
 			$imageSrc = null;
-			$html = new DOMDocument();
+			$html= new DOMDocument();
 			
-			$html->loadHTML($feed->content, LIBXML_NOWARNING );
-			
+			$content = $feed->content;
+			$html->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
 			$images = $html->getElementsByTagName('img');
 			foreach($images as $imgTag){
 				$imageSrc = $imgTag->getAttribute('src');

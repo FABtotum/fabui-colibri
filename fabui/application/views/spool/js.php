@@ -189,15 +189,52 @@
 					if(item.is_saleable){
 						counter++;
 						var cssclass = counter == 1 ? 'active' : '';
-						html += '<div class="item '+cssclass+'"> ' + 
+
+						html += '<div class="panel panel-default ">'+
+									'<div class="panel-body status">'+
+										'<div class="image padding-10">'+
+											'<a rel="tooltip" title="'+item.short_description+'" target="_blank" href="'+item.url+'"><img src="'+item.image_url+'"></a>'+
+										'</div>'+
+										'<div >'+
+											'<p class="text-center">'+item.name.trim()+'</p>'+
+										'</div>'+
+									'</div>'+
+								'</div>';
+
+						/*html += '<div class="item '+cssclass+'"> ' + 
 										'<div class="col-xs-12 col-sm-6 col-md-2"> ' +
 											'<a rel="tooltip" title="'+item.short_description+'" target="_blank" href="'+item.url+'"><img src="'+item.image_url+'" class="img-responsive center-block"></a> ' +
 											'<h4 class="text-center">'+item.name.trim()+'</h4> ' +
 											//'<h5 class="text-center">'+item.final_price_without_tax+' '+currency+'</h5> ' +
 										'</div>' +
 								'</div>';
+						*/
 					}
 				});
+				$(".owl-carousel").html(html);
+				$('.owl-carousel').owlCarousel({
+		        	loop: true,
+		         	margin: 10,
+		            responsiveClass: true,
+		            	responsive: {
+		                	0: {
+		                    	items: 1,
+		                    	nav: false
+		                  	},
+		                  	600: {
+		                    	items: 5,
+		                    	nav: false
+		                  	},
+		                  	1000: {
+		                    	items: 6,
+		                    	nav: false,
+		                    	loop: false,
+		                    	margin: 20
+		                  	}
+		                }
+				});
+				$("#slider-title").removeClass("hidden");
+				/*
 				$("#product-container").removeClass("hidden");
 				$(".carousel-inner").html(html);
 				$('.carousel-showmanymoveone .item').each(function(){
@@ -209,7 +246,7 @@
 						}
 					itemToClone.children(':first-child').clone().addClass("cloneditem-"+(i)).appendTo($(this));
 					}
-				});
+				});*/
 			}
 		});
 		/**

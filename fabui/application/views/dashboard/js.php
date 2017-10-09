@@ -20,6 +20,7 @@
 	**/
 	function buildBlogFeeds(data)
 	{
+		//showLatestPost(data[0]);
 		var html = '';
 		$.each(data, function(i, item) {
 			html += '<div class="panel panel-default">' +
@@ -188,5 +189,33 @@
 			return item.video_versions[0]['url'];
 		}
 		return "";
+	}
+	/**
+	*
+	**/
+	function showLatestPost(post)
+	{
+		var html = '';
+
+		html += '<div class="col-md-4">'+
+					'<img class="img-responsive" src="'+post['img_src']+'" alt="'+post['title'][0]+'" title="'+post['title'][0]+'" />' +
+					'<ul class="list-inline padding-10">'+
+						'<li>'+
+							'<i class="fa fa-calendar"></i>'+
+							'<a href="javascript:void(0);"> '+post['date']+' </a>'+
+						'</li>'+
+					'</ul>'+
+				'</div>';
+
+		html += '<div class="col-md-8 padding-left-0">'+
+					'<h3 class="margin-top-0"><a href="javascript:void(0);">'+post['title'][0]+'</a></h3>'+
+					'<p>'+ post['text'] + '</p>'+
+					'<a class="btn btn-primary" href="javascript:void(0);"> Read more </a>'+
+					'<a class="btn btn-warning" href="javascript:void(0);"> Edit </a>'+
+					'<a class="btn btn-success" href="javascript:void(0);"> Publish </a>'+
+				'</div>';
+
+		$("#last-post").html(html);
+
 	}
 </script>

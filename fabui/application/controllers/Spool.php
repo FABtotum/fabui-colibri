@@ -89,6 +89,9 @@ class Spool extends FAB_Controller {
 		
 		$this->content = $widget->print_html(true);
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
+		$this->addCssFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.carousel.min.css');
+		$this->addCssFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.theme.default.css');
+		$this->addJSFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.carousel.min.js');
 		$this->addCSSFile('/assets/css/spool/style.css');
 		$this->addJsInLine($this->load->view( 'std/task_wizard_js',   $data, true));
 		$this->addJsInLine($this->load->view('spool/js', $data, true));
