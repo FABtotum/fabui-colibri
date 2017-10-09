@@ -250,7 +250,7 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 		});
 		<?php endif; ?>
 
-		<?php if($type == "mill" || $type == "laser"): ?>
+		<?php if($type == "mill"): ?>
 		if(typeof rpmSlider == "undefined")
 		{
 			noUiSlider.create(document.getElementById('create-rpm-slider'), {

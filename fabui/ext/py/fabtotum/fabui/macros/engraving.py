@@ -50,14 +50,20 @@ def start_engraving(app, args = None, lang='en_US.UTF-8'):
     
     feeder = app.config.get_feeder_info('built_in_feeder')
     units_a = feeder['steps_per_angle']
-    LASER_FOCUS_OFFSET = 2
+    head = app.config.get_current_head_info()
+    
+    try:
+        laser_focus_offset = head['focus']
+    except:
+        laser_focus_offset = 2
+    
     configure_head(app, app.config.get('settings', 'hardware.head'))
     
     go_to_focus = int(args[0])
         
     if(go_to_focus == 1):
         app.macro("G91",       "ok", 2,   _("Set relative mode"), verbose=False)
-        app.macro("G0 Z{0} F1000".format(LASER_FOCUS_OFFSET), "ok", 2,   _("Going to focus point"), verbose=True)
+        app.macro("G0 Z{0} F1000".format(laser_focus_offset), "ok", 2,   _("Going to focus point"), verbose=True)
     
     app.macro("G92 X0 Y0 Z0 E0", "ok", 1,       _("Setting Origin Point"), verbose=False)
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th Axis mode"), verbose=False)

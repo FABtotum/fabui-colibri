@@ -228,7 +228,7 @@ $stats_button_size = $type == 'print' ? 4 : 6;
 				<div id="create-fan-slider" class="noUiSlider sliders"></div>
 			</div>
 			<?php endif;?>
-			<?php if($type == 'mill' || $type == 'laser'):?>
+			<?php if($type == 'mill'):?>
 			<hr class="simple hidden-md hidden-sm hidden-lg">
 			<div class="col-sm-6 margin-bottom-50">
 				<h4><?php echo $rpm_label; ?> <span class="pull-right"><strong><span class="slider-task-rpm"></span></strong> </span></h4>
