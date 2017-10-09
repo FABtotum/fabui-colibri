@@ -240,7 +240,7 @@ class Control extends FAB_Controller {
 	public function saveNetworkSettings($action = 'connect')
 	{
 		//get data from post
-		$this->load->helper('os_helper');
+		$this->load->helper(array('os_helper', 'social_helper', 'shop_helper'));
 		$postData = $this->input->post();
 		$result = true;
 		$net_type = $postData['net_type'];
@@ -255,10 +255,9 @@ class Control extends FAB_Controller {
 				configureEthernet($iface, $mode, $address, $netmask, $gateway);
 				storeNetworkSettings($net_type, $iface, $mode, $address, $netmask, $gateway);
 				
-				//update social feeds
-				downloadBlogFeeds();
-				downloadTwitterFeeds();
-				downloadInstagramFeeds();
+				//update social, shop feeds
+				downloadAllFeeds();
+				downloadAllFilamentsFeeds();
 				break;
 			case "wlan":
 				if($action == 'connect')
@@ -288,10 +287,9 @@ class Control extends FAB_Controller {
 					}
 					configureWireless($iface, $ssid, $password, $psk, $mode, $address, $netmask, $gateway, $ap_channel);
 					storeNetworkSettings($net_type, $iface, $mode, $address, $netmask, $gateway, $ssid, $password, $psk);
-					//update social feeds
-					downloadBlogFeeds();
-					downloadTwitterFeeds();
-					downloadInstagramFeeds();
+					//update social, shop feeds
+					downloadAllFeeds();
+					downloadAllFilamentsFeeds();	
 				}
 				else if($action == 'disconnect')
 				{
