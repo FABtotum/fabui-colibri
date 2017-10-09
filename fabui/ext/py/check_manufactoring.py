@@ -17,26 +17,17 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
+
+# Import standard python module
 import argparse
 import commands
 import re
+import os
 
 MANUFACTORING_ADDITIVE     = 'additive'
 MANUFACTORING_SUBTRACTIVE  = 'subtractive'
 MANUFACTORING_LASER        = 'laser'
-
-parser = argparse.ArgumentParser()
-parser.add_argument("-f", help="file to read")
-parser.add_argument("-n", help="Num lines to check",  default=500, nargs='?', type=int)
-parser.add_argument("-d", "--debug",    help="Debug: print console",   action="store_true")
-parser.add_argument("--lang",           help="Output language",     default='en_US.UTF-8' )
-
-args = parser.parse_args()
-
-file=args.f
-num_lines=args.n
-debug = args.debug
-
+MANUFACTORING_UNKNOWN      = ''
 
 def isSubtractive(line):
     match = re.search('(M3\s|M4\s|M03\s)', line)
@@ -47,30 +38,63 @@ def isLaser(line):
     return match != None
 
 def isPrint(line):
-    return False
+    match = re.search('(M109\s|M104\s)', line)
+    return match != None
 
-
-
-file_total_num_lines =  int(commands.getoutput('wc -l < "{0}"'.format(file)))
-
-if(file_total_num_lines < num_lines):
-    num_lines = file_total_num_lines
-
-''' READ FIRST NUM_LINES '''
-with open(file) as myfile:
-    lines = [next(myfile) for x in xrange(num_lines)]
+def checkGCodeManufactoring(filename, num_of_lines = 500):
+    """
+    Check what type of manufactoring a file is.
     
-manufactoring = MANUFACTORING_ADDITIVE
-
-for line in lines:
+    @param filename
+    @param num_of_lines Number of lines to check
     
-    if(isSubtractive(line)):
-        manufactoring = MANUFACTORING_SUBTRACTIVE
-        break
-    elif(isLaser(line)):
-        manufactoring = MANUFACTORING_LASER
-        break
+    @retursn additive|subtractive|lase
+    """
+    
+    file_total_num_lines =  int(commands.getoutput('wc -l < "{0}"'.format(filename)))
+
+    if(file_total_num_lines < num_of_lines):
+        num_of_lines = file_total_num_lines
+
+    ''' READ FIRST NUM_LINES '''
+    with open(filename) as myfile:
+        lines = [next(myfile) for x in xrange(num_of_lines)]
+        
+    manufactoring = MANUFACTORING_UNKNOWN
+
+    for line in lines:
+        
+        if(isSubtractive(line)):
+            manufactoring = MANUFACTORING_SUBTRACTIVE
+            break
+        elif(isLaser(line)):
+            manufactoring = MANUFACTORING_LASER
+            break
+        elif(isPrint(line)):
+            manufactoring = MANUFACTORING_ADDITIVE
+            break
+
+    return manufactoring
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-f", help="file to read")
+    parser.add_argument("-n", help="Num lines to check",  default=500, nargs='?', type=int)
+    parser.add_argument("-d", "--debug",    help="Debug: print console",   action="store_true")
+    parser.add_argument("--lang",           help="Output language",     default='en_US.UTF-8' )
+
+    args = parser.parse_args()
+
+    filename        = args.f
+    num_of_lines    = int(args.n)
+    debug       = bool(args.debug)
+
+    ################################################################################
+    ext = os.path.splitext(filename)[1].lower()
+    if ext == '.gcode':
+        print checkGCodeManufactoring(filename, num_of_lines)
     else:
-        manufactoring = MANUFACTORING_ADDITIVE
-
-print manufactoring
+        print MANUFACTORING_UNKNOWN
+    
+if __name__ == "__main__":
+    main()

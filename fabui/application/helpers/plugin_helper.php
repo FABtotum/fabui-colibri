@@ -294,6 +294,53 @@ if ( ! function_exists('getFileActionList'))
 	}
 }
 
+if ( ! function_exists('checkPluginManufacturing') )
+{
+	/**
+	 * @param (string) $file_path
+	 * @param (int) $numLines, number of lines to read
+	 * retunr what type of manufactoring file is
+	 */
+	function checkPluginManufacturing($filePath, $numLines = 100)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		$plugins = getActivePlugins();
+		
+		$manufactoring = '';
+		
+		$action_type = 'check-manufacturing';
+		
+		$params = '-f ' . $filePath . ' -n ' . $numLines;
+		
+		foreach($plugins as $plugin => $info)
+		{
+			foreach($info['hooks'] as $hook)
+			{
+				// safety check if "script" is defined
+				if( array_key_exists("script",$hook) )
+				{
+					
+					// safety check if "filetypes" is defined
+					if( array_key_exists("filetypes", $hook) )
+					{
+						$ext = getFileExtension($filePath);
+						if( !in_array($ext, $hook['filetypes']) )
+							continue;
+					}
+					
+					$manufactoring = startPluginPyScript($hook['script'], $params, false, false, $info['plugin_slug']);
+					$manufactoring = trim($manufactoring);
+					if($manufactoring != '')
+						return $manufactoring;
+				}
+			}
+		}
+		
+		return $manufactoring;
+	}
+}
+
 if ( ! function_exists('getObjectActionList'))
 {
 	/**
@@ -356,11 +403,13 @@ if ( ! function_exists('plugin_assets_url'))
 
 if ( ! function_exists('plugin_path'))
 {
-	function plugin_path()
+	function plugin_path($plugin_name = '')
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
-		$plugin_name = str_replace('plugin_', '', $CI->router->class);
+		if( $plugin_name == '')
+			$plugin_name = str_replace('plugin_', '', $CI->router->class);
+			
 		$plugins_path = $CI->config->item('plugins_path');
 		return $plugins_path . $plugin_name;
 	}
@@ -372,17 +421,18 @@ if(!function_exists('startPluginPyScript'))
 	/**
 	 * start python task
 	 */
-	function startPluginPyScript($script, $params = '', $background = true, $sudo = false)
+	function startPluginPyScript($script, $params = '', $background = true, $sudo = false, $plugin_name = '')
 	{
 		$CI =& get_instance();
 		$CI->load->helper('fabtotum_helper');
 		$CI->config->load('fabtotum');
 		//~ $extPath = $CI->config->item('ext_path');
-		$extPath = plugin_path() . '/scripts/';
+		$extPath = plugin_path($plugin_name) . '/scripts/';
 		// TODO: check trailing /
 		$cmd = 'python';
 		if($sudo)
 			$cmd = 'sudo ' . $cmd;
+			
 		return doCommandLine($cmd, $extPath.'py/'.$script, $params, $background);
 	}
 }
@@ -392,13 +442,13 @@ if(!function_exists('startPluginBashScript'))
 	/**
 	 * start bash script
 	 */
-	function startPluginBashScript($script, $params = '', $background = true, $sudo = false)
+	function startPluginBashScript($script, $params = '', $background = true, $sudo = false, $plugin_name = '')
 	{
 		$CI =& get_instance();
 		$CI->load->helper('fabtotum_helper');
 		$CI->config->load('fabtotum');
 		//~ $extPath = $CI->config->item('ext_path');
-		$extPath = plugin_path() . '/scripts/';
+		$extPath = plugin_path($plugin_name) . '/scripts/';
 		// TODO: check trailing /
 		$cmd = 'bash';
 		if($sudo)
@@ -412,13 +462,13 @@ if(!function_exists('startPluginScript'))
 	/**
 	 * start script from sub-directory
 	 */
-	function startPluginScript($script, $subdir='bash', $params = '', $background = true, $sudo = false)
+	function startPluginScript($script, $subdir='bash', $params = '', $background = true, $sudo = false, $plugin_name = '')
 	{
 		$CI =& get_instance();
 		$CI->load->helper('fabtotum_helper');
 		$CI->config->load('fabtotum');
 		//~ $extPath = $CI->config->item('ext_path');
-		$extPath = plugin_path() . '/scripts/';
+		$extPath = plugin_path($plugin_name) . '/scripts/';
 		// TODO: check trailing /
 		switch($subdir)
 		{

@@ -1102,11 +1102,23 @@ if(!function_exists('checkManufactoring'))
 	 */
 	function checkManufactoring($filePath, $numLines = 100)
 	{
+		//~ $CI =& get_instance();
+		//~ $CI->load->helper('plugin_helper');
+		//~ $CI->load->helper('file');
+		
+		
 		$args = array(
 			'-f' => $filePath,
 			'-n' => $numLines
 		);
-		return trim(startPyScript('check_manufactoring.py', $args, false, true));
+		$manufactoring = trim(startPyScript('check_manufactoring.py', $args, false, true));
+		
+		if($manufactoring == '')
+		{
+			$manufactoring = checkPluginManufacturing($filePath, $numLines);
+		}
+		
+		return $manufactoring;
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

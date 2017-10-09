@@ -308,14 +308,6 @@ class Projectsmanager extends FAB_Controller {
 		
 	}
 	
-	public function test($fileId)
-	{
-		$this->load->model('Files', 'files');
-		$data['file'] = $this->files->get($fileId, 1);
-		$this->output->set_content_type('application/json')->set_output(json_encode($data));
-		//~ print_r($data['file']);
-	}
-	
 	function getFileTasksForTable($fileId){
 		
 		$params = $this->input->get();
