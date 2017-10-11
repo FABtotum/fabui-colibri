@@ -15,6 +15,37 @@ if(!isset($extruder_max) || $extruder_max == 0) $extruder_max = 250;
 if(!isset($bed_min)      || $bed_min == 0)      $bed_min = 10;
 if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 
+if($type == 'print')
+{
+	if(!isset($show_temperature_graph)) $show_temperature_graph = true;
+	if(!isset($show_speed)) $show_speed = true;
+	if(!isset($show_flowrate)) $show_flowrate = true;
+	if(!isset($show_fanspeed)) $show_fanspeed = true;
+	if(!isset($show_layer_info)) $show_layer_info = true;
+	if(!isset($show_temp_info)) $show_temp_info = true;
+	if(!isset($show_change_filament)) $show_change_filament = true;
+}
+else if($type == 'mill')
+{
+	if(!isset($show_temperature_graph)) $show_temperature_graph = false;
+	if(!isset($show_speed)) $show_speed = true;
+	if(!isset($show_rpm)) $show_rpm = true;
+}
+else if($type == 'laser')
+{
+	if(!isset($show_temperature_graph)) $show_temperature_graph = false;
+	if(!isset($show_speed)) $show_speed = true;
+}
+
+if(!isset($show_temperature_graph)) $show_temperature_graph = false;
+if(!isset($show_flowrate)) $show_flowrate = false;
+if(!isset($show_speed)) $show_speed = false;
+if(!isset($show_fanspeed)) $show_fanspeed = false;
+if(!isset($show_rpm)) $show_rpm = false;
+if(!isset($show_layer_info)) $show_layer_info = false;
+if(!isset($show_temp_info)) $show_temp_info = false;
+if(!isset($show_change_filament)) $show_change_filament = false;
+
 ?>
 <script type="text/javascript">
 	
@@ -123,7 +154,7 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 	 */
 	function initSliders()
 	{	
-		<?php if($type == 'print'): ?>
+		<?php if($show_temp_info): ?>
 		//extruder target
 		if(typeof extruderSlider == "undefined")
 			noUiSlider.create(document.getElementById('create-ext-target-slider'), {
@@ -154,37 +185,9 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 					})
 				}
 			});
-		//flow-rate slider
-		if(typeof flowRateSlider == "undefined")
-			noUiSlider.create(document.getElementById('create-flow-rate-slider'), { 
-				start: 100,
-				connect: "lower",
-				range: {'min': 0, 'max' : 500},
-				pips: {
-					mode: 'positions',
-					values: [0,20,40,60,80,100],
-					density: 10,
-					format: wNumb({})
-				}
-			});
-		//fan slider
-		if(typeof fanSlider == "undefined")
-			noUiSlider.create(document.getElementById('create-fan-slider'), {
-				start: 0,
-				connect: "lower",
-				range: {'min': 0, 'max' : 100},
-				pips: {
-					mode: 'positions',
-					values: [0,50,100],
-					density: 10,
-					format: wNumb({})
-				}
-			});
 		
 		extruderSlider = document.getElementById('create-ext-target-slider');
 		bedSlider      = document.getElementById('create-bed-target-slider');
-		flowRateSlider = document.getElementById('create-flow-rate-slider');
-		fanSlider      = document.getElementById('create-fan-slider');
 		
 		//sliders events
 		
@@ -218,7 +221,25 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 			isBedSliderBusy = true;
 			wasBedSliderMoved = true;
 		});
+		
+		<?php endif; ?>
+		
 		//flow rate
+		<?php if($show_flowrate): ?>
+		//flow-rate slider
+		if(typeof flowRateSlider == "undefined")
+			noUiSlider.create(document.getElementById('create-flow-rate-slider'), { 
+				start: 100,
+				connect: "lower",
+				range: {'min': 0, 'max' : 500},
+				pips: {
+					mode: 'positions',
+					values: [0,20,40,60,80,100],
+					density: 10,
+					format: wNumb({})
+				}
+			});
+		flowRateSlider = document.getElementById('create-flow-rate-slider');
 		flowRateSlider.noUiSlider.on('change', function(e){
 			onChange('flow-rate', e);
 		});
@@ -233,7 +254,24 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 			isFlowRateSliderBusy = true;
 			wasFlowRateSliderMoved = true;
 		});
+		<?php endif;?>
+		
+		<?php if($show_fanspeed): ?>
+		//fan slider
+		if(typeof fanSlider == "undefined")
+			noUiSlider.create(document.getElementById('create-fan-slider'), {
+				start: 0,
+				connect: "lower",
+				range: {'min': 0, 'max' : 100},
+				pips: {
+					mode: 'positions',
+					values: [0,50,100],
+					density: 10,
+					format: wNumb({})
+				}
+			});
 		//fan
+		fanSlider      = document.getElementById('create-fan-slider');
 		fanSlider.noUiSlider.on('change', function(e){
 			onChange('fan', e);
 		});
@@ -250,7 +288,7 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 		});
 		<?php endif; ?>
 
-		<?php if($type == "mill"): ?>
+		<?php if($show_rpm): ?>
 		if(typeof rpmSlider == "undefined")
 		{
 			noUiSlider.create(document.getElementById('create-rpm-slider'), {
@@ -283,6 +321,7 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 		});
 		<?php endif; ?>
 		
+		<?php if($show_speed): ?>
 		//speed slider
 		if(typeof speedSlider == "undefined")
 		{
@@ -314,6 +353,7 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 			isSpeedSliderBusy = true;
 			wasSpeedSliderMoved = true;
 		});
+		<?php endif; ?>
 	}
 	
 	/**
@@ -337,9 +377,11 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 			case 'fan':
 				$('.slider-task-fan').html(parseInt(value));
 				break;
+			<?php if($show_speed): ?>
 			case 'speed':
 				$('.slider-task-speed').html(parseInt(value));
 				break;
+			<?php endif; ?>
 			case 'rpm':
 				$('.slider-task-rpm').html(parseInt(value));
 				break;
@@ -391,6 +433,10 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 	{	
 		ext_temp_target = ext_temp_target || 0;
 		bed_temp_target = bed_temp_target || 0;
+		
+		<?php if(!$show_temp_info): ?>
+		return;
+		<?php endif;?>
 		
 		$.get(temperatures_file_url + '?' + jQuery.now(), function(data){
 
@@ -446,6 +492,10 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 			return
 		}
 		
+		<?php if(!$show_temperature_graph): ?>
+		return;
+		<?php endif;?>
+		
 		temperaturesGraph = $.plot("#temperatures-chart", getPlotTemperatures(), {
 			series : {
 				lines : {
@@ -497,10 +547,14 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 	}
 	
 	/**
-	*	show or hide lines on graph
-	*/
+	 * show or hide lines on graph
+	 */
 	function setGraphLines(event)
 	{	
+		<?php if(!$show_temperature_graph): ?>
+		return;
+		<?php endif;?>
+		
 		var name = $(this).attr('name');
 		switch(name){
 			case 'ext-actual':
@@ -530,6 +584,10 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 		var seriesBedTemp   = [];
 		var seriesBedTarget = [];
 		var data            = new Array();
+		
+		<?php if(!$show_temperature_graph): ?>
+		return data;
+		<?php endif;?>
 		
 		$.each( temperaturesPlot.extruder.temp, function( key, plot ) {
   			seriesExtTemp.push([plot.time, plot.value]);
@@ -597,6 +655,9 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 		}
 	}
 	
+	/**
+	 *
+	 */
 	function zOverrideCallback()
 	{
 		zOverrideTimeoout = null;
@@ -736,7 +797,7 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 		getTrace();
 		disableCompleteSteps();
 		
-		<?php if($type=="print"): ?>
+		<?php if($show_temperature_graph): ?>
 		initGraph();
 		<?php endif; ?>
 		traceMonitor();
@@ -809,6 +870,40 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 		if(data.hasOwnProperty("task"))
 		{
 			handleTaskStatus(data.task.status);
+			
+			<?php if($type == "scan"): ?>
+			if(data.hasOwnProperty("scan"))
+			{
+				var scan_type = data.scan.type;
+				if(data.scan.hasOwnProperty("iso"))
+				{
+					updateResolution(data.scan.width, data.scan.height);
+					updateIso(data.scan.iso);
+					$(".imageinfo").show();
+				}
+				
+				updateSlices(data.scan.scan_total, data.scan.scan_current);
+				if(data.scan.hasOwnProperty('point_count'))
+				{
+					$(".pointcloudinfo").show();
+					updateClouds(data.scan.point_count, data.scan.cloud_size);
+				}
+				
+				if(data.scan.hasOwnProperty('postprocessing_percent')){
+					$(".postprocessing").show();
+					updatePostprocessingProgressBar(data.scan.postprocessing_percent);
+				}
+				
+				if(data.scan.hasOwnProperty('object_id')){
+					idObject = data.scan.object_id;
+				}
+				
+				if(data.scan.hasOwnProperty('file_id')){
+					idFile = data.scan.file_id;
+				}
+			}
+			<?php endif; ?>
+			
 			updateProgress(data.task.percent);
 			updateTimers(data.task.started_time, data.task.duration, data.task.estimated_time);
 		}
@@ -819,24 +914,29 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 			<?php if($type == "print"): ?>
 			updateFlowRate(data.override.flow_rate);
 			updateFan(data.override.fan);
-			if(data.hasOwnProperty("print") && 
-			   data.print.hasOwnProperty("layer_current") && 
-			   data.print.hasOwnProperty("layer_total"))
-			{
-				updateLayer(data.print.layer_current, data.print.layer_total);
-			}
 			<?php endif; ?>
 			<?php if($type == "mill" || $type == "laser"): ?>
 			updateRPM(data.override.rpm);
 			<?php endif; ?>
 		}
+		
+		<?php if($type=="print"): ?>
+		if(data.hasOwnProperty("print") && 
+		   data.print.hasOwnProperty("layer_current") && 
+		   data.print.hasOwnProperty("layer_total"))
+		{
+			updateLayer(data.print.layer_current, data.print.layer_total);
+		}
+		<?php endif; ?>
 	};
 	
+	<?php if($type == "print"): ?>
 	window.updateTemperatures = function(ext_temp, ext_temp_target, bed_temp, bed_temp_target)
 	{
 		updateExtTarget(ext_temp_target);
 		updateBedTarget(bed_temp_target);
 	}
+	<?php endif; ?>
 	
 	/**
 	 *  monitor interval if websocket is not available
@@ -845,6 +945,7 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 	{
 		 if(!socket_connected || socket.fallback) getTaskMonitor(false);
 	}
+	
 	/**
 	 *  trace interval if websocket is not available
 	 */
@@ -852,6 +953,7 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 	{
 		 if(!socket_connected || socket.fallback) getTrace();
 	}
+	
 	/**
 	* get trace
 	*/
@@ -933,6 +1035,7 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 		}).done(function(response) {
 		});
 	}
+	
 	/**
 	* handle called when task is aborted
 	*/
@@ -947,6 +1050,7 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 			}, 5000);
 		}
 	}
+	
 	/**
 	*
 	*/
@@ -967,6 +1071,7 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 		var taskType = "<?php echo $type; ?>";
 		openWait('<i class="fa fa-spinner fa-spin "></i> '+ '<?php echo _('Completing {0}');?>'.format("<?php echo _(ucfirst($type)); ?>"), _("Moving to safe zone")+"...", false);
 	}
+	
 	/**
 	* complete task
 	*/
@@ -1003,6 +1108,7 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 		$(".task-progress").html(parseFloat(value).toFixed(1) + " %");
 		$("#task-progress-bar").attr("style", "width:" +value +"%;");
 	}
+	
 	/**
 	 * update flow rate infos
 	 */
@@ -1017,6 +1123,7 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 			}
 		}
 	}
+	
 	/**
 	 * update fan infos
 	 */
@@ -1034,17 +1141,19 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 
 		
 	}
+	
 	/**
-	* update z override value
-	*/
+	 * update z override value
+	 */
 	function updateZOverride(value)
 	{	
 		zOverride = value;
 		$(".z-height").html(value);
 	}
+	
 	/**
-	*
-	*/
+	 * update RPM value and slider
+	 */
 	function updateRPM(value)
 	{
 		$(".task-rpm").html(parseInt(value));
@@ -1058,10 +1167,11 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 	} 
 	
 	/**
-	*
-	*/
+	 * update Speed value and slider
+	 */
 	function updateSpeed(value)
 	{
+		<?php if($show_speed): ?>
 		$(".task-speed").html(parseInt(value));
 		$("#task-speed-bar").attr("style", "width:" + ((value/500)*100) +"%;");
 		if(!isSpeedSliderBusy && !wasSpeedSliderMoved){
@@ -1070,10 +1180,12 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 				speedSlider.noUiSlider.set(value);
 			}
 		}
+		<?php endif;?>
 	}
+	
 	/**
-	*
-	**/
+	 * update extruder temperature slider
+	 **/
 	function updateExtTarget(value)
 	{
 		if(!isExtSliderBusy){
@@ -1083,9 +1195,10 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 			}
 		}
 	}
+	
 	/**
-	*
-	**/
+	 * update bed temperature slider
+	 **/
 	function updateBedTarget(value)
 	{
 		if(!isBedSliderBusy){
@@ -1095,33 +1208,83 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 			}
 		}
 	}
+	
 	/**
-	*
-	**/
+	 * update send-email status
+	 **/
 	function updateSendEmailCheckBox(bool)
 	{
 		$('#email-switch').prop('checked', bool);
 	}
+
 	/**
-	*
-	**/
+	 *
+	 **/
 	function updateFileInfo(file)
 	{
 		$(".task-file-name").html('<b>' + file.name + '</b>');
 	}
+	
+	<?php if($type=="scan"): ?>
+	/**
+	 * update cloud point count
+	 **/
+	function updateClouds(number, size)
+	{
+		$(".cloud-points").html(number);
+		$(".cloud-size").html(humanFileSize(size));
+	}
+	
+	/**
+	 * update resolution indicator
+	 **/
+	function updateResolution(width, height)
+	{
+		$(".resolution-width").html(width);
+		$(".resolution-height").html(height);
+	}
+	
+	/**
+	 * upadte iso indicator
+	 **/
+	function updateIso(value)
+	{
+		$(".iso").html(value);
+	}
+	
+	/**
+	 * update current/total slices indicator
+	 **/
+	function updateSlices(total, current)
+	{
+		$(".current-scan").html(current);
+		$(".total-scan").html(total);
+	}
+	
+	/**
+	 * update post-processing progressbar
+	 **/
+	function updatePostprocessingProgressBar(value)
+	{
+		$(".postprocessing-progress").html(parseFloat(value).toFixed(1) + " %");
+		$("#postprocessing-progress-bar").attr("style", "width:" +value + "%");
+	}
+	<?php endif; ?>
+	
 	<?php if($type=="print"): ?>
 	/**
-	*
-	**/
+	 *
+	 **/
 	function showChangeFilamentModal()
 	{
 		$('#filament-change-modal').modal({
 			backdrop : 'static'
 		});
 	}
+	
 	/**
-	*
-	**/
+	 *
+	 **/
 	function filamentSetMode()
 	{
 		$(".filament-button-choose-action").removeClass('btn-primary');
@@ -1134,9 +1297,10 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 		$("#filament-start-button").attr('data-action', action);
 		enableButton("#filament-start-button");
 	}
+	
 	/**
-	*
-	**/
+	 *
+	 **/
 	function startFilamentAction()
 	{
 		var action = $(this).attr('data-action');
@@ -1150,9 +1314,10 @@ if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 			closeWait();
 	  	});
 	}
+	
 	/**
-	*
-	**/
+	 *
+	 **/
 	function updateLayer(current, total)
 	{
 		if(total > 0){
