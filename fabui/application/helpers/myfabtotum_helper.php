@@ -71,7 +71,7 @@ if (!function_exists('fab_register_printer'))
 		
 		$args = array();
 		
-		if($serialno == '') getSerialNumber();
+		if($serialno == '') $serialno = getSerialNumber();
 		
 		$args['fabid']    = $fabid;
 		$args['serialno'] = $serialno;
