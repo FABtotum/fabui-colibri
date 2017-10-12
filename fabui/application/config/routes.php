@@ -105,8 +105,8 @@ $route['plugin/(:any)/(:any)/(:any)'] = 'plugin_$1/$2/$3';
 # 2
 $route['plugin/(:any)/(:any)/(:any)/(:any)'] = 'plugin_$1/$2/$3/$4';
 # 3
-$route['plugin/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'plugin_$1/$2/$3/$5';
+$route['plugin/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'plugin_$1/$2/$3/$4/$5';
 # 4
-$route['plugin/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'plugin_$1/$2/$3/$6';
+$route['plugin/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'plugin_$1/$2/$3/$4/$5/$6';
 # 5
-$route['plugin/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'plugin_$1/$2/$3/$6/$7';
+$route['plugin/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'plugin_$1/$2/$3/$4/$5/$6/$7';
