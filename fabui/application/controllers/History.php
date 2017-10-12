@@ -199,17 +199,18 @@ class History extends FAB_Controller {
 			$td_7 = date('d M, Y', strtotime($task['finish_date'])) . ' at ' . date('G:i', strtotime($task['finish_date']));
 			$td_8 = isset($attributes['note']) ? $attributes['note'] : '';
 			$td_9 = $task['type'];
-			$td_10 = $task['id_file'];
-			$td_11 = $task['id_object'];
+			$td_10 = $task['controller'];
+			$td_11 = $task['id_file'];
+			$td_12 = $task['id_object'];
 			
 			
 			if( array_key_exists("rating", $attributes) )
-				$td_12 = $attributes['rating'];
+				$td_13 = $attributes['rating'];
 			else
-				$td_12 = 0;
+				$td_13 = 0;
 			
-			$td_13 = $task['file_deleted'];
-			$aaData[] = array($td_0, $td_1, $td_2, $td_3, $td_4, $td_5, $td_6, $td_7, $td_8, $td_9, $td_10, $td_11, $td_12, $td_13);
+			$td_14 = $task['file_deleted'];
+			$aaData[] = array($td_0, $td_1, $td_2, $td_3, $td_4, $td_5, $td_6, $td_7, $td_8, $td_9, $td_10, $td_11, $td_12, $td_13, $td_14);
 
 		}
 		

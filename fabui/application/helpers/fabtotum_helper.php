@@ -663,13 +663,18 @@ if(!function_exists('safetyCheck'))
 				$result['all_is_ok'] = true;
 		}
 		
+		$bed_in_place_str = "no";
+		$result['bed_in_place'] = false;
+		
 		if($bed_enabled){
 			$bed_in_place  = isBedInPlace();
-			$result['bed_in_place'] = $bed_in_place;
 			$bed_in_place_str = $bed_in_place?"yes":"no";
+			$result['bed_in_place'] = $bed_in_place;
 			$result['bed_is_ok'] = ($heated_bed == $bed_in_place_str) || ($heated_bed == 'any');
-			$result['all_is_ok']  = $result['head_is_ok'] && $result['bed_is_ok'];
 		}
+		
+		$result['bed_is_ok'] = ($heated_bed == $bed_in_place_str) || ($heated_bed == 'any');
+		$result['all_is_ok'] = $result['head_is_ok'] && $result['bed_is_ok'];
 		
 		return $result;
 	}
