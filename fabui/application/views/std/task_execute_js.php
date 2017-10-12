@@ -784,7 +784,7 @@ if(!isset($show_change_filament)) $show_change_filament = false;
 	/**
 	 * 
 	 */
-	function initRunningTaskPage()
+	function initRunningTaskPage(task_menu)
 	{
 		if (typeof(Storage) !== "undefined"){
 			if(localStorage.getItem("temperaturesPlot") !== null){			
@@ -792,7 +792,9 @@ if(!isset($show_change_filament)) $show_change_filament = false;
 			}
 		}
 		
-		fabApp.freezeMenu('<?php echo $type ?>');
+		task_menu = task_menu || '<?php echo $type ?>';
+		
+		fabApp.freezeMenu(task_menu);
 		freezeUI();
 		getTrace();
 		disableCompleteSteps();
