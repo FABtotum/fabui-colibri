@@ -23,7 +23,7 @@
 	{
 		//showLatestPost(data[0]);
 		var html = '';
-		if(data.length > 0){
+		if(data && data.length > 0){
 			$.each(data, function(i, item) {
 				html += '<div class="panel panel-default">' +
 							'<div class="panel-body status">' +
@@ -63,7 +63,7 @@
 	function buildTwitterFeeds(data)
 	{
 		var html = '';
-		if(data.length > 0){
+		if(data && data.length > 0){
 			$.each(data, function(i, item) {
 				
 				var post_url  = 'http://www.twitter.com/statuses/' + item['id_str'];
@@ -113,7 +113,7 @@
 	function buildInstagramFeeds(data)
 	{
 		var html = '';
-		if(data){
+		if(data && (data.feeds_a)  && (data.feeds_b)){
 			html += '<div class="row"><div class="col-sm-6 col-xs-6 col-b">';
 			$.each(data.feeds_a, function(i, item) {
 				html += instagramPost(item);
