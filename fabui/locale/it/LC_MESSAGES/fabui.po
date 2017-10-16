@@ -893,7 +893,7 @@ msgstr "Servizio non autorizzato"
 
 #: fabui/application/helpers/myfabtotum_helper.php:245
 msgid "Service forbidden"
-msgstr ""
+msgstr "Servizio proibito"
 
 #: fabui/application/helpers/myfabtotum_helper.php:247
 msgid "Service server error"
@@ -953,9 +953,8 @@ msgid "You must agree with Terms and Conditions"
 msgstr "Devi accettare i Termini e le Condizioni"
 
 #: fabui/application/views/install/js.php:116
-#, fuzzy
 msgid "Please insert serial number"
-msgstr "Inserire il numero seriale"
+msgstr "Si prega di inserire il numero seriale"
 
 #: fabui/application/views/install/js.php:143
 #: fabui/application/views/settings/network_js.php:578
@@ -977,7 +976,6 @@ msgstr "Si prega inserire un indirizzo email valido"
 
 #: fabui/application/views/install/js.php:170
 #: fabui/application/views/account/js.php:89
-#, fuzzy
 msgid "Please enter the password"
 msgstr "Si prega di inserire la password"
 
@@ -1525,28 +1523,24 @@ msgid "Set system date and time"
 msgstr "Imposta data e ora del sistema"
 
 #: fabui/application/views/systeminfo/widget.php:192
-#, fuzzy
 msgid "Day"
-msgstr "Maggio"
+msgstr "Giorno"
 
 #: fabui/application/views/systeminfo/widget.php:198
-#, fuzzy
 msgid "Month"
-msgstr "mese"
+msgstr "Mese"
 
 #: fabui/application/views/systeminfo/widget.php:204
 msgid "Year"
-msgstr ""
+msgstr "Anno"
 
 #: fabui/application/views/systeminfo/widget.php:210
-#, fuzzy
 msgid "Hours"
-msgstr "ore"
+msgstr "Ore"
 
 #: fabui/application/views/systeminfo/widget.php:216
-#, fuzzy
 msgid "Minuti"
-msgstr "minuto"
+msgstr "Minuti"
 
 #: fabui/application/views/systeminfo/widget.php:223
 msgid "Timezone"
@@ -1561,9 +1555,8 @@ msgid "Set serial number"
 msgstr "Imposta il serial number"
 
 #: fabui/application/views/systeminfo/widget.php:303
-#, fuzzy
 msgid "Change a name to your FABtotum"
-msgstr "Dai un nome alla tua FABtotum"
+msgstr "Cambia il nome della tua FABtotum"
 
 #: fabui/application/views/systeminfo/widget.php:317
 #: fabui/application/views/plugin/main_widget.php:120
@@ -2008,7 +2001,6 @@ msgid "Warning"
 msgstr "Attenzione"
 
 #: fabui/application/views/account/js.php:178
-#, fuzzy
 msgid "Are sure you want to disconnect?"
 msgstr "Sei sicuro di volerti disconnettere?"
 
@@ -2135,7 +2127,7 @@ msgstr "La testa non ha un motore per la fresa"
 
 #: fabui/application/views/jog/widget.php:172
 msgid "Counter-clockwise"
-msgstr ""
+msgstr "Senso anti-orario"
 
 #: fabui/application/views/jog/widget.php:180
 #: fabui/application/views/std/task_execute.php:107
@@ -2591,16 +2583,15 @@ msgstr "Si prega di verificare la connessione a internet e riprovare"
 
 #: fabui/application/views/dashboard/js.php:49
 msgid "Read more"
-msgstr ""
+msgstr "Leggi di più"
 
 #: fabui/application/views/dashboard/js.php:56
 msgid "Latest blog posts"
 msgstr "Ultimi post"
 
 #: fabui/application/views/dashboard/js.php:105
-#, fuzzy
 msgid "Latest tweets"
-msgstr "Ultimi Tweets"
+msgstr "Ultimi Tweet"
 
 #: fabui/application/views/dashboard/js.php:127
 msgid "Latest instragm posts"
@@ -2640,7 +2631,6 @@ msgid "Aborting {0}"
 msgstr "Annullando {0}"
 
 #: fabui/application/views/std/task_execute_js.php:1048
-#, fuzzy
 msgid "{0} Aborted"
 msgstr "{0} annullata"
 
@@ -3964,8 +3954,7 @@ msgstr "Override"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
