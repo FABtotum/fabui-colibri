@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-16 10:38+0200\n"
+"POT-Creation-Date: 2017-10-16 11:22+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: FABTeam\n"
@@ -33,7 +33,7 @@ msgstr "Herstellen"
 #: fabui/application/helpers/fabtotum_helper.php:1721
 #: fabui/application/views/install/wizard.php:232
 #: fabui/application/views/login/register_form.php:77
-#: fabui/application/views/head/index.php:202
+#: fabui/application/views/head/index.php:203
 #: fabui/application/views/head/install.php:206
 #: fabui/application/views/create/print_js.php:58
 msgid "Print"
@@ -45,7 +45,7 @@ msgstr "Drücken"
 #: fabui/application/controllers/Create.php:273
 #: fabui/application/helpers/projects_manager_helper.php:43
 #: fabui/application/helpers/fabtotum_helper.php:1722
-#: fabui/application/views/head/index.php:203
+#: fabui/application/views/head/index.php:204
 #: fabui/application/views/head/install.php:207
 #: fabui/application/views/create/mill_js.php:58
 msgid "Mill"
@@ -129,7 +129,7 @@ msgid "Angle calibration"
 msgstr "Winkelkalibrierung"
 
 #: fabui/application/config/menu.php:99
-#: fabui/application/views/head/index.php:204
+#: fabui/application/views/head/index.php:205
 #: fabui/application/views/head/install.php:208
 #: fabui/assets/js/tours/0050_feeder.js:39
 msgid "Feeder"
@@ -152,7 +152,7 @@ msgstr "Einrasten"
 #: fabui/application/config/menu.php:120
 #: fabui/application/views/jog/widget.php:65
 #: fabui/application/views/std/jog_setup.php:84
-#: fabui/application/views/head/index.php:205
+#: fabui/application/views/head/index.php:206
 #: fabui/application/views/head/install.php:209
 msgid "4th axis"
 msgstr "Vierte Achse"
@@ -276,7 +276,7 @@ msgstr "Licht"
 #: fabui/application/views/systeminfo/widget.php:329
 #: fabui/application/views/settings/hardware_js.php:146
 #: fabui/application/views/settings/network_js.php:235
-#: fabui/application/views/head/index.php:371
+#: fabui/application/views/head/index.php:372
 #: fabui/application/views/head/install.php:375
 #: fabui/application/views/feeder/profiles/widget.php:212
 #: fabui/application/views/projectsmanager/edit/js.php:87
@@ -809,6 +809,7 @@ msgid "Popular"
 msgstr "Beliebt"
 
 #: fabui/application/helpers/social_helper.php:465
+#: fabui/application/views/dashboard/js.php:46
 msgid "Share on facebook"
 msgstr ""
 
@@ -1435,7 +1436,7 @@ msgstr "Einstellung zur Relativ positionierung"
 #: fabui/application/views/systeminfo/widget.php:311
 #: fabui/application/views/plugin/main_widget.php:103
 #: fabui/application/views/settings/network_widget.php:18
-#: fabui/application/views/head/index.php:109
+#: fabui/application/views/head/index.php:110
 #: fabui/application/views/head/install.php:113
 #: fabui/application/views/feeder/profiles/widget.php:97
 #: fabui/application/views/projectsmanager/edit/widget.php:26
@@ -1571,7 +1572,7 @@ msgstr "Weisen Sie Ihrem FABtotum einen Namen zu"
 #: fabui/application/views/jog/widget.php:246
 #: fabui/application/views/jog/widget.php:304
 #: fabui/application/views/settings/network_widget.php:29
-#: fabui/application/views/head/index.php:125
+#: fabui/application/views/head/index.php:126
 #: fabui/application/views/head/install.php:129
 #: fabui/application/views/history/main_widget.php:60
 #: fabui/application/views/feeder/profiles/widget.php:115
@@ -1998,7 +1999,7 @@ msgstr "Erstellen Sie Ihr persönliches Konto"
 #: fabui/application/views/settings/network_js.php:120
 #: fabui/application/views/std/print_setup_js.php:28
 #: fabui/application/views/std/task_wizard.php:26
-#: fabui/application/views/head/index.php:101
+#: fabui/application/views/head/index.php:102
 #: fabui/application/views/head/install.php:105
 #: fabui/application/views/updates/index/js.php:425
 #: fabui/application/views/feeder/profiles/widget.php:89
@@ -2234,7 +2235,7 @@ msgstr "Antwort"
 
 #: fabui/application/views/jog/widget.php:373
 #: fabui/application/views/std/task_execute.php:395
-#: fabui/application/views/head/index.php:71
+#: fabui/application/views/head/index.php:72
 #: fabui/application/views/updates/index/widget.php:65
 #: fabui/application/views/scan/instructions/rotating.php:67
 #: fabui/application/views/scan/instructions/photogrammetry.php:67
@@ -2601,6 +2602,10 @@ msgstr "Neueste Tweets sind nicht verfügbar"
 msgid "Please check internet connection and try again"
 msgstr ""
 "Bitte überprüfen Sie die Internetverbindung und versuchen Sie es erneut"
+
+#: fabui/application/views/dashboard/js.php:49
+msgid "Read more"
+msgstr ""
 
 #: fabui/application/views/dashboard/js.php:56
 #, fuzzy
@@ -3301,190 +3306,197 @@ msgstr "Messen"
 msgid "Default All"
 msgstr "Voreinstellung"
 
-#: fabui/application/views/head/index.php:84
+#: fabui/application/views/head/index.php:71
+#: fabui/application/views/head/install.php:51
+#: fabui/application/views/head/install.php:74
+#: fabui/application/views/feeder/profiles/widget.php:48
+msgid "More details"
+msgstr "Mehr Details"
+
+#: fabui/application/views/head/index.php:85
 #: fabui/application/views/head/install.php:88
 #: fabui/application/views/feeder/profiles/widget.php:72
 #, fuzzy
 msgid "Advanced settings"
 msgstr "Kopfeinstellungen"
 
-#: fabui/application/views/head/index.php:93
+#: fabui/application/views/head/index.php:94
 #: fabui/application/views/head/install.php:97
 msgid "Head settings"
 msgstr "Kopfeinstellungen"
 
-#: fabui/application/views/head/index.php:101
+#: fabui/application/views/head/index.php:102
 #: fabui/application/views/head/install.php:105
 #: fabui/application/views/feeder/profiles/widget.php:89
 msgid ""
 "changing these settings may affect the proper functioning of the printer"
 msgstr ""
 
-#: fabui/application/views/head/index.php:116
+#: fabui/application/views/head/index.php:117
 #: fabui/application/views/head/install.php:120
 #: fabui/application/views/feeder/profiles/widget.php:104
 msgid "URL"
 msgstr ""
 
-#: fabui/application/views/head/index.php:133
+#: fabui/application/views/head/index.php:134
 #: fabui/application/views/head/install.php:137
 msgid "Capabilities"
 msgstr "Fähigkeiten"
 
-#: fabui/application/views/head/index.php:167
+#: fabui/application/views/head/index.php:168
 #: fabui/application/views/head/install.php:171
 #: fabui/application/views/feeder/profiles/widget.php:198
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:312
 msgid "Custom initialization"
 msgstr "Benutzerdefinierte Initialisierung"
 
-#: fabui/application/views/head/index.php:179
+#: fabui/application/views/head/index.php:180
 #: fabui/application/views/head/install.php:183
 msgid "Working mode"
 msgstr "Arbeitsmodus"
 
-#: fabui/application/views/head/index.php:191
+#: fabui/application/views/head/index.php:192
 #: fabui/application/views/head/install.php:195
 msgid "Soft ID"
 msgstr ""
 
-#: fabui/application/views/head/index.php:215
+#: fabui/application/views/head/index.php:216
 #: fabui/application/views/head/install.php:219
 msgid "PID"
 msgstr ""
 
-#: fabui/application/views/head/index.php:222
+#: fabui/application/views/head/index.php:223
 #: fabui/application/views/head/install.php:226
 msgid "Thermistor"
 msgstr ""
 
-#: fabui/application/views/head/index.php:232
+#: fabui/application/views/head/index.php:233
 #: fabui/application/views/head/install.php:236
 msgid "Max temperature"
 msgstr "Max. Temperatur"
 
-#: fabui/application/views/head/index.php:238
+#: fabui/application/views/head/index.php:239
 #: fabui/application/views/head/install.php:242
 msgid "Min temperature"
 msgstr "Min. Temperatur"
 
-#: fabui/application/views/head/index.php:252
+#: fabui/application/views/head/index.php:253
 #: fabui/application/views/head/install.php:256
 msgid "Min RPM"
 msgstr "Min. RPM"
 
-#: fabui/application/views/head/index.php:259
+#: fabui/application/views/head/index.php:260
 #: fabui/application/views/head/install.php:263
 msgid "Max RPM"
 msgstr "Max. RPM"
 
-#: fabui/application/views/head/index.php:270
+#: fabui/application/views/head/index.php:271
 #: fabui/application/views/head/install.php:274
 #: fabui/application/views/feeder/profiles/widget.php:125
 msgid "Steps per unit"
 msgstr "Schritte pro Einheit"
 
-#: fabui/application/views/head/index.php:276
+#: fabui/application/views/head/index.php:277
 #: fabui/application/views/head/install.php:280
 #: fabui/application/views/feeder/profiles/widget.php:131
 msgid "Tube length (mm)"
 msgstr "Rohrlänge (mm)"
 
-#: fabui/application/views/head/index.php:284
+#: fabui/application/views/head/index.php:285
 #: fabui/application/views/head/install.php:288
 msgid "Max E acceleration (mm/s<sup>2</sup>)"
 msgstr "Max. E Beschleunigung (mm/s<sup>2</sup>)"
 
-#: fabui/application/views/head/index.php:290
+#: fabui/application/views/head/index.php:291
 #: fabui/application/views/head/install.php:294
 msgid "Max E feedrate (mm/s)"
 msgstr "Max. E Vorschub (mm/s)"
 
-#: fabui/application/views/head/index.php:296
+#: fabui/application/views/head/index.php:297
 #: fabui/application/views/head/install.php:300
 msgid "Max E jerk (mm)"
 msgstr "Max. E Ruck (mm)"
 
-#: fabui/application/views/head/index.php:305
+#: fabui/application/views/head/index.php:306
 #: fabui/application/views/head/install.php:309
 #: fabui/application/views/feeder/profiles/widget.php:183
 msgid "Retract acceleration (mm/s<sup>2</sup>)"
 msgstr "Rückzugs-Beschleunigung  (mm/s<sup>2</sup>)"
 
-#: fabui/application/views/head/index.php:311
+#: fabui/application/views/head/index.php:312
 #: fabui/application/views/head/install.php:315
 #: fabui/application/views/feeder/profiles/widget.php:176
 msgid "Retraction speed (mm/s)"
 msgstr "Rückzugs-Geschwindigkeit (mm/s)"
 
-#: fabui/application/views/head/index.php:317
+#: fabui/application/views/head/index.php:318
 #: fabui/application/views/head/install.php:321
 #: fabui/application/views/feeder/profiles/widget.php:189
 msgid "Retraction amount (mm)"
 msgstr "Rückzugs-Betrag (mm)"
 
-#: fabui/application/views/head/index.php:330
+#: fabui/application/views/head/index.php:331
 #: fabui/application/views/head/install.php:334
 #: fabui/application/views/feeder/profiles/widget.php:142
 #, fuzzy
 msgid "Steps per degree"
 msgstr "Schritte pro Einheit"
 
-#: fabui/application/views/head/index.php:338
+#: fabui/application/views/head/index.php:339
 #: fabui/application/views/head/install.php:342
 #, fuzzy
 msgid "Max Aacceleration (mm/s<sup>2</sup>)"
 msgstr "Max. Beschleunigung (mm/s<sup>2</ sup>)"
 
-#: fabui/application/views/head/index.php:344
+#: fabui/application/views/head/index.php:345
 #: fabui/application/views/head/install.php:348
 #, fuzzy
 msgid "Max A feedrate (mm/s)"
 msgstr "Max. E Vorschub (mm/s)"
 
-#: fabui/application/views/head/index.php:350
+#: fabui/application/views/head/index.php:351
 #: fabui/application/views/head/install.php:354
 #, fuzzy
 msgid "Max A jerk (mm)"
 msgstr "Max. E Ruck (mm)"
 
-#: fabui/application/views/head/index.php:368
+#: fabui/application/views/head/index.php:369
 #: fabui/application/views/head/install.php:372
 #: fabui/application/views/feeder/profiles/widget.php:209
 msgid "Restore factory settings"
 msgstr "Werkseinstellungen wiederherstellen"
 
-#: fabui/application/views/head/index.php:368
+#: fabui/application/views/head/index.php:369
 #: fabui/application/views/head/install.php:372
 #: fabui/application/views/feeder/profiles/widget.php:209
 msgid "Factory reset"
 msgstr "Werkseinstellung"
 
-#: fabui/application/views/head/index.php:369
+#: fabui/application/views/head/index.php:370
 #: fabui/application/views/head/install.php:373
 #: fabui/application/views/feeder/profiles/widget.php:210
 msgid "Import from file"
 msgstr "Import aus Datei"
 
-#: fabui/application/views/head/index.php:369
+#: fabui/application/views/head/index.php:370
 #: fabui/application/views/head/install.php:373
 #: fabui/application/views/feeder/profiles/widget.php:210
 msgid "Import"
 msgstr "Import"
 
-#: fabui/application/views/head/index.php:370
+#: fabui/application/views/head/index.php:371
 #: fabui/application/views/head/install.php:374
 #: fabui/application/views/feeder/profiles/widget.php:211
 msgid "Export to file"
 msgstr "In Datei exportieren"
 
-#: fabui/application/views/head/index.php:370
+#: fabui/application/views/head/index.php:371
 #: fabui/application/views/head/install.php:374
 #: fabui/application/views/feeder/profiles/widget.php:211
 msgid "Export"
 msgstr "Exportieren"
 
-#: fabui/application/views/head/index.php:372
+#: fabui/application/views/head/index.php:373
 #: fabui/application/views/head/install.php:376
 #, fuzzy
 msgid "Save & Install"
@@ -3557,12 +3569,6 @@ msgstr "Bitte wählen Sie aus welchen Kopf Sie installieren möchten"
 #: fabui/application/views/feeder/profiles/widget.php:32
 msgid "Edit"
 msgstr "Bearbeiten"
-
-#: fabui/application/views/head/install.php:51
-#: fabui/application/views/head/install.php:74
-#: fabui/application/views/feeder/profiles/widget.php:48
-msgid "More details"
-msgstr "Mehr Details"
 
 #: fabui/application/views/firmware/main_widget.php:7
 msgid "Select firmware version"
