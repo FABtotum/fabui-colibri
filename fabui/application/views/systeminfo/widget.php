@@ -189,31 +189,31 @@
 							<fieldset>
 								<div class="row">
 									<section class="col col-2">
-										<label class="label">Day</label>
+										<label class="label"><?php echo _("Day");?></label>
 										<label class="select">
 											<?php echo days_menu('day', date('d'), 'id="day"');?> <i></i> 
 										</label>
 									</section> 
 									<section class="col col-4">
-										<label class="label">Month</label>
+										<label class="label"><?php echo _("Month"); ?></label>
 										<label class="select">
 											<?php echo months_menu('month', date('m'), 'id="month"');?> <i></i>
 										</label>
 									</section>
 									<section class="col col-2">
-										<label class="label">Year</label>
+										<label class="label"><?php echo _("Year"); ?></label>
 										<label class="select">
 											<?php echo years_menu('year', date('Y'), 1975, date('Y'), 'id="year"');?> <i></i> 
 										</label>
 									</section>
 									<section class="col col-2">
-										<label class="label">Hour</label>
+										<label class="label"><?php echo _("Ore"); ?></label>
 										<label class="select">
 											<?php echo hours_menu('hour', date('H'), 'id="hour"');?> <i></i> 
 										</label>
 									</section>
 									<section class="col col-2">
-										<label class="label">Minute</label>
+										<label class="label"><?php echo _("Minuti"); ?></label>
 										<label class="select">
 											<?php echo minutes_menu('minute', date('i'), 'id="minute"');?> <i></i> 
 										</label>

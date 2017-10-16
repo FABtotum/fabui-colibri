@@ -50,7 +50,7 @@
 				<div class="row">
 					<section class="col col-3 text-center"></section>
 					<section class="col col-6 text-center">
-						<button rel="tooltip" type="button" title="" id="calibrate-height" class="btn btn-default btn-sm btn-block"> Calibrate </button>
+						<button rel="tooltip" type="button" title="" id="calibrate-height" class="btn btn-default btn-sm btn-block"> <?php echo _("Calibrate");?> </button>
 					</section>
 					<section class="col col-3 text-center"></section>
 				</div>
@@ -107,7 +107,7 @@
 				<div class="row">
 					<section class="col col-3 text-center"></section>
 					<section class="col col-6 text-center">
-						<button rel="tooltip" type="button" title="" id="save-override" class="btn btn-default btn-sm btn-block"> Save </button>
+						<button rel="tooltip" type="button" title="" id="save-override" class="btn btn-default btn-sm btn-block"> <?php echo _("Save");?> </button>
 					</section>
 					<section class="col col-3 text-center"></section>
 				</div>
