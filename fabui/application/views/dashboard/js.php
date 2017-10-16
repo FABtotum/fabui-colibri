@@ -43,10 +43,10 @@
 								'</div>' +
 								'<ul class="links  hidden-xs">' +
 									'<li class="">' +
-										'<a class="btn btn-default btn-circle btn-xs txt-color-blue" title="{$share_title}" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u='+item['link'][0]+'"><i class="fa fa-facebook"></i></a>' +
+										'<a class="btn btn-default btn-circle btn-xs txt-color-blue" title="<?php echo _("Share on facebook"); ?>" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u='+item['link'][0]+'"><i class="fa fa-facebook"></i></a>' +
 									'</li>' +
 									'<li class="">' +
-										'<a class="pull-right" target="_blank" href="'+item['link'][0]+'"> Read More <i class="fa fa-arrow-right"></i></a>' +
+										'<a class="pull-right" title="<?php echo _("Read more"); ?>" target="_blank" href="'+item['link'][0]+'"> <?php echo _("Read more"); ?> <i class="fa fa-arrow-right"></i></a>' +
 									'</li>' +
 								'</ul>' +
 							'</div>' +
