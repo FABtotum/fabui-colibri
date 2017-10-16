@@ -11,7 +11,7 @@
     "factory": "0"
   },
   "name": "Printing Head Pro",
-  "link": "http://www.fabtotum.com/printing-head-pro/",
+  "link": "https://www.fabtotum.com/printing-head-pro/",
   "description": "The <strong>Printing Head Pro</strong> ",
   "custom_gcode": "M720\nM204 S2000",
   "working_mode": "1",

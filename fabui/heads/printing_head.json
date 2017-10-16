@@ -1,6 +1,6 @@
 {
   "name": "Printing Head",
-  "link": "http://www.fabtotum.com/3d-printers/heads/3d-printer-extruder/",
+  "link": "https://www.fabtotum.com/3d-printers/heads/3d-printer-extruder/",
   "description": "The <strong>Printing Head</strong> is capable of printing  PLA, PETG, ABS, NYLON, HIPS, PC up to 250&deg;C. It features a full metal replaceable nozzle and 40W heating cartridge for better performances, as well as a secondary cooling fan.<br> The design is clog-proof and In addition can be fully disassembled and cleaned when necessary.",
   "custom_gcode": "",
   "working_mode": "1",

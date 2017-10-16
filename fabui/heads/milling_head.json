@@ -1,6 +1,6 @@
 {
   "name": "Milling Head",
-  "link": "http://www.fabtotum.com/3d-printers/heads/3d-cnc-milling-head/",
+  "link": "https://www.fabtotum.com/3d-printers/heads/3d-cnc-milling-head/",
   "description": "The <strong>Milling Head</strong> features a 200W Brushless Milling motor. It's capable of reaching 14000 RPM but it's quieter and more balanced than the Hybrid Head. The Milling Head V2 supports milling bits with a shank diameter in the range of 3.0 to 3.5mm (0.12 inches or 1/8).<br> The Standard ER8 Collet can be swapped with another compatible to this industry standard so it can be equipped with endbits with shank diameter from 0.1 to 6mm",
   "custom_gcode": "",
   "working_mode": "3",
