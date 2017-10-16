@@ -56,7 +56,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title" id="descriptionModalTitle"></h4>
+				<h4 class="modal-title"><i class="fabui-head-2"></i> <span id="descriptionModalTitle"></span></h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -68,6 +68,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
+				<a id="head-more-details" href="" target="_blank" class="btn btn-default pull-left"><?php echo _("More details"); ?> <i class="fa fa-external-link"></i></a>
 				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
 			</div>
 		</div>

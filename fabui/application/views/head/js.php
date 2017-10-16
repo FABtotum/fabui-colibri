@@ -588,9 +588,11 @@
 	**/
 	function showDescription()
 	{
+		console.log(heads[selected_head]);
 		$(".heads-description").addClass("hidden");
 		$("#"+selected_head+"_description").removeClass("hidden");
 		$("#descriptionModalTitle").html(heads[selected_head].name);
+		$("#head-more-details").attr("href",heads[selected_head].link );
 		$('#descriptionModal').modal('show');
 	}
 </script>
