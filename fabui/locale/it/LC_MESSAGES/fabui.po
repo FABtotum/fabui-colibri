@@ -416,9 +416,8 @@ msgid "Account"
 msgstr "Account"
 
 #: fabui/application/controllers/Account.php:45
-#, fuzzy
 msgid "Your account"
-msgstr "Crea un account"
+msgstr "Il tuo account"
 
 #: fabui/application/controllers/Firmware.php:53
 msgid "Factory default"
@@ -751,52 +750,51 @@ msgstr "Calibrazione angolo Probe"
 
 #: fabui/application/helpers/FAB_date_helper.php:58
 msgid "Jannuary"
-msgstr ""
+msgstr "Gennaio"
 
 #: fabui/application/helpers/FAB_date_helper.php:59
 msgid "February"
-msgstr ""
+msgstr "Febbraio"
 
 #: fabui/application/helpers/FAB_date_helper.php:60
 msgid "March"
-msgstr ""
+msgstr "Marzo"
 
 #: fabui/application/helpers/FAB_date_helper.php:61
 msgid "April"
-msgstr ""
+msgstr "Aprile"
 
 #: fabui/application/helpers/FAB_date_helper.php:62
-#, fuzzy
 msgid "May"
-msgstr "giorno"
+msgstr "Maggio"
 
 #: fabui/application/helpers/FAB_date_helper.php:63
 msgid "June"
-msgstr ""
+msgstr "Giugno"
 
 #: fabui/application/helpers/FAB_date_helper.php:64
 msgid "July"
-msgstr ""
+msgstr "Luglio"
 
 #: fabui/application/helpers/FAB_date_helper.php:65
 msgid "August"
-msgstr ""
+msgstr "Agosto"
 
 #: fabui/application/helpers/FAB_date_helper.php:66
 msgid "September"
-msgstr ""
+msgstr "Settembre"
 
 #: fabui/application/helpers/FAB_date_helper.php:67
 msgid "October"
-msgstr ""
+msgstr "Ottobre"
 
 #: fabui/application/helpers/FAB_date_helper.php:68
 msgid "November"
-msgstr ""
+msgstr "Novembre"
 
 #: fabui/application/helpers/FAB_date_helper.php:69
 msgid "December"
-msgstr ""
+msgstr "Dicembre"
 
 #: fabui/application/helpers/social_helper.php:389
 #: fabui/application/views/dashboard/js.php:157
@@ -805,7 +803,7 @@ msgstr "Popolare"
 
 #: fabui/application/helpers/social_helper.php:465
 msgid "Share on facebook"
-msgstr ""
+msgstr "Condividi su Facebook"
 
 #: fabui/application/helpers/fabtotum_helper.php:1617
 msgid "White"
@@ -890,7 +888,7 @@ msgstr "anni"
 
 #: fabui/application/helpers/myfabtotum_helper.php:243
 msgid "Service unauthorized"
-msgstr ""
+msgstr "Servizio non autorizzato"
 
 #: fabui/application/helpers/myfabtotum_helper.php:245
 msgid "Service forbidden"
@@ -898,25 +896,24 @@ msgstr ""
 
 #: fabui/application/helpers/myfabtotum_helper.php:247
 msgid "Service server error"
-msgstr ""
+msgstr "Server error"
 
 #: fabui/application/helpers/myfabtotum_helper.php:249
 msgid "Service invalid parameter"
-msgstr ""
+msgstr "Parametro non valido"
 
 #: fabui/application/helpers/myfabtotum_helper.php:251
-#, fuzzy
 msgid "Printer already registered"
-msgstr "Già registrato?"
+msgstr "La stampante è già registrata"
 
 #: fabui/application/helpers/myfabtotum_helper.php:253
-#, fuzzy
 msgid "Printer unknown"
-msgstr "Stampante"
+msgstr "Stampante sconosciuta"
 
 #: fabui/application/helpers/myfabtotum_helper.php:255
 msgid "Your sign in details were not recognized, please check and try again"
 msgstr ""
+"Le tue credenziali non sono state riconosciute, controllale e riprova ancora"
 
 #: fabui/application/views/install/js.php:58
 #: fabui/application/views/install/js.php:86
@@ -1046,14 +1043,13 @@ msgstr "Passwod per"
 
 #: fabui/application/views/install/js.php:542
 #: fabui/application/views/account/js.php:149
-#, fuzzy
 msgid "Connecting to FABID"
-msgstr "Connettendo"
+msgstr "Connessione al FABID"
 
 #: fabui/application/views/install/js.php:555
 #: fabui/application/views/account/widget.php:61
 msgid "Connected via FABID"
-msgstr ""
+msgstr "Connesso col FABID"
 
 #: fabui/application/views/install/wizard.php:30
 #: fabui/application/views/install/wizard.php:58
@@ -1129,6 +1125,8 @@ msgstr "Di che colore è la tua FABtotum"
 #: fabui/application/views/install/wizard.php:166
 msgid "For a better experience connect your printer to internet"
 msgstr ""
+"Per una esperienza migliore si consiglia di connettere la stampante a "
+"internet"
 
 #: fabui/application/views/install/wizard.php:176
 #: fabui/application/views/restore/wizard.php:121
@@ -1140,7 +1138,7 @@ msgstr "Ce l'hai quasi fatta."
 #: fabui/application/views/account/widget.php:54
 #: fabui/application/views/account/widget.php:73
 msgid "Connect to your FABID account"
-msgstr ""
+msgstr "Connettiti al tuo account FABID"
 
 #: fabui/application/views/install/wizard.php:185
 msgid "Click <strong>Install</strong> to complete"
@@ -1373,14 +1371,12 @@ msgid "Applying new settings"
 msgstr "Applicando le nuove impostazioni"
 
 #: fabui/application/views/systeminfo/js.php:65
-#, fuzzy
 msgid "Please enter serial number"
-msgstr "Si prega di inserire un nome per la testa"
+msgstr "Si prega di inserire il serial number"
 
 #: fabui/application/views/systeminfo/js.php:66
-#, fuzzy
 msgid "Serial number has 13 characters"
-msgstr "Inserire almeno {0} caratteri"
+msgstr "Il serial number è composto da 13 caratteri"
 
 #: fabui/application/views/systeminfo/js.php:83
 #: fabui/application/views/systeminfo/js.php:106
@@ -1396,24 +1392,20 @@ msgstr "Salvando"
 #: fabui/application/views/systeminfo/js.php:91
 #: fabui/application/views/systeminfo/js.php:114
 #: fabui/application/views/systeminfo/js.php:139
-#, fuzzy
 msgid "Settings applied"
-msgstr "Impostazioni DNS salvate"
+msgstr "Impostazioni applicate"
 
 #: fabui/application/views/systeminfo/js.php:105
-#, fuzzy
 msgid "Setting unit color"
-msgstr "Impostando il colore blu"
+msgstr "Impostando il colore della stampante"
 
 #: fabui/application/views/systeminfo/js.php:131
-#, fuzzy
 msgid "Setting serial number"
-msgstr "Inserire il numero seriale"
+msgstr "Impostando il serial number"
 
 #: fabui/application/views/systeminfo/js.php:161
-#, fuzzy
 msgid "Setting new host name"
-msgstr "Impostando posizione relativa"
+msgstr "Impostando il nuovo host name"
 
 #: fabui/application/views/systeminfo/widget.php:20
 #: fabui/application/views/systeminfo/widget.php:311
@@ -1434,7 +1426,7 @@ msgstr "Numero seriale"
 
 #: fabui/application/views/systeminfo/widget.php:26
 msgid "Color"
-msgstr ""
+msgstr "Colore"
 
 #: fabui/application/views/systeminfo/widget.php:30
 msgid "Os"
@@ -1529,21 +1521,19 @@ msgstr "Pacchetti"
 
 #: fabui/application/views/systeminfo/widget.php:183
 msgid "Set system date and time"
-msgstr ""
+msgstr "Imposta data e ora del sistema"
 
 #: fabui/application/views/systeminfo/widget.php:223
 msgid "Timezone"
-msgstr ""
+msgstr "Fuso orario"
 
 #: fabui/application/views/systeminfo/widget.php:245
-#, fuzzy
 msgid "Set unit color"
-msgstr "Impostando il colore blu"
+msgstr "Imposta colore della stampante"
 
 #: fabui/application/views/systeminfo/widget.php:274
-#, fuzzy
 msgid "Set serial number"
-msgstr "Numero seriale"
+msgstr "Imposta il serial number"
 
 #: fabui/application/views/systeminfo/widget.php:303
 #, fuzzy
@@ -1610,9 +1600,8 @@ msgstr ""
 "Beh questo è imbarazzante,  qualcosa è andato storto durante la misurazione"
 
 #: fabui/application/views/bed/calibration_results.php:58
-#, fuzzy
 msgid "Check probe lenght and try again"
-msgstr "Verificare la connessione e riprovare"
+msgstr "Controlla la lunghezza della probe e riprova ancora"
 
 #: fabui/application/views/bed/calibration_results.php:148
 msgid ", following this rotation direction"
@@ -1972,9 +1961,8 @@ msgid "Account information saved"
 msgstr "Informazioni dell'account salvate"
 
 #: fabui/application/views/account/js.php:160
-#, fuzzy
 msgid "Connected to your FABID account"
-msgstr "Crea il tuo account personale"
+msgstr "Connesso al tuo account FABID"
 
 #: fabui/application/views/account/js.php:177
 #: fabui/application/views/settings/network_js.php:120
@@ -2000,18 +1988,16 @@ msgid "Are sure you want to disconnect?"
 msgstr "Sei sicuro di volerti disconnettere?"
 
 #: fabui/application/views/account/js.php:192
-#, fuzzy
 msgid "Disconnecting from FABID"
-msgstr "Disconnettendo"
+msgstr "Disconnessione dal tuo FABID"
 
 #: fabui/application/views/account/js.php:198
-#, fuzzy
 msgid "Disconnected"
-msgstr "Disconnetti"
+msgstr "Disconnesso"
 
 #: fabui/application/views/account/widget.php:14
 msgid "Personal info"
-msgstr ""
+msgstr "Informazioni personali"
 
 #: fabui/application/views/account/widget.php:39
 msgid "Language"
@@ -2111,7 +2097,7 @@ msgstr "RPM"
 
 #: fabui/application/views/jog/widget.php:166
 msgid "Clockwise"
-msgstr ""
+msgstr "Senso orario"
 
 #: fabui/application/views/jog/widget.php:166
 #: fabui/application/views/jog/widget.php:172
@@ -2448,9 +2434,8 @@ msgid "Address mode"
 msgstr "Modalità"
 
 #: fabui/application/views/settings/wireless_tab.php:15
-#, fuzzy
 msgid "Connected to"
-msgstr "Connetti"
+msgstr "Connesso a "
 
 #: fabui/application/views/settings/wireless_tab.php:19
 #: fabui/application/views/settings/ethernet_tab.php:15
@@ -2580,9 +2565,8 @@ msgid "Please check internet connection and try again"
 msgstr "Si prega di verificare la connessione a internet e riprovare"
 
 #: fabui/application/views/dashboard/js.php:56
-#, fuzzy
 msgid "Latest blog posts"
-msgstr "Ultimi Tweets"
+msgstr "Ultimi post"
 
 #: fabui/application/views/dashboard/js.php:105
 #, fuzzy
@@ -2591,17 +2575,15 @@ msgstr "Ultimi Tweets"
 
 #: fabui/application/views/dashboard/js.php:127
 msgid "Latest instragm posts"
-msgstr ""
+msgstr "Ultimi post instagram"
 
 #: fabui/application/views/dashboard/js.php:165
-#, fuzzy
 msgid "View on instagram"
-msgstr "Instagram"
+msgstr "Guarda su instagram"
 
 #: fabui/application/views/dashboard/js.php:242
-#, fuzzy
 msgid "Feeds are not available"
-msgstr "Gli ultimi tweets non sono disponibili"
+msgstr "I post non sono disponibili"
 
 #: fabui/application/views/dashboard/instagram.php:32
 msgid "Instagram"
@@ -2625,9 +2607,8 @@ msgstr "In attesa del primo movimento"
 
 #: fabui/application/views/std/task_execute_js.php:1032
 #: fabui/application/views/std/task_execute_js.php:1063
-#, fuzzy
 msgid "Aborting {0}"
-msgstr "Annullando"
+msgstr "Annullando {0}"
 
 #: fabui/application/views/std/task_execute_js.php:1048
 #, fuzzy
@@ -3005,7 +2986,7 @@ msgstr ""
 msgid ""
 "Remove the Feeding tube by pushing down the black cap and then pulling the "
 "tube itself."
-msgstr ""
+msgstr "Si consigli"
 
 #: fabui/application/views/std/task_execute.php:377
 msgid "Press start to begin procedure"
@@ -3671,7 +3652,7 @@ msgstr "Preparando {0}"
 
 #: fabui/application/views/spool/wizard/step1.php:16
 msgid "A pair of scissors or clippers are suggested"
-msgstr ""
+msgstr "Si consiglia l'suo di un  paio di forbici"
 
 #: fabui/application/views/spool/wizard/step1.php:17
 msgid ""
@@ -3953,8 +3934,7 @@ msgstr "Override"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
@@ -4457,9 +4437,8 @@ msgid "Measuring point {0} of {1} ({2} times)"
 msgstr "Misurando i punti {0} di {1} ({2} volte)"
 
 #: fabui/ext/py/manual_bed_leveling.py:195
-#, fuzzy
 msgid "Probe failed"
-msgstr "Probe su"
+msgstr "Probe fallito"
 
 #: fabui/ext/py/manual_bed_leveling.py:256
 msgid "Manual bed leveling finished."
@@ -5446,7 +5425,7 @@ msgstr "Motori bloccati"
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:62
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:57
 msgid "Disabling door safety"
-msgstr ""
+msgstr "Disabilitazione sicurezza pannello frontale"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:87
 msgid " Set extruder to absolute mode"
@@ -5475,9 +5454,8 @@ msgstr "Sblocca motori"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:93
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:63
-#, fuzzy
 msgid "Set door safety"
-msgstr "La sicurezza di inattività"
+msgstr "Abilitazione sicurezza pannello frontale"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:96
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:191
@@ -6013,9 +5991,8 @@ msgid "Hi"
 msgstr "Ciao"
 
 #: fabui/application/views/settings/network_js.php:244
-#, fuzzy
 msgid "Connected"
-msgstr "Connetti"
+msgstr "Connesso"
 
 #: fabui/application/views/std/task_execute_js.php:708
 msgid "Z height increased"
@@ -6192,9 +6169,8 @@ msgid "X/Y position restored to {0}, {1}"
 msgstr "Posizione di X/Y ripristinata a {0}, {1}"
 
 #: fabui/application/views/settings/network_js.php:255
-#, fuzzy
 msgid "Configuration saved"
-msgstr "Configurando l'estrusore"
+msgstr "Configurazione salvata"
 
 #: fabui/assets/js/fab.app.js:1506
 msgid "You will be redirected to recovery page"
