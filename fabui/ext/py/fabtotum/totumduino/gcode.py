@@ -318,7 +318,7 @@ class GCodeService:
     
     REPLY_QUEUE_SIZE = 1 
         
-    def __init__(self, serial_port, serial_baud, serial_timeout = 5, use_checksum = False, logger = None):
+    def __init__(self, serial_port, serial_baud, serial_timeout = 5, use_checksum = False, logger = None, fabid = False):
         
         self.running = False
         self.released = False
@@ -357,8 +357,13 @@ class GCodeService:
             formatter = logging.Formatter("%(levelname)s : %(message)s")
             ch.setFormatter(formatter)
             self.log.addHandler(ch)
-            
-        self.mfc = MyFabtotumCom(self, logger)
+        
+        if(fabid == True):
+            self.log.info("MyFabtotumCom - service enabled")
+            self.mfc = MyFabtotumCom(self, logger)
+        else:
+            self.log.info("MyFabtotumCom - service disabled")
+            self.mfc = None
             
         self.gcode_state = {
             "axis_relative_mode" : {
@@ -1051,7 +1056,8 @@ class GCodeService:
         self.ev_rx_started.wait()
         
         # MyFabtotumCom Thread
-        self.mfc.start()
+        if(self.mfc):
+            self.mfc.start()
         
         if atomic_group:
             self.atomic_begin(group=atomic_group)
@@ -1064,7 +1070,8 @@ class GCodeService:
         """
         self.sender.join()
         self.receiver.join()
-        self.mfc.loop()
+        if(self.mfc):
+            self.mfc.loop()
     
     def close_serial(self):
         self.stop(release_only=True)
@@ -1196,7 +1203,8 @@ class GCodeService:
     
     def reload_mfc(self):
         """ reload my.fabtotum.com """
-        self.mfc.reload()
+        if(self.mfc):
+            self.mfc.reload()
     
     def register_callback(self, callback_fun):
         """

@@ -59,6 +59,7 @@
 					<form id="install-form">
 						<input type="hidden" name="browser-date" id="browser-date" />
 						<input type="hidden" name="fabid"        id="fabid" />
+						<input type="hidden" name="fabid_pwd"    id="fabid_pwd" />
 						<div class="row">
 							<div class="col-sm-6">
 								<div class="form-group">
@@ -174,11 +175,13 @@
 								<p class="font-md text-center">
 									<?php echo _("You're almost done.")?>
 								</p>
-								<hr>
-								<div class="text-center">
-									<button id="fabidModalButton" class="btn btn-default"><i class="fa fa-link"></i> <?php echo _("Connect to your FABID account");?></button>
-								</div>
-								<hr>
+								<?php if($fabid_active):?>
+									<hr>
+									<div class="text-center">
+										<button id="fabidModalButton" class="btn btn-default"><i class="fa fa-link"></i> <?php echo _("Connect to your FABID account");?></button>
+									</div>
+									<hr>
+								<?php endif; ?>
 								<p class="font-md text-center"><?php echo _("Click <strong>Install</strong> to complete")?></p>
 							</div>
 						</div>

@@ -115,7 +115,8 @@ USB_FILE            = config.get('usb', 'usb_file')
 SERIAL_PORT = config.get('serial', 'PORT')
 SERIAL_BAUD = config.get('serial', 'BAUD')
 GPIO_PIN    = config.get('gpio', 'pin')
-
+##################################################################
+FABID_ACTIVE = config.get('my.fabtotum.com', 'fabid_active', 0) == 1
 
 # Prepare files with correct permissions
 create_file(TRACE)
@@ -168,7 +169,7 @@ conn.close()
 #myFabototumCom = MyFabtotumCom(gcservice, config, logger)
 
 # Start gcode service
-gcservice = GCodeService(SERIAL_PORT, SERIAL_BAUD, logger=logger)
+gcservice = GCodeService(SERIAL_PORT, SERIAL_BAUD, logger=logger, fabid=FABID_ACTIVE)
 gcservice.start()
 
 # Pyro GCodeService wrapper

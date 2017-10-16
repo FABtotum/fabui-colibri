@@ -27,11 +27,8 @@ class Install extends FAB_Controller {
 	
 	private function installView()
 	{
-		$this->load->helper('date_helper');
-		$this->load->helper('language_helper');
-		$this->load->helper('fabtotum_helper');
-		$this->load->helper('os_helper');
-		
+		$this->load->helper(array('date_helper', 'language_helper', 'fabtotum_helper', 'os_helper'));
+		$this->config->load('fabtotum');
 		if($this->input->post('locale') != ''){
 			setLanguage($this->input->post('locale'));
 		}
@@ -50,6 +47,7 @@ class Install extends FAB_Controller {
 		}
 		$wizard_steps[] = array( 'id'=>'finish-tab', 'title' => _("Finish"), 'active' => false);
 		
+		$data['fabid_active'] = $this->config->item('fabid_active') == 1;
 		$data['steps'] = $wizard_steps;
 		$this->content = $this->load->view('install/wizard', $data, true );
 		$this->addJsInLine($this->load->view('install/js', $data, true));
@@ -280,8 +278,9 @@ class Install extends FAB_Controller {
 			}
 		}
 		
-		$locale = $postData['locale'];
-		$fabid  = $postData['fabid'];
+		$locale         = $postData['locale'];
+		$fabid          = $postData['fabid'];
+		$fabid_password = $postData['fabid_pwd'];
 		
 		$installSamples = false;
 		
@@ -295,6 +294,7 @@ class Install extends FAB_Controller {
 		unset($postData['unit_name']);
 		unset($postData['unit_color']);
 		unset($postData['fabid']);
+		unset($postData['fabid_pwd']);
 		
 		
 		//preparing user settings
@@ -302,7 +302,8 @@ class Install extends FAB_Controller {
 			'locale' => $locale	
 		);
 		if($fabid != ""){
-			$userSettings['fabid']['email'] = $fabid;
+			$userSettings['fabid']['email']    = $fabid;
+			$userSettings['fabid']['password'] = $fabid_password;
 		}
 		
 		//set user account data

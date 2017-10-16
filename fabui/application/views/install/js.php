@@ -551,6 +551,7 @@
 				closeWait();
 				if(response.connect.status == true){
 					$("#fabid").val(response.fabid);
+					$("#fabid_pwd").val(data['fabid_password']);
 					$("#fabidModalButton").addClass('btn-success').html('<i class="fa fa-check"></i> <?php echo _("Connected via FABID"); ?> (' + response.fabid +')');
 					$('#fabidModal').modal('hide');
 				}else{

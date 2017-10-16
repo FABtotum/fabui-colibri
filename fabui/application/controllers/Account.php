@@ -14,9 +14,7 @@
 		
 		//load libraries, helpers, model, config
 		$this->load->library('smart');
-		$this->load->helper('fabtotum_helper');
-		$this->load->helper('language_helper');
-		$this->load->helper('form');
+		$this->load->helper(array('fabtotum_helper', 'language_helper', 'form'));
 		$this->config->load('fabtotum');
 		
 		//reload user info
@@ -26,6 +24,7 @@
 		
 		$this->session->user = $user;
 		$data['user'] = $user;
+		$data['fabid_active'] = $this->config->item('fabid_active') == 1;
 		
 		//main page widget
 		$widgetOptions = array(
