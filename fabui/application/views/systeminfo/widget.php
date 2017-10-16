@@ -207,7 +207,7 @@
 										</label>
 									</section>
 									<section class="col col-2">
-										<label class="label"><?php echo _("Ore"); ?></label>
+										<label class="label"><?php echo _("Hours"); ?></label>
 										<label class="select">
 											<?php echo hours_menu('hour', date('H'), 'id="hour"');?> <i></i> 
 										</label>
