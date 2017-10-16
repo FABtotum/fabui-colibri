@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-16 11:22+0200\n"
+"POT-Creation-Date: 2017-10-16 12:04+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1523,6 +1523,29 @@ msgstr "Pacchetti"
 #: fabui/application/views/systeminfo/widget.php:183
 msgid "Set system date and time"
 msgstr "Imposta data e ora del sistema"
+
+#: fabui/application/views/systeminfo/widget.php:192
+#, fuzzy
+msgid "Day"
+msgstr "Maggio"
+
+#: fabui/application/views/systeminfo/widget.php:198
+#, fuzzy
+msgid "Month"
+msgstr "mese"
+
+#: fabui/application/views/systeminfo/widget.php:204
+msgid "Year"
+msgstr ""
+
+#: fabui/application/views/systeminfo/widget.php:210
+msgid "Ore"
+msgstr ""
+
+#: fabui/application/views/systeminfo/widget.php:216
+#, fuzzy
+msgid "Minuti"
+msgstr "minuto"
 
 #: fabui/application/views/systeminfo/widget.php:223
 msgid "Timezone"
