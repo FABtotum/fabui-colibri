@@ -16,15 +16,15 @@
 	<div class="col-sm-12">
 		<div class="owl-carousel">
 			<?php foreach($heads as $index => $head):?>
-				<div class="panel panel-default ">
+				<div class="panel panel-default <?php echo $index == $installed_head['filename'] ? 'installed' : 'not-installed' ?>">
 					
 					<div class="panel-body status">
 						<div class="who clearfix">
-							<h4 class="text-center <?php echo $index == $installed_head['filename'] ? 'installed' : 'not-installed' ?>">
+							<h4 class="text-center ">
 								<?php echo $head['name']; ?>
 							</h4>
 						</div>
-						<div class="image padding-10 <?php echo $index == $installed_head['filename'] ? 'installed' : 'not-installed' ?>">
+						<div class="image padding-10 ">
 							<img src="/assets/img/head/photo/<?php echo $head['filename']?>.png">
 						</div>
 						<ul class="links">

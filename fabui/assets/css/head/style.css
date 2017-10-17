@@ -19,3 +19,7 @@
 .not-installed {
 	opacity: 0.3;
 }
+
+.not-installed:HOVER {
+	opacity: 1 !important;
+}
