@@ -114,7 +114,7 @@
 		
 		$data['steps'] = array(
 				array('number'  => 1,
-				 'title'   => _("Choose file or drope here"),
+				 'title'   => _("Choose file or drop here"),
 				 'content' => !$task_is_running ? $this->load->view( 'std/select_file', $data, true ) : '',
 				 'active'  => !$file_is_ok && !$task_is_running
 			    ),
