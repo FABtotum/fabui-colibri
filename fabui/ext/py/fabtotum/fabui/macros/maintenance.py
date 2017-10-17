@@ -245,7 +245,7 @@ def manual_bed_leveling(app, args = None, lang='en_US.UTF-8'):
     app.macro("G0 Z{0} F5000".format(probe_height),    "ok",   99,  _("Moving to start Z height")) #mandatory!
     #app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), verbose=False )
 
-    app.macro("M401",          "ok",   2,      _("Extend Probe"), verbose=False)
+    app.macro("M401",          "ok",   5,      _("Extend Probe"), warning=True, verbose=False)
 
     return {'probe_height' : probe_height}
 
