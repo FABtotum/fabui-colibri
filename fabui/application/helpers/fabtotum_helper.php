@@ -1105,7 +1105,7 @@ if(!function_exists('checkManufactoring'))
 	 * @param (int) $numLines, number of lines to read
 	 * retunr what type of manufactoring file is
 	 */
-	function checkManufactoring($filePath, $numLines = 100)
+	function checkManufactoring($filePath, $numLines = 500)
 	{
 		//~ $CI =& get_instance();
 		//~ $CI->load->helper('plugin_helper');
