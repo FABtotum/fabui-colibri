@@ -91,7 +91,7 @@ def main():
 
     ################################################################################
     ext = os.path.splitext(filename)[1].lower()
-    if ext == '.gcode':
+    if ext == '.gcode' or ext == '.nc':
         print checkGCodeManufactoring(filename, num_of_lines)
     else:
         print MANUFACTORING_UNKNOWN
