@@ -301,7 +301,7 @@ if ( ! function_exists('checkPluginManufacturing') )
 	 * @param (int) $numLines, number of lines to read
 	 * retunr what type of manufactoring file is
 	 */
-	function checkPluginManufacturing($filePath, $numLines = 100)
+	function checkPluginManufacturing($filePath, $numLines = 500)
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
