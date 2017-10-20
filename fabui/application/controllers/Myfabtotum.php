@@ -55,7 +55,8 @@
 				$user = $this->user->get($this->session->user['id'], 1);
 				
 				$user['settings'] = json_decode($user['settings'], true);
-				$user['settings']['fabid']['email'] = $fabid;
+				$user['settings']['fabid']['email']    = $fabid;
+				$user['settings']['fabid']['password'] = $password;
 				$this->session->user = $user;
 				$this->user->update($user['id'], array('settings' => json_encode($user['settings'])));
 				//reload my.fabtotum.com credentials for the service
@@ -97,17 +98,11 @@
 			//update session user's info
 			if($fabid == ''){
 				$this->session->user = $user;
-			}
-			
+			}	
 			//reload my.fabtotum.com credentials for the service
 			reload_myfabtotum();
-		
 		}
-		
 		$this->output->set_content_type('application/json')->set_output(json_encode(true));
-		
 	}
-	
  }
- 
 ?>
