@@ -278,7 +278,7 @@ class MyFabtotumCom:
                 "head"      : head["name"],
                 "fwversion" : self.getFwVersion(),
                 "iplan"     : self.ip_lan,
-            #    'color'     : self.unit_color
+                'color'     : self.unit_color
             },
             "apiversion" : self.api_version,
         }
