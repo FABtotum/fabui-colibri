@@ -553,22 +553,25 @@ if(!function_exists('getInstalledHeadInfo'))
 		$_data = loadSettings();
 		
 		$head_filename =  $heads_dir .'/'. $_data['hardware']['head'] . '.json';
-		$info = json_decode(file_get_contents($head_filename), true);
-		$fw_id = intval($info['fw_id']);
-		if( $fw_id < 100 )
-		{
-			$info['image_src'] = '/assets/img/head/' . $_data['hardware']['head'] . '.png';
+		$info = false;
+		if(file_exists($head_filename)){
+			$info = json_decode(file_get_contents($head_filename), true);
+			$fw_id = intval($info['fw_id']);
+			if( $fw_id < 100 )
+			{
+				$info['image_src'] = '/assets/img/head/' . $_data['hardware']['head'] . '.png';
+			}
+			else
+			{
+				// @TODO: support for custom images
+				$info['image_src'] = '/assets/img/head/head_shape.png';
+			}
+			
+			if(!isset($info['nozzle_offset']))
+				$info['nozzle_offset'] = 0;
+			
+			$info['filename'] = basename($head_filename, '.json');
 		}
-		else
-		{
-			// @TODO: support for custom images
-			$info['image_src'] = '/assets/img/head/head_shape.png';
-		}
-		
-		if(!isset($info['nozzle_offset']))
-			$info['nozzle_offset'] = 0;
-		
-		$info['filename'] = basename($head_filename, '.json');
 		
 		return $info;
 	}

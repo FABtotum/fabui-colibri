@@ -1,20 +1,6 @@
-<!-- 
-<div class="row margin-bottom-10">
-	<div class="col-sm-12">
-		<div class="pull-right btn-toolbar">
-			<div class="btn-group">
-				<button data-action="add" type="button" class="btn btn-success settings-action"><i class="fa fa-plus"></i> <?php echo _("Add new head");?> </button>
-			</div>
-			<div class="btn-group">
-				<a class="btn btn-default no-ajax" target="_blank" href="https://store.fabtotum.com/"><i class="fa fa-cart-plus"></i> <span class="hidden-xs"><?php echo _("Get more heads") ?></span> </a>
-			</div>
-		</div>
-	</div>
-</div>
- -->
 <div class="row">
 	<div class="col-sm-12">
-		<div class="owl-carousel">
+		<div class="owl-carousel owl-theme">
 			<?php foreach($heads as $index => $head):?>
 				<div class="panel panel-default <?php echo $index == $installed_head['filename'] ? 'installed' : 'not-installed' ?>">
 					
@@ -31,11 +17,16 @@
 							<li class="pull-right" style="padding-right: 0px !important;">
 								<a data-action="install" data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action <?php echo $index == $installed_head['filename'] ? 'btn-primary ' : ''; ?>  install" ><i class="fa <?php echo $index == $installed_head['filename'] ? 'fa-check' : 'fa-wrench'?>"></i><span> <?php echo $index == $installed_head['filename'] ? _("Installed") : _("Install"); ?></span></a>
 							</li>
-							<li style="padding-right:0px !important;">
-								<a data-action="edit" data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action" ><i class="fa  fa-pencil-square-o"></i> </a>
-							</li>
-							<li style="padding-right:0px !important;">
-								<a data-action="info" data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action" ><i class="fa  fa-info"></i> </a>
+							<li style="padding-right:0px !important">
+								<div class="btn-toolbar">
+									<div class="btn-group">
+										<a data-action="edit" data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action" ><i class="fa  fa-pencil-square-o"></i> </a>
+										<a data-action="info" data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action" ><i class="fa  fa-info"></i> </a>
+										<?php if($head['fw_id'] >= 100):?>
+										<a data-action="remove" data-head="<?php echo $head['filename']; ?>" class="btn btn-danger settings-action" ><i class="fa  fa-trash"></i> </a>
+										<?php endif;?>
+									</div>
+								</div>
 							</li>
 						</ul>
 					</div>

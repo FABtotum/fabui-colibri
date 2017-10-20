@@ -20,12 +20,12 @@
 	{
 		$('.owl-carousel').owlCarousel({
         	loop: true,
-         	margin: 10,
+         	margin: 1,
             responsiveClass: true,
             	responsive: {
                 	0: {
                     	items: 1,
-                    	nav: true
+                    	nav: false
                   	},
                   	600: {
                     	items: 3,
@@ -33,7 +33,7 @@
                   	},
                   	1000: {
                     	items: 5,
-                    	nav: true,
+                    	nav: false,
                     	loop: false,
                     	margin: 20
                   	}
@@ -594,5 +594,33 @@
 		$("#descriptionModalTitle").html(heads[selected_head].name);
 		$("#head-more-details").attr("href",heads[selected_head].link );
 		$('#descriptionModal').modal('show');
+	}
+	/**
+	*
+	**/
+	function removeHeadSettings()
+	{
+		$.SmartMessageBox({
+			title: "<?php echo _("Attention");?>!",
+			content: "<?php echo _("Remove <strong>{0}</strong> settings?");?>".format(heads[selected_head].name),
+			buttons: '[<?php echo _("No")?>][<?php echo _("Yes")?>]'
+		}, function(ButtonPressed) {
+			if (ButtonPressed === "<?php echo _("Yes")?>")
+			{
+				$.ajax({
+					type: 'post',
+					url: '<?php echo site_url('head/removeHead'); ?>/' + selected_head,
+					dataType: 'json'
+				}).done(function(response) {
+					fabApp.showInfoAlert('<strong>{0}</strong> removed'.format(heads[selected_head].name));
+					setTimeout(function(){
+						location.reload();
+					}, 1000);
+				});
+			}
+			if (ButtonPressed === "<?php echo _("No")?>")
+			{
+			}
+		});
 	}
 </script>
