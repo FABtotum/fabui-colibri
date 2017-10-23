@@ -66,5 +66,6 @@
 	"r" : 25,
 	"length" : 32,
 	"enable" : 0
-  }
+  },
+  "locale": "en_US"
 }
