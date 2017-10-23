@@ -58,6 +58,7 @@ if(!function_exists('setLanguage'))
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
+		$CI->load->helper('plugin_helper');
 		
 		putenv('LC_MESSAGES='.$language_code.'.UTF-8');
 		setlocale(LC_MESSAGES, $language_code.'.UTF-8');
@@ -70,11 +71,15 @@ if(!function_exists('setLanguage'))
 		textdomain("fabui");
 		bind_textdomain_codeset("fabui", "UTF-8");
 		
+		//extendLanguageWithPlugins();
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('getCurrentLanguage'))
 {
+	/**
+	 * 
+	 */
 	function getCurrentLanguage()
 	{
 		//echo locale_get_default();

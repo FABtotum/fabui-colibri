@@ -82,6 +82,11 @@ function buildMenu($menu_array, $is_sub = FALSE, $parent = '') {
 	 * If the supplied array is part of a sub-menu, add the
 	 * sub-menu class instead of the menu ID for CSS styling
 	 */
+	
+	uasort($menu_array, 'menuSort');
+	
+	//print_r($menu_array); exit();
+	
 	$attr = (!$is_sub) ? ' class="menu-item-parent"' : ' ';
 	$menu = "<ul>";
 	// Open the menu container
@@ -203,6 +208,22 @@ if(!function_exists('buildLanguagesMenu'))
 		$html .= '</li></ul>';
 		
 		return $html;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('menuSort')){
+	
+	/*
+	 *
+	 */
+	function menuSort($itemA, $itemB)
+	{
+		if(!isset($itemA['pos']) || !isset($itemB['pos'])) return true;
+		
+		if ($itemA['pos'] == $itemB['pos']) {
+			return 0;
+		}
+		return ($itemA['pos'] > $itemB['pos']) ? 1 : -1;
 	}
 }
 ?>

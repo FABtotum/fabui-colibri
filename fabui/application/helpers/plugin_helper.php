@@ -380,14 +380,15 @@ if ( ! function_exists('getObjectActionList'))
 
 if ( ! function_exists('plugin_url'))
 {
-	function plugin_url($url, $ajax_firendly=false)
+	function plugin_url($url='', $ajax_firendly=false, $standalone=false)
 	{
 		$CI =& get_instance();
 		$plugin_name = str_replace('plugin_', '', $CI->router->class);
 		if($ajax_firendly)
 			return 'plugin/'.$plugin_name.'/'.$url;
 		else
-			return '/plugin/'.$plugin_name.'/'.$url;
+			return $standalone ? '/fabui/plugin/'.$plugin_name.'/'.$url : '/plugin/'.$plugin_name.'/'.$url;
+			//return '/plugin/'.$plugin_name.'/'.$url;
 	}
 }
 
@@ -517,33 +518,46 @@ if(!function_exists('createPlugin'))
 	}
 }
 
-//~ if ( ! function_exists('getManufactoringMapping'))
-//~ {
-	//~ /**
-	 //~ * Return an array that maps extensions to manufactoring type,
-	 //~ * based on plugin meta info.
-	 //~ * @return array of ext => print_type map
-	 //~ */
-	//~ function getManufactoringMapping()
-	//~ {
-		//~ $CI =& get_instance();
-		//~ $CI->config->load('fabtotum');
-		//~ $plugins = getActivePlugins();
-		
-		//~ $action_type = '';
-		
-		//~ $manumap = array();
-		
-		//~ foreach($plugins as $plugin => $info)
-		//~ {
-			//~ if( array_key_exists("manufactoring_map",$info) )
-			//~ {
-				//~ foreach($info)
-			//~ }
-		//~ }
-		
-		//~ return $manumap;
-	//~ }
-//~ }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('extendLanguageWithPlugins'))
+{
+	/**
+	 * hook for setLanguage - language_helper.php
+	 */
+	function extendLanguageWithPlugins()
+	{
+		$active = getActivePlugins();
+		
+		foreach($active as $plugin => $info)
+		{
+			loadPluginTranslation($plugin);
+		}
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('loadPluginTranslation'))
+{
+	/**
+	 * load plugin translation
+	 */
+	function loadPluginTranslation($plugin = '', $domain = 'plugin')
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		
+		if($plugin == '') $plugin = str_replace('plugin_', '', $CI->router->class);
+
+		if(file_exists($CI->config->item('plugins_path').$plugin.'/locale')){
+			
+			bindtextdomain($domain, $CI->config->item('plugins_path').$plugin.'/locale');
+			textdomain($domain);
+			bind_textdomain_codeset($domain, "UTF-8");
+			
+			return true;
+		}
+		
+		return false;
+	}
+}
 ?>
