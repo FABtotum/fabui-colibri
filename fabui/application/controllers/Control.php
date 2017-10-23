@@ -214,9 +214,9 @@ class Control extends FAB_Controller {
 	public function getNetworkInfo()
 	{
 		$this->load->helper('os_helper');
-		if(!file_exists($this->config->config['network_info_file'])){
+		//if(!file_exists($this->config->config['network_info_file'])){
 			writeNetworkInfo();
-		}
+		//}
 		$networkInfo = getNetworkInfo();
 		if($networkInfo['internet'] == false){
 			$networkInfo['internet'] = isInternetAvaialable();

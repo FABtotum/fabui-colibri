@@ -60,7 +60,7 @@
 	public function saveUser($userID, $data = array())
 	{
 		//load libraries, helpers, model, config
-		$this->load->helpers('utility_helper');
+		$this->load->helper(array('utility_helper', 'fabtotum_helper'));
 		$this->load->model('User', 'user');
 		
 		if(empty($data)){
@@ -72,9 +72,18 @@
 			$data = arrayFromPost($requesData);
 		}
 		
+		//if locale
+		if(isset($data['settings']['locale'])){
+			$hwSettings = loadSettings();
+			$hwSettings['locale'] = $data['settings']['locale']; //set locale to settings.json
+			saveSettings($hwSettings);
+		}
+		
+		//preare settings for db insert
 		if(isset($data['settings'])){
 			$data['settings'] = json_encode($data['settings']);
 		}
+		
 		//update user db
 		$this->user->update($userID, $data);
 		//get all user info

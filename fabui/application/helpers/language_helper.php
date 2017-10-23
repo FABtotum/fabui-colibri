@@ -86,8 +86,17 @@ if(!function_exists('getCurrentLanguage'))
 		$CI =& get_instance();
 		if(isset($CI->session->user['settings']['locale']))
 			return $CI->session->user['settings']['locale'];
+		else{
+			
+			$CI->load->helper('fabtotum_helper');
+			$settings = loadSettings();
+			
+			if(isset($settings['locale']))
+				return $settings['locale'];
+			else
+				return 'en_US';
+		}
 		
-		return 'en_US';
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

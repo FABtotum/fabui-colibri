@@ -35,12 +35,14 @@
 						<input type="text" name="email" id="email" value="<?php echo $this->session->user['email'] ?>">
 					</label>
 				</section>
+				<?php if($user['role'] == 'administrator'):?>
 				<section>
 					<label class="label"><?php echo _("Language")?></label>
 					<label class="select">
 						<?php echo langauges_menu('form-control', 'settings-locale', 'id="settings-locale"');?> <i></i>
 					</label>
 				</section>
+				<?php endif;?>
 			</fieldset>
 		</form>	
 	</div>

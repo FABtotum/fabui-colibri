@@ -126,10 +126,12 @@
 					timeout: 3000,
 					icon : "fa fa-check bounce animated"
 				});
-
+				
+				<?php if(isset( $this->session->user['settings']['locale'])):?>
 				if("<?php echo $this->session->user['settings']['locale'] ?>" != $("#settings-locale").val()){
 					location.reload();
 				}
+				<?php endif; ?>
 				
 			});
 		}

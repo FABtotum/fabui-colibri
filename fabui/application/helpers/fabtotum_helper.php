@@ -115,9 +115,7 @@ if(!function_exists('saveSettings'))
 		$CI->load->helper('file');
 		$CI->config->load('fabtotum');
 		$result = write_file($CI->config->item('settings'), json_encode($data, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK));
-		
 		xmlrpcReloadConfig();
-		
 		return $result;
 	}
 }
