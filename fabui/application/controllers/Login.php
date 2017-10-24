@@ -161,6 +161,7 @@
 			
 			$this->content = $this->load->view('login/reset_form', $data, true);
 			$this->addJsInLine($this->load->view('login/reset_js', $data, true));
+			$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js');
 			$this->loginLayout('reset');
 		}
 		else

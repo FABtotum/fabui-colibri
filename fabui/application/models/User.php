@@ -28,7 +28,7 @@
 	 */
 	public function getByToken($token)
 	{
-		$query = $this->db->get($this->tableName, 1);
+		$query = $this->db->get($this->tableName);
 		$result = $query->result();
 				
 		$user = false;

@@ -1694,7 +1694,7 @@ if(!function_exists('send_password_reset'))
 			
 			$token = md5($uid . '-' . $email . '-' . time());
 			
-			$user_settings = json_decode($user['settings'], 1);
+			$user_settings = json_decode($user['settings'], true);
 			$user_settings['token'] = $token;
 		
 			$data_update['settings'] = json_encode($user_settings);

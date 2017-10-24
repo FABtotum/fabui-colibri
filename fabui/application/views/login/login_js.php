@@ -89,11 +89,11 @@
 			// Messages for form validation
 			messages : {
 				email : {
-					required : '<?php echo _("Please enter your email address");?>',
-					email : '<?php echo _("Please enter a valid email address");?>'
+					required : "<?php echo _("Please enter your email address");?>",
+					email : "<?php echo _("Please enter a valid email address");?>"
 				},
 				password : {
-					required : '<?php echo _("Please enter your password");?>'
+					required : "<?php echo _("Please enter your password");?>"
 				}
 			},
 			// Do not change code below
