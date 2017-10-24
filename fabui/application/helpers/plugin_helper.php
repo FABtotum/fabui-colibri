@@ -560,4 +560,53 @@ if(!function_exists('loadPluginTranslation'))
 		return false;
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('loadPluginConfig'))
+{
+	/**
+	 * Load Plugin Config File
+	 *
+	 * @param	string	$file			Configuration file name
+	 * @param	bool	$use_sections		Whether configuration values should be loaded into their own section
+	 * @return	bool	TRUE if the file was loaded correctly or FALSE on failure
+	 */
+	function loadPluginConfig($file='', $use_sections = FALSE)
+	{
+		$CI =& get_instance();
+		$CI->config->load('fabtotum');
+		
+		$plugin = str_replace('plugin_', '', $CI->router->class);
+		
+		$config_plugin_path = $CI->config->item('plugins_path').$plugin.'/config/';
+		
+		$file_path = $config_plugin_path.$file.'.php';
+		
+		if(file_exists($file_path))
+		{
+			include($file_path);
+			
+			if( ! isset($config) OR !is_array($config))
+			{				
+				show_error('Your '.$file_path.' file does not appear to contain a valid configuration array.');
+			}
+			
+			if ($use_sections === TRUE)
+			{
+				$CI->config->config[$file] = isset($CI->config->config[$file]) ? array_merge($CI->config->config[$file], $config) : $config;
+			}
+			else
+			{
+				$CI->config->config = array_merge($CI->config->config, $config);
+			}
+			
+			$CI->config->is_loaded[] = $file_path;
+			$config = NULL;
+			log_message('debug', 'Config file loaded: '.$file_path);
+			
+			return true;
+			
+		}
+		show_error('The configuration file '.$file.'.php does not exist.');
+	}
+}
 ?>
