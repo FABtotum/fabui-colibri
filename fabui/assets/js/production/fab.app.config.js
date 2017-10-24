@@ -94,10 +94,11 @@ var temperaturesPlot = {extruder: {temp: [], target: []}, bed: {temp:[], target:
  * HEAD WORKING MODE
  * GCODE M450
  ***************************/
-HEAD_WORKING_MODE_HYBRID = 0;
-HEAD_WORKING_MODE_FFF    = 1;
-HEAD_WORKING_MODE_LASER  = 2;
-HEAD_WORKING_MODE_CNC    = 3
+HEAD_WORKING_MODE_HYBRID  = 0;
+HEAD_WORKING_MODE_FFF     = 1;
+HEAD_WORKING_MODE_LASER   = 2;
+HEAD_WORKING_MODE_CNC     = 3
+HEAD_WORKING_MODE_SCANNER = 4;
 /****************************
 * ERROR CODES
 *****************************/

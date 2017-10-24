@@ -1,2 +1,3 @@
 *.pyc
 fabui/locale/fabui.pot
+fabui/heads/digitizer_head.json

@@ -184,6 +184,7 @@ fabApp = (function(app) {
 	app._createExtruderTemperaturesTopSliders = function (max_temp){
 		//nozzle target		
 		if($("#top-ext-target-temp").length > 0) {
+			if(max_temp == 0) max_temp = 1; //workaround for slider init
 			
 			if(document.getElementById('top-ext-target-temp').noUiSlider != null)
 				document.getElementById('top-ext-target-temp').noUiSlider.destroy();
@@ -1562,7 +1563,7 @@ fabApp = (function(app) {
 	app.analizeTopBar = function(settings)
 	{
 		if(app.installed_head != null){
-			if(app.installed_head.working_mode == HEAD_WORKING_MODE_LASER || app.installed_head.working_mode == HEAD_WORKING_MODE_CNC ){
+			if(app.installed_head.working_mode == HEAD_WORKING_MODE_LASER || app.installed_head.working_mode == HEAD_WORKING_MODE_CNC || app.installed_head.working_mode == HEAD_WORKING_MODE_SCANNER){
 				$(".top-ajax-temperatures-dropdown .head-working-mode-"+HEAD_WORKING_MODE_FFF).remove();
 				$(".top-ajax-temperatures-dropdown .head-working-mode-"+HEAD_WORKING_MODE_HYBRID).remove();
 				$(".top-ajax-temperatures-dropdown").find('h4').removeClass('margin-top-50');
