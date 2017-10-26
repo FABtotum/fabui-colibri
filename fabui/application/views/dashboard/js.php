@@ -25,37 +25,14 @@
 		var html = '';
 		if(data && data.length > 0){
 			$.each(data, function(i, item) {
-				html += '<div class="panel panel-default">' +
-							'<div class="panel-body status">' +
-								'<div class="who clearfix">' +
-									'<img src="'+item['img_src']+'" alt="'+item['title'][0]+'" title="'+item['title'][0]+'" />' +
-									'<span class="name font-sm">' +
-										'<a target="_blank" href="'+item['link'][0]+'">'+item['title'][0]+'</a>' +
-										'<br>' +
-										'<span class="text-muted">'+item['date']+'</span>' +
-									'</span>' +
-								'</div>' +
-								'<div class="image padding-top-0 padding-10">' +
-									'<a target="_blank" href="'+item['link'][0]+'"><img title="'+item['title'][0]+'" alt="'+item['title'][0]+'" src="'+item['img_src']+'" /></a>' +
-								'</div>' +
-								'<div class="text hidden-xs">' +
-									'<p>'+item['text']+'</p>' +
-								'</div>' +
-								'<ul class="links  hidden-xs">' +
-									'<li class="">' +
-										'<a class="btn btn-default btn-circle btn-xs txt-color-blue" title="<?php echo _("Share on facebook"); ?>" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u='+item['link'][0]+'"><i class="fa fa-facebook"></i></a>' +
-									'</li>' +
-									'<li class="">' +
-										'<a class="pull-right" title="<?php echo _("Read more"); ?>" target="_blank" href="'+item['link'][0]+'"> <?php echo _("Read more"); ?> <i class="fa fa-arrow-right"></i></a>' +
-									'</li>' +
-								'</ul>' +
-							'</div>' +
-						'</div>';
+				html += buildBlogPost(item);
 			});
 		}else{
 			html = noFeedAvailable("<i class='fa fa-rss'></i> <?php echo _("Latest blog posts"); ?>", 'blog');
 		}
 		$("#blog-container").html(html);
+		$("#blog-carousel-container").html(html);
+		initCarousel("#blog-carousel-container");
 	}
 	/**
 	*
@@ -66,45 +43,15 @@
 		if(data && data.length > 0){
 			$.each(data, function(i, item) {
 				
-				var post_url  = 'http://www.twitter.com/statuses/' + item['id_str'];
-				var retweet = '';
-				var favourite = '';
-				var place = '';
-				var date = item['created_at'];
-				var images = '';
-	
-				
-				if(item.place) place += '<br><i class="fa fa-map-marker"></i> '+item['place']['full_name'];
-				if(item.retweet_count>0) retweet += '<li class="txt-color-green"><i class="fa fa-retweet"></i> ('+ item['retweet_count']+')</li>';
-				if(item.favorite_count>0) favourite += '<li class="txt-color-red"><i class="fa fa-heart"></i> ('+item['favorite_count']+')</li>';
-	
-				if(item.entities.media){
-					$.each(item.entities.media, function(j, media){
-						if(media.type == 'photo') images += '<div class="image padding-top-0 padding-10"><img title="'+item.original_text+'" src="'+media['media_url']+'" /></div>';
-					});
-				}
-				
-				html += '<div class="panel panel-default">'+
-							'<div class="panel-body status">'+
-								'<div class="who clearfix">'+
-									'<img src="'+item['user']['profile_image_url']+'" />'+
-									'<span class="name"><b><a target="_blank" href="https://twitter.com/'+item['user']['screen_name']+'">'+item['user']['screen_name']+'</a></b>'+
-									'<span class="pull-right"><a href="'+post_url+'" target="_blank" title="View on Twitter"><i class="fa fa-twitter"></i></a></span></span>'+
-									'<span class="from">'+ date + place + '</span>'+
-									'</span>'+
-								'</div>'+
-								'<div class="text">'+
-									'<p>'+item['text']+'</p>'+
-								'</div>'+images+
-								'<ul class="links">' + retweet + favourite +
-								'</ul>'+
-							'</div>'+
-						'</div>';
+				html += buildTwitterPost(item);
 			});
 		}else{
 			html = noFeedAvailable("<i class='fa fa-twitter'></i> <?php echo _("Latest tweets"); ?>", 'twitter');
 		}
 		$("#twitter-container").html(html);
+
+		$("#twitter-carousel-container").html(html);
+		initCarousel("#twitter-carousel-container");
 		
 	}
 	/**
@@ -113,21 +60,26 @@
 	function buildInstagramFeeds(data)
 	{
 		var html = '';
+		var html_carousel = '';
 		if(data && (data.feeds_a)  && (data.feeds_b)){
 			html += '<div class="row"><div class="col-sm-6 col-xs-6 col-b">';
 			$.each(data.feeds_a, function(i, item) {
 				html += instagramPost(item);
+				html_carousel += instagramPost(item);
 			});
 			html += '</div><div class="col-sm-6 col-xs-6 col-a">';
 	
 			$.each(data.feeds_b, function(i, item) {
 				html += instagramPost(item);
+				html_carousel += instagramPost(item);
 			});
 		}else{
 			html = noFeedAvailable("<i class='fa fa-instagram'></i> <?php echo _("Latest instragm posts"); ?>", 'instagram');
 		}
 		html += '</div>';
 		$("#instagram-container").html(html);
+		$("#instagram-carousel-container").html(html_carousel);
+		initCarousel("#instagram-carousel-container");
 	}
 	/**
 	*
@@ -159,7 +111,7 @@
 		var html = '<div class="panel panel-default">' +
 							'<div class="panel-body status">' +
 						'<div class="who clearfix">' +
-							'<img src="'+item['user']['profile_pic_url']+'" />' +
+							'<img class="hidden-xs" src="'+item['user']['profile_pic_url']+'" />' +
 							'<span class="name"><b><a target="_blank" href="http://www.instagram.com/'+item['user']['username']+'">'+item['user']['username']+'</a></b>' +
 							'<span class="pull-right">' +
 								'<a href="'+post_url+'" target="_blank" title="<?php echo _("View on instagram");?>"><i class="fa fa-instagram"></i></a>' +
@@ -272,5 +224,105 @@
 				loadFeed('/fabui/social/load/instagram/1', buildInstagramFeeds);
 				break;
 		}		
+	}
+	/**
+	*
+	**/
+	function initCarousel(element)
+	{
+		$(element).owlCarousel({
+        	loop: true,
+         	margin: 10,
+         	autoHeight:true,
+            responsiveClass: true,
+            	responsive: {
+                	0: {
+                    	items: 1,
+                    	nav: false
+                  	},
+                  	600: {
+                    	items: 3,
+                    	nav: false
+                  	},
+                  	1000: {
+                    	items: 5,
+                    	nav: false,
+                    	loop: false,
+                    	margin: 20
+                  	}
+                }
+		});
+	}
+	/**
+	*
+	**/
+	function buildBlogPost(item)
+	{
+		return '<div class="panel panel-default">' +
+					'<div class="panel-body status">' +
+					'<div class="who clearfix">' +
+						'<img class="hidden-xs" src="'+item['img_src']+'" alt="'+item['title'][0]+'" title="'+item['title'][0]+'" />' +
+						'<span class="name font-sm">' +
+							'<a target="_blank" href="'+item['link'][0]+'">'+item['title'][0]+'</a>' +
+							'<br>' +
+							'<span class="text-muted">'+item['date']+'</span>' +
+						'</span>' +
+					'</div>' +
+					'<div class="image padding-top-0 padding-10">' +
+						'<a target="_blank" href="'+item['link'][0]+'"><img title="'+item['title'][0]+'" alt="'+item['title'][0]+'" src="'+item['img_src']+'" /></a>' +
+					'</div>' +
+					'<div class="text hidden-xs">' +
+						'<p>'+item['text']+'</p>' +
+					'</div>' +
+					'<ul class="links">' +
+						'<li class="">' +
+							'<a class="btn btn-default btn-circle btn-xs txt-color-blue" title="<?php echo _("Share on facebook"); ?>" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u='+item['link'][0]+'"><i class="fa fa-facebook"></i></a>' +
+						'</li>' +
+						'<li class="">' +
+							'<a class="pull-right" title="<?php echo _("Read more"); ?>" target="_blank" href="'+item['link'][0]+'"> <?php echo _("Read more"); ?> <i class="fa fa-arrow-right"></i></a>' +
+						'</li>' +
+					'</ul>' +
+				'</div>' +
+			'</div>';
+	}
+	/**
+	*
+	**/
+	function buildTwitterPost(item)
+	{
+		var post_url  = 'http://www.twitter.com/statuses/' + item['id_str'];
+		var retweet = '';
+		var favourite = '';
+		var place = '';
+		var date = item['created_at'];
+		var images = '';
+
+		
+		if(item.place) place += '<br><i class="fa fa-map-marker"></i> '+item['place']['full_name'];
+		if(item.retweet_count>0) retweet += '<li class="txt-color-green"><i class="fa fa-retweet"></i> ('+ item['retweet_count']+')</li>';
+		if(item.favorite_count>0) favourite += '<li class="txt-color-red"><i class="fa fa-heart"></i> ('+item['favorite_count']+')</li>';
+
+		if(item.entities.media){
+			$.each(item.entities.media, function(j, media){
+				if(media.type == 'photo') images += '<div class="image padding-top-0 padding-10"><img title="'+item.original_text+'" src="'+media['media_url']+'" /></div>';
+			});
+		}
+		
+		return '<div class="panel panel-default">'+
+					'<div class="panel-body status">'+
+					'<div class="who clearfix">'+
+						'<img class="hidden-xs" src="'+item['user']['profile_image_url']+'" />'+
+						'<span class="name"><b><a target="_blank" href="https://twitter.com/'+item['user']['screen_name']+'">'+item['user']['screen_name']+'</a></b>'+
+						'<span class="pull-right"><a href="'+post_url+'" target="_blank" title="View on Twitter"><i class="fa fa-twitter"></i></a></span></span>'+
+						'<span class="from">'+ date + place + '</span>'+
+						'</span>'+
+					'</div>'+
+					'<div class="text">'+
+						'<p>'+item['text']+'</p>'+
+					'</div>'+images+
+					'<ul class="links">' + retweet + favourite +
+					'</ul>'+
+				'</div>'+
+			'</div>';
 	}
 </script>

@@ -335,11 +335,14 @@ if(!function_exists('downloadBlogFeeds'))
 				
 				$content = $feed->content;
 				$html->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
-				$images = $html->getElementsByTagName('img');
-				foreach($images as $imgTag){
-					$imageSrc = $imgTag->getAttribute('src');
-					$imgTag->parentNode->removeChild($imgTag);
+				$feedImages = $html->getElementsByTagName('img');
+				
+				foreach($feedImages as $imgTag){
+					
+					$imageSrc = getWordpressOriginalImage($imgTag->getAttribute('src'));
+					if($imageSrc != null) break;
 				}
+				//print_r($images); exit();
 				$processedFeeds[] = array(
 						'title' => $feed->title,
 						'link' => $feed->guid,
@@ -348,6 +351,8 @@ if(!function_exists('downloadBlogFeeds'))
 						'text' => word_limiter($html->textContent, 50, '...')
 				);
 			}
+			
+			
 			
 			write_file($CI->config->item('blog_feed_file'), json_encode($processedFeeds), 'w+');
 			log_message('debug', 'Blog feeds updated');
@@ -545,7 +550,32 @@ if(!function_exists('displayTwitterFeedItem'))
 EOT;
 	}
 }
-
+//////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getWordpressOriginalImage'))
+{
+	/**
+	 * 
+	 */
+	function getWordpressOriginalImage($url)
+	{
+		$complete_url_splitted = explode("/", $url);
+		
+		$image_name = end($complete_url_splitted);
+		$image_extension = ".".getFileExtension($image_name);
+		
+		$image_name_splitted = explode("-", $image_name);
+		
+		$last_chunk = end($image_name_splitted);
+		
+		if (strpos($last_chunk, 'x') !== false) {
+			$dimensions = str_replace($image_extension, "", $last_chunk);
+			return str_replace("-".$dimensions, '', $url);
+		}else{
+			return $url;
+		}
+		
+	}
+}
 
 
 

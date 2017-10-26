@@ -22,6 +22,9 @@
 				'refresh' => 300
 		);
 								
+		$this->addCssFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.carousel.min.css');
+		$this->addCssFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.theme.default.css');
+		$this->addJSFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.carousel.min.js');
 		$this->addCssFile('/assets/css/dashboard/style.css');
 		$this->addJsInLine($this->load->view('dashboard/js', null, true));
 		
