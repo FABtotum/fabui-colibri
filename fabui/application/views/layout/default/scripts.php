@@ -33,11 +33,17 @@
 		fabApp.getState(true);
 		fabApp.getSettings();
 		fabApp.getNetworkInfo();
-		fabApp.getUpdates();
+		
 		//fabApp.getFeeds();
 		fabApp.checkForFirstSetupWizard();
 		//start intervals
 		temperatures_interval = setInterval(fabApp.getTemperatures, temperatures_interval_timer);
+
+		//check for updates
+		setTimeout(function(){ 
+			fabApp.getUpdates();
+		}, 1000);
+		
 	});
 </script>
 <?php endif;?>
