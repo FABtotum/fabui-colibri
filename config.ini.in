@@ -67,7 +67,7 @@ instagram_feed_file = @BIGTEMP_PATH@fabui/instagram.json
 colibri_endpoint = http://update.fabtotum.com/os/colibri/
 firmware_endpoint = http://update.fabtotum.com/firmware/
 plugins_endpoint = http://update.fabtotum.com/plugins/fabui-colibri/
-updates_json_file = @FABUI_TEMP_PATH@updates.json
+updates_json_file = @BIGTEMP_PATH@fabui/updates.json
 
 [email]
 fabtotum_noreply_url = http://update.fabtotum.com/mail/noreply.php

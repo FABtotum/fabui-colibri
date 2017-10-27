@@ -19,10 +19,10 @@ class Cron extends CI_Controller {
 		$this->config->load('fabtotum');
 		fix_folder_permissions($this->config->item('bigtemp_path'), 'www-data');
 		//download feeds
+		$this->getUpdateJSON();
 		$this->blogFeeds();
 		$this->twitterFeeds();
 		$this->instagramFeeds();
-		$this->instagramHashFeeds();
 		$this->shopFilaments();
 	}
 	
@@ -52,21 +52,6 @@ class Cron extends CI_Controller {
 		//load helpers, config
 		$this->load->helper('social_helper');
 		downloadInstagramFeeds();
-	}
-	/**
-	 * retrieve fabtotum last instagram hash
-	 */
-	public function instagramHashFeeds()
-	{
-		//load helpers, config
-		$this->load->helper('os_helper');
-		$this->config->load('fabtotum');
-	
-		if(downloadRemoteFile($this->config->item('instagram_feed_hash_url'), $this->config->item('instagram_feed_hash_file'))){
-			log_message('debug', 'Instagram hash feeds updated');
-		}else{
-			log_message('debug', 'Instagram hash feeds unavailable');
-		}
 	}
 	/**
 	 * retrieve updates json object

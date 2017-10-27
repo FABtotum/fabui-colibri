@@ -481,6 +481,18 @@ class Control extends FAB_Controller {
 		reload_myfabtotum();
 		$this->output->set_content_type('application/json')->set_output(true);
 	}
+	/**
+	 * 
+	 */
+	function updates()
+	{
+		$this->load->config('fabtotum');
+		$output = '{}';
+		if(file_exists($this->config->item('updates_json_file'))){
+			$output = file_get_contents($this->config->item('updates_json_file'));
+		}
+		$this->output->set_content_type('application/json')->set_output($output);
+	}
 	
 }
 
