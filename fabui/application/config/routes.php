@@ -110,3 +110,6 @@ $route['plugin/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'plugin_$1/$2/$3/$4/$5';
 $route['plugin/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'plugin_$1/$2/$3/$4/$5/$6';
 # 5
 $route['plugin/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'plugin_$1/$2/$3/$4/$5/$6/$7';
+
+//myfabtotum
+$route['myfabtotum/back-url'] = 'myfabtotum/back_url';

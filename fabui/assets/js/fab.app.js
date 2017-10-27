@@ -62,6 +62,7 @@ fabApp = (function(app) {
                });
 				
 			},
+			
 			emergencyButton: function($this){
 				app.stopAll();
 			}
@@ -92,6 +93,11 @@ fabApp = (function(app) {
 			//clear memory reference
 			$this = null;
 			
+		});
+		
+		$.root_.on('click', '[data-action="fabidLogin"]', function(e) {
+			app.fabIDLogin();
+			e.preventDefault();
 		});
 		
 	};
@@ -747,6 +753,7 @@ fabApp = (function(app) {
 		
 		if((totalNotifications) > 0){
 			$("#activity").find('.badge').addClass('bg-color-red bounceIn animated');
+			
 		}else{
 			$("#activity").find('.badge').removeClass('bg-color-red bounceIn animated');
 		}
@@ -1476,6 +1483,17 @@ fabApp = (function(app) {
 			if(data.update.boot) number_updates += 1;
 			
 			app.updateNotificationBadge();
+			
+			if(number_updates > 0 && location.hash != "#updates"){
+				$.smallBox({
+					title : _("Updates center"),
+					content : _("New updates are available") + "<p class='text-align-right'><a href='#updates' class='btn btn-primary btn-sm'>"+_("Update now")+"</a></p>",
+					color : "#296191",
+					//timeout: 8000,
+					icon : "fa fa-refresh swing animated"
+				});
+			}
+			
 		});
 		
 	}
@@ -1753,6 +1771,30 @@ fabApp = (function(app) {
 				}
 			}
 		});
+	}
+	/**
+	 * 
+	 */
+	app.fabIDLogin = function(){
+		
+		if(!$("#fabidModalLogin").length){
+			
+			var host = location.host;
+			var myfabtotum = 'https://my.fabtotum.com/user/login';
+			var back_url = host+'/fabui/myfabtotum/back-url';
+			var iframe_url = myfabtotum + '?url=' + back_url;
+			var modalHtml = '<div class="modal fade" id="fabidModalLogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
+								'<div class="modal-dialog modal-lg">'+
+									'<div class="modal-content">'+
+										'<div class="modal-body no-padding">'+
+											'<iframe style="width: 100%;" src="'+ iframe_url +'"></iframe>'+
+										'</div>'+
+									'</div>'+
+								'</div>'+
+							 '</div>';
+			$("#content").append(modalHtml);
+		}
+		$('#fabidModalLogin').modal({});
 	}
 	return app;
 })({});

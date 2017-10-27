@@ -104,5 +104,16 @@
 		}
 		$this->output->set_content_type('application/json')->set_output(json_encode(true));
 	}
+	/**
+	 * return url from my.fabtotum.com 
+	 */
+	public function back_url()
+	{
+		$fabid = $this->input->get('fabid');
+		
+		if($fabid != ''){ //if fabid exists, means login was ok
+				
+		}
+	}
  }
 ?>
