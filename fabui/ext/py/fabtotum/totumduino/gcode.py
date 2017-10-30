@@ -746,7 +746,12 @@ class GCodeService:
                 if self.active_cmd:
                     if (self.active_cmd.data[:4] == 'M303' or
                         self.active_cmd.data[:4] == 'M109' or
-                        self.active_cmd.data[:4] == 'M190'):
+                        self.active_cmd.data[:4] == 'M190' or
+                        self.active_cmd.data[:3] == 'G30'  or
+                        self.active_cmd.data[:3] == 'G38'  or
+                        self.active_cmd.data[:3] == 'G27'  or
+                        self.active_cmd.data[:3] == 'G28'  or
+                        self.active_cmd.data[:3] == 'G29'):
                         self.active_cmd.notify(abort=True)
                         self.__trigger_callback('state_change', 'terminated')
 
