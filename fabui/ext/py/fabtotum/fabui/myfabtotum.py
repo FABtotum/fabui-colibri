@@ -129,7 +129,7 @@ class MyFabtotumCom:
                 "jsonrpc" : self.jsonrpc_version,
                 "id"      : self.id_counter,
             }
-            response = requests.post( self.url, data=json.dumps(payload), headers=headers, timeout=self.request_timeout).json()
+            response = requests.post( self.url, data=json.dumps(payload), headers=headers, timeout=self.request_timeout, verify=False).json()
             
             if "result" in response:
                 return response['result']
@@ -139,6 +139,7 @@ class MyFabtotumCom:
             
         except requests.exceptions.RequestException as e:
             self.log.debug("MyFabtotumCom - {0}".format(e))
+            self.log.debug("MyFabtotumCom - {0}".format(payload))
             return False
         
     

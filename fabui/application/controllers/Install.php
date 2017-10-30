@@ -252,8 +252,7 @@ class Install extends FAB_Controller {
 		//load libraries, models, helpers
 		$this->load->model('User', 'user');
 		$this->load->model('Configuration', 'configuration');
-		$this->load->helper('os_helper');
-		$this->load->helper('myfabtotum_helper');
+		$this->load->helper(array('os_helper', 'myfabtotum_helper'));
 		//load configs
 		$this->config->load('fabtotum');
 		
@@ -278,9 +277,8 @@ class Install extends FAB_Controller {
 			}
 		}
 		
-		$locale         = $postData['locale'];
-		$fabid          = $postData['fabid'];
-		$fabid_password = $postData['fabid_pwd'];
+		$locale = $postData['locale'];
+		$fabid  = $postData['fabid'];
 		
 		$installSamples = false;
 		
@@ -302,8 +300,11 @@ class Install extends FAB_Controller {
 			'locale' => $locale	
 		);
 		if($fabid != ""){
-			$userSettings['fabid']['email']    = $fabid;
-			$userSettings['fabid']['password'] = $fabid_password;
+			$userSettings['fabid']['email'] = $fabid;
+			
+			if(!fab_is_printer_registered()){
+				fab_register_printer($fabid);
+			}
 		}
 		
 		//set user account data

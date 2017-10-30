@@ -17,10 +17,11 @@
 	protected $layoutRestore       = 'layout/restore';
 	protected $layoutDebug         = 'layout/debug';
 	protected $layoutLock          = 'layout/lock';
+	protected $layoutPopup         = 'layout/popup';
 	protected $template            = array();
 	protected $content             = ''; //
 	protected $is_ajax_request     = false;
-	protected $noSessionNeeded     = array('Login', 'Install', 'Control');
+	protected $noSessionNeeded     = array('Login', 'Install', 'Control', 'Myfabtotum');
 	/*************************************
 	 * 
 	 ************************************/
@@ -86,6 +87,8 @@
 						redirect('login/out');
 				}		
 			}
+			
+			//load translation
 			loadTranslation();
 			
 			if(!$this->is_ajax_request){ //for ajax request no need to load menu
@@ -99,7 +102,7 @@
 				$javascript = $this->config->item('javascript');
 				$css        = $this->config->item('css');
 				
-				$this->js_mandatory = $javascript['mandatory'];
+				$this->js_mandatory  = $javascript['mandatory'];
 				$this->css_mandatory = $css['mandatory'];
 				
 				unset($javascript);
@@ -233,6 +236,22 @@
 		$this->template['footer']  = $this->load->view($this->layoutLock.'/footer', $data, true);
 		$this->template['content'] = $this->content;
 		$this->parser->parse($this->layoutLock.'/structure', $this->template);
+	}
+	
+	/**
+	 * 
+	 */
+	public function popupLayout()
+	{
+		$data = array();
+		$this->fab_app_init = false;
+		
+		$data['translations'] = $this->load->view('layout/translations_js', null, true);
+		
+		$this->template['head']    = $this->load-> view($this->layoutDefaultFolder.'/head', $data, true);
+		$this->template['scripts'] = $this->load-> view($this->layoutDefaultFolder.'/scripts', $data, true);
+		$this->template['content'] = $this->content;
+		$this->parser->parse($this->layoutPopup.'/structure', $this->template);
 	}
 	
 	/***

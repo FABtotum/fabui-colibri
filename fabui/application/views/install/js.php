@@ -41,8 +41,10 @@
 			}
 		});
 		
-		$("#fabidModalButton").on('click', openFABIDModal);
+		$("#fabidModalButton").on('click', fabApp.fabIDLogin);
 		$("#fabid-connect-button").on('click', fabIDConnect);
+
+		$("#fabid").on("change", fabidChange);
 		
 	});
 	/**
@@ -262,7 +264,7 @@
 		var installFields  = $( "#install-form :input" ).serializeArray();
 		var printerFields  = $( "#printer-form :input" ).serializeArray();
 		var timeZoneFields = $( "#tz-form :input" ).serializeArray();
-		var localFields = $( "#locale-form :input" ).serializeArray();
+		var localFields    = $( "#locale-form :input" ).serializeArray();
 
 		jQuery.each( installFields, function( index, object ) {
 			data[object.name] = object.value;
@@ -558,9 +560,14 @@
 					fabApp.showErrorAlert(response.connect.message, 'FABID');
 				}
 
-				
-				
 			});
 		}
+	}
+	/**
+	*
+	**/
+	function fabidChange()
+	{
+		$("#fabidModalButton").addClass('btn-success').html('<i class="fa fa-check"></i> <?php echo _("FABID connected"); ?> (' + $("#fabid").val() +')');
 	}
 </script>

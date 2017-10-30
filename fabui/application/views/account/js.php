@@ -17,7 +17,8 @@
 		$("#fabid-disconnect-button").on('click', askFabIDDisconnect);
 		
 		$("#fabidModalButton").click(function(e){
-	    	$('#fabidModal').modal({});
+	    	/*$('#fabidModal').modal({});*/
+	    	fabApp.fabIDLogin();
 	    });
 	});
 	/**

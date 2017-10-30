@@ -60,7 +60,7 @@
 		<?php else: ?>
 			<div style="padding:25px 14px 5px;">
 				<span>
-					<button class="btn btn-success"><i class="fa fa-check"></i> <?php echo _("Connected via FABID"); ?> (<?php echo $user['settings']['fabid']['email'] ?>)</button>
+					<button class="btn btn-success"><i class="fa fa-check"></i> <?php echo _("FABID connected"); ?> (<?php echo $user['settings']['fabid']['email'] ?>)</button>
 					<a style="margin-left:10px;" href="javascript:void(0);" id="fabid-disconnect-button" ><?php echo _("Disconnect"); ?></a>
 				</span>
 			</div>

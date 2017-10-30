@@ -165,7 +165,9 @@ if(!function_exists('fab_is_printer_registered'))
 		$args['serialno'] = getSerialNumber();
 		$args['mac']      = getMACAddres();
 		
-		return callMyFabtotum('fab_is_printer_registered', $args, false);
+		$response = callMyFabtotum('fab_is_printer_registered', $args, false);
+		
+		return $response['status_code'] == SERVICE_SUCCESS;
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

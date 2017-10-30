@@ -1654,7 +1654,7 @@ fabApp = (function(app) {
 					}
 					
 					if(data.interfaces.wlan0.wireless.hasOwnProperty('ssid')){
-						$(".ribbon-button-alignment").prepend('<span data-title="' + title + ' <br> ' + data.interfaces.wlan0.wireless.ssid  + '<br>' + wifi_ip_address+'"  rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="' + icon + '"></i></span>');	
+						$("#ribbon-left-buttons").prepend('<span data-title="' + title + ' <br> ' + data.interfaces.wlan0.wireless.ssid  + '<br>' + wifi_ip_address+'"  rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="' + icon + '"></i></span>');	
 					}
 					if(data.interfaces.wlan0.wireless.ip_address == hotstname) {
 						connectionType = 'wlan';
@@ -1672,7 +1672,7 @@ fabApp = (function(app) {
 					}
 					
 					if(data.interfaces.wlan1.wireless.hasOwnProperty('ssid')){
-						$(".ribbon-button-alignment").prepend('<span data-title="' + title + ' <br> ' + data.interfaces.wlan0.wireless.ssid  + '<br>' + wifi_ip_address+'"  rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="' + icon + '"></i></span>');	
+						$("#ribbon-left-buttons").prepend('<span data-title="' + title + ' <br> ' + data.interfaces.wlan0.wireless.ssid  + '<br>' + wifi_ip_address+'"  rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="' + icon + '"></i></span>');	
 					}
 					
 					if(data.interfaces.wlan1.wireless.ip_address == hotstname) {
@@ -1681,11 +1681,11 @@ fabApp = (function(app) {
 				}
 			}
 			if(data.internet){
-				$(".ribbon-button-alignment").prepend('<span data-title="' + _("Internet available") + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon internet-ribbon-icon"><i class="fa fa-globe"></i></span>');
+				$("#ribbon-left-buttons").prepend('<span data-title="' + _("Internet available") + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon internet-ribbon-icon"><i class="fa fa-globe"></i></span>');
 			}
 			if(connectionType == 'eth') {
 				$(".eth-ribbon").remove();
-				$(".ribbon-button-alignment").prepend('<span style="padding-top:2px;" data-title="' + _("Connected with ethernet cable") + '<br> ' +eth_address[0] +'" rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon eth-ribbon txt-color-blue"><i class="icon-communication-088 "></i></span>');	
+				$("#ribbon-left-buttons").prepend('<span style="padding-top:2px;" data-title="' + _("Connected with ethernet cable") + '<br> ' +eth_address[0] +'" rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon eth-ribbon txt-color-blue"><i class="icon-communication-088 "></i></span>');	
 			}else if(connectionType == 'wlan'){
 				$(".wifi-ribbon-icon").find('i').addClass('txt-color-blue');
 			}
@@ -1777,6 +1777,17 @@ fabApp = (function(app) {
 	 */
 	app.fabIDLogin = function(){
 		
+		
+		var myfabtotum = 'https://my.fabtotum.com/user/login';
+		var back_url = location.host+'/fabui/myfabtotum/back-url';
+		var complete_url = myfabtotum + '?url=' + back_url;
+		
+		var windowSize = {"width": 500, "height": 500};
+		var position   = {"left": ($(window).width()/2)-(windowSize.width/2), "top": ($(window).height()/2)-(windowSize.height/2) };
+		
+		window.open(complete_url, "myFabtotumIDLogin", "width="+windowSize.width+", height="+windowSize.height+", top="+position.top+", lef="+position.left+",  location=no, toolbar=no, menubar=no, resizable=no, titlebar=no");
+		
+		/*
 		if(!$("#fabidModalLogin").length){
 			
 			var host = location.host;
@@ -1795,6 +1806,7 @@ fabApp = (function(app) {
 			$("#content").append(modalHtml);
 		}
 		$('#fabidModalLogin').modal({});
+		*/
 	}
 	return app;
 })({});
