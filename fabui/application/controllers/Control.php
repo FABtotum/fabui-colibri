@@ -37,7 +37,6 @@ class Control extends FAB_Controller {
 	public function emergency()
 	{
 		//load helper
-		//$this->load->model('Tasks', 'tasks');
 		$this->load->helper('fabtotum_helper');
 		emergency();
 	}
@@ -90,77 +89,74 @@ class Control extends FAB_Controller {
 		$this->output->set_content_type('application/json')->set_output(json_encode($action($value)));
 	}
 	
+	/**
+	 * 
+	 */
 	public function trigger($name)
 	{
 		$this->load->helper('fabtotum_helper');
-		//~ $value = $this->input->post();
 		$value = $this->input->post('data');
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode(trigger($name, $value )));
 	}
 	
-	
+	/**
+	 * 
+	 */
 	public function ws_fallback()
 	{
 		$method = $this->input->method(true);
+		$reponse = array(
+			'type' => 'unknown',
+			'data' => ''
+		);
 		
-		$response = array("type" => "unknown", "data" => "");
-		
-		if($method == "GET")
-		{
-			$request = $this->input->get("data");
+		if($method == 'GET'){ //for get calls
+			
+			$request     = $this->input->get('data');
 			$requestData = json_decode($request, true);
 			
+			//load config file
 			$this->load->config('fabtotum');
-			$this->load->helper('fabtotum_helper');
-			$this->load->helper('os_helper');
-			
-			// notify.json
-			$notify = array(
-					'data' => json_decode( file_get_contents( $this->config->item('notify_file') ), true),
-					'type' => 'trace'
-			);
-			
-			// task_monitor.json
-			$task = array(
-					'data' => json_decode( file_get_contents( $this->config->item('task_monitor') ), true),
-					'type' => 'trace'
-			);
-			
-			// trace
-			$trace = array(
-					'data' => file_get_contents($this->config->item('trace')),
-					'type' => 'trace'
-			);
-			
-			// read usb status
-			$usb = array(
-					'data' => array('status' => getUsbStatus(), 'alert' => false),
-					'type' => 'usb'
-			);
+			//load helpers
+			$this->load->helper(array('fabtotum_helper', 'os_helper'));
 			
 			$response['type'] = 'poll';
-			
 			$response['data'] = array(
-					'notify' => $notify,
-					'trace'  => $trace,
-					'task'   => $task,
-					'usb'    => $usb
+				'notify' => array(
+					'data' => json_decode(file_get_contents( $this->config->item('notify_file') ), true),
+					'type' => 'trace'
+				),
+				'trace' => array(
+					'data' => file_get_contents($this->config->item('trace')),
+					'type' => 'trace'
+				),
+				'task' => array(
+					'data' => json_decode(file_get_contents( $this->config->item('task_monitor') ), true),
+					'type' => 'trace'
+				),
+				'usb' => array(
+					'data' => array('status' => getUsbStatus(), 'alert' => false),
+					'type' => 'usb'
+				)
 			);
 		}
-		else if($method == "POST")
-		{
-			$request = $this->input->post("data");
+		else if($method == 'POST'){ // for post calls
+			
+			$request     = $this->input->post('data');
 			$requestData = json_decode($request, true);
 			
+			//load config file
+			$this->load->config('fabtotum');
+			
 			if(isset($requestData['function'])){
+				
 				$function       = $requestData['function'];
 				$functionParams = isset($requestData['params']) ? $requestData['params'] : '';
 				
 				switch($function)
 				{
-					case "serial": {
-						
+					case 'serial':
 						$method      = $functionParams['method'];
 						$methodParam = $functionParams['value'];
 						$methodStamp = $functionParams['stamp'];
@@ -176,52 +172,54 @@ class Control extends FAB_Controller {
 							$response['data'] = $jogFactory->$method($methodParam, $methodStamp);
 							$response['type'] = $jogFactory->getResponseType();
 						}
-					}
-					break;
-					
-					case "fabBusy": {
+						break;
+						
+					case 'fabBusy':
 						$response['data'] = array('message' => 'FABtotum is busy');
 						$response['type'] = 'alert';
-					}
-					break;
-					
-					case "usbInserted": {
+						break;
+						
+					case 'usbInserted':
 						$response['type'] = 'usb';
-						//set true if usb file exists
-						$this->config->load('fabtotum');
 						$response['data'] = array('status' => file_exists($this->config->item('usb_file')), 'alert' => false);
-					}
+						break;
+						
+					case 'getUpdates':
+						$response['data'] = $this->_getUpdatesData();
+						$response['type'] = "updates";
+						break;
 					
+					case 'getHardwareSettings':
+						$response['data'] =  $this->_getSettingsData();
+						$response['type'] = "hardware-settings";
+						break;
+						
+					case 'getNetworkInfo':
+						$response['data'] = $this->_getNetworkData();
+						$response['type'] = "network-info";
+						break;
 				}
 			}
-			
 		}
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
+	
 	/**
 	 * get settings
 	 */
 	public function getSettings()
 	{
-		$this->load->helpers('fabtotum_helper');
-		$settings = loadSettings();
-		$this->output->set_content_type('application/json')->set_output(json_encode($settings));
+		$data = $this->_getSettingsData();
+		$this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
 	/**
 	 *
 	 */
 	public function getNetworkInfo()
 	{
-		$this->load->helper('os_helper');
-		//if(!file_exists($this->config->config['network_info_file'])){
-			writeNetworkInfo();
-		//}
-		$networkInfo = getNetworkInfo();
-		if($networkInfo['internet'] == false){
-			$networkInfo['internet'] = isInternetAvaialable();
-		}
-		$this->output->set_content_type('application/json')->set_output(json_encode($networkInfo));
+		$networkData = $this->_getNetworkData();
+		$this->output->set_content_type('application/json')->set_output(json_encode($networkData));
 	}
 	/**
 	 * scan wifi networks
@@ -486,19 +484,46 @@ class Control extends FAB_Controller {
 	 */
 	function updates()
 	{
+		$data = $this->_getUpdatesData();
+		$this->output->set_content_type('application/json')->set_output(json_encode($data));
+	}
+	
+	/**
+	 * 
+	 */
+	private function _getNetworkData()
+	{
+		$this->load->helper('os_helper');
+		writeNetworkInfo();
+		$networkInfo = getNetworkInfo();
+		return $networkInfo;
+	}
+	
+	/**
+	 * 
+	 */
+	private function _getUpdatesData()
+	{
 		$this->load->config('fabtotum');
-		$output = '{}';
 		
-		if(file_exists($this->config->item('updates_json_file'))){
-			$output = file_get_contents($this->config->item('updates_json_file'));
-		}else{
+		if(!file_exists($this->config->item('updates_json_file'))){
+			
 			$this->load->helper('update_helper');
 			$this->load->helper('file');
 			$updateJSON = json_encode(getUpdateStatus());
 			write_file($this->config->item('updates_json_file'), $updateJSON);
-			$output = file_get_contents($this->config->item('updates_json_file'));
 		}
-		$this->output->set_content_type('application/json')->set_output($output);
+		return json_decode(file_get_contents($this->config->item('updates_json_file'), true));
+	}
+	/**
+	 * 
+	 */
+	private function _getSettingsData()
+	{
+		$this->load->helpers('fabtotum_helper');
+		$settings = loadSettings();
+		return $settings;
+		
 	}
 	
 }

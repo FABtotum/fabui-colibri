@@ -984,6 +984,15 @@ fabApp = (function(app) {
 					case 'poll':
 						app.handlePollMessage(obj);
 						break;
+					case 'updates':
+						app.handleUpdatesData(obj.data);
+						break;
+					case 'hardware-settings':
+						app.handleSettingsData(obj.data);
+						break;
+					case 'network-info':
+						app.handleNetworkInfoData(obj.data);
+						break;
 					default:
 						break;
 				}
@@ -1399,7 +1408,11 @@ fabApp = (function(app) {
 	 * things to do when socket is connected
 	 */
 	app.afterSocketConnect = function(){
+		
 		if(socket_connected == true){
+			socket.send('{"function": "getUpdates"}');
+			socket.send('{"function": "getHardwareSettings"}');
+			socket.send('{"function": "getNetworkInfo"}');
 			socket.send('{"function": "usbInserted"}');   //check for if usb disk is connected
 		}
 	}
@@ -1475,27 +1488,34 @@ fabApp = (function(app) {
 	app.getUpdates = function() {
 		
 		$.get(updates_json_url + '?' + jQuery.now(), function(data, status){
-			number_updates = data.update.bundles;
 			
-			number_plugin_updates = data.update.plugins;
-			
-			if(data.update.firmware) number_updates += 1;
-			if(data.update.boot) number_updates += 1;
-			
-			app.updateNotificationBadge();
-			
-			if(number_updates > 0 && location.hash != "#updates"){
-				$.smallBox({
-					title : _("Updates center"),
-					content : _("New updates are available") + "<p class='text-align-right'><a href='#updates' class='btn btn-primary btn-sm'>"+_("Update now")+"</a></p>",
-					color : "#296191",
-					//timeout: 8000,
-					icon : "fa fa-refresh swing animated"
-				});
-			}
-			
+			app.handleUpdatesData(data);
 		});
 		
+	}
+	/**
+	 * 
+	 */
+	app.handleUpdatesData = function(data)
+	{
+		number_updates = data.update.bundles;
+		
+		number_plugin_updates = data.update.plugins;
+		
+		if(data.update.firmware) number_updates += 1;
+		if(data.update.boot) number_updates += 1;
+		
+		app.updateNotificationBadge();
+		
+		if(number_updates > 0 && location.hash != "#updates"){
+			$.smallBox({
+				title : _("Updates center"),
+				content : _("New updates are available") + "<p class='text-align-right'><a href='#updates' class='btn btn-primary btn-sm'>"+_("Update now")+"</a></p>",
+				color : "#296191",
+				//timeout: 8000,
+				icon : "fa fa-refresh swing animated"
+			});
+		}
 	}
 	/**
 	 * Redirect to a specific url only when the url responds 200
@@ -1540,10 +1560,17 @@ fabApp = (function(app) {
 	**/
 	app.getSettings = function() {
 		$.get(control_url + '/getSettings', function(data, status){
-			app.setInstalledHeadInfo(data);
-			app.analizeTopBar(data);
-			app.analizeMenu(data);
+			app.handleSettingsData(data);
 		});
+	}
+	/**
+	 * 
+	 */
+	app.handleSettingsData = function(data)
+	{
+		app.setInstalledHeadInfo(data);
+		app.analizeTopBar(data);
+		app.analizeMenu(data);
 	}
 	/**
 	* analize menu to check if something must be hided
@@ -1628,69 +1655,76 @@ fabApp = (function(app) {
 	**/
 	app.getNetworkInfo = function ()
 	{
+		$.get(network_info_url + '?' + jQuery.now(), function(data, status){
+			app.handleNetworkInfoData(data);
+		});
+	}
+	/**
+	 * 
+	 */
+	app.handleNetworkInfoData = function(data)
+	{
 		var hotstname = window.location.hostname;
 		var connectionType = '';
 		
-		$.get(network_info_url + '?' + jQuery.now(), function(data, status){
-			$(".wifi-ribbon-icon").remove();
-			$(".internet-ribbon-icon").remove();
-			if(data.interfaces != null){
+		$(".wifi-ribbon-icon").remove();
+		$(".internet-ribbon-icon").remove();
+		if(data.interfaces != null){
+			
+			if(data.interfaces.hasOwnProperty('eth0')){
 				
-				if(data.interfaces.hasOwnProperty('eth0')){
-					
-					var eth_address = data.interfaces.eth0.ipv4_address.split("/");					
-					if(eth_address[0] == hotstname) connectionType = 'eth';
+				var eth_address = data.interfaces.eth0.ipv4_address.split("/");					
+				if(eth_address[0] == hotstname) connectionType = 'eth';
+			}
+			
+			if(data.interfaces.hasOwnProperty('wlan0')){
+				
+				var icon = 'fa fa-wifi';
+				var title = _("Wifi connected");
+				var wifi_ip_address = data.interfaces.wlan0.wireless.ip_address ;
+				if(data.interfaces.wlan0.wireless.mode == 'accesspoint'){
+					icon = 'icon-communication-035';
+					title = _("Access Point");
+					wifi_ip_address = '';
 				}
 				
-				if(data.interfaces.hasOwnProperty('wlan0')){
-					
-					var icon = 'fa fa-wifi';
-					var title = _("Wifi connected");
-					var wifi_ip_address = data.interfaces.wlan0.wireless.ip_address ;
-					if(data.interfaces.wlan0.wireless.mode == 'accesspoint'){
-						icon = 'icon-communication-035';
-						title = _("Access Point");
-						wifi_ip_address = '';
-					}
-					
-					if(data.interfaces.wlan0.wireless.hasOwnProperty('ssid')){
-						$("#ribbon-left-buttons").prepend('<span data-title="' + title + ' <br> ' + data.interfaces.wlan0.wireless.ssid  + '<br>' + wifi_ip_address+'"  rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="' + icon + '"></i></span>');	
-					}
-					if(data.interfaces.wlan0.wireless.ip_address == hotstname) {
-						connectionType = 'wlan';
-					}
+				if(data.interfaces.wlan0.wireless.hasOwnProperty('ssid')){
+					$("#ribbon-left-buttons").prepend('<span data-title="' + title + ' <br> ' + data.interfaces.wlan0.wireless.ssid  + '<br>' + wifi_ip_address+'"  rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="' + icon + '"></i></span>');	
 				}
-				if(data.interfaces.hasOwnProperty('wlan1')){
-					
-					var icon = 'fa fa-wifi';
-					var title = _("Wifi connected");
-					var wifi_ip_address = data.interfaces.wlan1.wireless.ip_address ;
-					if(data.interfaces.wlan1.wireless.mode == 'accesspoint'){
-						icon = 'icon-communication-035';
-						title = _("Access Point");
-						wifi_ip_address = '';
-					}
-					
-					if(data.interfaces.wlan1.wireless.hasOwnProperty('ssid')){
-						$("#ribbon-left-buttons").prepend('<span data-title="' + title + ' <br> ' + data.interfaces.wlan0.wireless.ssid  + '<br>' + wifi_ip_address+'"  rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="' + icon + '"></i></span>');	
-					}
-					
-					if(data.interfaces.wlan1.wireless.ip_address == hotstname) {
-						connectionType = 'wlan';
-					}
+				if(data.interfaces.wlan0.wireless.ip_address == hotstname) {
+					connectionType = 'wlan';
 				}
 			}
-			if(data.internet){
-				$("#ribbon-left-buttons").prepend('<span data-title="' + _("Internet available") + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon internet-ribbon-icon"><i class="fa fa-globe"></i></span>');
+			if(data.interfaces.hasOwnProperty('wlan1')){
+				
+				var icon = 'fa fa-wifi';
+				var title = _("Wifi connected");
+				var wifi_ip_address = data.interfaces.wlan1.wireless.ip_address ;
+				if(data.interfaces.wlan1.wireless.mode == 'accesspoint'){
+					icon = 'icon-communication-035';
+					title = _("Access Point");
+					wifi_ip_address = '';
+				}
+				
+				if(data.interfaces.wlan1.wireless.hasOwnProperty('ssid')){
+					$("#ribbon-left-buttons").prepend('<span data-title="' + title + ' <br> ' + data.interfaces.wlan0.wireless.ssid  + '<br>' + wifi_ip_address+'"  rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="' + icon + '"></i></span>');	
+				}
+				
+				if(data.interfaces.wlan1.wireless.ip_address == hotstname) {
+					connectionType = 'wlan';
+				}
 			}
-			if(connectionType == 'eth') {
-				$(".eth-ribbon").remove();
-				$("#ribbon-left-buttons").prepend('<span style="padding-top:2px;" data-title="' + _("Connected with ethernet cable") + '<br> ' +eth_address[0] +'" rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon eth-ribbon txt-color-blue"><i class="icon-communication-088 "></i></span>');	
-			}else if(connectionType == 'wlan'){
-				$(".wifi-ribbon-icon").find('i').addClass('txt-color-blue');
-			}
-			pageSetUp();
-		});
+		}
+		if(data.internet){
+			$("#ribbon-left-buttons").prepend('<span data-title="' + _("Internet available") + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon internet-ribbon-icon"><i class="fa fa-globe"></i></span>');
+		}
+		if(connectionType == 'eth') {
+			$(".eth-ribbon").remove();
+			$("#ribbon-left-buttons").prepend('<span style="padding-top:2px;" data-title="' + _("Connected with ethernet cable") + '<br> ' +eth_address[0] +'" rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon eth-ribbon txt-color-blue"><i class="icon-communication-088 "></i></span>');	
+		}else if(connectionType == 'wlan'){
+			$(".wifi-ribbon-icon").find('i').addClass('txt-color-blue');
+		}
+		pageSetUp();
 	}
 	/**
 	* notify user when is possible to power off the printer

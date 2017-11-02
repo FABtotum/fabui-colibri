@@ -29,6 +29,8 @@ class FabWebSocketServer implements MessageComponentInterface {
 				if (method_exists ( $this, $method_name )) {
 					if (isset ( $decoded_message ['params'] ))
 						$reply_message = $this->$method_name ( $decoded_message ['params'] );
+					else 
+						$reply_message = $this->$method_name ();
 				}
 			}
 		}
@@ -92,6 +94,46 @@ class FabWebSocketServer implements MessageComponentInterface {
 				'alert' => false 
 		);
 		return $this->buildResponse ( 'usb', $messageData );
+	}
+	/**
+	 * return updates json 
+	 */
+	public function getUpdates()
+	{
+		$CI = & get_instance ();
+		$CI->load->config('fabtotum');
+		$output = array();
+		if(!file_exists($CI->config->item('updates_json_file'))){
+			$CI->load->helper('update_helper');
+			$CI->load->helper('file');
+			$updateJSON = json_encode(getUpdateStatus());
+			write_file($CI->config->item('updates_json_file'), $updateJSON);
+			
+		}
+		$output = json_decode(file_get_contents($CI->config->item('updates_json_file'), true));
+		return $this->buildResponse ( 'updates', $output);
+	}
+	/**
+	 * return hardware settings
+	 */
+	public function getHardwareSettings()
+	{
+		$CI = & get_instance ();
+		$CI->load->config('fabtotum');
+		$CI->load->helpers('fabtotum_helper');
+		$settings = loadSettings();
+		return $this->buildResponse ( 'hardware-settings', $settings);
+	}
+	/**
+	 * return network infos
+	 */
+	public function getNetworkInfo()
+	{
+		$CI = & get_instance ();
+		$CI->load->helpers('os_helper');
+		writeNetworkInfo();
+		$networkInfo = getNetworkInfo();
+		return $this->buildResponse ( 'network-info', $networkInfo);
 	}
 }
 

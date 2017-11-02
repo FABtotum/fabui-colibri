@@ -31,19 +31,9 @@
 		fabApp.FabActions();
 		fabApp.domReadyMisc();
 		fabApp.getState(true);
-		fabApp.getSettings();
-		fabApp.getNetworkInfo();
-		
-		//fabApp.getFeeds();
 		fabApp.checkForFirstSetupWizard();
 		//start intervals
 		temperatures_interval = setInterval(fabApp.getTemperatures, temperatures_interval_timer);
-
-		//check for updates
-		setTimeout(function(){ 
-			fabApp.getUpdates();
-		}, 1000);
-		
 	});
 </script>
 <?php endif;?>
