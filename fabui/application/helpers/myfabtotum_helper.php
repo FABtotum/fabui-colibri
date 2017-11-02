@@ -176,14 +176,14 @@ if(!function_exists('fab_is_fabid_registered'))
 	/**
 	 * check if fabid is registered to my.fabtotum.com
 	 */
-	function fab_is_fabid_registered($email, $password)
+	function fab_is_fabid_registered($email)
 	{
 		$CI =& get_instance();
 		$CI->load->helpers(array('fabtotum_helper', 'os_helper'));
 		
 		$args = array();
 		$args['email'] = $email;
-		$args['password'] = $password;
+		//$args['password'] = $password;
 		
 		return callMyFabtotum('fab_is_fabid_registered', $args, false);
 	}
@@ -227,6 +227,25 @@ if(!function_exists('myfabtotum_connect'))
 		}
 		
 		return $return;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('fab_my_printers_list'))
+{
+	/**
+	 * 
+	 */
+	function fab_my_printers_list($email)
+	{
+		$args = array();
+		$args['email']    = $email;
+		
+		$response = callMyFabtotum('fab_my_printers_list', $args, false);
+		
+		if($response['status_code'] == SERVICE_SUCCESS){
+			return $response['data'];
+		}
+		return false;
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

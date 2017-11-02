@@ -55,6 +55,11 @@ var serial_exec_url_action      = base_url + '/jog/exec';
 var first_setup_url_action      = base_url + '/control/firstSetup';
 var check_internet_url_action   = '/temp/internet';
 /*
+ * MY.FABTOTUM.COM
+ */
+var myfabtotum_login_url        = 'https://my.fabtotum.com/user/login';
+var myfabtotun_back_uri         = '/fabui/myfabtotum/back-url';
+/*
 * xmlrpc
 */
 var xmlrpc = true;

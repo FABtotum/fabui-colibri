@@ -37,7 +37,7 @@ from threading import Event, Thread
 from fabtotum.database import Database
 from fabtotum.database.sysconfig import SysConfig
 from fabtotum.database.user import User
-from fabtotum.utils.common import shell_exec
+from fabtotum.utils.common import shell_exec, fabtotum_model
 from fabtotum.os.paths import TEMP_PATH, BASH_PATH
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.constants import SERVICE_SUCCESS, SERVICE_UNAUTHORIZED, SERVICE_FORBIDDEN,\
@@ -193,6 +193,12 @@ class MyFabtotumCom:
         except:
             return 0
     
+    def getModel(self):
+        """ get fabtotum model """
+        batch_number = self.getBatchNumer()
+        model  = fabtotum_model(batch_number)
+        return "{0} ({1})".format(model, batch_number)
+    
     def getFwVersion(self):
         """ get firmware version """
         try:
@@ -275,7 +281,7 @@ class MyFabtotumCom:
             "mac"        : self.mac_address,
             "data"       : {
                 "name"      : self.unit_name,
-                "model"     : self.getBatchNumer(),
+                "model"     : self.getModel(),
                 "head"      : head["name"],
                 "fwversion" : self.getFwVersion(),
                 "iplan"     : self.ip_lan,

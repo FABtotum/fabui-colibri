@@ -41,10 +41,6 @@ case "$1" in
     ONLINE=$(sh /usr/share/fabui/ext/bash/internet.sh)
     if [ x"$ONLINE" == x"online" ]; then
         sudo -u www-data php /usr/share/fabui/index.php Cron all &> /var/log/fabui/cron_all.log 2>&1 &
-		#sudo -u www-data php /usr/share/fabui/index.php Cron blogFeeds &> /var/log/fabui/blog_feed.log 2>&1 &
-        #sudo -u www-data php /usr/share/fabui/index.php Cron twitterFeeds &> /var/log/fabui/twitter_feed.log 2>&1 &
-        #sudo -u www-data php /usr/share/fabui/index.php Cron instagramFeeds &> /var/log/fabui/instagram_feed.log 2>&1 &
-        #~ sudo -u www-data php /usr/share/fabui/index.php Cron getUpdateJSON  &> /var/log/fabui/update_check.log 2>&1 &
     fi
     
     # craete network info json file

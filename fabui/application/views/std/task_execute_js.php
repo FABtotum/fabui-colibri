@@ -96,8 +96,8 @@ if(!isset($show_change_filament)) $show_change_filament = false;
 	// internal state
 	var local_task_state = '';
 	//reloading state
-	var isAborted = false;
-	var isAboting = false;
+	var isAborted  = false;
+	var isAborting = false;
 	
 	$(document).ready(function() {
 		initSliders();

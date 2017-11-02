@@ -46,4 +46,21 @@ def rpi_version():
         return soc_name[soc_id]
     else:
         return soc_id
+#######################################################################
+# Define model depending on batch number
+########################################################################
+def fabtotum_model(batch_number):
+    batch_number = int(batch_number)
+    model = ''
+    
+    if(batch_number >= 3000 and batch_number < 4000 ):
+        model = 'Hydra'
+    elif(batch_number >= 2000 and batch_number < 3000):
+        model = 'PRO'
+    elif(batch_number >= 1000 and batch_number < 2000):
+        model = "Core"
+    else:
+        model = 'Fabtotum'
+    
+    return model
     

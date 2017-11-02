@@ -81,6 +81,8 @@ if(!function_exists('downloadInstagramFeeds'))
 		$CI->config->load('fabtotum');
 		$CI->load->helper(array('file', 'os_helper'));
 		
+		$done = false;
+		
 		$fabtotum_max_post = 5;
 		$hashtag_max_post  = 10;
 		
@@ -149,17 +151,14 @@ if(!function_exists('downloadInstagramFeeds'))
 					'feeds'   => $temp_feeds
 				);
 				
-				write_file($CI->config->item('instagram_feed_file'), json_encode($instagram_feeds), 'w+');
-				
-				log_message('debug', 'Instagram feeds updated');
-				return true;
-			
-			}else{
-				
-				log_message('debug', 'Instagram feeds unavailable');
-				return false;
+				if(write_file($CI->config->item('instagram_feed_file'), json_encode($instagram_feeds), 'w+')){
+					$done = true;
+				}	
 			}
 		}
+		
+		$done ? log_message('debug', 'Instagram feeds updated') : log_message('debug', 'Instagram feeds unavailable');
+		return $done;
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -238,6 +237,8 @@ if(!function_exists('downloadTwitterFeeds'))
 		$CI->config->load('fabtotum');
 		$CI->load->helper(array('file', 'os_helper'));
 		
+		$done = false;
+		
 		$twitter_feed = getRemoteFile($CI->config->item('twitter_feed_url'), true, null, 10);
 		
 		if($twitter_feed){
@@ -248,15 +249,15 @@ if(!function_exists('downloadTwitterFeeds'))
 				
 				$feeds = highlightTwitterPost($feeds);
 				
-				write_file($CI->config->item('twitter_feed_file'), json_encode($feeds), 'w+');
-				log_message('debug', 'Twitter feeds updated');
-				return true;
-				
-			}else{
-				log_message('debug', 'Twitter feeds unavailable');
+				if(write_file($CI->config->item('twitter_feed_file'), json_encode($feeds), 'w+')){
+					$done = true;
+				}	
 			}
 		}
-		return false;
+		
+		$done ? log_message('debug', 'Twitter feeds updated') : log_message('debug', 'Twitter feeds unavailable');
+		
+		return $done;
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -318,20 +319,22 @@ if(!function_exists('downloadBlogFeeds'))
 		$CI->load->helper(array('file', 'os_helper', 'text'));
 		
 		$xmlEndPoint = $CI->config->item('blog_feed_url').'?cat='.$CI->config->item('blog_post_categories');
+		$xml         = getRemoteFile($xmlEndPoint, true, null, 10);
 		
-		$xml = getRemoteFile($xmlEndPoint, true, null, 10);
+		$done = false;
+		
 		if($xml){
 			$xml = str_replace("content:encoded>","content>",$xml);
 			$xml = simplexml_load_string($xml,'SimpleXMLElement', LIBXML_NOCDATA );
 			
 			libxml_use_internal_errors(true);
 			
-			$feeds = $xml->channel->item;
-			$processedFeeds    = array();
+			$feeds          = $xml->channel->item;
+			$processedFeeds = array();
 			
 			foreach($feeds as $feed){
 				$imageSrc = null;
-				$html= new DOMDocument();
+				$html     = new DOMDocument();
 				
 				$content = $feed->content;
 				$html->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
@@ -352,15 +355,13 @@ if(!function_exists('downloadBlogFeeds'))
 				);
 			}
 			
-			
-			
-			write_file($CI->config->item('blog_feed_file'), json_encode($processedFeeds), 'w+');
-			log_message('debug', 'Blog feeds updated');
-			return true;
-		}else{
-			log_message('debug', 'Blog feeds unavailable');
-			return false;
+			if(write_file($CI->config->item('blog_feed_file'), json_encode($processedFeeds), 'w+')){
+				$done = true;
+			}
 		}
+			
+		$done ? log_message('debug', 'Blog feeds updated') : log_message('debug', 'Blog not updated');
+		return $done;
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////

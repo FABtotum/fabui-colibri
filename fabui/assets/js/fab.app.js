@@ -1777,36 +1777,13 @@ fabApp = (function(app) {
 	 */
 	app.fabIDLogin = function(){
 		
-		
-		var myfabtotum = 'https://my.fabtotum.com/user/login';
-		var back_url = location.host+'/fabui/myfabtotum/back-url';
-		var complete_url = myfabtotum + '?url=' + back_url;
+		var back_url     = location.host + myfabtotun_back_uri;
+		var complete_url = myfabtotum_login_url + '?url=' + back_url;
 		
 		var windowSize = {"width": 500, "height": 500};
 		var position   = {"left": ($(window).width()/2)-(windowSize.width/2), "top": ($(window).height()/2)-(windowSize.height/2) };
 		
 		window.open(complete_url, "myFabtotumIDLogin", "width="+windowSize.width+", height="+windowSize.height+", top="+position.top+", lef="+position.left+",  location=no, toolbar=no, menubar=no, resizable=no, titlebar=no");
-		
-		/*
-		if(!$("#fabidModalLogin").length){
-			
-			var host = location.host;
-			var myfabtotum = 'https://my.fabtotum.com/user/login';
-			var back_url = host+'/fabui/myfabtotum/back-url';
-			var iframe_url = myfabtotum + '?url=' + back_url;
-			var modalHtml = '<div class="modal fade" id="fabidModalLogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'+
-								'<div class="modal-dialog modal-lg">'+
-									'<div class="modal-content">'+
-										'<div class="modal-body no-padding">'+
-											'<iframe style="width: 100%;" src="'+ iframe_url +'"></iframe>'+
-										'</div>'+
-									'</div>'+
-								'</div>'+
-							 '</div>';
-			$("#content").append(modalHtml);
-		}
-		$('#fabidModalLogin').modal({});
-		*/
 	}
 	return app;
 })({});

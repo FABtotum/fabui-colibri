@@ -756,3 +756,10 @@ select.input-sm {
 	background-image: none !important;
 }
 
+body.smart-style-6 #ribbon {
+	background: #fdfdfd;
+    border-bottom: 1px solid #D8D4D4 !important;
+    border-width: 1px 0px 1px 0px;
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.07);
+}
+

@@ -2,10 +2,12 @@
 
 	$(document).ready(function() {
 
-		loadFeed('/fabui/social/load/blog', buildBlogFeeds);
-		loadFeed('/fabui/social/load/twitter', buildTwitterFeeds);
+		loadFeed('/fabui/social/load/blog',      buildBlogFeeds);
+		loadFeed('/fabui/social/load/twitter',   buildTwitterFeeds);
 		loadFeed('/fabui/social/load/instagram', buildInstagramFeeds);
-		
+		<?php if(isset($this->session->user['settings']['fabid'])): ?>
+			loadFeed('/fabui/myfabtotum/my_list', myFabotumPrintersList);
+		<?php endif; ?>
 	});
 
 	function loadFeed(url, callback)
@@ -324,5 +326,26 @@
 					'</ul>'+
 				'</div>'+
 			'</div>';
+	}
+	/**
+	*
+	**/
+	function myFabotumPrintersList(data)
+	{
+		if(data.status == true){
+			if(data.printers && data.printers.length > 0){
+				var html = '<div class="col-sm-12 animated fadeIn">\
+								<div class="well well-light well-sm">\
+									<div class="text-right">\
+										<span style="margin-right:30px;">'+_("My other printers")+'</span>';
+				$.each(data.printers, function(i, item) {
+					html += '<div class="btn-group"><a href="http://'+item.iplan+'/fabui" target="_blank" class="btn btn-default no-ajax" style="margin-right:5px;"><i class="fa fa-lg fa-fw fabui-core" style="vertical-align: -30%;"></i> '+item.name+'</a></div>';
+					
+				});
+				html += '</div></div></div>';
+
+				$("#my-fabtotum-printers-list").html(html);
+			}
+		}
 	}
 </script>

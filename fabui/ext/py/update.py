@@ -97,10 +97,8 @@ class UpdateApplication(GCodePusher):
         if bundles:
             remote_bundles = self.factory.getBundles()
             if remote_bundles:
-                print "remote_bundles", remote_bundles.keys()
-            
-                for bundle_name in bundles:                
-                    print "+", bundle_name
+                
+                for bundle_name in bundles:
                     
                     bundle = BundleTask(bundle_name, remote_bundles[bundle_name])
                     self.factory.addTask(bundle)
@@ -108,18 +106,16 @@ class UpdateApplication(GCodePusher):
         if firmware_switch:
             remote_firmware = self.factory.getFirmware()
             if remote_firmware:
-                print "+ firmware"
                 firmware = FirmwareTask("fablin", remote_firmware)
                 self.factory.addTask(firmware)
         
         if boot_switch:
             remote_boot = self.factory.getBoot()
             if remote_boot:
-                print "+ boot"
                 boot = BootTask("boot", remote_boot)
                 self.factory.addTask(boot)
         
-        self.send('M105 R0 U255 B0 S50')
+        self.send('M150 R0 U255 B0 S50')
 
         self.factory.setStatus('downloading')
         for task in self.factory.getTasks():
@@ -131,11 +127,26 @@ class UpdateApplication(GCodePusher):
         for task in self.factory.getTasks():
             self.factory.setCurrentTask( task.getName() )
             self.factory.update()
-            self.send('M105 R0 U255 B0 S100')
+            self.send('M150 R0 U255 B0 S100')
             task.install()
-            self.send('M105 R0 U255 B0 S100')
+            self.send('M150 R0 U255 B0 S100')
 
         self.playBeep()
+        # Set ambient colors
+        
+        try:
+            color = self.config.get('settings', 'color')
+        except KeyError:
+            color = {
+                'r' : 255,
+                'g' : 255,
+                'b' : 255,
+            }
+        
+        self.send("M701 S{0}".format(color['r']), group='bootstrap')
+        self.send("M702 S{0}".format(color['g']), group='bootstrap')
+        self.send("M703 S{0}".format(color['b']), group='bootstrap')
+        
         print "finishing task"
         self.finish_task()
 

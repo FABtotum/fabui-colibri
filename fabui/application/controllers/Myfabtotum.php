@@ -147,5 +147,30 @@ class Myfabtotum extends FAB_Controller{
 		
 		$this->popupLayout();
 	}
+	/**
+	 * get printers lists
+	 */
+	public function my_list()
+	{
+		$response['status'] = false;
+		
+		if(isset($this->session->user['settings']['fabid'])){
+			//load helpers
+			$this->load->helper(array('myfabtotum_helper', 'os_helper'));
+			$macAddress = getMACAddres();
+			$myPrinters = fab_my_printers_list($this->session->user['settings']['fabid']['email']);
+			
+			if($myPrinters){
+				foreach($myPrinters as $printer){
+					if($printer['mac'] != $macAddress){ //avoid the printer where iam
+						$response['status'] = true;
+						$response['printers'][] = $printer;
+					}
+				}
+			}
+		}
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($response));	
+	}
 }
 ?>
