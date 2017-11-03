@@ -54,13 +54,13 @@ def fabtotum_model(batch_number):
     model = ''
     
     if(batch_number >= 3000 and batch_number < 4000 ):
-        model = 'Hydra'
+        model = 'FABtotum Hydra'
     elif(batch_number >= 2000 and batch_number < 3000):
-        model = 'PRO'
+        model = 'FABtotum CORE PRO'
     elif(batch_number >= 1000 and batch_number < 2000):
-        model = "Core"
+        model = "FABtotum Core"
     else:
-        model = 'Fabtotum'
+        model = 'FABtotum Personal Fabricator'
     
     return model
     

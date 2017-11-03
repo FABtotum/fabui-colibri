@@ -48,9 +48,11 @@
 	 */
 	public function getByFABID($fabid)
 	{
-		$this->db->like('settings', '"fabid":{"email":"'.$fabid.'"}');
+		$this->db->like('settings', '"fabid":{"email":"'.$fabid.'"');
 		$query = $this->db->get($this->tableName, 1);
 		$result = $query->result_array();
+		
+		echo $this->db->last_query();
 		
 		return isset($result[0]) ? $result[0] : false;
 

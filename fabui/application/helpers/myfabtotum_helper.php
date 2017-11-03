@@ -185,7 +185,8 @@ if(!function_exists('fab_is_fabid_registered'))
 		$args['email'] = $email;
 		//$args['password'] = $password;
 		
-		return callMyFabtotum('fab_is_fabid_registered', $args, false);
+		$response = callMyFabtotum('fab_is_fabid_registered', $args, false);
+		return $response['status_code'] == SERVICE_SUCCESS;
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -245,6 +246,25 @@ if(!function_exists('fab_my_printers_list'))
 		if($response['status_code'] == SERVICE_SUCCESS){
 			return $response['data'];
 		}
+		return false;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('i_can_use_this_printer'))
+{
+	function i_can_use_this_printer($printers)
+	{
+		$CI =& get_instance();
+		$CI->load->helpers(array('fabtotum_helper', 'os_helper'));
+		
+		$mac_address = getMACAddres();
+		
+		foreach($printers as $printer)
+		{
+			if($printer['mac'] == $mac_address)
+				return true;
+		}
+		
 		return false;
 	}
 }

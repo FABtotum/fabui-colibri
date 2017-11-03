@@ -21,6 +21,7 @@ class FabWebSocketServer implements MessageComponentInterface {
 	/**
 	 */
 	public function onMessage(ConnectionInterface $from, $msg) {
+		
 		$decoded_message = json_decode ( $msg, true );
 		$reply_message = $msg;
 		if (json_last_error () == JSON_ERROR_NONE) {
@@ -36,7 +37,8 @@ class FabWebSocketServer implements MessageComponentInterface {
 		}
 		
 		foreach ( $this->clients as $client ) {
-			$client->send ( $reply_message );
+			if($from == $client)
+				$client->send ( $reply_message );
 		}
 	}
 	/**

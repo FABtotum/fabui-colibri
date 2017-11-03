@@ -162,7 +162,7 @@ class MyFabtotumCom:
         user = User(self.db)
         user.query_by('role', 'administrator')
         settings = json.loads(user['settings'])
-        if "fabid" in settings:
+        if "fabid" in settings :
             return settings['fabid']['email']
         else:
             return False
@@ -326,6 +326,7 @@ class MyFabtotumCom:
         """ polling thread """
         self.log.debug("MyFabtotumCom Polling_thread: started")
         while self.running:
+            self.log.info("MyFabtotumCom - {0}".format(self.fab_id))
             if self.fab_id:
                 self.fab_polling()
             time.sleep(self.polling_interval)

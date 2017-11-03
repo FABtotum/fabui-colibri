@@ -19,7 +19,21 @@
 		<div class="col-sm-3 hidden-xs hidden-sm"></div>
 	</div>
 <?php endif; ?>
-<div class="row">
+<div class="row" style="margin-top:50px;" id="fabid-access-form-container">
+	<div class="col-sm-4 col-xs-2 hidden-sm"></div>
+	<div class="col-sm-4 col-xs-8 ">
+		<div class="row text-center well">
+			<div class="col-sm-3 col-xs-3 hidden-sm"></div>
+			<div class="col-sm-6">
+				<img src="/assets/img/fabid.png" class="img-responsive margin-top-10" alt="FABUI">
+				<button type="button" data-action="fabidLogin" class="btn btn-primary btn-lg btn-block margin-top-10"><?php echo _("Sign in with FABID");?></button>
+			</div>
+			<div class="col-sm-4 col-xs-3 hidden-sm"></div>
+		</div>
+	</div>
+	<div class="col-sm-3 col-xs-2 hidden-sm"></div>
+</div>
+<div class="row" id="local-access-form-container" style="display:none;">
 	<div class="col-sm-3 hidden-xs hidden-sm"></div>
 	<div class="col-sm-6 col-xs-12">
 		<div class="well no-padding">
@@ -49,6 +63,7 @@
 				</fieldset>
 				<footer>
 					<button type="submit"  class="btn btn-primary"><?php echo _("Sign In");?></button>
+					<button type="button"   id="fabid-access" class="btn btn-default"><?php echo _("Sign in with FABID");?></button>
 				</footer>
 				<input type="hidden" name="browser-date" id="browser-date">
 			</form>
@@ -56,7 +71,9 @@
 	</div>
 	<div class="col-sm-3 hidden-xs hidden-sm"></div>
 </div>
-
+<form id="fabid-login-form" method="POST" action="<?php echo site_url('login/fabid'); ?>">
+	<input type="hidden" name="fabid" id="fabid" value="">
+</form>
 
 <div class="modal fade" id="password-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">

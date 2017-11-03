@@ -1512,7 +1512,7 @@ fabApp = (function(app) {
 				title : _("Updates center"),
 				content : _("New updates are available") + "<p class='text-align-right'><a href='#updates' class='btn btn-primary btn-sm'>"+_("Update now")+"</a></p>",
 				color : "#296191",
-				//timeout: 8000,
+				timeout: 15000,
 				icon : "fa fa-refresh swing animated"
 			});
 		}
@@ -1813,6 +1813,9 @@ fabApp = (function(app) {
 		
 		var back_url     = location.host + myfabtotun_back_uri;
 		var complete_url = myfabtotum_login_url + '?url=' + back_url;
+		
+		var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+	    var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
 		
 		var windowSize = {"width": 500, "height": 500};
 		var position   = {"left": ($(window).width()/2)-(windowSize.width/2), "top": ($(window).height()/2)-(windowSize.height/2) };

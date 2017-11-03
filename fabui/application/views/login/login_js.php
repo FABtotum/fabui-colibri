@@ -10,11 +10,28 @@
 ?>
 <script type="text/javascript">
 	$(document).ready(function() {
+		fabApp.FabActions();
 		initValidate();
 		$("#login-form").on('submit', submitForm);
 		$("#send-mail").on('click', sendResetEmail);
 		$("#forgot-password").on('click', showForgotPasswordModal);
 		$("#reload-page").on('click', reloadPage);
+		<?php if($fabid == true):?>
+			fabApp.fabIDLogin();
+		<?php endif; ?>
+
+		$("#local-access").on("click", function(){
+			$("#fabid-access-form-container").slideUp(function(){
+				$("#local-access-form-container").slideDown();
+			});
+		});
+
+		$("#fabid-access").on("click", function(){
+			$("#local-access-form-container").slideUp(function(){
+				$("#fabid-access-form-container").slideDown();
+			});
+		});
+				
 	});
 	
 	function showForgotPasswordModal()

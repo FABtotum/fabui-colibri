@@ -50,7 +50,7 @@
 <?php if($user['role'] == 'administrator' && $fabid_active):?>
 <div class="row">
 	<div class="col-sm-12 margin-bottom-10">
-		<?php if(!isset($user['settings']['fabid']['email'])):?>
+		<?php if(!isset($user['settings']['fabid']['logged_in']) || $user['settings']['fabid']['logged_in'] == false):?>
 			<div style="padding:25px 14px 5px;">
 				<span>
 					<button id="fabidModalButton" class="btn btn-default"><i class="fa fa-link"></i> <?php echo _("Connect to your FABID account"); ?></button>

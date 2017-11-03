@@ -90,9 +90,7 @@ class Myfabtotum extends FAB_Controller{
 		if($user){
 			
 			$user['settings'] = json_decode($user['settings'], true);
-			unset($user['settings']['fabid']);
-			
-			
+			$user['settings']['fabid']['logged_in'] = false;
 			//update user's db record
 			$this->user->update($user['id'], array('settings' => json_encode($user['settings'])));
 			
@@ -128,7 +126,8 @@ class Myfabtotum extends FAB_Controller{
 					
 					$user['settings'] = json_decode($user['settings'], true);
 					unset($user['settings']['fabid']);
-					$user['settings']['fabid']['email'] = $fabid;
+					$user['settings']['fabid']['email']     = $fabid;
+					$user['settings']['fabid']['logged_in'] = true;
 					
 					$this->session->user = $user;
 					$this->user->update($user['id'], array('settings' => json_encode($user['settings'])));
