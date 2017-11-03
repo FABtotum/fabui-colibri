@@ -39,9 +39,9 @@
 			window.opener.$("#fabid").val("<?php echo $fabid;?>").triggerHandler('change');
 			<?php endif; ?>
 		}else if(fromLogin){
+			<?php if($internet):?>
 			window.opener.$("#fabid").val("<?php echo $fabid;?>");
 			window.opener.$('body').css("opacity", "0.4");
-			<?php if($internet):?>
 			window.opener.$("#fabid-login-form").submit();
 			<?php endif;?>
 		}
