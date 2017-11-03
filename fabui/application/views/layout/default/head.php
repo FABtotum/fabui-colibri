@@ -27,8 +27,8 @@
 <!-- PAGE RELATED CSS FILES -->
 <?php echo cssFilesInclusion($this->css); ?>
 <!-- FAVICONS -->
-<link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon">
-<link rel="icon"          href="/assets/img/favicon/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="/assets/img/favicon/favicon.png" type="image/x-icon">
+<link rel="icon"          href="/assets/img/favicon/favicon.png" type="image/x-icon">
 <!-- HEADERD JAVASCRIPTS -->
 <script src="/assets/js/libs/jquery-2.1.1.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script src="/assets/js/libs/jquery-ui-1.10.3.min.js?v=<?php echo FABUI_VERSION ?>"></script>
