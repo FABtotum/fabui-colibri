@@ -9,9 +9,8 @@
  */
 ?>
 <script type="text/javascript">
+	var timeout = <?php echo $internet ? 1000 : 5000 ?>;
 	setTimeout(function(){
-
-
 		var regex_install = /fabui\/install/g;
 		var regex_login   = /fabui\/login/g;
 		var openerPathName = window.opener.location.pathname;
@@ -36,15 +35,21 @@
 		
 
 		if(fromInstall){
+			<?php if($internet):?>
 			window.opener.$("#fabid").val("<?php echo $fabid;?>").triggerHandler('change');
+			<?php endif; ?>
 		}else if(fromLogin){
 			window.opener.$("#fabid").val("<?php echo $fabid;?>");
 			window.opener.$('body').css("opacity", "0.4");
+			<?php if($internet):?>
 			window.opener.$("#fabid-login-form").submit();
+			<?php endif;?>
 		}
 		else{
+			<?php if($internet):?>
 			window.opener.location.reload(true);
+			<?php endif;?>
 		}
 		window.close();
-	}, 1000);
+	}, timeout);
 </script>

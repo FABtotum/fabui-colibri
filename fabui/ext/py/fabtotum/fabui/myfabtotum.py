@@ -326,7 +326,6 @@ class MyFabtotumCom:
         """ polling thread """
         self.log.debug("MyFabtotumCom Polling_thread: started")
         while self.running:
-            self.log.info("MyFabtotumCom - {0}".format(self.fab_id))
             if self.fab_id:
                 self.fab_polling()
             time.sleep(self.polling_interval)

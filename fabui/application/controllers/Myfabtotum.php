@@ -110,34 +110,37 @@ class Myfabtotum extends FAB_Controller{
 	{
 		$fabid = $this->input->get('fabid');
 		$data['fabid'] = $fabid;
+		$data['internet'] = false;
 		
 		if($fabid != ''){ //if fabid exists, means login was ok
 			
-			if(isset($this->session->user)){
-				
-				//load classes
-				$this->load->model('User', 'user');
-				//load helpers
-				$this->load->helper('myfabtotum_helper');
-				
-				$user = $this->user->get($this->session->user['id'], 1);
-				
-				if($user){ //if user exists
+			$this->load->helper(array('myfabtotum_helper', 'os_helper'));
+			
+			if(isInternetAvaialable()){
+				if(isset($this->session->user)){
 					
-					$user['settings'] = json_decode($user['settings'], true);
-					unset($user['settings']['fabid']);
-					$user['settings']['fabid']['email']     = $fabid;
-					$user['settings']['fabid']['logged_in'] = true;
+					$data['internet'] = true;
+					//load classes
+					$this->load->model('User', 'user');
+					//load helpers
+					$user = $this->user->get($this->session->user['id'], 1);
 					
-					$this->session->user = $user;
-					$this->user->update($user['id'], array('settings' => json_encode($user['settings'])));
+					if($user){ //if user exists
+						
+						$user['settings'] = json_decode($user['settings'], true);
+						unset($user['settings']['fabid']);
+						$user['settings']['fabid']['email']     = $fabid;
+						$user['settings']['fabid']['logged_in'] = true;
+						
+						$this->session->user = $user;
+						$this->user->update($user['id'], array('settings' => json_encode($user['settings'])));
+					}
+					
+					if(!fab_is_printer_registered()){
+						fab_register_printer($fabid);
+					}
+					reload_myfabtotum();	
 				}
-				
-				if(!fab_is_printer_registered()){
-					fab_register_printer($fabid);
-				}
-				
-				reload_myfabtotum();	
 			}
 		}
 		
@@ -156,14 +159,18 @@ class Myfabtotum extends FAB_Controller{
 		if(isset($this->session->user['settings']['fabid'])){
 			//load helpers
 			$this->load->helper(array('myfabtotum_helper', 'os_helper'));
-			$macAddress = getMACAddres();
-			$myPrinters = fab_my_printers_list($this->session->user['settings']['fabid']['email']);
 			
-			if($myPrinters){
-				foreach($myPrinters as $printer){
-					if($printer['mac'] != $macAddress){ //avoid the printer where iam
-						$response['status'] = true;
-						$response['printers'][] = $printer;
+			if(isInternetAvaialable()){
+				
+				$macAddress = getMACAddres();
+				$myPrinters = fab_my_printers_list($this->session->user['settings']['fabid']['email']);
+				
+				if($myPrinters){
+					foreach($myPrinters as $printer){
+						if($printer['mac'] != $macAddress){ //avoid the printer where iam
+							$response['status'] = true;
+							$response['printers'][] = $printer;
+						}
 					}
 				}
 			}
