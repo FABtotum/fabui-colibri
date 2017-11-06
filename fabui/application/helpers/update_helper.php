@@ -86,7 +86,7 @@ if(!function_exists('getSystemRemoteVersions')){
 		$CI->config->load('fabtotum');
 		$CI->load->helper('os_helper');
 		$endpoint = $CI->config->item('colibri_endpoint').getArchitecture().'/version.json';
-		$remoteContent = getRemoteFile($endpoint, false);
+		$remoteContent = getRemoteFile($endpoint, false, null, 60);
 		if($remoteContent != false) return json_decode($remoteContent, true);
 		else false;
 	}
@@ -156,7 +156,7 @@ if(!function_exists('getBundlesStatus'))
 			$firmware['need_update']         = version_compare($installedFirmware['firmware']['version'], $firmwareRemote['firmware']['latest']) == -1 ? true : false;
 			$firmware['is_priority']         = false;
 			$firmware['remote']              = $firmwareRemote['firmware'][$firmwareRemote['firmware']['latest']];
-			$firmware['remote']['changelog'] = getRemoteFile($fwEndpoint.'/latest/changelog.txt', false);
+			$firmware['remote']['changelog'] = getRemoteFile($fwEndpoint.'/latest/changelog.txt', false, null, 60);
 
 			//retrieve remote bootfiles info
 			$bootfiles['need_update']        = version_compare($installedBootfiles, $remoteBootfiles['latest']) == -1 ? true : false;
@@ -202,7 +202,7 @@ if(!function_exists('getBundlesStatus'))
 				$changelog = '';
 				$changelog_url = $bundlesEndpoint.'/bundles/'.$bundleName.'/changelog.json';
 				if($needUpdate) {
-					$remoteContent = getRemoteFile($bundlesEndpoint.'/bundles/'.$bundleName.'/changelog.json', false);
+					$remoteContent = getRemoteFile($bundlesEndpoint.'/bundles/'.$bundleName.'/changelog.json', false, null, 60);
 					if($remoteContent != false){
 						$temp = json_decode($remoteContent, true);
 						$changelog = ($temp[$remoteBundle['latest']]);
@@ -371,7 +371,7 @@ if(!function_exists('getRemoteFwVersions'))
 		$CI->config->load('fabtotum');
 		$CI->load->helper('os_helper');
 		$endpoint = $CI->config->item('firmware_endpoint').'fablin/atmega1280/version.json';
-		$remoteContent = getRemoteFile($endpoint, false);
+		$remoteContent = getRemoteFile($endpoint, false, null, 60);
 		if($remoteContent != false) return json_decode($remoteContent, true);
 		else false;
 	}

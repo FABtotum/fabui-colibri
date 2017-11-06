@@ -25,7 +25,7 @@ case "$1" in
     boot_msg "Starting ${SERVICE_NAME}."
     
     ######## websocket server ########
-    php ${FABUI_PATH}/index.php Server webSocket &> /var/log/fabui/webSocket.log &
+    sudo -u www-data php ${FABUI_PATH}/index.php Server webSocket &> /var/log/fabui/webSocket.log &
     echo $! > ${WEBSOCKET_PID}
     
     evaluate_retval

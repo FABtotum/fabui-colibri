@@ -12,18 +12,19 @@
 		
 		$(".address-mode").on('change', address_mode_change);
 		$(".show-password").on('change', show_password);
-		
-		<?php 
-			foreach($interfaces as $iface => $value)
-			{
-				if($value['do_scan'])
-				{
-					echo 'scan("'.$iface.'");'.PHP_EOL;
-				}
-			}
-			echo '$("#'.$preSelectedInterface.'-tab #address-mode").trigger("change");'.PHP_EOL;
-		?>
 
+		$("#<?php echo $preSelectedInterface?>-tab #address-mode").trigger("change");
+
+		<?php foreach($interfaces as $iface => $value): ?>
+
+			<?php if($value['do_scan']): ?>
+				scan("<?php echo $iface ?>");
+			<?php endif; ?>
+			
+			$("#<?php echo $iface?>-tab #address-mode").trigger("change");
+		
+		<?php endforeach ?>;
+		
 		$("#scanButton").on('click', do_scan);
 		$("#modalConnectButton").on('click', passwordModalConnect);
 		
@@ -32,8 +33,8 @@
 		initFieldValidator();
 		triggerPreSelected();
 		initEthCurrentIPV4();
-		fabApp.getNetworkInfo();
-
+		fabApp.doFunctionOverWS('getNetworkInfo');
+		
 		$("#wifiPassword").keypress(function(e) {
 			if(e.which == 13){
 				passwordModalConnect();
@@ -266,11 +267,11 @@
  
 	function tab_change(e)
 	{
-		var target = $(e.target).attr("href");
-		
+		var target = $(e.target).attr("href");		
 		if( target.startsWith("#wlan") )
 		{
 			var mode = $(target + ' #address-mode').val();
+			
 			if(mode != 'static-ap' && mode != 'auto-ap' && mode != 'disabled')
 				$("#scanButton").show();
 			else
@@ -303,7 +304,7 @@
 				$("#"+iface+"-tab #gateway-container").slideUp('slow');
 				$("#"+iface+"-table-container").slideDown('slow');
 				$("#"+iface+"-tab #dhcp-address-container").slideDown('slow');
-				if(iface.startsWith('wlan'))
+				if(iface.startsWith('wlan') && $("#"+iface+"-tab").is(':visible'))
 					$("#scanButton").show();
 				else
 					$("#scanButton").hide();
@@ -314,7 +315,7 @@
 				$("#"+iface+"-tab #gateway-container").slideDown('slow');
 				$("#"+iface+"-table-container").slideDown('slow');
 				$("#"+iface+"-tab #dhcp-address-container").slideUp('slow');
-				if(iface.startsWith('wlan'))
+				if(iface.startsWith('wlan')  && $("#"+iface+"-tab").is(':visible'))
 					$("#scanButton").show();
 				else
 					$("#scanButton").hide();
@@ -367,9 +368,11 @@
 	 */
 	function scan(iface)
 	{
+		
 		$("#"+iface+"-table-container").css('opacity', '0.1');
 		$("#scanButton").html('<i class="fa fa-search"></i> <?php echo _("Scanning") ?>..');
 		disableButton("#scanButton");
+		
 		$.ajax({
 			type: 'get',
 			url: "<?php echo site_url('settings/scanWifi'); ?>/"+iface,

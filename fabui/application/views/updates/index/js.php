@@ -17,8 +17,10 @@
 	$(document).ready(function() {
 		<?php if($runningTask): ?>
 		resumeTask();
-		<?php else: ?>
+		<?php elseif($internet): ?>
 		checkUpdateStatus();
+		<?php else: ?>
+		noInternetAvailable();
 		<?php endif; ?>
 	});
 	
@@ -42,8 +44,9 @@
 				noInternetAvailable();
 			}else{
 				handleAvailableUpdates(response);
+				fabApp.handleUpdatesData(response);
 			}
-			fabApp.getUpdates();
+			//fabApp.doFunctionOverWS('getUpdates');
 		});
 	}
 	/**

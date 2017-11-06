@@ -985,6 +985,7 @@ fabApp = (function(app) {
 						app.handlePollMessage(obj);
 						break;
 					case 'updates':
+						console.log(obj.data);
 						app.handleUpdatesData(obj.data);
 						break;
 					case 'hardware-settings':
@@ -1487,7 +1488,6 @@ fabApp = (function(app) {
 	app.getUpdates = function() {
 		
 		$.get(updates_json_url + '?' + jQuery.now(), function(data, status){
-			
 			app.handleUpdatesData(data);
 		});
 		
@@ -1822,6 +1822,27 @@ fabApp = (function(app) {
 		var position   = {"left": ($(window).width()/2)-(windowSize.width/2), "top": ($(window).height()/2)-(windowSize.height/2) };
 		
 		window.open(complete_url, "myFabtotumIDLogin", "width="+windowSize.width+", height="+windowSize.height+", top="+position.top+", lef="+position.left+",  location=no, toolbar=no, menubar=no, resizable=no, titlebar=no");
+	}
+	/**
+	 * 
+	 */
+	app.doFunctionOverWS = function(func)
+	{
+		if(!socket_connected || socket.fallback){
+			switch(func){
+				case 'getNetworkInfo':
+					app.getNetworkInfo();
+					break;
+				case 'getUpdates':
+					app.getUpdates();
+					break;
+				case 'getHardwareSettings':
+					app.getSettings();
+					break;
+			}
+		}else{
+			socket.send('{"function": "'+func+'"}');
+		}
 	}
 	return app;
 })({});

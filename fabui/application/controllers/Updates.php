@@ -24,11 +24,12 @@
  	public function index()
  	{
  		//load helpers
- 		$this->load->helper('layout');
+ 		$this->load->helper(array('layout', 'os_helper'));
  		$this->load->library('smart');
  		
  		$data = array();
  		$data['runningTask'] = $this->runningTask;
+ 		$data['internet']    = isInternetAvaialable();
  		
  		$widgetOptions = array(
  				'sortable' => false, 'fullscreenbutton' => true,'refreshbutton' => false,'togglebutton' => false,
@@ -57,12 +58,15 @@
 	function updateStatus()
 	{
 		//load helpers, config
-		$this->load->helper('update_helper');
-		$this->load->helper('file');
+		$this->load->helper(array('update_helper', 'file', 'os_helper'));
 		$this->config->load('fabtotum');
 		//get remote bundles status
-		$bundlesStatus = getUpdateStatus();
-		write_file($this->config->item('updates_json_file'), json_encode($bundlesStatus));
+		if(isInternetAvaialable()){
+			$bundlesStatus = getUpdateStatus();
+			write_file($this->config->item('updates_json_file'), json_encode($bundlesStatus));
+		}else{
+			$bundlesStatus['remote_connection'] = false;
+		}
 		$this->output->set_content_type('application/json')->set_output(json_encode($bundlesStatus));
 	}
 	/**
