@@ -51,7 +51,7 @@
 	**/
 	function noInternetAvailable()
 	{
-		$(".status").html('<i class="fa fa-exclamation-circle"></i><br><?php echo _("No internet connection found") ?><br><?php echo _("Check your connection and try again") ?>');
+		$(".status").html('<i class="fa fa-exclamation-circle"></i><br><?php echo _("No internet connection found") ?><br><?php echo _("Check network settings and try again") ?>');
 		/*$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-exclamation-circle');*/
 
 		buttons = '<button class="btn btn-default  action-buttons" id="check-again"> <?php echo _("Check again") ?></button> ';

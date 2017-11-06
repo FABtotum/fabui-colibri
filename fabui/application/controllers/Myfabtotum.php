@@ -105,7 +105,7 @@ class Myfabtotum extends FAB_Controller {
 	public function back_url() {
 		$fabid = $this->input->get ( 'fabid' );
 		$data ['fabid'] = $fabid;
-		$data ['internet']     = false;
+		$data ['internet'] = false;
 		
 		if ($fabid != '') { // if fabid exists, means login was ok
 			
@@ -115,11 +115,11 @@ class Myfabtotum extends FAB_Controller {
 			) );
 			
 			if (isInternetAvaialable ()) { // check for internet connection
-			    				
+			                               
 				// load classes
 				$this->load->model ( 'User', 'user' );
 				$data ['internet'] = true;
-								
+				
 				if (isset ( $this->session->user )) {
 					$user = $this->user->get ( $this->session->user ['id'], 1 );
 				} else {
@@ -136,7 +136,9 @@ class Myfabtotum extends FAB_Controller {
 						$user ['settings'] ['fabid'] ['email'] = $fabid;
 						$user ['settings'] ['fabid'] ['logged_in'] = true;
 						$this->session->user = $user;
-						$this->user->update ( $user ['id'], array ('settings' => json_encode ( $user ['settings'] ) ) );
+						$this->user->update ( $user ['id'], array (
+								'settings' => json_encode ( $user ['settings'] ) 
+						) );
 					}
 					
 					if (! fab_is_printer_registered ()) {
@@ -157,17 +159,13 @@ class Myfabtotum extends FAB_Controller {
 	 * get printers lists
 	 */
 	public function my_list() {
-		$response ['status'] = false;
 		
-		if (isset ( $this->session->user ['settings'] ['fabid'] )) {
-			// load helpers
-			$this->load->helper ( array (
-					'myfabtotum_helper',
-					'os_helper' 
-			) );
+		$response ['status'] = false;
+		// load helpers
+		$this->load->helper ( array ('myfabtotum_helper', 'os_helper' ) );
+		if (isInternetAvaialable()) {
 			
-			if (isInternetAvaialable ()) {
-				
+			if (isset ( $this->session->user ['settings'] ['fabid'] )) {
 				$macAddress = getMACAddres ();
 				$myPrinters = fab_my_printers_list ( $this->session->user ['settings'] ['fabid'] ['email'] );
 				

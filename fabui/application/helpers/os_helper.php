@@ -373,9 +373,10 @@ if(!function_exists('downloadRemoteFile'))
 				return false;
 			}
 		}
-		
+
 		$curl = curl_init($remoteUrl);
-		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $timeout);
+		curl_setopt($curl, CURLOPT_TIMEOUT,        $timeout);
+		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 0);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
 		$downloadedFile = curl_exec($curl); //make call
@@ -409,15 +410,17 @@ if(!function_exists('getRemoteFile'))
 		}
 		
 		$curl = curl_init($url);
-	
-		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $timeout);
+		
+		curl_setopt($curl, CURLOPT_TIMEOUT,        $timeout);
+		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 0);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+		
 		if(!empty($headers)){
 			curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 		}
 		$content = curl_exec($curl); //make call
-		$info = curl_getinfo($curl);
+		$info    = curl_getinfo($curl);
 		
 		if(isset($info['http_code']) && $info['http_code'] == 200){ //if response is OK
 			return $content;

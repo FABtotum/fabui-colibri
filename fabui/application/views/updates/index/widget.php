@@ -10,20 +10,11 @@
 <div class="row">
 	<div class="col-sm-12">
 		<div class="text-center  update-box">
-			 
 			<h1>
 				<span class="fabtotum-icon">
 				<i style="font-size:200px;" class="fabui-core"></i>
 				</span>
 			</h1>
-			<!--
-			<h1>
-				<span class="fabtotum-icon">
-					<i class="fa fa-play fa-rotate-90 fa-border border-black fa-4x"></i>
-					<span><b class="badge"></b></span>
-				</span>
-			</h1>
-			-->
 			<h4 class="status" style="margin-top:-10px;"></h4>
 			<p class="lead"><small class="small"></small></p>
 			<div class="button-container"></div>
