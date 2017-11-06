@@ -3,6 +3,7 @@
 	var selected_head = "<?php echo $installed_head['filename']?>";
 	heads = <?php echo json_encode($heads)?>;
 	var official_heads_id_limit = 100;
+	var owl;
 	
 	$(document).ready(function() {
 		initCarousel();
@@ -12,13 +13,14 @@
 		$('.capability').on('change', capability_change);
 		$("#inputId").on('change', importHeadSettings);
 		$("#advanced_settings_switch").on('click', clickShowHideSettings);
+
 	});
 	/**
 	*
 	**/
 	function initCarousel()
 	{
-		$('.owl-carousel').owlCarousel({
+		var owl = $('.owl-carousel').owlCarousel({
         	loop: true,
          	margin: 1,
             responsiveClass: true,
@@ -38,6 +40,33 @@
                     	margin: 20
                   	}
                 }
+		});
+
+		$('.filters-button').on('click', function(e) {
+			var filter_data = $(this).data('filter');
+						
+			/* return if current */
+			if($(this).hasClass('btn-info')) return;
+
+			/* active current */
+			$(this).addClass('btn-info').siblings().removeClass('btn-info');
+
+			/* animate filter */
+			var owlAnimateFilter = function(even) {
+				$(this)
+				.addClass('__loading')
+				.delay(70 * $(this).parent().index())
+				.queue(function() {
+					$(this).dequeue().removeClass('__loading')
+				})
+			}
+
+			/* Filter 
+			owl.owlFilter(filter_data);*/
+			owl.owlFilter(filter_data, function(_owl) { 
+				$(_owl).find('.item').each(owlAnimateFilter); 
+				$('.settings-action').on('click', buttonAction);
+			});
 		});
 	}
 	/**
@@ -588,7 +617,6 @@
 	**/
 	function showDescription()
 	{
-		console.log(heads[selected_head]);
 		$(".heads-description").addClass("hidden");
 		$("#"+selected_head+"_description").removeClass("hidden");
 		$("#descriptionModalTitle").html(heads[selected_head].name);

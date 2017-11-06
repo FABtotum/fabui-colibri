@@ -1,8 +1,17 @@
 <div class="row">
 	<div class="col-sm-12">
+		<span><?php echo _("Filters");?></span>
+		<?php foreach($capabilities as $key => $value):?>
+		<button type="button" class="btn btn-default <?php echo $key == "*" ? 'btn-info' : '';?>  filters-button" data-filter="<?php echo $key?>"><?php echo $value;?></button>
+		<?php endforeach; ?>
+	</div>
+</div>
+<hr class="simple">
+<div class="row">
+	<div class="col-sm-12">
 		<div class="owl-carousel owl-theme">
 			<?php foreach($heads as $index => $head):?>
-				<div class="panel panel-default <?php echo $index == $installed_head['filename'] ? 'installed' : 'not-installed' ?>">
+				<div class="panel panel-default item <?php echo implode(" ", $head['capabilities']); ?>  <?php echo $index == $installed_head['filename'] ? 'installed' : 'not-installed' ?>">
 					
 					<div class="panel-body status">
 						<div class="who clearfix">

@@ -149,6 +149,13 @@ class Head extends FAB_Controller {
 		
 		$data['heads'] = loadHeads();
 		$data['installed_head'] = getInstalledHeadInfo();
+		$data['capabilities'] = array(
+			'*'     => _("All"),
+			'.print' => _("3D Printing"),
+			'.mill'  => _("Milling"),
+			'.laser' => _("Laser"),
+			'.scan'  => _("Scan")
+		);
 		
 		$headerToolbar = '
 		<div class="widget-toolbar" role="menu">
@@ -177,6 +184,7 @@ class Head extends FAB_Controller {
 		$this->addCssFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.carousel.min.css');
 		$this->addCssFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.theme.default.css');
 		$this->addJSFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.carousel.min.js');
+		$this->addJSFile('/assets/js/plugin/OwlCarousel2-2.2.1/plugins/jquery.owl-filter.js');
 		
 		$this->content = $widget->print_html(true);
 		$this->view();
