@@ -1,3 +1,4 @@
+[cam_toolbox]
 preset_path          = @LIB_PATH@cam 
 api_url              = http://app.fabtotum.com/api/
 api_version          = 1
