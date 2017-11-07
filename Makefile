@@ -79,7 +79,7 @@ RECOVERY_FILES	=	recovery/*
 DB				= 	sqlite3
 DB_FILES		= 	fabtotum.db
 
-CONFIG_FILES	=	config.ini serial.ini lang.ini pins.ini
+CONFIG_FILES	=	config.ini serial.ini lang.ini pins.ini cam.ini
 
 # Files that will end up in SHARED_PATH
 STATIC_FILES	=	
@@ -91,7 +91,8 @@ DYNAMIC_FILES	=	$(CONFIG_FILES) \
 					fabui/feeders \
 					fabui/plugins \
 					fabui/cameras \
-					fabui/settings
+					fabui/settings \
+					fabui/cam
 
 # List of files that should go through the generator script
 GENERATED_FILES = $(CONFIG_FILES) \
