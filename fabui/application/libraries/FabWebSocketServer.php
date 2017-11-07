@@ -35,10 +35,13 @@ class FabWebSocketServer implements MessageComponentInterface {
 				}
 			}
 		}
-		
+		/**
+		 * @TODO better handler - if message come from webpage send only to the specific client
+		 *  if message come from python (es. monitor) send also to webpage
+		 */
 		foreach ( $this->clients as $client ) {
-			if($from == $client)
-				$client->send ( $reply_message );
+			//if($from == $client)
+			$client->send ( $reply_message );
 		}
 	}
 	/**
