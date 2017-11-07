@@ -104,7 +104,8 @@
 		$dropdown = array();
 		if(!$objects) return $dropdown; //if no objects
 		foreach($objects as $object){
-			$dropdown[$object['id']] = $object['name'];
+			if($object['deleted'] == 0)
+				$dropdown[$object['id']] = $object['name'];
 		}
 		return $dropdown;
 	}

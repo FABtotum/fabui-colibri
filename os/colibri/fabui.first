@@ -71,39 +71,39 @@ case "$1" in
         
         if [ -d "/mnt/live/mnt/boot/factory" ]; then
         
-			# copy heads files
-			if [ -d "/mnt/live/mnt/boot/factory/heads" ]; then
-				
-				cp -f /mnt/live/mnt/boot/factory/heads/* ${LIB_PATH}heads/ &> /dev/null
-				cp -f /mnt/live/mnt/boot/factory/heads/* ${FABUI_PATH}heads/ &> /dev/null
-				
-			fi
-			
-			# copy feeders files
-			if [ -d "/mnt/live/mnt/boot/factory/feeders" ]; then
-				
-				cp -f /mnt/live/mnt/boot/factory/feeders/* ${LIB_PATH}feeders/ &> /dev/null
-				cp -f /mnt/live/mnt/boot/factory/feeders/* ${FABUI_PATH}feeders/ &> /dev/null
-				
-			fi
-			
-			# copy feeders files
-			if [ -d "/mnt/live/mnt/boot/factory/settings" ]; then
-				
-				cp -f /mnt/live/mnt/boot/factory/settings/* /mnt/userdata/settings/ &> /dev/null
-				cp -f /mnt/live/mnt/boot/factory/settings/* ${LIB_PATH}settings/ &> /dev/null
-				cp -f /mnt/live/mnt/boot/factory/settings/* ${FABUI_PATH}settings/ &> /dev/null
-				sudo -uwww-data ln -sf /mnt/userdata/settings/settings.json ${LIB_PATH}settings
-				
-			fi
+            # copy heads files
+            if [ -d "/mnt/live/mnt/boot/factory/heads" ]; then
+                
+                cp -f /mnt/live/mnt/boot/factory/heads/* ${LIB_PATH}heads/ &> /dev/null
+                cp -f /mnt/live/mnt/boot/factory/heads/* ${FABUI_PATH}heads/ &> /dev/null
+                
+            fi
+            
+            # copy feeders files
+            if [ -d "/mnt/live/mnt/boot/factory/feeders" ]; then
+                
+                cp -f /mnt/live/mnt/boot/factory/feeders/* ${LIB_PATH}feeders/ &> /dev/null
+                cp -f /mnt/live/mnt/boot/factory/feeders/* ${FABUI_PATH}feeders/ &> /dev/null
+                
+            fi
+            
+            # copy feeders files
+            if [ -d "/mnt/live/mnt/boot/factory/settings" ]; then
+                
+                cp -f /mnt/live/mnt/boot/factory/settings/* /mnt/userdata/settings/ &> /dev/null
+                cp -f /mnt/live/mnt/boot/factory/settings/* ${LIB_PATH}settings/ &> /dev/null
+                cp -f /mnt/live/mnt/boot/factory/settings/* ${FABUI_PATH}settings/ &> /dev/null
+                sudo -uwww-data ln -sf /mnt/userdata/settings/settings.json ${LIB_PATH}settings
+                
+            fi
         
         
         fi
         chown -R 33:33 /mnt/userdata/*
     fi
-	
-	mkdir -p /mnt/bigtemp/lighttpd/compress
-	chown -R 33:33 /mnt/bigtemp/lighttpd/compress
+
+    mkdir -p /mnt/bigtemp/lighttpd/compress
+    chown -R 33:33 /mnt/bigtemp/lighttpd/compress
     
     # Detect camera version
     python ${PYTHON_PATH}/setCamera.py &> /var/log/fabui/setCamera.log
