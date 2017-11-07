@@ -14,6 +14,12 @@ $config['menu'] = array(
 		'url' => 'dashboard',
 		'pos' => 10
 	),
+	'cam' => array(
+		'title' => _("CAM Toolbox"),
+		'icon' => 'fabui-edit-file',
+		'url' => 'cam-toolbox',
+		'pos' => 11
+	),
 	'make' => array(
 		'title' => _("Make"),
 		'icon' => 'fabui-core',

@@ -32,6 +32,7 @@ case "$1" in
     mkdir -p /mnt/userdata/heads
     mkdir -p /mnt/userdata/feeders
     mkdir -p /mnt/userdata/plugins
+	mkdir -p /mnt/userdata/cam
     chown -R 33:33 /mnt/userdata/*
     ln -sf /mnt/userdata/uploads ${UPLOAD_PATH}   
     
@@ -57,6 +58,11 @@ case "$1" in
         cp ${LIB_PATH}feeders/* /mnt/userdata/feeders
         rm -rf ${LIB_PATH}feeders
         sudo -uwww-data ln -s /mnt/userdata/feeders ${LIB_PATH}
+		
+		# CAM toolbox
+        cp ${LIB_PATH}cam/* /mnt/userdata/cam
+        rm -rf ${LIB_PATH}cam
+        sudo -uwww-data ln -s /mnt/userdata/cam ${LIB_PATH}
         
         # Hardware Settings
         sudo -uwww-data cp ${LIB_PATH}settings/settings.json /mnt/userdata/settings

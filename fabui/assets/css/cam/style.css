@@ -1,0 +1,46 @@
+/* Add here all your css styles (customizations) */
+.image-preview-container {
+	position: relative;
+	min-height: 400px;
+	width: 100%;
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0.25, rgba(0, 0, 0, 0.03)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(0, 0, 0, 0.03)), color-stop(0.75, rgba(0, 0, 0, 0.03)), color-stop(0.75, transparent), to(transparent));
+  background-image: -webkit-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.03) 50%, rgba(0, 0, 0, 0.03) 75%, transparent 75%, transparent);
+  background-image: -moz-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.03) 50%, rgba(0, 0, 0, 0.03) 75%, transparent 75%, transparent);
+  background-image: -ms-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.03) 50%, rgba(0, 0, 0, 0.03) 75%, transparent 75%, transparent);
+  background-image: -o-linear-gradient(135deg, rgba(0, 0, 0, 0.03) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.03) 50%, rgba(0, 0, 0, 0.03) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.03) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.03) 50%, rgba(0, 0, 0, 0.03) 75%, transparent 75%, transparent);
+  background-color: #FAFCFD;
+  background-size: 16px 16px;
+	
+  display: flex;
+  flex-direction: column;
+  /*box-shadow: 0 0 20px rgba(0,0,0,.3);*/
+  padding: 10px;
+}
+
+.smart-form .icon-prepend {
+	width: auto !important;
+	left: 0px !important;
+	cursor: help !important;
+}
+.smart-form .input .icon-prepend+input, .smart-form .textarea .icon-prepend+textarea {
+	padding-left: 80px !important;
+}
+
+.smart-form .input input{
+	padding-left: 80px !important;
+}
+
+#no-gcode-alert {
+	margin-top: 35%;
+}
+
+.popover.top {
+	margin-top:-30px !important;
+}
+.popover-title {
+	padding: 5px !important;
+}
+.popover-content {
+	padding: 5px !important;
+}

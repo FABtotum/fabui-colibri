@@ -59,6 +59,8 @@ $route['install/restore'] = 'install/doRestore';
 $route['login/new-account']    = 'login/newAccount';
 $route['login/reset-password'] = 'login/resetPassword';
 $route['login/do']             = 'login/doLogin';
+//cam-toolbox
+$route['cam-toolbox'] = 'cam';
 // make
 $route['make/print/(\d+)'] = 'create/index/print/$1';
 $route['make/mill/(\d+)']  = 'create/index/mill/$1';

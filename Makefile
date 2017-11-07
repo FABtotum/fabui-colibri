@@ -69,7 +69,8 @@ FABUI_FILES		=	fabui/recovery \
 					fabui/locale \
 					fabui/heads \
 					fabui/feeders \
-					fabui/settings
+					fabui/settings \
+					fabui/cam
 
 # <files>/* is to avoid making <files>/<files> path
 RECOVERY_FILES	=	recovery/*
