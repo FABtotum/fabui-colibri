@@ -19,6 +19,7 @@ test -r /etc/default/fabui && source /etc/default/fabui
 
 SERVICE_NAME=FABUI
 FORCED="$2"
+CPUID=$(cat /proc/cpuinfo | grep Hardware | awk '{print $3}')
 
 case "$1" in
   start)
@@ -65,8 +66,8 @@ case "$1" in
     boot_msg "Stopping ${SERVICE_NAME}."
     
     start-stop-daemon -K -q -o -p ${FABSERVICE_PID}
-    start-stop-daemon -K -q -o -p ${XMLRPCS_PID}
     start-stop-daemon -K -q -o -p ${GPIOMONITOR_PID}
+    [ x"$CPUID" == x"BCM2709" ] && start-stop-daemon -K -q -o -p ${XMLRPCS_PID}
     
     evaluate_retval
 
