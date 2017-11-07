@@ -60,7 +60,7 @@ case "$1" in
         sudo -uwww-data ln -s /mnt/userdata/feeders ${LIB_PATH}
 		
 		# CAM toolbox
-        cp ${LIB_PATH}cam/* /mnt/userdata/cam
+        cp -R ${LIB_PATH}cam/* /mnt/userdata/cam
         rm -rf ${LIB_PATH}cam
         sudo -uwww-data ln -s /mnt/userdata/cam ${LIB_PATH}
         
