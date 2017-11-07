@@ -22,7 +22,8 @@
 		$user = $this->user->get($this->session->user['id'], 1);
 		$user['settings'] = json_decode($user['settings'], true);
 		
-		$this->session->user = $user;
+		$this->session->set_userdata('user', $user);
+		//$this->session->user = $user;
 		$data['user'] = $user;
 		$data['fabid_active'] = $this->config->item('fabid_active') == 1;
 		
@@ -89,7 +90,9 @@
 		//get all user info
 		$user = $this->user->get($userID, 1);
 		$user['settings'] = json_decode($user['settings'], true);
-		$this->session->user = $user;
+		
+		//$this->session->user = $user;
+		$this->session->set_userdata('user', $user);
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode( $this->session->user ));
 		

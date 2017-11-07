@@ -50,7 +50,7 @@ class Myfabtotum extends FAB_Controller {
 				$user ['settings'] = json_decode ( $user ['settings'], true );
 				$user ['settings'] ['fabid'] ['email'] = $fabid;
 				$user ['settings'] ['fabid'] ['password'] = $password;
-				$this->session->user = $user;
+				$this->session->set_userdata('user', $user);
 				$this->user->update ( $user ['id'], array (
 						'settings' => json_encode ( $user ['settings'] ) 
 				) );
@@ -92,7 +92,7 @@ class Myfabtotum extends FAB_Controller {
 			
 			// update session user's info
 			if ($fabid == '') {
-				$this->session->user = $user;
+				$this->session->set_userdata('user', $user);
 			}
 			// reload my.fabtotum.com credentials for the service
 			reload_myfabtotum ();
@@ -135,7 +135,7 @@ class Myfabtotum extends FAB_Controller {
 						unset ( $user ['settings'] ['fabid'] );
 						$user ['settings'] ['fabid'] ['email'] = $fabid;
 						$user ['settings'] ['fabid'] ['logged_in'] = true;
-						$this->session->user = $user;
+						$this->session->set_userdata('user', $user);
 						$this->user->update ( $user ['id'], array (
 								'settings' => json_encode ( $user ['settings'] ) 
 						) );

@@ -4,13 +4,18 @@ use Ratchet\ConnectionInterface;
 
 require_once APPPATH . 'third_party/vendor/autoload.php';
 require_once 'JogFactory.php';
+
 class FabWebSocketServer implements MessageComponentInterface {
+	
 	protected $clients;
+	protected $local_address = '127.0.0.1';
+	
 	
 	/**
 	 */
 	public function __construct() {
 		$this->clients = new \SplObjectStorage ();
+		
 	}
 	/**
 	 */
@@ -35,13 +40,17 @@ class FabWebSocketServer implements MessageComponentInterface {
 				}
 			}
 		}
+		
 		/**
-		 * @TODO better handler - if message come from webpage send only to the specific client
-		 *  if message come from python (es. monitor) send also to webpage
+		 *  if message request come from local address (127.0.0.1 - i.e. gpiomonitor) send response to all clients connected
+		 *  else just send response to the client who sent message request
 		 */
 		foreach ( $this->clients as $client ) {
-			//if($from == $client)
-			$client->send ( $reply_message );
+			
+			if(($from->remoteAddress != $this->local_address) && ($from == $client))
+				$client->send($reply_message);
+			else 
+				$client->send ( $reply_message );
 		}
 	}
 	/**
@@ -60,8 +69,8 @@ class FabWebSocketServer implements MessageComponentInterface {
 	 */
 	public function buildResponse($messageType, $messageData, $format = 'json') {
 		return json_encode ( array (
-				'type' => $messageType,
-				'data' => $messageData 
+			'type' => $messageType,
+			'data' => $messageData 
 		) );
 	}
 	/**

@@ -11,6 +11,7 @@
 <html>
 	<head>{head}</head>
 	<body class="smart-style-6">
+		{ga}
 		<div id="main" role="main">
 			<div id="content">{content}</div>
 		</div>

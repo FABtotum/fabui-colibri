@@ -83,8 +83,11 @@
 		}
 		
 		//create valid session for fabui
-		$this->session->loggedIn = true;
-		$this->session->user = $user;
+		//$this->session->loggedIn = true;
+		//$this->session->user = $user;
+		
+		$this->session->set_userdata('user', $user);
+		$this->session->set_userdata('loggedIn', true);
 		
 		if($user['role'] = 'administrator'){
 			setLanguage($user['settings']['locale']);
@@ -92,7 +95,7 @@
 		
 		reload_myfabtotum();
 		//save hardware settings on session
-		$this->session->settings = $hardwareSettings;
+		$this->session->set_userdata('settings', $hardwareSettings);
 		redirect('#dashboard');
 	}
 	
@@ -133,8 +136,11 @@
 							}
 							
 							//create valid session for fabui
-							$this->session->loggedIn = true;
-							$this->session->user = $user;
+							//$this->session->loggedIn = true;
+							//$this->session->user = $user;
+							
+							$this->session->set_userdata('user', $user);
+							$this->session->set_userdata('loggedIn', true);
 							
 							if($user['role'] = 'administrator'){
 								setLanguage($user['settings']['locale']);
@@ -142,7 +148,8 @@
 							
 							reload_myfabtotum();
 							//save hardware settings on session
-							$this->session->settings = $hardwareSettings;
+							//$this->session->settings = $hardwareSettings;
+							$this->session->set_userdata('settings', $hardwareSettings);
 							redirect('#dashboard');
 							
 							
@@ -167,12 +174,16 @@
 							$newUserID = $this->user->add($user);
 							$user['id'] = $newUserID;
 							
-							$this->session->loggedIn = true;
-							$this->session->user = $user;
+							//$this->session->loggedIn = true;
+							//$this->session->user = $user;
+							
+							$this->session->set_userdata('user', $user);
+							$this->session->set_userdata('loggedIn', true);
 							
 							reload_myfabtotum();
 							//save hardware settings on session
-							$this->session->settings = $hardwareSettings;
+							//$this->session->settings = $hardwareSettings;
+							$this->session->set_userdata('settings', $hardwareSettings);
 							redirect('#dashboard');
 							
 						}
@@ -198,7 +209,7 @@
 	{
 		delete_cookie("fabkml", $this->input->server('HTTP_HOST'));
 		//destroy session and redirect to login
-		$this->session->loggedIn = false; 
+		$this->session->set_userdata('loggedIn', false);
 		$this->session->unset_userdata('user');
 		$this->session->unset_userdata('settings');
 		redirect('login/?fabid=no');

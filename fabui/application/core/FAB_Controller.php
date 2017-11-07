@@ -246,10 +246,12 @@
 		$data = array();
 		$this->fab_app_init = false;
 		
-		$data['translations'] = $this->load->view('layout/translations_js', null, true);
+		$data['ga_property_id'] = $this->config->config['ga_property_id'];
+		$data['translations']   = $this->load->view('layout/translations_js', null, true);
 		
-		$this->template['head']    = $this->load-> view($this->layoutDefaultFolder.'/head', $data, true);
-		$this->template['scripts'] = $this->load-> view($this->layoutDefaultFolder.'/scripts', $data, true);
+		$this->template['head']    = $this->load->view($this->layoutDefaultFolder.'/head',    $data, true);
+		$this->template['scripts'] = $this->load->view($this->layoutDefaultFolder.'/scripts', $data, true);
+		$this->template['ga']      = $this->load->view('layout/ga',                           $data, true);
 		$this->template['content'] = $this->content;
 		$this->parser->parse($this->layoutPopup.'/structure', $this->template);
 	}

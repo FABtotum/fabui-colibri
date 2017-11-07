@@ -83,13 +83,13 @@ if ( ! function_exists('verify_keep_me_logged_in_cookie'))
 						
 						$user['settings'] = json_decode($user['settings'], true);
 						if(!isset($user['settings']['language'])) $user['settings']['language'] = 'en_US';
-						$CI->session->loggedIn = true;
-						$CI->session->user = $user;
+						$CI->session->set_userdata('user', $user);
+						$CI->session->set_userdata('loggedIn', true);
 						//load hardware settings
 						$CI->load->helpers('fabtotum_helper');
 						$hardwareSettings = loadSettings('default');
 						//save hardware settings on session
-						$CI->session->settings = $hardwareSettings;
+						$CI->session->set_userdata('settings', $hardwareSettings);
 						redirect($url);
 					}
 			}	
