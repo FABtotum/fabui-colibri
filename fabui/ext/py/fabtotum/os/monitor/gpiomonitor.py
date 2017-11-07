@@ -183,7 +183,7 @@ def main():
     SOCKET_HOST         = config.get('socket', 'host')
     SOCKET_PORT         = config.get('socket', 'port')
     ##################################################################
-    GPIO_PIN    = config.get('gpio', 'pin')
+    EVENT_PIN           = config.get('totumduino', 'event_pin')
     
     # Pyro GCodeService wrapper
     gcs = GCodeServiceClient()
@@ -205,7 +205,7 @@ def main():
     fh.setLevel(logging.DEBUG)
     logger2.addHandler(fh)
     
-    gpioMonitor = GPIOMonitor(ns, gcs, logger2, GPIO_PIN)
+    gpioMonitor = GPIOMonitor(ns, gcs, logger2, EVENT_PIN)
     gpioMonitor.start()
     gpioMonitor.loop()
     

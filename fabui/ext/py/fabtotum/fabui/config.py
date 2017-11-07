@@ -33,7 +33,7 @@ from watchdog.events import PatternMatchingEventHandler
 from watchdog.events import FileSystemEventHandler
 
 # Import internal modules
-from fabtotum.os.paths        import CONFIG_INI, SERIAL_INI, TEMP_PATH, CAMERA_INI
+from fabtotum.os.paths        import LIB_PATH
 from fabtotum.utils.singleton import Singleton
 
 #####################################################
@@ -43,16 +43,19 @@ class ConfigService:
         
     def __init__(self):
         """ Load config files """
-        self.config = ConfigParser.ConfigParser()
-        self.config.read(CONFIG_INI)
+        
+        self.config = {}
 
-        self.serialconfig = ConfigParser.ConfigParser()
-        self.serialconfig.read(SERIAL_INI)
+        for x in os.listdir(LIB_PATH):
+            if x.endswith('.ini'):
+                filename, ext = os.path.splitext(x)
+                
+                fn = os.path.join(LIB_PATH, x)
+                
+                self.config[filename] = ConfigParser.ConfigParser()
+                self.config[filename].read(fn)
         
-        self.cameraconfig = ConfigParser.ConfigParser()
-        self.cameraconfig.read(CAMERA_INI)
-        
-        self.HW_DEFAULT_SETTINGS = self.config.get('hardware', 'settings')
+        self.HW_DEFAULT_SETTINGS = self.get('hardware', 'settings')
         
         json_f = open(self.HW_DEFAULT_SETTINGS)
         self.settings = json.load(json_f)
@@ -75,11 +78,11 @@ class ConfigService:
     def reload(self):
         """ Reload config files """
         
-        self.config.read(CONFIG_INI)
-        self.serialconfig.read(SERIAL_INI)
-        self.cameraconfig.read(CAMERA_INI)
+        for fn in self.config:
+            ini_fn = os.path.join(LIB_PATH, fn, '.ini')
+            self.config[fn].read(ini_fn)
 
-        self.HW_DEFAULT_SETTINGS = self.config.get('hardware', 'settings')
+        self.HW_DEFAULT_SETTINGS = self.get('hardware', 'settings')
         
         json_f = open(self.HW_DEFAULT_SETTINGS)
         self.settings = json.load(json_f)
@@ -143,22 +146,26 @@ class ConfigService:
     def get(self, section, key, default = None):        
         value = ''
         
-        try:
-            if section == 'serial':
-                value = self.serialconfig.get('serial', key)
-            elif section == 'settings':
-                value = self.__get_dict_value(self.settings, key, default)
-            elif section == 'camera':
-                value = self.cameraconfig.get('camera', key)
-            else:
-                value = self.config.get(section, key)
-        except Exception:
-            if default != None:
-                return default
-            else:
-                raise KeyError
-                
-        return value
+        
+        if section == 'settings':
+            value = self.__get_dict_value(self.settings, key, default)
+            return value
+        
+        for cfg in self.config:
+            if section in self.config[cfg].sections():
+                try:
+                    data = self.config[cfg]
+                    return data.get(section, key)
+                except Exception:
+                    if default != None:
+                        return default
+                    else:
+                        raise KeyError
+                        
+        if default != None:
+            return default
+        else:
+            raise KeyError
 
     def set(self, section, key, value):
         """ Set settings value """

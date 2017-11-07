@@ -36,19 +36,21 @@ def reset():
     
     print "TOTUMDUINO: reset"
     
+    config = ConfigService()
+    
+    reset_pin = config.get('totumduino', 'reset_pin', 17)
+    
     try:
         #GPIO.setmode(GPIO.BOARD)
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
 
-        #~ pin = 11
-        pin = 17
-        GPIO.setup(pin, GPIO.OUT)
-        GPIO.output(pin, GPIO.HIGH)
+        GPIO.setup(reset_pin, GPIO.OUT)
+        GPIO.output(reset_pin, GPIO.HIGH)
         time.sleep(0.5)
-        GPIO.output(pin, GPIO.LOW)
+        GPIO.output(reset_pin, GPIO.LOW)
         time.sleep(0.5)
-        GPIO.output(pin, GPIO.HIGH)
+        GPIO.output(reset_pin, GPIO.HIGH)
 
         GPIO.cleanup()
     except:
