@@ -510,11 +510,13 @@
 
 			if(response.status == true){
 				laser_gcode_generated = true;
+				var now = new Date();
+				var project_name_suffix = now.getDate() + '/' + (now.getMonth()+1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':'+now.getMinutes();
 				$("#laser-preview-source").attr("src", "<?php echo site_url('cam/preview/laser/') ?>" + response.id);
 				$("#laser-save-gcode").html("<i class='fa fa-check'></i> <?php echo _("GCode ready"); ?>").removeClass("btn-default").addClass("btn-success");
 				$("#download-button").attr("data-href", "<?php echo site_url('cam/download/laser/') ?>/" + response.id + "/" + uploadedFile.raw_name).attr("data-type", "laser").removeClass("btn-default").addClass("btn-success");
 				$("#new-file-name").val(uploadedFile.raw_name);
-				$("#new-project-name").val("<?php echo _("New laser project"); ?>");
+				$("#new-project-name").val("<?php echo _("New laser project"); ?> " + project_name_suffix);
 				$("#save-gcode").attr("data-type", "laser").attr("data-id", response.id);
 				$("#no-gcode-alert").remove();
 				enableButton("#laser-save-gcode");
@@ -605,11 +607,20 @@
 			dataType: 'json',
 		}).done(function( response ) {
 			var options = '';
-			$(response.aaData).each(function (index, value){
-				options += '<option value="'+value[0]+'">'+value[1] +' - '+ value[2] +'</option>';
-			});
-			$("#projects-list").html(options);
-			$("#project-save-mode-choose").trigger("change");
+
+			if(response.aaData.length > 0){
+				$("#project-save-mode-choose").removeAttr("disabled");  
+				$(response.aaData).each(function (index, value){
+					
+					var description = value[2] != null ? ' - ' + value[2] : '';
+					options += '<option value="'+value[0]+'">'+value[1] + description +'</option>';
+				});
+				$("#projects-list").html(options);
+				$("#project-save-mode-choose").trigger("change");
+			}else{
+				$("#project-save-mode-choose").trigger("change");
+				$("#project-save-mode-choose").attr("disabled", "disabled");  
+			}
 		});
 	}
 	/**
@@ -631,7 +642,8 @@
 		data["filename"]     = $("#new-file-name").val();
 		data["project_id"]   = $("#projects-list").val();
 		data["project_name"] = $("#new-project-name").val();
-		
+		disableButton("#save-gcode");
+		$("#save-gcode").html("<i class='fa fa-gear fa-spin'></i> <?php echo _("Saving"); ?>");
 		$.ajax({
 			type: "POST",
 			data: data,
@@ -641,7 +653,7 @@
 			if(response.success == true){
 				fabApp.showInfoAlert("<?php echo _("Gcode saved"); ?>");
 			}
-			disableButton("#save-gcode");
+			$("#save-gcode").html("<i class='fa fa-save'></i> <?php echo _("Save"); ?>");
 			$('#downloadGcodeModal').modal('hide');
 		});
 	}
@@ -756,7 +768,7 @@
 				break;
 			case 'disable':
 				dropzone.disable();
-				$(dropzone.element).find(".dictDefaultMessage").html('<span class="font-lg"><i class="fa fa-warning text-danger"></i> <?php echo !$internet ? _("No internet connection found").'<br>'._("Check network settings and try again") :  _("You must enter a valid subscription code <br> in order to use the plugin"); ?></span>');
+				$(dropzone.element).find(".dictDefaultMessage").html('<span class="font-lg"><i class="fa fa-warning text-danger"></i> <?php echo !$internet ? _("No internet connection found").'<br>'._("Check network settings and try again") :  _("You must enter a valid subscription code <br> in order to use CAM toolbox"); ?></span>');
 				$(dropzone.element).css("opacity", 0.4);
 				break;
 		}
@@ -768,7 +780,7 @@
 	{
 		$.SmartMessageBox({
             title: "<i class='fa fa-trash'></i> <span class='txt-color-orangeDark'><strong><?php echo _("Warning");?></strong></span> ",
-            content: "<span class='font-md'><?php echo _("You need a valid subscription code to use the plugin");?><br><?php echo _("Are you sure you want remove it?")?></span>",
+            content: "<span class='font-md'><?php echo _("You need a valid subscription code to use CAM Toolbox");?><br><?php echo _("Are you sure you want remove it?")?></span>",
             buttons: "[<?php echo _("No");?>][<?php echo _("Yes");?>]"
         }, function(ButtonPressed) {
            if(ButtonPressed == "<?php echo _("Yes");?>"){

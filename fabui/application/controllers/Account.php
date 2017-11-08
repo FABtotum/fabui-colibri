@@ -64,6 +64,10 @@
 		$this->load->helper(array('utility_helper', 'fabtotum_helper'));
 		$this->load->model('User', 'user');
 		
+		$user = $this->user->get($userID, 1);
+		
+		$user['settings'] = json_decode($user['settings'], true);
+		
 		if(empty($data)){
 			if($this->input->method() == 'post'){
 				$requesData = $this->input->post();
@@ -73,6 +77,7 @@
 			$data = arrayFromPost($requesData);
 		}
 		
+		
 		//if locale
 		if(isset($data['settings']['locale'])){
 			$hwSettings = loadSettings();
@@ -80,13 +85,15 @@
 			saveSettings($hwSettings);
 		}
 		
+		$update = array_replace_recursive($user, $data);
+		
 		//preare settings for db insert
-		if(isset($data['settings'])){
-			$data['settings'] = json_encode($data['settings']);
+		if(isset($update['settings'])){
+			$update['settings'] = json_encode($update['settings']);
 		}
 		
 		//update user db
-		$this->user->update($userID, $data);
+		$this->user->update($userID, $update);
 		//get all user info
 		$user = $this->user->get($userID, 1);
 		$user['settings'] = json_decode($user['settings'], true);

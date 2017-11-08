@@ -5,9 +5,6 @@
 		loadFeed('/fabui/social/load/blog',      buildBlogFeeds);
 		loadFeed('/fabui/social/load/twitter',   buildTwitterFeeds);
 		loadFeed('/fabui/social/load/instagram', buildInstagramFeeds);
-		<?php if(isset($this->session->user['settings']['fabid'])): ?>
-			loadFeed('/fabui/myfabtotum/my_list', myFabotumPrintersList);
-		<?php endif; ?>
 	});
 
 	function loadFeed(url, callback)
@@ -336,15 +333,17 @@
 			if(data.printers && data.printers.length > 0){
 				var html = '<div class="col-sm-12 animated fadeIn">\
 								<div class="well well-light well-sm">\
-									<div class="text-right">\
+									<div class="">\
 										<span style="margin-right:30px;">'+_("My other printers")+'</span>';
+				var ribbon = '<span class="pull-left">'+_("My other printers")+'</span>';
 				$.each(data.printers, function(i, item) {
-					html += '<div class="btn-group"><a href="http://'+item.iplan+'/fabui" target="_blank" class="btn btn-default no-ajax" style="margin-right:5px;"><i class="fa fa-lg fa-fw fabui-core" style="vertical-align: -30%;"></i> '+item.name+'</a></div>';
-					
+					html += '<div class="btn-group"><a href="http://'+item.iplan+'/fabui/#dashboard" target="_blank" class="btn btn-default no-ajax" style="margin-right:5px;"><i class="fa fa-lg fa-fw fabui-core" style="vertical-align: -30%;"></i> '+item.name+'</a></div>';
+					ribbon += '<a href="http://'+item.iplan+'/fabui/#dashboard" target="_blank" class="btn btn-ribbon no-ajax"><i class="fa fa-lg fa-fw fabui-core"></i> '+item.name+'</a>';
 				});
+				ribbon += '';
 				html += '</div></div></div>';
-
-				$("#my-fabtotum-printers-list").html(html);
+				$("#ribbon-right-buttons").html(ribbon);
+				//$("#my-fabtotum-printers-list").html(html);
 			}
 		}
 	}

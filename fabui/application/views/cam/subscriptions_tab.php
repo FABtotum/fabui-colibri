@@ -17,8 +17,8 @@ if($subscription_exists){
 <div class="tab-pane fade in" id="subscriptions-tab">
 	<div id="settings-add-new-code" class="row <?php echo $subscription_exists ? 'hidden' : '';?>">
 		<div class="col-sm-12">
-			<p><?php echo _("You must enter a valid subscription code in order to use the plugin"); ?> <button id="add-subscription-button" class="btn btn-default"> <?php echo _("Add");?></button></p>
-			<p class="margin-top-10"><?php echo _("Need a subscription code"); ?>? <a target="_blank" href="#"><?php echo _("Get it here"); ?></a> </p>
+			<p><?php echo _("You must enter a valid subscription code in order to use CAM Toolbox"); ?> <button id="add-subscription-button" class="btn btn-default"><i class="fa fa-key"></i> <?php echo _("Add");?></button></p>
+			<p class="margin-top-10"><?php echo _("Need a subscription code"); ?>? <a target="_blank" class="no-ajax" href="https://www.fabtotum.com/software/cam-toolbox-cloud-based-cam-suite/"><?php echo _("Get it here"); ?></a> </p>
 		</div>
 	</div>
 	<div id="settings-code-container" class="row <?php echo !$subscription_exists ? 'hidden' : '';?>">
@@ -53,13 +53,12 @@ if($subscription_exists){
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title"><i class="fa fa-cubes"></i> <?php echo _("FABtotum CAM toolbox"); ?></h4>
+				<h4 class="modal-title"><i class="fabui-edit-file"></i> <?php echo _("FABtotum CAM toolbox"); ?></h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<p><?php echo _("FABtotum CAM toolbox is almost ready"); ?></p>
-						<p><?php echo _("You must enter a valid subscription code for it to work"); ?></p>
+						<p><?php echo _("You must enter a valid subscription code in order to use CAM toolbox"); ?></p>
 						<form id="modal-subscription-form">
 							<div class="smart-form" style="margin-top:20px;margin-bottom:30px;">
 								<label class="input">
@@ -67,13 +66,13 @@ if($subscription_exists){
 								</label>
 							</div>
 						</form>
-						<p class="margin-top-10"><?php echo _("Need a subscription code"); ?>? <a target="_blank" href="#"><?php echo _("Get it here"); ?></a> </p>
+						<p class="margin-top-10"><?php echo _("Need a subscription code"); ?>? <a class="no-ajax" target="_blank" href="https://www.fabtotum.com/software/cam-toolbox-cloud-based-cam-suite/"><?php echo _("Get it here"); ?></a> </p>
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _("Close");?></button>
-				<button type="button" class="btn btn-default action-button" data-type="modal" data-action="active-subscription" id="modal-active-subscription"><i class="fa fa-save"></i> <?php echo _("Active");?></button>
+				<button type="button" class="btn btn-default action-button" data-type="modal" data-action="active-subscription" id="modal-active-subscription"><i class="fa fa-star"></i> <?php echo _("Activate");?></button>
 			</div>
 		</div>
 	</div>

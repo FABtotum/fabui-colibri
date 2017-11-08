@@ -86,7 +86,7 @@ if(!function_exists('downloadInstagramFeeds'))
 		$fabtotum_max_post = 5;
 		$hashtag_max_post  = 10;
 		
-		$instagram_feeds = getRemoteFile($CI->config->item('instagram_feed_url'), true, null, 10);
+		$instagram_feeds = getRemoteFile($CI->config->item('instagram_feed_url'), true, null, 30);
 		
 		if($instagram_feeds){
 			
@@ -239,7 +239,7 @@ if(!function_exists('downloadTwitterFeeds'))
 		
 		$done = false;
 		
-		$twitter_feed = getRemoteFile($CI->config->item('twitter_feed_url'), true, null, 10);
+		$twitter_feed = getRemoteFile($CI->config->item('twitter_feed_url'), true, null, 30);
 		
 		if($twitter_feed){
 			
@@ -319,7 +319,7 @@ if(!function_exists('downloadBlogFeeds'))
 		$CI->load->helper(array('file', 'os_helper', 'text'));
 		
 		$xmlEndPoint = $CI->config->item('blog_feed_url').'?cat='.$CI->config->item('blog_post_categories');
-		$xml         = getRemoteFile($xmlEndPoint, true, null, 10);
+		$xml         = getRemoteFile($xmlEndPoint, true, null, 30);
 		
 		$done = false;
 		

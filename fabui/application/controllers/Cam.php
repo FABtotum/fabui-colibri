@@ -26,14 +26,8 @@
 		
 		$language = getCurrentLanguage();
 		$this->load->config('cam');
-		//load plugin config
-		//loadPluginConfig('plugin');
-		//load plugin translation
-		//loadPluginTranslation();
 		
 		$data = array();
-		
-		
 		
 		$widgetOptions = array(
 				'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
@@ -57,7 +51,7 @@
 		$data['options_mode']             = array('const' => _("Constant"), 'linear' => _("Linear mapping"));
 		$data['options_skip_line_mode']   = array('modulo' => _("Groups"));
 		$data['remote_endpoint']          = $this->config->item('api_url');
-		$data['isFabid']                  = isset($this->session->user['settings']['fabid']);
+		$data['isFabid']                  = isset($this->session->user['settings']['fabid']['logged_in']) && $this->session->user['settings']['fabid']['logged_in'] == true;
 		$data['subscription_exists']      = subscription_exists();
 		$data['linear_mapping_help']      = $this->load->view('cam/help/'.$language.'/linear_mapping', $data, true );
 		$data['skip_line_help']           = $this->load->view('cam/help/'.$language.'/skip_line', $data, true );
@@ -72,7 +66,7 @@
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-head-installation';
-		$widget->header = array('icon' => 'fa-cube', "title" => "<h2>FABtotum CAM toolbox</h2>", 'toolbar' => $headerToolbar);
+		$widget->header = array('icon' => 'fabui-edit-file', "title" => "<h2>CAM toolbox</h2>", 'toolbar' => $headerToolbar);
 		$widget->body   = array('content' => $this->load->view('cam/main_widget', $data, true ), 'class'=>''); //'footer'=>$widgeFooterButtons
 		
 		

@@ -985,7 +985,6 @@ fabApp = (function(app) {
 						app.handlePollMessage(obj);
 						break;
 					case 'updates':
-						console.log(obj.data);
 						app.handleUpdatesData(obj.data);
 						break;
 					case 'hardware-settings':
@@ -1843,6 +1842,31 @@ fabApp = (function(app) {
 		}else{
 			socket.send('{"function": "'+func+'"}');
 		}
+	}
+	/**
+	 * 
+	 */
+	app.myFabtotumPrintersList = function()
+	{
+		$.get(myfabtotum_printers_list, function(data, status){
+			if(data.status == true){
+				if(data.printers && data.printers.length > 0){
+					$.each(data.printers, function(i, item) {
+						$.ajax({
+							type: "GET",
+							url: 'http://'+item.iplan+'/fabui/login',
+							timeout: 5000,
+							dataType: 'html',
+							success: function(resonse, status){
+								$("#my-fabtotum-ribbon-label").removeClass("hidden");
+								var printer = '<a href="http://'+item.iplan+'/fabui/#dashboard" target="_blank" class="btn btn-ribbon no-ajax"><i class="fa fa-lg fa-fw fabui-core"></i> '+item.name+'</a>';
+								$("#ribbon-right-buttons").append(printer);
+							}
+						}).done(function( response, status ) {});
+					});
+				}
+			}
+		});
 	}
 	return app;
 })({});

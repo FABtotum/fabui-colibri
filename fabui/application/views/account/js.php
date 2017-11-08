@@ -127,6 +127,8 @@
 					timeout: 3000,
 					icon : "fa fa-check bounce animated"
 				});
+
+				$("#user-name").html(response.first_name + ' ' + response.last_name );
 				
 				<?php if(isset( $this->session->user['settings']['locale'])):?>
 				if("<?php echo $this->session->user['settings']['locale'] ?>" != $("#settings-locale").val()){

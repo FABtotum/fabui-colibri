@@ -11,7 +11,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <!-- WEB MANIFEST -->
 <link rel="manifest" href="/assets/manifest.json">
-<title> .: FABUI :. </title>
+<title><?php echo getHostName(); ?></title>
 <?php foreach($this->meta_tags as $name => $value): ?>
 <meta name="<?php echo $name ?>" content="<?php echo $value; ?>">
 <?php endforeach; ?>
@@ -37,3 +37,6 @@
 <?php if(isset($translations)) echo $translations; ?>
 <!-- END TRANSLATIONS -->
 <?php echo $this->jsInLineTop; ?>
+<script type="text/javascript">
+var page_title_prefix = '<?php echo getHostName(); ?> - ';
+</script>

@@ -62,7 +62,7 @@
 			
 			$this->is_ajax_request = $this->input->is_ajax_request();
 			$this->load->library(array('session', 'parser'));
-			$this->load->helper(array('url', 'layout', 'language', 'update', 'cookie'));
+			$this->load->helper(array('url', 'layout', 'language', 'update', 'cookie', 'os_helper'));
 			$this->load->database();
 			
 			/**

@@ -14,7 +14,7 @@
 		<span>
 			<a href="<?php echo site_url('#account'); ?>">
 				<img src="/assets/img/avatars/male.png" alt="me" class="online" />
-				<span><?php echo isset($this->session->user['first_name']) ?  $this->session->user['first_name'] : '' ?> <?php echo isset($this->session->user['last_name']) ?  $this->session->user['last_name'] : '' ?></span>
+				<span id="user-name"><?php echo isset($this->session->user['first_name']) ?  $this->session->user['first_name'] : '' ?> <?php echo isset($this->session->user['last_name']) ?  $this->session->user['last_name'] : '' ?></span>
 			</a>
 		</span>
 	</div>

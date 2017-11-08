@@ -122,10 +122,14 @@ if(!function_exists('active_subscription'))
 	{
 		$CI =& get_instance();
 		
-		if($fabid == ""){
-			if(isset($CI->session->user['fabid']['email']))
-				$fabid = $CI->session->user['fabid']['email'];
-		}
+		
+		if(isset($CI->session->user['settings']['fabid']['email']))
+			$fabid = $CI->session->user['settings']['fabid']['email'];
+			else
+				return json_encode(array(
+						'status' => false,
+						'message' => _("Missing FABID")
+				));
 		
 		$response = call_service('/subscription/active/'.$code);
 		

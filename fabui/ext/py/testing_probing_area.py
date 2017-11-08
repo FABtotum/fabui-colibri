@@ -46,13 +46,15 @@ class ProbeArea(GCodePusher):
         self.skip_homing = skip_homing
         
     def probe(self, x, y, idx):
+        self.send("G90")
         self.send("G0 X{0} Y{1} F6000".format(x, y))
         if(idx == 1):
             self.send("M400")
             self.send("M401")
         
         reply = self.send('G30', timeout = 90)
-        self.send("G0 Z{0} F5000".format(self.probe_length))
+        self.send("G91")
+        self.send("G0 Z{0} F5000".format(10))
         self.send("M400")
         
     def run(self):
@@ -71,13 +73,15 @@ class ProbeArea(GCodePusher):
         
         self.send("M402")
         self.send("M733 S0")
-        self.send("G90")
+        
         if(self.skip_homing == False):
             self.trace(_("Homing all axes"))
             self.send("G27")
+            self.send("G92 Z241.2")
+            self.send("G90")
             self.send("G0 Z100 F1000")
             self.send("M400")
-            
+                
         self.trace(_("Probing points"))
         counter = 1
         for (x,y) in points:
