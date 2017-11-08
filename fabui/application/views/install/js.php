@@ -291,7 +291,7 @@
 			timeout: 10000,
 			error: function(jqXHR, textStatus, errorThrown) {
 				
-				var time = textStatus=="timeout" ? 1000 : 5000;
+				var time = textStatus=="timeout" ? 1000 : <?php echo $rpi_version['version'] == 1 ? 10000 : 5000  ?>;
 				setTimeout(function() {
 					location.href="<?php echo site_url('login'); ?>";
 				}, time); 

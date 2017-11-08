@@ -34,6 +34,7 @@ class Install extends FAB_Controller {
 		}
 		
 		$interfaces = getInterfaces();
+		
 		if(!isset($interfaces['wlan0'])){ //maybe wlan is not ready yet, so better wait 5 seconds and try again
 			sleep(5);
 			$interfaces = getInterfaces();
@@ -47,6 +48,7 @@ class Install extends FAB_Controller {
 		}
 		$wizard_steps[] = array( 'id'=>'finish-tab', 'title' => _("Finish"), 'active' => false);
 		
+		$data['rpi_version'] = rpi_version();
 		$data['fabid_active'] = $this->config->item('fabid_active') == 1;
 		$data['steps'] = $wizard_steps;
 		$this->content = $this->load->view('install/wizard', $data, true );

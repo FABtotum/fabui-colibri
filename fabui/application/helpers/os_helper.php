@@ -591,4 +591,25 @@ if(!function_exists("fix_folder_permissions"))
 		shell_exec('sudo chown -R '.$owner.':'.$group.' '.$folder);
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('rpi_version'))
+{
+	/**
+	 * return Raspberry Model
+	 */
+	function rpi_version()
+	{
+		$rpi_versions = array(
+			'BCM2708' => array('version' => 1, 'description' => 'Raspberry Pi Model B'),
+			'BCM2709' => array('version' => 3, 'description' => 'Raspberry Pi 3 Model B')
+		);
+		
+		$code = trim(shell_exec('</proc/cpuinfo grep Hardware | awk \'{print $3}\''));
+		
+		if(isset($rpi_versions[$code]))
+			return $rpi_versions[$code];
+		else
+			return 'unkwnon';
+	}
+}
 ?>
