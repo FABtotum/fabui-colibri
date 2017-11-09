@@ -20,7 +20,7 @@ msgstr "Dashboard"
 
 #: fabui/application/config/menu.php:18
 msgid "CAM Toolbox"
-msgstr ""
+msgstr "CAM toolbox"
 
 #: fabui/application/config/menu.php:24
 #: fabui/application/views/history/main_widget.php:9
@@ -408,19 +408,20 @@ msgid "Please check your email or password"
 msgstr "Per favore ricontrollare email o password"
 
 #: fabui/application/controllers/Login.php:193
-#, fuzzy
 msgid "You don't have the permission for this printer"
-msgstr "Non hai i permessi per modificare questo progetto"
+msgstr "Non hai i permessi per questa stampante"
 
 #: fabui/application/controllers/Login.php:197
 msgid "FABID doesn't exists"
-msgstr ""
+msgstr "FABID non valido"
 
 #: fabui/application/controllers/Login.php:202
 msgid ""
 "Internet connection not available. Sign-in to your local access and then "
 "connect to internet"
 msgstr ""
+"Connessione internet non disponibile. Entra con l'accesso locale e connetti "
+"la stampante a internet"
 
 #: fabui/application/controllers/Login.php:250
 msgid "New user created successfully"
@@ -492,20 +493,17 @@ msgid "No running tasks"
 msgstr "Non ci sono task in corso"
 
 #: fabui/application/controllers/Cam.php:39
-#, fuzzy
 msgid "Laser Engraving"
-msgstr "Incisione laser completata!"
+msgstr "Laser"
 
 #: fabui/application/controllers/Cam.php:40
 #: fabui/application/controllers/Head.php:154
-#, fuzzy
 msgid "3D Printing"
-msgstr "Stampando"
+msgstr "Stampa 3D"
 
 #: fabui/application/controllers/Cam.php:41
-#, fuzzy
 msgid "Subscriptions"
-msgstr "Descrizione"
+msgstr "Abbonamenti"
 
 #: fabui/application/controllers/Cam.php:51
 msgid "Constant"
@@ -522,7 +520,7 @@ msgstr ""
 
 #: fabui/application/controllers/Cam.php:279
 msgid "Generated with app.fabtotum.com"
-msgstr ""
+msgstr "Generato con app.fabtotum.com"
 
 #: fabui/application/controllers/Std.php:206
 msgid "Task"
@@ -734,17 +732,17 @@ msgstr "Teste"
 
 #: fabui/application/controllers/Head.php:153
 msgid "All"
-msgstr ""
+msgstr "Tutti"
 
 #: fabui/application/controllers/Head.php:155
 #: fabui/application/controllers/Create.php:221
 #: fabui/application/controllers/Create.php:256
 msgid "Milling"
-msgstr "Fresare"
+msgstr "Fresa"
 
 #: fabui/application/controllers/Head.php:156
 msgid "Laser"
-msgstr ""
+msgstr "Laser"
 
 #: fabui/application/controllers/Updates.php:130
 msgid "1 new update is available"
@@ -801,7 +799,6 @@ msgid "Printing"
 msgstr "Stampando"
 
 #: fabui/application/controllers/Create.php:117
-#, fuzzy
 msgid "Choose file or drop here"
 msgstr "Scegli file o trascinalo qui"
 
@@ -934,15 +931,13 @@ msgstr ""
 "Le tue credenziali non sono state riconosciute, controllale e riprova ancora"
 
 #: fabui/application/helpers/cam_helper.php:54
-#, fuzzy
 msgid "Connection timeout"
-msgstr "Errore di connessione: {0}"
+msgstr "Connessione scaduta"
 
 #: fabui/application/helpers/cam_helper.php:131
 #: fabui/application/views/cam/main_widget.php:98
-#, fuzzy
 msgid "Missing FABID"
-msgstr "Fresatura annullata"
+msgstr "FABID mancante"
 
 #: fabui/application/helpers/utility_helper.php:102
 msgid "second"
@@ -1129,9 +1124,8 @@ msgstr "Connesso col FABID"
 #: fabui/application/views/install/js.php:571
 #: fabui/application/views/account/widget.php:63
 #: fabui/application/views/layout/default/ribbon.php:17
-#, fuzzy
 msgid "FABID connected"
-msgstr "Disconnesso"
+msgstr "FABID connesso"
 
 #: fabui/application/views/install/wizard.php:30
 #: fabui/application/views/install/wizard.php:58
@@ -1217,9 +1211,8 @@ msgstr "Ce l'hai quasi fatta."
 
 #: fabui/application/views/install/wizard.php:180
 #: fabui/application/views/layout/default/ribbon.php:19
-#, fuzzy
 msgid "Connect with FABID"
-msgstr "Connessione al FABID"
+msgstr "Connetti con FABID"
 
 #: fabui/application/views/install/wizard.php:184
 msgid "Click <strong>Install</strong> to complete"
@@ -2024,12 +2017,12 @@ msgstr "Resettare"
 #: fabui/application/views/login/login_form.php:29
 #: fabui/application/views/login/login_form.php:66
 msgid "Sign in with FABID"
-msgstr ""
+msgstr "Entra con FABID"
 
 #: fabui/application/views/login/login_form.php:41
 #: fabui/application/views/login/login_form.php:65
 msgid "Sign In"
-msgstr "Iscriviti"
+msgstr "Entra"
 
 #: fabui/application/views/login/login_form.php:53
 msgid "Enter your password"
@@ -2758,9 +2751,8 @@ msgid "Completing {0}"
 msgstr "Completando {0}"
 
 #: fabui/application/views/std/task_execute_js.php:1083
-#, fuzzy
 msgid "{0} completed!"
-msgstr "{0} completato !"
+msgstr "{0} completato!"
 
 #: fabui/application/views/std/print_setup_js.php:20
 msgid "Preparing engage procedure"
@@ -3398,7 +3390,7 @@ msgstr "Tutte le impostazioni predefinite"
 
 #: fabui/application/views/head/index.php:3
 msgid "Filters"
-msgstr ""
+msgstr "Filtri"
 
 #: fabui/application/views/head/index.php:71
 #: fabui/application/views/head/install.php:51
@@ -3675,14 +3667,12 @@ msgstr "Installa il firmware"
 msgid "Build-date"
 msgstr "Data di costruzione"
 
-#: fabui/application/views/cam/js.php:78
-#: fabui/application/views/cam/js.php:766
+#: fabui/application/views/cam/js.php:78 fabui/application/views/cam/js.php:766
 #: fabui/application/views/projectsmanager/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Trascina file per caricarli"
 
-#: fabui/application/views/cam/js.php:78
-#: fabui/application/views/cam/js.php:766
+#: fabui/application/views/cam/js.php:78 fabui/application/views/cam/js.php:766
 #: fabui/application/views/projectsmanager/add/js.php:32
 msgid "or click"
 msgstr "o clicca"
@@ -3693,24 +3683,20 @@ msgid "Remove file"
 msgstr "Rimuovi file"
 
 #: fabui/application/views/cam/js.php:84
-#, fuzzy
 msgid "You can upload just {{maxFiles}} file at time"
-msgstr "Puoi caricare 10 file alla volta"
+msgstr "Puoi caricare  {{maxFiles}} file alla volta"
 
 #: fabui/application/views/cam/js.php:98
-#, fuzzy
 msgid "File error"
-msgstr "Nessun errore"
+msgstr "Errore file"
 
 #: fabui/application/views/cam/js.php:157
-#, fuzzy
 msgid "PWM"
-msgstr "RPM"
+msgstr "PWM"
 
 #: fabui/application/views/cam/js.php:163
-#, fuzzy
 msgid "Feed"
-msgstr "Estrusore"
+msgstr "Feed"
 
 #: fabui/application/views/cam/js.php:188
 #: fabui/application/views/history/main_widget.php:26
@@ -3718,75 +3704,67 @@ msgid "Completed"
 msgstr "Completato"
 
 #: fabui/application/views/cam/js.php:194
-#, fuzzy
 msgid "Upload failed"
-msgstr "Caricato"
+msgstr "Upload fallito"
 
 #: fabui/application/views/cam/js.php:222
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:615
 msgid "Processing file"
-msgstr "Processione del file"
+msgstr "Elaborazione file"
 
 #: fabui/application/views/cam/js.php:467
-#, fuzzy
 msgid "Regenerate GCode"
-msgstr "Generato"
+msgstr "Rigenera GCode"
 
 #: fabui/application/views/cam/js.php:516
-#, fuzzy
 msgid "GCode ready"
-msgstr "Preparazione"
+msgstr "Gcode pronto"
 
 #: fabui/application/views/cam/js.php:519
-#, fuzzy
 msgid "New laser project"
-msgstr "Aggiungi un nuovo progetto"
+msgstr "Nuovo progetto laser"
 
 #: fabui/application/views/cam/js.php:527
-#, fuzzy
 msgid "Gcode ready!"
-msgstr "Preparazione"
+msgstr "GCode pronto!"
 
 #: fabui/application/views/cam/js.php:531
-#, fuzzy
 msgid "Generation failed"
-msgstr "Probe fallito"
+msgstr "Generazione fallita"
 
 #: fabui/application/views/cam/js.php:654
 msgid "Gcode saved"
-msgstr ""
+msgstr "Gcode salvato"
 
 #: fabui/application/views/cam/js.php:713
-#, fuzzy
 msgid "Please enter subscription code"
-msgstr "Si prega di inserire un nome per il progetto"
+msgstr "Inserisci codice abbonamento"
 
 #: fabui/application/views/cam/js.php:738
-#, fuzzy
 msgid "Activation failed"
-msgstr "Attivare"
+msgstr "Attivazione fallita"
 
 #: fabui/application/views/cam/js.php:771
 #: fabui/application/views/cam/main_widget.php:129
 #: fabui/application/views/updates/index/js.php:57
 #: fabui/assets/js/fab.app.js:1719
-#, fuzzy
 msgid "Check network settings and try again"
-msgstr "Verificare la connessione e riprovare"
+msgstr "Controlla le impostazioni di rete e ritenta ancora"
 
 #: fabui/application/views/cam/js.php:771
 msgid ""
 "You must enter a valid subscription code <br> in order to use CAM toolbox"
 msgstr ""
+"Devi inserire un codice abbonamento valido <br> per poter utilizzare CAM "
+"toolbox"
 
 #: fabui/application/views/cam/js.php:783
 msgid "You need a valid subscription code to use CAM Toolbox"
-msgstr ""
+msgstr "Hai bisogno di un codice abbonamento valido per utilizzare CAM toolbox"
 
 #: fabui/application/views/cam/js.php:783
-#, fuzzy
 msgid "Are you sure you want remove it?"
-msgstr "Sei sicuro di volerti disconnettere?"
+msgstr "Sei sicuro di volerlo rimuovere?"
 
 #: fabui/application/views/cam/js.php:817
 #: fabui/application/views/cam/subscriptions_tab.php:32
@@ -3798,49 +3776,44 @@ msgstr "Stato"
 #: fabui/application/views/cam/js.php:818
 #: fabui/application/views/cam/subscriptions_tab.php:33
 msgid "Expiration date"
-msgstr ""
+msgstr "Data scadenza"
 
 #: fabui/application/views/cam/js.php:818
 #: fabui/application/views/cam/subscriptions_tab.php:33
-#, fuzzy
 msgid "Exp. date"
-msgstr "Aggiorna"
+msgstr "Data scad."
 
 #: fabui/application/views/cam/laser_tab.php:15
 msgid "Note: max file size is {0}"
-msgstr ""
+msgstr "Nota: dimensione massima del file è {0}"
 
 #: fabui/application/views/cam/laser_tab.php:26
 msgid "Source image"
-msgstr ""
+msgstr "Immagine sorgente"
 
 #: fabui/application/views/cam/laser_tab.php:27
-#, fuzzy
 msgid "Upload new file"
-msgstr "Carica nuovo filamento"
+msgstr "Carica nuovo file"
 
 #: fabui/application/views/cam/laser_tab.php:33
 msgid "Click on \"Generate GCode\" to show preview"
-msgstr ""
+msgstr "Premi su \"Genera GCode\" per  l'anteprima"
 
 #: fabui/application/views/cam/laser_tab.php:36
 msgid "Note: black is being burned by the laser"
 msgstr ""
 
 #: fabui/application/views/cam/laser_tab.php:51
-#, fuzzy
 msgid "Generate GCode"
-msgstr "Genera Plugin"
+msgstr "Genera Gcode"
 
 #: fabui/application/views/cam/laser_tab.php:56
-#, fuzzy
 msgid "Waiting for the GCode"
-msgstr "In attesa del primo movimento"
+msgstr "In attesa del  Gcode"
 
 #: fabui/application/views/cam/laser_tab.php:59
-#, fuzzy
 msgid "Direct download"
-msgstr "scaricare"
+msgstr "Download diretto"
 
 #: fabui/application/views/cam/laser_tab.php:68
 #, fuzzy
@@ -3876,12 +3849,11 @@ msgstr "Altezza"
 
 #: fabui/application/views/cam/laser_tab.php:93
 msgid "Invert colors"
-msgstr ""
+msgstr "Inverti i colori"
 
 #: fabui/application/views/cam/laser_tab.php:98
-#, fuzzy
 msgid "Profile"
-msgstr "Profili"
+msgstr "Profilo"
 
 #: fabui/application/views/cam/laser_tab.php:106
 #, fuzzy
@@ -3890,7 +3862,7 @@ msgstr "Dimensione nuvola"
 
 #: fabui/application/views/cam/laser_tab.php:111
 msgid "Number of gray levels"
-msgstr ""
+msgstr "Numero scala di grigi"
 
 #: fabui/application/views/cam/laser_tab.php:115
 msgid "Turn laser off during travel moves"
@@ -3928,9 +3900,8 @@ msgstr ""
 
 #: fabui/application/views/cam/laser_tab.php:176
 #: fabui/application/views/cam/laser_tab.php:266
-#, fuzzy
 msgid "More info"
-msgstr "Info di sistema"
+msgstr "Dettagli"
 
 #: fabui/application/views/cam/laser_tab.php:195
 msgid "Burn"
@@ -3977,72 +3948,66 @@ msgstr "Salta"
 
 #: fabui/application/views/cam/subscriptions_tab.php:20
 msgid "You must enter a valid subscription code in order to use CAM Toolbox"
-msgstr ""
+msgstr "Devi inserire un codice abbonamento valido per utilizzare CAM toolbox"
 
 #: fabui/application/views/cam/subscriptions_tab.php:20
-#, fuzzy
 msgid "Add"
-msgstr "Indirizzo"
+msgstr "Aggiungi"
 
 #: fabui/application/views/cam/subscriptions_tab.php:21
 #: fabui/application/views/cam/subscriptions_tab.php:69
 msgid "Need a subscription code"
-msgstr ""
+msgstr "Bisogno di un codice abbonamento"
 
 #: fabui/application/views/cam/subscriptions_tab.php:21
 #: fabui/application/views/cam/subscriptions_tab.php:69
-#, fuzzy
 msgid "Get it here"
-msgstr "Preparazione"
+msgstr "Prendilo qui"
 
 #: fabui/application/views/cam/subscriptions_tab.php:26
-#, fuzzy
 msgid "Subscription code"
-msgstr "Descrizione"
+msgstr "Codice abbonamento"
 
 #: fabui/application/views/cam/subscriptions_tab.php:41
 msgid "{0} days remaining"
-msgstr ""
+msgstr "{0} giorni rimanenti"
 
 #: fabui/application/views/cam/subscriptions_tab.php:56
 msgid "CAM toolbox"
-msgstr ""
+msgstr "CAM toolbox"
 
 #: fabui/application/views/cam/subscriptions_tab.php:61
 msgid "You must enter a valid subscription code in order to use CAM toolbox"
-msgstr ""
+msgstr "Devi inserire un codice abbonamento valido per utilizzare CAM toolbox"
 
 #: fabui/application/views/cam/subscriptions_tab.php:65
 msgid "Type here your subscription code"
-msgstr ""
+msgstr "Digita qui il codice abbonamento"
 
 #: fabui/application/views/cam/main_widget.php:47
-#, fuzzy
 msgid "Save GCode"
-msgstr "GCode"
+msgstr "Salva GCode"
 
 #: fabui/application/views/cam/main_widget.php:57
-#, fuzzy
 msgid "Crate new project"
-msgstr "Creare un nuovo progetto"
+msgstr "Creare nuovo progetto"
 
 #: fabui/application/views/cam/main_widget.php:58
-#, fuzzy
 msgid "Add to existing project"
 msgstr "Aggiungere ad un progetto esistente"
 
 #: fabui/application/views/cam/main_widget.php:103
-#, fuzzy
 msgid "You must be logged with your FABID account"
-msgstr "Connesso al tuo account FABID"
+msgstr "Devi essere connesso col tuo FABID"
 
 #: fabui/application/views/cam/main_widget.php:128
 msgid "FABtotum must be connected to internet in order to use CAM toolbox"
 msgstr ""
+"FABtotum deve essere connesso a internet per poter utilizzare CAM toolbox"
 
 #: fabui/application/views/cam/3d_printing_tab.php:15
 msgid "Coming soon"
-msgstr ""
+msgstr "Coming soon"
 
 #: fabui/application/views/history/main_js.php:105
 msgid "Today"
@@ -4152,20 +4117,17 @@ msgid "Get in touch with our technical support team"
 msgstr "Resta in contatto con il nostro team del supporto tecnico"
 
 #: fabui/application/views/myfabtotum/back_url.php:18
-#, fuzzy
 msgid "You successfully connected with your FABID account"
-msgstr "Connesso al tuo account FABID"
+msgstr "Connesso con il tuo FABID"
 
 #: fabui/application/views/myfabtotum/back_url.php:20
 #: fabui/assets/js/fab.app.js:1719
-#, fuzzy
 msgid "No internet connection"
-msgstr "Nessuna connessione internet trovata"
+msgstr "Connessione internet non disponibile"
 
 #: fabui/application/views/myfabtotum/back_url.php:20
-#, fuzzy
 msgid "Connect the FABTotum to internet and try again"
-msgstr "Verificare la connessione e riprovare"
+msgstr "Connetti FABtotum a internet e riprova ancora"
 
 #: fabui/application/views/create/print_js.php:69
 #: fabui/application/views/create/mill_js.php:76
@@ -4245,7 +4207,7 @@ msgstr "Carica nuovo filamento"
 
 #: fabui/application/views/layout/login/top.php:16
 msgid "Local access"
-msgstr ""
+msgstr "Accesso locale"
 
 #: fabui/application/views/layout/login/top.php:18
 msgid "Already registered?"
@@ -4260,19 +4222,16 @@ msgid "Lock screen"
 msgstr ""
 
 #: fabui/application/views/layout/default/ribbon.php:17
-#, fuzzy
 msgid "You are connected with your FABID account"
-msgstr "Connesso al tuo account FABID"
+msgstr "Connesso con FABID"
 
 #: fabui/application/views/layout/default/ribbon.php:19
-#, fuzzy
 msgid "Connect with your FABID account"
-msgstr "Connettiti al tuo account FABID"
+msgstr "Connettiti con FABID"
 
 #: fabui/application/views/layout/default/ribbon.php:25
-#, fuzzy
 msgid "My others printers"
-msgstr "Qualità della stampa"
+msgstr "Le mie stampanti"
 
 #: fabui/application/views/layout/default/top.php:21
 #: fabui/application/views/layout/debug/top.php:21
@@ -4475,8 +4434,7 @@ msgstr "Override"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
@@ -6772,9 +6730,8 @@ msgid "New Z max offset: {0}"
 msgstr "Nuova compensazione di Z max: {0}"
 
 #: fabui/assets/js/fab.app.js:1511
-#, fuzzy
 msgid "New updates are available"
-msgstr "sono disponibili nuovi aggiornamenti"
+msgstr "Nuovi aggiornamenti disponibili"
 
 #: fabui/assets/js/fab.app.js:1193
 msgid "Please make sure"
@@ -6889,7 +6846,6 @@ msgstr ""
 "una testa"
 
 #: fabui/assets/js/fab.app.js:1510
-#, fuzzy
 msgid "Updates center"
 msgstr "Aggiornamenti"
 
