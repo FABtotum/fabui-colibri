@@ -1716,7 +1716,7 @@ fabApp = (function(app) {
 		if(data.internet){
 			$("#ribbon-left-buttons").prepend('<span data-title="' + _("Internet available") + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon internet-ribbon-icon"><i class="fa fa-globe"></i></span>');
 		}else{
-			$("#ribbon-fabid-button").html("<i class='fa fa-warning text-danger'></i> " + _("No internet connection")).attr('data-original-title',_("Check network settings and try again" )).attr('data-title', _("Check network settings and try again"));
+			$("#ribbon-fabid-button").html("<i class='fa fa-warning text-danger'></i> " + _("No internet connection")).attr('data-original-title',_("Check network settings and try again")).attr('data-title', _("Check network settings and try again"));
 		}
 		if(connectionType == 'eth') {
 			$(".eth-ribbon").remove();
