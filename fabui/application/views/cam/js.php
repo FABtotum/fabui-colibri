@@ -37,6 +37,9 @@
 		$("#project-save-mode-choose").on('change', setSaveProjectMode);
 		$("#add-subscription-button").on('click', showSubscriptionModal);
 		$("#remove-subscription-button").on('click', removeSubscription);
+		$("#upload-new-file").on('click', function(){
+			location.reload();
+		});
 
 		$("#grey-levels-slider").ionRangeSlider({
 	        min: 1,

@@ -24,7 +24,7 @@
 					<ul id="laserImagesTab" class="nav nav-tabs">
 						<li class="active"><a href="#laser-preview-image-tab" data-toggle="tab"><?php echo _("Preview");?></a></li>
 						<li><a href="#laser-source-image-tab" data-toggle="tab"> <?php echo _("Source image");?></a></li>
-						<li class="pull-right"><a  href="<?php echo plugin_url('', true);?>"><i class="fa fa-plus"></i> <?php echo _("Upload new file");?></a></li>
+						<li class="pull-right"><a class="no-ajax" id="upload-new-file"  href="javascript:void(0);"><i class="fa fa-plus"></i> <?php echo _("Upload new file");?></a></li>
 					</ul>
 					<div id="laserImagesTabContent" class="tab-content padding-10">
 						<div class="tab-pane fade in active" id="laser-preview-image-tab">
