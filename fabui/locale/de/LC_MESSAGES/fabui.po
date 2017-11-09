@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-09 11:34+0100\n"
+"POT-Creation-Date: 2017-11-09 12:52+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: FABTeam\n"
@@ -4215,6 +4215,10 @@ msgstr ""
 msgid "Get in touch with our technical support team"
 msgstr "Nehmen Sie Kontakt mit unserem technischen Supportteam auf"
 
+#: fabui/application/views/myfabtotum/back_url_js.php:39
+msgid "Sign-in with local access and go to network settings"
+msgstr ""
+
 #: fabui/application/views/myfabtotum/back_url.php:18
 #, fuzzy
 msgid "You successfully connected with your FABID account"
@@ -4333,7 +4337,7 @@ msgstr "Erstellen Sie Ihr persönliches Konto"
 
 #: fabui/application/views/layout/default/ribbon.php:25
 #, fuzzy
-msgid "My others printers"
+msgid "My printers"
 msgstr "Qualität des Drucks"
 
 #: fabui/application/views/layout/default/top.php:21

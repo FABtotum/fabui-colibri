@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-09 11:34+0100\n"
+"POT-Creation-Date: 2017-11-09 12:52+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -3667,12 +3667,14 @@ msgstr "Installa il firmware"
 msgid "Build-date"
 msgstr "Data di costruzione"
 
-#: fabui/application/views/cam/js.php:78 fabui/application/views/cam/js.php:766
+#: fabui/application/views/cam/js.php:78
+#: fabui/application/views/cam/js.php:766
 #: fabui/application/views/projectsmanager/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Trascina file per caricarli"
 
-#: fabui/application/views/cam/js.php:78 fabui/application/views/cam/js.php:766
+#: fabui/application/views/cam/js.php:78
+#: fabui/application/views/cam/js.php:766
 #: fabui/application/views/projectsmanager/add/js.php:32
 msgid "or click"
 msgstr "o clicca"
@@ -4116,6 +4118,10 @@ msgstr ""
 msgid "Get in touch with our technical support team"
 msgstr "Resta in contatto con il nostro team del supporto tecnico"
 
+#: fabui/application/views/myfabtotum/back_url_js.php:39
+msgid "Sign-in with local access and go to network settings"
+msgstr ""
+
 #: fabui/application/views/myfabtotum/back_url.php:18
 msgid "You successfully connected with your FABID account"
 msgstr "Connesso con il tuo FABID"
@@ -4230,7 +4236,8 @@ msgid "Connect with your FABID account"
 msgstr "Connettiti con FABID"
 
 #: fabui/application/views/layout/default/ribbon.php:25
-msgid "My others printers"
+#, fuzzy
+msgid "My printers"
 msgstr "Le mie stampanti"
 
 #: fabui/application/views/layout/default/top.php:21
@@ -4434,7 +4441,8 @@ msgstr "Override"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24
+#: fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
