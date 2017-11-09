@@ -46,7 +46,7 @@ if(!function_exists('http_code_description'))
 	/**
 	 *
 	 */
-	function http_code_description()
+	function http_code_description($http_code)
 	{
 		switch($http_code)
 		{

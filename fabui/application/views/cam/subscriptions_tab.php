@@ -53,7 +53,7 @@ if($subscription_exists){
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title"><i class="fabui-edit-file"></i> <?php echo _("FABtotum CAM toolbox"); ?></h4>
+				<h4 class="modal-title"><i class="fabui-edit-file"></i> <?php echo _("CAM toolbox"); ?></h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
