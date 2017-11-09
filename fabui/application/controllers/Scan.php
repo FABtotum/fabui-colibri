@@ -83,7 +83,7 @@
 		);
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-scan';
-		$widget->header = array('icon' => 'icon-fab-scan', "title" => "<h2>"._("Scan")."</h2>");
+		$widget->header = array('icon' => 'fabui-3d-scanner', "title" => "<h2>"._("Scan")."</h2>");
 		$widget->body   = array('content' => $this->load->view('scan/main_widget', $data, true ), 'class'=>'fuelux');
 		$this->content = $widget->print_html(true);
 		

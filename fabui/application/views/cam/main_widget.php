@@ -125,7 +125,7 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
-						<p><?php echo _("FABtotum must be connected to internet in order to use the plugin");?></p>
+						<p><?php echo _("FABtotum must be connected to internet in order to use CAM toolbox");?></p>
 						<p><?php echo _("Check network settings and try again")?></p>
 					</div>
 				</div>
