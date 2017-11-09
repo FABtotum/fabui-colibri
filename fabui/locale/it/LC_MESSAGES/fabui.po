@@ -3667,14 +3667,12 @@ msgstr "Installa il firmware"
 msgid "Build-date"
 msgstr "Data di costruzione"
 
-#: fabui/application/views/cam/js.php:78
-#: fabui/application/views/cam/js.php:766
+#: fabui/application/views/cam/js.php:78 fabui/application/views/cam/js.php:766
 #: fabui/application/views/projectsmanager/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Trascina file per caricarli"
 
-#: fabui/application/views/cam/js.php:78
-#: fabui/application/views/cam/js.php:766
+#: fabui/application/views/cam/js.php:78 fabui/application/views/cam/js.php:766
 #: fabui/application/views/projectsmanager/add/js.php:32
 msgid "or click"
 msgstr "o clicca"
@@ -4236,7 +4234,6 @@ msgid "Connect with your FABID account"
 msgstr "Connettiti con FABID"
 
 #: fabui/application/views/layout/default/ribbon.php:25
-#, fuzzy
 msgid "My printers"
 msgstr "Le mie stampanti"
 
@@ -4441,8 +4438,7 @@ msgstr "Override"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
