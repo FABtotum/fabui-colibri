@@ -13,7 +13,7 @@
 	setTimeout(function(){
 		var regex_install = /fabui\/install/g;
 		var regex_login   = /fabui\/login/g;
-		var openerPathName = window.opener.location.pathname;
+		var openerPathName = window.opener.location.pathname.replace(/([^:])(\/\/+)/g, '$1/').replace(/\/$/, "");
 		var fromInstall = false;
 		var fromLogin   = false;
 		
