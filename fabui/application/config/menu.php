@@ -39,7 +39,7 @@ $config['menu'] = array(
 			),
 			'scan' => array(
 				'title' => _("Scan"),
-				'icon' => 'fabui-scan',
+				'icon' => 'fabui-3d-scanner',
 				'url' => 'scan',
 				'pos' => 30,
 			),
