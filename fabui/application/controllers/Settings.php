@@ -320,7 +320,8 @@ class Settings extends FAB_Controller {
 		
 		$headerToolbar = '<ul class="nav nav-tabs network-tabs pull-right">' . $tabs_title .'</ul>';
 		
-		$widgeFooterButtons = $this->smart->create_button(_('Scan'), 'primary')->attr(array('id' => 'scanButton', 'style' => 'display:none'))->attr('data-action', 'exec')->icon('fa-search')->print_html(true)
+		$widgeFooterButtons = $this->smart->create_button(_('Hidden wifi'), 'default hiddenWifiButton')->attr(array('style' => 'display:none'))->attr('data-action', 'exec')->icon('fa-user-secret')->print_html(true)
+						 .' '.$this->smart->create_button(_('Scan'), 'primary')->attr(array('id' => 'scanButton', 'style' => 'display:none'))->attr('data-action', 'exec')->icon('fa-search')->print_html(true)
 						 .' '.$this->smart->create_button(_('Save'), 'primary')->attr(array('id' => 'saveButton'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
@@ -371,8 +372,9 @@ class Settings extends FAB_Controller {
 					$ap_pass     = $postData['ap-password'];
 					$ap_channel  = isset($postData['ap-channel']) ? $postData['ap-channel'] : 1;
 					$hidden_ssid = $postData['hidden-ssid'];
-					$hidden_pass = $postData['hidden-passphrase'];
-					$psk = $postData['hidden-psk'];
+					$hidden_pass         = $postData['hidden-passphrase'];
+					$psk                 = $postData['hidden-psk'];
+					$connectToHiddenWifi = isset($postData['connect-to-hidden-wifi']) && ($postData['connect-to-hidden-wifi'] == 'true');
 					
 					if($mode == 'static-ap')
 					{
@@ -385,6 +387,12 @@ class Settings extends FAB_Controller {
 						$ssid = $hidden_ssid;
 						$password = $hidden_pass;
 					}
+					
+					if($connectToHiddenWifi){
+						$ssid = $postData['hiddenWifiSsid'];
+						$password = $postData['hiddenWifiPassword'];
+					}
+					
 					configureWireless($iface, $ssid, $password, $psk, $mode, $address, $netmask, $gateway, $ap_channel);
 					storeNetworkSettings($net_type, $iface, $mode, $address, $netmask, $gateway, $ssid, $password, $psk);
 					//update social feeds
@@ -398,8 +406,8 @@ class Settings extends FAB_Controller {
 				}
 				break;
 			case "dnssd":
-				$hostname = $postData['dnssd-hostname'];
-				$name = $postData['dnssd-name'];
+				$hostname = str_replace(" ", "", trim($postData['dnssd-hostname']));
+				$name     = trim($postData['dnssd-name']);
 				// TODO: error handling
 				setHostName($hostname, $name);
 				storeNetworkSettings($net_type, '', '', '', '', '', '', '', '', $hostname, $name);

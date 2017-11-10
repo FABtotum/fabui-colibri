@@ -4,6 +4,7 @@
 	var wifiIface;
 	var wifiPassword;
 	var currentEthIPV4;
+	var hiddenWifi = false;
 	
 	$(function () 
 	{
@@ -26,7 +27,9 @@
 		<?php endforeach ?>;
 		
 		$("#scanButton").on('click', do_scan);
+		$(".hiddenWifiButton").on('click', hiddenWifiModal);
 		$("#modalConnectButton").on('click', passwordModalConnect);
+		$("#hiddenWifiConnectButton").on('click', hiddenWifiConnect);
 		
 		$('a[data-toggle="tab"]').on('shown.bs.tab', tab_change);
 		
@@ -155,6 +158,7 @@
 
 	function post_data(data)
 	{
+		data['connect-to-hidden-wifi'] = hiddenWifi;
 		scrollToTop();
 		var button = $("#saveButton");
 		disableButton("#saveButton");
@@ -272,22 +276,29 @@
 		{
 			var mode = $(target + ' #address-mode').val();
 			
-			if(mode != 'static-ap' && mode != 'auto-ap' && mode != 'disabled')
+			if(mode != 'static-ap' && mode != 'auto-ap' && mode != 'disabled'){
 				$("#scanButton").show();
-			else
+				$(".hiddenWifiButton").show();
+			}
+			else{
 				$("#scanButton").hide();
+				$(".hiddenWifiButton").hide();
+			}
 		}
 		else if( target.startsWith("#eth") )
 		{
 			$("#scanButton").hide();
+			$(".hiddenWifiButton").hide();
 		}
 		else if( target.startsWith("#dnssd") )
 		{
 			$("#scanButton").hide();
+			$(".hiddenWifiButton").hide();
 		}
 		else if( target.startsWith("#ssh") )
 		{
 			$("#scanButton").hide();
+			$(".hiddenWifiButton").hide();
 		}
 	}
 
@@ -304,10 +315,14 @@
 				$("#"+iface+"-tab #gateway-container").slideUp('slow');
 				$("#"+iface+"-table-container").slideDown('slow');
 				$("#"+iface+"-tab #dhcp-address-container").slideDown('slow');
-				if(iface.startsWith('wlan') && $("#"+iface+"-tab").is(':visible'))
+				if(iface.startsWith('wlan') && $("#"+iface+"-tab").is(':visible')){
 					$("#scanButton").show();
-				else
+					$(".hiddenWifiButton").show();
+				}	
+				else{
 					$("#scanButton").hide();
+					$(".hiddenWifiButton").hide();
+				}
 				break;
 			case "static":
 				$("#"+iface+"-tab #address-container").slideDown('slow');
@@ -315,10 +330,14 @@
 				$("#"+iface+"-tab #gateway-container").slideDown('slow');
 				$("#"+iface+"-table-container").slideDown('slow');
 				$("#"+iface+"-tab #dhcp-address-container").slideUp('slow');
-				if(iface.startsWith('wlan')  && $("#"+iface+"-tab").is(':visible'))
+				if(iface.startsWith('wlan')  && $("#"+iface+"-tab").is(':visible')){
 					$("#scanButton").show();
-				else
+					$(".hiddenWifiButton").show();
+				}
+				else{
 					$("#scanButton").hide();
+					$(".hiddenWifiButton").hide();
+				}
 				break;
 			case "static-ap":
 				$("#"+iface+"-tab #address-container").slideDown('slow');
@@ -327,6 +346,7 @@
 				$("#"+iface+"-tab #dhcp-address-container").slideUp('slow');
 				$("#"+iface+"-table-container").slideUp('slow');
 				$("#scanButton").hide();
+				$(".hiddenWifiButton").hide();
 				break;
 			case "auto-ap":
 				$("#"+iface+"-tab #address-container").slideUp('slow');
@@ -335,6 +355,7 @@
 				$("#"+iface+"-tab #dhcp-address-container").slideUp('slow');
 				$("#"+iface+"-table-container").slideUp('slow');
 				$("#scanButton").hide();
+				$(".hiddenWifiButton").hide();
 				break;
 			case "disabled":
 				$("#"+iface+"-tab #address-container").slideUp('slow');
@@ -343,6 +364,7 @@
 				$("#"+iface+"-tab #dhcp-address-container").slideUp('slow');
 				$("#"+iface+"-table-container").slideUp('slow');
 				$("#scanButton").hide();
+				$(".hiddenWifiButton").hide();
 				break;
 		}
 	}
@@ -350,7 +372,20 @@
 	function show_password()
 	{
 		var attr = $(this).attr('data-attribute');
-		var obj = (attr != "modal")?$('#'+attr+'-tab .password'):$('#passwordModal #wifiPassword');
+		var obj = null;
+		switch(attr)
+		{
+			case 'modal':
+				obj = $('#passwordModal #wifiPassword');
+				break;
+			case 'modal-hidden-wifi':
+				obj = $('#hiddenWifiPassword');
+				break;
+			default:
+				obj = $('#'+attr+'-tab .password');
+				
+		}
+		//var obj = (attr != "modal")?$('#'+attr+'-tab .password'):$('#passwordModal #wifiPassword');
 		if( $(this).is( ":checked" ) )
 			obj.attr('type', 'text');
 		else
@@ -587,6 +622,31 @@
 			}
 		});
 		
+
+		$("#hiddenWifiForm").validate({
+			rules:{
+				hiddenWifiPassword:{
+					required: true
+				},
+				hiddenWifiSsid: {
+					required: true
+				}
+			},
+			messages: {
+				hiddenWifiPassword: {
+					required: "<?php echo _('Please insert valid password')?>"
+				},
+				hiddenWifiSsid: {
+					required: "<?php echo _('Please insert SSID'); ?>",
+				}
+			},
+			errorPlacement : function(error, element) {
+				error.insertAfter(element.parent());
+			}
+		});
+		
+		
+		
 		$(".addressForm").each(function( index ) {
 		
 			$(this).validate({
@@ -693,5 +753,23 @@
 				window.location.href = '<?php echo site_url('#settings/network/') ?>/' + active_tab;
 			}
 		}, reload_timeout );
+	}
+	/**
+	*
+	*/
+	function hiddenWifiModal()
+	{
+		$('#hiddenWifiModal').modal({});
+	}
+	/**
+	*
+	**/
+	function hiddenWifiConnect()
+	{
+		
+		if($("#hiddenWifiForm").valid()){
+			hiddenWifi = true;
+			do_save();
+		}
 	}
 </script>

@@ -97,7 +97,7 @@
 			</section>
 			
 		</fieldset>
-		<form id="hiddenWifiForm" style="display:none;">
+		<form  style="display:none;">
 			<fieldset>
 				<input type="text" id="hidden-address-mode" name="hidden-address-mode" value="<?php echo $info['address_mode']; ?>"/>
 				<input type="text" id="hidden-ssid" name="hidden-ssid" value="<?php echo $info['wireless']['ssid']; ?>"/>
@@ -111,6 +111,44 @@
 	
 	<div class="row">
 		<div class="col-sm-12" id="<?php echo $iface;?>-table-container">
+		</div>
+	</div>
+
+	<!-- HIDDEN WIFI MODAL -->
+	<div class="modal fade" id="hiddenWifiModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"><i class="fa fa-user-secret"></i> <?php echo _("Connect to hidden wifi"); ?></h4>
+				</div>
+				<div class="modal-body custom-scroll">
+					<form class="smart-form" id="hiddenWifiForm" onsubmit="return false;">
+						<fieldset>
+							<section>
+								<label class="input">
+									<i class="icon-prepend fa fa-user-secret"></i>
+									<input type="text" id="hiddenWifiSsid" name="hiddenWifiSsid" placeholder="<?php echo _("Type here SSID"); ?>" />
+								</label>
+							</section>
+							<section>
+								<label class="input"> <i class="icon-prepend fa fa-lock"></i>
+									<input type="password" data-inputmask-regex="[-_a-z A-Z0-9$@^`,|%;.~()/\{}:?\[\]=+_#!\'\*]*" class="input-password password" placeholder="insert password" id="hiddenWifiPassword" name="hiddenWifiPassword">
+								</label>
+							</section>
+							<section>
+								<label class="checkbox">
+									<input type="checkbox" data-attribute="modal-hidden-wifi" class="show-password"> <i></i> <?php echo _('Show password') ?>
+								</label>
+							</section>
+						</fieldset>
+						<input type="hidden" id="connect-to-hidde-wifi">
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Cancel')?></button>
+					<button type="button" class="btn btn-primary" id="hiddenWifiConnectButton"><i class="fa fa-check"></i> <?php echo _('Connect')?> </button>
+				</div>
+			</div>
 		</div>
 	</div>
 	
