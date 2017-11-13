@@ -210,7 +210,7 @@ if(!function_exists('call_service'))
 	function call_service($endpoint, $data = array())
 	{
 		$CI =& get_instance();
-		$CI->config->load('cam');
+		$CI->load->helper(array('api_helper'));
 
 		if(isset($CI->session->user['settings']['fabid']['email']))
 			$fabid = $CI->session->user['settings']['fabid']['email'];
@@ -220,23 +220,6 @@ if(!function_exists('call_service'))
 		$data['fabid']        = json_encode(array('email' => $fabid));
 		$data['subscription'] = get_subscription_code();
 		
-		$url = $CI->config->item('api_url').$CI->config->item('api_version').'/'.$endpoint;
-		
-		//prepare call
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_URL,            $url);
-		curl_setopt($ch, CURLOPT_POST,           true);
-		curl_setopt($ch, CURLOPT_POSTFIELDS,     $data);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,0);
-		curl_setopt($ch, CURLOPT_TIMEOUT,        $CI->config->item('connection_timeout'));
-		
-		//exec call
-		$content = curl_exec ($ch);
-		//get call info
-		$info = curl_getinfo ($ch);
-		//close call
-		curl_close ($ch);
-		return array('content' =>$content, 'info' => $info );
+		return call_remote_api($endpoint, $data);
 	}
 }

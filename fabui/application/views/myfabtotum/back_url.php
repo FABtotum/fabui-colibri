@@ -19,6 +19,15 @@
 			<?php else:?>
 			<h3><i class="fa fa-warning"></i> <?php echo _("No internet connection")?><br><?php echo _("Connect the FABTotum to internet and try again");?></h3>
 			<?php endif;?>
+			
+			<?php if(isset($register_printer) && $register_printer['status'] == false):?>
+				<h3 class="registration"><i class="fa fa-warning"></i> <?php echo _("Warning");?> <br> <?php echo _("Cannot register the printer to my.fabtotum.com");?> <br>
+				 <?php echo $register_printer['message'];?></h3>
+			<?php elseif(isset($register_printer) && $register_printer['status'] == true):?>
+				<h3 class="registration">
+					<i class="fa fa-check"></i> <?php echo _("Printer was succesfully registered");?>
+				</h3>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>

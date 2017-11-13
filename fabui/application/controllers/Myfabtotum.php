@@ -109,13 +109,10 @@ class Myfabtotum extends FAB_Controller {
 		
 		if ($fabid != '') { // if fabid exists, means login was ok
 			
-			$this->load->helper ( array (
-					'myfabtotum_helper',
-					'os_helper' 
-			) );
+			$this->load->helper(array('myfabtotum_helper', 'os_helper'));
 			
 			if (isInternetAvaialable ()) { // check for internet connection
-			                               
+				
 				// load classes
 				$this->load->model ( 'User', 'user' );
 				$data ['internet'] = true;
@@ -136,15 +133,12 @@ class Myfabtotum extends FAB_Controller {
 						$user ['settings'] ['fabid'] ['email'] = $fabid;
 						$user ['settings'] ['fabid'] ['logged_in'] = true;
 						$this->session->set_userdata('user', $user);
-						$this->user->update ( $user ['id'], array (
-								'settings' => json_encode ( $user ['settings'] ) 
-						) );
+						$this->user->update ( $user ['id'], array ( 'settings' => json_encode ( $user ['settings'] ) ) );	
 					}
 					
 					if (! fab_is_printer_registered ()) {
-						fab_register_printer ( $fabid );
+						$data['register_printer'] = fab_register_printer ( $fabid );					
 					}
-					
 					reload_myfabtotum ();
 				}
 			}

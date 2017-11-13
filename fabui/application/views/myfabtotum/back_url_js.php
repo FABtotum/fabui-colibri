@@ -11,6 +11,10 @@
 <script type="text/javascript">
 	var timeout = <?php echo $internet ? 1000 : 5000 ?>;
 
+	<?php if(isset($register_printer) && $register_printer['status']==false): ?>
+	timeout = 5000;
+	<?php endif; ?>
+
 	var fromInstall = false;
 	var fromLogin   = false;
 
@@ -39,6 +43,10 @@
 		 $(".update-box").append('<h5><?php echo _("Sign-in with local access and go to network settings");?></h5>');
 	 }
 	<?php endif; ?>
+
+	if(fromInstall){
+		$(".registration").remove();
+	}
 	
 	setTimeout(function(){
 			

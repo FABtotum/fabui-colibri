@@ -66,21 +66,26 @@ if (!function_exists('fab_register_printer'))
 	function fab_register_printer($fabid, $serialno = "")
 	{
 		$CI =& get_instance();
-		$CI->load->helpers(array('fabtotum_helper', 'os_helper'));
+		$CI->load->helpers(array('fabtotum_helper', 'os_helper', 'api_helper'));
 		$CI->load->database();
 		
 		$args = array();
 		
 		if($serialno == '') $serialno = getSerialNumber();
 		
-		$args['fabid']    = $fabid;
-		$args['serialno'] = $serialno;
-		$args['mac']      = getMACAddres();
-		
 		$return = array(
 			'status' => false,
 			'message' => ''
 		);
+		
+		if(!exists_serial_number($serialno)){
+			$return['message'] = _('The serial number provided was not recognized');
+			return $return;
+		}
+				
+		$args['fabid']    = $fabid;
+		$args['serialno'] = $serialno;
+		$args['mac']      = getMACAddres();
 		
 		$response = callMyFabtotum('fab_register_printer', $args);
 		

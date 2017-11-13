@@ -80,6 +80,11 @@ myfabtotum_url = https://my.fabtotum.com/myfabtotum/default/call/jsonrpc2
 myfabtotum_api_version = 1
 fabid_active = 1
 
+[app.fabtotum.com]
+api_url = http://app.fabtotum.com/api/
+api_version = 1
+connection_timeout = 300
+
 [store]
 store_api_endpoint = https://store.fabtotum.com/api/rest/
 store_homepage_it_feed = @BIGTEMP_PATH@fabui/store_it.json
