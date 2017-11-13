@@ -45,6 +45,14 @@ class Spool extends FAB_Controller {
 			'collapsed'        => false
 		);
 		
+		$data['filament_types'] = array(
+			'*'     => _("All"),
+			'.pla'  => _("Pla"),
+			'.abs'  => _("Abs"),
+			'.nyl'  => _("Nylon"),
+			'.ppro' => _("Pla Pro")
+		);
+		
 		
 		$data['filamentsOptions'] = $this->config->item('filaments');
 		
@@ -92,6 +100,7 @@ class Spool extends FAB_Controller {
 		$this->addCssFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.carousel.min.css');
 		$this->addCssFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.theme.default.css');
 		$this->addJSFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.carousel.min.js');
+		$this->addJSFile('/assets/js/plugin/OwlCarousel2-2.2.1/plugins/jquery.owl-filter.js');
 		$this->addCSSFile('/assets/css/spool/style.css');
 		$this->addJsInLine($this->load->view( 'std/task_wizard_js',   $data, true));
 		$this->addJsInLine($this->load->view('spool/js', $data, true));

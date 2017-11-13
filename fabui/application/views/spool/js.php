@@ -190,7 +190,7 @@
 						counter++;
 						var cssclass = counter == 1 ? 'active' : '';
 
-						html += '<div class="panel panel-default ">'+
+						html += '<div class="panel panel-default ' + item.sku.split("-")[0].toLowerCase() + ' ">'+
 									'<div class="panel-body status">'+
 										'<div class="image padding-10">'+
 											'<a rel="tooltip" title="'+item.short_description+'" target="_blank" href="'+item.url+'"><img src="'+item.image_url+'"></a>'+
@@ -212,7 +212,7 @@
 					}
 				});
 				$(".owl-carousel").html(html);
-				$('.owl-carousel').owlCarousel({
+				var owl = $('.owl-carousel').owlCarousel({
 		        	loop: true,
 		         	margin: 10,
 		            responsiveClass: true,
@@ -233,20 +233,33 @@
 		                  	}
 		                }
 				});
-				$("#slider-title").removeClass("hidden");
-				/*
-				$("#product-container").removeClass("hidden");
-				$(".carousel-inner").html(html);
-				$('.carousel-showmanymoveone .item').each(function(){
-					var itemToClone = $(this);
-					for (var i=1;i<6;i++) {
-						itemToClone = itemToClone.next();
-						if (!itemToClone.length) {
-							itemToClone = $(this).siblings(':first');
-						}
-					itemToClone.children(':first-child').clone().addClass("cloneditem-"+(i)).appendTo($(this));
+				$('.filters-button').on('click', function(e) {
+					var filter_data = $(this).data('filter');
+								
+					/* return if current */
+					if($(this).hasClass('btn-info')) return;
+
+					/* active current */
+					$(this).addClass('btn-info').siblings().removeClass('btn-info');
+
+					/* animate filter */
+					var owlAnimateFilter = function(even) {
+						$(this)
+						.addClass('__loading')
+						.delay(70 * $(this).parent().index())
+						.queue(function() {
+							$(this).dequeue().removeClass('__loading')
+						})
 					}
-				});*/
+
+					/* Filter 
+					owl.owlFilter(filter_data);*/
+					owl.owlFilter(filter_data, function(_owl) { 
+						$(_owl).find('.item').each(owlAnimateFilter); 
+						$('.settings-action').on('click', buttonAction);
+					});
+				});
+				$(".spool-slider").removeClass("hidden");
 			}
 		});
 		/**

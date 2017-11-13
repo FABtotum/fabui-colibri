@@ -13,24 +13,17 @@
 	<?php echo $wizard?>
 	</div>
 </div>
-<!--  
-<div class="row hidden" id="product-container">
-	<div class="col-xs-12 col-sm-12 col-md-12">
-		<h5 id="slider-title"><?php echo _("Get more filaments");?></h5>
-		<div class="carousel carousel-showmanymoveone slide " id="itemslider">
-			<div class="carousel-inner"><!-- PRODUCTS HERE </div>
-			<div id="slider-control">
-				<a class="left carousel-control" href="#itemslider"  data-slide="prev"><img src="/assets/img/arrow_left.png" alt="<?php echo _("Left");?>" class="img-responsive"></a> 
-				<a class="right carousel-control" href="#itemslider" data-slide="next"><img src="/assets/img/arrow_right.png" alt="<?php echo _("Right");?>" class="img-responsive"></a>
-			</div>
-		</div>
+<div class="row spool-slider hidden">
+	<div class="col-sm-12">
+		<span id="slider-title margin-bottom-10"><?php echo _("Get more filaments");?></span><br>
+		<?php foreach($filament_types as $key => $value):?>
+		<button type="button" class="btn btn-default <?php echo $key == "*" ? 'btn-info' : '';?>  filters-button margin-top-10" data-filter="<?php echo $key?>"><?php echo $value;?></button>
+		<?php endforeach; ?>
 	</div>
 </div>
--->
-<div class="row">
+<hr class="simple spool-slider hidden">
+<div class="row spool-slider">
 	<div class="col-sm-12">
-		<h5 class="hidden" id="slider-title"><?php echo _("Get more filaments");?></h5>
-		<div class="owl-carousel owl-theme">
-		</div>
+		<div class="owl-carousel owl-theme"></div>
 	</div>
 </div>
