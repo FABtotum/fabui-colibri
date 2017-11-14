@@ -9,10 +9,11 @@
  */
 
 /* variable initialization */
-if( !isset($jog_image) ) $jog_image = "/assets/img/controllers/create/subtractive/1.png";
-if( !isset($jog_message) ) $jog_message = _("Jog the endmill to the desired origin point, press <i class=\"fa fa-bullseye\" ></i> and when you are ready press \"Next\"");
-if( !isset($fourth_axis) ) $fourth_axis = False;
-if( !isset($is_laser)    ) $is_laser = false;
+if( !isset($jog_image) ) $jog_image      = "/assets/img/controllers/create/subtractive/1.png";
+if( !isset($jog_message) ) $jog_message  = _("Jog the endmill to the desired origin point, press <i class=\"fa fa-bullseye\" ></i> and when you are ready press \"Next\"");
+if( !isset($fourth_axis) ) $fourth_axis  = False;
+if( !isset($is_laser)    ) $is_laser     = false;
+if( !isset($is_laser_pro)) $is_laser_pro = false;
  
 ?>
 <div class="row">
@@ -54,7 +55,7 @@ if( !isset($is_laser)    ) $is_laser = false;
 					</div>
 				</div>
 			</div>
-			<?php if($is_laser):?>
+			<?php if($is_laser && !$is_laser_pro):?>
 			<div class="row" id="laser-calibrate-z-focus-row" style="display:none;">
 				<div class="col-sm-4 hidden-xs">
 					<div class="product-image medium text-center">
@@ -70,7 +71,7 @@ if( !isset($is_laser)    ) $is_laser = false;
 			<?php endif; ?>
 		</div>
 		
-		<div class="note">Note: If you home the axis, the jog position will be saved for future use.</div>
+		<div class="note"><p><?php echo _("Note: if you home the axis, the jog position will be saved for future use"); ?></p></div>
 	</div>
 	
 	<div class="col-sm-6 col-md-6">
@@ -92,11 +93,20 @@ if( !isset($is_laser)    ) $is_laser = false;
 						<div class="smart-form">
 							<?php if($is_laser):?>
 							<fieldset>
-								<section>
-									<label class="checkbox">
-										<input type="checkbox" name="focus-point" id="focus-point">
-										<i></i>Calibrate Z focusing point</label>
-								</section>
+								<div class="row">
+									<section class="col col-6">
+										<label class="checkbox">
+											<input type="checkbox" name="focus-point" id="focus-point">
+											<i></i><?php echo !$is_laser_pro ? _("Calibrate Z focusing point") : _("Automatic Z focus point");?></label>
+									</section>
+									<?php if($is_laser_pro):?>
+										<section class="col col-6">
+											<label class="checkbox">
+												<input type="checkbox" name="fan-on" id="fan-on" checked="checked">
+												<i></i><?php echo _("Fan ON");?></label>
+										</section>
+									<?php endif;?>
+								</div>
 							</fieldset>
 							<?php endif;?>
 							<fieldset style="background: none !important;">

@@ -195,10 +195,22 @@ class ConfigService:
     
     def is_pro_head(self, id):
         """
+        return if printing head is pro
         """
         pro_heads = [6]
         
         if int(id) in pro_heads:
+            return True
+        else:
+            return False
+    
+    def is_laser_pro_head(self, id):
+        """
+        return if head laser is pro
+        """
+        laser_pro_heads = [7]
+        
+        if int(id) in laser_pro_heads:
             return True
         else:
             return False

@@ -48,9 +48,10 @@ def check_engraving(app, args = None, lang='en_US.UTF-8'):
 def start_engraving(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
-    feeder = app.config.get_feeder_info('built_in_feeder')
-    units_a = feeder['steps_per_angle']
-    head = app.config.get_current_head_info()
+    feeder       = app.config.get_feeder_info('built_in_feeder')
+    units_a      = feeder['steps_per_angle']
+    head         = app.config.get_current_head_info()
+    is_laser_pro = app.config.is_laser_pro_head(head['fw_id'])
     
     try:
         laser_focus_offset = head['focus']
@@ -60,17 +61,46 @@ def start_engraving(app, args = None, lang='en_US.UTF-8'):
     configure_head(app, app.config.get('settings', 'hardware.head'))
     
     go_to_focus = int(args[0])
+    
+    try:
+        fan_on = int(args[1]) == 1
+    except:
+        fan_on = True
+           
         
     if(go_to_focus == 1):
-        app.macro("G91",       "ok", 2,   _("Set relative mode"), verbose=False)
-        app.macro("G0 Z{0} F1000".format(laser_focus_offset), "ok", 2,   _("Going to focus point"), verbose=True)
+        if(is_laser_pro == True):
+            app.trace( _("Calibrating Z axis heigth") )
+            
+            x = head['offset']['microswitch']['x']
+            y = head['offset']['microswitch']['y']
+            
+            app.macro("G91",       "ok", 2,   _("Set relative mode"), verbose=False)
+            app.macro("G0 X-{0} Y-{1} F1000".format(x, y), "ok", 2,   _("Going to laser cross point"), verbose=True)
+            app.macro("M733 S0",    "ok", 2,   _("disable homeing check"), verbose=False)
+            app.macro("G92 Z241.5", "ok", 2,   _("set z max"), verbose=False)
+            app.macro("M746 S2",    "ok", 2,   _("enable external probe"), verbose=False)
+            app.macro("G38",        "ok", 120, _("G38"), verbose=False)
+            app.macro("G0 Z{0} F1000".format(laser_focus_offset), "ok", 2,   _("Going to focus point"), verbose=True)
+            app.macro("M746 S0",    "ok", 2,   _("disable external probe"), verbose=False)
+            app.macro("M733 S1",    "ok", 2,   _("enable homeing check"), verbose=False)
+            app.macro("G0 X+{0} F1000".format(x), "ok", 2,   _("Going to laser cross point"), verbose=True)
+        else:
+            app.macro("G91",       "ok", 2,   _("Set relative mode"), verbose=False)
+            app.macro("G0 Z{0} F1000".format(laser_focus_offset), "ok", 2,   _("Going to focus point"), verbose=True)
     
-    app.macro("G92 X0 Y0 Z0 E0", "ok", 1,       _("Setting Origin Point"), verbose=False)
-    app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th Axis mode"), verbose=False)
-    app.macro("M106 S255", "ok", 1,             _ ("Turning fan on"), verbose=False)
-    app.macro("M701 S0",  "ok", 2,            _("Turning off lights"), verbose=False)
-    app.macro("M702 S0",  "ok", 2,            _("Turning off lights"), verbose=False)
-    app.macro("M703 S0",  "ok", 2,            _("Turning off lights"), verbose=False)
+    if(is_laser_pro == True):
+        app.trace("G0 X-{0} Y{1} F1000".format(head['offset']['laser_cross']['x'], head['offset']['laser_cross']['y']))
+        app.macro("G0 X-{0} Y{1} F1000".format(head['offset']['laser_cross']['x'], head['offset']['laser_cross']['y']), "ok", 2,   _("Going to laser point"), verbose=True)
+    
+    app.macro("G92 X0 Y0 Z0 E0", "ok", 1,    _("Setting Origin Point"),  verbose=False)
+    app.macro("M92 E"+str(units_a), "ok", 1, _("Setting 4th Axis mode"), verbose=False)
+    app.macro("M701 S0",  "ok", 2,           _("Turning off lights"),    verbose=False)
+    app.macro("M702 S0",  "ok", 2,           _("Turning off lights"),    verbose=False)
+    app.macro("M703 S0",  "ok", 2,           _("Turning off lights"),    verbose=False)
+    
+    if(fan_on == True):
+        app.macro("M106 S255", "ok", 1,          _("Turning fan on"), verbose=True)
     
     
 def end_engraving(app, args = None, lang='en_US.UTF-8'):

@@ -594,6 +594,25 @@ if(!function_exists('getInstalledFeederInfo'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('isLaserProHead'))
+{
+	/**
+	 * Check whether if laser head is pro
+	 * @param array $head head info (same as getInstalledHeadInfo() )
+	 * @return true | false
+	 */
+	function isLaserProHead($head = array())
+	{
+		if(empty($head)){
+			$head = getInstalledHeadInfo();
+		}
+		
+		$pro_heads = array(7);
+		
+		return in_array(intval($head['fw_id']),  $pro_heads);
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('restoreHeadFactorySettings'))
 {
 	/**
@@ -717,7 +736,6 @@ if(!function_exists('isFeederInHead'))
 			}
 			
 		}
-		
 		return false;
 	}
 }
@@ -916,6 +934,7 @@ if(!function_exists('sendToXmlrpcServer'))
 			}else {
 				$tmp = json_decode( $CI->xmlrpc->display_response(), true );
 				$trace = $CI->xmlrpc->display_response();
+				
 				if(json_last_error()){
 					$reply = $CI->xmlrpc->display_response();
 					$response = 'error';
@@ -923,11 +942,11 @@ if(!function_exists('sendToXmlrpcServer'))
 				}else{
 					if($tmp['response'] == 'success')
 					{
-						$response = True;
+						$response = true;
 					}
 					$response = $tmp['response'];
-					$reply   = $tmp['reply'];
-					$message = $tmp['message'];
+					$reply    = $tmp['reply'];
+					$message  = $tmp['message'];
 				}
 			}
 		}
@@ -1000,7 +1019,6 @@ if(!function_exists('resetController'))
 	function resetController()
 	{
 		return sendToXmlrpcServer('do_reset');
-		//writeToCommandFile('!reset');
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1108,15 +1126,11 @@ if(!function_exists('checkManufactoring'))
 	 */
 	function checkManufactoring($filePath, $numLines = 500)
 	{
-		//~ $CI =& get_instance();
-		//~ $CI->load->helper('plugin_helper');
-		//~ $CI->load->helper('file');
-		
-		
 		$args = array(
 			'-f' => $filePath,
 			'-n' => $numLines
 		);
+		
 		$manufactoring = trim(startPyScript('check_manufactoring.py', $args, false, true));
 		
 		if($manufactoring == '')
