@@ -50,7 +50,12 @@ def rpi_version():
 # Define model depending on batch number
 ########################################################################
 def fabtotum_model(batch_number):
-    batch_number = int(batch_number)
+    
+    try:
+        batch_number = int(batch_number)
+    except:
+        batch_number = 1
+        
     model = ''
     
     if(batch_number >= 3000 and batch_number < 4000 ):

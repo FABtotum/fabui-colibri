@@ -653,23 +653,24 @@ fabApp = (function(app) {
 	 * @memberof fabApp
 	 */
 	app.resetController = function() {
-		openWait("<i class=\"fa fa-circle-o-notch fa-spin\"></i> " + _("Resetting controller"), _("Please wait"), false);
+		openWait("<i class=\"fa fa-cog fa-spin\"></i> " + _("Resetting controller"), _("Please wait"), false);
 		$.get(reset_controller_url_action, function(){
 			closeWait();
 		});
 	}
 	/**
-	 * Stop all operations and tasks on the fabtotum and refresh the page after 3 seconds.
+	 * Stop all operations and tasks on the fabtotum and refresh the page after 10 seconds.
 	 * @memberof fabApp
 	 */
 	app.stopAll = function(message) {
-		message = message || _("Aborting all operations") ;
+		message = message || '<i class="fa fa-warning"></i> ' +  _("Emergency stop") ;
 		openWait(message, ' ', false);
 		$.get(stop_all_url_action, function(){
-			waitContent(_("Reloading page"));
-			setTimeout(function(){ 
+			waitContent('<i class="fa fa-cog fa-spin"></i> ' + _("Restarting all services") + '<br> ' + _("Please wait"));
+			setTimeout(function(){
+				waitContent('<i class="fa fa-refresh fa-spin"></i> ' + _("Reloading page"));
 				location.reload(); 
-			}, 7000);
+			}, 10000);
 		});
 	}
 	/**

@@ -337,6 +337,11 @@
 		{
 			working_mode = 2;
 			laser = true;
+
+			$(".laser-settings").slideDown();
+			
+		}else{
+			$(".laser-settings").slideUp();
 		}
 			
 		if(capabilities.indexOf("scan") > -1)
@@ -379,7 +384,7 @@
 		}
 		else // first time show scenario
 		{
-			var available_tabs = ['print', 'mill', 'feeder', '4thaxis'];
+			var available_tabs = ['print', 'mill', 'feeder', '4thaxis', 'laser'];
 			
 			for(var i=0; i<capabilities.length; i++)
 			{

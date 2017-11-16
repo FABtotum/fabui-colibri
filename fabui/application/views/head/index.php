@@ -136,29 +136,29 @@
 									<div class="col col-4">
 										<label class="checkbox">
 											<input type="checkbox" id="cap-print" name="capability[]" data-attr="print" class="capability">
-											<i></i>Print</label>
+											<i></i><?php echo _('3D Print');?></label>
 										<label class="checkbox">
 											<input type="checkbox" id="cap-mill" name="capability[]" data-attr="mill" class="capability">
-											<i></i>Mill</label>
+											<i></i><?php echo _("Mill");?></label>
 										<label class="checkbox">
 											<input type="checkbox" id="cap-laser" name="capability[]" data-attr="laser" class="capability">
-											<i></i>Laser</label>
+											<i></i><?php echo _("Laser");?></label>
 									</div>
 									<div class="col col-4">
 										<label class="checkbox">
 											<input type="checkbox" id="cap-scan" name="capability[]" data-attr="scan" class="capability">
-											<i></i>Scan</label>
+											<i></i><?php echo _("Scan");?></label>
 										<label class="checkbox">
 											<input type="checkbox" id="cap-fan" name="capability[]" data-attr="fan" class="capability">
-											<i></i>Fan</label>
+											<i></i><?php echo _("Fan");?></label>
 									</div>
 									<div class="col col-4">
 										<label class="checkbox">
 											<input type="checkbox" id="cap-feeder" name="capability[]" data-attr="feeder" class="capability">
-											<i></i>Feeder</label>
+											<i></i><?php echo _("Feeder");?></label>
 										<label class="checkbox">
 											<input type="checkbox" id="cap-4thaxis" name="capability[]" data-attr="4thaxis" class="capability">
-											<i></i>4th axis</label>
+											<i></i><?php echo _("4th axis");?></label>
 									</div>
 								</div>
 							</section>
@@ -200,10 +200,11 @@
 					<fieldset>
 						<div class="row">
 							<ul class="nav nav-tabs pull-left">
-								<li class="active print-settings" style="display:none"><a id="print-tab-button" data-toggle="tab" href="#print-tab"><?php echo _('Print')?></a></li>
-								<li class="mill-settings" style="display:none"><a id="mill-tab-button" data-toggle="tab" href="#mill-tab"><?php echo _('Mill')?></a></li>
-								<li class="feeder-settings" style="display:none"><a id="feeder-tab-button" data-toggle="tab" href="#feeder-tab"><?php echo _('Feeder')?></a></li>
-								<li  class="4thaxis-settings" style="display:none"><a id="4thaxis-tab-button" data-toggle="tab" href="#4thaxis-tab"><?php echo _('4th axis')?></a></li>
+								<li class="active print-settings" style="display:none"><a id="print-tab-button"   data-toggle="tab" href="#print-tab"><?php echo _('Print')?></a></li>
+								<li class="mill-settings"         style="display:none"><a id="mill-tab-button"    data-toggle="tab" href="#mill-tab"><?php echo _('Mill')?></a></li>
+								<li class="feeder-settings"       style="display:none"><a id="feeder-tab-button"  data-toggle="tab" href="#feeder-tab"><?php echo _('Feeder')?></a></li>
+								<li class="4thaxis-settings"      style="display:none"><a id="4thaxis-tab-button" data-toggle="tab" href="#4thaxis-tab"><?php echo _('4th axis')?></a></li>
+								<li class="laser-settings"        style="display:none"><a id="laser-tab-button"   data-toggle="tab" href="#laser-tab"><?php echo _("Laser");?></a></li>
 							</ul>
 						</div>
 					</fieldset>
@@ -357,6 +358,18 @@
 						<input type="hidden" id="4thaxis-factory" name="factory" value="0"/>
 					</fieldset>
 					
+					<!-- LASER TAB -->
+					<fieldset class="tab-pane fade in" id="laser-tab">
+						<div class="row">
+							<section class="col col-6">
+								<label class="label"><?php echo _("Z focusing distance");?></label>
+								<label class="input">
+									<input type="number" id="head-focus" name="focus" min="1" max="4" value="2">
+								</label>
+							</section>
+						</div>
+					</fieldset>
+					<!-- END LASER TAB -->
 					</div><!-- <div class="tab-content padding-10"> -->
 					
 					<input type="hidden" id="tool" name="tool" value="" />
