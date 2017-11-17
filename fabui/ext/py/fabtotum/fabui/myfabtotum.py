@@ -234,8 +234,11 @@ class MyFabtotumCom:
         """ remote command identify printer"""
         self.log.info("MyFabtotumCom - Identify printer")
         
+        #send info to remote server
+        self.fab_info_update()
+        
         self.gcs.send("M300", group='gcode')
-        self.gcs.send("M150 R0 U255 B0 S50", group='gcode')
+        self.gcs.send("M150 R0 U255 B255 S50", group='gcode')
         time.sleep(3)
         self.gcs.send("M701 S{0}".format(self.leds_colors['r']), group='gcode')
         self.gcs.send("M702 S{0}".format(self.leds_colors['g']), group='gcode')
