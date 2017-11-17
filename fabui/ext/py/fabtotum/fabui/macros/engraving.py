@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
 
-__authors__ = "Marco Rizzuto, Daniel Kesler"
+__authors__ = "Marco Rizzuto, Daniel Kesler, Krios Mane"
 __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
@@ -28,7 +28,7 @@ __version__ = "1.0"
 
 # Import internal modules
 from fabtotum.utils.translation import _, setLanguage
-from fabtotum.fabui.macros.common import configure_head
+from fabtotum.fabui.macros.common import configure_head, goToFocusHeigth
 
 def check_engraving(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
@@ -60,44 +60,31 @@ def start_engraving(app, args = None, lang='en_US.UTF-8'):
     
     configure_head(app, app.config.get('settings', 'hardware.head'))
     
-    go_to_focus = int(args[0])
+    go_to_focus = int(args[0]) == 1
+    
     
     try:
-        fan_on = int(args[1]) == 1
+        automatic_positioning = int(args[1]) == 1
+    except:
+        automatic_positioning = False
+    
+    try:
+        fan_on = int(args[2]) == 1
     except:
         fan_on = True
-           
-        
-    if(go_to_focus == 1):
-        if(is_laser_pro == True):
-            app.trace( _("Calibrating Z axis heigth") )
-            
-            x = head['offset']['microswitch']['x']
-            y = head['offset']['microswitch']['y']
-            
-            app.macro("G91",       "ok", 2,   _("Set relative mode"), verbose=False)
-            app.macro("G0 X-{0} Y-{1} F1000".format(x, y), "ok", 2,   _("Going to laser cross point"), verbose=True)
-            app.macro("M733 S0",    "ok", 2,   _("disable homeing check"), verbose=False)
-            app.macro("G92 Z241.5", "ok", 2,   _("set z max"), verbose=False)
-            app.macro("M746 S2",    "ok", 2,   _("enable external probe"), verbose=False)
-            app.macro("G38",        "ok", 120, _("G38"), verbose=False)
-            app.macro("G0 Z{0} F1000".format(laser_focus_offset), "ok", 2,   _("Going to focus point"), verbose=True)
-            app.macro("M746 S0",    "ok", 2,   _("disable external probe"), verbose=False)
-            app.macro("M733 S1",    "ok", 2,   _("enable homeing check"), verbose=False)
-            app.macro("G0 X+{0} F1000".format(x), "ok", 2,   _("Going to laser cross point"), verbose=True)
-        else:
-            app.macro("G91",       "ok", 2,   _("Set relative mode"), verbose=False)
-            app.macro("G0 Z{0} F1000".format(laser_focus_offset), "ok", 2,   _("Going to focus point"), verbose=True)
     
-    if(is_laser_pro == True):
-        app.trace("G0 X-{0} Y{1} F1000".format(head['offset']['laser_cross']['x'], head['offset']['laser_cross']['y']))
-        app.macro("G0 X-{0} Y{1} F1000".format(head['offset']['laser_cross']['x'], head['offset']['laser_cross']['y']), "ok", 2,   _("Going to laser point"), verbose=True)
+    if(automatic_positioning == True):
+        app.macro("G27", "ok", 120, _("Homing all axes"), verbose=True)
+        go_to_focus = True
     
-    app.macro("G92 X0 Y0 Z0 E0", "ok", 1,    _("Setting Origin Point"),  verbose=False)
+    if(go_to_focus == True):
+        goToFocusHeigth(app, head)
+    
+    app.macro("G92 X0 Y0 Z0 E0",    "ok", 1, _("Setting Origin Point"),  verbose=False)
     app.macro("M92 E"+str(units_a), "ok", 1, _("Setting 4th Axis mode"), verbose=False)
-    app.macro("M701 S0",  "ok", 2,           _("Turning off lights"),    verbose=False)
-    app.macro("M702 S0",  "ok", 2,           _("Turning off lights"),    verbose=False)
-    app.macro("M703 S0",  "ok", 2,           _("Turning off lights"),    verbose=False)
+    app.macro("M701 S0",            "ok", 2, _("Turning off lights"),    verbose=False)
+    app.macro("M702 S0",            "ok", 2, _("Turning off lights"),    verbose=False)
+    app.macro("M703 S0",            "ok", 2, _("Turning off lights"),    verbose=False)
     
     if(fan_on == True):
         app.macro("M106 S255", "ok", 1,          _("Turning fan on"), verbose=True)
@@ -125,7 +112,6 @@ def end_engraving_aborted(app, args = None, lang='en_US.UTF-8'):
             'g' : 255,
             'b' : 255,
         }
-        
     
     app.macro("M400",       "ok", 200,   _("Waiting for all moves to finish") )
     app.macro("M62",        "ok", 10,    _("Shutting down the laser") ) #should be moved to firmware       

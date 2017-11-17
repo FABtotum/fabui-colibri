@@ -91,6 +91,7 @@ class MyFabtotumCom:
         self.polling_interval = 5
         self.info_interval    = (60*30) #30 minutes
         self.id_counter       = 0
+        self.leds_colors      = {}
         #self.mac_address      = None
         #self.serial_number    = None
         #self.fab_id           = None
@@ -111,6 +112,7 @@ class MyFabtotumCom:
         #self.batch_number  = self.getBatchNumer()
         #self.fw_version    = self.getFwVersion()
         self.unit_color    = self.getUnitColor()
+        self.leds_colors   = self.getLedsColors()
         
     
     def call(self, method, params):
@@ -185,6 +187,13 @@ class MyFabtotumCom:
         """ get unit color """
         return self.__getSystemConfig('unit_color')
     
+    def getLedsColors(self):
+        """ get ambient leds lights """
+        try:
+            return self.config.get('settings', 'color')
+        except:
+            return {'r': 255, 'g':255, 'b':255}
+    
     def getBatchNumer(self):
         """ get batch number """
         try:
@@ -224,7 +233,14 @@ class MyFabtotumCom:
     def identify(self):
         """ remote command identify printer"""
         self.log.info("MyFabtotumCom - Identify printer")
-        self.gcs.send("M728", group='gcode')
+        
+        self.gcs.send("M300", group='gcode')
+        self.gcs.send("M150 R0 U255 B0 S50", group='gcode')
+        time.sleep(3)
+        self.gcs.send("M701 S{0}".format(self.leds_colors['r']), group='gcode')
+        self.gcs.send("M702 S{0}".format(self.leds_colors['g']), group='gcode')
+        self.gcs.send("M703 S{0}".format(self.leds_colors['b']), group='gcode')
+        self.gcs.send("M300", group='gcode')
         
     def reboot(self):
         """ remote command reboot unit """
@@ -318,6 +334,7 @@ class MyFabtotumCom:
         #self.batch_number  = self.getBatchNumer()
         #self.fw_version    = self.getFwVersion()
         self.unit_color    = self.getUnitColor()
+        self.leds_colors   = self.getLedsColors()
         #### update info 
         self.fab_info_update()
         self.log.debug("MyFabtotumCom - Settings reloaded")

@@ -331,3 +331,31 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
             
     return True
 
+def goToFocusHeigth(app, head):
+    """ go to laaser focus heigth """
+    
+    is_laser_pro       = app.config.is_laser_pro_head(head['fw_id'])
+    laser_focus_offset = head['focus']
+    
+    if(is_laser_pro == True):
+        
+        microswitch_offset = head['offset']['microswitch']
+        laser_cross_offset = head['offset']['laser_cross']
+        
+        app.macro("G91", "ok", 2,   _("Set relative mode"), verbose=False)
+        app.macro("G0 X-{0} Y-{1} F1000".format(microswitch_offset['x'],microswitch_offset['y']), "ok", 2,   _("Going to laser cross point"), verbose=True)
+        app.macro("M733 S0",    "ok", 2,   _("disable homeing check"), verbose=False)
+        app.macro("G92 Z241.5", "ok", 2,   _("set z max"), verbose=False)
+        app.macro("M746 S2",    "ok", 2,   _("enable external probe"), verbose=False)
+        app.macro("G38",        "ok", 120, _("G38"), verbose=False)
+        app.macro("G0 Z{0} F1000".format(laser_focus_offset), "ok", 2,   _("Going to focus point"), verbose=True)
+        app.macro("M746 S0",    "ok", 2,   _("disable external probe"), verbose=False)
+        app.macro("M733 S1",    "ok", 2,   _("enable homeing check"), verbose=False)
+        app.macro("G0 X+{0} F1000".format(microswitch_offset['x']), "ok", 2,   _("Going to laser cross point"), verbose=True)
+        
+        app.macro("G0 X-{0} Y{1} F1000".format(laser_cross_offset['x'], laser_cross_offset['y']), "ok", 2,   _("Going to laser point"), verbose=True)
+        
+    else:
+        app.macro("G91",                                      "ok", 2, _("Set relative mode"),    verbose=False)
+        app.macro("G0 Z{0} F1000".format(laser_focus_offset), "ok", 2, _("Going to focus point"), verbose=True)
+

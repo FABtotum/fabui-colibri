@@ -6,7 +6,7 @@
     "working_mode": 2,
     "fw_id": 7,
     "pid": "",
-    "thermistor_index": 0,
+    "thermistor_index": 3,
     "max_temp": 80,
     "nozzle_offset": 0,
     "min_rpm": 6000,
@@ -21,5 +21,15 @@
         "fab_laser"
     ],
     "focus": 2,
-    "min_temp": 175
+    "min_temp": 20,
+    "offset": {
+        "laser_cross": {
+            "x": 4.5,
+            "y": 8.96
+        },
+        "microswitch": {
+            "x": 5.38,
+            "y": 8.38
+        }
+    }
 }

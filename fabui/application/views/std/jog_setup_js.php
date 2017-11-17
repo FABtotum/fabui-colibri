@@ -92,7 +92,7 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 			$('.touch-home-xy').addClass('disabled');
 			fabApp.jogMdi('G28 X Y', function(e){
 				unlock_touch();
-				});
+			});
 			return false;
 		 });
 		 
@@ -108,7 +108,8 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 		// workaround for missing resize event on show
 		$(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
 			jog_touch.jogtouch('resize');
-		})
+		});
+				
 	});
 	
 	function unlock_touch()

@@ -93,23 +93,25 @@ if( !isset($is_laser_pro)) $is_laser_pro = false;
 						<div class="smart-form">
 							<?php if($is_laser):?>
 							<fieldset>
-								<div class="row">
-									<section class="col col-6">
+								<section>
+									<div class="inline-group">
 										<label class="checkbox">
 											<input type="checkbox" name="focus-point" id="focus-point">
-											<i></i><?php echo !$is_laser_pro ? _("Calibrate Z focusing point") : _("Automatic Z focus point");?></label>
-									</section>
-									<?php if($is_laser_pro):?>
-										<section class="col col-6">
-											<label class="checkbox">
-												<input type="checkbox" name="fan-on" id="fan-on" checked="checked">
-												<i></i><?php echo _("Fan ON");?></label>
-										</section>
-									<?php endif;?>
-								</div>
+											<i></i><?php echo !$is_laser_pro ? _("Calibrate Z focusing point") : _("Automatic Z focus point");?>
+										</label>
+										<?php if($is_laser_pro):?>
+										<label class="checkbox">
+    										<input type="checkbox" name="automatic-positioning" id="automatic-positioning"><i></i><?php echo _("Automatic absolute positioning"); ?>
+    									</label>
+    									<label class="checkbox">
+											<input type="checkbox" name="fan-on" id="fan-on" checked="checked"><i></i><?php echo _("Fan ON");?>
+										</label>
+										<?php endif;?>
+									</div>
+								</section>
 							</fieldset>
 							<?php endif;?>
-							<fieldset style="background: none !important;">
+							<fieldset class="jog-controls" style="background: none !important;">
 								<div class="row">
 									<section class="col col-4">
 										<label class="label-mill text-center">XY <?php echo _("Step"); ?> (mm)</label>
