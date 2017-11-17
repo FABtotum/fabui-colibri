@@ -171,13 +171,25 @@ def version(app, args = None, lang='en_US.UTF-8'):
 
 def set_ambient_color(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    red = args[0]
-    green = args[1]
-    blue = args[2]
     
-    app.macro("M701 S{0}".format(red),   "ok", 1,    _("Setting red color"))
-    app.macro("M702 S{0}".format(green),   "ok", 1,    _("Setting green color"))
-    app.macro("M703 S{0}".format(blue),   "ok", 1,    _("Setting blue color"))
+    if(len(args) < 3):
+        try:
+            colors = app.config.get('settings', 'color')
+            red   = colors['r']
+            green = colors['g']
+            blue  = colors['b']
+        except:
+            red   = 255
+            green = 255
+            blue  = 255
+    else:
+        red   = args[0]
+        green = args[1]
+        blue  = args[2]
+    
+    app.macro("M701 S{0}".format(red),   "ok", 1, _("Setting red color"))
+    app.macro("M702 S{0}".format(green), "ok", 1, _("Setting green color"))
+    app.macro("M703 S{0}".format(blue),  "ok", 1, _("Setting blue color"))
 
 def install_head(app, args, lang='en_US.UTF-8'):
     _ = setLanguage(lang)

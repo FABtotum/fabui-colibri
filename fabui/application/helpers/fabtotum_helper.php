@@ -557,7 +557,7 @@ if(!function_exists('getInstalledHeadInfo'))
 			$fw_id = intval($info['fw_id']);
 			if( $fw_id < 100 )
 			{
-				$info['image_src'] = '/assets/img/head/' . $_data['hardware']['head'] . '.png';
+				$info['image_src'] = '/assets/img/head/photo/' . $_data['hardware']['head'] . '.png';
 			}
 			else
 			{
@@ -1614,6 +1614,7 @@ if(!function_exists('setSecure'))
 		$CI->load->config('fabtotum');
 		$CI->load->helper('file');
 		doMacro('clear_errors');
+		doMacro('set_ambient_color');
 		$notify = json_decode( file_get_contents( $CI->config->item('notify_file') ), true);
 		$notify['last_event']['seen'] = true;
 		write_file($CI->config->item('notify_file'), json_encode($notify, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK));
