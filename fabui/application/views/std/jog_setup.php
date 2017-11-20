@@ -40,7 +40,7 @@ if( !isset($is_laser_pro)) $is_laser_pro = false;
 		<?php endif; ?>
 		
 		<div class="product-content product-wrap clearfix">
-			<div class="row">
+			<div class="row" id="head-position-row">
 				<div class="col-sm-4 hidden-xs">
 					<div class="product-image medium text-center">
 						<img class="img-responsive" src="<?php echo $jog_image;?>" style="width: 90%; display:inline; margin-top:10px;"/>
@@ -55,16 +55,22 @@ if( !isset($is_laser_pro)) $is_laser_pro = false;
 					</div>
 				</div>
 			</div>
-			<?php if($is_laser && !$is_laser_pro):?>
+			<?php if($is_laser):?>
 			<div class="row" id="laser-calibrate-z-focus-row" style="display:none;">
 				<div class="col-sm-4 hidden-xs">
 					<div class="product-image medium text-center">
-						<img class="img-responsive" src="<?php echo plugin_assets_url('img/fabui_laser_03a.png');?>" style="width:50%;display:inline;  margin-top:10px;"/>
+						<img class="img-responsive" src="<?php echo $is_laser_pro ? plugin_assets_url('img/fabui_laser_pro_03a.png') : plugin_assets_url('img/fabui_laser_03a.png') ?>" style="width:50%;display:inline;  margin-top:10px;"/>
 					</div>
 				</div>
 				<div class="col-sm-8">
 					<div class="description text-center">
-						<p class="font-md margin-top-30"><?php echo _("Lower the Z so that the laser head is max 1 mm away from the stock material, then press continue");?></p>
+						<p class="font-md margin-top-30">
+							<?php if($is_laser_pro):?>
+							<?php echo _("Focal point will be calculated automatically ");?>
+							<?php else:?>
+							<?php echo _("Lower the Z so that the laser head is max 1 mm away from the stock material, then press continue");?>
+							<?php endif;?>
+						</p>
 					</div>
 				</div>
 			</div>
@@ -97,7 +103,7 @@ if( !isset($is_laser_pro)) $is_laser_pro = false;
 									<div class="inline-group">
 										<label class="checkbox">
 											<input type="checkbox" name="focus-point" id="focus-point">
-											<i></i><?php echo !$is_laser_pro ? _("Calibrate Z focusing point") : _("Automatic Z focus point");?>
+											<i></i><?php echo !$is_laser_pro ? _("Calibrate focal point") : _("Automatic focal point");?>
 										</label>
 										<?php if($is_laser_pro):?>
 										<label class="checkbox">
@@ -139,7 +145,7 @@ if( !isset($is_laser_pro)) $is_laser_pro = false;
 					</div><!-- id="jog-tab" -->
 				
 					<div class="tab-pane fade in" id="touch-tab">
-						<div class="touch-container">
+						<div class="touch-container text-center" style="display: block">
 							<img class="bed-image" src="/assets/img/std/hybrid_bed_v2_small.jpg" >
 							
 							<div class="button_container">
@@ -165,12 +171,9 @@ if( !isset($is_laser_pro)) $is_laser_pro = false;
 							<input value="0" class="knob" data-displayPrevious="true" data-width="230" data-height="230" data-cursor="true" data-step="0.5" data-min="0" data-max="360" data-thickness=".3" data-fgColor="#A0CFEC" data-displayInput="true">
 						</div>
 					</div><!-- id="fourth-tab" -->
-					
-					
 				</div>
 			</div>
 		</div>
-		
 	</div>
 </div>
 
