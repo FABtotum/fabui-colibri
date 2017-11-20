@@ -30,7 +30,7 @@ if(!function_exists('call_remote_api'))
 	/**
 	 * make call to remote api url (http://app.fabtotum.com)
 	 */
-	function call_remote_api($endpoint, $data = array())
+	function call_remote_api($endpoint, $data = array(), $post = true)
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
@@ -40,8 +40,10 @@ if(!function_exists('call_remote_api'))
 		//prepare call
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_URL,            $url);
-		curl_setopt($ch, CURLOPT_POST,           true);
-		curl_setopt($ch, CURLOPT_POSTFIELDS,     $data);
+		if($post){
+		  curl_setopt($ch, CURLOPT_POST,           true);
+		  curl_setopt($ch, CURLOPT_POSTFIELDS,     $data);
+		}
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,0);
 		curl_setopt($ch, CURLOPT_TIMEOUT,        $CI->config->item('connection_timeout'));
