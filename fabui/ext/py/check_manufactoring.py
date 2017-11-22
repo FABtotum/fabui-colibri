@@ -63,16 +63,17 @@ def checkGCodeManufactoring(filename, num_of_lines = 500):
     manufactoring = MANUFACTORING_UNKNOWN
 
     for line in lines:
-        
-        if(isSubtractive(line)):
-            manufactoring = MANUFACTORING_SUBTRACTIVE
-            break
-        elif(isLaser(line)):
-            manufactoring = MANUFACTORING_LASER
-            break
-        elif(isPrint(line)):
-            manufactoring = MANUFACTORING_ADDITIVE
-            break
+        if(line.startswith(';') == False):
+            
+            if(isSubtractive(line)): ##ignore comments
+                manufactoring = MANUFACTORING_SUBTRACTIVE
+                break
+            elif(isLaser(line)):
+                manufactoring = MANUFACTORING_LASER
+                break
+            elif(isPrint(line)):
+                manufactoring = MANUFACTORING_ADDITIVE
+                break
 
     return manufactoring
 
