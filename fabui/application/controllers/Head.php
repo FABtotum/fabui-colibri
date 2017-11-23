@@ -75,12 +75,9 @@ class Head extends FAB_Controller {
 		$this->load->helper(array('fabtotum_helper', 'myfabtotum_helper'));
 		setSecure();
 		
-		$heads  = loadHeads();
+		$heads = loadHeads();
 		$_data = loadSettings();
-		$settings_type = $_data['settings_type'];
-		if (isset($_data['settings_type']) && $_data['settings_type'] == 'custom') {
-			$_data = loadSettings( $_data['settings_type'] );
-		}
+		
 		$head_info = $heads[$new_head];
 		$_data['hardware']['head'] = $new_head;
 		doMacro('install_head', '', [$new_head]);
@@ -104,7 +101,7 @@ class Head extends FAB_Controller {
 			}
 		}
 		
-		saveSettings($_data, $settings_type);
+		saveSettings($_data);
 		// reset totumduino
 		resetController();
 		//reload myfabtotum
