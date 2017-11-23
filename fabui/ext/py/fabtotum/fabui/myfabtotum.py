@@ -273,7 +273,8 @@ class MyFabtotumCom:
             "serialno"   : self.serial_number,
             "mac"        : self.mac_address,
             "state"      : self.getState(),
-            "apiversion" : self.api_version
+            "apiversion" : self.api_version,
+            "iplan"     : self.ip_lan
         }
         result =  self.call('fab_polling', params)
         if result: 
