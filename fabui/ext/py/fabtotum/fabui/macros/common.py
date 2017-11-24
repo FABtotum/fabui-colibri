@@ -331,19 +331,25 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
             
     return True
 
-def goToFocusHeigth(app, head):
-    """ go to laaser focus heigth """
+def go_to_focal_point(app, head):
+    """ go to laser focal point """
     
     is_laser_pro       = app.config.is_laser_pro_head(head['fw_id'])
-    laser_focus_offset = head['focus']
+    
+    try:
+        laser_focus_offset = head['focus']
+    except:
+        laser_focus_offset = 2
     
     if(is_laser_pro == True):
         
-        microswitch_offset = head['offset']['microswitch']
+        # offset are relative to miscroswitch
+        laser_point_offset = head['offset']['laser_point']
         laser_cross_offset = head['offset']['laser_cross']
         
+        app.macro("G92 X0 Y0", "ok", 2, _("Setting Cross position"), verbose=False)
         app.macro("G91", "ok", 2,   _("Set relative mode"), verbose=False)
-        app.macro("G0 X-{0} Y-{1} F1000".format(microswitch_offset['x'],microswitch_offset['y']), "ok", 2,   _("Going to laser cross point"), verbose=True)
+        app.macro("G0 X{0} Y{1} F1000".format(laser_cross_offset['x'], laser_cross_offset['y']), "ok", 2, _("Going to laser cross point"), verbose=True)
         app.macro("M733 S0",    "ok", 2,   _("disable homeing check"), verbose=False)
         app.macro("G92 Z241.5", "ok", 2,   _("set z max"), verbose=False)
         app.macro("M746 S2",    "ok", 2,   _("enable external probe"), verbose=False)
@@ -351,9 +357,9 @@ def goToFocusHeigth(app, head):
         app.macro("G0 Z{0} F1000".format(laser_focus_offset), "ok", 2,   _("Going to focus point"), verbose=True)
         app.macro("M746 S0",    "ok", 2,   _("disable external probe"), verbose=False)
         app.macro("M733 S1",    "ok", 2,   _("enable homeing check"), verbose=False)
-        app.macro("G0 X+{0} F1000".format(microswitch_offset['x']), "ok", 2,   _("Going to laser cross point"), verbose=True)
         
-        app.macro("G0 X-{0} Y{1} F1000".format(laser_cross_offset['x'], laser_cross_offset['y']), "ok", 2,   _("Going to laser point"), verbose=True)
+        app.macro("G90", "ok", 2,   _("Set absolute mode"), verbose=False)
+        app.macro("G0 X{0} Y{1} F1000".format(laser_point_offset['x'], laser_point_offset['y']), "ok", 2, _("Moving to start position"), verbose=True)
         
     else:
         app.macro("G91",                                      "ok", 2, _("Set relative mode"),    verbose=False)

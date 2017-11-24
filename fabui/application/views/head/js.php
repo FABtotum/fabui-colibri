@@ -211,6 +211,24 @@
 						$(id).val(fvalue);
 					}
 				}
+
+				if(key == "offset")
+				{
+					for (var oKey in value)
+					{
+						var oValue = value[oKey];
+
+						if(isObject(oValue)){
+							
+							for(var vKey in oValue)
+							{
+								var vValue = oValue[vKey];
+								var id = "#offset-"+oKey+'-'+vKey;
+								$(id).val(vValue);
+							}
+						}
+					}
+				}
 			}
 			else
 			{
@@ -234,6 +252,8 @@
 			$("#head-fw_id").attr("min", official_heads_id_limit);
 		}
 
+		showHideLaserProExtraSettings(head.fw_id);
+
 	}
 	/**
 	*
@@ -247,6 +267,7 @@
 			$("#head-fw_id").removeAttr("readonly");
 			$(".factory-head-button").hide();
 			$(".custom-head-button").show();
+			$(".laser-pro").hide();
 		}else if(action == 'hide'){
 			$(".url-container").hide();
 			$(".description-container").hide();
@@ -254,6 +275,7 @@
 			$("#head-fw_id").attr("readonly", "readonly");
 			$(".factory-head-button").show();
 			$(".custom-head-button").hide();
+			$(".laser-pro").show();
 		}
 	}
 	/**
@@ -278,12 +300,12 @@
 	{
 		update_working_mode = update_working_mode || true;
 		var capabilities = [];
-		var print = false;
-		var mill = false;
-		var laser = false;
-		var scan = false;
-		var feeder = false;
-		var fourthaxis = false;
+		var print        = false;
+		var mill         = false;
+		var laser        = false;
+		var scan         = false;
+		var feeder       = false;
+		var fourthaxis   = false;
 		
 		$(".capability").each(function (index, value) {
 			if($(this).is(":checked"))
@@ -337,7 +359,6 @@
 		{
 			working_mode = 2;
 			laser = true;
-
 			$(".laser-settings").slideDown();
 			
 		}else{
@@ -358,9 +379,10 @@
 
 		if( $(this).is("input") )
 		{
-
+			
 			var state = $(this).is(":checked");
 			var tab_name =  $(this).attr('data-attr');
+
 			
 			if(state)
 			{
@@ -385,6 +407,8 @@
 		else // first time show scenario
 		{
 			var available_tabs = ['print', 'mill', 'feeder', '4thaxis', 'laser'];
+
+			$(".tab-pane").removeClass('active');
 			
 			for(var i=0; i<capabilities.length; i++)
 			{
@@ -501,6 +525,7 @@
 			var id     = $(this).attr('id');
 			var type   = $(this).attr('type');
 			var feeder = id.startsWith("feeder-");
+			var offset = id.startsWith("offset-");
 			var fourthaxis = id.startsWith("4thaxis-");
 			
 			
@@ -511,6 +536,10 @@
 			if( !settings.hasOwnProperty('4thaxis'))
 			{
 				settings['4thaxis'] = {};
+			}
+			if(!settings.hasOwnProperty('offset'))
+			{
+				settings['offset'] = {};
 			}
 			
 			if(name)
@@ -528,7 +557,12 @@
 						settings['feeder'][name] = $(this).val();
 					} else if(fourthaxis) {
 						settings['4thaxis'][name] = $(this).val();
-					} else {
+					} else if(offset){
+						var tmp = name.split("-");
+						if(!settings['offset'].hasOwnProperty(tmp[0])) settings['offset'][tmp[0]] = {};
+						settings['offset'][tmp[0]][tmp[1]] = $(this).val();
+					} 
+					else {
 						settings[name] = $(this).val();
 					}
 				}
@@ -655,5 +689,18 @@
 			{
 			}
 		});
+	}
+	/**
+	*
+	**/
+	function showHideLaserProExtraSettings(id)
+	{
+		var pro_laser_heads = [7];
+
+		if(pro_laser_heads.indexOf(id) > -1){
+			$(".laser-pro").show();
+		}else{
+			$(".laser-pro").hide();
+		}
 	}
 </script>

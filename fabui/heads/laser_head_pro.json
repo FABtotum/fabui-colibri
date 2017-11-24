@@ -24,12 +24,12 @@
     "min_temp": 20,
     "offset": {
         "laser_cross": {
-            "x": 4.5,
-            "y": 8.96
+            "x": -9.8,
+            "y": 0.5
         },
-        "microswitch": {
-            "x": 5.38,
-            "y": 8.38
+        "laser_point": {
+            "x": -4.5,
+            "y": 6.5
         }
     }
 }

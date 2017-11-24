@@ -368,6 +368,38 @@
 								</label>
 							</section>
 						</div>
+						
+						<div class="row laser-pro">
+							<section class="col col-3">
+								<label class="label"><?php echo _("Laser cross offset");?></label>
+								<label class="input">
+									<span class="icon-prepend">X</span>
+									<input type="number" id="offset-laser_cross-x" step="0.1" name="laser_cross-x">
+								</label>
+							</section>
+							<section class="col col-3">
+								<label class="label">&nbsp;</label>
+								<label class="input">
+									<span class="icon-prepend">Y</span>
+									<input type="number" id="offset-laser_cross-y" step="0.1" name="laser_cross-y">
+								</label>
+							</section>
+							<section class="col col-3">
+								<label class="label"><?php echo _("Laser point offset");?></label>
+								<label class="input">
+									<span class="icon-prepend">X</span>
+									<input type="number" id="offset-laser_point-x" step="0.1" name="laser_point-x">
+								</label>
+							</section>
+							<section class="col col-3">
+								<label class="label">&nbsp;</label>
+								<label class="input">
+									<span class="icon-prepend">Y</span>
+									<input type="number" id="offset-laser_point-y" step="0.1" name="laser_point-y">
+								</label>
+							</section>
+						</div>
+						
 					</fieldset>
 					<!-- END LASER TAB -->
 					</div><!-- <div class="tab-content padding-10"> -->
