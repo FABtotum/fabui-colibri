@@ -22,6 +22,7 @@ import argparse
 import os
 import gettext
 import json
+import re
 
 # Import external modules
 import numpy as np
@@ -70,8 +71,8 @@ def main():
         }
         
         for l in drawing.layers:
-            info['layers'].append( {'name':l.name.replace(" ", "_"), 'description': l.name, 'color':l.color, 'elements_count' : len(l.primitives)} )
-        
+            info['layers'].append( {'name': re.sub('[^A-Za-z0-9]+', '_', l.name), 'description': l.name, 'color':l.color, 'elements_count' : len(l.primitives)} )
+            
     elif ext == '.jpg' or ext == '.jpeg' or ext == '.png':
         
         info = {
