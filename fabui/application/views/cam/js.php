@@ -145,12 +145,14 @@
 							var palette = ['red', 'rgb(0,128,0)', 'blue', 'violet', 'gold', 'black', 'gray'];
 							var color_idx = 0;
 							if(laser_file_type == 'VECTOR'){
+								$(".dimensions-container").slideUp();
+								$("#target_width").val(0);
 								$(".raster-settings").slideUp();
 								for(i=0; i<response.info.layers.length; i++){
 									var lyr = response.info.layers[i];
 									var lyr_name = lyr.name;
 									if(lyr.elements_count > 0){
-										content += '<section><label clas="label">Layer '+lyr.name+'</label></section>';
+										content += '<section><label clas="label">Layer '+lyr.description+'</label></section>';
 										content += '<div class="row">\
 											<section class="col col-2">\
 												<input type="color" id="'+lyr_name+'-color" name="layer-'+lyr_name+'-color" class="color-palette" data-color="'+palette[color_idx]+'">\

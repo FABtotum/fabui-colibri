@@ -75,7 +75,7 @@
 							<div class="tab-pane fade in active" id="laser-general-tab">
 								<div class="smart-form">
 									<fieldset>
-										<div class="row">
+										<div class="row dimensions-container">
 											<section class="col col-6">
 												<label class="input">
 													<span class="icon-prepend"><?php echo _("Width");?></span>

@@ -70,7 +70,7 @@ def main():
         }
         
         for l in drawing.layers:
-            info['layers'].append( {'name':l.name, 'color':l.color, 'elements_count' : len(l.primitives)} )
+            info['layers'].append( {'name':l.name.replace(" ", "_"), 'description': l.name, 'color':l.color, 'elements_count' : len(l.primitives)} )
         
     elif ext == '.jpg' or ext == '.jpeg' or ext == '.png':
         
