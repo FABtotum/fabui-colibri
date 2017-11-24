@@ -38,5 +38,5 @@
 <!-- END TRANSLATIONS -->
 <?php echo $this->jsInLineTop; ?>
 <script type="text/javascript">
-var page_title_prefix = '<?php echo getHostName(); ?> - ';
+var page_title_prefix = '<?php echo addslashes(getHostName()); ?> - ';
 </script>
