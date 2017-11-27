@@ -53,12 +53,14 @@ case "$1" in
     ######## fabtotum server ########
     #start-stop-daemon -b -S -q -m -p ${FABSERVICE_PID} --exec python ${PYTHON_PATH}/FabtotumServices.py -- -B -L /var/log/fabui/FabtotumServices.log
     ARGS="-B -p ${FABSERVICE_PID} -x ${XMLRPCS_PID}"
-    if [ x"$FORCED" != x ]; then
+    if [ x"$FORCED" != x"" ]; then
         ARGS="-R ${ARGS}"
     fi
+    if [ x"$BTAGENT_STARTUP" != x"yes" ]; then
+        ARGS="${ARGS} --no-btagent"
+    fi
+    
     python ${PYTHON_PATH}/FabtotumServices.py ${ARGS} &> /var/log/fabui/FabtotumServices.log 2>&1 &
-    #~ python ${PYTHON_PATH}/fabtotum/os/monitor/gpiomonitor.py -p ${GPIOMONITOR_PID} -L /var/log/fabui/gpiomonitor.log &
-    #~ echo $! > ${FABSERVICE_PID}
 
     evaluate_retval
     ;;
@@ -68,6 +70,7 @@ case "$1" in
     start-stop-daemon -K -q -o -p ${FABSERVICE_PID}
     start-stop-daemon -K -q -o -p ${GPIOMONITOR_PID}
     [ x"$CPUID" == x"BCM2709" ] && start-stop-daemon -K -q -o -p ${XMLRPCS_PID}
+    [ x"$BTAGENT_STARTUP" = x"yes" ] && start-stop-daemon -K -q -o -p ${BTAGENT_PID}
     
     evaluate_retval
 
@@ -78,6 +81,7 @@ case "$1" in
     rm -f ${FABSERVICE_PID}
     rm -f ${XMLRPCS_PID}
     rm -f ${GPIOMONITOR_PID}
+    rm -f ${BTAGENT_PID}
 
     # Configure RESET pin to output
     PIN=17

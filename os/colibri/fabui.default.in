@@ -20,4 +20,8 @@ GPIOMONITOR_PID=/run/gpiomonitor.pid
 WEBSOCKET_STARTUP=yes
 WEBSOCKET_PID=/run/webSocket.pid
 
+BTAGENT_STARTUP=yes
+BTAGENT_PID=/run/btagent.pid
+BT_FIX_WIFI_ISSUE=yes
+
 LOG_LEVEL=@LOG_LEVEL@

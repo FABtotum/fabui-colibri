@@ -79,7 +79,7 @@ RECOVERY_FILES	=	recovery/*
 DB				= 	sqlite3
 DB_FILES		= 	fabtotum.db
 
-CONFIG_FILES	=	config.ini serial.ini lang.ini pins.ini cam.ini
+CONFIG_FILES	=	config.ini serial.ini lang.ini pins.ini cam.ini bluetooth.ini
 
 # Files that will end up in SHARED_PATH
 STATIC_FILES	=	
@@ -331,6 +331,11 @@ $(OS_COMMON_STAMP):
 # 	Rpi3 Wifi Module loading
 	$(FAKEROOT_ENV) install -d -m 0775 $(BDATA_DIR)/etc/modules-load.d
 	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/rpi3_wifi.conf $(BDATA_DIR)/etc/modules-load.d/rpi3_wifi.conf
+# 	Bluetooth configuration
+	$(FAKEROOT_ENV) install -d -m 0775 $(BDATA_DIR)/etc/bluetooth
+	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/bluetooth/main.conf $(BDATA_DIR)/etc/bluetooth/main.conf
+	$(FAKEROOT_ENV) install -d -m 0775 $(BDATA_DIR)/etc/default
+	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/bluetooth.default $(BDATA_DIR)/etc/default/bluetooth
 #	Sudoers fabui rule
 	$(FAKEROOT_ENV) install -d -m 0750 $(BDATA_DIR)/etc/sudoers.d
 	$(FAKEROOT_ENV) install -D -m 0440 $(OS_FILES_DIR)/common/fabui.sudoers $(BDATA_DIR)/etc/sudoers.d/fabui
