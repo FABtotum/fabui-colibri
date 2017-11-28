@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-09 12:52+0100\n"
+"POT-Creation-Date: 2017-11-28 16:20+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: FABTeam\n"
@@ -34,7 +34,7 @@ msgstr "Herstellen"
 #: fabui/application/controllers/Create.php:92
 #: fabui/application/controllers/Create.php:144
 #: fabui/application/helpers/projects_manager_helper.php:34
-#: fabui/application/helpers/fabtotum_helper.php:1722
+#: fabui/application/helpers/fabtotum_helper.php:1737
 #: fabui/application/views/install/wizard.php:231
 #: fabui/application/views/login/register_form.php:77
 #: fabui/application/views/head/index.php:203
@@ -48,7 +48,8 @@ msgstr "Drücken"
 #: fabui/application/controllers/Create.php:222
 #: fabui/application/controllers/Create.php:273
 #: fabui/application/helpers/projects_manager_helper.php:43
-#: fabui/application/helpers/fabtotum_helper.php:1723
+#: fabui/application/helpers/fabtotum_helper.php:1738
+#: fabui/application/views/head/index.php:142
 #: fabui/application/views/head/index.php:204
 #: fabui/application/views/head/install.php:207
 #: fabui/application/views/create/mill_js.php:58
@@ -56,14 +57,15 @@ msgid "Mill"
 msgstr "Fräsen"
 
 #: fabui/application/config/menu.php:41
-#: fabui/application/controllers/Settings.php:323
+#: fabui/application/controllers/Settings.php:324
 #: fabui/application/controllers/Head.php:157
 #: fabui/application/controllers/Scan.php:86
-#: fabui/application/helpers/fabtotum_helper.php:1724
+#: fabui/application/helpers/fabtotum_helper.php:1739
 #: fabui/application/views/install/js.php:346
 #: fabui/application/views/install/wizard.php:163
 #: fabui/application/views/settings/hardware_widget.php:58
-#: fabui/application/views/settings/network_js.php:384
+#: fabui/application/views/settings/network_js.php:419
+#: fabui/application/views/head/index.php:150
 #: fabui/application/views/scan/wizard/main.php:24
 msgid "Scan"
 msgstr "Scan"
@@ -75,7 +77,7 @@ msgstr "Historie"
 
 #: fabui/application/config/menu.php:55
 #: fabui/application/controllers/Jog.php:57
-#: fabui/application/views/std/jog_setup.php:81
+#: fabui/application/views/std/jog_setup.php:88
 msgid "Jog"
 msgstr "Jog"
 
@@ -94,7 +96,7 @@ msgid "Head"
 msgstr "Kopf"
 
 #: fabui/application/config/menu.php:78
-#: fabui/application/controllers/Spool.php:84
+#: fabui/application/controllers/Spool.php:92
 msgid "Spool management"
 msgstr "Spool-Verwaltung"
 
@@ -134,6 +136,7 @@ msgid "Angle calibration"
 msgstr "Winkelkalibrierung"
 
 #: fabui/application/config/menu.php:121
+#: fabui/application/views/head/index.php:158
 #: fabui/application/views/head/index.php:205
 #: fabui/application/views/head/install.php:208
 #: fabui/assets/js/tours/0050_feeder.js:39
@@ -156,7 +159,8 @@ msgstr "Einrasten"
 
 #: fabui/application/config/menu.php:146
 #: fabui/application/views/jog/widget.php:65
-#: fabui/application/views/std/jog_setup.php:84
+#: fabui/application/views/std/jog_setup.php:91
+#: fabui/application/views/head/index.php:161
 #: fabui/application/views/head/index.php:206
 #: fabui/application/views/head/install.php:209
 msgid "4th axis"
@@ -196,7 +200,7 @@ msgstr ""
 #: fabui/application/config/menu.php:183
 #: fabui/application/controllers/Install.php:47
 #: fabui/application/views/install/wizard.php:162
-#: fabui/assets/js/fab.app.js:1399
+#: fabui/assets/js/fab.app.js:1400
 msgid "Network"
 msgstr "Netzwerk"
 
@@ -264,7 +268,7 @@ msgid "Lighting"
 msgstr "Licht"
 
 #: fabui/application/controllers/Settings.php:46
-#: fabui/application/controllers/Settings.php:324
+#: fabui/application/controllers/Settings.php:325
 #: fabui/application/controllers/Account.php:42
 #: fabui/application/controllers/Projectsmanager.php:89
 #: fabui/application/controllers/Projectsmanager.php:229
@@ -280,10 +284,10 @@ msgstr "Licht"
 #: fabui/application/views/systeminfo/widget.php:293
 #: fabui/application/views/systeminfo/widget.php:329
 #: fabui/application/views/settings/hardware_js.php:146
-#: fabui/application/views/settings/network_js.php:236
-#: fabui/application/views/head/index.php:372
+#: fabui/application/views/settings/network_js.php:240
+#: fabui/application/views/head/index.php:417
 #: fabui/application/views/head/install.php:375
-#: fabui/application/views/cam/js.php:656
+#: fabui/application/views/cam/js.php:661
 #: fabui/application/views/cam/main_widget.php:86
 #: fabui/application/views/feeder/profiles/widget.php:212
 #: fabui/application/views/projectsmanager/edit/js.php:87
@@ -317,7 +321,7 @@ msgid "Automatic (DHCP)"
 msgstr "Automatisch (DHCP)"
 
 #: fabui/application/controllers/Settings.php:220
-#: fabui/assets/js/fab.app.js:1703
+#: fabui/assets/js/fab.app.js:1704
 msgid "Access Point"
 msgstr "Zugangspunkt"
 
@@ -343,7 +347,11 @@ msgstr ""
 msgid "DNS"
 msgstr ""
 
-#: fabui/application/controllers/Settings.php:328
+#: fabui/application/controllers/Settings.php:323
+msgid "Hidden wifi"
+msgstr ""
+
+#: fabui/application/controllers/Settings.php:329
 #: fabui/application/views/restore/wizard.php:98
 msgid "Network settings"
 msgstr "Netzwerkeinstellungen"
@@ -351,7 +359,7 @@ msgstr "Netzwerkeinstellungen"
 #: fabui/application/controllers/Myfabtotum.php:61
 #: fabui/application/views/plugin/js.php:68
 #: fabui/application/views/plugin/js.php:89
-#: fabui/application/views/cam/js.php:771
+#: fabui/application/views/cam/js.php:776
 #: fabui/application/views/cam/main_widget.php:123
 #: fabui/application/views/updates/index/js.php:57
 msgid "No internet connection found"
@@ -537,25 +545,47 @@ msgstr ""
 "Hallo {0}, <br> <br> Diese E-Mail ist hier um Sie zu informieren, dass die "
 "letzte {1} Aufgabe{2} wurde."
 
+#: fabui/application/controllers/Spool.php:49
+#: fabui/application/controllers/Head.php:153
+msgid "All"
+msgstr ""
+
+#: fabui/application/controllers/Spool.php:50
+#, fuzzy
+msgid "Pla"
+msgstr "Beliebt"
+
+#: fabui/application/controllers/Spool.php:51
+msgid "Abs"
+msgstr ""
+
+#: fabui/application/controllers/Spool.php:52
+msgid "Nylon"
+msgstr ""
+
 #: fabui/application/controllers/Spool.php:53
+msgid "Pla Pro"
+msgstr ""
+
+#: fabui/application/controllers/Spool.php:61
 #: fabui/application/controllers/Nozzle.php:59
 #: fabui/application/views/scan/wizard/main.php:15
 msgid "Choose mode"
 msgstr "Wählen Sie den Modus"
 
-#: fabui/application/controllers/Spool.php:59
+#: fabui/application/controllers/Spool.php:67
 #: fabui/application/views/std/task_execute.php:303
 msgid "Filament"
 msgstr ""
 
-#: fabui/application/controllers/Spool.php:64
+#: fabui/application/controllers/Spool.php:72
 #: fabui/application/controllers/Create.php:122
 #: fabui/application/controllers/Create.php:251
 #: fabui/application/views/scan/wizard/main.php:21
 msgid "Get ready"
 msgstr "Bereit machen"
 
-#: fabui/application/controllers/Spool.php:69
+#: fabui/application/controllers/Spool.php:77
 #: fabui/application/controllers/Nozzle.php:71
 #: fabui/application/controllers/Install.php:49
 #: fabui/application/controllers/Create.php:132
@@ -568,9 +598,8 @@ msgstr "Bereit machen"
 msgid "Finish"
 msgstr "Ende"
 
-#: fabui/application/controllers/Spool.php:77
-#: fabui/application/views/spool/main_widget.php:19
-#: fabui/application/views/spool/main_widget.php:32
+#: fabui/application/controllers/Spool.php:85
+#: fabui/application/views/spool/main_widget.php:18
 msgid "Get more filaments"
 msgstr "Bekommen sie mehr Filamente "
 
@@ -667,6 +696,7 @@ msgstr ""
 #: fabui/application/views/login/login_form.php:126
 #: fabui/application/views/account/widget.php:105
 #: fabui/application/views/jog/widget.php:248
+#: fabui/application/views/settings/wireless_tab.php:148
 #: fabui/application/views/settings/network_widget.php:148
 #: fabui/application/views/std/task_dropzone.php:57
 #: fabui/application/views/feeder/calibration/widget.php:72
@@ -735,10 +765,6 @@ msgstr "Installieren"
 msgid "Heads"
 msgstr "Köpfe"
 
-#: fabui/application/controllers/Head.php:153
-msgid "All"
-msgstr ""
-
 #: fabui/application/controllers/Head.php:155
 #: fabui/application/controllers/Create.php:221
 #: fabui/application/controllers/Create.php:256
@@ -746,6 +772,8 @@ msgid "Milling"
 msgstr "Fräsen"
 
 #: fabui/application/controllers/Head.php:156
+#: fabui/application/views/head/index.php:145
+#: fabui/application/views/head/index.php:207
 msgid "Laser"
 msgstr ""
 
@@ -761,7 +789,7 @@ msgstr "Neue updates sind verfügbar"
 #: fabui/application/controllers/Updates.php:140
 #: fabui/application/controllers/Updates.php:150
 #: fabui/application/controllers/Updates.php:160
-#: fabui/assets/js/fab.app.js:1511
+#: fabui/assets/js/fab.app.js:1512
 msgid "Update now"
 msgstr "Jetzt aktualisieren"
 
@@ -867,33 +895,23 @@ msgstr ""
 msgid "December"
 msgstr ""
 
-#: fabui/application/helpers/social_helper.php:395
-#: fabui/application/views/dashboard/js.php:108
-msgid "Popular"
-msgstr "Beliebt"
-
-#: fabui/application/helpers/social_helper.php:471
-#: fabui/application/views/dashboard/js.php:278
-msgid "Share on facebook"
-msgstr ""
-
-#: fabui/application/helpers/fabtotum_helper.php:1618
+#: fabui/application/helpers/fabtotum_helper.php:1633
 msgid "White"
 msgstr "Weiß"
 
-#: fabui/application/helpers/fabtotum_helper.php:1619
+#: fabui/application/helpers/fabtotum_helper.php:1634
 msgid "Red"
 msgstr "Rot"
 
-#: fabui/application/helpers/fabtotum_helper.php:1620
+#: fabui/application/helpers/fabtotum_helper.php:1635
 msgid "Black"
 msgstr "Schwarz"
 
-#: fabui/application/helpers/fabtotum_helper.php:1704
+#: fabui/application/helpers/fabtotum_helper.php:1719
 msgid "Password Reset"
 msgstr "Passwort zurücksetzen"
 
-#: fabui/application/helpers/fabtotum_helper.php:1705
+#: fabui/application/helpers/fabtotum_helper.php:1720
 msgid ""
 "Hi {0},<br><br>We've generated a URL to reset your password. If you did not "
 "request to reset your password or if you've changed your mind, simply ignore "
@@ -911,33 +929,47 @@ msgstr ""
 "und fügen Sie die URL in ein Browserfenster ein. Die URL ist nur für eine "
 "begrenzte Zeit gültig und läuft ab."
 
-#: fabui/application/helpers/myfabtotum_helper.php:284
-msgid "Service unauthorized"
+#: fabui/application/helpers/social_helper.php:395
+#: fabui/application/views/dashboard/js.php:108
+msgid "Popular"
+msgstr "Beliebt"
+
+#: fabui/application/helpers/social_helper.php:471
+#: fabui/application/views/dashboard/js.php:278
+msgid "Share on facebook"
 msgstr ""
 
-#: fabui/application/helpers/myfabtotum_helper.php:286
-msgid "Service forbidden"
-msgstr ""
-
-#: fabui/application/helpers/myfabtotum_helper.php:288
-msgid "Service server error"
+#: fabui/application/helpers/myfabtotum_helper.php:82
+msgid "The serial number provided was not recognized"
 msgstr ""
 
 #: fabui/application/helpers/myfabtotum_helper.php:290
-msgid "Service invalid parameter"
+msgid "Service unauthorized"
 msgstr ""
 
 #: fabui/application/helpers/myfabtotum_helper.php:292
+msgid "Service forbidden"
+msgstr ""
+
+#: fabui/application/helpers/myfabtotum_helper.php:294
+msgid "Service server error"
+msgstr ""
+
+#: fabui/application/helpers/myfabtotum_helper.php:296
+msgid "Service invalid parameter"
+msgstr ""
+
+#: fabui/application/helpers/myfabtotum_helper.php:298
 #, fuzzy
 msgid "Printer already registered"
 msgstr "Bereits registriert?"
 
-#: fabui/application/helpers/myfabtotum_helper.php:294
+#: fabui/application/helpers/myfabtotum_helper.php:300
 #, fuzzy
 msgid "Printer unknown"
 msgstr "Drucken"
 
-#: fabui/application/helpers/myfabtotum_helper.php:296
+#: fabui/application/helpers/myfabtotum_helper.php:302
 msgid "Your sign in details were not recognized, please check and try again"
 msgstr ""
 
@@ -1042,12 +1074,13 @@ msgid "Please insert serial number"
 msgstr "Seriennummer eingeben"
 
 #: fabui/application/views/install/js.php:145
-#: fabui/application/views/settings/network_js.php:581
+#: fabui/application/views/settings/network_js.php:616
+#: fabui/application/views/settings/network_js.php:637
 msgid "Please insert valid password"
 msgstr "Bitte geben Sie ein gültiges Passwort ein"
 
 #: fabui/application/views/install/js.php:146
-#: fabui/application/views/settings/network_js.php:582
+#: fabui/application/views/settings/network_js.php:617
 #, fuzzy
 msgid "Please enter at least {0} characters"
 msgstr "Geben Sie bitte Ihre Email-Adresse ein"
@@ -1091,13 +1124,13 @@ msgstr "Wird übersetzt"
 #: fabui/application/views/plugin/js.php:141
 #: fabui/application/views/nozzle/height_js.php:129
 #: fabui/application/views/settings/hardware_js.php:128
-#: fabui/application/views/settings/network_js.php:467
+#: fabui/application/views/settings/network_js.php:502
 #: fabui/application/views/std/task_execute_js.php:1310
 #: fabui/application/views/head/install_js.php:124
 #: fabui/application/views/head/install_js.php:467
-#: fabui/application/views/head/js.php:568
-#: fabui/application/views/head/js.php:600
-#: fabui/application/views/cam/js.php:501
+#: fabui/application/views/head/js.php:620
+#: fabui/application/views/head/js.php:652
+#: fabui/application/views/cam/js.php:506
 #: fabui/application/views/nozzle/pidtune/js.php:242
 #: fabui/application/views/nozzle/height/js.php:94
 #: fabui/application/views/nozzle/height/js.php:116
@@ -1110,7 +1143,7 @@ msgid "Please wait"
 msgstr "Bitte warten Sie"
 
 #: fabui/application/views/install/js.php:336
-#: fabui/application/views/settings/network_js.php:373
+#: fabui/application/views/settings/network_js.php:408
 msgid "Scanning"
 msgstr "Wird gescannt "
 
@@ -1118,13 +1151,14 @@ msgstr "Wird gescannt "
 #: fabui/application/views/install/wizard.php:263
 #: fabui/application/views/install/wizard.php:313
 #: fabui/application/views/account/widget.php:106
-#: fabui/application/views/settings/network_js.php:407
+#: fabui/application/views/settings/wireless_tab.php:149
+#: fabui/application/views/settings/network_js.php:442
 #: fabui/application/views/settings/network_widget.php:149
 msgid "Connect"
 msgstr "Verbinden"
 
 #: fabui/application/views/install/js.php:415
-#: fabui/application/views/settings/network_js.php:509
+#: fabui/application/views/settings/network_js.php:544
 msgid "Password for"
 msgstr "Passwort für"
 
@@ -1154,8 +1188,8 @@ msgstr "Trennen"
 #: fabui/application/views/jog/widget.php:25
 #: fabui/application/views/jog/widget.php:31
 #: fabui/application/views/jog/widget.php:92
-#: fabui/application/views/std/jog_setup.php:105
-#: fabui/application/views/std/jog_setup.php:117
+#: fabui/application/views/std/jog_setup.php:123
+#: fabui/application/views/std/jog_setup.php:135
 msgid "Step"
 msgstr "Schritt"
 
@@ -1260,6 +1294,7 @@ msgstr "Ich stimme zu"
 
 #: fabui/application/views/install/wizard.php:254
 #: fabui/application/views/settings/wireless_tab.php:85
+#: fabui/application/views/settings/wireless_tab.php:140
 #: fabui/application/views/settings/network_widget.php:140
 msgid "Show password"
 msgstr "Passwort anzeigen"
@@ -1305,16 +1340,6 @@ msgstr "Welches Filament werden Sie entladen?"
 #, fuzzy
 msgid "Heating nozzle"
 msgstr "Düse wird vorgeheizt..."
-
-#: fabui/application/views/spool/main_widget.php:23
-#: fabui/application/views/settings/hardware_widget.php:125
-msgid "Left"
-msgstr "Links"
-
-#: fabui/application/views/spool/main_widget.php:24
-#: fabui/application/views/settings/hardware_widget.php:128
-msgid "Right"
-msgstr "Rechts"
 
 #: fabui/application/views/layout/translations_js.php:17
 msgid "General Safety Lockdown"
@@ -1493,8 +1518,8 @@ msgstr "Geben Sie bitte Ihre Email-Adresse ein"
 #: fabui/application/views/systeminfo/js.php:160
 #: fabui/application/views/account/js.php:112
 #: fabui/application/views/settings/hardware_js.php:131
-#: fabui/application/views/settings/network_js.php:162
-#: fabui/application/views/cam/js.php:646
+#: fabui/application/views/settings/network_js.php:166
+#: fabui/application/views/cam/js.php:651
 #: fabui/application/views/projectsmanager/edit/js.php:71
 msgid "Saving"
 msgstr "Wird gespeichert"
@@ -1796,8 +1821,8 @@ msgstr "Aktualisieren"
 #: fabui/application/views/plugin/js.php:166
 #: fabui/application/views/head/install_js.php:520
 #: fabui/application/views/head/install_js.php:569
-#: fabui/application/views/head/js.php:450
-#: fabui/application/views/head/js.php:632
+#: fabui/application/views/head/js.php:482
+#: fabui/application/views/head/js.php:684
 #: fabui/application/views/feeder/profiles/js.php:264
 #: fabui/application/views/feeder/profiles/js.php:313
 msgid "Attention"
@@ -1810,16 +1835,16 @@ msgstr "<strong>{0}</strong> Plugin entfernen?"
 #: fabui/application/views/plugin/js.php:168
 #: fabui/application/views/plugin/js.php:175
 #: fabui/application/views/account/js.php:184
-#: fabui/application/views/settings/network_js.php:455
+#: fabui/application/views/settings/network_js.php:490
 #: fabui/application/views/head/install_js.php:522
 #: fabui/application/views/head/install_js.php:537
 #: fabui/application/views/head/install_js.php:571
 #: fabui/application/views/head/install_js.php:586
-#: fabui/application/views/head/js.php:452
-#: fabui/application/views/head/js.php:467
-#: fabui/application/views/head/js.php:634
-#: fabui/application/views/head/js.php:649
-#: fabui/application/views/cam/js.php:784
+#: fabui/application/views/head/js.php:484
+#: fabui/application/views/head/js.php:499
+#: fabui/application/views/head/js.php:686
+#: fabui/application/views/head/js.php:701
+#: fabui/application/views/cam/js.php:789
 #: fabui/application/views/feeder/profiles/js.php:266
 #: fabui/application/views/feeder/profiles/js.php:281
 #: fabui/application/views/feeder/profiles/js.php:315
@@ -1844,19 +1869,19 @@ msgstr "Nein"
 #: fabui/application/views/plugin/js.php:171
 #: fabui/application/views/account/js.php:184
 #: fabui/application/views/account/js.php:186
-#: fabui/application/views/settings/network_js.php:455
-#: fabui/application/views/settings/network_js.php:457
+#: fabui/application/views/settings/network_js.php:490
+#: fabui/application/views/settings/network_js.php:492
 #: fabui/application/views/std/task_finished.php:37
 #: fabui/application/views/head/install_js.php:522
 #: fabui/application/views/head/install_js.php:524
 #: fabui/application/views/head/install_js.php:571
 #: fabui/application/views/head/install_js.php:573
-#: fabui/application/views/head/js.php:452
-#: fabui/application/views/head/js.php:454
-#: fabui/application/views/head/js.php:634
-#: fabui/application/views/head/js.php:636
-#: fabui/application/views/cam/js.php:784
-#: fabui/application/views/cam/js.php:786
+#: fabui/application/views/head/js.php:484
+#: fabui/application/views/head/js.php:486
+#: fabui/application/views/head/js.php:686
+#: fabui/application/views/head/js.php:688
+#: fabui/application/views/cam/js.php:789
+#: fabui/application/views/cam/js.php:791
 #: fabui/application/views/feeder/profiles/js.php:266
 #: fabui/application/views/feeder/profiles/js.php:268
 #: fabui/application/views/feeder/profiles/js.php:315
@@ -1943,7 +1968,7 @@ msgstr "Aktiviren"
 
 #: fabui/application/views/plugin/main_widget.php:31
 #: fabui/application/views/head/install.php:35
-#: fabui/application/views/cam/js.php:827
+#: fabui/application/views/cam/js.php:832
 #: fabui/application/views/cam/subscriptions_tab.php:42
 #: fabui/application/views/feeder/profiles/widget.php:33
 #: fabui/application/views/projectsmanager/edit/js.php:105
@@ -2125,12 +2150,13 @@ msgid "Connected to your FABID account"
 msgstr "Erstellen Sie Ihr persönliches Konto"
 
 #: fabui/application/views/account/js.php:182
-#: fabui/application/views/settings/network_js.php:121
+#: fabui/application/views/settings/network_js.php:124
 #: fabui/application/views/std/print_setup_js.php:28
 #: fabui/application/views/std/task_wizard.php:26
 #: fabui/application/views/head/index.php:102
 #: fabui/application/views/head/install.php:105
-#: fabui/application/views/cam/js.php:782
+#: fabui/application/views/cam/js.php:787
+#: fabui/application/views/myfabtotum/back_url.php:24
 #: fabui/application/views/updates/index/js.php:428
 #: fabui/application/views/feeder/profiles/widget.php:89
 #: fabui/application/views/projectsmanager/index/js.php:142
@@ -2167,7 +2193,7 @@ msgid "Language"
 msgstr "Sprache"
 
 #: fabui/application/views/account/widget.php:64
-#: fabui/application/views/settings/network_js.php:407
+#: fabui/application/views/settings/network_js.php:442
 msgid "Disconnect"
 msgstr "Trennen"
 
@@ -2195,13 +2221,13 @@ msgstr "Möchten Sie Kaltfließpressen deaktivieren?"
 #: fabui/application/views/jog/widget.php:38
 #: fabui/application/views/jog/widget.php:98
 #: fabui/application/views/jog/widget.php:126
-#: fabui/application/views/std/jog_setup.php:111
-#: fabui/application/views/std/jog_setup.php:145
+#: fabui/application/views/std/jog_setup.php:129
+#: fabui/application/views/std/jog_setup.php:163
 msgid "Feedrate"
 msgstr "Vorschubgeschwindigkeit"
 
 #: fabui/application/views/jog/widget.php:54
-#: fabui/application/views/std/jog_setup.php:134
+#: fabui/application/views/std/jog_setup.php:152
 msgid ""
 "Before using the touch interface you need to home XY axis first.<br><br>Make "
 "sure that the head will not hit anything during homing."
@@ -2211,7 +2237,7 @@ msgstr ""
 "Referenzfahrt schlägt."
 
 #: fabui/application/views/jog/widget.php:55
-#: fabui/application/views/std/jog_setup.php:135
+#: fabui/application/views/std/jog_setup.php:153
 msgid "Home XY"
 msgstr "Home XY"
 
@@ -2245,6 +2271,7 @@ msgstr "Extruder Zieltemperatur"
 #: fabui/application/views/jog/widget.php:158
 #: fabui/application/views/std/task_execute.php:173
 #: fabui/application/views/std/task_execute.php:276
+#: fabui/application/views/head/index.php:153
 msgid "Fan"
 msgstr "Ventilator"
 
@@ -2330,7 +2357,7 @@ msgid "Parameters"
 msgstr "Parameter"
 
 #: fabui/application/views/jog/widget.php:303
-#: fabui/application/views/cam/js.php:816
+#: fabui/application/views/cam/js.php:821
 #: fabui/application/views/cam/subscriptions_tab.php:31
 msgid "Code"
 msgstr ""
@@ -2568,6 +2595,14 @@ msgstr "Filament Endstop"
 msgid "Default Homing Direction"
 msgstr "Standard Referenzfahrt Richtung"
 
+#: fabui/application/views/settings/hardware_widget.php:125
+msgid "Left"
+msgstr "Links"
+
+#: fabui/application/views/settings/hardware_widget.php:128
+msgid "Right"
+msgstr "Rechts"
+
 #: fabui/application/views/settings/hardware_widget.php:135
 msgid "Use the z touch probe during homing"
 msgstr "Den Z-Tastsystem während der Referenzfahrt verwenden"
@@ -2646,56 +2681,69 @@ msgstr ""
 msgid "SSID"
 msgstr ""
 
-#: fabui/application/views/settings/network_js.php:122
+#: fabui/application/views/settings/wireless_tab.php:122
+msgid "Connect to hidden wifi"
+msgstr ""
+
+#: fabui/application/views/settings/wireless_tab.php:130
+msgid "Type here SSID"
+msgstr ""
+
+#: fabui/application/views/settings/network_js.php:125
 msgid "You need to connect to a network first"
 msgstr "Sie müssen zuerst eine Verbindung zu einem Netzwerk herstellen"
 
-#: fabui/application/views/settings/network_js.php:263
-#: fabui/application/views/settings/network_js.php:477
-#: fabui/application/views/settings/network_js.php:489
+#: fabui/application/views/settings/network_js.php:267
+#: fabui/application/views/settings/network_js.php:512
+#: fabui/application/views/settings/network_js.php:524
 #: fabui/application/views/firmware/main_js.php:93
 msgid "Reloading page"
 msgstr "Seite wird nachgeladen"
 
-#: fabui/application/views/settings/network_js.php:454
+#: fabui/application/views/settings/network_js.php:489
 msgid "Are you sure you want to disconnect?"
 msgstr "Sind Sie sicher, dass Sie die Verbindung trennen möchten?"
 
-#: fabui/application/views/settings/network_js.php:467
+#: fabui/application/views/settings/network_js.php:502
 msgid "Disconnecting"
 msgstr "Trennung in gange"
 
-#: fabui/application/views/settings/network_js.php:568
+#: fabui/application/views/settings/network_js.php:603
 msgid "Please specify a valid IP address"
 msgstr "Bitte geben Sie eine gültige IP-Adresse ein"
 
-#: fabui/application/views/settings/network_js.php:607
+#: fabui/application/views/settings/network_js.php:640
+#, fuzzy
+msgid "Please insert SSID"
+msgstr "Bitte legen Sie eine USB-Festplatte ein"
+
+#: fabui/application/views/settings/network_js.php:667
 msgid "Please insert a valid IP address"
 msgstr "Bitte geben Sie eine gültige IP-Adresse ein"
 
-#: fabui/application/views/settings/network_js.php:610
+#: fabui/application/views/settings/network_js.php:670
 msgid "Please insert a valid netmask"
 msgstr "Bitte geben Sie eine gültige Netmask ein"
 
-#: fabui/application/views/settings/network_js.php:613
+#: fabui/application/views/settings/network_js.php:673
 msgid "Please insert a valid gateway address"
 msgstr "Bitte geben Sie ein gültiges Gateway ein"
 
-#: fabui/application/views/settings/network_js.php:640
+#: fabui/application/views/settings/network_js.php:700
 msgid "Please specify an SSID"
 msgstr "Bitte geben Sie ein SSID ein"
 
-#: fabui/application/views/settings/network_js.php:641
-#: fabui/application/views/settings/network_js.php:642
+#: fabui/application/views/settings/network_js.php:701
+#: fabui/application/views/settings/network_js.php:702
 msgid "Please specify an SSID that is between 4 and 63 characters"
 msgstr "Bitte geben Sie eine SSID zwischen 4 und 63 Zeichen ein"
 
-#: fabui/application/views/settings/network_js.php:645
+#: fabui/application/views/settings/network_js.php:705
 msgid "Please specify a password"
 msgstr "Bitte geben Sie ein passwort ein"
 
-#: fabui/application/views/settings/network_js.php:646
-#: fabui/application/views/settings/network_js.php:647
+#: fabui/application/views/settings/network_js.php:706
+#: fabui/application/views/settings/network_js.php:707
 msgid "Please specify a password between 8 and 63 characters"
 msgstr "Bitte geben Sie ein Passwort zwischen 8 und 63 Zeichen ein"
 
@@ -2831,24 +2879,53 @@ msgstr ""
 "<i class=\"fa fa-bullseye\" ></i> und wenn Sie bereit sind drücken Sie \"Next"
 "\""
 
-#: fabui/application/views/std/jog_setup.php:34
+#: fabui/application/views/std/jog_setup.php:35
 #: fabui/application/views/std/print_setup.php:68
 msgid "Close the cover"
 msgstr "Schließen Sie die Abdeckung"
 
-#: fabui/application/views/std/jog_setup.php:66
+#: fabui/application/views/std/jog_setup.php:69
+msgid "Focal point will be calculated automatically "
+msgstr ""
+
+#: fabui/application/views/std/jog_setup.php:71
 msgid ""
 "Lower the Z so that the laser head is max 1 mm away from the stock material, "
 "then press continue"
 msgstr ""
 
-#: fabui/application/views/std/jog_setup.php:81
+#: fabui/application/views/std/jog_setup.php:80
+#, fuzzy
+msgid ""
+"Note: if you home the axis, the jog position will be saved for future use"
+msgstr "Position wird für zukünftige Verwendung gespeichert"
+
+#: fabui/application/views/std/jog_setup.php:88
 msgid "Position will be saved for future use"
 msgstr "Position wird für zukünftige Verwendung gespeichert"
 
-#: fabui/application/views/std/jog_setup.php:82
+#: fabui/application/views/std/jog_setup.php:89
 msgid "Touch"
 msgstr ""
+
+#: fabui/application/views/std/jog_setup.php:106
+#, fuzzy
+msgid "Calibrate focal point"
+msgstr "Wieder kalibrieren"
+
+#: fabui/application/views/std/jog_setup.php:106
+msgid "Automatic focal point"
+msgstr ""
+
+#: fabui/application/views/std/jog_setup.php:110
+#, fuzzy
+msgid "Automatic absolute positioning"
+msgstr "Einstellung zur Absolute positionierung"
+
+#: fabui/application/views/std/jog_setup.php:113
+#, fuzzy
+msgid "Fan ON"
+msgstr "Ventilator ausgeschaltet"
 
 #: fabui/application/views/std/task_dropzone_js.php:46
 #: fabui/application/views/projectsmanager/add/js.php:38
@@ -2856,7 +2933,7 @@ msgid "You can't upload files of this type."
 msgstr "Sie können keine Dateien dieses Typs hochladen."
 
 #: fabui/application/views/std/task_dropzone_js.php:72
-#: fabui/application/views/cam/js.php:221
+#: fabui/application/views/cam/js.php:226
 msgid "Uploaded"
 msgstr "Hochladen"
 
@@ -2865,7 +2942,7 @@ msgid "Invalid file."
 msgstr ""
 
 #: fabui/application/views/std/task_dropzone_js.php:97
-#: fabui/application/views/cam/js.php:284
+#: fabui/application/views/cam/js.php:289
 msgid "Uploading"
 msgstr "Wird hochgeladen"
 
@@ -3491,6 +3568,11 @@ msgstr ""
 msgid "Capabilities"
 msgstr "Fähigkeiten"
 
+#: fabui/application/views/head/index.php:139
+#, fuzzy
+msgid "3D Print"
+msgstr "Drucken"
+
 #: fabui/application/views/head/index.php:168
 #: fabui/application/views/head/install.php:171
 #: fabui/application/views/feeder/profiles/widget.php:198
@@ -3508,173 +3590,186 @@ msgstr "Arbeitsmodus"
 msgid "Soft ID"
 msgstr ""
 
-#: fabui/application/views/head/index.php:216
+#: fabui/application/views/head/index.php:217
 #: fabui/application/views/head/install.php:219
 msgid "PID"
 msgstr ""
 
-#: fabui/application/views/head/index.php:223
+#: fabui/application/views/head/index.php:224
 #: fabui/application/views/head/install.php:226
 msgid "Thermistor"
 msgstr ""
 
-#: fabui/application/views/head/index.php:233
+#: fabui/application/views/head/index.php:234
 #: fabui/application/views/head/install.php:236
 msgid "Max temperature"
 msgstr "Max. Temperatur"
 
-#: fabui/application/views/head/index.php:239
+#: fabui/application/views/head/index.php:240
 #: fabui/application/views/head/install.php:242
 msgid "Min temperature"
 msgstr "Min. Temperatur"
 
-#: fabui/application/views/head/index.php:253
+#: fabui/application/views/head/index.php:254
 #: fabui/application/views/head/install.php:256
 msgid "Min RPM"
 msgstr "Min. RPM"
 
-#: fabui/application/views/head/index.php:260
+#: fabui/application/views/head/index.php:261
 #: fabui/application/views/head/install.php:263
 msgid "Max RPM"
 msgstr "Max. RPM"
 
-#: fabui/application/views/head/index.php:271
+#: fabui/application/views/head/index.php:272
 #: fabui/application/views/head/install.php:274
 #: fabui/application/views/feeder/profiles/widget.php:125
 msgid "Steps per unit"
 msgstr "Schritte pro Einheit"
 
-#: fabui/application/views/head/index.php:277
+#: fabui/application/views/head/index.php:278
 #: fabui/application/views/head/install.php:280
 #: fabui/application/views/feeder/profiles/widget.php:131
 msgid "Tube length (mm)"
 msgstr "Rohrlänge (mm)"
 
-#: fabui/application/views/head/index.php:285
+#: fabui/application/views/head/index.php:286
 #: fabui/application/views/head/install.php:288
 msgid "Max E acceleration (mm/s<sup>2</sup>)"
 msgstr "Max. E Beschleunigung (mm/s<sup>2</sup>)"
 
-#: fabui/application/views/head/index.php:291
+#: fabui/application/views/head/index.php:292
 #: fabui/application/views/head/install.php:294
 msgid "Max E feedrate (mm/s)"
 msgstr "Max. E Vorschub (mm/s)"
 
-#: fabui/application/views/head/index.php:297
+#: fabui/application/views/head/index.php:298
 #: fabui/application/views/head/install.php:300
 msgid "Max E jerk (mm)"
 msgstr "Max. E Ruck (mm)"
 
-#: fabui/application/views/head/index.php:306
+#: fabui/application/views/head/index.php:307
 #: fabui/application/views/head/install.php:309
 #: fabui/application/views/feeder/profiles/widget.php:183
 msgid "Retract acceleration (mm/s<sup>2</sup>)"
 msgstr "Rückzugs-Beschleunigung  (mm/s<sup>2</sup>)"
 
-#: fabui/application/views/head/index.php:312
+#: fabui/application/views/head/index.php:313
 #: fabui/application/views/head/install.php:315
 #: fabui/application/views/feeder/profiles/widget.php:176
 msgid "Retraction speed (mm/s)"
 msgstr "Rückzugs-Geschwindigkeit (mm/s)"
 
-#: fabui/application/views/head/index.php:318
+#: fabui/application/views/head/index.php:319
 #: fabui/application/views/head/install.php:321
 #: fabui/application/views/feeder/profiles/widget.php:189
 msgid "Retraction amount (mm)"
 msgstr "Rückzugs-Betrag (mm)"
 
-#: fabui/application/views/head/index.php:331
+#: fabui/application/views/head/index.php:332
 #: fabui/application/views/head/install.php:334
 #: fabui/application/views/feeder/profiles/widget.php:142
 #, fuzzy
 msgid "Steps per degree"
 msgstr "Schritte pro Einheit"
 
-#: fabui/application/views/head/index.php:339
+#: fabui/application/views/head/index.php:340
 #: fabui/application/views/head/install.php:342
 #, fuzzy
 msgid "Max Aacceleration (mm/s<sup>2</sup>)"
 msgstr "Max. Beschleunigung (mm/s<sup>2</ sup>)"
 
-#: fabui/application/views/head/index.php:345
+#: fabui/application/views/head/index.php:346
 #: fabui/application/views/head/install.php:348
 #, fuzzy
 msgid "Max A feedrate (mm/s)"
 msgstr "Max. E Vorschub (mm/s)"
 
-#: fabui/application/views/head/index.php:351
+#: fabui/application/views/head/index.php:352
 #: fabui/application/views/head/install.php:354
 #, fuzzy
 msgid "Max A jerk (mm)"
 msgstr "Max. E Ruck (mm)"
 
-#: fabui/application/views/head/index.php:369
+#: fabui/application/views/head/index.php:365
+msgid "Z focusing distance"
+msgstr ""
+
+#: fabui/application/views/head/index.php:374
+msgid "Laser cross offset"
+msgstr ""
+
+#: fabui/application/views/head/index.php:388
+#, fuzzy
+msgid "Laser point offset"
+msgstr "Rücksetzen des Referenzausgleichs"
+
+#: fabui/application/views/head/index.php:414
 #: fabui/application/views/head/install.php:372
 #: fabui/application/views/feeder/profiles/widget.php:209
 msgid "Restore factory settings"
 msgstr "Werkseinstellungen wiederherstellen"
 
-#: fabui/application/views/head/index.php:369
+#: fabui/application/views/head/index.php:414
 #: fabui/application/views/head/install.php:372
 #: fabui/application/views/feeder/profiles/widget.php:209
 msgid "Factory reset"
 msgstr "Werkseinstellung"
 
-#: fabui/application/views/head/index.php:370
+#: fabui/application/views/head/index.php:415
 #: fabui/application/views/head/install.php:373
 #: fabui/application/views/feeder/profiles/widget.php:210
 msgid "Import from file"
 msgstr "Import aus Datei"
 
-#: fabui/application/views/head/index.php:370
+#: fabui/application/views/head/index.php:415
 #: fabui/application/views/head/install.php:373
 #: fabui/application/views/feeder/profiles/widget.php:210
 msgid "Import"
 msgstr "Import"
 
-#: fabui/application/views/head/index.php:371
+#: fabui/application/views/head/index.php:416
 #: fabui/application/views/head/install.php:374
 #: fabui/application/views/feeder/profiles/widget.php:211
 msgid "Export to file"
 msgstr "In Datei exportieren"
 
-#: fabui/application/views/head/index.php:371
+#: fabui/application/views/head/index.php:416
 #: fabui/application/views/head/install.php:374
 #: fabui/application/views/feeder/profiles/widget.php:211
 msgid "Export"
 msgstr "Exportieren"
 
-#: fabui/application/views/head/index.php:373
+#: fabui/application/views/head/index.php:418
 #: fabui/application/views/head/install.php:376
 #, fuzzy
 msgid "Save & Install"
 msgstr "Installieren"
 
 #: fabui/application/views/head/install_js.php:124
-#: fabui/application/views/head/js.php:600
+#: fabui/application/views/head/js.php:652
 msgid "Installing head"
 msgstr "Kopf wird installiert"
 
 #: fabui/application/views/head/install_js.php:467
-#: fabui/application/views/head/js.php:568
+#: fabui/application/views/head/js.php:620
 #, fuzzy
 msgid "Saving head settings"
 msgstr "Kopfeinstellungen"
 
 #: fabui/application/views/head/install_js.php:521
-#: fabui/application/views/head/js.php:633
+#: fabui/application/views/head/js.php:685
 #: fabui/application/views/feeder/profiles/js.php:265
 msgid "Remove <strong>{0}</strong> settings?"
 msgstr "<strong>{0}</strong> Einstellungen entfernen?"
 
 #: fabui/application/views/head/install_js.php:570
-#: fabui/application/views/head/js.php:451
+#: fabui/application/views/head/js.php:483
 #: fabui/application/views/feeder/profiles/js.php:314
 msgid "Restore factory settings for <strong>{0}</strong> ?"
 msgstr "Werkseinstellungen für <strong>{0}</strong> wiederherstellen?"
 
 #: fabui/application/views/head/install_js.php:580
-#: fabui/application/views/head/js.php:461
+#: fabui/application/views/head/js.php:493
 #: fabui/application/views/feeder/profiles/js.php:324
 msgid "Factory settings restored"
 msgstr "Werkseinstellungen wiederhergestellt"
@@ -3736,133 +3831,133 @@ msgstr "Installiertes Firmware"
 msgid "Build-date"
 msgstr "Baudatum"
 
-#: fabui/application/views/cam/js.php:78
-#: fabui/application/views/cam/js.php:766
+#: fabui/application/views/cam/js.php:81
+#: fabui/application/views/cam/js.php:771
 #: fabui/application/views/projectsmanager/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Drop Dateien zum Hochladen"
 
-#: fabui/application/views/cam/js.php:78
-#: fabui/application/views/cam/js.php:766
+#: fabui/application/views/cam/js.php:81
+#: fabui/application/views/cam/js.php:771
 #: fabui/application/views/projectsmanager/add/js.php:32
 msgid "or click"
 msgstr "oder klicken Sie"
 
-#: fabui/application/views/cam/js.php:83
+#: fabui/application/views/cam/js.php:86
 #: fabui/application/views/projectsmanager/add/js.php:37
 msgid "Remove file"
 msgstr "Datai entfernen"
 
-#: fabui/application/views/cam/js.php:84
+#: fabui/application/views/cam/js.php:87
 #, fuzzy
 msgid "You can upload just {{maxFiles}} file at time"
 msgstr "Sie können bis zu 10 Dateien auf einmal hochladen"
 
-#: fabui/application/views/cam/js.php:98
+#: fabui/application/views/cam/js.php:101
 #, fuzzy
 msgid "File error"
 msgstr "Dateiansicht"
 
-#: fabui/application/views/cam/js.php:157
+#: fabui/application/views/cam/js.php:162
 #, fuzzy
 msgid "PWM"
 msgstr "U/min"
 
-#: fabui/application/views/cam/js.php:163
+#: fabui/application/views/cam/js.php:168
 #, fuzzy
 msgid "Feed"
 msgstr "Vorschubgeschwindigkeit"
 
-#: fabui/application/views/cam/js.php:188
+#: fabui/application/views/cam/js.php:193
 #: fabui/application/views/history/main_widget.php:26
 msgid "Completed"
 msgstr "Abgeschlossen"
 
-#: fabui/application/views/cam/js.php:194
+#: fabui/application/views/cam/js.php:199
 #, fuzzy
 msgid "Upload failed"
 msgstr "Hochladen"
 
-#: fabui/application/views/cam/js.php:222
+#: fabui/application/views/cam/js.php:227
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:615
 #, fuzzy
 msgid "Processing file"
 msgstr "Nachbearbeitung"
 
-#: fabui/application/views/cam/js.php:467
+#: fabui/application/views/cam/js.php:472
 #, fuzzy
 msgid "Regenerate GCode"
 msgstr "Wird generiert"
 
-#: fabui/application/views/cam/js.php:516
+#: fabui/application/views/cam/js.php:521
 #, fuzzy
 msgid "GCode ready"
 msgstr "Bereit machen"
 
-#: fabui/application/views/cam/js.php:519
+#: fabui/application/views/cam/js.php:524
 #, fuzzy
 msgid "New laser project"
 msgstr "Neues Projekt hinzufügen"
 
-#: fabui/application/views/cam/js.php:527
+#: fabui/application/views/cam/js.php:532
 #, fuzzy
 msgid "Gcode ready!"
 msgstr "Bereit machen"
 
-#: fabui/application/views/cam/js.php:531
+#: fabui/application/views/cam/js.php:536
 #, fuzzy
 msgid "Generation failed"
 msgstr "Sonde nach oben"
 
-#: fabui/application/views/cam/js.php:654
+#: fabui/application/views/cam/js.php:659
 msgid "Gcode saved"
 msgstr ""
 
-#: fabui/application/views/cam/js.php:713
+#: fabui/application/views/cam/js.php:718
 #, fuzzy
 msgid "Please enter subscription code"
 msgstr "Bitte geben Sie den Objektnamen ein"
 
-#: fabui/application/views/cam/js.php:738
+#: fabui/application/views/cam/js.php:743
 #, fuzzy
 msgid "Activation failed"
 msgstr "Aktiviren"
 
-#: fabui/application/views/cam/js.php:771
+#: fabui/application/views/cam/js.php:776
 #: fabui/application/views/cam/main_widget.php:129
 #: fabui/application/views/updates/index/js.php:57
-#: fabui/assets/js/fab.app.js:1719
+#: fabui/assets/js/fab.app.js:1720
 #, fuzzy
 msgid "Check network settings and try again"
 msgstr "Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut"
 
-#: fabui/application/views/cam/js.php:771
+#: fabui/application/views/cam/js.php:776
 msgid ""
 "You must enter a valid subscription code <br> in order to use CAM toolbox"
 msgstr ""
 
-#: fabui/application/views/cam/js.php:783
+#: fabui/application/views/cam/js.php:788
 msgid "You need a valid subscription code to use CAM Toolbox"
 msgstr ""
 
-#: fabui/application/views/cam/js.php:783
+#: fabui/application/views/cam/js.php:788
 #, fuzzy
 msgid "Are you sure you want remove it?"
 msgstr "Sind Sie sicher, dass Sie die Verbindung trennen möchten?"
 
-#: fabui/application/views/cam/js.php:817
+#: fabui/application/views/cam/js.php:822
 #: fabui/application/views/cam/subscriptions_tab.php:32
 #: fabui/application/views/history/main_widget.php:36
 #: fabui/application/views/history/main_widget.php:59
 msgid "Status"
 msgstr "Status"
 
-#: fabui/application/views/cam/js.php:818
+#: fabui/application/views/cam/js.php:823
 #: fabui/application/views/cam/subscriptions_tab.php:33
 msgid "Expiration date"
 msgstr ""
 
-#: fabui/application/views/cam/js.php:818
+#: fabui/application/views/cam/js.php:823
 #: fabui/application/views/cam/subscriptions_tab.php:33
 #, fuzzy
 msgid "Exp. date"
@@ -4149,7 +4244,7 @@ msgstr "Beendet"
 #: fabui/application/views/history/main_widget.php:44
 #: fabui/application/views/layout/default/top.php:22
 #: fabui/application/views/layout/debug/top.php:22
-#: fabui/assets/js/fab.app.js:1274
+#: fabui/assets/js/fab.app.js:1275
 msgid "Tasks"
 msgstr "Aufgaben"
 
@@ -4215,7 +4310,7 @@ msgstr ""
 msgid "Get in touch with our technical support team"
 msgstr "Nehmen Sie Kontakt mit unserem technischen Supportteam auf"
 
-#: fabui/application/views/myfabtotum/back_url_js.php:39
+#: fabui/application/views/myfabtotum/back_url_js.php:43
 msgid "Sign-in with local access and go to network settings"
 msgstr ""
 
@@ -4225,7 +4320,7 @@ msgid "You successfully connected with your FABID account"
 msgstr "Erstellen Sie Ihr persönliches Konto"
 
 #: fabui/application/views/myfabtotum/back_url.php:20
-#: fabui/assets/js/fab.app.js:1719
+#: fabui/assets/js/fab.app.js:1720
 #, fuzzy
 msgid "No internet connection"
 msgstr "Keine Internetverbindung gefunden"
@@ -4234,6 +4329,15 @@ msgstr "Keine Internetverbindung gefunden"
 #, fuzzy
 msgid "Connect the FABTotum to internet and try again"
 msgstr "Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut"
+
+#: fabui/application/views/myfabtotum/back_url.php:24
+msgid "Cannot register the printer to my.fabtotum.com"
+msgstr ""
+
+#: fabui/application/views/myfabtotum/back_url.php:28
+#, fuzzy
+msgid "Printer was succesfully registered"
+msgstr "Bereits registriert?"
 
 #: fabui/application/views/create/print_js.php:69
 #: fabui/application/views/create/mill_js.php:76
@@ -5266,6 +5370,7 @@ msgstr "Update initialisiert."
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:48
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:53
 #: fabui/ext/py/fabtotum/fabui/macros/calibration.py:79
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:71
 msgid "Homing all axes"
 msgstr "Referenzierung von allen Achsen"
 
@@ -5575,6 +5680,64 @@ msgstr "<strong>{0}</strong> Plugin entfernen?"
 msgid "Activating <strong>{0}</strong> plugin"
 msgstr "<strong>{0}</strong> Plugin entfernen?"
 
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:350
+#, fuzzy
+msgid "Setting Cross position"
+msgstr "Einstellung zur Absolute positionierung"
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:351
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:365
+#, fuzzy
+msgid "Set relative mode"
+msgstr "Einstellung des Extrudermodus"
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:352
+#, fuzzy
+msgid "Going to laser cross point"
+msgstr "Umzug zum Nässenpunkt"
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:353
+#, fuzzy
+msgid "disable homeing check"
+msgstr "Endstop Überprüfung deaktiviert"
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:354
+msgid "set z max"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:355
+msgid "enable external probe"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:356
+msgid "G38"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:357
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:366
+#, fuzzy
+msgid "Going to focus point"
+msgstr "Umzug zum Nässenpunkt"
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:358
+msgid "disable external probe"
+msgstr ""
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:359
+#, fuzzy
+msgid "enable homeing check"
+msgstr "Endstop Überprüfung aktiviert"
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:361
+#, fuzzy
+msgid "Set absolute mode"
+msgstr "Einstellung des Extrudermodus"
+
+#: fabui/ext/py/fabtotum/fabui/macros/common.py:362
+#, fuzzy
+msgid "Moving to start position"
+msgstr "Umstellung auf Vor-Scan-Position"
+
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:45
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:158
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:118
@@ -5611,7 +5774,7 @@ msgstr ""
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:215
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:224
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:284
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:100
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:110
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:36
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:79
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:134
@@ -5637,9 +5800,9 @@ msgstr "Sonde nach oben"
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:203
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:204
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:205
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:108
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:109
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:110
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:118
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:119
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:120
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:142
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:143
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:144
@@ -5697,7 +5860,7 @@ msgid "Probe Down"
 msgstr "Sonde nach unten"
 
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:137
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:219
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:231
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:41
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:79
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:96
@@ -5709,7 +5872,7 @@ msgid "Checking safety measures"
 msgstr "Sicherheitsmaßnahmen überprüfung"
 
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:139
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:221
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:233
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:43
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:81
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:98
@@ -5768,28 +5931,28 @@ msgstr ""
 msgid "Play beep sound"
 msgstr "Piep Ton abspielen"
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:178
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:190
 msgid "Setting red color"
 msgstr "Einstellung der roten Farbe"
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:179
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:191
 msgid "Setting green color"
 msgstr "Einstellung der grünen Farbe"
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:180
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:192
 msgid "Setting blue color"
 msgstr "Einstellung der blauen Farbe"
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:187
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:199
 msgid "Restarting totumduino"
 msgstr "Totumduino wird neu gestartet"
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:201
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:213
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:36
 msgid "Clearing error state"
 msgstr "Fehler löschen"
 
-#: fabui/ext/py/fabtotum/fabui/macros/general.py:202
+#: fabui/ext/py/fabtotum/fabui/macros/general.py:214
 msgid "Awaken"
 msgstr "Erwachen"
 
@@ -5799,7 +5962,7 @@ msgstr "Erwachen"
 #: fabui/ext/py/fabtotum/fabui/macros/maintenance.py:178
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:165
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:286
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:106
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:116
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:140
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:180
 msgid "Setting extruder mode"
@@ -6178,14 +6341,14 @@ msgstr "Düsenversatz kalibrieren"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:163
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:198
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:102
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:112
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:136
 msgid "Reset Speed factor override"
 msgstr "Geschwindigkeitsfaktor wird zurückgesetzt"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:164
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:199
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:103
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:113
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:137
 msgid "Reset Extruder factor override"
 msgstr "Extruder-Factor wird zurückgesetzt"
@@ -6212,13 +6375,13 @@ msgid "Shutting down Heated Bed"
 msgstr "Beheiztes Bett abschalten"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:200
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:104
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:114
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:138
 msgid "Turning Fan off"
 msgstr "Ventilator abschalten"
 
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:201
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:105
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:115
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:139
 msgid "Motor Off"
 msgstr "Motor abschalten"
@@ -6285,33 +6448,19 @@ msgstr "Bauplatte muss zur Frässeite umgedreht werden"
 msgid "Building plate inserted correctly"
 msgstr "Bett richtig eingelegt"
 
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:65
-#, fuzzy
-msgid "Set relative mode"
-msgstr "Einstellung des Extrudermodus"
-
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:66
-#, fuzzy
-msgid "Going to focus point"
-msgstr "Umzug zum Nässenpunkt"
-
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:68
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:77
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:108
 msgid "Setting Origin Point"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:69
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:78
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:109
 msgid "Setting 4th Axis mode"
 msgstr "Einstellung von 4. Achse modus"
 
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:70
-msgid "Turning fan on"
-msgstr "Ventilator eingeschaltet"
-
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:71
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:72
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:73
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:79
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:80
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:81
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:84
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:85
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:86
@@ -6321,15 +6470,19 @@ msgstr "Ventilator eingeschaltet"
 msgid "Turning off lights"
 msgstr "Lichter ausschalten"
 
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:80
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:84
+msgid "Turning fan on"
+msgstr "Ventilator eingeschaltet"
+
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:91
 msgid "Go back to Origin Point"
 msgstr ""
 
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:101
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:111
 msgid "Shutting down the laser"
 msgstr "Laser abschalten"
 
-#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:111
+#: fabui/ext/py/fabtotum/fabui/macros/engraving.py:121
 msgid "Laser engraving completed!"
 msgstr "Laser Fräsen abgeschlossen"
 
@@ -6509,7 +6662,7 @@ msgstr "Sicherheitsmaßnahmen überprüfung..."
 msgid "Fan override changed to {0}"
 msgstr "Fan-Override geändert zu {0}"
 
-#: fabui/assets/js/fab.app.js:1717
+#: fabui/assets/js/fab.app.js:1718
 msgid "Internet available"
 msgstr "Internet verfügbar"
 
@@ -6517,7 +6670,7 @@ msgstr "Internet verfügbar"
 msgid "Unknown action: {0}"
 msgstr "Unbekannte Handlung: {0}"
 
-#: fabui/assets/js/fab.app.js:1138
+#: fabui/assets/js/fab.app.js:1139
 msgid "Front panel has been opened"
 msgstr "Frontplatte wurde geöffnet"
 
@@ -6525,17 +6678,17 @@ msgstr "Frontplatte wurde geöffnet"
 msgid "Start extrude"
 msgstr ""
 
-#: fabui/assets/js/fab.app.js:1792
+#: fabui/assets/js/fab.app.js:1793
 msgid "Please check ethernet cable or wifi connection and then reload the page"
 msgstr ""
 "Bitte überprüfen Sie das Ethernet Kabel oder den WiFi Anschluss und "
 "versuchen Sie es erneut"
 
-#: fabui/application/views/std/jog_setup_js.php:321
+#: fabui/application/views/std/jog_setup_js.php:322
 msgid "You need to home X/Y axis first"
 msgstr "Sie müssen die X/Y Achse zuerst zum Nullpunkt bringen"
 
-#: fabui/assets/js/fab.app.js:1174
+#: fabui/assets/js/fab.app.js:1175
 msgid "Before proceed make sure the head is properly locked in place"
 msgstr ""
 "Bevor Sie fortfahren, stellen Sie sicher, dass der Kopf ordnungsgemäß "
@@ -6562,19 +6715,19 @@ msgstr ""
 msgid "Z height override changed to {0}mm"
 msgstr "Z-Höhen-Override auf {0} mm geändert"
 
-#: fabui/application/views/settings/network_js.php:201
+#: fabui/application/views/settings/network_js.php:205
 msgid "Saving new ethernet configuration"
 msgstr "Neue Ethernet-Konfiguration speicherung im gange"
 
-#: fabui/application/views/settings/network_js.php:175
+#: fabui/application/views/settings/network_js.php:179
 msgid "Failed to disable Wireless interface"
 msgstr "Fehler beim Deaktivieren der Wireless-Schnittstelle"
 
-#: fabui/application/views/settings/network_js.php:220
+#: fabui/application/views/settings/network_js.php:224
 msgid "DNS-SD settings saved"
 msgstr "DNS-SD-Einstellungen gespeichert"
 
-#: fabui/application/views/settings/network_js.php:180
+#: fabui/application/views/settings/network_js.php:184
 msgid "Failed to connect to Wireless network"
 msgstr "Fehler beim Herstellen der Verbindung zum Wireless-Netzwerk"
 
@@ -6586,11 +6739,11 @@ msgstr ""
 "ausgewählt ist, drücken Sie auf Weiter"
 
 # fabui/application/views/std/jog_setup_js.php:190
-#: fabui/application/views/std/jog_setup_js.php:208
+#: fabui/application/views/std/jog_setup_js.php:209
 msgid "Z Position {0} stored"
 msgstr "Z Position {0} gespeichert"
 
-#: fabui/assets/js/fab.app.js:1699
+#: fabui/assets/js/fab.app.js:1700
 msgid "Wifi connected"
 msgstr "Wifi verbunden"
 
@@ -6599,7 +6752,7 @@ msgid "Click on this button to start extruding filament"
 msgstr ""
 "Klicken Sie auf diese Taste um den Filament Ekstrudierungs prozess zu starten"
 
-#: fabui/assets/js/fab.app.js:1156
+#: fabui/assets/js/fab.app.js:1157
 msgid "Press OK to continue or Ignore to disable this warning"
 msgstr ""
 "Drücken Sie OK, um fortzufahren oder zu Ignorieren, um diese Warnung zu "
@@ -6617,7 +6770,7 @@ msgstr ""
 "Ohne ordnungsgemäße Kalibrierung können Sie das FABtotum nicht richtig "
 "benutzen"
 
-#: fabui/assets/js/fab.app.js:1543
+#: fabui/assets/js/fab.app.js:1544
 #, fuzzy
 msgid "Entering recovery mode"
 msgstr "Einstellung des Extrudermodus"
@@ -6631,7 +6784,7 @@ msgstr "Firmware Autor"
 msgid "New nozzle offset: {0}"
 msgstr "Neuer Düsenversatz: {0}"
 
-#: fabui/assets/js/fab.app.js:697
+#: fabui/assets/js/fab.app.js:698
 msgid "Restart in progress"
 msgstr "Neustart im Gange"
 
@@ -6652,7 +6805,7 @@ msgid "Resetting controller"
 msgstr "Regler  neustart"
 
 # fabui/application/views/std/jog_setup_js.php:184
-#: fabui/application/views/std/jog_setup_js.php:202
+#: fabui/application/views/std/jog_setup_js.php:203
 msgid "Position {0}, {1}, {2} stored"
 msgstr "Position {0}, {1}, {2} gespeichert"
 
@@ -6661,7 +6814,7 @@ msgid "Speed override changed to {0}"
 msgstr "Geschwindigkeitsüberschreitung wurde auf {0} geändert"
 
 # fabui/application/views/std/jog_setup_js.php:186
-#: fabui/application/views/std/jog_setup_js.php:204
+#: fabui/application/views/std/jog_setup_js.php:205
 msgid "X/Y Position {0}, {1} stored"
 msgstr "X/Y Position {0}, {1} gespeichert"
 
@@ -6669,7 +6822,7 @@ msgstr "X/Y Position {0}, {1} gespeichert"
 msgid "Custom Range"
 msgstr "Benutzerdefinierten Bereich"
 
-#: fabui/assets/js/fab.app.js:1382
+#: fabui/assets/js/fab.app.js:1383
 msgid "USB Disk"
 msgstr ""
 
@@ -6677,7 +6830,7 @@ msgstr ""
 msgid "Hi"
 msgstr "Hallo"
 
-#: fabui/application/views/settings/network_js.php:245
+#: fabui/application/views/settings/network_js.php:249
 #, fuzzy
 msgid "Connected"
 msgstr "Verbinden"
@@ -6687,11 +6840,11 @@ msgid "Z height increased"
 msgstr "Z-Höhe erhöht"
 
 # fabui/application/views/std/jog_setup_js.php:190
-#: fabui/application/views/std/jog_setup_js.php:239
+#: fabui/application/views/std/jog_setup_js.php:240
 msgid "Z Position restored to {0}"
 msgstr "Z Position wiederhergestellt zu {0}"
 
-#: fabui/application/views/settings/network_js.php:221
+#: fabui/application/views/settings/network_js.php:225
 msgid "Failed to save DNS-SD configuration"
 msgstr "Fehler beim Speichern der DNS-SD-Konfiguration"
 
@@ -6703,7 +6856,7 @@ msgstr "Schritt Kalibriermenü"
 msgid "Info"
 msgstr ""
 
-#: fabui/assets/js/fab.app.js:1138
+#: fabui/assets/js/fab.app.js:1139
 msgid "Aborting all operations"
 msgstr "Abbruch aller Operationen"
 
@@ -6711,7 +6864,7 @@ msgstr "Abbruch aller Operationen"
 msgid "Extruder temperature set to {0} &deg;"
 msgstr "Extrudertemperatur auf {0} &deg; eingestellt"
 
-#: fabui/assets/js/fab.app.js:1179
+#: fabui/assets/js/fab.app.js:1180
 msgid "Ignore"
 msgstr "Ignorieren"
 
@@ -6757,7 +6910,7 @@ msgstr "Einige Beschreibung"
 msgid "Do you want to do it now?"
 msgstr "Möchten Sie es jetzt tun?"
 
-#: fabui/application/views/settings/network_js.php:214
+#: fabui/application/views/settings/network_js.php:218
 msgid "DNS settings saved"
 msgstr "DNS-Einstellungen gespeichert"
 
@@ -6786,13 +6939,13 @@ msgstr "Wiederherstelle XY"
 msgid "Click on the menu item to continue"
 msgstr "Klicken Sie auf den Menüpunkt, um fortzufahren"
 
-#: fabui/assets/js/fab.app.js:1743
+#: fabui/assets/js/fab.app.js:1744
 msgid "Note: 5 seconds after the beep it's safe to switch off your unit."
 msgstr ""
 "Hinweis: 5 Sekunden nach dem Signalton ist es sicher, das Gerät "
 "auszuschalten."
 
-#: fabui/application/views/settings/network_js.php:174
+#: fabui/application/views/settings/network_js.php:178
 msgid "Disabling Wireless interface"
 msgstr "Deaktivierung der Wireless-Schnittstelle im gange"
 
@@ -6812,7 +6965,7 @@ msgstr "Spule"
 msgid "Logout"
 msgstr "Ausloggen"
 
-#: fabui/assets/js/fab.app.js:705
+#: fabui/assets/js/fab.app.js:706
 #, fuzzy
 msgid "You will be redirected to login page"
 msgstr "Sie werden umgeleitet zur Login-Seite"
@@ -6829,7 +6982,7 @@ msgstr "Erfolg"
 msgid "Bed temperature set to {0} &deg;"
 msgstr "Betttemperatur eingestellt auf {0} &deg;"
 
-#: fabui/assets/js/fab.app.js:1792
+#: fabui/assets/js/fab.app.js:1793
 msgid "No connection detected"
 msgstr "Keine Verbindung erkannt"
 
@@ -6842,29 +6995,29 @@ msgstr ""
 msgid "Manual Bed Calibration"
 msgstr "Manuelle Bettkalibrierung"
 
-#: fabui/assets/js/fab.app.js:1792
+#: fabui/assets/js/fab.app.js:1793
 msgid "Unable to connect to the FABtotum Personal Fabricator"
 msgstr "Kann nicht mit dem FABtotum Personal Fabricator verbunden werden"
 
-#: fabui/application/views/settings/network_js.php:167
+#: fabui/application/views/settings/network_js.php:171
 msgid "Unknown error"
 msgstr ""
 
-#: fabui/application/views/settings/network_js.php:215
+#: fabui/application/views/settings/network_js.php:219
 msgid "Failed to save DNS configuration"
 msgstr "Fehler beim Speichern der DNS-Konfiguration"
 
 # fabui/application/views/std/jog_setup_js.php:186
-#: fabui/application/views/std/jog_setup_js.php:249
+#: fabui/application/views/std/jog_setup_js.php:250
 msgid "X/Y position restored to {0}, {1}"
 msgstr "X / Y-Position wiederhergestellt auf {0}, {1}"
 
-#: fabui/application/views/settings/network_js.php:256
+#: fabui/application/views/settings/network_js.php:260
 #, fuzzy
 msgid "Configuration saved"
 msgstr "Feeder wird konfiguriert"
 
-#: fabui/assets/js/fab.app.js:1543
+#: fabui/assets/js/fab.app.js:1544
 #, fuzzy
 msgid "You will be redirected to recovery page"
 msgstr "Sie werden zur Wiederherstellungsseite umgeleitet"
@@ -6873,7 +7026,7 @@ msgstr "Sie werden zur Wiederherstellungsseite umgeleitet"
 msgid "Shutdown"
 msgstr "Herunterfahren"
 
-#: fabui/application/views/settings/network_js.php:202
+#: fabui/application/views/settings/network_js.php:206
 msgid "Failed to save ethernet configuration"
 msgstr "Fehler beim Speichern der Ethernet-Konfiguration"
 
@@ -6881,7 +7034,7 @@ msgstr "Fehler beim Speichern der Ethernet-Konfiguration"
 msgid "Please select at least one capability"
 msgstr "Bitte wählen Sie mindestens eine Fähigkeit aus"
 
-#: fabui/application/views/std/jog_setup_js.php:213
+#: fabui/application/views/std/jog_setup_js.php:214
 msgid "Failed to store position"
 msgstr "Position konnte nicht gespeichert werden"
 
@@ -6897,12 +7050,12 @@ msgstr ""
 msgid "New Z max offset: {0}"
 msgstr "Neue Z max Offset: {0}"
 
-#: fabui/assets/js/fab.app.js:1511
+#: fabui/assets/js/fab.app.js:1512
 #, fuzzy
 msgid "New updates are available"
 msgstr "Neue updates sind verfügbar"
 
-#: fabui/assets/js/fab.app.js:1193
+#: fabui/assets/js/fab.app.js:1194
 msgid "Please make sure"
 msgstr ""
 
@@ -6914,11 +7067,11 @@ msgstr "Überprüfen der Verbindung..."
 msgid "Please select a Head"
 msgstr "Bitte wählen Sie einen Kopf"
 
-#: fabui/application/views/settings/network_js.php:179
+#: fabui/application/views/settings/network_js.php:183
 msgid "Connecting to <strong>{0}</strong>"
 msgstr "Verbinden mit <strong>{0}</strong>"
 
-#: fabui/assets/js/fab.app.js:1124
+#: fabui/assets/js/fab.app.js:1125
 msgid ""
 "You have attempted to leave this page. The Fabtotum Personal Fabricator is "
 "still working. Are you sure you want to reload this page?"
@@ -6927,16 +7080,16 @@ msgstr ""
 "Fabricator arbeitet noch. Sind Sie sicher dass Sie diese Seite neu zu laden "
 "möchten?"
 
-#: fabui/assets/js/fab.app.js:716
+#: fabui/assets/js/fab.app.js:717
 msgid "Shutdown in progress"
 msgstr "Herunterfahren im Gange"
 
-#: fabui/assets/js/fab.app.js:1723
+#: fabui/assets/js/fab.app.js:1724
 #, fuzzy
 msgid "Connected with ethernet cable"
 msgstr "Ethernet Kabel"
 
-#: fabui/assets/js/fab.app.js:1193
+#: fabui/assets/js/fab.app.js:1194
 #, fuzzy
 msgid "is active"
 msgstr "Deaktivieren"
@@ -6946,7 +7099,7 @@ msgid "No connection."
 msgstr "Keine Verbindung."
 
 # fabui/application/views/std/jog_setup_js.php:184
-#: fabui/application/views/std/jog_setup_js.php:232
+#: fabui/application/views/std/jog_setup_js.php:233
 msgid "Position restored to {0}, {1}, {2}"
 msgstr "Position wiederhergestellt zu {0}, {1}, {2}"
 
@@ -6954,11 +7107,11 @@ msgstr "Position wiederhergestellt zu {0}, {1}, {2}"
 msgid "Send email on task finish: {0}"
 msgstr "Eine E-Mail sendend wenn die Aufgabe beendet  wird: {0}"
 
-#: fabui/application/views/std/jog_setup_js.php:339
+#: fabui/application/views/std/jog_setup_js.php:340
 msgid "You need to home Z axis first"
 msgstr "Sie müssen zuerst die Z-Achse zum Nullpunkt bringen"
 
-#: fabui/assets/js/fab.app.js:1397
+#: fabui/assets/js/fab.app.js:1398
 msgid "Ethernet cable"
 msgstr "Ethernet Kabel"
 
@@ -6977,8 +7130,13 @@ msgstr ""
 "Eine Nachricht wurde an diese Adresse gesendet die einen Link enthält um Ihr "
 "Passwort zurückzusetzen"
 
+#: fabui/assets/js/fab.app.js:669
+#, fuzzy
+msgid "Restarting all services"
+msgstr "Neustart im Gange"
+
 # fabui/application/views/std/jog_setup_js.php:186
-#: fabui/application/views/std/jog_setup_js.php:316
+#: fabui/application/views/std/jog_setup_js.php:317
 msgid "No X/Y position was stored"
 msgstr "X/Y Position nicht gespeichert"
 
@@ -6986,7 +7144,7 @@ msgstr "X/Y Position nicht gespeichert"
 msgid "Load spool"
 msgstr "Spule laden"
 
-#: fabui/application/views/settings/network_js.php:206
+#: fabui/application/views/settings/network_js.php:210
 msgid ""
 "It might take some time for the new address to become visible on the "
 "network. This page will be reloaded as soon as the new address is available."
@@ -6994,12 +7152,12 @@ msgstr ""
 "Es könnte einige Zeit dauern, bis die neue Adresse im Netzwerk sichtbar "
 "wird. Diese Seite wird neu geladen sobald die neue Adresse verfügbar ist."
 
-#: fabui/application/views/settings/network_js.php:213
+#: fabui/application/views/settings/network_js.php:217
 msgid "Saving DNS configuration"
 msgstr "DNS-Konfiguration speichern"
 
 # fabui/application/views/std/jog_setup_js.php:190
-#: fabui/application/views/std/jog_setup_js.php:334
+#: fabui/application/views/std/jog_setup_js.php:335
 msgid "No Z position was stored"
 msgstr "Es wurde keine Z-Position gespeichert"
 
@@ -7007,7 +7165,7 @@ msgstr "Es wurde keine Z-Position gespeichert"
 msgid "Restore Z"
 msgstr "Z Wiederherstellen"
 
-#: fabui/assets/js/fab.app.js:1742
+#: fabui/assets/js/fab.app.js:1743
 msgid "Now you can switch off the power"
 msgstr "Jetzt können Sie dem Strom ausschalten"
 
@@ -7016,7 +7174,7 @@ msgid "Before starting to use your FABtotum unit you need to install a head"
 msgstr ""
 "Bevor Sie mit dem FABtotum beginnen, müssen Sie einen Kopf installieren"
 
-#: fabui/assets/js/fab.app.js:1510
+#: fabui/assets/js/fab.app.js:1511
 #, fuzzy
 msgid "Updates center"
 msgstr "Aktualisierungen"
@@ -7028,6 +7186,10 @@ msgstr "Bitte geben Sie den Kopfnamen ein"
 #: fabui/application/views/history/main_js.php:98
 msgid "Apply"
 msgstr "Anwenden"
+
+#: fabui/assets/js/fab.app.js:666
+msgid "Emergency stop"
+msgstr ""
 
 #~ msgid "Create account"
 #~ msgstr "Benutzerkonto anlegen"
