@@ -7,7 +7,7 @@ POJSON			= pojson
 LC_AUTHOR 		= FABtotum
 LC_PACKAGE_NAME	= FABUI
 
-LC_FABUI_PHP_INPUT 	= $(wildcard fabui/application/*/*.php fabui/application/views/*/*.php fabui/application/views/*/*/*.php)
+LC_FABUI_PHP_INPUT 	= $(wildcard fabui/application/*/*.php fabui/application/views/*/*.php fabui/application/views/*/*/*/*.php)
 
 LC_FABUI_PY_INPUT = $(wildcard fabui/ext/py/*.py fabui/ext/py/fabtotum/*.py fabui/ext/py/fabtotum/*/*.py fabui/ext/py/fabtotum/*/*/*.py )
 
