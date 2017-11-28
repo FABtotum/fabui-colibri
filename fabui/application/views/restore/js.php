@@ -55,8 +55,10 @@
 				$(".next").find('a').html( _("Next") );
 			},
 			'onLast': function(tab, navigation, inde){
+				console.log("last");
 			},
 			'onFinish': function(tab, navigation, inde){
+				console.log("finish");
 			}
 			
 		});
@@ -68,7 +70,8 @@
 	function install()
 	{
 		$(".next").find('a').html( _("Restoring...") );
-		$(".wizard-button").disable(true);
+		//$(".wizard-button").disable(true);
+		disableButton(".wizard-button");
 		$("#browser-date").val(moment().format('YYYY-MM-DD HH:mm:ss'));
 		$("#restore-form").submit();
 	}

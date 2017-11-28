@@ -262,11 +262,12 @@ if(!function_exists('i_can_use_this_printer'))
 		$CI =& get_instance();
 		$CI->load->helpers(array('fabtotum_helper', 'os_helper'));
 		
-		$mac_address = getMACAddres();
-		
+		$mac_address   = getMACAddres();
+		$serial_number = getSerialNumber();
+	
 		foreach($printers as $printer)
 		{
-			if($printer['mac'] == $mac_address)
+		    if($printer['mac'] == $mac_address && (strtoupper($printer["serialno"]) == strtoupper($serial_number)))
 				return true;
 		}
 		

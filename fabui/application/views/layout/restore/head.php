@@ -32,3 +32,5 @@
 <script src="/assets/js/libs/jquery-2.1.1.min.js"></script>
 <script src="/assets/js/libs/jquery-ui-1.10.3.min.js"></script>
 <?php echo $cssInLine; ?>
+<!--  TRANSLATIONS -->
+<?php echo $translations; ?>

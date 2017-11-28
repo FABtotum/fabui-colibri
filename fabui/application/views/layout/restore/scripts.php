@@ -17,6 +17,7 @@
 <script src="/assets/js/plugin/fastclick/fastclick.min.js"></script>
 <script src="/assets/js/plugin/jquery-validate/jquery.validate.min.js"></script>
 <script src="/assets/js/app.min.js"></script>
+<script src="/assets/js/fabtotum.js"></script>
 <?php echo $jsScripts; ?>
 <?php echo $jsInLine; ?>
 	

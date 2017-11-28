@@ -308,11 +308,14 @@
 		var fourthaxis   = false;
 		
 		$(".capability").each(function (index, value) {
-			if($(this).is(":checked"))
+
+			var element = $(this);
+			if(element.is(":checked"))
 			{
-				capabilities.push($(this).attr('data-attr'));
+				capabilities.push(element.attr('data-attr'));
 			}
 		});
+
 		
 		var working_mode = 3;
 		
@@ -523,11 +526,10 @@
 
 			var name   = $(this).attr('name');
 			var id     = $(this).attr('id');
-			var type   = $(this).attr('type');
+			var type   = $(this).prop('tagName').toLowerCase();
 			var feeder = id.startsWith("feeder-");
 			var offset = id.startsWith("offset-");
 			var fourthaxis = id.startsWith("4thaxis-");
-			
 			
 			if( !settings.hasOwnProperty('feeder'))
 			{
@@ -544,12 +546,16 @@
 			
 			if(name)
 			{
-				if(type == 'checkbox')
+				if($(this).is(':checkbox'))
 				{
+					
 					if($(this).is(":checked"))
 					{
 						capabilities.push( $(this).attr('data-attr') );
 					}
+				}
+				else if($(this).is('select')){
+					settings[name] = $(this).val();
 				}
 				else
 				{
@@ -582,6 +588,7 @@
 						settings['plugins'] = $(this).val().split(",");
 					}
 				}
+				
 			}
 		});
 		
@@ -596,7 +603,13 @@
 		{
 			settings['4thaxis'] = {};
 		}
-		
+
+		if( capabilities.indexOf("laser") > -1 )
+		{
+			settings['thermistor_index'] = 3;
+		}
+
+		delete settings.capability;
 		return settings;
 	}
 	/**
@@ -605,7 +618,7 @@
 	function saveHeadSettings(callback)
 	{
 		openWait('<i class="fa fa-save"></i> <?php echo _("Saving head settings"); ?>', '<?php echo _("Please wait"); ?>...');
-		var settings = getHeadSettings();
+		var settings = getHeadSettings();		
 		var filename = settings['name'].replace(/ /g, "_").replace(/-/g, "_").toLowerCase();
 		$.ajax({
 			type: 'post',

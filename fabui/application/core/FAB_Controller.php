@@ -199,6 +199,7 @@
 		$data['jsScripts'] = jScriptsInclusion($this->js);
 		$data['jsInLine'] = $this->jsInLine;
 		$data['cssInLine'] = $this->cssInline;
+		$data['translations']      = $this->load->view('layout/translations_js', null, true);
 		
 		$this->template['head']    = $this->load-> view($this->layoutRestore.'/head',    $data, true);
 		$this->template['scripts'] = $this->load-> view($this->layoutRestore.'/scripts', $data, true);
