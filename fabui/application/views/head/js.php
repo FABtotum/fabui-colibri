@@ -20,22 +20,28 @@
 	**/
 	function initCarousel()
 	{
-		var owl = $('.owl-carousel').owlCarousel({
+		owl = $('#heads-carousel').owlCarousel({
         	loop: true,
          	margin: 1,
+         	navText : ["<i class='fa fw-lg fa-chevron-left'></i>","<i class='fa fw-lg fa-chevron-right'></i>"],
+         	dots: false,
+         	onInitialize: fixNavBars,
+         	onInitialized: fixNavBars,
+         	onChange : fixNavBars,
+         	onResized : fixNavBars,
             responsiveClass: true,
             	responsive: {
                 	0: {
                     	items: 1,
-                    	nav: false
+                    	nav: true
                   	},
                   	600: {
                     	items: 3,
-                    	nav: false
+                    	nav: true
                   	},
                   	1000: {
                     	items: 5,
-                    	nav: false,
+                    	nav: true,
                     	loop: false,
                     	margin: 20
                   	}
@@ -63,11 +69,28 @@
 
 			/* Filter 
 			owl.owlFilter(filter_data);*/
-			owl.owlFilter(filter_data, function(_owl) { 
+			owl.owlFilter(filter_data, function(_owl) {
 				$(_owl).find('.item').each(owlAnimateFilter); 
 				$('.settings-action').on('click', buttonAction);
+				fixNavBars();
 			});
 		});
+	}
+	
+	function fixNavBars(event)
+	{
+
+		var mainContentHeight = $("#content").height();
+		//center arrows
+		var carouselHeight = $("#heads-carousel  .owl-stage-outer").height();
+		var prevHeight = $("#heads-carousel .owl-prev").height();
+		var nextHeight = $("#heads-carousel .owl-next").height();
+		$("#heads-carousel .owl-prev").css("top", (carouselHeight-prevHeight)/2);
+		$("#heads-carousel .owl-next").css("top", (carouselHeight-prevHeight)/2);
+		
+		if(carouselHeight > mainContentHeight) fixNavBars();
+		
+		
 	}
 	/**
 	*

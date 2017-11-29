@@ -289,6 +289,26 @@ if(!function_exists('loadHead')){
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('loadLaserHeads'))
+{
+    /**
+     * 
+     */
+    function loadLaserHeads()
+    {
+        $all_heads = loadHeads();
+        $heads = array();
+        foreach($all_heads as $idx => $h){   
+            if(in_array('laser', $h['capabilities'])){
+                $heads[$idx] = $h;
+            }
+        }
+        return $heads;
+    }
+    
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('loadFeeders'))
 {
 	/**

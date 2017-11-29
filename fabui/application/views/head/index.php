@@ -9,7 +9,7 @@
 <hr class="simple">
 <div class="row">
 	<div class="col-sm-12">
-		<div class="owl-carousel owl-theme">
+		<div class="owl-carousel owl-theme" id="heads-carousel">
 			<?php foreach($heads as $index => $head):?>
 				<div class="panel panel-default item <?php echo implode(" ", $head['capabilities']); ?>  <?php echo $index == $installed_head['filename'] ? 'installed' : 'not-installed' ?>">
 					

@@ -74,7 +74,16 @@
 							<!-- GENERAL TAB -->
 							<div class="tab-pane fade in active" id="laser-general-tab">
 								<div class="smart-form">
+									
 									<fieldset>
+										
+										<section>
+											<label class="label"><?php echo _("Head");?></label>
+											<label class="select">
+												
+												<?php echo form_dropdown('laser-head', $laser_heads, $installed_head['fw_id'], $js); ?><i></i>
+											</label>
+										</section>
 										<div class="row dimensions-container">
 											<section class="col col-6">
 												<label class="input">
@@ -92,7 +101,9 @@
 										<section class="raster-settings">
 											<label class="checkbox"><input class="laser-monitor-change" id="invert" name="invert" type="checkbox"><i></i> <span><?php echo _("Invert colors");?></span></label>
 										</section>
-									
+										<section>
+											<label class="checkbox"><input class="laser-monitor-change" id="fan" name="fan"  type="checkbox"><i></i> <span><?php echo _("Fan on");?></span></label>
+										</section>
 										
 										<section>
 											<label class="label"><?php echo _("Profile");?></label>

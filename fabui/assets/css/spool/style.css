@@ -213,3 +213,13 @@
 .tooltip {
 	z-index: 1000000 !important;
 }
+
+.owl-next {
+	position: absolute !important;
+	right: 0px !important;
+}
+
+.owl-prev {
+	position: absolute !important;
+	left: 0px !important;
+}

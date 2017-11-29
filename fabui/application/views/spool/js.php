@@ -212,27 +212,34 @@
 					}
 				});
 				$(".owl-carousel").html(html);
+				
 				var owl = $('.owl-carousel').owlCarousel({
 		        	loop: true,
 		         	margin: 10,
+		         	dots: false,
+		         	navText : ["<i class='fa fw-lg fa-chevron-left'></i>","<i class='fa fw-lg fa-chevron-right'></i>"],
+		         	onInitialized: fixNavBars,
+		         	onChange : fixNavBars,
 		            responsiveClass: true,
 		            	responsive: {
 		                	0: {
 		                    	items: 1,
-		                    	nav: false
+		                    	nav: true
 		                  	},
 		                  	600: {
 		                    	items: 5,
-		                    	nav: false
+		                    	nav: true
 		                  	},
 		                  	1000: {
 		                    	items: 6,
-		                    	nav: false,
+		                    	nav: true,
 		                    	loop: false,
 		                    	margin: 20
 		                  	}
 		                }
 				});
+				
+
 				$('.filters-button').on('click', function(e) {
 					var filter_data = $(this).data('filter');
 								
@@ -256,10 +263,26 @@
 					owl.owlFilter(filter_data);*/
 					owl.owlFilter(filter_data, function(_owl) { 
 						$(_owl).find('.item').each(owlAnimateFilter); 
-						$('.settings-action').on('click', buttonAction);
+						fixNavBars();
 					});
 				});
 				$(".spool-slider").removeClass("hidden");
+
+				function fixNavBars()
+				{
+					var mainContentHeight = $("#content").height();
+					//center arrows
+					var carouselHeight = $(".owl-stage .owl-item:first-child").height();
+					//var carouselHeight = $(".owl-stage-outer").height();
+					var prevHeight = $(".owl-prev").height();
+					var nextHeight = $(".owl-next").height();
+					$(".owl-prev").css("top", (carouselHeight-prevHeight)/2);
+					$(".owl-next").css("top", (carouselHeight-prevHeight)/2);
+
+					if(carouselHeight > mainContentHeight) fixNavBars();
+				}
+
+				
 			}
 		});
 		/**

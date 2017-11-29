@@ -11,7 +11,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <!-- WEB MANIFEST -->
 <link rel="manifest" href="/assets/manifest.json">
-<title><?php echo getHostName(); ?></title>
+<title><?php echo getHostName(); ?> - </title>
 <?php foreach($this->meta_tags as $name => $value): ?>
 <meta name="<?php echo $name ?>" content="<?php echo $value; ?>">
 <?php endforeach; ?>
@@ -38,5 +38,13 @@
 <!-- END TRANSLATIONS -->
 <?php echo $this->jsInLineTop; ?>
 <script type="text/javascript">
-var page_title_prefix = '<?php echo addslashes(getHostName()); ?> - ';
+	var page_title_prefix = $(document).find("title").text();
 </script>
+<noscript>
+    <style type="text/css">
+        #main, #header, #left-panel {display:none !important;}
+    </style>
+    <div class="alert alert-danger animeted fadeIn alert-block text-center" style="margin-top: 10em;">
+		<h1><?php echo _("We are sorry, but FABUI doesn't work properly without JavaScript enabled.<br>Please enable JavaScript and reload the page");?></h1>
+	</div>
+</noscript>

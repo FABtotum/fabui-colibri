@@ -18,13 +18,13 @@
 				 <dl class="dl-horizontal">
 				 	
 				 	<dt><?php echo _("Name");?></dt>
-			        <dd><a href="javascript:void(0);" class="host-name edit-field"><?php echo getHostName(); ?> - <?php echo getAvahiServiceName(); ?></a></dd>
+			        <dd><a href="javascript:void(0);" class="host-name edit-field"><?php echo $host_name ?> - <?php echo $avahi_description; ?></a></dd>
 				 	
 				 	<dt><?php echo _("Serial number");?></dt>
-			        <dd><a href="javascript:void(0);" class="unit-serial-number edit-field"><?php echo strtoupper(getSerialNumber()); ?></a></dd>
+			        <dd><a href="javascript:void(0);" class="unit-serial-number edit-field"><?php echo $serial_number != '' ? strtoupper($serial_number) : '<i>'._("n.a.").'</i>'; ?></a></dd>
 			        
 			        <dt><?php echo _("Color");?></dt>
-			        <dd><a href="javascript:void(0);" class="unit-color edit-field"><?php echo ucfirst(_(getUnitColor())); ?></a></dd>
+			        <dd><a href="javascript:void(0);" class="unit-color edit-field"><?php echo ucfirst(_($unit_color)); ?></a></dd>
 			   		
 			   		
 			        <dt><?php echo _("Os");?></dt>

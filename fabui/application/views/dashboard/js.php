@@ -310,7 +310,7 @@
 		return '<div class="panel panel-default">'+
 					'<div class="panel-body status">'+
 					'<div class="who clearfix">'+
-						'<img class="hidden-xs" src="'+item['user']['profile_image_url']+'" />'+
+						'<img alt="'+item['user']['description']+'"  title="'+item['user']['description']+'" class="hidden-xs" src="'+item['user']['profile_image_url']+'" />'+
 						'<span class="name"><b><a target="_blank" href="https://twitter.com/'+item['user']['screen_name']+'">'+item['user']['screen_name']+'</a></b>'+
 						'<span class="pull-right"><a href="'+post_url+'" target="_blank" title="View on Twitter"><i class="fa fa-twitter"></i></a></span></span>'+
 						'<span class="from">'+ date + place + '</span>'+

@@ -246,7 +246,7 @@
       this.cursorX = mx;
       this.cursorY = my;
       
-      console.log("cursor set:", x, y, "mapped:", mx, my);
+      //console.log("cursor set:", x, y, "mapped:", mx, my);
       
       var mappedWidth = options.right - options.left;
       var mappedX1 = options.left;
@@ -486,7 +486,7 @@
 
       // Check `container` is necessary for IE8
       if (!container) {
-        console.log('skipping NO CONTAINER');
+        //console.log('skipping NO CONTAINER');
         return;
       }
 

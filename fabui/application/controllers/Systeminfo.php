@@ -16,15 +16,18 @@ class SystemInfo extends FAB_Controller {
 	{
 		//load librarire, helpers, config
 		$this->load->library('smart');
-		$this->load->helper('fabtotum_helper');
-		$this->load->helper('update_helper');
-		$this->load->helper('os_helper');
-		$this->load->helper('date_helper');
 		$this->config->load('fabtotum');
+		$this->load->helper(array('fabtotum_helper', 'update_helper', 'os_helper', 'date_helper'));
 		
 		//
 		$data = json_decode(startPyScript('systeminfo.py', '', false), true);
-		$data['bundles'] = getLocalBundles();
+		
+		$data['bundles']           = getLocalBundles();
+		$data['serial_number']     = getSerialNumber();
+		$data['unit_color']        = getUnitColor();
+		$data['host_name']         = getHostName();
+		$data['avahi_description'] = getAvahiServiceName();
+		
 		//versions macro
 		$data['versions'] = array();
 		$macroResponse = doMacro('version');

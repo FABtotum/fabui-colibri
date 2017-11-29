@@ -55,6 +55,13 @@
 		$data['subscription_exists']      = subscription_exists();
 		$data['linear_mapping_help']      = $this->load->view('cam/help/'.$language.'/linear_mapping', $data, true );
 		$data['skip_line_help']           = $this->load->view('cam/help/'.$language.'/skip_line', $data, true );
+		$data['installed_head']           = getInstalledHeadInfo();
+		
+		$laser_heads = loadLaserHeads();
+		foreach($laser_heads as $head){
+		    $data["laser_heads"][$head['fw_id']] = $head['name'];
+		}
+		
 		
 		if($data['subscription_exists']){
 			$data['subscription_code'] = load_subscription();
