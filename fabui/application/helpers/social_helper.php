@@ -275,11 +275,14 @@ if(!function_exists('highlightTwitterPost')){
 		foreach($feeds as $feed){
 			
 			$temporaryFeed = $feed;
-			$temporaryFeed['original_text'] = $temporaryFeed['text'];
-			$temporaryFeed['created_at'] = date('j M, Y',strtotime($temporaryFeed['created_at']));
+			$temporaryFeed['is_retweeted']  = false;
+			
 			if(isset($feed['retweeted_status']) && $feed['retweeted_status']){
 				$temporaryFeed = $feed['retweeted_status'];
+				$temporaryFeed['is_retweeted'] = true;
 			}
+			$temporaryFeed['original_text'] = $temporaryFeed['text'];
+			$temporaryFeed['created_at']    = date('j M, Y',strtotime($temporaryFeed['created_at']));
 			//highlitght hashtags
 			$hashtags = $temporaryFeed['entities']['hashtags'];
 			foreach($hashtags as $hash){

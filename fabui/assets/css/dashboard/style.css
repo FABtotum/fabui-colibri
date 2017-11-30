@@ -20,3 +20,8 @@
 .padding-10 {
 	padding: 10px !important;
 }
+
+.retweeted {
+	margin-top:10px;
+	margin-left:10px;
+}

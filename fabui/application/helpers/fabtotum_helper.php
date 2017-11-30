@@ -1830,4 +1830,32 @@ if(!function_exists('getUnitType'))
 		return $type;
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('getUnitTypeDescription'))
+{
+    /**
+     * return unity type description
+     * 
+     */
+    function getUnitTypeDescription()
+    {
+        $type = getUnitType();
+        
+        switch($type){
+            case 'UNKNOWN':
+            case 'GENERAL':
+                return "FABtotum Personal Fabricator";
+                break;
+            case 'CORE':
+                return "FABtotum Core";
+                break;
+            case 'PRO':
+                return "FABtotum Core Pro";
+                break;
+            case 'HYDRA':
+                return "FABtotum Hydra";
+                break;
+        }
+    }
+}
 ?>

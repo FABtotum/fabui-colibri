@@ -252,11 +252,17 @@ if(!function_exists('getHostName'))
 
 if(!function_exists('setHostName'))
 {
-	function setHostName($hostname, $name="Fabtotum Personal Fabricator 3D Printer")
+    /**
+     * @param string $hostname hostname
+     * @param string $name service decription
+     */
+	function setHostName($hostname, $name="")
 	{
 		$CI =& get_instance();
 		$CI->load->helper('fabtotum');
-		$response = startBashScript('set_hostname.sh', '"'.$hostname.'" "'.$name.'"', false, true);
+		$unitDescription = getUnitTypeDescription();
+		if($name == "" ) $name = $unitDescription;
+		$response = startBashScript('set_hostname.sh', '"'.$hostname.'" "'.$name.'" "'.$unitDescription.'" ', false, true);
 		return $response;
 	}
 }

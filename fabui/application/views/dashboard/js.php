@@ -294,21 +294,36 @@
 		var favourite = '';
 		var place = '';
 		var date = item['created_at'];
-		var images = '';
+		var media_html = '';
+		var retweeted = '';
+		var has_video = false;
 
-		
+		if(item.is_retweeted) retweeted += '<div class="retweeted"><span><i class="fa fa-retweet txt-color-green"></i> <?php echo _("FABtotum retweeted");?></span></div>';
 		if(item.place) place += '<br><i class="fa fa-map-marker"></i> '+item['place']['full_name'];
 		if(item.retweet_count>0) retweet += '<li class="txt-color-green"><i class="fa fa-retweet"></i> ('+ item['retweet_count']+')</li>';
 		if(item.favorite_count>0) favourite += '<li class="txt-color-red"><i class="fa fa-heart"></i> ('+item['favorite_count']+')</li>';
 
-		if(item.entities.media){
+		
+		if(item.extended_entities){
+			$.each(item.extended_entities.media, function(j, media){
+				if(media.type == 'video'){
+					var video_src = media.video_info.variants[1].url;
+					var src_image = media.media_url_https;
+					media_html += '<div class="image padding-10"><video class="img-responsive" controls><source src="'+video_src+'" type="video/mp4"><img src="'+src_image+'" /></video></div>';
+					has_video = true;
+				} 
+			});
+			
+		}
+		
+		if(item.entities.media && !has_video){
 			$.each(item.entities.media, function(j, media){
-				if(media.type == 'photo') images += '<div class="image padding-top-0 padding-10"><img title="'+item.original_text+'" src="'+media['media_url']+'" /></div>';
+				if(media.type == 'photo') media_html += '<div class="image padding-top-0 padding-10"><img title="'+item.original_text+'" src="'+media['media_url']+'" /></div>';
 			});
 		}
 		
 		return '<div class="panel panel-default">'+
-					'<div class="panel-body status">'+
+					'<div class="panel-body status">'+ retweeted + 
 					'<div class="who clearfix">'+
 						'<img alt="'+item['user']['description']+'"  title="'+item['user']['description']+'" class="hidden-xs" src="'+item['user']['profile_image_url']+'" />'+
 						'<span class="name"><b><a target="_blank" href="https://twitter.com/'+item['user']['screen_name']+'">'+item['user']['screen_name']+'</a></b>'+
@@ -318,7 +333,7 @@
 					'</div>'+
 					'<div class="text">'+
 						'<p>'+item['text']+'</p>'+
-					'</div>'+images+
+					'</div>'+media_html+
 					'<ul class="links">' + retweet + favourite +
 					'</ul>'+
 				'</div>'+

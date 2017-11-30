@@ -17,6 +17,7 @@ class Cron extends CI_Controller {
 		//fix evenutally permissions issues
 		$this->load->helper(array('os_helper', 'social_helper'));
 		$this->config->load('fabtotum');
+		//fix permissions
 		fix_folder_permissions($this->config->item('bigtemp_path'), 'www-data');
 		//download feeds
 		$this->getUpdateJSON();
@@ -24,6 +25,8 @@ class Cron extends CI_Controller {
 		downloadAllFeeds();
 		//shop files
 		$this->shopFilaments();
+		//fix permissions
+		fix_folder_permissions($this->config->item('bigtemp_path'), 'www-data');
 	}
 	
 	/**
