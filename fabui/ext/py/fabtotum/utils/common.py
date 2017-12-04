@@ -68,4 +68,23 @@ def fabtotum_model(batch_number):
         model = 'FABtotum Personal Fabricator'
     
     return model
+#######################################################################
+# GET MAC ADDRESS
+########################################################################
+def get_mac_address(iface):
+    result = shell_exec("ifconfig " + iface + " | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'")
+    try:
+        return result[0].strip()
+    except IndexError:
+        return "n.a"
+
+#######################################################################
+# GET IP ADDRESS
+########################################################################
+def get_ip_address(iface):
+    result = shell_exec("ifconfig " + iface + " | grep 'inet addr' | cut -d: -f2 | awk '{print $1}'")
+    try:
+        return result[0].strip()
+    except IndexError:
+        return "n.a"
     

@@ -37,7 +37,7 @@ from threading import Event, Thread
 from fabtotum.database import Database
 from fabtotum.database.sysconfig import SysConfig
 from fabtotum.database.user import User
-from fabtotum.utils.common import shell_exec, fabtotum_model
+from fabtotum.utils.common import shell_exec, fabtotum_model, get_mac_address, get_ip_address
 from fabtotum.os.paths import TEMP_PATH, BASH_PATH
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.constants import SERVICE_SUCCESS, SERVICE_UNAUTHORIZED, SERVICE_FORBIDDEN,\
@@ -81,17 +81,19 @@ class MyFabtotumCom:
         self.db     = Database(self.config)
         self.log    = logger
         
-        self.url              = self.config.get('my.fabtotum.com', 'myfabtotum_url')
-        self.api_version      = self.config.get('my.fabtotum.com', 'myfabtotum_api_version')
-        self.thread_polling   = None
-        self.thread_update    = None
-        self.running          = False
-        self.jsonrpc_version  = "2.0"
-        self.request_timeout  = 5
-        self.polling_interval = 5
-        self.info_interval    = (60*30) #30 minutes
-        self.id_counter       = 0
-        self.leds_colors      = {}
+        self.url                      = self.config.get('my.fabtotum.com', 'myfabtotum_url')
+        self.api_version              = self.config.get('my.fabtotum.com', 'myfabtotum_api_version')
+        self.thread_polling           = None
+        self.thread_update            = None
+        self.thread_reload            = None
+        self.running                  = False
+        self.jsonrpc_version          = "2.0"
+        self.request_timeout          = 5
+        self.polling_interval         = 5
+        self.info_interval            = (60*30) #30 minutes
+        self.internal_update_interval = (60*5) #5minutes
+        self.id_counter               = 0
+        self.leds_colors              = {}
         #self.mac_address      = None
         #self.serial_number    = None
         #self.fab_id           = None
@@ -169,10 +171,9 @@ class MyFabtotumCom:
         else:
             return False
     
-    def getMACAddres(self):
+    def getMACAddres(self, iface='eth0'):
         """ get printer mac address """
-        interfaces = self.__getInterfaces()
-        return interfaces["eth0"]["mac_address"]
+        return get_mac_address('eth0')
         
     
     def getSerialNumber(self):
@@ -217,14 +218,7 @@ class MyFabtotumCom:
             return "N.D."
     
     def getIPLan(self):
-        """ return valid ip for local network """
-        interfaces = self.__getInterfaces()
-        if "wlan0" in interfaces:
-            return interfaces['wlan0']['ipv4_address'].split('/')[0]
-        elif "wlan1" in interfaces:
-            return interfaces['wlan1']['ipv4_address'].split('/')[0]
-        else:
-            return interfaces['eth0']['ipv4_address'].split('/')[0]
+        return get_ip_address('wlan0')
     
     def getState(self):
         """ printer's state """
@@ -324,11 +318,14 @@ class MyFabtotumCom:
         
         self.thread_update = Thread( name = "MyFabtotumCom_InfoUpdate", target = self.__thread_update )
         self.thread_update.start()
+        
+        self.thread_reload = Thread( name = "MyFabtotumCom_Reload", target = self.__thread_reload)
+        self.thread_reload.start()
     
     def stop(self):
         self.running = False
     
-    def reload(self):
+    def reload(self, update=True):
         """ reload settings """
         self.mac_address   = self.getMACAddres()
         self.ip_lan        = self.getIPLan()
@@ -340,7 +337,8 @@ class MyFabtotumCom:
         self.unit_color    = self.getUnitColor()
         self.leds_colors   = self.getLedsColors()
         #### update info 
-        self.fab_info_update()
+        if(update == True):
+            self.fab_info_update()
         self.log.debug("MyFabtotumCom - Settings reloaded")
     
     def __thread_polling(self):
@@ -355,9 +353,17 @@ class MyFabtotumCom:
         """ info update thread """
         self.log.debug("MyFabtotumCom InfoUpdate_thread: started")
         while self.running:
-            self.fab_info_update()
+            if self.fab_id:
+                self.fab_info_update()
             time.sleep(self.info_interval)
-        
+            
+    def __thread_reload(self):
+        """ internal update """
+        self.log.debug("MyFabtotumCom Reload_thread: started")
+        while self.running:
+            if self.fab_id:
+                self.reload(update=False)
+            time.sleep(self.internal_update_interval)
         
     def loop(self):
         if self.thread_polling:
@@ -365,3 +371,6 @@ class MyFabtotumCom:
         
         if self.thread_update:
             self.thread_update.join()
+            
+        if self.thread_reload:
+            self.thread_reload.join()

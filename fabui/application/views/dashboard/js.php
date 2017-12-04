@@ -31,7 +31,7 @@
 		}
 		$("#blog-container").html(html);
 		$("#blog-carousel-container").html(html);
-		initCarousel("#blog-carousel-container");
+		initCarousel("#blog-carousel-container", false);
 	}
 	/**
 	*
@@ -50,7 +50,7 @@
 		$("#twitter-container").html(html);
 
 		$("#twitter-carousel-container").html(html);
-		initCarousel("#twitter-carousel-container");
+		initCarousel("#twitter-carousel-container", false);
 		
 	}
 	/**
@@ -78,7 +78,11 @@
 		html += '</div>';
 		$("#instagram-container").html(html);
 		$("#instagram-carousel-container").html(html_carousel);
-		initCarousel("#instagram-carousel-container");
+		initCarousel("#instagram-carousel-container", false);
+
+		setTimeout(function(){
+			initCarousel(".owl-carousel", true);
+		},500);
 	}
 	/**
 	*
@@ -91,6 +95,7 @@
 		var image = '';
 		var src_image = getInstagramImageSrc(item);
 		var src_video = getInstagramVideoSrc(item);
+		var carousel = getInstagramCarousel(item);
 		var video = '';
 		var likes = '<li class="txt-color-red"><i class="fa fa-heart"></i> ('+item['like_count']+')</li>';;
 		var comments = '<li class="txt-color-blue"><i class="fa fa-comments"></i> ('+item['comment_count']+')</li>';;
@@ -100,6 +105,8 @@
 		if(src_video != ''){
 			video = '<div class="image padding-10"><video class="img-responsive" controls><source src="'+src_video+'" type="video/mp4"><img src="'+src_image+'" /></video></div>';
 			views_count = '<li class="txt-color-green"><i class="fa fa-play"></i> ('+item['view_count']+')</li>';
+		}else if(carousel != ''){
+			
 		}else{
 			image = '<div class="image padding-10"><img title="'+item.caption.original_text+'" src="'+src_image+'" /></div>';
 		}
@@ -116,7 +123,7 @@
 								'<a href="'+post_url+'" target="_blank" title="<?php echo _("View on instagram");?>"><i class="fa fa-instagram"></i></a>' +
 							'</span></span>' +
 							'<span class="from"> ' + date + location + '</span>' +
-						'</div>' + image + video +
+						'</div>' + image + video + carousel +
 						'<div class="text padding-top-0 hidden-xs"><p style="word-wrap: break-word">'+item['caption']['text']+'</p></div>' +
 						'<ul class="links">' + likes + comments + views_count + ranked +
 						'</ul>' +
@@ -153,6 +160,26 @@
 			return item.video_versions[0]['url'];
 		}
 		return "";
+	}
+	/**
+	*
+	**/
+	function getInstagramCarousel(item)
+	{
+		if(item.carousel_media){
+
+			var html = '<div id="carousel_'+item.id+'" class="owl-carousel owl-theme">';
+			$.each(item.carousel_media, function(i, car_item) {
+
+				var img_src = getInstagramImageSrc(car_item);
+				html += '<div class="image padding-10"><img src="'+img_src+'" /></div>';	
+			});
+
+			html += '</div>';			
+			return html;
+		}
+
+		return '';
 	}
 	/**
 	*
@@ -227,31 +254,65 @@
 	/**
 	*
 	**/
-	function initCarousel(element)
+	function initCarousel(element, is_single_post)
 	{
+		
 		$(element).owlCarousel({
         	loop: true,
          	margin: 10,
          	autoHeight:true,
+         	navText : ["<i class='fa fw-lg fa-chevron-left'></i>","<i class='fa fw-lg fa-chevron-right'></i>"],
+         	dots: false,
+         	onInitialize: fixNavBars,
+         	onInitialized: fixNavBars,
+         	onChange : fixNavBars,
+         	onResized : fixNavBars,
             responsiveClass: true,
             	responsive: {
                 	0: {
                     	items: 1,
-                    	nav: false
+                    	nav: true
                   	},
                   	600: {
-                    	items: 3,
-                    	nav: false
+                    	items: is_single_post ? 1 : 3,
+                    	nav: true
                   	},
                   	1000: {
-                    	items: 5,
-                    	nav: false,
+                    	items: is_single_post ? 1 : 5,
+                    	nav: true,
                     	loop: false,
                     	margin: 20
                   	}
                 }
 		});
 	}
+	/**
+	*
+	**/
+	function fixNavBars(event)
+	{
+
+		var element = this.$element;
+		var id_element = element.attr("id");
+		var mainContentHeight = $("#content").height();
+		//center arrows
+		var carouselHeight = $("#" + id_element).height();
+		
+		//var prevHeight = $(".owl-prev").height();
+		//var nextHeight = $(".owl-next").height();
+		var prevHeight = $("#"+id_element+" .owl-prev").height();
+		var nextHeight = $("#"+id_element+" .owl-next").height();
+		
+		$("#"+id_element+" .owl-prev").css("top", (carouselHeight-prevHeight)/2);
+		$("#"+id_element+" .owl-next").css("top", (carouselHeight-prevHeight)/2);
+		
+		
+		
+		if(carouselHeight > mainContentHeight) fixNavBars();
+
+	}
+		
+		
 	/**
 	*
 	**/
