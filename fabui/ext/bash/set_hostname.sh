@@ -14,6 +14,7 @@ usage() {
 CURRENT_HOSTNAME=$(cat /etc/hostname)
 NEW_HOSTNAME=$1
 NEW_SERVICE_DESCRIPTION=$2
+NEW_UNIT_DESCRIPTION=$3
 
 for file in /etc/hostname /etc/hosts
 do
@@ -32,7 +33,7 @@ FABOTUM_SERICE="<?xml version=\"1.0\" standalone='no'?>\n
 \t\t<service>\n
 \t\t\t<type>_http._tcp</type>\n
 \t\t\t<port>80</port>\n
-\t\t\t<txt-record>product=Fabtotum Personal Fabricator - 3D Printer</txt-record>\n
+\t\t\t<txt-record>product=$NEW_UNIT_DESCRIPTION</txt-record>\n
 \t\t\t<domain-name>local</domain-name>\n
 \t\t</service>\n
 \t</service-group>"
