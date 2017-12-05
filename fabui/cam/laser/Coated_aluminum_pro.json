@@ -1,0 +1,60 @@
+{
+    "general": {
+        "dot_size": "0.1", 
+        "fan": false, 
+        "head": [
+            7
+        ], 
+        "levels": "6"
+    }, 
+    "info": {
+        "description": "Using cut and engrave layer names. Optimized for Laser Head PRO", 
+        "material": "Coated Aluminum", 
+        "name": "Coated Aluminum Engraving"
+    }, 
+    "layer": {
+        "cut": {
+            "burn": "500", 
+            "color": {
+                "b": "0", 
+                "g": "0", 
+                "r": "255"
+            }, 
+            "pwm": "255"
+        }, 
+        "engrave": {
+            "burn": "1000", 
+            "color": {
+                "b": "0", 
+                "g": "127.9845", 
+                "r": "0"
+            }, 
+            "pwm": "255"
+        }
+    }, 
+    "pwm": {
+        "in_max": "0", 
+        "in_min": "0", 
+        "off_during_travel": "true", 
+        "out_max": "0", 
+        "out_min": "0", 
+        "type": "layer", 
+        "value": "255"
+    }, 
+    "skip": {
+        "mod": "2", 
+        "on": [
+            "0"
+        ], 
+        "type": "modulo"
+    }, 
+    "speed": {
+        "burn": "1200", 
+        "in_max": "255", 
+        "in_min": "0", 
+        "out_max": "255", 
+        "out_min": "0", 
+        "travel": "10000", 
+        "type": "layer"
+    }
+}

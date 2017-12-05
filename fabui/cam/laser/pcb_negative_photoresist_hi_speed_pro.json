@@ -1,14 +1,14 @@
 {
     "general": {
         "dot_size": "0.015", 
-        "fan": true, 
+        "fan": false, 
         "head": [
-            4
+            7
         ], 
         "levels": "1"
     }, 
     "info": {
-        "description": "Laser Engraving for PCBs", 
+        "description": "Laser Engraving for PCBs. Optimized for Laser Head PRO", 
         "material": "PCB copper clad", 
         "name": "PCB engraving SMT hi-speed , Negative Photoresist"
     }, 

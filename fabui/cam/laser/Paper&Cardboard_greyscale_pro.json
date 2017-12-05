@@ -1,16 +1,16 @@
 {
     "general": {
-        "dot_size": "0.005", 
-        "fan": true, 
+        "dot_size": "0.1", 
+        "fan": false, 
         "head": [
-            4
+            7
         ], 
-        "levels": "1"
+        "levels": "8"
     }, 
     "info": {
-        "description": "Laser Engraving for PCBs", 
-        "material": "PCB copper clad", 
-        "name": "PCB engraving SMT hi-speed , Positive Photoresist"
+        "description": "Engraving Greyscale on Cardboard Images. Optimized for Laser Head PRO", 
+        "material": "White Paper / Cardboard", 
+        "name": "Paper & Carboard Engraving - Greyscale"
     }, 
     "pwm": {
         "in_max": "255", 
@@ -18,7 +18,7 @@
         "off_during_travel": "true", 
         "out_max": "255", 
         "out_min": "0", 
-        "type": "const", 
+        "type": "linear", 
         "value": "255"
     }, 
     "skip": {
@@ -29,7 +29,7 @@
         "type": "modulo"
     }, 
     "speed": {
-        "burn": "2000", 
+        "burn": "1500", 
         "in_max": "255", 
         "in_min": "0", 
         "out_max": "255", 

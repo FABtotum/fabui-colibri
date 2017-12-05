@@ -1,24 +1,24 @@
 {
     "general": {
-        "dot_size": "0.015", 
-        "fan": true, 
+        "dot_size": "0.1", 
+        "fan": false, 
         "head": [
-            4
+            7
         ], 
-        "levels": "1"
+        "levels": "6"
     }, 
     "info": {
-        "description": "Laser Engraving for PCBs", 
-        "material": "PCB copper clad", 
-        "name": "PCB engraving SMT hi-speed , Negative Photoresist"
+        "description": "Laser engraving on Wood, Greyscale images (6 levels). Optimized for Laser Head PRO", 
+        "material": "Wood", 
+        "name": "Engraving - Greyscale"
     }, 
     "pwm": {
-        "in_max": "0", 
+        "in_max": "255", 
         "in_min": "0", 
         "off_during_travel": "true", 
-        "out_max": "0", 
+        "out_max": "255", 
         "out_min": "0", 
-        "type": "const", 
+        "type": "linear", 
         "value": "255"
     }, 
     "skip": {
@@ -32,9 +32,9 @@
         "burn": "2000", 
         "in_max": "255", 
         "in_min": "0", 
-        "out_max": "0", 
-        "out_min": "255", 
+        "out_max": "255", 
+        "out_min": "0", 
         "travel": "10000", 
-        "type": "linear"
+        "type": "const"
     }
 }
