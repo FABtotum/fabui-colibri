@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-28 16:29+0100\n"
+"POT-Creation-Date: 2017-12-05 09:36+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: FABTeam\n"
@@ -34,7 +34,7 @@ msgstr "Herstellen"
 #: fabui/application/controllers/Create.php:92
 #: fabui/application/controllers/Create.php:144
 #: fabui/application/helpers/projects_manager_helper.php:34
-#: fabui/application/helpers/fabtotum_helper.php:1737
+#: fabui/application/helpers/fabtotum_helper.php:1757
 #: fabui/application/views/install/wizard.php:231
 #: fabui/application/views/login/register_form.php:77
 #: fabui/application/views/head/index.php:203
@@ -48,7 +48,7 @@ msgstr "Drücken"
 #: fabui/application/controllers/Create.php:222
 #: fabui/application/controllers/Create.php:273
 #: fabui/application/helpers/projects_manager_helper.php:43
-#: fabui/application/helpers/fabtotum_helper.php:1738
+#: fabui/application/helpers/fabtotum_helper.php:1758
 #: fabui/application/views/head/index.php:142
 #: fabui/application/views/head/index.php:204
 #: fabui/application/views/head/install.php:207
@@ -60,7 +60,7 @@ msgstr "Fräsen"
 #: fabui/application/controllers/Settings.php:324
 #: fabui/application/controllers/Head.php:157
 #: fabui/application/controllers/Scan.php:86
-#: fabui/application/helpers/fabtotum_helper.php:1739
+#: fabui/application/helpers/fabtotum_helper.php:1759
 #: fabui/application/views/install/js.php:346
 #: fabui/application/views/install/wizard.php:163
 #: fabui/application/views/settings/hardware_widget.php:58
@@ -90,6 +90,7 @@ msgstr "Instandhaltung"
 
 #: fabui/application/config/menu.php:72
 #: fabui/application/views/settings/network_widget.php:53
+#: fabui/application/views/cam/laser_tab.php:81
 #: fabui/assets/js/tours/0010_head.js:49
 msgid "Head"
 msgstr "Kopf"
@@ -357,7 +358,7 @@ msgstr "Keine Internetverbindung gefunden"
 
 #: fabui/application/controllers/Myfabtotum.php:61
 #: fabui/application/views/plugin/js.php:89
-#: fabui/application/views/dashboard/js.php:194
+#: fabui/application/views/dashboard/js.php:221
 msgid "Check your connection and try again"
 msgstr "Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut"
 
@@ -423,11 +424,11 @@ msgstr ""
 msgid "New user created successfully"
 msgstr "Neuer Benutzer wurde erfolgreich erstellt"
 
-#: fabui/application/controllers/Systeminfo.php:52
+#: fabui/application/controllers/Systeminfo.php:55
 msgid "Enter recovery mode"
 msgstr ""
 
-#: fabui/application/controllers/Systeminfo.php:52
+#: fabui/application/controllers/Systeminfo.php:55
 msgid "Recovery"
 msgstr ""
 
@@ -510,7 +511,7 @@ msgid "Constant"
 msgstr ""
 
 #: fabui/application/controllers/Cam.php:51
-#: fabui/application/views/cam/laser_tab.php:285
+#: fabui/application/views/cam/laser_tab.php:296
 msgid "Linear mapping"
 msgstr ""
 
@@ -518,7 +519,7 @@ msgstr ""
 msgid "Groups"
 msgstr ""
 
-#: fabui/application/controllers/Cam.php:279
+#: fabui/application/controllers/Cam.php:286
 msgid "Generated with app.fabtotum.com"
 msgstr ""
 
@@ -876,23 +877,23 @@ msgstr ""
 msgid "December"
 msgstr ""
 
-#: fabui/application/helpers/fabtotum_helper.php:1633
+#: fabui/application/helpers/fabtotum_helper.php:1653
 msgid "White"
 msgstr "Weiß"
 
-#: fabui/application/helpers/fabtotum_helper.php:1634
+#: fabui/application/helpers/fabtotum_helper.php:1654
 msgid "Red"
 msgstr "Rot"
 
-#: fabui/application/helpers/fabtotum_helper.php:1635
+#: fabui/application/helpers/fabtotum_helper.php:1655
 msgid "Black"
 msgstr "Schwarz"
 
-#: fabui/application/helpers/fabtotum_helper.php:1719
+#: fabui/application/helpers/fabtotum_helper.php:1739
 msgid "Password Reset"
 msgstr "Passwort zurücksetzen"
 
-#: fabui/application/helpers/fabtotum_helper.php:1720
+#: fabui/application/helpers/fabtotum_helper.php:1740
 msgid ""
 "Hi {0},<br><br>We've generated a URL to reset your password. If you did not "
 "request to reset your password or if you've changed your mind, simply ignore "
@@ -910,13 +911,13 @@ msgstr ""
 "und fügen Sie die URL in ein Browserfenster ein. Die URL ist nur für eine "
 "begrenzte Zeit gültig und läuft ab."
 
-#: fabui/application/helpers/social_helper.php:395
-#: fabui/application/views/dashboard/js.php:108
+#: fabui/application/helpers/social_helper.php:398
+#: fabui/application/views/dashboard/js.php:115
 msgid "Popular"
 msgstr "Beliebt"
 
-#: fabui/application/helpers/social_helper.php:471
-#: fabui/application/views/dashboard/js.php:278
+#: fabui/application/helpers/social_helper.php:474
+#: fabui/application/views/dashboard/js.php:339
 msgid "Share on facebook"
 msgstr ""
 
@@ -1108,8 +1109,8 @@ msgstr "Wird übersetzt"
 #: fabui/application/views/std/task_execute_js.php:1310
 #: fabui/application/views/head/install_js.php:124
 #: fabui/application/views/head/install_js.php:467
-#: fabui/application/views/head/js.php:620
-#: fabui/application/views/head/js.php:652
+#: fabui/application/views/head/js.php:643
+#: fabui/application/views/head/js.php:675
 #: fabui/application/views/cam/js.php:506
 #: fabui/application/views/projectsmanager/file/add/js.php:130
 msgid "Please wait"
@@ -1531,22 +1532,7 @@ msgstr "Name"
 msgid "Serial number"
 msgstr "Seriennummer"
 
-#: fabui/application/views/systeminfo/widget.php:26
-msgid "Color"
-msgstr ""
-
-#: fabui/application/views/systeminfo/widget.php:30
-msgid "Os"
-msgstr ""
-
-#: fabui/application/views/systeminfo/widget.php:33
-msgid "Date"
-msgstr "Datum"
-
-#: fabui/application/views/systeminfo/widget.php:36
-msgid "Fabui"
-msgstr ""
-
+#: fabui/application/views/systeminfo/widget.php:24
 #: fabui/application/views/systeminfo/widget.php:41
 #: fabui/application/views/systeminfo/widget.php:48
 #: fabui/application/views/systeminfo/widget.php:64
@@ -1563,6 +1549,22 @@ msgstr ""
 #: fabui/application/views/systeminfo/widget.php:97
 #: fabui/application/views/systeminfo/widget.php:100
 msgid "n.a."
+msgstr ""
+
+#: fabui/application/views/systeminfo/widget.php:26
+msgid "Color"
+msgstr ""
+
+#: fabui/application/views/systeminfo/widget.php:30
+msgid "Os"
+msgstr ""
+
+#: fabui/application/views/systeminfo/widget.php:33
+msgid "Date"
+msgstr "Datum"
+
+#: fabui/application/views/systeminfo/widget.php:36
+msgid "Fabui"
 msgstr ""
 
 #: fabui/application/views/systeminfo/widget.php:42
@@ -1757,7 +1759,7 @@ msgid "Checking online repository"
 msgstr "Überprüfen des Online-Repositorys"
 
 #: fabui/application/views/plugin/js.php:69
-#: fabui/application/views/dashboard/js.php:198
+#: fabui/application/views/dashboard/js.php:225
 msgid "Check again"
 msgstr "Nochmal Überprüfen"
 
@@ -1778,8 +1780,8 @@ msgstr "Aktualisieren"
 #: fabui/application/views/plugin/js.php:166
 #: fabui/application/views/head/install_js.php:520
 #: fabui/application/views/head/install_js.php:569
-#: fabui/application/views/head/js.php:482
-#: fabui/application/views/head/js.php:684
+#: fabui/application/views/head/js.php:505
+#: fabui/application/views/head/js.php:707
 msgid "Attention"
 msgstr "Achtung"
 
@@ -1795,10 +1797,10 @@ msgstr "<strong>{0}</strong> Plugin entfernen?"
 #: fabui/application/views/head/install_js.php:537
 #: fabui/application/views/head/install_js.php:571
 #: fabui/application/views/head/install_js.php:586
-#: fabui/application/views/head/js.php:484
-#: fabui/application/views/head/js.php:499
-#: fabui/application/views/head/js.php:686
-#: fabui/application/views/head/js.php:701
+#: fabui/application/views/head/js.php:507
+#: fabui/application/views/head/js.php:522
+#: fabui/application/views/head/js.php:709
+#: fabui/application/views/head/js.php:724
 #: fabui/application/views/cam/js.php:789
 #: fabui/application/views/projectsmanager/file/view/js.php:97
 #: fabui/application/views/projectsmanager/file/view/js.php:103
@@ -1816,10 +1818,10 @@ msgstr "Nein"
 #: fabui/application/views/head/install_js.php:524
 #: fabui/application/views/head/install_js.php:571
 #: fabui/application/views/head/install_js.php:573
-#: fabui/application/views/head/js.php:484
-#: fabui/application/views/head/js.php:486
-#: fabui/application/views/head/js.php:686
-#: fabui/application/views/head/js.php:688
+#: fabui/application/views/head/js.php:507
+#: fabui/application/views/head/js.php:509
+#: fabui/application/views/head/js.php:709
+#: fabui/application/views/head/js.php:711
 #: fabui/application/views/cam/js.php:789
 #: fabui/application/views/cam/js.php:791
 #: fabui/application/views/projectsmanager/file/view/js.php:97
@@ -2304,8 +2306,8 @@ msgstr "Antwort"
 #: fabui/application/views/jog/widget.php:373
 #: fabui/application/views/std/task_execute.php:395
 #: fabui/application/views/head/index.php:72
-#: fabui/application/views/cam/laser_tab.php:291
-#: fabui/application/views/cam/laser_tab.php:308
+#: fabui/application/views/cam/laser_tab.php:302
+#: fabui/application/views/cam/laser_tab.php:319
 #: fabui/application/views/cam/subscriptions_tab.php:74
 #: fabui/application/views/cam/main_widget.php:85
 #: fabui/application/views/cam/main_widget.php:109
@@ -2719,17 +2721,21 @@ msgstr "Neueste Tweets"
 msgid "Latest instragm posts"
 msgstr ""
 
-#: fabui/application/views/dashboard/js.php:116
+#: fabui/application/views/dashboard/js.php:123
 msgid "View on instagram"
 msgstr ""
 
-#: fabui/application/views/dashboard/js.php:193
+#: fabui/application/views/dashboard/js.php:220
 #, fuzzy
 msgid "Feeds are not available"
 msgstr "Neueste Tweets sind nicht verfügbar"
 
-#: fabui/application/views/dashboard/js.php:281
+#: fabui/application/views/dashboard/js.php:342
 msgid "Read more"
+msgstr ""
+
+#: fabui/application/views/dashboard/js.php:362
+msgid "FABtotum retweeted"
 msgstr ""
 
 #: fabui/application/views/dashboard/instagram.php:32
@@ -3616,28 +3622,28 @@ msgid "Save & Install"
 msgstr "Installieren"
 
 #: fabui/application/views/head/install_js.php:124
-#: fabui/application/views/head/js.php:652
+#: fabui/application/views/head/js.php:675
 msgid "Installing head"
 msgstr "Kopf wird installiert"
 
 #: fabui/application/views/head/install_js.php:467
-#: fabui/application/views/head/js.php:620
+#: fabui/application/views/head/js.php:643
 #, fuzzy
 msgid "Saving head settings"
 msgstr "Kopfeinstellungen"
 
 #: fabui/application/views/head/install_js.php:521
-#: fabui/application/views/head/js.php:685
+#: fabui/application/views/head/js.php:708
 msgid "Remove <strong>{0}</strong> settings?"
 msgstr "<strong>{0}</strong> Einstellungen entfernen?"
 
 #: fabui/application/views/head/install_js.php:570
-#: fabui/application/views/head/js.php:483
+#: fabui/application/views/head/js.php:506
 msgid "Restore factory settings for <strong>{0}</strong> ?"
 msgstr "Werkseinstellungen für <strong>{0}</strong> wiederherstellen?"
 
 #: fabui/application/views/head/install_js.php:580
-#: fabui/application/views/head/js.php:493
+#: fabui/application/views/head/js.php:516
 msgid "Factory settings restored"
 msgstr "Werkseinstellungen wiederhergestellt"
 
@@ -3884,111 +3890,116 @@ msgstr "Vorschubgeschwindigkeit"
 msgid "Skip line mode"
 msgstr "Einstellung des Extrudermodus"
 
-#: fabui/application/views/cam/laser_tab.php:81
+#: fabui/application/views/cam/laser_tab.php:90
 msgid "Width"
 msgstr "Breite"
 
-#: fabui/application/views/cam/laser_tab.php:87
+#: fabui/application/views/cam/laser_tab.php:96
 msgid "Height"
 msgstr "Höhe"
 
-#: fabui/application/views/cam/laser_tab.php:93
+#: fabui/application/views/cam/laser_tab.php:102
 msgid "Invert colors"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:98
+#: fabui/application/views/cam/laser_tab.php:105
+#, fuzzy
+msgid "Fan on"
+msgstr "Ventilator ausgeschaltet"
+
+#: fabui/application/views/cam/laser_tab.php:109
 #, fuzzy
 msgid "Profile"
 msgstr "Profile"
 
-#: fabui/application/views/cam/laser_tab.php:106
+#: fabui/application/views/cam/laser_tab.php:117
 #, fuzzy
 msgid "Dot size"
 msgstr "Wolkengröße"
 
-#: fabui/application/views/cam/laser_tab.php:111
+#: fabui/application/views/cam/laser_tab.php:122
 msgid "Number of gray levels"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:115
+#: fabui/application/views/cam/laser_tab.php:126
 msgid "Turn laser off during travel moves"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:140
+#: fabui/application/views/cam/laser_tab.php:151
 msgid "Value"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:145
+#: fabui/application/views/cam/laser_tab.php:156
 msgid "Laser PWM will be set to a constant value"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:151
-#: fabui/application/views/cam/laser_tab.php:212
+#: fabui/application/views/cam/laser_tab.php:162
+#: fabui/application/views/cam/laser_tab.php:223
 msgid "Input min"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:157
+#: fabui/application/views/cam/laser_tab.php:168
 msgid "Input Max"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:165
-#: fabui/application/views/cam/laser_tab.php:226
+#: fabui/application/views/cam/laser_tab.php:176
+#: fabui/application/views/cam/laser_tab.php:237
 msgid "Output min"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:171
+#: fabui/application/views/cam/laser_tab.php:182
 msgid "Output Max"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:176
+#: fabui/application/views/cam/laser_tab.php:187
 msgid "Laser PWM will be calculated based on pixel color value"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:176
-#: fabui/application/views/cam/laser_tab.php:266
+#: fabui/application/views/cam/laser_tab.php:187
+#: fabui/application/views/cam/laser_tab.php:277
 #, fuzzy
 msgid "More info"
 msgstr "Systeminformationen"
 
-#: fabui/application/views/cam/laser_tab.php:195
+#: fabui/application/views/cam/laser_tab.php:206
 msgid "Burn"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:201
+#: fabui/application/views/cam/laser_tab.php:212
 #, fuzzy
 msgid "Travel"
 msgstr "Gravieren"
 
-#: fabui/application/views/cam/laser_tab.php:206
+#: fabui/application/views/cam/laser_tab.php:217
 msgid "Feedrate will be set to a constant value"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:218
+#: fabui/application/views/cam/laser_tab.php:229
 msgid "Input max"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:232
+#: fabui/application/views/cam/laser_tab.php:243
 msgid "Output max"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:237
+#: fabui/application/views/cam/laser_tab.php:248
 msgid "Feedrate will be calculated based on pixel color value"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:255
+#: fabui/application/views/cam/laser_tab.php:266
 #, fuzzy
 msgid "Group size"
 msgstr "Wolkengröße"
 
-#: fabui/application/views/cam/laser_tab.php:261
+#: fabui/application/views/cam/laser_tab.php:272
 msgid "Pattern"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:266
+#: fabui/application/views/cam/laser_tab.php:277
 msgid "Control if and how many laser lines will be skipped"
 msgstr ""
 
-#: fabui/application/views/cam/laser_tab.php:302
+#: fabui/application/views/cam/laser_tab.php:313
 #, fuzzy
 msgid "Skip Line"
 msgstr "Überspringen"
