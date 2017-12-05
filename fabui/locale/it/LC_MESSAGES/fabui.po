@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-05 09:36+0100\n"
+"POT-Creation-Date: 2017-12-05 12:01+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -66,6 +66,7 @@ msgstr "Fresatura"
 #: fabui/application/views/settings/hardware_widget.php:58
 #: fabui/application/views/settings/network_js.php:419
 #: fabui/application/views/head/index.php:150
+#: fabui/application/views/scan/wizard/main.php:24
 msgid "Scan"
 msgstr "Scansione"
 
@@ -112,6 +113,9 @@ msgstr "Calibrazione del piatto"
 #: fabui/application/views/std/task_execute.php:84
 #: fabui/application/views/std/task_execute.php:145
 #: fabui/application/views/std/task_execute.php:248
+#: fabui/application/views/layout/default/top.php:91
+#: fabui/application/views/layout/debug/top.php:89
+#: fabui/application/views/nozzle/pidtune/widget.php:14
 #: fabui/assets/js/tours/0030_nozzle_assisted.js:38
 msgid "Nozzle"
 msgstr "Ugello"
@@ -183,6 +187,7 @@ msgstr "Info di sistema"
 #: fabui/application/views/plugin/js.php:353
 #: fabui/application/views/settings/hardware_js.php:150
 #: fabui/application/views/camera/main_widget.php:88
+#: fabui/application/views/scan/wizard/main.php:18
 msgid "Settings"
 msgstr "Impostazioni"
 
@@ -205,6 +210,8 @@ msgid "Raspicam"
 msgstr "Raspicam"
 
 #: fabui/application/config/menu.php:197
+#: fabui/application/views/layout/default/top.php:20
+#: fabui/application/views/layout/debug/top.php:20
 msgid "Updates"
 msgstr "Aggiornamenti"
 
@@ -223,6 +230,9 @@ msgstr "Plugins"
 #: fabui/application/controllers/Nozzle.php:217
 #: fabui/application/views/fourthaxis/main_widget.php:16
 #: fabui/application/views/std/task_execute.php:396
+#: fabui/application/views/nozzle/pidtune/js.php:229
+#: fabui/application/views/scan/settings/sweep.php:88
+#: fabui/application/views/feeder/engage/widget.php:13
 msgid "Start"
 msgstr "Inizia"
 
@@ -279,8 +289,10 @@ msgstr "Illuminazione"
 #: fabui/application/views/settings/network_js.php:240
 #: fabui/application/views/head/index.php:417
 #: fabui/application/views/head/install.php:375
-#: fabui/application/views/cam/js.php:661
+#: fabui/application/views/cam/js.php:682
 #: fabui/application/views/cam/main_widget.php:86
+#: fabui/application/views/feeder/profiles/widget.php:212
+#: fabui/application/views/projectsmanager/edit/js.php:87
 #: fabui/application/views/nozzle/height/wizard/mode.php:110
 #: fabui/application/views/projectsmanager/file/view/js.php:151
 msgid "Save"
@@ -350,8 +362,9 @@ msgstr "Impostazioni di rete"
 #: fabui/application/controllers/Myfabtotum.php:61
 #: fabui/application/views/plugin/js.php:68
 #: fabui/application/views/plugin/js.php:89
-#: fabui/application/views/cam/js.php:776
+#: fabui/application/views/cam/js.php:797
 #: fabui/application/views/cam/main_widget.php:123
+#: fabui/application/views/updates/index/js.php:57
 msgid "No internet connection found"
 msgstr "Nessuna connessione internet trovata"
 
@@ -365,6 +378,7 @@ msgstr "Verificare le impostazioni di rete e riprovare"
 #: fabui/application/views/plugin/js.php:110
 #: fabui/application/views/plugin/js.php:257
 #: fabui/application/views/head/index.php:27
+#: fabui/application/views/updates/index/js.php:561
 msgid "Installed"
 msgstr "Installato"
 
@@ -554,6 +568,7 @@ msgstr "PLA PRO"
 
 #: fabui/application/controllers/Spool.php:61
 #: fabui/application/controllers/Nozzle.php:59
+#: fabui/application/views/scan/wizard/main.php:15
 msgid "Choose mode"
 msgstr "Scegli modalità"
 
@@ -565,6 +580,7 @@ msgstr "Filamento"
 #: fabui/application/controllers/Spool.php:72
 #: fabui/application/controllers/Create.php:122
 #: fabui/application/controllers/Create.php:251
+#: fabui/application/views/scan/wizard/main.php:21
 msgid "Get ready"
 msgstr "Tieniti pronto"
 
@@ -576,6 +592,8 @@ msgstr "Tieniti pronto"
 #: fabui/application/views/restore/wizard.php:28
 #: fabui/application/views/std/task_wizard.php:50
 #: fabui/application/views/std/task_wizard.php:115
+#: fabui/application/views/scan/wizard/main.php:27
+#: fabui/application/views/scan/wizard/main.php:35
 msgid "Finish"
 msgstr "Completa"
 
@@ -609,6 +627,8 @@ msgstr "Nuovo Progetto"
 #: fabui/application/controllers/Projectsmanager.php:39
 #: fabui/application/controllers/Projectsmanager.php:87
 #: fabui/application/controllers/Projectsmanager.php:230
+#: fabui/application/views/projectsmanager/index/js.php:178
+#: fabui/application/views/projectsmanager/edit/js.php:172
 msgid "Delete"
 msgstr "Cancella"
 
@@ -677,6 +697,7 @@ msgstr "visualizzatore gCode"
 #: fabui/application/views/settings/wireless_tab.php:148
 #: fabui/application/views/settings/network_widget.php:148
 #: fabui/application/views/std/task_dropzone.php:57
+#: fabui/application/views/feeder/calibration/widget.php:72
 #: fabui/application/views/history/main_js.php:99
 msgid "Cancel"
 msgstr "Cancella"
@@ -787,6 +808,7 @@ msgid "A new boot update is available"
 msgstr "E' disponibile un nuovo aggiornamento iniziale"
 
 #: fabui/application/controllers/Updates.php:170
+#: fabui/application/views/updates/index/js.php:83
 msgid "Great! Your FABtotum Personal Fabricator is up to date"
 msgstr "Ottimo! La tua FABtotum Personal Fabricator è aggiornata"
 
@@ -1069,6 +1091,7 @@ msgstr "Si prega di inserire la password"
 #: fabui/application/views/restore/wizard.php:133
 #: fabui/application/views/std/task_wizard.php:51
 #: fabui/application/views/std/task_wizard.php:116
+#: fabui/application/views/scan/wizard/main.php:36
 #: fabui/assets/js/tours/0020_bed.js:21
 msgid "Next"
 msgstr "Successivo"
@@ -1094,7 +1117,15 @@ msgstr "Traducendo"
 #: fabui/application/views/head/install_js.php:467
 #: fabui/application/views/head/js.php:643
 #: fabui/application/views/head/js.php:675
-#: fabui/application/views/cam/js.php:506
+#: fabui/application/views/cam/js.php:527
+#: fabui/application/views/nozzle/pidtune/js.php:242
+#: fabui/application/views/nozzle/height/js.php:94
+#: fabui/application/views/nozzle/height/js.php:116
+#: fabui/application/views/nozzle/height/js.php:170
+#: fabui/application/views/nozzle/height/js.php:210
+#: fabui/application/views/feeder/profiles/js.php:95
+#: fabui/application/views/projectsmanager/index/js.php:208
+#: fabui/application/views/projectsmanager/add/js.php:129
 #: fabui/application/views/projectsmanager/file/add/js.php:130
 msgid "Please wait"
 msgstr "Attendere prego"
@@ -1130,6 +1161,7 @@ msgstr "Connesso col FABID"
 
 #: fabui/application/views/install/js.php:571
 #: fabui/application/views/account/widget.php:63
+#: fabui/application/views/layout/default/ribbon.php:17
 msgid "FABID connected"
 msgstr "FABID connesso"
 
@@ -1217,6 +1249,7 @@ msgid "You're almost done."
 msgstr "Ce l'hai quasi fatta."
 
 #: fabui/application/views/install/wizard.php:180
+#: fabui/application/views/layout/default/ribbon.php:19
 msgid "Connect with FABID"
 msgstr "Connetti con FABID"
 
@@ -1228,6 +1261,7 @@ msgstr "Clicca <strong>Installa</strong> per completare"
 #: fabui/application/views/restore/wizard.php:130
 #: fabui/application/views/std/task_wizard.php:48
 #: fabui/application/views/std/task_wizard.php:113
+#: fabui/application/views/scan/wizard/main.php:33
 msgid "Prev"
 msgstr "Precedente"
 
@@ -1462,7 +1496,8 @@ msgstr "Il serial number è composto da 13 caratteri"
 #: fabui/application/views/account/js.php:112
 #: fabui/application/views/settings/hardware_js.php:131
 #: fabui/application/views/settings/network_js.php:166
-#: fabui/application/views/cam/js.php:651
+#: fabui/application/views/cam/js.php:672
+#: fabui/application/views/projectsmanager/edit/js.php:71
 #: fabui/application/views/projectsmanager/file/view/js.php:118
 msgid "Saving"
 msgstr "Salvataggio in corso"
@@ -1491,6 +1526,10 @@ msgstr "Sto impostando il nuovo Hostname"
 #: fabui/application/views/settings/network_widget.php:18
 #: fabui/application/views/head/index.php:110
 #: fabui/application/views/head/install.php:113
+#: fabui/application/views/feeder/profiles/widget.php:97
+#: fabui/application/views/projectsmanager/edit/widget.php:26
+#: fabui/application/views/projectsmanager/edit/widget.php:62
+#: fabui/application/views/projectsmanager/add/widget.php:17
 #: fabui/application/views/projectsmanager/file/view/widget.php:14
 msgid "Name"
 msgstr "Nome"
@@ -1515,6 +1554,7 @@ msgstr "Numero seriale"
 #: fabui/application/views/systeminfo/widget.php:94
 #: fabui/application/views/systeminfo/widget.php:97
 #: fabui/application/views/systeminfo/widget.php:100
+#: fabui/application/views/feeder/calibration/widget.php:10
 msgid "n.a."
 msgstr "n.d."
 
@@ -1527,6 +1567,8 @@ msgid "Os"
 msgstr "Os"
 
 #: fabui/application/views/systeminfo/widget.php:33
+#: fabui/application/views/projectsmanager/index/widget.php:27
+#: fabui/application/views/projectsmanager/edit/widget.php:65
 msgid "Date"
 msgstr "Data"
 
@@ -1536,6 +1578,8 @@ msgstr "FABUI"
 
 #: fabui/application/views/systeminfo/widget.php:42
 #: fabui/application/views/systeminfo/widget.php:169
+#: fabui/application/views/updates/index/js.php:187
+#: fabui/application/views/updates/index/js.php:205
 msgid "Build date"
 msgstr "Data di costruzione"
 
@@ -1546,6 +1590,7 @@ msgid "Author"
 msgstr "Autore"
 
 #: fabui/application/views/systeminfo/widget.php:50
+#: fabui/application/views/nozzle/pidtune/widget.php:22
 msgid "Installed head"
 msgstr "Testa installata"
 
@@ -1637,6 +1682,10 @@ msgstr "Cambia il nome della tua FABtotum"
 #: fabui/application/views/head/index.php:126
 #: fabui/application/views/head/install.php:129
 #: fabui/application/views/history/main_widget.php:60
+#: fabui/application/views/feeder/profiles/widget.php:115
+#: fabui/application/views/projectsmanager/index/widget.php:26
+#: fabui/application/views/projectsmanager/edit/widget.php:46
+#: fabui/application/views/projectsmanager/add/widget.php:35
 msgid "Description"
 msgstr "Descrizione"
 
@@ -1721,6 +1770,7 @@ msgstr "Controllo repository remota in corso..."
 
 #: fabui/application/views/plugin/js.php:69
 #: fabui/application/views/dashboard/js.php:225
+#: fabui/application/views/updates/index/js.php:60
 msgid "Check again"
 msgstr "Controlla ancora"
 
@@ -1735,6 +1785,7 @@ msgid "visit plugin site"
 msgstr "visita il sito dei plugin"
 
 #: fabui/application/views/plugin/js.php:108
+#: fabui/application/views/updates/index/js.php:95
 msgid "Update"
 msgstr "Aggiorna"
 
@@ -1743,6 +1794,8 @@ msgstr "Aggiorna"
 #: fabui/application/views/head/install_js.php:569
 #: fabui/application/views/head/js.php:505
 #: fabui/application/views/head/js.php:707
+#: fabui/application/views/feeder/profiles/js.php:264
+#: fabui/application/views/feeder/profiles/js.php:313
 msgid "Attention"
 msgstr "Attenzione"
 
@@ -1762,7 +1815,24 @@ msgstr "Rimuovere <strong>{0}</strong> plugin?"
 #: fabui/application/views/head/js.php:522
 #: fabui/application/views/head/js.php:709
 #: fabui/application/views/head/js.php:724
-#: fabui/application/views/cam/js.php:789
+#: fabui/application/views/cam/js.php:810
+#: fabui/application/views/feeder/profiles/js.php:266
+#: fabui/application/views/feeder/profiles/js.php:281
+#: fabui/application/views/feeder/profiles/js.php:315
+#: fabui/application/views/feeder/profiles/js.php:330
+#: fabui/application/views/projectsmanager/index/js.php:144
+#: fabui/application/views/projectsmanager/index/js.php:150
+#: fabui/application/views/projectsmanager/index/js.php:189
+#: fabui/application/views/projectsmanager/index/js.php:194
+#: fabui/application/views/projectsmanager/index/js.php:229
+#: fabui/application/views/projectsmanager/index/js.php:234
+#: fabui/application/views/projectsmanager/edit/js.php:106
+#: fabui/application/views/projectsmanager/edit/js.php:113
+#: fabui/application/views/projectsmanager/edit/js.php:217
+#: fabui/application/views/projectsmanager/edit/js.php:223
+#: fabui/application/views/projectsmanager/edit/js.php:252
+#: fabui/application/views/projectsmanager/edit/js.php:258
+#: fabui/application/views/projectsmanager/add/widget.php:29
 #: fabui/application/views/projectsmanager/file/view/js.php:97
 #: fabui/application/views/projectsmanager/file/view/js.php:103
 msgid "No"
@@ -1783,8 +1853,25 @@ msgstr "No"
 #: fabui/application/views/head/js.php:509
 #: fabui/application/views/head/js.php:709
 #: fabui/application/views/head/js.php:711
-#: fabui/application/views/cam/js.php:789
-#: fabui/application/views/cam/js.php:791
+#: fabui/application/views/cam/js.php:810
+#: fabui/application/views/cam/js.php:812
+#: fabui/application/views/feeder/profiles/js.php:266
+#: fabui/application/views/feeder/profiles/js.php:268
+#: fabui/application/views/feeder/profiles/js.php:315
+#: fabui/application/views/feeder/profiles/js.php:317
+#: fabui/application/views/projectsmanager/index/js.php:144
+#: fabui/application/views/projectsmanager/index/js.php:146
+#: fabui/application/views/projectsmanager/index/js.php:189
+#: fabui/application/views/projectsmanager/index/js.php:191
+#: fabui/application/views/projectsmanager/index/js.php:229
+#: fabui/application/views/projectsmanager/index/js.php:231
+#: fabui/application/views/projectsmanager/edit/js.php:106
+#: fabui/application/views/projectsmanager/edit/js.php:109
+#: fabui/application/views/projectsmanager/edit/js.php:217
+#: fabui/application/views/projectsmanager/edit/js.php:219
+#: fabui/application/views/projectsmanager/edit/js.php:252
+#: fabui/application/views/projectsmanager/edit/js.php:254
+#: fabui/application/views/projectsmanager/add/widget.php:26
 #: fabui/application/views/projectsmanager/file/view/js.php:97
 #: fabui/application/views/projectsmanager/file/view/js.php:99
 msgid "Yes"
@@ -1811,10 +1898,14 @@ msgid "Uploaded zip file is not a plugin archive"
 msgstr "Il file zip caricato non è un archivio valido"
 
 #: fabui/application/views/plugin/js.php:251
+#: fabui/application/views/updates/index/js.php:523
+#: fabui/application/views/updates/index/js.php:549
 msgid "Downloading"
 msgstr "Download in corso"
 
 #: fabui/application/views/plugin/js.php:254
+#: fabui/application/views/updates/index/js.php:526
+#: fabui/application/views/updates/index/js.php:558
 msgid "Installing"
 msgstr "Installazione in corso"
 
@@ -1852,8 +1943,10 @@ msgstr "Attiva"
 
 #: fabui/application/views/plugin/main_widget.php:31
 #: fabui/application/views/head/install.php:35
-#: fabui/application/views/cam/js.php:832
+#: fabui/application/views/cam/js.php:853
 #: fabui/application/views/cam/subscriptions_tab.php:42
+#: fabui/application/views/feeder/profiles/widget.php:33
+#: fabui/application/views/projectsmanager/edit/js.php:105
 msgid "Remove"
 msgstr "Rimuovi"
 
@@ -2015,6 +2108,7 @@ msgstr ""
 "essere connessi ad internet"
 
 #: fabui/application/views/login/login_form.php:127
+#: fabui/application/views/projectsmanager/add/widget.php:66
 #: fabui/application/views/projectsmanager/file/add/widget.php:35
 msgid "Reload"
 msgstr "Ricarica"
@@ -2033,8 +2127,16 @@ msgstr "Connesso al tuo account FABID"
 #: fabui/application/views/std/task_wizard.php:26
 #: fabui/application/views/head/index.php:102
 #: fabui/application/views/head/install.php:105
-#: fabui/application/views/cam/js.php:787
+#: fabui/application/views/cam/js.php:808
 #: fabui/application/views/myfabtotum/back_url.php:24
+#: fabui/application/views/updates/index/js.php:428
+#: fabui/application/views/feeder/profiles/widget.php:89
+#: fabui/application/views/projectsmanager/index/js.php:142
+#: fabui/application/views/projectsmanager/index/js.php:187
+#: fabui/application/views/projectsmanager/index/js.php:227
+#: fabui/application/views/projectsmanager/edit/js.php:104
+#: fabui/application/views/projectsmanager/edit/js.php:215
+#: fabui/application/views/projectsmanager/edit/js.php:250
 #: fabui/application/views/projectsmanager/file/view/js.php:95
 #: fabui/application/views/firmware/main_js.php:84
 msgid "Warning"
@@ -2174,6 +2276,8 @@ msgstr "Senso anti-orario"
 #: fabui/application/views/std/task_execute.php:107
 #: fabui/application/views/std/task_execute.php:148
 #: fabui/application/views/std/task_execute.php:253
+#: fabui/application/views/layout/default/top.php:94
+#: fabui/application/views/layout/debug/top.php:92
 #: fabui/assets/js/tours/0020_bed.js:31
 msgid "Bed"
 msgstr "Piatto"
@@ -2223,7 +2327,7 @@ msgid "Parameters"
 msgstr "Parametri"
 
 #: fabui/application/views/jog/widget.php:303
-#: fabui/application/views/cam/js.php:821
+#: fabui/application/views/cam/js.php:842
 #: fabui/application/views/cam/subscriptions_tab.php:31
 msgid "Code"
 msgstr "Codice"
@@ -2238,6 +2342,7 @@ msgstr "Descrizione"
 
 #: fabui/application/views/jog/widget.php:327
 #: fabui/application/views/camera/main_widget.php:101
+#: fabui/application/views/projectsmanager/edit/widget.php:63
 msgid "Type"
 msgstr "Tipo"
 
@@ -2266,6 +2371,9 @@ msgstr "Risposta"
 #: fabui/application/views/cam/main_widget.php:85
 #: fabui/application/views/cam/main_widget.php:109
 #: fabui/application/views/cam/main_widget.php:134
+#: fabui/application/views/updates/index/widget.php:56
+#: fabui/application/views/scan/instructions/rotating.php:67
+#: fabui/application/views/scan/instructions/photogrammetry.php:67
 msgid "Close"
 msgstr "Chiudi"
 
@@ -2518,6 +2626,7 @@ msgstr "Connesso a "
 
 #: fabui/application/views/settings/wireless_tab.php:19
 #: fabui/application/views/settings/ethernet_tab.php:15
+#: fabui/application/views/scan/settings/photogrammetry.php:59
 msgid "IP address"
 msgstr "Indirizzo IP"
 
@@ -2785,12 +2894,13 @@ msgid "Fan ON"
 msgstr "Ventola accesa"
 
 #: fabui/application/views/std/task_dropzone_js.php:46
+#: fabui/application/views/projectsmanager/add/js.php:38
 #: fabui/application/views/projectsmanager/file/add/js.php:38
 msgid "You can't upload files of this type."
 msgstr "Non puoi caricare file di questo tipo."
 
 #: fabui/application/views/std/task_dropzone_js.php:72
-#: fabui/application/views/cam/js.php:226
+#: fabui/application/views/cam/js.php:227
 msgid "Uploaded"
 msgstr "Caricato"
 
@@ -2799,7 +2909,7 @@ msgid "Invalid file."
 msgstr "File non valido"
 
 #: fabui/application/views/std/task_dropzone_js.php:97
-#: fabui/application/views/cam/js.php:289
+#: fabui/application/views/cam/js.php:290
 msgid "Uploading"
 msgstr "Caricamento"
 
@@ -2946,11 +3056,15 @@ msgstr "Invia una email al termie delle operazioni"
 
 #: fabui/application/views/std/task_execute.php:65
 #: fabui/application/views/std/task_execute.php:194
+#: fabui/application/views/nozzle/pidtune/js.php:180
+#: fabui/application/views/nozzle/pidtune/js.php:192
+#: fabui/application/views/scan/wizard/step4.php:70
 msgid "Abort"
 msgstr "Annulla"
 
 #: fabui/application/views/std/task_execute.php:66
 #: fabui/application/views/std/task_execute.php:197
+#: fabui/application/views/scan/wizard/step4.php:67
 #: fabui/application/views/std/task_execute_js.php:1011
 msgid "Pause"
 msgstr "Pausa"
@@ -2966,6 +3080,8 @@ msgid "Target"
 msgstr "Target"
 
 #: fabui/application/views/std/task_execute.php:134
+#: fabui/application/views/layout/default/top.php:35
+#: fabui/application/views/layout/debug/top.php:35
 msgid "Loading"
 msgstr "Caricamento"
 
@@ -2986,6 +3102,7 @@ msgid "Total layers"
 msgstr "Layer totali"
 
 #: fabui/application/views/std/task_execute.php:153
+#: fabui/application/views/scan/wizard/step4.php:24
 msgid "Progress"
 msgstr "Progresso"
 
@@ -3000,6 +3117,7 @@ msgid "Flow rate"
 msgstr "Flusso filamento"
 
 #: fabui/application/views/std/task_execute.php:186
+#: fabui/application/views/scan/wizard/step4.php:60
 msgid "Elapsed time"
 msgstr "Tempo trascorso"
 
@@ -3041,15 +3159,19 @@ msgid "Closer to the nozzle"
 msgstr "Avvicinati al nozzle"
 
 #: fabui/application/views/std/task_execute.php:316
+#: fabui/application/views/spool/wizard/step1.php:30
 msgid "Load"
 msgstr "Carica"
 
 #: fabui/application/views/std/task_execute.php:319
+#: fabui/application/views/spool/wizard/step1.php:46
 msgid "Unload"
 msgstr "Scarica"
 
 #: fabui/application/views/std/task_execute.php:333
 #: fabui/application/views/std/task_execute.php:357
+#: fabui/application/views/spool/wizard/step3.php:47
+#: fabui/application/views/spool/wizard/step3.php:86
 msgid ""
 "Prepare the filament by cutting it at an angle. This helps the insertion of "
 "the filament."
@@ -3059,22 +3181,27 @@ msgstr ""
 
 #: fabui/application/views/std/task_execute.php:339
 #: fabui/application/views/std/task_execute.php:384
+#: fabui/application/views/spool/wizard/step3.php:105
 msgid "Pull the release lever on the back of the Printing Head PRO."
 msgstr "Alza la levetta posteriore della Printing Head PRO"
 
 #: fabui/application/views/std/task_execute.php:340
+#: fabui/application/views/spool/wizard/step3.php:106
 msgid "Insert the filament until it starts coming out from the nozzle"
 msgstr "Inserisci il filamento finchè inizia ad uscire fuori dal nozzle"
 
 #: fabui/application/views/std/task_execute.php:341
+#: fabui/application/views/spool/wizard/step3.php:107
 msgid "Release the release lever "
 msgstr "Rilascia la levetta"
 
 #: fabui/application/views/std/task_execute.php:342
+#: fabui/application/views/spool/wizard/step3.php:108
 msgid "Lock the feeding tube in place "
 msgstr "Bocca il tubo di alimentazione del filamento in posizione"
 
 #: fabui/application/views/std/task_execute.php:351
+#: fabui/application/views/spool/wizard/step3.php:28
 msgid ""
 "The Side cover is magnetically locked. Pull the panel confidently in order "
 "to access to the spool compartment."
@@ -3083,6 +3210,7 @@ msgstr ""
 "delicatamente per accedere al compartimento della bobina."
 
 #: fabui/application/views/std/task_execute.php:363
+#: fabui/application/views/spool/wizard/step3.php:66
 msgid ""
 "Insert the filament in the PTFE tube until you reach the feeder (you can "
 "feel it: last cm becomes harder and then you cannot push further)"
@@ -3092,6 +3220,7 @@ msgstr ""
 "spingere ulteriormente)"
 
 #: fabui/application/views/std/task_execute.php:376
+#: fabui/application/views/spool/wizard/step3.php:141
 msgid ""
 "Remove the Feeding tube by pushing down the black cap and then pulling the "
 "tube itself."
@@ -3298,14 +3427,22 @@ msgid "Photo"
 msgstr "Foto"
 
 #: fabui/application/views/camera/main_widget.php:107
+#: fabui/application/views/scan/settings/photogrammetry.php:35
 msgid "Size"
 msgstr "Misura"
 
 #: fabui/application/views/camera/main_widget.php:114
+#: fabui/application/views/scan/wizard/step4.php:46
+#: fabui/application/views/scan/settings/rotating.php:46
+#: fabui/application/views/scan/settings/sweep.php:52
+#: fabui/application/views/scan/settings/photogrammetry.php:26
 msgid "ISO"
 msgstr "ISO"
 
 #: fabui/application/views/camera/main_widget.php:120
+#: fabui/application/views/scan/settings/rotating.php:31
+#: fabui/application/views/scan/settings/sweep.php:37
+#: fabui/application/views/scan/settings/probing.php:73
 msgid "Quality"
 msgstr "Qualità"
 
@@ -3364,11 +3501,13 @@ msgstr "Filtri"
 #: fabui/application/views/head/index.php:71
 #: fabui/application/views/head/install.php:51
 #: fabui/application/views/head/install.php:74
+#: fabui/application/views/feeder/profiles/widget.php:48
 msgid "More details"
 msgstr "Dettagli"
 
 #: fabui/application/views/head/index.php:85
 #: fabui/application/views/head/install.php:88
+#: fabui/application/views/feeder/profiles/widget.php:72
 msgid "Advanced settings"
 msgstr "Impostazioni avanzate"
 
@@ -3379,6 +3518,7 @@ msgstr "Impostazioni della testa"
 
 #: fabui/application/views/head/index.php:102
 #: fabui/application/views/head/install.php:105
+#: fabui/application/views/feeder/profiles/widget.php:89
 msgid ""
 "changing these settings may affect the proper functioning of the printer"
 msgstr ""
@@ -3387,6 +3527,7 @@ msgstr ""
 
 #: fabui/application/views/head/index.php:117
 #: fabui/application/views/head/install.php:120
+#: fabui/application/views/feeder/profiles/widget.php:104
 msgid "URL"
 msgstr "URL"
 
@@ -3401,6 +3542,7 @@ msgstr "Stampa 3D"
 
 #: fabui/application/views/head/index.php:168
 #: fabui/application/views/head/install.php:171
+#: fabui/application/views/feeder/profiles/widget.php:198
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:312
 msgid "Custom initialization"
 msgstr "Inizializzazione personalizzata"
@@ -3447,11 +3589,13 @@ msgstr "Max RPM"
 
 #: fabui/application/views/head/index.php:272
 #: fabui/application/views/head/install.php:274
+#: fabui/application/views/feeder/profiles/widget.php:125
 msgid "Steps per unit"
 msgstr "Step per unità"
 
 #: fabui/application/views/head/index.php:278
 #: fabui/application/views/head/install.php:280
+#: fabui/application/views/feeder/profiles/widget.php:131
 msgid "Tube length (mm)"
 msgstr "Lunghezza tubo (mm)"
 
@@ -3472,21 +3616,25 @@ msgstr "Max E jerk (mm)"
 
 #: fabui/application/views/head/index.php:307
 #: fabui/application/views/head/install.php:309
+#: fabui/application/views/feeder/profiles/widget.php:183
 msgid "Retract acceleration (mm/s<sup>2</sup>)"
 msgstr "Accelerazione retrazione (mm/s<sup>2</sup>)"
 
 #: fabui/application/views/head/index.php:313
 #: fabui/application/views/head/install.php:315
+#: fabui/application/views/feeder/profiles/widget.php:176
 msgid "Retraction speed (mm/s)"
 msgstr "Velocità di retrazione (mm/s)"
 
 #: fabui/application/views/head/index.php:319
 #: fabui/application/views/head/install.php:321
+#: fabui/application/views/feeder/profiles/widget.php:189
 msgid "Retraction amount (mm)"
 msgstr "Ammontare della retrazione (mm)"
 
 #: fabui/application/views/head/index.php:332
 #: fabui/application/views/head/install.php:334
+#: fabui/application/views/feeder/profiles/widget.php:142
 msgid "Steps per degree"
 msgstr "Step per angolo"
 
@@ -3519,31 +3667,37 @@ msgstr "Offset Punto Laser"
 
 #: fabui/application/views/head/index.php:414
 #: fabui/application/views/head/install.php:372
+#: fabui/application/views/feeder/profiles/widget.php:209
 msgid "Restore factory settings"
 msgstr "Ripristina impostazioni di fabbrica"
 
 #: fabui/application/views/head/index.php:414
 #: fabui/application/views/head/install.php:372
+#: fabui/application/views/feeder/profiles/widget.php:209
 msgid "Factory reset"
 msgstr "Ripristino ai valori di fabbrica"
 
 #: fabui/application/views/head/index.php:415
 #: fabui/application/views/head/install.php:373
+#: fabui/application/views/feeder/profiles/widget.php:210
 msgid "Import from file"
 msgstr "Importa da file"
 
 #: fabui/application/views/head/index.php:415
 #: fabui/application/views/head/install.php:373
+#: fabui/application/views/feeder/profiles/widget.php:210
 msgid "Import"
 msgstr "Importa"
 
 #: fabui/application/views/head/index.php:416
 #: fabui/application/views/head/install.php:374
+#: fabui/application/views/feeder/profiles/widget.php:211
 msgid "Export to file"
 msgstr "Esporta a file"
 
 #: fabui/application/views/head/index.php:416
 #: fabui/application/views/head/install.php:374
+#: fabui/application/views/feeder/profiles/widget.php:211
 msgid "Export"
 msgstr "Esporta"
 
@@ -3564,16 +3718,19 @@ msgstr "Salvando le impostazioni della testa"
 
 #: fabui/application/views/head/install_js.php:521
 #: fabui/application/views/head/js.php:708
+#: fabui/application/views/feeder/profiles/js.php:265
 msgid "Remove <strong>{0}</strong> settings?"
 msgstr "Rimuovere impostazioni <strong>{0}</strong>?"
 
 #: fabui/application/views/head/install_js.php:570
 #: fabui/application/views/head/js.php:506
+#: fabui/application/views/feeder/profiles/js.php:314
 msgid "Restore factory settings for <strong>{0}</strong> ?"
 msgstr "Impostare le impostazioni di fabbrica per <strong>{0}</strong> ?"
 
 #: fabui/application/views/head/install_js.php:580
 #: fabui/application/views/head/js.php:516
+#: fabui/application/views/feeder/profiles/js.php:324
 msgid "Factory settings restored"
 msgstr "Impostazioni di fabbrica impostate"
 
@@ -3585,6 +3742,7 @@ msgstr ""
 "<strong>Warning</strong> Sembra che la testa in uso non sia stata impostata."
 
 #: fabui/application/views/head/install.php:9
+#: fabui/application/views/feeder/profiles/widget.php:9
 msgid ""
 "Currently  your <strong>FABtotum Personal Fabricator</strong> is configured "
 "to use <strong>{0}</strong>"
@@ -3610,6 +3768,7 @@ msgid "Please select which head you want to install"
 msgstr "Prego selezionare quale testa si vuole installare"
 
 #: fabui/application/views/head/install.php:34
+#: fabui/application/views/feeder/profiles/widget.php:32
 msgid "Edit"
 msgstr "Modifica"
 
@@ -3630,107 +3789,115 @@ msgstr "Installa il firmware"
 msgid "Build-date"
 msgstr "Data di costruzione"
 
-#: fabui/application/views/cam/js.php:81
-#: fabui/application/views/cam/js.php:771
+#: fabui/application/views/cam/js.php:82
+#: fabui/application/views/cam/js.php:792
+#: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Trascina file per caricarli"
 
-#: fabui/application/views/cam/js.php:81
-#: fabui/application/views/cam/js.php:771
+#: fabui/application/views/cam/js.php:82
+#: fabui/application/views/cam/js.php:792
+#: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "or click"
 msgstr "o clicca"
 
-#: fabui/application/views/cam/js.php:86
+#: fabui/application/views/cam/js.php:87
+#: fabui/application/views/projectsmanager/add/js.php:37
 #: fabui/application/views/projectsmanager/file/add/js.php:37
 msgid "Remove file"
 msgstr "Rimuovi file"
 
-#: fabui/application/views/cam/js.php:87
+#: fabui/application/views/cam/js.php:88
 msgid "You can upload just {{maxFiles}} file at time"
 msgstr "Puoi caricare  {{maxFiles}} file alla volta"
 
-#: fabui/application/views/cam/js.php:101
+#: fabui/application/views/cam/js.php:102
 msgid "File error"
 msgstr "Errore file"
 
-#: fabui/application/views/cam/js.php:162
+#: fabui/application/views/cam/js.php:163
 msgid "PWM"
 msgstr "PWM"
 
-#: fabui/application/views/cam/js.php:168
+#: fabui/application/views/cam/js.php:169
 msgid "Feed"
 msgstr "Feed"
 
-#: fabui/application/views/cam/js.php:193
+#: fabui/application/views/cam/js.php:194
 #: fabui/application/views/history/main_widget.php:26
 msgid "Completed"
 msgstr "Completato"
 
-#: fabui/application/views/cam/js.php:199
+#: fabui/application/views/cam/js.php:200
 msgid "Upload failed"
 msgstr "Upload fallito"
 
-#: fabui/application/views/cam/js.php:227
+#: fabui/application/views/cam/js.php:228
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:615
 msgid "Processing file"
 msgstr "Elaborazione file"
 
-#: fabui/application/views/cam/js.php:472
+#: fabui/application/views/cam/js.php:322
+msgid "No profiles available for this head"
+msgstr ""
+
+#: fabui/application/views/cam/js.php:492
 msgid "Regenerate GCode"
 msgstr "Rigenera GCode"
 
-#: fabui/application/views/cam/js.php:521
+#: fabui/application/views/cam/js.php:542
 msgid "GCode ready"
 msgstr "Gcode pronto"
 
-#: fabui/application/views/cam/js.php:524
+#: fabui/application/views/cam/js.php:545
 msgid "New laser project"
 msgstr "Nuovo progetto laser"
 
-#: fabui/application/views/cam/js.php:532
+#: fabui/application/views/cam/js.php:553
 msgid "Gcode ready!"
 msgstr "GCode pronto!"
 
-#: fabui/application/views/cam/js.php:536
+#: fabui/application/views/cam/js.php:557
 msgid "Generation failed"
 msgstr "Generazione fallita"
 
-#: fabui/application/views/cam/js.php:659
+#: fabui/application/views/cam/js.php:680
 msgid "Gcode saved"
 msgstr "Gcode salvato"
 
-#: fabui/application/views/cam/js.php:718
+#: fabui/application/views/cam/js.php:739
 msgid "Please enter subscription code"
 msgstr "Inserisci codice abbonamento"
 
-#: fabui/application/views/cam/js.php:743
+#: fabui/application/views/cam/js.php:764
 msgid "Activation failed"
 msgstr "Attivazione fallita"
 
-#: fabui/application/views/cam/js.php:776
+#: fabui/application/views/cam/js.php:797
 #: fabui/application/views/cam/main_widget.php:129
+#: fabui/application/views/updates/index/js.php:57
 #: fabui/assets/js/fab.app.js:1720
 msgid "Check network settings and try again"
 msgstr "Controlla le impostazioni di rete e ritenta ancora"
 
-#: fabui/application/views/cam/js.php:776
+#: fabui/application/views/cam/js.php:797
 msgid ""
 "You must enter a valid subscription code <br> in order to use CAM toolbox"
 msgstr ""
 "Devi inserire un codice abbonamento valido <br> per poter utilizzare CAM "
 "toolbox"
 
-#: fabui/application/views/cam/js.php:788
+#: fabui/application/views/cam/js.php:809
 msgid "You need a valid subscription code to use CAM Toolbox"
 msgstr "Hai bisogno di un codice abbonamento valido per utilizzare CAM toolbox"
 
-#: fabui/application/views/cam/js.php:788
+#: fabui/application/views/cam/js.php:809
 msgid "Are you sure you want remove it?"
 msgstr "Sei sicuro di volerlo rimuovere?"
 
-#: fabui/application/views/cam/js.php:822
+#: fabui/application/views/cam/js.php:843
 #: fabui/application/views/cam/subscriptions_tab.php:32
 #: fabui/application/views/history/main_widget.php:36
 #: fabui/application/views/history/main_widget.php:59
@@ -3738,12 +3905,12 @@ msgstr "Sei sicuro di volerlo rimuovere?"
 msgid "Status"
 msgstr "Stato"
 
-#: fabui/application/views/cam/js.php:823
+#: fabui/application/views/cam/js.php:844
 #: fabui/application/views/cam/subscriptions_tab.php:33
 msgid "Expiration date"
 msgstr "Data scadenza"
 
-#: fabui/application/views/cam/js.php:823
+#: fabui/application/views/cam/js.php:844
 #: fabui/application/views/cam/subscriptions_tab.php:33
 msgid "Exp. date"
 msgstr "Data scad."
@@ -3797,10 +3964,14 @@ msgid "Skip line mode"
 msgstr "Modalità linee alterne"
 
 #: fabui/application/views/cam/laser_tab.php:90
+#: fabui/application/views/scan/settings/rotating.php:56
+#: fabui/application/views/scan/settings/sweep.php:62
 msgid "Width"
 msgstr "Larghezza"
 
 #: fabui/application/views/cam/laser_tab.php:96
+#: fabui/application/views/scan/settings/rotating.php:64
+#: fabui/application/views/scan/settings/sweep.php:70
 msgid "Height"
 msgstr "Altezza"
 
@@ -4008,6 +4179,8 @@ msgid "Terminated"
 msgstr "Terminato"
 
 #: fabui/application/views/history/main_widget.php:44
+#: fabui/application/views/layout/default/top.php:22
+#: fabui/application/views/layout/debug/top.php:22
 #: fabui/assets/js/fab.app.js:1275
 msgid "Tasks"
 msgstr "Task"
@@ -4103,6 +4276,791 @@ msgstr "La stampante è stata registrata correttamente"
 msgid "Preparing {0}"
 msgstr "Preparazione: {0}"
 
+#: fabui/application/views/spool/wizard/step1.php:16
+msgid "A pair of scissors or clippers are suggested"
+msgstr "Si consiglia l'suo di un  paio di forbici"
+
+#: fabui/application/views/spool/wizard/step1.php:17
+#: fabui/application/views/nozzle/height/wizard/choise.php:16
+msgid ""
+"Operate according to safety instructions provided. Nozzle and bed can be "
+"hot, exercise caution accordingly"
+msgstr ""
+"Opera seguendo le istruzioni di sicurezza fornite. Il nozzle e il piatto "
+"possono essere caldi, agire con cautela"
+
+#: fabui/application/views/spool/wizard/step1.php:18
+msgid ""
+"Do not push or pull the filament too hard, as it can break inside the "
+"filament mechanism during the operations"
+msgstr ""
+"Non spingere o tirare il filamento con troppa forza per evitare che si possa "
+"rompere nel meccanismo di estrusione durante l'operazione"
+
+#: fabui/application/views/spool/wizard/step1.php:33
+msgid "Automatically load the filament into the machine"
+msgstr "Carica automaticamente il filamento nella macchina"
+
+#: fabui/application/views/spool/wizard/step1.php:36
+#: fabui/application/views/spool/wizard/step1.php:52
+#: fabui/application/views/scan/wizard/step1.php:25
+#: fabui/application/views/nozzle/height/wizard/choise.php:33
+#: fabui/application/views/nozzle/height/wizard/choise.php:49
+msgid "Choose"
+msgstr "Scegli"
+
+#: fabui/application/views/spool/wizard/step1.php:49
+msgid "Automatically unload the filament from the machine"
+msgstr "Scarica automaticamente il filamento dalla macchina"
+
+#: fabui/application/views/spool/wizard/step3.php:27
+msgid "Open the right cover panel"
+msgstr "Aprire il pannello destro di copertura"
+
+#: fabui/application/views/spool/wizard/step3.php:46
+#: fabui/application/views/spool/wizard/step3.php:85
+msgid "Cut the filament"
+msgstr "Tagliare il filamento"
+
+#: fabui/application/views/spool/wizard/step3.php:65
+msgid "Insert the filament"
+msgstr "Inserire il filamento"
+
+#: fabui/application/views/spool/wizard/step3.php:123
+msgid "Press Next to proceed"
+msgstr "Premere Avanti per proseguire"
+
+#: fabui/application/views/spool/wizard/step2.php:27
+msgid "Extrusion temperature"
+msgstr "Temperatura d'estrusione"
+
+#: fabui/application/views/spool/wizard/step4.php:30
+msgid " Pull the release lever on the back of the Printing Head PRO."
+msgstr "Tirare la levetta posteriore della Printing Head PRO"
+
+#: fabui/application/views/spool/wizard/step4.php:31
+msgid " Pull the filament out of the head"
+msgstr "Tira il filamento fuori dalla testa"
+
+#: fabui/application/views/spool/wizard/step4.php:45
+msgid "Procedure complete"
+msgstr "Procedura completata"
+
+#: fabui/application/views/spool/wizard/step4.php:46
+msgid "Load new filament"
+msgstr "Carica nuovo filamento"
+
+#: fabui/application/views/layout/login/top.php:16
+msgid "Local access"
+msgstr "Accesso locale"
+
+#: fabui/application/views/layout/login/top.php:18
+msgid "Already registered?"
+msgstr "Già registrato?"
+
+#: fabui/application/views/layout/login/top.php:18
+msgid "Sign in"
+msgstr "Iscriviti"
+
+#: fabui/application/views/layout/default/ribbon.php:14
+msgid "Lock screen"
+msgstr ""
+
+#: fabui/application/views/layout/default/ribbon.php:17
+msgid "You are connected with your FABID account"
+msgstr "Connesso con FABID"
+
+#: fabui/application/views/layout/default/ribbon.php:19
+msgid "Connect with your FABID account"
+msgstr "Connettiti con FABID"
+
+#: fabui/application/views/layout/default/ribbon.php:25
+msgid "My printers"
+msgstr "Le mie stampanti"
+
+#: fabui/application/views/layout/default/head.php:48
+msgid ""
+"We are sorry, but FABUI doesn't work properly without JavaScript enabled."
+"<br>Please enable JavaScript and reload the page"
+msgstr ""
+
+#: fabui/application/views/layout/default/top.php:21
+#: fabui/application/views/layout/debug/top.php:21
+msgid "Notify"
+msgstr "Notifica"
+
+#: fabui/application/views/layout/default/top.php:27
+#: fabui/application/views/layout/debug/top.php:27
+msgid "Click a button to show messages here"
+msgstr "Clicca un bottone per mostrare i messaggi qui"
+
+#: fabui/application/views/layout/default/top.php:28
+#: fabui/application/views/layout/debug/top.php:28
+msgid ""
+"This blank page message helps protect your privacy, or you can show the "
+"first message here automatically."
+msgstr ""
+"Questa pagina di messaggi bianca ti aiuta a proteggere la tua privacy, o "
+"puoi mostrare il primo messaggio qui automaticamente."
+
+#: fabui/application/views/layout/default/top.php:34
+#: fabui/application/views/layout/debug/top.php:34
+msgid "Last updated on"
+msgstr "Ultimo update su"
+
+#: fabui/application/views/layout/default/top.php:47
+#: fabui/application/views/layout/debug/top.php:46
+msgid "Collapse Menu"
+msgstr "Collassa menu"
+
+#: fabui/application/views/layout/default/top.php:52
+#: fabui/application/views/layout/debug/top.php:51
+msgid "Power Off/Log Out"
+msgstr "Power Off/Log Out"
+
+#: fabui/application/views/layout/default/top.php:52
+#: fabui/application/views/layout/debug/top.php:51
+msgid "What do you want to do?"
+msgstr "Cosa vuoi fare?"
+
+#: fabui/application/views/layout/default/top.php:56
+#: fabui/application/views/layout/debug/top.php:55
+msgid "This button will restart the control board, continue?"
+msgstr "Questo bottone riavvierà la board di controllo, continuare?"
+
+#: fabui/application/views/layout/default/top.php:56
+#: fabui/application/views/layout/debug/top.php:55
+msgid "Restart Controller.<br>This will restart the control board"
+msgstr "Riavviare il Controller. <br> Questo riavvierà la board di controllo"
+
+#: fabui/application/views/layout/default/top.php:61
+#: fabui/application/views/layout/debug/top.php:60
+msgid "This button will stop all the operations, continue?"
+msgstr "Questo bottone fermerà tutte le operazioni, continuare?"
+
+#: fabui/application/views/layout/default/top.php:61
+#: fabui/application/views/layout/debug/top.php:60
+msgid "Emergency Button. <br>This will stop all operations on the FABtotum"
+msgstr ""
+"Bottone di emergenza. <br> Questo fermerà tutte le operazioni sulla FABtotum"
+
+#: fabui/application/views/layout/default/top.php:82
+#: fabui/application/views/layout/debug/top.php:83
+msgid "Temperature<br> controls"
+msgstr "Controlli<br> Temperature"
+
+#: fabui/application/views/bed/wizard/start.php:14
+msgid ""
+"This wizard will help you level the bed by setting the calibration screws of "
+"the bed to the correct height."
+msgstr ""
+"Questa procedura guidata ti aiuterà a livellare il piatto, settando le viti "
+"di calibrazione del piatto alla giusta altezza."
+
+#: fabui/application/views/bed/wizard/start.php:15
+msgid "Use the provided hex key and make sure the screws are almost halfway in"
+msgstr ""
+"Utilizzare la chiave a brugola in dotazione e assicurarsi che le viti siano "
+"all'incirca a metà strada"
+
+#: fabui/application/views/updates/index/js.php:37
+msgid "Checking for updates"
+msgstr "Verificando gli aggiornamenti"
+
+#: fabui/application/views/updates/index/js.php:80
+msgid "New important software updates are now available"
+msgstr "Nuovi importanti aggiornamenti sono disponibili"
+
+#: fabui/application/views/updates/index/js.php:96
+#: fabui/application/views/updates/index/js.php:391
+#: fabui/application/views/updates/index/js.php:462
+#: fabui/application/views/updates/index/js.php:604
+msgid "View details"
+msgstr "Visualliza dettagli"
+
+#: fabui/application/views/updates/index/js.php:170
+#: fabui/application/views/updates/index/js.php:307
+#: fabui/application/views/updates/index/js.php:351
+msgid "Remote version"
+msgstr "Versione remota"
+
+#: fabui/application/views/updates/index/js.php:187
+#: fabui/application/views/updates/index/js.php:205
+#: fabui/application/views/updates/index/js.php:317
+#: fabui/application/views/updates/index/js.php:361
+msgid "Installed version"
+msgstr "Versione installata"
+
+#: fabui/application/views/updates/index/js.php:384
+#: fabui/application/views/updates/index/js.php:466
+#, fuzzy
+msgid "Hide details"
+msgstr "Visualliza dettagli"
+
+#: fabui/application/views/updates/index/js.php:429
+msgid "Please select at least 1 bundle, firmware or boot update"
+msgstr "Selezionare almeno 1 pacchetto, aggiornamento firmware o avvio"
+
+#: fabui/application/views/updates/index/js.php:443
+#: fabui/application/views/updates/index/js.php:495
+msgid "Connecting to update server"
+msgstr "Connessione al server degli aggiornamenti"
+
+#: fabui/application/views/updates/index/js.php:504
+msgid "A reboot is needed to apply new features"
+msgstr "Un riavvio è necessario per applicare le nuove caratteristiche"
+
+#: fabui/application/views/updates/index/js.php:505
+msgid "Reboot now"
+msgstr "Riavvia ora"
+
+#: fabui/application/views/updates/index/js.php:555
+msgid "Downloaded"
+msgstr "Scaricato"
+
+#: fabui/application/views/updates/index/js.php:564
+#: fabui/assets/js/fab.app.js:603
+msgid "Error"
+msgstr "Errore"
+
+#: fabui/application/views/updates/index/js.php:596
+msgid "Please don't turn off the printer until the operation is completed"
+msgstr ""
+"Si prega di non spegnere la stampante finché l'operazione non verrà "
+"completata"
+
+#: fabui/application/views/updates/index/widget.php:46
+msgid "Changelog"
+msgstr "Changelog"
+
+#: fabui/application/views/nozzle/pidtune/js.php:109
+msgid "Nozzle Temperature"
+msgstr "Temperatura del nozzle"
+
+#: fabui/application/views/nozzle/pidtune/js.php:117
+msgid "Nozzle Target"
+msgstr "Target del nozzle"
+
+#: fabui/application/views/nozzle/pidtune/js.php:235
+msgid "Pid tune completed"
+msgstr "PID tune completato"
+
+#: fabui/application/views/nozzle/pidtune/js.php:242
+msgid "Saving and applying new values"
+msgstr "Salvando e applicando i nuovi valori"
+
+#: fabui/application/views/nozzle/pidtune/widget.php:23
+msgid "Current PID"
+msgstr "PID attuale"
+
+#: fabui/application/views/nozzle/pidtune/widget.php:28
+msgid "Target temperature"
+msgstr "Temperatura target"
+
+#: fabui/application/views/nozzle/pidtune/widget.php:35
+msgid "Cycle"
+msgstr "Ciclo"
+
+#: fabui/application/views/nozzle/height/js.php:189
+msgid "New probe length"
+msgstr "Nuova lunghezza della Probe"
+
+#: fabui/application/views/nozzle/height/js.php:193
+msgid "New z max offset"
+msgstr "Nuovo z max offset"
+
+#: fabui/application/views/nozzle/height/js.php:197
+#: fabui/application/views/nozzle/height/js.php:232
+msgid "New nozzle offset"
+msgstr "Nuovo nozzle offset"
+
+#: fabui/application/views/nozzle/height/js.php:236
+msgid "Old nozzle offset"
+msgstr "Vecchio nozzle offset"
+
+#: fabui/application/views/nozzle/height/js.php:240
+msgid "Override"
+msgstr "Override"
+
+#: fabui/application/views/scan/wizard/step1.php:19
+msgid "mode"
+msgstr "modo"
+
+#: fabui/application/views/scan/wizard/step5.php:24
+#: fabui/ext/py/pg_scan.py:240
+msgid "Scan completed"
+msgstr "Scansione completata"
+
+#: fabui/application/views/scan/wizard/step5.php:26
+msgid "Go to projects manager"
+msgstr "Vai a Projects Manager"
+
+#: fabui/application/views/scan/wizard/step5.php:27
+msgid "Restart scan"
+msgstr "Riavvia scansione"
+
+#: fabui/application/views/scan/wizard/step5.php:28
+msgid "Download cloud points file"
+msgstr "Scarica il file con la nuvola di punti"
+
+#: fabui/application/views/scan/wizard/step5.php:29
+msgid "Download  missing images"
+msgstr "Scarica le immagini mancanti"
+
+#: fabui/application/views/scan/wizard/step4.php:16
+msgid "Live feed"
+msgstr "Aggiornamenti live"
+
+#: fabui/application/views/scan/wizard/step4.php:29
+msgid "Post processing"
+msgstr "Post processing"
+
+#: fabui/application/views/scan/wizard/step4.php:39
+msgid "Slice"
+msgstr "Slice"
+
+#: fabui/application/views/scan/wizard/step4.php:43
+msgid "Image resolution"
+msgstr "Risoluzione dell'immagine"
+
+#: fabui/application/views/scan/wizard/step4.php:52
+msgid "Cloud points"
+msgstr "Nuvola di punti"
+
+#: fabui/application/views/scan/wizard/step4.php:55
+msgid "Cloud size"
+msgstr "Dimensione nuvola"
+
+#: fabui/application/views/scan/instructions/rotating.php:17
+#: fabui/application/views/scan/instructions/sweep.php:17
+#: fabui/application/views/scan/instructions/photogrammetry.php:17
+#: fabui/application/views/scan/instructions/probing.php:17
+msgid "Are you ready to scan?"
+msgstr "Sei pronto alla scansione?"
+
+#: fabui/application/views/scan/instructions/rotating.php:30
+#: fabui/application/views/scan/instructions/photogrammetry.php:30
+msgid "Remove the platform"
+msgstr "Rimuovere il piatto"
+
+#: fabui/application/views/scan/instructions/rotating.php:32
+#: fabui/application/views/scan/instructions/photogrammetry.php:32
+msgid ""
+"Check if the LED light on the platform inside is off. <br>Then remove the "
+"building platform, exposing the A axis chuck"
+msgstr ""
+"Controllare se la luce LED sulla piattaforma interna è spenta. <br> Dopo la "
+"rimozione della piattaforma di realizzazione, esporre il chuck dell'asse A"
+
+#: fabui/application/views/scan/instructions/rotating.php:51
+#: fabui/application/views/scan/instructions/photogrammetry.php:51
+msgid "Attach the object"
+msgstr "Attaccare l'oggetto"
+
+#: fabui/application/views/scan/instructions/rotating.php:52
+#: fabui/application/views/scan/instructions/photogrammetry.php:52
+msgid "Attach the object to the chuck with screws, duct tape, wire etc."
+msgstr "Attaccare l'oggetto al chuck con viti, nastro adesivo, cavi ecc."
+
+#: fabui/application/views/scan/instructions/rotating.php:68
+#: fabui/application/views/scan/instructions/photogrammetry.php:68
+msgid "Close the front"
+msgstr "Chiudere lo sportello frontale"
+
+#: fabui/application/views/scan/instructions/sweep.php:20
+msgid "If you are ready click \"next\" to start scan"
+msgstr "Se pronti cliccare \"Avanti\" per iniziare la scansione"
+
+#: fabui/application/views/scan/instructions/probing.php:28
+msgid "Position the object"
+msgstr "Posizionare l'oggetto"
+
+#: fabui/application/views/scan/instructions/probing.php:30
+msgid ""
+"Position your object in the center of the platform when prompted. <br>Secure "
+"it with a double sided tape or use the fixture holes"
+msgstr ""
+"Posizionare il proprio oggetto al centro della piattaforma quando richiesto. "
+"<br> Assicurarlo con un nastro biadesivo o utilizzando i buchi per il "
+"fissaggio"
+
+#: fabui/application/views/scan/settings/default.php:20
+msgid "Create new object"
+msgstr "Creare un nuovo progetto"
+
+#: fabui/application/views/scan/settings/default.php:23
+msgid "Add to an existing object"
+msgstr "Aggiungere ad un progetto esistente"
+
+#: fabui/application/views/scan/settings/rotating.php:24
+#: fabui/application/views/scan/settings/sweep.php:30
+#: fabui/application/views/scan/settings/probing.php:67
+msgid "Slide to select quality"
+msgstr "Scorrere per selezionare la qualità"
+
+#: fabui/application/views/scan/settings/rotating.php:38
+#: fabui/application/views/scan/settings/sweep.php:44
+#: fabui/application/views/scan/settings/photogrammetry.php:46
+msgid "Slices"
+msgstr "Slices"
+
+#: fabui/application/views/scan/settings/sweep.php:83
+msgid "Select scan area"
+msgstr "Selezionare l'area di scansione"
+
+#: fabui/application/views/scan/settings/sweep.php:98
+msgid "End"
+msgstr "Fine"
+
+#: fabui/application/views/scan/settings/photogrammetry.php:21
+msgid "Camera settings"
+msgstr "Impostazioni della camera"
+
+#: fabui/application/views/scan/settings/photogrammetry.php:54
+msgid "Desktop Server"
+msgstr "Desktop Server"
+
+#: fabui/application/views/scan/settings/photogrammetry.php:65
+msgid ""
+"Before proceeding start the desktop server on your pc and check the "
+"connection. If you don't have the desktop server you can download it <a "
+"target=\"_blank\" href=\"/utilities/FabtotumDesktopServer.jar\">here</a>"
+msgstr ""
+"Prima di procedere lanciare Desktop Server sul vostro pc e verificare le "
+"connessioni. Se non avete Desktop Server lo potete scaricare  <a target="
+"\"_blank\" href=\"/utilities/FabtotumDesktopServer.jar\">qui</a>"
+
+#: fabui/application/views/scan/settings/photogrammetry.php:71
+msgid "Port"
+msgstr "Porta"
+
+#: fabui/application/views/scan/settings/photogrammetry.php:79
+msgid "Check Connection"
+msgstr "Verificare connessione"
+
+#: fabui/application/views/scan/settings/probing.php:18
+msgid "Test area"
+msgstr "Testa area di scansione"
+
+#: fabui/application/views/scan/settings/probing.php:20
+msgid "Press to test the selected area"
+msgstr "Premi per testare l'area selezionata"
+
+#: fabui/application/views/scan/settings/probing.php:27
+msgid "First point"
+msgstr "Primo punto"
+
+#: fabui/application/views/scan/settings/probing.php:47
+msgid "Second point"
+msgstr "Secondo punto"
+
+#: fabui/application/views/scan/settings/probing.php:74
+msgid "Probes per square millimeters"
+msgstr "Probe per millimetri quadri"
+
+#: fabui/application/views/scan/settings/probing.php:81
+msgid "Z Jump (mm)"
+msgstr "Salto Z (mm)"
+
+#: fabui/application/views/scan/settings/probing.php:85
+msgid ""
+"This is the maximum difference in height of the different portions of the "
+"object to probe"
+msgstr ""
+"Questa è la massima differenza in altezza tra le differenti porzioni "
+"dell'oggetto alla Probe"
+
+#: fabui/application/views/scan/settings/probing.php:90
+msgid "Detail threshold (mm)"
+msgstr "Dettaglio limite (mm)"
+
+#: fabui/application/views/scan/settings/probing.php:94
+msgid ""
+"If Z height change is minor than detail threshold adaptive auto skipping is "
+"automatically enabled. Lower values give finer details. 0 = disable"
+msgstr ""
+"Se cambiando l'altezza di Z essa è minore del dettaglio limite, la funzione "
+"di salto adattativo è automaticamente attivata. Valori più bassi danno "
+"dettagli maggiori. 0=disabilitata"
+
+#: fabui/application/views/feeder/calibration/widget.php:4
+msgid "Quick settings"
+msgstr "Impostazioni rapide"
+
+#: fabui/application/views/feeder/calibration/widget.php:8
+msgid "Actual extruder steps"
+msgstr "Step d'estrusione attuale"
+
+#: fabui/application/views/feeder/calibration/widget.php:15
+msgid "Change value"
+msgstr "Cambia valore"
+
+#: fabui/application/views/feeder/calibration/widget.php:19
+msgid "Measure and calibrate extruder step"
+msgstr "Misura e calibra lo step d'estrusione"
+
+#: fabui/application/views/feeder/calibration/widget.php:23
+msgid "Filament to extrude (mm)"
+msgstr "Filamento da estrudere (mm)"
+
+#: fabui/application/views/feeder/calibration/widget.php:30
+msgid "Start to extrude"
+msgstr "Inizia a estrudere"
+
+#: fabui/application/views/feeder/calibration/widget.php:36
+msgid "Enter the measured length of the filament extruded (mm)"
+msgstr "Inserire la lunghezza rilevata del filamento estruso (mm)"
+
+#: fabui/application/views/feeder/calibration/widget.php:43
+msgid "Recalculate"
+msgstr "Ricalcola"
+
+#: fabui/application/views/feeder/calibration/widget.php:60
+msgid "Set new value for extruder step"
+msgstr "Imposta il nuovo valore dello step d'estrusione"
+
+#: fabui/application/views/feeder/calibration/widget.php:73
+msgid "Change"
+msgstr "Cambia"
+
+#: fabui/application/views/feeder/profiles/js.php:95
+msgid "Configuring feeder"
+msgstr "Configurando l'estrusore"
+
+#: fabui/application/views/feeder/profiles/widget.php:5
+msgid ""
+"<strong>Warning</strong> Seems that you still have not set the feeder your "
+"are using."
+msgstr ""
+"<strong>Attenzione</strong> Sembra che non hai ancora impostato l'estrusore "
+"che stai utilizzando."
+
+#: fabui/application/views/feeder/profiles/widget.php:27
+msgid "Please select which feeder you want to configure"
+msgstr "Prego selezionare quale estrusore si vuole configurare"
+
+#: fabui/application/views/feeder/profiles/widget.php:81
+msgid "Feeder settings"
+msgstr "Impostazioni estrusore"
+
+#: fabui/application/views/feeder/profiles/widget.php:153
+msgid "Max acceleration (mm/s<sup>2</sup>)"
+msgstr "Accellerazione massima (mm/s<sup>2</sup>)"
+
+#: fabui/application/views/feeder/profiles/widget.php:159
+msgid "Max feedrate (mm/s)"
+msgstr "Massimo feedrate (mm/s)"
+
+#: fabui/application/views/feeder/profiles/widget.php:165
+msgid "Max jerk (mm)"
+msgstr "Max jerk (mm)"
+
+#: fabui/application/views/feeder/profiles/widget.php:213
+msgid "Save & Configure"
+msgstr "Salva & Configura"
+
+#: fabui/application/views/feeder/engage/js.php:9
+msgid "Preparing procedure"
+msgstr "Preparazione della procedura"
+
+#: fabui/application/views/feeder/engage/widget.php:11
+msgid "Please press the START button to initiate"
+msgstr "Si prega di premere il bottone START per iniziare"
+
+#: fabui/application/views/feeder/engage/widget.php:29
+msgid ""
+"To engage the filament feeder push the small button under the building "
+"platform near the 4th axis chuck."
+msgstr ""
+"Per ingaggiare l'estrusore del filamento premere il piccolo bottone sotto la "
+"piattaforma di costruzione vicina al chuck del 4°asse."
+
+#: fabui/application/views/feeder/engage/widget.php:30
+msgid "Apply a good amount of force when pushing"
+msgstr "Applicare una buona dose di forza mentre si preme"
+
+#: fabui/application/views/cam/help/inputs.php:13
+#, fuzzy
+msgid "Target width"
+msgstr "Target"
+
+#: fabui/application/views/cam/help/inputs.php:14
+msgid ""
+"Engraving width in mm.<br> Height is automatically calculated based on image "
+"ratio.<br>For DXF files set to 0 to use file units with scale factor 1.0"
+msgstr ""
+
+#: fabui/application/views/cam/help/inputs.php:17
+#, fuzzy
+msgid "Target height"
+msgstr "Target"
+
+#: fabui/application/views/cam/help/inputs.php:18
+msgid ""
+"Engraving height in mm.<br>Width is automatically calculated based on image "
+"ratio.<br>For DXF files set to 0 to use file units with scale factor 1.0"
+msgstr ""
+
+#: fabui/application/views/cam/help/inputs.php:21
+#, fuzzy
+msgid "Laser dot size"
+msgstr "Offset Punto Laser"
+
+#: fabui/application/views/cam/help/inputs.php:22
+msgid "If burning lines are visible reduce it untill they are gone"
+msgstr ""
+
+#: fabui/application/views/cam/help/inputs.php:25
+#, fuzzy
+msgid "PWM Value"
+msgstr "valore"
+
+#: fabui/application/views/cam/help/inputs.php:26
+msgid "Laser PWM value"
+msgstr ""
+
+#: fabui/application/views/cam/help/inputs.php:29
+#, fuzzy
+msgid "Invert"
+msgstr "Inverti i colori"
+
+#: fabui/application/views/cam/help/inputs.php:30
+msgid "Invert image gray colors to invert what is burned"
+msgstr ""
+
+#: fabui/application/views/cam/help/inputs.php:33
+#, fuzzy
+msgid "Travel moves"
+msgstr "movimenti rapidi (travel)"
+
+#: fabui/application/views/cam/help/inputs.php:34
+#, fuzzy
+msgid ""
+"To prevent laser leaving travel trails, turn it off during travel moves."
+msgstr "Disattiva laser durante movimenti rapidi"
+
+#: fabui/application/views/projectsmanager/index/js.php:104
+#: fabui/application/views/projectsmanager/index/js.php:123
+msgid "Please select at least 1 object"
+msgstr "Si prega di selezionare almeno un 1 progetto"
+
+#: fabui/application/views/projectsmanager/index/js.php:130
+#: fabui/application/views/projectsmanager/edit/js.php:202
+msgid "Information"
+msgstr "Informazioni"
+
+#: fabui/application/views/projectsmanager/index/js.php:132
+#: fabui/application/views/projectsmanager/index/js.php:134
+#: fabui/application/views/projectsmanager/edit/js.php:204
+#: fabui/application/views/projectsmanager/edit/js.php:206
+#: fabui/application/views/firmware/main_js.php:88
+msgid "Ok"
+msgstr "Ok"
+
+#: fabui/application/views/projectsmanager/index/js.php:143
+msgid "Do you really want to remove the selected objects?"
+msgstr "Vuoi davvero rimuovere i  progetti selezionati?"
+
+#: fabui/application/views/projectsmanager/index/js.php:160
+#: fabui/application/views/projectsmanager/edit/js.php:155
+msgid "Deleting"
+msgstr "Cancellando"
+
+#: fabui/application/views/projectsmanager/index/js.php:175
+msgid "Error deleting object"
+msgstr "Errore nella cancellazione del progetto"
+
+#: fabui/application/views/projectsmanager/index/js.php:188
+msgid "Do you really want download the selected objects?"
+msgstr "Vuoi veramente scaricare i progetti selezionati?"
+
+#: fabui/application/views/projectsmanager/index/js.php:208
+msgid "Installing samples"
+msgstr "Installando i samples"
+
+#: fabui/application/views/projectsmanager/index/js.php:228
+msgid "Do you really want to install samples?"
+msgstr "Vuoi davvero installare i samples?"
+
+#: fabui/application/views/projectsmanager/edit/js.php:90
+msgid "Object saved with success"
+msgstr "Progetto salvato con successo"
+
+#: fabui/application/views/projectsmanager/edit/js.php:123
+msgid "Deleting file"
+msgstr "Cancellando il file"
+
+#: fabui/application/views/projectsmanager/edit/js.php:169
+#, fuzzy
+msgid "Error deleting file(s)"
+msgstr "Errore nella cancellazione del/i file(s)"
+
+#: fabui/application/views/projectsmanager/edit/js.php:194
+msgid "Please select at least 1 file"
+msgstr "Si prega di selezionare almeno 1 file"
+
+#: fabui/application/views/projectsmanager/edit/js.php:216
+#, fuzzy
+msgid "Do you really want to remove the selected files?"
+msgstr "Vuoi davvero rimuovere i  progetti selezionati?"
+
+#: fabui/application/views/projectsmanager/edit/js.php:251
+msgid "Do you really want download the selected files?"
+msgstr "Vuoi veramente scaricare i file selezionati?"
+
+#: fabui/application/views/projectsmanager/edit/widget.php:15
+#, fuzzy
+msgid "You don't have permissions to edit this project"
+msgstr "Non hai i permessi per modificare questo progetto"
+
+#: fabui/application/views/projectsmanager/edit/widget.php:33
+#: fabui/application/views/projectsmanager/add/widget.php:23
+msgid "Public"
+msgstr "Pubblico"
+
+#: fabui/application/views/projectsmanager/edit/widget.php:64
+#: fabui/application/views/projectsmanager/file/view/widget.php:21
+msgid "Note"
+msgstr "Nota"
+
+#: fabui/application/views/projectsmanager/edit/widget.php:66
+msgid "Default action"
+msgstr "Azione predefinita"
+
+#: fabui/application/views/projectsmanager/add/js.php:39
+#, fuzzy
+msgid "You can upload 10 files at a time"
+msgstr "Puoi caricare 10 file alla volta"
+
+#: fabui/application/views/projectsmanager/add/js.php:90
+#: fabui/application/views/projectsmanager/file/add/js.php:90
+msgid "Please enter object name"
+msgstr "Si prega di inserire un nome per il progetto"
+
+#: fabui/application/views/projectsmanager/add/js.php:129
+msgid "Saving object"
+msgstr "Salvando il progetto"
+
+#: fabui/application/views/projectsmanager/add/widget.php:51
+#: fabui/application/views/projectsmanager/file/add/widget.php:20
+msgid "Dropzone"
+msgstr "Dropzone"
+
+#: fabui/application/views/projectsmanager/add/widget.php:54
+#: fabui/application/views/projectsmanager/file/add/widget.php:23
+msgid "Usb disk"
+msgstr "Disco Usb"
+
+#: fabui/application/views/projectsmanager/add/widget.php:65
+#, fuzzy
+msgid "Please insert USB disk"
+msgstr "Si prega di inserire un disco USB"
+
+#: fabui/application/views/projectsmanager/add/widget.php:77
+#: fabui/application/views/projectsmanager/file/add/widget.php:46
+msgid "Upload progress"
+msgstr "Progresso del caricamento"
+
 #: fabui/application/views/nozzle/height/wizard/mode.php:17
 msgid ""
 "Using the buttons below, raise the bed until a standard piece of copy paper "
@@ -4142,14 +5100,6 @@ msgstr "Calibrazione completa"
 msgid "Before proceed make sure nozzle is clean"
 msgstr "Prima di procedere assicurati che l'ugello sia pulito"
 
-#: fabui/application/views/nozzle/height/wizard/choise.php:16
-msgid ""
-"Operate according to safety instructions provided. Nozzle and bed can be "
-"hot, exercise caution accordingly"
-msgstr ""
-"Opera seguendo le istruzioni di sicurezza fornite. Il nozzle e il piatto "
-"possono essere caldi, agire con cautela"
-
 #: fabui/application/views/nozzle/height/wizard/choise.php:30
 msgid ""
 "Helps you correct the nozzle height during prints. Each time you swap heads "
@@ -4157,11 +5107,6 @@ msgid ""
 msgstr ""
 "Aiuta a correggere l'altezza dell'ugello durante le stampe. Ogni volta che "
 "si cambia la testa dovrà essere ri-calibrata."
-
-#: fabui/application/views/nozzle/height/wizard/choise.php:33
-#: fabui/application/views/nozzle/height/wizard/choise.php:49
-msgid "Choose"
-msgstr "Scegli"
 
 #: fabui/application/views/projectsmanager/file/gcodeviewer/index.php:5
 msgid "Running analysis"
@@ -4300,31 +5245,15 @@ msgstr "Temperatura ugello"
 msgid "You can upload 10 files at time"
 msgstr "Puoi caricare 10 file alla volta"
 
-#: fabui/application/views/projectsmanager/file/add/js.php:90
-msgid "Please enter object name"
-msgstr "Si prega di inserire un nome per il progetto"
-
 #: fabui/application/views/projectsmanager/file/add/js.php:130
 #, fuzzy
 msgid "Adding files"
 msgstr "Aggiungi Files"
 
-#: fabui/application/views/projectsmanager/file/add/widget.php:20
-msgid "Dropzone"
-msgstr "Dropzone"
-
-#: fabui/application/views/projectsmanager/file/add/widget.php:23
-msgid "Usb disk"
-msgstr "Disco Usb"
-
 #: fabui/application/views/projectsmanager/file/add/widget.php:34
 #, fuzzy
 msgid "Please insert usb disk"
 msgstr "Si prega di inserire un disco USB"
-
-#: fabui/application/views/projectsmanager/file/add/widget.php:46
-msgid "Upload progress"
-msgstr "Progresso del caricamento"
 
 #: fabui/application/views/projectsmanager/file/view/js.php:51
 #, fuzzy
@@ -4348,10 +5277,6 @@ msgstr ""
 #, fuzzy
 msgid "You don't have permissions to edit this file"
 msgstr "Non hai i permessi per modificare questo progetto"
-
-#: fabui/application/views/projectsmanager/file/view/widget.php:21
-msgid "Note"
-msgstr "Nota"
 
 #: fabui/ext/py/s_scan.py:158 fabui/ext/py/r_scan.py:145
 msgid "Post-processing started"
@@ -4659,10 +5584,6 @@ msgstr "Elaborazione immagine {0}"
 #: fabui/ext/py/pg_scan.py:237
 msgid "Scan aborted"
 msgstr "Scansione annullata"
-
-#: fabui/ext/py/pg_scan.py:240
-msgid "Scan completed"
-msgstr "Scansione completata"
 
 #: fabui/ext/py/fabtotum/fabui/command_parser.py:133
 msgid "Error parsing command [{0}], {1}"
@@ -5893,10 +6814,6 @@ msgstr ""
 msgid "You need to home X/Y axis first"
 msgstr "Sarà necessario portare in posizione di home gli assi X/Y"
 
-#: fabui/application/views/firmware/main_js.php:88
-msgid "Ok"
-msgstr "Ok"
-
 #: fabui/assets/js/fab.app.js:1175
 msgid "Before proceed make sure the head is properly locked in place"
 msgstr ""
@@ -6189,10 +7106,6 @@ msgstr "Nessuna connessione rilevata"
 msgid "To get the first layer right the bed must be well calibrated"
 msgstr "Per ottenere un buon primo layer il piatto dovrà essere ben calibrato"
 
-#: fabui/assets/js/fab.app.js:603
-msgid "Error"
-msgstr "Errore"
-
 #: fabui/assets/js/fab.app.js:638
 msgid "Manual Bed Calibration"
 msgstr "Calibrazione manuale del piatto"
@@ -6384,469 +7297,6 @@ msgstr "Applica"
 #: fabui/assets/js/fab.app.js:666
 msgid "Emergency stop"
 msgstr "Stop di Emergenza"
-
-#~ msgid "A pair of scissors or clippers are suggested"
-#~ msgstr "Si consiglia l'suo di un  paio di forbici"
-
-#~ msgid ""
-#~ "Do not push or pull the filament too hard, as it can break inside the "
-#~ "filament mechanism during the operations"
-#~ msgstr ""
-#~ "Non spingere o tirare il filamento con troppa forza per evitare che si "
-#~ "possa rompere nel meccanismo di estrusione durante l'operazione"
-
-#~ msgid "Automatically load the filament into the machine"
-#~ msgstr "Carica automaticamente il filamento nella macchina"
-
-#~ msgid "Automatically unload the filament from the machine"
-#~ msgstr "Scarica automaticamente il filamento dalla macchina"
-
-#~ msgid "Open the right cover panel"
-#~ msgstr "Aprire il pannello destro di copertura"
-
-#~ msgid "Cut the filament"
-#~ msgstr "Tagliare il filamento"
-
-#~ msgid "Insert the filament"
-#~ msgstr "Inserire il filamento"
-
-#~ msgid "Press Next to proceed"
-#~ msgstr "Premere Avanti per proseguire"
-
-#~ msgid "Extrusion temperature"
-#~ msgstr "Temperatura d'estrusione"
-
-#~ msgid " Pull the release lever on the back of the Printing Head PRO."
-#~ msgstr "Tirare la levetta posteriore della Printing Head PRO"
-
-#~ msgid " Pull the filament out of the head"
-#~ msgstr "Tira il filamento fuori dalla testa"
-
-#~ msgid "Procedure complete"
-#~ msgstr "Procedura completata"
-
-#~ msgid "Load new filament"
-#~ msgstr "Carica nuovo filamento"
-
-#~ msgid "Local access"
-#~ msgstr "Accesso locale"
-
-#~ msgid "Already registered?"
-#~ msgstr "Già registrato?"
-
-#~ msgid "Sign in"
-#~ msgstr "Iscriviti"
-
-#~ msgid "You are connected with your FABID account"
-#~ msgstr "Connesso con FABID"
-
-#~ msgid "Connect with your FABID account"
-#~ msgstr "Connettiti con FABID"
-
-#~ msgid "My printers"
-#~ msgstr "Le mie stampanti"
-
-#~ msgid "Notify"
-#~ msgstr "Notifica"
-
-#~ msgid "Click a button to show messages here"
-#~ msgstr "Clicca un bottone per mostrare i messaggi qui"
-
-#~ msgid ""
-#~ "This blank page message helps protect your privacy, or you can show the "
-#~ "first message here automatically."
-#~ msgstr ""
-#~ "Questa pagina di messaggi bianca ti aiuta a proteggere la tua privacy, o "
-#~ "puoi mostrare il primo messaggio qui automaticamente."
-
-#~ msgid "Last updated on"
-#~ msgstr "Ultimo update su"
-
-#~ msgid "Collapse Menu"
-#~ msgstr "Collassa menu"
-
-#~ msgid "Power Off/Log Out"
-#~ msgstr "Power Off/Log Out"
-
-#~ msgid "What do you want to do?"
-#~ msgstr "Cosa vuoi fare?"
-
-#~ msgid "This button will restart the control board, continue?"
-#~ msgstr "Questo bottone riavvierà la board di controllo, continuare?"
-
-#~ msgid "Restart Controller.<br>This will restart the control board"
-#~ msgstr ""
-#~ "Riavviare il Controller. <br> Questo riavvierà la board di controllo"
-
-#~ msgid "This button will stop all the operations, continue?"
-#~ msgstr "Questo bottone fermerà tutte le operazioni, continuare?"
-
-#~ msgid "Emergency Button. <br>This will stop all operations on the FABtotum"
-#~ msgstr ""
-#~ "Bottone di emergenza. <br> Questo fermerà tutte le operazioni sulla "
-#~ "FABtotum"
-
-#~ msgid "Temperature<br> controls"
-#~ msgstr "Controlli<br> Temperature"
-
-#~ msgid ""
-#~ "This wizard will help you level the bed by setting the calibration screws "
-#~ "of the bed to the correct height."
-#~ msgstr ""
-#~ "Questa procedura guidata ti aiuterà a livellare il piatto, settando le "
-#~ "viti di calibrazione del piatto alla giusta altezza."
-
-#~ msgid ""
-#~ "Use the provided hex key and make sure the screws are almost halfway in"
-#~ msgstr ""
-#~ "Utilizzare la chiave a brugola in dotazione e assicurarsi che le viti "
-#~ "siano all'incirca a metà strada"
-
-#~ msgid "Checking for updates"
-#~ msgstr "Verificando gli aggiornamenti"
-
-#~ msgid "New important software updates are now available"
-#~ msgstr "Nuovi importanti aggiornamenti sono disponibili"
-
-#~ msgid "View details"
-#~ msgstr "Visualliza dettagli"
-
-#~ msgid "Remote version"
-#~ msgstr "Versione remota"
-
-#~ msgid "Installed version"
-#~ msgstr "Versione installata"
-
-#~ msgid "Please select at least 1 bundle, firmware or boot update"
-#~ msgstr "Selezionare almeno 1 pacchetto, aggiornamento firmware o avvio"
-
-#~ msgid "Connecting to update server"
-#~ msgstr "Connessione al server degli aggiornamenti"
-
-#~ msgid "A reboot is needed to apply new features"
-#~ msgstr "Un riavvio è necessario per applicare le nuove caratteristiche"
-
-#~ msgid "Reboot now"
-#~ msgstr "Riavvia ora"
-
-#~ msgid "Downloaded"
-#~ msgstr "Scaricato"
-
-#~ msgid "Please don't turn off the printer until the operation is completed"
-#~ msgstr ""
-#~ "Si prega di non spegnere la stampante finché l'operazione non verrà "
-#~ "completata"
-
-#~ msgid "Changelog"
-#~ msgstr "Changelog"
-
-#~ msgid "Nozzle Temperature"
-#~ msgstr "Temperatura del nozzle"
-
-#~ msgid "Nozzle Target"
-#~ msgstr "Target del nozzle"
-
-#~ msgid "Pid tune completed"
-#~ msgstr "PID tune completato"
-
-#~ msgid "Saving and applying new values"
-#~ msgstr "Salvando e applicando i nuovi valori"
-
-#~ msgid "Current PID"
-#~ msgstr "PID attuale"
-
-#~ msgid "Target temperature"
-#~ msgstr "Temperatura target"
-
-#~ msgid "Cycle"
-#~ msgstr "Ciclo"
-
-#~ msgid "New probe length"
-#~ msgstr "Nuova lunghezza della Probe"
-
-#~ msgid "New z max offset"
-#~ msgstr "Nuovo z max offset"
-
-#~ msgid "New nozzle offset"
-#~ msgstr "Nuovo nozzle offset"
-
-#~ msgid "Old nozzle offset"
-#~ msgstr "Vecchio nozzle offset"
-
-#~ msgid "Override"
-#~ msgstr "Override"
-
-#~ msgid "mode"
-#~ msgstr "modo"
-
-#~ msgid "Go to projects manager"
-#~ msgstr "Vai a Projects Manager"
-
-#~ msgid "Restart scan"
-#~ msgstr "Riavvia scansione"
-
-#~ msgid "Download cloud points file"
-#~ msgstr "Scarica il file con la nuvola di punti"
-
-#~ msgid "Download  missing images"
-#~ msgstr "Scarica le immagini mancanti"
-
-#~ msgid "Live feed"
-#~ msgstr "Aggiornamenti live"
-
-#~ msgid "Post processing"
-#~ msgstr "Post processing"
-
-#~ msgid "Slice"
-#~ msgstr "Slice"
-
-#~ msgid "Image resolution"
-#~ msgstr "Risoluzione dell'immagine"
-
-#~ msgid "Cloud points"
-#~ msgstr "Nuvola di punti"
-
-#~ msgid "Cloud size"
-#~ msgstr "Dimensione nuvola"
-
-#~ msgid "Are you ready to scan?"
-#~ msgstr "Sei pronto alla scansione?"
-
-#~ msgid "Remove the platform"
-#~ msgstr "Rimuovere il piatto"
-
-#~ msgid ""
-#~ "Check if the LED light on the platform inside is off. <br>Then remove the "
-#~ "building platform, exposing the A axis chuck"
-#~ msgstr ""
-#~ "Controllare se la luce LED sulla piattaforma interna è spenta. <br> Dopo "
-#~ "la rimozione della piattaforma di realizzazione, esporre il chuck "
-#~ "dell'asse A"
-
-#~ msgid "Attach the object"
-#~ msgstr "Attaccare l'oggetto"
-
-#~ msgid "Attach the object to the chuck with screws, duct tape, wire etc."
-#~ msgstr "Attaccare l'oggetto al chuck con viti, nastro adesivo, cavi ecc."
-
-#~ msgid "Close the front"
-#~ msgstr "Chiudere lo sportello frontale"
-
-#~ msgid "If you are ready click \"next\" to start scan"
-#~ msgstr "Se pronti cliccare \"Avanti\" per iniziare la scansione"
-
-#~ msgid "Position the object"
-#~ msgstr "Posizionare l'oggetto"
-
-#~ msgid ""
-#~ "Position your object in the center of the platform when prompted. "
-#~ "<br>Secure it with a double sided tape or use the fixture holes"
-#~ msgstr ""
-#~ "Posizionare il proprio oggetto al centro della piattaforma quando "
-#~ "richiesto. <br> Assicurarlo con un nastro biadesivo o utilizzando i buchi "
-#~ "per il fissaggio"
-
-#~ msgid "Create new object"
-#~ msgstr "Creare un nuovo progetto"
-
-#~ msgid "Add to an existing object"
-#~ msgstr "Aggiungere ad un progetto esistente"
-
-#~ msgid "Slide to select quality"
-#~ msgstr "Scorrere per selezionare la qualità"
-
-#~ msgid "Slices"
-#~ msgstr "Slices"
-
-#~ msgid "Select scan area"
-#~ msgstr "Selezionare l'area di scansione"
-
-#~ msgid "End"
-#~ msgstr "Fine"
-
-#~ msgid "Camera settings"
-#~ msgstr "Impostazioni della camera"
-
-#~ msgid "Desktop Server"
-#~ msgstr "Desktop Server"
-
-#~ msgid ""
-#~ "Before proceeding start the desktop server on your pc and check the "
-#~ "connection. If you don't have the desktop server you can download it <a "
-#~ "target=\"_blank\" href=\"/utilities/FabtotumDesktopServer.jar\">here</a>"
-#~ msgstr ""
-#~ "Prima di procedere lanciare Desktop Server sul vostro pc e verificare le "
-#~ "connessioni. Se non avete Desktop Server lo potete scaricare  <a target="
-#~ "\"_blank\" href=\"/utilities/FabtotumDesktopServer.jar\">qui</a>"
-
-#~ msgid "Port"
-#~ msgstr "Porta"
-
-#~ msgid "Check Connection"
-#~ msgstr "Verificare connessione"
-
-#~ msgid "Test area"
-#~ msgstr "Testa area di scansione"
-
-#~ msgid "Press to test the selected area"
-#~ msgstr "Premi per testare l'area selezionata"
-
-#~ msgid "First point"
-#~ msgstr "Primo punto"
-
-#~ msgid "Second point"
-#~ msgstr "Secondo punto"
-
-#~ msgid "Probes per square millimeters"
-#~ msgstr "Probe per millimetri quadri"
-
-#~ msgid "Z Jump (mm)"
-#~ msgstr "Salto Z (mm)"
-
-#~ msgid ""
-#~ "This is the maximum difference in height of the different portions of the "
-#~ "object to probe"
-#~ msgstr ""
-#~ "Questa è la massima differenza in altezza tra le differenti porzioni "
-#~ "dell'oggetto alla Probe"
-
-#~ msgid "Detail threshold (mm)"
-#~ msgstr "Dettaglio limite (mm)"
-
-#~ msgid ""
-#~ "If Z height change is minor than detail threshold adaptive auto skipping "
-#~ "is automatically enabled. Lower values give finer details. 0 = disable"
-#~ msgstr ""
-#~ "Se cambiando l'altezza di Z essa è minore del dettaglio limite, la "
-#~ "funzione di salto adattativo è automaticamente attivata. Valori più bassi "
-#~ "danno dettagli maggiori. 0=disabilitata"
-
-#~ msgid "Quick settings"
-#~ msgstr "Impostazioni rapide"
-
-#~ msgid "Actual extruder steps"
-#~ msgstr "Step d'estrusione attuale"
-
-#~ msgid "Change value"
-#~ msgstr "Cambia valore"
-
-#~ msgid "Measure and calibrate extruder step"
-#~ msgstr "Misura e calibra lo step d'estrusione"
-
-#~ msgid "Filament to extrude (mm)"
-#~ msgstr "Filamento da estrudere (mm)"
-
-#~ msgid "Start to extrude"
-#~ msgstr "Inizia a estrudere"
-
-#~ msgid "Enter the measured length of the filament extruded (mm)"
-#~ msgstr "Inserire la lunghezza rilevata del filamento estruso (mm)"
-
-#~ msgid "Recalculate"
-#~ msgstr "Ricalcola"
-
-#~ msgid "Set new value for extruder step"
-#~ msgstr "Imposta il nuovo valore dello step d'estrusione"
-
-#~ msgid "Change"
-#~ msgstr "Cambia"
-
-#~ msgid "Configuring feeder"
-#~ msgstr "Configurando l'estrusore"
-
-#~ msgid ""
-#~ "<strong>Warning</strong> Seems that you still have not set the feeder "
-#~ "your are using."
-#~ msgstr ""
-#~ "<strong>Attenzione</strong> Sembra che non hai ancora impostato "
-#~ "l'estrusore che stai utilizzando."
-
-#~ msgid "Please select which feeder you want to configure"
-#~ msgstr "Prego selezionare quale estrusore si vuole configurare"
-
-#~ msgid "Feeder settings"
-#~ msgstr "Impostazioni estrusore"
-
-#~ msgid "Max acceleration (mm/s<sup>2</sup>)"
-#~ msgstr "Accellerazione massima (mm/s<sup>2</sup>)"
-
-#~ msgid "Max feedrate (mm/s)"
-#~ msgstr "Massimo feedrate (mm/s)"
-
-#~ msgid "Max jerk (mm)"
-#~ msgstr "Max jerk (mm)"
-
-#~ msgid "Save & Configure"
-#~ msgstr "Salva & Configura"
-
-#~ msgid "Preparing procedure"
-#~ msgstr "Preparazione della procedura"
-
-#~ msgid "Please press the START button to initiate"
-#~ msgstr "Si prega di premere il bottone START per iniziare"
-
-#~ msgid ""
-#~ "To engage the filament feeder push the small button under the building "
-#~ "platform near the 4th axis chuck."
-#~ msgstr ""
-#~ "Per ingaggiare l'estrusore del filamento premere il piccolo bottone sotto "
-#~ "la piattaforma di costruzione vicina al chuck del 4°asse."
-
-#~ msgid "Apply a good amount of force when pushing"
-#~ msgstr "Applicare una buona dose di forza mentre si preme"
-
-#, fuzzy
-#~ msgid "Target width"
-#~ msgstr "Target"
-
-#, fuzzy
-#~ msgid "Target height"
-#~ msgstr "Target"
-
-#~ msgid "Please select at least 1 object"
-#~ msgstr "Si prega di selezionare almeno un 1 progetto"
-
-#~ msgid "Information"
-#~ msgstr "Informazioni"
-
-#~ msgid "Do you really want to remove the selected objects?"
-#~ msgstr "Vuoi davvero rimuovere i  progetti selezionati?"
-
-#~ msgid "Deleting"
-#~ msgstr "Cancellando"
-
-#~ msgid "Error deleting object"
-#~ msgstr "Errore nella cancellazione del progetto"
-
-#~ msgid "Do you really want download the selected objects?"
-#~ msgstr "Vuoi veramente scaricare i progetti selezionati?"
-
-#~ msgid "Installing samples"
-#~ msgstr "Installando i samples"
-
-#~ msgid "Do you really want to install samples?"
-#~ msgstr "Vuoi davvero installare i samples?"
-
-#~ msgid "Object saved with success"
-#~ msgstr "Progetto salvato con successo"
-
-#~ msgid "Deleting file"
-#~ msgstr "Cancellando il file"
-
-#~ msgid "Please select at least 1 file"
-#~ msgstr "Si prega di selezionare almeno 1 file"
-
-#~ msgid "Do you really want download the selected files?"
-#~ msgstr "Vuoi veramente scaricare i file selezionati?"
-
-#~ msgid "Public"
-#~ msgstr "Pubblico"
-
-#~ msgid "Default action"
-#~ msgstr "Azione predefinita"
-
-#~ msgid "Saving object"
-#~ msgstr "Salvando il progetto"
 
 #~ msgid "Create account"
 #~ msgstr "Crea un account"
