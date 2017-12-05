@@ -2656,11 +2656,11 @@ msgstr "SSID"
 
 #: fabui/application/views/settings/wireless_tab.php:122
 msgid "Connect to hidden wifi"
-msgstr ""
+msgstr "Connetti ad una rete nascosta"
 
 #: fabui/application/views/settings/wireless_tab.php:130
 msgid "Type here SSID"
-msgstr ""
+msgstr "Scrivi qui il nome della rete WIFI"
 
 #: fabui/application/views/settings/network_js.php:125
 msgid "You need to connect to a network first"
@@ -2686,9 +2686,8 @@ msgid "Please specify a valid IP address"
 msgstr "Si prega di specificare un indirizzo IP valido"
 
 #: fabui/application/views/settings/network_js.php:640
-#, fuzzy
 msgid "Please insert SSID"
-msgstr "Si prega di inserire un disco USB"
+msgstr "Si prega di inserire nome della rete WIFI"
 
 #: fabui/application/views/settings/network_js.php:667
 msgid "Please insert a valid IP address"
@@ -2790,7 +2789,7 @@ msgstr "Leggi di più"
 
 #: fabui/application/views/dashboard/js.php:362
 msgid "FABtotum retweeted"
-msgstr ""
+msgstr "FABtotum ha ritwittato"
 
 #: fabui/application/views/dashboard/instagram.php:32
 msgid "Instagram"
@@ -3198,7 +3197,7 @@ msgstr "Rilascia la levetta"
 #: fabui/application/views/std/task_execute.php:342
 #: fabui/application/views/spool/wizard/step3.php:108
 msgid "Lock the feeding tube in place "
-msgstr "Bocca il tubo di alimentazione del filamento in posizione"
+msgstr "Blocca il tubo di alimentazione del filamento in posizione"
 
 #: fabui/application/views/std/task_execute.php:351
 #: fabui/application/views/spool/wizard/step3.php:28
@@ -3789,15 +3788,13 @@ msgstr "Installa il firmware"
 msgid "Build-date"
 msgstr "Data di costruzione"
 
-#: fabui/application/views/cam/js.php:82
-#: fabui/application/views/cam/js.php:792
+#: fabui/application/views/cam/js.php:82 fabui/application/views/cam/js.php:792
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Trascina file per caricarli"
 
-#: fabui/application/views/cam/js.php:82
-#: fabui/application/views/cam/js.php:792
+#: fabui/application/views/cam/js.php:82 fabui/application/views/cam/js.php:792
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "or click"
@@ -3841,7 +3838,7 @@ msgstr "Elaborazione file"
 
 #: fabui/application/views/cam/js.php:322
 msgid "No profiles available for this head"
-msgstr ""
+msgstr "Non ci sono profili disponibili per questa testa"
 
 #: fabui/application/views/cam/js.php:492
 msgid "Regenerate GCode"
@@ -3980,9 +3977,8 @@ msgid "Invert colors"
 msgstr "Inverti i colori"
 
 #: fabui/application/views/cam/laser_tab.php:105
-#, fuzzy
 msgid "Fan on"
-msgstr "Ventola spenta"
+msgstr "Ventola accesa"
 
 #: fabui/application/views/cam/laser_tab.php:109
 msgid "Profile"
@@ -4364,7 +4360,7 @@ msgstr "Iscriviti"
 
 #: fabui/application/views/layout/default/ribbon.php:14
 msgid "Lock screen"
-msgstr ""
+msgstr "Blocca schermo"
 
 #: fabui/application/views/layout/default/ribbon.php:17
 msgid "You are connected with your FABID account"
@@ -4383,6 +4379,8 @@ msgid ""
 "We are sorry, but FABUI doesn't work properly without JavaScript enabled."
 "<br>Please enable JavaScript and reload the page"
 msgstr ""
+"Siamo spiacenti, ma la FABUI non funziona correttamente senza JavaScript "
+"abilitato. Prego abilitare JavaScript e ricarica la pagina"
 
 #: fabui/application/views/layout/default/top.php:21
 #: fabui/application/views/layout/debug/top.php:21
@@ -4493,9 +4491,8 @@ msgstr "Versione installata"
 
 #: fabui/application/views/updates/index/js.php:384
 #: fabui/application/views/updates/index/js.php:466
-#, fuzzy
 msgid "Hide details"
-msgstr "Visualliza dettagli"
+msgstr "Nascondi dettagli"
 
 #: fabui/application/views/updates/index/js.php:429
 msgid "Please select at least 1 bundle, firmware or boot update"
@@ -4586,8 +4583,7 @@ msgstr "Override"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
@@ -4880,9 +4876,8 @@ msgid "Apply a good amount of force when pushing"
 msgstr "Applicare una buona dose di forza mentre si preme"
 
 #: fabui/application/views/cam/help/inputs.php:13
-#, fuzzy
 msgid "Target width"
-msgstr "Target"
+msgstr "Larghezza"
 
 #: fabui/application/views/cam/help/inputs.php:14
 msgid ""
@@ -4891,9 +4886,8 @@ msgid ""
 msgstr ""
 
 #: fabui/application/views/cam/help/inputs.php:17
-#, fuzzy
 msgid "Target height"
-msgstr "Target"
+msgstr "Altezza"
 
 #: fabui/application/views/cam/help/inputs.php:18
 msgid ""
@@ -4902,9 +4896,8 @@ msgid ""
 msgstr ""
 
 #: fabui/application/views/cam/help/inputs.php:21
-#, fuzzy
 msgid "Laser dot size"
-msgstr "Offset Punto Laser"
+msgstr "Dimensione punto laser"
 
 #: fabui/application/views/cam/help/inputs.php:22
 msgid "If burning lines are visible reduce it untill they are gone"
@@ -4991,7 +4984,6 @@ msgid "Deleting file"
 msgstr "Cancellando il file"
 
 #: fabui/application/views/projectsmanager/edit/js.php:169
-#, fuzzy
 msgid "Error deleting file(s)"
 msgstr "Errore nella cancellazione del/i file(s)"
 
@@ -5000,16 +4992,14 @@ msgid "Please select at least 1 file"
 msgstr "Si prega di selezionare almeno 1 file"
 
 #: fabui/application/views/projectsmanager/edit/js.php:216
-#, fuzzy
 msgid "Do you really want to remove the selected files?"
-msgstr "Vuoi davvero rimuovere i  progetti selezionati?"
+msgstr "Vuoi davvero rimuovere i  file selezionati="
 
 #: fabui/application/views/projectsmanager/edit/js.php:251
 msgid "Do you really want download the selected files?"
 msgstr "Vuoi veramente scaricare i file selezionati?"
 
 #: fabui/application/views/projectsmanager/edit/widget.php:15
-#, fuzzy
 msgid "You don't have permissions to edit this project"
 msgstr "Non hai i permessi per modificare questo progetto"
 
@@ -5028,7 +5018,6 @@ msgid "Default action"
 msgstr "Azione predefinita"
 
 #: fabui/application/views/projectsmanager/add/js.php:39
-#, fuzzy
 msgid "You can upload 10 files at a time"
 msgstr "Puoi caricare 10 file alla volta"
 
@@ -5052,7 +5041,6 @@ msgid "Usb disk"
 msgstr "Disco Usb"
 
 #: fabui/application/views/projectsmanager/add/widget.php:65
-#, fuzzy
 msgid "Please insert USB disk"
 msgstr "Si prega di inserire un disco USB"
 
@@ -5193,18 +5181,16 @@ msgid "Plastic type"
 msgstr ""
 
 #: fabui/application/views/projectsmanager/file/gcodeviewer/index.php:114
-#, fuzzy
 msgid "ABS"
-msgstr "AWB"
+msgstr "ABS"
 
 #: fabui/application/views/projectsmanager/file/gcodeviewer/index.php:115
 msgid "PLA"
-msgstr ""
+msgstr "PLA"
 
 #: fabui/application/views/projectsmanager/file/gcodeviewer/index.php:116
-#, fuzzy
 msgid "Nozzle size"
-msgstr "Nozzle"
+msgstr "Dimensione ugello"
 
 #: fabui/application/views/projectsmanager/file/gcodeviewer/index.php:117
 msgid "Printer hourly cost"
@@ -5232,38 +5218,32 @@ msgstr ""
 
 #: fabui/application/views/projectsmanager/file/stats/widget.php:5
 #: fabui/application/views/projectsmanager/file/stats/widget.php:66
-#, fuzzy
 msgid "No data available"
-msgstr "Nuovi aggiornamenti disponibili"
+msgstr "Dati non disponibili"
 
 #: fabui/application/views/projectsmanager/file/stats/widget.php:36
 msgid "attempts"
 msgstr "Temperatura ugello"
 
 #: fabui/application/views/projectsmanager/file/add/js.php:39
-#, fuzzy
 msgid "You can upload 10 files at time"
 msgstr "Puoi caricare 10 file alla volta"
 
 #: fabui/application/views/projectsmanager/file/add/js.php:130
-#, fuzzy
 msgid "Adding files"
-msgstr "Aggiungi Files"
+msgstr "Aggiungendo i file"
 
 #: fabui/application/views/projectsmanager/file/add/widget.php:34
-#, fuzzy
 msgid "Please insert usb disk"
 msgstr "Si prega di inserire un disco USB"
 
 #: fabui/application/views/projectsmanager/file/view/js.php:51
-#, fuzzy
 msgid "Please select an action"
-msgstr "Si prega di selezionare una testa"
+msgstr "Prego selezionare un azione"
 
 #: fabui/application/views/projectsmanager/file/view/js.php:86
-#, fuzzy
 msgid "Error deleting file"
-msgstr "Errore nella cancellazione del/i file(s)"
+msgstr "Errore nella cancellazione del file"
 
 #: fabui/application/views/projectsmanager/file/view/js.php:96
 msgid "Do you really want to remove this file"
@@ -5271,12 +5251,11 @@ msgstr "Vuoi veramente rimuovere il file selezionato?"
 
 #: fabui/application/views/projectsmanager/file/view/js.php:144
 msgid "The file was saved"
-msgstr ""
+msgstr "Il file è stato salvato"
 
 #: fabui/application/views/projectsmanager/file/view/widget.php:5
-#, fuzzy
 msgid "You don't have permissions to edit this file"
-msgstr "Non hai i permessi per modificare questo progetto"
+msgstr "Non hai i permessi per modificare questo file"
 
 #: fabui/ext/py/s_scan.py:158 fabui/ext/py/r_scan.py:145
 msgid "Post-processing started"

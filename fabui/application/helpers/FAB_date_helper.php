@@ -119,6 +119,10 @@ if(! function_exists('years_menu'))
 		$CI->load->helper('form');
 		$years = array();
 		
+		if($min < 2017){
+		    $min = 2020;
+		}
+		
 		for($i = $max; $i <= $min; $i++){
 			$years[$i] = $i;
 		}

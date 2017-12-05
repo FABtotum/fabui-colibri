@@ -18,7 +18,7 @@
 			<!-- the ID links are fetched via AJAX to the ajax container "ajax-notifications" -->
 			<div class="btn-group btn-group-justified" data-toggle="buttons">
 				<label class="btn btn-default"><input type="radio" name="activity" id="/fabui/updates/notifications"><?php echo _("Updates");?> <span class="updates-number"></span></label>
-				<label class="btn btn-default"><input type="radio" name="activity" id="/fabui/control/notifications"><?php echo _("Notify");?></label>
+				
 				<label class="btn btn-default"><input type="radio" name="activity" id="/fabui/control/runningTasks"><?php echo _("Tasks");?> <span class="tasks-number"></span></label>
 			</div>
 			<!-- notification content -->
