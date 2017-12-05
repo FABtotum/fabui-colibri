@@ -1,54 +1,60 @@
 {
-	"general": {
-		"dot_size": "0.1",
-		"levels": "6"
-	},
-	"layer": {
-		"cut": {
-			"color": {
-				"r": "255",
-				"g": "0",
-				"b": "0"
-			},
-			"pwm": "255",
-			"burn": "100"
-		},
-		"engrave": {
-			"color": {
-				"r": "0",
-				"g": "127.9845",
-				"b": "0"
-			},
-			"pwm": "255",
-			"burn": "1000"
-		}
-	},
-	"pwm": {
-		"type": "layer",
-		"in_min": "0",
-		"in_max": "0",
-		"out_min": "0",
-		"out_max": "0",
-		"value": "255",
-		"off_during_travel": "true"
-	},
-	"speed": {
-		"type": "layer",
-		"in_min": "0",
-		"in_max": "255",
-		"out_min": "0",
-		"out_max": "255",
-		"burn": "1000",
-		"travel": "10000"
-	},
-	"skip": {
-		"type": "modulo",
-		"mod": "1",
-		"on": ["0"]
-	},
-	"info": {
-		"name": "Balsa Cut & Engrave (DXF)",
-		"material": "5mm Balsa wood",
-		"description": "using cut and engrave layer names."
-	}
+    "general": {
+        "dot_size": "0.1", 
+        "fan": true, 
+        "head": [
+            4
+        ], 
+        "levels": "6"
+    }, 
+    "info": {
+        "description": "using cut and engrave layer names.", 
+        "material": "5mm Balsa wood", 
+        "name": "Balsa Cut & Engrave (DXF)"
+    }, 
+    "layer": {
+        "cut": {
+            "burn": "100", 
+            "color": {
+                "b": "0", 
+                "g": "0", 
+                "r": "255"
+            }, 
+            "pwm": "255"
+        }, 
+        "engrave": {
+            "burn": "1000", 
+            "color": {
+                "b": "0", 
+                "g": "127.9845", 
+                "r": "0"
+            }, 
+            "pwm": "255"
+        }
+    }, 
+    "pwm": {
+        "in_max": "0", 
+        "in_min": "0", 
+        "off_during_travel": "true", 
+        "out_max": "0", 
+        "out_min": "0", 
+        "type": "layer", 
+        "value": "255"
+    }, 
+    "skip": {
+        "mod": "1", 
+        "on": [
+            "0"
+        ], 
+        "type": "modulo"
+    }, 
+    "speed": {
+        "burn": "1000", 
+        "in_max": "255", 
+        "in_min": "0", 
+        "out_max": "255", 
+        "out_min": "0", 
+        "travel": "10000", 
+        "type": "layer"
+    }
 }

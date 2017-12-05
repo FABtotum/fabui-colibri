@@ -29,6 +29,7 @@
 		initLaserDropZone();
 		disableButton(".action-button");
 		$(".action-button").on('click', doAction);
+		$("#laser-head").on('change', setLaserHead);
 		$("#laser-profile").on('change', setLaserProfile);
 		$("#laser-speed-mode").on('change', onLaserSpeedModeChange);
 		$("#laser-pwm-mode").on('change', onLaserPWMmodeChange);
@@ -313,9 +314,22 @@
 	function setLaserProfile()
 	{
 		selected_laser_profile = laser_profiles[$("#laser-profile").val()];
-		$("#laser-profile-description").html(selected_laser_profile["info"]["description"]);
-		loadSlicerProfile(selected_laser_profile);
-	} 
+
+		if(typeof selected_laser_profile != "undefined"){
+			$("#laser-profile-description").html(selected_laser_profile["info"]["description"]);
+			loadSlicerProfile(selected_laser_profile);
+		}else{
+			fabApp.showWarningAlert("<?php echo _("No profiles available for this head");  ?>");
+		}
+	}
+	/**
+	*
+	**/
+	function setLaserHead()
+	{
+		populateLaserProfilesOptions();
+		$("#laser-profile").trigger('change');
+	}
 	/***
 	*
 	**/
@@ -330,6 +344,7 @@
 	{
 		//general
 		$("[name='general-dot_size']").val(profile.general.dot_size);
+		$("[name='fan']").prop('checked', profile.general.fan);
 
 		//speed
 		$("#laser-speed-mode").val(profile.speed.type).trigger('change');
@@ -448,16 +463,21 @@
 	**/
 	function populateLaserProfilesOptions()
 	{
+		var head = $("#laser-head").val();
 		var options = '';
-
+	
 		$.each(laser_profiles, function(i, profile) {
-			if(laser_file_type == 'VECTOR' && profile.pwm.type == "layer" && profile.speed.type == "layer")
-			{
-				options += '<option value="'+i+'">'+profile.info.name+' ['+profile.info.material+']</option>';
-			}
-			else if(laser_file_type != 'VECTOR' && profile.pwm.type != "layer" && profile.speed.type != "layer")
-			{
-				options += '<option value="'+i+'">'+profile.info.name+' ['+profile.info.material+']</option>';
+	
+			if(jQuery.inArray( parseInt(head), profile.general.head ) >= 0 ){
+			
+    			if(laser_file_type == 'VECTOR' && profile.pwm.type == "layer" && profile.speed.type == "layer")
+    			{
+    				options += '<option value="'+i+'">'+profile.info.name+' ['+profile.info.material+']</option>';
+    			}
+    			else if(laser_file_type != 'VECTOR' && profile.pwm.type != "layer" && profile.speed.type != "layer")
+    			{
+    				options += '<option value="'+i+'">'+profile.info.name+' ['+profile.info.material+']</option>';
+    			}
 			}
 		});
 
@@ -495,6 +515,7 @@
 		data['invert']        = $("#invert").is(":checked")?"yes":"no";
 		data['filename']      = uploadedFile.file_name;
 		data['file']          = uploadedFile.full_path;
+		data['fan']           = $("#fan").is(":checked")?"yes":"no";
 		
 		data.preset = getCurrentLaserSettings();
 		disableButton("#laser-generate-gcode");

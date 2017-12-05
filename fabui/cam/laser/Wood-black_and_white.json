@@ -1,1 +1,40 @@
-{"general":{"dot_size":"0.1","levels":"1"},"pwm":{"type":"const","in_min":"50","in_max":"255","out_min":"0","out_max":"255","value":"255","off_during_travel":"true"},"speed":{"type":"const","in_min":"0","in_max":"255","out_min":"0","out_max":"255","burn":"1500","travel":"10000"},"skip":{"type":"modulo","mod":"1","on":["0"]},"info":{"name":"Engraving - Black And white","material":"Wood","description":"Laser engraving on Wood, Black And White images."}}
+{
+    "general": {
+        "dot_size": "0.1", 
+        "fan": true, 
+        "head": [
+            4
+        ], 
+        "levels": "1"
+    }, 
+    "info": {
+        "description": "Laser engraving on Wood, Black And White images.", 
+        "material": "Wood", 
+        "name": "Engraving - Black And white"
+    }, 
+    "pwm": {
+        "in_max": "255", 
+        "in_min": "50", 
+        "off_during_travel": "true", 
+        "out_max": "255", 
+        "out_min": "0", 
+        "type": "const", 
+        "value": "255"
+    }, 
+    "skip": {
+        "mod": "1", 
+        "on": [
+            "0"
+        ], 
+        "type": "modulo"
+    }, 
+    "speed": {
+        "burn": "1500", 
+        "in_max": "255", 
+        "in_min": "0", 
+        "out_max": "255", 
+        "out_min": "0", 
+        "travel": "10000", 
+        "type": "const"
+    }
+}
