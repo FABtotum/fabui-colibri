@@ -7,3 +7,15 @@
 .smart-form .radio {
 	line-height: 15px !important;
 }
+
+.file-image-preview {
+	width: 25px;
+}
+
+.tooltip-image-preview {
+	width: 200px;
+}
+
+.popover-content {
+	padding: 5px !important;
+}

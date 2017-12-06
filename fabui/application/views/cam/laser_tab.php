@@ -18,8 +18,32 @@
 	</div>
 	<div class="row" id="laser-slice-form-container">
 		<div class="col-sm-4 hidden text-center" id="laser-image-container">
-			<div class="row margin-bottom-10"></div>
-			<div class="row">
+			<div class="row margin-bottom-10">
+				<div class="col-sm-12">
+					<button id="upload-new-file" class="btn btn-default pull-left"><i class="fa fa-plus"></i> <?php echo _("Upload new file");?></button>
+				</div>
+			</div>
+			<div class="row  margin-bottom-10">
+				<div class="col-sm-12">
+					<div class="owl-carousel owl-theme">
+						<div class="well well-light">
+							<div>
+    							<img class="img-responsive" id="laser-image-source">
+    							<span id="no-preview" class="font-md"><?php echo _('Preview not available for this file');?></span>
+							</div>
+						</div>
+						<div class="well well-light">
+							<div>
+								<img class="img-responsive" id="laser-preview-source">
+								<span id="no-gcode-alert" class="font-md"><?php echo _('Click on "Generate GCode" to show preview');?></span>
+							</div>
+							<div id="engraving-note" class="margin-bottom-10 hidden">
+								<span class="note pull-left"><?php echo _("Note: black is being burned by the laser");?></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			<!--  
 				<div class="col-sm-12">
 					<ul id="laserImagesTab" class="nav nav-tabs">
 						<li class="active"><a href="#laser-preview-image-tab" data-toggle="tab"><?php echo _("Preview");?></a></li>
@@ -43,6 +67,7 @@
 						</div>
 					</div>
 				</div>
+				-->
 			</div>
 		</div>
 		<div class="col-sm-8 hidden" id="laser-slice-settings-container">
@@ -52,11 +77,11 @@
 				</div>
 				<div class="col-sm-6  col-xs-6">
 					<div class="row">
-						<div class="col-sm-10 col-xs-9">
-							<button type="button" data-action="open-save-modal" data-type="laser" id="laser-save-gcode" class="btn btn-default btn-block action-button"> <?php echo _("Waiting for the GCode"); ?></button>
-						</div>
-						<div class="col-sm-2 col-xs-3">
-							<button type="button" title="<?php echo _("Direct download"); ?>"  class="btn btn-default btn-block action-button" data-action="download-gcode" id="download-button"><i class="fa fa-download"></i></button>
+						<div class="col-sm-12 text-right">
+							<span class="laser-status"> <?php echo _("Waiting for the GCode"); ?> </span>
+							<a href="javascript:void(0);" title="<?php echo _("Save GCode");?>"     class="btn btn-default action-button" data-action="open-save-modal" id="laser-save-gcode"><i class="fa fa-save"></i></a>
+							<a href="javascript:void(0);" title="<?php echo _("Engrave");?>"        class="btn btn-default action-button" data-action="engrave-gcode"   id="laser-engrave-gcode"><i class="fa icon-communication-143"></i></a>
+							<a href="javascript:void(0);" title="<?php echo _("Download GCode");?>" class="btn btn-default action-button" data-action="download-gcode"  id="download-button"><i class="fa fa-download"></i></a>
 						</div>
 					</div>
 				</div>

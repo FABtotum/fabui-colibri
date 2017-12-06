@@ -56,6 +56,7 @@ if( !isset($get_files_url) ) $get_files_url = 'std/getFiles/' + $type;
 					{
 						$(':radio[value='+idFile+']').attr('checked', 'checked');
 					}
+					pageSetUp();
 				},
 				"sAjaxSource": "<?php echo site_url($get_files_url) ?>",
 				"fnRowCallback": function (row, data, index ){

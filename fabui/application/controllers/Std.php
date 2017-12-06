@@ -76,14 +76,24 @@ class Std extends FAB_Controller {
 		//load text helper
 		$this->load->helper('text_helper');
 		$aaData = array();
-		foreach($data as $file){ 
+		foreach($data as $file){
+		    
+		    $attributes = json_decode($file['attributes'], true);
+		    
+		    $preview = '';
+		    
+		    if(isset($attributes['preview_file']) && file_exists($attributes['preview_file'])){
+		        $preview = '<a href="javascript:void(0);" data-placement="right" rel="popover-hover" class="pull-right hidden-xs" data-orginal-title="'.$file['client_name'].'" data-content="<img class=\'tooltip-image-preview\' src=\''.str_replace('/var/www', '', $attributes['preview_file']).'\'>" data-html="true"><i class="fa fa-eye"></i></a>';
+		    }
+		    
 			$td0 = '<label class="radio"><input type="radio" name="create-file" value="'.$file['id_file'].'"><i></i></label>';
-			$td1 = '<i class="fa fa-cube hidden-xs"></i> <span class="hidden-xs">'.$file['client_name'].'</span><span class="hidden-md hidden-sm hidden-lg">'.ellipsize($file['orig_name'], 35).'</span>';
+			$td1 = '<i class="fa fa-cube hidden-xs"></i> <span class="hidden-xs">'.$file['client_name'].'</span><span class="hidden-md hidden-sm hidden-lg">'.ellipsize($file['orig_name'], 35).'</span>'.$preview;
 			$td2 = '<i class="fa fa-cubes"></i> <span class="hidden-xs">'.$file['name'].'</span><span class="hidden-md hidden-sm hidden-lg">'.ellipsize($file['name'], 35).'</span>';
 			$td3 = $file['id_file'];
 			$td4 = $file['id_object'];
 			$aaData[] = array($td0, $td1, $td2, $td3, $td4);
 		}
+		
 		return $aaData;
 	}
 	
