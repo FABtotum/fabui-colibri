@@ -253,9 +253,18 @@ function scrollToTop()
 function getDataFromForm(form)
 {
 	var fields = $( form + " :input" ).serializeArray();
+	
+	//add checkbokx inputs
+	fields = fields.concat(
+	jQuery(form +' input[type=checkbox]').map(
+			function() {
+				return {"name": this.name, "value": $(this).is(':checked')}
+           }).get()
+    );
 	var data = {};
 	jQuery.each( fields, function( index, object ) {
 		data[object.name] = object.value;
 	});
+	
 	return data;
 }

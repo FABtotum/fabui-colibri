@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
 
-__authors__ = "Marco Rizzuto, Daniel Kesler"
+__authors__ = "Marco Rizzuto, Daniel Kesler, Krios Mane"
 __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
@@ -108,6 +108,7 @@ def resume_additive(app, args=None, lang='en_US.UTF-8'):
             z = float(content['position']['z'])
             e = float(content['position']['e'])
             
+            app.macro("G28 XY",                         "ok", 20,   _("Homing"), verbose=False)
             app.macro("G92 E{0:.16f}".format(e),        "ok", 2,    _("Set extuder length"), verbose=False)
             app.macro("G90",                            "ok", 2,    _("Setting abs position"), verbose=False )
             app.macro("G0 X{0} Y{1} F6000".format(x,y), "ok", 60,   _("Restore XY position"), verbose=False )

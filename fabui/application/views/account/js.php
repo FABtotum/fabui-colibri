@@ -10,9 +10,10 @@
 ?>
 <script type="text/javascript">
 	$(document).ready(function() {
+		drawBreadCrumb(["<?php echo _("Account"); ?>"]);
 		initLanguage();
 		initFormValidator();
-		$("#save").on('click', saveUser);
+		$("#save").on('click', handleSaveButton);
 		$("#fabid-connect-button").on('click', fabIDConnect);
 		$("#fabid-disconnect-button").on('click', askFabIDDisconnect);
 		
@@ -68,7 +69,42 @@
 			}
 		});
 
+		$("#password-form").validate({
+			// Rules for form validation
+			rules : {
+				old_password : {
+					required : true,
+				},
+				new_password : {
+					required : true
+				},
+				confirm_new_password : {
+					required: true,
+					equalTo: "#new_password"
+				}
+			},
+			// Messages for form validation
+			messages : {
+				old_password : {
+					required : "<?php echo _("Please enter your old password");?>",
+				},
+				new_password : {
+					required : "<?php echo _("Please enter your new password")?>"
+				},
+				confirm_new_password : {
+					required : "<?php echo _("Please confirm your new password")?>",
+					equalTo: "<?php echo _("Please enter the same password as above"); ?>"
+					
+				}
+			},
+			// Do not change code below
+			errorPlacement : function(error, element) {
+				error.insertAfter(element.parent());
+			}
+		});
 
+		
+		
 		$("#fabid-form").validate({
 			// Rules for form validation
 			rules : {
@@ -120,13 +156,8 @@
 				enableButton('#save');
 				$("#save").html('<i class="fa fa-save"></i> Save');
 
-				$.smallBox({
-					title : "Settings",
-					content : "<?php echo _("Account information saved");?>",
-					color : "#5384AF",
-					timeout: 3000,
-					icon : "fa fa-check bounce animated"
-				});
+				fabApp.showInfoAlert("<?php echo _("Account information saved");?>", '<?php echo _("Edit profile");?>');
+			
 
 				$("#user-name").html(response.first_name + ' ' + response.last_name );
 				
@@ -204,6 +235,79 @@
 			setTimeout(function() {
 				location.reload();
 			}, 2500);
+		});
+	}
+	/**
+	*
+	**/
+	function handleSaveButton()
+	{
+		var active_tab = $(".tab-pane.active").attr("id");
+		switch(active_tab){
+			case 'account-tab':
+				saveUser();
+				break;
+			case 'password-tab':
+				saveNewPassword();
+				break;
+			case 'notifications-tab':
+				saveNotifications();
+				break;
+		}
+	}
+	/**
+	*
+	*/
+	function saveNewPassword()
+	{
+		if($("#password-form").valid()){
+			var data = getDataFromForm("#password-form");
+			$("#save").html('<i class="fa fa-save"></i> <?php echo _("Saving") ?>');
+			disableButton("#save");
+			$.ajax({
+				type: 'post',
+				url: '<?php echo site_url('account/saveNewPassword/'); ?>',
+				data : data,
+				dataType: 'json'
+			}).done(function(response) {
+
+				if(response.status == false){
+					fabApp.showErrorAlert(response.message, '<?php echo _("Change password");?>');
+				}else{
+					fabApp.showInfoAlert(response.message, '<?php echo _("Change password");?>');
+				}
+
+				enableButton('#save');
+				$("#save").html('<i class="fa fa-save"></i> Save');
+			});
+			
+		}
+	}
+	/**
+	*
+	**/
+	function saveNotifications()
+	{
+		var data = getDataFromForm("#notifications-form");
+
+		$("#save").html('<i class="fa fa-save"></i> <?php echo _("Saving") ?>');
+		disableButton("#save");
+		$.ajax({
+			type: 'post',
+			url: '<?php echo site_url('account/saveNotifications/'); ?>',
+			data : data,
+			dataType: 'json'
+		}).done(function(response) {
+
+			if(response.status == false){
+				fabApp.showErrorAlert(response.message, '<?php echo _("Change password");?>');
+			}else{
+				fabApp.showInfoAlert(response.message, '<?php echo _("Change password");?>');
+			}
+
+			enableButton('#save');
+			$("#save").html('<i class="fa fa-save"></i> Save');
+			
 		});
 	}
 </script>

@@ -23,6 +23,7 @@
 		$user['settings'] = json_decode($user['settings'], true);
 		
 		$this->session->set_userdata('user', $user);
+		//print_r($user);
 		//$this->session->user = $user;
 		$data['user'] = $user;
 		$data['fabid_active'] = $this->config->item('fabid_active') == 1;
@@ -35,15 +36,16 @@
 		
 		$headerToolbar = '
 			<ul class="nav nav-tabs pull-right">
-				<li class="active"><a data-toggle="tab" href="#account-tab"> ' . _("Account"). '</a></li>
-				<li><a data-toggle="tab" href="#settings-tab"> '._("Settings").'</a></li>
+				<li class="active"><a data-toggle="tab" href="#account-tab"> ' . _("Edit profile"). '</a></li>
+				<li><a data-toggle="tab" href="#password-tab"> '._("Change password").'</a></li>
+                <li><a data-toggle="tab" href="#notifications-tab"> '._("Notification settings").'</a></li>
 			</ul>';
 		
 		$widgeFooterButtons = $this->smart->create_button( _("Save"), 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'user-widget';
-		$widget->header = array('icon' => 'fa-user', "title" => "<h2>". _("Your account"). "</h2>");
+		$widget->header = array('icon' => 'fa-user', "title" => "<h2>". _("Your account"). "</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('account/widget', $data, true ), 'class'=>'', 'footer'=>$widgeFooterButtons);
 		
 		$data['widget'] = $widget->print_html(true);
@@ -103,6 +105,80 @@
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode( $this->session->user ));
 		
+	}
+	
+	/**
+	 * save new password
+	 */
+	public function saveNewPassword($userId = '')
+	{
+	    $this->load->model('User', 'user');
+	    
+	    if($userId == ''){
+	        $userId = $this->session->user['id'];
+	    }
+	    
+	    $user = $this->user->get($userId, 1);
+	    $data = $this->input->post();
+	    
+	    if(!$user){
+	        $result['status'] = false;
+	        $result['message'] = _("Invalid user");
+	        $this->output->set_content_type('application/json')->set_output(json_encode($result));
+	    }
+	    
+	    if(md5($data['old_password']) != $user['password']){
+	        $result['status'] = false;
+	        $result['message'] = _("Old password was not recognized");
+	        $this->output->set_content_type('application/json')->set_output(json_encode($result));
+	    }
+	    
+	    $updateData['password'] =  md5($data['new_password']);
+	    //update user new password
+	    $this->user->update($userId, $updateData);
+	    
+	    $result['status'] = true;
+	    $result['message'] = _("Your password has been changed successfully");
+	    $this->output->set_content_type('application/json')->set_output(json_encode($result));
+	    
+	}
+	
+	/**
+	 * 
+	 */
+	public function saveNotifications($userId = '')
+	{
+	    //load libraries, helpers, model, config
+	    $this->load->helper(array('utility_helper', 'fabtotum_helper'));
+	    $this->load->model('User', 'user');
+	    
+	    if($userId == ''){
+	        $userId = $this->session->user['id'];
+	    }
+	    
+	    $user = $this->user->get($userId, 1);
+	    
+	    $settings = json_decode($user['settings'], true);
+	    
+	    $postData = $this->input->post();
+	    $data     = arrayFromPost($postData);
+	    
+	    $settings['notifications'] = $data;
+	    
+	    //update session
+	    $user['settings'] = $settings;
+	    $this->session->set_userdata('user', $user);
+	    
+	    
+	    $updateData['settings'] =  json_encode($settings);
+	    //update notifications db record
+	    $this->user->update($userId, $updateData);
+	    
+	    $result['status'] = true;
+	    $result['message'] = _("Notifications settings has been changed successfully");
+	    $this->output->set_content_type('application/json')->set_output(json_encode($result));
+	    
+	    
 	}
  }
  

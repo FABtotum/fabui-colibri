@@ -168,7 +168,8 @@ class Std extends FAB_Controller {
 			if($user)
 			{
 				$settings = json_decode($user['settings'], 1);
-				$lang_code = $settings['language'];
+				
+				$lang_code = $settings['locale'];
 				setLanguage($lang_code);
 				echo "Language: ".$lang_code.PHP_EOL;
 			}
@@ -220,11 +221,12 @@ class Std extends FAB_Controller {
 		
 		$content .= '<br><br>';
 		
-		$content .= '<h2>Info</h2>';
-		$content .= '<p>Started on: '.$task_start.'</p>';
-		$content .= '<p>Finished on: '.$task_start.'</p>';
-		$content .= '<p>Duration: '.$task_duration.'</p>';
-		$content .= '<p>File: '.$task_file.'</p>';
+		$content .= '<p class="callout">';
+		$content .= '<h4>Info</h4>';
+		$content .= '<br>Started on: '.$task_start;
+		$content .= '<br>Finished on: '.$task_start;
+		$content .= '<br>Duration: '.$task_duration;
+		$content .= '<br>File: '.$task_file.'</p>';
 		
 		$result = send_via_noreply($email, $first_name, $last_name, $subject, $content);
 		
