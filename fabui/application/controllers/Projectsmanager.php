@@ -191,16 +191,28 @@ class Projectsmanager extends FAB_Controller {
 		
 		if(is_array($attributes) and $attributes)
 		{
-			$dimensions = $attributes['dimensions'];
-
-			$x = number_format($dimensions['x'], 2, '.', '');
-			$y = number_format($dimensions['y'], 2, '.', '');
-			$z = number_format($dimensions['z'], 2, '.', '');
-
-			$data['dimesions'] = $x . ' x ' . $y . ' x ' . $z . ' mm';
-			$data['filament'] = number_format($attributes['filament'], 2, '.', '') . ' mm';
-			$data['number_of_layers'] = $attributes['number_of_layers'];
-			$data['estimated_time'] = $attributes['estimated_time'];
+		    
+		    if(isset($attributes['dimensions'])){
+		    
+			     $dimensions = $attributes['dimensions'];
+			     $x = number_format($dimensions['x'], 2, '.', '');
+			     $y = number_format($dimensions['y'], 2, '.', '');
+			     $z = number_format($dimensions['z'], 2, '.', '');
+			     $data['dimesions'] = $x . ' x ' . $y . ' x ' . $z . ' mm';
+		    }
+		    if(isset($attributes['filament'])) {
+		        $data['filament'] = number_format($attributes['filament'], 2, '.', '') . ' mm';
+		    }
+		    
+		    if(isset($attributes['number_of_layers'])){
+		        $data['number_of_layers'] = $attributes['number_of_layers'];
+		    }
+		    
+		    if(isset($attributes['estimated_time'])){
+		        $data['estimated_time'] = $attributes['estimated_time'];
+		    }
+			
+		    
 		}
 		else
 		{

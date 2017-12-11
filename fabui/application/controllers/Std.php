@@ -78,7 +78,9 @@ class Std extends FAB_Controller {
 		$aaData = array();
 		foreach($data as $file){
 		    
-		    $attributes = json_decode($file['attributes'], true);
+		    
+		    
+		    $attributes = isset($file['attributes']) ?  json_decode($file['attributes'], true) : array();
 		    
 		    $preview = '';
 		    
