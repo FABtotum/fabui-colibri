@@ -171,13 +171,17 @@ class GCodePusher(object):
         self.progress_monitor = None
         self.db = Database(self.config)
     
-    def __send_task_email(self):
+    def send_notification_email(self, action):
         
-        if not self.task_stats["send_email"]:
-            return
+        if (action == self.TASK_COMPLETED):
+            method = 'sendTaskEmail'
+        elif (action == self.TASK_PAUSED):
+            method = 'sendPauseTaskEmail'
+        
         
         import shlex, subprocess
-        cmd = 'sudo -u www-data php /usr/share/fabui/index.php Std sendTaskEmail/{0}'.format( self.task_stats['id'] )
+        cmd = 'sudo -u www-data php /usr/share/fabui/index.php Std {0}/{1}'.format( method, self.task_stats['id'] )
+        
         try:
             output = subprocess.check_output( shlex.split(cmd) )
             self.trace( _("Email sent") )
@@ -404,8 +408,8 @@ class GCodePusher(object):
                     
         self.file_done_callback()
         
-        if self.task_stats['status'] == self.TASK_COMPLETED:
-            self.__send_task_email()
+        if (self.task_stats['status'] == self.TASK_COMPLETED) and (not self.task_stats["send_email"]):
+            self.send_notification_email(self.TASK_COMPLETED)
     
     def finish_task(self):
         self.gcs.finish()
@@ -821,4 +825,5 @@ class GCodePusher(object):
     
     def resume(self):
         self.gcs.resume()
+        
 

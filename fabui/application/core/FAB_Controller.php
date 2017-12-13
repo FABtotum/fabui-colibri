@@ -18,6 +18,7 @@
 	protected $layoutDebug         = 'layout/debug';
 	protected $layoutLock          = 'layout/lock';
 	protected $layoutPopup         = 'layout/popup';
+	protected $layoutEmail         = 'layout/email';
 	protected $template            = array();
 	protected $content             = ''; //
 	protected $is_ajax_request     = false;
@@ -199,7 +200,6 @@
 		$data['jsScripts'] = jScriptsInclusion($this->js);
 		$data['jsInLine'] = $this->jsInLine;
 		$data['cssInLine'] = $this->cssInline;
-		$data['translations']      = $this->load->view('layout/translations_js', null, true);
 		
 		$this->template['head']    = $this->load-> view($this->layoutRestore.'/head',    $data, true);
 		$this->template['scripts'] = $this->load-> view($this->layoutRestore.'/scripts', $data, true);
@@ -255,6 +255,19 @@
 		$this->template['ga']      = $this->load->view('layout/ga',                           $data, true);
 		$this->template['content'] = $this->content;
 		$this->parser->parse($this->layoutPopup.'/structure', $this->template);
+	}
+	
+	/**
+	 * 
+	 */
+	public function layoutEmail($return=false)
+	{
+	    $data['cssInLine'] = $this->cssInline;
+	    
+	    $this->template['head'] = $this->load->view($this->layoutEmail.'/head', $data, true);
+	    $this->template['content'] = $this->content;
+	    
+	    return $this->parser->parse($this->layoutEmail.'/structure', $this->template, $return);
 	}
 	
 	/***

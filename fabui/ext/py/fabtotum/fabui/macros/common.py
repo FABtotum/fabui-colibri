@@ -272,14 +272,18 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     
     app.trace( _("Setting head values..."))
     
+    
+    # disable head
+    app.macro( "M793 S0",   "ok", 2, _("Disabling previous installed head's settings"), verbose=False)
+    
+    # Working mode
+    app.macro( "M450 S{0}".format( mode ),   "ok", 5, _("Configuring working mode"), verbose=False)
+    
     # Set installed head ID
     if fw_id is not None:
         #~ gcs.send( "M793 S{0}".format( fw_id ), group='bootstrap' )
         app.macro( "M793 S{0}".format( fw_id ),   "ok", 2, _("Setting soft ID to {0}").format(fw_id), verbose=False)
-    
-    # Working mode
-    app.macro( "M450 S{0}".format( mode ),   "ok", 2, _("Configuring working mode"), verbose=False)
-    
+     
     # Set head PID
     if pid != "":
         app.macro(head['pid'],   "ok *", 2, _("Configuring PID"), verbose=False)
