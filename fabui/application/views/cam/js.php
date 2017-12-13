@@ -29,7 +29,7 @@
 		initLaserDropZone();
 		disableButton(".action-button");
 		$(".action-button").on('click', doAction);
-		$("#laser-head").on('change', setLaserHead);
+		$("#head").on('change', setLaserHead);
 		$("#laser-profile").on('change', setLaserProfile);
 		$("#laser-speed-mode").on('change', onLaserSpeedModeChange);
 		$("#laser-pwm-mode").on('change', onLaserPWMmodeChange);
@@ -319,16 +319,12 @@
 		$("#laser-upload-container").slideUp(function(){
 			$("#laser-slice-settings-container").removeClass("hidden");
 			$("#laser-image-container").removeClass("hidden");
-
-			console.log($("#laser-image-source").lenght);
 			
 			if($("#laser-image-source").length > 0){
     			var height = $("#laser-image-source").parent().height();
     			$("#laser-preview-source").parent().css("min-height", height);
     			$("#no-gcode-alert").css('top', (height/2));
-			}
-			
-			
+			}			
 		});
 	}
 	/**
@@ -486,7 +482,7 @@
 	**/
 	function populateLaserProfilesOptions()
 	{
-		var head = $("#laser-head").val();
+		var head = $("#head").val();
 		var options = '';
 	
 		$.each(laser_profiles, function(i, profile) {
@@ -529,7 +525,7 @@
 		data['invert']        = $("#invert").is(":checked")?"yes":"no";
 		data['filename']      = uploadedFile.file_name;
 		data['file']          = uploadedFile.full_path;
-		data['fan']           = $("#fan").is(":checked")?"yes":"no";
+		
 		
 		data.preset = getCurrentLaserSettings();
 		disableButton("#laser-generate-gcode");
@@ -616,6 +612,7 @@
 		preset['info-material'] = selected_laser_profile["info"]["material"];
 		preset['info-description'] = selected_laser_profile["info"]["description"];
 		preset['general-levels'] = $("#grey-levels-slider-value").html();
+		preset['fan'] = $("#fan").is(':checked');
 
 		if(laser_file_type == 'VECTOR')
 		{

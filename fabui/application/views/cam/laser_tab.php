@@ -106,7 +106,7 @@
 											<label class="label"><?php echo _("Head");?></label>
 											<label class="select">
 												
-												<?php echo form_dropdown('laser-head', $laser_heads, $installed_head['fw_id'], 'id="laser-head"'); ?><i></i>
+												<?php echo form_dropdown('head', $laser_heads, $installed_head['fw_id'], 'id="head"'); ?><i></i>
 											</label>
 										</section>
 										<div class="row dimensions-container">
