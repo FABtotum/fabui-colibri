@@ -29,5 +29,6 @@
     "fan",
     "feeder"
   ],
-  "plugins": []
+  "plugins": [],
+  "order": 10
 }

@@ -18,5 +18,6 @@
     "print",
     "fan"
   ],
-  "plugins": []
+  "plugins": [],
+  "order": 30
 }

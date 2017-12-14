@@ -20,5 +20,6 @@
 	"plugins": [
 		"fab_laser"
 	],
-	"focus": "2"
+	"focus": "2",
+	"order": 50
 }

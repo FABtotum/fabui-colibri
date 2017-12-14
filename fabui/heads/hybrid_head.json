@@ -19,5 +19,6 @@
         "mill",
         "fan"
     ],
-	"plugins": []
+	"plugins": [],
+	"order": 60
 }
