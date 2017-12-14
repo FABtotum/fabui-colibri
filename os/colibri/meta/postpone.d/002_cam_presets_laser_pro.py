@@ -38,6 +38,6 @@ for file in laser_presets_factory_files:
         with open(file, 'w') as outfile:
             json.dump(preset, outfile, sort_keys=True, indent=4)
         ### copy to userdata
-        userdata_file = laser_presets_userdata_folder + os.path.basename(file)
-        shutil.copy(file, userdata_file)
+    userdata_file = laser_presets_userdata_folder + os.path.basename(file)
+    shutil.copy(file, userdata_file)
         
