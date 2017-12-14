@@ -9,15 +9,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Std extends FAB_Controller {
+   
     
-    protected $runningTask = false;
-    
-    function __construct(){
+   
+   function __construct(){
         parent::__construct();
-        if(!$this->input->is_cli_request()){
-            $this->load->model('Tasks', 'tasks');
-            $this->runningTask = $this->tasks->getRunning();
-        }
+       
     }
     
     public function index(){
@@ -78,12 +75,8 @@ class Std extends FAB_Controller {
         $aaData = array();
         foreach($data as $file){
             
-            
-            
             $attributes = isset($file['attributes']) ?  json_decode($file['attributes'], true) : array();
-            
             $preview = '';
-            
             if(isset($attributes['preview_file']) && file_exists($attributes['preview_file'])){
                 $preview = '<a href="javascript:void(0);" data-placement="right" rel="popover-hover" class="pull-right hidden-xs" data-orginal-title="'.$file['client_name'].'" data-content="<img class=\'tooltip-image-preview\' src=\''.str_replace('/var/www', '', $attributes['preview_file']).'\'>" data-html="true"><i class="fa fa-eye"></i></a>';
             }
@@ -99,6 +92,9 @@ class Std extends FAB_Controller {
         return $aaData;
     }
     
+    /**
+     * 
+     */
     public function saveQualityRating($taskID, $rating)
     {
         $this->load->model('Tasks', 'tasks');
@@ -125,21 +121,12 @@ class Std extends FAB_Controller {
         $this->output->set_content_type('application/json')->set_output(json_encode(array($result)));
     }
     
+    /**
+     * 
+     */
     public function safetyCheck($feature, $bed_in_place)
     {
         $this->load->helper('fabtotum_helper');
-        /*switch($bed_in_place)
-         {
-         case "yes":
-         $bed_check = 'true';
-         break;
-         case "no":
-         $bed_check = false;
-         break;
-         default:
-         $bed_check = 'any';
-         break;
-         }*/
         $result = safetyCheck($feature, $bed_in_place);
         $this->output->set_content_type('application/json')->set_output(json_encode($result));
     }
@@ -218,14 +205,17 @@ class Std extends FAB_Controller {
         $subject = _('Task') .' '. _($task['status']);
         $page    = $this->layoutEmail(true);
         
+        
         //send email
-        $result = send_via_noreply($user['email'], $user['first_name'], $user['last_name'],  $subject, $page);
+        $result['status'] = send_via_noreply($user['email'], $user['first_name'], $user['last_name'],  $subject, $page);
+        if($result['status'] == false) $result['message'] = _("Email sending failed ");
+        
         
         $this->output->set_content_type('application/json')->set_output(json_encode($result));
     }
     
     /**
-     *
+     * 
      */
     public function sendPauseTaskEmail($taskID = 0)
     {
@@ -246,14 +236,20 @@ class Std extends FAB_Controller {
         $task = $this->tasks->get($taskID, 1);
         
         $userID = $task['user'];
+        $fileID = $task['id_file'];
+        $projectID = $task['id_object'];
         
         //get user
         $user = $this->user->get($userID, 1);
+        //get file
+        $file = $this->files->get($fileID, 1);
+        //get project
+        $project = $this->objects->get($projectID, 1);
         
         // user settings
         $user_settings = json_decode($user['settings'], 1);
         
-        $result = false;
+        $result['status'] = false;
         
         //send only if notification is active
         if(isset($user_settings['notifications']['tasks']['pause']) && $user_settings['notifications']['tasks']['pause'] == 'true'){
@@ -264,16 +260,28 @@ class Std extends FAB_Controller {
             
             $data['task'] = $task;
             $data['user'] = $user;
+            $data['file'] = $file;
+            $data['project'] = $project;
             
             $this->content = $this->load->view('std/email/pause', $data, true );
             $page    = $this->layoutEmail(true);
             
-            $subject = _('Task') .' '. _('paused');
-        
+            
+            $construction_sign = "\xF0\x9F\x9A\xA7";
+            $pushpin = "\xF0\x9F\x93\x8C";
+            $triangle = "\xF0\x9F\x94\xBD";
+            
+            $subject = $pushpin.' "'.$file['client_name'].'" '. _('paused');
+            
             //send email
-            $result = send_via_noreply($user['email'], $user['first_name'], $user['last_name'],  $subject, $page);
+            $result['status'] = send_via_noreply($user['email'], $user['first_name'], $user['last_name'],  $subject, $page);
+            
+            if($result['status'] == false) $result['message'] = _("Email sending failed ");
+            
+        }else{
+            $result['message'] = _("Notification disabled");
         }
-        
+
         $this->output->set_content_type('application/json')->set_output(json_encode($result));
     }
     

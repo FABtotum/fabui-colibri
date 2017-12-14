@@ -53,6 +53,7 @@
 			"drawCallback" : function(oSettings) {
 				transformLinks($('#files-table'));
 				$(".file-action").on('click', do_file_action);
+				pageSetUp();
 			},
 			"sAjaxSource": "<?php echo site_url("projectsmanager/getFiles/".$object['id']) ?>",
 			"fnRowCallback": function (row, data, index ){

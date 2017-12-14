@@ -183,8 +183,14 @@ class GCodePusher(object):
         cmd = 'sudo -u www-data php /usr/share/fabui/index.php Std {0}/{1}'.format( method, self.task_stats['id'] )
         
         try:
-            output = subprocess.check_output( shlex.split(cmd) )
-            self.trace( _("Email sent") )
+            output = subprocess.check_output( shlex.split(cmd) ).strip()
+            json_output = json.loads(output)
+            
+            if(json_output['status'] == True):
+                self.trace( _("Email sent") )
+            else:
+                self.trace( json_output['message'] )
+                
         except subprocess.CalledProcessError as e:
             self.trace( _("Email sending failed") )
             

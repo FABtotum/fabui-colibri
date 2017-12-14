@@ -270,9 +270,28 @@ if(!function_exists('loadHeads'))
 			$heads[$key] = json_decode($content , true);
 			$heads[$key]['filename'] = $key;
 		}
-
+		
+		//sort heads
+		uasort($heads, 'headsSort');
+		
 		return $heads;
 	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('headsSort')){
+    
+    /*
+     *
+     */
+    function headsSort($itemA, $itemB)
+    {
+        if(!isset($itemA['order']) || !isset($itemB['order'])) return true;
+        
+        if ($itemA['order'] == $itemB['order']) {
+            return 0;
+        }
+        return ($itemA['order'] > $itemB['order']) ? 1 : -1;
+    }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('loadHead')){
@@ -1714,6 +1733,9 @@ if(!function_exists('send_via_noreply'))
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('send_password_reset'))
 {
+    /**
+     * @deprecated
+     */
 	function send_password_reset($email)
 	{
 		$CI =& get_instance();

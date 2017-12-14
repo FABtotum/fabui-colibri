@@ -148,6 +148,7 @@ class Head extends FAB_Controller {
 		$data = array();
 		
 		$data['heads'] = loadHeads();
+		
 		$data['installed_head'] = getInstalledHeadInfo();
 		$data['capabilities'] = array(
 			'*'     => _("All"),

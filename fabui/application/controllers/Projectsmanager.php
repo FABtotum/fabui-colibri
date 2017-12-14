@@ -108,6 +108,7 @@ class Projectsmanager extends FAB_Controller {
 			$this->addJSFile('/assets/js/plugin/datatables/dataTables.bootstrap.min.js'); //datatable
 			$this->addJSFile('/assets/js/plugin/datatable-responsive/datatables.responsive.min.js'); //datatable */
 			$this->addJsInLine($this->load->view('projectsmanager/edit/js',$data['object'], true));
+			$this->addCSSFile('/assets/css/projectsmanager/style.css');
 			$this->addCSSInLine('<style>.dropdown-menu {min-width: auto !important;}</style>');
 			
 			$this->view();
@@ -1184,10 +1185,18 @@ class Projectsmanager extends FAB_Controller {
 		$files = $this->files->getByObject($objectID);
 		//crate response for datatable
 		$aaData = array();
+		
 		foreach($files as $file){
+		    
+		    $attributes = isset($file['attributes']) ?  json_decode($file['attributes'], true) : array();
+		    $preview = '';
+		    if(isset($attributes['preview_file']) && file_exists($attributes['preview_file'])){
+		        $preview = '<a href="javascript:void(0);" data-placement="right" rel="popover-hover" class="pull-right hidden-xs" data-orginal-title="'.$file['client_name'].'" data-content="<img class=\'tooltip-image-preview\' src=\''.str_replace('/var/www', '', $attributes['preview_file']).'\'>" data-html="true"><i class="fa fa-eye"></i></a>';
+		    }
+		    
 			$temp = array();
 			$temp[] = '<label class="checkbox-inline"><input type="checkbox" id="check_'.$file['id'].'" name="checkbox-inline" class="checkbox"><span></span> </label>';
-			$temp[] = '<a href="projectsmanager/file/'.$file['id'].'">'.str_replace($file['file_ext'], '', $file['client_name']).'</a>';
+			$temp[] = '<a href="projectsmanager/file/'.$file['id'].'">'.str_replace($file['file_ext'], '', $file['client_name']).'</a> '.$preview;
 			$temp[] = $file['print_type'];
 			$temp[] = $file['note'];
 			

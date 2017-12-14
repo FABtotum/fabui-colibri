@@ -52,7 +52,7 @@
 							<input type="password" name="password">
 							<b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> <?php echo _("Enter your password");?></b> </label>
 						<div class="note">
-							<a href="#" id="forgot-password"><?php echo _("Forgot password?");?></a>
+							<a href="javascript:void(0);" id="forgot-password"><?php echo _("Forgot password?");?></a>
 						</div>
 					</section>
 					<section>

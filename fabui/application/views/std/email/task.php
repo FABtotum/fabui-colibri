@@ -7,7 +7,7 @@
  *
  */
 ?>
-<h3>Hi, <?php echo $user['first_name'];?> <?php echo $user['last_name'];?></h3>
+<h3>Hi, <?php echo $user['first_name'];?> </h3>
 <p class="lead"><?php echo pyformat(_('this e-mail is to inform you that the last {0} you started was just {1}.'), array($task['type'], $task['status'])); ?></p>
 <!-- Callout Panel -->
 <div class="callout">

@@ -318,9 +318,34 @@
 		if($user)
 		{
 			$response['user'] = true;
+			
+			
+			$uid        = $user['id'];
+			$first_name = $user['first_name'];
+			$last_name  = $user['last_name'];
+			
+			$token = md5($uid . '-' . $email . '-' . time());
+			
+			$user_settings = json_decode($user['settings'], true);
+			$user_settings['token'] = $token;
+			
+			$data_update['settings'] = json_encode($user_settings);
+			$this->user->update( $uid, $data_update);
+			$complete_url = site_url().'login/resetPassword/'.$token;
+			
+			$key_unicode = "\xF0\x9F\x94\x91";
+			$subject = $key_unicode.' '. _("Password Reset");
+			
+			$data['user'] = $user;
+			$data['complete_url']  = $complete_url;
+			
+			$this->content = $this->load->view('std/email/reset_password', $data, true );
+			$page = $this->layoutEmail(true);
+			
+			$sent = send_via_noreply($user['email'], $user['first_name'], $user['last_name'],  $subject, $page);
 		}
 		
-		$sent = send_password_reset($email);
+		//$sent = send_password_reset($email);
 		$response['sent'] = $sent;
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($response));

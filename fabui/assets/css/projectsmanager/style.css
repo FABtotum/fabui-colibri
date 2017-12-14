@@ -40,3 +40,15 @@
 .file-content-small {
 	min-height: 300px;
 }
+
+.file-image-preview {
+	width: 25px;
+}
+
+.tooltip-image-preview {
+	width: 200px;
+}
+
+.popover-content {
+	padding: 5px !important;
+}
