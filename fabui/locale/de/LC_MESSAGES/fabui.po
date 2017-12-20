@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-20 11:35+0100\n"
+"POT-Creation-Date: 2017-12-20 17:31+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: FABTeam\n"
@@ -34,10 +34,10 @@ msgstr "Herstellen"
 #: fabui/application/controllers/Create.php:92
 #: fabui/application/controllers/Create.php:144
 #: fabui/application/helpers/projects_manager_helper.php:34
-#: fabui/application/helpers/fabtotum_helper.php:1779
+#: fabui/application/helpers/fabtotum_helper.php:1781
 #: fabui/application/views/install/wizard.php:231
 #: fabui/application/views/login/register_form.php:77
-#: fabui/application/views/head/index.php:203
+#: fabui/application/views/head/index.php:205
 #: fabui/application/views/head/install.php:206
 #: fabui/application/views/create/print_js.php:58
 msgid "Print"
@@ -48,9 +48,9 @@ msgstr "Drücken"
 #: fabui/application/controllers/Create.php:222
 #: fabui/application/controllers/Create.php:273
 #: fabui/application/helpers/projects_manager_helper.php:43
-#: fabui/application/helpers/fabtotum_helper.php:1780
-#: fabui/application/views/head/index.php:142
-#: fabui/application/views/head/index.php:204
+#: fabui/application/helpers/fabtotum_helper.php:1782
+#: fabui/application/views/head/index.php:144
+#: fabui/application/views/head/index.php:206
 #: fabui/application/views/head/install.php:207
 #: fabui/application/views/create/mill_js.php:58
 msgid "Mill"
@@ -60,12 +60,12 @@ msgstr "Fräsen"
 #: fabui/application/controllers/Settings.php:324
 #: fabui/application/controllers/Head.php:158
 #: fabui/application/controllers/Scan.php:86
-#: fabui/application/helpers/fabtotum_helper.php:1781
+#: fabui/application/helpers/fabtotum_helper.php:1783
 #: fabui/application/views/install/js.php:346
 #: fabui/application/views/install/wizard.php:163
 #: fabui/application/views/settings/hardware_widget.php:58
 #: fabui/application/views/settings/network_js.php:419
-#: fabui/application/views/head/index.php:150
+#: fabui/application/views/head/index.php:152
 #: fabui/application/views/scan/wizard/main.php:24
 msgid "Scan"
 msgstr "Scan"
@@ -110,9 +110,9 @@ msgstr "Bett kalibrierung"
 #: fabui/application/config/menu.php:90
 #: fabui/application/views/jog/widget.php:70
 #: fabui/application/views/jog/widget.php:151
-#: fabui/application/views/std/task_execute.php:84
-#: fabui/application/views/std/task_execute.php:145
-#: fabui/application/views/std/task_execute.php:248
+#: fabui/application/views/std/task_execute.php:94
+#: fabui/application/views/std/task_execute.php:155
+#: fabui/application/views/std/task_execute.php:266
 #: fabui/application/views/layout/default/top.php:91
 #: fabui/application/views/layout/debug/top.php:89
 #: fabui/application/views/nozzle/pidtune/widget.php:14
@@ -137,8 +137,8 @@ msgid "Angle calibration"
 msgstr "Winkelkalibrierung"
 
 #: fabui/application/config/menu.php:121
-#: fabui/application/views/head/index.php:158
-#: fabui/application/views/head/index.php:205
+#: fabui/application/views/head/index.php:160
+#: fabui/application/views/head/index.php:207
 #: fabui/application/views/head/install.php:208
 #: fabui/assets/js/tours/0050_feeder.js:39
 msgid "Feeder"
@@ -161,8 +161,8 @@ msgstr "Einrasten"
 #: fabui/application/config/menu.php:146
 #: fabui/application/views/jog/widget.php:65
 #: fabui/application/views/std/jog_setup.php:91
-#: fabui/application/views/head/index.php:161
-#: fabui/application/views/head/index.php:206
+#: fabui/application/views/head/index.php:163
+#: fabui/application/views/head/index.php:208
 #: fabui/application/views/head/install.php:209
 msgid "4th axis"
 msgstr "Vierte Achse"
@@ -228,7 +228,7 @@ msgstr "Plugins"
 #: fabui/application/controllers/Bed.php:48
 #: fabui/application/controllers/Nozzle.php:217
 #: fabui/application/views/fourthaxis/main_widget.php:16
-#: fabui/application/views/std/task_execute.php:396
+#: fabui/application/views/std/task_execute.php:414
 #: fabui/application/views/nozzle/pidtune/js.php:229
 #: fabui/application/views/scan/settings/sweep.php:88
 #: fabui/application/views/feeder/engage/widget.php:13
@@ -287,7 +287,7 @@ msgstr "Licht"
 #: fabui/application/views/systeminfo/widget.php:329
 #: fabui/application/views/settings/hardware_js.php:146
 #: fabui/application/views/settings/network_js.php:240
-#: fabui/application/views/head/index.php:417
+#: fabui/application/views/head/index.php:419
 #: fabui/application/views/head/install.php:375
 #: fabui/application/views/cam/js.php:712
 #: fabui/application/views/cam/main_widget.php:86
@@ -378,7 +378,7 @@ msgstr "Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut"
 #: fabui/application/controllers/Plugin.php:53
 #: fabui/application/views/plugin/js.php:110
 #: fabui/application/views/plugin/js.php:257
-#: fabui/application/views/head/index.php:27
+#: fabui/application/views/head/index.php:28
 #: fabui/application/views/updates/index/js.php:561
 msgid "Installed"
 msgstr "Installiert"
@@ -439,7 +439,7 @@ msgid "New user created successfully"
 msgstr "Neuer Benutzer wurde erfolgreich erstellt"
 
 #: fabui/application/controllers/Login.php:337
-#: fabui/application/helpers/fabtotum_helper.php:1761
+#: fabui/application/helpers/fabtotum_helper.php:1763
 msgid "Password Reset"
 msgstr "Passwort zurücksetzen"
 
@@ -510,7 +510,7 @@ msgid "running"
 msgstr "laufend"
 
 #: fabui/application/controllers/Control.php:330
-#: fabui/application/controllers/Std.php:274
+#: fabui/application/controllers/Std.php:285
 msgid "paused"
 msgstr "pausiert"
 
@@ -571,21 +571,22 @@ msgstr ""
 msgid "Groups"
 msgstr ""
 
-#: fabui/application/controllers/Cam.php:337
+#: fabui/application/controllers/Cam.php:336
 msgid "Generated with FABtotum CAM toolbox"
 msgstr ""
 
-#: fabui/application/controllers/Std.php:205
+#: fabui/application/controllers/Std.php:212
 msgid "Task"
 msgstr "Aufgabe"
 
-#: fabui/application/controllers/Std.php:211
-#: fabui/application/controllers/Std.php:279
+#: fabui/application/controllers/Std.php:218
+#: fabui/application/controllers/Std.php:290
 #, fuzzy
 msgid "Email sending failed "
 msgstr "Email Versand gescheitert"
 
-#: fabui/application/controllers/Std.php:282
+#: fabui/application/controllers/Std.php:221
+#: fabui/application/controllers/Std.php:293
 #, fuzzy
 msgid "Notification disabled"
 msgstr "Feeder wird konfiguriert"
@@ -619,7 +620,7 @@ msgid "Choose mode"
 msgstr "Wählen Sie den Modus"
 
 #: fabui/application/controllers/Spool.php:67
-#: fabui/application/views/std/task_execute.php:303
+#: fabui/application/views/std/task_execute.php:321
 msgid "Filament"
 msgstr ""
 
@@ -790,7 +791,7 @@ msgid "Get more heads"
 msgstr "Mehr Köpfe bekommen"
 
 #: fabui/application/controllers/Head.php:54
-#: fabui/application/views/head/index.php:50
+#: fabui/application/views/head/index.php:52
 msgid ""
 "Before clicking \"Install\", make sure the head is properly locked in place"
 msgstr ""
@@ -801,7 +802,7 @@ msgstr ""
 #: fabui/application/views/install/js.php:236
 #: fabui/application/views/install/js.php:242
 #: fabui/application/views/plugin/js.php:102
-#: fabui/application/views/head/index.php:27
+#: fabui/application/views/head/index.php:28
 msgid "Install"
 msgstr "Installieren"
 
@@ -817,8 +818,8 @@ msgid "Milling"
 msgstr "Fräsen"
 
 #: fabui/application/controllers/Head.php:157
-#: fabui/application/views/head/index.php:145
-#: fabui/application/views/head/index.php:207
+#: fabui/application/views/head/index.php:147
+#: fabui/application/views/head/index.php:209
 msgid "Laser"
 msgstr ""
 
@@ -957,7 +958,11 @@ msgstr "Rot"
 msgid "Black"
 msgstr "Schwarz"
 
-#: fabui/application/helpers/fabtotum_helper.php:1762
+#: fabui/application/helpers/fabtotum_helper.php:1712
+msgid "Your FABtotum"
+msgstr ""
+
+#: fabui/application/helpers/fabtotum_helper.php:1764
 msgid ""
 "Hi {0},<br><br>We've generated a URL to reset your password. If you did not "
 "request to reset your password or if you've changed your mind, simply ignore "
@@ -1175,8 +1180,8 @@ msgstr "Wird übersetzt"
 #: fabui/application/views/std/task_execute_js.php:1310
 #: fabui/application/views/head/install_js.php:124
 #: fabui/application/views/head/install_js.php:467
-#: fabui/application/views/head/js.php:643
-#: fabui/application/views/head/js.php:675
+#: fabui/application/views/head/js.php:645
+#: fabui/application/views/head/js.php:677
 #: fabui/application/views/cam/js.php:537
 #: fabui/application/views/cam/js.php:538
 #: fabui/application/views/nozzle/pidtune/js.php:242
@@ -1360,7 +1365,7 @@ msgstr ""
 #: fabui/application/views/login/login_form.php:44
 #: fabui/application/views/account/widget.php:36
 #: fabui/application/views/account/widget.php:92
-#: fabui/application/views/std/task_execute.php:59
+#: fabui/application/views/std/task_execute.php:66
 msgid "Email"
 msgstr "Email"
 
@@ -1603,7 +1608,7 @@ msgstr "Einstellung zur Relativ positionierung"
 #: fabui/application/views/systeminfo/widget.php:311
 #: fabui/application/views/plugin/main_widget.php:103
 #: fabui/application/views/settings/network_widget.php:18
-#: fabui/application/views/head/index.php:110
+#: fabui/application/views/head/index.php:112
 #: fabui/application/views/head/install.php:113
 #: fabui/application/views/feeder/profiles/widget.php:97
 #: fabui/application/views/projectsmanager/edit/widget.php:26
@@ -1664,7 +1669,7 @@ msgstr "Baudatum"
 
 #: fabui/application/views/systeminfo/widget.php:43
 #: fabui/application/views/plugin/main_widget.php:12
-#: fabui/application/views/firmware/main_widget.php:41
+#: fabui/application/views/firmware/main_widget.php:52
 msgid "Author"
 msgstr "Autor"
 
@@ -1765,7 +1770,7 @@ msgstr "Weisen Sie Ihrem FABtotum einen Namen zu"
 #: fabui/application/views/jog/widget.php:246
 #: fabui/application/views/jog/widget.php:304
 #: fabui/application/views/settings/network_widget.php:29
-#: fabui/application/views/head/index.php:126
+#: fabui/application/views/head/index.php:128
 #: fabui/application/views/head/install.php:129
 #: fabui/application/views/history/main_widget.php:60
 #: fabui/application/views/feeder/profiles/widget.php:115
@@ -1877,8 +1882,8 @@ msgstr "Aktualisieren"
 #: fabui/application/views/plugin/js.php:166
 #: fabui/application/views/head/install_js.php:520
 #: fabui/application/views/head/install_js.php:569
-#: fabui/application/views/head/js.php:505
-#: fabui/application/views/head/js.php:707
+#: fabui/application/views/head/js.php:507
+#: fabui/application/views/head/js.php:709
 #: fabui/application/views/feeder/profiles/js.php:264
 #: fabui/application/views/feeder/profiles/js.php:313
 msgid "Attention"
@@ -1896,10 +1901,10 @@ msgstr "<strong>{0}</strong> Plugin entfernen?"
 #: fabui/application/views/head/install_js.php:537
 #: fabui/application/views/head/install_js.php:571
 #: fabui/application/views/head/install_js.php:586
-#: fabui/application/views/head/js.php:507
-#: fabui/application/views/head/js.php:522
-#: fabui/application/views/head/js.php:709
-#: fabui/application/views/head/js.php:724
+#: fabui/application/views/head/js.php:509
+#: fabui/application/views/head/js.php:524
+#: fabui/application/views/head/js.php:711
+#: fabui/application/views/head/js.php:726
 #: fabui/application/views/cam/js.php:840
 #: fabui/application/views/feeder/profiles/js.php:266
 #: fabui/application/views/feeder/profiles/js.php:281
@@ -1934,10 +1939,10 @@ msgstr "Nein"
 #: fabui/application/views/head/install_js.php:524
 #: fabui/application/views/head/install_js.php:571
 #: fabui/application/views/head/install_js.php:573
-#: fabui/application/views/head/js.php:507
 #: fabui/application/views/head/js.php:509
-#: fabui/application/views/head/js.php:709
+#: fabui/application/views/head/js.php:511
 #: fabui/application/views/head/js.php:711
+#: fabui/application/views/head/js.php:713
 #: fabui/application/views/cam/js.php:840
 #: fabui/application/views/cam/js.php:842
 #: fabui/application/views/feeder/profiles/js.php:266
@@ -2013,7 +2018,7 @@ msgstr "Hardware-Einstellungen gespeichert"
 
 #: fabui/application/views/plugin/main_widget.php:11
 #: fabui/application/views/plugin/main_widget.php:127
-#: fabui/application/views/firmware/main_widget.php:37
+#: fabui/application/views/firmware/main_widget.php:48
 msgid "Version"
 msgstr "Version"
 
@@ -2229,8 +2234,9 @@ msgstr "Erstellen Sie Ihr persönliches Konto"
 #: fabui/application/views/settings/network_js.php:124
 #: fabui/application/views/std/print_setup_js.php:28
 #: fabui/application/views/std/task_wizard.php:26
-#: fabui/application/views/head/index.php:102
+#: fabui/application/views/head/index.php:104
 #: fabui/application/views/head/install.php:105
+#: fabui/application/views/firmware/main_widget.php:9
 #: fabui/application/views/cam/js.php:838
 #: fabui/application/views/myfabtotum/back_url.php:24
 #: fabui/application/views/updates/index/js.php:428
@@ -2371,9 +2377,9 @@ msgid "Extruder target temperature"
 msgstr "Extruder Zieltemperatur"
 
 #: fabui/application/views/jog/widget.php:158
-#: fabui/application/views/std/task_execute.php:173
-#: fabui/application/views/std/task_execute.php:276
-#: fabui/application/views/head/index.php:153
+#: fabui/application/views/std/task_execute.php:185
+#: fabui/application/views/std/task_execute.php:294
+#: fabui/application/views/head/index.php:155
 msgid "Fan"
 msgstr "Ventilator"
 
@@ -2405,9 +2411,9 @@ msgid "Counter-clockwise"
 msgstr ""
 
 #: fabui/application/views/jog/widget.php:180
-#: fabui/application/views/std/task_execute.php:107
-#: fabui/application/views/std/task_execute.php:148
-#: fabui/application/views/std/task_execute.php:253
+#: fabui/application/views/std/task_execute.php:117
+#: fabui/application/views/std/task_execute.php:158
+#: fabui/application/views/std/task_execute.php:271
 #: fabui/application/views/layout/default/top.php:94
 #: fabui/application/views/layout/debug/top.php:92
 #: fabui/assets/js/tours/0020_bed.js:31
@@ -2495,8 +2501,8 @@ msgid "Reply"
 msgstr "Antwort"
 
 #: fabui/application/views/jog/widget.php:373
-#: fabui/application/views/std/task_execute.php:395
-#: fabui/application/views/head/index.php:72
+#: fabui/application/views/std/task_execute.php:413
+#: fabui/application/views/head/index.php:74
 #: fabui/application/views/cam/laser_tab.php:327
 #: fabui/application/views/cam/laser_tab.php:344
 #: fabui/application/views/cam/subscriptions_tab.php:74
@@ -3111,7 +3117,7 @@ msgstr "Letzte"
 
 #: fabui/application/views/std/select_file.php:32
 #: fabui/application/views/std/select_file.php:49
-#: fabui/application/views/std/task_execute.php:134
+#: fabui/application/views/std/task_execute.php:144
 #: fabui/application/views/std/email/task.php:15
 #: fabui/application/views/std/email/pause.php:14
 msgid "File"
@@ -3198,101 +3204,101 @@ msgstr ""
 "Untersucht dei Arbeitsebene, um Bewegungen zu korrigieren, um nicht ebenes "
 "Bett zu berücksichtigen"
 
-#: fabui/application/views/std/task_execute.php:51
+#: fabui/application/views/std/task_execute.php:57
 msgid "Live feeds"
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:52
+#: fabui/application/views/std/task_execute.php:58
 msgid "Controls"
 msgstr "Steuerungen"
 
-#: fabui/application/views/std/task_execute.php:56
+#: fabui/application/views/std/task_execute.php:63
 msgid "Send an email when the task is finished"
 msgstr "Eine E-Mail senden wenn die Aufgabe beendet ist"
 
-#: fabui/application/views/std/task_execute.php:65
-#: fabui/application/views/std/task_execute.php:194
+#: fabui/application/views/std/task_execute.php:73
+#: fabui/application/views/std/task_execute.php:219
 #: fabui/application/views/nozzle/pidtune/js.php:180
 #: fabui/application/views/nozzle/pidtune/js.php:192
 #: fabui/application/views/scan/wizard/step4.php:70
 msgid "Abort"
 msgstr "Abbrechen"
 
-#: fabui/application/views/std/task_execute.php:66
-#: fabui/application/views/std/task_execute.php:197
+#: fabui/application/views/std/task_execute.php:75
+#: fabui/application/views/std/task_execute.php:214
 #: fabui/application/views/scan/wizard/step4.php:67
 #: fabui/application/views/std/task_execute_js.php:1011
 msgid "Pause"
 msgstr "Pausieren"
 
-#: fabui/application/views/std/task_execute.php:92
-#: fabui/application/views/std/task_execute.php:115
+#: fabui/application/views/std/task_execute.php:102
+#: fabui/application/views/std/task_execute.php:125
 msgid "Actual"
 msgstr "Aktuell"
 
-#: fabui/application/views/std/task_execute.php:97
-#: fabui/application/views/std/task_execute.php:120
+#: fabui/application/views/std/task_execute.php:107
+#: fabui/application/views/std/task_execute.php:130
 msgid "Target"
 msgstr "Ziel"
 
-#: fabui/application/views/std/task_execute.php:134
+#: fabui/application/views/std/task_execute.php:144
 #: fabui/application/views/layout/default/top.php:35
 #: fabui/application/views/layout/debug/top.php:35
 msgid "Loading"
 msgstr "Laden"
 
-#: fabui/application/views/std/task_execute.php:139
+#: fabui/application/views/std/task_execute.php:149
 msgid "Layer"
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:139
+#: fabui/application/views/std/task_execute.php:149
 msgid "Current layer"
 msgstr "Aktuelle Schicht"
 
-#: fabui/application/views/std/task_execute.php:139
+#: fabui/application/views/std/task_execute.php:149
 msgid "of"
 msgstr "von"
 
-#: fabui/application/views/std/task_execute.php:139
+#: fabui/application/views/std/task_execute.php:149
 msgid "Total layers"
 msgstr "Gesamtschichten"
 
-#: fabui/application/views/std/task_execute.php:153
+#: fabui/application/views/std/task_execute.php:163
 #: fabui/application/views/scan/wizard/step4.php:24
 msgid "Progress"
 msgstr "Fortschritt"
 
-#: fabui/application/views/std/task_execute.php:159
-#: fabui/application/views/std/task_execute.php:262
+#: fabui/application/views/std/task_execute.php:171
+#: fabui/application/views/std/task_execute.php:280
 msgid "Speed"
 msgstr "Geschwindigkeit"
 
-#: fabui/application/views/std/task_execute.php:166
-#: fabui/application/views/std/task_execute.php:269
+#: fabui/application/views/std/task_execute.php:178
+#: fabui/application/views/std/task_execute.php:287
 msgid "Flow rate"
 msgstr "Fließrate"
 
-#: fabui/application/views/std/task_execute.php:186
+#: fabui/application/views/std/task_execute.php:198
 #: fabui/application/views/scan/wizard/step4.php:60
 msgid "Elapsed time"
 msgstr "Verstrichene Zeit"
 
-#: fabui/application/views/std/task_execute.php:189
+#: fabui/application/views/std/task_execute.php:201
 #, fuzzy
 msgid "Est. time left"
 msgstr "Geschätzte Restzeit"
 
-#: fabui/application/views/std/task_execute.php:201
-#: fabui/application/views/std/task_execute.php:295
+#: fabui/application/views/std/task_execute.php:208
+#: fabui/application/views/std/task_execute.php:313
 msgid "Change filament"
 msgstr "Faden wechseln"
 
-#: fabui/application/views/std/task_execute.php:224
-#: fabui/application/views/std/task_execute.php:226
+#: fabui/application/views/std/task_execute.php:242
+#: fabui/application/views/std/task_execute.php:244
 msgid "Override Z height"
 msgstr "Z-Höhe überschreiben"
 
-#: fabui/application/views/std/task_execute.php:224
+#: fabui/application/views/std/task_execute.php:242
 #, fuzzy
 msgid ""
 "If first layers are too high or too close to the bed, use this function to "
@@ -3303,31 +3309,31 @@ msgstr ""
 "Drucke fein zu kalibrieren. Normalerweise sind 0.05mm Schritten genug, um "
 "einen Unterschied zu machen."
 
-#: fabui/application/views/std/task_execute.php:224
+#: fabui/application/views/std/task_execute.php:242
 #: fabui/application/views/nozzle/height/wizard/mode.php:69
 msgid "Usually 0.05mm increments are enough to make a difference"
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:231
+#: fabui/application/views/std/task_execute.php:249
 msgid "Away from the nozzle"
 msgstr "Weg von der Düse"
 
-#: fabui/application/views/std/task_execute.php:239
+#: fabui/application/views/std/task_execute.php:257
 msgid "Closer to the nozzle"
 msgstr "Näher an der Düse"
 
-#: fabui/application/views/std/task_execute.php:316
+#: fabui/application/views/std/task_execute.php:334
 #: fabui/application/views/spool/wizard/step1.php:30
 msgid "Load"
 msgstr "Laden"
 
-#: fabui/application/views/std/task_execute.php:319
+#: fabui/application/views/std/task_execute.php:337
 #: fabui/application/views/spool/wizard/step1.php:46
 msgid "Unload"
 msgstr "Entladen"
 
-#: fabui/application/views/std/task_execute.php:333
-#: fabui/application/views/std/task_execute.php:357
+#: fabui/application/views/std/task_execute.php:351
+#: fabui/application/views/std/task_execute.php:375
 #: fabui/application/views/spool/wizard/step3.php:47
 #: fabui/application/views/spool/wizard/step3.php:86
 msgid ""
@@ -3337,28 +3343,28 @@ msgstr ""
 "Bereiten Sie den Faden vor indem Sie ihn schräg schneiden. Dies hilft beim "
 "Einsetzen des Glühfadens."
 
-#: fabui/application/views/std/task_execute.php:339
-#: fabui/application/views/std/task_execute.php:384
+#: fabui/application/views/std/task_execute.php:357
+#: fabui/application/views/std/task_execute.php:402
 #: fabui/application/views/spool/wizard/step3.php:105
 msgid "Pull the release lever on the back of the Printing Head PRO."
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:340
+#: fabui/application/views/std/task_execute.php:358
 #: fabui/application/views/spool/wizard/step3.php:106
 msgid "Insert the filament until it starts coming out from the nozzle"
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:341
+#: fabui/application/views/std/task_execute.php:359
 #: fabui/application/views/spool/wizard/step3.php:107
 msgid "Release the release lever "
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:342
+#: fabui/application/views/std/task_execute.php:360
 #: fabui/application/views/spool/wizard/step3.php:108
 msgid "Lock the feeding tube in place "
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:351
+#: fabui/application/views/std/task_execute.php:369
 #: fabui/application/views/spool/wizard/step3.php:28
 msgid ""
 "The Side cover is magnetically locked. Pull the panel confidently in order "
@@ -3367,30 +3373,30 @@ msgstr ""
 "Die Seitenabdeckung ist magnetisch verriegelt. Ziehen Sie die Tafel "
 "zuversichtlich, um auf das Spulenfach zuzugreifen."
 
-#: fabui/application/views/std/task_execute.php:363
+#: fabui/application/views/std/task_execute.php:381
 #: fabui/application/views/spool/wizard/step3.php:66
 msgid ""
 "Insert the filament in the PTFE tube until you reach the feeder (you can "
 "feel it: last cm becomes harder and then you cannot push further)"
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:376
+#: fabui/application/views/std/task_execute.php:394
 #: fabui/application/views/spool/wizard/step3.php:141
 msgid ""
 "Remove the Feeding tube by pushing down the black cap and then pulling the "
 "tube itself."
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:377
+#: fabui/application/views/std/task_execute.php:395
 #, fuzzy
 msgid "Press start to begin procedure"
 msgstr "Vorbereitungsverfahren"
 
-#: fabui/application/views/std/task_execute.php:383
+#: fabui/application/views/std/task_execute.php:401
 msgid "After the filament was pulled out from the nozzle"
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:385
+#: fabui/application/views/std/task_execute.php:403
 #, fuzzy
 msgid "Pull the filament out of the head"
 msgstr "Den Faden automatisch in die Maschine laden"
@@ -3656,245 +3662,245 @@ msgstr "Voreinstellung"
 msgid "Filters"
 msgstr ""
 
-#: fabui/application/views/head/index.php:71
+#: fabui/application/views/head/index.php:73
 #: fabui/application/views/head/install.php:51
 #: fabui/application/views/head/install.php:74
 #: fabui/application/views/feeder/profiles/widget.php:48
 msgid "More details"
 msgstr "Mehr Details"
 
-#: fabui/application/views/head/index.php:85
+#: fabui/application/views/head/index.php:87
 #: fabui/application/views/head/install.php:88
 #: fabui/application/views/feeder/profiles/widget.php:72
 #, fuzzy
 msgid "Advanced settings"
 msgstr "Kopfeinstellungen"
 
-#: fabui/application/views/head/index.php:94
+#: fabui/application/views/head/index.php:96
 #: fabui/application/views/head/install.php:97
 msgid "Head settings"
 msgstr "Kopfeinstellungen"
 
-#: fabui/application/views/head/index.php:102
+#: fabui/application/views/head/index.php:104
 #: fabui/application/views/head/install.php:105
 #: fabui/application/views/feeder/profiles/widget.php:89
 msgid ""
 "changing these settings may affect the proper functioning of the printer"
 msgstr ""
 
-#: fabui/application/views/head/index.php:117
+#: fabui/application/views/head/index.php:119
 #: fabui/application/views/head/install.php:120
 #: fabui/application/views/feeder/profiles/widget.php:104
 msgid "URL"
 msgstr ""
 
-#: fabui/application/views/head/index.php:134
+#: fabui/application/views/head/index.php:136
 #: fabui/application/views/head/install.php:137
 msgid "Capabilities"
 msgstr "Fähigkeiten"
 
-#: fabui/application/views/head/index.php:139
+#: fabui/application/views/head/index.php:141
 #, fuzzy
 msgid "3D Print"
 msgstr "Drucken"
 
-#: fabui/application/views/head/index.php:168
+#: fabui/application/views/head/index.php:170
 #: fabui/application/views/head/install.php:171
 #: fabui/application/views/feeder/profiles/widget.php:198
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:316
 msgid "Custom initialization"
 msgstr "Benutzerdefinierte Initialisierung"
 
-#: fabui/application/views/head/index.php:180
+#: fabui/application/views/head/index.php:182
 #: fabui/application/views/head/install.php:183
 msgid "Working mode"
 msgstr "Arbeitsmodus"
 
-#: fabui/application/views/head/index.php:192
+#: fabui/application/views/head/index.php:194
 #: fabui/application/views/head/install.php:195
 msgid "Soft ID"
 msgstr ""
 
-#: fabui/application/views/head/index.php:217
+#: fabui/application/views/head/index.php:219
 #: fabui/application/views/head/install.php:219
 msgid "PID"
 msgstr ""
 
-#: fabui/application/views/head/index.php:224
+#: fabui/application/views/head/index.php:226
 #: fabui/application/views/head/install.php:226
 msgid "Thermistor"
 msgstr ""
 
-#: fabui/application/views/head/index.php:234
+#: fabui/application/views/head/index.php:236
 #: fabui/application/views/head/install.php:236
 msgid "Max temperature"
 msgstr "Max. Temperatur"
 
-#: fabui/application/views/head/index.php:240
+#: fabui/application/views/head/index.php:242
 #: fabui/application/views/head/install.php:242
 msgid "Min temperature"
 msgstr "Min. Temperatur"
 
-#: fabui/application/views/head/index.php:254
+#: fabui/application/views/head/index.php:256
 #: fabui/application/views/head/install.php:256
 msgid "Min RPM"
 msgstr "Min. RPM"
 
-#: fabui/application/views/head/index.php:261
+#: fabui/application/views/head/index.php:263
 #: fabui/application/views/head/install.php:263
 msgid "Max RPM"
 msgstr "Max. RPM"
 
-#: fabui/application/views/head/index.php:272
+#: fabui/application/views/head/index.php:274
 #: fabui/application/views/head/install.php:274
 #: fabui/application/views/feeder/profiles/widget.php:125
 msgid "Steps per unit"
 msgstr "Schritte pro Einheit"
 
-#: fabui/application/views/head/index.php:278
+#: fabui/application/views/head/index.php:280
 #: fabui/application/views/head/install.php:280
 #: fabui/application/views/feeder/profiles/widget.php:131
 msgid "Tube length (mm)"
 msgstr "Rohrlänge (mm)"
 
-#: fabui/application/views/head/index.php:286
+#: fabui/application/views/head/index.php:288
 #: fabui/application/views/head/install.php:288
 msgid "Max E acceleration (mm/s<sup>2</sup>)"
 msgstr "Max. E Beschleunigung (mm/s<sup>2</sup>)"
 
-#: fabui/application/views/head/index.php:292
+#: fabui/application/views/head/index.php:294
 #: fabui/application/views/head/install.php:294
 msgid "Max E feedrate (mm/s)"
 msgstr "Max. E Vorschub (mm/s)"
 
-#: fabui/application/views/head/index.php:298
+#: fabui/application/views/head/index.php:300
 #: fabui/application/views/head/install.php:300
 msgid "Max E jerk (mm)"
 msgstr "Max. E Ruck (mm)"
 
-#: fabui/application/views/head/index.php:307
+#: fabui/application/views/head/index.php:309
 #: fabui/application/views/head/install.php:309
 #: fabui/application/views/feeder/profiles/widget.php:183
 msgid "Retract acceleration (mm/s<sup>2</sup>)"
 msgstr "Rückzugs-Beschleunigung  (mm/s<sup>2</sup>)"
 
-#: fabui/application/views/head/index.php:313
+#: fabui/application/views/head/index.php:315
 #: fabui/application/views/head/install.php:315
 #: fabui/application/views/feeder/profiles/widget.php:176
 msgid "Retraction speed (mm/s)"
 msgstr "Rückzugs-Geschwindigkeit (mm/s)"
 
-#: fabui/application/views/head/index.php:319
+#: fabui/application/views/head/index.php:321
 #: fabui/application/views/head/install.php:321
 #: fabui/application/views/feeder/profiles/widget.php:189
 msgid "Retraction amount (mm)"
 msgstr "Rückzugs-Betrag (mm)"
 
-#: fabui/application/views/head/index.php:332
+#: fabui/application/views/head/index.php:334
 #: fabui/application/views/head/install.php:334
 #: fabui/application/views/feeder/profiles/widget.php:142
 #, fuzzy
 msgid "Steps per degree"
 msgstr "Schritte pro Einheit"
 
-#: fabui/application/views/head/index.php:340
+#: fabui/application/views/head/index.php:342
 #: fabui/application/views/head/install.php:342
 #, fuzzy
 msgid "Max Aacceleration (mm/s<sup>2</sup>)"
 msgstr "Max. Beschleunigung (mm/s<sup>2</ sup>)"
 
-#: fabui/application/views/head/index.php:346
+#: fabui/application/views/head/index.php:348
 #: fabui/application/views/head/install.php:348
 #, fuzzy
 msgid "Max A feedrate (mm/s)"
 msgstr "Max. E Vorschub (mm/s)"
 
-#: fabui/application/views/head/index.php:352
+#: fabui/application/views/head/index.php:354
 #: fabui/application/views/head/install.php:354
 #, fuzzy
 msgid "Max A jerk (mm)"
 msgstr "Max. E Ruck (mm)"
 
-#: fabui/application/views/head/index.php:365
+#: fabui/application/views/head/index.php:367
 msgid "Z focusing distance"
 msgstr ""
 
-#: fabui/application/views/head/index.php:374
+#: fabui/application/views/head/index.php:376
 msgid "Laser cross offset"
 msgstr ""
 
-#: fabui/application/views/head/index.php:388
+#: fabui/application/views/head/index.php:390
 #, fuzzy
 msgid "Laser point offset"
 msgstr "Rücksetzen des Referenzausgleichs"
 
-#: fabui/application/views/head/index.php:414
+#: fabui/application/views/head/index.php:416
 #: fabui/application/views/head/install.php:372
 #: fabui/application/views/feeder/profiles/widget.php:209
 msgid "Restore factory settings"
 msgstr "Werkseinstellungen wiederherstellen"
 
-#: fabui/application/views/head/index.php:414
+#: fabui/application/views/head/index.php:416
 #: fabui/application/views/head/install.php:372
 #: fabui/application/views/feeder/profiles/widget.php:209
 msgid "Factory reset"
 msgstr "Werkseinstellung"
 
-#: fabui/application/views/head/index.php:415
+#: fabui/application/views/head/index.php:417
 #: fabui/application/views/head/install.php:373
 #: fabui/application/views/feeder/profiles/widget.php:210
 msgid "Import from file"
 msgstr "Import aus Datei"
 
-#: fabui/application/views/head/index.php:415
+#: fabui/application/views/head/index.php:417
 #: fabui/application/views/head/install.php:373
 #: fabui/application/views/feeder/profiles/widget.php:210
 msgid "Import"
 msgstr "Import"
 
-#: fabui/application/views/head/index.php:416
+#: fabui/application/views/head/index.php:418
 #: fabui/application/views/head/install.php:374
 #: fabui/application/views/feeder/profiles/widget.php:211
 msgid "Export to file"
 msgstr "In Datei exportieren"
 
-#: fabui/application/views/head/index.php:416
+#: fabui/application/views/head/index.php:418
 #: fabui/application/views/head/install.php:374
 #: fabui/application/views/feeder/profiles/widget.php:211
 msgid "Export"
 msgstr "Exportieren"
 
-#: fabui/application/views/head/index.php:418
+#: fabui/application/views/head/index.php:420
 #: fabui/application/views/head/install.php:376
 #, fuzzy
 msgid "Save & Install"
 msgstr "Installieren"
 
 #: fabui/application/views/head/install_js.php:124
-#: fabui/application/views/head/js.php:675
+#: fabui/application/views/head/js.php:677
 msgid "Installing head"
 msgstr "Kopf wird installiert"
 
 #: fabui/application/views/head/install_js.php:467
-#: fabui/application/views/head/js.php:643
+#: fabui/application/views/head/js.php:645
 #, fuzzy
 msgid "Saving head settings"
 msgstr "Kopfeinstellungen"
 
 #: fabui/application/views/head/install_js.php:521
-#: fabui/application/views/head/js.php:708
+#: fabui/application/views/head/js.php:710
 #: fabui/application/views/feeder/profiles/js.php:265
 msgid "Remove <strong>{0}</strong> settings?"
 msgstr "<strong>{0}</strong> Einstellungen entfernen?"
 
 #: fabui/application/views/head/install_js.php:570
-#: fabui/application/views/head/js.php:506
+#: fabui/application/views/head/js.php:508
 #: fabui/application/views/feeder/profiles/js.php:314
 msgid "Restore factory settings for <strong>{0}</strong> ?"
 msgstr "Werkseinstellungen für <strong>{0}</strong> wiederherstellen?"
 
 #: fabui/application/views/head/install_js.php:580
-#: fabui/application/views/head/js.php:516
+#: fabui/application/views/head/js.php:518
 #: fabui/application/views/feeder/profiles/js.php:324
 msgid "Factory settings restored"
 msgstr "Werkseinstellungen wiederhergestellt"
@@ -3939,20 +3945,24 @@ msgstr "Bitte wählen Sie aus welchen Kopf Sie installieren möchten"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: fabui/application/views/firmware/main_widget.php:7
+#: fabui/application/views/firmware/main_widget.php:9
+msgid "This form requires administrator privileges"
+msgstr ""
+
+#: fabui/application/views/firmware/main_widget.php:17
 msgid "Select firmware version"
 msgstr "Firmware-Version auswählen"
 
-#: fabui/application/views/firmware/main_widget.php:20
-#: fabui/application/views/firmware/main_widget.php:26
+#: fabui/application/views/firmware/main_widget.php:30
+#: fabui/application/views/firmware/main_widget.php:36
 msgid "Flash firmware"
 msgstr ""
 
-#: fabui/application/views/firmware/main_widget.php:34
+#: fabui/application/views/firmware/main_widget.php:45
 msgid "Installed Firmware"
 msgstr "Installiertes Firmware"
 
-#: fabui/application/views/firmware/main_widget.php:45
+#: fabui/application/views/firmware/main_widget.php:56
 msgid "Build-date"
 msgstr "Baudatum"
 
