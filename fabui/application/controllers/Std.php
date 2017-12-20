@@ -165,6 +165,7 @@ class Std extends FAB_Controller {
         //get project
         $project = $this->objects->get($projectID, 1);
         
+        
         $data['task'] = $task;
         $data['user'] = $user;
         $data['file'] = $file;
@@ -173,42 +174,52 @@ class Std extends FAB_Controller {
         $data['duration'] = dateDiff($task['finish_date'], $task['start_date']);
         $data['task_duration'] = '';
         
-        $time_labels = array('year', 'month', 'day', 'hour', 'minute', 'second');
-        foreach($time_labels as $label)
-        {
-            $found = false;
-            if( array_key_exists($label, $data['duration']))
-            {
-                $found = true;
-            }
-            else if(array_key_exists($label.'s', $data['duration']))
-            {
-                $label .= 's';
-                $found = true;
-            }
-            
-            if($found)
-            {
-                $data['task_duration'] .= $data['duration'][$label] . ' ' . _($label) . ' ';
-            }
-        }
-        
         // user settings
         $user_settings = json_decode($user['settings'], 1);
         
-        //set language
-        $lang_code = $user_settings['locale'];
-        setLanguage($lang_code);
+        $result['status'] = false;
         
-        $this->content = $this->load->view('std/email/task', $data, true );
+        if((isset($user_settings['notifications']['tasks']['pause']) && $user_settings['notifications']['tasks']['finish'] == 'true') ){
         
-        $subject = _('Task') .' '. _($task['status']);
-        $page    = $this->layoutEmail(true);
-        
-        
-        //send email
-        $result['status'] = send_via_noreply($user['email'], $user['first_name'], $user['last_name'],  $subject, $page);
-        if($result['status'] == false) $result['message'] = _("Email sending failed ");
+            $time_labels = array('year', 'month', 'day', 'hour', 'minute', 'second');
+            foreach($time_labels as $label)
+            {
+                $found = false;
+                if( array_key_exists($label, $data['duration']))
+                {
+                    $found = true;
+                }
+                else if(array_key_exists($label.'s', $data['duration']))
+                {
+                    $label .= 's';
+                    $found = true;
+                }
+                
+                if($found)
+                {
+                    $data['task_duration'] .= $data['duration'][$label] . ' ' . _($label) . ' ';
+                }
+            }
+            
+            
+            
+            //set language
+            $lang_code = $user_settings['locale'];
+            setLanguage($lang_code);
+            
+            $this->content = $this->load->view('std/email/task', $data, true );
+            
+            $subject = _('Task') .' '. _($task['status']);
+            $page    = $this->layoutEmail(true);
+            
+            
+            //send email
+            $result['status'] = send_via_noreply($user['email'], $user['first_name'], $user['last_name'],  $subject, $page);
+            if($result['status'] == false) $result['message'] = _("Email sending failed ");
+            
+        }else{
+            $result['message'] = _("Notification disabled");
+        }
         
         
         $this->output->set_content_type('application/json')->set_output(json_encode($result));
@@ -217,7 +228,7 @@ class Std extends FAB_Controller {
     /**
      * 
      */
-    public function sendPauseTaskEmail($taskID = 0)
+    public function sendPauseTaskEmail($taskID = 0, $force='')
     {
         //load helpers
         $this->load->helper(array('fabtotum_helper', 'url', 'language', 'update', 'utility'));
@@ -252,7 +263,7 @@ class Std extends FAB_Controller {
         $result['status'] = false;
         
         //send only if notification is active
-        if(isset($user_settings['notifications']['tasks']['pause']) && $user_settings['notifications']['tasks']['pause'] == 'true'){
+        if((isset($user_settings['notifications']['tasks']['pause']) && $user_settings['notifications']['tasks']['pause'] == 'true') || $force != ''){
         
             //set language
             $lang_code = $user_settings['locale'];

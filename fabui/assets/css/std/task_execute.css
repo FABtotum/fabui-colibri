@@ -92,3 +92,7 @@ body.smart-style-6 .widget-toolbar {
 .widget-toolbar >.smart-form {
 	margin-top: 5px !important;
 }
+
+.widget-toolbar .btn-group {
+	margin-top: -2px !important;
+}

@@ -1699,15 +1699,17 @@ if(!function_exists('send_via_noreply'))
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
+		$CI->load->helper('os_helper');
 		
 		$url = $CI->config->item('fabtotum_noreply_url');
 		
-		$fields = array();
-		$fields['email'] = $email;
-		$fields['subject'] = $subject;
-		$fields['content'] = $content;
+		$fields               = array();
+		$fields['email']      = $email;
+		$fields['subject']    = $subject;
+		$fields['content']    = $content;
 		$fields['first_name'] = $first_name;
-		$fields['last_name'] = $last_name;
+		$fields['last_name']  = $last_name;
+		$fields['from']       = getHostName().' - '._("Your FABtotum");
 			
 		$fields_string = '';
 

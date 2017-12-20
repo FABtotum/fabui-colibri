@@ -294,7 +294,6 @@
 		if(!$task_is_running){
 			
 			$this->addCssFile('/assets/css/std/select_file.css');
-			$this->addCssFile('/assets/css/std/task_execute.css');
 			$this->addCssFile('/assets/css/std/jog_setup.css');
 			$this->addCssFile('/assets/css/std/jogtouch.css');
 			$this->addCssFile('/assets/css/std/jogcontrols.css');
@@ -307,6 +306,7 @@
 			$this->addJSFile('/assets/js/plugin/dropzone/dropzone.js'); //dropzpone	
 		}
 		
+		$this->addCssFile('/assets/css/std/task_execute.css');
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
 		
 		

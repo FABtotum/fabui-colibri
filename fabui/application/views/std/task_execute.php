@@ -50,11 +50,14 @@ if(!isset($show_pause_button)) $show_pause_button = true;
 $split_view = $show_temperature_graph;
 $stats_button_size = $show_temperature_graph ? 4 : 6;
 
+//if($stats_button_size == 6 && $show_pause_button == false) $stats_button_size = 12;
+
 ?>
 <ul id="createFeed" class="nav nav-tabs bordered">
 	<li class="active"><a href="#live-feeds-tab" data-toggle="tab"><?php echo _("Live feeds")?></a></li>
 	<li><a href="#controls-tab" data-toggle="tab"><i class="fa fa-sliders"></i> <span class="hidden-xs"><?php echo _("Controls");?></span></a></li>
 	<li class="pull-right">
+		<!-- 
 		<div class="widget-toolbar" id="switch-2" style="display: block;" role="menu">
 			<div class="smart-form">
 				<label class="toggle" title="<?php echo _("Send an email when the task is finished")?>" >
@@ -64,6 +67,7 @@ $stats_button_size = $show_temperature_graph ? 4 : 6;
 				</label>
 			</div>
 		</div>
+		 -->
 		<div class="widget-toolbar" role="menu">
 			<div class="btn-group">
 				<button type="button" data-action="abort" class="btn btn-default action action-abort"><i class="fa fa-stop"></i> <span class="hidden-xs"> <?php echo _("Abort") ?></span></button>
@@ -148,67 +152,73 @@ $stats_button_size = $show_temperature_graph ? 4 : 6;
 					<?php endif ?>
 					
 					<?php if($show_temp_info): ?>
-					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 hidden-sm hidden-md hidden-lg"> <span class="text"> <?php echo _("Nozzle"); ?> <span class="pull-right"> <span class="extruder-temp"></span> / <span class="extruder-target"></span></span> </span>
+					<div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 hidden-sm hidden-md hidden-lg"> <span class="text"> <?php echo _("Nozzle"); ?> <span class="pull-right"> <span class="extruder-temp"></span> / <span class="extruder-target"></span></span> </span>
 						<div class="fake-progress"></div>
 					</div>
-					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 hidden-sm hidden-md hidden-lg"> <span class="text"> <?php echo _("Bed"); ?> <span class="pull-right"><span class="bed-temp"></span> / <span class="bed-target"></span> </span>
+					<div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 hidden-sm hidden-md hidden-lg"> <span class="text"> <?php echo _("Bed"); ?> <span class="pull-right"><span class="bed-temp"></span> / <span class="bed-target"></span> </span>
 						<div class="fake-progress"></div>
 					</div>
 					<?php endif; ?>
 					
-					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> <?php echo _("Progress"); ?> <span class="pull-right task-progress"></span> </span>
-						<div class="progress">
-							<div class="progress-bar" id="task-progress-bar"></div>
-						</div> </div>
+					<div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 "> <span class="text"> <?php echo _("Progress"); ?> <span class="pull-right task-progress"></span> </span>
+						<div class="progress hidden-xs">
+							<div class="progress-bar " id="task-progress-bar"></div>
+						</div>
+						<div class="fake-progress visible-xs"></div>
+					</div>
 						
 					<?php if($show_speed): ?>
-					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> <?php echo _("Speed"); ?> <span class="pull-right"><span class="task-speed"></span> / 500 %</span> </span>
+					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 hidden-xs" > <span class="text"> <?php echo _("Speed"); ?> <span class="pull-right"><span class="task-speed"></span> / 500 %</span> </span>
 						<div class="progress">
 							<div class="progress-bar" id="task-speed-bar"></div>
 						</div> </div>
 					<?php endif;?>
 					
 					<?php if($show_flowrate): ?>
-					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> <?php echo _("Flow rate"); ?><span class="pull-right"><span class="task-flow-rate"></span> / 500 %</span></span></span>
+					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 hidden-xs"> <span class="text"> <?php echo _("Flow rate"); ?><span class="pull-right"><span class="task-flow-rate"></span> / 500 %</span></span></span>
 						<div class="progress">
 							<div class="progress-bar" id="task-flow-rate-bar"></div>
 						</div> </div>
 					<?php endif;?>
 					
 					<?php if($show_fanspeed): ?>
-					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"> <?php echo _("Fan"); ?> <span class="pull-right"><span class="task-fan"></span> %</span> </span>
+					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 hidden-xs"> <span class="text"> <?php echo _("Fan"); ?> <span class="pull-right"><span class="task-fan"></span> %</span> </span>
 						<div class="progress">
 							<div class="progress-bar" id="task-fan-bar"></div>
 						</div> </div>
 					<?php endif;?>
 					
 					<?php if($show_rpm): ?>
-					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12"> <span class="text"><?php echo $rpm_label; ?> <span class="pull-right"><span class="task-rpm"></span> </span> </span>
+					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 hidden-xs"> <span class="text"><?php echo $rpm_label; ?> <span class="pull-right"><span class="task-rpm"></span> </span> </span>
 						<div class="progress">
 							<div class="progress-bar" id="task-rpm-bar"></div>
 						</div> </div>
 					<?php endif; ?>
 					
-					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"> <span class="text"> <?php echo _("Elapsed time"); ?> <span class="pull-right"><span class="elapsed-time"></span> </span> </span>
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> <span class="text"> <?php echo _("Elapsed time"); ?> <span class="pull-right"><span class="elapsed-time"></span> </span> </span>
 						<div class="fake-progress"></div>
 					</div>
-					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"> <span class="text"> <?php echo _("Est. time left"); ?> <span class="pull-right"><span class="estimated-time-left"></span> </span> </span>
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> <span class="text"> <?php echo _("Est. time left"); ?> <span class="pull-right"><span class="estimated-time-left"></span> </span> </span>
 						<div class="fake-progress"></div>
 					</div>
-					<span class="show-stat-buttons"> 
-						<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?>"> 
-							<button type="button" data-action="abort"  class="btn btn-default btn-block  action"><i class="fa fa-stop"></i> <span class="hidden-xs"><?php echo _("Abort"); ?></span> </button> 
-						</span> 
+					<span class="show-stat-buttons margin-top-10" style="padding-left:13px;padding-right:13px;"> 
+						
+						<?php if($show_change_filament):?>
+							<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?> pull-right"> 
+								<button type="button" class="btn btn-default btn-block change-filament-button"><i class="fa fa-circle-o-notch"></i> <span class="hidden-xs hidden-sm"><?php echo _("Change filament"); ?></span> </button> 
+							</span>
+						<?php endif;?> 
+						
 						<?php if($show_pause_button): ?>
-							<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?>"> 
+							<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?> pull-right"> 
 								<button type="button" data-action="pause"  class="btn btn-default btn-block  action isPaused-button action-pause"><i class="fa fa-pause"></i> <span class="hidden-xs"><?php echo _("Pause"); ?></span> </button> 
 							</span>
 						<?php endif;?>
-						<?php if($show_change_filament):?>
-						<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?>"> 
-							<button type="button" class="btn btn-default btn-block change-filament-button"><i class="fa fa-circle-o-notch"></i> <span class="hidden-xs hidden-sm"><?php echo _("Change filament"); ?></span> </button> 
-						</span>
-						<?php endif;?> 
+						
+						<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?> pull-right"> 
+							<button type="button" data-action="abort"  class="btn btn-default btn-block  action"><i class="fa fa-stop"></i> <span class="hidden-xs"><?php echo _("Abort"); ?></span> </button> 
+						</span> 
+						
 					</span>
 				</div>
 			</div>
