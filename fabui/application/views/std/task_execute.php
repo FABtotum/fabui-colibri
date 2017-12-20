@@ -21,17 +21,20 @@ if($type == 'print')
 	if(!isset($show_layer_info)) $show_layer_info = true;
 	if(!isset($show_temp_info)) $show_temp_info = true;
 	if(!isset($show_change_filament)) $show_change_filament = true;
+	if(!isset($show_pause_button)) $show_pause_button = true;
 }
 else if($type == 'mill')
 {
 	if(!isset($show_temperature_graph)) $show_temperature_graph = false;
 	if(!isset($show_speed)) $show_speed = true;
 	if(!isset($show_rpm)) $show_rpm = true;
+	if(!isset($show_pause_button)) $show_pause_button = false;
 }
 else if($type == 'laser')
 {
 	if(!isset($show_temperature_graph)) $show_temperature_graph = false;
 	if(!isset($show_speed)) $show_speed = true;
+	if(!isset($show_pause_button)) $show_pause_button = false;
 }
 
 if(!isset($show_temperature_graph)) $show_temperature_graph = false;
@@ -42,6 +45,7 @@ if(!isset($show_rpm)) $show_rpm = false;
 if(!isset($show_layer_info)) $show_layer_info = false;
 if(!isset($show_temp_info)) $show_temp_info = false;
 if(!isset($show_change_filament)) $show_change_filament = false;
+if(!isset($show_pause_button)) $show_pause_button = true;
 
 $split_view = $show_temperature_graph;
 $stats_button_size = $show_temperature_graph ? 4 : 6;
@@ -63,7 +67,9 @@ $stats_button_size = $show_temperature_graph ? 4 : 6;
 		<div class="widget-toolbar" role="menu">
 			<div class="btn-group">
 				<button type="button" data-action="abort" class="btn btn-default action action-abort"><i class="fa fa-stop"></i> <span class="hidden-xs"> <?php echo _("Abort") ?></span></button>
+				<?php if($show_pause_button): ?>
 				<button type="button" data-action="pause" class="btn btn-default action isPaused-button action-pause isPaused-button"><i class="fa fa-pause"></i> <span class="hidden-xs"> <?php echo _("Pause") ?></span></button>
+				<?php endif;?>
 			</div>
 		</div>
 	</li>
@@ -193,9 +199,11 @@ $stats_button_size = $show_temperature_graph ? 4 : 6;
 						<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?>"> 
 							<button type="button" data-action="abort"  class="btn btn-default btn-block  action"><i class="fa fa-stop"></i> <span class="hidden-xs"><?php echo _("Abort"); ?></span> </button> 
 						</span> 
-						<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?>"> 
-							<button type="button" data-action="pause"  class="btn btn-default btn-block  action isPaused-button action-pause"><i class="fa fa-pause"></i> <span class="hidden-xs"><?php echo _("Pause"); ?></span> </button> 
-						</span>
+						<?php if($show_pause_button): ?>
+							<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?>"> 
+								<button type="button" data-action="pause"  class="btn btn-default btn-block  action isPaused-button action-pause"><i class="fa fa-pause"></i> <span class="hidden-xs"><?php echo _("Pause"); ?></span> </button> 
+							</span>
+						<?php endif;?>
 						<?php if($show_change_filament):?>
 						<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?>"> 
 							<button type="button" class="btn btn-default btn-block change-filament-button"><i class="fa fa-circle-o-notch"></i> <span class="hidden-xs hidden-sm"><?php echo _("Change filament"); ?></span> </button> 
