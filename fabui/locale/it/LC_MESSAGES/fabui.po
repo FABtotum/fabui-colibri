@@ -454,46 +454,40 @@ msgstr "Recovery"
 
 #: fabui/application/controllers/Account.php:39
 #: fabui/application/views/account/js.php:159
-#, fuzzy
 msgid "Edit profile"
-msgstr "Modifica progetto"
+msgstr "Modifica profilo"
 
 #: fabui/application/controllers/Account.php:40
 #: fabui/application/views/account/js.php:275
 #: fabui/application/views/account/js.php:277
 #: fabui/application/views/account/js.php:303
 #: fabui/application/views/account/js.php:305
-#, fuzzy
 msgid "Change password"
-msgstr "Mostra password"
+msgstr "Cambia password"
 
 #: fabui/application/controllers/Account.php:41
-#, fuzzy
 msgid "Notification settings"
-msgstr "Impostazioni di rete"
+msgstr "Impostazioni delle notifiche"
 
 #: fabui/application/controllers/Account.php:48
 msgid "Your account"
 msgstr "Il tuo account"
 
 #: fabui/application/controllers/Account.php:126
-#, fuzzy
 msgid "Invalid user"
-msgstr "File non valido"
+msgstr "Utente non valido"
 
 #: fabui/application/controllers/Account.php:132
-#, fuzzy
 msgid "Old password was not recognized"
-msgstr "Il numero seriale inserito non è stato riconosciuto"
+msgstr "La vecchia password non è stata riconosciuta"
 
 #: fabui/application/controllers/Account.php:141
-#, fuzzy
 msgid "Your password has been changed successfully"
-msgstr "Nuovo utente creato con successo"
+msgstr "La tua password è stata cambiata con successo"
 
 #: fabui/application/controllers/Account.php:178
 msgid "Notifications settings has been changed successfully"
-msgstr ""
+msgstr "Le impostazioni delle notifiche sono state cambiate con successo"
 
 #: fabui/application/controllers/Firmware.php:53
 msgid "Factory default"
@@ -571,9 +565,8 @@ msgid "Groups"
 msgstr "Gruppi"
 
 #: fabui/application/controllers/Cam.php:336
-#, fuzzy
 msgid "Generated with FABtotum CAM toolbox"
-msgstr "Generato con app.fabtotum.com"
+msgstr "Generato con FABtotum CAM toolbox"
 
 #: fabui/application/controllers/Std.php:212
 msgid "Task"
@@ -581,15 +574,13 @@ msgstr "attività"
 
 #: fabui/application/controllers/Std.php:218
 #: fabui/application/controllers/Std.php:290
-#, fuzzy
 msgid "Email sending failed "
 msgstr "Invio email fallito"
 
 #: fabui/application/controllers/Std.php:221
 #: fabui/application/controllers/Std.php:293
-#, fuzzy
 msgid "Notification disabled"
-msgstr "Configurazione salvata"
+msgstr "Notifica disabilitata"
 
 #: fabui/application/controllers/Spool.php:49
 #: fabui/application/controllers/Head.php:154
@@ -2169,19 +2160,16 @@ msgid "Reload"
 msgstr "Ricarica"
 
 #: fabui/application/views/account/js.php:89
-#, fuzzy
 msgid "Please enter your old password"
-msgstr "Si prega di inserire la password"
+msgstr "Prego inserire la vecchia password"
 
 #: fabui/application/views/account/js.php:92
-#, fuzzy
 msgid "Please enter your new password"
-msgstr "Si prega di inserire la password"
+msgstr "Prego inserire la nuova password"
 
 #: fabui/application/views/account/js.php:95
-#, fuzzy
 msgid "Please confirm your new password"
-msgstr "Si prega di inserire la password"
+msgstr "Prego confermare la nuova password"
 
 #: fabui/application/views/account/js.php:159
 msgid "Account information saved"
@@ -2235,33 +2223,28 @@ msgid "Disconnect"
 msgstr "Disconnetti"
 
 #: fabui/application/views/account/widget.php:132
-#, fuzzy
 msgid "Enter your old password"
-msgstr "Inserire la password"
+msgstr "Prego inserire la vecchia password"
 
 #: fabui/application/views/account/widget.php:139
-#, fuzzy
 msgid "Enter your new password"
-msgstr "Inserire la password"
+msgstr "Prego inserire la nuova password"
 
 #: fabui/application/views/account/widget.php:146
-#, fuzzy
 msgid "Confirm new password"
-msgstr "Mostra password"
+msgstr "Prego confermare la nuova password"
 
 #: fabui/application/views/account/widget.php:163
 msgid "Tasks notification"
-msgstr ""
+msgstr "Notifiche attività"
 
 #: fabui/application/views/account/widget.php:166
-#, fuzzy
 msgid "Send me a notification email when task is finished"
-msgstr "Invia una email al termie delle operazioni"
+msgstr "Mandami una mail quando l'attività è terminata"
 
 #: fabui/application/views/account/widget.php:171
-#, fuzzy
 msgid "Send me a notification email when task is paused"
-msgstr "Invia una email al termie delle operazioni"
+msgstr "Mandami una email quando l'attività è in pausa"
 
 #: fabui/application/views/jog/jog_js.php:172
 #: fabui/application/views/jog/widget.php:238
@@ -2963,10 +2946,9 @@ msgstr ""
 "materiale,  poi premi continua"
 
 #: fabui/application/views/std/jog_setup.php:80
-#, fuzzy
 msgid ""
 "Note: if you home the axis, the jog position will be saved for future use"
-msgstr "La posizione verrà salvata per usi futuri"
+msgstr ""
 
 #: fabui/application/views/std/jog_setup.php:88
 msgid "Position will be saved for future use"
@@ -3878,7 +3860,7 @@ msgstr "Modifica"
 
 #: fabui/application/views/firmware/main_widget.php:9
 msgid "This form requires administrator privileges"
-msgstr ""
+msgstr "Questo modulo richiede privilegi da amministratore"
 
 #: fabui/application/views/firmware/main_widget.php:17
 msgid "Select firmware version"
@@ -3891,21 +3873,19 @@ msgstr "Flash firmware"
 
 #: fabui/application/views/firmware/main_widget.php:45
 msgid "Installed Firmware"
-msgstr "Installa il firmware"
+msgstr "Firmware installato"
 
 #: fabui/application/views/firmware/main_widget.php:56
 msgid "Build-date"
 msgstr "Data di costruzione"
 
-#: fabui/application/views/cam/js.php:82
-#: fabui/application/views/cam/js.php:822
+#: fabui/application/views/cam/js.php:82 fabui/application/views/cam/js.php:822
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Trascina file per caricarli"
 
-#: fabui/application/views/cam/js.php:82
-#: fabui/application/views/cam/js.php:822
+#: fabui/application/views/cam/js.php:82 fabui/application/views/cam/js.php:822
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "or click"
@@ -4031,9 +4011,8 @@ msgid "Source image"
 msgstr "Immagine sorgente"
 
 #: fabui/application/views/cam/js.php:918
-#, fuzzy
 msgid "Laser engraving preview"
-msgstr "Incisione laser completata!"
+msgstr "Anteprima incisione laser"
 
 #: fabui/application/views/cam/laser_tab.php:15
 msgid "Note: max file size is {0}"
@@ -4045,9 +4024,8 @@ msgid "Upload new file"
 msgstr "Carica nuovo file"
 
 #: fabui/application/views/cam/laser_tab.php:32
-#, fuzzy
 msgid "Preview not available for this file"
-msgstr "Non ci sono profili disponibili per questa testa"
+msgstr "Anteprima non disponibile per questo file"
 
 #: fabui/application/views/cam/laser_tab.php:38
 #: fabui/application/views/cam/laser_tab.php:57
@@ -4073,14 +4051,12 @@ msgid "Save GCode"
 msgstr "Salva GCode"
 
 #: fabui/application/views/cam/laser_tab.php:83
-#, fuzzy
 msgid "Engrave"
-msgstr "movimenti rapidi (travel)"
+msgstr "Incidi"
 
 #: fabui/application/views/cam/laser_tab.php:84
-#, fuzzy
 msgid "Download GCode"
-msgstr "Scaricato"
+msgstr "Scarica GCode"
 
 #: fabui/application/views/cam/laser_tab.php:93
 msgid "General"
@@ -4578,7 +4554,7 @@ msgstr "Controlli<br> Temperature"
 
 #: fabui/application/views/layout/email/structure.php:52
 msgid "You can update your notification settings in Account page"
-msgstr ""
+msgstr "Puoi aggiornare le impostazioni delle notifiche nella pagina Account"
 
 #: fabui/application/views/layout/debug/top.php:21
 msgid "Notify"
@@ -4717,24 +4693,20 @@ msgid "Override"
 msgstr "Override"
 
 #: fabui/application/views/std/email/task.php:11
-#, fuzzy
 msgid ""
 "this e-mail is to inform you that the last {0} you started was just {1}."
 msgstr ""
 "Ciao {0},<br><br> questa mail è per informarti che l'ultima {1} è appena {2}"
 
 #: fabui/application/views/std/email/task.php:21
-#, fuzzy
 msgid "Started on"
-msgstr "Inizia"
+msgstr "Iniziata alle"
 
 #: fabui/application/views/std/email/task.php:24
-#, fuzzy
 msgid "Finished on"
-msgstr "Completa"
+msgstr "Terminata alle"
 
 #: fabui/application/views/std/email/reset_password.php:6
-#, fuzzy
 msgid ""
 "We've generated a URL to reset your password. If you did not request to "
 "reset your password or if you've changed your mind, simply ignore this email "
@@ -4743,8 +4715,8 @@ msgid ""
 "does not work, copy and paste the URL into a browser window. The URL will "
 "only be valid for a limited time and will expire."
 msgstr ""
-"Ciao {0},<br><br>Abbiamo generato una URL per reimpostare la tua password. "
-"Se non hai richiesto di reimpostare la tua password o hai cambiato idea puoi "
+"Abbiamo generato una URL per reimpostare la tua password. Se non hai "
+"richiesto di reimpostare la tua password o hai cambiato idea puoi "
 "semplicemente ignorare questa email e niente succederà.<br><br>Puoi "
 "reimpostare la tua password cliccando al seguente link:<br><a href="
 "\"{1}\">{1}</a><br><br>Se cliccando il link non funziona copialo e incollalo "
@@ -4752,22 +4724,19 @@ msgstr ""
 "disponibile per un periodo limitato di tempo."
 
 #: fabui/application/views/std/email/pause.php:11
-#, fuzzy
 msgid ""
 "this e-mail is to inform you that the last {0} you started was just paused."
-msgstr ""
-"Ciao {0},<br><br> questa mail è per informarti che l'ultima {1} è appena {2}"
+msgstr "questa mail è per informarti che l'ultima {1} è appena {2}"
 
 #: fabui/application/views/std/email/pause.php:21
 msgid "If you paused the task please ignore this email"
-msgstr ""
+msgstr "Se sei stato tu a mettere in pausa  puoi ignorare questa email"
 
 #: fabui/application/views/scan/wizard/step1.php:19
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
@@ -5956,9 +5925,8 @@ msgid "Setting head values..."
 msgstr "Imposto i valori della testa"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:277
-#, fuzzy
 msgid "Disabling previous installed head's settings"
-msgstr "Ripristina tutti i plugins installati precedentemente."
+msgstr "Disabilito le impostazioni della testa precedentemente installata"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:280
 msgid "Configuring working mode"
@@ -6001,9 +5969,8 @@ msgid "Activating <strong>{0}</strong> plugin"
 msgstr "Attivando <strong>{0}</strong> plugin"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:354
-#, fuzzy
 msgid "Setting Cross position"
-msgstr "Impostando posizione assoluta"
+msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:355
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:369
@@ -6011,9 +5978,8 @@ msgid "Set relative mode"
 msgstr "Imposta modalità relativa"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:356
-#, fuzzy
 msgid "Going to laser cross point"
-msgstr "Andando verso il punto di messa a fuoco"
+msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:357
 msgid "disable homeing check"
@@ -6045,14 +6011,12 @@ msgid "enable homeing check"
 msgstr "Attiva controllo homing"
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:365
-#, fuzzy
 msgid "Set absolute mode"
-msgstr "Configuro l'estrusore in modalità assoluta"
+msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:366
-#, fuzzy
 msgid "Moving to start position"
-msgstr "Spostandosi in posizione di pre-scansione"
+msgstr ""
 
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:45
 #: fabui/ext/py/fabtotum/fabui/macros/general.py:158
