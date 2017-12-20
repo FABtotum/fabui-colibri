@@ -22,6 +22,8 @@
 	{
 		owl = $('#heads-carousel').owlCarousel({
         	loop: true,
+        	center: false,
+        	startPosition: parseInt($(".installed").attr('data-position')),
          	margin: 1,
          	navText : ["<i class='fa fw-lg fa-chevron-left'></i>","<i class='fa fw-lg fa-chevron-right'></i>"],
          	dots: false,

@@ -10,8 +10,9 @@
 <div class="row">
 	<div class="col-sm-12">
 		<div class="owl-carousel owl-theme" id="heads-carousel">
+			<?php $counter = 0;?>
 			<?php foreach($heads as $index => $head):?>
-				<div class="panel panel-default item <?php echo implode(" ", $head['capabilities']); ?>  <?php echo $index == $installed_head['filename'] ? 'installed' : 'not-installed' ?>">
+				<div data-position="<?php echo $counter; ?>" class="panel panel-default item <?php echo implode(" ", $head['capabilities']); ?>  <?php echo $index == $installed_head['filename'] ? 'installed' : 'not-installed' ?>">
 					
 					<div class="panel-body status">
 						<div class="who clearfix">
@@ -40,6 +41,7 @@
 						</ul>
 					</div>
 				</div>
+				<?php $counter++;?>
 			<?php endforeach; ?>
 		</div>
 	</div>	
