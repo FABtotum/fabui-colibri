@@ -70,7 +70,8 @@ class Cam extends FAB_Controller
             'modulo' => _("Groups")
         );
         $data['remote_endpoint'] = $this->config->item('api_url');
-        $data['isFabid'] = isset($this->session->user['settings']['fabid']['logged_in']) && $this->session->user['settings']['fabid']['logged_in'] == true;
+        //$data['isFabid'] = isset($this->session->user['settings']['fabid']['logged_in']) && $this->session->user['settings']['fabid']['logged_in'] == true;
+        $data['isFabid'] = $this->_isFabid();
         $data['subscription_exists'] = subscription_exists();
         $data['linear_mapping_help'] = $this->load->view('cam/help/' . $language . '/linear_mapping', $data, true);
         $data['skip_line_help'] = $this->load->view('cam/help/' . $language . '/skip_line', $data, true);
@@ -124,9 +125,7 @@ class Cam extends FAB_Controller
      */
     public function subscription($action, $code = "")
     {
-        $this->load->helper(array(
-            'cam_helper'
-        ));
+        $this->load->helper(array('cam_helper'));
         
         switch ($action) {
             case 'active':
@@ -379,6 +378,14 @@ class Cam extends FAB_Controller
             $response['success'] = false;
         }
         $this->output->set_content_type('application/json')->set_output(json_encode($response));
+    }
+    
+    /**
+     * 
+     */
+    private function _isFabid()
+    {
+        return (isset($this->session->user['settings']['fabid']['logged_in']) && ($this->session->user['settings']['fabid']['logged_in'] == true));
     }
 }
 

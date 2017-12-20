@@ -124,7 +124,7 @@ if(!function_exists('active_subscription'))
 		$CI =& get_instance();
 		
 		
-		if(isset($CI->session->user['settings']['fabid']['email']))
+		if(isset($CI->session->user['settings']['fabid']['email']) && $CI->session->user['settings']['fabid']['logged_in'] == true)
 			$fabid = $CI->session->user['settings']['fabid']['email'];
 			else
 				return json_encode(array(
@@ -213,7 +213,7 @@ if(!function_exists('call_service'))
 		$CI =& get_instance();
 		$CI->load->helper(array('api_helper'));
 
-		if(isset($CI->session->user['settings']['fabid']['email']))
+		if(isset($CI->session->user['settings']['fabid']['email']) && $CI->session->user['settings']['fabid']['logged_in'] == true)
 			$fabid = $CI->session->user['settings']['fabid']['email'];
 		else
 			return false;
