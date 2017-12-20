@@ -120,6 +120,7 @@ if(!function_exists('active_subscription'))
 	 */
 	function active_subscription($code)
 	{
+	    $code = trim($code);
 		$CI =& get_instance();
 		
 		
@@ -131,7 +132,7 @@ if(!function_exists('active_subscription'))
 						'message' => _("Missing FABID")
 				));
 		
-		$response = call_service('/subscription/active/'.$code);
+		$response = call_service('/subscription/active/', array('code' => $code));
 		
 		if($response['content']){
 			
@@ -217,7 +218,8 @@ if(!function_exists('call_service'))
 		else
 			return false;
 		
-		$data['fabid']        = json_encode(array('email' => $fabid));
+		//$data['fabid']        = json_encode(array('email' => $fabid));
+		$data['fabid']        = $fabid;
 		$data['subscription'] = get_subscription_code();
 		
 		return call_remote_api($endpoint, $data);

@@ -69,8 +69,11 @@
 			html += '</div><div class="col-sm-6 col-xs-6 col-a">';
 	
 			$.each(data.feeds_b, function(i, item) {
-				html += instagramPost(item);
-				html_carousel += instagramPost(item);
+
+				var post = instagramPost(item);
+				html += post;
+				html_carousel += post;
+				
 			});
 		}else{
 			html = noFeedAvailable("<i class='fa fa-instagram'></i> <?php echo _("Latest instragm posts"); ?>", 'instagram');
@@ -78,8 +81,21 @@
 		html += '</div>';
 		$("#instagram-container").html(html);
 		$("#instagram-carousel-container").html(html_carousel);
+		$(".instagram-comments").on('click', function(){
+			var container = $(this).parent().parent();
+			
+			 if(container.find('.comments').length){
+				 var comments = container.find('.comments');
+				 if(comments.is(':visible')){
+					 comments.slideUp();
+				 }else{
+					 comments.slideDown();
+				 }
+			 }
+		});
+		
 		initCarousel("#instagram-carousel-container", false);
-
+		
 		setTimeout(function(){
 			initCarousel(".owl-carousel", true);
 		},500);
@@ -97,10 +113,14 @@
 		var src_video = getInstagramVideoSrc(item);
 		var carousel = getInstagramCarousel(item);
 		var video = '';
-		var likes = '<li class="txt-color-red"><i class="fa fa-heart"></i> ('+item['like_count']+')</li>';;
-		var comments = '<li class="txt-color-blue"><i class="fa fa-comments"></i> ('+item['comment_count']+')</li>';;
+		var likes = '<li class="txt-color-red"><i class="fa fa-heart"></i> ('+item['like_count']+')</li>';
 		var views_count = '';
 		var ranked = '';
+		var comments_list = '';
+		var class_comments = item.preview_comments.length > 0 ? 'cursor-pointer' : '';
+		var comments_title = item.preview_comments.length > 0 ? "<?php echo _("Click to view comments"); ?>" : "";
+		var comments_color = item.preview_comments.length > 0 ? "txt-color-blue" : "";
+		var comments = '<li title="'+comments_title+'" class="'+comments_color+' instagram-comments '+class_comments+'"><i class="fa fa-comments"></i> ('+item['comment_count']+') </li>';
 
 		if(src_video != ''){
 			video = '<div class="image padding-10"><video class="img-responsive" controls><source src="'+src_video+'" type="video/mp4"><img src="'+src_image+'" /></video></div>';
@@ -113,12 +133,25 @@
 
 		if(item.location) location += '<br><i class="fa fa-map-marker"></i> '+item['location']['name'];
 		if(item.is_ranked && item.is_ranked == true) ranked += '<li title="<?php echo _("Popular"); ?>" class="txt-color-yellow pull-right"><i class="fa fa-star"></i> </li>';
+
+		if(item.preview_comments.length > 0){
+			
+			comments_list += '<ul class="comments" style="display:none;">';
+			$.each(item.preview_comments, function(i, comment) {
+
+				comments_list += '<li>'+
+									'<img src="'+comment.user.profile_pic_url+'">'+
+									'<a target="_blank" href="https://www.instagram.com/'+comment.user.username+'"><span class="name">' + comment.user.full_name + '</span></a>' + 
+									comment.text				
+			});
+			comments_list += '</ul>';
+		}
 		
 		var html = '<div class="panel panel-default">' +
 							'<div class="panel-body status">' +
 						'<div class="who clearfix">' +
 							'<img class="hidden-xs" src="'+item['user']['profile_pic_url']+'" />' +
-							'<span class="name"><b><a target="_blank" href="http://www.instagram.com/'+item['user']['username']+'">'+item['user']['username']+'</a></b>' +
+							'<span class="name"><b><a target="_blank" href="https://www.instagram.com/'+item['user']['username']+'">'+item['user']['username']+'</a></b>' +
 							'<span class="pull-right">' +
 								'<a href="'+post_url+'" target="_blank" title="<?php echo _("View on instagram");?>"><i class="fa fa-instagram"></i></a>' +
 							'</span></span>' +
@@ -127,6 +160,7 @@
 						'<div class="text padding-top-0 hidden-xs"><p style="word-wrap: break-word">'+item['caption']['text']+'</p></div>' +
 						'<ul class="links">' + likes + comments + views_count + ranked +
 						'</ul>' +
+						comments_list + 
 					'</div>' +
 				'</div>';
 
@@ -261,7 +295,7 @@
         	loop: true,
          	margin: 10,
          	autoHeight:true,
-         	navText : ["<i class='fa fw-lg fa-chevron-left'></i>","<i class='fa fw-lg fa-chevron-right'></i>"],
+         	navText : ["<i class='fa fw-lg fa-chevron-left font-lg'></i>","<i class='fa fw-lg fa-chevron-right font-lg'></i>"],
          	dots: false,
          	onInitialize: fixNavBars,
          	onInitialized: fixNavBars,

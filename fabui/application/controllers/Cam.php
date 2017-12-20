@@ -171,11 +171,11 @@ class Cam extends FAB_Controller
             createFolder($upload_path);
         
         // config load upload library
-        $config['upload_path'] = $upload_path;
+        $config['upload_path']      = $upload_path;
         $config['file_ext_tolower'] = true;
-        $config['remove_spaces'] = true;
-        $config['allowed_types'] = $this->config->item('laser_allowed_types');
-        $config['max_size'] = $this->config->item('upload_max_file_size');
+        $config['remove_spaces']    = true;
+        $config['allowed_types']    = $this->config->item('laser_allowed_types');
+        $config['max_size']         = $this->config->item('upload_max_file_size');
         
         $this->load->library('upload', $config);
         
@@ -183,10 +183,10 @@ class Cam extends FAB_Controller
         if ($this->upload->do_upload('file')) {
             $data = $this->upload->data();
             $data['upload'] = true;
-            $data['url'] = '/temp/uploads/' . $data['file_name'];
-            $data['info'] = get_img_extra_info($data['full_path']);
+            $data['url']    = '/temp/uploads/' . $data['file_name'];
+            $data['info']   = get_img_extra_info($data['full_path']);
         } else {
-            $data['error'] = $this->upload->display_errors();
+            $data['error']  = $this->upload->display_errors();
             $data['upload'] = false;
         }
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
@@ -322,20 +322,21 @@ class Cam extends FAB_Controller
                 // get file info
                 $file_info = get_file_info($full_path);
                 
-                $file_record['file_name'] = $filename;
-                $file_record['file_type'] = "text/plain";
-                $file_record['file_path'] = $this->config->item('upload_path') . 'gcode/';
-                $file_record['full_path'] = $full_path;
-                $file_record['raw_name'] = $file_info['name'];
-                $file_record['orig_name'] = $post['filename'] . '.gcode';
+                $file_record['file_name']   = $filename;
+                $file_record['file_type']   = "text/plain";
+                $file_record['file_path']   = $this->config->item('upload_path') . 'gcode/';
+                $file_record['full_path']   = $full_path;
+                $file_record['raw_name']    = $file_info['name'];
+                $file_record['orig_name']   = $post['filename'] . '.gcode';
                 $file_record['client_name'] = $post['filename'] . '.gcode';
-                $file_record['file_ext'] = '.gcode';
-                $file_record['file_size'] = $file_info['size'];
-                $file_record['print_type'] = 'laser';
+                $file_record['file_ext']    = '.gcode';
+                $file_record['file_size']   = $file_info['size'];
+                $file_record['print_type']  = 'laser';
                 $file_record['insert_date'] = date('Y-m-d H:i:s');
                 $file_record['update_date'] = date('Y-m-d H:i:s');
-                $file_record['note'] = _("Generated with app.fabtotum.com");
-                $attributes          = array();
+                $file_record['note']        = _("Generated with FABtotum CAM toolbox");
+                
+                $attributes                 = array();
                 // save preview image
                 if ($preview['content']) {
                     
@@ -355,9 +356,9 @@ class Cam extends FAB_Controller
                 
                 if ($post["mode"] == "new") { // if craete a new object
                     
-                    $project_record['user'] = $this->session->user['id'];
-                    $project_record['name'] = $post['project_name'];
-                    $project_record['public'] = 1;
+                    $project_record['user']        = $this->session->user['id'];
+                    $project_record['name']        = $post['project_name'];
+                    $project_record['public']      = 1;
                     $project_record['date_insert'] = date('Y-m-d H:i:s');
                     $project_record['date_update'] = date('Y-m-d H:i:s');
                     

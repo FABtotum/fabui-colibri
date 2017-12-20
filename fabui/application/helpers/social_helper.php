@@ -83,8 +83,8 @@ if(!function_exists('downloadInstagramFeeds'))
 		
 		$done = false;
 		
-		$fabtotum_max_post = 5;
-		$hashtag_max_post  = 10;
+		$fabtotum_max_post = 20;
+		$hashtag_max_post  = 30;
 		
 		$instagram_feeds = getRemoteFile($CI->config->item('instagram_feed_url'), true, null, 30);
 		
@@ -104,10 +104,12 @@ if(!function_exists('downloadInstagramFeeds'))
 					$temp_feeds = array_merge($temp_feeds, $user_feeds);
 				}
 				
+				
 				if(isset($instagram_feeds['hashtag_feeds'])){
 					//get last 9 post
 					$hashtag_feeds = array_slice($instagram_feeds['hashtag_feeds']['fullResponse']['items'], 0, $hashtag_max_post);
 					$temp_feeds = array_merge($temp_feeds, $hashtag_feeds);
+					/*
 					//poular posts
 					if(isset($instagram_feeds['hashtag_feeds']['ranked_items'])){
 						$ranked_feeds = array();
@@ -118,6 +120,7 @@ if(!function_exists('downloadInstagramFeeds'))
 						}
 						$temp_feeds = array_merge($temp_feeds, $ranked_feeds);
 					}
+					*/
 				}
 				
 				$temp_feeds = highlightInstagramPost($temp_feeds); //highlight links, tags, hashtags
@@ -382,7 +385,7 @@ if(!function_exists('displayInstagramFeedItem'))
 		$likes       = '';
 		$comments    = '';
 		$ranked      = '';
-		$post_url    = 'http://www.instagram.com/p/'.$feed['code'];
+		$post_url    = 'https://www.instagram.com/p/'.$feed['code'];
 		$video       = "";
 		$views_count = "";
 		$image       = '<div class="image padding-10"><img src="'.$src_image.'" /></div>';
@@ -405,7 +408,7 @@ if(!function_exists('displayInstagramFeedItem'))
 				<div class="panel-body status">
 					<div class="who clearfix">
 						<img src="{$feed['user']['profile_pic_url']}" />
-						<span class="name"><b><a target="_blank" href="http://www.instagram.com/{$feed['user']['username']}">{$feed['user']['username']}</a></b>
+						<span class="name"><b><a target="_blank" href="https://www.instagram.com/{$feed['user']['username']}">{$feed['user']['username']}</a></b>
 						<span class="pull-right">
 							<a href="{$post_url}" target="_blank" title="View on instagram"><i class="fa fa-instagram"></i></a>
 						</span></span>
@@ -515,7 +518,7 @@ if(!function_exists('displayTwitterFeedItem'))
 		$images    = '';
 		$retweet   = '';
 		$favourite = '';
-		$post_url  = 'http://www.twitter.com/statuses/'.$feed['id_str'];
+		$post_url  = 'https://www.twitter.com/statuses/'.$feed['id_str'];
 		if(is_array($feed['place']))
 			$place .= '<br><i class="fa fa-map-marker"></i> '.$feed['place']['full_name'];
 			if(isset($feed['entities']['media'])){

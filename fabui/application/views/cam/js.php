@@ -782,7 +782,7 @@
 	{
 		if($("#"+type+"-subscription-form").valid()){
 
-			var code = $("#"+type+"-subscription").val();
+			var code = $("#"+type+"-subscription").val().trim();
 			disableButton("#"+type+"-active-subscription");
 			$.ajax({
 				type: "POST",

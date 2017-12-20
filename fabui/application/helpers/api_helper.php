@@ -38,12 +38,16 @@ if(!function_exists('call_remote_api'))
 		$url = $CI->config->item('api_url').$CI->config->item('api_version').'/'.$endpoint;
 		
 		//prepare call
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_URL,            $url);
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL,  $url);
 		if($post){
-		  curl_setopt($ch, CURLOPT_POST,           true);
-		  curl_setopt($ch, CURLOPT_POSTFIELDS,     $data);
+		  curl_setopt($ch, CURLOPT_POST,       true);
+		  curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		}else{
+		    $url .= '?'.http_build_query($data);
 		}
+		//echo $url; exit();
+		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,0);
 		curl_setopt($ch, CURLOPT_TIMEOUT,        $CI->config->item('connection_timeout'));
@@ -52,6 +56,7 @@ if(!function_exists('call_remote_api'))
 		$content = curl_exec ($ch);
 		//get call info
 		$info = curl_getinfo ($ch);
+		$info['data'] = $data;
 		//close call
 		curl_close ($ch);
 		return array('content' =>$content, 'info' => $info );
