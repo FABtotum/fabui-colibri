@@ -6,6 +6,26 @@
  *  @author Daniel Kesler (dk@fabtotum.com)
  */
 
+if(ENVIROMENT == 'production'){	
+	/**
+	 * check if is a valid url
+	 * es: /fabui/#dashboard (valid)
+	 * es: /fabui/dashboard (not valid)
+	 */	
+	
+	if(document.location.pathname != "/fabui/"){
+		document.location.href = document.location.pathname.replace("/fabui/", "/fabui/#");
+	}
+	
+}
+/**
+ * borrowed from app.min.js
+ */
+if ($('nav').length) {
+    checkURL();
+}
+
+
 /**
  * Add "disabled" class to element class list.
  * 
@@ -67,6 +87,7 @@ function transformSeconds(seconds)
 
 /**
 * @brief Display alert message 
+* @deprecated (moved into fab.app.js)
 */
 // use fabApp.showErrorAlert(content, title='Error' /*default*/)
 /*function showErrorAlert(title, content)
@@ -257,9 +278,9 @@ function getDataFromForm(form)
 	//add checkbokx inputs
 	fields = fields.concat(
 	jQuery(form +' input[type=checkbox]').map(
-			function() {
-				return {"name": this.name, "value": $(this).is(':checked')}
-           }).get()
+		function() {
+			return {"name": this.name, "value": $(this).is(':checked')}
+        }).get()
     );
 	var data = {};
 	jQuery.each( fields, function( index, object ) {
