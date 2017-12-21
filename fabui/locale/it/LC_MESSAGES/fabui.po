@@ -4730,7 +4730,7 @@ msgstr "questa mail è per informarti che l'ultima {1} è appena {2}"
 
 #: fabui/application/views/std/email/pause.php:21
 msgid "If you paused the task please ignore this email"
-msgstr "Se sei stato tu a mettere in pausa  puoi ignorare questa email"
+msgstr "Se sei stato tu a mettere in pausa puoi ignorare questa email"
 
 #: fabui/application/views/scan/wizard/step1.php:19
 msgid "mode"
