@@ -1,6 +1,6 @@
 {
     "name": "Laser Head Pro",
-    "link": "https://www.fabtotum.com/3d-printers/heads/3d-laser-printer/",
+    "link": "https://www.fabtotum.com/3d-printers/heads/laser-engraving-head-pro/",
     "description": "The <strong>FABtotum Laser head PRO</strong>",
     "custom_gcode": "M563 H1 S0\nM723",
     "working_mode": 2,
