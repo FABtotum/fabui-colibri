@@ -6,26 +6,6 @@
  *  @author Daniel Kesler (dk@fabtotum.com)
  */
 
-if(ENVIROMENT == 'production'){	
-	/**
-	 * check if is a valid url
-	 * es: /fabui/#dashboard (valid)
-	 * es: /fabui/dashboard (not valid)
-	 */	
-	
-	if(document.location.pathname != "/fabui/"){
-		document.location.href = document.location.pathname.replace("/fabui/", "/fabui/#");
-	}
-	
-}
-/**
- * borrowed from app.min.js
- */
-if ($('nav').length) {
-    checkURL();
-}
-
-
 /**
  * Add "disabled" class to element class list.
  * 

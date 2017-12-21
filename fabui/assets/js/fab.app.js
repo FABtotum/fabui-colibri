@@ -28,7 +28,7 @@ fabApp = (function(app) {
 	app.rebooting = false; //is the unit rebooting?
 	app.dropZoneList = new Array();
 	app.FabActions = function(){
-		var fabActions = {
+		var fabActions = {	
 			userLogout: function($this){
 				$.SmartMessageBox({
 					title: "<i class='fa fa-sign-out txt-color-orangeDark'></i> " + _("Hi")  + " <span class='txt-color-orangeDark'><strong>" + $this.data("user-name") + "</strong></span> ",
@@ -99,6 +99,8 @@ fabApp = (function(app) {
 			app.fabIDLogin();
 			e.preventDefault();
 		});
+		
+		
 		
 	};
 	/**
@@ -335,6 +337,7 @@ fabApp = (function(app) {
 	*
 	**/
 	app.domReadyMisc = function() {
+		app.urlIntegrityCheck();
 		// update notification when ajax-dropdown is closed
 		$(document).mouseup(function(e) {
 			if (!$('.ajax-dropdown').is(e.target) && $('.ajax-dropdown').has(e.target).length === 0) {
@@ -1868,6 +1871,28 @@ fabApp = (function(app) {
 				}
 			}
 		});
+	}
+	/**
+	 * 
+	 */
+	app.urlIntegrityCheck = function()
+	{
+		/**
+		 * check if is a valid url
+		 * es: /fabui/#dashboard (valid)
+		 * es: /fabui/dashboard (not valid)
+		 */	
+		if(ENVIROMENT == 'production'){	
+			if(document.location.pathname != "/fabui/"){
+				document.location.href = document.location.pathname.replace("/fabui/", "/fabui/#");
+			}
+		}
+		/**
+		 * borrowed from app.min.js
+		 */
+		if ($('nav').length) {
+		    checkURL();
+		}
 	}
 	return app;
 })({});
