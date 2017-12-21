@@ -68,6 +68,8 @@
 		handleDropzone(laserDropZone, 'disable');
 		showSubscriptionModal();
 		<?php endif; ?>
+
+		initCodeVisibilityHandler();
 			
 	});
 	/**
@@ -866,6 +868,7 @@
 		var statusClass = info.status == 'active' ? 'success' : 'danger';
 		var expirationDate = moment(subscription.exp_date);
 		var remainingDays = expirationDate.diff(today, 'days');
+		var password_symbol = "*";
 		
 		var html = '<thead>\
 						<tr>\
@@ -877,7 +880,7 @@
 					<thed>\
 					<tbody>\
 						<tr>\
-							<td><strong>'+subscription.link+'</strong></td>\
+							<td width="300"><span class="visible-code hidden"><strong>'+subscription.link+'</strong></span> <span class="hidden-code">'+password_symbol.repeat(subscription.link.length)+'</span>  <span class="pull-right"><i style="cursor:pointer;" class="fa fa-eye code-visible-button"></i></span></td>\
 							<td><span class="center-block padding-5 label label-'+statusClass+'">'+info.status+'</span></td>\
 							<td>'+expirationDate.format("DD/MM/YYYY")+' ('+_("{0} remaining days").replace("{0}", remainingDays)+')</td>\
 							<td class="text-center"><button title="<?php echo _("Remove"); ?>" id="remove-subscription-button" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>\
@@ -885,6 +888,7 @@
 					</tbody>';
 		$("#subscription-codes-table").html(html);
 		$("#remove-subscription-button").on('click', removeSubscription);
+		initCodeVisibilityHandler();
 	}
 	/**
 	*
@@ -930,5 +934,19 @@
 	function engraveGcode(id)
 	{
 		document.location.href = '/fabui/#plugin/fab_laser/make/' + id;
+	}
+	/**
+	*
+	**/
+	function initCodeVisibilityHandler()
+	{
+		$(".code-visible-button").mouseup(function() {
+			$(".visible-code").addClass('hidden');
+			$(".hidden-code").removeClass('hidden');
+			
+		}).mousedown(function() {
+			$(".visible-code").removeClass('hidden');
+			$(".hidden-code").addClass('hidden');
+		});
 	}
 </script>

@@ -36,7 +36,7 @@ if($subscription_exists){
 				</thead>
 				<tbody>
 					<tr>
-						<td><strong><?php echo $subscription_code['code']; ?></strong></td>
+						<td width="300"><strong><span class="visible-code hidden"><?php echo $subscription_code['code']; ?></span> <span class="hidden-code"><?php echo str_repeat( "*", strlen( $subscription_code['code'] ) );?></span> <span class="pull-right"><i title="<?php echo _("Press to view code");?>" style="cursor:pointer;" class="fa fa-eye code-visible-button"></i></span></strong></td>
 						<td><span class="center-block padding-5 label label-<?php echo $subscription_code['status'] == 'active' ? 'success' : 'danger';?>"><strong><?php echo $subscription_code['status']; ?></strong></span></td>
 						<td><?php echo date('d/m/Y', strtotime($subscription_code['expiration_date'])) ; ?>  (<?php echo str_replace("{0}", $remainingDays, _("{0} days remaining"));?>)</td>
 						<td class="text-center"><button title="<?php echo _("Remove"); ?>" id="remove-subscription-button" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
