@@ -17,7 +17,11 @@
 					<div class="panel-body status">
 						<div class="who clearfix">
 							<h4 class="text-center ">
-								<?php echo $head['name']; ?>
+								<?php if($head['link'] != ''):?>
+									<a title="<?php echo _("More details");?>" class="no-ajax" target="_blank" href="<?php echo $head['link'];?>"><?php echo $head['name']; ?> <small><i class="fa fa-external-link"></i></small></a>
+								<?php else:?>
+									<?php echo $head['name']; ?>
+								<?php endif;?>
 							</h4>
 						</div>
 						<div class="image padding-10 ">
@@ -30,8 +34,8 @@
 							<li style="padding-right:0px !important">
 								<div class="btn-toolbar">
 									<div class="btn-group">
-										<a data-action="edit" data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action" ><i class="fa  fa-pencil-square-o"></i> </a>
-										<a data-action="info" data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action" ><i class="fa  fa-info"></i> </a>
+										<a title="<?php echo _("Settings");?>" data-action="edit" data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action" ><i class="fa  fa-cog"></i> </a>
+										<!--  <a data-action="info" data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action" ><i class="fa  fa-info"></i> </a>-->
 										<?php if($head['fw_id'] >= 100):?>
 										<a data-action="remove" data-head="<?php echo $head['filename']; ?>" class="btn btn-danger settings-action" ><i class="fa  fa-trash"></i> </a>
 										<?php endif;?>
