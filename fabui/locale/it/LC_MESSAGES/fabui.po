@@ -945,7 +945,7 @@ msgstr "Nero"
 
 #: fabui/application/helpers/fabtotum_helper.php:1712
 msgid "Your FABtotum"
-msgstr ""
+msgstr "La tua FABtotum"
 
 #: fabui/application/helpers/fabtotum_helper.php:1764
 msgid ""
@@ -2856,7 +2856,7 @@ msgstr "Ultimi post instagram"
 
 #: fabui/application/views/dashboard/js.php:121
 msgid "Click to view comments"
-msgstr ""
+msgstr "Clicca per vedere i commenti"
 
 #: fabui/application/views/dashboard/js.php:156
 msgid "View on instagram"
@@ -4726,7 +4726,9 @@ msgstr ""
 #: fabui/application/views/std/email/pause.php:11
 msgid ""
 "this e-mail is to inform you that the last {0} you started was just paused."
-msgstr "questa mail è per informarti che l'ultima {1} è appena {2}"
+msgstr ""
+"questa mail è per informarti che l'ultima {1} che hai iniziato è appena "
+"stata messa in pausa"
 
 #: fabui/application/views/std/email/pause.php:21
 msgid "If you paused the task please ignore this email"
@@ -5057,30 +5059,26 @@ msgid "If burning lines are visible reduce it untill they are gone"
 msgstr ""
 
 #: fabui/application/views/cam/help/inputs.php:25
-#, fuzzy
 msgid "PWM Value"
-msgstr "valore"
+msgstr ""
 
 #: fabui/application/views/cam/help/inputs.php:26
 msgid "Laser PWM value"
 msgstr ""
 
 #: fabui/application/views/cam/help/inputs.php:29
-#, fuzzy
 msgid "Invert"
-msgstr "Inverti i colori"
+msgstr ""
 
 #: fabui/application/views/cam/help/inputs.php:30
 msgid "Invert image gray colors to invert what is burned"
 msgstr ""
 
 #: fabui/application/views/cam/help/inputs.php:33
-#, fuzzy
 msgid "Travel moves"
 msgstr "movimenti rapidi (travel)"
 
 #: fabui/application/views/cam/help/inputs.php:34
-#, fuzzy
 msgid ""
 "To prevent laser leaving travel trails, turn it off during travel moves."
 msgstr "Disattiva laser durante movimenti rapidi"
