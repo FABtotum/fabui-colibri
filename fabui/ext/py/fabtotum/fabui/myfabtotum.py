@@ -90,8 +90,8 @@ class MyFabtotumCom:
         self.jsonrpc_version          = "2.0"
         self.request_timeout          = 5
         self.polling_interval         = 5
-        self.info_interval            = (60*30) #30 minutes
-        self.internal_update_interval = (60*5) #5minutes
+        self.info_interval            = (60*30) # 30 minutes
+        self.internal_update_interval = (60*5)  #  5 minutes
         self.id_counter               = 0
         self.leds_colors              = {}
         #self.mac_address      = None
@@ -228,8 +228,8 @@ class MyFabtotumCom:
         """ remote command identify printer"""
         self.log.info("MyFabtotumCom - Identify printer")
         
-        #send info to remote server
-        self.fab_info_update()
+        # reload infos and send all to remote server
+        self.reload(update=True)
         
         self.gcs.send("M300", group='gcode')
         self.gcs.send("M150 R0 U255 B255 S50", group='gcode')
