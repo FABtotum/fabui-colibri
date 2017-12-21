@@ -49,11 +49,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'dashboard/blank';
-$route['404_override'] = '';
+$route['default_controller']   = 'dashboard/blank';
+$route['404_override']         = '';
 $route['translate_uri_dashes'] = FALSE;
 //install
-$route['install/do'] = 'install/doInstall';
+$route['install/do']      = 'install/doInstall';
 $route['install/restore'] = 'install/doRestore';
 //login
 $route['login/new-account']    = 'login/newAccount';
@@ -64,15 +64,15 @@ $route['cam-toolbox'] = 'cam';
 // make
 $route['make/print/(\d+)'] = 'create/index/print/$1';
 $route['make/mill/(\d+)']  = 'create/index/mill/$1';
-$route['make/laser/(\d+)']  = 'create/index/laser/$1';
-$route['make/print'] = 'create/index/print';
-$route['make/mill']  = 'create/index/mill';
-$route['make/scan']  = 'scan';
+$route['make/laser/(\d+)'] = 'create/index/laser/$1';
+$route['make/print']       = 'create/index/print';
+$route['make/mill']        = 'create/index/mill';
+$route['make/scan']        = 'scan';
 //file manager
-$route['projectsmanager/add-project']  = 'projectsmanager/newProject';
+$route['projectsmanager/add-project']      = 'projectsmanager/newProject';
 $route['projectsmanager/add-file/(:num)']  = 'projectsmanager/newFile/$1';
 //settings
-$route['settings/cam'] = 'cam';
+$route['settings/cam'] = 'raspicam';
 //maintenance
 $route['maintenance/head']                      = 'head';
 $route['maintenance/bed-calibration']           = 'bed';
@@ -89,15 +89,15 @@ $route['maintenance/system-info']               = 'systeminfo';
 $route['maintenance/nozzle-height-calibration'] = 'nozzle';
 $route['maintenance/nozzle-pid-tune']           = 'nozzle/pidtune';
 //plugin
-$route['plugin/add'] = 'plugin/add';
-$route['plugin/getOnline'] = 'plugin/getOnline';
-$route['plugin/online'] = 'plugin/online';
-$route['plugin/create'] = 'plugin/create';
-$route['plugin/download/(:any)'] = 'plugin/download/$1';
-$route['plugin/doUpload'] = 'plugin/doUpload';
-$route['plugin/update/(:any)'] = 'plugin/manage/update/$1';
-$route['plugin/remove/(:any)'] = 'plugin/manage/remove/$1';
-$route['plugin/activate/(:any)'] = 'plugin/manage/activate/$1';
+$route['plugin/add']               = 'plugin/add';
+$route['plugin/getOnline']         = 'plugin/getOnline';
+$route['plugin/online']            = 'plugin/online';
+$route['plugin/create']            = 'plugin/create';
+$route['plugin/download/(:any)']   = 'plugin/download/$1';
+$route['plugin/doUpload']          = 'plugin/doUpload';
+$route['plugin/update/(:any)']     = 'plugin/manage/update/$1';
+$route['plugin/remove/(:any)']     = 'plugin/manage/remove/$1';
+$route['plugin/activate/(:any)']   = 'plugin/manage/activate/$1';
 $route['plugin/deactivate/(:any)'] = 'plugin/manage/deactivate/$1';
 
 $route['plugin/(:any)'] = 'plugin_$1';
