@@ -78,11 +78,13 @@ if (!function_exists('fab_register_printer'))
 			'message' => ''
 		);
 		
+		/*
 		if(!exists_serial_number($serialno)){
 			$return['message'] = _('The serial number provided was not recognized');
 			return $return;
 		}
-				
+		*/
+			
 		$args['fabid']    = $fabid;
 		$args['serialno'] = $serialno;
 		$args['mac']      = getMACAddres();
