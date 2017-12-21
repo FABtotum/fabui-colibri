@@ -37,7 +37,7 @@
         $('#take_photo').html('<i class="fa fa-spinner fa-spin"></i> ' + _("Taking picture") + "..." );
         $("#raspi_picture").addClass('sfumatura');
         $.ajax({
-              url: "<?php echo site_url("cam/takePicture") ?>",
+              url: "<?php echo site_url("raspicam/takePicture") ?>",
               dataType : 'json',
               type: "POST", 
               async: true,
@@ -45,7 +45,7 @@
         }).done(function(response) {
             d = new Date();
             
-            var src ="<?php echo site_url("cam/getPicture") ?>" + '/'+d.getTime();
+            var src ="<?php echo site_url("raspicam/getPicture") ?>" + '/'+d.getTime();
             
             $('#result').html(response.result);
             $("#raspi_picture").attr('src',src);
@@ -98,7 +98,7 @@
         openWait('<i class="fa fa-spinner fa-spin"></i> ' + _("Detecting camera") + '...');
         
 		$.ajax({
-			url: '<?php echo site_url('cam/doDetectCamera') ?>',
+			url: '<?php echo site_url('raspicam/doDetectCamera') ?>',
 			dataType: 'json',
 			cache: false,
 			contentType: false,
@@ -106,7 +106,6 @@
 			data: {},                         
 			type: 'post',
 			success: function(response){
-                console.log(response);
                 location.reload();
 			}
 		 });

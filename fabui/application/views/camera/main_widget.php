@@ -36,7 +36,7 @@
 					<div class="row margin-bottom-10">
 						<div class="col-sm-12">
 							<img id="raspi_picture" class="img-responsive"
-								src="<?php echo site_url('cam/getPicture') ?>" />
+								src="<?php echo site_url('raspicam/getPicture') ?>" />
 							<div id="result"></div>
 						</div>
 					</div>
