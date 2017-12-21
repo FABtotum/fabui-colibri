@@ -320,9 +320,14 @@ class Settings extends FAB_Controller {
 		
 		$headerToolbar = '<ul class="nav nav-tabs network-tabs pull-right">' . $tabs_title .'</ul>';
 		
+		/*
 		$widgeFooterButtons = $this->smart->create_button(_('Hidden wifi'), 'default hiddenWifiButton')->attr(array('style' => 'display:none'))->attr('data-action', 'exec')->icon('fa-user-secret')->print_html(true)
 						 .' '.$this->smart->create_button(_('Scan'), 'primary')->attr(array('id' => 'scanButton', 'style' => 'display:none'))->attr('data-action', 'exec')->icon('fa-search')->print_html(true)
 						 .' '.$this->smart->create_button(_('Save'), 'primary')->attr(array('id' => 'saveButton'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		*/
+		$widgeFooterButtons = $this->smart->create_button(_('Scan'), 'primary')->attr(array('id' => 'scanButton', 'style' => 'display:none'))->attr('data-action', 'exec')->icon('fa-search')->print_html(true)
+						      .' '.$this->smart->create_button(_('Save'), 'primary')->attr(array('id' => 'saveButton'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
+		
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'network-settings-widget';
