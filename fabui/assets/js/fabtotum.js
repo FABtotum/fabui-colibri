@@ -172,7 +172,10 @@ function pageCleanUp()
 function pageLoadSuccess()
 {
     if(debugState) console.log("pageLoadSuccess");
-    updateTour();
+    
+    if (typeof updateTour === "function") {
+    	updateTour();
+    }
 }
 
 /**
