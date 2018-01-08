@@ -95,17 +95,28 @@
 					</tr></thead><tbody>';
 			
 			$.each(plugins, function(i, plugin) {
-				table_html += '<tr><td><h4>' + plugin.name + '<small>' + plugin.desc + ' | <a class="no-ajax" target="_blank" href="'+plugin.url+'"> '+"<?php echo _("visit plugin site");?>"+'</a></small><p class="margin-top-10">';
+
+
+				var update_available = false;
+
+				if( installed_plugins.indexOf(plugin.slug) != -1 ){
+
+					var idx = installed_plugins.indexOf(plugin.slug);
+					update_available = cmpVersions(installed_plugins_version[idx], plugin.latest) < 0;
+				}
+
+				var tr_class = update_available ? 'danger' : '';
 				
+				table_html += '<tr class="'+tr_class+'"><td><h4>' + plugin.name + '<small>' + plugin.desc + ' | <a class="no-ajax" target="_blank" href="'+plugin.url+'"> '+"<?php echo _("visit plugin site");?>"+'</a></small><p class="margin-top-10">';
+
 				if( installed_plugins.indexOf(plugin.slug) == -1 )
 				{
 					table_html += '<button class="btn btn-xs btn-primary action-button" data-action="update" data-title="'+plugin.slug+'" " title="Install">' + "<?php echo _("Install");?>" + '</button>&nbsp;';
 				}
 				else
 				{
-					var idx = installed_plugins.indexOf(plugin.slug);
-					if( cmpVersions(installed_plugins_version[idx], plugin.latest) < 0 )
-						table_html += '<button class="btn btn-xs btn-primary action-button" data-action="update" data-title="'+plugin.slug+'" " title="Update">' + "<?php echo _("Update");?>" + '</button>&nbsp;';
+					if( update_available)
+						table_html += '<button class="btn btn-xs btn-danger action-button" data-action="update" data-title="'+plugin.slug+'" " title="Update">' + "<?php echo _("Update");?>" + '</button>&nbsp;';
 					else
 						table_html += '<span class="label label-success">' + "<?php echo _("Installed");?>" + '</span>';
 				}

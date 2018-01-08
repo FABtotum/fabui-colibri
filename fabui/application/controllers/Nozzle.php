@@ -41,6 +41,7 @@ class Nozzle extends FAB_Controller {
 		$this->load->helper('fabtotum_helper');
 		
 		$data = array();
+		$data['settings'] = loadSettings();
 		
 		//main page widget
 		$widgetOptions = array(

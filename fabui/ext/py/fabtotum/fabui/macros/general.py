@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
 
-__authors__ = "Marco Rizzuto, Daniel Kesler"
+__authors__ = "Marco Rizzuto, Daniel Kesler, Krios Mane"
 __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
@@ -30,6 +30,7 @@ import re
 # Import internal modules
 from fabtotum.fabui.macros.common import getEeprom, configure_head, configure_feeder, configure_4thaxis, get_versions, getPosition
 from fabtotum.utils.translation import _, setLanguage
+from fabtotum.fabui.constants import *
 
 def home_all(app, args = None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
@@ -38,7 +39,7 @@ def home_all(app, args = None, lang='en_US.UTF-8'):
         zprobe_disabled = int(app.config.get('settings', 'probe.enable')) == 0
         z_max_offset    = app.config.get('settings', 'z_max_offset')
     except KeyError:
-        z_max_offset = 241.5
+        z_max_offset = Z_MAX_OFFSET
         zprobe_disabled = False
 
     app.trace( _("Homing all axes") )
@@ -47,7 +48,7 @@ def home_all(app, args = None, lang='en_US.UTF-8'):
     if zprobe_disabled :
         app.macro("G27", "ok", 200,                             _("Homing all axes"), verbose=False)
         app.macro('G92 Z{0}'.format(z_max_offset), "ok", 99,    _("Set Z Max"), verbose=False)
-        app.macro("G0 Z50 F10000", "ok", 120,                    _("Raising"), verbose=False)
+        app.macro("G0 Z50 F10000", "ok", 120,                   _("Raising"), verbose=False)
         app.macro("M400",  "ok", 120,        _("Waiting for all moves to finish"), verbose=False)
     else:
         app.macro("G28", "ok", 200,                             _("Homing all axes"), verbose=False)

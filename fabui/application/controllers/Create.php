@@ -98,6 +98,7 @@
 		
 		if(!$task_is_running){
 			
+		    $data['settings'] = loadSettings();
 			$data['safety_check'] = safetyCheck("print", "yes");
 			$data['safety_check']['url'] = 'std/safetyCheck/print/yes';
 			$data['safety_check']['content'] = $this->load->view( 'std/task_safety_check', $data, true );

@@ -18,7 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
 
-__authors__ = "Marco Rizzuto, Daniel Kesler"
+__authors__ = "Marco Rizzuto, Daniel Kesler, Krios Mane"
 __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
@@ -31,6 +31,7 @@ import json
 # Import internal modules
 from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.macros.common import getPosition, configure_head
+from fabtotum.fabui.constants import *
 
 def pause_subtractive(app, args=None, lang='en_US.UTF-8'):
     app.macro("M400",   "ok", 240,    _("Waiting for all moves to finish"), verbose=False)
@@ -44,7 +45,7 @@ def pause_subtractive(app, args=None, lang='en_US.UTF-8'):
     current_z = float(position['z'])
     safe_z = current_z + 50.0
     
-    max_z = app.config.get('settings', 'z_max_offset', 241.5) - 5
+    max_z = app.config.get('settings', 'z_max_offset', Z_MAX_OFFSET) - 5
     if safe_z > max_z:
         safe_z = max_z
     

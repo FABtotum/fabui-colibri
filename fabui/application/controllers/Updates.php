@@ -83,8 +83,10 @@
 		//get data from post
 		$data     = $this->input->post();
 		$bundles  = $this->input->post('bundles');
+		$plugins  = $this->input->post('plugins');
 		$firmware = $data['firmware'];
 		$boot     = $data['boot'];
+		
 		
 		//add task record to db
 		$taskData = array(
@@ -100,6 +102,7 @@
 				'-T' => $taskId,
 		);
 		if($bundles)  $updateArgs['-b'] = implode(',', $bundles);
+		if($plugins) $updateArgs['-p'] =  implode(',',  $plugins);
 		if($firmware == "true") $updateArgs['--firmware'] = '';
 		if($boot == "true") $updateArgs['--boot'] = '';
 

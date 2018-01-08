@@ -138,12 +138,12 @@
 							<input type="radio" id="probe-enable" name="probe-enable" value="1" <?php if(isset($defaultSettings['probe']['enable']) && $defaultSettings['probe']['enable'] == 1) echo 'checked="checked"'; ?>><i></i><?php echo _('Enable')?>
 						</label>
 						<label class="radio">
-							<input type="radio" id="probe-enable" name="probe-enable" value="0" <?php if(isset($defaultSettings['probe']['enable']) && $defaultSettings['probe']['enable'] == 0) echo 'checked="checked"'; ?>><i></i><?php echo _('Disabled')?>
+							<input type="radio" id="probe-enable" name="probe-enable" value="0" <?php if(isset($defaultSettings['probe']['enable']) && $defaultSettings['probe']['enable'] == 0) echo 'checked="checked"'; ?>><i></i><?php echo _('Disabled')?> (<?php echo _("Suggested");?>)
 						</label>
 					</div>
 				</section>
-				<div class="note">
-					<p class="font-md"><i class="fa fa-warning"></i> <?php echo _("Please perform a new nozzle height calibration when switching between the two options above");?> </p>
+				<div class="alert alert-warning animated fadeIn">
+					<strong><i class="fa fa-warning"></i> <?php echo _("Please perform a new nozzle height calibration when switching between the two options above");?> </strong>
 				</div>
 			</fieldset>
 		</div>

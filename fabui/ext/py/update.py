@@ -35,7 +35,7 @@ import pycurl
 from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.gpusher import GCodePusher
 from fabtotum.update.factory  import UpdateFactory
-from fabtotum.update import BundleTask, FirmwareTask, BootTask
+from fabtotum.update import BundleTask, FirmwareTask, BootTask, PluginTask
 
 ################################################################################
 
@@ -85,7 +85,7 @@ class UpdateApplication(GCodePusher):
             self.update_stats.update( self.factory.serialize() )
             self.update_monitor_file()
 
-    def run(self, task_id, bundles, firmware_switch, boot_switch):
+    def run(self, task_id, bundles, firmware_switch, boot_switch, plugins):
         """
         """
 
@@ -99,10 +99,19 @@ class UpdateApplication(GCodePusher):
             if remote_bundles:
                 
                 for bundle_name in bundles:
-                    
                     bundle = BundleTask(bundle_name, remote_bundles[bundle_name])
                     self.factory.addTask(bundle)
-            
+        
+        if plugins:
+            remote_plugins = self.factory.getPlugins()
+            for slug in plugins:
+                if slug in remote_plugins:
+                    repo_plugin = remote_plugins[slug]
+                    latest = repo_plugin['latest']
+                    task = PluginTask(slug, repo_plugin)
+                    self.factory.addTask(task)
+                    
+        
         if firmware_switch:
             remote_firmware = self.factory.getFirmware()
             if remote_firmware:
@@ -156,6 +165,7 @@ def main():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-T", "--task-id",     						help="Task ID.",                      default=0)
     parser.add_argument("-b", "--bundles", 							help="Bundle name to be updated" )
+    parser.add_argument("-p", "--plugins",                          help="Plugins to update")
     parser.add_argument("--boot", action="store_true", 				help="Update boot files" )
     parser.add_argument("-f", "--firmware", action="store_true", 	help="Update firmware" )
     parser.add_argument("--lang",                                   help="Output language", 		      default='en_US.UTF-8' )
@@ -170,13 +180,20 @@ def main():
         bundles     = args.bundles.split(',')
     else:
         bundles     = []
+    
+    # plugins
+    if args.plugins:
+        plugins = args.plugins.split(',')
+    else:
+        plugins = []    
+        
     firmware    = args.firmware
     boot        = args.boot
     lang        = args.lang
     
     app = UpdateApplication(lang=lang)
 
-    app.run(task_id, bundles, firmware, boot)
+    app.run(task_id, bundles, firmware, boot, plugins)
     app.loop()
 
 if __name__ == "__main__":

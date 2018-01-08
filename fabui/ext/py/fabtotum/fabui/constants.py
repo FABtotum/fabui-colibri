@@ -23,6 +23,10 @@ __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
 ############################
+# HARDWARE SETTINGS        #
+############################
+Z_MAX_OFFSET = 241.5
+############################
 #      ERROR CODES         #
 ############################
 ERROR_KILLED           = 100

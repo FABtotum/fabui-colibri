@@ -772,9 +772,9 @@ fabApp = (function(app) {
 			var controller = link.attr('data-controller');
 			if(controller == 'updates'){
 				$("#update-menu-badge").remove();
-				if(number_updates > 0)
+				if((number_updates+number_plugin_updates) > 0)
 				{
-					link.append('<span id="update-menu-badge" class="badge pull-right inbox-badge bg-color-red margin-right-13">'+number_updates+'</span>');
+					link.append('<span id="update-menu-badge" class="badge pull-right inbox-badge bg-color-red margin-right-13">'+(number_updates+number_plugin_updates)+'</span>');
 				}
 			}
 		});

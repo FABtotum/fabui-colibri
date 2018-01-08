@@ -30,20 +30,21 @@
 	/**
 	*
 	**/
-	function checkUpdateStatus()
+	function checkUpdateStatus(bool)
 	{
+		var task_completed = bool || false;
 		$(".button-container").html('');
 		/*$('.fabtotum-icon .badge').html('<i class="fa fa-refresh fa-spin"></i>');*/
-		$(".status").html('<i class="fa fa-spinner fa-spin"></i> <?php echo _("Checking for updates") ?>');
+		if(!task_completed) $(".status").html('<i class="fa fa-spinner fa-spin"></i> <?php echo _("Checking for updates") ?>');
 		$.ajax({
 			type: "POST",
 			url: "<?php echo site_url('updates/updateStatus') ?>",
 			dataType: 'json'
 		}).done(function(response) {
 			if(response.remote_connection == false){
-				noInternetAvailable();
+				if(!task_completed) noInternetAvailable();
 			}else{
-				handleAvailableUpdates(response);
+				if(!task_completed) handleAvailableUpdates(response);
 				fabApp.handleUpdatesData(response);
 			}
 			//fabApp.doFunctionOverWS('getUpdates');
@@ -82,13 +83,15 @@
 		}else{
 			$(".status").html('<?php echo _("Great! Your FABtotum Personal Fabricator is up to date") ?>');
 			/*$('.fabtotum-icon .badge').find('i').removeClass('fa-spin fa-refresh').addClass('fa-check');*/
+
 		}
 
 		local_data_copy = object;
-
+		
 		createBundlesTable(object);
 		createFirmwareTable(object);
 		createBootFilesTable(object);
+		createPluginsTable(object);
 		
 		$(".show-changelog").on('click', findChangelog);
 		
@@ -403,12 +406,20 @@
 		var bundles_to_update = [];
 		var firmware = false;
 		var boot = false;
+		var plugins_to_update = [];
 		
 		$("#bundles-table").find("tr > td input:checkbox").each(function () {
 			if($(this).is(':checked')){
 				bundles_to_update.push($(this).val());
 			}
 		});
+
+		$("#plugins-table").find("tr > td input:checkbox").each(function () {
+			if($(this).is(':checked')){
+				plugins_to_update.push($(this).val());
+			}
+		});
+
 		$("#firmware-table").find("tr > td input:checkbox").each(function () {
 			if($(this).is(':checked')){
 				firmware = true;
@@ -420,13 +431,13 @@
 			}
 		});
 
-		if(bundles_to_update.length > 0 || firmware || boot){
-			startUpdate(bundles_to_update, firmware, boot);
+		if(bundles_to_update.length > 0 || firmware || boot || plugins_to_update.length>0){
+			startUpdate(bundles_to_update, firmware, boot, plugins_to_update);
 		}else{
 			enableButton('.action-buttons');
 			$.smallBox({
 				title : "<?php echo _('Warning')?>",
-				content : '<?php echo _('Please select at least 1 bundle, firmware or boot update')?>',
+				content : '<?php echo _('Please select at least 1 bundle, firmware, boot or plugin update')?>',
 				color : "#5384AF",
 				timeout: 3000,
 				icon : "fa fa-warning"
@@ -438,12 +449,12 @@
 	/**
 	*
 	**/
-	function startUpdate(bundles, firmware, boot)
-	{
+	function startUpdate(bundles, firmware, boot, plugins)
+	{	
 		$(".status").html('<?php echo _("Connecting to update server") ?>...');
 		$.ajax({
 			type: "POST",
-			data: {'bundles': bundles, 'firmware' : firmware, 'boot' : boot},
+			data: {'bundles': bundles, 'firmware' : firmware, 'boot' : boot, 'plugins': plugins},
 			url: "<?php echo site_url('updates/startUpdate') ?>",
 			dataType: 'json'
 		}).done(function(response) {
@@ -480,7 +491,7 @@
 	**/
 	function handleTask(data)
 	{
-		handleUpdate(data.update);
+		handleUpdate(data);
 		handleCurrent(data.update.current);
 		handleTaskStatus(data.task.status);
 	}
@@ -501,6 +512,7 @@
 				/*$('.fabtotum-icon .badge').addClass('check').find('i').removeClass('fa-spin fa-refresh').addClass('fa-check');*/
 				$("#do-abort").remove();
 				fabApp.unFreezeMenu();
+				checkUpdateStatus(true);
 				$(".small").html('<?php echo _("A reboot is needed to apply new features") ?>');
 				if($("#do-reboot").length == 0) $(".button-container").append('<button class="btn btn-default  action-buttons" id="do-reboot"> <?php echo _("Reboot now") ?></button>')
 				$('.fabtotum-icon').parent().removeClass().addClass('tada animated');
@@ -517,6 +529,7 @@
 	**/
 	function handleCurrent(current)
 	{
+		
 		if(current.status != ''){
 			switch(current.status){
 				case 'downloading' :
@@ -533,16 +546,33 @@
 	**/
 	function handleUpdate(object)
 	{
-		
-		
-		var table = '<table class="table  table-forum"><thead><tr></tr></thead><tbody>';		
-		$.each(object.tasks, function(i, task) {
-			
-			var tr_class = task.status == 'error' ? 'warning' : '';
+		var table = '<table class="table  table-forum"><thead><tr></tr></thead><tbody>';
+	
+		$.each(object.update.tasks, function(i, task) {
+
+			var tr_class = '';
+			if(object.update.current.task == task.name) tr_class = 'warning';
+			if(object.task.status == 'completed') tr_class = '';
+			if(task.status == 'error') tr_class = 'error';
+			var icon = '';
+			switch(task.type){
+				case 'plugin':
+					icon = 'fa-plug';
+					break;
+				case 'bundle':
+					icon = 'fa-puzzle-piece';
+					break;
+				case 'firmware':
+					icon = 'fa-microchip';
+					break;
+				case 'boot':
+					icon = 'fa-rocket';
+					break;
+			}
 			
 			table += '<tr class="'+ tr_class +'">';
 			table += '<td width="20" class="text-center"></td>';
-			table += '<td><h4><a href="javascript:void(0);">' + task.name.capitalize() + '</a>';
+			table += '<td><h4><a href="javascript:void(0);"><i class="fa '+icon+' "></i> ' + task.name.capitalize() + '</a>';
 			
 			switch(task.status){
 				case 'downloading':
@@ -665,6 +695,54 @@
 		}
 		
 		return 0;
+	}
+
+	/**
+	*
+	*/
+	function createPluginsTable(object)
+	{
+		var html = '<table id="plugins-table" class="table  table-forum">' + 
+			'<thead>' +
+			'<tr>' +
+				'<th colspan="2">Plugin</th>' +
+				'<th class="text-center" style="width:150px"><?php echo _("Remote version") ?></th>' +
+				'<th class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px; margin-bottom:0px"><label><input id="select-all-plugins" value="all_plugins" type="checkbox" class="checkbox"><span></span></label></div></th>' + 
+			'</tr>' + 
+		'</thead>' + 
+		'<tbody>';
+
+		$.each(object.plugins, function(plugin_name, plugin) {
+
+			var tr_class = plugin.need_update ? 'warning' : '';
+			var icon = plugin.need_update ? 'fa-exclamation-circle text-danger': 'fa-check text-muted';
+			var checked = plugin.need_update ? 'checked="checked"' : '';
+			
+			html += '<tr class="'+tr_class+'">'+
+				'<td class="text-center" style="width:40px;"><i class="fa '+icon+'"></i></td>'+
+				'<td><h4>'+
+					'<a>'+plugin.info.name+'</a>' +
+					'<small>'+plugin.info.description+' | <?php echo _("Installed version") ?>: '+plugin.info.version+' </small>' + 
+				'</h4></td>'+
+				'<td class="text-center">'+plugin.latest+'</td>'+
+				'<td class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px;"><label><input id="checkbox-plugin-'+plugin_name+'" value="'+plugin_name +'" type="checkbox" '+checked+' class="checkbox checkbox-action"><span></span></label></div></td>' + 
+			'</tr>';
+
+		});
+		
+		html += '</tbody></table>';
+
+		$("#plugins_tab").html(html);
+		if(object.update.plugins > 0){
+			$("#plugins-badge").html(object.update.plugins);
+		}
+
+		$("#select-all-plugins").on('click', function(){
+			var that = this;
+			$(this).closest("table").find("tr > td input:checkbox").each(function() {
+				this.checked = that.checked;
+			});
+		});
 	}
 	
 </script>

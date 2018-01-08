@@ -31,6 +31,7 @@ import json
 # Import internal modules
 from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.macros.common import getPosition, configure_head
+from fabtotum.fabui.constants import *
 
 def pause_additive(app, args=None, lang='en_US.UTF-8'):
     app.macro("M999",   "ok", 5,    _("Clearing error state"), verbose=False)
@@ -46,7 +47,7 @@ def pause_additive(app, args=None, lang='en_US.UTF-8'):
     current_z = float(position['z'])
     safe_z = current_z + 50.0
     
-    max_z = app.config.get('settings', 'z_max_offset', 241.5) - 5
+    max_z = app.config.get('settings', 'z_max_offset', Z_MAX_OFFSET) - 5
     if safe_z > max_z:
         safe_z = max_z
     
@@ -83,7 +84,7 @@ def resume_additive(app, args=None, lang='en_US.UTF-8'):
         #app.macro("M740", "TRIGGERED", 1, _("Filament not inserted"), verbose=False)
         
     #block stepper motor for 1min => 60*1=60
-    app.macro("M84 S60",                     "ok", 2,   _("Block stepper motor"), verbose=False)
+    app.macro("M84 S60",                     "ok", 2,  _("Block stepper motor"), verbose=False)
     app.macro("M82",                         "ok", 1,  _(" Set extruder to absolute mode"),  verbose=False)
     app.macro("M104 S{0}".format(ext_temp),  "ok", 5,  _("Heating Nozzle"), verbose=False)
     app.macro("M140 S{0}".format(bed_temp),  "ok", 5,  _("Heating Bed"), verbose=False)
@@ -142,6 +143,7 @@ def start_additive(app, args = None, lang='en_US.UTF-8'):
     
     offset  = float(head.get('nozzle_offset', 0))
 
+    # homing direction (left= 0, right=1)
     try:
         switch = app.config.get('settings', 'switch')
     except KeyError:

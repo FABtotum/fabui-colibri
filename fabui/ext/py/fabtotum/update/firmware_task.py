@@ -45,8 +45,8 @@ class FirmwareTask(SubTask):
 	def install(self):
 		self.setStatus('installing')
 		
-		cmd = 'sh /usr/share/fabui/ext/bash/totumduino_manager.sh update ' + self.getFile("firmware").getLocal()
-		
+		cmd = 'sh /usr/share/fabui/ext/bash/totumduino_manager.sh update "' + self.getFile("firmware").getLocal()+'"'
+				
 		avrdude_log = '/var/log/fabui/avrdude.log'
 		
 		errorcode = 0
@@ -62,9 +62,10 @@ class FirmwareTask(SubTask):
 			install_output = e.output
 			errorcode = e.returncode
 		
-		self.factory.gcs.open_serial()
-		
 		install_output = open(avrdude_log, 'r').read()
+		
+		
+		# self.factory.gcs.open_serial()
 		
 		match_error1 = re.search('stk500_recv\(\): programmer is not responding', install_output, re.IGNORECASE)
 		match_error2 = re.search('stk500_getsync\(\)', install_output, re.IGNORECASE)
@@ -72,7 +73,7 @@ class FirmwareTask(SubTask):
 		if ((match_error1 != None) or ( match_error2 != None)):
 			errorcode = 1
 		
-		time.sleep(2)
+		# time.sleep(2)
 		
 		cmd = 'cp ' + self.getFile("gcodes").getLocal() + ' /var/lib/fabui/settings/gcodes.json';
 		
@@ -81,6 +82,9 @@ class FirmwareTask(SubTask):
 		except subprocess.CalledProcessError as e:
 			pass
 		
+		time.sleep(5)
+		self.factory.gcs.open_serial()
+		
 		if errorcode in success:
 			print "Firmware installed"
 			self.setStatus('installed')
@@ -88,3 +92,5 @@ class FirmwareTask(SubTask):
 			print "Firmware not installed"
 			self.setStatus('error')
 			self.setMessage('Firmware was not flashed\nPlease try again\nIf the problem persists please contact support\n\n' + install_output)
+		
+		

@@ -10,10 +10,13 @@
 ?>
 <div class="row">
 	<div class="col-sm-12">
-		<div class="well well-light well-sm margin-bottom-10">
+		<div class="alert alert-warning animated fadeIn margin-bottom-10">
 			<ul class="list-unstyled">
 				<li><i class="fa fa-warning"></i> <?php echo _("Before proceed make sure nozzle is clean"); ?></li>
 	            <li><i class="fa fa-warning"></i> <?php echo _("Operate according to safety instructions provided. Nozzle and bed can be hot, exercise caution accordingly");?></li>
+	            <?php if($settings['probe']['enable']):?>
+	            	<li><i class="fa fa-warning"></i> <?php echo _("Z touch probe enabled: probe's length will be automatically calibrated");?></li>
+	            <?php endif;?>
          	</ul>
 		</div>
 	</div>
