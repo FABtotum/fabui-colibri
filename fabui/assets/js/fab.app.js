@@ -11,7 +11,7 @@
 /*                  ______________________________________
            ________|                                      |_______
            \       |           fabui-colibri WebApp       |      /
-            \      |      Copyright © 2017 FABteam        |     /
+            \      |      Copyright © 2018 FABteam        |     /
             /      |______________________________________|     \
            /__________)                                (_________\
  *
@@ -1528,10 +1528,10 @@ fabApp = (function(app) {
 	app.redirectToUrlWhenisReady = function (url)
 	{
 		$.get(url)
-			.success(function(result) {				
+			.done(function(result) {				
 				document.location.href = url;
 			})
-			.error(function(jqXHR, textStatus, errorThrown) {
+			.fail(function(jqXHR, textStatus, errorThrown) {
 				setTimeout( function() {
 					app.redirectToUrlWhenisReady(url);
 				}, 500 );
@@ -1736,12 +1736,12 @@ fabApp = (function(app) {
 	app.showAlertToPowerOff = function ()
 	{
 		$.get(base_url)
-			.success(function(result) {				
+			.done(function(result) {				
 				setTimeout( function() {
 					app.showAlertToPowerOff();
 				}, 50 );
 			})
-			.error(function(jqXHR, textStatus, errorThrown) {
+			.fail(function(jqXHR, textStatus, errorThrown) {
 				setTimeout(function() {
 					waitTitle(_("Now you can switch off the power"));
 					waitContent(_("Note: 5 seconds after the beep it's safe to switch off your unit."));
@@ -1788,11 +1788,11 @@ fabApp = (function(app) {
 	app.checkConnectivity = function()
 	{
 		if(app.rebooting == false){
-			$.get(base_url).success(function(result) {
+			$.get(base_url).done(function(result) {
 				/**
 				 * @TODO
 				 */
-			}).error(function(jqXHR, textStatus, errorThrown) {
+			}).fail(function(jqXHR, textStatus, errorThrown) {
 				openWait('<i class="fa fa-warning"></i> ' + _("No connection detected"), _("Unable to connect to the FABtotum Personal Fabricator") + '<br>' + _("Please check ethernet cable or wifi connection and then reload the page"), false); 
 			});
 		}
