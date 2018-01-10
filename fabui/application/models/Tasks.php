@@ -94,6 +94,8 @@
 			}
 			if(isset($filters['type']) && $filters['type'] != ''){
 				$this->db->where('type', $filters['type']);
+			}else{
+			    $this->db->where_in('type', array('print', 'mill', 'scan', 'laser'));
 			}
 			if(isset($filters['status']) && $filters['status'] != ''){
 				$this->db->where('status', $filters['status']);
