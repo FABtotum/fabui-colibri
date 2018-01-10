@@ -123,12 +123,17 @@
 												</label>
 											</section>
 										</div>
-										<section class="raster-settings">
-											<label class="checkbox"><input class="laser-monitor-change" id="invert" name="invert" type="checkbox"><i></i> <span><?php echo _("Invert colors");?></span></label>
-										</section>
-										<section>
-											<label class="checkbox"><input class="laser-monitor-change" id="fan" name="fan"  type="checkbox"><i></i> <span><?php echo _("Fan on");?></span></label>
-										</section>
+										<div class="row margin-top-10 margin-bottom-10">
+    										<section class="col col-4 raster-settings">
+    											<label class="checkbox"><input class="laser-monitor-change" id="invert" name="invert" type="checkbox"><i></i> <span><?php echo _("Invert colors");?></span></label>
+    										</section>
+    										<section class="col col-4">
+    											<label class="checkbox"><input class="laser-monitor-change" id="fan" name="fan"  type="checkbox"><i></i> <span><?php echo _("Fan on");?></span></label>
+    										</section>
+    										<section  class="col col-4">
+												<label class="checkbox"><input class="laser-monitor-change" id="off-during-travel" name="pwm-off_during_travel" checked="checked" type="checkbox"><i></i> <span><?php echo _("Turn laser off during travel moves");?></span></label>
+											</section>
+										</div>
 										
 										<section>
 											<label class="label"><?php echo _("Profile");?></label>
@@ -147,15 +152,17 @@
 											<label class="label"><?php echo _("Number of gray levels") ?> (<span id="grey-levels-slider-value">1</span>)</label>
 											<input id="grey-levels-slider" type="text" name="range_2a" value="">
 										</section>
-										<section>
-											<label class="checkbox"><input class="laser-monitor-change" id="off-during-travel" name="pwm-off_during_travel" checked="checked" type="checkbox"><i></i> <span><?php echo _("Turn laser off during travel moves");?></span></label>
-										</section>
+										
 									</fieldset>
 									<!-- layer settings -->
 									<!-- Layers -->
 									<fieldset>
-										<div class="row laser-pro-settings-vector">
-											<section class="col col-4"></section>
+										<div class="layer-settings" style="display: none">
+											<label>Layer mapping</label>
+										</div>
+										<div class="row laser-cut-z-settings" style="display: none">
+											<hr class=" margin-bottom-10">
+											<section class="col col-2"></section>
 											<section class="col col-4">
 												<label class="input">
 													<span class="icon-prepend"><?php echo _("Z Depth");?></span>
@@ -168,9 +175,6 @@
 													<input type="number" class="laser-monitor-change" value="5" min="0" max="5" step="1" id="z-steps" name="z-steps" />
 												</label>
 											</section>
-										</div>
-										<div class="layer-settings" style="display: none">
-											<label>Layer mapping</label>
 										</div>
 									</fieldset>
 								</div>

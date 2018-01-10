@@ -161,11 +161,6 @@
 											<section class="col col-2">\
 												<input type="color" id="'+lyr_name+'-color" name="layer-'+lyr_name+'-color" class="color-palette" data-color="'+palette[color_idx]+'">\
 											</section>\
-											<section class="col col-2 laser-pro-settings-vector">\
-												<label class="checkbox">\
-													<input class="layer-cut" data-name="'+lyr_name+'" id="'+lyr_name+'-cut"  name="layer-'+lyr_name+'-cut" type="checkbox"><i></i> <?php echo _("Cut"); ?>\
-												</label>\
-											</section>\
 											<section class="col col-4">\
 												<label class="input">\
 													<span class="icon-prepend"><?php echo _("PWM") ?></span>\
@@ -176,6 +171,11 @@
 												<label class="input">\
 													<span class="icon-prepend"><?php echo _("Feed"); ?></span>\
 													<input name="layer-'+lyr_name+'-burn" id="layer-'+lyr_name+'-burn" class="laser-monitor-change" type="number" value="1000" min="200" max="10000">\
+												</label>\
+											</section>\
+											<section class="col col-2 laser-pro-settings-vector">\
+												<label class="checkbox">\
+													<input class="layer-cut" data-name="'+lyr_name+'" id="'+lyr_name+'-cut"  name="layer-'+lyr_name+'-cut" type="checkbox"><i></i> <?php echo _("Cut"); ?>\
 												</label>\
 											</section>\
 											</div>';
@@ -204,6 +204,20 @@
 									onLaserValueChange();
 								}
 							});
+							$(".layer-cut").on('click', function(){
+								var count = 0;
+								$(".layer-cut").each(function (index, value) {
+									if($(this).is(":checked")){
+										count++;
+									}
+								});
+
+								if(count > 0){
+									$(".laser-cut-z-settings").slideDown();
+								}else{
+									$(".laser-cut-z-settings").slideUp();
+								}
+							})
 							$(".layer-settings").slideDown();
 							setTimeout(function(){
 								$(".dropzone-upload-label").html("<?php echo _("Completed"); ?>");
