@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.0.5\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -4695,8 +4695,7 @@ msgstr "Override"
 #: fabui/application/views/std/email/task.php:11
 msgid ""
 "this e-mail is to inform you that the last {0} you started was just {1}."
-msgstr ""
-"Ciao {0},<br><br> questa mail è per informarti che l'ultima {1} è appena {2}"
+msgstr "questa mail è per informarti che l'ultima {0} è appena {1}"
 
 #: fabui/application/views/std/email/task.php:21
 msgid "Started on"
