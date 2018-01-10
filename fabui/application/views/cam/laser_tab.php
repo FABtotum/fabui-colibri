@@ -154,6 +154,21 @@
 									<!-- layer settings -->
 									<!-- Layers -->
 									<fieldset>
+										<div class="row laser-pro-settings-vector">
+											<section class="col col-4"></section>
+											<section class="col col-4">
+												<label class="input">
+													<span class="icon-prepend"><?php echo _("Z Depth");?></span>
+													<input type="number" class="laser-monitor-change" value="0" min="0" max="5" step="0.1" id="z-depth" name="z-depth"/>
+												</label>
+											</section>
+											<section class="col col-4">
+												<label class="input">
+													<span class="icon-prepend"><?php echo _("Z Steps");?></span>
+													<input type="number" class="laser-monitor-change" value="5" min="0" max="5" step="1" id="z-steps" name="z-steps" />
+												</label>
+											</section>
+										</div>
 										<div class="layer-settings" style="display: none">
 											<label>Layer mapping</label>
 										</div>

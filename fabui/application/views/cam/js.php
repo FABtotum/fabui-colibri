@@ -14,6 +14,7 @@
 	var uploadedFile;
 	var gcodeID = '';
 	var today   = moment("<?php echo date("Y-m-d H:i") ?>");
+	var laser_pro_heads = [7];
 	
 	//laser stuff
 	var laserDropZone;
@@ -155,18 +156,23 @@
 									var lyr = response.info.layers[i];
 									var lyr_name = lyr.name;
 									if(lyr.elements_count > 0){
-										content += '<section><label clas="label">Layer '+lyr.description+'</label></section>';
+										content += '<section class=""><label clas="label">Layer '+lyr.description+'</label></section>';
 										content += '<div class="row">\
 											<section class="col col-2">\
 												<input type="color" id="'+lyr_name+'-color" name="layer-'+lyr_name+'-color" class="color-palette" data-color="'+palette[color_idx]+'">\
 											</section>\
-											<section class="col col-5">\
+											<section class="col col-2 laser-pro-settings-vector">\
+												<label class="checkbox">\
+													<input class="layer-cut" data-name="'+lyr_name+'" id="'+lyr_name+'-cut"  name="layer-'+lyr_name+'-cut" type="checkbox"><i></i> <?php echo _("Cut"); ?>\
+												</label>\
+											</section>\
+											<section class="col col-4">\
 												<label class="input">\
 													<span class="icon-prepend"><?php echo _("PWM") ?></span>\
 													<input name="layer-'+lyr_name+'-pwm" id="layer-'+lyr_name+'-pwm" class="laser-monitor-change" type="number" value="255" min="0" max="255">\
 												</label>\
 											</section>\
-											<section class="col col-5">\
+											<section class="col col-4">\
 												<label class="input">\
 													<span class="icon-prepend"><?php echo _("Feed"); ?></span>\
 													<input name="layer-'+lyr_name+'-burn" id="layer-'+lyr_name+'-burn" class="laser-monitor-change" type="number" value="1000" min="200" max="10000">\
@@ -503,6 +509,13 @@
 		});
 
 		$("#laser-profile").html(options);
+
+		//if is laser head pro
+		if(jQuery.inArray( parseInt(head), laser_pro_heads ) >= 0 && laser_file_type == 'VECTOR'){
+			$(".laser-pro-settings-vector").slideDown();
+		}else{
+			$(".laser-pro-settings-vector").slideUp();
+		}
 	}
 	/**
 	*
@@ -527,9 +540,26 @@
 		data['invert']        = $("#invert").is(":checked")?"yes":"no";
 		data['filename']      = uploadedFile.file_name;
 		data['file']          = uploadedFile.full_path;
-		
+		data['z_depth']       = $("#z-depth").val();
+		data['z_steps']       = $("#z-steps").val();
+		data['cut_layer']     = '';
 		
 		data.preset = getCurrentLaserSettings();
+
+		/*
+		* if is head pro selected
+		* check if layers cut available
+		*/
+		if(jQuery.inArray( parseInt($("#head").val()), laser_pro_heads ) >= 0){
+			var layer_cut = [];
+			$(".layer-cut").each(function (index, value) {
+				if($(this).is(":checked")){
+					layer_cut.push($(this).attr("data-name"));
+				}
+			});
+			data['cut_layer'] = layer_cut.join();			
+		}
+	
 		disableButton("#laser-generate-gcode");
 		disableButton("#laser-save-gcode");
 		disableButton("#download-button");
