@@ -3881,15 +3881,13 @@ msgstr "Firmware installato"
 msgid "Build-date"
 msgstr "Data di costruzione"
 
-#: fabui/application/views/cam/js.php:85
-#: fabui/application/views/cam/js.php:854
+#: fabui/application/views/cam/js.php:85 fabui/application/views/cam/js.php:854
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Trascina file per caricarli"
 
-#: fabui/application/views/cam/js.php:85
-#: fabui/application/views/cam/js.php:854
+#: fabui/application/views/cam/js.php:85 fabui/application/views/cam/js.php:854
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "or click"
@@ -4124,9 +4122,8 @@ msgid "Z Depth"
 msgstr ""
 
 #: fabui/application/views/cam/laser_tab.php:167
-#, fuzzy
 msgid "Z Steps"
-msgstr "Step"
+msgstr ""
 
 #: fabui/application/views/cam/laser_tab.php:191
 msgid "Value"
@@ -4226,9 +4223,8 @@ msgid "Subscription code"
 msgstr "Codice abbonamento"
 
 #: fabui/application/views/cam/subscriptions_tab.php:39
-#, fuzzy
 msgid "Press to view code"
-msgstr "Clicca per vedere i commenti"
+msgstr "Tieni premuto per visualizzare il codice"
 
 #: fabui/application/views/cam/subscriptions_tab.php:41
 msgid "{0} days remaining"
@@ -4633,9 +4629,8 @@ msgid "Hide details"
 msgstr "Nascondi dettagli"
 
 #: fabui/application/views/updates/index/js.php:440
-#, fuzzy
 msgid "Please select at least 1 bundle, firmware, boot or plugin update"
-msgstr "Selezionare almeno 1 pacchetto, aggiornamento firmware o avvio"
+msgstr "Selezionare almeno 1 pacchetto, aggiornamento firmware, avvio o plugin"
 
 #: fabui/application/views/updates/index/js.php:454
 #: fabui/application/views/updates/index/js.php:506
@@ -4763,8 +4758,7 @@ msgstr "Se sei stato tu a mettere in pausa puoi ignorare questa email"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
