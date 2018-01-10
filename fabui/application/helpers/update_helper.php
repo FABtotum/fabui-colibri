@@ -150,7 +150,6 @@ if(!function_exists('getBundlesStatus'))
 			$remoteBootfiles   = $remoteMeta['boot'];
 			$firmwareRemote    = getRemoteFwVersions();
 			$remotePlugins     = getOnlinePlugins();
-			
 			//retrieve remote firmware info
 			$latestFirmwareRemote            = $firmwareRemote['firmware']['latest'];
 			$firmware['need_update']         = version_compare($installedFirmware['firmware']['version'], $firmwareRemote['firmware']['latest']) == -1 ? true : false;
@@ -192,46 +191,53 @@ if(!function_exists('getBundlesStatus'))
 		
 		foreach($localBundles as $bundleName => $localBundleData)
 		{
-			$requires = array();
+			$requires      = array();
+			$latestVersion = '';
+			$changelog     = '';
+			$changelog_url = '';
+			$online        = false;
 			
 			if($remoteBundles){ //retrieve remote bundle info
-				$remoteBundle = $remoteBundles[$bundleName];
-				$latestVersion = str_replace('v', '', $remoteBundle['latest']);
-				$latestInfo = $remoteBundle[$remoteBundle['latest']];
-				$needUpdate = version_compare($localBundleData['version'], $latestVersion, '<');
-				$changelog = '';
-				$changelog_url = $bundlesEndpoint.'/bundles/'.$bundleName.'/changelog.json';
-				if($needUpdate) {
-					$remoteContent = getRemoteFile($bundlesEndpoint.'/bundles/'.$bundleName.'/changelog.json', false, null, 60);
-					if($remoteContent != false){
-						$temp = json_decode($remoteContent, true);
-						$changelog = ($temp[$remoteBundle['latest']]);
-						$status['update']['bundles'] += 1;
-					}
-				}
-				
-				if(isset($latestInfo['requires']))
-				{
-					$requires = $latestInfo['requires'];
-					
-					foreach($latestInfo['requires']['bundle'] as $index => $bundleInfo)
-					{
-						// Check if this bundle requires the CORE bundle to be updated
-						// and if the installed CORE bundle meets the requirements
-						if( $bundleInfo['name'] == 'core' && version_compare($localBundles['core']['version'], $bundleInfo['min_version'], '<') )
-						{
-							// CORE needs and update so make it a priority
-							if( !in_array('core', $status['update']['priority']) )
-								$status['update']['priority'][] = 'core';
-						}
-					}
-				}
+			    if(isset($remoteBundles[$bundleName])){
+    				$remoteBundle = $remoteBundles[$bundleName];
+    				$latestVersion = str_replace('v', '', $remoteBundle['latest']);
+    				$latestInfo = $remoteBundle[$remoteBundle['latest']];
+    				$needUpdate = version_compare($localBundleData['version'], $latestVersion, '<');
+    				$changelog_url = $bundlesEndpoint.'/bundles/'.$bundleName.'/changelog.json';
+    				$online = true;
+    				if($needUpdate) {
+    					$remoteContent = getRemoteFile($bundlesEndpoint.'/bundles/'.$bundleName.'/changelog.json', false, null, 60);
+    					if($remoteContent != false){
+    						$temp = json_decode($remoteContent, true);
+    						$changelog = ($temp[$remoteBundle['latest']]);
+    						$status['update']['bundles'] += 1;
+    					}
+    				}
+    				
+    				if(isset($latestInfo['requires']))
+    				{
+    					$requires = $latestInfo['requires'];
+    					
+    					foreach($latestInfo['requires']['bundle'] as $index => $bundleInfo)
+    					{
+    						// Check if this bundle requires the CORE bundle to be updated
+    						// and if the installed CORE bundle meets the requirements
+    						if( $bundleInfo['name'] == 'core' && version_compare($localBundles['core']['version'], $bundleInfo['min_version'], '<') )
+    						{
+    							// CORE needs and update so make it a priority
+    							if( !in_array('core', $status['update']['priority']) )
+    								$status['update']['priority'][] = 'core';
+    						}
+    					}
+    				}
+			    }
 				
 			}else{
 				$latestVersion = $changelog =  'unknown';
 				$changelog_url = '';
 				$needUpdate = false;
 			}
+			
  			$status['bundles'][$bundleName] = array(
 				'latest'      => $latestVersion,
 				'local'       => $localBundleData['version'],
@@ -242,6 +248,7 @@ if(!function_exists('getBundlesStatus'))
  				'info'        => $localBundleData['info'],
  				'licenses'    => $localBundleData['licenses'],
  				'packages'    => $localBundleData['packages'],
+ 			    'online'      => $online //set if bundle exists online for updates
 			);
 		}
 		

@@ -178,7 +178,7 @@
 
 		// separated into two section so the updates go on the top
 		$.each(data.bundles, function(bundle_name, object) {
-			if( (!have_priority_updates && object.need_update) || (have_priority_updates && object.is_priority) ){
+			if( ((!have_priority_updates && object.need_update) || (have_priority_updates && object.is_priority)) && object.online == true ){
 				var tr_class = 'warning';
 				var icon = object.is_priority?'fa fa-exclamation-circle text-danger fa-2x':'fa fa-exclamation-circle';
 				var checked = 'checked="checked"';
@@ -197,7 +197,7 @@
 		});
 
 		$.each(data.bundles, function(bundle_name, object) {
-			if( (!have_priority_updates && !object.need_update) || (have_priority_updates && !object.is_priority)){
+			if( ((!have_priority_updates && !object.need_update) || (have_priority_updates && !object.is_priority)) && object.online == true  ){
 				var tr_class = '';
 				var icon = 'fa fa-check text-muted';
 				var checked = '';

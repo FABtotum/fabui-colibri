@@ -48,7 +48,7 @@
 	**/
 	function doBedCalibration()
 	{
-		openWait('<i class="fa fa-spinner fa-spin"></i> <?php echo _("Calibration in progress");?>');
+		openWait('<i class="fa fa-cog fa-spin"></i> <?php echo _("Calibration in progress");?>');
 		$.ajax({
             type: "POST",
             url: "<?php echo site_url("bed/calibrate") ?>/"
