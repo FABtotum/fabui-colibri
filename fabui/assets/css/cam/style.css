@@ -65,3 +65,24 @@
 	margin-top:6px !important;
 	margin-right: 10px;
 }
+
+
+
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+
+.dragged {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 2000;
+  background: #fbfbfb;
+  border: 1px dotted grey;
+}
+
+.cursor-move {
+	cursor: move !important;
+}
+.layer-label {
+	padding-left:14px !important;
+}

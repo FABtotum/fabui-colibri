@@ -1180,6 +1180,11 @@ fabApp = (function(app) {
 			input : "select",
 			options : options
 		}, function(ButtonPressed, Value) {
+			/*
+			$("#txt1 option").each(function(){
+				console.log(this.text);
+			});
+			*/
 			if(ButtonPressed == _("Ignore")) app.setSecure(0);
 			if(ButtonPressed == _("Install head")){
 				$.each(heads, function(i, item) {

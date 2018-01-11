@@ -9,14 +9,19 @@
  
 /* variable initialization */
 
-if(!isset($task_jump_new)) $task_jump_new = 1;
+if(!isset($task_jump_new))     $task_jump_new = 1;
 if(!isset($task_jump_restart)) $task_jump_restart = 1;
 
 ?>
 <script type="text/javascript">
 	
 	$(document).ready(function() {
-		$(".new-task").on('click', function(){$('.wizard').wizard('selectedItem', { step: <?php echo $task_jump_new; ?> });});
+		$(".new-task").on('click', function(){
+
+			window.location.hash = '#<?php echo $restart_task_url_file; ?>';
+			location.reload();
+			
+		});
 		$(".restart-task").on('click', restartTask);
 		//$(".save-z-height").on('click', saveZHeight);
 		$("input[name='quality']").on('click', qualityRating);

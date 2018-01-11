@@ -10,6 +10,12 @@
 <!-- LASER TAB -->
 <div class="tab-pane fade in active" id="laser-tab">
 	<div class="row margin-bottom-10" id="laser-upload-container">
+		
+		<div class="col-sm-12 margin-bottom-20" id="latest-upload-images-container">
+			<h5 style="display:none;" id="laser-recent-files-title"><?php echo _("Recent files");?></h5>
+			<div class="owl-carousel owl-theme" id="uplaoded-images"></div>
+		</div>
+		
 		<div class="col-sm-12">
 			<div id="laser-dropzone" class="dropzone"></div>
 			<span class="pull-left margin-top-10"><?php echo str_replace("{0}", ($max_upload_file_size/1024)." MB", _("Note: max file size is {0}"));?></span>
@@ -25,7 +31,7 @@
 			</div>
 			<div class="row  margin-bottom-10">
 				<div class="col-sm-12">
-					<div class="owl-carousel owl-theme">
+					<div class="owl-carousel owl-theme" id="laser-preview-carousel">
 						<div class="well well-light">
 							<div>
     							<img class="img-responsive" id="laser-image-source">
@@ -162,14 +168,14 @@
 										</div>
 										<div class="row laser-cut-z-settings" style="display: none">
 											<hr class=" margin-bottom-10">
-											<section class="col col-2"></section>
-											<section class="col col-4">
+											<section class="col col-1"></section>
+											<section class="col col-5">
 												<label class="input">
 													<span class="icon-prepend"><?php echo _("Z Depth");?></span>
 													<input type="number" class="laser-monitor-change" value="0" min="0" max="5" step="0.1" id="z-depth" name="z-depth"/>
 												</label>
 											</section>
-											<section class="col col-4">
+											<section class="col col-5">
 												<label class="input">
 													<span class="icon-prepend"><?php echo _("Z Steps");?></span>
 													<input type="number" class="laser-monitor-change" value="5" min="0" max="5" step="1" id="z-steps" name="z-steps" />

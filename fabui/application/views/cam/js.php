@@ -56,7 +56,8 @@
 	            onLaserValueChange();
 	        }
 	    });
-	    
+
+	    loadRecentImagesUploaded();
 		loadHelpDescriptions();
 		populateProjectsList();
 		<?php if(!$internet): ?>
@@ -142,93 +143,7 @@
 					
 					if(file.hasOwnProperty("xhr")){
 						var response = jQuery.parseJSON(file.xhr.response);
-						if(response.upload == true){
-							uploadedFile = response;
-							laser_file_type = response.info.type;
-							var content = '';
-							var palette = ['red', 'rgb(0,128,0)', 'blue', 'violet', 'gold', 'black', 'gray'];
-							var color_idx = 0;
-							if(laser_file_type == 'VECTOR'){
-								$(".dimensions-container").slideUp();
-								$("#target_width").val(0);
-								$(".raster-settings").slideUp();
-								for(i=0; i<response.info.layers.length; i++){
-									var lyr = response.info.layers[i];
-									var lyr_name = lyr.name;
-									if(lyr.elements_count > 0){
-										content += '<section class=""><label clas="label">Layer '+lyr.description+'</label></section>';
-										content += '<div class="row">\
-											<section class="col col-2">\
-												<input type="color" id="'+lyr_name+'-color" name="layer-'+lyr_name+'-color" class="color-palette" data-color="'+palette[color_idx]+'">\
-											</section>\
-											<section class="col col-4">\
-												<label class="input">\
-													<span class="icon-prepend"><?php echo _("PWM") ?></span>\
-													<input name="layer-'+lyr_name+'-pwm" id="layer-'+lyr_name+'-pwm" class="laser-monitor-change" type="number" value="255" min="0" max="255">\
-												</label>\
-											</section>\
-											<section class="col col-4">\
-												<label class="input">\
-													<span class="icon-prepend"><?php echo _("Feed"); ?></span>\
-													<input name="layer-'+lyr_name+'-burn" id="layer-'+lyr_name+'-burn" class="laser-monitor-change" type="number" value="1000" min="200" max="10000">\
-												</label>\
-											</section>\
-											<section class="col col-2 laser-pro-settings-vector">\
-												<label class="checkbox">\
-													<input class="layer-cut" data-name="'+lyr_name+'" id="'+lyr_name+'-cut"  name="layer-'+lyr_name+'-cut" type="checkbox"><i></i> <?php echo _("Cut"); ?>\
-												</label>\
-											</section>\
-											</div>';
-										color_idx += 1;
-										if(color_idx >= palette.length)
-											color_idx = palette.length-1;
-									}
-								}
-								$("#laser-image-source").parent().css("min-height",   300);
-								$("#laser-preview-source").parent().css("min-height", 300);
-								$("#no-gcode-alert").css('top', 150);
-								$("#laser-image-source").remove();
-								$("#engraving-note").remove();
-							}else{
-								$("#no-preview").remove();
-							}
-							
-							$(".layer-settings").html(content);
-							$(".laser-monitor-change").on('change', onLaserValueChange);
-							$(".color-palette").spectrum({
-								showPaletteOnly: true,
-								showPalette:true,
-								hideAfterPaletteSelect:true,
-								palette: [palette],
-								change: function(color) {
-									onLaserValueChange();
-								}
-							});
-							$(".layer-cut").on('click', function(){
-								var count = 0;
-								$(".layer-cut").each(function (index, value) {
-									if($(this).is(":checked")){
-										count++;
-									}
-								});
-
-								if(count > 0){
-									$(".laser-cut-z-settings").slideDown();
-								}else{
-									$(".laser-cut-z-settings").slideUp();
-								}
-							})
-							$(".layer-settings").slideDown();
-							setTimeout(function(){
-								$(".dropzone-upload-label").html("<?php echo _("Completed"); ?>");
-								$(".dropzone-file-upload-percent").html('<i class="fa fa-check"></i>');
-					 			hideDropzoneModal();
-					 			initLaserSlicerForm();
-							},2000);
-						}else{
-							fabApp.showErrorAlert("<?php echo _("Upload failed"); ?>", response.error);
-							hideDropzoneModal();
-						}
+						processUpload(response);
 					}
 				});
 				/**
@@ -263,6 +178,116 @@
 			}
 		});
 	}
+	/**
+	*
+	**/
+
+	function processUpload(response)
+	{
+		if(response.upload == true){
+			uploadedFile = response;
+			laser_file_type = response.info.type;
+			var content = '<ol class="sortable-layers list-unstyled">';
+			//var content = '<div class="dd" id="nestable"><ol class="dd-list">';
+			var palette = ['red', 'rgb(0,128,0)', 'blue', 'violet', 'gold', 'black', 'gray'];
+			var color_idx = 0;
+			if(laser_file_type == 'VECTOR'){
+				$(".dimensions-container").slideUp();
+				$("#target_width").val(0);
+				$(".raster-settings").slideUp();
+				for(i=0; i<response.info.layers.length; i++){
+					var lyr = response.info.layers[i];
+					var lyr_name = lyr.name;
+					if(lyr.elements_count > 0){
+						content += '<li><div class="row">\
+							<section class=""><label class="label layer-label">layer: <strong>"'+lyr.description+'"</strong></label></section>\
+							<section class="col col-1">\
+								<input type="color" id="'+lyr_name+'-color" name="layer-'+lyr_name+'-color" class="color-palette" data-color="'+palette[color_idx]+'">\
+							</section>\
+							<section class="col col-5">\
+								<label class="input">\
+									<span class="icon-prepend"><?php echo _("PWM") ?></span>\
+									<input name="layer-'+lyr_name+'-pwm" id="layer-'+lyr_name+'-pwm" class="laser-monitor-change" type="number" value="255" min="0" max="255">\
+								</label>\
+							</section>\
+							<section class="col col-5">\
+								<label class="input">\
+									<span class="icon-prepend"><?php echo _("Feed"); ?></span>\
+									<input name="layer-'+lyr_name+'-burn" id="layer-'+lyr_name+'-burn" class="laser-monitor-change" type="number" value="1000" min="200" max="10000">\
+								</label>\
+							</section>\
+							<section class="col col-1 laser-pro-settings-vector">\
+								<label class="checkbox">\
+									<input class="layer-cut" data-name="'+lyr_name+'" id="'+lyr_name+'-cut"  name="layer-'+lyr_name+'-cut" type="checkbox"><i></i> <?php echo _("Cut"); ?>\
+								</label>\
+							</section>\
+							</div></li>';
+						color_idx += 1;
+						if(color_idx >= palette.length)
+							color_idx = palette.length-1;
+					}
+				}
+				content += '</ol>';
+				$("#laser-image-source").parent().css("min-height",   300);
+				$("#laser-preview-source").parent().css("min-height", 300);
+				$("#no-gcode-alert").css('top', 150);
+				$("#laser-image-source").remove();
+				$("#engraving-note").remove();
+
+				$(".layer-settings").html(content);
+				$(".laser-monitor-change").on('change', onLaserValueChange);
+				$(".color-palette").spectrum({
+					showPaletteOnly: true,
+					showPalette:true,
+					hideAfterPaletteSelect:true,
+					palette: [palette],
+					change: function(color) {
+						onLaserValueChange();
+					}
+				});
+
+				$('ol.sortable-layers').sortable({});
+				$('ol.sortable-layers').sortable('disable');
+				
+				$(".layer-settings").slideDown();
+
+				$(".layer-cut").on('click', function(){
+					var count = 0;
+					$(".layer-cut").each(function (index, value) {
+						if($(this).is(":checked")){
+							count++;
+						}
+					});
+
+					if(count > 0){
+						$(".laser-cut-z-settings").slideDown();
+						$('ol.sortable-layers').sortable('enable');
+						$(".layer-label").addClass('cursor-move');
+					}else{
+						$(".laser-cut-z-settings").slideUp();
+						$('ol.sortable-layers').sortable('disable');
+						$(".layer-label").removeClass('cursor-move');
+					}
+				});
+			}else{
+				$("#no-preview").remove();
+			}
+			
+			setTimeout(function(){
+				$(".dropzone-upload-label").html("<?php echo _("Completed"); ?>");
+				$(".dropzone-file-upload-percent").html('<i class="fa fa-check"></i>');
+	 			hideDropzoneModal();
+	 			initLaserSlicerForm();
+	 			closeWait();
+			},2000);
+		}else{
+			fabApp.showErrorAlert("<?php echo _("Upload failed"); ?>", response.error);
+			hideDropzoneModal();
+			closeWait();
+		}
+		
+	}
+	
 	/**
 	*
 	**/
@@ -359,6 +384,10 @@
 		if(typeof selected_laser_profile != "undefined"){
 			$("#laser-profile-description").html(selected_laser_profile["info"]["description"]);
 			loadSlicerProfile(selected_laser_profile);
+			//override fan value for laser pro heads
+			if(isLaserProHead()){
+				$("[name='fan']").prop('checked', true);
+			}
 		}else{
 			fabApp.showWarningAlert("<?php echo _("No profiles available for this head");  ?>");
 		}
@@ -571,7 +600,7 @@
 					layer_cut.push($(this).attr("data-name"));
 				}
 			});
-			data['cut_layer'] = layer_cut.join();			
+			data['cut_layer'] = layer_cut.join();	
 		}
 	
 		disableButton("#laser-generate-gcode");
@@ -960,7 +989,7 @@
 	**/
 	function initPreviewCarousel()
 	{
-		 $('.owl-carousel').owlCarousel({
+		 $('#laser-preview-carousel').owlCarousel({
 	        loop: true,
 	        margin: 1,
 	        navText : ["<?php echo _("Source image");?>","<?php echo _("Laser engraving preview");?>"],
@@ -991,6 +1020,86 @@
 		}).mousedown(function() {
 			$(".visible-code").removeClass('hidden');
 			$(".hidden-code").addClass('hidden');
+		});
+	}
+	/**
+	*
+	**/
+	function isLaserProHead()
+	{
+		return jQuery.inArray( parseInt($("#head").val()), laser_pro_heads ) >= 0;
+	}
+	/**
+	*
+	**/
+	function loadRecentImagesUploaded()
+	{
+		$.ajax({
+			type: "POST",
+			url: "<?php echo site_url('cam/laserUploadedImages') ?>/",
+			dataType: 'json',
+		}).done(function( response ) {
+			if(response.images.length > 0){
+				var content = '';
+				$.each(response.images, function (index, image) {
+
+					var image_view = '';
+					if(image.extension == "dxf"){
+						image_view = '<i class="fa fa-file" style="font-size:90px;color:#D6D6D6"></i>';
+					}else{
+						image_view = '<img style="vertical-align: middle;" src="'+image.url+'">';
+					}
+					content += '<div class="well well-sm text-center" style="width:120px!important;overflow: hidden;">\
+									<span style="display: block; height:100px; text-align:center;">'+image_view+'</span>\
+									<br>\
+									<strong title="'+image.name+'">'+image.name+'</strong><br>\
+									<a class="uploaded-image" data-name="'+image.name+'" href="javascript:void(0)"><?php echo _("Use again");?></a>\
+								</div>';
+				});
+				content += '';
+				$("#uplaoded-images").html(content);
+				$("#laser-recent-files-title").show();
+				$(".uploaded-image").on('click', useUploadedImage);
+
+				$('#uplaoded-images').owlCarousel({
+		         	dots: false,
+		         	navText : ["<i class='fa fw-lg fa-chevron-left'></i>","<i class='fa fw-lg fa-chevron-right'></i>"],
+		            responsiveClass: true,
+		            autoWidth: true,
+		            responsive:{
+		                0:{
+		                    items:2,
+		                    loop:true,
+		                    margin:10
+		                },
+		                500:{
+		                    items:4,
+		                    loop:false,
+		                    margin:5
+		                },
+		                1000:{
+		                    items:10,
+		                    loop:false,
+		                    margin:10
+		                }
+		            }
+				});
+			}
+		});
+	}
+	/**
+	*
+	**/
+	function useUploadedImage()
+	{
+		var name = $(this).attr('data-name');
+		openWait("<i class='fa fa-cog fa-spin'></i> <?php echo _("Processing file"); ?>", "<?php echo _("Please wait");?>", false);
+		$.ajax({
+			type: "POST",
+			url: "<?php echo site_url('cam/reUseUploadedImage') ?>/"+name,
+			dataType: 'json',
+		}).done(function( response ) {
+			processUpload(response);
 		});
 	}
 </script>

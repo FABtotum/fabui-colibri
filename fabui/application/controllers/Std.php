@@ -209,7 +209,7 @@ class Std extends FAB_Controller {
             
             $this->content = $this->load->view('std/email/task', $data, true );
             
-            $subject = _('Task') .' '. _($task['status']);
+            $subject = "\xE2\x9C\x94 "._('Task') .' '. _($task['status']);
             $page    = $this->layoutEmail(true);
             
             
@@ -280,7 +280,7 @@ class Std extends FAB_Controller {
             
             $construction_sign = "\xF0\x9F\x9A\xA7";
             $pushpin = "\xF0\x9F\x93\x8C";
-            $triangle = "\xF0\x9F\x94\xBD";
+            $triangle = "\xF0\x9F\x94\xBD"; 
             
             $subject = $pushpin.' "'.$file['client_name'].'" '. _('paused');
             

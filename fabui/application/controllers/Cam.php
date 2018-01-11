@@ -118,6 +118,8 @@ class Cam extends FAB_Controller
         $this->addCssFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.theme.default.css');
         $this->addJSFile('/assets/js/plugin/OwlCarousel2-2.2.1/owl.carousel.min.js');
         
+        $this->addJSFile('/assets/js/jquery-sortable.js');
+        
         $this->view();
     }
 
@@ -148,6 +150,32 @@ class Cam extends FAB_Controller
                 break;
         }
     }
+    
+    /**
+     * 
+     */
+    public function reUseUploadedImage($image_name)
+    {
+        // load helpers
+        $this->load->helper(array('directory', 'file', 'file_helper', 'cam_helper'));
+        // load config
+        $this->config->load('fabtotum');
+        
+        $directory = $this->config->item('temp_path') . '/uploads/laser/'.$this->session->user['id'].'/';
+        
+        if(file_exists($directory.$image_name)){
+         
+            $data['upload'] = true;
+            $data['url']    = '/temp/uploads/laser/'.$this->session->user['id'].'/' . $image_name;
+            $data['info']   = get_img_extra_info($directory.$image_name);
+            
+        }else{
+            $data['error']  = _("File not found");
+            $data['upload'] = false;
+        }
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
+        
+    }
 
     /**
      */
@@ -169,6 +197,14 @@ class Cam extends FAB_Controller
         if (! file_exists($upload_path))
             createFolder($upload_path);
         
+        $upload_path = $this->config->item('temp_path') . '/uploads/laser/';
+        if (! file_exists($upload_path))
+            createFolder($upload_path);
+        
+        $upload_path.= $this->session->user['id'];
+        if (! file_exists($upload_path))
+            createFolder($upload_path);
+        
         // config load upload library
         $config['upload_path']      = $upload_path;
         $config['file_ext_tolower'] = true;
@@ -183,7 +219,17 @@ class Cam extends FAB_Controller
             $data = $this->upload->data();
             $data['upload'] = true;
             $data['url']    = '/temp/uploads/' . $data['file_name'];
+            $data['url']    = str_replace('/tmp/fabui/', '/temp/', $data['full_path']);
             $data['info']   = get_img_extra_info($data['full_path']);
+            
+            if(empty($data['info'])){
+                unlink($data['full_path']);
+                unset($data);
+                $data['error']  = _("File not valid, unable to process it");
+                $data['upload'] = false;
+                
+            }
+            
         } else {
             $data['error']  = $this->upload->display_errors();
             $data['upload'] = false;
@@ -215,6 +261,7 @@ class Cam extends FAB_Controller
         }
         
         $data['preset'] = json_encode($data['preset']);
+        
         
         $result = call_service('/' . $type . '/generate', $data);
         
@@ -376,6 +423,34 @@ class Cam extends FAB_Controller
             }
         } else {
             $response['success'] = false;
+        }
+        $this->output->set_content_type('application/json')->set_output(json_encode($response));
+    }
+    
+    /**
+     * get all uploaded images in /tmp/ folder
+     */
+    public function laserUploadedImages()
+    {
+        // load helpers
+        $this->load->helper(array('directory', 'file', 'file_helper'));
+        // load config
+        $this->config->load('fabtotum');
+        
+        $directory = $this->config->item('temp_path') . '/uploads/laser/'.$this->session->user['id'].'/';
+        
+        $response['images'] = array();
+        
+        if(file_exists($directory)){
+         
+            $images = get_dir_file_info($directory);
+    
+            foreach($images as $image){
+                $image['url'] = str_replace('/var/www/temp/', '/temp/', $image['relative_path']).$image['name'];
+                $image['extension'] = getFileExtension($image['name']);
+                $response['images'][] = $image;
+            }
+
         }
         $this->output->set_content_type('application/json')->set_output(json_encode($response));
     }

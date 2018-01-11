@@ -857,6 +857,9 @@ if(!isset($show_change_filament)) $show_change_filament = false;
 	{
 		elapsedTime++;
 		remainingTime = estimatedTime - elapsedTime;
+
+		if(remainingTime<0) remainingTime = 0;
+		
 		$(".elapsed-time").html(transformSeconds(elapsedTime));
 		var estimatedTimeLeft = transformSeconds(remainingTime);
 		
@@ -864,8 +867,8 @@ if(!isset($show_change_filament)) $show_change_filament = false;
 			estimatedTimeLeft = "<?php echo _("Waiting for first move");?>...";
 		else if(estimatedTime < 0)
 			estimatedTimeLeft = 0;
-		
-		$(".estimated-time-left").html(estimatedTimeLeft);
+
+	   $(".estimated-time-left").html(estimatedTimeLeft);
 	}
 	
 	window.manageMonitor = function(data){
