@@ -1055,7 +1055,9 @@
 									<span style="display: block; height:100px; text-align:center;">'+image_view+'</span>\
 									<br>\
 									<strong title="'+image.name+'">'+image.name+'</strong><br>\
+									<?php if($subscription_exists): ?>
 									<a class="uploaded-image" data-name="'+image.name+'" href="javascript:void(0)"><?php echo _("Use again");?></a>\
+									<?php endif; ?>
 								</div>';
 				});
 				content += '';

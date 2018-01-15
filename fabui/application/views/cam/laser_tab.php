@@ -133,7 +133,7 @@
     										<section class="col col-4 raster-settings">
     											<label class="checkbox"><input class="laser-monitor-change" id="invert" name="invert" type="checkbox"><i></i> <span><?php echo _("Invert colors");?></span></label>
     										</section>
-    										<section class="col col-4">
+    										<section class="col col-3">
     											<label class="checkbox"><input class="laser-monitor-change" id="fan" name="fan"  type="checkbox"><i></i> <span><?php echo _("Fan on");?></span></label>
     										</section>
     										<section  class="col col-4">

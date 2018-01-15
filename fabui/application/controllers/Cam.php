@@ -168,6 +168,8 @@ class Cam extends FAB_Controller
             $data['upload'] = true;
             $data['url']    = '/temp/uploads/laser/'.$this->session->user['id'].'/' . $image_name;
             $data['info']   = get_img_extra_info($directory.$image_name);
+            $data['file_name'] = $image_name;
+            $data['full_path'] = $directory.$image_name;
             
         }else{
             $data['error']  = _("File not found");
