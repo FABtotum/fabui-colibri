@@ -20,7 +20,7 @@
     "plugins": [
         "fab_laser"
     ],
-    "focus": 2,
+    "focus": 4,
     "min_temp": 20,
     "offset": {
         "laser_cross": {
