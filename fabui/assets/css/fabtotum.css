@@ -17,8 +17,7 @@
  * - BODY
  * - CUSTOM STYLES
  */
-
- .dotted {
+.dotted {
 	border-style: dotted !important;
 }
 
@@ -55,18 +54,13 @@
 		/*width: 25%;*/
 		width: 10%;
 	}
-	
-	
-	
-	
+
 }
 @media only screen and (min-width: 768px) {
 	.scan-preview {
 		/*width: 16.66666667%;*/
 		width: 10%;
-	}
-	
-	
+	}	
 }
 @media only screen and (min-width: 1025px) {
 	.scan-preview {
@@ -731,12 +725,14 @@ body.smart-style-6 .input-group-addon+.form-control[type=password] {
     padding-right: 10px;
 }
 
+/*
 select{
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     padding: 30px;
 }
+*/
 .dropzone .dz-preview.dz-error .dz-error-message {
 	margin-top: 20px !important;
 }
@@ -771,5 +767,3 @@ body.smart-style-6 #ribbon {
     border-width: 1px 0px 1px 0px;
     box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.07);
 }
-
-

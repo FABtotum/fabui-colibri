@@ -319,13 +319,13 @@ class GCodePusher(object):
             if action == 'heating':
 
                 if data[0] == 'M109':
-                    self.trace( _("Wait for nozzle temperature to reach {0}&deg;C").format(data[1]) )
+                    self.trace( _("Wait for nozzle temperature to reach {:.0f}&deg;C").format(float(data[1])) )
                 elif data[0] == 'M190':
-                    self.trace( _("Wait for bed temperature to reach {0}&deg;C").format(data[1]) )
+                    self.trace( _("Wait for bed temperature to reach {:.0f}&deg;C").format(float(data[1])) )
                 elif data[0] == 'M104':
-                    self.trace( _("Nozzle temperature set to {0}&deg;C").format(data[1]) )
+                    self.trace( _("Nozzle temperature set to {:.0f}&deg;C").format(float(data[1])) )
                 elif data[0] == 'M140':
-                    self.trace( _("Bed temperature set to {0}&deg;C").format(data[1]) )
+                    self.trace( _("Bed temperature set to {:.0f}&deg;C").format(float(data[1])))
                 
             elif action == 'cooling':
                 

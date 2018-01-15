@@ -682,13 +682,14 @@ fabApp = (function(app) {
 	 * 
 	 * @param {String} message Message text.
 	 */
-	app.refreshPage = function(message) {
+	app.refreshPage = function(message, timeout) {
 		message = message || _("Aborting all operations");
+		timeout = timeout || 3000; 
 		openWait(message, ' ', false);
 		waitContent(_("Reloading page"));
 		setTimeout(function(){ 
 			location.reload();
-		}, 3000);
+		}, timeout);
 	}
 	/**
 	 * Launch reboot command and refresh the page when it's ready again.
@@ -698,7 +699,7 @@ fabApp = (function(app) {
 		app.rebooting = true;
 		clearInterval(temperatures_interval);
 		//$.is_macro_on = true;
-		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> " + _("Restart in progress") , _("Please wait") + '...', false);
+		openWait("<i class='fa fa-cog fa-spin'></i> " + _("Restart in progress") , _("Please wait") + '...', false);
 		$.ajax({
 			url: reboot_url_action,
 		}).done(function(data) {
@@ -717,7 +718,7 @@ fabApp = (function(app) {
 	app.poweroff = function() {
 		clearInterval(temperatures_interval);
 		//is_macro_on = true;
-		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> ' + _("Shutdown in progress") , _("Please wait") + '...', false);
+		openWait('<i class="fa fa-cog fa-spin"></i> ' + _("Shutdown in progress") , _("Please wait") + '...', false);
 		$.ajax({
 			url: poweroff_url_action,
 		}).done(function(data) {
@@ -1139,7 +1140,10 @@ fabApp = (function(app) {
 		switch(code)
 		{
 			case 102:
-				app.refreshPage(_("Front panel has been opened") + '.<br> ' + _("Aborting all operations"));
+				app.refreshPage(_("Front panel has been opened") + '.<br> ' + _("Aborting all operations"), 10000);
+				setTimeout(function(){
+					waitContent( "<i class='fa fa-cog fa-spin'></i> " +  _("Restarting all services"));
+				}, 5000);
 				break;
 			case 103:
 				//TODO
@@ -1178,13 +1182,9 @@ fabApp = (function(app) {
 			content : _("Before proceed make sure the head is properly locked in place"),
 			buttons : "[" + _("Install head")  + "]["+ _("Ignore") +"]",
 			input : "select",
-			options : options
+			options : options,
+			selected: app.installed_head.name
 		}, function(ButtonPressed, Value) {
-			/*
-			$("#txt1 option").each(function(){
-				console.log(this.text);
-			});
-			*/
 			if(ButtonPressed == _("Ignore")) app.setSecure(0);
 			if(ButtonPressed == _("Install head")){
 				$.each(heads, function(i, item) {
@@ -1199,7 +1199,10 @@ fabApp = (function(app) {
 		$("#txt1").on("change", function() {
 			
 			var selected_head = $(this).find("option:selected").text();
-			if(selected_head == 'Laser Head') $(".MessageBoxButtonSection").append('<span class="pull-left margin-top-10 laser-head-plugin-note font-xs">'+ _("Please make sure") +' <a target="_blank" href="#plugin">Laser Plugin</a> ' + _("is active") +' </span>');
+			if((selected_head == 'Laser Head')  || (selected_head == 'Laser Head Pro')) {
+				if($(".laser-head-plugin-note").length <= 0)
+					$(".MessageBoxButtonSection").append('<span class="pull-left margin-top-10 laser-head-plugin-note font-xs">'+ _("Please make sure") +' <a target="_blank" href="#plugin">Laser Plugin</a> ' + _("is active") +' </span>');
+			}
 			else $(".laser-head-plugin-note").remove();
 		});
 	}
@@ -1223,7 +1226,7 @@ fabApp = (function(app) {
 	**/
 	app.installHead = function(head)
 	{
-		openWait('<i class="fa fa-circle-o-notch fa-spin"></i> ' + _("Installing head"), _("Please wait") + '...', false);
+		openWait('<i class="fa fa-cog fa-spin"></i> ' + _("Installing head"), _("Please wait") + '...', false);
 		$.ajax({
 			type : "POST",
 			url : install_head_url + '/'+head,
