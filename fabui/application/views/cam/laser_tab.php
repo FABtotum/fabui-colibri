@@ -34,13 +34,13 @@
 					<div class="owl-carousel owl-theme" id="laser-preview-carousel">
 						<div class="well well-light">
 							<div>
-    							<img class="img-responsive" id="laser-image-source">
+    							<img class="img-responsive" id="laser-image-source" >
     							<span id="no-preview" class="font-md"><?php echo _('Preview not available for this file');?></span>
 							</div>
 						</div>
-						<div class="well well-light">
+						<div class="well well-light"  style="overflow: auto; max-height: 500px;">
 							<div>
-								<img class="img-responsive" id="laser-preview-source">
+								<img class="img-responsive laser-preview-source" id="laser-preview-source">
 								<span id="no-gcode-alert" class="font-md"><?php echo _('Click on "Generate GCode" to show preview');?></span>
 							</div>
 							<div id="engraving-note" class="margin-bottom-10 hidden">
@@ -49,31 +49,6 @@
 						</div>
 					</div>
 				</div>
-			<!--  
-				<div class="col-sm-12">
-					<ul id="laserImagesTab" class="nav nav-tabs">
-						<li class="active"><a href="#laser-preview-image-tab" data-toggle="tab"><?php echo _("Preview");?></a></li>
-						<li><a href="#laser-source-image-tab" data-toggle="tab"> <?php echo _("Source image");?></a></li>
-						<li class="pull-right"><a class="no-ajax" id="upload-new-file"  href="javascript:void(0);"><i class="fa fa-plus"></i> <?php echo _("Upload new file");?></a></li>
-					</ul>
-					<div id="laserImagesTabContent" class="tab-content padding-10">
-						<div class="tab-pane fade in active" id="laser-preview-image-tab">
-							<div class="image-preview-container">
-								<img class="img-responsive" id="laser-preview-source">
-								<span id="no-gcode-alert" class="font-md"><?php echo _('Click on "Generate GCode" to show preview');?></span>
-							</div>
-							<div class="note pull-left">
-								<p><?php echo _("Note: black is being burned by the laser");?></p>
-							</div>
-						</div>
-						<div class="tab-pane fade in" id="laser-source-image-tab">
-							<div class="image-preview-container">
-								<img class="img-responsive" id="laser-image-source">
-							</div>
-						</div>
-					</div>
-				</div>
-				-->
 			</div>
 		</div>
 		<div class="col-sm-8 hidden" id="laser-slice-settings-container">
@@ -105,13 +80,10 @@
 							<!-- GENERAL TAB -->
 							<div class="tab-pane fade in active" id="laser-general-tab">
 								<div class="smart-form">
-									
 									<fieldset>
-										
 										<section>
 											<label class="label"><?php echo _("Head");?></label>
 											<label class="select">
-												
 												<?php echo form_dropdown('head', $laser_heads, $installed_head['fw_id'], 'id="head"'); ?><i></i>
 											</label>
 										</section>

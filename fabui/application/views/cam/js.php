@@ -610,11 +610,9 @@
 		disableButton("#download-button");
 
 		$("#laser-generate-gcode").find('i').addClass("fa-spin");
-		$("#laser-preview-image-tab").css("opacity", 0.3);
+		$(".laser-preview-source").css("opacity", 0.3);
 		$(".laser-status").html("<?php echo _("Please wait"); ?>");
-		//$("#laser-save-gcode").html("<?php echo _("Please wait"); ?>").removeClass("btn-success").addClass("btn-default");
-		//$("#laser-save-gcode").removeClass("btn-success").addClass("btn-default");
-		//$("#download-button").removeClass("btn-info").addClass("btn-default");
+		
 
 		$.ajax({
 			type: "POST",
@@ -630,10 +628,7 @@
 				$("#engraving-note").removeClass('hidden');
 				$("#laser-preview-source").attr("src", "<?php echo site_url('cam/preview/laser/') ?>" + response.id+"?time="+jQuery.now());
 				$(".owl-next").trigger('click');
-				
-				//$("#laser-save-gcode").html("<i class='fa fa-check'></i> <?php echo _("GCode ready"); ?>").removeClass("btn-default").addClass("btn-success");
 				$(".laser-status").html("<i class='fa fa-check'></i> <?php echo _("GCode ready"); ?>");
-				//$("#laser-save-gcode").removeClass("btn-default").addClass("btn-success");
 				$("#download-button").attr("data-href", "<?php echo site_url('cam/download/laser/') ?>/" + response.id + "/" + uploadedFile.raw_name).attr("data-type", "laser");
 				$("#new-file-name").val(uploadedFile.raw_name);
 				$("#new-project-name").val("<?php echo _("New laser project"); ?> " + project_name_suffix);
@@ -651,6 +646,7 @@
 				fabApp.showErrorAlert("<?php echo _("Generation failed"); ?>", response.message);
 			}
 			$("#laser-generate-gcode").find('i').removeClass("fa-spin");
+			$(".laser-preview-source").css("opacity", 1);
 		});
 
 	}
