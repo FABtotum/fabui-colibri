@@ -200,7 +200,7 @@
 					var lyr_name = lyr.name;
 					if(lyr.elements_count > 0){
 						content += '<li><div class="row">\
-							<section class=""><label class="label layer-label">layer: <strong>"'+lyr.description+'"</strong></label></section>\
+							<section class=""><label class="label layer-label"><i></i> layer: <strong>"'+lyr.description+'"</strong></label></section>\
 							<section class="col col-1">\
 								<input type="color" id="'+lyr_name+'-color" name="layer-'+lyr_name+'-color" class="color-palette" data-color="'+palette[color_idx]+'">\
 							</section>\
@@ -263,10 +263,12 @@
 						$(".laser-cut-z-settings").slideDown();
 						$('ol.sortable-layers').sortable('enable');
 						$(".layer-label").addClass('cursor-move');
+						$(".layer-label").find('i').addClass('fa fa-arrows');
 					}else{
 						$(".laser-cut-z-settings").slideUp();
 						$('ol.sortable-layers').sortable('disable');
 						$(".layer-label").removeClass('cursor-move');
+						$(".layer-label").find('i').removeClass('fa fa-arrows');
 					}
 				});
 			}else{
