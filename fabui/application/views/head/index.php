@@ -370,7 +370,7 @@
 							<section class="col col-6">
 								<label class="label"><?php echo _("Z focusing distance");?></label>
 								<label class="input">
-									<input type="number" id="head-focus" name="focus" min="1" max="20" value="2">
+									<input type="number" id="head-focus" name="focus" min="1" max="20" value="2" step="0.5">
 								</label>
 							</section>
 						</div>

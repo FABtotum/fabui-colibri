@@ -9,6 +9,8 @@
 
 /* variable initialization */
 if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_is_ok' => false, 'bed_is_ok' => false , 'bed_enabled' => true, 'url' => '' );
+if( !isset($content_to_show)) $content_to_show = '#task-wizard-content';
+
 ?>
 
 <?php if(!$safety_check['all_is_ok']): ?>
@@ -67,17 +69,13 @@ if( !isset($safety_check) ) $safety_check = array( 'all_is_ok' => false, 'head_i
 			if(data.all_is_ok)
 			{
 				$('#safety-check-content').hide();
-				$('#task-wizard-content').show();
+				$('<?php echo $content_to_show; ?>').show();
 			}
 			else
 			{
 				setTimeout(checkSafety, 1500);
 			}
 		});
-
-		
 	}
-
 </script>
-
 <?php endif;?>

@@ -122,13 +122,21 @@ class Std extends FAB_Controller {
     }
     
     /**
-     * 
+     * safety check for tasks 
      */
     public function safetyCheck($feature, $bed_in_place)
     {
         $this->load->helper('fabtotum_helper');
         $result = safetyCheck($feature, $bed_in_place);
         $this->output->set_content_type('application/json')->set_output(json_encode($result));
+    }
+    
+    /**
+     *  safety check for maintenance tasks
+     */
+    public function safetyCheckMaintenance()
+    {
+        
     }
     
     /**

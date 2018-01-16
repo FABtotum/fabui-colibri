@@ -24,6 +24,7 @@
 	$(document).ready(function() {
 		initGraph();
 		if(isRunning) initRunningTaskPage();
+		else fabApp.checkSafety('print', 'any', '#main-widget-nozzle-pidtune');
 		disableButton('#save');
 		$("#autotune").on('click', handleAutotuneAction);
 		$("#save").on('click', savePIDValues);

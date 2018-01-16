@@ -14,6 +14,7 @@
 	var is_pro_head = <?php echo isset($head['feeder']) ? 'true' : 'false' ?>;
 	
 	$(document).ready(function() {
+		fabApp.checkSafety('print', 'yes', '.fuelux');
 		setFilamentDescription('<?php echo isset($settings['filament']['type']) ? $settings['filament']['type'] : 'pla' ?>');
 		$(".mode-choise").on('click', clickSetMode);
 		$(".filament").on('click', filamentButtonClick);

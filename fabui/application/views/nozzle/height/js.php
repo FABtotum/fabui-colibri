@@ -17,6 +17,7 @@
 	*
 	**/
 	$(document).ready(function() {
+		fabApp.checkSafety('print', 'yes', '#main-widget-nozzl-height-calibration');
 		init();
 	});
 	/**

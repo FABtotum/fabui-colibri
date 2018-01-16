@@ -26,6 +26,7 @@
 fabApp = (function(app) {
 	app.installed_head =  null;
 	app.rebooting = false; //is the unit rebooting?
+	app.intervals = new Array();
 	app.dropZoneList = new Array();
 	app.FabActions = function(){
 		var fabActions = {	
@@ -1900,6 +1901,113 @@ fabApp = (function(app) {
 		 */
 		if ($('nav').length) {
 		    checkURL();
+		}
+	}
+	/**
+	 *  clear all saved intervals
+	 */
+	app.clearIntervals = function()
+	{
+		jQuery.each(app.intervals, function( index, value ) {
+			  clearInterval(value);
+		});
+		app.intervals = [];
+	}
+	/**
+	 * 
+	 * 
+	 */
+	app.checkSafety = function(type, bed_in_place, element_to_hide) {
+		$(element_to_hide).css("opacity", "0.5");
+		var url = safety_url + type + '/'+ bed_in_place;
+		_make_call(url);
+		app.intervals.push(setInterval(_make_call, 2000, url));
+		var interval_reference = app.intervals[app.intervals.length-1];
+		
+		/**
+		 * 
+		 */
+		function _make_call(url)
+		{
+			$.ajax({
+				type: "POST",
+				url: url,
+				dataType: 'json'
+			}).done(function( data ) {
+				_process_response(data);
+			});
+		}
+		
+		/**
+		 * 
+		 */
+		function _process_response(data)
+		{
+			if(data.all_is_ok == true){
+				$(element_to_hide).show().css("opacity", "1");
+				$(".safety-check-container").remove();
+				clearInterval(interval_reference);
+			}else{
+				
+				if($(element_to_hide).length <= 0) return false;
+				
+				var bed = data.bed_in_place == false ? 'mill.png' : 'glass.png';
+
+				if(data.head_is_ok){
+					var head_title = '<strong>' + _("Correct head installed") + '</strong> <i class="fa fa-check-circle text-success fa-2x"></i>';
+					var head_subtitle = '';
+				}else{
+					var head_title =  data.head_in_place ? '<strong>' + _("Wrong head installed") + '</strong> <i class="fa fa-times-circle text-danger fa-2x"></i>' : '<strong>' + _("No head installed") + '</strong>'; 
+					var head_subtitle = _("Please install a {0} head.").replace("{0}", type);
+				}
+
+				if(data.bed_is_ok){
+					var bed_title = '<strong>' +  _("Bed inserted correctly") + '</strong> <i class="fa fa-check-circle text-success fa-2x"></i>';
+					var bed_subtitle = '';
+				}else{
+					var bed_title = '<strong>'+ _("Bed inserted incorrectly") + '</strong> <i class="fa fa-times-circle text-danger fa-2x"></i>' ;
+					var bed_subtitle = _("Please flip the bed to the other side.");;
+				}
+				
+				var content = '<div class="row safety-check-container">\
+					<div class="col-sm-12">\
+						<div class="well">\
+							<div class="row text-center">\
+								<h1><strong>'+_("Safety check")+'</strong></h1>\
+							</div>\
+							<div class="row">\
+								<div class="col-sm-6">\
+									<div class="row text-center">\
+										<div class="">\
+											<img style="height:320px; display:inline;" class="img-responsive" src="/assets/img/head/photo/'+fabApp.installed_head['filename']+'.png">\
+										</div>\
+									</div>\
+									<div class="row text-center">\
+										<h4>'+head_title+'</h4>\
+										<h3>'+head_subtitle+'</h3>\
+									</div>\
+								</div>\
+								<div class="col-sm-6">\
+									<div class="row">\
+										<div class="text-center">\
+											<img style="height:320px; display:inline;" class="img-responsive" src="/assets/img/controllers/bed/hybrid_bed_'+bed+'">\
+										</div>\
+									</div>\
+									<div class="row text-center">\
+										<h4>'+bed_title+'</h4>\
+										<h3>'+bed_subtitle+'</h3>\
+									</div>\
+								</div>\
+							</div>\
+						</div>\
+					</div>\
+				</div>';
+				if($(".safety-check-container").length >= 0){
+					$(".safety-check-container").remove();
+				}
+				$("#content").prepend(content);
+				$(element_to_hide).hide();	
+			}
 		}
 	}
 	return app;

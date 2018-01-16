@@ -42,6 +42,7 @@ var dashboard_url               = base_url + '/dashboard';
 var install_head_url            = base_url + '/head/setHead/';
 var head_page_url               = base_url + '/maintenance/head';
 var head_page_ajax_url          = base_url + '#maintenance/head';
+var safety_url                  = base_url + '/std/safetyCheck/';
 var temperatures_file_url       = '/temp/temperature.json';
 var jog_response_file_url       = '/temp/jog_response.json';
 var task_monitor_file_url       = '/temp/task_monitor.json';

@@ -9,6 +9,7 @@
  
 ?>
 <script type="text/javascript">
+	fabApp.clearIntervals();
 	pageSetUp();
 	transformLinks();
 	<?php echo ajaxJSInline($this->jsInLine, count($this->js) == 0); ?>

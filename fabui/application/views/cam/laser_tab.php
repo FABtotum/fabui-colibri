@@ -38,7 +38,7 @@
     							<span id="no-preview" class="font-md"><?php echo _('Preview not available for this file');?></span>
 							</div>
 						</div>
-						<div class="well well-light"  style="overflow: auto; max-height: 500px;">
+						<div class="well well-light"  style="overflow: auto; max-height: 550px;">
 							<div>
 								<img class="img-responsive laser-preview-source" id="laser-preview-source">
 								<span id="no-gcode-alert" class="font-md"><?php echo _('Click on "Generate GCode" to show preview');?></span>

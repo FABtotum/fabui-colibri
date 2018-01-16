@@ -1,6 +1,7 @@
 <script type="text/javascript">
     
     $(function () {
+    	fabApp.checkSafety('print', 'yes', '#main-widget-feeder-calibration');
         $(".extrude").on("click", extrudeFilament);
         $(".recalculate").on('click', calculateStep);
         $(".step-change-modal-open").on('click', openModal);

@@ -26,12 +26,11 @@ if($runningTask) $safety_check['all_is_ok'] = true;
 	<i class="fa fa-warning"></i><strong><?php echo _("Warning");?></strong> <?php echo $warning;?>
 </div>
 <?php endif; ?>
-
-<div id="safety-check-content">
+<!-- SAFETY BLOCK -->
 <?php if(!$safety_check['all_is_ok']): ?>
 <?php echo $safety_check['content']; ?>
 <?php endif; ?>
-</div>
+<!-- END SAFETY BLOCK -->
 <div id="task-wizard-content" style="<?php echo $safety_check["all_is_ok"]?"":"display:none" ?>">
 	<div class="wizard" data-initialize="wizard" id="myWizard">
 		<div class="steps-container">

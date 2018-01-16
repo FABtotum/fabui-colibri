@@ -85,7 +85,8 @@ class Nozzle extends FAB_Controller {
 		
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
 		$this->addJsInLine($this->load->view( 'std/task_wizard_js',   $data, true));
-		$this->addJsInLine($this->load->view('nozzle/height/js', $data, true));
+		
+		$this->addJsInLine($this->load->view( 'nozzle/height/js', $data, true));
 		
 		$this->view();
 		
@@ -204,6 +205,7 @@ class Nozzle extends FAB_Controller {
 		$data = array();
 		$data['installed_head'] = getInstalledHeadInfo();
 		$data['runningTask'] = $this->tasks->getRunning('maintenance');
+		$data['safety_check_url']  = 'std/safetyCheck/print/yes';
 		
 		$data['task'] = 'stopped';
 		
@@ -219,6 +221,15 @@ class Nozzle extends FAB_Controller {
 		.' '.$this->smart->create_button(_('Save'), 'primary')->attr(array('id' => 'save'))->icon('fa-save')->print_html(true);
 		
 		
+		/**
+		 * safety check
+		 */
+		$data['type']                        = 'print';
+		$data['safety_check']                = safetyCheck("print", "yes");
+		$data['safety_check']['bed_enabled'] = false;
+		$data['safety_check']['url']         = 'std/safetyCheck/print/yes';
+		$data['safety_check']['content']     = $this->load->view( 'std/task_safety_check', $data, true );
+		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-nozzle-pidtune';
 		$widget->header = array('icon' => 'fa-thermometer-three-quarters', "title" => "<h2>PID Tune</h2>");
@@ -232,6 +243,7 @@ class Nozzle extends FAB_Controller {
 		
 		
 		$this->addJSFile('/assets/js/plugin/fuelux/wizard/wizard.min.old.js'); //wizard
+		
 		$this->addJsInLine($this->load->view('nozzle/pidtune/js', $data, true));
 		$this->content = $widget->print_html(true);
 		$this->view();

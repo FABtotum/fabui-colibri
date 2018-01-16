@@ -7,7 +7,6 @@
  * 
  */
 ?>
-
 <div class="row">
 	<div class="col-sm-6">
 		<p class="margin-top-10" style="padding:10px">
