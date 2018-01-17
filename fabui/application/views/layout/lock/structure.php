@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html lang="it">
 	<head>{head}</head>
-	<body>
+	<body class="smart-style-6">
 		<div id="main" role="main">
 			{content}
 		</div>

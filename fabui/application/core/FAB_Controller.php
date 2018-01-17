@@ -197,12 +197,14 @@
 	public function restoreLayout()
 	{
 		$data = array();
+		$this->fab_app_init        = false;
+		$data['translations']      = $this->load->view('layout/translations_js', null, true);
 		$data['jsScripts'] = jScriptsInclusion($this->js);
-		$data['jsInLine'] = $this->jsInLine;
+		$data['jsInLine']  = $this->jsInLine;
 		$data['cssInLine'] = $this->cssInline;
 		
-		$this->template['head']    = $this->load-> view($this->layoutRestore.'/head',    $data, true);
-		$this->template['scripts'] = $this->load-> view($this->layoutRestore.'/scripts', $data, true);
+		$this->template['head']    = $this->load-> view($this->layoutDefaultFolder.'/head',    $data, true);
+		$this->template['scripts'] = $this->load-> view($this->layoutDefaultFolder.'/scripts', $data, true);
 		$this->template['content'] = $this->content;
 		$this->parser->parse($this->layoutRestore.'/structure', $this->template);
 	}
@@ -227,14 +229,16 @@
 	public function lockLayout()
 	{
 		$data = array();
+		$this->fab_app_init = false;
+		$data['translations']      = $this->load->view('layout/translations_js', null, true);
 		$data['jsScripts'] = jScriptsInclusion($this->js);
 		$data['cssFiles']  = cssFilesInclusion($this->css);
 		$data['jsInLine']  = $this->jsInLine;
 		$data['cssInLine'] = $this->cssInline;
-		$this->template['head'] = $this->load-> view($this->layoutLock.'/head', $data, true);
+		$this->template['head']    = $this->load->view($this->layoutDefaultFolder.'/head',    $data, true);
 		$this->template['top']     = $this->load-> view($this->layoutLock.'/top', $data, true);
-		$this->template['scripts'] = $this->load-> view($this->layoutLock.'/scripts', $data, true);
-		$this->template['footer']  = $this->load->view($this->layoutLock.'/footer', $data, true);
+		$this->template['scripts'] = $this->load-> view($this->layoutDefaultFolder.'/scripts', $data, true);
+		$this->template['footer']  = $this->load->view($this->layoutDefaultFolder.'/footer',  $data, true);
 		$this->template['content'] = $this->content;
 		$this->parser->parse($this->layoutLock.'/structure', $this->template);
 	}

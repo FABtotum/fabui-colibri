@@ -1976,10 +1976,10 @@ fabApp = (function(app) {
 								<h1><strong>'+_("Safety check")+'</strong></h1>\
 							</div>\
 							<div class="row">\
-								<div class="col-sm-6">\
+								<div class="col-sm-6 col-xs-6">\
 									<div class="row text-center">\
 										<div class="">\
-											<img style="height:320px; display:inline;" class="img-responsive" src="/assets/img/head/photo/'+fabApp.installed_head['filename']+'.png">\
+											<img style="max-height:320px; display:inline;" class="img-responsive" src="/assets/img/head/photo/'+fabApp.installed_head['filename']+'.png">\
 										</div>\
 									</div>\
 									<div class="row text-center">\
@@ -1987,10 +1987,10 @@ fabApp = (function(app) {
 										<h3>'+head_subtitle+'</h3>\
 									</div>\
 								</div>\
-								<div class="col-sm-6">\
+								<div class="col-sm-6 col-xs-6">\
 									<div class="row">\
 										<div class="text-center">\
-											<img style="height:320px; display:inline;" class="img-responsive" src="/assets/img/controllers/bed/hybrid_bed_'+bed+'">\
+											<img style="max-height:320px; display:inline;" class="img-responsive" src="/assets/img/controllers/bed/hybrid_bed_'+bed+'">\
 										</div>\
 									</div>\
 									<div class="row text-center">\

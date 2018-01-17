@@ -12,7 +12,7 @@
 	<div class="row margin-bottom-10" id="laser-upload-container">
 		
 		<div class="col-sm-12 margin-bottom-20" id="latest-upload-images-container">
-			<h5 style="display:none;" id="laser-recent-files-title"><?php echo _("Recent files");?></h5>
+			<h5 style="display:none;" id="laser-recent-files-title"><?php echo _("Latest uploaded files");?></h5>
 			<div class="owl-carousel owl-theme" id="uplaoded-images"></div>
 		</div>
 		

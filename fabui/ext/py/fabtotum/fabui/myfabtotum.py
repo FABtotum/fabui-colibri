@@ -24,7 +24,6 @@ __version__ = "1.0"
 
 # Import standard python module
 import json
-import re
 import gettext
 import time
 import requests
@@ -37,7 +36,7 @@ from threading import Event, Thread
 from fabtotum.database import Database
 from fabtotum.database.sysconfig import SysConfig
 from fabtotum.database.user import User
-from fabtotum.utils.common import shell_exec, fabtotum_model, get_mac_address, get_ip_address
+from fabtotum.utils.common import shell_exec, fabtotum_model, get_mac_address, get_ip_address, get_local_bundle
 from fabtotum.os.paths import TEMP_PATH, BASH_PATH
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.constants import SERVICE_SUCCESS, SERVICE_UNAUTHORIZED, SERVICE_FORBIDDEN,\
@@ -115,6 +114,7 @@ class MyFabtotumCom:
         #self.fw_version    = self.getFwVersion()
         self.unit_color    = self.getUnitColor()
         self.leds_colors   = self.getLedsColors()
+        self.fabui_version = self.getFabUiVersion()
         
     
     def call(self, method, params):
@@ -153,14 +153,7 @@ class MyFabtotumCom:
         sysconfig.query_by('key', value)
         return sysconfig['text']
     
-    
-    def __getInterfaces(self):
-        shell_exec('sh {0} > {1}'.format(os.path.join(BASH_PATH, 'get_net_interfaces.sh'), os.path.join(TEMP_PATH, 'interfaces.json')))
-        interfaces = {}
-        with open(os.path.join(TEMP_PATH, 'interfaces.json')) as data_file:    
-            interfaces = json.load(data_file)
-        return interfaces
-        
+            
     def getFabID(self):
         """ """
         user = User(self.db)
@@ -217,7 +210,16 @@ class MyFabtotumCom:
         except:
             return "N.D."
     
+    def getFabUiVersion(self):
+        """ get fabui version """
+        bundle = get_local_bundle('fabui')
+        if bundle:
+            return bundle['version']
+        else:
+            return None
+    
     def getIPLan(self):
+        """ return IP address """
         return get_ip_address('wlan0')
     
     def getState(self):
@@ -268,7 +270,8 @@ class MyFabtotumCom:
             "mac"        : self.mac_address,
             "state"      : self.getState(),
             "apiversion" : self.api_version,
-            "iplan"     : self.ip_lan
+            "iplan"     : self.ip_lan,
+            # "fabuiversion" : self.fabui_version
         }
         result =  self.call('fab_polling', params)
         if result: 
@@ -299,7 +302,8 @@ class MyFabtotumCom:
                 "head"      : head["name"],
                 "fwversion" : self.getFwVersion(),
                 "iplan"     : self.ip_lan,
-                'color'     : self.unit_color
+                'color'     : self.unit_color,
+                'fabuiversion' : self.fabui_version
             },
             "apiversion" : self.api_version,
         }
@@ -336,6 +340,7 @@ class MyFabtotumCom:
         #self.fw_version    = self.getFwVersion()
         self.unit_color    = self.getUnitColor()
         self.leds_colors   = self.getLedsColors()
+        self.fabui_version = self.getFabUiVersion()
         #### update info 
         if(update == True):
             self.fab_info_update()

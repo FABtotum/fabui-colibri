@@ -23,9 +23,9 @@ __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
 # Import standard python module
-import os
+import os, re
 
-#######################################################################
+########################################################################
 # Execute command via shell and return the complete output as a string
 ########################################################################
 def shell_exec(cmd):
@@ -35,7 +35,7 @@ def shell_exec(cmd):
     stdout.close()
     return lines
 
-#######################################################################
+########################################################################
 # Define on wich Raspberry im running on
 ########################################################################
 def rpi_version():
@@ -46,7 +46,7 @@ def rpi_version():
         return soc_name[soc_id]
     else:
         return soc_id
-#######################################################################
+########################################################################
 # Define model depending on batch number
 ########################################################################
 def fabtotum_model(batch_number):
@@ -68,7 +68,7 @@ def fabtotum_model(batch_number):
         model = 'FABtotum Personal Fabricator'
     
     return model
-#######################################################################
+########################################################################
 # GET MAC ADDRESS
 ########################################################################
 def get_mac_address(iface):
@@ -78,7 +78,7 @@ def get_mac_address(iface):
     except IndexError:
         return "n.a"
 
-#######################################################################
+########################################################################
 # GET IP ADDRESS
 ########################################################################
 def get_ip_address(iface):
@@ -87,4 +87,38 @@ def get_ip_address(iface):
         return result[0].strip()
     except IndexError:
         return "n.a"
+########################################################################
+# GET LOCAL BUNDLES LIST
+########################################################################
+def get_local_bundles():
     
+    list = shell_exec("colibrimngr list") # get list
+    list.pop(0) # remove first element "list"
+    bundles = {}
+    
+    def get_group(index, regex):
+        try:
+            value = regex.group(index).strip()
+        except IndexError:
+            value = False
+        return value
+    
+    for item in list:
+        match = re.search('\[(\!*)(A|D|-|)\]\s(\d+)\s:(\s.*?\s):\s([0-9.]+)', item.strip(), re.IGNORECASE)
+        if match != None:
+            bundle_name = get_group(4, match)
+            version     = get_group(5, match)
+            state       = get_group(2, match)
+            priority    = get_group(3, match)
+            if(bundle_name):
+                bundles[bundle_name] = {'name': bundle_name, 'version': version, 'state':state, 'priority': priority}  
+    return bundles
+########################################################################
+# GET LOCAL BUNDLE INFO
+########################################################################
+def get_local_bundle(name):
+    bundles = get_local_bundles()
+    if(name in bundles):
+        return bundles[name]
+    else:
+        return None

@@ -243,11 +243,11 @@ def configure_4thaxis(app, feeder_name, lang='en_US.UTF-8'):
     
     app.trace( _("Setting 4th-axis values..."))
     
-    app.macro("M92 E{0}".format(steps_per_angle),            "ok", 1,   _("Setting A steps per degree to {0}").format(steps_per_angle), verbose=False)
-    app.macro("G92 E0",              						"ok", 1,   _("Setting A position to 0"), verbose=False )
-    app.macro("M201 E{0}".format(max_acceleration),         "ok", 1,   _("Setting A acceleration to {0}").format(max_acceleration), verbose=False)
-    app.macro("M203 E{0}".format(max_feedrate),             "ok", 1,   _("Setting A max feedrate to {0}").format(max_feedrate), verbose=False)
-    app.macro("M205 E{0}".format(max_jerk),                 "ok", 1,   _("Setting A max jerk to {0}").format(max_jerk), verbose=False)
+    app.macro("M92 E{0}".format(steps_per_angle),   "ok", 1,  _("Setting A steps per degree to {0}").format(steps_per_angle), verbose=False)
+    app.macro("G92 E0",              				"ok", 1,  _("Setting A position to 0"), verbose=False )
+    app.macro("M201 E{0}".format(max_acceleration), "ok", 1,  _("Setting A acceleration to {0}").format(max_acceleration), verbose=False)
+    app.macro("M203 E{0}".format(max_feedrate),     "ok", 1,  _("Setting A max feedrate to {0}").format(max_feedrate), verbose=False)
+    app.macro("M205 E{0}".format(max_jerk),         "ok", 1,  _("Setting A max jerk to {0}").format(max_jerk), verbose=False)
     
     return True
     
@@ -269,6 +269,7 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     probe_length = float(app.config.get('settings', 'probe.length', 0))
     tool         = head.get('tool', '')
     plugins      = head.get('plugins', False)
+    capabilities = head.get('capabilities', False)
     
     app.trace( _("Setting head values..."))
     
@@ -293,7 +294,6 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     
     # Set max_temp
     if max_temp > 25:
-        #~ gcs.send( "M801 S{0}".format( max_temp ), group='bootstrap' )
         app.macro( "M801 S{0}".format( max_temp ),   "ok", 2, _("Setting MAX temperature to {0}".format(max_temp)), verbose=False)
     
     # Set min_temp
@@ -311,6 +311,10 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     # Set probe offset
     if probe_length:
         app.macro( "M710 S{0}".format( probe_length ),   "ok", 2, _("Configuring probe offset"), verbose=False)
+    
+    # enable bed thermistor - disable serial port
+    if "laser" in capabilities:
+        app.macro("M563 P0 H4:5 S0",   "ok", 2, _("Configuring tool"), verbose=False)
     
     # Custom initialization code
     app.trace( _("Custom initialization"))
@@ -338,7 +342,7 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
 def go_to_focal_point(app, head):
     """ go to laser focal point """
     
-    is_laser_pro       = app.config.is_laser_pro_head(head['fw_id'])
+    is_laser_pro = app.config.is_laser_pro_head(head['fw_id'])
     
     try:
         laser_focus_offset = head['focus']

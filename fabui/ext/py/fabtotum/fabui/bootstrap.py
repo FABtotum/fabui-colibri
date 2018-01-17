@@ -113,6 +113,7 @@ def configure_head(gcs, config, log):
         custom_gcode = head.get('custom_gcode','')
         tool         = head.get('tool', '')
         plugins      = head.get('plugins', False)
+        capabilities = head.get('capabilities', False)
         
         probe_length  = float(config.get('settings', 'probe.length', 0))
         
@@ -149,6 +150,9 @@ def configure_head(gcs, config, log):
         #Set tool
         if tool != "" :
             gcs.send( head['tool'], group='bootstrap' )
+            
+        if "laser" in capabilities:
+            gcs.send( "M563 P0 H4:5 S0", group='bootstrap' )
         
         for line in custom_gcode.split('\n'):
             if line:

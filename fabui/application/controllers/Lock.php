@@ -12,6 +12,8 @@
  	
 	public function index()
 	{	
+	    $this->addCssFile('/assets/css/lockscreen.min.css');
+	    $this->addCSSInLine("<style>#main{margin-left:0px !important;} .page-footer{padding-left:10px !important;}</style>");
 		$this->content = $this->load->view('lock/index', null, true );
 		$this->lockLayout();
 	}

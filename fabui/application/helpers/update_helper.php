@@ -316,10 +316,10 @@ if(!function_exists('flashFirmware'))
 				$args = 'factory';
 				break;
 			case "custom":
-				$args = 'update '.$argument;
+				$args = 'update "'.$argument.'" ';
 				break;
 			case "remote": // remote update
-				$args = 'remote-update '.$argument;
+				$args = 'remote-update "'.$argument.'" ';
 				break;
 			default:
 				return false;
