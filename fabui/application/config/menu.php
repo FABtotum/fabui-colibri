@@ -165,7 +165,13 @@ $config['menu'] = array(
 				'icon' => 'fa-info-circle',
 				'url' => 'maintenance/system-info',
 				'pos' => 100
-			)
+			),
+		    'backup' => array(
+		        'title' => _("Backup & restore"),
+		        'icon' => 'icon-electronics-089',
+		        'url' => 'maintenance/backup-restore',
+		        'pos' => 110
+		    )
 		)
 	),
 	'settings' => array (

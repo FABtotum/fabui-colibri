@@ -88,6 +88,7 @@ $route['maintenance/firmware']                  = 'firmware';
 $route['maintenance/system-info']               = 'systeminfo';
 $route['maintenance/nozzle-height-calibration'] = 'nozzle';
 $route['maintenance/nozzle-pid-tune']           = 'nozzle/pidtune';
+$route['maintenance/backup-restore']            = 'backup';
 //plugin
 $route['plugin/add']               = 'plugin/add';
 $route['plugin/getOnline']         = 'plugin/getOnline';

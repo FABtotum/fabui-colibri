@@ -271,7 +271,7 @@ class MyFabtotumCom:
             "state"      : self.getState(),
             "apiversion" : self.api_version,
             "iplan"     : self.ip_lan,
-            # "fabuiversion" : self.fabui_version
+            "fabuiversion" : self.fabui_version
         }
         result =  self.call('fab_polling', params)
         if result: 
