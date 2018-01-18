@@ -139,10 +139,12 @@
 		$result_codes[1002] = 'SERVICE_ALREADY_REGISTERED';
 		$result_codes[1003] = 'SERVICE_PRINTER_UNKNOWN';
 		
+		
+		
 		switch($method){
 			case 'fab_register_printer':
 				//$params['fabid'] = 'fabtest@fabtotum.com';
-				$result = fab_register_printer('fabtest@fabtotum.com');
+			    $result = fab_register_printer($this->session->user['email']);
 				break;
 			case 'fab_info_update':
 				$result = fab_info_update();
@@ -153,6 +155,9 @@
 			case 'fab_is_printer_registered':
 				$result = fab_is_printer_registered();
 				break;
+			case 'fab_my_printers_list':
+			    $result = fab_my_printers_list($this->session->user['email']);
+			    break;
 		}
 		
 		if(is_array($result)){
@@ -160,7 +165,8 @@
 				$result['status_description'] = $result_codes[$result['status_code']];
 			}
 		}else{
-			$result = $result->getMessage();
+		    if(is_object($result))
+		        $result = $result->getMessage();
 		}
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode(array('method'=>$method, 'result'=>$result)));

@@ -1068,8 +1068,8 @@
 		            autoWidth: true,
 		            responsive:{
 		                0:{
-		                    items:2,
-		                    loop:true,
+		                    items:1,
+		                    loop:false,
 		                    margin:10
 		                },
 		                500:{

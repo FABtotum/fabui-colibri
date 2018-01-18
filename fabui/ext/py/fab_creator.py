@@ -117,11 +117,33 @@ def create_plugin(args, raw_meta):
     create_dir( build_path(destDir, 'scripts') )
     create_dir( build_path(destDir, 'bin') )
     
+    # default locale folders
+    create_dir( build_path(destDir, 'locale/it/LC_MESSAGES') )
+    create_dir( build_path(destDir, 'locale/de/LC_MESSAGES') )
+    
     filename = build_path(destDir, 'views/js.php')
     create_from_template('php/js.php.template', filename, env, overwrite=True)
     
     filename = build_path(destDir, 'views/main_widget.php')
     create_from_template('php/js.php.template', filename, env, overwrite=True)
+    
+    filename = build_path(destDir, 'scripts/index.html')
+    create_from_template('html/index.html.template', filename, env, overwrite=True)
+    
+    filename = build_path(destDir, 'assets/img/index.html')
+    create_from_template('html/index.html.template', filename, env, overwrite=True)
+    
+    filename = build_path(destDir, 'assets/js/index.html')
+    create_from_template('html/index.html.template', filename, env, overwrite=True)
+    
+    filename = build_path(destDir, 'bin/index.html')
+    create_from_template('html/index.html.template', filename, env, overwrite=True)
+    
+    filename = build_path(destDir, 'locale/it/LC_MESSAGES/index.html')
+    create_from_template('html/index.html.template', filename, env, overwrite=True)
+    
+    filename = build_path(destDir, 'locale/de/LC_MESSAGES/index.html')
+    create_from_template('html/index.html.template', filename, env, overwrite=True)
 
 def create_controller(args):
     

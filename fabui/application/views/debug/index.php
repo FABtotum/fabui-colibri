@@ -32,6 +32,7 @@
 					<li><a href="javascript:void(0);" class="json-rpc" data-action="fab_info_update">fab_info_update</a></li>
 					<li><a href="javascript:void(0);" class="json-rpc" data-action="fab_polling">fab_polling</a></li>
 					<li><a href="javascript:void(0);" class="json-rpc" data-action="fab_is_printer_registered">fab_is_printer_registered</a></li>
+					<li><a href="javascript:void(0);" class="json-rpc" data-action="fab_my_printers_list">fab_my_printers_list</a></li>
 				</ul>
 			</div>
 		</div>
