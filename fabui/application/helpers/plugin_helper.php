@@ -549,14 +549,10 @@ if(!function_exists('loadPluginTranslation'))
 		if($plugin == '') $plugin = str_replace('plugin_', '', $CI->router->class);
 
 		if(file_exists($CI->config->item('plugins_path').$plugin.'/locale')){
-			
 			bindtextdomain($domain, $CI->config->item('plugins_path').$plugin.'/locale');
-			textdomain($domain);
 			bind_textdomain_codeset($domain, "UTF-8");
-			
 			return true;
 		}
-		
 		return false;
 	}
 }
