@@ -32,8 +32,16 @@ if(!function_exists('load_subscription'))
 		//load plugin config
 		$CI =& get_instance();
 		$CI->config->load('cam');
+		$CI->load->library('encrypt');
+		$CI->load->helper(array('os_helper'));
 		
 		if(file_exists($CI->config->item('subscription_file'))){
+		    /*
+		    if( $CI->encrypt->decode(file_get_contents($CI->config->item('subscription_file'))) == '' ){
+		        $dataToEncode = file_get_contents($CI->config->item('subscription_file'));
+		        $encodedData = $CI->encrypt->encode($dataToEncode.'::'.getMACAddres());
+		        $decoded = $CI->encrypt->decode($encodedData);  
+		    }*/
 			$subscription =  json_decode(file_get_contents($CI->config->item('subscription_file')), true);
 			return $subscription;
 		}

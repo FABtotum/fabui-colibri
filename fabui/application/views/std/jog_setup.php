@@ -66,7 +66,7 @@ if( !isset($is_laser_pro)) $is_laser_pro = false;
 					<div class="description text-center">
 						<p class="font-md margin-top-30">
 							<?php if($is_laser_pro):?>
-							<?php echo _("Focal point will be calculated automatically ");?>
+							<?php echo _("Focal point will be calculated automatically");?>
 							<?php else:?>
 							<?php echo _("Lower the Z so that the laser head is max 1 mm away from the stock material, then press continue");?>
 							<?php endif;?>

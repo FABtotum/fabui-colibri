@@ -45,7 +45,7 @@ class Std extends FAB_Controller {
     {
         //load libraries, models, helpers
         $this->load->model('Files', 'files');
-        $files = $this->files->getForCreate( $task_type );
+        $files  = $this->files->getForCreate( $task_type );
         $aaData = $this->dataTableFormat($files);
         $this->output->set_content_type('application/json')->set_output(json_encode(array('aaData' => $aaData)));
     }
@@ -223,7 +223,7 @@ class Std extends FAB_Controller {
             
             //send email
             $result['status'] = send_via_noreply($user['email'], $user['first_name'], $user['last_name'],  $subject, $page);
-            if($result['status'] == false) $result['message'] = _("Email sending failed ");
+            if($result['status'] == false) $result['message'] = _("Email sending failed");
             
         }else{
             $result['message'] = _("Notification disabled");
@@ -295,7 +295,7 @@ class Std extends FAB_Controller {
             //send email
             $result['status'] = send_via_noreply($user['email'], $user['first_name'], $user['last_name'],  $subject, $page);
             
-            if($result['status'] == false) $result['message'] = _("Email sending failed ");
+            if($result['status'] == false) $result['message'] = _("Email sending failed");
             
         }else{
             $result['message'] = _("Notification disabled");

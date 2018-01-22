@@ -25,7 +25,7 @@
 	{
 		$this->db->select('tf.orig_name, tf.client_name, tf.file_ext, to.name, tf.id as id_file, to.id as id_object, to.description, tf.attributes');
 		if($type != '')	$this->db->where('print_type', $type);
-		$this->db->where('to.user', $this->session->user['id']);
+		$this->db->where('("to".user = "'.$this->session->user['id'].'" or "to".public = 1)', NULL, FALSE);
 		$this->db->where('tf.deleted', 0);
 		$this->db->join($this->objFilesTable, $this->objFilesTable.'.id_file = tf.id');
 		$this->db->join('sys_objects as to', 'to.id = '.$this->objFilesTable.'.id_obj');
