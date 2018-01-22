@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.5\n"
+"X-Generator: Poedit 2.0.6\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
@@ -571,7 +571,6 @@ msgid "Groups"
 msgstr "Gruppi"
 
 #: fabui/application/controllers/Cam.php:175
-#, fuzzy
 msgid "File not found"
 msgstr "Filamento non inserito"
 
@@ -1492,7 +1491,7 @@ msgstr ""
 #: fabui/application/views/restore/wizard.php:50
 #: fabui/application/views/restore/wizard.php:58
 msgid "Restore all previously uploaded and created objects and files."
-msgstr "Ripristina tutti i precedenti upload e progetti creati"
+msgstr "Ripristina tutti i precedenti upload e progetti creati."
 
 #: fabui/application/views/restore/wizard.php:52
 msgid "User Objects and Files"
@@ -1504,7 +1503,7 @@ msgstr "Impostazioni Hardware"
 
 #: fabui/application/views/restore/wizard.php:69
 msgid "Restore all previous task data."
-msgstr "Ripristina tutti i precedenti dati dell'operazione"
+msgstr "Ripristina tutti i precedenti dati dell'operazione."
 
 #: fabui/application/views/restore/wizard.php:71
 msgid "Task History"
@@ -1512,7 +1511,7 @@ msgstr "Crologia Attività"
 
 #: fabui/application/views/restore/wizard.php:77
 msgid "Restore all head settings."
-msgstr "Ripristina tutte le impostazioni della testa"
+msgstr "Ripristina tutte le impostazioni della testa."
 
 #: fabui/application/views/restore/wizard.php:79
 msgid "Head Settings"
@@ -1520,7 +1519,7 @@ msgstr "Impostazioni Testa"
 
 #: fabui/application/views/restore/wizard.php:85
 msgid "Restore all feeder settings."
-msgstr "Ripristina tutte le impostazioni dell'estrusore"
+msgstr "Ripristina tutte le impostazioni dell'estrusore."
 
 #: fabui/application/views/restore/wizard.php:87
 msgid "Feeder Settings"
@@ -1798,7 +1797,7 @@ msgstr "Il piatto è ben calibrato e pronto per la stampa"
 msgid "Well this is embarrassing, during measurements something went wrong"
 msgstr ""
 "Ops!  qualcosa è andato storto durante la misurazione. Ripeti o Contatta il "
-"supporto."
+"supporto"
 
 #: fabui/application/views/bed/calibration_results.php:58
 msgid "Check probe lenght and try again"
@@ -2064,7 +2063,7 @@ msgstr "Posizione nel menù"
 
 #: fabui/application/views/plugin/main_widget.php:168
 msgid "Github Repository"
-msgstr "Repository Github "
+msgstr "Repository Github"
 
 #: fabui/application/views/plugin/main_widget.php:181
 msgid "Generate Plugin"
@@ -2170,7 +2169,7 @@ msgid ""
 "the internet."
 msgstr ""
 "Per inviare la email con il link per reimpostare la password è necessario "
-"essere connessi ad internet"
+"essere connessi ad internet."
 
 #: fabui/application/views/login/login_form.php:127
 #: fabui/application/views/projectsmanager/add/widget.php:66
@@ -2721,7 +2720,7 @@ msgstr "Modalità"
 
 #: fabui/application/views/settings/wireless_tab.php:15
 msgid "Connected to"
-msgstr "Connesso a "
+msgstr "Connesso a"
 
 #: fabui/application/views/settings/wireless_tab.php:19
 #: fabui/application/views/settings/ethernet_tab.php:15
@@ -3007,7 +3006,7 @@ msgstr "Caricato"
 
 #: fabui/application/views/std/task_dropzone_js.php:81
 msgid "Invalid file."
-msgstr "File non valido"
+msgstr "File non valido."
 
 #: fabui/application/views/std/task_dropzone_js.php:97
 #: fabui/application/views/cam/js.php:349
@@ -3905,15 +3904,13 @@ msgstr "Firmware installato"
 msgid "Build-date"
 msgstr "Data di costruzione"
 
-#: fabui/application/views/cam/js.php:86
-#: fabui/application/views/cam/js.php:895
+#: fabui/application/views/cam/js.php:86 fabui/application/views/cam/js.php:895
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Trascina file per caricarli"
 
-#: fabui/application/views/cam/js.php:86
-#: fabui/application/views/cam/js.php:895
+#: fabui/application/views/cam/js.php:86 fabui/application/views/cam/js.php:895
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "or click"
@@ -3948,9 +3945,8 @@ msgid "Feed"
 msgstr "Feed"
 
 #: fabui/application/views/cam/js.php:221
-#, fuzzy
 msgid "Cut"
-msgstr "Corrente"
+msgstr "Taglio"
 
 #: fabui/application/views/cam/js.php:279
 #: fabui/application/views/history/main_widget.php:26
@@ -4047,14 +4043,12 @@ msgid "Laser engraving preview"
 msgstr "Anteprima incisione laser"
 
 #: fabui/application/views/cam/js.php:1055
-#, fuzzy
 msgid "Use again"
-msgstr "Controlla ancora"
+msgstr "Usa ancora"
 
 #: fabui/application/views/cam/laser_tab.php:15
-#, fuzzy
 msgid "Latest uploaded files"
-msgstr "Carica nuovo file"
+msgstr "Ultimi file caricati"
 
 #: fabui/application/views/cam/laser_tab.php:21
 msgid "Note: max file size is {0}"
@@ -4405,48 +4399,44 @@ msgstr "Resta in contatto con il nostro team del supporto tecnico"
 
 #: fabui/application/views/backup/widget.php:14
 #: fabui/application/views/backup/widget.php:82
-#, fuzzy
 msgid "Backup"
-msgstr "Indietro"
+msgstr "Backup"
 
 #: fabui/application/views/backup/widget.php:17
 #: fabui/application/views/backup/widget.php:38
 msgid "Backup wizard"
-msgstr ""
+msgstr "Backup wizard"
 
 #: fabui/application/views/backup/widget.php:18
 msgid ""
 "The backup wizard helps you to create a backup of your settings and files"
 msgstr ""
+"Backup wizard ti aiuta a creare un backup delle impostazioni e dei file"
 
 #: fabui/application/views/backup/widget.php:28
 #: fabui/application/views/backup/widget.php:94
-#, fuzzy
 msgid "Restore wizard"
-msgstr "Ripristinare la posizione di Z"
+msgstr "\vRestore wizard"
 
 #: fabui/application/views/backup/widget.php:29
 msgid "The restore wizard helps you to restore your data from a backup"
-msgstr ""
+msgstr "Restore wizard ti aiuta a ripristinare i tuoi dai da un backup"
 
 #: fabui/application/views/backup/widget.php:46
-#, fuzzy
 msgid "Default backup"
-msgstr "Azione predefinita"
+msgstr "Default backup"
 
 #: fabui/application/views/backup/widget.php:49
 msgid "Advanced backup"
 msgstr ""
 
 #: fabui/application/views/backup/widget.php:55
-#, fuzzy
 msgid "System"
-msgstr "Info di sistema"
+msgstr "Sistema"
 
 #: fabui/application/views/backup/widget.php:61
-#, fuzzy
 msgid "Feeders"
-msgstr "Estrusore"
+msgstr "Estrusori"
 
 #: fabui/application/views/backup/widget.php:69
 msgid "User"
@@ -4839,8 +4829,7 @@ msgstr "Se sei stato tu a mettere in pausa puoi ignorare questa email"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
@@ -5480,7 +5469,7 @@ msgstr "Dati non disponibili"
 
 #: fabui/application/views/projectsmanager/file/stats/widget.php:36
 msgid "attempts"
-msgstr "Temperatura ugello"
+msgstr "tentativi"
 
 #: fabui/application/views/projectsmanager/file/add/js.php:39
 msgid "You can upload 10 files at time"
@@ -5842,24 +5831,20 @@ msgid "Task Started"
 msgstr "Task iniziato"
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:322
-#, fuzzy
 msgid "Wait for nozzle temperature to reach {:.0f}&deg;C"
-msgstr "In attesa che la temperatura dell'ugello raggiunga  {0}&deg;C"
+msgstr "In attesa che la temperatura dell'ugello raggiunga {0}&deg;C"
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:324
-#, fuzzy
 msgid "Wait for bed temperature to reach {:.0f}&deg;C"
-msgstr "In attesa che la temperatura del piatto raggiunga  {0}&deg;C"
+msgstr "In attesa che la temperatura del piatto raggiunga {0}&deg;C"
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:326
-#, fuzzy
 msgid "Nozzle temperature set to {:.0f}&deg;C"
-msgstr "Temperatura del nozzle impostata a  {0}&deg;C"
+msgstr "Temperatura del nozzle impostata a {0}&deg;C"
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:328
-#, fuzzy
 msgid "Bed temperature set to {:.0f}&deg;C"
-msgstr "Temperatura del patto impostata a  {0}&deg;C"
+msgstr "Temperatura del patto impostata a {0}&deg;C"
 
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:340
 msgid "Fan value set to {0}%"
