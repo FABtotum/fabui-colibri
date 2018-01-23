@@ -572,7 +572,7 @@ msgstr "Filamento non inserito"
 
 #: fabui/application/controllers/Cam.php:230
 msgid "File not valid, unable to process it"
-msgstr ""
+msgstr "File non valido e non processabile"
 
 #: fabui/application/controllers/Cam.php:385
 msgid "Generated with FABtotum CAM toolbox"
@@ -2651,9 +2651,8 @@ msgid "Machine limits collision warning"
 msgstr "Allarme collisione limiti della macchina"
 
 #: fabui/application/views/settings/hardware_widget.php:104
-#, fuzzy
 msgid "Idle timeout"
-msgstr "Connessione scaduta"
+msgstr "Timeout di inattività"
 
 #: fabui/application/views/settings/hardware_widget.php:113
 msgid "Wire endstop"
@@ -2956,9 +2955,8 @@ msgid "Close the cover"
 msgstr "Chiudi la cover"
 
 #: fabui/application/views/std/jog_setup.php:69
-#, fuzzy
 msgid "Focal point will be calculated automatically"
-msgstr "la distanza focale sarà impostata automaticamente"
+msgstr "La distanza focale sarà impostata automaticamente"
 
 #: fabui/application/views/std/jog_setup.php:71
 msgid ""
@@ -3908,15 +3906,13 @@ msgstr "Firmware installato"
 msgid "Build-date"
 msgstr "Data di costruzione"
 
-#: fabui/application/views/cam/js.php:86
-#: fabui/application/views/cam/js.php:895
+#: fabui/application/views/cam/js.php:86 fabui/application/views/cam/js.php:895
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Trascina file per caricarli"
 
-#: fabui/application/views/cam/js.php:86
-#: fabui/application/views/cam/js.php:895
+#: fabui/application/views/cam/js.php:86 fabui/application/views/cam/js.php:895
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "or click"
@@ -4151,11 +4147,11 @@ msgstr "Numero scala di grigi"
 
 #: fabui/application/views/cam/laser_tab.php:146
 msgid "Z Depth"
-msgstr ""
+msgstr "Z profondità"
 
 #: fabui/application/views/cam/laser_tab.php:152
 msgid "Z Steps"
-msgstr ""
+msgstr "Z steps"
 
 #: fabui/application/views/cam/laser_tab.php:173
 msgid "Value"
@@ -4434,7 +4430,7 @@ msgstr "Default backup"
 
 #: fabui/application/views/backup/widget.php:49
 msgid "Advanced backup"
-msgstr ""
+msgstr "Backup avanzato"
 
 #: fabui/application/views/backup/widget.php:55
 msgid "System"
@@ -4835,8 +4831,7 @@ msgstr "Se sei stato tu a mettere in pausa puoi ignorare questa email"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
@@ -5340,6 +5335,7 @@ msgstr "Prima di procedere assicurati che l'ugello sia pulito"
 #: fabui/application/views/nozzle/height/wizard/choise.php:18
 msgid "Z touch probe enabled: probe's length will be automatically calibrated"
 msgstr ""
+"Z probe abilitata: la lunghezza della probe verrà calibrata automaticamente"
 
 #: fabui/application/views/nozzle/height/wizard/choise.php:33
 msgid ""
