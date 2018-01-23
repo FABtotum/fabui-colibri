@@ -6,7 +6,8 @@
   },
   "safety": {
     "door": 1,
-    "collision_warning": 1
+    "collision_warning": 1,
+	"idle_timeout": 600
   },
   "switch": 0,
   "feeder": {

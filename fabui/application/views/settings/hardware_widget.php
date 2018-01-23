@@ -99,6 +99,15 @@
 					</div>
 				</section>
 			</fieldset>
+			<fieldset>
+				<section>
+					<label class="label"><?php echo _("Idle timeout")?> (<?php echo _("seconds");?>)</label>
+					<label class="input">
+						<input type="number" id="safety-idle_timeout" name="safety-idle_timeout" value="<?php echo isset($defaultSettings['safety']['idle_timeout']) ? $defaultSettings['safety']['idle_timeout'] : 600; ?>" step="1">
+						<div class="note"> Idle timeout. To disable set to zero</div>
+					</label>
+				</section>
+			</fieldset>
 			<fieldset class="<?php echo ($unitType == 'PRO' || $defaultSettings['settings_type'] == 'custom') ? '' : 'hidden'?> pro">
 				<section>
 					<label class="label"> <?php echo _('Wire endstop')?></label>

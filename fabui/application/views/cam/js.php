@@ -218,7 +218,7 @@
 							</section>\
 							<section class="col col-1 laser-pro-settings-vector">\
 								<label class="checkbox">\
-									<input class="layer-cut" data-name="'+lyr_name+'" id="'+lyr_name+'-cut"  name="layer-'+lyr_name+'-cut" type="checkbox"><i></i> <?php echo _("Cut"); ?>\
+									<input class="layer-cut laser-monitor-change" data-name="'+lyr_name+'" id="'+lyr_name+'-cut"  name="layer-'+lyr_name+'-cut" type="checkbox"><i></i> <?php echo _("Cut"); ?>\
 								</label>\
 							</section>\
 							</div></li>';
