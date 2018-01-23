@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-23 11:14+0100\n"
+"POT-Creation-Date: 2018-01-23 11:34+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: FABTeam\n"
@@ -1466,10 +1466,10 @@ msgstr ""
 "die Steuerplatine neu"
 
 #: fabui/application/views/layout/translations_js.php:27
-#: fabui/ext/py/print.py:148
+#, fuzzy
 msgid ""
-"The FABtotum has been idling for more than 10 minutes. Temperatures and "
-"Motors have been turned off"
+"The FABtotum has been idling for a while. Temperatures and Motors have been "
+"turned off"
 msgstr ""
 "FABtotum ist seit mehr als 10 Minuten im Leerlauf. Temperaturen und Motoren "
 "wurden ausgeschaltet"
@@ -5893,6 +5893,14 @@ msgstr "Warnung: kann nicht so viel Filament extrudieren!"
 #: fabui/ext/py/print.py:146
 msgid "Warning: extruder Temperature critical, shutting down"
 msgstr "Warnung: Extruder Temperatur ist kritisch, Wird ausgeschaltet"
+
+#: fabui/ext/py/print.py:148
+msgid ""
+"The FABtotum has been idling for more than 10 minutes. Temperatures and "
+"Motors have been turned off"
+msgstr ""
+"FABtotum ist seit mehr als 10 Minuten im Leerlauf. Temperaturen und Motoren "
+"wurden ausgeschaltet"
 
 #: fabui/ext/py/print.py:180
 msgid "Print initialized."

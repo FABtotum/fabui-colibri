@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-23 11:14+0100\n"
+"POT-Creation-Date: 2018-01-23 11:34+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1437,10 +1437,10 @@ msgid "Y min Endstop hit: Move the carriage to the center and reset"
 msgstr "Y min Endstop colpito: Muovere il carrello al centro e resettare"
 
 #: fabui/application/views/layout/translations_js.php:27
-#: fabui/ext/py/print.py:148
+#, fuzzy
 msgid ""
-"The FABtotum has been idling for more than 10 minutes. Temperatures and "
-"Motors have been turned off"
+"The FABtotum has been idling for a while. Temperatures and Motors have been "
+"turned off"
 msgstr ""
 "La FABtotum non è stata utilizzata per più di 10 minuti. Temperature e "
 "motore sono stati spenti"
@@ -3906,13 +3906,15 @@ msgstr "Firmware installato"
 msgid "Build-date"
 msgstr "Data di costruzione"
 
-#: fabui/application/views/cam/js.php:86 fabui/application/views/cam/js.php:895
+#: fabui/application/views/cam/js.php:86
+#: fabui/application/views/cam/js.php:895
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Trascina file per caricarli"
 
-#: fabui/application/views/cam/js.php:86 fabui/application/views/cam/js.php:895
+#: fabui/application/views/cam/js.php:86
+#: fabui/application/views/cam/js.php:895
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "or click"
@@ -4831,7 +4833,8 @@ msgstr "Se sei stato tu a mettere in pausa puoi ignorare questa email"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24
+#: fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
@@ -5699,6 +5702,14 @@ msgstr "Non è possibile estrudere così tanto filamento!"
 #: fabui/ext/py/print.py:146
 msgid "Warning: extruder Temperature critical, shutting down"
 msgstr "Temperatura critica dell'estrusore, spegnimento"
+
+#: fabui/ext/py/print.py:148
+msgid ""
+"The FABtotum has been idling for more than 10 minutes. Temperatures and "
+"Motors have been turned off"
+msgstr ""
+"La FABtotum non è stata utilizzata per più di 10 minuti. Temperature e "
+"motore sono stati spenti"
 
 #: fabui/ext/py/print.py:180
 msgid "Print initialized."
