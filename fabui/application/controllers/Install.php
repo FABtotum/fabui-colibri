@@ -296,6 +296,9 @@ class Install extends FAB_Controller {
 		unset($postData['fabid']);
 		unset($postData['fabid_pwd']);
 		
+		//set locale
+		setLanguage($locale, true);
+		
 		
 		//preparing user settings
 		$userSettings = array(

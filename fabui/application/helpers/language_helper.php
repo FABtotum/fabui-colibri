@@ -54,11 +54,11 @@ if(!function_exists('setLanguage'))
 	/**
 	 * 
 	 */
-	function setLanguage($language_code)
+	function setLanguage($language_code, $saveSettings=false)
 	{
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
-		$CI->load->helper('plugin_helper');
+		$CI->load->helper(array('plugin_helper', 'fabtotum_helper'));
 		
 		putenv('LC_MESSAGES='.$language_code.'.UTF-8');
 		setlocale(LC_MESSAGES, $language_code.'.UTF-8');
@@ -70,6 +70,12 @@ if(!function_exists('setLanguage'))
 		bindtextdomain("fabui", $CI->config->item('locale_path'));
 		textdomain("fabui");
 		bind_textdomain_codeset("fabui", "UTF-8");
+		
+		if($saveSettings == true){
+		  $hardwareSettings = loadSettings();
+		  $hardwareSettings['locale'] = $language_code;
+		  saveSettings($hardwareSettings);
+		}
 		
 		//extendLanguageWithPlugins();
 	}
