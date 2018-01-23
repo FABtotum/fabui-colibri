@@ -1437,13 +1437,12 @@ msgid "Y min Endstop hit: Move the carriage to the center and reset"
 msgstr "Y min Endstop colpito: Muovere il carrello al centro e resettare"
 
 #: fabui/application/views/layout/translations_js.php:27
-#, fuzzy
 msgid ""
 "The FABtotum has been idling for a while. Temperatures and Motors have been "
 "turned off"
 msgstr ""
-"La FABtotum non è stata utilizzata per più di 10 minuti. Temperature e "
-"motore sono stati spenti"
+"La FABtotum non è stata utilizzata per un pò. Temperature e motore sono "
+"stati spenti"
 
 #: fabui/application/views/layout/translations_js.php:28
 msgid "Out of filament detected"
@@ -3906,15 +3905,13 @@ msgstr "Firmware installato"
 msgid "Build-date"
 msgstr "Data di costruzione"
 
-#: fabui/application/views/cam/js.php:86
-#: fabui/application/views/cam/js.php:895
+#: fabui/application/views/cam/js.php:86 fabui/application/views/cam/js.php:895
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Trascina file per caricarli"
 
-#: fabui/application/views/cam/js.php:86
-#: fabui/application/views/cam/js.php:895
+#: fabui/application/views/cam/js.php:86 fabui/application/views/cam/js.php:895
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "or click"
@@ -4833,8 +4830,7 @@ msgstr "Se sei stato tu a mettere in pausa puoi ignorare questa email"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
