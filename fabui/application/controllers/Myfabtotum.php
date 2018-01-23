@@ -8,6 +8,14 @@
  */
 defined ( 'BASEPATH' ) or exit ( 'No direct script access allowed' );
 class Myfabtotum extends FAB_Controller {
+    /**
+     *
+     */
+    function __construct()
+    {
+        parent::__construct();
+        session_write_close(); //avoid freezing page
+    }
 	/**
 	 */
 	public function index() {

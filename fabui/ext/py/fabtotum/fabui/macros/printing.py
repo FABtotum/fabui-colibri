@@ -136,7 +136,7 @@ def start_additive(app, args = None, lang='en_US.UTF-8'):
     
     head_file = os.path.join( app.config.get('hardware', 'heads'), app.config.get('settings', 'hardware.head') + '.json');
     
-    configure_head(app, app.config.get('settings', 'hardware.head'))
+    # configure_head(app, app.config.get('settings', 'hardware.head'))
 
     with open(head_file) as json_f:
         head = json.load(json_f)

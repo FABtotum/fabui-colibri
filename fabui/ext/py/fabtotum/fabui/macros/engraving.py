@@ -53,7 +53,7 @@ def start_engraving(app, args = None, lang='en_US.UTF-8'):
     head         = app.config.get_current_head_info()
     is_laser_pro = app.config.is_laser_pro_head(head['fw_id'])
     
-    configure_head(app, app.config.get('settings', 'hardware.head'))
+    # configure_head(app, app.config.get('settings', 'hardware.head'))
     
     focal_point = int(args[0]) == 1
     

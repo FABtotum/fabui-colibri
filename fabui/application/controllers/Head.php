@@ -12,6 +12,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 class Head extends FAB_Controller {
 	
+    /**
+     *
+     */
+    function __construct()
+    {
+        parent::__construct();
+        session_write_close(); //avoid freezing page
+    }
+    
 	public function old_index()
 	{
 		//load libraries, helpers, model

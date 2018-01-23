@@ -77,10 +77,9 @@
 		$hardwareSettings = loadSettings();
 		
 		
-		if(!isset($user['settings']['locale'])) {
-			if(isset($hardwareSettings['locale'])) $user['settings']['locale'] = $hardwareSettings['locale'];
-			else $user['settings']['locale'] = 'en_US';
-		}
+		if(isset($hardwareSettings['locale'])) $user['settings']['locale'] = $hardwareSettings['locale'];
+		else $user['settings']['locale'] = 'en_US';
+		
 		
 		//create valid session for fabui
 		//$this->session->loggedIn = true;
@@ -89,7 +88,7 @@
 		$this->session->set_userdata('user', $user);
 		$this->session->set_userdata('loggedIn', true);
 		
-		if($user['role'] = 'administrator'){
+		if($user['role'] == 'administrator'){
 			setLanguage($user['settings']['locale']);
 		}
 		
@@ -130,19 +129,15 @@
 							$user['settings']['fabid']['logged_in'] = true;
 							$user['last_login'] = $last_login;
 							
-							if(!isset($user['settings']['locale'])) {
-								if(isset($hardwareSettings['locale'])) $user['settings']['locale'] = $hardwareSettings['locale'];
-								else $user['settings']['locale'] = 'en_US';
-							}
-							
+							if(isset($hardwareSettings['locale'])) $user['settings']['locale'] = $hardwareSettings['locale'];
+							else $user['settings']['locale'] = 'en_US';
+														
 							//create valid session for fabui
-							//$this->session->loggedIn = true;
-							//$this->session->user = $user;
 							
 							$this->session->set_userdata('user', $user);
 							$this->session->set_userdata('loggedIn', true);
 							
-							if($user['role'] = 'administrator'){
+							if($user['role'] == 'administrator'){
 								setLanguage($user['settings']['locale']);
 							}
 							

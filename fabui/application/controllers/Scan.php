@@ -13,6 +13,7 @@
  	function __construct()
  	{
  		parent::__construct();
+ 		session_write_close();
  		if(!$this->input->is_cli_request()){ //avoid this form command line
  			$this->load->model('Tasks', 'tasks');
  			//$this->tasks->truncate();
