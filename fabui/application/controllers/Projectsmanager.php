@@ -522,6 +522,7 @@ class Projectsmanager extends FAB_Controller {
 		
 		//add css files
 		$this->addCssFile('/assets/css/projectsmanager/style.css');
+		$this->addCSSInLine('<style>.workaround-fix {opacity: 1 !important; transform: inherit !important;} </style>');
 		//add needed scripts
 		$this->addJSFile('/assets/js/plugin/datatables/jquery.dataTables.min.js'); //datatable
 		$this->addJSFile('/assets/js/plugin/datatables/dataTables.colVis.min.js'); //datatable

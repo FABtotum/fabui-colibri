@@ -43,6 +43,10 @@
 	
 	
 	$(document).ready(function() {
+
+		$("#date-picker").on('click', function(){
+			$(".daterangepicker").addClass("workaround-fix");
+		});
 		
 		graph = Morris.Line({
 			element : 'non-continu-graph',
@@ -86,13 +90,13 @@
       			format: format_date
    			},
 			ranges: {
-				'Today': [moment(), moment()],
-				'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-				'Last 7 days': [moment().subtract(6, 'days'), moment()],
-				'Last 30 Days': [moment().subtract(30, 'days'), moment()],
-				'This month': [moment().startOf('month'), moment().endOf('month')],
-				'Last month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-				'Since upload date': [min_date, moment()]
+				"<?php echo _("Today");?>": [moment(), moment()],
+				"<?php echo _("Yesterday");?>": [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+				"<?php echo _("Last 7 days");?>": [moment().subtract(6, 'days'), moment()],
+				"<?php echo _("Last 30 Days");?>": [moment().subtract(30, 'days'), moment()],
+				"<?php echo _("This month");?>": [moment().startOf('month'), moment().endOf('month')],
+				"<?php echo _("Last month");?>": [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+				"<?php echo _("Since the beginning");?>": [min_date, moment()]
 			}
 		
 		}, function(start, end) {

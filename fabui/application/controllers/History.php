@@ -80,10 +80,11 @@ class History extends FAB_Controller {
 		
 		$params = $this->input->get();
 		
+		
 		$filters['start_date'] = $params['start_date'] == '' ? date('d/m/Y', strtotime('today - 30 days')) : $params['start_date'];
-		$filters['end_date'] = $params['end_date'] == '' ? date('d/m/Y', strtotime('today')) : $params['end_date'];
-		$filters['type'] = ''; //$params['type'];
-		$filters['status'] = ''; //$params['status'];
+		$filters['end_date']   = $params['end_date'] == '' ? date('d/m/Y', strtotime('today')) : $params['end_date'];
+		$filters['type']       = isset($params['type']) ? $params['type'] : ''; //$params['type'];
+		$filters['status']     = isset($params['status']) ? $params['status'] : '';; //$params['status'];
 		
 		$tasks = $this->tasks->getMakeTasks($filters);
 		
@@ -91,11 +92,11 @@ class History extends FAB_Controller {
 		// @TODO: this is a temporary fix as it only covers the extra laser plugin scenario
 		$data['icons'] = array('print' => 'icon-fab-print', 'mill' => 'icon-fab-mill', 'scan' => 'icon-fab-scan', 'laser' => 'icon-communication-143');
 
-		$data['status_label'] = array('completed' => '<span class="label label-success">COMPLETED</span>', 'aborted' => '<span class="label label-warning">ABORTED</span>', 'terminated' => '<span class="label label-danger">TERMINATED</span>');
-		$data['stats_label'] = array('total_time' => '<i class="fa fa-clock-o"></i> Total time', 'completed' => '<i class="fa fa-check"></i> Completed', 'aborted' => '<i class="fa fa-times"></i> Aborted', 'terminated' => '<i class="fa fa-ban"></i> Terminated');
-		$data['type_options'] = array('print' => 'Print', 'mill' => 'Mill', 'scan' => 'Scan');
+		$data['status_label'] = array('completed' => '<span class="label label-success">'._('Completed').'</span>', 'aborted' => '<span class="label label-warning">'._('Aborted').'</span>', 'terminated' => '<span class="label label-danger">'._('Terminated').'</span>');
+		$data['stats_label'] = array('total_time' => '<i class="fa fa-clock-o"></i> Total time', 'completed' => '<i class="fa fa-check"></i> '._('Completed'), 'aborted' => '<i class="fa fa-times"></i> '._('Aborted'), 'terminated' => '<i class="fa fa-ban"></i> '._('Terminated'));
+		$data['type_options'] = array('print' => _('Print'), 'mill' => _('Mill'), 'scan' => _('Scan'), 'laser' => _('Laser'));
 
-		$data['status_options'] = array('completed' => 'Completed', 'aborted' => 'Aborted', 'terminated' => 'Terminated');
+		$data['status_options'] = array('completed' => _('Completed'), 'aborted' => _('Aborted'), 'terminated' => _('Terminated'));
 		$data['status_colors']  = array('completed' => '#7e9d3a', 'aborted' => '#FF9F01', 'terminated' => '#a90329');
 		
 		$data['stats'] = array();
@@ -126,7 +127,10 @@ class History extends FAB_Controller {
 			} 
 			else 
 			{
+			    
 				$data['stats'][$filters['type']]['total_time'] = $this -> tasks->getTotalTime('make', $filters['type'], $filters['status'], $filters['start_date'], $filters['end_date']);
+				
+				
 
 				if ($filters['status'] == '')
 				{
@@ -142,6 +146,7 @@ class History extends FAB_Controller {
 				}
 			}
 		}
+		
 		
 		
 		
@@ -166,7 +171,7 @@ class History extends FAB_Controller {
 		// @TODO: this is a temporary fix as it only covers the extra laser plugin scenario
 		$data['icons'] = array('print' => 'icon-fab-print', 'mill' => 'icon-fab-mill', 'scan' => 'icon-fab-scan', 'laser' => 'icon-communication-143');
 
-		$data['status_label'] = array('completed' => '<span class="label label-success">COMPLETED</span>', 'aborted' => '<span class="label label-warning">ABORTED</span>', 'terminated' => '<span class="label label-danger">TERMINATED</span>');
+		$data['status_label'] = array('completed' => '<span class="label label-success">'._('Completed').'</span>', 'aborted' => '<span class="label label-warning">'._('Aborted').'</span>', 'terminated' => '<span class="label label-danger">'._('Terminated').'</span>');
 		
 		$aaData = array();
 		
@@ -189,7 +194,7 @@ class History extends FAB_Controller {
 				$info .= '<a href="#">' . ucfirst($attributes['mode_name']) . '</a><small> </small>';*/
 			$info .= '</h4>';
 
-			$td_0 = '<a href="#" > <i class="fa fa-chevron-right fa-lg" data-toggle="row-detail" title="Show Details"></i> </a>';
+			$td_0 = '<a href="#" > <i class="fa fa-chevron-right fa-lg" data-toggle="row-detail" title="'._('Show Details').'"></i> </a>';
 			$td_1 = $when;
 			$td_2 = '<strong><i class="<' . $data['icons'][$task['type']] . '"></i> <span class="hidden-xs">' . ucfirst($task['type']) . '</strong></span>';
 			$td_3 = $data['status_label'][$task['status']];

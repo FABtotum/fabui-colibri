@@ -13,13 +13,17 @@
 					<a data-type="type" data-value="<?php echo $key ?>" href="javascript:void(0);"><?php echo  $label;?></a>
 				</li>
 			<?php endforeach;?>
+			<li class="divider"></li>
+			<li>
+				<a  data-type="type" data-value="" href="javascript:void(0);"><?php echo _("Make");?></a>
+			</li>
 		</ul>
 	</div>
 
 	<div class="btn-group">
 	
 		<button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-			<span id="ajax-status">Status</span> <span class="caret"></span>
+			<span id="ajax-status"><?php echo _("Status");?></span> <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu">
 			<li>

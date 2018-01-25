@@ -13,7 +13,7 @@ $total_time = 0;
 $temp_times = array();
 $div_totals = 0;
 
-//print_r($stats);
+
 foreach($stats as $key_stat => $value_stat){
 	
 	foreach($value_stat as $status => $tot){
@@ -35,7 +35,8 @@ $total_time_seconds = timeToSeconds($total_time);
 ?><!-- CONTENITORE -->	
 <div class="row">		
 <?php foreach($stats as $key_stat => $value_stat):
-	  
+	
+
 	
 	$total  = 0;
 	$temp   = array();
@@ -56,6 +57,7 @@ $total_time_seconds = timeToSeconds($total_time);
 	}
 	
 	
+	
 	if(array_key_exists($key_stat,$type_options) && (array_sum($value_stat) > 0)): 
 
 ?>
@@ -64,7 +66,7 @@ $total_time_seconds = timeToSeconds($total_time);
 		
 		<div class="row">
 			<div class="col-sm-12">
-				<h4><i class="<?php echo $icons[$key_stat] ?>"></i> <?php echo $type_options[$key_stat]; ?> <span class="pull-right"><?php echo $total; ?> times</span></h4>
+				<h4><i class="<?php echo $icons[$key_stat] ?>"></i> <?php echo $type_options[$key_stat]; ?> <span class="pull-right"><?php echo $total; ?> <?php echo _('volte');?></span></h4>
 				<hr class="simple">
 			</div>
 		</div>
@@ -87,7 +89,7 @@ $total_time_seconds = timeToSeconds($total_time);
 						</div>
 						<?php elseif($status == 'total_time'):?>
 							<div class="col-sm-12">
-								<span class="text">Total Time 
+								<span class="text"><?php echo _("Total time");?> 
 									<span class="pull-right"><?php echo $tot ?></span>
 								</span>
 								<div class="progress">
