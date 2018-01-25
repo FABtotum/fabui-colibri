@@ -39,7 +39,54 @@
 	 */
 	public function doBackup()
 	{
+	    //post data
 	    $data = $this->input->post();
+	    
+	    //load helpers, libraries, config
+	    $this->config->load('fabtotum');
+	    $this->load->helper(array('fabtotum_helper', 'download'));
+	    
+	    // init
+	    $mode = isset($data['mode']) ? $data['mode'] : 'default';
+	    
+	    $date = date('Y_m_d_h_i_s');
+	    $archive = $this->config->item('temp_path').'/backup_'.$date.'.faback';
+	    
+	    $default_folders = array(
+	        '/mnt/userdata/cam',
+	        '/mnt/userdata/feeders',
+	        '/mnt/userdata/heads',
+	        '/mnt/userdata/settings',
+	        '/mnt/userdata/uploads'
+	    );
+	    
+	    $args = array(
+	        '-a' => $archive,
+	        '-l' => $mode == 'default' ? implode(" ", $default_folders) : ""
+	    );
+	    
+	    //remove old files
+	    shell_exec('sudo rm -rvf '.$this->config->item('temp_path').'/*.faback');
+	    startBashScript('backup.sh', $args, false);
+	    
+	    $this->output->set_content_type('application/json')->set_output(json_encode(array('file' => base64_encode($archive))));
+	}
+	
+	/**
+	 * 
+	 */
+	public function download($file)
+	{
+	    $file = base64_decode($file);
+	    
+	    if(file_exists($file)){
+	       
+	       //load helpers, libraries
+	       $this->load->helper(array('fabtotum_helper', 'download'));
+	       force_download($file, null);
+	    }else{
+	        show_404();
+	    }
 	}
  }
 ?>

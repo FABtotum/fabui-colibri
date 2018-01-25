@@ -11,7 +11,7 @@
 <!-- BACKUP ROW -->
 <div class="row">
 	<div class="col-xs-2 col-sm-1 text-center">
-		<a class="btn btn-default" data-toggle="modal" href="javascript:void(0);" data-target="#backupModal"><?php echo _("Backup");?></a>
+		<a class="btn btn-default" data-toggle="modal" data-target="#backupModal"><?php echo _("Backup");?></a>
 	</div>
 	<div class="col-xs-10 col-sm-11">
 		<h6 class="no-margin"><?php echo _("Backup wizard");?></h6>
@@ -22,7 +22,7 @@
 <!-- RESTORE ROW -->
 <div class="row">
 	<div class="col-xs-2 col-sm-1 text-center">
-		<a class="btn btn-default" data-toggle="modal" href="javascript:void(0);" data-target="#restoreModal"><?php echo _("Restore");?></a>
+		<a class="btn btn-default" data-toggle="modal"  data-target="#restoreModal"><?php echo _("Restore");?></a>
 	</div>
 	<div class="col-xs-10 col-sm-11">
 		<h6 class="no-margin"><?php echo _("Restore wizard");?></h6>
@@ -55,21 +55,35 @@
             					<label class="label"><?php echo _("System");?></label>
             					<div class="inline-group">
             						<label class="checkbox">
-            							<input type="checkbox" name="checkbox-inline" id="system-heads"><i></i> <?php echo _("Heads");?>
+            							<input type="checkbox" class="backup-folders" id="system-heads" value="system-heads"><i></i> <?php echo _("Heads");?>
             						</label>
             						<label class="checkbox">
-            							<input type="checkbox" name="checkbox-inline" id="system-feeders"><i></i> <?php echo _("Feeders");?>
+            							<input type="checkbox" class="backup-folders"  id="system-feeders" value="system-feeders"><i></i> <?php echo _("Feeders");?>
             						</label>
             						<label class="checkbox">
-            							<input type="checkbox" name="checkbox-inline" id="system-"><i></i> <?php echo _("Settings");?>
+            							<input type="checkbox" class="backup-folders"  id="system-settings" value="system-settings"><i></i> <?php echo _("Settings");?>
+            						</label>
+            						<label class="checkbox">
+            							<input type="checkbox" class="backup-folders" id="system-cam" value="system-cam"><i></i> <?php echo _("CAM");?>
             						</label>
             					</div>
             				</section>
             				<section>
-            					<label class="label"><?php echo _("User");?></label>
+            					<label class="label"><?php echo _("Firmware");?></label>
             					<div class="inline-group">
             						<label class="checkbox">
-            							<input type="checkbox" name="checkbox-inline"><i></i> <?php echo _("Projects");?>
+            							<input type="checkbox" class="backup-folders" value="firmware-eeprom"><i></i> <?php echo _("EEPROM");?>
+            						</label>
+            					</div>
+            				</section>
+            				<section>
+            					<label class="label"><?php echo _("Users");?></label>
+            					<div class="inline-group">
+            						<label class="checkbox">
+            							<input type="checkbox" class="backup-folders" value="users-data"><i></i> <?php echo _("Data");?>
+            						</label>
+            						<label class="checkbox">
+            							<input type="checkbox" class="backup-folders" value="users-projects"><i></i> <?php echo _("Projects");?>
             						</label>
             					</div>
             				</section>

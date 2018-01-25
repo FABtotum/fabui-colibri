@@ -51,14 +51,21 @@
 		var data = {};
 
 		data.mode = $(":radio[name='backup_mode']").filter(':checked').val();
+		data.advanced = [];
 		
+		$.each($(".backup-folders"), function( index, value ) {
+			if($(value).is(':checked')){
+				data.advanced.push($(value).val());
+			}
+		});
+
 		$.ajax({
 			type: 'post',
 			url: '<?php echo site_url('backup/doBackup'); ?>',
 			dataType: 'json',
 			data: data
 		}).done(function(response) {
-
+			document.location.href = "<?php echo site_url('backup/download')?>/" + response.file;
 		});
 	}
 </script>

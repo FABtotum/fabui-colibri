@@ -9,7 +9,6 @@
  
 ?>
 <div class="lockscreen animated flipInY">
-	
 	<div class="logo text-center">
 		<img src="/assets/img/fabui_v1.png">
 	</div>
@@ -92,7 +91,7 @@
 								<div class="form-group">
 									<div class="input-group">
 										<span class="input-group-addon"><i class="fa fa-lock  fa-fw"></i></span>
-										<input class="form-control " placeholder="Password" type="password" name="password" id="password">
+										<input class="form-control " placeholder="<?php echo _("Password");?>" type="password" name="password" id="password">
 									</div>
 								</div>
 							</div>
@@ -100,7 +99,7 @@
 								<div class="form-group">
 									<div class="input-group">
 										<span class="input-group-addon"><i class="fa fa-lock  fa-fw"></i></span>
-										<input class="form-control " placeholder="Confirm password" type="password" name="confirmPassword" id="confirmPassword">
+										<input class="form-control " placeholder="<?php echo _("Confirm password");?>" type="password" name="confirmPassword" id="confirmPassword">
 									</div>
 								</div>
 							</div>
@@ -228,7 +227,6 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _("Cancel")?></button>
 				<button type="button" class="btn btn-primary" id="i-agree"><i class="fa fa-check"></i> <?php echo _("I agree")?></button>
-				<button type="button" class="btn btn-danger pull-left" id="print"><i class="fa fa-print"></i> <?php echo _("Print")?></button>
 			</div>
 		</div>
 	</div>
@@ -246,7 +244,7 @@
 					<fieldset>
 						<section>
 							<label class="input"> <i class="icon-prepend fa fa-lock"></i>
-								<input type="password" data-inputmask-regex="[-_a-z A-Z0-9$@^`,|%;.~()/\{}:?\[\]=+_#!\'\*]*" class="input-password password" placeholder="insert password" id="wifiPassword" name="wifiPassword">
+								<input type="password" data-inputmask-regex="[-_a-z A-Z0-9$@^`,|%;.~()/\{}:?\[\]=+_#!\'\*]*" class="input-password password" placeholder="<?php echo _("Insert password");?>" id="wifiPassword" name="wifiPassword">
 							</label>
 						</section>
 						<section>
