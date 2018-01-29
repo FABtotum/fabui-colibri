@@ -201,18 +201,19 @@
 	function getInstagramCarousel(item)
 	{
 		if(item.carousel_media){
-
 			var html = '<div id="carousel_'+item.id+'" class="owl-carousel owl-theme">';
 			$.each(item.carousel_media, function(i, car_item) {
-
 				var img_src = getInstagramImageSrc(car_item);
-				html += '<div class="image padding-10"><img src="'+img_src+'" /></div>';	
+				if(car_item.media_type == 1){ // PHOTO	
+					html += '<div class="image padding-10"><img src="'+img_src+'" /></div>';
+				}else if(car_item.media_type == 2){ // VIDEO
+					var video_src = getInstagramVideoSrc(car_item);
+					html += '<div class="image padding-10"><video class="img-responsive" controls><source src="'+video_src+'" type="video/mp4"><img src="'+img_src+'" /></video></div>';
+				}
 			});
-
 			html += '</div>';			
 			return html;
 		}
-
 		return '';
 	}
 	/**
