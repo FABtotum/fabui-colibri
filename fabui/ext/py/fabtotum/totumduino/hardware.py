@@ -37,22 +37,32 @@ def reset():
     print "TOTUMDUINO: reset"
     
     config = ConfigService()
-    
-    reset_pin = int(config.get('totumduino', 'reset_pin', 17))
-    
+
+    reset_pin_s = config.get('totumduino', 'reset_pin', '17')
+    reset_pins = reset_pin_s.split(',')
+
     try:
         #GPIO.setmode(GPIO.BOARD)
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
 
-        GPIO.setup(reset_pin, GPIO.OUT)
-        GPIO.output(reset_pin, GPIO.HIGH)
+        for pin in reset_pins:
+            reset_pin = int(pin)
+
+            GPIO.setup(reset_pin, GPIO.OUT)
+            GPIO.output(reset_pin, GPIO.HIGH)
+            time.sleep(0.5)
+            GPIO.output(reset_pin, GPIO.LOW)
+
         time.sleep(0.5)
-        GPIO.output(reset_pin, GPIO.LOW)
-        time.sleep(0.5)
-        GPIO.output(reset_pin, GPIO.HIGH)
+
+        for pin in reset_pins:
+            reset_pin = int(pin)
+
+            GPIO.output(reset_pin, GPIO.HIGH)
 
         GPIO.cleanup()
+
     except Exception as e:
         print e
         print "No GPIO support in QEMU simulation"
