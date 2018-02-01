@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-23 11:34+0100\n"
+"POT-Creation-Date: 2018-02-01 17:16+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -24,18 +24,19 @@ msgstr "CAM Toolbox"
 
 #: fabui/application/config/menu.php:24
 #: fabui/application/views/history/main_widget.php:9
-#: fabui/application/views/history/main_widget.php:58
+#: fabui/application/views/history/main_widget.php:18
+#: fabui/application/views/history/main_widget.php:62
 msgid "Make"
 msgstr "Crea"
 
 #: fabui/application/config/menu.php:29
 #: fabui/application/controllers/Settings.php:50
-#: fabui/application/controllers/Projectsmanager.php:1105
+#: fabui/application/controllers/History.php:97
+#: fabui/application/controllers/Projectsmanager.php:1106
 #: fabui/application/controllers/Create.php:92
 #: fabui/application/controllers/Create.php:145
 #: fabui/application/helpers/projects_manager_helper.php:34
-#: fabui/application/helpers/fabtotum_helper.php:1781
-#: fabui/application/views/install/wizard.php:231
+#: fabui/application/helpers/fabtotum_helper.php:1784
 #: fabui/application/views/login/register_form.php:77
 #: fabui/application/views/head/index.php:209
 #: fabui/application/views/head/install.php:206
@@ -44,11 +45,12 @@ msgid "Print"
 msgstr "Stampa"
 
 #: fabui/application/config/menu.php:35
-#: fabui/application/controllers/Projectsmanager.php:1114
+#: fabui/application/controllers/History.php:97
+#: fabui/application/controllers/Projectsmanager.php:1115
 #: fabui/application/controllers/Create.php:223
 #: fabui/application/controllers/Create.php:274
 #: fabui/application/helpers/projects_manager_helper.php:43
-#: fabui/application/helpers/fabtotum_helper.php:1782
+#: fabui/application/helpers/fabtotum_helper.php:1785
 #: fabui/application/views/head/index.php:148
 #: fabui/application/views/head/index.php:210
 #: fabui/application/views/head/install.php:207
@@ -58,11 +60,12 @@ msgstr "Fresatura"
 
 #: fabui/application/config/menu.php:41
 #: fabui/application/controllers/Settings.php:335
-#: fabui/application/controllers/Head.php:167
+#: fabui/application/controllers/History.php:97
+#: fabui/application/controllers/Head.php:113
 #: fabui/application/controllers/Scan.php:87
-#: fabui/application/helpers/fabtotum_helper.php:1783
+#: fabui/application/helpers/fabtotum_helper.php:1786
 #: fabui/application/views/install/js.php:346
-#: fabui/application/views/install/wizard.php:163
+#: fabui/application/views/install/wizard.php:162
 #: fabui/application/views/settings/hardware_widget.php:58
 #: fabui/application/views/settings/network_js.php:419
 #: fabui/application/views/head/index.php:156
@@ -175,6 +178,7 @@ msgstr "Primo Setup"
 #: fabui/application/config/menu.php:158
 #: fabui/application/controllers/Firmware.php:80
 #: fabui/application/views/systeminfo/widget.php:40
+#: fabui/application/views/backup/widget.php:72
 msgid "Firmware"
 msgstr "Firmware"
 
@@ -201,7 +205,7 @@ msgstr "Hardware"
 
 #: fabui/application/config/menu.php:189
 #: fabui/application/controllers/Install.php:47
-#: fabui/application/views/install/wizard.php:162
+#: fabui/application/views/install/wizard.php:161
 #: fabui/assets/js/fab.app.js:1412
 msgid "Network"
 msgstr "Reti"
@@ -217,6 +221,7 @@ msgid "Updates"
 msgstr "Aggiornamenti"
 
 #: fabui/application/config/menu.php:209
+#: fabui/application/controllers/Support.php:30
 #: fabui/application/views/support/widget.php:38
 msgid "Support"
 msgstr "Supporto"
@@ -276,8 +281,8 @@ msgstr "Illuminazione"
 #: fabui/application/controllers/Account.php:44
 #: fabui/application/controllers/Projectsmanager.php:89
 #: fabui/application/controllers/Projectsmanager.php:242
-#: fabui/application/controllers/Projectsmanager.php:706
-#: fabui/application/controllers/Projectsmanager.php:749
+#: fabui/application/controllers/Projectsmanager.php:707
+#: fabui/application/controllers/Projectsmanager.php:750
 #: fabui/application/controllers/Nozzle.php:217
 #: fabui/application/controllers/Nozzle.php:221
 #: fabui/application/views/systeminfo/js.php:117
@@ -291,7 +296,7 @@ msgstr "Illuminazione"
 #: fabui/application/views/settings/network_js.php:240
 #: fabui/application/views/head/index.php:423
 #: fabui/application/views/head/install.php:375
-#: fabui/application/views/cam/js.php:785
+#: fabui/application/views/cam/js.php:787
 #: fabui/application/views/cam/main_widget.php:86
 #: fabui/application/views/feeder/profiles/widget.php:212
 #: fabui/application/views/projectsmanager/edit/js.php:88
@@ -357,18 +362,18 @@ msgstr "DNS"
 msgid "Network settings"
 msgstr "Impostazioni di rete"
 
-#: fabui/application/controllers/Myfabtotum.php:69
+#: fabui/application/controllers/Myfabtotum.php:68
 #: fabui/application/views/plugin/js.php:68
 #: fabui/application/views/plugin/js.php:89
-#: fabui/application/views/cam/js.php:900
+#: fabui/application/views/cam/js.php:902
 #: fabui/application/views/cam/main_widget.php:123
 #: fabui/application/views/updates/index/js.php:58
 msgid "No internet connection found"
 msgstr "Nessuna connessione internet trovata"
 
-#: fabui/application/controllers/Myfabtotum.php:69
+#: fabui/application/controllers/Myfabtotum.php:68
 #: fabui/application/views/plugin/js.php:89
-#: fabui/application/views/dashboard/js.php:255
+#: fabui/application/views/dashboard/js.php:256
 msgid "Check your connection and try again"
 msgstr "Verificare le impostazioni di rete e riprovare"
 
@@ -376,7 +381,7 @@ msgstr "Verificare le impostazioni di rete e riprovare"
 #: fabui/application/views/plugin/js.php:121
 #: fabui/application/views/plugin/js.php:268
 #: fabui/application/views/head/index.php:32
-#: fabui/application/views/updates/index/js.php:591
+#: fabui/application/views/updates/index/js.php:599
 msgid "Installed"
 msgstr "Installato"
 
@@ -386,6 +391,7 @@ msgstr "Online"
 
 #: fabui/application/controllers/Plugin.php:55
 #: fabui/application/views/cam/laser_tab.php:22
+#: fabui/application/views/backup/widget.php:116
 msgid "Upload"
 msgstr "Carica"
 
@@ -438,11 +444,11 @@ msgid "New user created successfully"
 msgstr "Nuovo utente creato con successo"
 
 #: fabui/application/controllers/Login.php:332
-#: fabui/application/helpers/fabtotum_helper.php:1763
+#: fabui/application/helpers/fabtotum_helper.php:1766
 msgid "Password Reset"
 msgstr "Reimposta password"
 
-#: fabui/application/controllers/Backup.php:27
+#: fabui/application/controllers/Backup.php:31
 msgid "Backup or restore your files"
 msgstr ""
 
@@ -508,7 +514,7 @@ msgid "running"
 msgstr "in esecuzione"
 
 #: fabui/application/controllers/Control.php:330
-#: fabui/application/controllers/Std.php:293
+#: fabui/application/controllers/Std.php:285
 msgid "paused"
 msgstr "in pausa"
 
@@ -545,7 +551,7 @@ msgid "Laser Engraving"
 msgstr "Incisione Laser"
 
 #: fabui/application/controllers/Cam.php:54
-#: fabui/application/controllers/Head.php:164
+#: fabui/application/controllers/Head.php:110
 msgid "3D Printing"
 msgstr "Stampa 3D"
 
@@ -578,23 +584,23 @@ msgstr "File non valido e non processabile"
 msgid "Generated with FABtotum CAM toolbox"
 msgstr "Generato con FABtotum CAM toolbox"
 
-#: fabui/application/controllers/Std.php:220
+#: fabui/application/controllers/Std.php:212
 msgid "Task"
 msgstr "attività"
 
-#: fabui/application/controllers/Std.php:226
-#: fabui/application/controllers/Std.php:298
+#: fabui/application/controllers/Std.php:218
+#: fabui/application/controllers/Std.php:290
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:195
 msgid "Email sending failed"
 msgstr "Invio email fallito"
 
-#: fabui/application/controllers/Std.php:229
-#: fabui/application/controllers/Std.php:301
+#: fabui/application/controllers/Std.php:221
+#: fabui/application/controllers/Std.php:293
 msgid "Notification disabled"
 msgstr "Notifica disabilitata"
 
 #: fabui/application/controllers/Spool.php:49
-#: fabui/application/controllers/Head.php:163
+#: fabui/application/controllers/Head.php:109
 msgid "All"
 msgstr "Tutti"
 
@@ -655,13 +661,50 @@ msgstr "Acquista più filamenti"
 msgid "Missing argument"
 msgstr "Parametro mancante"
 
-#: fabui/application/controllers/History.php:183
+#: fabui/application/controllers/History.php:95
+#: fabui/application/controllers/History.php:96
+#: fabui/application/controllers/History.php:99
+#: fabui/application/controllers/History.php:174
+#: fabui/application/views/cam/js.php:281
+#: fabui/application/views/history/main_widget.php:30
+msgid "Completed"
+msgstr "Completato"
+
+#: fabui/application/controllers/History.php:95
+#: fabui/application/controllers/History.php:96
+#: fabui/application/controllers/History.php:99
+#: fabui/application/controllers/History.php:174
+#: fabui/application/views/history/main_widget.php:33
+msgid "Aborted"
+msgstr "Annullato"
+
+#: fabui/application/controllers/History.php:95
+#: fabui/application/controllers/History.php:96
+#: fabui/application/controllers/History.php:99
+#: fabui/application/controllers/History.php:174
+#: fabui/application/views/history/main_widget.php:36
+msgid "Terminated"
+msgstr "Terminato"
+
+#: fabui/application/controllers/History.php:97
+#: fabui/application/controllers/Head.php:112
+#: fabui/application/views/head/index.php:151
+#: fabui/application/views/head/index.php:213
+msgid "Laser"
+msgstr "Laser"
+
+#: fabui/application/controllers/History.php:188
 msgid "Go to file page"
 msgstr "Vai alla pagina del file"
 
-#: fabui/application/controllers/History.php:183
+#: fabui/application/controllers/History.php:188
 msgid "File deleted"
 msgstr "File eliminato"
+
+#: fabui/application/controllers/History.php:197
+#, fuzzy
+msgid "Show Details"
+msgstr "Dettagli"
 
 #: fabui/application/controllers/Raspicam.php:36
 #: fabui/application/views/settings/hardware_widget.php:52
@@ -673,7 +716,7 @@ msgid "Install samples"
 msgstr "Installa gli esempi"
 
 #: fabui/application/controllers/Projectsmanager.php:38
-#: fabui/application/controllers/Projectsmanager.php:714
+#: fabui/application/controllers/Projectsmanager.php:715
 msgid "Add new project"
 msgstr "Nuovo Progetto"
 
@@ -688,13 +731,12 @@ msgstr "Cancella"
 #: fabui/application/controllers/Projectsmanager.php:40
 #: fabui/application/controllers/Projectsmanager.php:95
 #: fabui/application/controllers/Projectsmanager.php:259
-#: fabui/application/controllers/Projectsmanager.php:1122
+#: fabui/application/controllers/Projectsmanager.php:1123
 #: fabui/application/views/camera/main_widget.php:75
 msgid "Download"
 msgstr "Scarica"
 
 #: fabui/application/controllers/Projectsmanager.php:46
-#: fabui/application/views/backup/widget.php:72
 msgid "Projects"
 msgstr "Progetti"
 
@@ -712,9 +754,15 @@ msgstr "Indietro"
 msgid "Edit project"
 msgstr "Modifica progetto"
 
+#: fabui/application/controllers/Projectsmanager.php:238
+#: fabui/application/controllers/Projectsmanager.php:245
+msgid "view content"
+msgstr ""
+
 #: fabui/application/controllers/Projectsmanager.php:257
-#: fabui/application/controllers/Projectsmanager.php:1135
-#: fabui/application/views/history/main_widget.php:47
+#: fabui/application/controllers/Projectsmanager.php:1142
+#: fabui/application/views/history/main_js.php:153
+#: fabui/application/views/history/main_widget.php:51
 msgid "Stats"
 msgstr "Statistiche"
 
@@ -726,19 +774,19 @@ msgstr "Visualizza file"
 msgid "File statistics"
 msgstr "Statistiche dei file"
 
-#: fabui/application/controllers/Projectsmanager.php:557
+#: fabui/application/controllers/Projectsmanager.php:558
 msgid "Not supported"
 msgstr "Non supportato"
 
-#: fabui/application/controllers/Projectsmanager.php:589
+#: fabui/application/controllers/Projectsmanager.php:590
 msgid "gCodeViewer"
 msgstr "visualizzatore gCode"
 
-#: fabui/application/controllers/Projectsmanager.php:709
-#: fabui/application/controllers/Projectsmanager.php:752
-#: fabui/application/views/install/wizard.php:229
-#: fabui/application/views/install/wizard.php:262
-#: fabui/application/views/install/wizard.php:312
+#: fabui/application/controllers/Projectsmanager.php:710
+#: fabui/application/controllers/Projectsmanager.php:753
+#: fabui/application/views/install/wizard.php:228
+#: fabui/application/views/install/wizard.php:260
+#: fabui/application/views/install/wizard.php:310
 #: fabui/application/views/systeminfo/widget.php:234
 #: fabui/application/views/systeminfo/widget.php:263
 #: fabui/application/views/systeminfo/widget.php:292
@@ -756,19 +804,25 @@ msgstr "visualizzatore gCode"
 msgid "Cancel"
 msgstr "Cancella"
 
-#: fabui/application/controllers/Projectsmanager.php:757
+#: fabui/application/controllers/Projectsmanager.php:758
 msgid "Add new file"
 msgstr "Aggiungi nuovo file"
 
-#: fabui/application/controllers/Projectsmanager.php:854
+#: fabui/application/controllers/Projectsmanager.php:855
 msgid "Object has been added"
 msgstr "L'oggetto è stato aggiunto"
 
-#: fabui/application/controllers/Projectsmanager.php:891
+#: fabui/application/controllers/Projectsmanager.php:892
 msgid "No POST data"
 msgstr "Non sono disponibili dati POST"
 
-#: fabui/application/controllers/Projectsmanager.php:1130
+#: fabui/application/controllers/Projectsmanager.php:1129
+#: fabui/application/views/head/install.php:34
+#: fabui/application/views/feeder/profiles/widget.php:32
+msgid "Edit"
+msgstr "Modifica"
+
+#: fabui/application/controllers/Projectsmanager.php:1137
 msgid "Preview"
 msgstr "Anteprima"
 
@@ -785,49 +839,24 @@ msgstr "Calibrazione altezza Nozzle"
 msgid "Engage 4th Axis"
 msgstr "Ingaggio 4° asse"
 
-#: fabui/application/controllers/Head.php:53
-#: fabui/application/controllers/Head.php:172
-msgid "Add new head"
-msgstr "Aggiungi nuova testa"
-
-#: fabui/application/controllers/Head.php:54
-#: fabui/application/controllers/Head.php:173
-msgid "Get more heads"
-msgstr "Acquista altre teste"
-
-#: fabui/application/controllers/Head.php:63
-#: fabui/application/views/head/index.php:56
-msgid ""
-"Before clicking \"Install\", make sure the head is properly locked in place"
-msgstr ""
-"Prima di premere \"Installa\", assicurarsi che la testa sia correttamente "
-"bloccata nel carrello"
-
-#: fabui/application/controllers/Head.php:64
-#: fabui/application/views/install/js.php:236
-#: fabui/application/views/install/js.php:242
-#: fabui/application/views/plugin/js.php:114
-#: fabui/application/views/head/index.php:32
-msgid "Install"
-msgstr "Installa"
-
-#: fabui/application/controllers/Head.php:68
-#: fabui/application/controllers/Head.php:185
-#: fabui/application/views/backup/widget.php:58
-msgid "Heads"
-msgstr "Teste"
-
-#: fabui/application/controllers/Head.php:165
+#: fabui/application/controllers/Head.php:111
 #: fabui/application/controllers/Create.php:222
 #: fabui/application/controllers/Create.php:257
 msgid "Milling"
 msgstr "Fresa"
 
-#: fabui/application/controllers/Head.php:166
-#: fabui/application/views/head/index.php:151
-#: fabui/application/views/head/index.php:213
-msgid "Laser"
-msgstr "Laser"
+#: fabui/application/controllers/Head.php:118
+msgid "Add new head"
+msgstr "Aggiungi nuova testa"
+
+#: fabui/application/controllers/Head.php:119
+msgid "Get more heads"
+msgstr "Acquista altre teste"
+
+#: fabui/application/controllers/Head.php:131
+#: fabui/application/views/backup/widget.php:58
+msgid "Heads"
+msgstr "Teste"
 
 #: fabui/application/controllers/Updates.php:133
 msgid "1 new update is available"
@@ -867,7 +896,7 @@ msgid "Great! Your FABtotum Personal Fabricator is up to date"
 msgstr "Ottimo! La tua FABtotum Personal Fabricator è aggiornata"
 
 #: fabui/application/controllers/Install.php:43
-#: fabui/application/views/install/wizard.php:30
+#: fabui/application/views/install/wizard.php:29
 #: fabui/application/views/restore/wizard.php:22
 #: fabui/application/views/restore/wizard.php:36
 msgid "Welcome"
@@ -879,9 +908,13 @@ msgid "Account"
 msgstr "Account"
 
 #: fabui/application/controllers/Install.php:45
-#: fabui/application/views/install/wizard.php:122
+#: fabui/application/views/install/wizard.php:121
 msgid "Printer"
 msgstr "Stampante"
+
+#: fabui/application/controllers/Create.php:78
+msgid "Selected file is not for printing"
+msgstr ""
 
 #: fabui/application/controllers/Create.php:91
 #: fabui/application/controllers/Create.php:128
@@ -948,23 +981,23 @@ msgstr "Novembre"
 msgid "December"
 msgstr "Dicembre"
 
-#: fabui/application/helpers/fabtotum_helper.php:1672
+#: fabui/application/helpers/fabtotum_helper.php:1675
 msgid "White"
 msgstr "Bianco"
 
-#: fabui/application/helpers/fabtotum_helper.php:1673
+#: fabui/application/helpers/fabtotum_helper.php:1676
 msgid "Red"
 msgstr "Rosso"
 
-#: fabui/application/helpers/fabtotum_helper.php:1674
+#: fabui/application/helpers/fabtotum_helper.php:1677
 msgid "Black"
 msgstr "Nero"
 
-#: fabui/application/helpers/fabtotum_helper.php:1712
+#: fabui/application/helpers/fabtotum_helper.php:1715
 msgid "Your FABtotum"
 msgstr "La tua FABtotum"
 
-#: fabui/application/helpers/fabtotum_helper.php:1764
+#: fabui/application/helpers/fabtotum_helper.php:1767
 msgid ""
 "Hi {0},<br><br>We've generated a URL to reset your password. If you did not "
 "request to reset your password or if you've changed your mind, simply ignore "
@@ -987,35 +1020,35 @@ msgid "Popular"
 msgstr "Popolare"
 
 #: fabui/application/helpers/social_helper.php:477
-#: fabui/application/views/dashboard/js.php:373
+#: fabui/application/views/dashboard/js.php:374
 msgid "Share on facebook"
 msgstr "Condividi su Facebook"
 
-#: fabui/application/helpers/myfabtotum_helper.php:292
+#: fabui/application/helpers/myfabtotum_helper.php:320
 msgid "Service unauthorized"
 msgstr "Servizio non autorizzato"
 
-#: fabui/application/helpers/myfabtotum_helper.php:294
+#: fabui/application/helpers/myfabtotum_helper.php:322
 msgid "Service forbidden"
 msgstr "Servizio non consentito"
 
-#: fabui/application/helpers/myfabtotum_helper.php:296
+#: fabui/application/helpers/myfabtotum_helper.php:324
 msgid "Service server error"
 msgstr "Service server error"
 
-#: fabui/application/helpers/myfabtotum_helper.php:298
+#: fabui/application/helpers/myfabtotum_helper.php:326
 msgid "Service invalid parameter"
 msgstr "Parametro non valido per il servizio"
 
-#: fabui/application/helpers/myfabtotum_helper.php:300
+#: fabui/application/helpers/myfabtotum_helper.php:328
 msgid "Printer already registered"
 msgstr "La stampante è già registrata"
 
-#: fabui/application/helpers/myfabtotum_helper.php:302
+#: fabui/application/helpers/myfabtotum_helper.php:330
 msgid "Printer unknown"
 msgstr "Stampante sconosciuta"
 
-#: fabui/application/helpers/myfabtotum_helper.php:304
+#: fabui/application/helpers/myfabtotum_helper.php:332
 msgid "Your sign in details were not recognized, please check and try again"
 msgstr ""
 "Le tue credenziali non sono state riconosciute, controllale e riprova ancora"
@@ -1144,7 +1177,7 @@ msgid "Please enter the password"
 msgstr "Si prega di inserire la password"
 
 #: fabui/application/views/install/js.php:225
-#: fabui/application/views/install/wizard.php:198
+#: fabui/application/views/install/wizard.php:197
 #: fabui/application/views/restore/wizard.php:133
 #: fabui/application/views/std/task_wizard.php:50
 #: fabui/application/views/std/task_wizard.php:115
@@ -1157,6 +1190,13 @@ msgstr "Successivo"
 #: fabui/application/views/install/js.php:232
 msgid "Skip"
 msgstr "Salta"
+
+#: fabui/application/views/install/js.php:236
+#: fabui/application/views/install/js.php:242
+#: fabui/application/views/plugin/js.php:114
+#: fabui/application/views/head/index.php:32
+msgid "Install"
+msgstr "Installa"
 
 #: fabui/application/views/install/js.php:326
 msgid "Translating"
@@ -1174,8 +1214,8 @@ msgstr "Traducendo"
 #: fabui/application/views/head/install_js.php:467
 #: fabui/application/views/head/js.php:645
 #: fabui/application/views/head/js.php:677
-#: fabui/application/views/cam/js.php:614
-#: fabui/application/views/cam/js.php:1096
+#: fabui/application/views/cam/js.php:616
+#: fabui/application/views/cam/js.php:1098
 #: fabui/application/views/nozzle/pidtune/js.php:243
 #: fabui/application/views/nozzle/height/js.php:95
 #: fabui/application/views/nozzle/height/js.php:117
@@ -1194,8 +1234,8 @@ msgid "Scanning"
 msgstr "Scansionando"
 
 #: fabui/application/views/install/js.php:363
-#: fabui/application/views/install/wizard.php:263
-#: fabui/application/views/install/wizard.php:313
+#: fabui/application/views/install/wizard.php:261
+#: fabui/application/views/install/wizard.php:311
 #: fabui/application/views/account/widget.php:118
 #: fabui/application/views/settings/wireless_tab.php:149
 #: fabui/application/views/settings/network_js.php:442
@@ -1223,10 +1263,10 @@ msgstr "Connesso col FABID"
 msgid "FABID connected"
 msgstr "FABID connesso"
 
-#: fabui/application/views/install/wizard.php:30
-#: fabui/application/views/install/wizard.php:58
-#: fabui/application/views/install/wizard.php:122
-#: fabui/application/views/install/wizard.php:162
+#: fabui/application/views/install/wizard.php:29
+#: fabui/application/views/install/wizard.php:57
+#: fabui/application/views/install/wizard.php:121
+#: fabui/application/views/install/wizard.php:161
 #: fabui/application/views/restore/wizard.php:36
 #: fabui/application/views/restore/wizard.php:45
 #: fabui/application/views/jog/widget.php:25
@@ -1238,84 +1278,97 @@ msgstr "FABID connesso"
 msgid "Step"
 msgstr "Step"
 
-#: fabui/application/views/install/wizard.php:34
+#: fabui/application/views/install/wizard.php:33
 msgid "Please select your language before proceeding with the installation"
 msgstr "Scegli la tua lingua prima di procedere con l'installazione"
 
-#: fabui/application/views/install/wizard.php:46
+#: fabui/application/views/install/wizard.php:45
 msgid "What is your timezone?"
 msgstr "Qual è il tuo fuso orario?"
 
-#: fabui/application/views/install/wizard.php:58
+#: fabui/application/views/install/wizard.php:57
 msgid "Create your personal account"
 msgstr "Crea il tuo account personale"
 
-#: fabui/application/views/install/wizard.php:67
+#: fabui/application/views/install/wizard.php:66
 #: fabui/application/views/login/register_form.php:38
 #: fabui/application/views/account/widget.php:19
 #: fabui/application/views/account/widget.php:21
 msgid "First name"
 msgstr "Nome"
 
-#: fabui/application/views/install/wizard.php:75
+#: fabui/application/views/install/wizard.php:74
 #: fabui/application/views/login/register_form.php:43
 #: fabui/application/views/account/widget.php:27
 #: fabui/application/views/account/widget.php:29
 msgid "Last name"
 msgstr "Cognome"
 
-#: fabui/application/views/install/wizard.php:113
+#: fabui/application/views/install/wizard.php:94
+#: fabui/application/views/install/wizard.php:294
+#: fabui/application/views/login/login_form.php:50
+#: fabui/application/views/account/widget.php:98
+#: fabui/application/views/settings/wireless_tab.php:77
+msgid "Password"
+msgstr "Password"
+
+#: fabui/application/views/install/wizard.php:102
+#, fuzzy
+msgid "Confirm password"
+msgstr "Prego confermare la nuova password"
+
+#: fabui/application/views/install/wizard.php:112
 #: fabui/application/views/login/register_form.php:50
 msgid "I agree with the"
 msgstr "Sono d'accordo"
 
-#: fabui/application/views/install/wizard.php:113
-#: fabui/application/views/install/wizard.php:223
+#: fabui/application/views/install/wizard.php:112
+#: fabui/application/views/install/wizard.php:222
 #: fabui/application/views/login/register_form.php:50
 msgid "Terms & Conditions"
 msgstr "Termini e Condizioni"
 
-#: fabui/application/views/install/wizard.php:127
+#: fabui/application/views/install/wizard.php:126
 msgid "Assign a name to your FABtotum"
 msgstr "Dai un nome alla tua FABtotum"
 
-#: fabui/application/views/install/wizard.php:130
+#: fabui/application/views/install/wizard.php:129
 msgid "I'd like to have a name"
 msgstr "Mi piacerebbe avere un nome"
 
-#: fabui/application/views/install/wizard.php:138
+#: fabui/application/views/install/wizard.php:137
 msgid "Insert serial number"
 msgstr "Inserire il numero seriale"
 
-#: fabui/application/views/install/wizard.php:143
+#: fabui/application/views/install/wizard.php:142
 msgid "The unit's serial number can be found on the back cover."
 msgstr "Il numero seriale dell'unità si trova sulla cover posteriore."
 
-#: fabui/application/views/install/wizard.php:150
+#: fabui/application/views/install/wizard.php:149
 msgid "What color is your FABtotum "
 msgstr "Di che colore è la tua FABtotum?"
 
-#: fabui/application/views/install/wizard.php:165
+#: fabui/application/views/install/wizard.php:164
 msgid "For a better experience connect your printer to internet"
 msgstr ""
 "Per una esperienza migliore si consiglia di connettere la stampante a "
 "internet"
 
-#: fabui/application/views/install/wizard.php:175
+#: fabui/application/views/install/wizard.php:174
 #: fabui/application/views/restore/wizard.php:121
 msgid "You're almost done."
 msgstr "Ce l'hai quasi fatta."
 
-#: fabui/application/views/install/wizard.php:180
+#: fabui/application/views/install/wizard.php:179
 #: fabui/application/views/layout/default/ribbon.php:19
 msgid "Connect with FABID"
 msgstr "Connetti con FABID"
 
-#: fabui/application/views/install/wizard.php:184
+#: fabui/application/views/install/wizard.php:183
 msgid "Click <strong>Install</strong> to complete"
 msgstr "Clicca <strong>Installa</strong> per completare"
 
-#: fabui/application/views/install/wizard.php:195
+#: fabui/application/views/install/wizard.php:194
 #: fabui/application/views/restore/wizard.php:130
 #: fabui/application/views/std/task_wizard.php:47
 #: fabui/application/views/std/task_wizard.php:112
@@ -1323,35 +1376,40 @@ msgstr "Clicca <strong>Installa</strong> per completare"
 msgid "Prev"
 msgstr "Precedente"
 
-#: fabui/application/views/install/wizard.php:209
+#: fabui/application/views/install/wizard.php:208
 msgid "Installation in progress"
 msgstr "Installazione in corso"
 
-#: fabui/application/views/install/wizard.php:210
+#: fabui/application/views/install/wizard.php:209
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:626
 msgid "This may take a while, please wait"
 msgstr "Questo potrebbe richiedere un po' di tempo, attendere prego"
 
-#: fabui/application/views/install/wizard.php:230
+#: fabui/application/views/install/wizard.php:229
 #: fabui/application/views/login/register_form.php:75
 msgid "I agree"
 msgstr "Accetto"
 
-#: fabui/application/views/install/wizard.php:254
+#: fabui/application/views/install/wizard.php:247
+#, fuzzy
+msgid "Insert password"
+msgstr "Cambia password"
+
+#: fabui/application/views/install/wizard.php:252
 #: fabui/application/views/settings/wireless_tab.php:85
 #: fabui/application/views/settings/wireless_tab.php:140
 #: fabui/application/views/settings/network_widget.php:140
 msgid "Show password"
 msgstr "Mostra password"
 
-#: fabui/application/views/install/wizard.php:282
+#: fabui/application/views/install/wizard.php:280
 #: fabui/application/views/account/widget.php:61
 #: fabui/application/views/account/widget.php:84
 #: fabui/application/views/cam/main_widget.php:110
 msgid "Connect to your FABID account"
 msgstr "Connettiti al tuo account FABID"
 
-#: fabui/application/views/install/wizard.php:290
+#: fabui/application/views/install/wizard.php:288
 #: fabui/application/views/login/login_form.php:44
 #: fabui/application/views/account/widget.php:36
 #: fabui/application/views/account/widget.php:92
@@ -1359,14 +1417,7 @@ msgstr "Connettiti al tuo account FABID"
 msgid "Email"
 msgstr "Email"
 
-#: fabui/application/views/install/wizard.php:296
-#: fabui/application/views/login/login_form.php:50
-#: fabui/application/views/account/widget.php:98
-#: fabui/application/views/settings/wireless_tab.php:77
-msgid "Password"
-msgstr "Password"
-
-#: fabui/application/views/install/wizard.php:303
+#: fabui/application/views/install/wizard.php:301
 #: fabui/application/views/account/widget.php:63
 #: fabui/application/views/account/widget.php:106
 #: fabui/application/views/cam/main_widget.php:104
@@ -1473,7 +1524,6 @@ msgstr "Non è sicuro estrudere così tanto filamento!"
 #: fabui/application/views/restore/wizard.php:25
 #: fabui/application/views/restore/wizard.php:45
 #: fabui/application/views/backup/widget.php:25
-#: fabui/application/views/backup/widget.php:100
 msgid "Restore"
 msgstr "Ripristina"
 
@@ -1557,7 +1607,7 @@ msgstr "Il serial number è composto da 13 caratteri"
 #: fabui/application/views/account/js.php:293
 #: fabui/application/views/settings/hardware_js.php:131
 #: fabui/application/views/settings/network_js.php:166
-#: fabui/application/views/cam/js.php:762
+#: fabui/application/views/cam/js.php:764
 #: fabui/application/views/projectsmanager/edit/js.php:72
 #: fabui/application/views/projectsmanager/file/view/js.php:118
 msgid "Saving"
@@ -1742,7 +1792,7 @@ msgstr "Cambia il nome della tua FABtotum"
 #: fabui/application/views/settings/network_widget.php:29
 #: fabui/application/views/head/index.php:132
 #: fabui/application/views/head/install.php:129
-#: fabui/application/views/history/main_widget.php:60
+#: fabui/application/views/history/main_widget.php:64
 #: fabui/application/views/feeder/profiles/widget.php:115
 #: fabui/application/views/projectsmanager/index/widget.php:26
 #: fabui/application/views/projectsmanager/edit/widget.php:46
@@ -1830,7 +1880,7 @@ msgid "Checking online repository"
 msgstr "Controllo repository remota in corso..."
 
 #: fabui/application/views/plugin/js.php:69
-#: fabui/application/views/dashboard/js.php:259
+#: fabui/application/views/dashboard/js.php:260
 #: fabui/application/views/updates/index/js.php:61
 msgid "Check again"
 msgstr "Controlla ancora"
@@ -1876,7 +1926,7 @@ msgstr "Rimuovere <strong>{0}</strong> plugin?"
 #: fabui/application/views/head/js.php:524
 #: fabui/application/views/head/js.php:711
 #: fabui/application/views/head/js.php:726
-#: fabui/application/views/cam/js.php:913
+#: fabui/application/views/cam/js.php:915
 #: fabui/application/views/feeder/profiles/js.php:266
 #: fabui/application/views/feeder/profiles/js.php:281
 #: fabui/application/views/feeder/profiles/js.php:315
@@ -1914,8 +1964,8 @@ msgstr "No"
 #: fabui/application/views/head/js.php:511
 #: fabui/application/views/head/js.php:711
 #: fabui/application/views/head/js.php:713
-#: fabui/application/views/cam/js.php:913
 #: fabui/application/views/cam/js.php:915
+#: fabui/application/views/cam/js.php:917
 #: fabui/application/views/feeder/profiles/js.php:266
 #: fabui/application/views/feeder/profiles/js.php:268
 #: fabui/application/views/feeder/profiles/js.php:315
@@ -1959,14 +2009,14 @@ msgid "Uploaded zip file is not a plugin archive"
 msgstr "Il file zip caricato non è un archivio valido"
 
 #: fabui/application/views/plugin/js.php:262
-#: fabui/application/views/updates/index/js.php:536
-#: fabui/application/views/updates/index/js.php:579
+#: fabui/application/views/updates/index/js.php:544
+#: fabui/application/views/updates/index/js.php:587
 msgid "Downloading"
 msgstr "Download in corso"
 
 #: fabui/application/views/plugin/js.php:265
-#: fabui/application/views/updates/index/js.php:539
-#: fabui/application/views/updates/index/js.php:588
+#: fabui/application/views/updates/index/js.php:547
+#: fabui/application/views/updates/index/js.php:596
 msgid "Installing"
 msgstr "Installazione in corso"
 
@@ -2004,7 +2054,7 @@ msgstr "Attiva"
 
 #: fabui/application/views/plugin/main_widget.php:31
 #: fabui/application/views/head/install.php:35
-#: fabui/application/views/cam/js.php:957
+#: fabui/application/views/cam/js.php:959
 #: fabui/application/views/cam/subscriptions_tab.php:42
 #: fabui/application/views/feeder/profiles/widget.php:33
 #: fabui/application/views/projectsmanager/edit/js.php:106
@@ -2201,7 +2251,7 @@ msgstr "Connesso al tuo account FABID"
 #: fabui/application/views/head/index.php:108
 #: fabui/application/views/head/install.php:105
 #: fabui/application/views/firmware/main_widget.php:9
-#: fabui/application/views/cam/js.php:911
+#: fabui/application/views/cam/js.php:913
 #: fabui/application/views/myfabtotum/back_url.php:24
 #: fabui/application/views/updates/index/js.php:439
 #: fabui/application/views/feeder/profiles/widget.php:89
@@ -2421,7 +2471,7 @@ msgid "Parameters"
 msgstr "Parametri"
 
 #: fabui/application/views/jog/widget.php:303
-#: fabui/application/views/cam/js.php:946
+#: fabui/application/views/cam/js.php:948
 #: fabui/application/views/cam/subscriptions_tab.php:31
 msgid "Code"
 msgstr "Codice"
@@ -2653,6 +2703,10 @@ msgstr "Allarme collisione limiti della macchina"
 msgid "Idle timeout"
 msgstr "Timeout di inattività"
 
+#: fabui/application/views/settings/hardware_widget.php:107
+msgid "Idle timeout. To disable set to zero"
+msgstr ""
+
 #: fabui/application/views/settings/hardware_widget.php:113
 msgid "Wire endstop"
 msgstr "Fine filo endstop"
@@ -2882,15 +2936,15 @@ msgstr "Clicca per vedere i commenti"
 msgid "View on instagram"
 msgstr "Guarda su instagram"
 
-#: fabui/application/views/dashboard/js.php:254
+#: fabui/application/views/dashboard/js.php:255
 msgid "Feeds are not available"
 msgstr "I post non sono disponibili"
 
-#: fabui/application/views/dashboard/js.php:376
+#: fabui/application/views/dashboard/js.php:377
 msgid "Read more"
 msgstr "Leggi di più"
 
-#: fabui/application/views/dashboard/js.php:396
+#: fabui/application/views/dashboard/js.php:397
 msgid "FABtotum retweeted"
 msgstr "FABtotum ha ritwittato"
 
@@ -3001,7 +3055,7 @@ msgid "You can't upload files of this type."
 msgstr "Non puoi caricare file di questo tipo."
 
 #: fabui/application/views/std/task_dropzone_js.php:72
-#: fabui/application/views/cam/js.php:171
+#: fabui/application/views/cam/js.php:173
 msgid "Uploaded"
 msgstr "Caricato"
 
@@ -3010,7 +3064,7 @@ msgid "Invalid file."
 msgstr "File non valido."
 
 #: fabui/application/views/std/task_dropzone_js.php:97
-#: fabui/application/views/cam/js.php:349
+#: fabui/application/views/cam/js.php:351
 msgid "Uploading"
 msgstr "Caricamento"
 
@@ -3086,9 +3140,10 @@ msgstr ""
 "salvare e mantenere i valori per le stampe successive?"
 
 #: fabui/application/views/std/task_finished.php:29
-#: fabui/application/views/history/main_widget.php:61
+#: fabui/application/views/history/main_widget.php:65
 #: fabui/application/views/std/email/task.php:27
 #: fabui/application/views/projectsmanager/file/stats/widget.php:25
+#: fabui/application/views/projectsmanager/file/stats/widget.php:38
 msgid "Duration"
 msgstr "Durata"
 
@@ -3617,6 +3672,13 @@ msgstr "Filtri"
 msgid "More details"
 msgstr "Dettagli"
 
+#: fabui/application/views/head/index.php:56
+msgid ""
+"Before clicking \"Install\", make sure the head is properly locked in place"
+msgstr ""
+"Prima di premere \"Installa\", assicurarsi che la testa sia correttamente "
+"bloccata nel carrello"
+
 #: fabui/application/views/head/index.php:91
 #: fabui/application/views/head/install.php:88
 #: fabui/application/views/feeder/profiles/widget.php:72
@@ -3879,11 +3941,6 @@ msgstr ""
 msgid "Please select which head you want to install"
 msgstr "Prego selezionare quale testa si vuole installare"
 
-#: fabui/application/views/head/install.php:34
-#: fabui/application/views/feeder/profiles/widget.php:32
-msgid "Edit"
-msgstr "Modifica"
-
 #: fabui/application/views/firmware/main_widget.php:9
 msgid "This form requires administrator privileges"
 msgstr "Questo modulo richiede privilegi da amministratore"
@@ -3905,145 +3962,148 @@ msgstr "Firmware installato"
 msgid "Build-date"
 msgstr "Data di costruzione"
 
-#: fabui/application/views/cam/js.php:86 fabui/application/views/cam/js.php:895
+#: fabui/application/views/cam/js.php:88
+#: fabui/application/views/cam/js.php:897
+#: fabui/application/views/backup/js.php:44
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Trascina file per caricarli"
 
-#: fabui/application/views/cam/js.php:86 fabui/application/views/cam/js.php:895
+#: fabui/application/views/cam/js.php:88
+#: fabui/application/views/cam/js.php:897
+#: fabui/application/views/backup/js.php:44
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "or click"
 msgstr "o clicca"
 
-#: fabui/application/views/cam/js.php:91
+#: fabui/application/views/cam/js.php:93
+#: fabui/application/views/backup/js.php:49
 #: fabui/application/views/projectsmanager/add/js.php:37
 #: fabui/application/views/projectsmanager/file/add/js.php:37
 msgid "Remove file"
 msgstr "Rimuovi file"
 
-#: fabui/application/views/cam/js.php:92
+#: fabui/application/views/cam/js.php:94
+#: fabui/application/views/backup/js.php:50
 msgid "You can upload just {{maxFiles}} file at time"
 msgstr "Puoi caricare  {{maxFiles}} file alla volta"
 
-#: fabui/application/views/cam/js.php:106
+#: fabui/application/views/cam/js.php:108
+#: fabui/application/views/backup/js.php:63
 msgid "File error"
 msgstr "Errore file"
 
-#: fabui/application/views/cam/js.php:172
-#: fabui/application/views/cam/js.php:1096
+#: fabui/application/views/cam/js.php:174
+#: fabui/application/views/cam/js.php:1098
 #: fabui/ext/py/fabtotum/fabui/gpusher.py:625
 msgid "Processing file"
 msgstr "Elaborazione file"
 
-#: fabui/application/views/cam/js.php:209
+#: fabui/application/views/cam/js.php:211
 msgid "PWM"
 msgstr "PWM"
 
-#: fabui/application/views/cam/js.php:215
+#: fabui/application/views/cam/js.php:217
 msgid "Feed"
 msgstr "Feed"
 
-#: fabui/application/views/cam/js.php:221
+#: fabui/application/views/cam/js.php:223
 msgid "Cut"
 msgstr "Taglio"
 
-#: fabui/application/views/cam/js.php:279
-#: fabui/application/views/history/main_widget.php:26
-msgid "Completed"
-msgstr "Completato"
-
-#: fabui/application/views/cam/js.php:286
+#: fabui/application/views/cam/js.php:288
 msgid "Upload failed"
 msgstr "Upload fallito"
 
-#: fabui/application/views/cam/js.php:394
+#: fabui/application/views/cam/js.php:396
 msgid "No profiles available for this head"
 msgstr "Non ci sono profili disponibili per questa testa"
 
-#: fabui/application/views/cam/js.php:571
+#: fabui/application/views/cam/js.php:573
 msgid "Regenerate GCode"
 msgstr "Rigenera GCode"
 
-#: fabui/application/views/cam/js.php:631
+#: fabui/application/views/cam/js.php:633
 msgid "GCode ready"
 msgstr "Gcode pronto"
 
-#: fabui/application/views/cam/js.php:634
+#: fabui/application/views/cam/js.php:636
 msgid "New laser project"
 msgstr "Nuovo progetto laser"
 
-#: fabui/application/views/cam/js.php:642
+#: fabui/application/views/cam/js.php:644
 msgid "Gcode ready!"
 msgstr "GCode pronto!"
 
-#: fabui/application/views/cam/js.php:646
+#: fabui/application/views/cam/js.php:648
 msgid "Generation failed"
 msgstr "Generazione fallita"
 
-#: fabui/application/views/cam/js.php:770
-#: fabui/application/views/cam/js.php:773
+#: fabui/application/views/cam/js.php:772
+#: fabui/application/views/cam/js.php:775
 msgid "Gcode saved"
 msgstr "Gcode salvato"
 
-#: fabui/application/views/cam/js.php:842
+#: fabui/application/views/cam/js.php:844
 msgid "Please enter subscription code"
 msgstr "Inserisci codice abbonamento"
 
-#: fabui/application/views/cam/js.php:867
+#: fabui/application/views/cam/js.php:869
 msgid "Activation failed"
 msgstr "Attivazione fallita"
 
-#: fabui/application/views/cam/js.php:900
+#: fabui/application/views/cam/js.php:902
 #: fabui/application/views/cam/main_widget.php:129
 #: fabui/application/views/updates/index/js.php:58
 #: fabui/assets/js/fab.app.js:1732
 msgid "Check network settings and try again"
 msgstr "Controlla le impostazioni di rete e ritenta ancora"
 
-#: fabui/application/views/cam/js.php:900
+#: fabui/application/views/cam/js.php:902
 msgid ""
 "You must enter a valid subscription code <br> in order to use CAM toolbox"
 msgstr ""
 "Devi inserire un codice abbonamento valido <br> per poter utilizzare CAM "
 "toolbox"
 
-#: fabui/application/views/cam/js.php:912
+#: fabui/application/views/cam/js.php:914
 msgid "You need a valid subscription code to use CAM Toolbox"
 msgstr "Hai bisogno di un codice abbonamento valido per utilizzare CAM toolbox"
 
-#: fabui/application/views/cam/js.php:912
+#: fabui/application/views/cam/js.php:914
 msgid "Are you sure you want remove it?"
 msgstr "Sei sicuro di volerlo rimuovere?"
 
-#: fabui/application/views/cam/js.php:947
+#: fabui/application/views/cam/js.php:949
 #: fabui/application/views/cam/subscriptions_tab.php:32
-#: fabui/application/views/history/main_widget.php:36
-#: fabui/application/views/history/main_widget.php:59
+#: fabui/application/views/history/main_widget.php:26
+#: fabui/application/views/history/main_widget.php:40
+#: fabui/application/views/history/main_widget.php:63
 #: fabui/application/views/projectsmanager/file/stats/widget.php:24
 msgid "Status"
 msgstr "Stato"
 
-#: fabui/application/views/cam/js.php:948
+#: fabui/application/views/cam/js.php:950
 #: fabui/application/views/cam/subscriptions_tab.php:33
 msgid "Expiration date"
 msgstr "Data scadenza"
 
-#: fabui/application/views/cam/js.php:948
+#: fabui/application/views/cam/js.php:950
 #: fabui/application/views/cam/subscriptions_tab.php:33
 msgid "Exp. date"
 msgstr "Data scad."
 
-#: fabui/application/views/cam/js.php:993
+#: fabui/application/views/cam/js.php:995
 msgid "Source image"
 msgstr "Immagine sorgente"
 
-#: fabui/application/views/cam/js.php:993
+#: fabui/application/views/cam/js.php:995
 msgid "Laser engraving preview"
 msgstr "Anteprima incisione laser"
 
-#: fabui/application/views/cam/js.php:1055
+#: fabui/application/views/cam/js.php:1057
 msgid "Use again"
 msgstr "Usa ancora"
 
@@ -4291,53 +4351,92 @@ msgid "Coming soon"
 msgstr "Coming soon"
 
 #: fabui/application/views/history/main_js.php:105
+#: fabui/application/views/projectsmanager/file/stats/js.php:93
 msgid "Today"
 msgstr "Oggi"
 
 #: fabui/application/views/history/main_js.php:106
+#: fabui/application/views/projectsmanager/file/stats/js.php:94
 msgid "Yesterday"
 msgstr "Ieri"
 
 #: fabui/application/views/history/main_js.php:107
+#: fabui/application/views/projectsmanager/file/stats/js.php:95
 msgid "Last 7 days"
 msgstr "Ultimi 7 giorni"
 
 #: fabui/application/views/history/main_js.php:108
+#: fabui/application/views/projectsmanager/file/stats/js.php:96
 msgid "Last 30 Days"
 msgstr "Ultimi 30 giorni"
 
 #: fabui/application/views/history/main_js.php:109
+#: fabui/application/views/projectsmanager/file/stats/js.php:97
 msgid "This month"
 msgstr "Questo mese"
 
 #: fabui/application/views/history/main_js.php:110
+#: fabui/application/views/projectsmanager/file/stats/js.php:98
 msgid "Last month"
 msgstr "Scorso mese"
 
 #: fabui/application/views/history/main_js.php:111
+#: fabui/application/views/projectsmanager/file/stats/js.php:99
 msgid "Since the beginning"
 msgstr "Dall'inizio"
+
+#: fabui/application/views/history/main_js.php:136
+#, fuzzy
+msgid "Not rated"
+msgstr "Non supportato"
+
+#: fabui/application/views/history/main_js.php:141
+#, fuzzy
+msgid "Started"
+msgstr "Inizia"
+
+#: fabui/application/views/history/main_js.php:142
+#, fuzzy
+msgid "Finished"
+msgstr "Completa"
+
+#: fabui/application/views/history/main_js.php:143
+#, fuzzy
+msgid "Rating"
+msgstr "Rotando"
+
+#: fabui/application/views/history/main_js.php:147
+#: fabui/application/views/projectsmanager/edit/widget.php:64
+#: fabui/application/views/projectsmanager/file/view/widget.php:21
+msgid "Note"
+msgstr "Nota"
+
+#: fabui/application/views/history/main_js.php:152
+#, fuzzy
+msgid "it again"
+msgstr "Usa ancora"
 
 #: fabui/application/views/history/stats_tab.php:6
 msgid "<strong>Info!</strong> No data available"
 msgstr "<strong>Info!</strong> Nessun dato disponibile"
 
-#: fabui/application/views/history/main_widget.php:29
-msgid "Aborted"
-msgstr "Annullato"
+#: fabui/application/views/history/stats_tab.php:69
+msgid "volte"
+msgstr ""
 
-#: fabui/application/views/history/main_widget.php:32
-msgid "Terminated"
-msgstr "Terminato"
+#: fabui/application/views/history/stats_tab.php:92
+#, fuzzy
+msgid "Total time"
+msgstr "Totale "
 
-#: fabui/application/views/history/main_widget.php:44
+#: fabui/application/views/history/main_widget.php:48
 #: fabui/application/views/layout/default/top.php:22
 #: fabui/application/views/layout/debug/top.php:22
 #: fabui/assets/js/fab.app.js:1287
 msgid "Tasks"
 msgstr "Task"
 
-#: fabui/application/views/history/main_widget.php:57
+#: fabui/application/views/history/main_widget.php:61
 #: fabui/application/views/projectsmanager/file/stats/widget.php:23
 msgid "When"
 msgstr "Quando"
@@ -4399,7 +4498,7 @@ msgid "Get in touch with our technical support team"
 msgstr "Resta in contatto con il nostro team del supporto tecnico"
 
 #: fabui/application/views/backup/widget.php:14
-#: fabui/application/views/backup/widget.php:82
+#: fabui/application/views/backup/widget.php:93
 msgid "Backup"
 msgstr "Backup"
 
@@ -4415,7 +4514,7 @@ msgstr ""
 "Backup wizard ti aiuta a creare un backup delle impostazioni e dei file"
 
 #: fabui/application/views/backup/widget.php:28
-#: fabui/application/views/backup/widget.php:94
+#: fabui/application/views/backup/widget.php:105
 msgid "Restore wizard"
 msgstr "\vRestore wizard"
 
@@ -4439,9 +4538,22 @@ msgstr "Sistema"
 msgid "Feeders"
 msgstr "Estrusori"
 
-#: fabui/application/views/backup/widget.php:69
-msgid "User"
+#: fabui/application/views/backup/widget.php:67
+msgid "CAM"
+msgstr ""
+
+#: fabui/application/views/backup/widget.php:75
+msgid "EEPROM"
+msgstr ""
+
+#: fabui/application/views/backup/widget.php:80
+#, fuzzy
+msgid "Users"
 msgstr "Utente"
+
+#: fabui/application/views/backup/widget.php:83
+msgid "Data"
+msgstr ""
 
 #: fabui/application/views/myfabtotum/back_url_js.php:43
 msgid "Sign-in with local access and go to network settings"
@@ -4676,14 +4788,14 @@ msgstr "Nuovi importanti aggiornamenti sono disponibili"
 #: fabui/application/views/updates/index/js.php:99
 #: fabui/application/views/updates/index/js.php:394
 #: fabui/application/views/updates/index/js.php:473
-#: fabui/application/views/updates/index/js.php:634
+#: fabui/application/views/updates/index/js.php:642
 msgid "View details"
 msgstr "Visualliza dettagli"
 
 #: fabui/application/views/updates/index/js.php:173
 #: fabui/application/views/updates/index/js.php:310
 #: fabui/application/views/updates/index/js.php:354
-#: fabui/application/views/updates/index/js.php:709
+#: fabui/application/views/updates/index/js.php:717
 msgid "Remote version"
 msgstr "Versione remota"
 
@@ -4691,7 +4803,7 @@ msgstr "Versione remota"
 #: fabui/application/views/updates/index/js.php:208
 #: fabui/application/views/updates/index/js.php:320
 #: fabui/application/views/updates/index/js.php:364
-#: fabui/application/views/updates/index/js.php:725
+#: fabui/application/views/updates/index/js.php:733
 msgid "Installed version"
 msgstr "Versione installata"
 
@@ -4709,24 +4821,24 @@ msgstr "Selezionare almeno 1 pacchetto, aggiornamento firmware, avvio o plugin"
 msgid "Connecting to update server"
 msgstr "Connessione al server degli aggiornamenti"
 
-#: fabui/application/views/updates/index/js.php:516
+#: fabui/application/views/updates/index/js.php:520
 msgid "A reboot is needed to apply new features"
 msgstr "Un riavvio è necessario per applicare le nuove caratteristiche"
 
-#: fabui/application/views/updates/index/js.php:517
+#: fabui/application/views/updates/index/js.php:521
 msgid "Reboot now"
 msgstr "Riavvia ora"
 
-#: fabui/application/views/updates/index/js.php:585
+#: fabui/application/views/updates/index/js.php:593
 msgid "Downloaded"
 msgstr "Scaricato"
 
-#: fabui/application/views/updates/index/js.php:594
+#: fabui/application/views/updates/index/js.php:602
 #: fabui/assets/js/fab.app.js:607
 msgid "Error"
 msgstr "Errore"
 
-#: fabui/application/views/updates/index/js.php:626
+#: fabui/application/views/updates/index/js.php:634
 msgid "Please don't turn off the printer until the operation is completed"
 msgstr ""
 "Si prega di non spegnere la stampante finché l'operazione non verrà "
@@ -4830,7 +4942,8 @@ msgstr "Se sei stato tu a mettere in pausa puoi ignorare questa email"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24
+#: fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
@@ -5251,11 +5364,6 @@ msgstr "Non hai i permessi per modificare questo progetto"
 msgid "Public"
 msgstr "Pubblico"
 
-#: fabui/application/views/projectsmanager/edit/widget.php:64
-#: fabui/application/views/projectsmanager/file/view/widget.php:21
-msgid "Note"
-msgstr "Nota"
-
 #: fabui/application/views/projectsmanager/edit/widget.php:66
 msgid "Default action"
 msgstr "Azione predefinita"
@@ -5465,12 +5573,13 @@ msgid "About"
 msgstr ""
 
 #: fabui/application/views/projectsmanager/file/stats/widget.php:5
-#: fabui/application/views/projectsmanager/file/stats/widget.php:66
+#: fabui/application/views/projectsmanager/file/stats/widget.php:67
 msgid "No data available"
 msgstr "Dati non disponibili"
 
-#: fabui/application/views/projectsmanager/file/stats/widget.php:36
-msgid "attempts"
+#: fabui/application/views/projectsmanager/file/stats/widget.php:37
+#, fuzzy
+msgid "Attempts"
 msgstr "tentativi"
 
 #: fabui/application/views/projectsmanager/file/add/js.php:39
@@ -5759,11 +5868,7 @@ msgstr "Calcolo di {0} fallito."
 msgid "Calculation for {0} successful."
 msgstr "Calcolo di {0} eseguito."
 
-#: fabui/ext/py/update.py:80
-msgid "Print STOPPED"
-msgstr "Stampa fermata"
-
-#: fabui/ext/py/update.py:95
+#: fabui/ext/py/update.py:102
 msgid "Update initialized."
 msgstr "Aggiornamento inizializzato."
 
@@ -7016,6 +7121,10 @@ msgstr "Menù estrusore"
 msgid "Checking safety measures..."
 msgstr "Verificando le misure di sicurezza..."
 
+#: fabui/assets/js/std/jogcontrols.js:573
+msgid "Restore XY"
+msgstr "Ripristinare la posizione di XY"
+
 #: fabui/application/views/std/task_execute_js.php:705
 msgid "Fan override changed to {0}"
 msgstr "Valori della ventola cambiati a {0}"
@@ -7286,10 +7395,6 @@ msgstr "Menù manutenzione"
 msgid "Please try again"
 msgstr "Tentare ancora"
 
-#: fabui/assets/js/std/jogcontrols.js:573
-msgid "Restore XY"
-msgstr "Ripristinare la posizione di XY"
-
 #: fabui/assets/js/tours/0010_head.js:14
 msgid "Click on the menu item to continue"
 msgstr "Cliccare sulle voci del menù per continuare"
@@ -7529,6 +7634,9 @@ msgstr "Applica"
 #: fabui/assets/js/fab.app.js:670
 msgid "Emergency stop"
 msgstr "Stop di Emergenza"
+
+#~ msgid "Print STOPPED"
+#~ msgstr "Stampa fermata"
 
 #~ msgid "Email sending failed "
 #~ msgstr "Invio email fallito"
