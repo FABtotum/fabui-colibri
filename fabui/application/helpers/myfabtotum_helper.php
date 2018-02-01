@@ -346,7 +346,7 @@ if(!function_exists('callDeshape'))
         $debug = true;
         $url = 'http://myfabdev.tk/deshape/';
         
-        $access_token = fab_authenticate('km@fabtotum.com', 'f4bt0tum');
+        $access_token = fab_authenticate('**', '***');
         
         if(!isset($args['token'])) {
             $args['token'] = $access_token;
