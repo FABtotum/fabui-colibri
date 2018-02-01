@@ -57,7 +57,7 @@
 	        }
 	    });
 
-	    loadRecentImagesUploaded();
+		
 		loadHelpDescriptions();
 		populateProjectsList();
 		<?php if(!$internet): ?>
@@ -69,8 +69,10 @@
 		<?php elseif(!$subscription_exists): ?>
 		handleDropzone(laserDropZone, 'disable');
 		showSubscriptionModal();
+		<?php elseif($internet):?>
+		loadRecentImagesUploaded();
 		<?php endif; ?>
-
+		
 		initCodeVisibilityHandler();
 			
 	});

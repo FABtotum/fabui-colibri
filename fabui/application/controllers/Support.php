@@ -27,7 +27,7 @@
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'support-widget';
 		$widget->class  = 'well transparent ';
-		$widget->header = array('icon' => 'fa-support ', "title" => "<h2>Support</h2>");
+		$widget->header = array('icon' => 'fa-support ', "title" => "<h2>"._("Support")."</h2>");
 		$widget->body   = array('content' => $this->load->view('support/widget', $data, true ), 'class'=>'');
 		
 		$data['supportWidget'] = $widget->print_html(true);

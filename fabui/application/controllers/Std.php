@@ -132,14 +132,6 @@ class Std extends FAB_Controller {
     }
     
     /**
-     *  safety check for maintenance tasks
-     */
-    public function safetyCheckMaintenance()
-    {
-        
-    }
-    
-    /**
      *
      */
     public function sendTaskEmail($taskID = 0)

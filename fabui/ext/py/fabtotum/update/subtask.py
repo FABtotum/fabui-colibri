@@ -20,7 +20,7 @@
 
 
 # Import standard python module
-import os
+import os, sys
 
 # Import external modules
 import pycurl
@@ -42,12 +42,19 @@ class SubTask(object):
 
         self.main_file     = ''
         self.current       = ''
+        self.is_installable = False
     
     def setMainFile(self, tag):
         self.main_file = tag
     
     def isDownloaded(self):
         return self.downloaded
+    
+    def isInstallable(self):
+        return self.is_installable
+    
+    def setInstallable(self, bool):
+        self.is_installable = bool
     
     def getFactory(self):
         return self.factory
@@ -92,6 +99,12 @@ class SubTask(object):
         
     def getFile(self, tag):
         return self.files[tag]
+    
+    def getFilesSize(self):
+        size = 0
+        for tag in self.files:
+            size += self.getFile(tag).getSize()
+        return size
 
     def install(self):
         raise NotImplementedError('"install" function must be implemented !!!')
@@ -101,10 +114,13 @@ class SubTask(object):
         self.downloaded = False
         
         for tag in self.files:
-            self.download_file(tag)
+            if(self.download_file(tag) == False):
+                self.downloaded = False
+                return False
             
         self.downloaded = True
         self.setStatus('downloaded')
+        return True
         
     def download_file(self, tag):
         
@@ -115,12 +131,14 @@ class SubTask(object):
         file_endpoint = file.getEndpoint()
         file_name = file.getName()
         
+        """
         if file.getUseDirectURL():
             url = file_endpoint
         else:
             url = os.path.join(self.factory.getEndpoint(self.getType()), file_endpoint)
         
-        print "URL: ", url
+        """
+        url = file_endpoint
         
         curl = pycurl.Curl()
         curl.setopt(pycurl.URL, url )
@@ -130,19 +148,30 @@ class SubTask(object):
         fn = os.path.join(self.factory.getTempFolder(), 'fabui', file_name)
         file.setLocal(fn)
         
-        file_to_write = open( fn , "wb")
+        try:
+            file_to_write = open( fn , "wb")
+        except Exception as e:
+            self.setStatus('error')
+            self.setMessage(str(e))
+            return False
         
         curl.setopt(pycurl.WRITEDATA, file_to_write)
         curl.setopt(pycurl.NOPROGRESS, 0)
         curl.setopt(pycurl.PROGRESSFUNCTION, self.download_progress)
         
-        curl.perform()
+        try:
+            curl.perform()
+        except pycurl.error, error:
+            errno, errstr = error
+            self.setStatus('error')
+            self.setMessage(errstr)
+            return False
         
         file.setStatus('downloaded')
         self.setCurrent("")
         self.factory.update()
-        
-        
+        return True
+
     def download_progress(self, file_size, downloaded, upload_t, upload_d):
         
         try:

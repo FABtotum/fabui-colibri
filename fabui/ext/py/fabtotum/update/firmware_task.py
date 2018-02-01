@@ -22,18 +22,20 @@ import shlex, subprocess
 import time, re
 
 from fabtotum.update.subtask  import SubTask
+from fabtotum.utils.common import shell_exec
 
 class FirmwareTask(SubTask):
 
-	def __init__(self, name, data, factory=None):
+	def __init__(self, name, data, repository,  factory=None):
 		super(FirmwareTask, self).__init__(name, "firmware", factory)
 		
 		self.latest        = data["latest"]
 		self.date_uploaded = data[self.latest]['date-uploaded']
 		self.version       = data[self.latest]['version']
+		self.repository    = repository
 		
 		for tag in data[self.latest]['files']:
-			self.addFile(tag, data[self.latest]['files'][tag])
+			self.addFile(tag, self.repository + "/" + data[self.latest]['files'][tag])
 	
 		self.setMainFile("firmware")
 	
@@ -93,4 +95,7 @@ class FirmwareTask(SubTask):
 			self.setStatus('error')
 			self.setMessage('Firmware was not flashed\nPlease try again\nIf the problem persists please contact support\n\n' + install_output)
 		
-		
+	
+	def remove(self):
+		### remove files ###
+		shell_exec('sudo rm {0}'.format(self.getFile("firmware").getLocal()))

@@ -75,7 +75,7 @@
 			}
 			else
 			{
-				$data['warning'] = "Selected file is not for printing";
+				$data['warning'] = _("Selected file is not for printing");
 			}
 		}
 		

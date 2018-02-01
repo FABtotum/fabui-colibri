@@ -900,6 +900,8 @@ if(!function_exists('doCommandLine'))
 		
 		$command = $bin.' '.$scriptPath.' ';
 		
+		
+		
 		if(is_array($args) && $args != ''){
 			if(is_array($args)){
 				foreach($args as $key => $value){
@@ -1426,6 +1428,7 @@ if(!function_exists('resetTaskMonitor'))
 		$monitor = json_decode(file_get_contents($CI->config->item('task_monitor')), true);
 		unset($monitor['gpusher']);
 		unset($monitor['print']);
+		unset($monitor['update']);
 		if(!is_array($monitor)) $monitor = array();
 		
 		//override keys value

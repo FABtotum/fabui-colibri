@@ -19,6 +19,7 @@
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+from fabtotum.utils.common import get_url_num_bytes
 
 class File:
     def __init__(self, file_url, filename='', use_endpoint=True):
@@ -31,6 +32,8 @@ class File:
         self.progress = 0
         self.status = ''
         self.local = ''
+        
+        self.setSize(get_url_num_bytes(file_url))
     
     def getLocal(self):
         return self.local
@@ -52,6 +55,12 @@ class File:
     
     def setSize(self, size):
         self.size = size
+    
+    def getSize(self):
+        return self.size
+    
+    def getUrl(self):
+        return self.endpoint
     
     def setStatus(self, status):
         self.status = status

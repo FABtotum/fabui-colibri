@@ -321,11 +321,14 @@ if(!function_exists('flashFirmware'))
 			case "remote": // remote update
 				$args = 'remote-update "'.$argument.'" ';
 				break;
+			case 'dump-eeprom':
+			    $args = 'dump-eeprom';
+			    break;
 			default:
 				return false;
 		}
 
-		startBashScript('totumduino_manager.sh', $args, false, true);
+		$bashResult = startBashScript('totumduino_manager.sh', $args, false, true);
 		
 		$result = file_get_contents($avrdude_logfile);
 		

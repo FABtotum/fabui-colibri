@@ -42,7 +42,7 @@ if(!function_exists('callMyFabtotum'))
 		//init jsonRPC library
 		$CI->load->library('JsonRPC', $init, 'jsonRPC');
 		//set api version
-		if($apiVersion) $args['apiversion'] = $CI->config->item('myfabtotum_api_version');
+		if($apiVersion == true) $args['apiversion'] = $CI->config->item('myfabtotum_api_version');
 		
 		$response = $CI->jsonRPC->execute($method, $args);
 		
@@ -276,6 +276,34 @@ if(!function_exists('i_can_use_this_printer'))
 		return false;
 	}
 }
+if(!function_exists('fab_authenticate'))
+{
+    function fab_authenticate($fabid, $password)
+    {
+        $CI =& get_instance();
+        
+        $args = array();
+        
+        $args['fabid']    = $fabid;
+        $args['password'] = $password;
+        //$args['apiversion'] = 1;
+        
+       
+        $init['url'] = 'http://myfabdev.tk//default/call/jsonrpc2';
+        //init jsonRPC library
+        $CI->load->library('JsonRPC', $init, 'jsonRPC');
+         
+        $response = $CI->jsonRPC->execute('fab_authenticate', $args);
+        
+        if(is_array($response)){
+            
+            if(isset($response['status_code']) && $response['status_code'] == 200){       
+                return $response['access_token'];
+            }
+        }
+        return false;
+    }
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('fab_get_status_description'))
 {
@@ -306,4 +334,78 @@ if(!function_exists('fab_get_status_description'))
 				return 'UNKNOWN';
 		}
 	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('callDeshape'))
+{
+    /**
+     * 
+     */
+    function callDeshape($endpoint, $args = array())
+    {
+        $debug = true;
+        $url = 'http://myfabdev.tk/deshape/';
+        
+        $access_token = fab_authenticate('km@fabtotum.com', 'f4bt0tum');
+        
+        if(!isset($args['token'])) {
+            $args['token'] = $access_token;
+        }
+        
+        $data_string = json_encode($args);
+        
+        if($debug)
+            echo $data_string.PHP_EOL;
+         
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url.$endpoint);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($data_string))
+        );
+        
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        
+        if($debug){
+            $out = fopen('php://output', 'w');
+            curl_setopt($ch, CURLOPT_VERBOSE, true);
+            curl_setopt($ch, CURLOPT_STDERR, $out);
+        }
+       
+        
+        $content = curl_exec ($ch);
+        curl_close ($ch);
+        
+        //if($debug)
+            echo $content;
+        
+        return json_decode($content, true);       
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('deshape_list_projects_full'))
+{
+    /**
+     * 
+     */
+    function deshape_list_projects_full()
+    {
+        return callDeshape('list_projects_full');
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('deshape_create_project'))
+{
+    /**
+     * 
+     */
+    function deshape_create_project($project)
+    {
+        return callDeshape('create_project', $project);
+    }
 }

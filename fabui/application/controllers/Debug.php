@@ -63,28 +63,6 @@
 	public function gcodeviewer()
 	{
 		$this->content = $this->load->view('filemanager/file/preview/index', null, true );
-    //~ <script src="lib/modernizr.custom.93389.js"></script>
-    //~ <script src="lib/jquery-1.7.1.min.js"></script>
-    //~ <script src="lib/bootstrap-modal.js"></script>
-    //~ <script src="lib/sugar-1.2.4.min.js"></script>
-    //~ <script src="lib/three.js"></script>
-    //~ <script src="lib/TrackballControls.js"></script>
-
-    //~ <script src="js/ShaderExtras.js"></script>
-    //~ <script src="js/postprocessing/EffectComposer.js"></script>
-    //~ <script src="js/postprocessing/MaskPass.js"></script>
-    //~ <script src="js/postprocessing/RenderPass.js"></script>
-    //~ <script src="js/postprocessing/ShaderPass.js"></script>
-    //~ <script src="js/postprocessing/BloomPass.js"></script>
-
-    //~ <script src="js/Stats.js"></script>
-    //~ <script src="js/DAT.GUI.min.js"></script>
-    //~ <!-- Custom code -->
-    //~ <script type="text/javascript" src="gcode_model.js"></script>
-    //~ <script type="text/javascript" src="gcode_parser.js"></script>
-    //~ <script type="text/javascript" src="gcode_interpreter.js"></script>
-    //~ <script type="text/javascript" src="gcode_importer.js"></script>
-    //~ <script type="text/javascript" src="gcode_renderer.js"></script>
 		$this->addJSFile('/assets/js/plugin/gcode-viewer/lib/modernizr.custom.93389.js');
 		$this->addJSFile('/assets/js/plugin/gcode-viewer/lib/jquery-1.7.1.min.js');
 		$this->addJSFile('/assets/js/plugin/gcode-viewer/lib/sugar-1.2.4.min.js');
@@ -180,13 +158,52 @@
 		$this->load->helpers('fabtotum_helper');
 		
 		$json['hardware']['bed']['enable'] = $json['hardware']['bed']['enable'] == 'true';
-		$json['feeder']['show'] = $json['feeder']['show'] == 'true';
-		$json['filament']['inserted'] = $json['filament']['inserted'] == 'true';
+		$json['feeder']['show']            = $json['feeder']['show'] == 'true';
+		$json['filament']['inserted']      = $json['filament']['inserted'] == 'true';
 		
 		saveSettings($json);
 		resetController();
 		$this->output->set_content_type('application/json')->set_output(json_encode(loadSettings()));
 		
+	}
+	
+	/**
+	 * 
+	 */
+	public function deshape()
+	{
+	    $this->load->helpers(array('api_helper', 'myfabtotum_helper'));
+	    
+	    //$projects_full = deshape_list_projects_full();
+	    
+	    $args['project'] = array(
+	        'project_name' => 'Prova Project',
+	        'project_description' => '1 Progetto di prova pubblico',
+	        'visibility' => 'PUBLIC',
+	        'categories' => array('Design'),
+	        'parts' => array (
+	            array(
+	                'part_name' => 'Nome parte',
+	                'part_description' => 'Descrizione parte',
+	                'price' => 0,
+	                'part_creation_tool' => 'Printing Head Pro',
+	                'part_quantity' => 1,
+	                'ordinal_number' => 1,
+	                'part_files' => array (
+	                    array(
+	                        'title' => 'File title',
+	                        'file_type' => 'STL', 
+	                        'file_data' => base64_encode("FILE STL DI PROVA"),
+	                        'file_name' => 'File name'
+	                    )
+	                )
+	            )
+	        )
+	    );
+	    
+	    $project = deshape_create_project($args);
+	    
+	    //print_r($project);
 	}
  }
  

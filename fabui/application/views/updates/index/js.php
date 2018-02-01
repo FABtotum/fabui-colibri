@@ -493,12 +493,12 @@
 	{
 		handleUpdate(data);
 		handleCurrent(data.update.current);
-		handleTaskStatus(data.task.status);
+		handleTaskStatus(data.task.status, data);
 	}
 	/**
 	*
 	**/
-	function handleTaskStatus(status)
+	function handleTaskStatus(status, data)
 	{
 		
 		switch(status){ 
@@ -508,15 +508,23 @@
 			case 'runnning':
 				break;
 			case 'completed':
-				$(".status").html('<i class="fa fa-check"></i> Update completed');
+
+
+				if(data.update.current.status == "error"){
+					$(".status").html('<i class="fa fa-warning"></i> ' + data.update.current.message).addClass('margin-bottom-20');
+					$(".lead").hide();
+					$(".update-details").hide();
+				}else{
+					$(".status").html('<i class="fa fa-check"></i> Update completed');
+					$("#do-abort").remove();
+					$(".small").html('<?php echo _("A reboot is needed to apply new features") ?>');
+					if($("#do-reboot").length == 0) $(".button-container").append('<button class="btn btn-default  action-buttons" id="do-reboot"> <?php echo _("Reboot now") ?></button>')
+					$('.fabtotum-icon').parent().removeClass().addClass('tada animated');
+					$("#do-reboot").on('click', fabApp.reboot);
+				}
 				/*$('.fabtotum-icon .badge').addClass('check').find('i').removeClass('fa-spin fa-refresh').addClass('fa-check');*/
-				$("#do-abort").remove();
 				fabApp.unFreezeMenu();
 				checkUpdateStatus(true);
-				$(".small").html('<?php echo _("A reboot is needed to apply new features") ?>');
-				if($("#do-reboot").length == 0) $(".button-container").append('<button class="btn btn-default  action-buttons" id="do-reboot"> <?php echo _("Reboot now") ?></button>')
-				$('.fabtotum-icon').parent().removeClass().addClass('tada animated');
-				$("#do-reboot").on('click', fabApp.reboot);
 				clearInterval(checkInterval);
 				number_tasks -= 1;
 				fabApp.updateNotificationBadge();

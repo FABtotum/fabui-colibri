@@ -24,6 +24,7 @@ __version__ = "1.0"
 
 # Import standard python module
 import os, re
+import urllib2
 
 ########################################################################
 # Execute command via shell and return the complete output as a string
@@ -122,3 +123,41 @@ def get_local_bundle(name):
         return bundles[name]
     else:
         return None
+########################################################################
+# GET DIRECTORY FREE SPACE IN BYTES
+########################################################################
+def get_dir_free_space(directory):
+    result = shell_exec("df -Pk "+directory+" | tail -1 | awk '{print $4}'")
+    try:
+        kbytes = float(result[0].strip())
+        return int(kbytes*1024)
+    except IndexError:
+        return "n.a"
+########################################################################
+# GET REMOTE FILE SIZE
+########################################################################
+def get_url_num_bytes(url):
+    """
+    Get number of bytes of file at a URL. None if not reported.
+    """
+    # urllib2 could be a bit more intelligent in guessing what I mean:
+    if not re.match('^[a-zA-Z]*:', url):
+        if os.path.exists(url):
+            url = 'file:' + url
+        else:
+            url = 'http://' + url
+    try:
+        class HeadRequest(urllib2.Request):
+            def get_method(self):
+                return "HEAD"
+        response = urllib2.urlopen(HeadRequest(
+                url, None, {'User-Agent': 'Mozilla/5.0'}))
+        # if using_py2:
+        num_bytes = response.info().getheader('content-length')
+        
+    except Exception as e:
+        print('Failed to connect to url: {0}'.format(url))
+        num_bytes = None
+    if num_bytes is not None:
+        num_bytes = int(num_bytes)
+    return num_bytes

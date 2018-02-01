@@ -176,7 +176,7 @@ class PluginManagerApplication(GCodePusher):
             self.factory.setCurrentTask( task.getName() )
             self.factory.update()
             self.trace(_("Installing plugin {0}...").format(task.getName()) )
-            task.install()
+            # task.install()
             self.trace(_("Installed plugin {0}").format(task.getName()) )
         
         self.trace(_("Finishing task"))

@@ -33,6 +33,7 @@ import pycurl
 
 # Import internal modules
 from fabtotum.utils.translation import _, setLanguage
+from fabtotum.utils.common import shell_exec
 from fabtotum.fabui.gpusher import GCodePusher
 from fabtotum.update.factory  import UpdateFactory
 from fabtotum.update import BundleTask, FirmwareTask, BootTask, PluginTask
@@ -77,18 +78,24 @@ class UpdateApplication(GCodePusher):
          
     def state_change_callback(self, state):
         if state == 'aborted' or state == 'finished':
-            self.trace( _("Print STOPPED") )
+            # self.trace( _("Print STOPPED") )
             self.finalize_task()
 
     def update_monitor(self, factory=None):
         with self.monitor_lock:
             self.update_stats.update( self.factory.serialize() )
             self.update_monitor_file()
-
+    
+    def clearFolder(self):
+        """ clear old files """
+        folder = self.config.get('general', 'bigtemp_path')
+        shell_exec('sudo rm -rvf {0}/fabui/*.cb {1}/fabui/*.md5sum {2}/fabui/boot-*.zip'.format(folder, folder, folder))
+    
     def run(self, task_id, bundles, firmware_switch, boot_switch, plugins):
         """
         """
-
+        
+        self.clearFolder()
         self.prepare_task(task_id, task_type='update', task_controller='updates')
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
@@ -127,19 +134,27 @@ class UpdateApplication(GCodePusher):
         self.send('M150 R0 U255 B0 S50')
 
         self.factory.setStatus('downloading')
-        for task in self.factory.getTasks():
-            self.factory.setCurrentTask( task.getName() )
-            self.factory.update()
-            task.download()
         
-        self.factory.setStatus('installing')    
         for task in self.factory.getTasks():
             self.factory.setCurrentTask( task.getName() )
             self.factory.update()
-            self.send('M150 R0 U255 B0 S100')
-            task.install()
-            self.send('M150 R0 U255 B0 S100')
+            task.setInstallable(task.download())
+        
+        self.factory.setStatus('installing')
+        
+        for task in self.factory.getTasks():
+            
+            if(task.isInstallable()):
+                
+                self.factory.setCurrentTask( task.getName() )
+                self.factory.update()
+                self.send('M150 R0 U255 B0 S100')
+                task.install()
+                self.send('M150 R0 U255 B0 S100')
 
+        # clear files
+        for task in self.factory.getTasks():
+            task.remove()
         self.playBeep()
         # Set ambient colors
         
@@ -156,8 +171,9 @@ class UpdateApplication(GCodePusher):
         self.send("M702 S{0}".format(color['g']), group='bootstrap')
         self.send("M703 S{0}".format(color['b']), group='bootstrap')
         
-        print "finishing task"
+        # print "finishing task"
         self.finish_task()
+        self.clearFolder()
 
 
 def main():

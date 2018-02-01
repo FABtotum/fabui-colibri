@@ -23,6 +23,7 @@ class UpdateFactory:
 		self.reboot_required = False
 		self.status = ''
 		self.task = ''
+		self.message = ''
 	
 	def getTasks(self):
 		return self.tasks
@@ -55,7 +56,7 @@ class UpdateFactory:
 	def addTask(self, task):
 		task.setFactory(self)
 		self.tasks.append(task)
-
+		
 	def update(self):
 		if self.notify_update:
 			self.notify_update(self)
@@ -82,6 +83,12 @@ class UpdateFactory:
 	
 	def getStatus(self):
 		return self.status
+	
+	def setMessage(self, message):
+		self.message = message
+		
+	def getMessage(self):
+		return self.message
 	
 	def setCurrentTask(self, task):
 		self.task = task
@@ -114,7 +121,8 @@ class UpdateFactory:
 				"type": self.getCurrentType(),
 				"status": self.getStatus(),
 				"task": self.getCurrentTask(),
-				"reboot": self.getRebootRequired()
+				"reboot": self.getRebootRequired(),
+				"message": self.getMessage()
 			},
 			"tasks":[]
 		}

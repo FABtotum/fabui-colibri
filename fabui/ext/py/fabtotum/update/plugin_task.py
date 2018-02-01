@@ -23,6 +23,7 @@ import time
 
 from fabtotum.update.subtask  import SubTask
 from fabtotum.utils.plugin import install_plugin
+from fabtotum.utils.common import shell_exec
 
 class PluginTask(SubTask):
 
@@ -35,6 +36,7 @@ class PluginTask(SubTask):
 		self.slug          = data['slug']
 		
 		download_url = rel['url_zip']
+		
 		self.addFile('plugin', download_url, self.slug + '.zip', use_endpoint=False)
 		self.setMainFile("plugin")
 	
@@ -61,3 +63,7 @@ class PluginTask(SubTask):
 			print "Plugin not installed"
 			self.setStatus('error')
 			self.setMessage('Failed to install plugin "{0}"'.format(plugin_name))
+	
+	def remove(self):
+		### remove files ###
+		shell_exec('sudo rm {0}'.format(self.getFile("plugin").getLocal()))

@@ -72,7 +72,7 @@
             					<label class="label"><?php echo _("Firmware");?></label>
             					<div class="inline-group">
             						<label class="checkbox">
-            							<input type="checkbox" class="backup-folders" value="firmware-eeprom"><i></i> <?php echo _("EEPROM");?>
+            							<input type="checkbox" id="firmware"  value="firmware-eeprom"><i></i> <?php echo _("EEPROM");?>
             						</label>
             					</div>
             				</section>
@@ -81,9 +81,6 @@
             					<div class="inline-group">
             						<label class="checkbox">
             							<input type="checkbox" class="backup-folders" value="users-data"><i></i> <?php echo _("Data");?>
-            						</label>
-            						<label class="checkbox">
-            							<input type="checkbox" class="backup-folders" value="users-projects"><i></i> <?php echo _("Projects");?>
             						</label>
             					</div>
             				</section>
@@ -108,10 +105,15 @@
             	<h4 class="modal-title" id="myModalLabel"><?php echo _("Restore wizard");?></h4>
             </div>
             <div class="modal-body">
+            	<div class="row">
+            		<div class="col-sm-12">
+            			<div id="upload-backup-dropzone" class="dropzone"></div>
+            		</div>
+            	</div>
             </div>
             <div class="modal-footer">
             	<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            	<button type="button" class="btn btn-primary"><?php echo _("Restore");?></button>
+            	<button type="button" class="btn btn-primary action" data-action="upload" id="upload-button"><?php echo _("Upload");?></button>
             </div>
         </div>  
     </div>  

@@ -29,14 +29,14 @@ class RemoteVersion:
         if not config:
             self.config = ConfigService()
         
-        self.colibri_endpoint = self.config.get('updates', 'colibri_endpoint')
+        self.colibri_endpoint  = self.config.get('updates', 'colibri_endpoint')
         self.firmware_endpoint = self.config.get('updates', 'firmware_endpoint')
-        self.plugin_endpoint = self.config.get('updates', 'plugins_endpoint')
+        self.plugin_endpoint   = self.config.get('updates', 'plugins_endpoint')
         self.arch = arch
         self.mcu = mcu
-        self.colibri = None
+        self.colibri  = None
         self.firmware = None
-        self.plugins = None
+        self.plugins  = None
         self.setColibri()
         self.setFirmware()
         self.setPlugins()
@@ -49,8 +49,7 @@ class RemoteVersion:
         curl.setopt(pycurl.FOLLOWLOCATION, 1)
         curl.setopt(pycurl.MAXREDIRS, 5)
         curl.setopt(curl.WRITEDATA, buffer)
-        curl.perform()
-        
+        curl.perform()        
         return buffer.getvalue()
         
     def setColibri(self):

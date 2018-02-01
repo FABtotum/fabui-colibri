@@ -20,13 +20,15 @@
 
 import shlex, subprocess
 
+from fabtotum.utils.common import shell_exec
 from fabtotum.update.subtask  import SubTask
 
 class BundleTask(SubTask):
 	
-	def __init__(self, name, data, factory=None):
+	def __init__(self, name, data, repository, factory=None):
 		super(BundleTask, self).__init__(name, "bundle", factory)
 		
+		self.repository    = repository
 		self.latest        = data["latest"]
 		self.date_uploaded = data[self.latest]['date-uploaded']
 		self.priority      = data[self.latest]['priority']
@@ -34,7 +36,7 @@ class BundleTask(SubTask):
 		self.optional      = data[self.latest]['optional']
 		
 		for tag in data[self.latest]['files']:
-			self.addFile(tag, data[self.latest]['files'][tag])
+			self.addFile(tag, self.repository + '/' + data[self.latest]['files'][tag])
 
 		self.setMainFile("bundle")
 
@@ -71,3 +73,7 @@ class BundleTask(SubTask):
 			
 		self.factory.update()
 		print "installed:", self.getName()
+		
+	def remove(self):
+		### remove files ###
+		shell_exec('sudo rm {0} {1}'.format(self.getFile("bundle").getLocal(), self.getFile("md5sum").getLocal()))

@@ -235,14 +235,14 @@ class Projectsmanager extends FAB_Controller {
 		$deleteTopButton = '';
 		
 		if($data['isOwner'] == true){
-			$widgeFooterButtons = '<button class="btn btn-default pull-left" type="button" id="load-content"><i class="fa fa-angle-double-down"></i> view content </button>
+			$widgeFooterButtons = '<button class="btn btn-default pull-left" type="button" id="load-content"><i class="fa fa-angle-double-down"></i> '._("view content").' </button>
 				<label class="checkbox-inline" style="padding-top:0px;">
 				 <input type="checkbox" class="checkbox" disabled="disabled" id="also-content">
 				 <span>Save content also </span>
 			</label>' .$this->smart->create_button(_("Save"), 'primary')->attr(array('id' => 'save'))->attr('data-action', 'exec')->icon('fa-save')->print_html(true);
 			$deleteTopButton = '<button class="btn btn-danger button-action" data-action="delete"><i class="fa fa-trash"></i> <span class="hidden-xs">'._("Delete").'</span> </button>';
 		}else{
-			$widgeFooterButtons = '<button class="btn btn-default" type="button" id="load-content"><i class="fa fa-angle-double-down"></i> view content </button>';
+			$widgeFooterButtons = '<button class="btn btn-default" type="button" id="load-content"><i class="fa fa-angle-double-down"></i> '._("view content").' </button>';
 		}
 		
 		
@@ -1123,7 +1123,13 @@ class Projectsmanager extends FAB_Controller {
 				"title" => _("Download"),
 				"icon" => "fa-download",
 				"url" => "projectsmanager/download/file/".$fileID
-			);
+		);
+		
+		$builtin_actions[] = array(
+		    "title" => _("Edit"),
+		    "icon" => "fa-pencil",
+		    "url" => "#projectsmanager/file/".$fileID
+		);
 			
 		if( $file['print_type'] == 'additive' or $file['print_type'] == 'subtractive' )
 		{
