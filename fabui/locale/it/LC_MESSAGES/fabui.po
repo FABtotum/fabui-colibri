@@ -450,7 +450,7 @@ msgstr "Reimposta password"
 
 #: fabui/application/controllers/Backup.php:31
 msgid "Backup or restore your files"
-msgstr ""
+msgstr "Backup o ripristina i tuoi file"
 
 #: fabui/application/controllers/Systeminfo.php:55
 msgid "Enter recovery mode"
@@ -702,7 +702,6 @@ msgid "File deleted"
 msgstr "File eliminato"
 
 #: fabui/application/controllers/History.php:197
-#, fuzzy
 msgid "Show Details"
 msgstr "Dettagli"
 
@@ -1313,9 +1312,8 @@ msgid "Password"
 msgstr "Password"
 
 #: fabui/application/views/install/wizard.php:102
-#, fuzzy
 msgid "Confirm password"
-msgstr "Prego confermare la nuova password"
+msgstr "Conferma password"
 
 #: fabui/application/views/install/wizard.php:112
 #: fabui/application/views/login/register_form.php:50
@@ -1391,9 +1389,8 @@ msgid "I agree"
 msgstr "Accetto"
 
 #: fabui/application/views/install/wizard.php:247
-#, fuzzy
 msgid "Insert password"
-msgstr "Cambia password"
+msgstr "Inserisci password"
 
 #: fabui/application/views/install/wizard.php:252
 #: fabui/application/views/settings/wireless_tab.php:85
@@ -2705,7 +2702,7 @@ msgstr "Timeout di inattività"
 
 #: fabui/application/views/settings/hardware_widget.php:107
 msgid "Idle timeout. To disable set to zero"
-msgstr ""
+msgstr "Timeout inattività. Per disabilitare inserire 0"
 
 #: fabui/application/views/settings/hardware_widget.php:113
 msgid "Wire endstop"
@@ -3193,6 +3190,8 @@ msgid ""
 "Z touch probe enabled: please make sure probe's length was <a "
 "href='#maintenance/nozzle-height-calibration'>calibrated</a> "
 msgstr ""
+"Probe abilitata: prego assicurarsi che la lunghezza è stata <a "
+"href='#maintenance/nozzle-height-calibration'>calibrata</a> "
 
 #: fabui/application/views/std/print_setup.php:99
 msgid "Quickly home all axis. Works well with a well calibrated working plane"
@@ -3962,16 +3961,14 @@ msgstr "Firmware installato"
 msgid "Build-date"
 msgstr "Data di costruzione"
 
-#: fabui/application/views/cam/js.php:88
-#: fabui/application/views/cam/js.php:897
+#: fabui/application/views/cam/js.php:88 fabui/application/views/cam/js.php:897
 #: fabui/application/views/backup/js.php:44
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Trascina file per caricarli"
 
-#: fabui/application/views/cam/js.php:88
-#: fabui/application/views/cam/js.php:897
+#: fabui/application/views/cam/js.php:88 fabui/application/views/cam/js.php:897
 #: fabui/application/views/backup/js.php:44
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
@@ -4386,24 +4383,20 @@ msgid "Since the beginning"
 msgstr "Dall'inizio"
 
 #: fabui/application/views/history/main_js.php:136
-#, fuzzy
 msgid "Not rated"
-msgstr "Non supportato"
+msgstr "Non votato"
 
 #: fabui/application/views/history/main_js.php:141
-#, fuzzy
 msgid "Started"
-msgstr "Inizia"
+msgstr "Iniziato"
 
 #: fabui/application/views/history/main_js.php:142
-#, fuzzy
 msgid "Finished"
-msgstr "Completa"
+msgstr "Finito"
 
 #: fabui/application/views/history/main_js.php:143
-#, fuzzy
 msgid "Rating"
-msgstr "Rotando"
+msgstr "Voto"
 
 #: fabui/application/views/history/main_js.php:147
 #: fabui/application/views/projectsmanager/edit/widget.php:64
@@ -4412,9 +4405,8 @@ msgid "Note"
 msgstr "Nota"
 
 #: fabui/application/views/history/main_js.php:152
-#, fuzzy
 msgid "it again"
-msgstr "Usa ancora"
+msgstr "ancora"
 
 #: fabui/application/views/history/stats_tab.php:6
 msgid "<strong>Info!</strong> No data available"
@@ -4425,9 +4417,8 @@ msgid "volte"
 msgstr ""
 
 #: fabui/application/views/history/stats_tab.php:92
-#, fuzzy
 msgid "Total time"
-msgstr "Totale "
+msgstr "Tempo totale"
 
 #: fabui/application/views/history/main_widget.php:48
 #: fabui/application/views/layout/default/top.php:22
@@ -4547,13 +4538,12 @@ msgid "EEPROM"
 msgstr ""
 
 #: fabui/application/views/backup/widget.php:80
-#, fuzzy
 msgid "Users"
-msgstr "Utente"
+msgstr "Utenti"
 
 #: fabui/application/views/backup/widget.php:83
 msgid "Data"
-msgstr ""
+msgstr "Dati"
 
 #: fabui/application/views/myfabtotum/back_url_js.php:43
 msgid "Sign-in with local access and go to network settings"
@@ -4942,8 +4932,7 @@ msgstr "Se sei stato tu a mettere in pausa puoi ignorare questa email"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:240
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:240
 msgid "Scan completed"
 msgstr "Scansione completata"
 
@@ -5578,9 +5567,8 @@ msgid "No data available"
 msgstr "Dati non disponibili"
 
 #: fabui/application/views/projectsmanager/file/stats/widget.php:37
-#, fuzzy
 msgid "Attempts"
-msgstr "tentativi"
+msgstr "Tentativi"
 
 #: fabui/application/views/projectsmanager/file/add/js.php:39
 msgid "You can upload 10 files at time"
