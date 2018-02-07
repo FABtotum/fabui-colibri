@@ -35,12 +35,12 @@ try:
   from gi.repository import GObject
 except ImportError:
   import gobject as GObject
-  
+
 # Import internal modules
 #~ import bluezutils
 
-from adapter import Adapter
-from agent import Agent
+from fabtotum.bluetooth.adapter import Adapter
+from fabtotum.bluetooth.agent import Agent
 ################################################################################
 
 dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
@@ -55,7 +55,7 @@ devices = adapter.discoverDevices(look_for_name="PRISM", timeout=30)
 for addr in devices:
     dev = devices[addr]
     print addr, dev.Name, dev.Paired, dev.Trusted, dev.Adapter
-    
+
     if not dev.Paired:
         print "Pairing..."
         dev.Pair()
@@ -63,4 +63,4 @@ for addr in devices:
         print "Paired"
     else:
         print "Already paired"
-    
+

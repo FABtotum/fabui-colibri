@@ -48,25 +48,25 @@ class Rejected(dbus.DBusException):
 
 class Agent(dbus.service.Object):
     exit_on_release = True
-    
-    def __init__(self, passkey="1234", bus=None, log=None, path=AGENT_PATH, capability="KeyboardDisplay"):        
-        
+
+    def __init__(self, passkey="1234", bus=None, log=None, path=AGENT_PATH, capability="KeyboardDisplay"):
+
         if bus:
             self.__bus = bus
         else:
             self.__bus = dbus.SystemBus()
-        
+
         self.log = log
-        
+
         super(Agent, self).__init__(self.__bus, path)
-        
+
         obj = self.__bus.get_object(SERVICE_NAME, "/org/bluez");
-        
+
         self.__passkey = passkey
         self.__manager = dbus.Interface(obj, AGENT_MANAGE_INTERFACE)
         self.__path = path
         self.__capability = capability
-        
+
     def set_exit_on_release(self, exit_on_release):
         self.exit_on_release = exit_on_release
 
@@ -86,10 +86,11 @@ class Agent(dbus.service.Object):
                     in_signature="os", out_signature="")
     def AuthorizeService(self, device, uuid):
         self.log.debug("AuthorizeService (%s, %s)" % (device, uuid))
-        authorize = ask("Authorize connection (yes/no): ")
-        if (authorize == "yes"):
-            return
-        raise Rejected("Connection rejected by user")
+        return
+        #~ authorize = ask("Authorize connection (yes/no): ")
+        #~ if (authorize == "yes"):
+            #~ return
+        #~ raise Rejected("Connection rejected by user")
 
     @dbus.service.method(AGENT_INTERFACE,
                     in_signature="o", out_signature="s")
@@ -121,21 +122,30 @@ class Agent(dbus.service.Object):
     def RequestConfirmation(self, device, passkey):
         self.log.debug("RequestConfirmation (%s, %06d): Yes" % (device, passkey))
         #~ confirm = ask("Confirm passkey (yes/no): ")
-        confirm = "yes"
-        if (confirm == "yes"):
-            set_trusted(device)
-            return
-        raise Rejected("Passkey doesn't match")
+        #~ confirm = "yes"
+        #~ if (confirm == "yes"):
+            #~ #set_trusted(device)
+            #~ return
+        return
+        #~ raise Rejected("Passkey doesn't match")
 
     @dbus.service.method(AGENT_INTERFACE,
                     in_signature="o", out_signature="")
     def RequestAuthorization(self, device):
         self.log.debug("RequestAuthorization (%s): Yes" % (device))
         #~ auth = ask("Authorize? (yes/no): ")
-        auth = "yes"
-        if (auth == "yes"):
-            return
-        raise Rejected("Pairing rejected")
+        #~ auth = "yes"
+        #~ if (auth == "yes"):
+            #~ return
+        return
+        #~ raise Rejected("Pairing rejected")
+
+    @dbus.service.method("org.bluez.Agent",
+                         in_signature="s",
+                         out_signature="")
+    def ConfirmModeChange(self, mode):
+        print("ConfirmModeChange ({})".format(mode))
+        return
 
     @dbus.service.method(AGENT_INTERFACE,
                     in_signature="", out_signature="")
@@ -145,24 +155,24 @@ class Agent(dbus.service.Object):
 if __name__ == '__main__':
     from fabtotum.fabui.config  import ConfigService
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-    
+
     # Setup arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("-L", "--log",              help="Use logfile to store log messages.",  default='<stdout>')
     parser.add_argument("-p", "--pidfile",          help="File to store process pid.",          default=os.path.join(RUN_PATH,'btagent.pid') )
-    
+
     # Get arguments
     args = parser.parse_args()
     pidfile = args.pidfile
     logging_facility = args.log
-    
+
     with open(pidfile, 'w') as f:
         f.write( str(os.getpid()) )
-    
+
     config = ConfigService()
     PASSKEY = config.get('bluetooth', 'passkey', '1234')
     LOG_LEVEL = 'DEBUG'
-    
+
     # Setup logger
     if LOG_LEVEL == 'INFO':
         LOG_LEVEL = logging.INFO
@@ -184,9 +194,9 @@ if __name__ == '__main__':
     ch.setFormatter(formatter)
     ch.setLevel(LOG_LEVEL)
     logger.addHandler(ch)
-    
+
     mainloop = GObject.MainLoop()
-    
+
     agent = Agent(passkey=PASSKEY, log=logger)
     agent.register()
 

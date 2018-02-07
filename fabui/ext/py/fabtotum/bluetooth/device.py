@@ -39,15 +39,15 @@ from common import SERVICE_NAME, DEVICE_INTERFACE, find_device
 ################################################################################
 
 class Device(object):
-    
+
     def __init__(self, address, bus=None):
         if bus:
             self.__bus = bus
         else:
             self.__bus = dbus.SystemBus()
-            
+
         self.__device = find_device(address)
-        self.__props = dbus.Interface(self.__bus.get_object(SERVICE_NAME, self.__device.object_path), "org.freedesktop.DBus.Properties") 
+        self.__props = dbus.Interface(self.__bus.get_object(SERVICE_NAME, self.__device.object_path), "org.freedesktop.DBus.Properties")
 
     def test(self):
         pass
@@ -58,41 +58,45 @@ class Device(object):
         initiate pairing and then retrieve all SDP records
         (or GATT primary services).
         """
+        #~ try:
         self.__device.Pair()
+        #~ except dbus.exceptions.DBusException as e:
+            #~ print e
+            #~ pass
 
     def CancelPairing(self):
         self.__device.CancelPairing()
 
     def Connect(self):
         self.__device.Connect()
-        
+
     def Disconnect(self):
         self.__device.Disconnect()
-    
+
     @property
     def object_path(self):
         return self.__device.object_path
-    
+
     @property
     def Adapter(self):
         return self.__props.Get(DEVICE_INTERFACE, "Adapter")
-        
+
     @property
     def Address(self):
         return self.__props.Get(DEVICE_INTERFACE, "Address")
-        
+
     @property
     def Name(self):
         return self.__props.Get(DEVICE_INTERFACE, "Name")
-        
+
     @property
     def Icon(self):
         return self.__props.Get(DEVICE_INTERFACE, "Icon")
-        
+
     @property
     def Class(self):
         return self.__props.Get(DEVICE_INTERFACE, "Class")
-        
+
     @property
     def RSSI(self):
         """
@@ -100,19 +104,19 @@ class Device(object):
         device (inquiry or advertising).
         """
         return self.__props.Get(DEVICE_INTERFACE, "RSSI")
-        
+
     @property
     def Paired(self):
         return self.__props.Get(DEVICE_INTERFACE, "Paired")
-        
+
     @property
     def Trusted(self):
         return self.__props.Get(DEVICE_INTERFACE, "Trusted")
-        
+
     @Trusted.setter
     def Trusted(self, value):
         self.__props.Set(DEVICE_INTERFACE, "Trusted", value)
-        
+
     @property
     def Blocked(self):
         return self.__props.Get(DEVICE_INTERFACE, "Blocked")

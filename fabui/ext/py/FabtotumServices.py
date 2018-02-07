@@ -67,7 +67,7 @@ def signal_handler(signal, frame):
 def shell_exec(cmd):
     stdin,stdout = os.popen2(cmd)
     stdin.close()
-    lines = stdout.readlines(); 
+    lines = stdout.readlines();
     stdout.close()
     return lines
 
@@ -234,13 +234,13 @@ rpc = None
 
 if not no_xmlrpc:
     if soc_id == 'BCM2709':
-        
+
         xmlrpc_exe = os.path.join(PYTHON_PATH, 'fabtotum/utils/xmlrpc/xmlrpcserver.py')
         os.system('python {0} -p {1} -L /var/log/fabui/xmlrpc.log &'.format(xmlrpc_exe, xmlrpc_pidfile) )
-        
+
         #myfabtotumcom_exe = os.path.join(PYTHON_PATH, 'MyFabtotumCom.py')
         #os.system('python {0} -p {1} -L /var/log/fabui/myfabtotumcom.log &'.format(myfabtotumcom_exe, myfabtotumcom_pidfile))
-        
+
     else:
         from fabtotum.utils.xmlrpc.xmlrpcserver import create as rpc_create
         rpc = rpc_create(gcservice, config, logging_facility, logger)

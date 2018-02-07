@@ -2,10 +2,10 @@
 ################################################################
 # Begin $rc_base/init.d/
 #
-# Description : 
-# 
+# Description :
+#
 # Authors     :
-# 
+#
 # Version     : 00.01
 #
 # Notes       :
@@ -17,6 +17,11 @@
 
 test -r /etc/default/fabui && source /etc/default/fabui
 
+[ -z "$BTAGENT_STARTUP" ] && BTAGENT_STARTUP="yes"
+[ -z "$GPIOMONITOR_STARTUP" ] && GPIOMONITOR_STARTUP="yes"
+[ -z "$XMLRPCS_STARTUP" ] && XMLRPCS_STARTUP="yes"
+[ -z "$FABSERVICE_STARTUP" ] && FABSERVICE_STARTUP="yes"
+
 SERVICE_NAME=FABUI
 FORCED="$2"
 CPUID=$(cat /proc/cpuinfo | grep Hardware | awk '{print $3}')
@@ -26,14 +31,14 @@ case "$1" in
     mkdir -p ${TEMP_PATH}/fabui
     chown 33:33 ${TEMP_PATH}/fabui
     chown 33:33 ${BIGTEMP_PATH}
-    
+
     mkdir -p ${BIGTEMP_PATH}/fabui
     chown 33:33 ${BIGTEMP_PATH}/fabui
     chown 33:33 ${BIGTEMP_PATH}
-	 
+
 	#mkdir -p ${TEMP_PATH}/lighttpd/compress
 	#chown 33:33 ${TEMP_PATH}/lighttpd/compress
-	
+
 	### fix file permissions
 	chown -R 33:33 /mnt/userdata/*
 	#~ chown -R 33:33 /var/lib/fabui/*
@@ -44,12 +49,12 @@ case "$1" in
 	chown 33:33 /var/lib/fabui/plugins
 	chown 33:33 /var/lib/fabui/feeders
 	chown -R 33:33 /var/lib/fabui/settings
-    
+
     boot_msg "Starting ${SERVICE_NAME}."
 
     # (obsolete)
     #python ${PYTHON_PATH}/setBaud.py &> /var/log/fabui/setBaud.log
-    
+
     ######## fabtotum server ########
     #start-stop-daemon -b -S -q -m -p ${FABSERVICE_PID} --exec python ${PYTHON_PATH}/FabtotumServices.py -- -B -L /var/log/fabui/FabtotumServices.log
     ARGS="-B -p ${FABSERVICE_PID} -x ${XMLRPCS_PID}"
@@ -59,19 +64,27 @@ case "$1" in
     if [ x"$BTAGENT_STARTUP" != x"yes" ]; then
         ARGS="${ARGS} --no-btagent"
     fi
-    
-    python ${PYTHON_PATH}/FabtotumServices.py ${ARGS} &> /var/log/fabui/FabtotumServices.log 2>&1 &
+    if [ x"$GPIOMONITOR_STARTUP" != x"yes" ]; then
+        ARGS="${ARGS} --no-gpiomonitor"
+    fi
+    if [ x"$XMLRPCS_STARTUP" != x"yes" ]; then
+        ARGS="${ARGS} --no-xmlrpc"
+    fi
+
+    if [ x"$FABSERVICE_STARTUP" == x"yes" ]; then
+        python ${PYTHON_PATH}/FabtotumServices.py ${ARGS} &> /var/log/fabui/FabtotumServices.log 2>&1 &
+    fi
 
     evaluate_retval
     ;;
   stop)
     boot_msg "Stopping ${SERVICE_NAME}."
-    
+
     start-stop-daemon -K -q -o -p ${FABSERVICE_PID}
     start-stop-daemon -K -q -o -p ${GPIOMONITOR_PID}
     [ x"$CPUID" == x"BCM2709" ] && start-stop-daemon -K -q -o -p ${XMLRPCS_PID}
     [ x"$BTAGENT_STARTUP" = x"yes" ] && start-stop-daemon -K -q -o -p ${BTAGENT_PID}
-    
+
     evaluate_retval
 
     ;;
@@ -93,7 +106,7 @@ case "$1" in
 
     # Reset totumduino
     echo 0 > /sys/class/gpio/$GPIO_DIR/value
-    
+
     # Start the services with totumduino hw reset
     ${0} start "forced"
     ;;
