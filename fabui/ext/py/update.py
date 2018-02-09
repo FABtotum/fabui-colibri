@@ -19,7 +19,7 @@
 # along with FABUI.  If not, see <http://www.gnu.org/licenses/>.
 
 # Import standard python module
-import os
+import os, sys
 import re
 import argparse
 import time
@@ -31,9 +31,12 @@ from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 import pycurl
 
+# Import external modules
+from threading import Event, Thread
+
 # Import internal modules
 from fabtotum.utils.translation import _, setLanguage
-from fabtotum.utils.common import shell_exec
+from fabtotum.utils.common import shell_exec, get_dir_free_space
 from fabtotum.fabui.gpusher import GCodePusher
 from fabtotum.update.factory  import UpdateFactory
 from fabtotum.update import BundleTask, FirmwareTask, BootTask, PluginTask
@@ -69,8 +72,10 @@ class UpdateApplication(GCodePusher):
             self.set_task_status(GCodePusher.TASK_ABORTED)
         else:
             self.set_task_status(GCodePusher.TASK_COMPLETED)
-                
+        
+        print "task finalized"        
         self.stop()
+        sys.exit()
     
     # Only for development
     def trace(self, msg):
@@ -89,24 +94,34 @@ class UpdateApplication(GCodePusher):
     def clearFolder(self):
         """ clear old files """
         folder = self.config.get('general', 'bigtemp_path')
-        shell_exec('sudo rm -rvf {0}/fabui/*.cb {1}/fabui/*.md5sum {2}/fabui/boot-*.zip'.format(folder, folder, folder))
+        shell_exec('sudo rm -rvf {0}/fabui/*.cb {1}/fabui/*.md5sum {2}/fabui/boot-*.zip {3}/fabui/fab_*.zip'.format(folder, folder, folder, folder))
     
     def run(self, task_id, bundles, firmware_switch, boot_switch, plugins):
         """
         """
         
+        # TODO
+        # check availabel free disk space
+        #
+        
         self.clearFolder()
         self.prepare_task(task_id, task_type='update', task_controller='updates')
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
-        self.trace( _("Update initialized.") )
-
+        free_disk_space = get_dir_free_space(self.factory.getTempFolder())
+        
+        # print "free disk space ", free_disk_space
+        # self.trace( _("Update initialized.") )
+        
+        self.factory.setStatus('init')
+        self.factory.setMessage(_("Connecting to update server"))
+        self.factory.update()
+        
         if bundles:
             remote_bundles = self.factory.getBundles()
             if remote_bundles:
-                
                 for bundle_name in bundles:
-                    bundle = BundleTask(bundle_name, remote_bundles[bundle_name])
+                    bundle = BundleTask(bundle_name, remote_bundles[bundle_name], self.factory.getEndpoint('bundle'))
                     self.factory.addTask(bundle)
         
         if plugins:
@@ -122,25 +137,46 @@ class UpdateApplication(GCodePusher):
         if firmware_switch:
             remote_firmware = self.factory.getFirmware()
             if remote_firmware:
-                firmware = FirmwareTask("fablin", remote_firmware)
+                firmware = FirmwareTask("fablin", remote_firmware, self.factory.getEndpoint('firmware'))
                 self.factory.addTask(firmware)
         
         if boot_switch:
             remote_boot = self.factory.getBoot()
             if remote_boot:
-                boot = BootTask("boot", remote_boot)
+                boot = BootTask("boot", remote_boot, self.factory.getEndpoint('boot'))
                 self.factory.addTask(boot)
         
+        # 
+        # count update size
+        # and compare with
+        # available free disk space
+        # abort task if space is not enough
+        total_size = 0
+        for task in self.factory.getTasks():
+            size = task.getFilesSize()
+            total_size += size
+        
+        if(free_disk_space <=  total_size):
+            self.factory.setStatus('error')
+            self.factory.setMessage(_("Not enough disk space for the update. Please free disk space and try again"))
+            self.factory.update()
+            self.finalize_task()
+        
+        # start downloading all bundles | plugins | firmware
+        
         self.send('M150 R0 U255 B0 S50')
-
+        
         self.factory.setStatus('downloading')
         
         for task in self.factory.getTasks():
             self.factory.setCurrentTask( task.getName() )
             self.factory.update()
-            task.setInstallable(task.download())
+            task.setInstallable(task.download()) # if download fails task is not installable
+        
         
         self.factory.setStatus('installing')
+        
+        # start install all all bundles | plugins | firmware
         
         for task in self.factory.getTasks():
             
@@ -152,12 +188,13 @@ class UpdateApplication(GCodePusher):
                 task.install()
                 self.send('M150 R0 U255 B0 S100')
 
-        # clear files
+        # clear downloaded files
         for task in self.factory.getTasks():
             task.remove()
-        self.playBeep()
-        # Set ambient colors
         
+        self.playBeep()
+        
+        # Set ambient colors
         try:
             color = self.config.get('settings', 'color')
         except KeyError:
@@ -172,6 +209,7 @@ class UpdateApplication(GCodePusher):
         self.send("M703 S{0}".format(color['b']), group='bootstrap')
         
         # print "finishing task"
+        self.factory.setStatus('')
         self.finish_task()
         self.clearFolder()
 
@@ -179,12 +217,12 @@ class UpdateApplication(GCodePusher):
 def main():
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-T", "--task-id",     						help="Task ID.",                      default=0)
-    parser.add_argument("-b", "--bundles", 							help="Bundle name to be updated" )
-    parser.add_argument("-p", "--plugins",                          help="Plugins to update")
-    parser.add_argument("--boot", action="store_true", 				help="Update boot files" )
-    parser.add_argument("-f", "--firmware", action="store_true", 	help="Update firmware" )
-    parser.add_argument("--lang",                                   help="Output language", 		      default='en_US.UTF-8' )
+    parser.add_argument("-T", "--task-id",                       help="Task ID.", default=0)
+    parser.add_argument("-b", "--bundles",                       help="Bundle name to be updated" )
+    parser.add_argument("-p", "--plugins",                       help="Plugins to update")
+    parser.add_argument("--boot", action="store_true",           help="Update boot files" )
+    parser.add_argument("-f", "--firmware", action="store_true", help="Update firmware" )
+    parser.add_argument("--lang",                                help="Output language", default='en_US.UTF-8' )
     
     # GET ARGUMENTS
     args = parser.parse_args()
@@ -208,9 +246,11 @@ def main():
     lang        = args.lang
     
     app = UpdateApplication(lang=lang)
-
+    
     app.run(task_id, bundles, firmware, boot, plugins)
+    
     app.loop()
+    #app_thread.join()
 
 if __name__ == "__main__":
     main()

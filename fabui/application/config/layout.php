@@ -5,6 +5,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * 
  */
 $config['javascript']['mandatory'] = array(
+    '/assets/js/plugin/fontawesome/fontawesome-all.min.js',
+    '/assets/js/plugin/fontawesome/fa-v4-shims.min.js',
 	'/assets/js/plugin/jquery-touch/jquery.ui.touch-punch.min.js',
 	'/assets/js/bootstrap/bootstrap.min.js',
 	'/assets/js/notification/SmartNotification.min.js',
@@ -36,20 +38,20 @@ $config['javascript']['mandatory'] = array(
  */
 $config['css']['mandatory'] = array(
 	'/assets/css/bootstrap.min.css',
-	'/assets/css/font-awesome.min.css',
+//  '/assets/css/font-awesome.min.css',
 	'/assets/css/line-icons-pro/styles.css',
 	'/assets/css/smartadmin-production-plugins.min.css',
 	'/assets/css/smartadmin-production.min.css',
 	'/assets/css/smartadmin-skins.min.css',
 //	'/assets/css/font-fabtotum.css',
 	'/assets/css/fonts.css',
-	'/assets/css/demo.min.css',
+//	'/assets/css/demo.min.css',
 	'/assets/css/bootstrap-tour/bootstrap-tour.min.css',
 	'/assets/css/fabtotum.css',
 	'/assets/js/plugin/noUiSlider.8.2.1/nouislider.min.css',
 	'/assets/js/plugin/noUiSlider.8.2.1/nouislider.pips.css',
 	'/assets/js/plugin/fancybox/jquery.fancybox.css',
-	'/assets/css/third_party.css',
+//	'/assets/css/third_party.css',
 	'/assets/css/fabui-font.css',
 );
 ?>

@@ -23,7 +23,7 @@ __license__ = "GPL - https://opensource.org/licenses/GPL-3.0"
 __version__ = "1.0"
 
 # Import standard python module
-import os
+import os, sys
 import logging
 import argparse
 
@@ -59,13 +59,18 @@ class Agent(dbus.service.Object):
         self.log = log
 
         super(Agent, self).__init__(self.__bus, path)
-
-        obj = self.__bus.get_object(SERVICE_NAME, "/org/bluez");
-
-        self.__passkey = passkey
-        self.__manager = dbus.Interface(obj, AGENT_MANAGE_INTERFACE)
-        self.__path = path
-        self.__capability = capability
+        
+        try:
+            obj = self.__bus.get_object(SERVICE_NAME, "/org/bluez");
+            
+            self.__passkey = passkey
+            self.__manager = dbus.Interface(obj, AGENT_MANAGE_INTERFACE)
+            self.__path = path
+            self.__capability = capability
+        
+        except Exception as e:
+            self.log.error("__init__: " + str(e))
+            sys.exit()
 
     def set_exit_on_release(self, exit_on_release):
         self.exit_on_release = exit_on_release
@@ -169,9 +174,9 @@ if __name__ == '__main__':
     with open(pidfile, 'w') as f:
         f.write( str(os.getpid()) )
 
-    config = ConfigService()
-    PASSKEY = config.get('bluetooth', 'passkey', '1234')
-    LOG_LEVEL = 'DEBUG'
+    config    = ConfigService()
+    PASSKEY   = config.get('bluetooth', 'passkey', '1234')
+    LOG_LEVEL = config.get('general', 'log_level', 'INFO')
 
     # Setup logger
     if LOG_LEVEL == 'INFO':

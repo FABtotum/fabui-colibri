@@ -38,7 +38,6 @@ from fabtotum.fabui.config              import ConfigService
 from fabtotum.fabui.bootstrap           import hardwareBootstrap
 from fabtotum.fabui.monitor             import StatsMonitor
 from fabtotum.fabui.notify              import NotifyService
-#from fabtotum.fabui.myfabtotum          import MyFabtotumCom
 from fabtotum.totumduino.gcode          import GCodeService
 from fabtotum.totumduino.hardware       import reset as totumduino_reset
 from fabtotum.utils.pyro.gcodeserver    import GCodeServiceServer
@@ -78,10 +77,8 @@ parser.add_argument("-R", "--reset", action='store_true',  help="Reset totumduin
 parser.add_argument("-L", "--log", help="Use logfile to store log messages.",               default='<stdout>')
 parser.add_argument("-p", "--pidfile", help="File to store process pid.",                   default=os.path.join(RUN_PATH,'fabtotumservices.pid') )
 parser.add_argument("-x", "--xmlrpc_pidfile", help="File to store xmlrpc process pid.",     default=os.path.join(RUN_PATH,'xmlrpcserver.pid') )
-parser.add_argument("-g", "--gpio_pidfile", help="File to store gpio monitor process pid.",     default=os.path.join(RUN_PATH,'gpiomonitor.pid') )
-parser.add_argument("-b", "--btagent_pidfile", help="File to store BT agent process pid.",     default=os.path.join(RUN_PATH,'btagent.pid') )
-#parser.add_argument("-m", "--myfabtotumcom_pidfile", help="File to store myfatoumcom process pid", default=os.path.join(RUN_PATH,'myfabtotumcom.pid'))
-
+parser.add_argument("-g", "--gpio_pidfile", help="File to store gpio monitor process pid.", default=os.path.join(RUN_PATH,'gpiomonitor.pid') )
+parser.add_argument("-b", "--btagent_pidfile", help="File to store BT agent process pid.",  default=os.path.join(RUN_PATH,'btagent.pid') )
 parser.add_argument("--no-xmlrpc", help="Don't start XML-RPC service", action='store_true', default=False)
 parser.add_argument("--no-gpiomonitor", help="Don't start GPIO monitor service", action='store_true', default=False)
 parser.add_argument("--no-btagent", help="Don't start BT agetn service", action='store_true', default=False)
@@ -221,9 +218,6 @@ if not no_btagent:
 statsMonitor = StatsMonitor(TEMP_MONITOR_FILE, gcservice, config, logger=logger)
 statsMonitor.start()
 
-#myFabototumCom = MyFabtotumCom(gcservice, config, logger)
-#myFabototumCom.start()
-
 # Ensure CTRL+C detection to gracefully stop the server.
 signal.signal(signal.SIGINT, signal_handler)
 
@@ -251,7 +245,6 @@ gcserver.loop()
 gcservice.loop()
 logger.info("Server stopped.")
 statsMonitor.loop()
-#myFabototumCom.loop()
 observer.join()
 #usbMonitor.join()
 #gpioMonitor.join()
