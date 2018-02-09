@@ -130,8 +130,8 @@ if(!function_exists('getBundlesStatus'))
 		$bundlesEndpoint = $CI->config->item('colibri_endpoint').getArchitecture();
 		$fwEndpoint      = $CI->config->item('firmware_endpoint').'fablin/atmega1280/';
 		//get local info
-		$localBundles      = getLocalBundles();
-		$installedFirmware = firmwareInfo();
+		$localBundles       = getLocalBundles();
+		$installedFirmware  = firmwareInfo();
 		$installedBootfiles = bootFilesInfo();
 		$installedPlugins   = getInstalledPlugins();
 		
@@ -254,17 +254,19 @@ if(!function_exists('getBundlesStatus'))
 		
 		foreach($installedPlugins as $pluginSlug => $pluginData)
 		{
-			$needUpdate = false;
+			$needUpdate    = false;
 			$latestVersion = 'unknown';
-			$changelog = 'unknown';
-			$onlineData = 'unknown';
+			$changelog     = 'unknown';
+			$onlineData    = 'unknown';
+			$online        = false;
 			
 			if($remotePlugins)
 			{
 				// check if there is an online version of this plugin
 				if( array_key_exists($pluginSlug, $remotePlugins) )
 				{
-					$onlineData = $remotePlugins[$pluginSlug];
+				    $online        = true;
+					$onlineData    = $remotePlugins[$pluginSlug];
 					$latestVersion = $onlineData['latest'];
 					
 					$needUpdate = version_compare($pluginData['version'], $onlineData['latest']) == -1 ? true : false;
@@ -280,7 +282,8 @@ if(!function_exists('getBundlesStatus'))
 				'latest'      => $latestVersion,
 				'need_update' => $needUpdate,
 				'changelog'   => $changelog,
-				'info'        => $pluginData
+				'info'        => $pluginData,
+			    'online'      => $online
 			);
 		}
 		

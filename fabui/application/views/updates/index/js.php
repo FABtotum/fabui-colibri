@@ -722,20 +722,21 @@
 
 		$.each(object.plugins, function(plugin_name, plugin) {
 
-			var tr_class = plugin.need_update ? 'warning' : '';
-			var icon = plugin.need_update ? 'fa-exclamation-circle text-danger': 'fa-check text-muted';
-			var checked = plugin.need_update ? 'checked="checked"' : '';
-			
-			html += '<tr class="'+tr_class+'">'+
-				'<td class="text-center" style="width:40px;"><i class="fa '+icon+'"></i></td>'+
-				'<td><h4>'+
-					'<a>'+plugin.info.name+'</a>' +
-					'<small>'+plugin.info.description+' | <?php echo _("Installed version") ?>: '+plugin.info.version+' </small>' + 
-				'</h4></td>'+
-				'<td class="text-center">'+plugin.latest+'</td>'+
-				'<td class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px;"><label><input id="checkbox-plugin-'+plugin_name+'" value="'+plugin_name +'" type="checkbox" '+checked+' class="checkbox checkbox-action"><span></span></label></div></td>' + 
-			'</tr>';
-
+			if(plugin.online == true){
+    			var tr_class = plugin.need_update ? 'warning' : '';
+    			var icon = plugin.need_update ? 'fa-exclamation-circle text-danger': 'fa-check text-muted';
+    			var checked = plugin.need_update ? 'checked="checked"' : '';
+    			
+    			html += '<tr class="'+tr_class+'">'+
+    				'<td class="text-center" style="width:40px;"><i class="fa '+icon+'"></i></td>'+
+    				'<td><h4>'+
+    					'<a>'+plugin.info.name+'</a>' +
+    					'<small>'+plugin.info.description+' | <?php echo _("Installed version") ?>: '+plugin.info.version+' </small>' + 
+    				'</h4></td>'+
+    				'<td class="text-center">'+plugin.latest+'</td>'+
+    				'<td class="text-center" style="width:40px"><div class="checkbox" style="margin-top:0px;"><label><input id="checkbox-plugin-'+plugin_name+'" value="'+plugin_name +'" type="checkbox" '+checked+' class="checkbox checkbox-action"><span></span></label></div></td>' + 
+    			'</tr>';
+			}
 		});
 		
 		html += '</tbody></table>';
