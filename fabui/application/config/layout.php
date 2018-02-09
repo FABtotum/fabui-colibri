@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * 
  */
 $config['javascript']['mandatory'] = array(
-    '/assets/js/plugin/fontawesome/fontawesome-all.min.js',
+    '/assets/js/plugin/fontawesome/fontawesome-all.js',
     '/assets/js/plugin/fontawesome/fa-v4-shims.min.js',
 	'/assets/js/plugin/jquery-touch/jquery.ui.touch-punch.min.js',
 	'/assets/js/bootstrap/bootstrap.min.js',
