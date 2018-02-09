@@ -2,10 +2,10 @@
 ################################################################
 # Begin $rc_base/init.d/
 #
-# Description : 
-# 
+# Description :
+#
 # Authors     :
-# 
+#
 # Version     : 00.01
 #
 # Notes       :
@@ -17,17 +17,21 @@
 
 test -r /etc/default/fabui && source /etc/default/fabui
 
+[ -z "$WEBSOCKET_STARTUP" ] && WEBSOCKET_STARTUP="yes"
+
 SERVICE_NAME="FABUI WebSocket Server"
 FORCED="$2"
 
 case "$1" in
-  start)    
+  start)
     boot_msg "Starting ${SERVICE_NAME}."
-    
+
     ######## websocket server ########
+    if [ x"$WEBSOCKET_STARTUP" == x"yes" ]; then
     sudo -u www-data php ${FABUI_PATH}/index.php Server webSocket &> /var/log/fabui/webSocket.log &
     echo $! > ${WEBSOCKET_PID}
-    
+    fi
+
     evaluate_retval
     ;;
   stop)
@@ -35,7 +39,7 @@ case "$1" in
     if [ -e "${WEBSOCKET_PID}" ]; then
         PID=$(cat ${WEBSOCKET_PID})
         kill -9 $PID &> /dev/null
-    fi    
+    fi
     evaluate_retval
     ;;
   emergency)

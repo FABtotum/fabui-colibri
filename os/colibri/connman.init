@@ -28,28 +28,30 @@ CONNMAN_ARGS="$CONNMAN_ARGS -n"
 source /usr/share/fabui/ext/bash/${NETWORK_MANAGER}_nm_functions.sh
 connman_migrate_settings &> /var/log/connman_migration.log
 
-
 DAEMON=/usr/sbin/connmand
 
 case "$1" in
-  start)
-	boot_msg "Starting connection manager."
-	start-stop-daemon -S -b -m -q -p $CONNMAN_PIDFILE --exec $DAEMON -- $CONNMAN_ARGS
-	evaluate_retval
-	;;
-  stop)
-	boot_msg "Stopping connection manager."
-	start-stop-daemon -K -q -p $CONNMAN_PIDFILE
-	evaluate_retval
-	;;
-  restart|reload)
-	${0} stop
-	sleep 1
-	${0} start
-	;;
-  *)
-	echo "Usage: $0 {start|stop|restart}"
-	exit 1
+    start)
+        # Wrokaround for bluetooth/wifi boot issue
+        sh /usr/share/fabui/ext/bash/fix_bt_wifi_issue.sh
+        
+        boot_msg "Starting connection manager."
+        start-stop-daemon -S -b -m -q -p $CONNMAN_PIDFILE --exec $DAEMON -- $CONNMAN_ARGS
+        evaluate_retval
+        ;;
+    stop)
+        boot_msg "Stopping connection manager."
+        start-stop-daemon -K -q -p $CONNMAN_PIDFILE
+        evaluate_retval
+        ;;
+    restart|reload)
+        ${0} stop
+        sleep 1
+        ${0} start
+        ;;
+    *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
 esac
 
 exit $?

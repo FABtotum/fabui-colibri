@@ -65,11 +65,11 @@ def signal_handler(signal, frame):
     statsMonitor.stop()
 
 def shell_exec(cmd):
-	stdin,stdout = os.popen2(cmd)
-	stdin.close()
-	lines = stdout.readlines(); 
-	stdout.close()
-	return lines
+    stdin,stdout = os.popen2(cmd)
+    stdin.close()
+    lines = stdout.readlines();
+    stdout.close()
+    return lines
 
 # Setup arguments
 parser = argparse.ArgumentParser()
@@ -79,10 +79,12 @@ parser.add_argument("-L", "--log", help="Use logfile to store log messages.",   
 parser.add_argument("-p", "--pidfile", help="File to store process pid.",                   default=os.path.join(RUN_PATH,'fabtotumservices.pid') )
 parser.add_argument("-x", "--xmlrpc_pidfile", help="File to store xmlrpc process pid.",     default=os.path.join(RUN_PATH,'xmlrpcserver.pid') )
 parser.add_argument("-g", "--gpio_pidfile", help="File to store gpio monitor process pid.",     default=os.path.join(RUN_PATH,'gpiomonitor.pid') )
+parser.add_argument("-b", "--btagent_pidfile", help="File to store BT agent process pid.",     default=os.path.join(RUN_PATH,'btagent.pid') )
 #parser.add_argument("-m", "--myfabtotumcom_pidfile", help="File to store myfatoumcom process pid", default=os.path.join(RUN_PATH,'myfabtotumcom.pid'))
 
-parser.add_argument("--no-xmlrpc", help="Don't start XML-RPC server", default=False)
-parser.add_argument("--no-gpiomonitor", help="Don't start GPIO monitor server", default=False)
+parser.add_argument("--no-xmlrpc", help="Don't start XML-RPC service", action='store_true', default=False)
+parser.add_argument("--no-gpiomonitor", help="Don't start GPIO monitor service", action='store_true', default=False)
+parser.add_argument("--no-btagent", help="Don't start BT agetn service", action='store_true', default=False)
 
 # Get arguments
 args = parser.parse_args()
@@ -92,9 +94,11 @@ do_reset              = args.reset
 logging_facility      = args.log
 pidfile               = args.pidfile
 xmlrpc_pidfile        = args.xmlrpc_pidfile
+btagent_pidfile       = args.btagent_pidfile
 no_xmlrpc             = args.no_xmlrpc
 gpio_pidfile          = args.gpio_pidfile
 no_gpiomonitor        = args.no_gpiomonitor
+no_btagent            = args.no_btagent
 #myfabtotumcom_pidfile = args.myfabtotumcom_pidfile
 
 with open(pidfile, 'w') as f:
@@ -208,6 +212,10 @@ if not no_gpiomonitor:
     gpiomon_exe = os.path.join(PYTHON_PATH, 'fabtotum/os/monitor/gpiomonitor.py')
     os.system('python {0} -p {1} -L /var/log/fabui/gpiomonitor.log &'.format(gpiomon_exe, gpio_pidfile) )
 
+## Bluetooth agent
+if not no_btagent:
+    btagent_exe = os.path.join(PYTHON_PATH, 'fabtotum/bluetooth/agent.py')
+    os.system('python {0} -p {1} -L /var/log/fabui/btagent.log &'.format(btagent_exe, btagent_pidfile) )
 
 ## Stats monitor
 statsMonitor = StatsMonitor(TEMP_MONITOR_FILE, gcservice, config, logger=logger)
@@ -226,13 +234,13 @@ rpc = None
 
 if not no_xmlrpc:
     if soc_id == 'BCM2709':
-        
+
         xmlrpc_exe = os.path.join(PYTHON_PATH, 'fabtotum/utils/xmlrpc/xmlrpcserver.py')
         os.system('python {0} -p {1} -L /var/log/fabui/xmlrpc.log &'.format(xmlrpc_exe, xmlrpc_pidfile) )
-        
+
         #myfabtotumcom_exe = os.path.join(PYTHON_PATH, 'MyFabtotumCom.py')
         #os.system('python {0} -p {1} -L /var/log/fabui/myfabtotumcom.log &'.format(myfabtotumcom_exe, myfabtotumcom_pidfile))
-        
+
     else:
         from fabtotum.utils.xmlrpc.xmlrpcserver import create as rpc_create
         rpc = rpc_create(gcservice, config, logging_facility, logger)
