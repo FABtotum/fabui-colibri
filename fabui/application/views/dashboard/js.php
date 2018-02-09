@@ -31,7 +31,7 @@
 		}
 		$("#blog-container").html(html);
 		$("#blog-carousel-container").html(html);
-		initCarousel("#blog-carousel-container", false);
+		//initCarousel("#blog-carousel-container", false, false);
 	}
 	/**
 	*
@@ -50,7 +50,10 @@
 		$("#twitter-container").html(html);
 
 		$("#twitter-carousel-container").html(html);
-		initCarousel("#twitter-carousel-container", false);
+		//initCarousel("#twitter-carousel-container", false, false);
+		setTimeout(function(){
+			initCarousel(".twitter-carousel", true, true);
+		},500);
 		
 	}
 	/**
@@ -94,10 +97,10 @@
 			 }
 		});
 		
-		initCarousel("#instagram-carousel-container", false);
+		//initCarousel("#instagram-carousel-container", false, false);
 		
 		setTimeout(function(){
-			initCarousel(".owl-carousel", true);
+			initCarousel(".instagram-carousel", true, false);
 		},500);
 	}
 	/**
@@ -111,7 +114,7 @@
 		var image = '';
 		var src_image = getInstagramImageSrc(item);
 		var src_video = getInstagramVideoSrc(item);
-		var carousel = getInstagramCarousel(item);
+		var carousel  = getInstagramCarousel(item);
 		var video = '';
 		var likes = '<li class="txt-color-red"><i class="fa fa-heart"></i> ('+item['like_count']+')</li>';
 		var views_count = '';
@@ -138,7 +141,6 @@
 			
 			comments_list += '<ul class="comments" style="display:none;">';
 			$.each(item.preview_comments, function(i, comment) {
-
 				comments_list += '<li>'+
 									'<img src="'+comment.user.profile_pic_url+'">'+
 									'<a target="_blank" href="https://www.instagram.com/'+comment.user.username+'"><span class="name">' + comment.user.full_name + '</span></a>' + 
@@ -201,7 +203,7 @@
 	function getInstagramCarousel(item)
 	{
 		if(item.carousel_media){
-			var html = '<div id="carousel_'+item.id+'" class="owl-carousel owl-theme">';
+			var html = '<div id="carousel_'+item.id+'" class="owl-carousel instagram-carousel owl-theme">';
 			$.each(item.carousel_media, function(i, car_item) {
 				var img_src = getInstagramImageSrc(car_item);
 				if(car_item.media_type == 1){ // PHOTO	
@@ -211,6 +213,7 @@
 					html += '<div class="image padding-10"><video class="img-responsive" controls><source src="'+video_src+'" type="video/mp4"><img src="'+img_src+'" /></video></div>';
 				}
 			});
+			html += '';
 			html += '</div>';			
 			return html;
 		}
@@ -289,34 +292,45 @@
 	/**
 	*
 	**/
-	function initCarousel(element, is_single_post)
+	function initCarousel(element, is_single_post, is_twitter)
 	{
-		
-		$(element).owlCarousel({
+
+		var custom_prev_class = is_twitter == true ? 'instagram-owl-prev' : 'instagram-owl-prev';
+		var custom_next_class = is_twitter == true ? 'instagram-owl-next' : 'instagram-owl-next';
+
+		var prev_class = "owl-prev " + custom_prev_class;
+		var next_class = "owl-next " + custom_next_class;
+
+		var show_nav =  true;
+
+		var  owl = $(element).owlCarousel({
         	loop: true,
          	margin: 10,
          	autoHeight:true,
          	navText : ["<i class='fa fw-lg fa-chevron-left font-lg'></i>","<i class='fa fw-lg fa-chevron-right font-lg'></i>"],
+         	navClass: [prev_class, next_class],
          	dots: false,
-         	onInitialize: fixNavBars,
+         	onInitialize:  fixNavBars,
          	onInitialized: fixNavBars,
-         	onChange : fixNavBars,
-         	onResized : fixNavBars,
+         	onChange :  fixNavBars,
+         	onResized :  fixNavBars,
+         	onRefreshed : fixNavBars,
+         	onDragged: fixNavBars,
             responsiveClass: true,
             	responsive: {
                 	0: {
                     	items: 1,
-                    	nav: true
+                    	nav: show_nav
                   	},
                   	600: {
                     	items: is_single_post ? 1 : 3,
-                    	nav: true
+                    	nav: show_nav
                   	},
                   	1000: {
                     	items: is_single_post ? 1 : 5,
-                    	nav: true,
+                    	nav: show_nav,
                     	loop: false,
-                    	margin: 20
+                    	margin: 10
                   	}
                 }
 		});
@@ -340,9 +354,7 @@
 		
 		$("#"+id_element+" .owl-prev").css("top", (carouselHeight-prevHeight)/2);
 		$("#"+id_element+" .owl-next").css("top", (carouselHeight-prevHeight)/2);
-		
-		
-		
+
 		if(carouselHeight > mainContentHeight) fixNavBars();
 
 	}
@@ -399,23 +411,27 @@
 		if(item.retweet_count>0) retweet += '<li class="txt-color-green"><i class="fa fa-retweet"></i> ('+ item['retweet_count']+')</li>';
 		if(item.favorite_count>0) favourite += '<li class="txt-color-red"><i class="fa fa-heart"></i> ('+item['favorite_count']+')</li>';
 
+
+		if(typeof item.quoted_status !== "undefined"){
+
+			if(typeof item.quoted_status.extended_entities !== "undefined")
+				item.extended_entities = item.quoted_status.extended_entities;
+				
+		}
 		
 		if(item.extended_entities){
-			$.each(item.extended_entities.media, function(j, media){
-				if(media.type == 'video'){
+			media_html += '<div id="carousel_'+item.id+'" class="owl-carousel twitter-carousel owl-theme" style="">';
+			$.each(item.extended_entities.media, function(j, media){	
+				if(media.type == 'photo'){
+					media_html += '<div class="image padding-top-0 padding-10" style=""><img title="'+item.original_text+'" src="'+media.media_url+'" /></div>';
+				}else if(media.type == 'video'){
 					var video_src = media.video_info.variants[1].url;
 					var src_image = media.media_url_https;
 					media_html += '<div class="image padding-10"><video class="img-responsive" controls><source src="'+video_src+'" type="video/mp4"><img src="'+src_image+'" /></video></div>';
-					has_video = true;
-				} 
+				}
 			});
-			
-		}
-		
-		if(item.entities.media && !has_video){
-			$.each(item.entities.media, function(j, media){
-				if(media.type == 'photo') media_html += '<div class="image padding-top-0 padding-10"><img title="'+item.original_text+'" src="'+media['media_url']+'" /></div>';
-			});
+			media_html += '</div>';
+		}else if(item.entities.media){
 		}
 		
 		return '<div class="panel panel-default">'+

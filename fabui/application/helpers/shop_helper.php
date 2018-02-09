@@ -12,7 +12,7 @@ define("STORE_EU",             1);
 define("STORE_INTL",           2);
 define("STORE_IT",             3);
 define("PRODUCT_HOMPEAGE",     6);
-define("PRODUCT_FILAMENTS",    8);
+define("PRODUCT_FILAMENTS",   serialize(array(8, 9)));
 define("PRODUCT_ACCESSORIES", 10);
 define("PRODUCT_ADDONS",      13);
 
@@ -111,10 +111,57 @@ if(!function_exists('downloadAllFilamentsFeeds'))
 		$CI =& get_instance();
 		$CI->config->load('fabtotum');
 		
-		downloadStoreFeed(STORE_EU,   PRODUCT_FILAMENTS, $CI->config->item('store_filament_eu_feed'));
-		downloadStoreFeed(STORE_INTL, PRODUCT_FILAMENTS, $CI->config->item('store_filament_intl_feed'));
-		downloadStoreFeed(STORE_IT,   PRODUCT_FILAMENTS, $CI->config->item('store_filament_it_feed'));
+		
+		$products_filaments = unserialize (PRODUCT_FILAMENTS); 
+		
+		downloadStoreFilamentsFeed(STORE_EU,   $products_filaments, $CI->config->item('store_filament_eu_feed'));
+		downloadStoreFilamentsFeed(STORE_INTL, $products_filaments, $CI->config->item('store_filament_intl_feed'));
+		downloadStoreFilamentsFeed(STORE_IT,   $products_filaments, $CI->config->item('store_filament_it_feed'));
 	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('downloadStoreFilamentsFeed'))
+{
+    function downloadStoreFilamentsFeed($store, $category, $filepath)
+    {
+        $CI =& get_instance();
+        $CI->load->helper('os_helper');
+        $CI->load->helper('file');
+        
+        
+        $feeds = array();
+        
+        foreach($category as $category_id){
+            
+            $url_endpoint = $CI->config->item('store_api_endpoint').'products/store/'.$store.'/category/'.$category_id.'?limit=100';
+            $remote_feed  = getRemoteFile($url_endpoint, false, array('Content-Type: application/json'), 15);
+            
+            if($remote_feed){
+                $remote_decoded = json_decode($remote_feed, true);
+                if(json_last_error() == JSON_ERROR_NONE){ 
+                    
+                    $temp_feeds = array();
+                    
+                    foreach($remote_decoded as $id => $item){
+                        $temp = $item;
+                        $temp['url'] = 'https://store.fabtotum.com/'.$GLOBALS['STORES'][$store].'/catalog/product/view/id/'.$id.'/category/'.$category_id;
+                        
+                        $temp_feeds[] = $temp;
+                    }
+                    
+                    $feeds = array_merge_recursive($feeds, $temp_feeds);
+                }
+            }
+        }
+        
+        if(!empty($feeds)){
+            
+            write_file($filepath, json_encode(array('store'=> $GLOBALS['STORES'][$store], 'items'=>$feeds)), 'w+');
+            return true;
+        }
+        
+        return false;
+    }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('downloadAllHomePageFeeds'))

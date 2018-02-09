@@ -24,12 +24,12 @@
 	margin-top:10px;
 	margin-left:10px;
 }
-.owl-next {
+.instagram-owl-next {
 	position: absolute !important;
 	right: 0px !important;
 	background: none !important;
 }
-.owl-prev {
+.instagram-owl-prev {
 	position: absolute !important;
 	left: 0px !important;
 	background: none !important;
@@ -37,3 +37,18 @@
 .cursor-pointer {
 	cursor: pointer !important;
 }
+.transparent {
+	background-color:transparent !important;
+}
+.stick {
+	position:absolute !important;
+	top:20px;
+	right:20px;
+}
+
+.twitter-owl-next {
+	
+}
+.twitter-owl-prev {
+}
+

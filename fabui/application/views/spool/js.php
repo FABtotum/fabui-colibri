@@ -196,20 +196,11 @@
 										'<div class="image padding-10">'+
 											'<a rel="tooltip" title="'+item.short_description+'" target="_blank" href="'+item.url+'"><img src="'+item.image_url+'"></a>'+
 										'</div>'+
-										'<div >'+
+										'<div style="padding:5px;">'+
 											'<p class="text-center">'+item.name.trim()+'</p>'+
 										'</div>'+
 									'</div>'+
 								'</div>';
-
-						/*html += '<div class="item '+cssclass+'"> ' + 
-										'<div class="col-xs-12 col-sm-6 col-md-2"> ' +
-											'<a rel="tooltip" title="'+item.short_description+'" target="_blank" href="'+item.url+'"><img src="'+item.image_url+'" class="img-responsive center-block"></a> ' +
-											'<h4 class="text-center">'+item.name.trim()+'</h4> ' +
-											//'<h5 class="text-center">'+item.final_price_without_tax+' '+currency+'</h5> ' +
-										'</div>' +
-								'</div>';
-						*/
 					}
 				});
 				$(".owl-carousel").html(html);

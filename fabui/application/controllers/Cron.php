@@ -93,6 +93,19 @@ class Cron extends CI_Controller {
 		$this->load->helper("shop_helper");
 		downloadAllFilamentsFeeds();
 	}
+	
+	/**
+	 * 
+	 */
+	public function sync_remote_projects()
+	{
+	    $this->load->database();
+	    $fabid = '***';
+	    $this->load->helpers(array('myfabtotum_helper', 'deshape_helper'));
+	    $acces_token = fab_authenticate($fabid, '***');
+	    
+	    sync_projects($fabid, $acces_token);
+	}
 
 }
 ?>

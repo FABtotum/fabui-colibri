@@ -50,7 +50,8 @@ class Spool extends FAB_Controller {
 			'.pla'  => _("Pla"),
 			'.abs'  => _("Abs"),
 			'.nyl'  => _("Nylon"),
-			'.ppro' => _("Pla Pro")
+			'.ppro' => _("Pla Pro"),
+		    '.tpu'  => _("TPU")
 		);
 		
 		
