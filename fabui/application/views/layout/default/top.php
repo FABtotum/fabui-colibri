@@ -32,8 +32,8 @@
 			<!-- end notification content -->
 			<!-- footer: refresh area -->
 			<span> <?php echo _("Last updated on");?>: <span class="last-update-time"></span>
-				<button type="button" data-loading-text="<i class='fa fa-refresh fa-spin'></i> <?php echo _("Loading");?>..." class="btn btn-xs btn-default pull-right">
-					<i class="fa fa-refresh"></i>
+				<button type="button" data-loading-text="<i class='fa fa-sync fa-spin'></i> <?php echo _("Loading");?>..." class="btn btn-xs btn-default pull-right">
+					<i class="fa  fa-sync"></i>
 				</button> </span>
 			<!-- end footer -->
 		</div>
@@ -44,7 +44,7 @@
 	<div class="pull-right top-bar">
 		<!-- collapse menu button -->
 		<div id="hide-menu" class="btn-header pull-right">
-			<span> <a href="javascript:void(0);" title="<?php echo _("Collapse Menu");?>" data-action="toggleMenu"><i class="fa fa-reorder"></i></a> </span>
+			<span> <a href="javascript:void(0);" title="<?php echo _("Collapse Menu");?>" data-action="toggleMenu"><i class="fa fa-bars"></i></a> </span>
 		</div>
 		<!-- end collapse menu -->
 		<!-- logout button -->
@@ -58,7 +58,7 @@
 		<!-- end reset controller button -->
 		<!-- emergency button -->
 		<div  class="btn-header transparent pull-right">
-			<span> <a href="javascript:void(0)"  data-action="emergencyButton" data-reset-msg="<?php echo _("This button will stop all the operations, continue?");?>" rel="tooltip" data-placement="left" data-html="true" data-original-title="<?php echo _("Emergency Button. <br>This will stop all operations on the FABtotum");?>"><i class="fa fa-warning"></i></a> </span>
+			<span> <a href="javascript:void(0)"  data-action="emergencyButton" data-reset-msg="<?php echo _("This button will stop all the operations, continue?");?>" rel="tooltip" data-placement="left" data-html="true" data-original-title="<?php echo _("Emergency Button. <br>This will stop all operations on the FABtotum");?>"><i class="fa fa-exclamation-triangle"></i></a> </span>
 		</div>
 		<!-- end emergency button -->
 	</div>

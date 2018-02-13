@@ -1872,7 +1872,7 @@ fabApp = (function(app) {
 							dataType: 'html',
 							success: function(resonse, status){
 								$("#my-fabtotum-ribbon-label").removeClass("hidden");
-								var printer = '<a href="http://'+item.iplan+'/fabui/#dashboard" target="_blank" class="btn btn-ribbon no-ajax"><i class="fa fa-lg fa-fw fabui-core"></i> '+item.name+'</a>';
+								var printer = '<a href="http://'+item.iplan+'/fabui/#dashboard" target="_blank" class="btn btn-ribbon no-ajax"><i class="fa-lg fa-fw fabui-core"></i> '+item.name+'</a>';
 								$("#ribbon-right-buttons").append(printer);
 							}
 						}).done(function( response, status ) {});

@@ -10,7 +10,7 @@
 $config['menu'] = array(
 	'dashboard' => array(
 		'title' => _("Dashboard"),
-		'icon' => 'fa fa-lg fa-fw fa-dashboard',
+		'icon' => 'fa fa-lg fa-fw fa-tachometer-alt',
 		'url' => 'dashboard',
 		'pos' => 10
 	),
@@ -93,7 +93,7 @@ $config['menu'] = array(
 				'sub' => array(
 					'height' => array(
 						'title' => _("Height calibration"),
-						'icon' => 'fa fa-lg fa-fw fa-arrows-v',
+						'icon' => 'fa fa-lg fa-fw fa-arrows-alt-v',
 						'url' => 'maintenance/nozzle-height-calibration',
 						'pos' => 10,
 					),
@@ -107,7 +107,7 @@ $config['menu'] = array(
 			),
 			'probecalibration' => array(
 				'title' => _("Probe calibration"),
-				'icon' => 'fa fa-lg fa-fw fa-level-down',
+				'icon' => 'fa fa-lg fa-fw fa-level-down-alt',
 				'pos'  => 50,
 				'sub'  => array(
 					'angle' => array(
@@ -201,7 +201,7 @@ $config['menu'] = array(
 	),
 	'updates' => array(
  		'title' => _("Updates"),
- 		'icon' => 'fa fa-lg fa-fw  fa-refresh',
+ 		'icon' => 'fa fa-lg fa-fw  fa-sync-alt',
  		'url' => 'updates',
 		'pos' => 70
 	),

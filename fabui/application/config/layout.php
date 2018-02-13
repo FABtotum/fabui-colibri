@@ -5,8 +5,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * 
  */
 $config['javascript']['mandatory'] = array(
-    '/assets/js/plugin/fontawesome/fontawesome-all.js',
-    '/assets/js/plugin/fontawesome/fa-v4-shims.min.js',
+//    '/assets/js/plugin/fontawesome/fontawesome-all.js',
+//    '/assets/js/plugin/fontawesome/fa-v4-shims.min.js',
 	'/assets/js/plugin/jquery-touch/jquery.ui.touch-punch.min.js',
 	'/assets/js/bootstrap/bootstrap.min.js',
 	'/assets/js/notification/SmartNotification.min.js',
@@ -38,7 +38,7 @@ $config['javascript']['mandatory'] = array(
  */
 $config['css']['mandatory'] = array(
 	'/assets/css/bootstrap.min.css',
-//  '/assets/css/font-awesome.min.css',
+    '/assets/css/fontawesome-all.min.css',
 	'/assets/css/line-icons-pro/styles.css',
 	'/assets/css/smartadmin-production-plugins.min.css',
 	'/assets/css/smartadmin-production.min.css',

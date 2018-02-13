@@ -45,7 +45,7 @@
 				html += buildTwitterPost(item);
 			});
 		}else{
-			html = noFeedAvailable("<i class='fa fa-twitter'></i> <?php echo _("Latest tweets"); ?>", 'twitter');
+			html = noFeedAvailable("<i class='fab fa-twitter'></i> <?php echo _("Latest tweets"); ?>", 'twitter');
 		}
 		$("#twitter-container").html(html);
 
@@ -79,7 +79,7 @@
 				
 			});
 		}else{
-			html = noFeedAvailable("<i class='fa fa-instagram'></i> <?php echo _("Latest instragm posts"); ?>", 'instagram');
+			html = noFeedAvailable("<i class='fab fa-instagram'></i> <?php echo _("Latest instragm posts"); ?>", 'instagram');
 		}
 		html += '</div>';
 		$("#instagram-container").html(html);
@@ -155,7 +155,7 @@
 							'<img class="hidden-xs" src="'+item['user']['profile_pic_url']+'" />' +
 							'<span class="name"><b><a target="_blank" href="https://www.instagram.com/'+item['user']['username']+'">'+item['user']['username']+'</a></b>' +
 							'<span class="pull-right">' +
-								'<a href="'+post_url+'" target="_blank" title="<?php echo _("View on instagram");?>"><i class="fa fa-instagram"></i></a>' +
+								'<a href="'+post_url+'" target="_blank" title="<?php echo _("View on instagram");?>"><i class="fab fa-instagram"></i></a>' +
 							'</span></span>' +
 							'<span class="from"> ' + date + location + '</span>' +
 						'</div>' + image + video + carousel +
@@ -383,7 +383,7 @@
 					'</div>' +
 					'<ul class="links">' +
 						'<li class="">' +
-							'<a class="btn btn-default btn-circle btn-xs txt-color-blue" title="<?php echo _("Share on facebook"); ?>" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u='+item['link'][0]+'"><i class="fa fa-facebook"></i></a>' +
+							'<a class="btn btn-default btn-circle btn-xs txt-color-blue" title="<?php echo _("Share on facebook"); ?>" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u='+item['link'][0]+'"><i class="fab fa-facebook-f"></i></a>' +
 						'</li>' +
 						'<li class="">' +
 							'<a class="pull-right" title="<?php echo _("Read more"); ?>" target="_blank" href="'+item['link'][0]+'"> <?php echo _("Read more"); ?> <i class="fa fa-arrow-right"></i></a>' +
@@ -439,7 +439,7 @@
 					'<div class="who clearfix">'+
 						'<img alt="'+item['user']['description']+'"  title="'+item['user']['description']+'" class="hidden-xs" src="'+item['user']['profile_image_url']+'" />'+
 						'<span class="name"><b><a target="_blank" href="https://twitter.com/'+item['user']['screen_name']+'">'+item['user']['screen_name']+'</a></b>'+
-						'<span class="pull-right"><a href="'+post_url+'" target="_blank" title="View on Twitter"><i class="fa fa-twitter"></i></a></span></span>'+
+						'<span class="pull-right"><a href="'+post_url+'" target="_blank" title="View on Twitter"><i class="fab fa-twitter"></i></a></span></span>'+
 						'<span class="from">'+ date + place + '</span>'+
 						'</span>'+
 					'</div>'+

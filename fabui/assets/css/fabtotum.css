@@ -767,3 +767,10 @@ body.smart-style-6 #ribbon {
     border-width: 1px 0px 1px 0px;
     box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.07);
 }
+
+.smart-form .checkbox input+i:after {
+	 font-family: "Font Awesome 5 Free"!important;
+  	font-weight: 900;
+  	content: "\f00c";
+}
+
