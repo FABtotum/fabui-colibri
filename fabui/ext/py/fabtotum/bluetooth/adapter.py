@@ -32,62 +32,62 @@ try:
   from gi.repository import GObject
 except ImportError:
   import gobject as GObject
-  
+
 # Import internal modules
 from common import SERVICE_NAME, ADAPTER_INTERFACE, DEVICE_INTERFACE, find_adapter, find_device
 from device import Device
 
 class Adapter(dbus.service.Object):
-    
+
     def __init__(self, pattern=None):
         """
         Bluetooth adapter class constructor.
-        
+
         @param pattern if None then automatically detect one
         """
         self.__mainloop = None
         self.__bus = dbus.SystemBus()
         self.__adapter = find_adapter(pattern)
-        self.__props = dbus.Interface(self.__bus.get_object(SERVICE_NAME, self.__adapter.object_path), "org.freedesktop.DBus.Properties") 
-        
+        self.__props = dbus.Interface(self.__bus.get_object(SERVICE_NAME, self.__adapter.object_path), "org.freedesktop.DBus.Properties")
+
         self.__bus.add_signal_receiver(self.__PropertiesChanged,
                 dbus_interface = "org.freedesktop.DBus.Properties",
                 signal_name = "PropertiesChanged",
                 arg0 = DEVICE_INTERFACE,
                 path_keyword = "path")
-        
+
         self.__devices = {}
-        
+
         om = dbus.Interface(self.__bus.get_object("org.bluez", "/"),
                     "org.freedesktop.DBus.ObjectManager")
         objects = om.GetManagedObjects()
         for path, interfaces in objects.iteritems():
             if DEVICE_INTERFACE in interfaces:
                 self.__devices[path] = interfaces[DEVICE_INTERFACE]
-                
+
         self.__look_for_name = None
         self.__discovery = {}
 
     def discoverDevices(self, look_for_name=None, timeout=10, scan_filter={}):
         """
         Start BT discovery process.
-        
+
         Return discovered devices.
         """
         self.__look_for_name = look_for_name
         self.__discovery = {}
-        
+
         timeout *= 1000
         GObject.timeout_add(timeout, self.__timeout_handler)
-        
+
         self.__adapter.SetDiscoveryFilter(scan_filter)
         self.__adapter.StartDiscovery()
-        
+
         self.__mainloop = GObject.MainLoop()
         self.__mainloop.run()
-        
+
         self.__adapter.StopDiscovery()
-        
+
         return self.__discovery
 
     def __timeout_handler(self):
@@ -108,7 +108,7 @@ class Adapter(dbus.service.Object):
             value = properties[key]
             if type(value) is dbus.String:
                 value = unicode(value).encode('ascii', 'replace')
-            
+
             if self.__look_for_name:
                 if key == "Name":
                     print ">> name:", value
@@ -139,7 +139,7 @@ class Adapter(dbus.service.Object):
             address = "<unknown>"
 
         self.__add_device(address, self.__devices[path])
-        
+
     def __PropertiesChanged(self, interface, changed, invalidated, path):
         """
         """
@@ -166,69 +166,69 @@ class Adapter(dbus.service.Object):
     @property
     def object_path(self):
         return self.__device.object_path
-    
+
     @property
     def Address(self):
         return self.__props.Get(ADAPTER_INTERFACE, "Address")
-        
+
     @property
     def Name(self):
         return self.__props.Get(ADAPTER_INTERFACE, "Name")
-        
+
     @property
     def Class(self):
         return self.__props.Get(ADAPTER_INTERFACE, "Class")
-        
+
     @property
     def Alias(self):
         return self.__props.Get(ADAPTER_INTERFACE, "Alias")
-        
+
     @Alias.setter
     def Alias(self, value):
         self.__props.Set(ADAPTER_INTERFACE, "Alias", value)
-        
+
     @property
     def Powered(self):
         return self.__props.Get(ADAPTER_INTERFACE, "Powered")
-        
+
     @Powered.setter
     def Powered(self, value):
         self.__props.Set(ADAPTER_INTERFACE, "Powered", value)
-        
+
     @property
     def Discovering(self):
         return self.__props.Get(ADAPTER_INTERFACE, "Discovering")
-        
+
     @property
     def Discoverable(self):
         return self.__props.Get(ADAPTER_INTERFACE, "Discoverable")
-        
+
     @Discoverable.setter
     def Discoverable(self, value):
         self.__props.Set(ADAPTER_INTERFACE, "Discoverable", value)
-        
+
     @property
     def DiscoverableTimeout(self):
         return self.__props.Get(ADAPTER_INTERFACE, "DiscoverableTimeout")
-        
+
     @DiscoverableTimeout.setter
     def DiscoverableTimeout(self, value):
         self.__props.Set(ADAPTER_INTERFACE, "DiscoverableTimeout", value)
-        
+
     @property
     def Pairable(self):
         return self.__props.Get(ADAPTER_INTERFACE, "Pairable")
-        
+
     @Pairable.setter
     def Pairable(self, value):
         self.__props.Set(ADAPTER_INTERFACE, "Pairable", value)
-        
+
     @property
     def PairableTimeout(self):
         return self.__props.Get(ADAPTER_INTERFACE, "PairableTimeout")
-        
+
     @PairableTimeout.setter
     def PairableTimeout(self, value):
         self.__props.Set(ADAPTER_INTERFACE, "PairableTimeout", value)
-        
-    
+
+

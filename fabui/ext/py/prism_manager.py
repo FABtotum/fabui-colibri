@@ -27,6 +27,8 @@ import sys
 import json
 import os
 import argparse
+import subprocess
+import time
 from threading import Event, Thread
 
 # Import external modules
@@ -70,6 +72,17 @@ def main():
 
     if arg_list:
         arg_list = arg_list.split(',')
+
+    # Ensure bluetooth is enabled
+    p = subprocess.Popen(['connmanctl', 'enable', 'bluetooth'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE)
+    out, err = p.communicate()
+
+    if 'Enabled bluetooth' == out.strip():
+        # Give bluetoothd some time to bring up the hci device
+        time.sleep(3)
+        print "Bluetooth enabled"
 
     sock=bluetooth.BluetoothSocket(bluetooth.L2CAP)
 

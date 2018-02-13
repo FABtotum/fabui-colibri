@@ -25,6 +25,8 @@ __version__ = "1.0"
 # Import standard python module
 import os
 import argparse
+import subprocess
+import time
 
 # Import external modules
 import bluetooth
@@ -45,12 +47,23 @@ from fabtotum.bluetooth.agent import Agent
 
 dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
-#~ agent = Agent()
-#~ agent.register()
+# Ensure bluetooth is enabled
+p = subprocess.Popen(['connmanctl', 'enable', 'bluetooth'],
+    stdout=subprocess.PIPE,
+    stderr=subprocess.PIPE)
+out, err = p.communicate()
+
+if 'Enabled bluetooth' == out.strip():
+    # Give bluetoothd some time to bring up the hci device
+    time.sleep(3)
+    print "Bluetooth enabled"
 
 adapter = Adapter()
-devices = adapter.discoverDevices(look_for_name="PRISM", timeout=30)
+if not adapter.Powered:
+    print "Powering up bluetooth..."
+    adapter.Powered = True
 
+devices = adapter.discoverDevices(look_for_name="PRISM", timeout=30)
 
 for addr in devices:
     dev = devices[addr]

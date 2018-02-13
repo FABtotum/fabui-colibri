@@ -31,6 +31,7 @@ import argparse
 import dbus
 import dbus.service
 import dbus.mainloop.glib
+import time
 try:
   from gi.repository import GObject
 except ImportError:
@@ -59,18 +60,24 @@ class Agent(dbus.service.Object):
         self.log = log
 
         super(Agent, self).__init__(self.__bus, path)
-        
-        try:
-            obj = self.__bus.get_object(SERVICE_NAME, "/org/bluez");
-            
-            self.__passkey = passkey
-            self.__manager = dbus.Interface(obj, AGENT_MANAGE_INTERFACE)
-            self.__path = path
-            self.__capability = capability
-        
-        except Exception as e:
-            self.log.error("__init__: " + str(e))
-            sys.exit()
+
+        while True:
+            try:
+                obj = self.__bus.get_object(SERVICE_NAME, "/org/bluez");
+
+                self.__passkey = passkey
+                self.__manager = dbus.Interface(obj, AGENT_MANAGE_INTERFACE)
+                self.__path = path
+                self.__capability = capability
+
+                self.log.info("Agent connected to org.bluez")
+                break
+
+            except Exception as e:
+                self.log.error("__init__: " + str(e))
+                #sys.exit()
+                time.sleep(3)
+
 
     def set_exit_on_release(self, exit_on_release):
         self.exit_on_release = exit_on_release
@@ -78,13 +85,14 @@ class Agent(dbus.service.Object):
     def register(self):
         self.__manager.RegisterAgent(self.__path, self.__capability)
         self.__manager.RequestDefaultAgent(self.__path)
-        self.log.debug("BT agent registered")
+        self.log.info("BT agent registered")
 
     @dbus.service.method(AGENT_INTERFACE,
                     in_signature="", out_signature="")
     def Release(self):
-        self.log.debug("Released")
+        self.log.debug("Agent released")
         if self.exit_on_release:
+            self.log.info("BT agent exiting...")
             mainloop.quit()
 
     @dbus.service.method(AGENT_INTERFACE,
@@ -149,13 +157,13 @@ class Agent(dbus.service.Object):
                          in_signature="s",
                          out_signature="")
     def ConfirmModeChange(self, mode):
-        print("ConfirmModeChange ({})".format(mode))
+        self.log.debug("ConfirmModeChange ({})".format(mode))
         return
 
     @dbus.service.method(AGENT_INTERFACE,
                     in_signature="", out_signature="")
     def Cancel(self):
-        print("Cancel")
+        self.log.debug("Cancel")
 
 if __name__ == '__main__':
     from fabtotum.fabui.config  import ConfigService

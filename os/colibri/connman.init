@@ -2,10 +2,10 @@
 ################################################################
 # Begin $rc_base/init.d/
 #
-# Description : 
-# 
+# Description :
+#
 # Authors     : Daniel Kesler <kesler.daniel@gmail.com>
-# 
+#
 # Version     : 00.10
 #
 # Notes       :
@@ -17,12 +17,16 @@
 
 test -r /etc/default/connman && source /etc/default/connman
 test -r /etc/default/network && source /etc/default/network
+test -r /etc/default/network && source /etc/default/fabui
+test -r /etc/default/fabui && source /etc/default/fabui
 
 [ -z $NETWORK_MANAGER ] && NETWORK_MANAGER=ifupdown
 [ "$NETWORK_MANAGER" != "connman" ] && exit 0
 
 [ -z $CONNMAN_PIDFILE ] && CONNMAN_PIDFILE=/run/connmand.pid
 CONNMAN_ARGS="$CONNMAN_ARGS -n"
+
+[ -z $BT_FIX_WIFI_ISSUE ] && BT_FIX_WIFI_ISSUE=no
 
 # Workaround for swapping rpi board
 source /usr/share/fabui/ext/bash/${NETWORK_MANAGER}_nm_functions.sh
@@ -33,8 +37,12 @@ DAEMON=/usr/sbin/connmand
 case "$1" in
     start)
         # Wrokaround for bluetooth/wifi boot issue
-        sh /usr/share/fabui/ext/bash/fix_bt_wifi_issue.sh
-        
+        # Ensures bluetooth tether is enabled
+        if [ x"$BT_FIX_WIFI_ISSUE" == x"yes" ]; then
+            echo "Fixing BT/WiFi issue..."
+            python /usr/share/fabui/ext/py/fabtotum/bluetooth/fix_connman_config.py
+        fi
+
         boot_msg "Starting connection manager."
         start-stop-daemon -S -b -m -q -p $CONNMAN_PIDFILE --exec $DAEMON -- $CONNMAN_ARGS
         evaluate_retval
