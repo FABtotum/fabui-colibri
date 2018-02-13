@@ -34,9 +34,14 @@ import dbus
 import dbus.service
 import dbus.mainloop.glib
 try:
-  from gi.repository import GObject
+    from gi.repository import GObject
 except ImportError:
-  import gobject as GObject
+    import gobject as GObject
+
+try:
+    import ConfigParser
+except ImportError:
+    import configparser as ConfigParser
 
 # Import internal modules
 #~ import bluezutils
@@ -45,35 +50,44 @@ from fabtotum.bluetooth.adapter import Adapter
 from fabtotum.bluetooth.agent import Agent
 ################################################################################
 
-dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+def main():
+    from fabtotum.fabui.config  import ConfigService
+    dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
-# Ensure bluetooth is enabled
-p = subprocess.Popen(['connmanctl', 'enable', 'bluetooth'],
-    stdout=subprocess.PIPE,
-    stderr=subprocess.PIPE)
-out, err = p.communicate()
+    config    = ConfigService()
 
-if 'Enabled bluetooth' == out.strip():
-    # Give bluetoothd some time to bring up the hci device
-    time.sleep(3)
-    print "Bluetooth enabled"
+    # Ensure bluetooth is enabled
+    p = subprocess.Popen(['connmanctl', 'enable', 'bluetooth'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE)
+    out, err = p.communicate()
 
-adapter = Adapter()
-if not adapter.Powered:
-    print "Powering up bluetooth..."
-    adapter.Powered = True
+    if 'Enabled bluetooth' == out.strip():
+        # Give bluetoothd some time to bring up the hci device
+        time.sleep(3)
+        print "Bluetooth enabled"
 
-devices = adapter.discoverDevices(look_for_name="PRISM", timeout=30)
+    adapter = Adapter()
+    if not adapter.Powered:
+        print "Powering up bluetooth..."
+        adapter.Powered = True
 
-for addr in devices:
-    dev = devices[addr]
-    print addr, dev.Name, dev.Paired, dev.Trusted, dev.Adapter
+    devices = adapter.discoverDevices(look_for_name="PRISM", timeout=30)
 
-    if not dev.Paired:
-        print "Pairing..."
-        dev.Pair()
-        dev.Trusted = True
-        print "Paired"
-    else:
-        print "Already paired"
+    for addr in devices:
+        dev = devices[addr]
+        print addr, dev.Name, dev.Paired, dev.Trusted, dev.Adapter
 
+        if not dev.Paired:
+            print "Pairing..."
+            dev.Pair()
+            dev.Trusted = True
+            print "Paired"
+            # Store prism bt mac address
+            config.set('bluetooth', 'prism_bt_address', str(addr) )
+            config.save('bluetooth')
+        else:
+            print "Already paired"
+
+if __name__ == '__main__':
+    main()

@@ -40,117 +40,137 @@ from fabtotum.utils.singleton import Singleton
 
 class ConfigService:
     __metaclass__ = Singleton
-        
+
     def __init__(self):
         """ Load config files """
-        
+
         self.config = {}
 
         for x in os.listdir(LIB_PATH):
             if x.endswith('.ini'):
                 filename, ext = os.path.splitext(x)
-                
+
                 fn = os.path.join(LIB_PATH, x)
-                
+
                 self.config[filename] = ConfigParser.ConfigParser()
                 self.config[filename].read(fn)
-        
+
         self.HW_DEFAULT_SETTINGS = self.get('hardware', 'settings')
-        
+
         json_f = open(self.HW_DEFAULT_SETTINGS)
         self.settings = json.load(json_f)
-            
+
         self.reload_callback = []
-    
+
     def register_callback(self, handler):
         if handler not in self.reload_callback:
             self.reload_callback.append(handler)
-    
+
     def unregister_callback(self, handler):
         self.reload_callback.remove(handler)
-    
+
     def is_firstboot(self):
         if os.path.exists( os.path.join('/tmp', 'firstboot') ):
             return True
-            
+
         return False
-    
+
     def reload(self):
         """ Reload config files """
-        
+
         for fn in self.config:
             ini_fn = os.path.join(LIB_PATH, fn, '.ini')
             self.config[fn].read(ini_fn)
 
         self.HW_DEFAULT_SETTINGS = self.get('hardware', 'settings')
-        
+
         json_f = open(self.HW_DEFAULT_SETTINGS)
         self.settings = json.load(json_f)
-        
+
         for cb in self.reload_callback:
             cb()
-    
+
     def save(self, section):
+        """
+        Save configuration section to the correct file.
+        """
         if section == 'settings':
-            
+
             with open(self.HW_DEFAULT_SETTINGS, 'w') as outfile:
                 json.dump(self.settings, outfile, sort_keys=True, indent=4)
             return True
 
+        for cfg in self.config:
+            if section in self.config[cfg].sections():
+                data = self.config[cfg]
+                filename = os.path.join(LIB_PATH, cfg + '.ini')
+                with open(filename, 'wb') as f:
+                    data.write(f)
+
         return False
-    
+
     def __get_dict_value(self, data, key, default = None):
         try:
             kl = key.split('.')
             if len(kl) == 1 and kl[0]:
                 return data[kl[0]]
-                
+
             elif len(kl) == 2 and kl[0] and kl[1]:
                 return data[kl[0]][kl[1]]
-                
+
             elif len(kl) == 3 and kl[0] and kl[1] and kl[2]:
                 return data[kl[0]][kl[1]][kl[2]]
-                
+
             elif len(kl) == 4  and kl[0] and kl[1] and kl[2] and kl[3]:
                 return data[kl[0]][kl[1]][kl[2]][kl[3]]
-                
+
             else:
                 return data
         except:
             return default
-            
+
     def __set_dict_value(self, data, key, value):
         try:
             kl = key.split('.')
             if len(kl) == 1 and kl[0]:
                 data[kl[0]] = value
                 return True
-                
+
             elif len(kl) == 2 and kl[0] and kl[1]:
                 data[kl[0]][kl[1]] = value
                 return True
-                
+
             elif len(kl) == 3 and kl[0] and kl[1] and kl[2]:
                 data[kl[0]][kl[1]][kl[2]] = value
                 return True
-                
+
             elif len(kl) == 4  and kl[0] and kl[1] and kl[2] and kl[3]:
                 data[kl[0]][kl[1]][kl[2]][kl[3]] = value
                 return True
-                
+
             else:
                 return False
         except:
             return False
-            
-    def get(self, section, key, default = None):        
+
+    def get(self, section, key, default = None):
+        """
+        Get configuration value by section and key
+
+        @parem section Section name
+        @param key     Section key name
+        @param default Default configuration value in case it is not set
+
+        @returns Configuration value
+        @raises  KeyError exception in case no default value is specified and
+                 the configuration key does not exist
+        """
         value = ''
-        
-        
+
         if section == 'settings':
             value = self.__get_dict_value(self.settings, key, default)
             return value
-        
+
         for cfg in self.config:
             if section in self.config[cfg].sections():
                 try:
@@ -161,69 +181,83 @@ class ConfigService:
                         return default
                     else:
                         raise KeyError
-                        
+
         if default != None:
             return default
         else:
             raise KeyError
 
     def set(self, section, key, value):
-        """ Set settings value """
-        
+        """
+        Set configuration value by section and key
+
+        @parem section Section name
+        @param key     Section key name
+        @param value   Configuration value
+
+        @returns True on success, False otherwise
+        """
+
         if section == 'settings':
             return self.__set_dict_value(self.settings, key, value)
-            
+
+        for cfg in self.config:
+            if section in self.config[cfg].sections():
+                data = self.config[cfg]
+                data.set(section, key, value)
+                return True
+
         return False
-        
+
     def get_head_info(self, head_name):
         head_file = os.path.join( self.get('hardware', 'heads'), head_name + '.json');
         try:
             with open(head_file) as json_f:
                 head = json.load(json_f)
-            return head            
-            
+            return head
+
         except Exception as e:
             return None
-            
+
         return None
-        
+
     def get_current_head_info(self):
         """
         """
         head_name = self.get('settings', 'hardware.head', 'hybrid_head')
         return self.get_head_info(head_name)
-    
+
     def is_pro_head(self, id):
         """
         return if printing head is pro
         """
         pro_heads = [6]
-        
+
         if int(id) in pro_heads:
             return True
         else:
             return False
-    
+
     def is_laser_pro_head(self, id):
         """
         return if head laser is pro
         """
         laser_pro_heads = [7]
-        
+
         if int(id) in laser_pro_heads:
             return True
         else:
             return False
-    
+
     def save_head_info(self, info, head_name):
         """
         """
         head_file = os.path.join( self.get('hardware', 'heads'), head_name + '.json');
-        
+
         if os.path.exists(head_file):
             with open(head_file, 'w') as json_f:
                 json.dump(info, json_f, sort_keys=True, indent=4)
-            
+
         return None
 
     def save_current_head_info(self, info):
@@ -231,26 +265,26 @@ class ConfigService:
         """
         head_name = self.get('settings', 'hardware.head', 'hybrid_head')
         self.save_head_info(info, head_name)
-        
+
     def get_feeder_info(self, feeder_name):
         """
         Return feeder info.
         """
         head_file = os.path.join( self.get('hardware', 'heads'), feeder_name + '.json');
         feeder_file = os.path.join( self.get('hardware', 'feeders'), feeder_name + '.json');
-        
+
         if os.path.exists(head_file):
             # Load Head feeder
             try:
                 with open(head_file) as json_f:
                     head = json.load(json_f)
-                    
+
                 feeder = head['feeder']
                 feeder['name'] = head['name']
                 feeder['description'] = head['description']
                 feeder['link'] = head['link']
                 return feeder
-                
+
             except Exception as e:
                 return None
 
@@ -262,28 +296,28 @@ class ConfigService:
                 return feeder
             except Exception as e:
                 return None
-                
+
         return None
-        
+
     def get_4thaxis_info(self, feeder_name):
         """
         Return feeder info.
         """
         head_file = os.path.join( self.get('hardware', 'heads'), feeder_name + '.json');
         feeder_file = os.path.join( self.get('hardware', 'feeders'), feeder_name + '.json');
-        
+
         if os.path.exists(head_file):
             # Load Head feeder
             try:
                 with open(head_file) as json_f:
                     head = json.load(json_f)
-                    
+
                 fourthaxis = head['4thaxis']
                 fourthaxis['name'] = head['name']
                 fourthaxis['description'] = head['description']
                 fourthaxis['link'] = head['link']
                 return fourthaxis
-                
+
             except Exception as e:
                 return None
 
@@ -295,23 +329,23 @@ class ConfigService:
                 return feeder
             except Exception as e:
                 return None
-                
+
         return None
-    
+
     def get_current_feeder_info(self):
         """
         Return feeder info of current feeder.
         """
         feeder_name = self.get('settings', 'hardware.feeder', 'built_in_feeder')
         return self.get_feeder_info(feeder_name)
-        
+
     def get_current_4thaxis_info(self):
         """
         Return feeder info of current feeder.
         """
         feeder_name = self.get('settings', 'hardware.feeder', 'built_in_feeder')
         return self.get_4thaxis_info(feeder_name)
-    
+
     def save_feeder_info(self, feeder_name, info):
         head_file = os.path.join( self.get('hardware', 'heads'), feeder_name + '.json');
         feeder_file = os.path.join( self.get('hardware', 'feeders'), feeder_name + '.json');
@@ -319,28 +353,28 @@ class ConfigService:
             try:
                 with open(head_file) as json_f:
                     head = json.load(json_f)
-                
+
                 info.pop('name')
                 info.pop('description')
                 info.pop('link')
-                
+
                 head['feeder'] = info
-                
+
                 with open(head_file, 'w') as json_f:
                     json.dump(head, json_f, sort_keys=True, indent=4)
                 return True
-                
+
             except Exception as e:
                 return False
-        
+
         try:
             with open(feeder_file, 'w') as json_f:
                 json.dump(info, json_f, sort_keys=True, indent=4)
         except Exception as e:
             return False
-            
+
         return True
-            
+
     def save_current_feeder_info(self, info):
         feeder_name = self.get('settings', 'hardware.feeder', 'built_in_feeder')
         self.save_feeder_info(feeder_name, info)

@@ -51,24 +51,35 @@ if sys.version < '3':
     input = raw_input
 
 def main():
+    from fabtotum.fabui.config  import ConfigService
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+
+    config  = ConfigService()
+
+    # Get PRISM BT address and use it as default value if it exists
+    bt_addr = config.get('bluetooth', 'prism_bt_address', '')
+    bt_addr_required = True
+    if bt_addr:
+        bt_addr_required = False
 
     # Setup arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("command",          help="Prism management command." )
+    parser.add_argument("-v", dest='verbose', action='store_true',  help="Verbose.")
     parser.add_argument("--arg-list",       help="Comma separated argument list.", default=[] )
-    parser.add_argument("-a", "--address",  help="Bluetooth address." )
+    parser.add_argument("-a", "--address",  help="Bluetooth address.",
+            # In case there is no prism_bt_address preconfigured, fallback to asking for the address
+            required=bt_addr_required,
+            default=bt_addr
+    )
     parser.add_argument("-P", "--port",     help="L2C port",  default=0x1001)
-
-    #~ parser.add_argument("-L", "--log",      help="Use logfile to store log messages.",  default='<stdout>')
-    #~ parser.add_argument("-p", "--pidfile",  help="File to store process pid.",          default=os.path.join(RUN_PATH,'btagent.pid') )
-
 
     args     = parser.parse_args()
     cmd      = args.command
     arg_list = args.arg_list
     bt_port  = args.port
     bt_addr  = args.address
+    verbose  = args.verbose
 
     if arg_list:
         arg_list = arg_list.split(',')
@@ -82,28 +93,42 @@ def main():
     if 'Enabled bluetooth' == out.strip():
         # Give bluetoothd some time to bring up the hci device
         time.sleep(3)
-        print "Bluetooth enabled"
+        if verbose:
+            print "Bluetooth enabled"
 
     sock=bluetooth.BluetoothSocket(bluetooth.L2CAP)
 
-    print("trying to connect to %s on port 0x%X" % (bt_addr, bt_port))
-    sock.connect((bt_addr, bt_port))
+    sock.settimeout(5)
 
-    if cmd == 'connect' or cmd == 'disconnect':
-        adapter = Adapter()
-        arg_list.append( adapter.Address )
+    if verbose:
+        print("trying to connect to %s on port 0x%X" % (bt_addr, bt_port))
 
-    data = json.dumps( {
-        'cmd': cmd,
-        'args': arg_list
-    } )
+    try:
 
-    print data
+        sock.connect((bt_addr, bt_port))
 
-        #~ if(len(data) == 0): break
-    sock.send(data)
-    reply = sock.recv(1024)
-    print("Data received:", str(reply))
+        if cmd == 'connect' or cmd == 'disconnect':
+            adapter = Adapter()
+            arg_list.append( adapter.Address )
+
+        data = json.dumps( {
+            'cmd': cmd,
+            'args': arg_list
+        } )
+
+        if verbose:
+            print "Data sent", str(data)
+
+        sock.send(data)
+        reply = sock.recv(1024)
+        if verbose:
+            print "Data received:", str(reply)
+        else:
+            print str(reply)
+
+    except Exception as e:
+        if verbose:
+            print "Error:", str(e)
 
     sock.close()
 
