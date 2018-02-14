@@ -48,6 +48,7 @@ except ImportError:
 
 from fabtotum.bluetooth.adapter import Adapter
 from fabtotum.bluetooth.agent import Agent
+from prism_manager import send_command
 ################################################################################
 
 def main():
@@ -72,6 +73,7 @@ def main():
         print "Powering up bluetooth..."
         adapter.Powered = True
 
+    master_bt_address = adapter.Address
     devices = adapter.discoverDevices(look_for_name="PRISM", timeout=30)
 
     for addr in devices:
@@ -83,9 +85,11 @@ def main():
             dev.Pair()
             dev.Trusted = True
             print "Paired"
-            # Store prism bt mac address
+            # Store PRISM bt mac address
             config.set('bluetooth', 'prism_bt_address', str(addr) )
             config.save('bluetooth')
+            # Make PRISM trust us ;)
+            send_command('trust', [master_bt_address], addr)
         else:
             print "Already paired"
 

@@ -68,13 +68,14 @@ class Adapter(dbus.service.Object):
         self.__look_for_name = None
         self.__discovery = {}
 
-    def discoverDevices(self, look_for_name=None, timeout=10, scan_filter={}):
+    def discoverDevices(self, look_for_name=None, look_for_address=None, timeout=10, scan_filter={}):
         """
         Start BT discovery process.
 
         Return discovered devices.
         """
         self.__look_for_name = look_for_name
+        self.__look_for_address = look_for_address
         self.__discovery = {}
 
         timeout *= 1000
@@ -113,6 +114,11 @@ class Adapter(dbus.service.Object):
                 if key == "Name":
                     print ">> name:", value
                 if key == "Name" and value == self.__look_for_name and address != "<unknown>":
+                    self.__discovery[address] = Device(address, bus=self.__bus)
+                    self.__timeout_handler()
+
+            if self.__look_for_address:
+                if address != "<unknown>" and address == self.__look_for_address:
                     self.__discovery[address] = Device(address, bus=self.__bus)
                     self.__timeout_handler()
 

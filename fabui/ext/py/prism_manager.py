@@ -47,8 +47,38 @@ from fabtotum.bluetooth.adapter import Adapter
 
 ################################################################################
 
-if sys.version < '3':
-    input = raw_input
+def send_command(command, arg_list, bt_address, bt_port=0x1001, verbose=False):
+    sock=bluetooth.BluetoothSocket(bluetooth.L2CAP)
+
+    sock.settimeout(5)
+
+    if verbose:
+        print("trying to connect to %s on port 0x%X" % (bt_address, bt_port))
+
+    try:
+
+        sock.connect((bt_address, bt_port))
+
+        data = json.dumps( {
+            'cmd': command,
+            'args': arg_list
+        } )
+
+        if verbose:
+            print "Data sent", str(data)
+
+        sock.send(data)
+        reply = sock.recv(1024)
+        if verbose:
+            print "Data received:", str(reply)
+        else:
+            print str(reply)
+
+    except Exception as e:
+        if verbose:
+            print "Error:", str(e)
+
+    sock.close()
 
 def main():
     from fabtotum.fabui.config  import ConfigService
@@ -96,41 +126,11 @@ def main():
         if verbose:
             print "Bluetooth enabled"
 
-    sock=bluetooth.BluetoothSocket(bluetooth.L2CAP)
+    if cmd in [ 'connect', 'disconnect', 'trust', 'untrust']:
+        adapter = Adapter()
+        arg_list.append( adapter.Address )
 
-    sock.settimeout(5)
-
-    if verbose:
-        print("trying to connect to %s on port 0x%X" % (bt_addr, bt_port))
-
-    try:
-
-        sock.connect((bt_addr, bt_port))
-
-        if cmd == 'connect' or cmd == 'disconnect':
-            adapter = Adapter()
-            arg_list.append( adapter.Address )
-
-        data = json.dumps( {
-            'cmd': cmd,
-            'args': arg_list
-        } )
-
-        if verbose:
-            print "Data sent", str(data)
-
-        sock.send(data)
-        reply = sock.recv(1024)
-        if verbose:
-            print "Data received:", str(reply)
-        else:
-            print str(reply)
-
-    except Exception as e:
-        if verbose:
-            print "Error:", str(e)
-
-    sock.close()
+    send_command(cmd, arg_list, bt_addr, bt_port, verbose)
 
 
 if __name__ == '__main__':

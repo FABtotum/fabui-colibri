@@ -78,6 +78,15 @@ class Agent(dbus.service.Object):
                 #sys.exit()
                 time.sleep(3)
 
+    def __set_trusted(self, path):
+        props = dbus.Interface(bus.get_object("org.bluez", path),
+                        "org.freedesktop.DBus.Properties")
+        props.Set("org.bluez.Device1", "Trusted", True)
+
+    #~ def dev_connect(path):
+        #~ dev = dbus.Interface(bus.get_object("org.bluez", path),
+                                #~ "org.bluez.Device1")
+        #~ dev.Connect()
 
     def set_exit_on_release(self, exit_on_release):
         self.exit_on_release = exit_on_release
@@ -109,14 +118,14 @@ class Agent(dbus.service.Object):
                     in_signature="o", out_signature="s")
     def RequestPinCode(self, device):
         self.log.debug("RequestPinCode (%s) : %s" % (device, self.__passkey))
-        #~ set_trusted(device)
+        #self.__set_trusted(device)
         return self.__passkey
 
     @dbus.service.method(AGENT_INTERFACE,
                     in_signature="o", out_signature="u")
     def RequestPasskey(self, device):
         self.log.debug("RequestPasskey (%s): %s" % (device, self.__passkey))
-        #~ set_trusted(device)
+        #self.__set_trusted(device)
         return dbus.UInt32(self.__passkey)
 
     @dbus.service.method(AGENT_INTERFACE,
@@ -139,6 +148,7 @@ class Agent(dbus.service.Object):
         #~ if (confirm == "yes"):
             #~ #set_trusted(device)
             #~ return
+        #self.__set_trusted(device)
         return
         #~ raise Rejected("Passkey doesn't match")
 
