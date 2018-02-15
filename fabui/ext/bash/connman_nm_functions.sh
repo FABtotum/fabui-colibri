@@ -665,3 +665,104 @@ connman_migrate_settings()
 		rm -rf ${CONNMAN_SERVICES_DIR}/wifi_* &> /dev/null
 	fi
 }
+
+##
+# Disable bluetooth
+#
+disable_bluetooth()
+{
+	DISABLED="false"
+    DISABLED_RESULT=$(connmanctl disable bluetooth 2>&1)
+	if [ x"$DISABLED_RESULT" == x"Disabled bluetooth" ] ; then
+		DISABLED="true"
+	fi
+	
+	echo "{"
+	echo "  \"disabled\": $DISABLED"
+	echo "}"
+}
+##
+# Enable bluetooth
+enable_bluetooth()
+{
+	ENABLED="false"
+	TETHER="false"
+    ENABLED_RESULT=$(connmanctl enable bluetooth 2>&1)
+	TETHER_RESULT=$(connmanctl tether bluetooth on 2>&1)
+	
+	if [ x"$ENABLED_RESULT" == x"Error bluetooth: Already enabled" ] || [ x"$ENABLED_RESULT" == x"Enabled bluetooth" ] ; then
+		ENABLED="true"
+	fi
+	
+	if [ x"$TETHER_RESULT" == x"Error enabling bluetooth tethering: Already enabled" ] || [ x"$TETHER_RESULT" == x"Enabled tethering for bluetooth" ] ; then
+		TETHER="true"
+	fi
+	
+	echo "{"
+	echo "  \"enabled\": $ENABLED,"
+	echo "  \"tethering\": $TETHER"
+	echo "}"
+}
+##
+# Get Bluetooth status
+##
+bluetooth_status()
+{
+	POWERED=$(connmanctl technologies | awk '/^$/{f=0} f{print} /\/net\/connman\/technology\/bluetooth/{f=1}' | grep -m 1 Powered | awk  '{print $3}')
+	TETHERING=$(connmanctl technologies | awk '/^$/{f=0} f{print} /\/net\/connman\/technology\/bluetooth/{f=1}' | grep -m 1 Tethering | awk  '{print $3}')
+	CONNECTED=$(connmanctl technologies | awk '/^$/{f=0} f{print} /\/net\/connman\/technology\/bluetooth/{f=1}' | grep -m 1 Connected | awk  '{print $3}')
+	BT_ADDRESS=$(hcitool dev | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}')
+		
+	POWERED_VALUE="false"
+	TETHERING_VALUE="false"
+	CONNECTED_VALUE="false"
+	PAIRED_VALUE="false"
+	
+	if [ x"$POWERED" == x"True" ]; then
+		POWERED_VALUE="true"
+	fi
+	
+	if [ x"$TETHERING" == x"True" ]; then
+		TETHERING_VALUE="true"
+	fi
+	
+	if [ x"$CONNECTED" == x"True" ]; then
+		CONNECTED_VALUE="true"
+	fi
+	
+	echo "{"
+	echo "  \"powered\": $POWERED_VALUE,"
+	echo "  \"tethering\": $TETHERING_VALUE,"
+	echo "  \"connected\": $CONNECTED_VALUE,"
+	echo "  \"paired\":"
+	
+	DIRECTORY="/var/lib/bluetooth/$BT_ADDRESS/*:*:*:*:*:*"
+	
+	if [ -d $DIRECTORY ] && [ x"$POWERED" == x"True" ]; then
+		
+		# go to folder
+		cd $DIRECTORY
+		MAC_ADDRESS=${PWD##*/}
+		
+		NAME=$(awk -F "=" '/Name/ {print $2}'  $DIRECTORY/info)
+		TRUSTED=$(awk -F "=" '/Trusted/ {print $2}'  $DIRECTORY/info)
+		BLOCKED=$(awk -F "=" '/Blocked/ {print $2}'  $DIRECTORY/info)
+		PAIR_CONNECTED="false"
+		
+		if [ $(hcitool con | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}') == $MAC_ADDRESS ]; then
+			PAIR_CONNECTED="true"
+		fi
+		
+		echo "  {"
+		echo "    \"mac_address\": \"$MAC_ADDRESS\"",
+		echo "    \"name\": \"$NAME\","
+		echo "    \"connected\": $PAIR_CONNECTED,"
+		echo "    \"trusted\": $TRUSTED,"
+		echo "    \"blocked\": $BLOCKED"
+		echo "  }"
+	else
+		echo "false"
+	fi
+	
+	echo "}"
+}

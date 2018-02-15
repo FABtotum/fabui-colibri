@@ -50,7 +50,7 @@ from fabtotum.bluetooth.adapter import Adapter
 def send_command(command, arg_list, bt_address, bt_port=0x1001, verbose=False):
     sock=bluetooth.BluetoothSocket(bluetooth.L2CAP)
 
-    sock.settimeout(5)
+    sock.settimeout(3)
 
     if verbose:
         print("trying to connect to %s on port 0x%X" % (bt_address, bt_port))
@@ -79,6 +79,9 @@ def send_command(command, arg_list, bt_address, bt_port=0x1001, verbose=False):
             print "Error:", str(e)
 
     sock.close()
+    
+    return reply 
+    
 
 def main():
     from fabtotum.fabui.config  import ConfigService

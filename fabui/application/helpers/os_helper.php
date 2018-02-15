@@ -618,4 +618,55 @@ if(!function_exists('rpi_version'))
 			return 'unkwnon';
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('disable_bluetooth'))
+{
+    /**
+     * disable bluetooth
+     */
+    function disable_bluetooth()
+    {
+        $CI =& get_instance();
+        $CI->load->helper('fabtotum');
+        $args = array(
+            '-a' => 'disable'
+        );
+        $scriptResult = startBashScript('bluetooth.sh', $args, false, true);
+        return json_decode($scriptResult,true);
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('enable_bluetooth'))
+{
+    /**
+     * disable bluetooth
+     */
+    function enable_bluetooth()
+    {
+        $CI =& get_instance();
+        $CI->load->helper('fabtotum');
+        $args = array(
+            '-a' => 'enable'
+        );
+        $scriptResult = startBashScript('bluetooth.sh', $args, false, true);
+        return json_decode($scriptResult,true);
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('bluetooth_status'))
+{
+    /**
+     * disable bluetooth
+     */
+    function bluetooth_status()
+    {
+        $CI =& get_instance();
+        $CI->load->helper('fabtotum');
+        $args = array(
+            '-a' => 'status'
+        );
+        $scriptResult = startBashScript('bluetooth.sh', $args, false, true);
+        return json_decode($scriptResult,true);
+    }
+}
 ?>
