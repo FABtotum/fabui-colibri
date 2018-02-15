@@ -67,7 +67,7 @@ $.FabWaitBox = function(settings, callback) {
 		setting.stop = true;
 	}
 	
-	if(settings.stop) Content += '<a rel="tooltip" data-original-title="Emergency Button. <br>This will stop all operations on the FABtotum" data-html="true" id="waitEmergencyButton" href="#" class="btn btn-default pull-right wait-button" data-action="emergencyButton"><i class="fa fa fa-warning"></i></a>';
+	if(settings.stop) Content += '<a rel="tooltip" data-original-title="Emergency Button. <br>This will stop all operations on the FABtotum" data-html="true" id="waitEmergencyButton" href="#" class="btn btn-default pull-right wait-button" data-action="emergencyButton"><i class="fa fa fa-exclamation-triangle"></i></a>';
 	
 	Content += '<hr class="simple">';
 	
