@@ -27,6 +27,7 @@ import os
 import argparse
 import subprocess
 import time
+import json
 
 # Import external modules
 import bluetooth
@@ -54,7 +55,21 @@ from prism_manager import send_command
 def main():
     from fabtotum.fabui.config  import ConfigService
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-
+    
+    
+    # SETTING EXPECTED ARGUMENTS
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("-n", "--name", help="Look for name", default="PRISM")
+    parser.add_argument("-m", "--mac",  help="Mac address",   default="")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Show verbose" )
+    
+    
+    # GET ARGUMENTS
+    args    = parser.parse_args()
+    name    = args.name
+    mac     = args.mac
+    verbose = args.verbose
+    
     config    = ConfigService()
 
     # Ensure bluetooth is enabled
@@ -66,32 +81,50 @@ def main():
     if 'Enabled bluetooth' == out.strip():
         # Give bluetoothd some time to bring up the hci device
         time.sleep(3)
-        print "Bluetooth enabled"
+        if(verbose):
+            print "Bluetooth enabled"
 
     adapter = Adapter()
     if not adapter.Powered:
-        print "Powering up bluetooth..."
+        if(verbose):
+            print "Powering up bluetooth..."
         adapter.Powered = True
 
     master_bt_address = adapter.Address
-    devices = adapter.discoverDevices(look_for_name="PRISM", timeout=30)
-
+    devices = adapter.discoverDevices(look_for_name="PRISM", timeout=30, verbose=verbose)
+    
+    paired = False
+    already_paired = False
+    
     for addr in devices:
         dev = devices[addr]
-        print addr, dev.Name, dev.Paired, dev.Trusted, dev.Adapter
+        if(verbose):
+            print addr, dev.Name, dev.Paired, dev.Trusted, dev.Adapter
 
         if not dev.Paired:
-            print "Pairing..."
+            if(verbose):
+                print "Pairing..."
             dev.Pair()
             dev.Trusted = True
-            print "Paired"
+            paired = True
+            mac = addr
+            if(verbose):
+                print "Paired"
             # Store PRISM bt mac address
             config.set('bluetooth', 'prism_bt_address', str(addr) )
             config.save('bluetooth')
             # Make PRISM trust us ;)
-            send_command('trust', [master_bt_address], addr)
+            send_command('trust', [master_bt_address], addr, verbose=verbose)
         else:
-            print "Already paired"
+            paired = True
+            mac = addr
+            already_paired = True
+            send_command('trust', [master_bt_address], addr, verbose=verbose)
+            if(verbose):
+                print "Already paired"
+    
+    response = {'name': name, 'mac': mac, 'paired': paired, 'already_paired': already_paired }
+    print json.dumps(response)
 
 if __name__ == '__main__':
     main()

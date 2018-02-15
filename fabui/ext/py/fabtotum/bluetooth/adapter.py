@@ -57,6 +57,7 @@ class Adapter(dbus.service.Object):
                 path_keyword = "path")
 
         self.__devices = {}
+        self.__verbose = False
 
         om = dbus.Interface(self.__bus.get_object("org.bluez", "/"),
                     "org.freedesktop.DBus.ObjectManager")
@@ -68,7 +69,7 @@ class Adapter(dbus.service.Object):
         self.__look_for_name = None
         self.__discovery = {}
 
-    def discoverDevices(self, look_for_name=None, look_for_address=None, timeout=10, scan_filter={}):
+    def discoverDevices(self, look_for_name=None, look_for_address=None, timeout=10, scan_filter={}, verbose=False):
         """
         Start BT discovery process.
 
@@ -77,6 +78,7 @@ class Adapter(dbus.service.Object):
         self.__look_for_name = look_for_name
         self.__look_for_address = look_for_address
         self.__discovery = {}
+        self.__verbose = verbose
 
         timeout *= 1000
         GObject.timeout_add(timeout, self.__timeout_handler)
@@ -103,7 +105,8 @@ class Adapter(dbus.service.Object):
         """
         New device discovered.
         """
-        print("[ " + address + " ]")
+        if(self.__verbose):
+            print("[ " + address + " ]")
 
         for key in properties.keys():
             value = properties[key]
@@ -111,7 +114,7 @@ class Adapter(dbus.service.Object):
                 value = unicode(value).encode('ascii', 'replace')
 
             if self.__look_for_name:
-                if key == "Name":
+                if key == "Name" and self.__verbose == True:
                     print ">> name:", value
                 if key == "Name" and value == self.__look_for_name and address != "<unknown>":
                     self.__discovery[address] = Device(address, bus=self.__bus)
