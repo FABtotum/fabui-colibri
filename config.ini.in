@@ -77,7 +77,7 @@ ga_property_id = UA-42679362-4
 
 [my.fabtotum.com]
 myfabtotum_url = https://my.fabtotum.com/myfabtotum/default/call/jsonrpc2
-myfabtotum_api_version = 1
+myfabtotum_api_version = 2
 fabid_active = 1
 
 [app.fabtotum.com]

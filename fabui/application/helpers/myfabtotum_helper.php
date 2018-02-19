@@ -183,13 +183,13 @@ if(!function_exists('fab_is_fabid_registered'))
 	/**
 	 * check if fabid is registered to my.fabtotum.com
 	 */
-	function fab_is_fabid_registered($email)
+	function fab_is_fabid_registered($fabid)
 	{
 		$CI =& get_instance();
 		$CI->load->helpers(array('fabtotum_helper', 'os_helper'));
 		
 		$args = array();
-		$args['email'] = $email;
+		$args['fabid'] = $fabid;
 		//$args['password'] = $password;
 		
 		$response = callMyFabtotum('fab_is_fabid_registered', $args, false);
@@ -243,10 +243,10 @@ if(!function_exists('fab_my_printers_list'))
 	/**
 	 * 
 	 */
-	function fab_my_printers_list($email)
+	function fab_my_printers_list($fabid)
 	{
 		$args = array();
-		$args['email']    = $email;
+		$args['fabid']    = $fabid;
 		
 		$response = callMyFabtotum('fab_my_printers_list', $args, false);
 		
@@ -335,77 +335,5 @@ if(!function_exists('fab_get_status_description'))
 		}
 	}
 }
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if(!function_exists('callDeshape'))
-{
-    /**
-     * 
-     */
-    function callDeshape($endpoint, $args = array())
-    {
-        $debug = true;
-        $url = 'http://myfabdev.tk/deshape/';
-        
-        $access_token = fab_authenticate('**', '***');
-        
-        if(!isset($args['token'])) {
-            $args['token'] = $access_token;
-        }
-        
-        $data_string = json_encode($args);
-        
-        if($debug)
-            echo $data_string.PHP_EOL;
-         
-        
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url.$endpoint);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($data_string))
-        );
-        
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        
-        if($debug){
-            $out = fopen('php://output', 'w');
-            curl_setopt($ch, CURLOPT_VERBOSE, true);
-            curl_setopt($ch, CURLOPT_STDERR, $out);
-        }
-       
-        
-        $content = curl_exec ($ch);
-        curl_close ($ch);
-        
-        //if($debug)
-            echo $content;
-        
-        return json_decode($content, true);       
-    }
-}
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if(!function_exists('deshape_list_projects_full'))
-{
-    /**
-     * 
-     */
-    function deshape_list_projects_full()
-    {
-        return callDeshape('list_projects_full');
-    }
-}
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if(!function_exists('deshape_create_project'))
-{
-    /**
-     * 
-     */
-    function deshape_create_project($project)
-    {
-        return callDeshape('create_project', $project);
-    }
-}
+
+
