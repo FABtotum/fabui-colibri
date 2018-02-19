@@ -2,7 +2,7 @@
 
 class Deshape {
         
-    protected $server = '';
+    protected $server = 'http://myfabdev.tk/deshape/';
     protected $curl;
     
     /**
@@ -71,25 +71,7 @@ class Deshape {
      */
     public function list_projects_full()
     {
-        $projects = $this->_call('list_projects_full');
-        
-        if($projects['status'] == true){
-            
-            $new_list = array();
-            
-            $projects = array_reverse($projects['data']);
-            
-            foreach($projects as $project){
-                
-                $image_url = $this->get_project_image($project['project_id']);
-                //$image_url = '';
-                $temp = $project;
-                $temp['image_url'] = $image_url;
-                
-                $new_list[] = $temp;
-            }
-            return $new_list;
-        }
+        return $this->_call('list_projects_full');
     }
     
     /**
@@ -194,6 +176,7 @@ class Deshape {
      */
     protected function _formatResponse()
     {
+        
         if($this->curl->getHttpCode() == self::HTTP_SUCCESS){
             
             return array(

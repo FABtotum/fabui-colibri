@@ -10,11 +10,16 @@
 ?>
 <script type="text/javascript">
 	var counter = 0;
-	var dropzones = [];
+	main_form    = "#create-project-form";
 	$(document).ready(function(){
-		initDropzone('#dropzone-part-0');
+		dropzones[counter] = initDropzone("#dropzone-part-0", "<?php echo site_url('projects/upload/file') ?>", "<?php echo implode(',', $accepted_files); ?>");
+		
 		$("#add-part").on('click', addPartForm);
-		$('#crate-project-form').bootstrapValidator();
+		initValidator("#create-project-form");
+		$("#save-project").on('click', function(){
+			//saveProject("#create-project-form");
+			startUpload("#create-project-form");
+		});
 		
 	});
 
@@ -25,27 +30,8 @@
 	{
 		$(".remove-part").on('click', removePart);
 	}
+
 	
-	/**
-	*
-	*/
-	function initDropzone(element)
-	{
-		dropzones[counter] = $("div" + element).dropzone({
-			url: "<?php echo site_url('projects/upload/file') ?>",
-			acceptedFiles: "<?php echo implode(',', $accepted_files); ?>",
-			addRemoveLinks : true, 
-			autoProcessQueue: false,
-			dictRemoveFile: "<?php echo _("Remove file");?>",
-			dictMaxFilesExceeded: "<?php echo  _("You can upload just {{maxFiles}} file at time"); ?>", 
-			init: function(){
-				
-			}
-		});
-
-		console.log(dropzones);
-	}
-
 	/**
 	*
 	**/
@@ -57,9 +43,13 @@
 			url: "<?php echo site_url('projects/getPartForm') ?>/" + counter,
 			dataType: "html",
 		}).done(function( response ) {
-			$("#crate-project-form").append(response);
+			$(".form-actions").before(response);
 			initButtons();
-			initDropzone("#dropzone-part-"+counter);
+			dropzones[counter] = initDropzone("#dropzone-part-"+counter, "<?php echo site_url('projects/upload/file') ?>", "<?php echo implode(',', $accepted_files); ?>");
+			$('#create-project-form').bootstrapValidator('addField', $('[name="part-'+counter+'-name"]'));
+			$('#create-project-form').bootstrapValidator('addField', $('[name="part-'+counter+'-description"]'));
+			$('#create-project-form').bootstrapValidator('addField', $('[name="part-'+counter+'-tool"]'));
+			
 		});
 	}
 
@@ -70,5 +60,10 @@
 	{
 		var index = $(this).attr('data-index');
 		$("#project-part-" + index).remove();
+		$('#create-project-form').bootstrapValidator('removeField', $('[name="part-'+index+'-name"]'));
+		$('#create-project-form').bootstrapValidator('removeField', $('[name="part-'+index+'-description"]'));
+		$('#create-project-form').bootstrapValidator('removeField', $('[name="part-'+index+'-tool"]'));
+		dropzones[index].disable();
 	}
+
 </script>

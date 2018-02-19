@@ -36,12 +36,12 @@ if(!function_exists('sync_projects'))
          * .if exists
          *     .check if needs to be updated
          */
-        if($projects){
+        if($projects['status'] == true){
             
             //load models
-            $CI->load->model('Projects', 'projects');
+            $CI->load->model('ProjectsModel', 'projects');
             
-            foreach($projects as $project){
+            foreach($projects['data'] as $project){
                 
                 if(!$CI->projects->exists($project['project_id'])){
                     
