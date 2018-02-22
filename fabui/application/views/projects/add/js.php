@@ -12,7 +12,10 @@
 	var counter = 0;
 	main_form    = "#create-project-form";
 	$(document).ready(function(){
-		dropzones[counter] = initDropzone("#dropzone-part-0", "<?php echo site_url('projects/upload/file') ?>", "<?php echo implode(',', $accepted_files); ?>");
+
+		dropzones[counter] = {};
+		dropzones[counter]["source"]  = initDropzone("#dropzone-part-0-source", "<?php echo site_url('projects/upload/file/source') ?>", "<?php echo implode(',', $accepted_source_files); ?>", "<?php echo _("Drop here source file"); ?><br>(<?php echo implode(',', $accepted_source_files); ?>)");
+		dropzones[counter]["machine"] = initDropzone("#dropzone-part-0-machine", "<?php echo site_url('projects/upload/file/machine') ?>", "<?php echo implode(',', $accepted_machine_files); ?>", "<?php echo _("Drop here machine file"); ?><br>(<?php echo implode(',', $accepted_machine_files); ?>)");
 		
 		$("#add-part").on('click', addPartForm);
 		initValidator("#create-project-form");
@@ -45,7 +48,11 @@
 		}).done(function( response ) {
 			$(".form-actions").before(response);
 			initButtons();
-			dropzones[counter] = initDropzone("#dropzone-part-"+counter, "<?php echo site_url('projects/upload/file') ?>", "<?php echo implode(',', $accepted_files); ?>");
+			
+			dropzones[counter] = {};
+			dropzones[counter]["source"]  = initDropzone("#dropzone-part-"+counter + "-source", "<?php echo site_url('projects/upload/file/source') ?>", "<?php echo implode(',', $accepted_source_files); ?>", "<?php echo _("Drop here source file"); ?><br>(<?php echo implode(',', $accepted_source_files); ?>)");
+			dropzones[counter]["machine"] = initDropzone("#dropzone-part-"+counter + "-machine", "<?php echo site_url('projects/upload/file/machine') ?>", "<?php echo implode(',', $accepted_machine_files); ?>", "<?php echo _("Drop here machine file"); ?><br>(<?php echo implode(',', $accepted_machine_files); ?>)");
+
 			$('#create-project-form').bootstrapValidator('addField', $('[name="part-'+counter+'-name"]'));
 			$('#create-project-form').bootstrapValidator('addField', $('[name="part-'+counter+'-description"]'));
 			$('#create-project-form').bootstrapValidator('addField', $('[name="part-'+counter+'-tool"]'));

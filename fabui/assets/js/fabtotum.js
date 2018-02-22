@@ -258,6 +258,8 @@ function getDataFromForm(form)
 {
 	var fields = $( form + " :input" ).serializeArray();
 	
+	console.log(fields);
+	
 	//add checkbokx inputs
 	fields = fields.concat(
 	jQuery(form +' input[type=checkbox]').map(
@@ -265,6 +267,14 @@ function getDataFromForm(form)
 			return {"name": this.name, "value": $(this).is(':checked')}
         }).get()
     );
+	//add select multiple
+	fields = fields.concat(
+		jQuery(form +' select[multiple]').map(
+			function() {
+					return {"name": this.name, "value": $(this).val()}
+		     }).get()
+	);
+	
 	var data = {};
 	jQuery.each( fields, function( index, object ) {
 		data[object.name] = object.value;

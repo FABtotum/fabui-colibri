@@ -1885,4 +1885,17 @@ if(!function_exists('getUnitTypeDescription'))
         }
     }
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('reload_myfabtotum'))
+{
+    /**
+     * reload my.fabtotum.com
+     * credentials and settings
+     */
+    function reload_myfabtotum()
+    {
+        $CI =& get_instance();
+        return sendToXmlrpcServer('do_mfc_reload');
+    }
+}
 ?>

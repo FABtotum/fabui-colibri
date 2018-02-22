@@ -50,16 +50,6 @@
 		$this->debugLayout();
 	}
 	
-	public function test()
-	{
-		$this->load->helpers('plugin_helper');
-		$this->load->helpers('upload_helper');
-		$this->config->load('upload');
-		#$tmp = allowedTypesToDropzoneAcceptedFiles( $this->config->item('allowed_types') );
-		$tmp = getFileActionList('drl');
-		var_dump($tmp);
-	}
-	
 	public function gcodeviewer()
 	{
 		$this->content = $this->load->view('filemanager/file/preview/index', null, true );
@@ -117,12 +107,9 @@
 		$result_codes[1002] = 'SERVICE_ALREADY_REGISTERED';
 		$result_codes[1003] = 'SERVICE_PRINTER_UNKNOWN';
 		
-		
-		
 		switch($method){
 			case 'fab_register_printer':
-				//$params['fabid'] = 'fabtest@fabtotum.com';
-			    $result = fab_register_printer($this->session->user['email']);
+			    $result = fab_register_printer($this->session->user['settings']['fabid']['email']);
 				break;
 			case 'fab_info_update':
 				$result = fab_info_update();
@@ -134,7 +121,7 @@
 				$result = fab_is_printer_registered();
 				break;
 			case 'fab_my_printers_list':
-			    $result = fab_my_printers_list($this->session->user['email']);
+			    $result = fab_my_printers_list($this->session->user['settings']['fabid']['email']);
 			    break;
 		}
 		
@@ -172,133 +159,10 @@
 	 */
 	public function deshape()
 	{
-	    
-	    $this->load->helpers(array('api_helper', 'myfabtotum_helper'));
-	    
-	    $config['server'] = 'http://myfabdev.tk/deshape/';
-	    $config['token']  = fab_authenticate('*******', '***********');
-	    
-	    $this->load->library('Deshape', $config);
-	    
-	    $data['project'] = array(
-	        'project_name' => 'Marvin Test',
-	        'project_description' => 'This is Marvin. He is the symbol of the 3D Printing movement. Marvin\'s core ethos is about community, creativity, social change, and problem solving. He\'s determined to revolutionize the way we make things through 3D Printing',
-	        'visibility' => 'PUBLIC',
-	        'categories' => array('Design'),
-	        'parts' => array (
-	            array(
-	                'part_name' => 'marvin_test',
-	                'part_description' => 'No description',
-	                'price' => 0,
-	                'part_creation_tool' => 'Printing Head Pro',
-	                'part_quantity' => 1,
-	                'ordinal_number' => 1,
-	                'part_files' => array (
-	                    array(
-	                        'title' => 'marvin_test',
-	                        'file_type' => 'STL',
-	                        'file_data' => base64_encode(file_get_contents('/mnt/bigtemp/fabui/marvin_test.STL')),
-	                        'file_name' => 'marvin_test.STL'
-	                    )
-	                )
-	            )
-	        )
-	    );
-	    
-	    //$project = $this->deshape->create_project($data);
-	    
-	    $projects = $this->deshape->get_project_image(273);
-	    
-	    print_r($projects);
-	    
-	    
-	    //$projects = $this->deshape->get_single_project(211);
-	    
-	    //print_r($projects);
-	    
-	    //print_r($this->deshape);
-	    
-	    /*
-	    $this->load->helpers(array('api_helper', 'myfabtotum_helper'));
-	    
-	    //$projects_full = deshape_list_projects_full();
-	    
-	    
-	    $args['project'] = array(
-	        'project_name' => 'Cane',
-	        'project_description' => 'logo CANE',
-	        'visibility' => 'PUBLIC',
-	        'categories' => array('Design'),
-	        'parts' => array (
-	            array(
-	                'part_name' => 'Cane',
-	                'part_description' => 'Unica parte',
-	                'price' => 0,
-	                'part_creation_tool' => 'Printing Head Pro',
-	                'part_quantity' => 1,
-	                'ordinal_number' => 1,
-	                'part_files' => array (
-	                    array(
-	                        'title' => 'logo_cane',
-	                        'file_type' => 'STL', 
-	                        'file_data' => base64_encode(file_get_contents('/mnt/bigtemp/fabui/CANE.stl')),
-	                        'file_name' => 'CANE.stl'
-	                    )
-	                )
-	            )
-	        )
-	    );
-	    
-	    // $project       = deshape_create_project($args);  // ok
-	     $projects_full = deshape_list_projects_full();   // ok
-	    // $projects_short = deshape_list_projects_short(); // ok
-	    
-	    //edit project id=211
-	    $args['project'] = array(
-	        'project_id' => 211,
-	        'project_name' => 'Nome progetto modificato',
-	        'project_description' => 'Descrizione progetto modificato',
-	        'visibility' => 'PUBLIC'
-	    );
-	    
-	    // $project_edited = deshape_edit_project($args); // ok
-	    
-	    $part = array(
-	        'part_name' => 'Cane nuova parte',
-	        'part_description' => 'seconda parte aggiunta',
-	        'price' => 10,
-	        'part_creation_tool' => 'Printing Head Pro',
-	        'part_quantity' => 2,
-	        'ordinal_number' => 1,
-	        'part_files' => array (
-	            array(
-	                'title' => 'logo_cane_aggiunto',
-	                'file_type' => 'STL',
-	                'file_data' => base64_encode(file_get_contents('/mnt/bigtemp/fabui/CANE.stl')),
-	                'file_name' => 'CANE.stl'
-	            )
-	        )
-	    );
-	    
-	    //$added_part = deshape_add_part(211, $part); // ok - note : [response] il file della parte aggiunta viene aggiunta nell'elenco "part_files" di tutte le parti
-	    
-	    
-	    $remove_part = deshape_remove_part(211, 210); // ko - BAD REQUEST
-	   
-	    //print_r($project);
-	    print_r($projects_full);
-	    
-	    //print_r($project);
-	    //print_r($projects_short);
-	    
-	    //print_r($project_edited);
-	    
-	    //print_r($added_part);
-	    
-	    //print_r($remove_part);
-	     * 
-	     * 
-	     */
+	}
+	
+	public function test()
+	{
 	}
  }
  

@@ -7,6 +7,7 @@
  *
  */
 defined ( 'BASEPATH' ) or exit ( 'No direct script access allowed' );
+
 class Myfabtotum extends FAB_Controller {
     /**
      *
@@ -15,102 +16,81 @@ class Myfabtotum extends FAB_Controller {
     {
         parent::__construct();
     }
+    
 	/**
 	 */
 	public function index() {
+	   //@TODO
 	}
+	
 	/**
-	 * connect to my.fabtotum.com with fabid
+	 * 
 	 */
-	public function connect($saveToDB = true) {
-		// load helpers
-		$this->load->helper ( 'myfabtotum_helper' );
-		$this->load->helper ( 'os_helper' );
-		
-		// get data from post
-		$fabid = $this->input->post ( 'fabid_email' );
-		$password = $this->input->post ( 'fabid_password' );
-		$serial = $this->input->post ( 'fabid_serial_number' );
-		
-		$response = array (
-				'connect' => false,
-				'register' => false,
-				'fabid' => $fabid 
-		);
-		
-		if (isInternetAvaialable ()) {
-			
-			$connect = myfabtotum_connect ( $fabid, $password ); // connect to my.fabtotum.com
-			$register = fab_register_printer ( $fabid, $serial ); // register printer
-			
-			$response ['register'] = $register;
-			$response ['connect'] = $connect;
-			$response ['fabid'] = $fabid;
-			
-			if ($saveToDB && $connect ['status'] == true) { // save info to user db's record
-				
-				$this->load->model ( 'User', 'user' );
-				$this->load->library ( 'session' );
-				
-				$user = $this->user->get ( $this->session->user ['id'], 1 );
-				
-				$user ['settings'] = json_decode ( $user ['settings'], true );
-				$user ['settings'] ['fabid'] ['email'] = $fabid;
-				$user ['settings'] ['fabid'] ['password'] = $password;
-				$this->session->set_userdata('user', $user);
-				$this->user->update ( $user ['id'], array (
-						'settings' => json_encode ( $user ['settings'] ) 
-				) );
-				// reload my.fabtotum.com credentials for the service
-				reload_myfabtotum ();
-			}
-		} else {
-			$response ['connect'] ['message'] = _ ( "No internet connection found" ) . '<br>' . _ ( "Check your connection and try again" );
-		}
-		
-		$this->output->set_content_type ( 'application/json' )->set_output ( json_encode ( $response ) );
+	public function disconnect($fabid = '')
+	{
+	    /**
+	     * load model
+	     */
+	    $this->load->model('User', 'user');
+	    
+	    /**
+	     * load helpers
+	     */
+	    $this->load->helper(array('fabtotum_helper'));
+	    
+	    /**
+	     * if fabid is empty get it from session
+	     */
+	    if($fabid == ''){
+	        
+	        $user = $this->user->get($this->session->user['id'], 1);
+	        
+	    }else{
+	        /**
+	         * else get user from database
+	         */
+	        $user = $this->user->getByFABID($fabid);
+	    }
+	    
+	    /**
+	     * 
+	     */
+	    if($user){
+	        /**
+	         * ger user settings
+	         */
+	        $ettings = json_decode($user['settings'], true);
+	        /**
+	         * update fabid status
+	         */
+	        $settings['fabid']['logged_in'] = false;
+	        /**
+	         * update db record
+	         */
+	        $update_data['settings'] = json_encode($settings);
+	        $this->user->update($user['id'], $update_data);
+	        /**
+	         * update session if user is in session
+	         */
+	        $this->session->set_userdata('user', $user);
+	        /**
+	         * reload myfabtotum daemon
+	         */
+	        reload_myfabtotum ();
+	        
+	    }
+	    
+	    $this->output->set_content_type ( 'application/json' )->set_output ( json_encode ( true ) );
 	}
-	/**
-	 * disconnect from my.fabtotum.com
-	 */
-	function disconnect($fabid = '') {
-		// load classes
-		$this->load->model ( 'User', 'user' );
-		$this->load->database ();
-		
-		// load helpers
-		$this->load->helper ( 'myfabtotum_helper' );
-		
-		if ($fabid == '') {
-			$this->load->library ( 'session' );
-			$user = $this->user->get ( $this->session->user ['id'], 1 );
-		} else {
-			$user = $this->user->getByFABID ( $fabid );
-		}
-		
-		if ($user) {
-			
-			$user ['settings'] = json_decode ( $user ['settings'], true );
-			$user ['settings'] ['fabid'] ['logged_in'] = false;
-			// update user's db record
-			$this->user->update ( $user ['id'], array (
-					'settings' => json_encode ( $user ['settings'] ) 
-			) );
-			
-			// update session user's info
-			if ($fabid == '') {
-				$this->session->set_userdata('user', $user);
-			}
-			// reload my.fabtotum.com credentials for the service
-			reload_myfabtotum ();
-		}
-		$this->output->set_content_type ( 'application/json' )->set_output ( json_encode ( true ) );
-	}
+	
+	
 	/**
 	 * return url from my.fabtotum.com - if this page is called it means fabid exists
 	 */
 	public function back_url() {
+	    
 		$fabid = $this->input->get ( 'fabid' );
+		
 		$data ['fabid'] = $fabid;
 		$data ['internet'] = false;
 		
@@ -140,11 +120,19 @@ class Myfabtotum extends FAB_Controller {
 						$user ['settings'] ['fabid'] ['email'] = $fabid;
 						$user ['settings'] ['fabid'] ['logged_in'] = true;
 						$this->session->set_userdata('user', $user);
-						$this->user->update ( $user ['id'], array ( 'settings' => json_encode ( $user ['settings'] ) ) );	
+						$this->user->update ( $user ['id'], array ( 'settings' => json_encode ( $user ['settings'] ) ) );
 					}
 					
-					if (! fab_is_printer_registered ()) {
-						$data['register_printer'] = fab_register_printer ( $fabid );					
+					/**
+					 * init myfabototum client
+					 */
+					$init['fabid'] = $fabid;
+					$this->load->library('MyFabtotumClient', $init,  'myfabtotumclient');
+					/**
+					 * 
+					 */
+					if (! $this->myfabtotumclient->is_printer_registered() ) {
+					    $data['register_printer'] = $this->myfabtotumclient->register_printer ();
 					}
 					reload_myfabtotum ();
 				}
@@ -163,14 +151,22 @@ class Myfabtotum extends FAB_Controller {
 		
 		$response ['status'] = false;
 		// load helpers
-		$this->load->helper ( array ('myfabtotum_helper', 'os_helper' ) );
+		$this->load->helper ( array ('os_helper' ) );
 		if (isInternetAvaialable()) {
 			
 			if (isset ( $this->session->user ['settings'] ['fabid'] )) {
-				$macAddress = getMACAddres ();
-				$myPrinters = fab_my_printers_list ( $this->session->user ['settings'] ['fabid'] ['email'] );
-				
+			    
+			    $init['fabid'] = $this->session->user['settings']['fabid']['email'];
+			    $this->load->library('MyFabtotumClient', $init,  'myfabtotumclient');
+			    /**
+			     *  get all owned/shared printers
+			     */
+			    $myPrinters = $this->myfabtotumclient->printers_list();
+				/**
+				 * 
+				 */
 				if ($myPrinters) {
+				    $macAddress = $this->myfabtotumclient->get_mac_address();
 					foreach ( $myPrinters as $printer ) {
 						if ($printer ['mac'] != $macAddress) { // avoid the printer where iam
 							$response ['status'] = true;

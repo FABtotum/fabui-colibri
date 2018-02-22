@@ -66,31 +66,19 @@
 		}
 		
 		//update user last login column
-		$last_login = date('Y-m-d H:i:s');
-		$this->user->update($user['id'], array('last_login' => $last_login));
+		$update_data['last_login'] = $last_login;
+		$update_data['session_id'] = $this->session->session_id;
+		$this->user->update($user['id'], $update_data);
 		
 		$user['settings'] = json_decode($user['settings'], true);
 		$user['last_login'] = $last_login;
 		
 		//load hardware settings
-		$this->load->helper(array('fabtotum_helper', 'language_helper', 'myfabtotum_helper'));
+		$this->load->helper(array('fabtotum_helper', 'language_helper'));
 		$hardwareSettings = loadSettings();
-		
-		
-		if(isset($hardwareSettings['locale'])) $user['settings']['locale'] = $hardwareSettings['locale'];
-		else $user['settings']['locale'] = 'en_US';
-		
-		
-		//create valid session for fabui
-		//$this->session->loggedIn = true;
-		//$this->session->user = $user;
 		
 		$this->session->set_userdata('user', $user);
 		$this->session->set_userdata('loggedIn', true);
-		
-		if($user['role'] == 'administrator'){
-			setLanguage($user['settings']['locale']);
-		}
 		
 		reload_myfabtotum();
 		//save hardware settings on session
@@ -98,108 +86,157 @@
 		redirect('#dashboard');
 	}
 	
+	/**
+	 * 
+	 */
 	public function fabid()
 	{
-		$data = $this->input->post();
-		$fabid = $data['fabid'];
-		
-		//load helpers
-		$this->load->helper(array('fabtotum_helper', 'language_helper', 'myfabtotum_helper', 'os_helper'));
-		
-		if(isInternetAvaialable()){ //only if printer is connected to internet
-			//1. check if fabid exists
-			//2. get printers lists - if this printer exists in printers list i can login
-			$fabidExists = fab_is_fabid_registered($fabid);
-			if($fabidExists){
-				$printers = fab_my_printers_list($fabid);
-				if($printers){
-					$iCanUse = i_can_use_this_printer($printers);
-					if($iCanUse){ //if this printer is on my printers list i can access to it
-						$this->load->model('User', 'user');
-						$user = $this->user->getByFABID($fabid);
-						$hardwareSettings = loadSettings();
-						
-						if($user){ //if exists a user with that fabid then login
-							
-							//update user last login column
-							$last_login = date('Y-m-d H:i:s');
-							$this->user->update($user['id'], array('last_login' => $last_login));
-							
-							$user['settings']  = json_decode($user['settings'], true);
-							$user['settings']['fabid']['logged_in'] = true;
-							$user['last_login'] = $last_login;
-							
-							if(isset($hardwareSettings['locale'])) $user['settings']['locale'] = $hardwareSettings['locale'];
-							else $user['settings']['locale'] = 'en_US';
-														
-							//create valid session for fabui
-							
-							$this->session->set_userdata('user', $user);
-							$this->session->set_userdata('loggedIn', true);
-							
-							if($user['role'] == 'administrator'){
-								setLanguage($user['settings']['locale']);
-							}
-							
-							reload_myfabtotum();
-							//save hardware settings on session
-							//$this->session->settings = $hardwareSettings;
-							$this->session->set_userdata('settings', $hardwareSettings);
-							redirect('#dashboard');
-							
-							
-						}else{ //create a guest user
-							
-							$settings = array (
-								'fabid' => array(
-									'email' => $fabid,
-									'logged_in' => true
-								),
-								'locale' => $hardwareSettings['locale']
-							);
-							
-							$user['email']      = $fabid;
-							$user['first_name'] = 'Guest';
-							$user['last_name']  = 'Guest';
-							$user['role']       = 'user';
-							$user['session_id'] = $this->session->session_id;
-							$user['last_login'] = date('Y-m-d H:i:s');
-							$user['settings']   = json_encode($settings);
-							
-							$newUserID = $this->user->add($user);
-							$user['id'] = $newUserID;
-							
-							//$this->session->loggedIn = true;
-							//$this->session->user = $user;
-							
-							$this->session->set_userdata('user', $user);
-							$this->session->set_userdata('loggedIn', true);
-							
-							reload_myfabtotum();
-							//save hardware settings on session
-							//$this->session->settings = $hardwareSettings;
-							$this->session->set_userdata('settings', $hardwareSettings);
-							redirect('#dashboard');
-							
-						}
-					}
-				}
-				//no access to this printer with fabid
-				$this->session->set_flashdata('alert', array('type' => 'alert-danger', 'message'=> '<i class="fa fa-fw fa-warning"></i> '._("You don't have the permission for this printer") ));
-				redirect('login/?fabid=no');
-			}
-			//fabid was not recognized
-			$this->session->set_flashdata('alert', array('type' => 'alert-danger', 'message'=> '<i class="fa fa-fw fa-warning"></i> '._("FABID doesn't exists") ));
-			redirect('login/?fabid=no');
-		
-		}
-		//printer not connected to internet
-		$this->session->set_flashdata('alert', array('type' => 'alert-danger', 'message'=> '<i class="fa fa-fw fa-warning"></i> '._("Internet connection not available. Sign-in to your local access and then connect to internet") ));
-		redirect('login/?fabid=no');
-		
+	    /**
+	     * 
+	     */
+	    $data  = $this->input->post();
+	    $fabid = $data['fabid'];
+	    
+	    /**
+	     * 
+	     */
+	    $redirect      = '';
+	    $alert_type    = '';
+	    $alert_message = '';
+	    
+	    /**
+	     * load helpers
+	     */
+	    $this->load->helper(array('fabtotum_helper', 'language_helper', 'os_helper'));
+	    
+	    /**
+	     * check if printer is connected to internet 
+	     */
+	    if(isInternetAvaialable()){
+	        /**
+	         * init myfabotutum client
+	         */
+	        $init['fabid'] = $fabid;
+	        $this->load->library('MyFabtotumClient', $init,  'myfabtotumclient');
+	        /**
+	         * check if fabid exists
+	         */
+	        if($this->myfabtotumclient->is_fabid_registered()){
+	            /**
+	             *  check if fabid is authorized to use this printer
+	             */
+	            if($this->myfabtotumclient->can_use_local_printer()){
+	                /**
+	                 *  load users model
+	                 */
+	                $this->load->model('User', 'user');
+	                $user = $this->user->getByFABID($fabid);
+	                
+	                /**
+	                 * if user exists
+	                 */
+	                if($user){
+	                    /**
+	                     * update user's info
+	                     */
+	                    $settings = json_decode($user['settings'], true);
+	                    $settings['fabid'] = array(
+	                        'email' => $fabid,
+	                        'logged_in' => true
+	                    );
+	                    $update_data['last_login'] = date('Y-m-d H:i:s');
+	                    $update_data['session_id'] = $this->session->session_id;
+	                    $update_data['settings']   = json_encode($settings);
+	                    $this->user->update($user['id'], $update_data);
+	                    
+	                }else{
+	                    /**
+	                     * user doesn't exists
+	                     * crate a new "GUEST" user
+	                     */
+	                    $settings = array(
+	                        'fabid' => array(
+	                            'email'     => $fabid,
+	                            'logged_in' => true
+	                        ),
+	                        'notifications' => array(
+	                            'tasks' => array(
+	                                'finish' => false,
+	                                'pause' => false
+	                            )
+	                        )
+	                    );
+	                    $user['email']      = $fabid;
+	                    $user['first_name'] = 'Guest';
+	                    $user['last_name']  = 'Guest';
+	                    $user['role']       = 'user';
+	                    $user['session_id'] = $this->session->session_id;
+	                    $user['last_login'] = date('Y-m-d H:i:s');
+	                    $user['settings']   = json_encode($settings);
+	                    /**
+	                     * insert new user row
+	                     */
+	                    $new_user_id = $this->user->add($user);
+	                    $user['id'] = $new_user_id;
+	                }
+	                /**
+	                 * create valid session for fabui
+	                 */
+	                $user['settings'] = json_decode($user['settings'], true);
+	                
+	                $this->session->set_userdata('user',     $user);
+	                $this->session->set_userdata('loggedIn', true);
+	                /**
+	                 * reload myfabtotum background daemon
+	                 */
+	                reload_myfabtotum();
+	                /**
+	                 *  LOGIN OK
+	                 */
+	                $redirect      = '#dashboard';
+	                $alert_type    = '';
+	                $alert_message = '';
+	                
+	            }else{
+	                /**
+	                 * fabid not authorized to use this printer
+	                 * LOGIN KO
+	                 */
+	                $redirect      = 'login/?fabid=no';
+	                $alert_type    = 'alert-danger';
+	                $alert_message = '<i class="fa fa-fw fa-exclamation-triangle"></i> '._("You don't have the permission for this printer");
+	            }
+	        }else{
+	            /**
+	             * fabid doesn't exists or invalid
+	             * LOGIN KO
+	             */
+	            $redirect      = 'login/?fabid=no';
+	            $alert_type    = 'alert-danger';
+	            $alert_message = '<i class="fa fa-fw fa-exclamation-triangle"></i> '._("FABID doesn't exists");
+	            
+	        }
+	    }else{
+	        /**
+	         * printer not connected to internet
+	         * LOGIN KO
+	         */
+	        $redirect      = 'login/?fabid=no';
+	        $alert_type    = 'alert-danger';
+	        $alert_message = '<i class="fa fa-fw fa-exclamation-triangle"></i> '._("Internet connection not available. Sign-in to your local access and then connect to internet");
+	    }
+	    
+	    /**
+	     * 
+	     */
+	    $this->session->set_flashdata('alert', array('type' => $alert_type,  'message'=> $alert_message));
+	    redirect($redirect);
 	}
 	
-	//log out
+	/*
+	 * 
+	 * 
+	 */
 	public function out()
 	{
 		delete_cookie("fabkml", $this->input->server('HTTP_HOST'));

@@ -1,8 +1,9 @@
 /**
  * 
  */
-const ALL_PROJECTS_URL = '/fabui/projects/get_all_projects';
-const SAVE_PROJECT_URL = '/fabui/projects/action/create-new-project';
+const PROJECTS_INDEX_URL = '/fabui/#projects';
+const ALL_PROJECTS_URL   = '/fabui/projects/get_all_projects';
+const SAVE_PROJECT_URL   = '/fabui/projects/action/create-new-project';
 
 /**
  * 
@@ -12,36 +13,81 @@ var upload_queue = 0;
 var total_files  = 0;
 var main_form    = "";
 /**
+ * 
+ */
+var default_limit  = 10;
+var default_offset = 0;
+/**
+ * 
+ */
+clearDropzones();
+/**
 *
 **/
-function get_projects(remote_sync)
+function get_projects(remote_sync, limit, offset)
 {
-	$("#projects-container").html('<h4 class="ajax-loading-animation text-center"><i class="fa fa-cog fa-spin"></i> '+_("Loading projects")+'</h4>');
+	limit = limit || default_limit;
+	offset = offset || default_offset;
 	
-	$.get(ALL_PROJECTS_URL + '/' + remote_sync , function(data, status){
+	$(".sync").find('i').addClass("fa-spin");
+	disableButton(".sync");
+	disableButton("#load-more-button")
+	if($(".project").length <= 0 || remote_sync == 1)
+		$("#projects-container").html('<h4 class="ajax-loading-animation text-center"><i class="fa fa-cog fa-spin"></i> '+_("Loading projects")+'</h4>');
+	
+	$.get(ALL_PROJECTS_URL + '/' + remote_sync + '/' + limit + '/' + offset , function(data, status){
 		$(".ajax-loading-animation").remove();
 		build_projects(data);
+		$(".sync").find('i').removeClass("fa-spin");
+		enableButton(".sync");
 	});
 }
 
 /**
 * build projects
 **/
-function build_projects(projects)
+function build_projects(data)
 {	
-	$.each(projects, function(i, item) {
-		var html = '<div class="col-sm-2 animated fadeIn">\
+	$.each(data.projects, function(i, item) {
+		
+		var image_url = item.image_url;
+		if(image_url == '' || image_url == null){
+			image_url = "http://via.placeholder.com/500x500?text=No%20preview";
+		}
+		var parts_icon = 'fa fas fa-cog';
+		if(item.parts > 1){
+			parts_icon = 'fa fas fa-cogs';
+		}
+		var cloud_icon = 'fas fa-cloud';
+		if(item.deshape_id == '' || item.deshape_id == null){
+			cloud_icon = '';
+		}
+		var html = '<div class="col-sm-2 animated fadeIn project">\
 						<div class="panel panel-default">\
 							<div class="panel-body status">\
-								<div class="image"><a href="#projects/edit/'+item.id+'"><image src="'+item.image_url+'"></a></div>\
-								<div class="links">\
-									<a href="#projects/edit/'+item.id+'">'+item.name+'</a>\
+								<div>\
+									<a class="project-name"  href="#projects/edit/'+item.id+'">'+item.name+'</a>\
 								</div>\
+								<div class="image"><a href="#projects/edit/'+item.id+'"><image src="'+image_url+'"></a></div>\
+								<ul class="links">\
+									<li> </li>\
+									<li title="' + item.parts + ' '+ _("part(s)") +'" class="pull-right"><i class="'+parts_icon+' text-info"></i></li>\
+									<li  class="pull-right"><i class="'+cloud_icon+' text-info"></i></li>\
+								</ul>\
 							</div>\
 						</div>\
 					</div>';
 		$("#projects-container").append(html);
+		
 	});
+	
+	if(data.projects.length < data.limit){
+		disableButton("#load-more-button");
+	}else{
+		$("#load-more-button").attr('data-attribute-offset', data.next_offset);
+		enableButton("#load-more-button");
+	}
+	
 }
 
 /**
@@ -70,14 +116,26 @@ function isValidForm(form)
 }
 
 /**
+ * remove all dropzones
+ */
+function clearDropzones()
+{
+	$.each(dropzones, function(i, item){
+		dropzones[i].destroy();
+	});
+	dropzones = [];
+}
+
+/**
  * craete dropzone instance
  */
-function initDropzone(element, url, acceptedFiles)
+function initDropzone(element, url, acceptedFiles, title)
 {
 	return new Dropzone("div"+element, {
 		url: url,
 		acceptedFiles: acceptedFiles,
 		parallelUploads: 1,
+		dictDefaultMessage: title,
 		maxFiles: 1,
 		addRemoveLinks : true, 
 		autoProcessQueue: false,
@@ -135,8 +193,11 @@ function initDropzone(element, url, acceptedFiles)
 				if(file.hasOwnProperty("xhr")){
 					var response = jQuery.parseJSON(file.xhr.response);
 					if(response.upload == true){
-						var counter = this.element.id[this.element.id.length - 1];
-						$('[name="part-'+counter+'-files"').val(response.file_id+",");
+						
+						var splitted_id = this.element.id.split('-');
+						var counter = splitted_id[2];
+						var type    = splitted_id[3];
+						$('[name="part-'+counter+'-'+type+'_file"').val(response.file_id);
 						upload_queue--;
 						if(upload_queue == 0){
 							$(".dropzone-modal-title").html('<i class="fa fa-check"></i> ' + _("Files uploaded"));
@@ -184,7 +245,8 @@ function startUpload(form)
 			});
 			
 			$.each(dropzones, function(i, item){
-				doUpload(item);
+				doUpload(item.source);
+				doUpload(item.machine);
 			});
 		}else{
 			fabApp.showErrorAlert(_("Add at least 1 file"));
@@ -199,14 +261,17 @@ function saveProject(form)
 {
 	if(isValidForm(form)){
 		var data = getDataFromForm(form);
-		openWait("Saving project");
+		openWait('<i class="fas fa-spinner fa-pulse"></i> ' + _("Saving project"), _("Please wait.."), false);
 		$.ajax({
 			type: "POST",
 			url: SAVE_PROJECT_URL,
 			data: data,
 			dataType: "json",
 		}).done(function( response ) {
-			
+			openWait('<i class="fas fa-check"></i> ' + _("Project saved"), '<i class="fas fa-sync fa-spin"></i> ' + _("Reloading page"), false);
+			setTimeout(function() {
+				document.location.href = PROJECTS_INDEX_URL;
+			}, 2000);
 		});
 	}
 }

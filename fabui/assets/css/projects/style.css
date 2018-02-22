@@ -1,0 +1,8 @@
+.panel::HOVER {
+	opacity: 0.1;
+}
+.project-name {
+	position:relative;
+	top:10px;
+	left:15px;
+}

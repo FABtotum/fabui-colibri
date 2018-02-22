@@ -172,7 +172,7 @@ if(!function_exists('fab_is_printer_registered'))
 		$args['serialno'] = getSerialNumber();
 		$args['mac']      = getMACAddres();
 		
-		$response = callMyFabtotum('fab_is_printer_registered', $args, false);
+		$response = callMyFabtotum('fab_is_printer_registered', $args);
 		
 		return $response['status_code'] == SERVICE_SUCCESS;
 	}
@@ -192,7 +192,7 @@ if(!function_exists('fab_is_fabid_registered'))
 		$args['fabid'] = $fabid;
 		//$args['password'] = $password;
 		
-		$response = callMyFabtotum('fab_is_fabid_registered', $args, false);
+		$response = callMyFabtotum('fab_is_fabid_registered', $args);
 		return $response['status_code'] == SERVICE_SUCCESS;
 	}
 }
@@ -248,7 +248,7 @@ if(!function_exists('fab_my_printers_list'))
 		$args = array();
 		$args['fabid']    = $fabid;
 		
-		$response = callMyFabtotum('fab_my_printers_list', $args, false);
+		$response = callMyFabtotum('fab_my_printers_list', $args);
 		
 		if($response['status_code'] == SERVICE_SUCCESS){
 			return $response['data'];

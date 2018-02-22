@@ -537,12 +537,15 @@ if(!function_exists('getMACAddress'))
 	 */
 	function getMACAddres($interface = 'eth0')
 	{
+	    /*
 		$interfaces = getInterfaces();
 		if(array_key_exists($interface,$interfaces)){
 			if(isset($interfaces[$interface]["mac_address"]))
 				return $interfaces[$interface]["mac_address"];
 		}
 		return false;
+		*/
+		return trim(shell_exec("ifconfig " . $interface . " | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'"));
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -73,6 +73,16 @@
 	}
 }
 
+@media only screen and (max-width: 979px) {
+	.dropzone .dz-default.dz-message {
+	    background-size: 100%;
+	    width: auto !important;
+	    height: auto !important;
+	    margin-left: 0 !important;
+	    margin-top: 0 !important;
+	}
+}
+
 .console {
 	max-height: 300px !important;
 	overflow: auto;
@@ -774,3 +784,20 @@ body.smart-style-6 #ribbon {
   	content: "\f00c";
 }
 
+nav ul li.active > a::before {
+	content: none !important;
+}
+
+.select2-selection__choice__remove, label input[type=checkbox].checkbox+span:before, label input[type=radio].radiobox+span:before {
+	font-family: "Font Awesome 5 Free"!important;
+	font-weight: 900;
+}
+.select2-selection__choice__remove:before {
+	
+}
+
+label input[type=checkbox].checkbox:checked+span:before {
+	 font-family: "Font Awesome 5 Free"!important;
+	 content: "\f00c";
+	 font-weight: 900;
+}

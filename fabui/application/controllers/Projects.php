@@ -11,7 +11,7 @@
 class Projects extends FAB_Controller {
 
     protected $categories = array(
-        'Jewelery & Fashion' => 'Jewelery & Fashion',
+        'Jewelry & Fashion'  => 'Jewelry & Fashion',
         'Home Living'        => 'Home Living',
         'Tech'               => 'Tech',
         'Toys & Games'       => 'Toys & Games',
@@ -31,16 +31,23 @@ class Projects extends FAB_Controller {
         'Laser Head Pro'     => 'Laser Head Pro'
     );
     
-    protected $accepted_files = array( ".stl", ".gcode", ".gc", ".dxf", ".nc");
+    protected $accepted_source_files  = array( ".stl", ".dxf", ".png", ".jpg");
+    protected $accepted_machine_files = array( ".gcode", ".gc", ".nc");
+    
+    protected $limit  = 10;
+    protected $offset = 0;
     
     /**
      * 
      */
     public function index()
     {
+        $data['default_limit']  = $this->limit;
+        $data['default_offset'] = $this->offset;
+        $this->addCssFile('/assets/css/projects/style.css');
         $this->addJSFile('/assets/js/controllers/projects/common.js');
-        $this->addJsInLine($this->load->view('projects/index/js', null, true));
-        $this->content = $this->load->view('projects/index/index', null, true );
+        $this->addJsInLine($this->load->view('projects/index/js', $data, true));
+        $this->content = $this->load->view('projects/index/index', $data, true );
         $this->view();
     }
     
@@ -48,11 +55,11 @@ class Projects extends FAB_Controller {
      *  get all projects
      *  @TODO load from local json that should be synchronized 
      */
-    public function get_all_projects($remote_sync=0)
+    public function get_all_projects($remote_sync=0, $limit=10, $offset=0)
     { 
         $fabid = $this->session->userdata['user']['settings']['fabid']['email'];
         /**
-         * sync with deshpe server
+         * sync with cloud server
          */
         if($remote_sync == 1){
             $this->load->helper(array('deshape_helper', 'myfabtotum_helper'));
@@ -61,8 +68,16 @@ class Projects extends FAB_Controller {
         }
         
         $this->load->model('ProjectsModel', 'projects');
-        $projects = $this->projects->get( array('fabid'=> $fabid));
-        $this->output->set_content_type('application/json')->set_output(json_encode($projects));
+        $projects = $this->projects->get_list($fabid, array('creation_date' => 'DESC'), array('limit'=>$limit, 'offset'=>$offset));
+        /**
+         * output
+         */
+        $output = array(
+            'projects' => $projects,
+            'next_offset' => $offset + 10,
+            'limit' => $limit
+        );
+        $this->output->set_content_type('application/json')->set_output(json_encode($output));
         
         
     }
@@ -81,7 +96,8 @@ class Projects extends FAB_Controller {
         $data = array(
             'categories'     => $this->categories,
             'tools'          => $this->tools,
-            'accepted_files' => $this->accepted_files
+            'accepted_source_files' => $this->accepted_source_files,
+            'accepted_machine_files' => $this->accepted_machine_files
         );
         
         //main page widget
@@ -135,7 +151,7 @@ class Projects extends FAB_Controller {
     /**
      * 
      */
-    public function upload($type)
+    public function upload($what="file", $type="source")
     {
         //load config
         $this->config->load('upload');
@@ -156,11 +172,15 @@ class Projects extends FAB_Controller {
         /**
          * init upload library
          */
+        if($type=="source"){
+            $config['allowed_types']    = str_replace(".", "", implode('|', $this->accepted_source_files));
+        }elseif($type="machine"){
+            $config['allowed_types']    = str_replace(".", "", implode('|', $this->accepted_machine_files));
+        }
         $config['upload_path']      = $upload_path.$fileExtension;
-        $config['allowed_types']    = str_replace(".", "", implode('|', $this->accepted_files));
         $config['file_ext_tolower'] = true ;
         $config['remove_spaces']    = true ;
-        $config['encrypt_name']     = true;
+        //$config['encrypt_name']     = true;
        
         $this->load->library('upload', $config);
         /**
@@ -226,13 +246,118 @@ class Projects extends FAB_Controller {
      */
     public function create_new_project($data)
     {
-        $this->load->helpers(array('utility_helper'));
+        /**
+         * @TODO
+         * insert project, and get id
+         * insert parts and get id
+         * assoc parts and files
+         * assoc project and parts
+         */
         
+        /**
+         * load libraries, helpers, config, models
+         */
+        $this->load->helpers(array('utility_helper', 'myfabtotum_helper', 'deshape_helper'));
+        $this->load->model('ProjectsModel', 'projects');
+        $this->load->model('Parts', 'parts');
+        
+        /**
+         * retrieve user data
+         */
+        $user = $this->session->user;
+        /**
+         * normalize data from post
+         */
         $data = arrayFromPost($data);
+        $upload_cloud = $data['cloud'] == 'true';
+        $project      = $data['project'];
+        $parts        = $data['part'];
+        /**
+         * preparing project
+         */
+        $project['user_id']       = $user['id']; 
+        $project['categories']    = implode(",", $project['categories']);
+        $project['creation_date'] = date('Y-m-d H:i:s');
+        $project['update_date']   = date('Y-m-d H:i:s');
+        /**
+         * add fabid if exists
+         */
+        if(isset($user['settings']['fabid']['email'])) $project['fabid'] = $user['settings']['fabid']['email'];
+        /**
+         * adding project
+         */
+        $id_project = $this->projects->add($project);
         
-        echo "<pre>";
-        print_r($data);
-        echo "</pre>";
+        /**
+         * parts
+         */
+        foreach($parts as $part){
+            
+            $tmp_part = $part;
+            /**
+             * get list of files and remove it from part data
+             */
+            $files = array();
+            if($tmp_part['source_file']  != "") $files[] = $tmp_part['source_file'];
+            if($tmp_part['machine_file'] != "") $files[] = $tmp_part['machine_file'];
+            unset($tmp_part['source_file']);
+            unset($tmp_part['machine_file']);
+            /**
+             * adding part
+             */
+            $id_part = $this->parts->add($tmp_part);
+            /**
+             * assoc files to part
+             */
+            foreach($files as $id_file){
+                if($id_file != '')
+                    $this->parts->add_file($id_part, $id_file);
+            }
+            /**
+             * assoc part to object
+             */
+            $this->projects->add_part($id_project, $id_part);
+        }
+        
+        /**
+         * upload to cloud if selected
+         */
+        if($upload_cloud){
+            
+            $fabid = $this->session->userdata['user']['settings']['fabid']['email'];
+            $access_token = fab_authenticate($fabid, 'f@bt0tum');
+            sync_project($fabid, $access_token, $id_project);
+        }
+        /**
+         * output
+         */
+        $output = array(
+            'create' => true,
+            'project_id' => $id_project
+        );
+        
+        $this->output->set_content_type('application/json')->set_output(json_encode($output));
+        
+    }
+    
+    public function test()
+    {
+
+        $this->load->helpers(array('utility_helper', 'myfabtotum_helper', 'deshape_helper'));
+        $fabid = $this->session->userdata['user']['settings']['fabid']['email'];
+        $access_token = fab_authenticate($fabid, '****');
+        
+        
+        
+        $config['token'] = $access_token;
+        $this->load->library('Deshape', $config);
+        
+        $projects = $this->deshape->list_projects_full();
+        
+        foreach($projects as $project){
+            $project->save();
+        }
+        
     }
 } 
 ?>

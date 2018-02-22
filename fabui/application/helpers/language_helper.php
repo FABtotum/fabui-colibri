@@ -88,21 +88,14 @@ if(!function_exists('getCurrentLanguage'))
 	 */
 	function getCurrentLanguage()
 	{
-		//echo locale_get_default();
-		$CI =& get_instance();
-		if(isset($CI->session->user['settings']['locale']))
-			return $CI->session->user['settings']['locale'];
-		else{
-			
-			$CI->load->helper('fabtotum_helper');
-			$settings = loadSettings();
-			
-			if(isset($settings['locale']))
-				return $settings['locale'];
-			else
-				return 'en_US';
-		}
-		
+	    $CI =& get_instance();
+    	$CI->load->helper('fabtotum_helper');
+    	$settings = loadSettings();
+    	
+    	if(isset($settings['locale']))
+    		return $settings['locale'];
+    	else
+    		return 'en_US';
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

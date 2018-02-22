@@ -592,7 +592,7 @@ fabApp = (function(app) {
 			content : message,
 			color : "#C46A69",
 			timeout: 10000,
-			icon : "fa fa-warning"
+			icon : "fa fa-exclamation-triangle"
 		});
 	}
 	/**
@@ -610,7 +610,7 @@ fabApp = (function(app) {
 			content : message,
 			color : "#C46A69",
 			timeout: 10000,
-			icon : "fa fa-warning"
+			icon : "fa fa-exclamation-triangle"
 		});
 	}
 	/**

@@ -1,5 +1,9 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
+require_once 'deshape/Project.php';
+require_once 'deshape/Part.php';
+require_once 'deshape/File.php';
+
 class Deshape {
         
     protected $server = 'http://myfabdev.tk/deshape/';
@@ -72,6 +76,18 @@ class Deshape {
     public function list_projects_full()
     {
         return $this->_call('list_projects_full');
+        /*
+        $response = $this->_call('list_projects_full');
+        $list = [];
+        if($response['status']==true)
+        {
+            foreach($response['data'] as $remote_project){
+               $project = new Project();
+               $project->createFromDeshapeData($remote_project);
+               $list[] = $project;  
+            }
+        }
+        return $list;*/
     }
     
     /**
@@ -255,6 +271,5 @@ class Curl {
         curl_setopt($this->ch, $option, $value);
     }
 }
-
 
 ?>

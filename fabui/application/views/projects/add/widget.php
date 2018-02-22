@@ -16,7 +16,7 @@
 						data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
 						data-bv-feedbackicons-validating="glyphicon glyphicon-refresh">
 			<fieldset>
-				<legend><?php echo _("Project basic info");?></legend>
+				<legend><h5><?php echo _("Project basic info");?></h5></legend>
 				<div class="form-group">
 					<label class="col-md-2 control-label"><?php echo _("Name");?></label>
 					<div class="col-md-10">
@@ -38,7 +38,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label"><?php echo _("Category");?></label>
 					<div class="col-md-10">
-						<?php echo form_dropdown('project-categories', $categories, null, 'multiple class="select2" data-bv-notempty="true"');?> 
+						<?php echo form_dropdown('project-categories', $categories, null, 'multiple class="form-control custom-scroll" data-bv-notempty="true"');?> 
 					</div>
 				</div>
 				
@@ -53,10 +53,20 @@
 						</label>
 					</div>
 				</div>
+				<div class="form-group">
+					<label class="col-md-2 control-label"><?php echo _("Upload cloud");?></label>
+					<div class="col-md-10">
+						<div class="checkbox">
+							<label>
+							  <input type="checkbox" name="cloud" class="checkbox"> <span></span>
+							</label>
+						</div>
+					</div>
+				</div>
 			</fieldset>
 			
 			<fieldset id="partTemplate">
-				<legend><?php echo _("Part");?></legend>
+				<legend><h5><?php echo _("Part");?></h5></legend>
 				<div class="form-group">
 					<label class="col-md-2 control-label"><?php echo _("Name");?></label>
 					<div class="col-md-10">
@@ -74,19 +84,24 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label"><?php echo _("Tool");?></label>
 					<div class="col-md-10">
-						<?php echo form_dropdown('part-0-tool', $tools, null, 'class="form-control" data-bv-notempty="true"');?> 
+						<?php echo form_dropdown('part-0-creation_tool', $tools, null, 'class="form-control" data-bv-notempty="true"');?> 
 					</div>
 				</div>
 				
 				<div class="form-group">
 					<label class="col-md-2 control-label"><?php echo _("File(s)");?></label>
-					<div class="col-md-10">
-						<div id="dropzone-part-0"  class="dropzone" style="min-height: 100px;"></div>
+					<div class="col-md-5 margin-bottom-10">
+						<div id="dropzone-part-0-source"  class="dropzone" style="min-height: 100px;"></div>
+					</div>
+					
+					<div class="col-md-5">
+						<div id="dropzone-part-0-machine"  class="dropzone" style="min-height: 100px;"></div>
 					</div>
 				</div>
 			</fieldset>
 			
-			<input type="hidden" name="part-0-files">
+			<input type="hidden" name="part-0-source_file">
+			<input type="hidden" name="part-0-machine_file">
 			
 			<div class="form-actions">
 				<div class="row">
