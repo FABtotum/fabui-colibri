@@ -44,6 +44,7 @@ from fabtotum.fabui.gpusher import GCodePusher
 import fabtotum.utils.triangulation as tripy
 import fabtotum.speedups.triangulation as tricpp
 from fabtotum.utils.ascfile import ASCFile
+from fabtotum.utils.common  import clear_big_temp
 
 ################################################################################
 
@@ -263,6 +264,9 @@ class RotaryScan(GCodePusher):
         """
         Run the rotary scan.
         """
+        
+         # clear bigtemp folder 
+        clear_big_temp()
         
         self.trace( _("Initializing scan") )
         

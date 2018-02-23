@@ -36,7 +36,7 @@ from threading import Event, Thread
 
 # Import internal modules
 from fabtotum.utils.translation import _, setLanguage
-from fabtotum.utils.common import shell_exec, get_dir_free_space
+from fabtotum.utils.common import shell_exec, get_dir_free_space, clear_big_temp
 from fabtotum.fabui.gpusher import GCodePusher
 from fabtotum.update.factory  import UpdateFactory
 from fabtotum.update import BundleTask, FirmwareTask, BootTask, PluginTask
@@ -93,8 +93,9 @@ class UpdateApplication(GCodePusher):
     
     def clearFolder(self):
         """ clear old files """
-        folder = self.config.get('general', 'bigtemp_path')
-        shell_exec('sudo rm -rvf {0}/fabui/*.cb {1}/fabui/*.md5sum {2}/fabui/boot-*.zip {3}/fabui/fab_*.zip'.format(folder, folder, folder, folder))
+        #folder = self.config.get('general', 'bigtemp_path')
+        #shell_exec('sudo rm -rvf {0}/fabui/*.cb {1}/fabui/*.md5sum {2}/fabui/boot-*.zip {3}/fabui/fab_*.zip'.format(folder, folder, folder, folder))
+        clear_big_temp()
     
     def run(self, task_id, bundles, firmware_switch, boot_switch, plugins):
         """

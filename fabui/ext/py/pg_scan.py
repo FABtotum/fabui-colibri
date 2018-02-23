@@ -40,6 +40,7 @@ from picamera import PiCamera
 from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
+from fabtotum.utils.common  import clear_big_temp
 
 ################################################################################
 
@@ -160,6 +161,9 @@ class PhotogrammetryScan(GCodePusher):
         """
         Run the photogrammetry scan.
         """
+        # clear bigtemp folder 
+        clear_big_temp()
+        
         self.resetTrace()
 		
         self.prepare_task(task_id, task_type='scan', task_controller='scan')

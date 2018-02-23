@@ -134,6 +134,12 @@ def get_dir_free_space(directory):
     except IndexError:
         return "n.a"
 ########################################################################
+# CLEAR BIGTEMP FOLDER  
+########################################################################
+def clear_big_temp(folder = '/mnt/bigtemp/'):
+    shell_exec('sudo rm -rvf {0}/fabui/*.cb {1}/fabui/*.md5sum {2}/fabui/boot-*.zip {3}/fabui/fab_*.zip {4}/fabui/images'.format(folder, folder, folder, folder, folder))
+        
+########################################################################
 # GET REMOTE FILE SIZE
 ########################################################################
 def get_url_num_bytes(url):

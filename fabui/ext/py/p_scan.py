@@ -36,6 +36,8 @@ from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.config  import ConfigService
 from fabtotum.fabui.gpusher import GCodePusher
 from fabtotum.totumduino.format import parseG30
+from fabtotum.utils.common  import clear_big_temp
+
 ################################################################################
 
 class ProbeScan(GCodePusher):
@@ -181,7 +183,10 @@ class ProbeScan(GCodePusher):
         """
         Run the probe scan.
         """
-                
+        
+        # clear bigtemp folder 
+        clear_big_temp()
+        
         self.prepare_task(task_id, task_type='scan', task_controller='scan')
         self.set_task_status(GCodePusher.TASK_RUNNING)
         
