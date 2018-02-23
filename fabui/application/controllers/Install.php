@@ -254,7 +254,7 @@ class Install extends FAB_Controller {
 		//load libraries, models, helpers
 		$this->load->model('User', 'user');
 		$this->load->model('Configuration', 'configuration');
-		$this->load->helper(array('os_helper', 'myfabtotum_helper'));
+		$this->load->helper(array('os_helper', 'fabtotum_helper'));
 		//load configs
 		$this->config->load('fabtotum');
 		
@@ -299,16 +299,34 @@ class Install extends FAB_Controller {
 		//set locale
 		setLanguage($locale, true);
 		
-		
 		//preparing user settings
 		$userSettings = array(
-			'locale' => $locale	
+		    'notifications' => array(
+		        'tasks' => array(
+		            'finish' => false,
+		            'pause' => false
+		        )
+		    )
 		);
+		
+		/**
+		 * 
+		 */
 		if($fabid != ""){
-			$userSettings['fabid']['email'] = $fabid;
+		    
+		    /**
+		     * init myfabtotum library
+		     */
+		    $init['fabid'] = $fabid;
+		    $this->load->library('MyFabtotumClient', $init,  'myfabtotumclient');
+		     
+			$userSettings['fabid']['email'] = $fabid;	
 			
-			if(!fab_is_printer_registered()){
-				fab_register_printer($fabid);
+			/**
+			 * register printer if not registered
+			 */
+			if(!$this->myfabtotumclient->is_printer_registered()){
+			    $this->myfabtotumclient->register_printer();
 			}
 		}
 		

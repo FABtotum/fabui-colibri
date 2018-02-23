@@ -491,6 +491,15 @@ class Control extends FAB_Controller {
 	/**
 	 * 
 	 */
+	function setLanguage($lang)
+	{
+	    $this->load->helper(array('language_helper'));
+	    setLanguage($lang, true);
+	}
+	
+	/**
+	 * 
+	 */
 	private function _getNetworkData()
 	{
 		$this->load->helper('os_helper');

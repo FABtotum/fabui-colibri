@@ -17,9 +17,17 @@ class SystemInfo extends FAB_Controller {
 		//load librarire, helpers, config
 		$this->load->library('smart');
 		$this->config->load('fabtotum');
-		$this->load->helper(array('fabtotum_helper', 'update_helper', 'os_helper', 'date_helper'));
+		$this->load->helper(array('fabtotum_helper', 'update_helper', 'os_helper', 'date_helper', 'language_helper'));
 		
-		//
+		$current_language = getCurrentLanguage();
+		$languages = getAvailableLanguages();
+		$language = '';
+		
+		foreach($languages as $key => $value){
+		    if($value['code'] == $current_language)
+		        $language = $value['description'];
+		}
+		
 		$data = json_decode(startPyScript('systeminfo.py', '', false), true);
 		
 		$data['bundles']           = getLocalBundles();
@@ -27,6 +35,7 @@ class SystemInfo extends FAB_Controller {
 		$data['unit_color']        = getUnitColor();
 		$data['host_name']         = getHostName();
 		$data['avahi_description'] = getAvahiServiceName();
+		$data['language']          = $language;
 		
 		//versions macro
 		$data['versions'] = array();

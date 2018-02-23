@@ -36,11 +36,16 @@
 		    $(".host-name").click(function(e){
 		    	$('#hostNameModal').modal({});
 		    });
+
+		    $(".language").click(function(e){
+			    $("#languageModal").modal({});
+		    });
 		    
 	    	$("#dateTimeSave").on('click', saveDateTime);
 	    	$("#unitColorSave").on('click', saveUnitColor);
 	    	$("#unitSerialNumberSave").on('click', saveSerialNumber);
 	    	$("#hostNameSave").on('click', saveHostName);
+	    	$("#langaugeSave").on('click', saveLanguage);
 	    <?php endif; ?>
 		
 	 });
@@ -173,6 +178,25 @@
 				}, 1500);
 				
 			});
+		 }
+		 /**
+		 *
+		 **/
+		 function saveLanguage()
+		 {
+			$("#langaugeSave").html('<i class="fa fa-save"></i> <?php echo _('Saving')?> ...');
+			openWait("<i class='fa fa-spin fa-spinner'></i> <?php echo _("Translating"); ?> ..", "<?php echo _("Please wait"); ?>", false);
+
+			$.ajax({
+				type: 'post',
+				url: '<?php echo site_url('control/setLanguage');?>/' + $("#language-select").val(),
+			}).done(function(response) {
+				location.reload();
+			});
+			
+			$('#languageModal').modal('hide');
+			$("#language-form").submit();
+			
 		 }
 	 <?php endif; ?>
 </script>

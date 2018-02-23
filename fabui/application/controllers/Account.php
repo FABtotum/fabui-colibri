@@ -21,11 +21,16 @@
 		$this->load->model('User', 'user');
 		$user = $this->user->get($this->session->user['id'], 1);
 		$user['settings'] = json_decode($user['settings'], true);
-		
+
 		$this->session->set_userdata('user', $user);
+		//print_r($this->session->user);
 		//print_r($user);
 		//$this->session->user = $user;
+		
+		
+		
 		$data['user'] = $user;
+		$data['has_image'] = isset($user['settings']['image']['url']) && $user['settings']['image']['url'] != '';
 		$data['fabid_active'] = $this->config->item('fabid_active') == 1;
 		
 		//main page widget
@@ -62,6 +67,7 @@
 	 */
 	public function saveUser($userID, $data = array())
 	{
+	    
 		//load libraries, helpers, model, config
 		$this->load->helper(array('utility_helper', 'fabtotum_helper'));
 		$this->load->model('User', 'user');
@@ -79,12 +85,60 @@
 			$data = arrayFromPost($requesData);
 		}
 		
-		
-		//if locale
-		if(isset($data['settings']['locale'])){
-			$hwSettings = loadSettings();
-			$hwSettings['locale'] = $data['settings']['locale']; //set locale to settings.json
-			saveSettings($hwSettings);
+		/**
+		 * if an image is uploaded
+		 */
+		if($_FILES['profile-image']['name'] != ''){
+		    /**
+		     * load helper, configs
+		     */
+		    $this->load->helper(array('file_helper', 'file'));
+		    $this->config->load('upload');
+		    /**
+		     *  get file extension to save the file in the correct directory
+		     */
+		    $fileExtension = getFileExtension($_FILES['profile-image']['name']);
+		    /**
+		     * preaprea configs for upload library
+		     * crate folder extension if doesn't exist
+		     */
+		    $upload_path        = $this->config->item('upload_path');
+		    $folder_destination = $upload_path . $fileExtension . '/';
+		    if(!file_exists($folder_destination)) createFolder($folder_destination);
+		    
+		    /**
+		     * init upload library
+		     */
+		    $config['upload_path']      = $upload_path.$fileExtension;
+		    $config['file_ext_tolower'] = true;
+		    $config['remove_spaces']    = true;
+		    $config['allowed_types']    = 'gif|jpg|png';  
+		    $this->load->library('upload', $config);
+		    /**
+		     * do upload
+		     */
+		    if($this->upload->do_upload('profile-image')) {
+		        /**
+		         * retrieve data from upload
+		         */
+		        $upload_data = $this->upload->data();
+		        
+		        /**
+		         * remove existing image
+		         */
+		        if(isset($user['settings']['image']['full_path']) && $user['settings']['image']['full_path'] != ''){
+		            unlink($user['settings']['image']['full_path']);
+		        }
+		        $user['settings']['image'] = array(
+		            'full_path' => $upload_data['full_path'],
+		            'url' => '/uploads/'.$fileExtension.'/'.$upload_data['file_name']
+		        );
+		    }
+		    
+		}else{
+		   /**
+		    * nothing for now
+		    */
 		}
 		
 		$update = array_replace_recursive($user, $data);
@@ -103,7 +157,8 @@
 		//$this->session->user = $user;
 		$this->session->set_userdata('user', $user);
 		
-		$this->output->set_content_type('application/json')->set_output(json_encode( $this->session->user ));
+		//$this->output->set_content_type('application/json')->set_output(json_encode( $this->session->user ));
+		redirect("#account");
 		
 	}
 	

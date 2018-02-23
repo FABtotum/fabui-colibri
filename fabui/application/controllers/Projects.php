@@ -63,7 +63,7 @@ class Projects extends FAB_Controller {
          */
         if($remote_sync == 1){
             $this->load->helper(array('deshape_helper', 'myfabtotum_helper'));
-            $access_token = fab_authenticate($fabid, 'f@bt0tum');
+            $access_token = fab_authenticate($fabid, '****');
             sync_projects($fabid, $access_token);
         }
         
@@ -325,7 +325,7 @@ class Projects extends FAB_Controller {
         if($upload_cloud){
             
             $fabid = $this->session->userdata['user']['settings']['fabid']['email'];
-            $access_token = fab_authenticate($fabid, 'f@bt0tum');
+            $access_token = fab_authenticate($fabid, '****');
             sync_project($fabid, $access_token, $id_project);
         }
         /**
@@ -340,24 +340,6 @@ class Projects extends FAB_Controller {
         
     }
     
-    public function test()
-    {
-
-        $this->load->helpers(array('utility_helper', 'myfabtotum_helper', 'deshape_helper'));
-        $fabid = $this->session->userdata['user']['settings']['fabid']['email'];
-        $access_token = fab_authenticate($fabid, '****');
-        
-        
-        
-        $config['token'] = $access_token;
-        $this->load->library('Deshape', $config);
-        
-        $projects = $this->deshape->list_projects_full();
-        
-        foreach($projects as $project){
-            $project->save();
-        }
-        
-    }
+ 
 } 
 ?>

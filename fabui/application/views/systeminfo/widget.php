@@ -33,8 +33,11 @@
 			        <dt><?php echo _("Date");?></dt>
 			        <dd><a href="javascript:void(0);" class="system-date-time edit-field"><?php  echo trim(shell_exec('date +"%b %a %d %H:%M %Y"')); //echo date('d/m/Y G:i');?></a></dd>
 			        
-			        <dt><?php echo _("Fabui");?></dt>
-			        <dd><?php echo $bundles['fabui']['version']?></dd>
+			        <dt><?php echo _("Language");?></dt>
+			        <dd><a href="javascript:void(0);" class="language edit-field"><?php echo $language;?></a></dd>
+			        
+			        <dt class="margin-top-20"><?php echo _("Fabui");?></dt>
+			        <dd class="margin-top-20"><?php echo $bundles['fabui']['version']?></dd>
 			        
 			        <?php if(isset($versions['firmware'])):?>
 			        <dt><?php echo _("Firmware");?></dt>
@@ -327,6 +330,35 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Cancel')?></button>
 				<button type="button" class="btn btn-primary" id="hostNameSave"><i class="fa fa-save"></i> <?php echo _('Save')?> </button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- LANGUAGE MODAL -->
+<div class="modal fade" id="languageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php echo _("Set language") ?></h4>
+			</div>
+			<div class="modal-body no-padding" >
+				<div class="row">
+					<div class="col-sm-12">
+						<form class="smart-form" id="language-form">
+							<fieldset>
+								<section>
+									<label class="select">
+										<?php echo langauges_menu('form-control', 'language-language', 'id="language-select"',getCurrentLanguage());?> <i></i>
+									</label>
+								</section>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Cancel')?></button>
+				<button type="button" class="btn btn-primary" id="langaugeSave"><i class="fa fa-save"></i> <?php echo _('Save')?> </button>
 			</div>
 		</div>
 	</div>

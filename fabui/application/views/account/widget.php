@@ -12,7 +12,7 @@
 	<div class="tab-pane fade in active" id="account-tab">
 		<div class="row">
 			<div class="col-sm-12">
-				<form class="smart-form" id="user-form" method="post">
+				<form class="smart-form"  enctype="multipart/form-data"  id="user-form" method="post" action="<?php echo site_url('account/saveUser/'.$this->session->user['id']); ?>">
 					<fieldset>
 						<div class="row">
 							<section class="col col-6">
@@ -20,7 +20,7 @@
 									class="input"> <i class="icon-prepend fa fa-user"></i> <input
 									type="text" placeholder="<?php echo _("First name"); ?>"
 									name="first_name" id="first_name"
-									value="<?php echo $this->session->user['first_name'] ?>">
+									value="<?php echo $user['first_name'] ?>">
 								</label>
 							</section>
 							<section class="col col-6">
@@ -28,25 +28,34 @@
 									class="input"> <i class="icon-prepend fa fa-user"></i> <input
 									type="text" placeholder="<?php echo _("Last name"); ?>"
 									name="last_name" id="last_name"
-									value="<?php echo $this->session->user['last_name'] ?>">
+									value="<?php echo $user['last_name'] ?>">
 								</label>
 							</section>
 						</div>
-						<section>
-							<label class="label"><?php echo _("Email")?></label> <label
-								class="input"> <i class="icon-prepend fa fa fa-envelope-o"></i>
-								<input type="text" name="email" id="email"
-								value="<?php echo $this->session->user['email'] ?>">
-							</label>
-						</section>
-        				<?php if($user['role'] == 'administrator'):?>
-        				<section>
-							<label class="label"><?php echo _("Language")?></label> <label
-								class="select">
-        						<?php echo langauges_menu('form-control', 'settings-locale', 'id="settings-locale"');?> <i></i>
-							</label>
-						</section>
-        				<?php endif;?>
+						<div class="row">
+    						<section class="col col-6">
+    							<label class="label"><?php echo _("Email")?></label> <label
+    								class="input"> <i class="icon-prepend fa fa-envelope"></i>
+    								<input type="text" name="email" id="email"
+    								value="<?php echo $user['email'] ?>">
+    							</label>
+    						</section>
+        				</div>
+        				<div class="row">
+        					<section class="col col-6">
+								<label class="label"><?php echo _("Profile picture"); ?></label>
+								<label for="file" class="input input-file">
+									<div class="button"><input type="file" name="profile-image" id="file" accept="image/*"><?php echo _("Browse");?></div> 
+									<i class="icon-prepend far fa-smile"></i>
+									<input type="text" id="image-name" readonly="readonly" placeholder="<?php echo $has_image ? _("Change image") : _("Load a nice pic");?>" >
+								</label>
+								<div class="margin-top-20 preview">
+									<?php if(isset($user['settings']['image']['url']) && $user['settings']['image']['url'] =! ''):?>
+										<img width="100" src="<?php echo $this->session->user['settings']['image']['url']; ?>">
+									<?php endif;?>
+								</div>
+							</section>
+        				</div>
         			</fieldset>
 				</form>
 			</div>

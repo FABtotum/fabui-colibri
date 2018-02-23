@@ -9,9 +9,12 @@
  
 ?>
 <script type="text/javascript">
+
+var fileTypes = [ 'image/jpeg', 'image/pjpeg', 'image/png', 'image/gif'];
+var file = null;
 	$(document).ready(function() {
 		drawBreadCrumb(["<?php echo _("Account"); ?>"]);
-		initLanguage();
+		
 		initFormValidator();
 		$("#save").on('click', handleSaveButton);
 		$("#fabid-connect-button").on('click', fabIDConnect);
@@ -21,16 +24,23 @@
 	    	/*$('#fabidModal').modal({});*/
 	    	fabApp.fabIDLogin();
 	    });
+
+	    $("#file").on('change', function(){
+	    	handleAvatarPreview();
+		});
 	});
-	/**
-	*
-	*/
-	function initLanguage()
-	{
-		<?php if(isset($this->session->user['settings']['locale'])): ?>
-		$("#settings-locale").val('<?php echo $this->session->user['settings']['locale'] ?>');
-		<?php endif; ?>
-	}
+
+	function validFileType(file) {
+		  for(var i = 0; i < fileTypes.length; i++) {
+		    if(file.type === fileTypes[i]) {
+		      return true;
+		    }
+		  }
+
+		  return false;
+		}
+
+	
 	/**
 	*
 	*/
@@ -140,35 +150,15 @@
 	function saveUser()
 	{
 		if($("#user-form").valid()){
-			var fields = $( "#user-form :input" ).serializeArray();
-			var data = {};
-			jQuery.each( fields, function( index, object ) {
-				data[object.name] = object.value;
-			});
+			//var fields = $( "#user-form :input" ).serializeArray();
+			var data = getDataFromForm("#user-form");
 			$("#save").html('<i class="fa fa-save"></i> <?php echo _("Saving") ?>');
 			disableButton('#save');
-			$.ajax({
-				type: 'post',
-				url: '<?php echo site_url('account/saveUser/'.$this->session->user['id']); ?>',
-				data : data,
-				dataType: 'json'
-			}).done(function(response) {
-				enableButton('#save');
-				$("#save").html('<i class="fa fa-save"></i> Save');
-
-				fabApp.showInfoAlert("<?php echo _("Account information saved");?>", '<?php echo _("Edit profile");?>');
+			openWait('<i class="fa fa-cog fa-spin "></i> <?php echo _("Saving...") ?>', _("Please wait"), false);
+			$("#user-form").submit();
 			
-
-				$("#user-name").html(response.first_name + ' ' + response.last_name );
-				
-				<?php if(isset( $this->session->user['settings']['locale'])):?>
-				if("<?php echo $this->session->user['settings']['locale'] ?>" != $("#settings-locale").val()){
-					location.reload();
-				}
-				<?php endif; ?>
-				
-			});
 		}
+			
 	}
 	/**
 	*
@@ -309,5 +299,46 @@
 			$("#save").html('<i class="fa fa-save"></i> Save');
 			
 		});
+	}
+
+	/**
+	*
+	*/
+	function handleAvatarPreview()
+	{
+
+		var preview = document.querySelector('.preview');
+
+		while(preview.firstChild){
+			preview.removeChild(preview.firstChild);
+		}
+
+		 var reader  = new FileReader();
+
+		var input = $("#file")
+		var files = input[0].files;
+
+		if(files.length == 0){
+			var para = document.createElement('p');
+			$("#image-name").attr("placeholder", _('No files currently selected for upload'));
+			preview.appendChild(para);
+		}else{
+
+			var para = document.createElement('p');
+			var image = document.createElement('img');
+			file = files[0];
+
+			if(validFileType(file)){
+				image.src = window.URL.createObjectURL(file);
+				$(".online").attr('src', image.src);
+				image.width = 100;
+				preview.appendChild(image);
+	    		$("#image-name").attr("placeholder", file.name);
+	    		
+			}else{
+				$("#image-name").attr("placeholder", + file.name + ': ' + + _('Not a valid file type. Update your selection.'));
+				;
+			}
+		}
 	}
 </script>

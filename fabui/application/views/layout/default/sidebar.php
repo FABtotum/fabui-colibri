@@ -13,7 +13,11 @@
 	<div class="login-info">
 		<span>
 			<a href="<?php echo site_url('#account'); ?>">
-				<img src="/assets/img/avatars/male.png" alt="me" class="online" />
+				<?php if(isset($this->session->user['settings']['image']['url']) && $this->session->user['settings']['image']['url'] != ''):?>
+					<img src="<?php echo $this->session->user['settings']['image']['url']; ?>" alt="me" class="online" />
+				<?php else:?>
+					<img src="/assets/img/avatars/male.png" alt="me" />
+				<?php endif;?>
 				<span id="user-name"><?php echo isset($this->session->user['first_name']) ?  $this->session->user['first_name'] : '' ?> <?php echo isset($this->session->user['last_name']) ?  $this->session->user['last_name'] : '' ?></span>
 			</a>
 		</span>
