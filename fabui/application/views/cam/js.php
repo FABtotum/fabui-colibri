@@ -171,7 +171,7 @@
 					if(uploadProgress == 100)
 					{
 						var html = '<span><i class="fa fa-check"></i> <?php echo _("Uploaded"); ?></span><br>';
-						html += '<span class="fant-md"><i class="fa fa-gear fa-spin"></i> <?php echo _("Processing file"); ?></span>';
+						html += '<span class="fant-md"><i class="fa fa-cog fa-spin"></i> <?php echo _("Processing file"); ?></span>';
 						$(".dropzone-upload-label").html(html);
 						$(".dropzone-file-upload-percent").html('');
 						$(".dropzone-progress-bar").parent().remove();
@@ -570,7 +570,7 @@
 	function onLaserValueChange(e)
 	{
 		if(laser_gcode_generated){
-			$("#laser-generate-gcode").html('<i class="fa fa-gear"></i> <?php echo _("Regenerate GCode"); ?>').attr("data-regenerate", "true");
+			$("#laser-generate-gcode").html('<i class="fa fa-cog"></i> <?php echo _("Regenerate GCode"); ?>').attr("data-regenerate", "true");
 			enableButton("#laser-generate-gcode");	
 		}
 	}
@@ -761,7 +761,7 @@
 		data["project_id"]   = $("#projects-list").val();
 		data["project_name"] = $("#new-project-name").val();
 		disableButton("#save-gcode");
-		$("#save-gcode").html("<i class='fa fa-gear fa-spin'></i> <?php echo _("Saving"); ?>");
+		$("#save-gcode").html("<i class='fa fa-cog fa-spin'></i> <?php echo _("Saving"); ?>");
 		$.ajax({
 			type: "POST",
 			data: data,

@@ -593,7 +593,7 @@
 					label = '<i class="fa fa-check"></i> <?php echo _("Downloaded") ?>';
 					break;
 				case 'installing':
-					label = '<i class="fa fa-gear fa-spin"></i> <?php echo _("Installing") ?> ';
+					label = '<i class="fa fa-cog fa-spin"></i> <?php echo _("Installing") ?> ';
 					break;
 				case 'installed':
 					label = '<i class="fa fa-check"></i> <?php echo _("Installed") ?>';

@@ -674,7 +674,7 @@
 	 		return false;
 	 	}
 	 	
-	 	openWait('<i class="fa fa-gear fa-spin"></i> <?php echo _("Installing head"); ?>', '<?php echo _("Please wait"); ?>...');
+	 	openWait('<i class="fa fa-cog fa-spin"></i> <?php echo _("Installing head"); ?>', '<?php echo _("Please wait"); ?>...');
 	 	$.ajax({
 			type: "POST",
 			url: "<?php echo site_url("head/setHead") ?>/"+ headToInstall,

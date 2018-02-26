@@ -54,7 +54,7 @@
 		<div class="col-sm-8 hidden" id="laser-slice-settings-container">
 			<div class="row margin-bottom-10">
 				<div class="col-sm-6 col-xs-6">
-					<button type="button" data-action="generate-gcode" data-type="laser" id="laser-generate-gcode" class="btn btn-primary btn-block action-button"><i class="fa fa-gear"></i> <?php echo _("Generate GCode"); ?></button>
+					<button type="button" data-action="generate-gcode" data-type="laser" id="laser-generate-gcode" class="btn btn-primary btn-block action-button"><i class="fa fa-cog"></i> <?php echo _("Generate GCode"); ?></button>
 				</div>
 				<div class="col-sm-6  col-xs-6">
 					<div class="row">

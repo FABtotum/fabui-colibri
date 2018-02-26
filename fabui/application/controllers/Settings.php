@@ -91,7 +91,7 @@ class Settings extends FAB_Controller {
 		//load libraries, helpers, model, config
 		$this->load->helpers('utility_helper');
 		$this->load->helpers('fabtotum_helper');
-		$this->load->helpers('myfabtotum_helper');
+		//$this->load->helpers('myfabtotum_helper');
 		//create settings array
 		$settingsToSave = arrayFromPost($postData);
 		
@@ -352,8 +352,7 @@ class Settings extends FAB_Controller {
 	public function saveNetworkSettings($action = 'connect')
 	{
 		//get data from post
-		$this->load->helper(array('os_helper', 'social_helper', 'shop_helper'));
-		$this->load->helper('myfabtotum_helper');
+		$this->load->helper(array('os_helper', 'social_helper', 'shop_helper', 'fabtotum_helper'));
 		$postData = $this->input->post();
 		$result = true;
 		$net_type = $postData['net_type'];

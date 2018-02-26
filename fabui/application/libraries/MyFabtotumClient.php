@@ -128,7 +128,7 @@ class MyFabtotumClient {
      */
     public function set_serial_number($serial_number)
     {
-        $this->serial_number = $serial_number;
+        $this->serial_number = strtolower($serial_number);
     }
     
     /**
@@ -144,7 +144,7 @@ class MyFabtotumClient {
      */
     public function set_mac_address($mac_address)
     {
-        $this->mac_address = $mac_address;
+        $this->mac_address = strtolower($mac_address);
     }
     
     /**
@@ -319,7 +319,7 @@ class MyFabtotumClient {
     private function _get_local_mac_address($interface = 'eth0')
     {
         $this->ci->load->helper('os_helper');
-        $this->mac_address = getMACAddres();
+        $this->mac_address = strtolower(getMACAddres());
     }
     
     /**
@@ -328,7 +328,7 @@ class MyFabtotumClient {
     private function _get_local_serial_number()
     {
         $this->ci->load->helper('os_helper');
-        $this->serial_number = getSerialNumber();
+        $this->serial_number = strtolower(getSerialNumber());
     }
     
     /**

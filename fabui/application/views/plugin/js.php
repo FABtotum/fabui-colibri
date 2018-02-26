@@ -262,7 +262,7 @@
 					$(".status-button").html('<i class="fa fa-download"></i> <?php echo _("Downloading");?> &nbsp;');
 					break;
 				case 'installing' :
-					$(".status-button").html('<i class="fa fa-gear fa-spin"></i> <?php echo _("Installing");?> &nbsp;');
+					$(".status-button").html('<i class="fa fa-cog fa-spin"></i> <?php echo _("Installing");?> &nbsp;');
 					break;
 				case 'installed':
 					$(".status-button").html('<i class="fa fa-check"></i> <?php echo _("Installed");?> &nbsp;');

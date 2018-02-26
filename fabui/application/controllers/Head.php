@@ -27,7 +27,7 @@ class Head extends FAB_Controller {
 	 */
 	public function setHead($new_head)
 	{
-		$this->load->helper(array('fabtotum_helper', 'myfabtotum_helper'));
+		$this->load->helper(array('fabtotum_helper'));
 		setSecure();
 		
 		$heads = loadHeads();
