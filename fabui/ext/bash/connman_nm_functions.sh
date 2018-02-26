@@ -448,9 +448,10 @@ get_interface_state()
 	else
 		IFACES=$1
 	fi
-
+	BLUETOOTH=$(bluetooth_status)
 	echo "{"
 	echo "  \"hostname\":\"$HOSTNAME.local\"",
+	echo "  \"bluetooth\": $BLUETOOTH, "
 	PREV=
 	TETHER="no"
 	for iface in $(echo $IFACES); do
@@ -749,7 +750,9 @@ bluetooth_status()
 		BLOCKED=$(awk -F "=" '/Blocked/ {print $2}'  $DIRECTORY/info)
 		PAIR_CONNECTED="false"
 		
-		if [ $(hcitool con | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}') == $MAC_ADDRESS ]; then
+		HCI_CONN=$(hcitool con | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}')
+		
+		if [ x"$HCI_CONN" == x"$MAC_ADDRESS" ]; then
 			PAIR_CONNECTED="true"
 		fi
 		

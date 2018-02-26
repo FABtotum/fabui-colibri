@@ -91,7 +91,7 @@ def main():
         adapter.Powered = True
 
     master_bt_address = adapter.Address
-    devices = adapter.discoverDevices(look_for_name="PRISM", timeout=30, verbose=verbose)
+    devices = adapter.discoverDevices(look_for_name=name, timeout=30, verbose=verbose)
     
     paired = False
     already_paired = False

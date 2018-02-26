@@ -1725,6 +1725,20 @@ fabApp = (function(app) {
 					connectionType = 'wlan';
 				}
 			}
+			if(data.interfaces.hasOwnProperty('bluetooth')){
+				var bluetooth = data.interfaces.bluetooth;
+				if(bluetooth.powered == true){
+					var bluetooth_icon = 'fab fa-bluetooth-b';
+					var bluetoot_title = _("Bluetooth enabled");
+					
+					if(bluetooth.hasOwnProperty('paired') && bluetooth.paired.connected == true){
+						bluetooth_icon = 'fab fa-bluetooth txt-color-blueLight';
+						bluetoot_title = _("Bluetooth connected to:") + '<br>' + bluetooth.paired.name;
+					}
+					
+					$("#ribbon-left-buttons").prepend('<span data-title="'+bluetoot_title+'"  rel="tooltip" data-html="true" data-placement="bottom" class="btn btn-ribbon wifi-ribbon-icon"><i class="'+bluetooth_icon+'"></i></span>');	
+				}
+			}
 		}
 		if(data.internet){
 			$("#ribbon-left-buttons").prepend('<span data-title="' + _("Internet available") + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon internet-ribbon-icon"><i class="fa fa-globe"></i></span>');
