@@ -17,9 +17,9 @@
 		<div class="ajax-dropdown">
 			<!-- the ID links are fetched via AJAX to the ajax container "ajax-notifications" -->
 			<div class="btn-group btn-group-justified" data-toggle="buttons">
-				<label class="btn btn-default"><input type="radio" name="activity" id="/fabui/updates/notifications"><?php echo _("Updates");?> <span class="updates-number"></span></label>
+				<label class="btn btn-default"><input type="radio" name="activity" id="/fabui/updates/notifications"><i class="fa fa-sync-alt"></i> <?php echo _("Updates");?> <span class="updates-number"></span></label>
 				
-				<label class="btn btn-default"><input type="radio" name="activity" id="/fabui/control/runningTasks"><?php echo _("Tasks");?> <span class="tasks-number"></span></label>
+				<label class="btn btn-default"><input type="radio" name="activity" id="/fabui/control/runningTasks"><i class="fa fa-tasks"></i> <?php echo _("Tasks");?> <span class="tasks-number"></span></label>
 			</div>
 			<!-- notification content -->
 			<div class="ajax-notifications custom-scroll">
@@ -101,7 +101,7 @@
 	<!-- INSTALLED HEAD INFO NAME -->
 	<div style="padding:0 13px;" class="hidden-xs pull-right">
 		<span>
-			<a href="<?php echo site_url('#maintenance/head'); ?>" id="top-installed-head" style="display: inline-block; margin: 18px 0; font-weight: 70; color:white;"><span class="installead-head-name"></span></a>
+			<a href="<?php echo site_url('#maintenance/heads-modules'); ?>" id="top-installed-head" style="display: inline-block; margin: 18px 0; font-weight: 70; color:white;"><span class="installead-head-name"></span></a>
 		</span>
 	</div>
 	<!-- END INSTALLED HEAD INFO NAME -->
