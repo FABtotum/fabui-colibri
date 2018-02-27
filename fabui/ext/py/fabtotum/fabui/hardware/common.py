@@ -132,3 +132,14 @@ def defaultHydraSettings(gcodeSender, config, log, eeprom, factory):
     config.set('settings', 'hardware.bed.enable', False)
     config.set('settings', 'scan.available', False)
     config.save('settings')
+    
+""" PRISM Default settings """
+def defaultPrismSettings(gcodeSender, config, log, eeprom, factory):
+    log.info("Applying default settings for Prism")
+    config.set('settings', 'scan.available', False)
+    config.set('settings', 'hardware.bed.enable', False)
+    config.set('settings', 'hardware.camera.available', False)
+    config.set('settings', 'feeder.available', False)
+    config.set('settings', 'feeder.engage', False)
+    config.save('settings')
+    

@@ -26,6 +26,7 @@ import fabtotum.fabui.hardware.general as general_hardware
 import fabtotum.fabui.hardware.core    as core_hardware
 import fabtotum.fabui.hardware.pro     as core_pro_hardware
 import fabtotum.fabui.hardware.hydra   as hydra_hardware
+import fabtotum.fabui.hardware.prism   as prism_hardware
 
 PRESET_MAP = {
     "custom" : general_hardware.customHardware,
@@ -44,5 +45,8 @@ PRESET_MAP = {
     "2600"   : core_pro_hardware.hardware2600,
 
     #HYDRA
-    "3000"   : hydra_hardware.hardware3000
+    "3000"   : hydra_hardware.hardware3000, 
+    
+    #PRISM
+    "4000"   : prism_hardware.hardware4000
 }
