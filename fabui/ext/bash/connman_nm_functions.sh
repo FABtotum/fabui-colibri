@@ -453,7 +453,7 @@ get_interface_state()
 	echo "  \"hostname\":\"$HOSTNAME.local\"",
 	echo "  \"bluetooth\": $BLUETOOTH, "
 	PREV=
-	TETHER="no"
+	# TETHER="no"
 	for iface in $(echo $IFACES); do
 		if [ "$iface" != "lo" ]; then
 		
@@ -461,7 +461,21 @@ get_interface_state()
 				TETHER="yes"
 				continue
 			fi
-		
+			
+			if [ x"$iface" == x"wlan0" ]; then
+				CONNMAN_TECHNOLOGY="/\/net\/connman\/technology\/wifi/"
+			elif [ x"$iface" == x"eth0" ]; then
+				CONNMAN_TECHNOLOGY="/\/net\/connman\/technology\/ethernet/"
+			fi
+			
+			TETHERING=$(connmanctl technologies | awk '/^$/{f=0} f{print} $CONNMAN_TECHNOLOGY' | grep -m 1 Tethering | awk  '{print $3}')
+			
+			if [ x"$TETHERING" == x"True" ]; then
+				TETHER="yes"
+			else
+				TETHER="no"
+			fi
+			
 			# Get driver used by this interface
 			DRIVER_DIR="/sys/class/net/$iface/device/driver"
 			DRIVER=""
@@ -471,6 +485,7 @@ get_interface_state()
 			if [ -n "$PREV" ]; then
 				echo -e "  },"
 			fi
+			
 			
 			MAC=$(ip link show dev $iface | grep link/ether | awk '{print $2}')
 			IPv4=""

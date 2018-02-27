@@ -69,9 +69,9 @@ $config['menu'] = array(
 		'pos' => 50,
 		'sub' => array(
 			'head' => array(
-				'title' => _("Head"),
+				'title' => _("Heads & Modules"),
 				'icon' => 'fa-lg fa-fw fabui-head-2',
-				'url' => 'maintenance/head',
+				'url' => 'maintenance/heads-modules',
 				'pos' => 10
 			),
 			'spool' => array(

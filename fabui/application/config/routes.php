@@ -75,6 +75,7 @@ $route['projectsmanager/add-file/(:num)']  = 'projectsmanager/newFile/$1';
 $route['settings/cam'] = 'raspicam';
 //maintenance
 $route['maintenance/head']                      = 'head';
+$route['maintenance/heads-modules']             = 'head';
 $route['maintenance/bed-calibration']           = 'bed';
 $route['maintenance/spool-management']          = 'spool';
 $route['maintenance/probe-length-calibration']  = 'probe/index/length';

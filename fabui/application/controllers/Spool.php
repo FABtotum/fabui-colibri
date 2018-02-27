@@ -32,7 +32,8 @@ class Spool extends FAB_Controller {
 		
 		$data = array();
 		$data['settings'] = loadSettings();
-		$data['head']     = getInstalledHeadInfo();
+		$data['head']     = getInstalledHeadInfo(); 
+		
 		//main page widget
 		$widgetOptions = array(
 			'sortable'         => false, 
@@ -154,11 +155,15 @@ class Spool extends FAB_Controller {
 	/**
 	 * 
 	 */
-	public function heatsNozzle($filament_type = 'pla')
+	public function heatsNozzle($filament_type = 'pla', $temperature='')
 	{
 		$this->load->helpers('fabtotum_helper');
 		$filament = getFilament($filament_type);
-		$resultHeat = doMacro('heats', '', ['nozzle', $filament['temperatures']['extrusion']]);
+		
+		if($temperature==''){
+		    $temperature = $filament['temperatures']['extrusion'];
+		}
+		$resultHeat = doMacro('heats', '', ['nozzle', $temperature]);
 		$this->output->set_content_type('application/json')->set_output(json_encode($resultHeat));
 		
 	}

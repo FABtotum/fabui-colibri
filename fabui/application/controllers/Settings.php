@@ -165,6 +165,7 @@ class Settings extends FAB_Controller {
 		
 		
 		
+		
 		writeNetworkInfo($ifaces_data);
 		
 		//main page widget
@@ -194,7 +195,7 @@ class Settings extends FAB_Controller {
 		
 		foreach($ifaces_data as $iface => $info)
 		{
-			if(!is_array($info)) continue;
+			if(!is_array($info) || $iface == 'bluetooth' || $iface == 'bnep0') continue;
 			/* Convert <ip>/<prefix> format to <ip> & <netmask> */
 			if( $info['ipv4_address'] != '' )
 			{
@@ -204,9 +205,9 @@ class Settings extends FAB_Controller {
 			}
 			else
 			{
-				$info['ipv4_address'] = '0.0.0.0';
+				$info['ipv4_address']    = '0.0.0.0';
 				$info['netmask_address'] = '255.255.0.0';
-				$info['gateway'] = '0.0.0.0';
+				$info['gateway']         = '0.0.0.0';
 			}
 			
 			$interfaces[$iface] = array('do_scan' => false);

@@ -51,6 +51,7 @@
 	{
 		$this->load->library('smart');
 		$this->load->helper('form');
+		$this->config->load('filaments');
 		$this->load->helper( array('fabtotum_helper', 'upload_helper', 'os_helper') );
 		$this->load->model('Files', 'files');
 		
@@ -91,7 +92,15 @@
 		$data['type_label'] = _("Printing");
 		$data['type_action'] = _("Print");
 		$data['extruder_min'] = isset($data['head']['min_temp']) ? ($data['head']['min_temp'] + 5) : 180;
-		$data['filamentsOptions'] = array('pla' => 'PLA', 'abs' => 'ABS', 'nylon' => 'Nylon');
+		
+		
+		$filaments =  $this->config->item('filaments');
+		$filamentsOptions = array();
+		foreach($filaments as $key => $val){
+		    $filamentOptions[$key] = $val['name'];
+		}
+		
+		$data['filamentsOptions'] = $filamentOptions;
 		$this->config->load('upload');
 		
 		$data['accepted_files'] = allowedTypesToDropzoneAcceptedFiles( $this->config->item('allowed_types') );

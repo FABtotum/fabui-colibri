@@ -15,11 +15,9 @@
 	
 	$(document).ready(function() {
 		fabApp.checkSafety('print', 'yes', '.fuelux');
-		setFilamentDescription('<?php echo isset($settings['filament']['type']) ? $settings['filament']['type'] : 'pla' ?>');
 		$(".mode-choise").on('click', clickSetMode);
-		$(".filament").on('click', filamentButtonClick);
 		$("#restart-button").on('click', restartAction);
-
+		$("input[name='filament-type']").on('click', filamentButtonClick);
 		loadShopFilaments();
 
 		
@@ -108,21 +106,14 @@
 	**/
 	function  filamentButtonClick()
 	{
-		var type = $(this).attr("data-type");
-		setFilamentDescription(type);
+		var input = $(this); 
+		var type = input.attr("data-type");
+		var temperature = input.attr("data-temperature");
+		$("#extrusion-temperature").val(temperature);
+		$("#details").attr("href", input.attr("data-details"));
+		
 	}
-	/**
-	*
-	**/
-	function setFilamentDescription(type)
-	{	
-		filament = type;
-		$(".filament").addClass('btn-default').removeClass('bg-color-blueLight txt-color-white').find('span').html('');
-		$("." + filament).addClass('bg-color-blueLight txt-color-white').removeClass('btn-default').find('span').html('<i class="fa fa-check"></i>');
-		var html = $("#"+ filament +"_description").html();
-		$("#filament-description").html(html);
-		$(".extrusion-temperature").html($("#"+ filament +"_description").attr("data-temperature"));
-	}
+	
 	/**
 	*
 	**/
@@ -162,9 +153,11 @@
 	function heatsNozzle()
 	{
 		openWait("<i class='fa fa-gear-notch fa-spin'></i> <?php echo _("Heating nozzle");?>");
+		var filament = $("input[name='filament-type']:checked").val();
+		var temperature = $("#extrusion-temperature").val()
 		$.ajax({
 			type: "POST",
-			url: "<?php echo site_url("spool") ?>/heatsNozzle/" + filament,
+			url: "<?php echo site_url("spool") ?>/heatsNozzle/" + filament + '/' + temperature,
 			dataType: 'json'
 		}).done(function( response ) {
 			closeWait();
