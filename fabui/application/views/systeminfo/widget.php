@@ -7,7 +7,13 @@
 * @license https://opensource.org/licenses/GPL-3.0
 *
 */
+$is_admin = $this->session->user['role'] == 'administrator';
 ?>
+<?php if(!$is_admin):?>
+	<div class="alert alert-info animeted fadeIn">
+		<i class="fa fa-info-circle"></i> <?php echo _("To edit information below you need administrator privileges");?>.
+	</div>
+<?php endif; ?>
 <div class="panel-group smart-accordion-default" id="accordion">
 	<div class="panel panel-default">
 		<div class="panel-heading">

@@ -1,11 +1,19 @@
-<?php 
+<?php
+/**
+ *
+* @author Krios Mane
+* @author FabTeam
+* @version 0.1
+* @license https://opensource.org/licenses/GPL-3.0
+*
+*/
 $is_admin = $this->session->user['role'] == 'administrator';
 ?>
 <div class="row">
 	<div class="col-sm-12">
 		<?php if(!$is_admin):?>
 			<div class="alert alert-warning animeted fadeIn">
-        		<i class="fa-fw fa fa-warning"></i>
+        		<i class="fa fa-exclamation-triangle"></i>
         		<strong><?php echo _("Warning");?></strong> <?php echo _("This form requires administrator privileges");?>.
         	</div>
 		<?php endif; ?>

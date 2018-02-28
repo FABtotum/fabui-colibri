@@ -119,6 +119,16 @@
 		$this->db->where('id', $id);
 		$this->db->update($this->tableName, $data);
 	}
+	
+	/**
+	 * transfer project ownership
+	 */
+	function transfer($from, $to)
+	{
+	    $this->db->set('user', $to);
+	    $this->db->where('user', $from);
+	    $this->db->update($this->tableName);
+	}
  }
  
 ?>

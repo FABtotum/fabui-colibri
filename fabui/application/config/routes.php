@@ -72,7 +72,8 @@ $route['make/scan']        = 'scan';
 $route['projectsmanager/add-project']      = 'projectsmanager/newProject';
 $route['projectsmanager/add-file/(:num)']  = 'projectsmanager/newFile/$1';
 //settings
-$route['settings/cam'] = 'raspicam';
+$route['settings/cam']   = 'raspicam';
+$route['settings/users'] = 'users';
 //maintenance
 $route['maintenance/head']                      = 'head';
 $route['maintenance/heads-modules']             = 'head';

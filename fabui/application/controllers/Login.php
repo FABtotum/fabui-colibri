@@ -335,10 +335,14 @@
 		redirect('login?fabid=no');
 	}
 	
-	public function sendResetEmail()
+	public function sendResetEmail($email = '')
 	{
-		$email = $this->input->post('email');
-		
+	    if($email == ''){
+	        
+	        $email = $this->input->post('email');
+	    }
+	    
+	    $email = urldecode($email);
 		$this->load->helper('fabtotum_helper');
 		$this->load->model('User', 'user');
 

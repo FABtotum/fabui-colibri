@@ -196,7 +196,13 @@ $config['menu'] = array(
 				'icon' => 'fa fa-lg fa-fw fa-video-camera',
 				'url' => 'settings/cam',
 				'pos' => 30
-			)
+			),
+		    'users' => array(
+		      'title' => _("Users"),
+		      'icon' => 'fa fa-lg fa-fw fa-users',
+		      'url'  => 'settings/users',
+		      'pos'  => 40
+		    ),
 		)
 	),
 	'updates' => array(
