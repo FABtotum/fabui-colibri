@@ -1,5 +1,16 @@
 <script type="text/javascript">
 
+	var HYBRID_WORKING_MODE = <?php echo array_search('Hybrid', $working_modes); ?>;
+	var FFF_WORKING_MODE    = <?php echo array_search('FFF',    $working_modes); ?>;
+	var LASER_WORKING_MODE  = <?php echo array_search('Laser',  $working_modes); ?>;
+	var CNC_WORKING_MODE    = <?php echo array_search('CNC',    $working_modes); ?>;
+	var SCAN_WORKING_MODE   = <?php echo array_search('Scan',   $working_modes); ?>;
+	var SLA_WORKING_MODE    = <?php echo array_search('SLA',    $working_modes); ?>;
+	var PRISM_MODULE_ID     = 8;
+
+	var max_prism_connection_attempts     = 3;
+	var prism_connection_attemtps_counter = 0;
+
 	var selected_head = "<?php echo $installed_head['filename']?>";
 	heads = <?php echo json_encode($heads)?>;
 	var official_heads_id_limit = 100;
@@ -331,6 +342,7 @@
 		var scan         = false;
 		var feeder       = false;
 		var fourthaxis   = false;
+		var sla          = false;
 		
 		$(".capability").each(function (index, value) {
 
@@ -342,12 +354,12 @@
 		});
 
 		
-		var working_mode = 3;
+		var working_mode = CNC_WORKING_MODE;
 		
 		if(capabilities.indexOf("print") > -1)
 		{
 			$(".print-settings").slideDown();
-			working_mode = 1;
+			working_mode = FFF_WORKING_MODE;
 			print = true;
 		}
 		else
@@ -357,10 +369,10 @@
 		{
 			$(".mill-settings").slideDown();
 			mill = true;
-			if(working_mode == 1)
-				working_mode = 0;
+			if(working_mode == FFF_WORKING_MODE)
+				working_mode = HYBRID_WORKING_MODE;
 			else
-				working_mode = 3;
+				working_mode = CNC_WORKING_MODE;
 		}
 		else
 			$(".mill-settings").slideUp();
@@ -385,7 +397,7 @@
 		
 		if(capabilities.indexOf("laser") > -1)
 		{
-			working_mode = 2;
+			working_mode = LASER_WORKING_MODE;
 			laser = true;
 			$(".laser-settings").slideDown();
 			
@@ -395,8 +407,13 @@
 			
 		if(capabilities.indexOf("scan") > -1)
 		{
-			working_mode = 4;
+			working_mode = SCAN_WORKING_MODE;
 			scan = false;
+		}
+
+		if(capabilities.indexOf("sla") > -1){
+			sla = true;
+			working_mode = SLA_WORKING_MODE;
 		}
 		
 		if(update_working_mode)
@@ -457,15 +474,18 @@
 	{
 		var tool = '';
 		switch(working_mode){
-			case 0: //hybrid
-			case 1: //FFF
+			case HYBRID_WORKING_MODE: //hybrid
+			case FFF_WORKING_MODE: //FFF
 				tool = 'M563 P0 D0';
 				break;
-			case 2: //laser
-			case 3: //CNC
+			case LASER_WORKING_MODE: //laser
+			case CNC_WORKING_MODE: //CNC
 				tool = 'M563 P0 D-1';
 				break;
-			case 4: // Scan
+			case SCAN_WORKING_MODE: // Scan
+				break;
+			case SLA_WORKING_MODE:
+				tool = 'M563 P0 D-1 H4:5 S0';
 				break;
 		}
 		if(hasFeeder){
@@ -673,22 +693,57 @@
 	 		alert( _("Please select a Head") );
 	 		return false;
 	 	}
-	 	
+
+
 	 	openWait('<i class="fa fa-cog fa-spin"></i> <?php echo _("Installing head"); ?>', '<?php echo _("Please wait"); ?>...');
 	 	$.ajax({
 			type: "POST",
 			url: "<?php echo site_url("head/setHead") ?>/"+ headToInstall,
 			dataType: 'json'
 		}).done(function( data ) {
-			$(".alerts-container").find('div:first-child').remove();
-			$(".alerts-container").append( '<div class="alert alert-success animated  fadeIn" role="alert"><i class="fa fa-check"></i> ' + _("Well done! Now your <strong>FABtotum Personal Fabricator</strong> is set for the <strong>{0}</strong>.").format(data.name) + '</div>' );			
-
-			setTimeout(function(){
-					document.location.href =  '<?php echo site_url('head'); ?>?head_installed';
-					location.reload();
-				}, 2000);
+			
+			if(data.fw_id =! PRISM_MODULE_ID){
+    			setTimeout(function(){
+    					document.location.href =  '<?php echo site_url('head'); ?>?head_installed';
+    					location.reload();
+    				}, 2000);
+			}else{
+				openWait('<i class="fa fa-cog fa-spin"></i> <?php echo _("Connecting to PRISM module"); ?>', '<?php echo _("Please wait"); ?>');
+				autoConnectToPrism();
+			}
+			
 		});
 	}
+
+	/**
+	*
+	**/
+	function autoConnectToPrism()
+	{
+		if(prism_connection_attemtps_counter < max_prism_connection_attempts){
+			
+    		prism_connection_attemtps_counter++;
+    		waitContent("Prism connection attempt: " + prism_connection_attemtps_counter);
+    		$.ajax({
+    			type: 'get',
+    			url: '<?php echo site_url('plugin/fab_prism/autoconnect'); ?>',
+    			dataType: 'json'
+    		}).done(function(response) {			
+    			if(response.paired.connected == false){
+    				autoConnectToPrism();
+    			}else{
+    				openWait('<i class="fa fa-check"></i> <?php echo _("Prism Module connected"); ?>', '<?php echo _("Loading page"); ?>');
+    				setTimeout(function(){
+    					location.reload();
+    				}, 2000);
+    			}
+    		}).fail(function(jqXHR, textStatus){
+    			autoConnectToPrism();
+			});
+		}
+		
+	}
+	
 	/**
 	*
 	**/

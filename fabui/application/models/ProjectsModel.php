@@ -51,6 +51,36 @@
 	    $this->db->insert('tb_projects_parts', $data);
 	    return $this->db->insert_id();
 	}
+	
+	/**
+	 * 
+	 */
+	public function get_list($fabid, $order = array(), $limit = array())
+	{
+	    /**
+	     * set order
+	     */
+	    if(!empty($order)){
+	        foreach($order as $column => $value){
+	            $this->db->order_by($column, $value);
+	        }
+	    }
+	    
+	    /**
+	     * set limit
+	     */
+	    if(!empty($limit)){
+	        $this->db->limit($limit['limit'], $limit['offset']);
+	    }
+	    
+	    /**
+	     * 
+	     */
+	    $this->db->where('fabid', $fabid);
+	    $query = $this->db->get($this->tableName);
+	    
+	    return $query->result_array();
+	}
 
  }
  

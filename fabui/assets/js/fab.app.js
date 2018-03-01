@@ -1619,7 +1619,8 @@ fabApp = (function(app) {
 	app.analizeTopBar = function(settings)
 	{
 		if(app.installed_head != null){
-			if(app.installed_head.working_mode == HEAD_WORKING_MODE_LASER || app.installed_head.working_mode == HEAD_WORKING_MODE_CNC || app.installed_head.working_mode == HEAD_WORKING_MODE_SCANNER){
+			if(app.installed_head.working_mode == HEAD_WORKING_MODE_LASER || app.installed_head.working_mode == HEAD_WORKING_MODE_CNC 
+				|| app.installed_head.working_mode == HEAD_WORKING_MODE_SCANNER || app.installed_head.working.mode == HEAD_WORKING_MODE_SLA){
 				$(".top-ajax-temperatures-dropdown .head-working-mode-"+HEAD_WORKING_MODE_FFF).remove();
 				$(".top-ajax-temperatures-dropdown .head-working-mode-"+HEAD_WORKING_MODE_HYBRID).remove();
 				$(".top-ajax-temperatures-dropdown").find('h4').removeClass('margin-top-50');
@@ -1968,10 +1969,10 @@ fabApp = (function(app) {
 				var bed = data.bed_in_place == false ? 'mill.png' : 'glass.png';
 
 				if(data.head_is_ok){
-					var head_title = '<strong>' + _("Correct head installed") + '</strong> <i class="fa fa-check-circle text-success fa-2x"></i>';
+					var head_title = '<strong>' + _("Correct head/module installed") + '</strong> <i class="fa fa-check-circle text-success fa-2x"></i>';
 					var head_subtitle = '';
 				}else{
-					var head_title =  data.head_in_place ? '<strong>' + _("Wrong head installed") + '</strong> <i class="fa fa-times-circle text-danger fa-2x"></i>' : '<strong>' + _("No head installed") + '</strong>'; 
+					var head_title =  data.head_in_place ? '<strong>' + _("Wrong head/module installed") + '</strong> <i class="fa fa-times-circle text-danger fa-2x"></i>' : '<strong>' + _("No head installed") + '</strong>'; 
 					var head_subtitle = _("Please install a {0} head.").replace("{0}", type);
 				}
 

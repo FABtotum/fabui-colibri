@@ -801,3 +801,7 @@ label input[type=checkbox].checkbox:checked+span:before {
 	 content: "\f00c";
 	 font-weight: 900;
 }
+
+.onoffswitch-checkbox+.onoffswitch-label .onoffswitch-switch:before, .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch:before {
+	font-family: "Font Awesome 5 Free"!important;
+}

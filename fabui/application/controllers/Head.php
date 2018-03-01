@@ -97,8 +97,7 @@ class Head extends FAB_Controller {
 	 */
 	public function index(){
 		$this->load->library('smart');
-		$this->load->helper('form');
-		$this->load->helper('fabtotum_helper');
+		$this->load->helper(array('form', 'fabtotum_helper'));
 		
 		$data = array();
 		
@@ -106,17 +105,32 @@ class Head extends FAB_Controller {
 		
 		$data['installed_head'] = getInstalledHeadInfo();
 		$data['capabilities'] = array(
-			'*'     => _("All"),
-			'.print' => _("3D Printing"),
+			'*'      => _("All"),
+			'.print' => _("3D Printing (FDM)"),
+		    '.sla'   => _("3D Printing (SLA)"),
 			'.mill'  => _("Milling"),
 			'.laser' => _("Laser"),
 			'.scan'  => _("Scan")
 		);
 		
+		$data['working_modes'] = array(
+		    '0' => "Hybrid",
+		    '1' => "FFF",
+		    '2' => "Laser",
+		    '3' => "CNC",
+		    '4' => "Scan",
+		    '5' => "SLA"
+		);
+		
+		$data['thermistors'] = array(
+		    '0' => 'Fabtotum',
+		    '1' => 'Standard 100k'
+		);
+		
 		$headerToolbar = '
 		<div class="widget-toolbar" role="menu">
-			<a class="btn btn-success settings-action" data-action="add" href=""><i class="fa fa-plus"></i> '._("Add new head").' </a>
-			<a class="btn btn-default no-ajax" target="_blank" href="http://store.fabtotum.com/"><i class="fa fa-cart-plus"></i> <span class="hidden-xs">'._("Get more heads").'</span> </a>
+			<a class="btn btn-success settings-action" data-action="add" href=""><i class="fa fa-plus"></i> '._("Add new head/module").' </a>
+			<a class="btn btn-default no-ajax" target="_blank" href="http://store.fabtotum.com/"><i class="fa fa-cart-plus"></i> <span class="hidden-xs">'._("Get more heads & modules").'</span> </a>
 		</div>';
 		
 		//main page widget
@@ -126,14 +140,17 @@ class Head extends FAB_Controller {
 		);
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
-		$widget->id     = 'main-widget-head-installation';
+		$widget->id     = 'main-widget-heads-modules-installation';
 		$widget->class = '';
-		$widget->header = array('icon' => 'fabui-head-2', "title" => "<h2>"._("Heads")."</h2>", 'toolbar'=>$headerToolbar);
+		$widget->header = array('icon' => 'fabui-head-2', "title" => "<h2>"._("Heads & Modules")."</h2>", 'toolbar'=>$headerToolbar);
 		$widget->body   = array('content' => $this->load->view('head/index', $data, true ), 'class'=>'');
 		
 		$this->addJsInLine($this->load->view('head/js', $data, true));
-		$this->addCssFile('/assets/css/head/style.css');
 		
+		/**
+		 * include scripts
+		 */
+		$this->addCssFile('/assets/css/head/style.css');
 		$this->addJSFile('/assets/js/plugin/jquery-validate/jquery.validate.min.js'); //validator
 		$this->addJSFile('/assets/js/plugin/inputmask/jquery.inputmask.bundle.js');
 		$this->addJSFile('/assets/js/plugin/FileSaver.min.js');

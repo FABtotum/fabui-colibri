@@ -30,20 +30,14 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-/**
- * 
- */
-require_once 'JsonRPC.php';
+use JsonRPC\Client as JsonRpcClient;
+use JsonRPC\HttpClient;
+
+require_once APPPATH.'/third_party/vendor/autoload.php';
 
 /**
  * MyFabtotum Class
- * 
- * 
- * 
- * 
- * 
- * 
- * 
+ *  
  */
 class MyFabtotumClient {
     
@@ -69,7 +63,9 @@ class MyFabtotumClient {
     /**
      * 
      */
-    protected $rpc_client = '';
+    protected $http_client = '';
+    protected $rpc_client  = '';
+    protected $ssl         = false;
     
     /**
      * 
@@ -97,12 +93,16 @@ class MyFabtotumClient {
         }
         
         /**
-         * 
+         * get ci reference
          */
         $this->ci =& get_instance();
-        $this->rpc_client = new JsonRPC(array(
-            'url' => $this->server_url
-        ));
+        
+        /**
+         * init http client & jsonrpc client
+         */
+        $this->http_client = new HttpClient($this->server_url);
+        if(!$this->ssl) $this->http_client->withoutSslVerification();
+        $this->rpc_client = new JsonRpcClient($this->server_url, true, $this->http_client);
         
         /**
          * 

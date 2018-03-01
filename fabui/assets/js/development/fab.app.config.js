@@ -107,6 +107,7 @@ HEAD_WORKING_MODE_FFF     = 1;
 HEAD_WORKING_MODE_LASER   = 2;
 HEAD_WORKING_MODE_CNC     = 3
 HEAD_WORKING_MODE_SCANNER = 4;
+HEAD_WORKING_MODE_SLA     = 5;
 /****************************
 * ERROR CODES
 *****************************/

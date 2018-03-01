@@ -193,7 +193,7 @@ $config['menu'] = array(
 			),
 			'raspicam' => array(
 				'title' => _("Raspicam"),
-				'icon' => 'fa fa-lg fa-fw fa-video-camera',
+				'icon' => 'fa fa-lg fa-fw fa-video',
 				'url' => 'settings/cam',
 				'pos' => 30
 			),

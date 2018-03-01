@@ -74,7 +74,7 @@ class Drawing2D(object):
         elif type(points) is tuple:
             points = [ points ]
         else:
-            print 'neither a tuple or a list'
+            # print 'neither a tuple or a list'
             return
         
         x1 = 1.0e10
@@ -112,7 +112,7 @@ class Drawing2D(object):
     def get_font(self, font):
         filename = '/var/lib/fabui/plugins/fab_laser/fonts/lff/{0}.lff'.format(font)
         
-        print "loading font", filename
+        # print "loading font", filename
         
         if font not in self.fonts:    
             f = lff.readfile(filename)
@@ -304,23 +304,23 @@ class Drawing2D(object):
         font = self.get_font(font_name)
         
         if not font:
-            print "Font '{0}' not found".format(font_name)
+            # print "Font '{0}' not found".format(font_name)
             return
         
-        print
-        print "direction", direction
-        print "height", height
+        # print
+        # print "direction", direction
+        # print "height", height
         
         scale = height / 9.0
-        print "scale",scale
+        # print "scale",scale
         wordSpacing = float(font.meta['WordSpacing']) * scale
         letterSpacing = float(font.meta['LetterSpacing']) * scale
         letterHeight = height
         
-        print "letterSpacing", letterSpacing
-        print "wordSpacing", wordSpacing
+        # print "letterSpacing", letterSpacing
+        # print "wordSpacing", wordSpacing
         
-        print text_lines
+        # print text_lines
         
         off_x = position[0]
         off_y = position[1]
@@ -379,10 +379,10 @@ class Drawing2D(object):
                     #~ print "R",off_x,off_y,max_x,max_y
                     #~ self.add_rect(off_x,off_y,max_x,max_y,layer=layer)
                     
-                    print "off_x", off_x, position[0]
+                    # print "off_x", off_x, position[0]
                         
                     off_x = max_x + letterSpacing
-                    print "+off_x", off_x
+                    # print "+off_x", off_x
                     
             off_y -= letterHeight
             off_x = position[0]

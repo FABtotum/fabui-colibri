@@ -34,7 +34,7 @@
 							<li style="padding-right:0px !important">
 								<div class="btn-toolbar">
 									<div class="btn-group">
-										<a title="<?php echo _("Settings");?>" data-action="edit" data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action" ><i class="fa  fa-cog"></i> </a>
+										<a title="<?php echo _("Settings");?>" data-action="edit" data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action" ><i class="fa  fa-cogs"></i> </a>
 										<!--  <a data-action="info" data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action" ><i class="fa  fa-info"></i> </a>-->
 										<?php if($head['fw_id'] >= 100):?>
 										<a data-action="remove" data-head="<?php echo $head['filename']; ?>" class="btn btn-danger settings-action" ><i class="fa  fa-trash"></i> </a>
@@ -53,7 +53,7 @@
 <div class="row">
 	<div class="col-sm-12">
 		<div>
-			<p class="font-sm"><?php echo _('Before clicking "Install", make sure the head is properly locked in place'); ?></p>
+			<p class="font-sm"><?php echo _('Before clicking "Install", make sure the head/module is properly locked in place'); ?></p>
 		</div>
 	</div>
 </div>
@@ -97,14 +97,14 @@
 						</label> 
 					</span> 										
 				</span>
-				<h4 class="modal-title"><?php echo _("Head settings");?> </h4>
+				<h4 class="modal-title"><?php echo _("Module settings");?> </h4>
 			</div><!-- /.modal-header -->
 
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="alert alert-warning fade in">
-							<i class="fa-fw fa fa-warning"></i>
+							<i class="fa-fw fa fa-exclamation-triangle"></i>
 							<strong><?php echo _("Warning");?></strong> <?php echo _("changing these settings may affect the proper functioning of the printer"); ?>
 						</div>
 					</div>
@@ -142,7 +142,10 @@
 									<div class="col col-4">
 										<label class="checkbox">
 											<input type="checkbox" id="cap-print" name="capability[]" data-attr="print" class="capability">
-											<i></i><?php echo _('3D Print');?></label>
+											<i></i><?php echo _('3D Print (FDM)');?></label>
+										<label class="checkbox">
+											<input type="checkbox" id="cap-sla" name="capability[]" data-attr="sla" class="capability">
+											<i></i><?php echo _('3D Print (SLA)');?></label>
 										<label class="checkbox">
 											<input type="checkbox" id="cap-mill" name="capability[]" data-attr="mill" class="capability">
 											<i></i><?php echo _("Mill");?></label>
@@ -185,14 +188,8 @@
 							<section class="col col-6">
 								<label class="label"><?php echo _("Working mode");?></label>
 								<label class="select">
-									<select id="head-working_mode" name="working_mode">
-										<option value="0">Hybrid</option>
-										<option value="1">FFF</option>
-										<option value="2">Laser</option>
-										<option value="3" selected>CNC</option>
-										<option value="4">Scan</option>
-										<option value="5">SLA</option>
-									</select> <i></i> </label>
+									<?php echo form_dropdown('working_mode', $working_modes, '', 'id="head-working_mode"'); ?><i></i> 
+								</label>
 							</section>
 							<section class="col col-6">
 								<label class="label"><?php echo _('Soft ID')?></label>
@@ -229,10 +226,8 @@
 							<section class="col col-6 advanced-settings">
 								<label class="label"><?php echo _("Thermistor");?></label>
 								<label class="select">
-									<select id="head-thermistor_index" name="thermistor_index">
-										<option value="0">Fabtotum</option>
-										<option value="1">Standard 100k</option>
-									</select> <i></i> </label>
+									<?php echo  form_dropdown('thermistor_index', $thermistors, '', 'id="head-head-thermistor_index"'); ?><i></i> 
+								</label>
 							</section>
 						</div>
 						<div class="row">
@@ -417,9 +412,9 @@
 
 			<div class="modal-footer">
 				<input id="inputId" type="file" style="display:none" accept=".json">
-				<button type="button" class="btn btn-default settings-action pull-left factory-head-button" data-action="factory-reset" title="<?php echo _("Restore factory settings")?>"><i class="fa fa-refresh"></i> <?php echo _("Factory reset");?></button>
-				<button type="button" class="btn btn-default settings-action custom-head-button" data-action="import" title="<?php echo _("Import from file")?>"><i class="fa fa-upload"></i> <?php echo _("Import");?></button>
-				<button type="button" class="btn btn-default settings-action" data-action="export" title="<?php echo _("Export to file")?>"><i class="fa fa-download"></i> <?php echo _("Export");?></button>
+				<button type="button" class="btn btn-default settings-action pull-left factory-head-button" data-action="factory-reset" title="<?php echo _("Restore factory settings")?>"><i class="fa fa-industry"></i> <?php echo _("Factory reset");?></button>
+				<button type="button" class="btn btn-default settings-action custom-head-button" data-action="import" title="<?php echo _("Import settings from file")?>"><i class="fa fa-upload"></i> <?php echo _("Import");?></button>
+				<button type="button" class="btn btn-default settings-action" data-action="export" title="<?php echo _("Export settings to file")?>"><i class="fa fa-download"></i> <?php echo _("Export");?></button>
 				<button type="button" class="btn btn-primary settings-action" data-action="save" data-dismiss="modal"><i class="fa fa-save"></i> <?php echo _("Save");?></button>
 				<button type="button" class="btn btn-success settings-action" data-action="save-install" data-dismiss="modal"><i class="fa fa-wrench"></i> <?php echo _("Save & Install");?></button>
 			</div><!-- /.modal-footer -->
