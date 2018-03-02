@@ -57,7 +57,7 @@ LOG_LEVEL ?= INFO
 WWW_FILES		= 	index.php \
 					LICENSE \
 					README.md
-					
+
 # Files that will end up in FABUI_PATH
 FABUI_FILES		=	fabui/recovery \
 					fabui/ext \
@@ -82,7 +82,7 @@ DB_FILES		= 	fabtotum.db
 CONFIG_FILES	=	config.ini serial.ini lang.ini pins.ini cam.ini bluetooth.ini
 
 # Files that will end up in SHARED_PATH
-STATIC_FILES	=	
+STATIC_FILES	=
 
 # Files that will end up in LIB_PATH
 DYNAMIC_FILES	=	$(CONFIG_FILES) \
@@ -130,7 +130,7 @@ WWW_DATA_GROUPS	= wheel,dialout,tty,plugdev,video
 # Tools
 INSTALL			?= install
 FAKEROOT 		?= fakeroot
-FAKEROOT_ENV 	= $(FAKEROOT) -s $(TEMP_DIR)/.fakeroot_env -i $(TEMP_DIR)/.fakeroot_env -- 
+FAKEROOT_ENV 	= $(FAKEROOT) -s $(TEMP_DIR)/.fakeroot_env -i $(TEMP_DIR)/.fakeroot_env --
 MKSQUASHFS		?= mksquashfs
 BUNDLE_COMP		?= lzo
 ########################### Makefile rules #############################
@@ -143,7 +143,7 @@ clean:
 	rm -rf $(TEMP_DIR)
 	rm -rf $(CONFIG_FILES)
 	rm -rf $(DB_FILES)
-	
+
 distclean: clean
 	rm -rf *.cb
 	rm -rf *.cb.md5sum
@@ -160,7 +160,7 @@ check-tools:
 	@echo "Looking for sqlite3: FOUND"
 	which php
 	@echo "Looking for php: FOUND"
-	
+
 bundle: check-tools distclean $(FABUI_BUNDLE)
 
 # Collects rules of all *.in files and uses the generator on them.
@@ -187,7 +187,7 @@ bundle: check-tools distclean $(FABUI_BUNDLE)
 
 $(TEMP_DIR):
 	mkdir -p $@
-	
+
 $(BDATA_DIR):
 	mkdir -p $@
 
@@ -254,32 +254,32 @@ endif
 	$(FAKEROOT_ENV) cp LICENSE $(BDATA_DIR)/usr/share/licenses/$(NAME)
 #|username |uid |group |gid |password |home |shell |groups |comment
 	$(FAKEROOT_ENV) echo "$(WWW_DATA_NAME) $(WWW_DATA_UID) $(WWW_DATA_NAME) $(WWW_DATA_GID) * /var/www /bin/sh $(WWW_DATA_GROUPS) Web Data" > $(BDATA_DIR)$(METADATA_PATH)/user_table
-	
+
 #   Install bundle helper scripts
 	$(FAKEROOT_ENV) cp -R $(OS_FILES_DIR)/colibri/meta/* $(BDATA_DIR)$(METADATA_PATH)/
 #	$(FAKEROOT_ENV) cp $(OS_FILES_DIR)/colibri/meta/postpone.sh $(BDATA_DIR)$(METADATA_PATH)/postpone.sh
 
-#	Minify 
+#	Minify
 	sed -e "s@/var/log/fabui/@./temp@" -i $(BDATA_DIR)/usr/share/fabui/application/config/config.php
-	$(FAKEROOT_ENV) php $(BDATA_DIR)/usr/share/fabui/index.php control minify 
+	$(FAKEROOT_ENV) php $(BDATA_DIR)/usr/share/fabui/index.php control minify
 	sed -e "s@./temp@/var/log/fabui/@" -i $(BDATA_DIR)/usr/share/fabui/application/config/config.php
 # 	Create a stamp file
 	touch $@
 
 $(OS_COLIBRI_STAMP):
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/init.d
-	
+
 #	Connman iface migration fix
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/connman.init \
 		$(BDATA_DIR)/etc/init.d/connman
-		
+
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fabtotum.init \
 		$(BDATA_DIR)/etc/init.d/fabtotum
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0644 $(OS_FILES_DIR)/colibri/fabtotum.default \
 		$(BDATA_DIR)/etc/default/fabtotum
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0644 $(OS_FILES_DIR)/colibri/fabui.default \
 		$(BDATA_DIR)/etc/default/fabui
-		
+
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fabui.init \
 		$(BDATA_DIR)/etc/init.d/fabui
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fabui-ws.init \
@@ -287,31 +287,31 @@ $(OS_COLIBRI_STAMP):
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0644 $(OS_FILES_DIR)/colibri/fabui.default \
 		$(BDATA_DIR)/etc/default/fabui
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fabui.first \
-		$(BDATA_DIR)/etc/firstboot.d/fabui	
+		$(BDATA_DIR)/etc/firstboot.d/fabui
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/network.first \
-		$(BDATA_DIR)/etc/firstboot.d/network	
-		
+		$(BDATA_DIR)/etc/firstboot.d/network
+
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fixes.init \
 		$(BDATA_DIR)/etc/init.d/fixes
-		
+
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/network/if-up.d
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/zz_default_gateway \
-		$(BDATA_DIR)/etc/network/if-up.d/zz_default_gateway	
-			
+		$(BDATA_DIR)/etc/network/if-up.d/zz_default_gateway
+
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/rc.d/rc.firstboot.d
 	$(FAKEROOT_ENV) ln -fs ../../firstboot.d/fabui \
 		$(BDATA_DIR)/etc/rc.d/rc.firstboot.d/S10fabui
 	$(FAKEROOT_ENV) ln -fs ../../firstboot.d/network \
 		$(BDATA_DIR)/etc/rc.d/rc.firstboot.d/S09network
-		
-	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/rc.d/rc.startup.d	
+
+	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/rc.d/rc.startup.d
 	$(FAKEROOT_ENV) ln -fs ../../init.d/fabtotum \
 		$(BDATA_DIR)/etc/rc.d/rc.startup.d/S30fabtotum
 	$(FAKEROOT_ENV) ln -fs ../../init.d/fabui \
 		$(BDATA_DIR)/etc/rc.d/rc.startup.d/S40fabui
 	$(FAKEROOT_ENV) ln -fs ../../init.d/fabui-ws \
 		$(BDATA_DIR)/etc/rc.d/rc.startup.d/S39fabui-ws
-	
+
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/rc.d/rc.shutdown.d
 	$(FAKEROOT_ENV) ln -fs ../../init.d/fabui \
 		$(BDATA_DIR)/etc/rc.d/rc.shutdown.d/S20fabui
@@ -323,7 +323,7 @@ $(OS_COLIBRI_STAMP):
 		$(BDATA_DIR)/etc/rc.d/rc.shutdown.d/S62fixes
 # 	Create a stamp file
 	touch $@
-	
+
 $(OS_COMMON_STAMP):
 # 	Avahi service
 	$(FAKEROOT_ENV) install -d -m 0775 $(BDATA_DIR)/etc/avahi/services
@@ -336,6 +336,7 @@ $(OS_COMMON_STAMP):
 	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/bluetooth/main.conf $(BDATA_DIR)/etc/bluetooth/main.conf
 	$(FAKEROOT_ENV) install -d -m 0775 $(BDATA_DIR)/etc/default
 	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/bluetooth.default $(BDATA_DIR)/etc/default/bluetooth
+	$(FAKEROOT_ENV) install -D -m 0775 $(OS_FILES_DIR)/colibri/bluetooth.init $(BDATA_DIR)/etc/init.d/bluetooth
 #	Sudoers fabui rule
 	$(FAKEROOT_ENV) install -d -m 0750 $(BDATA_DIR)/etc/sudoers.d
 	$(FAKEROOT_ENV) install -D -m 0440 $(OS_FILES_DIR)/common/fabui.sudoers $(BDATA_DIR)/etc/sudoers.d/fabui
@@ -356,17 +357,17 @@ $(OS_COMMON_STAMP):
 	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/network.default $(BDATA_DIR)/etc/default/network
 	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/ifplugd.default $(BDATA_DIR)/etc/default/ifplugd
 	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/connman.default $(BDATA_DIR)/etc/default/connman
-	
+
 #~ 	$(FAKEROOT_ENV) install -d -m 0775 $(BDATA_DIR)/var/lib/connman
 #~ 	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/connman/ethernet.config $(BDATA_DIR)/var/lib/connman/ethernet.config
 	$(FAKEROOT_ENV) install -d -m 0775 $(BDATA_DIR)/etc/connman
 	$(FAKEROOT_ENV) install -D -m 0644 $(OS_FILES_DIR)/common/connman/main.conf $(BDATA_DIR)/etc/connman/main.conf
 # 	Create a stamp file
 	touch $@
-	
+
 %.db: fabui/recovery/sql/%.$(DB)
-	$(DB) $@ < $< 
-		
+	$(DB) $@ < $<
+
 $(FABUI_BUNDLE): $(BDATA_STAMP) $(OS_COMMON_STAMP) $(OS_STAMP)
 	$(FAKEROOT_ENV) $(MKSQUASHFS) $(BDATA_DIR) $@ -noappend -comp $(BUNDLE_COMP) -b 512K -no-xattrs
 	md5sum $@ > $@.md5sum
@@ -376,5 +377,5 @@ include Makefile.docs
 
 minify:
 	sed -e "s@/var/log/fabui/@./temp@" -i $(BDATA_DIR)/usr/share/fabui/application/config/config.php
-	$(FAKEROOT_ENV) php $(BDATA_DIR)/usr/share/fabui/index.php control minify 
+	$(FAKEROOT_ENV) php $(BDATA_DIR)/usr/share/fabui/index.php control minify
 	sed -e "s@./temp@/var/log/fabui/@" -i $(BDATA_DIR)/usr/share/fabui/application/config/config.php

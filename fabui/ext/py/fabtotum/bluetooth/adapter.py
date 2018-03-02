@@ -170,7 +170,8 @@ class Adapter(dbus.service.Object):
         self.__add_device(address, self.__devices[path])
 
     def RemoveDevice(self, address):
-        self.__adapter.RemoveDevice(address)
+        device = find_device(address)
+        self.__adapter.RemoveDevice(device)
 
     @property
     def object_path(self):

@@ -39,11 +39,6 @@ try:
 except ImportError:
     import gobject as GObject
 
-try:
-    import ConfigParser
-except ImportError:
-    import configparser as ConfigParser
-
 # Import internal modules
 #~ import bluezutils
 
@@ -55,21 +50,21 @@ from prism_manager import send_command
 def main():
     from fabtotum.fabui.config  import ConfigService
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-    
-    
+
+
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-n", "--name", help="Look for name", default="PRISM")
     parser.add_argument("-m", "--mac",  help="Mac address",   default="")
     parser.add_argument("-v", "--verbose", action="store_true", help="Show verbose" )
-    
-    
+
+
     # GET ARGUMENTS
     args    = parser.parse_args()
     name    = args.name
     mac     = args.mac
     verbose = args.verbose
-    
+
     config    = ConfigService()
 
     # Ensure bluetooth is enabled
@@ -92,10 +87,10 @@ def main():
 
     master_bt_address = adapter.Address
     devices = adapter.discoverDevices(look_for_name=name, timeout=30, verbose=verbose)
-    
+
     paired = False
     already_paired = False
-    
+
     for addr in devices:
         dev = devices[addr]
         if(verbose):
@@ -122,7 +117,7 @@ def main():
             send_command('trust', [master_bt_address], addr, verbose=verbose)
             if(verbose):
                 print "Already paired"
-    
+
     response = {'name': name, 'mac': mac, 'paired': paired, 'already_paired': already_paired }
     print json.dumps(response)
 
