@@ -49,9 +49,9 @@ from fabtotum.bluetooth.adapter import Adapter
 
 def send_command(command, arg_list, bt_address, bt_port=0x1001, verbose=False):
     sock=bluetooth.BluetoothSocket(bluetooth.L2CAP)
-
+    
     sock.settimeout(3)
-
+    reply = ""
     if verbose:
         print("trying to connect to %s on port 0x%X" % (bt_address, bt_port))
 
@@ -73,14 +73,18 @@ def send_command(command, arg_list, bt_address, bt_port=0x1001, verbose=False):
             print "Data received:", str(reply)
         else:
             print str(reply)
+            
+        sock.close()
+    
+        return reply
 
     except Exception as e:
         if verbose:
             print "Error:", str(e)
+            
+        return json.dumps({'error': str(e)})
 
-    sock.close()
-    
-    return reply 
+     
     
 
 def main():
@@ -132,8 +136,11 @@ def main():
     if cmd in [ 'connect', 'disconnect', 'trust', 'untrust']:
         adapter = Adapter()
         arg_list.append( adapter.Address )
-
-    send_command(cmd, arg_list, bt_addr, bt_port, verbose)
+    
+    if verbose : 
+        print "Send: ", cmd
+        
+    print send_command(cmd, arg_list, bt_addr, bt_port, verbose)
 
 
 if __name__ == '__main__':

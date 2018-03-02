@@ -672,4 +672,23 @@ if(!function_exists('bluetooth_status'))
         return json_decode($scriptResult,true);
     }
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('bluetooth_remove_device'))
+{
+    /**
+     * disable bluetooth
+     */
+    function bluetooth_remove_device($mac_address)
+    {
+        $CI =& get_instance();
+        $CI->load->helper('fabtotum');
+        $args = array(
+            '-a' => 'remove',
+            '-m'  => $mac_address
+        );
+        $scriptResult = trim(startBashScript('bluetooth.sh', $args, false, true));
+        return $scriptResult != '';
+        
+    }
+}
 ?>

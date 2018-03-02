@@ -30,24 +30,28 @@ EOF
 
 
 ACTION=
+MAC=
 
 
 echo $@ > /tmp/args
 
-while getopts “h:a:” OPTION
+while getopts “h:a:m:” OPTION
 do
-     case $OPTION in
-         h)
-             usage
-             exit 1
-             ;;
-         a)
-             ACTION="$OPTARG"
-             ;;
-         ?)
-             usage
-             exit
-             ;;
+    case $OPTION in
+		h)
+            usage
+            exit 1
+            ;;
+        a)
+            ACTION="$OPTARG"
+            ;;
+		m)
+			MAC="$OPTARG"
+			;;
+        ?)
+            usage
+            exit
+            ;;
      esac
 done
 
@@ -70,6 +74,9 @@ case $ACTION in
     disable)
         disable_bluetooth
         ;;
+	remove)
+		bluetooth_remove_device "$MAC"
+		;;
     *)
         echo "error: unknown mode \'$ACTION\'"
         usage

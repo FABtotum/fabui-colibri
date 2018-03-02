@@ -1579,15 +1579,16 @@ fabApp = (function(app) {
 	 */
 	app.handleSettingsData = function(data)
 	{
+		app.analizeMenu(data);
 		app.setInstalledHeadInfo(data);
 		app.analizeTopBar(data);
-		app.analizeMenu(data);
+		
 	}
 	/**
 	* analize menu to check if something must be hided
 	**/
 	app.analizeMenu = function (settings)
-	{	
+	{			
 		var a = $("nav li > a");
 		var unit_type = app.getUnitType(settings.hardware.id);
 		a.each(function() {
@@ -1795,7 +1796,9 @@ fabApp = (function(app) {
 	{
 		id = parseInt(id);
 		var type = UNIT_UNKNOWN;
-		if(id>=3000 && id<4000){
+		if(id>=4000 && id<5000){
+			type=UNIT_PRISM;
+		}else if(id>=3000 && id<4000){
 			type = UNIT_HYDRA;
 		}else if(id>=2000 && id<3000){
 			type = UNIT_PRO;

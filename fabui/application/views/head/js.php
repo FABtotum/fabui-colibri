@@ -694,19 +694,23 @@
 	 		return false;
 	 	}
 
-
-	 	openWait('<i class="fa fa-cog fa-spin"></i> <?php echo _("Installing head"); ?>', '<?php echo _("Please wait"); ?>...');
+	 	var title = '<?php echo _("Installing head"); ?>';
+	 	if(headToInstall == 'prism_module'){
+	 		title = '<?php echo _("Installing module"); ?>';
+	 	}
+	 	
+	 	openWait('<i class="fa fa-cog fa-spin"></i> ' + title, '<?php echo _("Please wait"); ?>...');
 	 	$.ajax({
 			type: "POST",
 			url: "<?php echo site_url("head/setHead") ?>/"+ headToInstall,
 			dataType: 'json'
 		}).done(function( data ) {
 			
-			if(data.fw_id =! PRISM_MODULE_ID){
+			if(parseInt(data.fw_id) != PRISM_MODULE_ID){
+				openWait('<i class="fa fa-check"></i> <?php echo _("Head installed"); ?>', '<?php echo _("Reloading page"); ?>', false);
     			setTimeout(function(){
-    					document.location.href =  '<?php echo site_url('head'); ?>?head_installed';
-    					location.reload();
-    				}, 2000);
+    				location.reload();
+    			}, 2000);
 			}else{
 				openWait('<i class="fa fa-cog fa-spin"></i> <?php echo _("Connecting to PRISM module"); ?>', '<?php echo _("Please wait"); ?>');
 				autoConnectToPrism();
@@ -721,7 +725,6 @@
 	function autoConnectToPrism()
 	{
 		if(prism_connection_attemtps_counter < max_prism_connection_attempts){
-			
     		prism_connection_attemtps_counter++;
     		waitContent("Prism connection attempt: " + prism_connection_attemtps_counter);
     		$.ajax({
@@ -740,8 +743,14 @@
     		}).fail(function(jqXHR, textStatus){
     			autoConnectToPrism();
 			});
+		}else{
+			
+			openWait('<i class="fa fa-exclamation-triangle"></i> <?php echo _("Couldn\'t connect to PRSIM"); ?>', '<?php echo _("Redirect to settings page"); ?>', false);
+			setTimeout(function(){
+	    		document.location.href = '<?php echo site_url('#plugin/fab_prism/settings'); ?>';
+	    	}, 2000);
+			
 		}
-		
 	}
 	
 	/**

@@ -784,3 +784,18 @@ bluetooth_status()
 	
 	echo "}"
 }
+##
+# bluetooth remove device
+#
+bluetooth_remove_device()
+{
+	MAC_ADDRESS="$1"
+	BT_ADDRESS=$(hcitool dev | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}')
+	
+	DIRECTORY="/var/lib/bluetooth/$BT_ADDRESS/$MAC_ADDRESS"
+	
+	if [ -d $DIRECTORY ]; then
+		rm -rvf $DIRECTORY 
+		/etc/init.d/bluetooth restart
+	fi
+}

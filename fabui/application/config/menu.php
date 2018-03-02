@@ -136,7 +136,7 @@ $config['menu'] = array(
 					),
 					'angle' => array(
 						'title' => _("Engage"),
-						'icon' => 'fa fa-lg fa-fw fa-hand-o-right',
+						'icon' => 'fa fa-lg fa-fw fa-hand-point-right',
 						'url' => 'maintenance/feeder-engage',
 						'pos' => 30
 					)
@@ -144,7 +144,7 @@ $config['menu'] = array(
 			),
 			'4thaxis' => array(
 				'title' => _("4th axis"),
-				'icon' => 'fa fa-lg fa-fw fa-arrows-h',
+				'icon' => 'fa fa-lg fa-fw fa-arrows-alt-h',
 				'url' => 'maintenance/4th-axis',
 				'pos' => 70
 			),

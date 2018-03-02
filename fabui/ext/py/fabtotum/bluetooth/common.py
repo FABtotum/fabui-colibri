@@ -24,6 +24,13 @@ __version__ = "1.0"
 
 # Import external modules
 import dbus
+import json
+
+import bluetooth
+
+# Import internal modules
+from fabtotum.os.paths import *
+from fabtotum.utils.common import shell_exec
 
 ################################################################################
 
@@ -75,3 +82,65 @@ def find_device_in_objects(objects, device_address, adapter_pattern=None):
             return dbus.Interface(obj, DEVICE_INTERFACE)
 
     raise Exception("Bluetooth device not found")
+
+
+########################################################################
+# get bluetooth status
+########################################################################
+def bluetooth_status():
+    result = shell_exec('sudo sh ' + BASH_PATH + 'bluetooth.sh -a "status"')
+    return json.loads(''.join(result))
+
+########################################################################
+# enable bluetooth
+########################################################################
+def enable_bletooth():
+    result = shell_exec('sudo sh ' + BASH_PATH + 'bluetooth.sh -a "enable"')
+    return json.loads(''.join(result))
+
+########################################################################
+# disable bluetooth
+########################################################################
+def disable_bletooth():
+    result = shell_exec('sudo sh ' + BASH_PATH + 'bluetooth.sh -a "disable"')
+    return json.loads(''.join(result))
+
+########################################################################
+# Scan for bluetooth devices
+########################################################################
+def scan(output='json', flush=True):
+    
+    devices = []
+    for address, name in bluetooth.discover_devices(flush_cache=flush, lookup_names = True):
+        devices.append({'mac': address, 'name': name})
+        
+    if (output == 'json'):
+        return json.dumps(devices)
+    
+    return devices
+
+########################################################################
+# Do pair
+########################################################################
+def pair(adapter, name="PRISM"):
+    devices = adapter.discoverDevices(look_for_name=name, timeout=60, verbose=True)
+    paired = False
+    already_paired = False
+    mac = None
+    
+    for addr in devices:
+        dev = devices[addr]
+        
+        print addr
+        if not dev.Paired :
+            dev.Pair()
+            dev.Trusted = True
+            paired = True
+            mac = addr
+        else:
+            paired = True
+            mac = addr
+            already_paired = True
+    return {'paired': paired, 'already_paired': already_paired, 'mac': mac}
+    
+    
