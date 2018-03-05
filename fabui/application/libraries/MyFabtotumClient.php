@@ -59,6 +59,7 @@ class MyFabtotumClient {
     protected $serial_number = '';
     protected $mac_address   = '';
     protected $fabui_version = '';
+    protected $printers_list = array();
     
     /**
      * 
@@ -248,9 +249,10 @@ class MyFabtotumClient {
         $response = $this->_call('fab_my_printers_list', $args);
         
         if($response['status'] == true)
-            return $response['data'];
+            $this->printers_list = $response['data'];
+            //return $response['data'];
         
-        return array();
+        return $this->printers_list;
     }
     
     /**
@@ -258,10 +260,28 @@ class MyFabtotumClient {
      */
     public function can_use_local_printer()
     {
-        $printers = $this->printers_list();
+        if(empty($this->printers_list))
+            $this->printers_list();
         
-        foreach($printers as $printer){
+        //$printers = $this->printers_list();
+        
+        foreach($this->printers_list as $printer){
             if((strtoupper($printer['mac']) == strtoupper($this->mac_address)) && (strtoupper($printer["serialno"]) == strtoupper($this->serial_number)))
+                return true;
+        }
+        return false;
+    }
+    
+    /**
+     * 
+     */
+    public function im_owner()
+    {
+        if(empty($this->printers_list))
+            $this->printers_list();
+        
+        foreach($this->printers_list as $printer){
+            if((strtoupper($printer['mac']) == strtoupper($this->mac_address)) && (strtoupper($printer["serialno"]) == strtoupper($this->serial_number)) && ($printer['owner'] == true))
                 return true;
         }
         return false;

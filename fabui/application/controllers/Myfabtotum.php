@@ -110,6 +110,17 @@ class Myfabtotum extends FAB_Controller {
 					$user = $this->user->getByFABID ( $fabid );
 				}
 				
+				/**
+				 * init myfabototum client
+				 */
+				$init['fabid'] = $fabid;
+				$this->load->library('MyFabtotumClient', $init,  'myfabtotumclient');
+				
+				/**
+				 * get if im the owner of the printer
+				 */
+				$owner = $this->myfabtotumclient->im_owner();
+				
 				if ($user) { // if user exists
 					
 					$data ['fabid_exists'] = true;
@@ -122,12 +133,6 @@ class Myfabtotum extends FAB_Controller {
 						$this->session->set_userdata('user', $user);
 						$this->user->update ( $user ['id'], array ( 'settings' => json_encode ( $user ['settings'] ) ) );
 					}
-					
-					/**
-					 * init myfabototum client
-					 */
-					$init['fabid'] = $fabid;
-					$this->load->library('MyFabtotumClient', $init,  'myfabtotumclient');
 					/**
 					 * 
 					 */
@@ -135,6 +140,10 @@ class Myfabtotum extends FAB_Controller {
 					    $data['register_printer'] = $this->myfabtotumclient->register_printer ();
 					}
 					reload_myfabtotum ();
+				}else{
+				    /**
+				     * if user doesn't exists locally but is the owner he should be an administrator
+				     */
 				}
 			}
 		}

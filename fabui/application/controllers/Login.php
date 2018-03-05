@@ -118,6 +118,12 @@
 	         */
 	        $init['fabid'] = $fabid;
 	        $this->load->library('MyFabtotumClient', $init,  'myfabtotumclient');
+	        
+	        /**
+	         * get if im the owner of the printer
+	         */
+	        $owner = $this->myfabtotumclient->im_owner();
+	
 	        /**
 	         * check if fabid exists
 	         */
@@ -131,11 +137,25 @@
 	                 */
 	                $this->load->model('User', 'user');
 	                $user = $this->user->getByFABID($fabid);
+	            
+	                /**
+	                 * check if there's already a user with the same e-mail as fabid
+	                 * if true then the users should be the same user (it happens after first install if user didnt connect to my.fabtotum.com before
+	                 * clicking to "install"). This avoid to have duplicate users
+	                 */
+
+	                if(!$user){
+	                    $userEmail = $this->user->getByEmail($fabid);
+	                    if($userEmail) {
+	                        $user = $userEmail;
+	                    }
+	                }   
 	                
 	                /**
 	                 * if user exists
 	                 */
 	                if($user){
+	                    
 	                    /**
 	                     * update user's info
 	                     */
@@ -147,9 +167,18 @@
 	                    $update_data['last_login'] = date('Y-m-d H:i:s');
 	                    $update_data['session_id'] = $this->session->session_id;
 	                    $update_data['settings']   = json_encode($settings);
+	                    /**
+	                     * if user is printer's owner he should be also an administrator
+	                     */
+	                    if($owner == true){
+	                        $update_data['role'] = 'administrator';
+	                    }
+	                    
 	                    $this->user->update($user['id'], $update_data);
+	                    $user['settings'] = $update_data['settings'];
 	                    
 	                }else{
+	                    
 	                    /**
 	                     * user doesn't exists
 	                     * crate a new "GUEST" user
@@ -169,7 +198,7 @@
 	                    $user['email']      = $fabid;
 	                    $user['first_name'] = 'Guest';
 	                    $user['last_name']  = 'Guest';
-	                    $user['role']       = 'user';
+	                    $user['role']       = $owner == true ? 'user' : 'administrator';
 	                    $user['session_id'] = $this->session->session_id;
 	                    $user['last_login'] = date('Y-m-d H:i:s');
 	                    $user['settings']   = json_encode($settings);
@@ -179,6 +208,7 @@
 	                    $new_user_id = $this->user->add($user);
 	                    $user['id'] = $new_user_id;
 	                }
+	               
 	                /**
 	                 * create valid session for fabui
 	                 */
@@ -193,6 +223,7 @@
 	                /**
 	                 *  LOGIN OK
 	                 */
+	                
 	                $redirect      = '#dashboard';
 	                $alert_type    = '';
 	                $alert_message = '';
