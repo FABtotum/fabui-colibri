@@ -145,6 +145,9 @@ class SubTask(object):
         curl.setopt(pycurl.FOLLOWLOCATION, 1)
         curl.setopt(pycurl.MAXREDIRS, 5)
         
+        curl.setopt(pycurl.SSL_VERIFYPEER, 0)
+        curl.setopt(pycurl.SSL_VERIFYHOST, 0)
+        
         fn = os.path.join(self.factory.getTempFolder(), 'fabui', file_name)
         file.setLocal(fn)
         

@@ -369,7 +369,7 @@ if(!function_exists('downloadRemoteFile'))
 	/**
 	 * download remote file 
 	 */
-	function downloadRemoteFile($remoteUrl, $path, $timeout=30, $do_internet_check=true)
+	function downloadRemoteFile($remoteUrl, $path, $timeout=30, $do_internet_check=true, $ssl=false)
 	{	
 		if($do_internet_check)
 		{
@@ -385,6 +385,12 @@ if(!function_exists('downloadRemoteFile'))
 		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 0);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+		
+		if($ssl == false){
+		    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+		    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+		}
+		
 		$downloadedFile = curl_exec($curl); //make call
 		$info = curl_getinfo($curl);
 		if(isset($info['http_code']) && $info['http_code'] == 200 && $downloadedFile != ""){ //if response is OK and response is not empty
@@ -404,7 +410,7 @@ if(!function_exists('getRemoteFile'))
 	/**
 	 * 
 	 */
-	function getRemoteFile($url, $do_internet_check=true, $headers = array(), $timeout=30)
+	function getRemoteFile($url, $do_internet_check=true, $headers = array(), $timeout=30, $ssl=false )
 	{
 		if($do_internet_check)
 		{
@@ -421,6 +427,11 @@ if(!function_exists('getRemoteFile'))
 		curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 0);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+		
+		if($ssl == false){
+		    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+		    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+		}
 		
 		if(!empty($headers)){
 			curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);

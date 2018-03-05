@@ -47,6 +47,8 @@ class RemoteVersion:
         curl.setopt(pycurl.URL, endpoint)
         curl.setopt(pycurl.TIMEOUT, 30)
         curl.setopt(pycurl.FOLLOWLOCATION, 1)
+        curl.setopt(pycurl.SSL_VERIFYPEER, 0)
+        curl.setopt(pycurl.SSL_VERIFYHOST, 0)
         curl.setopt(pycurl.MAXREDIRS, 5)
         curl.setopt(curl.WRITEDATA, buffer)
         curl.perform()        
