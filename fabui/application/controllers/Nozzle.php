@@ -192,6 +192,7 @@ class Nozzle extends FAB_Controller {
 	 */
 	public function pidtune()
 	{
+	   
 		$this->load->library('smart');
 		$this->load->helper('form');
 		$this->load->helper('fabtotum_helper');
@@ -209,6 +210,7 @@ class Nozzle extends FAB_Controller {
 		
 		$data['task'] = 'stopped';
 		
+		
 		$widgetOptions = array(
 				'sortable'     => false, 'fullscreenbutton' => true,  'refreshbutton' => false, 'togglebutton' => false,
 				'deletebutton' => false, 'editbutton'       => false, 'colorbutton'   => false, 'collapsed'    => false
@@ -225,10 +227,13 @@ class Nozzle extends FAB_Controller {
 		 * safety check
 		 */
 		$data['type']                        = 'print';
-		$data['safety_check']                = safetyCheck("print", "yes");
-		$data['safety_check']['bed_enabled'] = false;
-		$data['safety_check']['url']         = 'std/safetyCheck/print/yes';
-		$data['safety_check']['content']     = $this->load->view( 'std/task_safety_check', $data, true );
+		
+		if($data['runningTask'] == false){
+    		$data['safety_check']                = safetyCheck("print", "yes");
+    		$data['safety_check']['bed_enabled'] = false;
+    		$data['safety_check']['url']         = 'std/safetyCheck/print/yes';
+    		$data['safety_check']['content']     = $this->load->view( 'std/task_safety_check', $data, true );
+	   }
 		
 		$widget         = $this->smart->create_widget($widgetOptions);
 		$widget->id     = 'main-widget-nozzle-pidtune';

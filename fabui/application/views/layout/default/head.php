@@ -27,8 +27,13 @@
 <!-- PAGE RELATED CSS FILES -->
 <?php echo cssFilesInclusion($this->css); ?>
 <!-- FAVICONS -->
-<link rel="shortcut icon" href="/assets/img/favicon/favicon.png" type="image/x-icon">
-<link rel="icon"          href="/assets/img/favicon/favicon.png" type="image/x-icon">
+<?php if(isset($this->session->user['settings']['image']['url']) && $this->session->user['settings']['image']['url'] != ''):?>
+	<link rel="shortcut icon" href="<?php echo $this->session->user['settings']['image']['url'];?>" type="image/x-icon">
+    <link rel="icon"          href="<?php echo $this->session->user['settings']['image']['url'];?>" type="image/x-icon">
+<?php else:?>
+    <link rel="shortcut icon" href="/assets/img/favicon/favicon.png" type="image/x-icon">
+    <link rel="icon"          href="/assets/img/favicon/favicon.png" type="image/x-icon">
+<?php endif;?>
 <!-- HEADERD JAVASCRIPTS -->
 <script src="/assets/js/libs/jquery-3.2.1.min.js?v=<?php echo FABUI_VERSION ?>"></script>
 <script src="/assets/js/libs/jquery-ui.min.js?v=<?php echo FABUI_VERSION ?>"></script>

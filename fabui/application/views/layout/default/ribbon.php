@@ -22,7 +22,7 @@
 	<!-- breadcrumb -->
 	<ol class="breadcrumb hidden-xs"><!-- This is auto generated --></ol>
 	<span class="ribbon-button-alignment pull-right" id="ribbon-right-buttons">
-		<span class="pull-left hidden" id="my-fabtotum-ribbon-label" ><?php echo _("My printers");?></span>
+		<span class="pull-left hidden hidden-xs" id="my-fabtotum-ribbon-label" ><?php echo _("My printers");?></span>
 	</span>
 </div>
 <!-- END RIBBON --> 

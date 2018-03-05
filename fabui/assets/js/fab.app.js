@@ -28,6 +28,8 @@ fabApp = (function(app) {
 	app.rebooting = false; //is the unit rebooting?
 	app.intervals = new Array();
 	app.dropZoneList = new Array();
+	app.favicon_interval = null;
+	app.favicon = '';
 	app.FabActions = function(){
 		var fabActions = {	
 			userLogout: function($this){
@@ -552,6 +554,7 @@ fabApp = (function(app) {
 			}
 		});
 		app.updateNotificationBadge();
+		app.setWorkingFavicon();
 	};
 	/**
 	 * Unfreeze all menu items.
@@ -569,6 +572,7 @@ fabApp = (function(app) {
 			}
 		});
 		$(".freeze-menu").remove();
+		app.removeWorkingFavicon();
 	}
 	/**
 	*
@@ -1890,7 +1894,7 @@ fabApp = (function(app) {
 							dataType: 'html',
 							success: function(resonse, status){
 								$("#my-fabtotum-ribbon-label").removeClass("hidden");
-								var printer = '<a href="http://'+item.iplan+'/fabui/#dashboard" target="_blank" class="btn btn-ribbon no-ajax"><i class="fa-lg fa-fw fabui-core"></i> '+item.name+'</a>';
+								var printer = '<a href="http://'+item.iplan+'/fabui/#dashboard" target="_blank" class="btn btn-ribbon no-ajax hidden-xs"><i class="fa-lg fa-fw fabui-core"></i> '+item.name+'</a>';
 								$("#ribbon-right-buttons").append(printer);
 							}
 						}).done(function( response, status ) {});
@@ -2027,6 +2031,45 @@ fabApp = (function(app) {
 				$(element_to_hide).hide();	
 			}
 		}
+	}
+	/**
+	 * add animated gif during tasks
+	 * FIREFOX suppor it
+	 * other browesers needs a workaorund
+	 */
+	app.setWorkingFavicon = function() {
+		
+		app.favicon = $("link[rel='icon']");
+		
+		if(isFirefox){
+			$("link[rel='icon']").remove();
+		    $("link[rel='shortcut icon']").remove();
+			$("head").append('<link rel="icon" href="/assets/img/favicon/working.gif" type="image/gif">');
+		}else{
+			var max_counter = 29;
+			image_counter = 0;
+			$("link[rel='icon']").remove();
+		    $("link[rel='shortcut icon']").remove();
+		    $("head").append('<link rel="icon" id="favicon" href="/assets/img/favicon/animated/tmp-'+image_counter+'.gif" type="image/gif">');
+		    
+			app.favicon_interval = setInterval(function() {
+			    $("#favicon").attr("href", '/assets/img/favicon/animated/tmp-'+image_counter+'.gif');
+				if(image_counter == max_counter)
+			        image_counter = 0;
+			    else
+			        image_counter++;
+			}, 10);
+		}
+	}
+	/**
+	 * 
+	 */
+	app.removeWorkingFavicon = function()
+	{
+		clearInterval(app.favicon_interval);
+		$("link[rel='icon']").remove();
+		$("head").append(app.favicon);
+		
 	}
 	return app;
 })({});

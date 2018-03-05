@@ -174,7 +174,7 @@
 	**/
 	function  initRunningTaskPage()
 	{
-		fabApp.freezeMenu('pidtune');
+		fabApp.freezeMenu('pid_tune');
 		fabApp.disableTopBarControls();
 		disableInputs();
 		getTaskMonitor();
