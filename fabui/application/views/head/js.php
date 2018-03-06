@@ -732,7 +732,7 @@
     			url: '<?php echo site_url('plugin/fab_prism/autoconnect'); ?>',
     			dataType: 'json'
     		}).done(function(response) {			
-    			if(response.paired.connected == false){
+    			if(response.bluetooth_status.paired.connected == false){
     				autoConnectToPrism();
     			}else{
     				openWait('<i class="fa fa-check"></i> <?php echo _("Prism Module connected"); ?>', '<?php echo _("Loading page"); ?>');
