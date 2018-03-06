@@ -23,10 +23,12 @@ import argparse
 import commands
 import re
 import os
+import xml.etree.ElementTree as ET
 
 MANUFACTORING_ADDITIVE     = 'additive'
 MANUFACTORING_SUBTRACTIVE  = 'subtractive'
 MANUFACTORING_LASER        = 'laser'
+MANUFACTORING_PRISM        = 'prism'
 MANUFACTORING_UNKNOWN      = ''
 
 def isSubtractive(line):
@@ -40,6 +42,24 @@ def isLaser(line):
 def isPrint(line):
     match = re.search('(M109\s|M104\s)', line)
     return match != None
+
+def isPrism(file):
+    tree = ET.parse(file)
+    root = tree.getroot()
+    
+    namespace = {
+        'slic3r': 'http://slic3r.org/namespaces/slic3r',
+        'svg': 'http://www.w3.org/2000/svg'
+    }
+    
+    layer = root.find("./svg:g[@id='layer0']", namespace)
+    if layer is not None:
+        z_key = "{{{0}}}z".format(namespace['slic3r'])
+        
+        if z_key in layer.attrib:
+            return True
+    
+    return False
 
 def checkGCodeManufactoring(filename, num_of_lines = 500):
     """
@@ -61,7 +81,7 @@ def checkGCodeManufactoring(filename, num_of_lines = 500):
         lines = [next(myfile) for x in xrange(num_of_lines)]
         
     manufactoring = MANUFACTORING_UNKNOWN
-
+    
     for line in lines:
         if(line.startswith(';') == False):
             
@@ -74,7 +94,11 @@ def checkGCodeManufactoring(filename, num_of_lines = 500):
             elif(isPrint(line)):
                 manufactoring = MANUFACTORING_ADDITIVE
                 break
-
+            
+    if(manufactoring == MANUFACTORING_UNKNOWN):
+        if(isPrism(filename)):
+            manufactoring = MANUFACTORING_PRISM
+    
     return manufactoring
 
 def main():
@@ -92,7 +116,7 @@ def main():
 
     ################################################################################
     ext = os.path.splitext(filename)[1].lower()
-    if ext == '.gcode' or ext == '.nc':
+    if ext == '.gcode' or ext == '.nc' or ext == '.svg':
         print checkGCodeManufactoring(filename, num_of_lines)
     else:
         print MANUFACTORING_UNKNOWN

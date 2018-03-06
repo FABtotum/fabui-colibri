@@ -1100,6 +1100,8 @@ class Projectsmanager extends FAB_Controller {
 		
 		$builtin_actions = array();
 		
+		
+		
 		if($file['print_type'] == 'additive')
 		{
 			$builtin_actions[] = array(
@@ -1174,6 +1176,10 @@ class Projectsmanager extends FAB_Controller {
 		else // There are some built
 		{
 			unset($builtin_actions[0]);
+		}
+		
+		if(!isset($default_action)){
+		    $default_action = array('url'=>'', 'icon'=>'', 'title' =>'');
 		}
 		
 		// Generate action buttons
