@@ -94,7 +94,7 @@ def bluetooth_status():
 ########################################################################
 # enable bluetooth
 ########################################################################
-def enable_bletooth():
+def enable_bluetooth():
     result = shell_exec('sudo sh ' + BASH_PATH + 'bluetooth.sh -a "enable"')
     return json.loads(''.join(result))
 
@@ -113,9 +113,10 @@ def scan(output='json', flush=True):
     devices = []
     for address, name in bluetooth.discover_devices(flush_cache=flush, lookup_names = True):
         devices.append({'mac': address, 'name': name})
-        
+            
     if (output == 'json'):
         return json.dumps(devices)
+    
     
     return devices
 
