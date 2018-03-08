@@ -15,7 +15,7 @@ if(!isset($extruder_max) || $extruder_max == 0) $extruder_max = 250;
 if(!isset($bed_min)      || $bed_min == 0)      $bed_min = 10;
 if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 
-if($type == 'print')
+if($type == 'print' || $type == "prism")
 {
 	if(!isset($show_temperature_graph)) $show_temperature_graph = true;
 	if(!isset($show_speed)) $show_speed = true;
@@ -925,7 +925,7 @@ if(!isset($show_change_filament)) $show_change_filament = false;
 			<?php endif; ?>
 		}
 		
-		<?php if($type=="print"): ?>
+		<?php if($show_layer_info): ?>
 		if(data.hasOwnProperty("print") && 
 		   data.print.hasOwnProperty("layer_current") && 
 		   data.print.hasOwnProperty("layer_total"))
@@ -1319,7 +1319,8 @@ if(!isset($show_change_filament)) $show_change_filament = false;
 			closeWait();
 	  	});
 	}
-	
+	<?php endif;?>
+	<?php if($show_layer_info):?>
 	/**
 	 *
 	 **/
@@ -1329,6 +1330,11 @@ if(!isset($show_change_filament)) $show_change_filament = false;
 			$(".task-layer-current").html((parseInt(current)+1));
 			$(".task-layer-total").html(parseInt(total));
 			$(".layer-info").removeClass("hidden");
+		}
+
+		if($("#prism-preview-layer").length > 0){
+
+			$("#prism-preview-layer").attr('src', '/fabui/plugin/fab_prism/preview/' + current);
 		}
 	}
 	<?php endif; ?>

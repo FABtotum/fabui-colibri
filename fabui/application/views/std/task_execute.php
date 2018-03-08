@@ -12,7 +12,7 @@
 if( !isset($z_height_values) ) $z_height_values = array('0.1' => '0.1 mm', '0.01' => '0.01 mm');
 if( !isset($rpm_label) ) $rpm_label = _("RPM");
 
-if($type == 'print')
+if($type == 'print' || $type == "prism")
 {
 	if(!isset($show_temperature_graph)) $show_temperature_graph = true;
 	if(!isset($show_speed)) $show_speed = true;
@@ -46,12 +46,12 @@ if(!isset($show_layer_info)) $show_layer_info = false;
 if(!isset($show_temp_info)) $show_temp_info = false;
 if(!isset($show_change_filament)) $show_change_filament = false;
 if(!isset($show_pause_button)) $show_pause_button = true;
+if(!isset($show_prism_layer_preview)) $show_prism_layer_preview = false;
 
-$split_view = $show_temperature_graph;
+$split_view = $show_temperature_graph || $show_prism_layer_preview;
 $stats_button_size = $show_temperature_graph ? 4 : 6;
 
 //if($stats_button_size == 6 && $show_pause_button == false) $stats_button_size = 12;
-
 ?>
 <ul id="createFeed" class="nav nav-tabs bordered">
 	<li class="active"><a href="#live-feeds-tab" data-toggle="tab"><?php echo _("Live feeds")?></a></li>
@@ -82,6 +82,7 @@ $stats_button_size = $show_temperature_graph ? 4 : 6;
 	<br>
 	<div class="tab-pane fade in active" id="live-feeds-tab">
 		<div class="row">
+			<!-- TEMPERATURES GRAPH -->
 			<?php if($show_temperature_graph): ?>
 			<div class="col-sm-6">
 				
@@ -137,8 +138,21 @@ $stats_button_size = $show_temperature_graph ? 4 : 6;
 				<div class="row hidden-xs">
 					<div id="temperatures-chart" class="chart"> </div>
 				</div>
-			</div>
-			<?php endif; // if($show_temperature_graph): ?>
+			</div>			
+			<?php endif;?>
+			<!-- END TEMPERATURES GRAPH -->
+			
+			<!-- PRISM PREVIEW LAYER -->
+			<?php if($show_prism_layer_preview):?>
+				<div class="col-sm-6">
+					<div>
+						<img class="img-responsive" style=" height: 400px;"  id="prism-preview-layer">
+					</div>
+					
+				</div>
+			<?php endif;?>
+			<!-- END PRISM PREVIEW LAYER -->
+			
 			<div class="col-sm-<?php echo $split_view ? '6' : '12' ?> show-stats">
 				<div class="row ">
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <span class="text"> <i class="fa fa-cube"></i> <?php echo _("File"); ?> <span class="pull-right"><span class="task-file-name"> (<?php echo _("Loading");?> ..)</span> </span> </span>
