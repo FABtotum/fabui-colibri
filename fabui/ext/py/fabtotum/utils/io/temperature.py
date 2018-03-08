@@ -49,10 +49,11 @@ class ThermistorInterface:
         self.discharged = False
         GPIO.setup(self.b_pin, GPIO.IN)
         GPIO.setup(self.a_pin, GPIO.OUT)
+        max_count = 100
         count = 0
         GPIO.output(self.a_pin, True)
         start = time.time()
-        while not GPIO.input(self.b_pin):
+        while not GPIO.input(self.b_pin) and count < max_count:
             count = count +1
         return time.time() - start
 
