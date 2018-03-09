@@ -16,7 +16,7 @@
 	var SLA_WORKING_MODE    = <?php echo $working_modes['SLA']?>;
 	var PRISM_MODULE_ID     = 8;
 
-	var max_prism_connection_attempts     = 3;
+	var max_prism_connection_attempts     = <?php echo $max_prism_connection_attempts; ?>;
 	var prism_connection_attemtps_counter = 0;
 
 	var selected_head = "<?php echo $installed_head['filename']?>";
@@ -490,10 +490,10 @@
 			case CNC_WORKING_MODE: //CNC
 				tool = 'M563 P0 D-1';
 				break;
-			case SCAN_WORKING_MODE: // Scan
-				break;
 			case SLA_WORKING_MODE:
-				tool = 'M563 P0 H-1 D3';
+				tool = 'M563 H-1';
+				break;
+			case SCAN_WORKING_MODE: // Scan
 				break;
 		}
 		if(hasFeeder){
@@ -721,7 +721,9 @@
     			}, 2000);
 			}else{
 				openWait('<i class="fa fa-cog fa-spin"></i> <?php echo _("Connecting to PRISM module"); ?>', '<?php echo _("Please wait"); ?>');
-				autoConnectToPrism();
+				setTimeout(function(){
+					autoConnectToPrism();
+				}, 10000)
 			}
 			
 		});
@@ -739,15 +741,20 @@
     			type: 'get',
     			url: '<?php echo site_url('plugin/fab_prism/autoconnect'); ?>',
     			dataType: 'json'
-    		}).done(function(response) {			
-    			if(response.bluetooth_status.paired.connected == false){
-    				autoConnectToPrism();
-    			}else{
+    		}).done(function(response) {
+        		
+    			if(response.bluetooth_status.paired.connected == true){
     				openWait('<i class="fa fa-check"></i> <?php echo _("Prism Module connected"); ?>', '<?php echo _("Loading page"); ?>');
     				setTimeout(function(){
     					location.reload();
     				}, 2000);
+    			}else{
+
+    				setTimeout(function(){
+    					autoConnectToPrism()
+    				}, 1000);
     			}
+        				
     		}).fail(function(jqXHR, textStatus){
     			autoConnectToPrism();
 			});

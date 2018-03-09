@@ -59,6 +59,7 @@ class BTFactory():
         self._adapter           = None
         self.controller_address = None
         self.config             = ConfigService()
+        self.status             = None
         
         ## init adapater
         self._init_adapter()
@@ -200,6 +201,54 @@ class BTFactory():
             #print connection
                 
         return {'connection': connection, 'paired': paired}
+    
+    ###################################
+    ## SEN COMMAND TO PRISM 
+    ###################################
+    def send_command(self, command, args, mac_address=None,  port=0x1001):
+        if(mac_address == None or mac_address == ""):
+            if "mac_address" in self.status['paired']:
+                mac_address = self.status['paired']['mac_address']
+            else:
+                return {'error': _("No connected device")}
+            
+        
+        socket = bluetooth.BluetoothSocket(bluetooth.L2CAP)
+        socket.settimeout(3)
+        
+        if(self.verbose):
+            print "Trying to connect to {0} on port {1}".format(mac_address, port)
+            
+        try:
+            socket.connect((mac_address, port))
+            data = json.dumps({ 'cmd': command, 'args': args })
+            
+            if self.verbose:
+                print "Data sent {0}".format(data)
+            
+            ## send data
+            socket.send(data)
+            
+            # get data
+            reply = socket.recv(1024)
+            
+            if self.verbose:
+                print "Data received:".format(reply)
+            
+            response = json.loads(reply)
+            
+            ## save network address
+            if(command == 'network-address'):
+                self.config.set('bluetooth', 'prism_bt_network_address', response['reply'])
+                self.config.save('bluetooth')
+            
+            return {'command': command, 'response': response['reply']}
+            
+        except Exception as e:
+            if self.verbose:
+                print "Error: {0}".format(e)
+            
+            return {'error': str(e)}
             
 def main():
     
@@ -210,12 +259,22 @@ def main():
     parser.add_argument("-a", "--action",  help="Action",        default="")
     parser.add_argument("-v", "--verbose", action="store_true",  help="Show verbose" )
     
+    parser.add_argument("-c", "--command", help="Command to send", default="")
+    parser.add_argument("--arg-list",       help="Comma separated argument list.", default=[] )
+    parser.add_argument("-P", "--port",     help="L2C port",  default=0x1001)
+    
+    
+    
+    
     # GET ARGUMENTS
     args    = parser.parse_args()
     action  = args.action
     name    = args.name
     mac     = args.mac
     verbose = args.verbose
+    command = args.command
+    command_args_list = args.arg_list
+    bt_port = args.port
     
     
     bt_factory = BTFactory(verbose=verbose)
@@ -227,6 +286,8 @@ def main():
         action_result = bt_factory.unpair(mac)
     elif(action == 'auto_connect'):
         action_result = bt_factory.auto_connection(name=name, mac_address=mac)
+    elif(action == 'send-command'):
+        action_result = bt_factory.send_command(command, command_args_list)
     
     output = {'action': action, 'response': action_result}
     

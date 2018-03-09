@@ -160,6 +160,9 @@ class Head extends FAB_Controller {
 		    '1' => 'Standard 100k'
 		);
 		
+		
+		$data['max_prism_connection_attempts'] = 5;
+		
 		$headerToolbar = '
 		<div class="widget-toolbar" role="menu">
 			<a class="btn btn-success settings-action" data-action="add" href=""><i class="fa fa-plus"></i> '._("Add new head/module").' </a>

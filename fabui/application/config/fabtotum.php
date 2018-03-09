@@ -28,12 +28,20 @@
  	$config['camera_'.$iniKey] = $iniValue;
  }
  
+ 
  //languages ini
  $ini = parse_ini_file("/var/lib/fabui/lang.ini", true);
  
  $config['language_current']     = $ini['language']['current'];
  $config['language_code']        = $ini[$ini['language']['current']]['code'];
  $config['language_description'] = $ini[$ini['language']['current']]['description'];
+ 
+ 
+ //bluetooth ini
+ $ini = parse_ini_file("/var/lib/fabui/bluetooth.ini");
+ foreach($ini as $iniKey => $iniValue){
+     $config[$iniKey] = $iniValue;
+ }
  
  unset($ini);
  

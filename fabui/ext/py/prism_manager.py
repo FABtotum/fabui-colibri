@@ -71,8 +71,6 @@ def send_command(command, arg_list, bt_address, bt_port=0x1001, verbose=False):
         reply = sock.recv(1024)
         if verbose:
             print "Data received:", str(reply)
-        else:
-            print str(reply)
             
         sock.close()
     
@@ -102,7 +100,7 @@ def main():
     # Setup arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("command",          help="Prism management command." )
-    parser.add_argument("-v", dest='verbose', action='store_true',  help="Verbose.")
+    parser.add_argument("-v", dest='verbose', action='store_true',  help="Verbose.", default=False)
     parser.add_argument("--arg-list",       help="Comma separated argument list.", default=[] )
     parser.add_argument("-a", "--address",  help="Bluetooth address.",
             # In case there is no prism_bt_address preconfigured, fallback to asking for the address

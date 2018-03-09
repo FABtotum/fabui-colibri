@@ -30,6 +30,7 @@ import json
 from fabtotum.utils.translation import _, setLanguage
 from fabtotum.utils.plugin import activate_plugin, get_active_plugins, get_installed_plugins
 from fabtotum.totumduino.format import parseG30, parseM114
+from fabtotum.fabui.constants import *
 
 def zProbe(app, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
@@ -254,6 +255,8 @@ def configure_4thaxis(app, feeder_name, lang='en_US.UTF-8'):
 def configure_head(app, head_name, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
+    # get EEprom
+    eeprom = getEeprom(app)
     # Load Head
     head = app.config.get_head_info(head_name)
     if head == None:
@@ -273,17 +276,18 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     
     app.trace( _("Setting head values..."))
     
-    
-    # disable head
-    app.macro( "M793 S0",   "ok", 2, _("Disabling previous installed head's settings"), verbose=False)
+    ## if prism module is alrady installed then skip the head id initialization
+    if fw_id == PRISM_MODULE_ID and PRISM_MODULE_ID == int(eeprom['installed_head']):
+        pass # do not set it again
+    else:
+        # disable head
+        app.macro( "M793 S0",   "ok", 2, _("Disabling previous installed head's settings"), verbose=False)
+        # Set installed head ID
+        if fw_id is not None:
+            app.macro( "M793 S{0}".format( fw_id ),   "ok", 2, _("Setting soft ID to {0}").format(fw_id), verbose=False)
     
     # Working mode
     app.macro( "M450 S{0}".format( mode ),   "ok", 5, _("Configuring working mode"), verbose=False)
-    
-    # Set installed head ID
-    if fw_id is not None:
-        #~ gcs.send( "M793 S{0}".format( fw_id ), group='bootstrap' )
-        app.macro( "M793 S{0}".format( fw_id ),   "ok", 2, _("Setting soft ID to {0}").format(fw_id), verbose=False)
      
     # Set head PID
     if pid != "":

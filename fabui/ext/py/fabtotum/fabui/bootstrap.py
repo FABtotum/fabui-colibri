@@ -35,6 +35,7 @@ from fabtotum.utils.common import shell_exec
 from fabtotum.utils.plugin import activate_plugin, get_active_plugins, get_installed_plugins
 from fabtotum.fabui.config import ConfigService
 from fabtotum.fabui.hardware.all import PRESET_MAP
+from fabtotum.fabui.constants import *
 
 def read_eeprom(gcodeSender):
         
@@ -59,6 +60,12 @@ def read_eeprom(gcodeSender):
     
     def getBatchNumber(string_source):
         match = re.search('Batch\sNumber:\s([0-9.]+)', string_source, re.IGNORECASE)
+        if match != None:
+            value = match.group(1)
+            return value
+        
+    def getInstalledHead(string_source):
+        match = re.search('M793\sS([0-9.]+)', string_source, re.IGNORECASE)
         if match != None:
             value = match.group(1)
             return value
@@ -90,10 +97,12 @@ def read_eeprom(gcodeSender):
             eeprom["servo_endstop"] = getServoEndstopValues(line)
         elif line.startswith('Batch Number'):
             eeprom['batch_number'] = getBatchNumber(line)
+        elif line.startswith('M793'):
+            eeprom['installed_head'] = getInstalledHead(line)
     
     return eeprom
     
-def configure_head(gcs, config, log):
+def configure_head(gcs, config, log, eeprom):
 
     try:
         log.info("Initializing HEAD")
@@ -115,13 +124,17 @@ def configure_head(gcs, config, log):
         plugins      = head.get('plugins', False)
         capabilities = head.get('capabilities', False)
         
-        # disable head
-        # Disabling previous installed head's settings"
-        gcs.send( "M793 S0".format( fw_id ), group='bootstrap' )
-        
-        # Set installed head
-        if fw_id is not None:
-            gcs.send( "M793 S{0}".format( fw_id ), group='bootstrap' )
+        ## if prism module is alrady installed then skip the head id initialization
+        if fw_id == PRISM_MODULE_ID and PRISM_MODULE_ID == int(eeprom['installed_head']):
+            pass
+        else:
+            # disable head
+            # Disabling previous installed head's settings"
+            gcs.send( "M793 S0".format( fw_id ), group='bootstrap' )
+            
+            # Set installed head
+            if fw_id is not None:
+                gcs.send( "M793 S{0}".format( fw_id ), group='bootstrap' )
         
         # Set head PID
         if pid != "":
@@ -391,7 +404,7 @@ def hardwareBootstrap(gcs, config = None, logger = None):
 
     config.reload()
     
-    configure_head(gcs, config, log)
+    configure_head(gcs, config, log, eeprom)
     configure_feeder(gcs, config, log)
     configure_4thaxis(gcs, config, log)
     
