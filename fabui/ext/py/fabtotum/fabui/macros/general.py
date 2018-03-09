@@ -197,7 +197,7 @@ def install_head(app, args, lang='en_US.UTF-8'):
     head_name = args[0]
     
     result = configure_head(app, head_name, lang)
-    app.trace(_("Restarting totumduino"))
+    # app.trace(_("Restarting totumduino"))
     return result
     
 def install_feeder(app, args, lang='en_US.UTF-8'):

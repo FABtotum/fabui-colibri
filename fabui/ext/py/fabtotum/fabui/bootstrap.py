@@ -115,7 +115,9 @@ def configure_head(gcs, config, log):
         plugins      = head.get('plugins', False)
         capabilities = head.get('capabilities', False)
         
-        probe_length  = float(config.get('settings', 'probe.length', 0))
+        # disable head
+        # Disabling previous installed head's settings"
+        gcs.send( "M793 S0".format( fw_id ), group='bootstrap' )
         
         # Set installed head
         if fw_id is not None:
@@ -141,8 +143,9 @@ def configure_head(gcs, config, log):
             #~ app.macro( "M206 Z-{0}".format( offset ),   "ok", 2, _("Configuring nozzle offset"))
         
         # Set probe offset
-        if probe_length:
-            gcs.send( "M710 S{0}".format( probe_length ), group='bootstrap' )
+        #if "print" in capabilities:
+        #    if probe_length:
+        #        gcs.send( "M710 S{0}".format( probe_length ), group='bootstrap' )
         
         # Working mode
         gcs.send( "M450 S{0}".format( mode ), group='bootstrap' )
@@ -301,6 +304,7 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     probe = {}  
     probe['extend']  = config.get('settings', 'probe.e', 127)
     probe['retract'] = config.get('settings', 'probe.r', 25)
+    probe['length']  = config.get('settings', 'probe.length', 32)
         
     ## MANDATORY - AFTER THAT LINE YOU CAN SEND COMMANDS
     gcs.atomic_begin(group='bootstrap')
@@ -310,7 +314,8 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     
     # reset EEPROM (to prevent any mysterious bug)
     log.info("Reset EEPROM")
-    gcs.send('M502', group='bootstrap')
+    ### better to disable it
+    # gcs.send('M502', group='bootstrap')
     
     # read Factory settings
     factory = None
@@ -367,6 +372,8 @@ def hardwareBootstrap(gcs, config = None, logger = None):
     gcs.send("M714 S{0}".format(switch), group='bootstrap')
     #set wire_end enabled/disabled
     gcs.send("M805 S{0}".format(wire_end), group='bootstrap')
+    #set probe length
+    gcs.send("M710 S{0}".format(probe['length']), group='bootstrap')
     #set probe extend angle
     gcs.send("M711 S{0}".format(probe['extend']), group='bootstrap')
     #set probe retract angle

@@ -12,6 +12,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 class Head extends FAB_Controller {
 	
+    const PRISM_ID = 8; 
+    
     /**
      *
      */
@@ -28,13 +30,26 @@ class Head extends FAB_Controller {
 	public function setHead($new_head)
 	{
 		$this->load->helper(array('fabtotum_helper'));
-		setSecure();
+		
+		
+		
 		
 		$heads = loadHeads();
 		$_data = loadSettings();
 		
 		$head_info = $heads[$new_head];
 		$_data['hardware']['head'] = $new_head;
+		
+		if($head_info['fw_id'] != self::PRISM_ID){
+		    setSecure();
+		    //resetController();
+		}
+		
+		
+		if($head_info['fw_id'] == self::PRISM_ID){
+		    doMacro('clear_errors');
+		}
+		
 		doMacro('install_head', '', [$new_head]);
 		
 		if(in_array('feeder', $head_info['capabilities']))
@@ -58,7 +73,12 @@ class Head extends FAB_Controller {
 		
 		saveSettings($_data);
 		// reset totumduino
-		resetController();
+		/*
+		if($head_info['fw_id'] != self::PRISM_ID){
+		  //resetController();
+		}
+		*/
+		
 		//reload myfabtotum
 		reload_myfabtotum();
 		
@@ -113,14 +133,27 @@ class Head extends FAB_Controller {
 			'.scan'  => _("Scan")
 		);
 		
-		$data['working_modes'] = array(
+		$data['working_modes_options'] = array(
 		    '0' => "Hybrid",
 		    '1' => "FFF",
 		    '2' => "Laser",
 		    '3' => "CNC",
 		    '4' => "Scan",
-		    '5' => "SLA"
+		    '4' => "SLA"
 		);
+		
+		/**
+		 * temporary
+		 */
+		$data['working_modes'] = array(
+		    'Hybrid' => 0,
+		    'FFF'    => 1,
+		    'Laser'  => 2,
+		    'CNC'    => 3,
+		    'Scan'   => 4,
+		    'SLA'    => 4
+		);
+		
 		
 		$data['thermistors'] = array(
 		    '0' => 'Fabtotum',

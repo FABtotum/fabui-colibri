@@ -1,11 +1,19 @@
 <script type="text/javascript">
 
+	/*
 	var HYBRID_WORKING_MODE = <?php echo array_search('Hybrid', $working_modes); ?>;
 	var FFF_WORKING_MODE    = <?php echo array_search('FFF',    $working_modes); ?>;
 	var LASER_WORKING_MODE  = <?php echo array_search('Laser',  $working_modes); ?>;
 	var CNC_WORKING_MODE    = <?php echo array_search('CNC',    $working_modes); ?>;
 	var SCAN_WORKING_MODE   = <?php echo array_search('Scan',   $working_modes); ?>;
 	var SLA_WORKING_MODE    = <?php echo array_search('SLA',    $working_modes); ?>;
+	*/
+	var HYBRID_WORKING_MODE = <?php echo $working_modes['Hybrid']?>;
+	var FFF_WORKING_MODE    = <?php echo $working_modes['FFF']?>;
+	var LASER_WORKING_MODE  = <?php echo $working_modes['Laser']?>;
+	var CNC_WORKING_MODE    = <?php echo $working_modes['CNC']?>;
+	var SCAN_WORKING_MODE   = <?php echo $working_modes['Scan']?>;
+	var SLA_WORKING_MODE    = <?php echo $working_modes['SLA']?>;
 	var PRISM_MODULE_ID     = 8;
 
 	var max_prism_connection_attempts     = 3;
@@ -485,7 +493,7 @@
 			case SCAN_WORKING_MODE: // Scan
 				break;
 			case SLA_WORKING_MODE:
-				tool = 'M563 P0 D-1 H4:5 S0';
+				tool = 'M563 P0 H-1 D3';
 				break;
 		}
 		if(hasFeeder){
@@ -747,7 +755,9 @@
 			
 			openWait('<i class="fa fa-exclamation-triangle"></i> <?php echo _("Couldn\'t connect to PRSIM"); ?>', '<?php echo _("Redirect to settings page"); ?>', false);
 			setTimeout(function(){
-	    		document.location.href = '<?php echo site_url('#plugin/fab_prism/settings'); ?>';
+				closeWait();
+	    		//document.location.href = '<?php echo site_url('#plugin/fab_prism/settings'); ?>';
+	    		document.location.href = '/fabui/#plugin/fab_prism/settings';
 	    	}, 2000);
 			
 		}

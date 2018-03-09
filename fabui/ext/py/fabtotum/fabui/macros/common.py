@@ -266,7 +266,7 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     fw_id        = int(head.get('fw_id',0))
     max_temp     = int(head.get('max_temp',230)) + 15
     min_temp     = int(head.get('min_temp', 0))
-    probe_length = float(app.config.get('settings', 'probe.length', 0))
+    # probe_length = float(app.config.get('settings', 'probe.length', 0))
     tool         = head.get('tool', '')
     plugins      = head.get('plugins', False)
     capabilities = head.get('capabilities', False)
@@ -309,8 +309,9 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
         app.macro(head['tool'],   "ok", 2, _("Configuring tool"), verbose=False)
     
     # Set probe offset
-    if probe_length:
-        app.macro( "M710 S{0}".format( probe_length ),   "ok", 2, _("Configuring probe offset"), verbose=False)
+    #if "print" in capabilities:
+    #    if probe_length:
+    #        app.macro( "M710 S{0}".format( probe_length ),   "ok", 2, _("Configuring probe offset"), verbose=False)
     
     # enable bed thermistor - disable serial port
     if "laser" in capabilities:

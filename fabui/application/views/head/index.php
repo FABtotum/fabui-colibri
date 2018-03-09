@@ -188,7 +188,7 @@
 							<section class="col col-6">
 								<label class="label"><?php echo _("Working mode");?></label>
 								<label class="select">
-									<?php echo form_dropdown('working_mode', $working_modes, '', 'id="head-working_mode"'); ?><i></i> 
+									<?php echo form_dropdown('working_mode', $working_modes_options, '', 'id="head-working_mode"'); ?><i></i> 
 								</label>
 							</section>
 							<section class="col col-6">
