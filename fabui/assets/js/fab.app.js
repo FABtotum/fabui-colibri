@@ -1624,15 +1624,19 @@ fabApp = (function(app) {
 	app.analizeTopBar = function(settings)
 	{
 		if(app.installed_head != null){
-			if(app.installed_head.working_mode == HEAD_WORKING_MODE_LASER || app.installed_head.working_mode == HEAD_WORKING_MODE_CNC 
-				|| app.installed_head.working_mode == HEAD_WORKING_MODE_SCANNER || app.installed_head.working.mode == HEAD_WORKING_MODE_SLA){
+			
+			var working_mode = parseInt(app.installed_head.working_mode);
+			var no_temps = [HEAD_WORKING_MODE_LASER, HEAD_WORKING_MODE_CNC, HEAD_WORKING_MODE_SCANNER, HEAD_WORKING_MODE_SLA];
+			
+			if(jQuery.inArray( working_mode, no_temps ) >= 0){	
 				$(".top-ajax-temperatures-dropdown .head-working-mode-"+HEAD_WORKING_MODE_FFF).remove();
 				$(".top-ajax-temperatures-dropdown .head-working-mode-"+HEAD_WORKING_MODE_HYBRID).remove();
 				$(".top-ajax-temperatures-dropdown").find('h4').removeClass('margin-top-50');
 				$(".top-ajax-temperatures-dropdown").attr('style', 'min-height: 130px; height:130px;');
 				$("#top-temperatures .head-working-mode-"+HEAD_WORKING_MODE_FFF).remove();
+			}else{
+				$("#top-temperatures").removeClass('hidden');
 			}
-			$("#top-temperatures").removeClass('hidden');
 		}
 	}
 	/**
