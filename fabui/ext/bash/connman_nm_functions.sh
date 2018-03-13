@@ -460,16 +460,16 @@ get_interface_state()
 			if [ "$iface" == "tether" ]; then
 				TETHER="yes"
 				continue
+			else
+				TETHER="no"
 			fi
 			
 			if [ x"$iface" == x"wlan0" ]; then
-				CONNMAN_TECHNOLOGY="/\/net\/connman\/technology\/wifi/"
+				TETHERING=$(connmanctl technologies | awk '/^$/{f=0} f{print} /\/net\/connman\/technology\/wifi/{f=1}' | grep -m 1 Tethering | awk  '{print $3}')
 			elif [ x"$iface" == x"eth0" ]; then
-				CONNMAN_TECHNOLOGY="/\/net\/connman\/technology\/ethernet/"
+				TETHERING=$(connmanctl technologies | awk '/^$/{f=0} f{print} /\/net\/connman\/technology\/ethernet/{f=1}' | grep -m 1 Tethering | awk  '{print $3}')
 			fi
-			
-			TETHERING=$(connmanctl technologies | awk '/^$/{f=0} f{print} $CONNMAN_TECHNOLOGY' | grep -m 1 Tethering | awk  '{print $3}')
-			
+						
 			if [ x"$TETHERING" == x"True" ]; then
 				TETHER="yes"
 			else

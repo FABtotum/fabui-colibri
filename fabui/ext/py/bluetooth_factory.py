@@ -28,6 +28,7 @@ import argparse
 import subprocess
 import time
 import json
+from struct import pack
 
 # Import external modules
 import bluetooth
@@ -160,6 +161,7 @@ class BTFactory():
             ## save to config file
             self.config.set('bluetooth', 'prism_bt_address', '')
             self.config.set('bluetooth', 'prism_bt_name', '' )
+            self.config.set('bluetooth', 'prism_bt_network_address', '')
             self.config.save('bluetooth')
             
         except Exception as e:
@@ -196,8 +198,9 @@ class BTFactory():
         connection     = None
         
         if(paired):
-            connection = send_command('connect', [self.controller_address], mac_address, verbose=self.verbose)
-            connection = json.loads(connection)
+            connection = self.send_command('connect', [], mac_address)
+            # connection = send_command('connect', [self.controller_address], mac_address, verbose=self.verbose)
+            # connection = json.loads(connection)
             #print connection
                 
         return {'connection': connection, 'paired': paired}
@@ -205,7 +208,7 @@ class BTFactory():
     ###################################
     ## SEN COMMAND TO PRISM 
     ###################################
-    def send_command(self, command, args, mac_address=None,  port=0x1001):
+    def send_command(self, command, args=[], mac_address=None,  port=0x1001):
         if(mac_address == None or mac_address == ""):
             if "mac_address" in self.status['paired']:
                 mac_address = self.status['paired']['mac_address']
@@ -221,11 +224,15 @@ class BTFactory():
             
         try:
             socket.connect((mac_address, port))
+            
+            if command in [ 'connect', 'disconnect', 'trust', 'untrust']:
+                args.append( self._adapter.Address )
+            
             data = json.dumps({ 'cmd': command, 'args': args })
             
             if self.verbose:
                 print "Data sent {0}".format(data)
-            
+             
             ## send data
             socket.send(data)
             
@@ -237,11 +244,18 @@ class BTFactory():
             
             response = json.loads(reply)
             
+            if(command == 'connect'):
+                self.send_command('network-address')
+            
             ## save network address
             if(command == 'network-address'):
                 self.config.set('bluetooth', 'prism_bt_network_address', response['reply'])
                 self.config.save('bluetooth')
             
+            if(command == 'disconnect'):
+                self.config.set('bluetooth', 'prism_bt_network_address', '')
+                self.config.save('bluetooth')
+                
             return {'command': command, 'response': response['reply']}
             
         except Exception as e:
@@ -264,17 +278,15 @@ def main():
     parser.add_argument("-P", "--port",     help="L2C port",  default=0x1001)
     
     
-    
-    
     # GET ARGUMENTS
-    args    = parser.parse_args()
-    action  = args.action
-    name    = args.name
-    mac     = args.mac
-    verbose = args.verbose
-    command = args.command
+    args              = parser.parse_args()
+    action            = args.action
+    name              = args.name
+    mac               = args.mac
+    verbose           = args.verbose
+    command           = args.command
     command_args_list = args.arg_list
-    bt_port = args.port
+    bt_port           = args.port
     
     
     bt_factory = BTFactory(verbose=verbose)
@@ -288,11 +300,10 @@ def main():
         action_result = bt_factory.auto_connection(name=name, mac_address=mac)
     elif(action == 'send-command'):
         action_result = bt_factory.send_command(command, command_args_list)
-    
+        
     output = {'action': action, 'response': action_result}
     
     print json.dumps(output)
      
-
 if __name__ == '__main__':
     main()
