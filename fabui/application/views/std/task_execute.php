@@ -145,8 +145,8 @@ $stats_button_size = $show_temperature_graph ? 4 : 6;
 			<!-- PRISM PREVIEW LAYER -->
 			<?php if($show_prism_layer_preview):?>
 				<div class="col-sm-6">
-					<div>
-						<img class="img-responsive" style=" height: 400px;"  id="prism-preview-layer">
+					<div style="position:relative; min-height: 220px;">
+						<img class="img-responsive" style=" height: 400px; position:absolute; left:100px; top:-100px; transform:rotate(90deg);"  id="prism-preview-layer">
 					</div>
 					
 				</div>

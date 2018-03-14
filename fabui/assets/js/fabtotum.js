@@ -258,8 +258,6 @@ function getDataFromForm(form)
 {
 	var fields = $( form + " :input" ).serializeArray();
 	
-	console.log(fields);
-	
 	//add checkbokx inputs
 	fields = fields.concat(
 	jQuery(form +' input[type=checkbox]').map(

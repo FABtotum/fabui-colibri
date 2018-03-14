@@ -79,7 +79,9 @@ function elaborate_screw($data){
 	$turns_number = $units;
 	$degrees      = roundUpToAny(round((floatval(floatval('0.'.$decimals) * 360))));
 	
-	$direction   = $s_data  > 0 ? 'right' : 'left';
+	
+	// $direction   = $s_data  > 0 ? 'right' : 'left';
+	$direction = $s_data > 0 ? 'redo' : 'undo';
 	return array('t_value' =>$t_value, 'turns'=>array('times'=>$turns_number, 'degrees'=>$degrees), 'direction'=>$direction, 'color'=>get_color($s_data));
 	
 }
@@ -142,10 +144,12 @@ function get_instructions($screw){
 		return '<i class="fa fa-check"></i> Well done';
 	}
 	
-	$badge_background_color['right'] = ' #0084ff!important;';
-	$badge_background_color['left'] = ' #ff0000!important; ';
+	//redo->right
+	//undo->left
+	$badge_background_color['redo'] = ' #0084ff!important;';
+	$badge_background_color['undo'] = ' #ff0000!important; ';
 	
-	$rotation_section = _(", following this rotation direction").' <span class="badge" style="background-color: '.$badge_background_color[$screw['direction']].'"><i class="fa fa-rotate-'.$screw['direction'].'"></i></span>';
+	$rotation_section = _(", following this rotation direction").' <span class="badge" style="background-color: '.$badge_background_color[$screw['direction']].'"><i class="fa fa-'.$screw['direction'].'"></i></span>';
 	
 	if($screw['turns']['times'] < 1 ){
 		return pyformat( _("Turn by {0} degrees"), array( $screw['turns']['degrees'] ) ) . $rotation_section;

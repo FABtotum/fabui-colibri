@@ -1333,7 +1333,7 @@ if(!isset($show_change_filament)) $show_change_filament = false;
 		}
 
 		if($("#prism-preview-layer").length > 0){
-
+			
 			$("#prism-preview-layer").attr('src', '/fabui/plugin/fab_prism/preview/' + current);
 		}
 	}

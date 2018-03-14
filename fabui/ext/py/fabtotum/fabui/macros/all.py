@@ -29,6 +29,7 @@ import fabtotum.fabui.macros.engraving   as laser_macros
 import fabtotum.fabui.macros.scanning    as scan_macros
 import fabtotum.fabui.macros.maintenance as maint_macros
 import fabtotum.fabui.macros.calibration as calib_macros
+import fabtotum.fabui.macros.prism       as prism_macros
 
 PRESET_MAP = {
     # General purpose
@@ -98,5 +99,8 @@ PRESET_MAP = {
     "measure_probe_offset"          : calib_macros.measure_probe_offset,
     "measure_nozzle_prepare"        : calib_macros.measure_nozzle_prepare,
     "measure_nozzle_offset"         : calib_macros.measure_nozzle_offset,
+    
+    # Prism
+    "prepare_prism"                 : prism_macros.prepare_prism
     
 }
