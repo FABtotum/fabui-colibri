@@ -278,6 +278,7 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     
     ## if prism module is alrady installed then skip the head id initialization
     if fw_id == PRISM_MODULE_ID and PRISM_MODULE_ID == int(eeprom['installed_head']):
+        set_lights(app, [0, 0, 0])
         pass # do not set it again
     else:
         # disable head
@@ -312,11 +313,6 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     if tool != "":
         app.macro(head['tool'],   "ok", 2, _("Configuring tool"), verbose=False)
     
-    # Set probe offset
-    #if "print" in capabilities:
-    #    if probe_length:
-    #        app.macro( "M710 S{0}".format( probe_length ),   "ok", 2, _("Configuring probe offset"), verbose=False)
-    
     # enable bed thermistor - disable serial port
     if "laser" in capabilities:
         app.macro("M563 P0 H4:5 S0",   "ok", 2, _("Configuring tool"), verbose=False)
@@ -327,6 +323,10 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
         if line:
             code = line.split(';')[0]
             app.macro( code, "ok*", 50, "hidden message", verbose=False)
+    
+    # if is PRISM turn off lights
+    if "sla" in capabilities :
+        set_lights(app, [0, 0, 0])
     
     # Save settings
     #~ gcs.send( "M500", group='bootstrap' )
@@ -377,4 +377,28 @@ def go_to_focal_point(app, head):
     else:
         app.macro("G91",                                      "ok", 2, _("Set relative mode"),    verbose=False)
         app.macro("G0 Z{0} F1000".format(laser_focus_offset), "ok", 2, _("Going to focus point"), verbose=True)
+        
+   
+def set_lights(app, args = None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    
+    if(len(args) < 3):
+        try:
+            colors = app.config.get('settings', 'color')
+            red   = colors['r']
+            green = colors['g']
+            blue  = colors['b']
+        except:
+            red   = 255
+            green = 255
+            blue  = 255
+    else:
+        red   = args[0]
+        green = args[1]
+        blue  = args[2]
+    
+    app.macro("M701 S{0}".format(red),   "ok", 1, _("Setting red color"))
+    app.macro("M702 S{0}".format(green), "ok", 1, _("Setting green color"))
+    app.macro("M703 S{0}".format(blue),  "ok", 1, _("Setting blue color"))
+    
 

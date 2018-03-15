@@ -155,10 +155,6 @@ def configure_head(gcs, config, log, eeprom):
         #~ if offset:
             #~ app.macro( "M206 Z-{0}".format( offset ),   "ok", 2, _("Configuring nozzle offset"))
         
-        # Set probe offset
-        #if "print" in capabilities:
-        #    if probe_length:
-        #        gcs.send( "M710 S{0}".format( probe_length ), group='bootstrap' )
         
         # Working mode
         gcs.send( "M450 S{0}".format( mode ), group='bootstrap' )
@@ -175,6 +171,12 @@ def configure_head(gcs, config, log, eeprom):
                 code = line.split(';')[0]
                 if code:
                     gcs.send( code, group='bootstrap' )
+                    
+        # if is PRISM turn off lights
+        if "sla" in capabilities :
+            gcs.send( "M701 S0", group='bootstrap' )
+            gcs.send( "M702 S0", group='bootstrap' )
+            gcs.send( "M703 S0", group='bootstrap' )
         
         if plugins:
             activated_plugins = get_active_plugins()

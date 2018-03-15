@@ -28,7 +28,7 @@ import re
 # Import external modules
 
 # Import internal modules
-from fabtotum.fabui.macros.common import getEeprom, configure_head, configure_feeder, configure_4thaxis, get_versions, getPosition
+from fabtotum.fabui.macros.common import getEeprom, configure_head, configure_feeder, configure_4thaxis, get_versions, getPosition, set_lights
 from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.constants import *
 
@@ -171,26 +171,8 @@ def version(app, args = None, lang='en_US.UTF-8'):
     return get_versions(app, lang)
 
 def set_ambient_color(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
     
-    if(len(args) < 3):
-        try:
-            colors = app.config.get('settings', 'color')
-            red   = colors['r']
-            green = colors['g']
-            blue  = colors['b']
-        except:
-            red   = 255
-            green = 255
-            blue  = 255
-    else:
-        red   = args[0]
-        green = args[1]
-        blue  = args[2]
-    
-    app.macro("M701 S{0}".format(red),   "ok", 1, _("Setting red color"))
-    app.macro("M702 S{0}".format(green), "ok", 1, _("Setting green color"))
-    app.macro("M703 S{0}".format(blue),  "ok", 1, _("Setting blue color"))
+    return set_lights(app, args, lang)
 
 def install_head(app, args, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
