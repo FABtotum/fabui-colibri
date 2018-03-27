@@ -48,7 +48,7 @@ class ThermistorInterface:
         GPIO.output(self.a_pin, True)
         elapsed = 0
         start = time.time()
-        while not GPIO.input(self.b_pin) and elapsed < timeout:
+        while not GPIO.input(self.b_pin) and elapsed < self.timeout:
             elapsed = time.time() - start
         return elapsed
 
