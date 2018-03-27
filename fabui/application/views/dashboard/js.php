@@ -425,7 +425,13 @@
 				if(media.type == 'photo'){
 					media_html += '<div class="image padding-top-0 padding-10" style=""><img title="'+item.original_text+'" src="'+media.media_url+'" /></div>';
 				}else if(media.type == 'video'){
-					var video_src = media.video_info.variants[1].url;
+
+					var video_types = ["video/mp4"];
+					$.each( media.video_info.variants, function(k, video){
+						if($.inArray( video.content_type, video_types ) > -1){
+							video_src = video.url;
+						}
+					});
 					var src_image = media.media_url_https;
 					media_html += '<div class="image padding-10"><video class="img-responsive" controls><source src="'+video_src+'" type="video/mp4"><img src="'+src_image+'" /></video></div>';
 				}
