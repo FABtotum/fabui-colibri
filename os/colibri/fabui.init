@@ -21,6 +21,7 @@ test -r /etc/default/fabui && source /etc/default/fabui
 [ -z "$GPIOMONITOR_STARTUP" ] && GPIOMONITOR_STARTUP="yes"
 [ -z "$XMLRPCS_STARTUP" ] && XMLRPCS_STARTUP="yes"
 [ -z "$FABSERVICE_STARTUP" ] && FABSERVICE_STARTUP="yes"
+[ -z "$MONITOR_STARTUP" ] && MONITOR_STARTUP="no"
 
 SERVICE_NAME=FABUI
 FORCED="$2"
@@ -70,6 +71,10 @@ case "$1" in
     fi
     if [ x"$XMLRPCS_STARTUP" != x"yes" ]; then
         ARGS="${ARGS} --no-xmlrpc"
+    fi
+	
+	if [ x"$MONITOR_STARTUP" != x"yes" ]; then
+        ARGS="${ARGS} --no-monitor"
     fi
 
     if [ x"$FABSERVICE_STARTUP" == x"yes" ]; then

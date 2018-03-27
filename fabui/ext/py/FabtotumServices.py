@@ -82,6 +82,7 @@ parser.add_argument("-b", "--btagent_pidfile", help="File to store BT agent proc
 parser.add_argument("--no-xmlrpc", help="Don't start XML-RPC service", action='store_true', default=False)
 parser.add_argument("--no-gpiomonitor", help="Don't start GPIO monitor service", action='store_true', default=False)
 parser.add_argument("--no-btagent", help="Don't start BT agetn service", action='store_true', default=False)
+parser.add_argument("--no-monitor", help="Don't start Monitor service", action='store_true', default=False)
 
 # Get arguments
 args = parser.parse_args()
@@ -96,6 +97,7 @@ no_xmlrpc             = args.no_xmlrpc
 gpio_pidfile          = args.gpio_pidfile
 no_gpiomonitor        = args.no_gpiomonitor
 no_btagent            = args.no_btagent
+no_monitor            = args.no_monitor
 #myfabtotumcom_pidfile = args.myfabtotumcom_pidfile
 
 with open(pidfile, 'w') as f:
@@ -215,8 +217,9 @@ if not no_btagent:
     os.system('python {0} -p {1} -L /var/log/fabui/btagent.log &'.format(btagent_exe, btagent_pidfile) )
 
 ## Stats monitor
-statsMonitor = StatsMonitor(TEMP_MONITOR_FILE, gcservice, config, logger=logger)
-statsMonitor.start()
+if not no_monitor:
+    statsMonitor = StatsMonitor(TEMP_MONITOR_FILE, gcservice, config, logger=logger)
+    statsMonitor.start()
 
 # Ensure CTRL+C detection to gracefully stop the server.
 signal.signal(signal.SIGINT, signal_handler)
@@ -243,8 +246,10 @@ if not no_xmlrpc:
 # Wait for all threads to finish
 gcserver.loop()
 gcservice.loop()
-logger.info("Server stopped.")
-statsMonitor.loop()
+
+if not no_monitor:
+    statsMonitor.loop()
+    
 observer.join()
 #usbMonitor.join()
 #gpioMonitor.join()
