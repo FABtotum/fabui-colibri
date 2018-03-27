@@ -19,17 +19,11 @@ class ThermistorInterface:
     Implement methods to compute the actual resistance of a thermistor by means
     of discharge and charge timings of a series capacitor, using two GPIO pins.
     """
-    a_pin = None
-    b_pin = None
-    discharge_time = 1
-    discharged = None
-
     capacitance = 0.00001
     resistance = 4700
     supply = 3.3
     threshold = 1.3
-
-    model = None
+    timeout = 5 # Max 5sec charge time
 
     def __init__ (self, charge, discharge, thermistor):
         self.a_pin = charge
@@ -37,6 +31,8 @@ class ThermistorInterface:
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         self.model = thermistor
+        self.discharge_time = self.timeout # Discharge time is the same as the charge timeout by default
+        self.discharged = None
 
     def discharge (self):
         GPIO.setup(self.a_pin, GPIO.IN)
@@ -49,13 +45,12 @@ class ThermistorInterface:
         self.discharged = False
         GPIO.setup(self.b_pin, GPIO.IN)
         GPIO.setup(self.a_pin, GPIO.OUT)
-        max_count = 100
-        count = 0
         GPIO.output(self.a_pin, True)
+        elapsed = 0
         start = time.time()
-        while not GPIO.input(self.b_pin) and count < max_count:
-            count = count +1
-        return time.time() - start
+        while not GPIO.input(self.b_pin) and elapsed < timeout:
+            elapsed = time.time() - start
+        return elapsed
 
     def getValue (self, time=None):
         if time is None:
