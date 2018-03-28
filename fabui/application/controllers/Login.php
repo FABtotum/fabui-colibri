@@ -54,6 +54,10 @@
 		$this->load->model('User', 'user');
 		$user = $this->user->get($postData, 1);
 		
+		//print_r($postData);
+		
+		//print_r($user); exit();
+		
 		if($user == false){ //if user doesn't exists
 			//TO DO add flash message
 			$this->session->mark_as_flash('alert');
@@ -123,7 +127,7 @@
 	         * get if im the owner of the printer
 	         */
 	        $owner = $this->myfabtotumclient->im_owner();
-	
+	        
 	        /**
 	         * check if fabid exists
 	         */
@@ -198,7 +202,7 @@
 	                    $user['email']      = $fabid;
 	                    $user['first_name'] = 'Guest';
 	                    $user['last_name']  = 'Guest';
-	                    $user['role']       = $owner == true ? 'user' : 'administrator';
+	                    $user['role']       = $owner == true ? 'administrator' : 'user';
 	                    $user['session_id'] = $this->session->session_id;
 	                    $user['last_login'] = date('Y-m-d H:i:s');
 	                    $user['settings']   = json_encode($settings);
