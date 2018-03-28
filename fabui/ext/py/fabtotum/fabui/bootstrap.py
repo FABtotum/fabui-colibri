@@ -123,6 +123,7 @@ def configure_head(gcs, config, log, eeprom):
         tool         = head.get('tool', '')
         plugins      = head.get('plugins', False)
         capabilities = head.get('capabilities', False)
+        init_gcode   = head.get('init_gcode', '')
         
         ## if prism module is alrady installed then skip the head id initialization
         if fw_id == PRISM_MODULE_ID and PRISM_MODULE_ID == int(eeprom['installed_head']):
@@ -166,6 +167,14 @@ def configure_head(gcs, config, log, eeprom):
         if "laser" in capabilities:
             gcs.send( "M563 P0 H4:5 S0", group='bootstrap' )
         
+        # factory initialization code
+        for line in init_gcode.split('\n'):
+            if line:
+                code = line.split(';')[0]
+                if code:
+                    gcs.send( code, group='bootstrap' )
+                    
+        # Custom initialization code
         for line in custom_gcode.split('\n'):
             if line:
                 code = line.split(';')[0]
@@ -219,6 +228,7 @@ def configure_feeder(gcs, config, log):
         max_acceleration     = float(feeder['max_acceleration'])
         max_jerk             = float(feeder['max_jerk'])
         retract_acceleration = float(feeder['retract_acceleration'])
+        init_gcode           = feeder.get('init_gcode', '')
         custom_gcode         = feeder.get('custom_gcode','')
 
         gcs.send("M92 E{0}".format(steps_per_unit),        group='bootstrap' )
@@ -228,6 +238,14 @@ def configure_feeder(gcs, config, log):
         gcs.send("M205 E{0}".format(max_jerk),             group='bootstrap' )
         gcs.send("M204 T{0}".format(retract_acceleration), group='bootstrap' )
         
+        # factory initialization code
+        for line in init_gcode.split('\n'):
+            if line:
+                code = line.split(';')[0]
+                if code:
+                    gcs.send( code, group='bootstrap' )
+        
+        # Custom initialization code
         for line in custom_gcode.split('\n'):
             if line:
                 code = line.split(';')[0]

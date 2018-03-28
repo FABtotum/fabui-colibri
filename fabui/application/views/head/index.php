@@ -118,14 +118,20 @@
 									<input type="text" data-inputmask-regex="[_a-z A-Z0-9]*" class="plugin-adaptive-meta" id="head-name" name="name" placeholder="My New Head">
 								</label>
 							</section>
-							
+							<!--  
 							<section class="col col-6 url-container">
 								<label class="label"><?php echo _('URL');?></label>
 								<label class="input">
 									<input type="text" class="plugin-adaptive-meta" id="head-link" name="link" placeholder="More info link">
 								</label>
 							</section>
-							
+							-->
+							<section class="col col-6 init-gcode-container advanced-settings">
+								<label class="label"><?php echo _('Factory initialization');?></label>
+								<label class="textarea">
+									<textarea class="gcodearea" id="head-init_gcode" name="init_gcode" rows="3" readonly="readonly" placeholder="Gcode factory initialization sequence"></textarea>
+								</label>
+							</section>
 						</div>
 						
 						<section class="description-container">
@@ -171,7 +177,6 @@
 									</div>
 								</div>
 							</section>
-							
 							
 							<section class="col col-6">
 								<label class="label"><?php echo _('Custom initialization');?></label>

@@ -305,21 +305,23 @@
 	function showHideInputsForOfficialHeads(action)
 	{
 		if(action == 'show'){
-			$(".url-container").show();
+			//$(".url-container").show();
 			$(".description-container").show();
 			$("#head-name").removeAttr("readonly")
 			$("#head-fw_id").removeAttr("readonly");
 			$(".factory-head-button").hide();
 			$(".custom-head-button").show();
 			$(".laser-pro").hide();
+			$(".init-gcode-container").hide();
 		}else if(action == 'hide'){
-			$(".url-container").hide();
+			//$(".url-container").hide();
 			$(".description-container").hide();
 			$("#head-name").attr("readonly", "readonly");
 			$("#head-fw_id").attr("readonly", "readonly");
 			$(".factory-head-button").show();
 			$(".custom-head-button").hide();
 			$(".laser-pro").show();
+			$(".init-gcode-container").show();
 		}
 	}
 	/**
@@ -633,6 +635,15 @@
 					else
 						settings[name] = settings[name].toUpperCase();
 				}
+
+				if(name == "init_gcode")
+				{
+					if(feeder)
+						settings['feeder'][name] = settings['feeder'][name].toUpperCase();
+					else
+						settings[name] = settings[name].toUpperCase();
+				}
+				
 				if(name=="plugins")
 				{
 					if($(this).val() == ""){

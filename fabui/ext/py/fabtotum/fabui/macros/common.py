@@ -207,6 +207,7 @@ def configure_feeder(app, feeder_name, lang='en_US.UTF-8'):
     max_acceleration     = float(feeder['max_acceleration'])
     max_jerk             = float(feeder['max_jerk'])
     retract_acceleration = float(feeder['retract_acceleration'])
+    init_gcode           = feeder.get('init_gcode', '')
     custom_gcode         = feeder.get('custom_gcode','')
     
     app.trace( _("Setting feeder values..."))
@@ -218,6 +219,14 @@ def configure_feeder(app, feeder_name, lang='en_US.UTF-8'):
     app.macro("M205 E{0}".format(max_jerk),                 "ok", 1,   _("Setting E max jerk to {0}").format(max_jerk), verbose=False)
     app.macro("M204 T{0}".format(retract_acceleration),     "ok", 1,   _("Setting retract acceleration {0}").format(retract_acceleration), verbose=False)
     
+    # factory initialization code
+    for line in init_gcode.split('\n'):
+            if line:
+                code = line.split(';')[0]
+                if code:
+                    app.macro( code, "ok*", 50, "hidden message", verbose=False)
+    
+    # Custom initialization code
     for line in custom_gcode.split('\n'):
             if line:
                 code = line.split(';')[0]
@@ -273,6 +282,8 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     tool         = head.get('tool', '')
     plugins      = head.get('plugins', False)
     capabilities = head.get('capabilities', False)
+    init_gcode   = head.get('init_gcode', '')
+    custom_gcode = head.get('custom_gcode', '')
     
     app.trace( _("Setting head values..."))
     
@@ -317,9 +328,17 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     if "laser" in capabilities:
         app.macro("M563 P0 H4:5 S0",   "ok", 2, _("Configuring tool"), verbose=False)
     
+    
+    # factory initialization code
+    app.trace( _("Factory initialization"))
+    for line in init_gcode.split('\n'):
+        if line:
+            code = line.split(';')[0]
+            app.macro( code, "ok*", 50, "hidden message", verbose=False)
+    
     # Custom initialization code
     app.trace( _("Custom initialization"))
-    for line in head.get('custom_gcode', '').split('\n'):
+    for line in custom_gcode.split('\n'):
         if line:
             code = line.split(';')[0]
             app.macro( code, "ok*", 50, "hidden message", verbose=False)
