@@ -95,7 +95,7 @@ msgstr "Manutenzione"
 #: fabui/application/config/menu.php:72
 #: fabui/application/controllers/Head.php:181
 msgid "Heads & Modules"
-msgstr ""
+msgstr "Teste e Moduli"
 
 #: fabui/application/config/menu.php:78
 #: fabui/application/controllers/Spool.php:94
@@ -292,9 +292,8 @@ msgid "Get more beds"
 msgstr "Acquista più piatti"
 
 #: fabui/application/controllers/Users.php:115
-#, fuzzy
 msgid "Reset password"
-msgstr "Inserisci password"
+msgstr "Reimposta password"
 
 #: fabui/application/controllers/Users.php:120
 #: fabui/application/controllers/Projectsmanager.php:39
@@ -626,7 +625,7 @@ msgstr "Generato con FABtotum CAM toolbox"
 
 #: fabui/application/controllers/Std.php:212
 msgid "Task"
-msgstr "attività"
+msgstr "Attività"
 
 #: fabui/application/controllers/Std.php:218
 #: fabui/application/controllers/Std.php:290
@@ -662,7 +661,7 @@ msgstr "PLA PRO"
 
 #: fabui/application/controllers/Spool.php:55
 msgid "TPU"
-msgstr ""
+msgstr "TPU"
 
 #: fabui/application/controllers/Spool.php:63
 #: fabui/application/controllers/Nozzle.php:60
@@ -701,9 +700,8 @@ msgid "Get more filaments"
 msgstr "Acquista più filamenti"
 
 #: fabui/application/controllers/Projects.php:112
-#, fuzzy
 msgid "Create new project"
-msgstr "Creare nuovo progetto"
+msgstr "Crea nuovo progetto"
 
 #: fabui/application/controllers/Api.php:33
 #: fabui/application/controllers/Api.php:55
@@ -798,7 +796,7 @@ msgstr "Modifica progetto"
 #: fabui/application/controllers/Projectsmanager.php:238
 #: fabui/application/controllers/Projectsmanager.php:245
 msgid "view content"
-msgstr ""
+msgstr "visualizza contenuto"
 
 #: fabui/application/controllers/Projectsmanager.php:257
 #: fabui/application/controllers/Projectsmanager.php:1144
@@ -883,14 +881,12 @@ msgid "Engage 4th Axis"
 msgstr "Ingaggio 4° asse"
 
 #: fabui/application/controllers/Head.php:129
-#, fuzzy
 msgid "3D Printing (FDM)"
-msgstr "Stampa 3D"
+msgstr "Stampa 3D (FDM)"
 
 #: fabui/application/controllers/Head.php:130
-#, fuzzy
 msgid "3D Printing (SLA)"
-msgstr "Stampa 3D"
+msgstr "Stampa 3D (SLA)"
 
 #: fabui/application/controllers/Head.php:131
 #: fabui/application/controllers/Create.php:231
@@ -899,14 +895,12 @@ msgid "Milling"
 msgstr "Fresa"
 
 #: fabui/application/controllers/Head.php:168
-#, fuzzy
 msgid "Add new head/module"
-msgstr "Aggiungi nuova testa"
+msgstr "Aggiungi nuova testa/modulo"
 
 #: fabui/application/controllers/Head.php:169
-#, fuzzy
 msgid "Get more heads & modules"
-msgstr "Acquista altre teste"
+msgstr "Acquista altre teste/moduli"
 
 #: fabui/application/controllers/Updates.php:133
 msgid "1 new update is available"
@@ -964,7 +958,7 @@ msgstr "Stampante"
 
 #: fabui/application/controllers/Create.php:79
 msgid "Selected file is not for printing"
-msgstr ""
+msgstr "File di stampa non valido"
 
 #: fabui/application/controllers/Create.php:92
 #: fabui/application/controllers/Create.php:137
@@ -1842,9 +1836,8 @@ msgid "Description"
 msgstr "Descrizione"
 
 #: fabui/application/views/systeminfo/widget.php:348
-#, fuzzy
 msgid "Set language"
-msgstr "Seleziona la tua lingua"
+msgstr "Imposta la lingua"
 
 #: fabui/application/views/bed/js.php:51
 msgid "Calibration in progress"
@@ -2059,7 +2052,7 @@ msgstr "Connessione in corso..."
 
 #: fabui/application/views/plugin/js.php:206
 msgid "Uploading and installing plugin"
-msgstr "Upload e Installazione del plugin in corso..."
+msgstr "Caricamento e Installazione del plugin in corso"
 
 #: fabui/application/views/plugin/js.php:222
 msgid "Plugin installed successfully"
@@ -2199,9 +2192,8 @@ msgid "Please confirm your new password"
 msgstr "Prego confermare la nuova password"
 
 #: fabui/application/views/account/js.php:157
-#, fuzzy
 msgid "Saving..."
-msgstr "Salvataggio in corso"
+msgstr "Salvataggio in corso..."
 
 #: fabui/application/views/account/js.php:186
 msgid "Connected to your FABID account"
@@ -2243,22 +2235,20 @@ msgid "Disconnected"
 msgstr "Disconnesso"
 
 #: fabui/application/views/account/widget.php:46
-#, fuzzy
 msgid "Profile picture"
-msgstr "Profilo"
+msgstr "Foto profilo"
 
 #: fabui/application/views/account/widget.php:48
 msgid "Browse"
-msgstr ""
+msgstr "Sfoglia"
 
 #: fabui/application/views/account/widget.php:50
-#, fuzzy
 msgid "Change image"
-msgstr "Cambia valore"
+msgstr "Cambia immagine"
 
 #: fabui/application/views/account/widget.php:50
 msgid "Load a nice pic"
-msgstr ""
+msgstr "Carica una bella immagine"
 
 #: fabui/application/views/account/widget.php:81
 #: fabui/application/views/settings/network_js.php:442
@@ -2418,7 +2408,7 @@ msgstr "Il piatto non è installato"
 
 #: fabui/application/views/jog/widget.php:198
 msgid "Write command"
-msgstr "digitare un comando"
+msgstr "Digitare un comando"
 
 #: fabui/application/views/jog/widget.php:203
 msgid "Send"
@@ -3346,7 +3336,7 @@ msgstr ""
 #: fabui/application/views/std/task_execute.php:416
 #: fabui/application/views/spool/wizard/step3.php:105
 msgid "Pull the release lever on the back of the Printing Head PRO."
-msgstr "Alza la levetta posteriore della Printing Head PRO"
+msgstr "Alza la levetta posteriore della Printing Head PRO."
 
 #: fabui/application/views/std/task_execute.php:372
 #: fabui/application/views/spool/wizard/step3.php:106
@@ -3356,7 +3346,7 @@ msgstr "Inserisci il filamento finchè inizia ad uscire fuori dal nozzle"
 #: fabui/application/views/std/task_execute.php:373
 #: fabui/application/views/spool/wizard/step3.php:107
 msgid "Release the release lever "
-msgstr "Rilascia la levetta"
+msgstr "Rilascia la levetta "
 
 #: fabui/application/views/std/task_execute.php:374
 #: fabui/application/views/spool/wizard/step3.php:108
@@ -3670,13 +3660,12 @@ msgid "More details"
 msgstr "Dettagli"
 
 #: fabui/application/views/head/index.php:56
-#, fuzzy
 msgid ""
 "Before clicking \"Install\", make sure the head/module is properly locked in "
 "place"
 msgstr ""
-"Prima di premere \"Installa\", assicurarsi che la testa sia correttamente "
-"bloccata nel carrello"
+"Prima di premere \"Installa\", assicurarsi che la testa/modulo sia "
+"correttamente bloccata nel carrello"
 
 #: fabui/application/views/head/index.php:91
 #: fabui/application/views/head/install.php:88
@@ -3685,9 +3674,8 @@ msgid "Advanced settings"
 msgstr "Impostazioni avanzate"
 
 #: fabui/application/views/head/index.php:100
-#, fuzzy
 msgid "Module settings"
-msgstr "Impostazioni estrusore"
+msgstr "Impostazioni modulo"
 
 #: fabui/application/views/head/index.php:108
 #: fabui/application/views/head/install.php:105
@@ -3706,9 +3694,8 @@ msgstr "URL"
 
 #: fabui/application/views/head/index.php:130
 #: fabui/ext/py/fabtotum/fabui/macros/common.py:333
-#, fuzzy
 msgid "Factory initialization"
-msgstr "Inizializzazione personalizzata"
+msgstr "Inizializzazione di fabbrica"
 
 #: fabui/application/views/head/index.php:146
 #: fabui/application/views/head/install.php:137
@@ -3716,14 +3703,12 @@ msgid "Capabilities"
 msgstr "Capacità"
 
 #: fabui/application/views/head/index.php:151
-#, fuzzy
 msgid "3D Print (FDM)"
-msgstr "Stampa 3D"
+msgstr "Stampa 3D (FDM)"
 
 #: fabui/application/views/head/index.php:154
-#, fuzzy
 msgid "3D Print (SLA)"
-msgstr "Stampa 3D"
+msgstr "Stampa 3D (SLA)"
 
 #: fabui/application/views/head/index.php:182
 #: fabui/application/views/head/install.php:171
@@ -3863,9 +3848,8 @@ msgid "Factory reset"
 msgstr "Ripristino ai valori di fabbrica"
 
 #: fabui/application/views/head/index.php:421
-#, fuzzy
 msgid "Import settings from file"
-msgstr "Importa da file"
+msgstr "Importa impostazioni da file"
 
 #: fabui/application/views/head/index.php:421
 #: fabui/application/views/head/install.php:373
@@ -3874,9 +3858,8 @@ msgid "Import"
 msgstr "Importa"
 
 #: fabui/application/views/head/index.php:422
-#, fuzzy
 msgid "Export settings to file"
-msgstr "Esporta a file"
+msgstr "Esporta impostazioni su file"
 
 #: fabui/application/views/head/index.php:422
 #: fabui/application/views/head/install.php:374
@@ -3918,38 +3901,32 @@ msgid "Factory settings restored"
 msgstr "Impostazioni di fabbrica impostate"
 
 #: fabui/application/views/head/js.php:718
-#, fuzzy
 msgid "Installing module"
-msgstr "Installando i samples"
+msgstr "Installazione modulo"
 
 #: fabui/application/views/head/js.php:729
-#, fuzzy
 msgid "Head installed"
-msgstr "Nessuna testa installata"
+msgstr "Testa installata"
 
 #: fabui/application/views/head/js.php:734
-#, fuzzy
 msgid "Connecting to PRISM module"
-msgstr "Connessione al FABID"
+msgstr "Connessione al modulo PRISM"
 
 #: fabui/application/views/head/js.php:758
-#, fuzzy
 msgid "Prism Module connected"
-msgstr "Disconnesso"
+msgstr "Modulo Prism disconesso"
 
 #: fabui/application/views/head/js.php:758
-#, fuzzy
 msgid "Loading page"
-msgstr "Ricaricando la pagina"
+msgstr "Caricando la pagina"
 
 #: fabui/application/views/head/js.php:774
 msgid "Couldn\\'t connect to PRSIM"
-msgstr ""
+msgstr "Non è possibile connettersi al modulo PRISM"
 
 #: fabui/application/views/head/js.php:774
-#, fuzzy
 msgid "Redirect to settings page"
-msgstr "Re-indirizzamento alla pagina dei plugins..."
+msgstr "Re-indirizzamento alla pagina delle impostazioni."
 
 #: fabui/application/views/head/install.php:5
 msgid ""
@@ -4019,16 +3996,14 @@ msgstr "Firmware installato"
 msgid "Build-date"
 msgstr "Data di costruzione"
 
-#: fabui/application/views/cam/js.php:88
-#: fabui/application/views/cam/js.php:897
+#: fabui/application/views/cam/js.php:88 fabui/application/views/cam/js.php:897
 #: fabui/application/views/backup/js.php:44
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Trascina file per caricarli"
 
-#: fabui/application/views/cam/js.php:88
-#: fabui/application/views/cam/js.php:897
+#: fabui/application/views/cam/js.php:88 fabui/application/views/cam/js.php:897
 #: fabui/application/views/backup/js.php:44
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
@@ -4186,7 +4161,7 @@ msgstr "Premi su \"Genera GCode\" per  l'anteprima"
 
 #: fabui/application/views/cam/laser_tab.php:47
 msgid "Note: black is being burned by the laser"
-msgstr "Nota: il nero indica dove il Laser andrà ad incidere."
+msgstr "Nota: il nero indica dove il Laser andrà ad incidere"
 
 #: fabui/application/views/cam/laser_tab.php:57
 msgid "Generate GCode"
@@ -4271,7 +4246,7 @@ msgstr "Z steps"
 
 #: fabui/application/views/cam/laser_tab.php:173
 msgid "Value"
-msgstr "valore"
+msgstr "Valore"
 
 #: fabui/application/views/cam/laser_tab.php:178
 msgid "Laser PWM will be set to a constant value"
@@ -4788,7 +4763,6 @@ msgid "Extrusion temperature"
 msgstr "Temperatura d'estrusione"
 
 #: fabui/application/views/spool/wizard/step2.php:44
-#, fuzzy
 msgid "Details"
 msgstr "Dettagli"
 
@@ -4931,14 +4905,12 @@ msgid "Sync"
 msgstr ""
 
 #: fabui/application/views/projects/index/index.php:14
-#, fuzzy
 msgid "Crate project"
-msgstr "Creare nuovo progetto"
+msgstr "Crea progetto"
 
 #: fabui/application/views/projects/index/index.php:20
-#, fuzzy
 msgid "Load more"
-msgstr "Leggi di più"
+msgstr "Carica di più"
 
 #: fabui/application/views/projects/add/js.php:17
 #: fabui/application/views/projects/add/js.php:53
@@ -4951,35 +4923,32 @@ msgid "Drop here machine file"
 msgstr ""
 
 #: fabui/application/views/projects/add/widget.php:19
-#, fuzzy
 msgid "Project basic info"
-msgstr "Progetti"
+msgstr "Informazioni base"
 
 #: fabui/application/views/projects/add/widget.php:23
-#, fuzzy
 msgid "Project name"
-msgstr "Project manager"
+msgstr "Nome progetto"
 
 #: fabui/application/views/projects/add/widget.php:25
 msgid "Project name is required and cannot be empty"
-msgstr ""
+msgstr "Il nome del progetto è obbligatorio e non può essere vuoto"
 
 #: fabui/application/views/projects/add/widget.php:32
-#, fuzzy
 msgid "Project description"
-msgstr "Descrizione"
+msgstr "Descrizione progetto"
 
 #: fabui/application/views/projects/add/widget.php:34
 msgid "Project description is required and cannot be empty"
-msgstr ""
+msgstr "La descrizione del progetto è obbligatoria e non può essere vuota"
 
 #: fabui/application/views/projects/add/widget.php:39
 msgid "Category"
-msgstr ""
+msgstr "Categori"
 
 #: fabui/application/views/projects/add/widget.php:46
 msgid "Visibility"
-msgstr ""
+msgstr "Visibilità"
 
 #: fabui/application/views/projects/add/widget.php:49
 #: fabui/application/views/projectsmanager/edit/widget.php:33
@@ -4988,47 +4957,41 @@ msgid "Public"
 msgstr "Pubblico"
 
 #: fabui/application/views/projects/add/widget.php:52
-#, fuzzy
 msgid "Private"
-msgstr "Attiva"
+msgstr "Privato"
 
 #: fabui/application/views/projects/add/widget.php:57
-#, fuzzy
 msgid "Upload cloud"
-msgstr "Carica personalizzato"
+msgstr "Carica su cloud"
 
 #: fabui/application/views/projects/add/widget.php:69
 #: fabui/application/views/projects/add/part-form.php:2
 msgid "Part"
-msgstr ""
+msgstr "Parte"
 
 #: fabui/application/views/projects/add/widget.php:73
 #: fabui/application/views/projects/add/part-form.php:6
-#, fuzzy
 msgid "Part name"
-msgstr "Cognome"
+msgstr "Nome parte"
 
 #: fabui/application/views/projects/add/widget.php:80
 #: fabui/application/views/projects/add/part-form.php:13
-#, fuzzy
 msgid "Part description"
-msgstr "Descrizione"
+msgstr "Descrizione parte"
 
 #: fabui/application/views/projects/add/widget.php:85
 #: fabui/application/views/projects/add/part-form.php:18
 msgid "Tool"
-msgstr ""
+msgstr "Strumento"
 
 #: fabui/application/views/projects/add/widget.php:92
 #: fabui/application/views/projects/add/part-form.php:25
-#, fuzzy
 msgid "File(s)"
 msgstr "File"
 
 #: fabui/application/views/projects/add/widget.php:109
-#, fuzzy
 msgid "Add part"
-msgstr "Nuovo Progetto"
+msgstr "Aggiungi parte"
 
 #: fabui/application/views/updates/index/js.php:38
 msgid "Checking for updates"
@@ -5146,8 +5109,7 @@ msgstr "Se sei stato tu a mettere in pausa puoi ignorare questa email"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:244
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:244
 msgid "Scan completed"
 msgstr "Scansione completata"
 
@@ -5493,34 +5455,30 @@ msgid ""
 msgstr "Disattiva laser durante movimenti rapidi"
 
 #: fabui/application/views/users/index/js.php:78
-#, fuzzy
 msgid "Reset email"
-msgstr "Resettare"
+msgstr "Reimposta email"
 
 #: fabui/application/views/users/index/js.php:79
 msgid "An email with reset instructions will be sent.<br>Continue?"
 msgstr ""
 
 #: fabui/application/views/users/index/js.php:94
-#, fuzzy
 msgid "Sending email"
-msgstr "Invia email"
+msgstr "Invio email"
 
 #: fabui/application/views/users/index/js.php:94
 #: fabui/application/views/users/index/js.php:184
 #: fabui/application/views/users/index/js.php:193
-#, fuzzy
 msgid "Please wait.."
-msgstr "Attendere prego..."
+msgstr "Attendere prego... "
 
 #: fabui/application/views/users/index/js.php:107
-#, fuzzy
 msgid ""
 "A message was sent to that address containing the instructions to reset the "
 "password "
 msgstr ""
 "Un messaggio è stato mandato a quell'indirizzo contenente il link per "
-"reimpostare la tua password "
+"reimpostare la tua password"
 
 #: fabui/application/views/users/index/js.php:164
 msgid "The user will be deleted and all its data will be transfered to:"
@@ -5531,9 +5489,8 @@ msgid "The user and all its data will be permanently deleted"
 msgstr ""
 
 #: fabui/application/views/users/index/js.php:184
-#, fuzzy
 msgid "Processing..."
-msgstr "Elaborazione file"
+msgstr "Operazione in corso..."
 
 #: fabui/application/views/users/index/widget.php:19
 msgid "Role"
@@ -5544,9 +5501,8 @@ msgid "FABID"
 msgstr ""
 
 #: fabui/application/views/users/index/widget.php:23
-#, fuzzy
 msgid "Last login"
-msgstr "Scorso mese"
+msgstr "Ultimo accesso"
 
 #: fabui/application/views/users/index/widget.php:38
 msgid "User deletion"
@@ -5563,9 +5519,8 @@ msgid "Transfer data"
 msgstr ""
 
 #: fabui/application/views/users/index/widget.php:48
-#, fuzzy
 msgid "Select new owner"
-msgstr "Selezionare l'area di scansione"
+msgstr "Seleziona nuovo proprietario"
 
 #: fabui/application/views/projectsmanager/index/js.php:104
 #: fabui/application/views/projectsmanager/index/js.php:123
@@ -6143,9 +6098,8 @@ msgid "Command."
 msgstr "Comando."
 
 #: fabui/ext/py/bluetooth_factory.py:216
-#, fuzzy
 msgid "No connected device"
-msgstr "Nessuna connessione rilevata"
+msgstr "Nessun dispositivo connesso"
 
 #: fabui/ext/py/calculate_extrinsic.py:169
 msgid "Find chessboard: SUCCESS."
@@ -7422,9 +7376,8 @@ msgid "Firmware flashed correctly"
 msgstr "Firmware flashato correttamente"
 
 #: fabui/assets/js/fab.app.js:1986
-#, fuzzy
 msgid "Wrong head/module installed"
-msgstr "Testa installata errata"
+msgstr "Testa/modulo installato erroneamente"
 
 #: fabui/application/views/scan/scan_js.php:65
 msgid "Connection success!"
@@ -7787,9 +7740,8 @@ msgid "To get the first layer right the bed must be well calibrated"
 msgstr "Per ottenere un buon primo layer il piatto dovrà essere ben calibrato"
 
 #: fabui/assets/js/fab.app.js:1983
-#, fuzzy
 msgid "Correct head/module installed"
-msgstr "Testa installata corretta"
+msgstr "Testa/modulo installata correttamente"
 
 #: fabui/assets/js/fab.app.js:646
 msgid "Manual Bed Calibration"
@@ -7821,9 +7773,8 @@ msgid "X/Y position restored to {0}, {1}"
 msgstr "Posizione di X/Y ripristinata a {0}, {1}"
 
 #: fabui/assets/js/fab.app.js:1746
-#, fuzzy
 msgid "Bluetooth connected to:"
-msgstr "Connesso a"
+msgstr "Bluetooth connesso a:"
 
 #: fabui/application/views/settings/network_js.php:260
 msgid "Configuration saved"
