@@ -75,7 +75,7 @@ $is_admin = $this->session->user['role'] == 'administrator';
         var email  = button.attr('data-email');
 
         $.SmartMessageBox({
-            title: "<i class='fa fa-envelope'></i> <span class='txt-color-orangeDark'><strong><?php echo _("Reset email");?></strong></span> ",
+            title: "<i class='fa fa-key'></i> <span class='txt-color-orangeDark'><strong><?php echo _("Reset password");?></strong></span> ",
             content: "<?php echo _("An email with reset instructions will be sent.<br>Continue?");?>",
             buttons: "[<?php echo _("Yes");?>][<?php echo _("No");?>]"
         }, function(ButtonPressed) {
