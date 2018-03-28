@@ -5090,7 +5090,7 @@ msgstr ""
 "richiesto di reimpostare la tua password o hai cambiato idea puoi "
 "semplicemente ignorare questa email e niente succederà.<br><br>Puoi "
 "reimpostare la tua password cliccando al seguente link:<br><a href="
-"\"{1}\">{1}</a><br><br>Se cliccando il link non funziona copialo e incollalo "
+"\"{0}\">{0}</a><br><br>Se cliccando il link non funziona copialo e incollalo "
 "direttamente nella barra degli indirizzi del tuo browser. Il link sarà "
 "disponibile per un periodo limitato di tempo."
 
