@@ -1,6 +1,6 @@
 {
     "name": "Prism Module",
-    "link": "",
+    "link": "https://www.fabtotum.com/3d-printers/heads/prism-3d-printing-sla-platform/",
     "description": "",
     "init_gcode": "M720 H0",
 	"custom_gcode": "",
