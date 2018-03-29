@@ -199,10 +199,7 @@ class BTFactory():
         
         if(paired):
             connection = self.send_command('connect', [], mac_address)
-            # connection = send_command('connect', [self.controller_address], mac_address, verbose=self.verbose)
-            # connection = json.loads(connection)
-            #print connection
-                
+                            
         return {'connection': connection, 'paired': paired}
     
     ###################################
@@ -239,16 +236,16 @@ class BTFactory():
             # get data
             reply = socket.recv(1024)
             
+            # close socket
+            socket.close()
+            
             if self.verbose:
                 print "Data received:".format(reply)
             
             response = json.loads(reply)
-            
-            if(command == 'connect'):
-                self.send_command('network-address')
-            
+                    
             ## save network address
-            if(command == 'network-address'):
+            if(command in ['connect', 'network-address']):
                 self.config.set('bluetooth', 'prism_bt_network_address', response['reply'])
                 self.config.save('bluetooth')
             
@@ -274,7 +271,7 @@ def main():
     parser.add_argument("-v", "--verbose", action="store_true",  help="Show verbose" )
     
     parser.add_argument("-c", "--command", help="Command to send", default="")
-    parser.add_argument("--arg-list",       help="Comma separated argument list.", default=[] )
+    parser.add_argument("--arg-list",       help="Comma separated argument list.", default=[])
     parser.add_argument("-P", "--port",     help="L2C port",  default=0x1001)
     
     
@@ -288,6 +285,8 @@ def main():
     command_args_list = args.arg_list
     bt_port           = args.port
     
+    if(len(command_args_list) > 0):
+        command_args_list = command_args_list.split(",")
     
     bt_factory = BTFactory(verbose=verbose)
     action_result = None
