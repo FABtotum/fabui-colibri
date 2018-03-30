@@ -13,7 +13,7 @@
   "name": "Printing Head Pro",
   "link": "https://www.fabtotum.com/printing-head-pro/",
   "description": "The <strong>Printing Head Pro</strong> ",
-  "init_gcode": "M720\nM204 S2000\nM2208",
+  "init_gcode": "M720\nM204 S2000\nM2208 S1 R8",
   "custom_gcode": "",
   "working_mode": "1",
   "fw_id": "6",

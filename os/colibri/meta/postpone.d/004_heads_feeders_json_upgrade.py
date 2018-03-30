@@ -1,4 +1,12 @@
 #!/bin/env python
+############################################################
+# Add "init_gcode" key to json files
+# "init_gcode" init with "custom_gcode" value
+# "init_gcode" will be handled only by fabtotum
+# "custom_gcode" is for users modifications
+# updated printing head pro "init_gcode" for upcoming silent version
+############################################################
+
 import json
 import os
 import shutil
@@ -34,6 +42,13 @@ def add_new_field(head_list, head):
             
             if not "init_gcode" in data and int(data['fw_id']) < 100:
                 data['init_gcode']   = data['custom_gcode']
+                
+                ###
+                ## update printing head pro init_gcode
+                ###
+                if(filename == 'printing_head_pro.json'):
+                    data['init_gcode'] = 'M720\nM204 S2000\nM2208 S1 R8'
+                    
                 data['custom_gcode'] = ''
                 write = True
                 
