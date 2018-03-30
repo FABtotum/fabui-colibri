@@ -49,6 +49,7 @@ from fabtotum.bluetooth.common import bluetooth_status, enable_bluetooth, disabl
 from prism_manager import send_command
 
 from fabtotum.fabui.config  import ConfigService
+from fabtotum.utils.common import get_ip_address
 
 
 class BTFactory():
@@ -156,7 +157,7 @@ class BTFactory():
             self._adapter.RemoveDevice(mac_address)
             ### tell also device to unpair
             send_command('disconnect', [self.controller_address], mac_address, verbose=self.verbose)
-            send_command('unpair', [self.controller_address], mac_address, verbose=self.verbose)
+            # send_command('unpair', [self.controller_address], mac_address, verbose=self.verbose)
             
             ## save to config file
             self.config.set('bluetooth', 'prism_bt_address', '')
@@ -213,6 +214,7 @@ class BTFactory():
                 return {'error': _("No connected device")}
             
         
+        
         socket = bluetooth.BluetoothSocket(bluetooth.L2CAP)
         socket.settimeout(3)
         
@@ -221,9 +223,17 @@ class BTFactory():
             
         try:
             socket.connect((mac_address, port))
+            #bluetooth.set_packet_timeout(mac_address, 0)
             
             if command in [ 'connect', 'disconnect', 'trust', 'untrust']:
                 args.append( self._adapter.Address )
+                
+            if command in ['connect', 'rpc']:
+                tether_address = get_ip_address('tether')
+                if(tether_address != 'n.a'):
+                    args.append( tether_address )
+                    args.append(self.config.get('xmlrpc', 'xmlrpc_port'))
+                    
             
             data = json.dumps({ 'cmd': command, 'args': args })
             
@@ -265,14 +275,13 @@ def main():
     
     # SETTING EXPECTED ARGUMENTS
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("-n", "--name",    help="Look for name", default="PRISM")
-    parser.add_argument("-m", "--mac",     help="Mac address",   default="")
-    parser.add_argument("-a", "--action",  help="Action",        default="")
-    parser.add_argument("-v", "--verbose", action="store_true",  help="Show verbose" )
-    
+    parser.add_argument("-n", "--name",    help="Look for name",   default="PRISM")
+    parser.add_argument("-m", "--mac",     help="Mac address",     default="")
+    parser.add_argument("-a", "--action",  help="Action",          default="")
+    parser.add_argument("-v", "--verbose", action="store_true",    help="Show verbose" )
     parser.add_argument("-c", "--command", help="Command to send", default="")
-    parser.add_argument("--arg-list",       help="Comma separated argument list.", default=[])
-    parser.add_argument("-P", "--port",     help="L2C port",  default=0x1001)
+    parser.add_argument("--arg-list",      help="Comma separated argument list.", default=[])
+    parser.add_argument("-P", "--port",    help="L2C port",  default=0x1001)
     
     
     # GET ARGUMENTS

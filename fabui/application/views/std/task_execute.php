@@ -47,6 +47,7 @@ if(!isset($show_temp_info)) $show_temp_info = false;
 if(!isset($show_change_filament)) $show_change_filament = false;
 if(!isset($show_pause_button)) $show_pause_button = true;
 if(!isset($show_prism_layer_preview)) $show_prism_layer_preview = false;
+if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 
 $split_view = $show_temperature_graph || $show_prism_layer_preview;
 $stats_button_size = $show_temperature_graph ? 4 : 6;
@@ -161,6 +162,12 @@ $stats_button_size = $show_temperature_graph ? 4 : 6;
 					
 					<?php if($show_layer_info): ?>
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 layer-info hidden"> <span class="text"> <i class="fa fa-database"></i> <?php echo _("Layer"); ?> <span class="pull-right"><span title="<?php echo _("Current layer");?>" class="task-layer-current"></span> <?php echo _("of")?> <span title="<?php echo _("Total layers");?>" class="task-layer-total"></span> </span> </span>
+						<div class="fake-progress"></div>
+					</div>
+					<?php endif ?>
+					
+					<?php if($show_prism_temperature): ?>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 prism-temperature"> <span class="text"> <i class="fa fa-thermometer-three-quarters"></i> <?php echo _("Temperature"); ?> <span class="pull-right"><span class="task-prism-temperature"></span> &deg;C</span> </span>
 						<div class="fake-progress"></div>
 					</div>
 					<?php endif ?>

@@ -45,6 +45,8 @@ if(!isset($show_rpm)) $show_rpm = false;
 if(!isset($show_layer_info)) $show_layer_info = false;
 if(!isset($show_temp_info)) $show_temp_info = false;
 if(!isset($show_change_filament)) $show_change_filament = false;
+if(!isset($show_prism_temperature)) $show_prism_temperature = false;
+
 
 ?>
 <script type="text/javascript">
@@ -933,6 +935,11 @@ if(!isset($show_change_filament)) $show_change_filament = false;
 			updateLayer(data.print.layer_current, data.print.layer_total);
 		}
 		<?php endif; ?>
+		<?php if($show_prism_temperature): ?>
+    		if(data.hasOwnProperty("prism")){
+    			updatePrismTemperature(data.prism.temperature);
+    		}	
+		<?php endif; ?>
 	};
 	
 	<?php if($type == "print"): ?>
@@ -1338,5 +1345,14 @@ if(!isset($show_change_filament)) $show_change_filament = false;
 		}
 	}
 	<?php endif; ?>
+	<?php if($show_prism_temperature):?>
+	/**
+	*
+	**/
+	function updatePrismTemperature(temperature)
+	{
+		$(".task-prism-temperature").html(temperature.toFixed(2));
+	}
+	<?php endif;?>
 </script>
 

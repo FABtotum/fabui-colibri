@@ -101,6 +101,8 @@ PRESET_MAP = {
     "measure_nozzle_offset"         : calib_macros.measure_nozzle_offset,
     
     # Prism
-    "prepare_prism"                 : prism_macros.prepare_prism
+    "prepare_prism"                 : prism_macros.prepare_prism,
+    "pause_prism"                   : prism_macros.pause_prism,
+    "resume_prism"                  : prism_macros.resume_prism
     
 }

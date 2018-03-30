@@ -28,11 +28,28 @@ import json
 
 # Import internal modules
 from fabtotum.utils.translation import _, setLanguage
+from fabtotum.fabui.macros.common import set_lights
 
 
 def prepare_prism(app, args=None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-
-    app.macro("M701 S0", "ok", 3, _("Turning off lights"))
-    app.macro("M702 S0", "ok", 3, _("Turning off lights"), verbose=False)
-    app.macro("M703 S0", "ok", 3, _("Turning off lights"), verbose=False)
+    
+    app.trace( _("Turning off lights") )
+    set_lights(app, [0, 0, 0])
+    app.macro("M999",    "ok", 3, _("Reset all errors"),   verbose=False)
+    
+    
+def pause_prism(app, args=None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    
+    app.macro("M300", "ok", 3, _("Play beep"), verbose=False)
+    set_lights(app, [255, 0, 0])
+    
+    
+    
+def resume_prism(app, args=None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    
+    app.trace( _("Turning off lights") )
+    set_lights(app, [0, 0, 0])
+    app.macro("M999",    "ok", 3, _("Reset all errors"),   verbose=False)
