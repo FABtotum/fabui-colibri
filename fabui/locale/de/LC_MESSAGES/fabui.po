@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FABUI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-28 11:26+0200\n"
+"POT-Creation-Date: 2018-04-03 12:46+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: FABTeam\n"
@@ -111,9 +111,9 @@ msgstr "Bett kalibrierung"
 #: fabui/application/config/menu.php:90
 #: fabui/application/views/jog/widget.php:70
 #: fabui/application/views/jog/widget.php:151
-#: fabui/application/views/std/task_execute.php:95
-#: fabui/application/views/std/task_execute.php:169
-#: fabui/application/views/std/task_execute.php:280
+#: fabui/application/views/std/task_execute.php:96
+#: fabui/application/views/std/task_execute.php:176
+#: fabui/application/views/std/task_execute.php:287
 #: fabui/application/views/layout/default/top.php:91
 #: fabui/application/views/layout/debug/top.php:89
 #: fabui/application/views/nozzle/pidtune/widget.php:13
@@ -277,7 +277,7 @@ msgstr ""
 #: fabui/application/controllers/Bed.php:48
 #: fabui/application/controllers/Nozzle.php:222
 #: fabui/application/views/fourthaxis/main_widget.php:16
-#: fabui/application/views/std/task_execute.php:428
+#: fabui/application/views/std/task_execute.php:435
 #: fabui/application/views/scan/settings/sweep.php:88
 #: fabui/application/views/feeder/engage/widget.php:13
 #: fabui/application/views/nozzle/pidtune/js.php:230
@@ -294,6 +294,7 @@ msgid "Get more beds"
 msgstr "Mehr Betten bekommen"
 
 #: fabui/application/controllers/Users.php:115
+#: fabui/application/views/users/index/js.php:78
 #, fuzzy
 msgid "Reset password"
 msgstr "Passwort anzeigen"
@@ -505,29 +506,29 @@ msgstr "Schrittkalibrierung"
 msgid "Engage Feeder"
 msgstr "Feeder einrasten"
 
-#: fabui/application/controllers/Login.php:60
+#: fabui/application/controllers/Login.php:64
 msgid "Please check your email or password"
 msgstr "Bitte überprüfen Sie Ihre E-Mail oder Ihr Passwort"
 
-#: fabui/application/controllers/Login.php:238
+#: fabui/application/controllers/Login.php:242
 msgid "You don't have the permission for this printer"
 msgstr ""
 
-#: fabui/application/controllers/Login.php:247
+#: fabui/application/controllers/Login.php:251
 msgid "FABID doesn't exists"
 msgstr ""
 
-#: fabui/application/controllers/Login.php:257
+#: fabui/application/controllers/Login.php:261
 msgid ""
 "Internet connection not available. Sign-in to your local access and then "
 "connect to internet"
 msgstr ""
 
-#: fabui/application/controllers/Login.php:313
+#: fabui/application/controllers/Login.php:317
 msgid "New user created successfully"
 msgstr "Neuer Benutzer wurde erfolgreich erstellt"
 
-#: fabui/application/controllers/Login.php:404
+#: fabui/application/controllers/Login.php:408
 #: fabui/application/helpers/fabtotum_helper.php:1766
 msgid "Password Reset"
 msgstr "Passwort zurücksetzen"
@@ -683,7 +684,7 @@ msgid "Choose mode"
 msgstr "Wählen Sie den Modus"
 
 #: fabui/application/controllers/Spool.php:69
-#: fabui/application/views/std/task_execute.php:335
+#: fabui/application/views/std/task_execute.php:342
 msgid "Filament"
 msgstr ""
 
@@ -1255,7 +1256,7 @@ msgstr "Wird übersetzt"
 #: fabui/application/views/plugin/js.php:152
 #: fabui/application/views/settings/hardware_js.php:128
 #: fabui/application/views/settings/network_js.php:502
-#: fabui/application/views/std/task_execute_js.php:1313
+#: fabui/application/views/std/task_execute_js.php:1320
 #: fabui/application/views/head/install_js.php:124
 #: fabui/application/views/head/install_js.php:467
 #: fabui/application/views/head/js.php:684
@@ -1464,7 +1465,7 @@ msgstr ""
 #: fabui/application/views/account/widget.php:37
 #: fabui/application/views/account/widget.php:101
 #: fabui/application/views/login/login_form.php:44
-#: fabui/application/views/std/task_execute.php:66
+#: fabui/application/views/std/task_execute.php:67
 #: fabui/application/views/users/index/widget.php:21
 msgid "Email"
 msgstr "Email"
@@ -1802,6 +1803,7 @@ msgid "Time alive"
 msgstr "Zeit am Leben"
 
 #: fabui/application/views/systeminfo/widget.php:127
+#: fabui/application/views/std/task_execute.php:170
 msgid "Temperature"
 msgstr "Temperatur"
 
@@ -2421,8 +2423,8 @@ msgid "Extruder target temperature"
 msgstr "Extruder Zieltemperatur"
 
 #: fabui/application/views/jog/widget.php:158
-#: fabui/application/views/std/task_execute.php:199
-#: fabui/application/views/std/task_execute.php:308
+#: fabui/application/views/std/task_execute.php:206
+#: fabui/application/views/std/task_execute.php:315
 #: fabui/application/views/head/index.php:168
 msgid "Fan"
 msgstr "Ventilator"
@@ -2455,9 +2457,9 @@ msgid "Counter-clockwise"
 msgstr ""
 
 #: fabui/application/views/jog/widget.php:180
-#: fabui/application/views/std/task_execute.php:118
-#: fabui/application/views/std/task_execute.php:172
-#: fabui/application/views/std/task_execute.php:285
+#: fabui/application/views/std/task_execute.php:119
+#: fabui/application/views/std/task_execute.php:179
+#: fabui/application/views/std/task_execute.php:292
 #: fabui/application/views/layout/default/top.php:94
 #: fabui/application/views/layout/debug/top.php:92
 #: fabui/assets/js/tours/0020_bed.js:31
@@ -2545,7 +2547,7 @@ msgid "Reply"
 msgstr "Antwort"
 
 #: fabui/application/views/jog/widget.php:373
-#: fabui/application/views/std/task_execute.php:427
+#: fabui/application/views/std/task_execute.php:434
 #: fabui/application/views/head/index.php:78
 #: fabui/application/views/cam/laser_tab.php:324
 #: fabui/application/views/cam/laser_tab.php:341
@@ -3028,27 +3030,27 @@ msgstr "Entwicklungs-Blog"
 msgid "Latest news from Development blog aren't available"
 msgstr "Aktuelle Nachrichten aus Entwicklungsblog sind nicht verfügbar"
 
-#: fabui/application/views/std/task_execute_js.php:867
+#: fabui/application/views/std/task_execute_js.php:869
 msgid "Waiting for first move"
 msgstr "Warten auf den ersten Zug"
 
-#: fabui/application/views/std/task_execute_js.php:1035
-#: fabui/application/views/std/task_execute_js.php:1066
+#: fabui/application/views/std/task_execute_js.php:1042
+#: fabui/application/views/std/task_execute_js.php:1073
 #, fuzzy
 msgid "Aborting {0}"
 msgstr "Wird abbrechen"
 
-#: fabui/application/views/std/task_execute_js.php:1051
+#: fabui/application/views/std/task_execute_js.php:1058
 #, fuzzy
 msgid "{0} Aborted"
 msgstr "{0} abgebrochen"
 
-#: fabui/application/views/std/task_execute_js.php:1077
+#: fabui/application/views/std/task_execute_js.php:1084
 #, fuzzy
 msgid "Completing {0}"
 msgstr "Vervollständigung im gange"
 
-#: fabui/application/views/std/task_execute_js.php:1086
+#: fabui/application/views/std/task_execute_js.php:1093
 #, fuzzy
 msgid "{0} completed!"
 msgstr "abgeschlossen"
@@ -3189,7 +3191,7 @@ msgstr "Letzte"
 
 #: fabui/application/views/std/select_file.php:32
 #: fabui/application/views/std/select_file.php:49
-#: fabui/application/views/std/task_execute.php:158
+#: fabui/application/views/std/task_execute.php:159
 #: fabui/application/views/std/email/task.php:15
 #: fabui/application/views/std/email/pause.php:14
 msgid "File"
@@ -3279,101 +3281,101 @@ msgstr ""
 "Untersucht dei Arbeitsebene, um Bewegungen zu korrigieren, um nicht ebenes "
 "Bett zu berücksichtigen"
 
-#: fabui/application/views/std/task_execute.php:57
+#: fabui/application/views/std/task_execute.php:58
 msgid "Live feeds"
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:58
+#: fabui/application/views/std/task_execute.php:59
 msgid "Controls"
 msgstr "Steuerungen"
 
-#: fabui/application/views/std/task_execute.php:63
+#: fabui/application/views/std/task_execute.php:64
 msgid "Send an email when the task is finished"
 msgstr "Eine E-Mail senden wenn die Aufgabe beendet ist"
 
-#: fabui/application/views/std/task_execute.php:73
-#: fabui/application/views/std/task_execute.php:233
+#: fabui/application/views/std/task_execute.php:74
+#: fabui/application/views/std/task_execute.php:240
 #: fabui/application/views/scan/wizard/step4.php:70
 #: fabui/application/views/nozzle/pidtune/js.php:181
 #: fabui/application/views/nozzle/pidtune/js.php:193
 msgid "Abort"
 msgstr "Abbrechen"
 
-#: fabui/application/views/std/task_execute.php:75
-#: fabui/application/views/std/task_execute.php:228
+#: fabui/application/views/std/task_execute.php:76
+#: fabui/application/views/std/task_execute.php:235
 #: fabui/application/views/scan/wizard/step4.php:67
-#: fabui/application/views/std/task_execute_js.php:1014
+#: fabui/application/views/std/task_execute_js.php:1021
 msgid "Pause"
 msgstr "Pausieren"
 
-#: fabui/application/views/std/task_execute.php:103
-#: fabui/application/views/std/task_execute.php:126
+#: fabui/application/views/std/task_execute.php:104
+#: fabui/application/views/std/task_execute.php:127
 msgid "Actual"
 msgstr "Aktuell"
 
-#: fabui/application/views/std/task_execute.php:108
-#: fabui/application/views/std/task_execute.php:131
+#: fabui/application/views/std/task_execute.php:109
+#: fabui/application/views/std/task_execute.php:132
 msgid "Target"
 msgstr "Ziel"
 
-#: fabui/application/views/std/task_execute.php:158
+#: fabui/application/views/std/task_execute.php:159
 #: fabui/application/views/layout/default/top.php:35
 #: fabui/application/views/layout/debug/top.php:35
 msgid "Loading"
 msgstr "Laden"
 
-#: fabui/application/views/std/task_execute.php:163
+#: fabui/application/views/std/task_execute.php:164
 msgid "Layer"
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:163
+#: fabui/application/views/std/task_execute.php:164
 msgid "Current layer"
 msgstr "Aktuelle Schicht"
 
-#: fabui/application/views/std/task_execute.php:163
+#: fabui/application/views/std/task_execute.php:164
 msgid "of"
 msgstr "von"
 
-#: fabui/application/views/std/task_execute.php:163
+#: fabui/application/views/std/task_execute.php:164
 msgid "Total layers"
 msgstr "Gesamtschichten"
 
-#: fabui/application/views/std/task_execute.php:177
+#: fabui/application/views/std/task_execute.php:184
 #: fabui/application/views/scan/wizard/step4.php:24
 msgid "Progress"
 msgstr "Fortschritt"
 
-#: fabui/application/views/std/task_execute.php:185
-#: fabui/application/views/std/task_execute.php:294
+#: fabui/application/views/std/task_execute.php:192
+#: fabui/application/views/std/task_execute.php:301
 msgid "Speed"
 msgstr "Geschwindigkeit"
 
-#: fabui/application/views/std/task_execute.php:192
-#: fabui/application/views/std/task_execute.php:301
+#: fabui/application/views/std/task_execute.php:199
+#: fabui/application/views/std/task_execute.php:308
 msgid "Flow rate"
 msgstr "Fließrate"
 
-#: fabui/application/views/std/task_execute.php:212
+#: fabui/application/views/std/task_execute.php:219
 #: fabui/application/views/scan/wizard/step4.php:60
 msgid "Elapsed time"
 msgstr "Verstrichene Zeit"
 
-#: fabui/application/views/std/task_execute.php:215
+#: fabui/application/views/std/task_execute.php:222
 #, fuzzy
 msgid "Est. time left"
 msgstr "Geschätzte Restzeit"
 
-#: fabui/application/views/std/task_execute.php:222
-#: fabui/application/views/std/task_execute.php:327
+#: fabui/application/views/std/task_execute.php:229
+#: fabui/application/views/std/task_execute.php:334
 msgid "Change filament"
 msgstr "Faden wechseln"
 
-#: fabui/application/views/std/task_execute.php:256
-#: fabui/application/views/std/task_execute.php:258
+#: fabui/application/views/std/task_execute.php:263
+#: fabui/application/views/std/task_execute.php:265
 msgid "Override Z height"
 msgstr "Z-Höhe überschreiben"
 
-#: fabui/application/views/std/task_execute.php:256
+#: fabui/application/views/std/task_execute.php:263
 #, fuzzy
 msgid ""
 "If first layers are too high or too close to the bed, use this function to "
@@ -3384,31 +3386,31 @@ msgstr ""
 "Drucke fein zu kalibrieren. Normalerweise sind 0.05mm Schritten genug, um "
 "einen Unterschied zu machen."
 
-#: fabui/application/views/std/task_execute.php:256
+#: fabui/application/views/std/task_execute.php:263
 #: fabui/application/views/nozzle/height/wizard/mode.php:69
 msgid "Usually 0.05mm increments are enough to make a difference"
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:263
+#: fabui/application/views/std/task_execute.php:270
 msgid "Away from the nozzle"
 msgstr "Weg von der Düse"
 
-#: fabui/application/views/std/task_execute.php:271
+#: fabui/application/views/std/task_execute.php:278
 msgid "Closer to the nozzle"
 msgstr "Näher an der Düse"
 
-#: fabui/application/views/std/task_execute.php:348
+#: fabui/application/views/std/task_execute.php:355
 #: fabui/application/views/spool/wizard/step1.php:30
 msgid "Load"
 msgstr "Laden"
 
-#: fabui/application/views/std/task_execute.php:351
+#: fabui/application/views/std/task_execute.php:358
 #: fabui/application/views/spool/wizard/step1.php:46
 msgid "Unload"
 msgstr "Entladen"
 
-#: fabui/application/views/std/task_execute.php:365
-#: fabui/application/views/std/task_execute.php:389
+#: fabui/application/views/std/task_execute.php:372
+#: fabui/application/views/std/task_execute.php:396
 #: fabui/application/views/spool/wizard/step3.php:47
 #: fabui/application/views/spool/wizard/step3.php:86
 msgid ""
@@ -3418,28 +3420,28 @@ msgstr ""
 "Bereiten Sie den Faden vor indem Sie ihn schräg schneiden. Dies hilft beim "
 "Einsetzen des Glühfadens."
 
-#: fabui/application/views/std/task_execute.php:371
-#: fabui/application/views/std/task_execute.php:416
+#: fabui/application/views/std/task_execute.php:378
+#: fabui/application/views/std/task_execute.php:423
 #: fabui/application/views/spool/wizard/step3.php:105
 msgid "Pull the release lever on the back of the Printing Head PRO."
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:372
+#: fabui/application/views/std/task_execute.php:379
 #: fabui/application/views/spool/wizard/step3.php:106
 msgid "Insert the filament until it starts coming out from the nozzle"
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:373
+#: fabui/application/views/std/task_execute.php:380
 #: fabui/application/views/spool/wizard/step3.php:107
 msgid "Release the release lever "
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:374
+#: fabui/application/views/std/task_execute.php:381
 #: fabui/application/views/spool/wizard/step3.php:108
 msgid "Lock the feeding tube in place "
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:383
+#: fabui/application/views/std/task_execute.php:390
 #: fabui/application/views/spool/wizard/step3.php:28
 msgid ""
 "The Side cover is magnetically locked. Pull the panel confidently in order "
@@ -3448,30 +3450,30 @@ msgstr ""
 "Die Seitenabdeckung ist magnetisch verriegelt. Ziehen Sie die Tafel "
 "zuversichtlich, um auf das Spulenfach zuzugreifen."
 
-#: fabui/application/views/std/task_execute.php:395
+#: fabui/application/views/std/task_execute.php:402
 #: fabui/application/views/spool/wizard/step3.php:66
 msgid ""
 "Insert the filament in the PTFE tube until you reach the feeder (you can "
 "feel it: last cm becomes harder and then you cannot push further)"
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:408
+#: fabui/application/views/std/task_execute.php:415
 #: fabui/application/views/spool/wizard/step3.php:141
 msgid ""
 "Remove the Feeding tube by pushing down the black cap and then pulling the "
 "tube itself."
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:409
+#: fabui/application/views/std/task_execute.php:416
 #, fuzzy
 msgid "Press start to begin procedure"
 msgstr "Vorbereitungsverfahren"
 
-#: fabui/application/views/std/task_execute.php:415
+#: fabui/application/views/std/task_execute.php:422
 msgid "After the filament was pulled out from the nozzle"
 msgstr ""
 
-#: fabui/application/views/std/task_execute.php:417
+#: fabui/application/views/std/task_execute.php:424
 #, fuzzy
 msgid "Pull the filament out of the head"
 msgstr "Den Faden automatisch in die Maschine laden"
@@ -4025,8 +4027,9 @@ msgid "Loading page"
 msgstr "Seite wird nachgeladen"
 
 #: fabui/application/views/head/js.php:774
-msgid "Couldn\\'t connect to PRSIM"
-msgstr ""
+#, fuzzy
+msgid "Couldn\\'t connect to PRISM"
+msgstr "Verbinden"
 
 #: fabui/application/views/head/js.php:774
 #, fuzzy
@@ -5655,11 +5658,6 @@ msgid ""
 "To prevent laser leaving travel trails, turn it off during travel moves."
 msgstr ""
 
-#: fabui/application/views/users/index/js.php:78
-#, fuzzy
-msgid "Reset email"
-msgstr "Zurücksetzen"
-
 #: fabui/application/views/users/index/js.php:79
 msgid "An email with reset instructions will be sent.<br>Continue?"
 msgstr ""
@@ -6340,7 +6338,7 @@ msgstr "Fräsen Initialisiert."
 msgid "Command."
 msgstr ""
 
-#: fabui/ext/py/bluetooth_factory.py:216
+#: fabui/ext/py/bluetooth_factory.py:214
 #, fuzzy
 msgid "No connected device"
 msgstr "Keine Verbindung erkannt"
@@ -7040,7 +7038,7 @@ msgstr "Extrusionsprävention deaktiviert"
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:218
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:227
 #: fabui/ext/py/fabtotum/fabui/macros/milling.py:55
-#: fabui/application/views/std/task_execute_js.php:1077
+#: fabui/application/views/std/task_execute_js.php:1084
 msgid "Moving to safe zone"
 msgstr "Umzug in eine sichere Zone"
 
@@ -7178,9 +7176,8 @@ msgstr ""
 msgid "Please wait..."
 msgstr "Bitte warten Sie"
 
-#: fabui/ext/py/fabtotum/fabui/macros/prism.py:36
 #: fabui/ext/py/fabtotum/fabui/macros/prism.py:37
-#: fabui/ext/py/fabtotum/fabui/macros/prism.py:38
+#: fabui/ext/py/fabtotum/fabui/macros/prism.py:53
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:79
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:80
 #: fabui/ext/py/fabtotum/fabui/macros/engraving.py:81
@@ -7192,6 +7189,17 @@ msgstr "Bitte warten Sie"
 #: fabui/ext/py/fabtotum/fabui/macros/scanning.py:134
 msgid "Turning off lights"
 msgstr "Lichter ausschalten"
+
+#: fabui/ext/py/fabtotum/fabui/macros/prism.py:39
+#: fabui/ext/py/fabtotum/fabui/macros/prism.py:55
+#, fuzzy
+msgid "Reset all errors"
+msgstr "Neustart im Gange"
+
+#: fabui/ext/py/fabtotum/fabui/macros/prism.py:45
+#, fuzzy
+msgid "Play beep"
+msgstr "Piep Ton abspielen"
 
 #: fabui/ext/py/fabtotum/fabui/macros/calibration.py:51
 #: fabui/ext/py/fabtotum/fabui/macros/printing.py:264
@@ -7652,7 +7660,7 @@ msgstr "Bett tiefergelegt"
 msgid "Scan completed!"
 msgstr "Scan abgeschlossen!"
 
-#: fabui/application/views/std/task_execute_js.php:639
+#: fabui/application/views/std/task_execute_js.php:641
 msgid "Bed target"
 msgstr "Bett Ziel"
 
@@ -7660,7 +7668,7 @@ msgstr "Bett Ziel"
 msgid "Select head"
 msgstr "Kopf auswählen"
 
-#: fabui/application/views/std/task_execute_js.php:630
+#: fabui/application/views/std/task_execute_js.php:632
 msgid "Bed temp"
 msgstr "Bett Temp"
 
@@ -7678,7 +7686,7 @@ msgstr "Falscher Kopf installiert"
 msgid "Connection success!"
 msgstr "Verbindungserfolg!"
 
-#: fabui/application/views/std/task_execute_js.php:702
+#: fabui/application/views/std/task_execute_js.php:704
 msgid "Flow Rate override changed to {0}"
 msgstr "Durchflussrate überschrieben geändert auf {0}"
 
@@ -7686,7 +7694,7 @@ msgstr "Durchflussrate überschrieben geändert auf {0}"
 msgid "Head management"
 msgstr "Kopfverwaltung"
 
-#: fabui/application/views/std/task_execute_js.php:982
+#: fabui/application/views/std/task_execute_js.php:989
 msgid "Resume"
 msgstr "Fortsetzen"
 
@@ -7706,7 +7714,7 @@ msgstr "Wiederherstelle XY"
 msgid "Internet available"
 msgstr "Internet verfügbar"
 
-#: fabui/application/views/std/task_execute_js.php:722
+#: fabui/application/views/std/task_execute_js.php:724
 msgid "Unknown action: {0}"
 msgstr "Unbekannte Handlung: {0}"
 
@@ -7751,7 +7759,7 @@ msgid "After bed is leveled the nozzle height needs to be adjusted"
 msgstr ""
 "Nach dem das Bett nivelliert ist, die Düsenhöhe muss eingestellt werden"
 
-#: fabui/application/views/std/task_execute_js.php:710
+#: fabui/application/views/std/task_execute_js.php:712
 msgid "Z height override changed to {0}mm"
 msgstr "Z-Höhen-Override auf {0} mm geändert"
 
@@ -7844,7 +7852,7 @@ msgstr "Regler  neustart"
 msgid "Position {0}, {1}, {2} stored"
 msgstr "Position {0}, {1}, {2} gespeichert"
 
-#: fabui/application/views/std/task_execute_js.php:699
+#: fabui/application/views/std/task_execute_js.php:701
 msgid "Speed override changed to {0}"
 msgstr "Geschwindigkeitsüberschreitung wurde auf {0} geändert"
 
@@ -7874,7 +7882,7 @@ msgstr "Hallo"
 msgid "Connected"
 msgstr "Verbinden"
 
-#: fabui/application/views/std/task_execute_js.php:708
+#: fabui/application/views/std/task_execute_js.php:710
 msgid "Z height increased"
 msgstr "Z-Höhe erhöht"
 
@@ -7904,7 +7912,7 @@ msgstr ""
 msgid "Aborting all operations"
 msgstr "Abbruch aller Operationen"
 
-#: fabui/application/views/std/task_execute_js.php:404
+#: fabui/application/views/std/task_execute_js.php:406
 msgid "Extruder temperature set to {0} &deg;"
 msgstr "Extrudertemperatur auf {0} &deg; eingestellt"
 
@@ -7946,7 +7954,7 @@ msgstr ""
 "Es scheint, dass Sie das erste empfohlene Setup noch nicht abgeschlossen "
 "haben"
 
-#: fabui/application/views/std/task_execute_js.php:610
+#: fabui/application/views/std/task_execute_js.php:612
 msgid "Ext temp"
 msgstr ""
 
@@ -7962,7 +7970,7 @@ msgstr "Möchten Sie es jetzt tun?"
 msgid "DNS settings saved"
 msgstr "DNS-Einstellungen gespeichert"
 
-#: fabui/application/views/std/task_execute_js.php:705
+#: fabui/application/views/std/task_execute_js.php:707
 msgid "Fan override changed to {0}"
 msgstr "Fan-Override geändert zu {0}"
 
@@ -8005,7 +8013,7 @@ msgstr "Deaktivierung der Wireless-Schnittstelle im gange"
 msgid "Sending..."
 msgstr "Senden..."
 
-#: fabui/application/views/std/task_execute_js.php:620
+#: fabui/application/views/std/task_execute_js.php:622
 msgid "Ext target"
 msgstr "Ext Ziel"
 
@@ -8030,7 +8038,7 @@ msgstr "Kopf einbauen"
 msgid "Success"
 msgstr "Erfolg"
 
-#: fabui/application/views/std/task_execute_js.php:408
+#: fabui/application/views/std/task_execute_js.php:410
 msgid "Bed temperature set to {0} &deg;"
 msgstr "Betttemperatur eingestellt auf {0} &deg;"
 
@@ -8177,7 +8185,7 @@ msgstr "Keine Verbindung."
 msgid "Position restored to {0}, {1}, {2}"
 msgstr "Position wiederhergestellt zu {0}, {1}, {2}"
 
-#: fabui/application/views/std/task_execute_js.php:717
+#: fabui/application/views/std/task_execute_js.php:719
 msgid "Send email on task finish: {0}"
 msgstr "Eine E-Mail sendend wenn die Aufgabe beendet  wird: {0}"
 
@@ -8189,7 +8197,7 @@ msgstr "Sie müssen zuerst die Z-Achse zum Nullpunkt bringen"
 msgid "Ethernet cable"
 msgstr "Ethernet Kabel"
 
-#: fabui/application/views/std/task_execute_js.php:709
+#: fabui/application/views/std/task_execute_js.php:711
 msgid "Z height decreased"
 msgstr "Z Höhe verringert"
 
@@ -8252,6 +8260,10 @@ msgstr "Anwenden"
 #: fabui/assets/js/fab.app.js:674
 msgid "Emergency stop"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Reset email"
+#~ msgstr "Zurücksetzen"
 
 #~ msgid "Account information saved"
 #~ msgstr "Kontoinformationen gespeichert"
