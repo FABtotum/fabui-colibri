@@ -771,7 +771,7 @@
 			});
 		}else{
 			
-			openWait('<i class="fa fa-exclamation-triangle"></i> <?php echo _("Couldn\'t connect to PRSIM"); ?>', '<?php echo _("Redirect to settings page"); ?>', false);
+			openWait('<i class="fa fa-exclamation-triangle"></i> <?php echo _("Couldn\'t connect to PRISM"); ?>', '<?php echo _("Redirect to settings page"); ?>', false);
 			setTimeout(function(){
 				closeWait();
 	    		//document.location.href = '<?php echo site_url('#plugin/fab_prism/settings'); ?>';

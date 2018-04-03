@@ -163,12 +163,26 @@ function pageLoadSuccess()
  */
 function pageLoadError(url, container,  xhr, thrownError)
 {
-    if(debugState) console.log("pageLoadError");
+    if(debugState) console.log("pageLoadError: " + xhr.status);
     
     if(xhr.status == 403){
         showSessionExpired();
     }else{
-        container.html('<h4 class="ajax-loading-error"><i class="fa fa-warning txt-color-orangeDark"></i> Error requesting <span class="txt-color-red">' + url + '</span>: ' + xhr.status + ' <span style="text-transform: capitalize;">'  + thrownError + '</span></h4>');
+    	
+    	
+    	var html = '<h4 class="ajax-loading-error"><i class="fa fa-exclamation-triangle txt-color-orangeDark"></i> '+_('Error requesting') + ' <span class="txt-color-red">' + url + '</span>: ' + xhr.status + ' <span style="text-transform: capitalize;">'  + thrownError + '</span></h4>';
+    	
+    	if(xhr.status == 404){
+    		html += '<h4 class="ajax-loading-error">'+ _("Redirect to <span class=\"txt-color-red\">dashboard</span> page..")  + '</h4>';
+    	}
+    	
+        container.html(html);
+        
+        if(xhr.status == 404){
+    		setTimeout(function() {
+    			document.location.href = base_url  + '#dashboard';
+    		}, 2000);
+    	}
     }
 }
 
