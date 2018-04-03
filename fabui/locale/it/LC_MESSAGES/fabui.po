@@ -1652,7 +1652,6 @@ msgid "Setting new host name"
 msgstr "Sto impostando il nuovo Hostname"
 
 #: fabui/application/views/systeminfo/widget.php:14
-#, fuzzy
 msgid "To edit information below you need administrator privileges"
 msgstr "Questo modulo richiede privilegi da amministratore"
 
@@ -3923,7 +3922,6 @@ msgid "Loading page"
 msgstr "Caricando la pagina"
 
 #: fabui/application/views/head/js.php:774
-#, fuzzy
 msgid "Couldn\\'t connect to PRISM"
 msgstr "Non è possibile connettersi al modulo PRISM"
 
@@ -3999,16 +3997,14 @@ msgstr "Firmware installato"
 msgid "Build-date"
 msgstr "Data di costruzione"
 
-#: fabui/application/views/cam/js.php:88
-#: fabui/application/views/cam/js.php:897
+#: fabui/application/views/cam/js.php:88 fabui/application/views/cam/js.php:897
 #: fabui/application/views/backup/js.php:44
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Trascina file per caricarli"
 
-#: fabui/application/views/cam/js.php:88
-#: fabui/application/views/cam/js.php:897
+#: fabui/application/views/cam/js.php:88 fabui/application/views/cam/js.php:897
 #: fabui/application/views/backup/js.php:44
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
@@ -5114,8 +5110,7 @@ msgstr "Se sei stato tu a mettere in pausa puoi ignorare questa email"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:244
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:244
 msgid "Scan completed"
 msgstr "Scansione completata"
 
@@ -5515,10 +5510,12 @@ msgid ""
 "Before deleting this user, you can transfer data associated with it to a new "
 "owner."
 msgstr ""
+"Prima di eliminare un utente puoi trasferire i suoi dati ad un nuovo "
+"proprieatario."
 
 #: fabui/application/views/users/index/widget.php:45
 msgid "Transfer data"
-msgstr ""
+msgstr "Trasferisci dati"
 
 #: fabui/application/views/users/index/widget.php:48
 msgid "Select new owner"
@@ -6917,12 +6914,10 @@ msgstr "Spegnendo le luci"
 
 #: fabui/ext/py/fabtotum/fabui/macros/prism.py:39
 #: fabui/ext/py/fabtotum/fabui/macros/prism.py:55
-#, fuzzy
 msgid "Reset all errors"
-msgstr "Riavvio dei servizi in corso"
+msgstr "Reset di tutti gli errori"
 
 #: fabui/ext/py/fabtotum/fabui/macros/prism.py:45
-#, fuzzy
 msgid "Play beep"
 msgstr "Suono beep"
 
