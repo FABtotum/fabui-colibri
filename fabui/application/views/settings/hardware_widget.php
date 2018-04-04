@@ -152,7 +152,7 @@
 					</div>
 				</section>
 				<div class="alert alert-warning animated fadeIn">
-					<strong><i class="fa fa-warning"></i> <?php echo _("Please perform a new nozzle height calibration when switching between the two options above");?> </strong>
+					<strong><i class="fa fa-exclamation-triangle"></i> <?php echo _("Please perform a new nozzle height calibration when switching between the two options above");?> </strong>
 				</div>
 			</fieldset>
 		</div>

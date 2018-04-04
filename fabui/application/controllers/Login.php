@@ -61,7 +61,7 @@
 		if($user == false){ //if user doesn't exists
 			//TO DO add flash message
 			$this->session->mark_as_flash('alert');
-			$this->session->set_flashdata('alert', array('type' => 'alert-danger', 'message'=> '<i class="fa fa-fw fa-warning"></i> '._("Please check your email or password") ));
+			$this->session->set_flashdata('alert', array('type' => 'alert-danger', 'message'=> '<i class="fa fa-fw fa-exclamation-triangle"></i> '._("Please check your email or password") ));
 			redirect('login?fabid=no');
 		}
 		

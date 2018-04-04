@@ -81,7 +81,7 @@
 		if(response.result == false) {
 			closeWait();
 			$.SmartMessageBox({
-				title: "<i class='fa fa-warning txt-color-orangeDark'></i> " + _("Warning"),
+				title: "<i class='fa fa-exclamation-triangle-warning txt-color-orangeDark'></i> " + _("Warning"),
 				content : '<br><span >' + _("Firmware was not flashed") + '</span><br><span >'+_("Please try again")+'</span><br><span >'+_("If the problem persists please contact support")+'</span>',
 				buttons: "[" + _("Ok") + "]",
 			}, function(ButtonPressed, Option) {

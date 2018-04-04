@@ -65,7 +65,7 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="alert alert-warning">
-						<i class="fa fa-warning"></i> <?php echo $error; ?>
+						<i class="fa fa-exclamation-triangle"></i> <?php echo $error; ?>
 					</div>
 				</div>
 			</div>

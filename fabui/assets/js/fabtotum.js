@@ -191,7 +191,7 @@ function pageLoadError(url, container,  xhr, thrownError)
  */
 function showSessionExpired()
 {
-    openWait("<i class=\"fa fa-warning\"></i> " + _("Your session is expired"), _("You will be redirect to login page"), false);
+    openWait("<i class=\"fa fa-exclamation-triangle\"></i> " + _("Your session is expired"), _("You will be redirect to login page"), false);
     setTimeout(function(){ 
         window.location = logout_url; 
     }, 5000);

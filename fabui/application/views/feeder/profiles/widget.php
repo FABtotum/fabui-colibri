@@ -2,7 +2,7 @@
 	<div class="col-sm-12 alerts-container">
 <?php if(!isset($units['hardware']['feeder']) || $units['hardware']['feeder'] == ''): ?>
 		<div class="alert alert-warning animated  fadeIn" role="alert">
-			<i class="fa fa-warning"></i><?php echo _("<strong>Warning</strong> Seems that you still have not set the feeder your are using.");?>
+			<i class="fa fa-exclamation-triangle"></i><?php echo _("<strong>Warning</strong> Seems that you still have not set the feeder your are using.");?>
 		</div>
 <?php else: ?>
 		<div class="alert alert-info animated  fadeIn" role="alert">
@@ -85,7 +85,7 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="alert alert-warning fade in">
-							<i class="fa-fw fa fa-warning"></i>
+							<i class="fa-fw fa fa-exclamation-triangle"></i>
 							<strong><?php echo _("Warning");?></strong> <?php echo _("changing these settings may affect the proper functioning of the printer"); ?>
 						</div>
 					</div>

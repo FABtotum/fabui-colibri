@@ -899,7 +899,7 @@
 				break;
 			case 'disable':
 				dropzone.disable();
-				$(dropzone.element).find(".dictDefaultMessage").html('<span class="font-lg"><i class="fa fa-warning text-danger"></i> <?php echo !$internet ? _("No internet connection found").'<br>'._("Check network settings and try again") :  _("You must enter a valid subscription code <br> in order to use CAM toolbox"); ?></span>');
+				$(dropzone.element).find(".dictDefaultMessage").html('<span class="font-lg"><i class="fa fa-exclamation-triangle text-danger"></i> <?php echo !$internet ? _("No internet connection found").'<br>'._("Check network settings and try again") :  _("You must enter a valid subscription code <br> in order to use CAM toolbox"); ?></span>');
 				$(dropzone.element).css("opacity", 0.4);
 				break;
 		}

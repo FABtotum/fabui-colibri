@@ -213,7 +213,7 @@
 	
 	function bulk_ask_delete(ids){
 		$.SmartMessageBox({
-				title: "<i class='fa fa-warning txt-color-orangeDark'></i> <?php echo _("Warning") ?>!",
+				title: "<i class='fa fa-exclamation-triangle txt-color-orangeDark'></i> <?php echo _("Warning") ?>!",
 				content: "<?php echo _("Do you really want to remove the selected files?") ?>",
 				buttons: '[<?php echo _("No") ?>][<?php echo _("Yes") ?>]'
 			}, function(ButtonPressed) {
@@ -248,7 +248,7 @@
    	
 	function bulk_ask_download(ids){
 		$.SmartMessageBox({
-				title: "<i class='fa fa-warning txt-color-orangeDark'></i> <?php echo _("Warning") ?>!",
+				title: "<i class='fa fa-exclamation-triangle txt-color-orangeDark'></i> <?php echo _("Warning") ?>!",
 				content: "<?php echo _("Do you really want download the selected files?") ?>",
 				buttons: '[<?php echo _("No") ?>][<?php echo _("Yes") ?>]'
 		}, function(ButtonPressed) {

@@ -440,7 +440,7 @@
 				content : '<?php echo _('Please select at least 1 bundle, firmware, boot or plugin update')?>',
 				color : "#5384AF",
 				timeout: 3000,
-				icon : "fa fa-warning"
+				icon : "fa fa-exclamation-triangle"
 			});
 		}
 	
@@ -511,7 +511,7 @@
 
 
 				if(data.update.current.status == "error"){
-					$(".status").html('<i class="fa fa-warning"></i> ' + data.update.current.message).addClass('margin-bottom-20');
+					$(".status").html('<i class="fa fa-exclamation-triangle"></i> ' + data.update.current.message).addClass('margin-bottom-20');
 					$(".lead").hide();
 					$(".update-details").hide();
 				}else{

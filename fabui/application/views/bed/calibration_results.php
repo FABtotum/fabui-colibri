@@ -53,7 +53,7 @@ if(is_array($_response) && isset($_response['bed_leveling']) && $_response['bed_
 echo '<div class="row">
 	<div class="col-sm-12">
 		<div class="alert alert-block alert-warning">
-			<h4 class="alert-heading"><i class="fa fa-warning"></i> Warning!</h4>
+			<h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i>'._("Warning!").'</h4>
 			'._("Well this is embarrassing, during measurements something went wrong").'<br>
 			'._("Check probe lenght and try again").'
 		</div>

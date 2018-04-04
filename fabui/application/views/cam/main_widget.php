@@ -95,7 +95,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title"><i class="fa fa-warning"></i> <?php echo _("Missing FABID"); ?></h4>
+				<h4 class="modal-title"><i class="fa fa-exclamation-triangle></i> <?php echo _("Missing FABID"); ?></h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -120,7 +120,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title"><i class="fa fa-warning"></i> <?php echo _("No internet connection found"); ?></h4>
+				<h4 class="modal-title"><i class="fa fa-exclamation-triangle"></i> <?php echo _("No internet connection found"); ?></h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">

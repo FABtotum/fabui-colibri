@@ -76,7 +76,7 @@
 <h4 class="text-center"><?php echo _('Choose calibration type'); ?></h4>
 <?php if($settings['probe']['enable']):?>
 	<div class="alert alert-warning animated fadeIn margin-top-10 margin-bottom-10 ">
-		<i class="fa fa-warning"></i> <?php echo _("Z touch probe enabled: please make sure probe's length was <a href='#maintenance/nozzle-height-calibration'>calibrated</a> ");?>
+		<i class="fa fa-exclamation-triangle"></i> <?php echo _("Z touch probe enabled: please make sure probe's length was <a href='#maintenance/nozzle-height-calibration'>calibrated</a> ");?>
 	</div>
 <?php endif;?>
 <div class="row">

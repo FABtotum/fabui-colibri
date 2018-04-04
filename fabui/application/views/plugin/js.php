@@ -26,7 +26,7 @@
 			
 			if($.inArray(extension.toLowerCase(), allowed_types) == -1){
 				
-				$(".well").after('<div class="alert alert-warning type-warning"><i class="fa-fw fa fa-warning"></i>'+"<?php echo _("<strong>Warning</strong>: Only .zip files are allowed");?>"+'</div>');
+				$(".well").after('<div class="alert alert-warning type-warning"><i class="fa-fw fa fa-exclamation-triangle"></i>'+"<?php echo _("<strong>Warning</strong>: Only .zip files are allowed");?>"+'</div>');
 				$(this).val("");
 				$("#install-button").addClass("disabled");
 			}
@@ -86,7 +86,7 @@
 	function populateOnlineTable(plugins)
 	{
 		if(plugins == false){
-			$("#online-table").html('<h2 class="text-center"><i class="fa fa-warning"></i> <?php echo _("No internet connection found") ?></h2><h6 class="text-center"><?php echo _("Check your connection and try again") ?></h6>');
+			$("#online-table").html('<h2 class="text-center"><i class="fa fa-exclamation-triangle"></i> <?php echo _("No internet connection found") ?></h2><h6 class="text-center"><?php echo _("Check your connection and try again") ?></h6>');
 
 		}else{
 			var table_html = '<table class="table table-striped table-forum"><thead><tr>\
@@ -232,7 +232,7 @@
 						content : '<?php echo _("Uploaded zip file is not a plugin archive");?>',
 						color : "#C46A69",
 						timeout: 10000,
-						icon : "fa fa-warning"
+						icon : "fa fa-exclamation-triangle"
 					});
 				}
 			}

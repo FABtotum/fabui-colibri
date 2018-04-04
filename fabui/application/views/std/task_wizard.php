@@ -23,7 +23,7 @@ if($runningTask) $safety_check['all_is_ok'] = true;
 
 <?php if($warning): ?>
 <div class="alert alert-warning animated  fadeIn" role="alert">
-	<i class="fa fa-warning"></i><strong><?php echo _("Warning");?></strong> <?php echo $warning;?>
+	<i class="fa fa-exclamation-triangle"></i><strong><?php echo _("Warning");?></strong> <?php echo $warning;?>
 </div>
 <?php endif; ?>
 <!-- SAFETY BLOCK -->

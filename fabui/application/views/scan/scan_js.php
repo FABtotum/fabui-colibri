@@ -55,7 +55,7 @@
 			if(response.connection == 'failed'){
 				
 				$("#connection_test_button").removeClass("disabled btn-primary btn-success").addClass("btn-warning");
-				$("#connection_test_button").html('<i class="fa fa-warning"></i> ' + _("No connection.") );
+				$("#connection_test_button").html('<i class="fa fa-exclamation-triangle"></i> ' + _("No connection.") );
 				$("#connection-note").html( _("Please check the desktop server or that your firewall is not blocking the port and try again.") );
 				$('#btn-next').removeClass('disabled').addClass('disabled');
 				

@@ -28,7 +28,7 @@
 					title : "<?php echo _("Warning");?>",
 					content: data.trace,
 					color : "#C46A69",
-					icon : "fa fa-warning",
+					icon : "fa fa-exclamation-triangle",
 					timeout: 15000
 				});
 			}

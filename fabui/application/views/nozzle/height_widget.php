@@ -67,7 +67,7 @@
                                 <h4 class="text-center">
                                     <?php echo _("Using the buttons below, raise the bed until a standard piece of copy paper (80 mg) can barely move between the nozzle and the bed.");?>
                                     <br>
-                                    <i class="fa fa-warning"></i> <?php echo _("Caution the nozzle is hot!");?>
+                                    <i class="fa fa-exclamation-triangle"></i> <?php echo _("Caution the nozzle is hot!");?>
                                     <br><br>
                                     <?php echo _("When done press Calibrate to finish");?>
                                 </h4>

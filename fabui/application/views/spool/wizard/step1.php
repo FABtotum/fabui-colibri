@@ -14,7 +14,7 @@
 		<div class="well well-sm well-light">
 			<ul class="list-unstyled">
 	            <li><i class="fa fa-wrench"></i> <?php echo _("A pair of scissors or clippers are suggested"); ?></li>
-	            <li><i class="fa fa-warning"></i> <?php echo _("Operate according to safety instructions provided. Nozzle and bed can be hot, exercise caution accordingly"); ?></li>
+	            <li><i class="fa fa-exclamation-triangle"></i> <?php echo _("Operate according to safety instructions provided. Nozzle and bed can be hot, exercise caution accordingly"); ?></li>
 	            <li><i class="fa fa-info-circle"></i> <?php echo _("Do not push or pull the filament too hard, as it can break inside the filament mechanism during the operations"); ?></li>
          	</ul>
 		</div>

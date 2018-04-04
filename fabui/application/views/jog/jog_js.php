@@ -486,7 +486,7 @@ if(!isset($rpm_max)) 		$rpm_max = 14000;
 		if(action == "off")
 		{
 			$.SmartMessageBox({
-				title: "<h4><span class='txt-color-orangeDark'><i class='fa fa-warning fa-2x'></i></span>&nbsp;&nbsp; <?php echo _("Turning the cold extrusion protection off might be dangerous if the filament has not been removed from the head already"); ?>.<br><?php echo _("Do you want to disable cold extrusion?");?></h4>",
+				title: "<h4><span class='txt-color-orangeDark'><i class='fa fa-exclamation-triangle fa-2x'></i></span>&nbsp;&nbsp; <?php echo _("Turning the cold extrusion protection off might be dangerous if the filament has not been removed from the head already"); ?>.<br><?php echo _("Do you want to disable cold extrusion?");?></h4>",
 				buttons: '[No][Yes]'
 			}, function(ButtonPressed) {
 			   
