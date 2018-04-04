@@ -645,7 +645,7 @@ fabApp = (function(app) {
 							title : "Wizard Setup",
 							content : _("It seems that you still did not complete the first recommended setup")+ ": <ul><li>" + _("Install head") + "</li> <li>"+ _("Manual Bed Calibration") + "</li><li>" + _("Nozzle height calibration") +" </li></ul><br>" + _("Without a proper calibration you will not be able to use the FABtotum correctly") + "<br>" + _("Do you want to do it now?") + " <br><br><p class='text-align-right'><a href='#maintenance/first-setup' class='btn btn-primary btn-sm'>" + _("Yes") + "</a> <a href='javascript:javascript:void(0);' class='btn btn-danger btn-sm'>"+ _("No") + "</a> <a href='javascript:fabApp.finalizeWizard();' class='btn btn-warning btn-sm'>" + _("Don't ask me anymore") + "</a> </p>",
 							color : "#296191",
-							icon : "fa fa-warning swing animated"
+							icon : "fa fa-exclamation-triangle swing animated"
 						});
 				}, 1000);
 			}
@@ -671,12 +671,12 @@ fabApp = (function(app) {
 	 * @memberof fabApp
 	 */
 	app.stopAll = function(message) {
-		message = message || '<i class="fa fa-warning"></i> ' +  _("Emergency stop") ;
+		message = message || '<i class="fa fa-exclamation-triangle"></i> ' +  _("Emergency stop") ;
 		openWait(message, ' ', false);
 		$.get(stop_all_url_action, function(){
 			waitContent('<i class="fa fa-cog fa-spin"></i> ' + _("Restarting all services") + '<br> ' + _("Please wait"));
 			setTimeout(function(){
-				waitContent('<i class="fa fa-refresh fa-spin"></i> ' + _("Reloading page"));
+				waitContent('<i class="fa fa-sync-alt fa-spin"></i> ' + _("Reloading page"));
 				location.reload(); 
 			}, 10000);
 		});
@@ -1166,7 +1166,7 @@ fabApp = (function(app) {
 		var buttons = '[' + _("Ok")  + '][' + _("Ignore") + ']';
 		$.SmartMessageBox({
 			buttons : buttons,
-			title : "<h4><span class='txt-color-orangeDark'><i class='fa fa-warning fa-2x'></i></span>&nbsp;&nbsp;" + emergency_descriptions[error_code] + "<br>&nbsp;" + _("Press OK to continue or Ignore to disable this warning") + "</h4>"
+			title : "<h4><span class='txt-color-orangeDark'><i class='fa fa-exclamation-triangle fa-2x'></i></span>&nbsp;&nbsp;" + emergency_descriptions[error_code] + "<br>&nbsp;" + _("Press OK to continue or Ignore to disable this warning") + "</h4>"
 		},function(ButtonPressed) {
 			if(ButtonPressed == _("Ok") || (ButtonPressed == _("Ignore") && buttons.indexOf(_("Install head")) > -1) ) app.setSecure(1);
 			else if(ButtonPressed == _("Ignore")) app.setSecure(0);
@@ -1183,7 +1183,7 @@ fabApp = (function(app) {
 		});
 		
 		$.SmartMessageBox({
-			title : '<i class="fa fa-warning txt-color-orangeDark"></i> ' + emergency_descriptions[ERROR_MIN_TEMP],
+			title : '<i class="fa fa-exclamation-triangle txt-color-orangeDark"></i> ' + emergency_descriptions[ERROR_MIN_TEMP],
 			content : _("Before proceed make sure the head is properly locked in place"),
 			buttons : "[" + _("Install head")  + "]["+ _("Ignore") +"]",
 			input : "select",
@@ -1258,7 +1258,7 @@ fabApp = (function(app) {
 			content : emergency_descriptions[code],
 			color : "#5384AF",
 			timeout : 10000,
-			icon : "fa fa-warning"
+			icon : "fa fa-exclamation-triangle"
 		});
 	};
 	/*
@@ -1528,7 +1528,7 @@ fabApp = (function(app) {
 				content : _("New updates are available") + "<p class='text-align-right'><a href='#updates' class='btn btn-primary btn-sm'>"+_("Update now")+"</a></p>",
 				color : "#296191",
 				timeout: 15000,
-				icon : "fa fa-refresh swing animated"
+				icon : "fa fa-sync-alt swing animated"
 			});
 		}
 	}
@@ -1557,7 +1557,7 @@ fabApp = (function(app) {
 	app.forceRecovery = function (){
 		
 		app.rebooting = true;
-			openWait("<i class='fa fa-warning'></i> " + _("Entering recovery mode"), _("You will be redirected to recovery page"), false);
+			openWait("<i class='fa fa-exclamation-triangle'></i> " + _("Entering recovery mode"), _("You will be redirected to recovery page"), false);
 			$.get(set_recovery_url + '/activate', function(data){ 
 				$.ajax({
 					url: reboot_url_action,
@@ -1753,7 +1753,7 @@ fabApp = (function(app) {
 		if(data.internet){
 			$("#ribbon-left-buttons").prepend('<span data-title="' + _("Internet available") + '"  rel="tooltip" data-placement="bottom" class="btn btn-ribbon internet-ribbon-icon"><i class="fa fa-globe"></i></span>');
 		}else{
-			$("#ribbon-fabid-button").html("<i class='fa fa-warning text-danger'></i> " + _("No internet connection")).attr('data-original-title',_("Check network settings and try again")).attr('data-title', _("Check network settings and try again"));
+			$("#ribbon-fabid-button").html("<i class='fa fa-exclamation-triangle text-danger'></i> " + _("No internet connection")).attr('data-original-title',_("Check network settings and try again")).attr('data-title', _("Check network settings and try again"));
 		}
 		if(connectionType == 'eth') {
 			$(".eth-ribbon").remove();
@@ -1828,7 +1828,7 @@ fabApp = (function(app) {
 				 * @TODO
 				 */
 			}).fail(function(jqXHR, textStatus, errorThrown) {
-				openWait('<i class="fa fa-warning"></i> ' + _("No connection detected"), _("Unable to connect to the FABtotum Personal Fabricator") + '<br>' + _("Please check ethernet cable or wifi connection and then reload the page"), false); 
+				openWait('<i class="fa fa-exclamation-triangle"></i> ' + _("No connection detected"), _("Unable to connect to the FABtotum Personal Fabricator") + '<br>' + _("Please check ethernet cable or wifi connection and then reload the page"), false); 
 			});
 		}
 	}
