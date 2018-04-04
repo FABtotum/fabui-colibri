@@ -35,7 +35,7 @@ $is_admin = $this->session->user['role'] == 'administrator';
     							<div class="form-group">
     								<input type="file" class="btn btn-default" id="hex-file" name="hex-file" accept=".hex">
     							</div>
-    							<button type="button" id="install-button" class="btn btn-primary disabled flash-button" style="margin-left:5px;"><?php echo _("Flash firmware");?></button>
+    							<button type="button" id="install-button" class="btn btn-primary disabled flash-button" disabled="disabled" style="margin-left:5px;"><?php echo _("Flash firmware");?></button>
     						</fieldset>
     					</form>
     				</div>

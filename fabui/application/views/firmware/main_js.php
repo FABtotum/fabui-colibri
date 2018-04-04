@@ -5,6 +5,7 @@
 		$("#fw-version").on('change', set_flash_section);
 		$(".flash-button").on('click', start_fw_flashing);
 		$("#hex-file").on('change', function(){
+			enableButton("#install-button");
 			$(".flash-button").removeClass("disabled");
 		});
 	 });
@@ -26,6 +27,7 @@
 
 	function start_fw_flashing()
 	{
+		disableButton(".flash-button");
 		var version = $("#fw-version").val();
 		if(version == 'upload')
 		{
