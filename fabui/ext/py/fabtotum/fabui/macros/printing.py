@@ -85,7 +85,7 @@ def resume_additive(app, args=None, lang='en_US.UTF-8'):
         
     #block stepper motor for 1min => 60*1=60
     app.macro("M84 S60",                     "ok", 2,  _("Block stepper motor"), verbose=False)
-    app.macro("M82",                         "ok", 1,  _(" Set extruder to absolute mode"),  verbose=False)
+    # app.macro("M82",                         "ok", 1,  _(" Set extruder to absolute mode"),  verbose=False)
     app.macro("M104 S{0}".format(ext_temp),  "ok", 5,  _("Heating Nozzle"), verbose=False)
     app.macro("M140 S{0}".format(bed_temp),  "ok", 5,  _("Heating Bed"), verbose=False)
     app.macro("M109 S{0}".format(ext_temp),  "*", 400, _("Waiting for nozzle to reach temperature {0}&deg;".format(ext_temp)) ) #heating and waiting.
@@ -109,14 +109,14 @@ def resume_additive(app, args=None, lang='en_US.UTF-8'):
             z = float(content['position']['z'])
             e = float(content['position']['e'])
             
-            app.macro("G28 XY",                         "ok", 20,   _("Homing"), verbose=False)
-            app.macro("G91",                            "ok", 2,    _("Setting relative position"), verbose=False )
-            app.macro("G0 E+20 F150",                    "ok", 300,  _("Extrude filament to clean the nozzle and build up extrusion pressure") )
-            app.macro("G92 E{0:.16f}".format(e),        "ok", 2,    _("Set extuder length"), verbose=False)
-            app.macro("G90",                            "ok", 2,    _("Setting abs position"), verbose=False )
-            app.macro("G0 X{0} Y{1} F6000".format(x,y), "ok", 60,   _("Restore XY position"), verbose=False )
-            app.macro("G0 Z{0} F5000".format(z),        "ok", 60,   _("Restore Z position"), verbose=False )
-            app.macro("M400",                           "ok", 120,  _("Waiting for all moves to finish"), verbose=False)
+            app.macro("G28 XY",                         "ok", 20,  _("Homing"), verbose=False)
+            # app.macro("G91",                            "ok", 2,   _("Setting relative position"), verbose=False )
+            app.macro("G0 E+30 F150",                   "ok", 300, _("Extrude filament to clean the nozzle and build up extrusion pressure") )
+            app.macro("G92 E{0:.16f}".format(e),        "ok", 2,   _("Set extuder length"), verbose=False)
+            app.macro("G90",                            "ok", 2,   _("Setting abs position"), verbose=False )
+            app.macro("G0 X{0} Y{1} F6000".format(x,y), "ok", 60,  _("Restore XY position"), verbose=False )
+            app.macro("G0 Z{0} F5000".format(z),        "ok", 60,  _("Restore Z position"), verbose=False )
+            app.macro("M400",                           "ok", 120, _("Waiting for all moves to finish"), verbose=False)
             #app.macro("G0 E{0} F{1}".format(feeder['retract_amount'], feeder['retract_feedrate']),  "ok", 20,    _("Restore fillament") )
 
 def prepare_additive(app, args=None, lang='en_US.UTF-8'):
