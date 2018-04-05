@@ -304,7 +304,7 @@ msgstr "Reimposta password"
 #: fabui/application/views/projectsmanager/index/js.php:178
 #: fabui/application/views/projectsmanager/edit/js.php:173
 msgid "Delete"
-msgstr "Cancella"
+msgstr "Elimina"
 
 #: fabui/application/controllers/Settings.php:39
 #: fabui/application/views/std/task_dropzone.php:33
@@ -3997,16 +3997,14 @@ msgstr "Firmware installato"
 msgid "Build-date"
 msgstr "Data di costruzione"
 
-#: fabui/application/views/cam/js.php:88
-#: fabui/application/views/cam/js.php:897
+#: fabui/application/views/cam/js.php:88 fabui/application/views/cam/js.php:897
 #: fabui/application/views/backup/js.php:44
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
 msgid "Drop files to upload"
 msgstr "Trascina file per caricarli"
 
-#: fabui/application/views/cam/js.php:88
-#: fabui/application/views/cam/js.php:897
+#: fabui/application/views/cam/js.php:88 fabui/application/views/cam/js.php:897
 #: fabui/application/views/backup/js.php:44
 #: fabui/application/views/projectsmanager/add/js.php:32
 #: fabui/application/views/projectsmanager/file/add/js.php:32
@@ -5112,8 +5110,7 @@ msgstr "Se sei stato tu a mettere in pausa puoi ignorare questa email"
 msgid "mode"
 msgstr "modo"
 
-#: fabui/application/views/scan/wizard/step5.php:24
-#: fabui/ext/py/pg_scan.py:244
+#: fabui/application/views/scan/wizard/step5.php:24 fabui/ext/py/pg_scan.py:244
 msgid "Scan completed"
 msgstr "Scansione completata"
 
@@ -5506,7 +5503,7 @@ msgstr "Ultimo accesso"
 
 #: fabui/application/views/users/index/widget.php:38
 msgid "User deletion"
-msgstr ""
+msgstr "Eliminazione utente"
 
 #: fabui/application/views/users/index/widget.php:41
 msgid ""
