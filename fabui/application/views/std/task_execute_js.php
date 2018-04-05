@@ -932,7 +932,7 @@ if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 		   data.print.hasOwnProperty("layer_current") && 
 		   data.print.hasOwnProperty("layer_total"))
 		{
-			updateLayer(data.print.layer_current, data.print.layer_total);
+			updateLayer(data.print.layer_current, data.print.layer_total, data.print.engine);
 		}
 		<?php endif; ?>
 		<?php if($show_prism_temperature): ?>
@@ -1331,10 +1331,15 @@ if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 	/**
 	 *
 	 **/
-	function updateLayer(current, total)
+	function updateLayer(current, total, engine)
 	{
 		if(total > 0){
-			$(".task-layer-current").html((parseInt(current)+1));
+
+			if(engine == "CURA"){
+				current = parseInt(current) + 1; 
+			}	
+			
+			$(".task-layer-current").html(current);
 			$(".task-layer-total").html(parseInt(total));
 			$(".layer-info").removeClass("hidden");
 		}
