@@ -120,9 +120,11 @@
 	function doSpoolAction()
 	{
 		openWait("<i class='fa fa-circle-o-notch fa-spin'></i> <?php echo _("Please wait");?>");
+		var filament = $("input[name='filament-type']:checked").val();
+		var temperature = $("#extrusion-temperature").val();
 		$.ajax({
 			type: "POST",
-			url: "<?php echo site_url("spool") ?>/" + mode + '/' + filament,
+			url: "<?php echo site_url("spool") ?>/" + mode + '/' + filament + '/0/' + temperature,
 			dataType: 'json'
 		}).done(function( response ) {
 		closeWait();
