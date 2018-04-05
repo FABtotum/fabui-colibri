@@ -844,7 +844,7 @@ msgstr "visualizzatore gCode"
 #: fabui/application/views/users/index/widget.php:57
 #: fabui/application/views/history/main_js.php:99
 msgid "Cancel"
-msgstr "Cancella"
+msgstr "Annulla"
 
 #: fabui/application/controllers/Projectsmanager.php:758
 msgid "Add new file"
