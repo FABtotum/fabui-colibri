@@ -25,6 +25,7 @@ __version__ = "1.0"
 # Import standard python module
 import os, re
 import urllib2
+import hashlib
 
 ########################################################################
 # Execute command via shell and return the complete output as a string
@@ -167,3 +168,12 @@ def get_url_num_bytes(url):
     if num_bytes is not None:
         num_bytes = int(num_bytes)
     return num_bytes
+########################################################################
+# GET FILE MD5
+########################################################################
+def file_md5(file):
+    hash_md5 = hashlib.md5()
+    with open(file, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
