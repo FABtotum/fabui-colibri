@@ -46,10 +46,14 @@ def pause_prism(app, args=None, lang='en_US.UTF-8'):
     set_lights(app, [255, 0, 0])
     
     
-    
 def resume_prism(app, args=None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
-    
+    app.macro("M999",    "ok", 3, _("Reset all errors"),   verbose=False)
     app.trace( _("Turning off lights") )
     set_lights(app, [0, 0, 0])
-    app.macro("M999",    "ok", 3, _("Reset all errors"),   verbose=False)
+    app.macro("M300", "ok", 3, _("Play beep"), verbose=False)
+    
+def end_prism(app, args=None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    app.trace( _("End prism") )
+    

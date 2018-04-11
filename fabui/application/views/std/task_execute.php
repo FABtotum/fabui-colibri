@@ -48,11 +48,12 @@ if(!isset($show_change_filament)) $show_change_filament = false;
 if(!isset($show_pause_button)) $show_pause_button = true;
 if(!isset($show_prism_layer_preview)) $show_prism_layer_preview = false;
 if(!isset($show_prism_temperature)) $show_prism_temperature = false;
+if(!isset($show_connect_button)) $show_connect_button = false;
 
 $split_view = $show_temperature_graph || $show_prism_layer_preview;
-$stats_button_size = $show_temperature_graph ? 4 : 6;
+$stats_button_size = $show_temperature_graph  || $type == "prism" ? 4 : 6;
 
-//if($stats_button_size == 6 && $show_pause_button == false) $stats_button_size = 12;
+
 ?>
 <ul id="createFeed" class="nav nav-tabs bordered">
 	<li class="active"><a href="#live-feeds-tab" data-toggle="tab"><?php echo _("Live feeds")?></a></li>
@@ -223,6 +224,13 @@ $stats_button_size = $show_temperature_graph ? 4 : 6;
 						<div class="fake-progress"></div>
 					</div>
 					<span class="show-stat-buttons margin-top-10" style="padding-left:13px;padding-right:13px;"> 
+						
+						
+						<?php if($show_connect_button):?>
+							<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?> pull-right"> 
+								<button type="button" class="btn btn-default btn-block connect-button"><i class="fa fa-link"></i> <span class="hidden-xs hidden-sm"> <?php echo _("Connect"); ?></span> </button> 
+							</span>
+						<?php endif; ?>
 						
 						<?php if($show_change_filament):?>
 							<span class="col-xs-<?php echo $stats_button_size; ?> col-sm-<?php echo $stats_button_size; ?> col-md-<?php echo $stats_button_size; ?> col-lg-<?php echo $stats_button_size; ?> pull-right"> 

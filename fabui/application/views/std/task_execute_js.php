@@ -119,6 +119,11 @@ if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 		$(".filament-button-choose-action").on('click', filamentSetMode);
 		$("#filament-start-button").on('click', startFilamentAction);
 		<?php endif; ?>
+
+		<?php if($type=="prism"): ?>
+			disableButton(".connect-button");
+			$(".connect-button").on('click', prismConnect);
+		<?php endif; ?>
 		
 	});
 	/**
@@ -935,10 +940,19 @@ if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 			updateLayer(data.print.layer_current, data.print.layer_total, data.print.engine);
 		}
 		<?php endif; ?>
-		<?php if($show_prism_temperature): ?>
-    		if(data.hasOwnProperty("prism")){
-    			updatePrismTemperature(data.prism.temperature);
-    		}	
+		
+		<?php if($type=="prism"): ?>
+			
+			if(data.hasOwnProperty("prism")){
+	    		updatePrismTemperature(data.prism.temperature);
+			}
+
+			if(data.prism.connected == false){
+				enableButton(".connect-button");
+			}else{
+				disableButton(".connect-button");
+			}
+			
 		<?php endif; ?>
 	};
 	
@@ -1345,7 +1359,6 @@ if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 		}
 
 		if($("#prism-preview-layer").length > 0){
-			
 			$("#prism-preview-layer").attr('src', '/fabui/plugin/fab_prism/preview/' + current);
 		}
 	}
@@ -1359,5 +1372,27 @@ if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 		$(".task-prism-temperature").html(temperature.toFixed(2));
 	}
 	<?php endif;?>
+
+	<?php if($type=="prism"): ?>
+	function prismConnect()
+	{
+		disableButton('.connect-button'); 
+		$.ajax({
+			url: "<?php echo $connect_url_action; ?>",
+			dataType : 'json',
+			type: "POST",
+		}).done(function(response) {
+			if(response.bluetooth_status.paired.connected == true){
+				fabApp.showInfoAlert("<?php echo dgettext('fab_prism', "PRISM connected"); ?>");
+				disableButton('.connect-button');
+			}else{
+				fabApp.showErrorAlert("<?php echo dgettext('fab_prism', "Connection failed"); ?><br>" + response.connection_response.error + "<br><?php echo dgettext('fab_prism', 'Try Again'); ?>");
+			}
+			enableButton('.connect-button'); 
+		});
+
+		
+	}
+    <?php endif; ?>
 </script>
 

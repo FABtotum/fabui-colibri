@@ -171,7 +171,6 @@ def version(app, args = None, lang='en_US.UTF-8'):
     return get_versions(app, lang)
 
 def set_ambient_color(app, args = None, lang='en_US.UTF-8'):
-    
     return set_lights(app, args, lang)
 
 def install_head(app, args, lang='en_US.UTF-8'):
