@@ -702,4 +702,22 @@ if(!function_exists('bluetooth_remove_device'))
         
     }
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('bluetooth_restart'))
+{
+    /**
+     * disable bluetooth
+     */
+    function bluetooth_restart()
+    {
+        $CI =& get_instance();
+        $CI->load->helper('fabtotum');
+        $args = array(
+            '-a' => 'restart',
+        );
+        $scriptResult = trim(startBashScript('bluetooth.sh', $args, false, true));
+        return $scriptResult != '';
+        
+    }
+}
 ?>

@@ -74,6 +74,9 @@ case $ACTION in
     disable)
         disable_bluetooth
         ;;
+	restart)
+		sudo /etc/init.d/bluetooth restart
+		;;
 	remove)
 		bluetooth_remove_device "$MAC"
 		;;

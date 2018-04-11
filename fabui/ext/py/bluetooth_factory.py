@@ -79,7 +79,7 @@ class BTFactory():
         if(self.status['powered'] == False):
             self.enable_bluetooth()
         
-        self._adapter = Adapter()
+        self._adapter = Adapter(verbose=self.verbose)
         
         ## power adapter if necessary
         if not self._adapter.Powered:
@@ -118,7 +118,7 @@ class BTFactory():
         paired = False
             
         ## start pairing 
-        devices = self._adapter.discoverDevices(look_for_name=look_for_name, timeout=30, verbose=self.verbose)
+        devices = self._adapter.discoverDevices(look_for_address=mac_address, timeout=60, verbose=self.verbose)
         
         for addrees in devices:
             device = devices[addrees]

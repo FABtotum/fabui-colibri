@@ -39,7 +39,7 @@ from device import Device
 
 class Adapter(dbus.service.Object):
 
-    def __init__(self, pattern=None):
+    def __init__(self, pattern=None, verbose=False):
         """
         Bluetooth adapter class constructor.
 
@@ -57,7 +57,7 @@ class Adapter(dbus.service.Object):
                 path_keyword = "path")
 
         self.__devices = {}
-        self.__verbose = False
+        self.__verbose = verbose
 
         om = dbus.Interface(self.__bus.get_object("org.bluez", "/"),
                     "org.freedesktop.DBus.ObjectManager")
@@ -75,11 +75,16 @@ class Adapter(dbus.service.Object):
 
         Return discovered devices.
         """
+        
+        
         self.__look_for_name = look_for_name
         self.__look_for_address = look_for_address
         self.__discovery = {}
         self.__verbose = verbose
-
+        
+        #print self.__look_for_name
+        #print self.__look_for_address
+        
         timeout *= 1000
         GObject.timeout_add(timeout, self.__timeout_handler)
 
@@ -105,6 +110,10 @@ class Adapter(dbus.service.Object):
         """
         New device discovered.
         """
+        
+        #print "__add_device"
+        #print properties
+        
         if(self.__verbose):
             print("[ " + address + " ]")
 
@@ -112,15 +121,15 @@ class Adapter(dbus.service.Object):
             value = properties[key]
             if type(value) is dbus.String:
                 value = unicode(value).encode('ascii', 'replace')
-
-            if self.__look_for_name:
+            
+            if self.__look_for_name is not None:
                 if key == "Name" and self.__verbose == True:
                     print ">> name:", value
                 if key == "Name" and value == self.__look_for_name and address != "<unknown>":
                     self.__discovery[address] = Device(address, bus=self.__bus)
                     self.__timeout_handler()
-
-            if self.__look_for_address:
+            
+            if self.__look_for_address is not None:
                 if address != "<unknown>" and address == self.__look_for_address:
                     self.__discovery[address] = Device(address, bus=self.__bus)
                     self.__timeout_handler()
