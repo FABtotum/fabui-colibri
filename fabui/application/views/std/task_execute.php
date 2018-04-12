@@ -49,6 +49,7 @@ if(!isset($show_pause_button)) $show_pause_button = true;
 if(!isset($show_prism_layer_preview)) $show_prism_layer_preview = false;
 if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 if(!isset($show_connect_button)) $show_connect_button = false;
+if(!isset($show_z_override)) $show_z_override = true;
 
 $split_view = $show_temperature_graph || $show_prism_layer_preview;
 $stats_button_size = $show_temperature_graph  || $type == "prism" ? 4 : 6;
@@ -59,17 +60,6 @@ $stats_button_size = $show_temperature_graph  || $type == "prism" ? 4 : 6;
 	<li class="active"><a href="#live-feeds-tab" data-toggle="tab"><?php echo _("Live feeds")?></a></li>
 	<li><a href="#controls-tab" data-toggle="tab"><i class="fa fa-sliders"></i> <span class="hidden-xs"><?php echo _("Controls");?></span></a></li>
 	<li class="pull-right">
-		<!-- 
-		<div class="widget-toolbar" id="switch-2" style="display: block;" role="menu">
-			<div class="smart-form">
-				<label class="toggle" title="<?php echo _("Send an email when the task is finished")?>" >
-					<input type="checkbox" id="email-switch" name="checkbox-toggle">
-					<i data-swchon-text="ON" data-swchoff-text="OFF"></i>
-					<em class="fa fa-envelope"></em> <span class="hidden-xs"><?php echo _("Email") ?></span>
-				</label>
-			</div>
-		</div>
-		 -->
 		<div class="widget-toolbar" role="menu">
 			<div class="btn-group">
 				<button type="button" data-action="abort" class="btn btn-default action action-abort"><i class="fa fa-stop"></i> <span class="hidden-xs"> <?php echo _("Abort") ?></span></button>
@@ -146,7 +136,7 @@ $stats_button_size = $show_temperature_graph  || $type == "prism" ? 4 : 6;
 			
 			<!-- PRISM PREVIEW LAYER -->
 			<?php if($show_prism_layer_preview):?>
-				<div class="col-sm-6">
+				<div class="col-sm-6 hidden-xs">
 					<div style="position:relative; min-height: 220px;">
 						<img class="img-responsive" style=" height: 400px; position:absolute; left:100px; top:-100px; transform:rotate(90deg);"  id="prism-preview-layer">
 					</div>
@@ -157,32 +147,32 @@ $stats_button_size = $show_temperature_graph  || $type == "prism" ? 4 : 6;
 			
 			<div class="col-sm-<?php echo $split_view ? '6' : '12' ?> show-stats">
 				<div class="row ">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <span class="text"> <i class="fa fa-cube"></i> <?php echo _("File"); ?> <span class="pull-right"><span class="task-file-name"> (<?php echo _("Loading");?> ..)</span> </span> </span>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <span class="text font-md"> <i class="fa fa-cube"></i> <?php echo _("File"); ?> <span class="pull-right"><span class="task-file-name"> (<?php echo _("Loading");?> ..)</span> </span> </span>
 						<div class="fake-progress"></div>
 					</div>
 					
 					<?php if($show_layer_info): ?>
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 layer-info hidden"> <span class="text"> <i class="fa fa-database"></i> <?php echo _("Layer"); ?> <span class="pull-right"><span title="<?php echo _("Current layer");?>" class="task-layer-current"></span> <?php echo _("of")?> <span title="<?php echo _("Total layers");?>" class="task-layer-total"></span> </span> </span>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 layer-info hidden"> <span class="text font-md"> <i class="fa fa-database"></i> <?php echo _("Layer"); ?> <span class="pull-right"><span title="<?php echo _("Current layer");?>" class="task-layer-current"></span> <?php echo _("of")?> <span title="<?php echo _("Total layers");?>" class="task-layer-total"></span> </span> </span>
 						<div class="fake-progress"></div>
 					</div>
 					<?php endif ?>
 					
 					<?php if($show_prism_temperature): ?>
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 prism-temperature"> <span class="text"> <i class="fa fa-thermometer-three-quarters"></i> <?php echo _("Temperature"); ?> <span class="pull-right"><span class="task-prism-temperature"></span> &deg;C</span> </span>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 prism-temperature"> <span class="text font-md"> <i class="fa fa-thermometer-three-quarters"></i> <?php echo _("Temperature"); ?> <span class="pull-right"><span class="task-prism-temperature"></span> &deg;C</span> </span>
 						<div class="fake-progress"></div>
 					</div>
 					<?php endif ?>
 					
 					<?php if($show_temp_info): ?>
-					<div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 hidden-sm hidden-md hidden-lg"> <span class="text"> <?php echo _("Nozzle"); ?> <span class="pull-right"> <span class="extruder-temp"></span> / <span class="extruder-target"></span></span> </span>
+					<div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 hidden-sm hidden-md hidden-lg"> <span class="text font-md"> <?php echo _("Nozzle"); ?> <span class="pull-right"> <span class="extruder-temp"></span> / <span class="extruder-target"></span></span> </span>
 						<div class="fake-progress"></div>
 					</div>
-					<div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 hidden-sm hidden-md hidden-lg"> <span class="text"> <?php echo _("Bed"); ?> <span class="pull-right"><span class="bed-temp"></span> / <span class="bed-target"></span> </span>
+					<div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 hidden-sm hidden-md hidden-lg"> <span class="text font-md"> <?php echo _("Bed"); ?> <span class="pull-right"><span class="bed-temp"></span> / <span class="bed-target"></span> </span>
 						<div class="fake-progress"></div>
 					</div>
 					<?php endif; ?>
 					
-					<div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 "> <span class="text"> <?php echo _("Progress"); ?> <span class="pull-right task-progress"></span> </span>
+					<div class="col-xs-12 col-sm-6 col-md-12 col-lg-12 "> <span class="text font-md"><i class="fa fa-cog fa-spin"></i> <?php echo _("Progress"); ?> <span class="pull-right task-progress"></span> </span>
 						<div class="progress hidden-xs">
 							<div class="progress-bar " id="task-progress-bar"></div>
 						</div>
@@ -190,37 +180,37 @@ $stats_button_size = $show_temperature_graph  || $type == "prism" ? 4 : 6;
 					</div>
 						
 					<?php if($show_speed): ?>
-					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 hidden-xs" > <span class="text"> <?php echo _("Speed"); ?> <span class="pull-right"><span class="task-speed"></span> / 500 %</span> </span>
+					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 hidden-xs" > <span class="text font-md"> <?php echo _("Speed"); ?> <span class="pull-right"><span class="task-speed"></span> / 500 %</span> </span>
 						<div class="progress">
 							<div class="progress-bar" id="task-speed-bar"></div>
 						</div> </div>
 					<?php endif;?>
 					
 					<?php if($show_flowrate): ?>
-					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 hidden-xs"> <span class="text"> <?php echo _("Flow rate"); ?><span class="pull-right"><span class="task-flow-rate"></span> / 500 %</span></span></span>
+					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 hidden-xs"> <span class="text font-md"> <?php echo _("Flow rate"); ?><span class="pull-right"><span class="task-flow-rate"></span> / 500 %</span></span></span>
 						<div class="progress">
 							<div class="progress-bar" id="task-flow-rate-bar"></div>
 						</div> </div>
 					<?php endif;?>
 					
 					<?php if($show_fanspeed): ?>
-					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 hidden-xs"> <span class="text"> <?php echo _("Fan"); ?> <span class="pull-right"><span class="task-fan"></span> %</span> </span>
+					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 hidden-xs"> <span class="text font-md"> <?php echo _("Fan"); ?> <span class="pull-right"><span class="task-fan"></span> %</span> </span>
 						<div class="progress">
 							<div class="progress-bar" id="task-fan-bar"></div>
 						</div> </div>
 					<?php endif;?>
 					
 					<?php if($show_rpm): ?>
-					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 hidden-xs"> <span class="text"><?php echo $rpm_label; ?> <span class="pull-right"><span class="task-rpm"></span> </span> </span>
+					<div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 hidden-xs"> <span class="text font-md"><?php echo $rpm_label; ?> <span class="pull-right"><span class="task-rpm"></span> </span> </span>
 						<div class="progress">
 							<div class="progress-bar" id="task-rpm-bar"></div>
 						</div> </div>
 					<?php endif; ?>
 					
-					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> <span class="text"> <?php echo _("Elapsed time"); ?> <span class="pull-right"><span class="elapsed-time"></span> </span> </span>
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> <span class="text font-md"> <?php echo _("Elapsed time"); ?> <span class="pull-right"><span class="elapsed-time"></span> </span> </span>
 						<div class="fake-progress"></div>
 					</div>
-					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> <span class="text"> <?php echo _("Est. time left"); ?> <span class="pull-right"><span class="estimated-time-left"></span> </span> </span>
+					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> <span class="text font-md"> <?php echo _("Est. time left"); ?> <span class="pull-right"><span class="estimated-time-left"></span> </span> </span>
 						<div class="fake-progress"></div>
 					</div>
 					<span class="show-stat-buttons margin-top-10" style="padding-left:13px;padding-right:13px;"> 
@@ -265,6 +255,7 @@ $stats_button_size = $show_temperature_graph  || $type == "prism" ? 4 : 6;
 	</div>
 	<div class="tab-pane fade in" id="controls-tab">
 		<div class="row margin-bottom-20">
+			<?php if($show_z_override):?>
 			<div class="col-sm-6 col-xs-12">
 				<span class="col-xs-12 col-sm-12 margin-bottom-10">
 					<?php if($type == 'print'): ?>
@@ -287,6 +278,7 @@ $stats_button_size = $show_temperature_graph  || $type == "prism" ? 4 : 6;
 					</span>
 				</span>
 			</div>
+			<?php endif; ?>
 		</div>
 		<hr class="simple hidden-md hidden-sm hidden-lg">
 		<?php if($show_temp_info): ?>

@@ -56,4 +56,6 @@ def resume_prism(app, args=None, lang='en_US.UTF-8'):
 def end_prism(app, args=None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     app.trace( _("End prism") )
+    app.trace( _("Turning off lights") )
+    set_lights(app, [0, 0, 0])
     

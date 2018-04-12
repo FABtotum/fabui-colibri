@@ -26,8 +26,7 @@ if (! isset($safety_check))
 
 	<div class="row">
 
-		<div
-			class="col-sm-<?php echo $safety_check['bed_enabled'] ? 6 : 12; ?> col-md-<?php echo $safety_check['bed_enabled'] ? 6 : 12; ?> text-center">
+		<div class="col-sm-<?php echo $safety_check['bed_enabled'] ? 6 : 12; ?> col-md-<?php echo $safety_check['bed_enabled'] ? 6 : 12; ?> text-center">
 			<div class="row">
 				<img id="safety-check-head-image" class=""
 					src="<?php echo $safety_check['head_in_place']?$safety_check['head_info']['image_src']:"/assets/img/head/head_shape.png"; ?>"
@@ -36,19 +35,28 @@ if (! isset($safety_check))
 
 			<div id="safety-check-head-message">
 		<?php if($safety_check['head_is_ok']): ?>
-		<h4>
-					<strong><?php echo _("Correct head installed");?></strong> <i
-						class="fa fa-check-circle text-success fa-2x"></i>
+				<h4>
+					<strong><?php echo _("Correct module installed");?></strong> <i class="fa fa-check-circle text-success fa-2x"></i>
 				</h4>
 		<?php else: ?>
-		<h4>
-					<strong><?php echo $safety_check['head_in_place']?_("Wrong head installed"):_("No head installed");?></strong>
+				<h4>
+					<strong><?php echo $safety_check['head_in_place']?_("Wrong module installed"):_("No module installed");?></strong>
 					<i class="fa fa-times-circle text-danger fa-2x"></i>
 				</h4>
-				<h3><?php echo pyformat( _("Please install a {0} head."), [$type]); ?></h3>
+				<h3><?php echo pyformat( _("Please install a {0} module."), [$type]); ?></h3>
 		<?php endif; ?>
+			</div>
+			
+			<?php if(isset($safety_check['extra_message'])):?>
+			
+				<?php echo $safety_check['extra_message']; ?>
+			
+			<?php endif;?>
+			
 		</div>
-		</div>
+		
+		
+		
 	<?php if($safety_check['bed_enabled']):?>
 	<div class="col-sm-6 col-md-6 text-center">
 			<div class="row">

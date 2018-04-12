@@ -189,9 +189,15 @@ class BTFactory():
                 for device in devices:
                     if(device['name'] == name):
                         mac_address = device['mac']
-        
+        else:
+            if(mac_address == None or mac_address == ""):
+                mac_address = self.status['paired']['mac_address']
+       
+       
         if(self.verbose):
-            print "Autoconnection to {0} [{1}]".format(name, mac_address) 
+            print "Autoconnection to {0} [{1}]".format(name, mac_address)
+            
+        
         
         pairing_result = self.pair(mac_address=mac_address, look_for_name=name)
         mac_address    = pairing_result['mac_address']
