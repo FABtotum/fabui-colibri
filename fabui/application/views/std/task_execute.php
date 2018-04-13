@@ -12,7 +12,7 @@
 if( !isset($z_height_values) ) $z_height_values = array('0.1' => '0.1 mm', '0.01' => '0.01 mm');
 if( !isset($rpm_label) ) $rpm_label = _("RPM");
 
-if($type == 'print' || $type == "prism")
+if($type == 'print' )
 {
 	if(!isset($show_temperature_graph)) $show_temperature_graph = true;
 	if(!isset($show_speed)) $show_speed = true;

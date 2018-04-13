@@ -28,16 +28,7 @@ if( !isset($z_height_save_message) ) $z_height_save_message = _("Z height is <st
 				<section>
 					<label class="label"><?php echo _("Duration");?>: <span class="pull-right"><span class="elapsed-time"></span></span></label>
 				</section>
-				<!--
-				<div class="row" id="save-z-height-section">
-					<section class="col col-9">
-						<label class="label"><?php echo $z_height_save_message; ?></label>
-					</section>
-					<section class="col col-3">
-						<a style="padding:6px 10px 5px" href="javascript:void(0);" class="btn btn-default btn-block save-z-height"><i class="fa fa-save"></i> <?php echo _("Yes");?></a>
-					</section>
-				</div>
-				-->
+				
 				<section>
 					<div class="rating">
 						<input type="radio" name="quality" id="quality-10">
@@ -71,3 +62,10 @@ if( !isset($z_height_save_message) ) $z_height_save_message = _("Z height is <st
 		</div>
 	</div>
 </div>
+<?php if($type == "prism"):?>
+	<div class="row">
+		<div class="col-sm-12">
+			<h4>Clean instructions</h4>
+		</div>
+	</div>		
+<?php endif;?>

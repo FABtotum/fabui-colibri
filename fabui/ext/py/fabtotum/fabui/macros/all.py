@@ -104,6 +104,7 @@ PRESET_MAP = {
     "prepare_prism"                 : prism_macros.prepare_prism,
     "pause_prism"                   : prism_macros.pause_prism,
     "resume_prism"                  : prism_macros.resume_prism,
-    "end_prism"                     : prism_macros.end_prism
+    "end_prism"                     : prism_macros.end_prism,
+    "initial_prism_homing"          : prism_macros.initial_prism_homing
     
 }

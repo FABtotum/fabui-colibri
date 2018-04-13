@@ -9,11 +9,13 @@
  */
 
 /* variable initialization */
-if( !isset($jog_image) ) $jog_image      = "/assets/img/controllers/create/subtractive/1.png";
-if( !isset($jog_message) ) $jog_message  = _("Jog the endmill to the desired origin point, press <i class=\"fa fa-bullseye\" ></i> and when you are ready press \"Next\"");
-if( !isset($fourth_axis) ) $fourth_axis  = False;
-if( !isset($is_laser)    ) $is_laser     = false;
-if( !isset($is_laser_pro)) $is_laser_pro = false;
+if( !isset($jog_image) )     $jog_image      = "/assets/img/controllers/create/subtractive/1.png";
+if( !isset($jog_message) )   $jog_message    = _("Jog the endmill to the desired origin point, press <i class=\"fa fa-bullseye\" ></i> and when you are ready press \"Next\"");
+if( !isset($fourth_axis) )   $fourth_axis    = false;
+if( !isset($is_laser)    )   $is_laser       = false;
+if( !isset($is_laser_pro))   $is_laser_pro   = false;
+if( !isset($show_jog_touch)) $show_jog_touch = true;
+
  
 ?>
 <div class="row">
@@ -21,7 +23,7 @@ if( !isset($is_laser_pro)) $is_laser_pro = false;
 	
 	<div class="col-sm-6 col-md-6" style="margin-top:42px">
 		
-		<?php if(!$is_laser): ?>
+		<?php if(!$is_laser && $type != "prism"): ?>
 		<div class="product-content product-wrap clearfix">
 			<div class="row">
 				<div class="col-sm-4 hidden-xs">
@@ -39,45 +41,65 @@ if( !isset($is_laser_pro)) $is_laser_pro = false;
 		</div>
 		<?php endif; ?>
 		
-		<div class="product-content product-wrap clearfix">
-			<div class="row" id="head-position-row">
-				<div class="col-sm-4 hidden-xs">
-					<div class="product-image medium text-center">
-						<img class="img-responsive" src="<?php echo $jog_image;?>" style="width: 90%; display:inline; margin-top:10px;"/>
-					</div>
-				</div>
-				<div class="col-sm-8">
-					<div class="description text-center">
-						<?php if(!$is_laser):?>
-							<h1><span class="badge bg-color-blue txt-color-white">2</span></h1>
-						<?php endif; ?>
-						<p class="font-md margin-top-30"><?php echo _($jog_message); ?></p>
-					</div>
-				</div>
-			</div>
-			<?php if($is_laser):?>
-			<div class="row" id="laser-calibrate-z-focus-row" style="display:none;">
-				<div class="col-sm-4 hidden-xs">
-					<div class="product-image medium text-center">
-						<img class="img-responsive" src="<?php echo $is_laser_pro ? plugin_assets_url('img/fabui_laser_pro_03a.png') : plugin_assets_url('img/fabui_laser_03a.png') ?>" style="width:50%;display:inline;  margin-top:10px;"/>
-					</div>
-				</div>
-				<div class="col-sm-8">
-					<div class="description text-center">
-						<p class="font-md margin-top-30">
-							<?php if($is_laser_pro):?>
-							<?php echo _("Focal point will be calculated automatically");?>
-							<?php else:?>
-							<?php echo _("Lower the Z so that the laser head is max 1 mm away from the stock material, then press continue");?>
-							<?php endif;?>
-						</p>
-					</div>
-				</div>
-			</div>
-			<?php endif; ?>
-		</div>
+		<?php if($type == "prism"): ?>
 		
-		<div class="note"><p><?php echo _("Note: if you home the axis, the jog position will be saved for future use"); ?></p></div>
+    		<div class="product-content product-wrap clearfix">
+        		<div class="row">
+        			<div class="col-md-6 hidden-xs">
+        				<img class="img-responsive margin-top-10" style="max-width: 100%;" src="<?php echo $jog_image;?>">
+        			</div>
+        			<div class="col-md-6">
+        				<div class="description ">
+            				<h5 class="text-center"><span class="badge bg-color-blue txt-color-white">5</span> <?php echo $jog_title; ?> </h5>
+            				<p class="text font-sm"  style="text-align: justify;">
+            					<?php echo $jog_message ?>
+            				</p>
+        				</div>
+        			</div>
+        		</div>
+    		</div>
+		<?php else:?>
+    		<div class="product-content product-wrap clearfix">
+    			<div class="row" id="head-position-row">
+    				<div class="col-sm-4 hidden-xs">
+    					<div class="product-image medium text-center">
+    						<img class="img-responsive" src="<?php echo $jog_image;?>" style="width: 90%; display:inline; margin-top:10px;"/>
+    					</div>
+    				</div>
+    				<div class="col-sm-8">
+    					<div class="description text-center">
+    						<?php if(!$is_laser):?>
+    							<h1><span class="badge bg-color-blue txt-color-white">2</span></h1>
+    						<?php endif; ?>
+    						<p class="font-md margin-top-30"><?php echo _($jog_message); ?></p>
+    					</div>
+    				</div>
+    			</div>
+    			<?php if($is_laser):?>
+    			<div class="row" id="laser-calibrate-z-focus-row" style="display:none;">
+    				<div class="col-sm-4 hidden-xs">
+    					<div class="product-image medium text-center">
+    						<img class="img-responsive" src="<?php echo $is_laser_pro ? plugin_assets_url('img/fabui_laser_pro_03a.png') : plugin_assets_url('img/fabui_laser_03a.png') ?>" style="width:50%;display:inline;  margin-top:10px;"/>
+    					</div>
+    				</div>
+    				<div class="col-sm-8">
+    					<div class="description text-center">
+    						<p class="font-md margin-top-30">
+    							<?php if($is_laser_pro):?>
+    							<?php echo _("Focal point will be calculated automatically");?>
+    							<?php else:?>
+    							<?php echo _("Lower the Z so that the laser head is max 1 mm away from the stock material, then press continue");?>
+    							<?php endif;?>
+    						</p>
+    					</div>
+    				</div>
+    			</div>
+    			<?php endif; ?>
+    		</div>
+    		<div class="note"><p><?php echo _("Note: if you home the axis, the jog position will be saved for future use"); ?></p></div>
+		
+		<?php endif;?>
+		
 	</div>
 	
 	<div class="col-sm-6 col-md-6">
@@ -86,7 +108,9 @@ if( !isset($is_laser_pro)) $is_laser_pro = false;
 			<div class="row" style="margin-right: 0px">
 				<ul class="nav nav-tabs pull-right">
 					<li data-attribute="jog" class="tab active"><a data-toggle="tab" href="#jog-tab"><i aria-hidden="true" class="fa fa-floppy-o save-indication" style="display:none" data-toggle="tooltip" title="<?php echo _("Position will be saved for future use");?>" data-container="body" data-html="true"></i> <?php echo _("Jog");?></a></li>
+					<?php if($show_jog_touch):?>
 					<li data-attribute="touch" class="tab"><a data-toggle="tab" href="#touch-tab"> <?php echo _("Touch");?></a></li>
+					<?php endif; ?>
 					<?php if($fourth_axis): ?>
 					<li data-attribute="4th" class="tab"><a data-toggle="tab" href="#fourth-tab"> <?php echo _("4th axis");?></a></li>
 					<?php endif;?>
@@ -143,7 +167,8 @@ if( !isset($is_laser_pro)) $is_laser_pro = false;
 						<!-- jog controls placeholder -->
 						<div class="jog-controls-holder text-center"></div>
 					</div><!-- id="jog-tab" -->
-				
+					
+					<?php if($show_jog_touch):?>
 					<div class="tab-pane fade in" id="touch-tab">
 						<div class="touch-container text-center" style="display: block">
 							<img class="bed-image" src="/assets/img/std/hybrid_bed_v2_small.jpg" >
@@ -155,6 +180,7 @@ if( !isset($is_laser_pro)) $is_laser_pro = false;
 							</div>
 						</div>
 					</div><!-- id="touch-tab" -->
+					<?php endif; ?>
 					
 					<div class="tab-pane fade in" id="fourth-tab">
 						<div class="smart-form">

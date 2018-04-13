@@ -31,12 +31,41 @@ from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.macros.common import set_lights
 
 
+def initial_prism_homing(app, args=None, lang='en_US.UTF-8'):
+    _ = setLanguage(lang)
+    app.trace( _("Prism homing") )
+    
+    """
+    G91
+    G0 Z-200 F500
+    G92 Z0
+    M564 Z175 S1
+    G90
+    G0 Z130 F1000
+    G0 Z160 F200
+    """
+    app.macro("G91", "ok", 1, _("Relative mode"), verbose=True)
+    app.macro("G0 Z-200 F500", "ok", 60, _("Going up"), verbose=True)
+    app.macro("M400", "ok", 120, _("Wait for all movements"), verbose=True)
+    app.macro("G92 Z0", "ok", 1, _("Set Z 0"), verbose=True)
+    app.macro("M564 Z175 S1", "ok", 1, _("Restrict Z movements"), verbose=True)
+    app.macro("G90", "ok", 1, _("Absolute mode"), verbose=True)
+    app.macro("G0 Z130 F1000", "ok", 60, _("Going to position (fast)"), verbose=True)
+    app.macro("G0 Z150 F200", "ok", 60, _("Going to position (slow)"), verbose=True)
+    app.macro("M400", "ok", 120, _("Wait for all movements"), verbose=True)
+    
+    
+    
+    
+    
 def prepare_prism(app, args=None, lang='en_US.UTF-8'):
     _ = setLanguage(lang)
     
     app.trace( _("Turning off lights") )
     set_lights(app, [0, 0, 0])
-    app.macro("M999",    "ok", 3, _("Reset all errors"),   verbose=False)
+    # app.macro("M999",    "ok", 3, _("Reset all errors"),   verbose=False)
+    app.macro("M564 S0", "ok", 3, _("Disbale restricted movements"), verbose=False)
+    app.macro("G92 Z0", "ok", 3, _("Set Z 0"), verbose=False)
     
     
 def pause_prism(app, args=None, lang='en_US.UTF-8'):

@@ -15,7 +15,7 @@ if(!isset($extruder_max) || $extruder_max == 0) $extruder_max = 250;
 if(!isset($bed_min)      || $bed_min == 0)      $bed_min = 10;
 if(!isset($bed_max)      || $bed_max == 0)      $bed_max = 100;
 
-if($type == 'print' || $type == "prism")
+if($type == 'print')
 {
 	if(!isset($show_temperature_graph)) $show_temperature_graph = true;
 	if(!isset($show_speed)) $show_speed = true;
@@ -107,7 +107,10 @@ if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 		initRunningTaskPage();
 		<?php endif; ?>
 		$(".action").on('click', doAction);
+
+		<?php if($show_temperature_graph): ?>
 		$(".graph-line-selector").on('click', setGraphLines);
+		<?php endif; ?>
 		
 		$("#shutdown-switch").on('change', shutdownSwitchChange);
 		$("#email-switch").on('change', emailSwitchChange);
@@ -488,7 +491,8 @@ if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 			}
 		});
 	}
-	
+
+	<?php if($show_temperature_graph): ?>
 	/**
 	 * init graph
 	 */
@@ -661,7 +665,7 @@ if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 			temperaturesGraph.setupGrid();	
 		}
 	}
-	
+	<?php endif; ?>
 	/**
 	 *
 	 */
@@ -947,12 +951,14 @@ if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 	    		updatePrismTemperature(data.prism.temperature);
 			}
 
-			if(data.prism.connected == false){
-				enableButton(".connect-button");
-			}else{
-				disableButton(".connect-button");
+			if(data.hasOwnProperty("prism")){
+				
+    			if(data.prism.connected == false){
+    				enableButton(".connect-button");
+    			}else{
+    				disableButton(".connect-button");
+    			}
 			}
-			
 		<?php endif; ?>
 	};
 	
