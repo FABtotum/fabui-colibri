@@ -52,7 +52,8 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 			}
 		 });
 		<?php endif; ?>
-		 
+
+		<?php if($type != "prism"): ?>
 		var touch_options = {
 			guides: false,
 			center: false,
@@ -109,9 +110,25 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 		$(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
 			jog_touch.jogtouch('resize');
 		});
+		<?php else: ?>
+		$(".jog-button").on('click', function () {
+			var action = $(this).attr('data-action');
+
+			var zStep   = $("#zStep").length             > 0 ? $("#zStep").val()             : 0.5;
+			var xyzFeed = $("#xyzFeed").length           > 0 ? $("#xyzFeed").val()           : 1000;
+			
+			disableButton(".jog-button");
+			
+			fabApp.jogMove(action, zStep, xyzFeed, true, function(){
+				enableButton(".jog-button");
+			});
+			
+		});
+		<?php endif; ?>
 				
 	});
-	
+
+	<?php if($type!="prism"): ?>
 	function unlock_touch()
 	{
 		jog_is_xy_homed = true;
@@ -344,6 +361,8 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 		
 		return false;
 	}
+
+	<?php endif;?>
 	
 
 </script>
