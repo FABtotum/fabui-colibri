@@ -95,6 +95,9 @@ if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 	<?php if($type=="print"): ?>
 	var nozzleOffset = parseFloat(<?php echo $head['nozzle_offset']; ?>);
 	<?php endif;?>
+	<?php if($type=="prism"): ?>
+	var preview_image_index = -1;
+	<?php endif; ?>
 	// internal state
 	var local_task_state = '';
 	//reloading state
@@ -946,12 +949,13 @@ if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 		<?php endif; ?>
 		
 		<?php if($type=="prism"): ?>
+
+
 			
 			if(data.hasOwnProperty("prism")){
-	    		updatePrismTemperature(data.prism.temperature);
-			}
 
-			if(data.hasOwnProperty("prism")){
+				updatePrismTemperature(data.prism.temperature);
+				handlePrismImage(data);
 				
     			if(data.prism.connected == false){
     				enableButton(".connect-button");
@@ -1363,10 +1367,6 @@ if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 			$(".task-layer-total").html(parseInt(total));
 			$(".layer-info").removeClass("hidden");
 		}
-
-		if($("#prism-preview-layer").length > 0){
-			$("#prism-preview-layer").attr('src', '/fabui/plugin/fab_prism/preview/' + current);
-		}
 	}
 	<?php endif; ?>
 	<?php if($show_prism_temperature):?>
@@ -1380,6 +1380,34 @@ if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 	<?php endif;?>
 
 	<?php if($type=="prism"): ?>
+
+	/**
+	*
+	**/
+	function handlePrismImage(data)
+	{
+	
+		if(data.hasOwnProperty("gpusher")){
+		
+    		if(data.gpusher.first_move == true){
+    			
+    			if((data.print.layer_current != preview_image_index) || (data.print.layer_current == 0)){
+
+    				preview_image_index = data.print.layer_current;
+    
+    				if($("#prism-preview-layer").length > 0){
+    					$("#prism-preview-layer").attr('src', '/fabui/plugin/fab_prism/preview/' + preview_image_index);
+    
+    				}
+    			}
+
+    		}
+		}
+	}
+	
+	/**
+	*
+	**/
 	function prismConnect()
 	{
 		disableButton('.connect-button'); 
