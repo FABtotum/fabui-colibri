@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html lang="<?php echo $lang; ?>">
 	<head>{head}</head>
-	<body class="smart-style-6 fixed-header fixed-navigation fixed-ribbon">
+	<body class="smart-style-6 fixed-header fixed-ribbon">
 		{ga}
 		{top}
 		{sidebar}

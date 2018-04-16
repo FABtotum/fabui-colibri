@@ -95,13 +95,17 @@
 			if(isset($filters['type']) && $filters['type'] != ''){
 				$this->db->where('type', $filters['type']);
 			}else{
-			    $this->db->where_in('type', array('print', 'mill', 'scan', 'laser'));
+			    $this->db->where_in('type', array('print', 'mill', 'scan', 'laser', 'prism'));
 			}
 			if(isset($filters['status']) && $filters['status'] != ''){
 				$this->db->where('status', $filters['status']);
 			}
 		}
 		
+		/*
+		$ret = $this->db->get($this->tableName)->result_array();
+		echo $this->db->last_query(); exit();
+		*/
 		return $this->db->get($this->tableName)->result_array();
 	}
 	
@@ -145,7 +149,8 @@
 			$this->db->where("finish_date <=", DateTime::createFromFormat('d/m/Y',$to_date)->format('Y-m-d')." 23:59:59");
 		}
 		
-		$result = $this->db->get($this->tableName)->result_array();				   
+		$result = $this->db->get($this->tableName)->result_array();
+		
 		return isset($result[0]['total']) ? $result[0]['total'] : 0;
 		
 	}

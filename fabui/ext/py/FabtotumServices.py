@@ -26,6 +26,7 @@ import signal
 import argparse
 import logging
 import time
+from datetime import datetime
 
 # Import external modules
 from watchdog.observers import Observer
@@ -166,9 +167,10 @@ from fabtotum.database.task import Task
 # Clear unfinished tasks
 from fabtotum.database import Database
 from fabtotum.database.task import Task
+now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 db = Database()
 conn = db.get_connection()
-cursor = conn.execute("UPDATE sys_tasks SET status='terminated' where status!='completed' and status!='aborted' and status!='terminated'")
+cursor = conn.execute("UPDATE sys_tasks SET status='terminated', finish_date='{0}' where status!='completed' and status!='aborted' and status!='terminated'".format(now))
 conn.commit()
 conn.close()
 

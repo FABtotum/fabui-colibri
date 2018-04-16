@@ -1129,7 +1129,7 @@ class Projectsmanager extends FAB_Controller {
 		
 		$builtin_actions[] = array(
 		    "title" => _("Edit"),
-		    "icon" => "fa-pencil",
+		    "icon" => "fa-pencil-alt",
 		    "url" => "#projectsmanager/file/".$fileID
 		);
 			
@@ -1142,7 +1142,7 @@ class Projectsmanager extends FAB_Controller {
 			);
 			$builtin_actions[] = array(
 				"title" => _("Stats"),
-				"icon" => "fa-area-chart",
+				"icon" => "fa-chart-area",
 				"url" => "#projectsmanager/file/".$fileID."/stats"
 			);
 		}

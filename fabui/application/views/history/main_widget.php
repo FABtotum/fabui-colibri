@@ -1,7 +1,8 @@
 <div class="widget-body-toolbar">
+
 	<div class="btn-group">
 		<button class="btn btn-default" data-toggle="dropdown" id="date-picker">
-			<i class="fa fa-calendar"></i> <span><?php echo  date('F j, Y', strtotime('today - 30 days')) .' - '.date('F j, Y', strtotime('today')) ?></span> <span class="caret"></span>
+			<i class="fa fa-calendar-alt"></i> <span><?php echo  date('F j, Y', strtotime('today - 30 days')) .' - '.date('F j, Y', strtotime('today')) ?></span> <span class="caret"></span>
 		</button>
 	</div>
     
@@ -27,13 +28,13 @@
 		</button>
 		<ul class="dropdown-menu">
 			<li>
-				<a  data-type="status" data-value="completed" href="javascript:void(0);"><?php echo _("Completed");?></a>
+				<a  data-type="status" data-value="completed" href="javascript:void(0);"><i class="fa fa-check txt-color-green"></i> <?php echo _("Completed");?></a>
 			</li>
 			<li>
-				<a  data-type="status" data-value="aborted" href="javascript:void(0);"><?php echo _("Aborted");?></a>
+				<a  data-type="status" data-value="aborted" href="javascript:void(0);"><i class="fa fa-stop txt-color-orange"></i> <?php echo _("Aborted");?></a>
 			</li>
 			<li>
-				<a  data-type="status" data-value="terminated" href="javascript:void(0);"><?php echo _("Terminated");?></a>
+				<a  data-type="status" data-value="terminated" href="javascript:void(0);"><i class="fa fa-exclamation-triangle txt-color-red"></i> <?php echo _("Terminated");?></a>
 			</li>
 			<li class="divider"></li>
 			<li>
@@ -48,7 +49,7 @@
 		<a href="#s1" data-toggle="tab"><i class="fa fa-list"></i> <?php echo _("Tasks");?></a>
 	</li>
 	<li>
-		<a id="stats-click" href="#s2" data-toggle="tab"><i class="fa fa-area-chart"></i> <?php echo _("Stats");?></a>
+		<a id="stats-click" href="#s2" data-toggle="tab"><i class="fa fa-chart-area"></i> <?php echo _("Stats");?></a>
 	</li>
 </ul>
 
@@ -58,7 +59,7 @@
 			<thead>
 				<tr>
 					<th></th>
-					<th><i class="fa fa-calendar"></i> <span class="hidden-xs"><?php echo _("When");?></span></th>
+					<th><i class="fa fa-calendar-alt"></i> <span class="hidden-xs"><?php echo _("When");?></span></th>
 					<th><i class="fa fa-play fa-rotate-90 txt-color-blue"></i> <span class="hidden-xs"><?php echo _("Make");?></span></th>
 					<th><?php echo _("Status");?></th>
 					<th><?php echo _("Description");?></th>
