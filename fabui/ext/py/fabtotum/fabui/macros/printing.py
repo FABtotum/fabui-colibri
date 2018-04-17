@@ -34,6 +34,7 @@ from fabtotum.fabui.macros.common import getPosition, configure_head
 from fabtotum.fabui.constants import *
 
 def pause_additive(app, args=None, lang='en_US.UTF-8'):
+    setLanguage(lang)
     app.macro("M999",   "ok", 5,    _("Clearing error state"), verbose=False)
     #app.macro("M756",   "ok", 1,    _("Clearing error state"))
     app.macro("M400",   "ok", 240,    _("Waiting for all moves to finish"), verbose=False)
@@ -64,6 +65,7 @@ def pause_additive(app, args=None, lang='en_US.UTF-8'):
     
 def resume_additive(app, args=None, lang='en_US.UTF-8'):
     
+    setLanguage(lang)
     
     ext_temp = args[0]
     bed_temp = args[1]
@@ -120,7 +122,7 @@ def resume_additive(app, args=None, lang='en_US.UTF-8'):
             #app.macro("G0 E{0} F{1}".format(feeder['retract_amount'], feeder['retract_feedrate']),  "ok", 20,    _("Restore fillament") )
 
 def prepare_additive(app, args=None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     ext_temp = args[0];
     bed_temp = args[1];
@@ -131,7 +133,7 @@ def prepare_additive(app, args=None, lang='en_US.UTF-8'):
     app.macro("M402", "ok", 2,    _("Retract Probe"), verbose=False)
 
 def start_additive(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     feeder = app.config.get_current_feeder_info();
     units_e = feeder['steps_per_unit']
@@ -173,7 +175,7 @@ def start_additive(app, args = None, lang='en_US.UTF-8'):
     app.macro("M400",                   "ok", 60, _("Waiting for all moves to finish"), verbose=False)
 
 def end_additive(app, args=None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     try:
         color = app.config.get('settings', 'color')
@@ -212,7 +214,7 @@ def end_additive(app, args=None, lang='en_US.UTF-8'):
     app.macro("M18",                    "ok", 2,    _("Motors off"), verbose=False    )
 
 def end_additive_safe_zone(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     app.macro("M121",                     "ok", 2,    _("Force endstops"), verbose=False )
     app.macro("G90",                      "ok", 2,    _("Setting abs position"), verbose=False)
     app.macro("G0 X210 Y210 Z240 F10000", "ok", 100,  _("Moving to safe zone"), verbose=False)
@@ -221,7 +223,7 @@ def end_additive_safe_zone(app, args = None, lang='en_US.UTF-8'):
     app.macro("M18",                      "ok", 2,    _("Motors off"), verbose=False    )
         
 def end_additive_aborted(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     #app.macro("G91",                        "ok", 2,    _("Setting rel position") )
     #app.macro("G0 Z5 F10000",   "ok", 100,  _("Moving to safe zone") )
     app.macro("G27 Z0", "ok", 100,  _("Moving to safe zone") )
@@ -230,7 +232,7 @@ def end_additive_aborted(app, args = None, lang='en_US.UTF-8'):
     app.macro("M18",    "ok", 2,    _("Motors off"), verbose=False    )
 
 def check_additive(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     try:
         safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
@@ -269,7 +271,7 @@ def check_additive(app, args = None, lang='en_US.UTF-8'):
     
 
 def engage_feeder(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     try:
         safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:

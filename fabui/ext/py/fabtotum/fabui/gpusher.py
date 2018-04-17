@@ -86,7 +86,7 @@ class GCodePusher(object):
         self.UPDATE_PERIOD = update_period
         self.gcode_info = None
         self.lang = lang
-        _ = setLanguage(self.lang)
+        setLanguage(self.lang)
         self.use_stdout = use_stdout
         # Task specific attributes
         self.task_stats = {

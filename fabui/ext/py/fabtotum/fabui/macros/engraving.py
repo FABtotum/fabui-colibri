@@ -31,7 +31,7 @@ from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.macros.common import configure_head, go_to_focal_point
 
 def check_engraving(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     try:
         safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
@@ -46,7 +46,7 @@ def check_engraving(app, args = None, lang='en_US.UTF-8'):
     app.trace( _("Building plate inserted correctly") )
     
 def start_engraving(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     feeder       = app.config.get_feeder_info('built_in_feeder')
     units_a      = feeder['steps_per_angle']
@@ -85,7 +85,7 @@ def start_engraving(app, args = None, lang='en_US.UTF-8'):
     
     
 def end_engraving(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     app.trace("Terminating...")    
     app.macro("G0 X0 Y0 Z0 E0 F2000", "ok", 1, _("Go back to Origin Point"), verbose=False)
@@ -94,7 +94,7 @@ def end_engraving(app, args = None, lang='en_US.UTF-8'):
     end_engraving_aborted(app, args, lang)
 
 def end_engraving_aborted(app, args = None, lang='en_US.UTF-8'):
-    
+    setLanguage(lang)
     feeder = app.config.get_current_feeder_info();
     units_e = feeder['steps_per_unit']
     

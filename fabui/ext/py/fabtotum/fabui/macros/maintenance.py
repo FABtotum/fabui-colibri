@@ -31,7 +31,7 @@ __version__ = "1.0"
 from fabtotum.utils.translation import _, setLanguage
 
 def extrude(app, args, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     try:
         safety_door = app.config.get('settings', 'safety')['door']
@@ -55,7 +55,7 @@ def extrude(app, args, lang='en_US.UTF-8'):
     #app.macro("M400",       "ok", 200,    _("Waiting for all moves to finish"), verbose=False)
     
 def change_step(app, args, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     new_step = float(args[0])
     app.macro("M92 E{0}".format(new_step),  "ok", 1,   _("Setting extruder mode") )
     #app.macro("M500",                       "*", 1,   _("Writing settings to eeprom") )
@@ -69,7 +69,7 @@ def change_step(app, args, lang='en_US.UTF-8'):
     
 
 def pre_unload_spool(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     try:
         safety_door = app.config.get('settings', 'safety')['door']
@@ -86,7 +86,7 @@ def pre_unload_spool(app, args = None, lang='en_US.UTF-8'):
     app.macro("M109 S{0}".format(ext_temp),  "*", 400,  _("Waiting for nozzle to reach temperature (<span class='top-bar-nozzle-actual'>-</span> / {0}&deg;)".format(ext_temp)) ) #heating and waiting.
     
 def unload_spool(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     try:
         safety_door = app.config.get('settings', 'safety')['door']
@@ -134,7 +134,7 @@ def unload_spool(app, args = None, lang='en_US.UTF-8'):
     app.macro("M302 S{0}".format(min_temp),          "ok", 10,   _("Extrusion prevention enabled"), verbose=False)
     
 def load_spool(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     try:
         safety_door = app.config.get('settings', 'safety')['door']
@@ -194,7 +194,7 @@ def load_spool(app, args = None, lang='en_US.UTF-8'):
     app.macro("M302 S{0}".format(min_temp),          "ok", 1,    _("Disabling Cold Extrusion Prevention"), verbose=False)
 
 def manual_bed_leveling(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     app.trace( _("Manual bed leveling started.") )
     
     skip_homing = args[0]
@@ -251,7 +251,7 @@ def manual_bed_leveling(app, args = None, lang='en_US.UTF-8'):
 
 
 def heats(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     what        = args[0]
     temperature = float(args[1])

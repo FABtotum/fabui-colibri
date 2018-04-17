@@ -33,7 +33,7 @@ from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.constants import *
 
 def home_all(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     try:
         zprobe_disabled = int(app.config.get('settings', 'probe.enable')) == 0
@@ -54,7 +54,7 @@ def home_all(app, args = None, lang='en_US.UTF-8'):
         app.macro("G28", "ok", 200,                             _("Homing all axes"), verbose=False)
 
 def start_up(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     try:
         color = app.config.get('settings', 'color')
@@ -94,13 +94,13 @@ def start_up(app, args = None, lang='en_US.UTF-8'):
     app.macro("M734 S"+str(collision_warning),  "ok", 2, _("Machine Limits Collision warning"), verbose=False)
 
 def shutdown(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     app.trace( _("Shutting down...") ) 
     app.macro("M300",   "ok", 5, _("Play alert sound!"), verbose=False)
     app.macro("M729",   "ok", 2, _("Asleep!"), verbose=False)
     
 def auto_bed_leveling(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     app.trace( _("Auto Bed leveling Initialized") )
     app.macro("G28",                "ok", 120,   _("Homing Z axis") )
@@ -108,17 +108,17 @@ def auto_bed_leveling(app, args = None, lang='en_US.UTF-8'):
     app.macro("G29",                "ok", 150,  _("Probing the bed") )
 
 def probe_down(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
    
     app.macro("M401",   "ok", 1, _("Probe Down") )
     
 def probe_up(app, args = None, lang='en_US.UTF-8'):    
-    _ = setLanguage(lang)
+    setLanguage(lang)
     app.macro("M402",   "ok", 1, _("Probe Up") )
 
 def safe_zone(app, args = None, lang='en_US.UTF-8'):
     """ .. todo: turn these into macroes """
-    _ = setLanguage(lang)
+    setLanguage(lang)
     pass
     #~ app.send("G91")
     #~ app.send("G0 E-5 F1000")
@@ -128,7 +128,7 @@ def safe_zone(app, args = None, lang='en_US.UTF-8'):
     #~ app.send("G0 X210 Y210")
 
 def engage_4axis(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     try:
         safety_door = app.config.get('settings', 'safety')['door']
@@ -161,20 +161,20 @@ def engage_4axis(app, args = None, lang='en_US.UTF-8'):
     app.macro("M300",               "ok", 3,    _("Play beep sound"), verbose=False)
     
 def do_4th_axis_mode(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     feeder = get_feeder_info('built_in_feeder')
     units_a = feeder['steps_per_angle']
     app.macro("M92 E"+str(units_a), "ok", 1,    _("Setting 4th axis mode"), verbose=False)
 
 def version(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     return get_versions(app, lang)
 
 def set_ambient_color(app, args = None, lang='en_US.UTF-8'):
     return set_lights(app, args, lang)
 
 def install_head(app, args, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     head_name = args[0]
     
     result = configure_head(app, head_name, lang)
@@ -196,15 +196,15 @@ def clear_errors(app, args = None, lang='en_US.UTF-8'):
     app.macro("M728",   "ok", 5,    _("Awaken"), verbose=False)
 
 def read_eeprom(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     return getEeprom(app, lang)
 
 def read_position(app, args = None,  lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     return getPosition(app, lang)
 
 def door_safety(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     try:
         safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:

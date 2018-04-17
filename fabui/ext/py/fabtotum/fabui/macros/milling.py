@@ -34,6 +34,7 @@ from fabtotum.fabui.macros.common import getPosition, configure_head
 from fabtotum.fabui.constants import *
 
 def pause_subtractive(app, args=None, lang='en_US.UTF-8'):
+    setLanguage(lang)
     app.macro("M400",   "ok", 240,    _("Waiting for all moves to finish"), verbose=False)
     position = getPosition(app, lang)
     
@@ -58,6 +59,7 @@ def pause_subtractive(app, args=None, lang='en_US.UTF-8'):
     app.macro("M732 S0", "ok", 2, _("Disabling door safety"))
 
 def resume_subtractive(app, args=None, lang='en_US.UTF-8'):
+    setLanguage(lang)
     app.macro("M84", "ok", 2, _("Unlock stepper motor"), verbose=False)
     safety_door = app.config.get('settings', 'safety.door', 0)
     
@@ -80,7 +82,7 @@ def resume_subtractive(app, args=None, lang='en_US.UTF-8'):
             app.macro("M400",                           "ok", 120,  _("Waiting for all moves to finish"), verbose=False)
 
 def check_subtractive(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     try:
         safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
@@ -99,7 +101,7 @@ def check_subtractive(app, args = None, lang='en_US.UTF-8'):
         app.macro("M744",       "open", 1, _("Building plane inserted correctly"))
 
 def start_subtractive(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     feeder = app.config.get_feeder_info('built_in_feeder')
     units_a = feeder['steps_per_angle']
@@ -111,7 +113,7 @@ def start_subtractive(app, args = None, lang='en_US.UTF-8'):
     
     
 def end_subtractive(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
 
     app.trace("Terminating...")
     
@@ -120,6 +122,7 @@ def end_subtractive(app, args = None, lang='en_US.UTF-8'):
 
 
 def end_subtractive_aborted(app, args = None, lang='en_US.UTF-8'):
+    setLanguage(lang)
     feeder = app.config.get_current_feeder_info()
     units_e = feeder['steps_per_unit']
     

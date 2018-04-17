@@ -30,7 +30,7 @@ __version__ = "1.0"
 from fabtotum.utils.translation import _, setLanguage
 
 def check_pre_scan(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     feeder = app.config.get_feeder_info('built_in_feeder')
     units_a = feeder['steps_per_angle']
     
@@ -66,7 +66,7 @@ def check_pre_scan(app, args = None, lang='en_US.UTF-8'):
     # macro("M18","ok",1,"Motor Off",1) #should be moved to firmware
     
 def rotary_scan(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     feeder = app.config.get_feeder_info('built_in_feeder')
     units_a = feeder['steps_per_angle']
     
@@ -92,7 +92,7 @@ def rotary_scan(app, args = None, lang='en_US.UTF-8'):
     #macro("M92 E"+str(units['a']),"ok",1,"Setting 4th axis mode",0)
     
 def photogrammetry_scan(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     feeder = app.config.get_feeder_info('built_in_feeder')
     units_a = feeder['steps_per_angle']
     
@@ -117,7 +117,7 @@ def photogrammetry_scan(app, args = None, lang='en_US.UTF-8'):
     #app.macro("M400",       "ok", 55,           _("Wait for all moves to finish"), verbose=False)
 
 def sweep_scan(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     try:
         safety_door = app.config.get('settings', 'safety')['door']
     except KeyError:
@@ -141,7 +141,7 @@ def sweep_scan(app, args = None, lang='en_US.UTF-8'):
     #app.macro("M400",            "ok", 55,      _("Wait for all moves to finish"), verbose=False)
 
 def probe_scan(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     feeder = app.config.get_feeder_info('built_in_feeder')
     units_a = feeder['steps_per_angle']
     try:
@@ -160,7 +160,7 @@ def probe_scan(app, args = None, lang='en_US.UTF-8'):
     app.macro("M92 E"+str(units_a), "ok", 2,        _("Setting 4th axis mode"), verbose=True)
 
 def end_scan(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     feeder = app.config.get_current_feeder_info();
     units_e = feeder['steps_per_unit']
     try:

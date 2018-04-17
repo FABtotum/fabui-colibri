@@ -28,17 +28,47 @@ import ConfigParser
 # Import internal modules
 from fabtotum.fabui.config  import ConfigService
 
-# Set up message catalog access
-tr = gettext.translation('fabui', '/usr/share/fabui/locale', fallback=True)
-_ = tr.ugettext
+
+class Translation():
+	
+	def __init__(self, config=None):
+		if not config:
+			self.config = ConfigService()
+			
+		self.tr = gettext.translation('fabui', '/usr/share/fabui/locale', fallback=True)
+		self.tp = gettext.translation('fabui', '/usr/share/fabui/locale', fallback=True)
+		
+	def setLanguage(self, lang, domain='fabui'):
+		
+		locale_path = self.config.get('general', 'locale_path')
+		self.tr = gettext.translation('fabui', locale_path, fallback=True, languages=[lang])
+		
+	def setPluginLanguage(self, plugin_name, lang):
+		plugins_path = self.config.get('general', 'plugins_path')
+		locale_path = '{0}{1}/locale'.format(plugins_path, plugin_name)
+		self.tp = gettext.translation(plugin_name, locale_path, fallback=True, languages=[lang])
+	
+	def get(self, text):
+		
+		t = self.tp.gettext(text)
+		if t == text :
+			t = self.tr.gettext(text)
+		return t
+	
+
+tr = Translation()
+_ = tr.get
+
 
 def setLanguage(lang, domain='fabui', config=None):
-	if not config:
-		config = ConfigService()
+	tr.setLanguage(lang, domain)
+	
+def setPluginLanguage(name, lang):
+	tr.setPluginLanguage(name, lang)
+	
 
-	locale_path = config.get('general', 'locale_path')
+
+
+				
+				
 	
-	tr = gettext.translation('fabui', locale_path, fallback=True, languages=[lang])
-	_ = tr.ugettext
-	
-	return _

@@ -32,8 +32,7 @@ from fabtotum.fabui.macros.common import set_lights
 
 
 def initial_prism_homing(app, args=None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
-    app.trace( _("Prism homing") )
+    setLanguage(lang)
     
     """
     G91
@@ -44,22 +43,20 @@ def initial_prism_homing(app, args=None, lang='en_US.UTF-8'):
     G0 Z130 F1000
     G0 Z160 F200
     """
-    app.macro("G91", "ok", 1, _("Relative mode"), verbose=True)
-    app.macro("G0 Z-200 F500", "ok", 60, _("Going up"), verbose=True)
-    app.macro("M400", "ok", 120, _("Wait for all movements"), verbose=True)
-    app.macro("G92 Z0", "ok", 1, _("Set Z 0"), verbose=True)
-    app.macro("M564 Z175 S1", "ok", 1, _("Restrict Z movements"), verbose=True)
-    app.macro("G90", "ok", 1, _("Absolute mode"), verbose=True)
-    app.macro("G0 Z130 F1000", "ok", 60, _("Going to position (fast)"), verbose=True)
-    app.macro("G0 Z150 F200", "ok", 60, _("Going to position (slow)"), verbose=True)
-    app.macro("M400", "ok", 120, _("Wait for all movements"), verbose=True)
-    
-    
-    
+    app.trace(_("Positioning the platform"))
+    app.macro("G91", "ok", 1, _("Relative mode"), verbose=False)
+    app.macro("G0 Z-200 F500", "ok", 60, _("Going up"), verbose=False)
+    app.macro("M400", "ok", 120, _("Wait for all movements"), verbose=False)
+    app.macro("G92 Z0", "ok", 1, _("Set Z 0"), verbose=False)
+    app.macro("M564 Z175 S1", "ok", 1, _("Restrict Z movements"), verbose=False)
+    app.macro("G90", "ok", 1, _("Absolute mode"), verbose=False)
+    app.macro("G0 Z130 F1000", "ok", 60, _("Going to position (fast)"), verbose=False)
+    app.macro("G0 Z150 F200", "ok", 60, _("Going to position (slow)"), verbose=False)
+    app.macro("M400", "ok", 120, _("Wait for all movements"), verbose=False)
     
     
 def prepare_prism(app, args=None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     app.trace( _("Turning off lights") )
     set_lights(app, [0, 0, 0])
@@ -69,22 +66,26 @@ def prepare_prism(app, args=None, lang='en_US.UTF-8'):
     
     
 def pause_prism(app, args=None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     app.macro("M300", "ok", 3, _("Play beep"), verbose=False)
     set_lights(app, [255, 0, 0])
     
     
 def resume_prism(app, args=None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     app.macro("M999",    "ok", 3, _("Reset all errors"),   verbose=False)
     app.trace( _("Turning off lights") )
     set_lights(app, [0, 0, 0])
     app.macro("M300", "ok", 3, _("Play beep"), verbose=False)
     
 def end_prism(app, args=None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
-    app.trace( _("End prism") )
-    app.trace( _("Turning off lights") )
-    set_lights(app, [0, 0, 0])
+    setLanguage(lang)
+    
+    set_lights(app, [25, 2, 0])
+    app.macro("G91", "ok", 1, _("Relative mode"), verbose=False)
+    app.macro("G0 Z-200 F300", "ok", 60, _("Raising the platform"), verbose=True)
+    app.macro("M400", "ok", 120, _("Wait for all movements"), verbose=False)
+    
+    
     

@@ -33,7 +33,7 @@ from fabtotum.totumduino.format import parseG30, parseM114
 from fabtotum.fabui.constants import *
 
 def zProbe(app, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     app.macro("M401", "ok", 5, _("Open probe"), verbose=False)
     reply = app.macro("G30", "ok", 120, _("Probe position"), verbose=False)
     probe = parseG30(reply)
@@ -46,7 +46,7 @@ def zProbe(app, lang='en_US.UTF-8'):
     
 
 def getPosition(app, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     reply = app.macro("M114", "ok", 120, _("Get position"), verbose=False)
     result = parseM114(reply)
@@ -54,7 +54,7 @@ def getPosition(app, lang='en_US.UTF-8'):
         return result
 
 def getEeprom(app, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     def serialize(string_source, regex_to_serach, keys):
         match = re.search(regex_to_serach, string_source, re.IGNORECASE)
@@ -142,7 +142,7 @@ def getEeprom(app, lang='en_US.UTF-8'):
     return eeprom
 
 def get_versions(app, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     ### controller serail ID
     retr = app.macro("M760",   "ok", 1, _("Controller serial ID"), verbose=False)
@@ -195,7 +195,7 @@ def get_versions(app, lang='en_US.UTF-8'):
 def configure_feeder(app, feeder_name, lang='en_US.UTF-8'):
     """
     """
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     feeder = app.config.get_feeder_info(feeder_name)
     
@@ -238,7 +238,7 @@ def configure_feeder(app, feeder_name, lang='en_US.UTF-8'):
 def configure_4thaxis(app, feeder_name, lang='en_US.UTF-8'):
     """
     """
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     feeder = app.config.get_feeder_info(feeder_name)
     
@@ -262,7 +262,7 @@ def configure_4thaxis(app, feeder_name, lang='en_US.UTF-8'):
     return True
     
 def configure_head(app, head_name, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     # get EEprom
     eeprom = getEeprom(app)
@@ -399,7 +399,7 @@ def go_to_focal_point(app, head):
         
    
 def set_lights(app, args = None, lang='en_US.UTF-8'):
-    _ = setLanguage(lang)
+    setLanguage(lang)
     
     if(len(args) < 3):
         try:
@@ -420,4 +420,3 @@ def set_lights(app, args = None, lang='en_US.UTF-8'):
     app.macro("M702 S{0}".format(green), "ok", 1, _("Setting green color"), verbose=False)
     app.macro("M703 S{0}".format(blue),  "ok", 1, _("Setting blue color"), verbose=False)
     
-

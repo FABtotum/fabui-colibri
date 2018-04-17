@@ -15,6 +15,9 @@ if( !isset($fourth_axis) )   $fourth_axis    = false;
 if( !isset($is_laser)    )   $is_laser       = false;
 if( !isset($is_laser_pro))   $is_laser_pro   = false;
 if( !isset($show_jog_touch)) $show_jog_touch = true;
+if( !isset($jog_feederate))  $jog_feederate  = 1000;
+if( !isset($jog_xy_step))    $jog_xy_step    = 1;
+if( !isset($jog_z_step))     $jog_z_step     = 0.5;
 
  
 ?>
@@ -147,20 +150,20 @@ if( !isset($show_jog_touch)) $show_jog_touch = true;
 									<section class="col col-4">
 										<label class="label-mill text-center">XY <?php echo _("Step"); ?> (mm)</label>
 										<label class="input">
-											<input  type="number" id="xyStep" value="1" step="0.1" min="0.1" max="100">
+											<input  type="number" id="xyStep" value="<?php echo $jog_xy_step?>" step="0.1" min="0.1" max="100">
 										</label>
 									</section>
 									<?php endif; ?>
 									<section class="col col-<?php echo $type=="prism" ? '6' : '4'; ?>">
 										<label class="label-mill text-center"><?php echo _("Feedrate"); ?></label>
 										<label class="input">
-											<input  type="number" id="xyzFeed" value="1000" step="50" min="1" max="10000">
+											<input  type="number" id="xyzFeed" value="<?php echo $jog_feederate; ?>" step="50" min="1" max="10000">
 										</label>
 									</section>
 									<section class="col col-<?php echo $type=="prism" ? '6' : '4'; ?>">
 										<label class="label-mill text-center">Z <?php echo _("Step"); ?> (mm)</label>
 										<label class="input"> 
-											<input type="number" id="zStep" value="0.5" step="0.1" min="0.1" max="100">
+											<input type="number" id="zStep" value="<?php echo $jog_z_step; ?>" step="0.1" min="0.1" max="100">
 										</label>
 									</section>
 								</div>
@@ -169,13 +172,11 @@ if( !isset($show_jog_touch)) $show_jog_touch = true;
 							<fieldset  class="jog-controls" style="background: none !important;">
 								<div class="row">
 									<section class="col col-6">
-										
 										<label class="input">
 											<button class="btn btn-sm btn-default btn-block jog-button" data-action="z-down"><i class="fa fa-arrow-down"></i> <?php echo _("Closer to the platform");?></button>
 										</label>
 									</section>
 									<section class="col col-6">
-										
 										<label class="input">
 											<button class="btn btn-sm  btn-default btn-block jog-button" data-action="z-up"><i class="fa fa-arrow-up"></i> <?php echo _("Away form the platform");?></button>
 										</label>
