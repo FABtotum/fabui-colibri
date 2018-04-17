@@ -1105,7 +1105,7 @@ class GCodeService:
         else:
             self.running = False
         if hasattr(self.serial, 'cancel_read'):
-            self.cancel_read()
+            self.serial.cancel_read()
         self.cq.put( Command.kill() )
         
         # Wait for both threads to be stopped and then clean up the queues.
