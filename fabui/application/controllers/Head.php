@@ -161,6 +161,56 @@ class Head extends FAB_Controller {
 		);
 		
 		
+		
+		$data['prism_module_instractions'] = array(
+		    1 => array(
+		        'image' => '/assets/img/head/prism/prism_install_1.png',
+		        'title' => _('Clean the unit'),
+		        'description' => _('Turn off the FAbtotum Personal fabricator and with no power connected remove any module installed (heads and build plate).<br><br> Make sure no dust or debris is in the way and clean thoroughly the inside.'),
+		    ),
+		    2 => array(
+		        'image' => '/assets/img/head/prism/prism_install_2.png',
+		        'title' => _('Prepare the mounting plate'),
+		        'description' => _('The PRISM module requires a locking plate to be fixed and aligned with the FABtotum Personal Fabricator bottom plate.<br><br>
+                                    Adhesion is provided by industrial-grade double side adhesive.<br>
+                                    To lock it in place, clean the bottom of the FABtotum personal fabricator and make sure there is no dirt or debris.<br><br>
+                                    Remove the protective plastic from the adhesive masking tape provided and prepare to position the plate'),
+		    ),
+		    3 => array(
+		        'image' => '/assets/img/head/prism/prism_install_3.png',
+		        'title' => _('Position the locking plate'),
+		        'description' => _('Position the mounting plate as shown, make sure it is aligned with the front side of the bottom of the FABtotum unit.<br><br>
+                                    The metal mounting plate does not interfere with the normal operations and should not be removed after using PRISM (e.g when switching back to FDM printing or Milling).'),
+		    ),
+		    4 => array(
+		        'image' => '/assets/img/head/prism/prism_install_4.png',
+		        'title' => _('Attach the power connector'),
+		        'description' => _('Change the power connector with the provided one
+                                    Prism takes its power from the FAbtotum personal fabricator 24V 6A DC build plate connector inside the unit itself.<br>
+                                    To avoid cable swaps each time prism is used, a new cable is provided with the PRISM module.<br>
+                                    This cable should not be removed when using the FABtotum in another working mode (e.g Milling, Printing) as it does not interfere with normal operations unless conductive debris is produced (conductive filaments, aluminum dust from milling).
+                                    In this last case you may switch to the old configuration and always clean the unit after each job, especially in the connector area.<br>
+                                    Remove the power connector (1) and connect it to the female part of the provided PRISM power cable (2). Connect the male lead of the PRISM power cable to the original connection slot (1). The DC plug of the PRISM power cable is now ready to be plugged in the PRISM module body.'),
+		    ),
+		    5 => array(
+		        'image' => '/assets/img/head/prism/prism_install_6.png',
+		        'title' => _(' Place the PRISM module Body'),
+		        'description' => _('Place the prism module body on the lock plate<br>
+                                    Make sure no cleareance or other foreign object is present and that all pins are aligned.<br>
+                                    Notice: practice caution as the PRISM module body is equipped with magnets to lock in place.<br>
+                                    Position the PRISM module body aligning it with the positioning pins on the lock plate.<br>
+                                    The PRISM body will be magnetically attracted to the lock plate and stick to the unit bottom.'),
+		    ),
+		    6 => array(
+		        'image' => '/assets/img/head/prism/prism_install_5.png',
+		        'title' => _('Connect the DC power plug'),
+		        'description' => _('Connect the power jack on Prism. Make sure the cable is straight and untangled.<br>
+                                      You can do this when the PRISM module body is not placed in the FABtotum unit.<br>
+                                    You are now ready to set up PRISM for 3D printing'),
+		   )
+		);
+		
+		
 		$data['max_prism_connection_attempts'] = 5;
 		
 		$headerToolbar = '

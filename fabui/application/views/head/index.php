@@ -426,3 +426,60 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+
+<!-- DESCRIPTION MODAL -->
+<div class="modal fade" id="prismModuleDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><i class="fas fa-list-ul"></i> <?php echo _("Prism install instrucions"); ?> </h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<button class="btn btn-default pull-right" id="instructionsCarouselNext"><i class="fa fw-lg fa-chevron-right"></i></button>
+						<button class="btn btn-default pull-right" id="instructionsCarouselPrev"><i class="fa fw-lg fa-chevron-left" ></i></button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+    					<div id="carousel-instructions" class="carousel slide" data-interval="false">
+    						
+    						<div class="carousel-inner" role="listbox">
+    						
+    							<?php foreach($prism_module_instractions as $index => $instr):?>
+    								
+    								<div class="item <?php echo $index == 1 ? 'active' : '' ?>">			
+    									<div class="product-content product-wrap clearfix">
+                    						<div class="row">
+                    							<div class="col-md-6 hidden-xs">
+                    								<img class="img-responsive margin-top-10" style="max-width: 100%;" src="<?php echo $instr['image']; ?>">
+                    							</div>
+                    							<div class="col-md-6">
+                    								<div class="description">
+                    									<h5 class="text-center"><span class="badge bg-color-blue txt-color-white"><?php echo $index; ?></span> <?php echo $instr['title']; ?> </h5>
+                    										<p class="text"><?php echo $instr['description']; ?></p>
+                    								</div>
+                    							</div>
+                    						</div>
+                    					</div>
+    								</div>
+    							<?php endforeach;?>
+    						</div>
+    						
+    					</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
+				<button class="btn btn-primary" id="prismConfirmInsallButton"> <?php echo _("Confirm & Install");?> </button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- MODAL   -->
+

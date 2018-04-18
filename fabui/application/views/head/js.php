@@ -32,6 +32,26 @@
 		$('.capability').on('change', capability_change);
 		$("#inputId").on('change', importHeadSettings);
 		$("#advanced_settings_switch").on('click', clickShowHideSettings);
+		$("#prismConfirmInsallButton").on('click', function(){
+			$('#prismModuleDescriptionModal').modal('hide');
+			set_head('prism_module');
+		});
+
+		$("#instructionsCarouselNext").on('click', function() {
+			$("#carousel-instructions").carousel('next');
+			
+		});
+
+		$("#instructionsCarouselPrev").on('click', function() {
+			$("#carousel-instructions").carousel('prev');
+			
+		});
+
+		$("#carousel-instructions").on('slid.bs.carousel', function () {
+			//console.log($("#carousel-instructions .active").index());
+	    });
+
+
 
 	});
 	/**
@@ -197,7 +217,12 @@
 				break;
 			case "install":
 				selected_head = button.attr('data-head');
-				set_head();
+				
+				if(selected_head == 'prism_module'){
+					showPrismInstructions();
+				}else{
+					set_head();
+				}
 				break;
 			case 'info':
 				selected_head = button.attr('data-head');
@@ -832,5 +857,14 @@
 		}else{
 			$(".laser-pro").hide();
 		}
+	}
+
+	/**
+	*
+	**/
+	function showPrismInstructions()
+	{
+		
+		$('#prismModuleDescriptionModal').modal('show');
 	}
 </script>
