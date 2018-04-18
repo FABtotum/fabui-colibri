@@ -170,7 +170,7 @@ def end_prism(app, args=None, lang='en_US.UTF-8'):
     
     setLanguage(lang)
     
-    set_lights(app, [25, 2, 0])
+    set_lights(app, [0, 0, 0])
     
     app.macro("G91", "ok", 1, _("Relative mode"), verbose=False)
     
