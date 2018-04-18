@@ -187,7 +187,7 @@ class History extends FAB_Controller {
 			     $attributes = json_decode(utf8_encode(preg_replace('!\\r?\\n!', "<br>", $task['task_attributes'])), true);
 		    }
 
-			$when = strtotime($task['finish_date']) > strtotime("-1 day") ? getTimePast($task['finish_date']) . ' ago' : date('d M, Y', strtotime($task['finish_date']));
+			$when = strtotime($task['finish_date']) > strtotime("-1 day") ? getTimePast($task['finish_date']) . ' '._("ago").'' : date('d M, Y', strtotime($task['finish_date']));
 			$info = '<h4>';
 			$icon = $task['file_deleted'] == 0 ? 'far fa-file' : 'fa fa-trash';
 			$link = $task['file_deleted'] == 0 ? "#projectsmanager/file/".$task['id_file'] : "javascript:void(0)";
