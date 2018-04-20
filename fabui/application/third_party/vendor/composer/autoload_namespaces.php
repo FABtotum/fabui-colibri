@@ -12,5 +12,6 @@ return array(
     'Guzzle\\Parser' => array($vendorDir . '/guzzle/parser'),
     'Guzzle\\Http' => array($vendorDir . '/guzzle/http'),
     'Guzzle\\Common' => array($vendorDir . '/guzzle/common'),
+    'FABtotum\\' => array($vendorDir . '/fabtotum/helpers/src'),
     'Evenement' => array($vendorDir . '/evenement/evenement/src'),
 );

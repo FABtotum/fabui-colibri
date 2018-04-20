@@ -164,7 +164,7 @@ class HttpClient
     }
 
     /**
-     * Set timeout
+     * Set headers
      *
      * @access public
      * @param  array $headers
@@ -211,7 +211,7 @@ class HttpClient
      * @return $this
      */
     public function withoutSslVerification()
-    {	
+    {
         $this->verifySslCertificate = false;
         return $this;
     }
@@ -257,16 +257,17 @@ class HttpClient
      *
      * @access public
      * @throws ConnectionFailureException
-     * @param  string $payload
+     * @param  string   $payload
+     * @param  string[] $headers Headers for this request
      * @return array
      */
-    public function execute($payload)
+    public function execute($payload, array $headers = array())
     {
         if (is_callable($this->beforeRequest)) {
-            call_user_func_array($this->beforeRequest, array($this, $payload));
+            call_user_func_array($this->beforeRequest, array($this, $payload, $headers));
         }
 
-        $stream = fopen(trim($this->url), 'r', false, $this->buildContext($payload));
+        $stream = fopen(trim($this->url), 'r', false, $this->buildContext($payload, $headers));
 
         if (! is_resource($stream)) {
             throw new ConnectionFailureException('Unable to establish a connection');
@@ -295,11 +296,12 @@ class HttpClient
      *
      * @access private
      * @param  string   $payload
+     * @param  string[] $headers
      * @return resource
      */
-    private function buildContext($payload)
+    private function buildContext($payload, array $headers = array())
     {
-        $headers = $this->headers;
+        $headers = array_merge($this->headers, $headers);
 
         if (! empty($this->username) && ! empty($this->password)) {
             $headers[] = 'Authorization: Basic '.base64_encode($this->username.':'.$this->password);

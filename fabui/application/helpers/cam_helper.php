@@ -49,6 +49,56 @@ if(!function_exists('load_subscription'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('load_access_token'))
+{
+	/**
+	 * Load stored access token for specific fabid/subscription pair
+	 */
+	function load_access_token($fabid, $subscription)
+	{
+		$CI =& get_instance();
+		$CI->config->load('cam');
+		$CI->load->library('encrypt');
+		$CI->load->helper(array('os_helper'));
+		
+		if(file_exists($CI->config->item('token_file'))){
+			$data =  json_decode(file_get_contents($CI->config->item('token_file')), true);
+			
+			if( isset($data[$fabid]) ) {
+				if( isset($data[$fabid][$subscription]) ) 
+				{
+					return $data[$fabid][$subscription];
+				}
+			}
+
+		}
+		return false;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('store_access_token'))
+{
+	/**
+	 * Store access token for future use to reduce network traffic and response time
+	 */
+	function store_access_token($fabid, $subscription, $access_token)
+	{
+		$CI =& get_instance();
+		$CI->config->load('cam');
+		$CI->load->library('encrypt');
+		$CI->load->helper(array('os_helper'));
+		
+		$data = array();
+		if(file_exists($CI->config->item('token_file'))){
+			$data =  json_decode(file_get_contents($CI->config->item('token_file')), true);
+		}
+		
+		$data[$fabid][$subscription] = $access_token;
+		
+		return write_file($CI->config->item('token_file'), json_encode($data));
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('http_code_description'))
 {
 	/**

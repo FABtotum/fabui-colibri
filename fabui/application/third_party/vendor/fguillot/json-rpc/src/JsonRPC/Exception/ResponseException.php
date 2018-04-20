@@ -10,7 +10,7 @@ use Exception;
  * @package JsonRPC\Exception
  * @author  Frederic Guillot
  */
-class ResponseException extends Exception
+class ResponseException extends RpcCallFailedException
 {
     /**
      * A value that contains additional information about the error.

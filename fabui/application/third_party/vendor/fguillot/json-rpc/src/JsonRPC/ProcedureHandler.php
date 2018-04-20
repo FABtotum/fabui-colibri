@@ -250,7 +250,7 @@ class ProcedureHandler
         foreach ($methodParams as $p) {
             $name = $p->getName();
 
-            if (isset($requestParams[$name])) {
+            if (array_key_exists($name, $requestParams)) {
                 $params[$name] = $requestParams[$name];
             } elseif ($p->isDefaultValueAvailable()) {
                 $params[$name] = $p->getDefaultValue();

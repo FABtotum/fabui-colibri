@@ -159,9 +159,10 @@ class Client
      * @param  array       $params    Procedure arguments
      * @param  array       $reqattrs
      * @param  string|null $requestId Request Id
+     * @param  string[]    $headers   Headers for this request
      * @return mixed
      */
-    public function execute($procedure, array $params = array(), array $reqattrs = array(), $requestId = null)
+    public function execute($procedure, array $params = array(), array $reqattrs = array(), $requestId = null, array $headers = array())
     {
         $payload = RequestBuilder::create()
             ->withProcedure($procedure)
@@ -175,7 +176,7 @@ class Client
             return $this;
         }
 
-        return $this->sendPayload($payload);
+        return $this->sendPayload($payload, $headers);
     }
 
     /**
@@ -183,14 +184,15 @@ class Client
      *
      * @access private
      * @throws Exception
-     * @param  string $payload
+     * @param  string   $payload
+     * @param  string[] $headers
      * @return Exception|Client
      */
-    private function sendPayload($payload)
+    private function sendPayload($payload, array $headers = array())
     {
         return ResponseParser::create()
             ->withReturnException($this->returnException)
-            ->withPayload($this->httpClient->execute($payload))
+            ->withPayload($this->httpClient->execute($payload, $headers))
             ->parse();
     }
 }

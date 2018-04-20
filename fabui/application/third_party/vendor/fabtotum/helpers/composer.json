@@ -1,0 +1,39 @@
+{
+    "name": "fabtotum/helpers",
+    "version": "0.1.0",
+    "description": "FABtotum helpers library",
+    "require-dev": {
+        "php": ">=5.5.0",
+        "phpunit/phpunit": "^7"
+    },
+    "authors": [
+        {
+            "name": "Daniel Kesler",
+            "email": "dk@fabtotum.com"
+        }
+    ],
+    "require": {
+        "fguillot/json-rpc": "@stable",
+        "guzzlehttp/guzzle": "6.3.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "FABtotum\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": { 
+            "Tests\\": "tests/" 
+        }
+    },
+    "scripts":{
+        "tests": "vendor/bin/phpunit --testdox",
+        "test-login": "vendor/bin/phpunit --testdox --filter LoginTest",
+        "test-app": "vendor/bin/phpunit --testdox --filter AppTest",
+        "test-task": "vendor/bin/phpunit --testdox --filter TaskTest",
+        "test-file": "vendor/bin/phpunit --testdox --filter TaskFileTest",
+        "test-run": "vendor/bin/phpunit --testdox --filter RunTaskTest",
+        "test-cam": "vendor/bin/phpunit --testdox --filter RunCamApplicationTest"
+    },
+    "minimum-stability": "dev"
+}
