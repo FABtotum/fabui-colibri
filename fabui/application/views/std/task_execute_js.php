@@ -1386,22 +1386,38 @@ if(!isset($show_prism_temperature)) $show_prism_temperature = false;
 	**/
 	function handlePrismImage(data)
 	{
-	
-		if(data.hasOwnProperty("gpusher")){
 		
-    		if(data.gpusher.first_move == true){
+		if(data.prism.hasOwnProperty("uploaded")){
+
+    		if(data.prism.uploaded == true){
+    
+    			$("#prism-transfer-message").hide();
     			
-    			if((data.print.layer_current != preview_image_index) || (data.print.layer_current == 0)){
-
-    				preview_image_index = data.print.layer_current;
+    			$("#prism-preview-container").show();
+    			
+        		//if(data.hasOwnProperty("gpusher")){
+        		
+        		if(data.prism.displayed == true){
+        			
+        			if((data.print.layer_current != preview_image_index) || (data.print.layer_current == 0)){
     
-    				if($("#prism-preview-layer").length > 0){
-    					$("#prism-preview-layer").attr('src', '/fabui/plugin/fab_prism/preview/' + preview_image_index);
+        				preview_image_index = data.print.layer_current;
+        
+        				if($("#prism-preview-layer").length > 0){
+            				
+        					$("#prism-preview-layer").attr('src', '/fabui/plugin/fab_prism/preview/' + preview_image_index);
+        
+        				}
+        			}
     
-    				}
-    			}
-
+        		}
+    		}else{
+    				
+    			$("#prism-transfer-message").show();
+    
+    			$("#prism-preview-container").hide();
     		}
+
 		}
 	}
 	

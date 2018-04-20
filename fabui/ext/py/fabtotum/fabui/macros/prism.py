@@ -37,6 +37,16 @@ def initial_prism_homing(app, args=None, lang='en_US.UTF-8'):
     
     setLanguage(lang)
     
+    app.trace(_("Moving head to safe zone"))
+    
+    app.macro("G28 XY", "ok", 90, _("Homing XY"), verbose=False)
+    
+    app.macro("G90", "ok", 2, _("Absoulte mode"), verbose=False)
+    
+    app.macro("G0 X210 Y210 F10000", "ok", 90, _("Going to safe zone"), verbose=False)
+    
+    app.macro("M400", "ok", 120, _("Wait for all movements"), verbose=False)
+    
     app.trace(_("Positioning the platform"))
     
     app.macro("G91", "ok", 1, _("Relative mode"), verbose=False)
