@@ -67,6 +67,8 @@ def initial_prism_homing(app, args=None, lang='en_US.UTF-8'):
     
     app.macro("M400", "ok", 120, _("Wait for all movements"), verbose=False)
     
+    app.macro("M732 S0", "ok", 2, _("Disabling door safety"), verbose=False)
+    
     
 def prepare_prism(app, args=None, lang='en_US.UTF-8'):
     
@@ -102,6 +104,8 @@ def pause_prism(app, args=None, lang='en_US.UTF-8'):
         z_offset = 100.00
         
     app.macro("M300", "ok", 3, _("Play beep"), verbose=False)
+    
+    app.macro("M732 S0", "ok", 2, _("Disabling door safety"), verbose=False)
     
     # turn lights to red
     set_lights(app, [25, 2, 0])
@@ -141,6 +145,8 @@ def resume_prism(app, args=None, lang='en_US.UTF-8'):
     except:
         
         z_offset = 100.00
+        
+    safety_door = app.config.get('settings', 'safety.door', 0)
     
     app.macro("M999",    "ok", 3, _("Reset all errors"),   verbose=False)
     
@@ -149,6 +155,8 @@ def resume_prism(app, args=None, lang='en_US.UTF-8'):
     set_lights(app, [0, 0, 0])
     
     app.macro("M300", "ok", 3, _("Play beep"), verbose=False)
+    
+    app.macro("M732 S{0}".format(safety_door), "ok", 2, _("Set door safety"), verbose=False)
     
     # restore position
     if os.path.exists('/var/lib/fabui/settings/stored_task.json'):
