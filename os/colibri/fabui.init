@@ -42,8 +42,7 @@ case "$1" in
 
 	### fix file permissions
 	chown -R 33:33 /mnt/userdata/*
-	chown -R 33:33 /mnt/bigtemp/fabui/*
-	#~ chown -R 33:33 /var/lib/fabui/*
+	chown -R 33:33 /mnt/bigtemp/fabui
 	chown 33:33 /var/lib/fabui/serial.ini
 	chown 33:33 /var/lib/fabui/camera.ini
 	chown 33:33 /var/lib/fabui/fabtotum.db
