@@ -39,16 +39,24 @@
 
 		$("#instructionsCarouselNext").on('click', function() {
 			$("#carousel-instructions").carousel('next');
+
+			
 			
 		});
 
 		$("#instructionsCarouselPrev").on('click', function() {
 			$("#carousel-instructions").carousel('prev');
 			
+			
 		});
 
 		$("#carousel-instructions").on('slid.bs.carousel', function () {
 			//console.log($("#carousel-instructions .active").index());
+
+			$(".current-step-title").html($(".item.active").find('h5.text-center').html());
+
+			console.log();
+			
 	    });
 
 

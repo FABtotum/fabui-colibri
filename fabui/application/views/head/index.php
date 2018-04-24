@@ -427,20 +427,19 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
-
 <!-- DESCRIPTION MODAL -->
 <div class="modal fade" id="prismModuleDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title"><i class="fas fa-list-ul"></i> <?php echo _("Prism install instrucions"); ?> </h4>
+				<h4 class="modal-title"><i class="fas fa-list-ul"></i> <?php echo _("Prism install instructions"); ?> </h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-12">
+						<h4 class="pull-left hidden-sm hidden-md hidden-lg current-step-title"><span class="badge bg-color-blue txt-color-white">1</span> <span class="step-title"><?php echo $prism_module_instractions[1]['title']; ?></span></h4>
 						<button class="btn btn-default pull-right" id="instructionsCarouselNext"><i class="fa fw-lg fa-chevron-right"></i></button>
-						<button class="btn btn-default pull-right" id="instructionsCarouselPrev"><i class="fa fw-lg fa-chevron-left" ></i></button>
+						<button class="btn btn-default pull-right" id="instructionsCarouselPrev" style="margin-right:5px;"><i class="fa fw-lg fa-chevron-left" ></i></button>
 					</div>
 				</div>
 				<div class="row">
@@ -459,7 +458,7 @@
                     							</div>
                     							<div class="col-md-6">
                     								<div class="description">
-                    									<h5 class="text-center"><span class="badge bg-color-blue txt-color-white"><?php echo $index; ?></span> <?php echo $instr['title']; ?> </h5>
+                    									<h5 class="text-center hidden-xs"><span class="badge bg-color-blue txt-color-white"><?php echo $index; ?></span> <span class="step-title"><?php echo $instr['title']; ?></span> </h5>
                     										<p class="text"><?php echo $instr['description']; ?></p>
                     								</div>
                     							</div>
@@ -475,7 +474,14 @@
 			</div>
 			
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Close')?></button>
+				<div class="form-group pull-left">				
+					<label class="checkbox-inline">
+						  <input type="checkbox" class="checkbox" id="dama">
+						  <span><?php echo _("Don't ask me anymore");?></span>
+					</label>
+				</div>
+				
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Cancel')?></button>
 				<button class="btn btn-primary" id="prismConfirmInsallButton"> <?php echo _("Confirm & Install");?> </button>
 			</div>
 		</div>
