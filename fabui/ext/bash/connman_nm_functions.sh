@@ -74,9 +74,9 @@ connman_iface2service()
     IF_MAC=$(ip link show dev $IFACE | grep link/ether | awk '{print $2}' | sed -e s@:@@g )
     IF_SRV=""
     
-    if [ x"$IFACE" == x"eth0" ]; then
+    if [ $(echo $iface | grep -e "eth[0-9]") ]; then
         IF_SRV="ethernet_${IF_MAC}_cable"
-    elif [ x"$IFACE" == x"wlan0" ]; then
+    elif [ $(echo $iface | grep -e "wlan[0-9]") ]; then
         IF_SRV=$(find ${CONNMAN_SERVICES_DIR} -name  wifi_${IF_MAC}_*)
         [ -n "$IF_SRV" ] && IF_SRV=$(basename $IF_SRV)
     fi
@@ -464,9 +464,9 @@ get_interface_state()
 				TETHER="no"
 			fi
 			
-			if [ x"$iface" == x"wlan0" ]; then
+			if [ $(echo $iface | grep -e "wlan[0-9]") ]; then
 				TETHERING=$(connmanctl technologies | awk '/^$/{f=0} f{print} /\/net\/connman\/technology\/wifi/{f=1}' | grep -m 1 Tethering | awk  '{print $3}')
-			elif [ x"$iface" == x"eth0" ]; then
+			elif [ $(echo $iface | grep -e "eth[0-9]") ]; then
 				TETHERING=$(connmanctl technologies | awk '/^$/{f=0} f{print} /\/net\/connman\/technology\/ethernet/{f=1}' | grep -m 1 Tethering | awk  '{print $3}')
 			fi
 						
@@ -498,8 +498,8 @@ get_interface_state()
 			echo "  \"$iface\" : {"
 			echo "    \"driver\" : \"$DRIVER\", "
 			
-			if [ "$iface" == "eth0" ]; then
-				CABLE_PLUGGED_IN=$(ethtool eth0 | grep "Link detected" | awk '{print $NF}')
+			if [ $(echo $iface | grep -e "eth[0-9]") ]; then
+				CABLE_PLUGGED_IN=$(ethtool $iface | grep "Link detected" | awk '{print $NF}')
 				echo "    \"cable\" : \"$CABLE_PLUGGED_IN\","
 			fi
 			
@@ -508,6 +508,7 @@ get_interface_state()
 				SETTINGS_FILE="${CONNMAN_SERVICES_DIR}/${SERVICE}/settings"
 			
 				LIVE_SERVICE=$(connmanctl services | grep $SERVICE | awk '{print $NF}')
+				
 				if [ -n "$LIVE_SERVICE" ]; then
 					A=$(connmanctl services $SERVICE | grep "IPv4 " | sed -e 's@IPv4 = \[@@g' -e 's@\]@@g' -e 's@,@@g')
 					B=$(connmanctl services $SERVICE | grep IPv4.Configuration | sed -e 's@IPv4.Configuration = \[@@g' -e 's@\]@@g' -e 's@,@@g')
@@ -531,7 +532,7 @@ get_interface_state()
 					done
 					NETMASK_PREFIX=$(mask2cidr ${NETMASK})
 				else
-					if [ x"$iface" == x"eth0" ]; then
+					if [ $(echo $iface | grep -e "eth[0-9]") ]; then
 						if [ -e "$SETTINGS_FILE" ]; then
 							#echo "Reading settings from file"
 							# fallback, read addresses from settings
@@ -542,7 +543,7 @@ get_interface_state()
 							
 							GATEWAY=$(cat "$SETTINGS_FILE" |  grep "IPv4.gateway" | awk -F= '{print $2}')
 						fi
-					elif [ x"$iface" == x"wlan0" ]; then
+					elif [ $(echo $iface | grep -e "wlan[0-9]") ]; then
 						MODE="disabled"
 						STATE=$(parse_ini "${CONNMAN_SERVICES_DIR}/settings" WiFi Enable)
 						if [ x"$STATE" == x"false" ]; then
@@ -560,7 +561,7 @@ get_interface_state()
 			
 			[ $TETHER == "yes" ] && MODE="static-ap"
 			
-			if [ x"$iface" == x"wlan0" ]; then
+			if [ $(echo $iface | grep -e "wlan[0-9]") ]; then
 				POWERED=$(connmanctl technologies | awk '/^$/{f=0} f{print} /\/net\/connman\/technology\/wifi/{f=1}' | grep -m 1 Powered | awk  '{print $3}')
 				if [ x"$POWERED" == x"False" ]; then
 					MODE="disabled"
