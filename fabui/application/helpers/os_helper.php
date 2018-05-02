@@ -544,19 +544,31 @@ if(!function_exists('getNetworkInfo'))
 if(!function_exists('getMACAddress'))
 {
 	/**
+	 * @param interface If left blank will look for first ethernet interface
+	 * 
 	 * return mac address
 	 */
-	function getMACAddres($interface = 'eth0')
+	function getMACAddres($interface = null)
 	{
-	    /*
-		$interfaces = getInterfaces();
-		if(array_key_exists($interface,$interfaces)){
-			if(isset($interfaces[$interface]["mac_address"]))
-				return $interfaces[$interface]["mac_address"];
+		$CI =& get_instance();
+		$CI->load->helper('utility');
+		
+		if($interface)
+		{
+			return trim(shell_exec("ifconfig " . $interface . " | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'"));
 		}
+		
+		$interfaces = getInterfaces();
+		foreach($interfaces as  $label => $value)
+		{
+			if(is_string($label) && startsWith($label, "eth") )
+			{
+				if(isset($interfaces[$label]["mac_address"]))
+					return $interfaces[$label]["mac_address"];
+			}
+		}
+		
 		return false;
-		*/
-		return trim(shell_exec("ifconfig " . $interface . " | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'"));
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
