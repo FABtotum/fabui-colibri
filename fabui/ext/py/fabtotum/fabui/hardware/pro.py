@@ -34,11 +34,25 @@ from fabtotum.utils.translation import _, setLanguage
 
 def hardware2000(gcodeSender, config, log, eeprom, factory):
     """
-    Rev2000 CORE PRO: TBA - xxx
+    Rev2000 CORE PRO
     """
     log.info("Rev2000 - PRO")
     defaultProSettings(gcodeSender, config, log, eeprom, factory)
     config.set('settings', 'hardware.id', 2000)
+    config.save('settings')
+    
+
+def hardware2100(gcodeSender, config, log, eeprom, factory):
+    """
+    Rev2100 CORE PRO Silent
+    """
+    log.info("Rev2100 - PRO")
+    
+    defaultProSettings(gcodeSender, config, log, eeprom, factory)
+    
+    gcodeSender.send("M92 X36.29 Y36.29", group='bootstrap')
+    
+    config.set('settings', 'hardware.id', 2100)
     config.save('settings')
     
 def hardware2500(gcodeSender, config, log, eeprom, factory):
@@ -48,6 +62,28 @@ def hardware2500(gcodeSender, config, log, eeprom, factory):
     log.info("Rev2500 - PRO")
     defaultProSettings(gcodeSender, config, log, eeprom, factory)
     config.set('settings', 'hardware.id', 2500)
+    config.set('settings', 'feeder.engage', False)
+    config.set('settings', 'feeder.available', True)
+    
+    if config.is_firstboot():
+        feeder = loadFactoryFeeder(config)
+        updateFactoryFeeder(config, feeder)
+        config.save_feeder_info('built_in_feeder', feeder)
+    
+    config.save('settings')
+    
+    
+def hardware2550(gcodeSender, config, log, eeprom, factory):
+    """
+    Rev2500 CORE PRO Silent with mobile built-in feeder installed 
+    """
+    log.info("Rev2550 - PRO")
+    
+    defaultProSettings(gcodeSender, config, log, eeprom, factory)
+    
+    gcodeSender.send("M92 X36.29 Y36.29", group='bootstrap')
+    
+    config.set('settings', 'hardware.id', 2550)
     config.set('settings', 'feeder.engage', False)
     config.set('settings', 'feeder.available', True)
     

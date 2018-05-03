@@ -98,6 +98,10 @@ def defaultCoreSettings(gcodeSender, config, log, eeprom, factory):
     gcodeSender.send("M747 X1", group='bootstrap')
     #set maximum feedrate
     gcodeSender.send("M203 X250.00 Y250.00 Z15.00", group='bootstrap')
+    
+    # default XY Step
+    gcodeSender.send("M92 X72.58 Y72.58", group='bootstrap')
+    
     config.set('settings', 'feeder.engage', False)
     config.set('settings', 'feeder.available', True)
     config.set('settings', 'hardware.camera.available', False)
@@ -112,11 +116,18 @@ def defaultCoreSettings(gcodeSender, config, log, eeprom, factory):
     
 """ CORE PRO Default settings """
 def defaultProSettings(gcodeSender, config, log, eeprom, factory):
-    log.info("Applying default settings for CORE PRO version")
+    
+    log.info("Applying default settings for PRO version")
+    
     #invert x endstop logic
     gcodeSender.send("M747 X1", group='bootstrap')
+    
     #set maximum feedrate
     gcodeSender.send("M203 X250.00 Y250.00 Z15.00", group='bootstrap')
+    
+    # default XY Step
+    gcodeSender.send("M92 X72.58 Y72.58", group='bootstrap')
+    
     config.set('settings', 'feeder.engage', False)
     config.set('settings', 'feeder.available', False)
     config.set('settings', 'hardware.camera.available', False)
@@ -125,7 +136,7 @@ def defaultProSettings(gcodeSender, config, log, eeprom, factory):
 
 """ CORE HYDRA Default settings """
 def defaultHydraSettings(gcodeSender, config, log, eeprom, factory):
-    log.info("Applying default settings for CORE HYDRA version")
+    log.info("Applying default settings for HYDRA version")
     config.set('settings', 'feeder.engage', False)
     config.set('settings', 'feeder.available', False)
     config.set('settings', 'hardware.camera.available', False)

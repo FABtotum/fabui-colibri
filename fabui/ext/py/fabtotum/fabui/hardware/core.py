@@ -39,5 +39,9 @@ def hardware1000(gcodeSender, config, log, eeprom, factory):
     """
     log.info("Rev1000 - Core")
     defaultCoreSettings(gcodeSender, config, log, eeprom, factory)
+    
+    # default XY Step
+    gcodeSender.send("M92 X72.58 Y72.58", group='bootstrap')
+    
     config.set('settings', 'hardware.id', 1000)
     config.save('settings')

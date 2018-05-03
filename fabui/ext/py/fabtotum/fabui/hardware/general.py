@@ -60,6 +60,10 @@ def hardware1(gcodeSender, config, log, eeprom, factory):
     - Original FABtotum
     """
     gcodeSender.send("M203 X250.00 Y250.00 Z15.00", group='bootstrap')
+    
+    # default XY Step
+    gcodeSender.send("M92 X72.58 Y72.58", group='bootstrap')
+    
     config.set('settings', 'hardware.id', 1)
     config.set('settings', 'feeder.engage', True)
     config.set('settings', 'feeder.available', True)
@@ -87,10 +91,10 @@ def hardware2(gcodeSender, config, log, eeprom, factory):
     gcodeSender.send("M747 X1", group='bootstrap')
     #set maximum feedrate
     gcodeSender.send("M203 X250.00 Y250.00 Z15.00", group='bootstrap')
-    #save settings
-    #gcodeSender.send("M500", group='bootstrap')
     
-    #~ eeprom = read_eeprom(gcodeSender)
+    # default XY Step
+    gcodeSender.send("M92 X72.58 Y72.58", group='bootstrap')
+    
     
     config.set('settings', 'hardware.id', 2)
     config.set('settings', 'feeder.engage', True)
@@ -121,10 +125,9 @@ def hardware3(gcodeSender, config, log, eeprom, factory):
     gcodeSender.send("M747 X1", group='bootstrap')
     #set maximum feedrate
     gcodeSender.send("M203 X250.00 Y250.00 Z15.00", group='bootstrap')
-    #save settings
-    #gcodeSender.send("M500", group='bootstrap')
     
-    #eeprom = read_eeprom(gcodeSender)
+    # default XY Step
+    gcodeSender.send("M92 X72.58 Y72.58", group='bootstrap')
     
     config.set('settings', 'hardware.id', 3)
     config.set('settings', 'feeder.engage', False)
@@ -148,10 +151,9 @@ def hardware4(gcodeSender, config, log, eeprom, factory):
     gcodeSender.send("M747 X1", group='bootstrap')
     #set maximum feedrate
     gcodeSender.send("M203 X250.00 Y250.00 Z15.00", group='bootstrap')
-    #save settings
-    #gcodeSender.send("M500", group='bootstrap')
-    
-    #eeprom = read_eeprom(gcodeSender)
+   
+    # default XY Step
+    gcodeSender.send("M92 X72.58 Y72.58", group='bootstrap')
     
     config.set('settings', 'hardware.id', 4)
     config.set('settings', 'feeder.engage', False)
@@ -175,6 +177,10 @@ def hardware5(gcodeSender, config, log, eeprom, factory):
     gcodeSender.send("M747 X1", group='bootstrap')
     #set maximum feedrate
     gcodeSender.send("M203 X250.00 Y250.00 Z15.00", group='bootstrap')
+    
+    # default XY Step
+    gcodeSender.send("M92 X72.58 Y72.58", group='bootstrap')
+    
     #save settings
     config.set('settings', 'hardware.id', 5)
     config.set('settings', 'feeder.engage', False)

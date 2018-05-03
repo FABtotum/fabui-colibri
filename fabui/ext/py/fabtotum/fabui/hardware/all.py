@@ -41,7 +41,9 @@ PRESET_MAP = {
     
     #CORE PRO
     "2000"   : core_pro_hardware.hardware2000,
+    "2100"   : core_pro_hardware.hardware2100,
     "2500"   : core_pro_hardware.hardware2500,
+    "2550"   : core_pro_hardware.hardware2550,
     "2600"   : core_pro_hardware.hardware2600,
 
     #HYDRA
