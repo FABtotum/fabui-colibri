@@ -1398,16 +1398,24 @@ if(!isset($show_prism_temperature)) $show_prism_temperature = false;
         		//if(data.hasOwnProperty("gpusher")){
         		
         		if(data.prism.displayed == true){
-        			
-        			if((data.print.layer_current != preview_image_index) || (data.print.layer_current == 0)){
+
+        			if(data.hasOwnProperty('print')){
+					
+    					if(data.print.hasOwnProperty('layer_current')){
+            			
+                			if((data.print.layer_current != preview_image_index) || (data.print.layer_current == 0)){
+            
+                				preview_image_index = data.print.layer_current;
+                
+                				if($("#prism-preview-layer").length > 0){
+                    				
+                					$("#prism-preview-layer").attr('src', '/fabui/plugin/fab_prism/preview/' + preview_image_index);
+                
+                				}
+                			}
     
-        				preview_image_index = data.print.layer_current;
-        
-        				if($("#prism-preview-layer").length > 0){
-            				
-        					$("#prism-preview-layer").attr('src', '/fabui/plugin/fab_prism/preview/' + preview_image_index);
-        
-        				}
+            			}
+
         			}
     
         		}
