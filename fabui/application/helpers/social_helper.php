@@ -84,7 +84,7 @@ if(!function_exists('downloadInstagramFeeds'))
 		$done = false;
 		
 		$fabtotum_max_post = 20;
-		$hashtag_max_post  = 30;
+		$hashtag_max_post  = 50;
 		
 		$instagram_feeds = getRemoteFile($CI->config->item('instagram_feed_url'), true, null, 30);
 		
@@ -109,7 +109,7 @@ if(!function_exists('downloadInstagramFeeds'))
 					//get last 9 post
 					$hashtag_feeds = array_slice($instagram_feeds['hashtag_feeds']['fullResponse']['items'], 0, $hashtag_max_post);
 					$temp_feeds = array_merge($temp_feeds, $hashtag_feeds);
-					/*
+					
 					//poular posts
 					if(isset($instagram_feeds['hashtag_feeds']['ranked_items'])){
 						$ranked_feeds = array();
@@ -120,7 +120,7 @@ if(!function_exists('downloadInstagramFeeds'))
 						}
 						$temp_feeds = array_merge($temp_feeds, $ranked_feeds);
 					}
-					*/
+					
 				}
 				
 				$temp_feeds = highlightInstagramPost($temp_feeds); //highlight links, tags, hashtags
