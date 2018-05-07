@@ -32,16 +32,17 @@
 		$('.capability').on('change', capability_change);
 		$("#inputId").on('change', importHeadSettings);
 		$("#advanced_settings_switch").on('click', clickShowHideSettings);
+
+
+
+		<?php if($prism_disabled == false): ?>
 		$("#prismConfirmInsallButton").on('click', function(){
 			$('#prismModuleDescriptionModal').modal('hide');
 			set_head('prism_module');
 		});
 
 		$("#instructionsCarouselNext").on('click', function() {
-			$("#carousel-instructions").carousel('next');
-
-			
-			
+			$("#carousel-instructions").carousel('next');	
 		});
 
 		$("#instructionsCarouselPrev").on('click', function() {
@@ -49,15 +50,12 @@
 			
 			
 		});
-
+	
 		$("#carousel-instructions").on('slid.bs.carousel', function () {
-			//console.log($("#carousel-instructions .active").index());
-
-			$(".current-step-title").html($(".item.active").find('h5.text-center').html());
-
-			console.log();
-			
+			$(".current-step-title").html($(".item.active").find('h5.text-center').html());			
 	    });
+	    
+	    <?php endif; ?>
 
 
 
@@ -185,6 +183,16 @@
 	{
 		var button = $(this);
 		var action = button.attr('data-action');
+
+		<?php if($prism_disabled == true): ?>
+
+    		selected_head = button.attr('data-head');
+    		if(selected_head == 'prism_module' ){
+    			return false;
+    		}
+    		
+		<?php endif; ?>
+		
 		switch(action)
 		{
 			case "edit":

@@ -161,6 +161,7 @@ class Head extends FAB_Controller {
 		);
 		
 		
+		$data['prism_disabled'] = false;
 		
 		$data['prism_module_instractions'] = array(
 		    1 => array(

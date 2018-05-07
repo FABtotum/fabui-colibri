@@ -33,7 +33,9 @@
 	function checkUpdateStatus(bool)
 	{
 		var task_completed = bool || false;
-		$(".button-container").html('');
+		if(task_completed == false) {
+			$(".button-container").html('');
+		}
 		/*$('.fabtotum-icon .badge').html('<i class="fa fa-refresh fa-spin"></i>');*/
 		if(!task_completed) $(".status").html('<i class="fa fa-spinner fa-spin"></i> <?php echo _("Checking for updates") ?>');
 		$.ajax({
@@ -518,9 +520,12 @@
 					$(".status").html('<i class="fa fa-check"></i> Update completed');
 					$("#do-abort").remove();
 					$(".small").html('<?php echo _("A reboot is needed to apply new features") ?>');
-					if($("#do-reboot").length == 0) $(".button-container").append('<button class="btn btn-default  action-buttons" id="do-reboot"> <?php echo _("Reboot now") ?></button>')
+					
+					$(".button-container").html('<button class="btn btn-default  action-buttons" id="do-reboot"> <?php echo _("Reboot now") ?></button>');
+					
 					$('.fabtotum-icon').parent().removeClass().addClass('tada animated');
 					$("#do-reboot").on('click', fabApp.reboot);
+					$(".update-details").hide();
 				}
 				/*$('.fabtotum-icon .badge').addClass('check').find('i').removeClass('fa-spin fa-refresh').addClass('fa-check');*/
 				fabApp.unFreezeMenu();

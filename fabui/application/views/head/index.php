@@ -29,16 +29,18 @@
 						</div>
 						<ul class="links">
 							<li class="pull-right" style="padding-right: 0px !important;">
-								<a data-action="install" data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action <?php echo $index == $installed_head['filename'] ? 'btn-primary ' : ''; ?>  install" ><i class="fa <?php echo $index == $installed_head['filename'] ? 'fa-check' : 'fa-wrench'?>"></i><span> <?php echo $index == $installed_head['filename'] ? _("Installed") : _("Install"); ?></span></a>
+								<a data-action="install" <?php echo ($prism_disabled == true && $head['filename'] == 'prism_module') ? 'disabled="disabled"' : ''; ?> data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action <?php echo $index == $installed_head['filename'] ? 'btn-primary ' : ''; ?>  install" ><i class="fa <?php echo $index == $installed_head['filename'] ? 'fa-check' : 'fa-wrench'?>"></i><span> <?php echo $index == $installed_head['filename'] ? _("Installed") : _("Install"); ?></span></a>
 							</li>
 							<li style="padding-right:0px !important">
 								<div class="btn-toolbar">
 									<div class="btn-group">
-										<a title="<?php echo _("Settings");?>" data-action="edit" data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action" ><i class="fa  fa-cogs"></i> </a>
-										<!--  <a data-action="info" data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action" ><i class="fa  fa-info"></i> </a>-->
-										<?php if($head['fw_id'] >= 100):?>
-										<a data-action="remove" data-head="<?php echo $head['filename']; ?>" class="btn btn-danger settings-action" ><i class="fa  fa-trash"></i> </a>
+										
+										<a title="<?php echo _("Settings");?>" data-action="edit" data-head="<?php echo $head['filename']; ?>" class="btn btn-default settings-action" <?php echo ($prism_disabled == true && $head['filename'] == 'prism_module') ? 'disabled="disabled"' : ''; ?> > <i class="fa fa-cogs"></i> </a>
+										
+										<?php if($head['fw_id'] >= 100): ?>
+											<a data-action="remove" data-head="<?php echo $head['filename']; ?>" class="btn btn-danger settings-action" ><i class="fa  fa-trash"></i> </a>
 										<?php endif;?>
+									
 									</div>
 								</div>
 							</li>
