@@ -528,17 +528,19 @@ fabApp = (function(app) {
 	 * @param except Menu item(s) to keep unfrozen.
 	 */
 	app.freezeMenu = function(except){
-		var excepet_item_menu = new Array();
-		excepet_item_menu[0] = 'dashboard';
-		excepet_item_menu[1] = 'projectsmanager';
-		excepet_item_menu[2] = 'make/history';
-		excepet_item_menu[3] = except;
+		var except_item_menu = new Array();
+		
+		except_item_menu[0] = 'dashboard';
+		except_item_menu[1] = 'cam';
+		except_item_menu[2] = 'projectsmanager';
+		except_item_menu[3] = 'make/history';
+		except_item_menu[4] = except;
 		
 		var a = $("nav li > a");
 		a.each(function() {
 			var link = $(this);
 			var controller = link.attr('data-controller');
-			if(jQuery.inArray( controller, excepet_item_menu ) >= 0 ){
+			if(jQuery.inArray( controller, except_item_menu ) >= 0 ){
 				if(controller == except){
 					app.unFreezeParent(link);
 					if($(".freeze-menu").length == 0) link.append('<span class="badge bg-color-red pull-right inbox-badge freeze-menu">!</span>');
@@ -653,8 +655,7 @@ fabApp = (function(app) {
 	};
 	app.finalizeWizard = function()
 	{
-		$.get(first_setup_url_action + '/finalize', function(data, status){
-		});
+		$.get(first_setup_url_action + '/finalize', function(data, status){ } );
 	}
 	/**
 	 * Launch reset controller command.
@@ -1144,13 +1145,13 @@ fabApp = (function(app) {
 		
 		switch(code)
 		{
-			case 102:
+			case ERROR_DOOR_OPEN:
 				app.refreshPage(_("Front panel has been opened") + '.<br> ' + _("Aborting all operations"), 10000);
 				setTimeout(function(){
 					waitContent( "<i class='fa fa-cog fa-spin'></i> " +  _("Restarting all services"));
 				}, 5000);
 				break;
-			case 103:
+			case ERROR_MIN_TEMP:
 				//TODO
 				app.showInstallHeadModal();
 				break;
