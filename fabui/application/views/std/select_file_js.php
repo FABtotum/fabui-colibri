@@ -20,6 +20,7 @@ if( !isset($get_files_url) ) $get_files_url = 'std/getFiles/' + $type;
 	    var breakpointDefinition = { tablet : 1024, phone : 480};
 	    
 		$(document).ready(function() {
+
 			initFilesTable();
 			
 			<?php if( isset($get_reacent_url) ): ?>
@@ -29,75 +30,84 @@ if( !isset($get_files_url) ) $get_files_url = 'std/getFiles/' + $type;
 	    
 		function initFilesTable()
 		{
-			filesTable = $('#files_table').dataTable({
+			if ( ! $.fn.DataTable.isDataTable( '#files_table' ) ) {
 				
-				"language": {
-	                "url": "assets/js/plugin/datatables/lang/<?php echo getCurrentLanguage();?>"
-	            },
-				
-				"sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+
-					"t"+
-					"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
-				"autoWidth" : true,
-				"preDrawCallback" : function() {
-					// Initialize the responsive datatables helper once.
-					if (!responsiveHelper_dt_basic) {
-						responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#files_table'), breakpointDefinition);
-					}
-				},
-				"aaSorting": [],
-				"rowCallback" : function(nRow) {
-					responsiveHelper_dt_basic.createExpandIcon(nRow);
-				},
-				"drawCallback" : function(oSettings) {
-					responsiveHelper_dt_basic.respond();
-					initFilesTableEvents();
-					if(idFile)
-					{
-						$(':radio[value='+idFile+']').attr('checked', 'checked');
-					}
-					pageSetUp();
-				},
-				"sAjaxSource": "<?php echo site_url($get_files_url) ?>",
-				"fnRowCallback": function (row, data, index ){
-					$('td', row).eq(0).addClass('text-center');
-					$('td', row).eq(2).addClass('hidden-xs');
-					$('td', row).eq(3).addClass('hidden');
-					$('td', row).eq(4).addClass('hidden');
-				}
-			});
+    			filesTable = $('#files_table').dataTable({
+    				
+    				"language": {
+    	                "url": "assets/js/plugin/datatables/lang/<?php echo getCurrentLanguage();?>"
+    	            },
+    				
+    				"sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+
+    					"t"+
+    					"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+    				"autoWidth" : true,
+    				"preDrawCallback" : function() {
+    					// Initialize the responsive datatables helper once.
+    					if (!responsiveHelper_dt_basic) {
+    						responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#files_table'), breakpointDefinition);
+    					}
+    				},
+    				"aaSorting": [],
+    				"rowCallback" : function(nRow) {
+    					responsiveHelper_dt_basic.createExpandIcon(nRow);
+    				},
+    				"drawCallback" : function(oSettings) {
+    					responsiveHelper_dt_basic.respond();
+    					initFilesTableEvents();
+    					if(idFile)
+    					{
+    						$(':radio[value='+idFile+']').attr('checked', 'checked');
+    					}
+    					pageSetUp();
+    				},
+    				"sAjaxSource": "<?php echo site_url($get_files_url) ?>",
+    				"fnRowCallback": function (row, data, index ){
+    					$('td', row).eq(0).addClass('text-center');
+    					$('td', row).eq(2).addClass('hidden-xs');
+    					$('td', row).eq(3).addClass('hidden');
+    					$('td', row).eq(4).addClass('hidden');
+    				}
+    			});
+
+			}
 	
 		}
 		
 		<?php if( isset($get_reacent_url) ): ?>
 		function initRecentFilesTable()
 		{
-			recentFilesTable = $('#recent_files_table').dataTable({
-				"sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+
-					"t"+
-					"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
-				"autoWidth" : true,
-				"preDrawCallback" : function() {
-					// Initialize the responsive datatables helper once.
-					if (!responsiveHelper_dt_basic) {
-						responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#recent_files_table'), breakpointDefinition);
-					}
-				},
-				"rowCallback" : function(nRow) {
-					responsiveHelper_dt_basic.createExpandIcon(nRow);
-				},
-				"drawCallback" : function(oSettings) {
-					responsiveHelper_dt_basic.respond();
-					initRecentFilesTableEvents();
-				},
-				"sAjaxSource": "<?php echo site_url($get_reacent_url) ?>",
-				"fnRowCallback": function (row, data, index ){
-					$('td', row).eq(0).addClass('text-center');
-					$('td', row).eq(2).addClass('hidden-xs');
-					$('td', row).eq(3).addClass('hidden');
-					$('td', row).eq(4).addClass('hidden');
-				}
-			});
+
+			if ( ! $.fn.DataTable.isDataTable( '#recent_files_table' ) ) {
+			
+    			recentFilesTable = $('#recent_files_table').dataTable({
+    				"sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+
+    					"t"+
+    					"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+    				"autoWidth" : true,
+    				"preDrawCallback" : function() {
+    					// Initialize the responsive datatables helper once.
+    					if (!responsiveHelper_dt_basic) {
+    						responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#recent_files_table'), breakpointDefinition);
+    					}
+    				},
+    				"rowCallback" : function(nRow) {
+    					responsiveHelper_dt_basic.createExpandIcon(nRow);
+    				},
+    				"drawCallback" : function(oSettings) {
+    					responsiveHelper_dt_basic.respond();
+    					initRecentFilesTableEvents();
+    				},
+    				"sAjaxSource": "<?php echo site_url($get_reacent_url) ?>",
+    				"fnRowCallback": function (row, data, index ){
+    					$('td', row).eq(0).addClass('text-center');
+    					$('td', row).eq(2).addClass('hidden-xs');
+    					$('td', row).eq(3).addClass('hidden');
+    					$('td', row).eq(4).addClass('hidden');
+    				}
+    			});
+
+			}
 		}
 		
 		// recent files table event

@@ -31,39 +31,43 @@
 	 */
 	function initTable()
 	{
-		filesTable = $('#files-table').dataTable({
-			"language": {
-                "url": "assets/js/plugin/datatables/lang/<?php echo getCurrentLanguage();?>"
-            },
-            
-			"sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+
-				"t"+
-				"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
-			"autoWidth" : true,
-			"preDrawCallback" : function() {
-				// Initialize the responsive datatables helper once.
-				if (!responsiveHelper_dt_basic) {
-					responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#files-table'), breakpointDefinition);
-				}
-			},
-			"aaSorting": [],
-			"rowCallback" : function(nRow) {
-				responsiveHelper_dt_basic.createExpandIcon(nRow);
-			},
-			"drawCallback" : function(oSettings) {
-				transformLinks($('#files-table'));
-				$(".file-action").on('click', do_file_action);
-				pageSetUp();
-			},
-			"sAjaxSource": "<?php echo site_url("projectsmanager/getFiles/".$object['id']) ?>",
-			"fnRowCallback": function (row, data, index ){
+		if ( ! $.fn.DataTable.isDataTable( '#files-table' ) ) {
+			
+    		filesTable = $('#files-table').dataTable({
+    			"language": {
+                    "url": "assets/js/plugin/datatables/lang/<?php echo getCurrentLanguage();?>"
+                },
+                
+    			"sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+
+    				"t"+
+    				"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+    			"autoWidth" : true,
+    			"preDrawCallback" : function() {
+    				// Initialize the responsive datatables helper once.
+    				if (!responsiveHelper_dt_basic) {
+    					responsiveHelper_dt_basic = new ResponsiveDatatablesHelper($('#files-table'), breakpointDefinition);
+    				}
+    			},
+    			"aaSorting": [],
+    			"rowCallback" : function(nRow) {
+    				responsiveHelper_dt_basic.createExpandIcon(nRow);
+    			},
+    			"drawCallback" : function(oSettings) {
+    				transformLinks($('#files-table'));
+    				$(".file-action").on('click', do_file_action);
+    				pageSetUp();
+    			},
+    			"sAjaxSource": "<?php echo site_url("projectsmanager/getFiles/".$object['id']) ?>",
+    			"fnRowCallback": function (row, data, index ){
+    
+    				
+    				$('td', row).eq(2).addClass('hidden-xs');
+    				$('td', row).eq(3).addClass('hidden-xs');
+    				$('td', row).eq(4).addClass('hidden-xs');
+    			}
+    		});
 
-				
-				$('td', row).eq(2).addClass('hidden-xs');
-				$('td', row).eq(3).addClass('hidden-xs');
-				$('td', row).eq(4).addClass('hidden-xs');
-			}
-		});
+		}
 	}
 	
 	function save_object(){
