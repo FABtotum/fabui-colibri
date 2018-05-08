@@ -77,17 +77,17 @@ class GPIOMonitor:
                     result = parseM730(reply)
                     if result:
                         errorNumber = int(result['error_num'])
-                        self.log.warning("Totumduino error no.: %s", errorNumber)
+                        self.log.debug("Totumduino error no.: %s", errorNumber)
                         self.manageErrorNumber(errorNumber)
                     else:
-                        self.log.error("Totumduino unrecognized error: %s", reply[0])
+                        self.log.debug("Totumduino unrecognized error: %s", reply[0])
 
             #GPIO_STATUS = GPIO.HIGH
             GPIO_STATUS = GPIO.input(self.ACTION_PIN)
             self.log.debug('GPIO STATUS on EXIT: %s', str(GPIO_STATUS))
             self.log.debug("======= EXIT ============")
         except Exception as e:
-            self.log.error('GPIOMonitor ERROR: %s', str(e) )
+            self.log.debug('GPIOMonitor ERROR: %s', str(e) )
 
     def manageErrorNumber(self, error):
         alertErrors = [ERROR_IDLE_SAFETY, ERROR_WIRE_END]
@@ -100,18 +100,16 @@ class GPIOMonitor:
             return None
         
         if error in shutdownErrors:
-            self.log.info("shutdown")
+            self.log.debug("shutdown")
             # TODO: trigger shutdown
             return None
         elif error in alertErrors:
-            self.log.info("alert")
             errorType = 'alert'
             if error == ERROR_WIRE_END:
                 self.gcs.send('M805 S0', block=False, group='*')
             
             self.gcs.send('M999', block=False, group='*')
         elif error in terminateErrors:
-            self.log.info("terminate")
             self.ns.notify(errorType, {'code': error} )
             self.gcs.terminate()
             return None
@@ -200,7 +198,7 @@ def main():
     fh = logging.FileHandler(args.log, mode='w')
 
     #~ formatter = logging.Formatter("%(name)s - %(levelname)s : %(message)s")
-    formatter = logging.Formatter("%(levelname)s : %(message)s")
+    formatter = logging.Formatter("[%(asctime)s] %(levelname)s : %(message)s")
     fh.setFormatter(formatter)
     fh.setLevel(logging.DEBUG)
     logger2.addHandler(fh)
