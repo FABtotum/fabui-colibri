@@ -60,6 +60,11 @@ def main():
     
     filename, ext = os.path.splitext(image_file) 
     
+    info = {
+        'type': 'UNKNOWN',
+        'layers': []
+    }
+    
     if ext == '.dxf':
         drawing = preprocess_dxf_image(image_file)
         drawing.normalize()

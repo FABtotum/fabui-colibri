@@ -57,6 +57,37 @@ if ( !function_exists('arrayFromPost'))
 	}	
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('flatten_array'))
+{
+	/**
+	 * 
+	 * 
+	 */
+	function flatten_array($array, $glue = '.', $path = [])
+	{
+		$flat = array();
+		
+		foreach($array as $key => $value)
+		{
+			$new_path = $path;
+			$new_path[] = $key;
+			$flat_key = implode($glue, $new_path);
+			
+			if( is_array($value) )
+			{
+				$sub_array = flatten_array($value, $glue, $new_path);
+				$flat = array_merge($flat, $sub_array);
+			}
+			else
+			{
+				$flat[$flat_key] = $value;
+			}
+		}
+		
+		return $flat;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('is_assoc'))
 {
 	/**

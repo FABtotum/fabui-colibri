@@ -435,6 +435,8 @@ class Client {
 
     /**
      * Private uploadFile function
+     * 
+     * @param fileType File type (CONFIG, INPUT, PREVIEW...)
      *
      * @return array
      */
@@ -512,6 +514,15 @@ class Client {
         return null;
     }
 
+    /**
+     * Update existing file
+     * 
+     * @param taskId    File owner task
+     * @param fileId    File ID
+     * @param fileName  Local filename
+     * 
+     * @return array
+     */
     public function __updateFile($taskId, $fileId, $fileName)
     {
         $content = fopen($fileName, 'r');
@@ -719,6 +730,7 @@ class Client {
             'getConfigs',
             'getConfig',
             'getSchema',
+            'getUISchema',
             'getTasks',
             'getTask',
             'newTask',
@@ -756,7 +768,7 @@ class Client {
                     {
                         $body = (string) $response->getBody();
                         $data = json_decode($body, true);
-                        $this->error_message = $data['error'];
+                        $this->error_message = 'server: ' . $data['error'];
                     }
                     catch(Exception $e)
                     {
@@ -772,8 +784,8 @@ class Client {
                 {
                     $this->error_message = 'Server error';
                 }
-
-                return "jebiga";   
+  
+                error_log($this->error_message, 0);
             }
             // Normal method, no authorization needed
             else
