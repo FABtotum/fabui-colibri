@@ -16,6 +16,7 @@
 	var camAcceptedFiles = [];
 	var camApplicationConfigs = [];
 	var camTask = null;
+	var outputFileId = null;
 	
 	$(document).ready(function() {
 		initLaserDropZone();
@@ -226,11 +227,11 @@
 				doUpload(camDropZone);
 				break;
 			case 'generate-gcode':
-				//if(type == 'laser') generateLaserGCode();
 				generateGCode();
 				break;
 			case 'download-gcode':
 				//if(type == 'laser') downloadLaserGcode(button.attr('data-href'));
+				downloadGCode();
 				break;
 			case 'open-save-modal':
 				//openDownloadDialog();
@@ -393,6 +394,9 @@
 		return false;
 	}
 	
+	/**
+	*
+	**/
 	function doShowApps()
 	{
 		var link = $(this);
@@ -401,6 +405,9 @@
 		return false;
 	}
 	
+	/**
+	*
+	**/
 	function showApps(group)
 	{
 		camAcceptedFiles = [];
@@ -452,6 +459,9 @@
 		$(".app-groups").on('click', doShowGroups );
 	}
 	
+	/**
+	*
+	**/
 	function doStartApplication()
 	{
 		var link = $(this);
@@ -464,6 +474,9 @@
 		return false;
 	}
 	
+	/**
+	*
+	**/
 	function startApplication(appId)
 	{
 		for(i in camApplications)
@@ -506,6 +519,9 @@
 		//initSettingsForm();
 	}
 	
+	/**
+	*
+	**/
 	function setProfileList(appId)
 	{
 		var profileId = 0;
@@ -520,6 +536,9 @@
 		$("#cam-profile").on('change', changeProfile);
 	}
 	
+	/**
+	*
+	**/
 	function changeProfile()
 	{
 		var id = $("#cam-profile").val();
@@ -532,6 +551,9 @@
 		});
 	}
 	
+	/**
+	*
+	**/
 	function initSettingsForm()
 	{
 		$("#cam-dropzone-view").addClass("hidden");
@@ -540,6 +562,9 @@
 		enableButton("#cam-generate-gcode");
 	}
 	
+	/**
+	*
+	**/
 	function unflatten(obj, path, value, datatype)
 	{
 		if(path.length == 1)
@@ -569,6 +594,9 @@
 		}
 	}
 	
+	/**
+	*
+	**/
 	function generateGCode()
 	{
 		var config = {};
@@ -604,13 +632,16 @@
 			console.log(response);
 			camTask = {
 				id: response.taskId,
-				status: 'WAITING'
+				status: 'QUEUED'
 			}
 			
 			checkStatus();
 		});
 	}
 	
+	/**
+	*
+	**/
 	function taskFinish(task)
 	{
 		camTask = task;
@@ -623,9 +654,19 @@
 			enableButton("#cam-save-gcode");
 			enableButton("#cam-make-gcode");
 			enableButton("#cam-download-gcode");
+			
+			$.each(task.files, function (i, file) {
+				if(file.type == 'OUTPUT')
+				{
+					outputFileId = file.id;
+				}
+			});
 		}
 	}
 	
+	/**
+	*
+	**/
 	function checkStatus()
 	{
 		$.get("<?php echo site_url('cam2/status') ?>/" +  camTask.id,
@@ -643,6 +684,21 @@
 				setTimeout(checkStatus, 1000);
 			}
 		});
+	}
+	
+	function downloadGCode()
+	{
+		console.log('downloadGCode', camTask.id, outputFileId);
+	}
+	
+	function saveGCode()
+	{
+		console.log('saveGCode', camTask.id, outputFileId);
+	}
+	
+	function makeGCode()
+	{
+		console.log('makeGCode', camTask.id, outputFileId);
 	}
 	
 </script>

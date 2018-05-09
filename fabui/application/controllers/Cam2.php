@@ -565,9 +565,7 @@ class Cam2 extends FAB_Controller
 		
 		$files = $cam->getFiles($taskId);
 		
-		$app_path = $this->config->item('userdata_path') . 'cam/apps/' . $appId;
-		
-		$task_path = $app_path . '/task';
+		$task_path = $this->config->item('userdata_path') . 'cam/tasks';
 		if (! file_exists($task_path))
 			createFolder($task_path);
 		
@@ -582,12 +580,20 @@ class Cam2 extends FAB_Controller
 		$config_path = $task_path . '/config';
 		if (! file_exists($config_path))
 			createFolder($config_path);
+			
+		$input_path = $task_path . '/output';
+		if (! file_exists($input_path))
+			createFolder($input_path);
+			
+		$preview_path = $task_path . '/preview';
+		if (! file_exists($preview_path))
+			createFolder($preview_path);
 		
 		$upload_path = $this->config->item('temp_path') . '/uploads/cam/' . $this->session->user['id'];
 		
 		$configFilename = $config_path . '/config.json';
 		//~ write_file($configFilename, json_encode($config, JSON_PRETTY_PRINT) );
-		write_file($configFilename, $config );
+		write_file($configFilename, $config);
 		
 		// Check for uploaded files
 		$inputId = 0;
@@ -608,12 +614,12 @@ class Cam2 extends FAB_Controller
 		if($configId)
 		{
 			// update existing
-			//$cam->updateFile($taskId, $configId, $configFilename);
+			$cam->updateFile($taskId, $configId, $configFilename);
 		}
 		else
 		{
 			// upload new
-			//$cam->uploadConfigFile($taskId, $configFilename);
+			$cam->uploadConfigFile($taskId, $configFilename);
 		}
 		
 		// Upload INPUT files
@@ -671,14 +677,43 @@ class Cam2 extends FAB_Controller
 		
 		$task = $cam->getTask($taskId);
 		$task['files'] = array();
+		$task_path = $this->config->item('userdata_path') . 'cam/tasks/' . $taskId;
+		$output_path = $task_path . '/output';
+		$preview_path = $task_path . '/preview';
 		
 		if($task['status'] == 'FINISHED')
 		{
 			$files = $cam->getFiles($taskId);
 			$task['files'] = $files;
+			
+			$cam->downloadOutput($taskId, $output_path);
+			$cam->downloadPreview($taskId, $preview_path);
 		}
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($task));
 	}
 	
+	public function download($taskId)
+	{
+		// load helpers
+		$this->load->helper(array(
+			'file_helper',
+			'file',
+			'fabtotum_helper',
+			'cam_helper'
+		));
+		// load config
+		$this->config->load('fabtotum');
+		$this->config->load('cam');
+		
+		$task_path = $this->config->item('userdata_path') . 'cam/task/' . $taskId;
+		$output_path = $task_path . '/output';
+		
+		
+	}
+	
+	public function save($taskId)
+	{
+		
+	}
 }
