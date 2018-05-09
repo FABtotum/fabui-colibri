@@ -1053,8 +1053,12 @@ class Projectsmanager extends FAB_Controller {
 	
 	private function generateActionDropdown($default_action, $builtin_actions, $plugin_actions)
 	{
+	    
+	    
+	    $default_action_url = $default_action['url'] != '' ? site_url($default_action['url']) : '';
+	    
 		$html = '<div class="btn-group">
-					<button data-action="'.site_url($default_action['url']).'"type="button" class="btn btn-xs btn-success file-action"><i class="fa '.$default_action['icon'].'"></i> <span class="hidden-xs">'.$default_action['title'].'</span> </button>';
+					<button data-action="'.$default_action_url.'"type="button" class="btn btn-xs btn-success file-action"><i class="fa '.$default_action['icon'].'"></i> <span class="hidden-xs">'.$default_action['title'].'</span> </button>';
 		
 		if( count($plugin_actions) > 0 || count($builtin_actions) > 0 )
 		{
@@ -1147,9 +1151,15 @@ class Projectsmanager extends FAB_Controller {
 			);
 		}
 		
+		
+		
 		$plugin_actions = array();
 		
 		$actions = getFileActionList($file_ext, $file['print_type']);
+		
+		
+		
+		
 		foreach($actions as $action)
 		{
 			$plugin_actions[] = array(
@@ -1158,6 +1168,7 @@ class Projectsmanager extends FAB_Controller {
 				'url' => '#'.str_replace('$1', $fileID, $action['url'] )
 			);
 		}
+		
 		
 		if( count($builtin_actions) == 1) // There are no builtin actions except "Download"
 		{
@@ -1175,11 +1186,11 @@ class Projectsmanager extends FAB_Controller {
 		}
 		else // There are some built
 		{
-			unset($builtin_actions[0]);
+			//unset($builtin_actions[0]);
 		}
 		
 		if(!isset($default_action)){
-		    $default_action = array('url'=>'', 'icon'=>'', 'title' =>'');
+		    $default_action = array('url'=>'', 'icon'=>'', 'title' => _('Actions'));
 		}
 		
 		// Generate action buttons
