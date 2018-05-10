@@ -26,7 +26,7 @@
 				<!-- SOURCE/PREVIEW IMAGES -->
 				<div class="row  margin-bottom-10">
 					<div class="col-sm-12">
-						<div class="owl-carousel owl-theme owl-loaded owl-drag" id="laser-preview-carousel" style="">
+						<div class="owl-carousel owl-theme owl-loaded owl-drag" id="cam-preview-carousel" style="">
 							
 							<div class="owl-stage-outer">
 								<div class="owl-stage" style="transform: translate3d(-367px, 0px, 0px); transition: 0.25s; width: 734px;">
@@ -53,10 +53,10 @@
 						
 							</div><!--div class="owl-stage-outer"-->
 					
-							<div class="owl-nav">
+							<!--div class="owl-nav">
 								<div class="owl-prev">Source image</div>
 								<div class="owl-next disabled">CAM preview</div>
-							</div>
+							</div-->
 							
 							<div class="owl-dots disabled"></div>
 						

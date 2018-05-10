@@ -47,7 +47,35 @@ class Std extends FAB_Controller {
         $this->load->model('Files', 'files');
         $files  = $this->files->getForCreate( $task_type );
         $aaData = $this->dataTableFormat($files);
-        $this->output->set_content_type('application/json')->set_output(json_encode(array('aaData' => $aaData)));
+        $this->output->set_content_type('application/json')->set_output(
+            json_encode(array('aaData' => $aaData))
+        );
+    }
+    
+    /**
+     * @return 
+     */
+    public function getUserObjects()
+    {
+        // load db model
+        $this->load->model('Objects', 'objects');
+        // retrieve objetcs
+        $objects = $this->objects->getUserObjects($this->session->user['id']);
+        // crate response for datatable
+        $aaData = array();
+        foreach ($objects as $object) {
+            $temp = array();
+            $temp[] = $object['id'];
+            $temp[] = $object['name'];
+            $temp[] = $object['description'];
+            $date_inserted = date('d/m/Y', strtotime($object['date_insert']));
+            $temp[] = $date_inserted;
+            $temp[] = $object['num_files'];
+            $aaData[] = $temp;
+        }
+        $this->output->set_content_type('application/json')->set_output(
+            json_encode(array('aaData' => $aaData))
+        );
     }
     
     /**

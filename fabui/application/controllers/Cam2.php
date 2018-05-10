@@ -90,17 +90,23 @@ class Cam2 extends FAB_Controller
 			if( $data['isFabid'] )
 			{
 				$init['fabid'] = $this->_fabId();
-				$this->load->library('ApiFabtotumClient', $init,  'apifabtotum');
-				$data['cam']['apps'] = $this->apifabtotum->apps;
 				
-				foreach($data['cam']['apps'] as $appId => $app)
+				if($data['internet'])
 				{
-					foreach($app['config'] as $idx => $cfg)
+				
+					$this->load->library('ApiFabtotumClient', $init,  'apifabtotum');
+					$data['cam']['apps'] = $this->apifabtotum->apps;
+					
+					foreach($data['cam']['apps'] as $appId => $app)
 					{
-						$cfg_file = $this->config->item('userdata_path') . '/cam/apps/' . $app['id'] . '/config/' . $cfg['id'] . '.json';
-						$cfg_data = json_decode(file_get_contents($cfg_file), true);
-						$data['cam']['apps'][$appId]['config'][$idx]['data'] = flatten_array($cfg_data);
+						foreach($app['config'] as $idx => $cfg)
+						{
+							$cfg_file = $this->config->item('userdata_path') . '/cam/apps/' . $app['id'] . '/config/' . $cfg['id'] . '.json';
+							$cfg_data = json_decode(file_get_contents($cfg_file), true);
+							$data['cam']['apps'][$appId]['config'][$idx]['data'] = flatten_array($cfg_data);
+						}
 					}
+				
 				}
 			}
 			
@@ -528,7 +534,7 @@ class Cam2 extends FAB_Controller
 		$this->output->set_output($output);
 	}
 	
-	public function generate($appId)
+	public function generate($appId, $taskId = null)
 	{
 		// load helpers
 		$this->load->helper(array(
@@ -548,7 +554,6 @@ class Cam2 extends FAB_Controller
 		
 		$this->load->library('ApiFabtotumClient');
 		$cam = $this->apifabtotumclient;
-		//$apps = $this->apifabtotumclient->apps;
 		
 		$accepts = array();
 		foreach($cam->apps as $id => $app)
@@ -560,10 +565,19 @@ class Cam2 extends FAB_Controller
 			}
 		}
 		
-		//$taskId = $this->apifabtotumclient->newTask($appName);
-		$taskId = 16;
-		
-		$files = $cam->getFiles($taskId);
+		$files = array();
+		$reloadFiles = false;
+		if(is_null($taskId))
+		{
+			//$taskId = 16; 
+			$this->apifabtotumclient->newTask($appName);
+			//$files = $cam->getFiles($taskId);
+			$reloadFiles = true;
+		}
+		else
+		{
+			$files = $cam->getFiles($taskId);
+		}
 		
 		$task_path = $this->config->item('userdata_path') . 'cam/tasks';
 		if (! file_exists($task_path))
@@ -592,7 +606,6 @@ class Cam2 extends FAB_Controller
 		$upload_path = $this->config->item('temp_path') . '/uploads/cam/' . $this->session->user['id'];
 		
 		$configFilename = $config_path . '/config.json';
-		//~ write_file($configFilename, json_encode($config, JSON_PRETTY_PRINT) );
 		write_file($configFilename, $config);
 		
 		// Check for uploaded files
@@ -627,6 +640,7 @@ class Cam2 extends FAB_Controller
 		{
 			// upload new
 			$inputFilename = false;
+			$destFilename = '';
 			foreach (glob( $upload_path . "/*.*") as $filename) {
 				#echo "$filename size " . filesize($filename) . "\n";
 				$file_parts = pathinfo($filename);
@@ -634,25 +648,28 @@ class Cam2 extends FAB_Controller
 				if(in_array($ext, $accepts))
 				{
 					$inputFilename = $filename;
+					$destFilename = $input_path . '/' . $file_parts['basename'];
 					break;
 				}
 			}
 			if($inputFilename)
 			{
 				$inputId = $cam->uploadInputFile($taskId, $inputFilename);
-				unlink($inputFilename);
+				//unlink($inputFilename);
+				rename($inputFilename, $destFilename);
 			}
 		}
+		
+		if($reloadFiles)
+			$files = $cam->getFiles($taskId);
 		
 		$cam->startTask($taskId);
 		
 		$response['appId'] = $appId;
 		$response['taskId'] = $taskId;
 		$response['files'] = $files;
-		$response['configId'] = $configId;
-		$response['inputId'] = $inputId;
-		$response['accepts'] = $accepts;
-		$response['config'] = $config;
+		$response['src'] = $inputFilename;
+		$response['dst'] = $destFilename;
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
@@ -686,6 +703,12 @@ class Cam2 extends FAB_Controller
 			$files = $cam->getFiles($taskId);
 			$task['files'] = $files;
 			
+			$old = glob($output_path . '/*'); // get all file names
+			foreach($old as $file){ // iterate files
+			  if(is_file($file))
+				unlink($file); // delete file
+			}
+			
 			$cam->downloadOutput($taskId, $output_path);
 			$cam->downloadPreview($taskId, $preview_path);
 		}
@@ -699,21 +722,120 @@ class Cam2 extends FAB_Controller
 		$this->load->helper(array(
 			'file_helper',
 			'file',
+			'download',
 			'fabtotum_helper',
 			'cam_helper'
 		));
 		// load config
 		$this->config->load('fabtotum');
 		$this->config->load('cam');
+		$this->load->library('zip');
 		
-		$task_path = $this->config->item('userdata_path') . 'cam/task/' . $taskId;
+		$task_path = $this->config->item('userdata_path') . 'cam/tasks/' . $taskId;
 		$output_path = $task_path . '/output';
+		$files = array();
+		foreach (glob( $output_path . "/*.*") as $filename) {
+			$files[] = $filename;
+		}
 		
 		
+		// http://169.254.1.2/fabui/cam2/download/16
+		
+		if(count($files) == 1)
+		{
+			$data = file_get_contents($files[0]);
+			$fn = basename($files[0]);
+			force_download($fn, $data);
+		}
+		elseif(count($files) > 1)
+		{
+			foreach($files as $file)
+			{
+				$fn = basename($file);
+				$this->zip->read_file($file, $fn);
+			}
+			$this->zip->download('output.zip');
+		}
 	}
 	
-	public function save($taskId)
+	public function save($taskId, $groupName)
 	{
+		$post = $this->input->post();
 		
+		$this->load->helper(array(
+			'file_helper',
+			'file',
+			'fabtotum_helper',
+			'cam_helper'
+		));
+		
+		$response['success'] = false;
+		
+		$task_path = $this->config->item('userdata_path') . 'cam/tasks/' . $taskId;
+		$output_path = $task_path . '/output';
+		
+		$files = glob($output_path . '/*');
+		foreach($files as $src_path)
+		{
+			if(is_file($src_path))
+			{
+				$file_info = get_file_info($full_path);
+				$file_ext = '.' . $file_info['extension'];
+				
+				$filename = $id . '_' . $post['filename'] . '.' . $file_info['extension'];
+				$upload_path = $this->config->item('upload_path') . $file_info['extension'] . '/';
+				$full_path = $upload_path . $filename;
+				
+				copy($src_path, $full_path);
+				
+				// load model
+				$this->load->model('Files', 'files');
+				$this->load->model('Objects', 'objects');
+				// get file info
+				$file_info = get_file_info($full_path);
+				
+				$file_record['file_name']   = $filename;
+				$file_record['file_type']   = "text/plain";
+				$file_record['file_path']   = $upload_path;
+				$file_record['full_path']   = $full_path;
+				$file_record['raw_name']    = $file_info['name'];
+				$file_record['orig_name']   = $post['filename'] . $file_ext;
+				$file_record['client_name'] = $post['filename'] . $file_ext;
+				$file_record['file_ext']    = $file_ext;
+				$file_record['file_size']   = $file_info['size'];
+				$file_record['print_type']  = $groupName;
+				$file_record['insert_date'] = date('Y-m-d H:i:s');
+				$file_record['update_date'] = date('Y-m-d H:i:s');
+				$file_record['note']        = _("Generated with FABtotum CAM toolbox");
+				
+				$attributes                 = array();
+				// TODO: save preview
+				
+				$file_record['attributes'] = json_encode($attributes);
+				// save file to db
+				$fileId = $this->files->add($file_record);
+				
+				if ($post["mode"] == "new") { // if craete a new object
+					
+					$project_record['user']        = $this->session->user['id'];
+					$project_record['name']        = $post['project_name'];
+					$project_record['public']      = 1;
+					$project_record['date_insert'] = date('Y-m-d H:i:s');
+					$project_record['date_update'] = date('Y-m-d H:i:s');
+					
+					$objectID = $this->objects->add($project_record);
+				} else {
+					$objectID = $post['project_id'];
+				}
+				
+				// assoc project and file
+				$this->objects->addFiles($objectID, $fileId);
+				
+				$response['success'] = true;
+				$response['file_id'] = $fileId;
+			}
+		}
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
 }

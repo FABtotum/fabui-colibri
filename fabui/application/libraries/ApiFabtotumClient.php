@@ -113,9 +113,6 @@ class ApiFabtotumClient {
 			}
 			
 		}
-			
-			
-		if (!file_exists($cache_file))
 		
 		$apps = $this->getApplications();
 		

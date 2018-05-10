@@ -148,9 +148,6 @@ class Cam extends FAB_Controller
             case 'laser':
                 $this->uploadLaser();
                 break;
-            case 'prism':
-                $this->uploadPrism();
-                break;
         }
     }
     
@@ -477,52 +474,6 @@ class Cam extends FAB_Controller
         }
         
         return null;
-    }
-    
-    
-    
-    /**
-     */
-    public function uploadPrism()
-    {
-        $data = array();
-        
-        $this->output->set_content_type('application/json')->set_output(json_encode($data));
-    }
-    
-    public function cam2()
-    {
-        $this->load->helper(array(
-            'cam_helper'
-        ));
-        
-        $init = array();
-        if ( subscription_exists() ) {
-            $subscription = load_subscription();
-            $init['subscription'] = $subscription['code'];
-        }
-        if( $this->_isFabid() )
-        {
-            $init['fabid'] = $this->_fabId();
-        }
-        $this->load->library('ApiFabtotumClient', $init,  'apifabtotum');
-        
-        $data = array();
-        
-        //~ if ( subscription_exists() ) {
-            //~ $data['subscription'] = load_subscription();
-        //~ }
-        
-        //~ $data['message'] = 'working';
-        //~ $data['isFabid'] = $this->_isFabid();
-        //~ $data['fabid'] = $this->_fabId();
-        
-        //~ $fabid = $this->_fabId();
-        //~ $subscription = $data['subscription']['code'];
-        
-        $data['auth'] = $this->apifabtotum->test($fabid, $subscription);
-        
-        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 }
 
