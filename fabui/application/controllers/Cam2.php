@@ -569,8 +569,8 @@ class Cam2 extends FAB_Controller
 		$reloadFiles = false;
 		if(is_null($taskId))
 		{
-			//$taskId = 16; 
-			$this->apifabtotumclient->newTask($appName);
+			$taskId = $this->apifabtotumclient->newTask($appName);
+			// $taskId = 16; 
 			//$files = $cam->getFiles($taskId);
 			$reloadFiles = true;
 		}

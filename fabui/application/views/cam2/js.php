@@ -42,10 +42,10 @@
 		
 		//console.log('apps', camApplications);
 		
-		//doShowGroups();
-		startApplication(5);
+		doShowGroups();
+		/*startApplication(5);
 		initSettingsForm();
-		enableButton("#cam-save-gcode");
+		enableButton("#cam-save-gcode");*/
 	});
 	
 	/**
