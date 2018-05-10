@@ -420,6 +420,9 @@
 			<div class="modal-footer">
 				<input id="inputId" type="file" style="display:none" accept=".json">
 				<button type="button" class="btn btn-default settings-action pull-left factory-head-button" data-action="factory-reset" title="<?php echo _("Restore factory settings")?>"><i class="fa fa-industry"></i> <?php echo _("Factory reset");?></button>
+				
+				<button type="button" id="head-instructions" class="btn btn-default" title="<?php echo _("Instructions");?>"><i class="fa fa-info-circle"></i> <span class="hidden-xs"><?php echo _("Instructions");?></span></button>
+				
 				<button type="button" class="btn btn-default settings-action custom-head-button" data-action="import" title="<?php echo _("Import settings from file")?>"><i class="fa fa-upload"></i> <?php echo _("Import");?></button>
 				<button type="button" class="btn btn-default settings-action" data-action="export" title="<?php echo _("Export settings to file")?>"><i class="fa fa-download"></i> <?php echo _("Export");?></button>
 				<button type="button" class="btn btn-primary settings-action" data-action="save" data-dismiss="modal"><i class="fa fa-save"></i> <?php echo _("Save");?></button>
@@ -476,7 +479,7 @@
 			</div>
 			
 			<div class="modal-footer">
-				<div class="form-group pull-left">				
+				<div class="form-group pull-left prism-buttons">				
 					<label class="checkbox-inline">
 						  <input type="checkbox" class="checkbox" id="dama">
 						  <span><?php echo _("Don't ask me anymore");?></span>
@@ -484,7 +487,7 @@
 				</div>
 				
 				<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo _('Cancel')?></button>
-				<button class="btn btn-primary" id="prismConfirmInsallButton"> <?php echo _("Confirm & Install");?> </button>
+				<button class="btn btn-primary prism-buttons" id="prismConfirmInsallButton"> <?php echo _("Confirm & Install");?> </button>
 			</div>
 		</div>
 	</div>

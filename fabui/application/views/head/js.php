@@ -54,6 +54,10 @@
 		$("#carousel-instructions").on('slid.bs.carousel', function () {
 			$(".current-step-title").html($(".item.active").find('h5.text-center').html());			
 	    });
+
+	    $("#head-instructions").on('click', function(){
+			showPrismInstructions(false);
+		});
 	    
 	    <?php endif; ?>
 
@@ -235,7 +239,12 @@
 				selected_head = button.attr('data-head');
 				
 				if(selected_head == 'prism_module'){
+
+					<?php if($user_settings['show_prism_instructions'] == true ): ?>
 					showPrismInstructions();
+					<?php else: ?>
+					set_head();
+					<?php endif; ?>
 				}else{
 					set_head();
 				}
@@ -339,12 +348,19 @@
 
 		showHideLaserProExtraSettings(head.fw_id);
 
+		if(head.filename == 'prism_module'){
+			$("#head-instructions").show();
+		}else{
+			$("#head-instructions").hide();
+		}
+
 	}
 	/**
 	*
 	**/
 	function showHideInputsForOfficialHeads(action)
 	{
+		
 		if(action == 'show'){
 			//$(".url-container").show();
 			$(".description-container").show();
@@ -755,14 +771,19 @@
 	 	}
 
 	 	var title = '<?php echo _("Installing head"); ?>';
+
 	 	if(headToInstall == 'prism_module'){
 	 		title = '<?php echo _("Installing module"); ?>';
 	 	}
 	 	
 	 	openWait('<i class="fa fa-cog fa-spin"></i> ' + title, '<?php echo _("Please wait"); ?>...');
+
+	 	
+		
 	 	$.ajax({
 			type: "POST",
 			url: "<?php echo site_url("head/setHead") ?>/"+ headToInstall,
+			data: { 'dama' : $("#dama").is(':checked') },
 			dataType: 'json'
 		}).done(function( data ) {
 			
@@ -878,8 +899,14 @@
 	/**
 	*
 	**/
-	function showPrismInstructions()
+	function showPrismInstructions(show_button = true)
 	{
+		
+		if(show_button == true){
+			$(".prism-buttons").show();
+		}else{
+			$(".prism-buttons").hide();
+		}
 		
 		$('#prismModuleDescriptionModal').modal('show');
 	}

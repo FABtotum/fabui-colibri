@@ -31,13 +31,30 @@ class Head extends FAB_Controller {
 	{
 		$this->load->helper(array('fabtotum_helper'));
 		
-		
-		
-		
 		$heads = loadHeads();
+		
+		$post = $this->input->post();
+		
+		
 		$_data = loadSettings();
 		
+		
+		/**
+		 *  if is set dama dont't ask me anymore checkbox [DAMA -> [D]on't [A]sk [M]e [A]nymore ]
+		 */
+		if(isset($post['dama'])){
+		    
+		    if($post['dama'] == 'true'){
+		        /**
+		         *
+		         */
+		        $_data['user_settings'][$this->session->user['id']]['show_prism_instructions'] = false;
+		    }
+		}
+		
+		
 		$head_info = $heads[$new_head];
+		
 		$_data['hardware']['head'] = $new_head;
 		
 		if($head_info['fw_id'] != self::PRISM_ID){
@@ -116,14 +133,19 @@ class Head extends FAB_Controller {
 	 * 
 	 */
 	public function index(){
+	    
 		$this->load->library('smart');
+		
 		$this->load->helper(array('form', 'fabtotum_helper'));
 		
 		$data = array();
 		
 		$data['heads'] = loadHeads();
 		
+		$data['user_settings'] = load_user_settings($this->session->user['id']);
+		
 		$data['installed_head'] = getInstalledHeadInfo();
+		
 		$data['capabilities'] = array(
 			'*'      => _("All"),
 			'.print' => _("3D Printing (FDM)"),

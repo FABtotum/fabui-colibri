@@ -80,6 +80,33 @@ if(!function_exists('loadSettings'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('load_user_settings'))
+{
+    /**
+     * 
+     *
+     */
+    function load_user_settings($user_id)
+    {
+        $data = loadSettings();
+        
+        if(!isset($data['user_settings'][$user_id])){
+            
+            $data['user_settings'][$user_id] = [
+                
+                'show_prism_instructions' => true
+                
+            ];
+            
+            saveSettings($data);
+            
+        }
+        
+        return $data['user_settings'][$user_id];
+        
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('loadGCodeInfo'))
 {
 	/**
