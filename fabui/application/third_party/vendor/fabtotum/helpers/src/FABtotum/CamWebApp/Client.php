@@ -4,6 +4,7 @@ namespace FABtotum\CamWebApp;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException as HttpClientException;
 use GuzzleHttp\Exception\ServerException as HttpServerException;
+use BadMethodCallException;
 
 class Client {
 
@@ -127,6 +128,11 @@ class Client {
     public function setAccessToken($token)
     {
         $this->access_token = $token;
+        // Store authorization headers
+        $this->headers = [
+            'Authorization' => 'Bearer ' . $this->access_token,        
+            'Accept'        => 'application/json',
+        ];
     }
 
     /**
