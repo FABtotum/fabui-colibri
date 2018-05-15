@@ -28,7 +28,11 @@ class Control extends FAB_Controller {
 	 */
 	public function poweroff()
 	{
-		shell_exec('sudo poweroff');
+	   $this->load->helper('fabtotum_helper');
+	   
+	   $shutDownResult = doMacro('shutdown'); 
+	   
+	   shell_exec('sudo poweroff');
 	}
 	
 	/**

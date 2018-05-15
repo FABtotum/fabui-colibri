@@ -28,11 +28,12 @@ import re
 # Import external modules
 
 # Import internal modules
-from fabtotum.fabui.macros.common import getEeprom, configure_head, configure_feeder, configure_4thaxis, get_versions, getPosition, set_lights
+from fabtotum.fabui.macros.common import getEeprom, configure_head, configure_feeder, configure_4thaxis, get_versions, getPosition, set_lights, getTemperature
 from fabtotum.utils.translation import _, setLanguage
 from fabtotum.fabui.constants import *
 
 def home_all(app, args = None, lang='en_US.UTF-8'):
+    
     setLanguage(lang)
     
     try:
@@ -94,10 +95,29 @@ def start_up(app, args = None, lang='en_US.UTF-8'):
     app.macro("M734 S"+str(collision_warning),  "ok", 2, _("Machine Limits Collision warning"), verbose=False)
 
 def shutdown(app, args = None, lang='en_US.UTF-8'):
+    
     setLanguage(lang)
+    
+    installed_head = app.config.get_current_head_info()
+    
+    temps = getTemperature(app)
+    
+    min_temperature = 70
+    
     app.trace( _("Shutting down...") ) 
+    
+    if "print" in installed_head['capabilities'] and (float(temps['T']) > min_temperature ):
+        
+        app.macro("M104 S{0}".format(min_temperature), "ok", 5,  _("Cooling down nozzle temperature") )
+    
+        app.macro("M109 S{0}".format(min_temperature), "*", 400, _("Waiting for nozzle to reach temperature (<span class='top-bar-nozzle-actual'>-</span> / {0}&deg;)".format(min_temperature)) ) #heating and waiting.
+        
+        app.trace( _("Nozzle cooled") )
+    
     app.macro("M300",   "ok", 5, _("Play alert sound!"), verbose=False)
+    
     app.macro("M729",   "ok", 2, _("Asleep!"), verbose=False)
+    
     
 def auto_bed_leveling(app, args = None, lang='en_US.UTF-8'):
     setLanguage(lang)

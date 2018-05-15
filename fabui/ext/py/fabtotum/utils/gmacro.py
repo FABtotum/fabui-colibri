@@ -75,7 +75,7 @@ class GMacroHandler:
     def trace(self, message):
         self.__trace(message)
     
-    def macro(self, command, expected_reply, timeout, message, final_reply = 'ok', verbose=True, warning=False):
+    def macro(self, command, expected_reply, timeout, message, final_reply = 'ok', verbose=True, warning=False, skip_reply_check = False):
         if verbose:
             self.trace(message)
         
@@ -91,7 +91,13 @@ class GMacroHandler:
                 raise MacroTimeOutException(command)
         
         found = False
+        
+        if skip_reply_check == True:
+            
+            return reply
+        
         if expected_reply is not None:
+            
             for reply_line in reply:
                 
                 retr = re.match( glob2re(expected_reply), reply_line )

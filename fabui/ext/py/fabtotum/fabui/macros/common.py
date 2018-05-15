@@ -29,7 +29,7 @@ import json
 
 from fabtotum.utils.translation import _, setLanguage
 from fabtotum.utils.plugin import activate_plugin, get_active_plugins, get_installed_plugins
-from fabtotum.totumduino.format import parseG30, parseM114
+from fabtotum.totumduino.format import parseG30, parseM114, parseM105
 from fabtotum.fabui.constants import *
 
 def zProbe(app, lang='en_US.UTF-8'):
@@ -268,6 +268,7 @@ def configure_head(app, head_name, lang='en_US.UTF-8'):
     eeprom = getEeprom(app)
     # Load Head
     head = app.config.get_head_info(head_name)
+    
     if head == None:
         return False
         
@@ -419,4 +420,17 @@ def set_lights(app, args = None, lang='en_US.UTF-8'):
     app.macro("M701 S{0}".format(red),   "ok", 1, _("Setting red color"), verbose=False)
     app.macro("M702 S{0}".format(green), "ok", 1, _("Setting green color"), verbose=False)
     app.macro("M703 S{0}".format(blue),  "ok", 1, _("Setting blue color"), verbose=False)
+    
+    
+def getTemperature(app, lang='en_US.UTF-8'):
+    
+    reply = app.macro("M105", "ok", 1, _("temps"), verbose=False, skip_reply_check=True)
+    
+    result = parseM105(reply)
+    
+    if result:
+        
+        return result
+    
+    
     

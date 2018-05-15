@@ -722,14 +722,14 @@ fabApp = (function(app) {
 	 * @memberof fabApp
 	 */
 	app.poweroff = function() {
-		clearInterval(temperatures_interval);
-		//is_macro_on = true;
 		openWait('<i class="fa fa-cog fa-spin"></i> ' + _("Shutdown in progress") , _("Please wait") + '...', false);
 		$.ajax({
 			url: poweroff_url_action,
 		}).done(function(data) {
+			clearInterval(temperatures_interval);
 			app.showAlertToPowerOff();
 		}).fail(function(jqXHR, textStatus){
+			clearInterval(temperatures_interval);
 			app.showAlertToPowerOff();
 		});
 	};
