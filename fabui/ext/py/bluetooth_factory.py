@@ -213,11 +213,14 @@ class BTFactory():
     ## SEN COMMAND TO PRISM 
     ###################################
     def send_command(self, command, args=[], mac_address=None,  port=0x1001):
+        
         if(mac_address == None or mac_address == ""):
-            if "mac_address" in self.status['paired']:
-                mac_address = self.status['paired']['mac_address']
-            else:
-                return {'error': _("No connected device")}
+           
+            if self.status['paired'] != False: 
+                if "mac_address" in self.status['paired']:
+                    mac_address = self.status['paired']['mac_address']
+                else:
+                    return {'error': _("No connected device")}
             
         
         
@@ -313,7 +316,7 @@ def main():
     elif(action == 'auto_connect'):
         action_result = bt_factory.auto_connection(name=name, mac_address=mac)
     elif(action == 'send-command'):
-        action_result = bt_factory.send_command(command, command_args_list)
+        action_result = bt_factory.send_command(command, command_args_list, mac)
         
     output = {'action': action, 'response': action_result}
     
