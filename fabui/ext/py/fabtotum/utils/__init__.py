@@ -3,6 +3,7 @@ import os
 import errno
 import shlex, subprocess
 import shutil
+import pwd
 
 def makedirs(path):
     """ python implementation of `mkdir -p` """
@@ -14,10 +15,12 @@ def makedirs(path):
         else:
             raise
 
-def create_dir(f):
+def create_dir(f, owner="www-data"):
     if not os.path.exists(f):
         try:
             os.makedirs(f)
+            uid, gid =  pwd.getpwnam(owner).pw_uid, pwd.getpwnam(owner).pw_uid
+            os.chown(f, uid, gid)
         except OSError as exc:  # Python >2.5
             if exc.errno == errno.EEXIST and os.path.isdir(f):
                 pass
@@ -46,10 +49,12 @@ def remove_file(fn):
         return False
     return True
     
-def copy_files(src, dst):
+def copy_files(src, dst, owner="www-data"):
     cmd = 'cp -aR {0} {1}'.format(src, dst)
+    uid, gid =  pwd.getpwnam(owner).pw_uid, pwd.getpwnam(owner).pw_uid
     try:
         output = subprocess.check_output( cmd, shell=True )
+        output2 = subprocess.check_output('chown -R {0}:{1} {2}'.format(uid, gid, dst), shell=True)
     except subprocess.CalledProcessError as e:
         return False
         
