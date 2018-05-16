@@ -22,6 +22,8 @@ class ApiFabtotumClient {
 	protected $api_client = '';
 	protected $server_url = 'http://52.17.77.207/api/'; // must have a trailing /
 	
+	private $logged_in = false;
+	
 	/**
 	 * 
 	 */
@@ -70,21 +72,39 @@ class ApiFabtotumClient {
 		 * Get access_token from api server or load if from local storage
 		 */
 		$access_token = load_access_token($this->fabid, $this->subscription);
+		
 		if($access_token)
 		{
+			error_log('loading access token', 0);
 			$this->access_token = $access_token;
 			$this->api_client->setAccessToken($access_token);
+			
+			// test login
+			$dummy = $this->getApplications();
+			if($this->getErrorCode() == 200)
+			{
+				$logged_in = true;
+			}
 		}
-		else
+		
+		
+		if($logged_in == false)
 		{
+			error_log('requesting access token', 0);
 			if($this->api_client->login($this->fabid, $this->subscription))
 			{
+				$logged_in = true;
 				$this->access_token = $this->api_client->getAccessToken();
 				store_access_token($this->fabid, $this->subscription, $this->access_token);
 			}
 		}
 		
 		$this->apps = $this->synchronize();
+	}
+	
+	public function isLoggedIn()
+	{
+		return $logged_in;
 	}
 	
 	private function synchronize()

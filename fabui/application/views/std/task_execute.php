@@ -137,9 +137,20 @@ $stats_button_size = $show_temperature_graph  || $type == "prism" ? 4 : 6;
 			<!-- PRISM PREVIEW LAYER -->
 			<?php if($show_prism_layer_preview):?>
 				<div class="col-sm-6 hidden-xs">
-					<div style="position:relative; min-height: 220px;">
+					
+					<div class="row" id="prism-transfer-message" style="display:none;">
+						<div class="col-sm-12">
+							<div class="well well-light" style="min-height: 250px;">
+								<h4 class="text-center margin-top-40"> <?php echo _("Transferring file to PRISM module"); ?>   </h4>
+								<h5 class="text-center"><i class="fa fa-spinner fa-spin"></i> <?php echo _("Please wait...");?></h5>
+							</div>
+						</div>
+					</div>
+					
+					<div id="prism-preview-container" style="position:relative; min-height: 220px; display:none;">
 						<img class="img-responsive" style=" height: 400px; position:absolute; left:100px; top:-100px; transform:rotate(90deg);"  id="prism-preview-layer">
 					</div>
+					
 					
 				</div>
 			<?php endif;?>

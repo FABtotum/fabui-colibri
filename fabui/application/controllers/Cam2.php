@@ -80,6 +80,7 @@ class Cam2 extends FAB_Controller
 		);
 		
 		$data['cam']['apps'] = array();
+		$data['cam']['tasks'] = array();
 		
 		if ($data['subscription_exists']) {
 			$data['subscription_code'] = load_subscription();
@@ -96,6 +97,18 @@ class Cam2 extends FAB_Controller
 				
 					$this->load->library('ApiFabtotumClient', $init,  'apifabtotum');
 					$data['cam']['apps'] = $this->apifabtotum->apps;
+					$data['cam']['tasks'] = $this->apifabtotum->getTasks();
+					
+					foreach($data['cam']['tasks'] as $idx => $task)
+					{
+						$data['cam']['tasks'][$idx]['file'] = array();
+						
+						$files = $this->apifabtotum->getFiles($task['id']);
+						foreach($files as $file)
+						{
+							$data['cam']['tasks'][$idx]['file'][strtolower($file['type'])] = $file;
+						}
+					}
 					
 					foreach($data['cam']['apps'] as $appId => $app)
 					{
@@ -198,6 +211,30 @@ class Cam2 extends FAB_Controller
 		$apps = $this->apifabtotumclient->getApplications();
 
 		$this->output->set_content_type('application/json')->set_output(json_encode($apps));
+	}
+	
+	public function history()
+	{
+		$this->load->helper(array(
+			'cam_helper'
+		));
+		
+		$this->load->library('ApiFabtotumClient');
+		
+		$tasks = $this->apifabtotumclient->getTasks();
+		
+		foreach($tasks as $idx => $task)
+		{
+			$tasks[$idx]['file'] = array();
+			
+			$files = $this->apifabtotumclient->getFiles($task['id']);
+			foreach($files as $file)
+			{
+				$tasks[$idx]['file'][strtolower($file['type'])] = $file;
+			}
+		}
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($tasks));
 	}
 	
 	/**
@@ -534,6 +571,16 @@ class Cam2 extends FAB_Controller
 		$this->output->set_output($output);
 	}
 	
+	public function test()
+	{
+		$this->load->library('ApiFabtotumClient');
+		$cam = $this->apifabtotumclient;
+		
+		$r = $cam->getApplications();
+		
+		$this->output->set_content_type('application/json')->set_output(json_encode($r));
+	}
+	
 	public function generate($appId, $taskId = null)
 	{
 		// load helpers
@@ -549,6 +596,7 @@ class Cam2 extends FAB_Controller
 		
 		$data = $this->input->post();
 		$response = array();
+		$response['success'] = false;
 		$config = $data['config'];
 		$appName = $data['app_name'];
 		
@@ -567,9 +615,12 @@ class Cam2 extends FAB_Controller
 		
 		$files = array();
 		$reloadFiles = false;
+		error_log('taskId: ' . $taskId, 0);
 		if(is_null($taskId))
 		{
+			error_log('call newTask [' . $appName . ']', 0);
 			$taskId = $this->apifabtotumclient->newTask($appName);
+			error_log('new-taskId: ' . $taskId, 0);
 			// $taskId = 16; 
 			//$files = $cam->getFiles($taskId);
 			$reloadFiles = true;
@@ -577,6 +628,13 @@ class Cam2 extends FAB_Controller
 		else
 		{
 			$files = $cam->getFiles($taskId);
+		}
+		
+		if(is_null($taskId))
+		{
+			$response['success'] = false;
+			$this->output->set_content_type('application/json')->set_output(json_encode($response));
+			return;
 		}
 		
 		$task_path = $this->config->item('userdata_path') . 'cam/tasks';
@@ -670,6 +728,8 @@ class Cam2 extends FAB_Controller
 		$response['files'] = $files;
 		$response['src'] = $inputFilename;
 		$response['dst'] = $destFilename;
+		
+		$response['success'] = true;
 		
 		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}

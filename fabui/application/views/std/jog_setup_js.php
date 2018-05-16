@@ -114,8 +114,8 @@ if( !isset($stored_position) ) $stored_position = loadPosition($type);
 		$(".jog-button").on('click', function () {
 			var action = $(this).attr('data-action');
 
-			var zStep   = $("#zStep").length             > 0 ? $("#zStep").val()             : 0.5;
-			var xyzFeed = $("#xyzFeed").length           > 0 ? $("#xyzFeed").val()           : 1000;
+			var zStep   = $("#zStep").length   > 0 ? $("#zStep").val()   : <?php echo $jog_z_step; ?>;
+			var xyzFeed = $("#xyzFeed").length > 0 ? $("#xyzFeed").val() : <?php echo $jog_feederate; ?>;
 			
 			disableButton(".jog-button");
 			

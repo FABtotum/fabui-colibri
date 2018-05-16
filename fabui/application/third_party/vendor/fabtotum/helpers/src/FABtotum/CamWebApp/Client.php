@@ -1,10 +1,10 @@
 <?php
 namespace FABtotum\CamWebApp;
 
+use BadMethodCallException;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException as HttpClientException;
 use GuzzleHttp\Exception\ServerException as HttpServerException;
-use BadMethodCallException;
 
 class Client {
 
@@ -33,6 +33,8 @@ class Client {
      * @var Authorized request headers
      */
     private $error_code;
+
+    private $max_login_attempts = 2;
 
     /**
      * Construct a new CAMWebApp client
@@ -128,9 +130,8 @@ class Client {
     public function setAccessToken($token)
     {
         $this->access_token = $token;
-        // Store authorization headers
         $this->headers = [
-            'Authorization' => 'Bearer ' . $this->access_token,        
+            'Authorization' => 'Bearer ' . $token,        
             'Accept'        => 'application/json',
         ];
     }
@@ -231,6 +232,11 @@ class Client {
                     'application' => $app_name
                 ]
             ]);
+
+        //error_log('__newTask body: ' . $response->getBody(),0 );
+        //error_log('headers: ' . print_r($this->headers, true), 0);
+        //error_log('access: ' . ($this->access_token), 0);
+        //error_log('__newTask code: ' . $response->getStatusCode(),0 );
 
         if( $response->getStatusCode() == 201 )
         {
@@ -762,19 +768,26 @@ class Client {
             // Method has to use unauthorized decorator
             if( in_array($method, $unauthorized_decorator) )
             {
+                
                 try{
                     return call_user_func_array([$this, '__' . $method], $parameters);
                 }
                 // Client error
                 catch(HttpClientException $e)
                 {
+                    //error_log('HttpClientException', 0);
                     $response = $e->getResponse();
+                    $request = $e->getRequest();
+                    
+                    //error_log( 'params: ' . print_r($parameters), 0);
+                    
                     $this->error_message = '';
                     try
                     {
                         $body = (string) $response->getBody();
                         $data = json_decode($body, true);
                         $this->error_message = 'server: ' . $data['error'];
+                        //error_log('body: ' . $body, 0);
                     }
                     catch(Exception $e)
                     {
@@ -783,15 +796,17 @@ class Client {
                     }
 
                     $this->error_code = $response->getStatusCode();
-                    //echo 'HTTP Error('. $this->error_code . '):'. $this->error_message . PHP_EOL;
+                    error_log('HTTP Error('. $this->error_code . '):'. $this->error_message, 0);
                 }
                 // Server error
                 catch(HttpServerException $e)
                 {
                     $this->error_message = 'Server error';
+                    //error_log('HttpServerException: ...', 0);
                 }
-  
-                error_log($this->error_message, 0);
+                //error_log($this->error_message, 0);
+                
+                return null;
             }
             // Normal method, no authorization needed
             else
@@ -799,6 +814,7 @@ class Client {
                 return call_user_func_array([$this, '__' . $method], $parameters);   
             }
         }
+        error_log('Method not found: ' . $method, 0);
         throw new BadMethodCallException("Method [$method] does not exist.");
     }
 

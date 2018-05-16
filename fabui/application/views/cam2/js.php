@@ -657,6 +657,8 @@
 			}
 		}
 		
+		console.log('Uploading files to CAM server');
+		
 		$.ajax({
 			type: "POST",
 			url: genUrl,
@@ -664,28 +666,36 @@
 			data : data
 		}).done(function( response ) {
 			console.log(response);
-			camTask = {
-				id: response.taskId,
-				status: 'QUEUED',
-				files: response.files
-			}
 			
-			$("#new-file-name").val('output');
-			
-			$.each(camTask.files, function (key, value) {
-				console.log('files', key, value);
-				if(value.type == 'INPUT')
-				{
-					var fn = value.filename;
-					fn = fn.substr(0, fn.lastIndexOf("."));
-					$("#new-file-name").val(fn);
+			if(response.success)
+			{
+				camTask = {
+					id: response.taskId,
+					status: 'QUEUED',
+					files: response.files
 				}
-			});
-			
-			var now = new Date();
-			var project_name_suffix = now.getDate() + '/' + (now.getMonth()+1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':'+now.getMinutes();
-			$("#new-project-name").val( "New "+camApp.group+" project " + project_name_suffix);
-			checkStatus();
+				
+				$("#new-file-name").val('output');
+				
+				$.each(camTask.files, function (key, value) {
+					console.log('files', key, value);
+					if(value.type == 'INPUT')
+					{
+						var fn = value.filename;
+						fn = fn.substr(0, fn.lastIndexOf("."));
+						$("#new-file-name").val(fn);
+					}
+				});
+				
+				var now = new Date();
+				var project_name_suffix = now.getDate() + '/' + (now.getMonth()+1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':'+now.getMinutes();
+				$("#new-project-name").val( "New "+camApp.group+" project " + project_name_suffix);
+				checkStatus();
+			}
+			else
+			{
+				fabApp.showErrorAlert('Failed to start task');
+			}
 		});
 	}
 	
