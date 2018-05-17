@@ -68,6 +68,10 @@ class ApiFabtotumClient {
 		 */
 		$this->api_client = new ApiClient($this->server_url);
 		
+		error_log('api_client: done', 0);
+		
+		if(!$this->subscription)
+			return;
 		/**
 		 * Get access_token from api server or load if from local storage
 		 */

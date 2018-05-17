@@ -209,6 +209,30 @@ if(!function_exists('active_subscription'))
 		
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('store_subscription'))
+{
+	/**
+	 * 
+	 */
+	function store_subscription($subscription)
+	{
+		$CI =& get_instance();
+		$CI->config->load('cam');
+		
+		$CI->load->helper(array('file'));
+		
+		$data = array(
+			'code'            => $subscription['code'],
+			'link'            => $subscription['code'],
+			'status'          => $subscription['status'],
+			'start_date'      => '',
+			'expiration_date' => $subscription['exp_date']
+		);
+		
+		return write_file($CI->config->item('subscription_file'), json_encode($data));
+	}
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('get_subscription_code'))
 {

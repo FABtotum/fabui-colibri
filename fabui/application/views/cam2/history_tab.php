@@ -9,7 +9,7 @@
 ?>
 <!-- CAM HISTORY TAB -->
 
-<div class="tab-pane fade in active" id="cam-history-tab">
+<div class="tab-pane fade in" id="cam-history-tab">
 	<div id="history-container" class="row">
 		<div class="col-sm-12">
 			<h5><?php echo _("Task history");?></h5>

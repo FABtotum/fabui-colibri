@@ -8,7 +8,7 @@
  */
 ?>
 <!-- CAM APPLICATIONS TAB -->
-<div class="tab-pane fade in " id="cam-apps-tab">
+<div class="tab-pane fade in active" id="cam-apps-tab">
 	
 	<div id="cam-apps-view">
 	</div>

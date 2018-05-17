@@ -687,6 +687,8 @@
 					}
 				});
 				
+				$("#subscription-credits").html(response.credits);
+				
 				var now = new Date();
 				var project_name_suffix = now.getDate() + '/' + (now.getMonth()+1) + '/' + now.getFullYear() + ' ' + now.getHours() + ':'+now.getMinutes();
 				$("#new-project-name").val( "New "+camApp.group+" project " + project_name_suffix);
@@ -694,7 +696,10 @@
 			}
 			else
 			{
-				fabApp.showErrorAlert('Failed to start task');
+				$("#cam-generate-gcode").find('i').removeClass("fa-spin");
+				enableButton("#cam-generate-gcode");
+				
+				fabApp.showErrorAlert('Failed to start task: ' + response.error);
 			}
 		});
 	}

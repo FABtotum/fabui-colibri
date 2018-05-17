@@ -33,6 +33,8 @@ class Client {
      * @var Authorized request headers
      */
     private $error_code;
+    
+    private $http_response;
 
     private $max_login_attempts = 2;
 
@@ -52,6 +54,7 @@ class Client {
         $this->headers = [];
         $this->error_message = '';
         $this->error_code = 0;
+        $this->http_response = [];
         
         $this->client = new HttpClient([
             'base_uri' => $this->url
@@ -155,8 +158,46 @@ class Client {
     {
         return $this->error_code;
     }
+    
+    /**
+     * Return the last response
+     *
+     * @return Array
+     */
+    public function getResponse()
+    {
+        return $this->http_response;
+    }
 
 
+    /**
+     * Check login status
+     *
+     * @return true if logged in, false otherwise
+     */
+    private function __verifySubscription($code)
+    {
+        error_log('subscriptions/verify/' . $code, 0);
+        
+        $response = $this->client->request('POST', 'subscriptions/verify/' . $code);
+
+        if( $response->getStatusCode() == 200 )
+        {
+            $data = json_decode((string) $response->getBody(), true);
+            return $data;
+        }
+        else
+        {
+            $data = json_decode((string) $response->getBody(), true);
+            $this->error_message = $data['message'];
+            $this->error_code = $response->getStatusCode();
+        }
+        
+        return [
+            'status' => false,
+            'message' => $this->error_message
+        ];
+    }
 
     /**
      * Check login status
@@ -294,12 +335,14 @@ class Client {
         if( $response->getStatusCode() == 200 )
         {
             $data = json_decode((string) $response->getBody(), true);
+            $this->http_response = $data;
             return true;
         }
         else
         {
             $data = json_decode((string) $response->getBody(), true);
             $this->error_message = $data['error'];
+            $this->http_response = $data;
         }
 
         $this->error_code = $response->getStatusCode();
@@ -768,6 +811,10 @@ class Client {
             // Method has to use unauthorized decorator
             if( in_array($method, $unauthorized_decorator) )
             {
+                // Reset responses
+                $this->error_message = '';
+                $this->error_code = 200;
+                $this->http_response = [];
                 
                 try{
                     return call_user_func_array([$this, '__' . $method], $parameters);
@@ -796,7 +843,7 @@ class Client {
                     }
 
                     $this->error_code = $response->getStatusCode();
-                    error_log('HTTP Error('. $this->error_code . '):'. $this->error_message, 0);
+                    error_log('HTTP Error('. $this->error_code . '): '. $this->error_message, 0);
                 }
                 // Server error
                 catch(HttpServerException $e)

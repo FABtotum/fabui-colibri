@@ -83,10 +83,10 @@ class Cam2 extends FAB_Controller
 		$data['cam']['tasks'] = array();
 		
 		if ($data['subscription_exists']) {
-			$data['subscription_code'] = load_subscription();
+			$data['subscription'] = load_subscription();
 			
 			$init = array();
-			$init['subscription'] = $data['subscription_code']['code'];
+			$init['subscription'] = $data['subscription']['code'];
 			
 			if( $data['isFabid'] )
 			{
@@ -96,6 +96,13 @@ class Cam2 extends FAB_Controller
 				{
 				
 					$this->load->library('ApiFabtotumClient', $init,  'apifabtotum');
+					
+					// update credits value
+					$resp = $this->apifabtotum->verifySubscription($data['subscription']['code']);
+					$data['subscription']['credits'] = $resp['subscription']['credits'];
+					
+					//error_log( print_r($data['subscription']), 0);
+					
 					$data['cam']['apps'] = $this->apifabtotum->apps;
 					$data['cam']['tasks'] = $this->apifabtotum->getTasks();
 					
@@ -184,20 +191,23 @@ class Cam2 extends FAB_Controller
 	}
 	
 	/**
-	 */
+	 pdCdnw3v97wvv */ 
 	public function subscription($action, $code = "")
 	{
 		$this->load->helper(array('cam_helper'));
+		$this->load->library('ApiFabtotumClient');
 		
 		switch ($action) {
 			case 'active':
-				$output = active_subscription($code);
+				//$output = active_subscription($code);
+				$output = $this->apifabtotumclient->verifySubscription($code);
+				store_subscription($output['subscription']);
 				break;
 			case 'remove':
 				$output = remove_subscription();
 				break;
 		}
-		$this->output->set_content_type('application/json')->set_output($output);
+		$this->output->set_content_type('application/json')->set_output(json_encode($output));
 	}
 	
 	public function applications($group = "")
@@ -721,16 +731,21 @@ class Cam2 extends FAB_Controller
 		if($reloadFiles)
 			$files = $cam->getFiles($taskId);
 		
-		$cam->startTask($taskId);
-		
 		$response['appId'] = $appId;
 		$response['taskId'] = $taskId;
 		$response['files'] = $files;
-		$response['src'] = $inputFilename;
-		$response['dst'] = $destFilename;
+		$response['error'] = '';
 		
-		$response['success'] = true;
+		$resp = $cam->startTask($taskId);
+		$response['success'] = $resp;
+		$response['error'] = $cam->getErrorMessage();
+		if( $response['success'] )
+		{
+			$resp = $cam->getResponse();
+			$response['credits'] = $resp['remaining_credits'];
+		}
 		
+
 		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
 	

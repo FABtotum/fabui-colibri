@@ -122,8 +122,8 @@
 	function createSubscriptionCodesTable(subscription)
 	{
 		//subscription-codes-table
-		var info = jQuery.parseJSON(subscription.target);
-		var statusClass = info.status == 'active' ? 'success' : 'danger';
+		//var info = jQuery.parseJSON(subscription.target);
+		var statusClass = subscription.status == 'active' ? 'success' : 'danger';
 		var expirationDate = moment(subscription.exp_date);
 		var remainingDays = expirationDate.diff(today, 'days');
 		var password_symbol = "*";
@@ -132,14 +132,16 @@
 						<tr>\
 							<th><?php echo _("Code");?></th>\
 							<th><?php echo _("Status");?></th>\
+							<th><?php echo _("Credits");?></th>\
 							<th><span class="hidden-xs"><?php echo _("Expiration date");?></span><span class="visible-xs"><?php echo _("Exp. date"); ?></span></th>\
 							<th width="20"></th>\
 						<tr>\
 					<thed>\
 					<tbody>\
 						<tr>\
-							<td width="300"><span class="visible-code hidden"><strong>'+subscription.link+'</strong></span> <span class="hidden-code">'+password_symbol.repeat(subscription.link.length)+'</span>  <span class="pull-right"><i style="cursor:pointer;" class="fa fa-eye code-visible-button"></i></span></td>\
-							<td><span class="center-block padding-5 label label-'+statusClass+'">'+info.status+'</span></td>\
+							<td width="300"><span class="visible-code hidden"><strong>'+subscription.code+'</strong></span> <span class="hidden-code">'+password_symbol.repeat(subscription.code.length)+'</span>  <span class="pull-right"><i style="cursor:pointer;" class="fa fa-eye code-visible-button"></i></span></td>\
+							<td><span class="center-block padding-5 label label-'+statusClass+'">'+subscription.status+'</span></td>\
+							<td id="subscription-credits">'+subscription.credits+'</td>\
 							<td>'+expirationDate.format("DD/MM/YYYY")+' ('+_("{0} remaining days").replace("{0}", remainingDays)+')</td>\
 							<td class="text-center"><button title="<?php echo _("Remove"); ?>" id="remove-subscription-button" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>\
 						</tr>\

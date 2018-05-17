@@ -8,7 +8,7 @@
  */
 $remainingDays = 0;
 if($subscription_exists){
-	$expirationDate = new DateTime(date('Y-m-d H:i', strtotime($subscription_code['expiration_date'])));
+	$expirationDate = new DateTime(date('Y-m-d H:i', strtotime($subscription['expiration_date'])));
 	$today          = new DateTime(date('Y-m-d H:i'));
 	$remainingDays = $expirationDate->diff($today)->days;
 }
@@ -30,15 +30,17 @@ if($subscription_exists){
 					<tr>
 						<th><?php echo _("Code");?></th>
 						<th><?php echo _("Status");?></th>
+						<th><?php echo _("Credits");?></th>
 						<th><span class="hidden-xs"><?php echo _("Expiration date");?></span><span class="visible-xs"><?php echo _("Exp. date");?></span></th>
 						<th width="20"></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td width="300"><strong><span class="visible-code hidden"><?php echo $subscription_code['code']; ?></span> <span class="hidden-code"><?php echo str_repeat( "*", strlen( $subscription_code['code'] ) );?></span> <span class="pull-right"><i title="<?php echo _("Press to view code");?>" style="cursor:pointer;" class="fa fa-eye code-visible-button"></i></span></strong></td>
-						<td><span class="center-block padding-5 label label-<?php echo $subscription_code['status'] == 'active' ? 'success' : 'danger';?>"><strong><?php echo $subscription_code['status']; ?></strong></span></td>
-						<td><?php echo date('d/m/Y', strtotime($subscription_code['expiration_date'])) ; ?>  (<?php echo str_replace("{0}", $remainingDays, _("{0} days remaining"));?>)</td>
+						<td width="300"><strong><span class="visible-code hidden"><?php echo $subscription['code']; ?></span> <span class="hidden-code"><?php echo str_repeat( "*", strlen( $subscription['code'] ) );?></span> <span class="pull-right"><i title="<?php echo _("Press to view code");?>" style="cursor:pointer;" class="fa fa-eye code-visible-button"></i></span></strong></td>
+						<td><span class="center-block padding-5 label label-<?php echo $subscription['status'] == 'active' ? 'success' : 'danger';?>"><strong><?php echo $subscription['status']; ?></strong></span></td>
+						<td id="subscription-credits"><?php echo $subscription['credits'];?></td>
+						<td><?php echo date('d/m/Y', strtotime($subscription['expiration_date'])) ; ?>  (<?php echo str_replace("{0}", $remainingDays, _("{0} days remaining"));?>)</td>
 						<td class="text-center"><button title="<?php echo _("Remove"); ?>" id="remove-subscription-button" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
 					</tr>
 				</tbody>
