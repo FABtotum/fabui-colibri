@@ -42,10 +42,10 @@
 		
 		//console.log('apps', camApplications);
 		
-		doShowGroups();
-		/*startApplication(5);
+		//doShowGroups();
+		startApplication(2);
 		initSettingsForm();
-		enableButton("#cam-save-gcode");*/
+		/*enableButton("#cam-save-gcode");*/
 	});
 	
 	/**
@@ -547,9 +547,15 @@
 		var cfg = camApp.config[id];
 		console.log('profile change', cfg);
 		$.each(cfg.data, function (key, value) {
-			var fieldId = 'camfield-' + key.replace('.', '-');
-			console.log('field', key, value);
-			$("#" + fieldId).val(value);
+			var fieldId = 'camfield-' + key.replace(/\./g, '-');
+			var input_type = $("#" + fieldId).attr('data-type');
+			console.log('field', input_type, fieldId, key, value);
+			if(input_type == "boolean") {
+				$("#" + fieldId).prop('checked', value);
+			}
+			else {
+				$("#" + fieldId).val(value);
+			}
 		});
 	}
 	
@@ -837,13 +843,6 @@
 		}).done(function( response ) {
 			if(response.success == true){
 				fabApp.showInfoAlert("<?php echo _("Gcode saved"); ?>");
-
-				//~ if(type == 'laser'){
-					//~ $(".laser-status").html("<i class='fa fa-check'></i> <?php echo _("Gcode saved"); ?>");
-					//~ $("#laser-engrave-gcode").attr("data-id", response.file_id);
-					//~ disableButton('#laser-save-gcode');
-					//~ enableButton("#laser-engrave-gcode");
-				//~ }
 				
 				disableButton('#cam-save-gcode');
 				enableButton("#cam-make-gcode");

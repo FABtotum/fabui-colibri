@@ -191,7 +191,7 @@ class Cam2 extends FAB_Controller
 	}
 	
 	/**
-	 pdCdnw3v97wvv */ 
+	 */ 
 	public function subscription($action, $code = "")
 	{
 		$this->load->helper(array('cam_helper'));
@@ -329,17 +329,29 @@ class Cam2 extends FAB_Controller
 	
 	private function resolve_oneof_property($schemas, $property_path)
 	{
+		$result = [];
+		
 		foreach($schemas as $schema)
 		{
 			if(isset($schema['properties']))
 			{
 				$schema['type'] = 'object';
 				$r = $this->get_property_schema($schema, $property_path);
-				if($r) return $r;
+				if(isset($r['enum']))
+				{
+					if(isset($result['enum'])) {
+						$result['enum'] = array_merge($result['enum'], $r['enum']);
+					} else {
+						$result = $r;
+					}
+				}
+				else
+				{
+					if($r) return $r;
+				}
 			}
 		}
-		
-		return null;
+		return $result;
 	}
 
 	private function get_property_schema($schema, $property_path)
@@ -433,13 +445,15 @@ class Cam2 extends FAB_Controller
 		}
 		else
 		{
-			$col_val = int(12 / $children);
+			$col_val = round(12 / $children);
 			$content .= '<section class="col col-'.$col_val.'">';
 		}
 		
 		if(isset($property_schema['enum']))
 		{
 			$content .= '<label class="select">';
+			if($label) 
+				$content .= '<span class="icon-prepend">'.$label.'</span>';
 			$content .= '<select data-type="'.$property_schema['type'].'" name="'.$field_name.'" id="'.$field_id.'"';
 			if($field_class) ' class="'.$field_class.'" ';
 			$content .= '>';
@@ -466,7 +480,8 @@ class Cam2 extends FAB_Controller
 				case 'integer':
 					if(!$default) $default = 0;
 					$content .= '<label class="input">';
-					$content .= '<span class="icon-prepend">'.$label.'</span>';
+					if($label) 
+						$content .= '<span class="icon-prepend">'.$label.'</span>';
 					$content .= '<input data-type="integer" type="number" name="'.$field_name.'" id="'.$field_id.'"';
 					if($field_class) ' class="'.$field_class.'" ';
 					$content .= ' value="'.$default.'"';
@@ -538,23 +553,55 @@ class Cam2 extends FAB_Controller
 
 			foreach($tab['rows'] as $rowIdx => $row)
 			{
-				if(count($row) == 1)
+				if(count($row) > 1)
 				{
-					//$tab_content .= '<div class="row margin-top-10 margin-bottom-10">';
+					$tab_content .= '<div class="row margin-top-10 margin-bottom-10">';
 				}
 				
 				foreach($row as $element)
 				{
 					$tab_content .= $this->get_property_ui_element($schema, $element, count($row));
+					$field_name = str_replace('.', '-', $element['field']);
+					$morph_content = '';
+					
+					if(isset($element['morph']))
+					{
+						foreach($element['morph'] as $morph_value => $morph_rows)
+						{
+							$morph_group = $field_name . '-' . $morph_value;
+							$morph_content .= '<div data-morph-group="'.$morph_group.'">';
+							foreach($morph_rows as $morph_row)
+							{
+								if(count($morph_row) > 1)
+								{
+									$morph_content .= '<div class="row">';
+								}
+								
+								foreach($morph_row as $element)
+								{
+									$morph_content .= $this->get_property_ui_element($schema, $element, count($morph_row));
+								}
+								
+								if(count($morph_row) > 1)
+								{
+									$morph_content .= '</div>';
+								}
+							}
+							$morph_content .= '</div>';
+						}
+					}
+					
+					$tab_content .= $morph_content;
 				}
 				
-				if(count($row) == 1)
+				if(count($row) > 1)
 				{
-					//$tab_content .= '</div>';
+					$tab_content .= '</div>';
 				}
 			}
+			
 			$tab_content .= '</fieldset>'; 
-			$tab_content .= '</div>';
+			$tab_content .= '</div></div>';
 			
 			$active = '';
 		}
@@ -580,17 +627,7 @@ class Cam2 extends FAB_Controller
 
 		$this->output->set_output($output);
 	}
-	
-	public function test()
-	{
-		$this->load->library('ApiFabtotumClient');
-		$cam = $this->apifabtotumclient;
-		
-		$r = $cam->getApplications();
-		
-		$this->output->set_content_type('application/json')->set_output(json_encode($r));
-	}
-	
+
 	public function generate($appId, $taskId = null)
 	{
 		// load helpers
