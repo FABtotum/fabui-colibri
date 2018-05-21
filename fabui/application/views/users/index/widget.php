@@ -19,7 +19,9 @@ $is_admin = $this->session->user['role'] == 'administrator';
 						<th width="100"><?php echo _("Role") ?></th>
 						<th><?php echo _("Name") ?></th>
 						<th><?php echo _("Email");?></th>
-						<th><?php echo _("FABID");?></th>
+						<?php if($fabid_active):?>
+							<th><?php echo _("FABID");?></th>
+						<?php endif;?>
 						<th><?php echo _("Last login");?></th>
 						<th width="20"></th>
 					</tr>

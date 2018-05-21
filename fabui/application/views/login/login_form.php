@@ -19,6 +19,7 @@
 		<div class="col-sm-3 hidden-xs hidden-sm"></div>
 	</div>
 <?php endif; ?>
+<?php if($fabid_active): ?>
 <div class="row" style="margin-top:50px;" id="fabid-access-form-container">
 	<div class="col-sm-4 col-xs-2 hidden-sm"></div>
 	<div class="col-sm-4 col-xs-8 ">
@@ -33,7 +34,8 @@
 	</div>
 	<div class="col-sm-3 col-xs-2 hidden-sm"></div>
 </div>
-<div class="row" id="local-access-form-container" style="display:none;">
+<?php endif; ?>
+<div class="row" id="local-access-form-container" style="<?php echo $fabid_active ? 'display:none;' : ''; ?>">
 	<div class="col-sm-3 hidden-xs hidden-sm"></div>
 	<div class="col-sm-6 col-xs-12">
 		<div class="well no-padding">
@@ -63,7 +65,9 @@
 				</fieldset>
 				<footer>
 					<button type="submit"  class="btn btn-primary"><?php echo _("Sign In");?></button>
+					<?php if($fabid_active):?>
 					<button type="button"   id="fabid-access" class="btn btn-default"><?php echo _("Sign in with FABID");?></button>
+					<?php endif;?>
 				</footer>
 				<input type="hidden" name="browser-date" id="browser-date">
 			</form>

@@ -16,10 +16,11 @@
 		$("#send-mail").on('click', sendResetEmail);
 		$("#forgot-password").on('click', showForgotPasswordModal);
 		$("#reload-page").on('click', reloadPage);
-		<?php if($fabid == true):?>
+		<?php if($fabid == true && $fabid_active):?>
 			fabApp.fabIDLogin();
 		<?php endif; ?>
 
+		<?php if($fabid_active): ?>
 		$("#local-access").on("click", function(){
 			$("#fabid-access-form-container").slideUp(function(){
 				$("#local-access-form-container").slideDown();
@@ -31,6 +32,7 @@
 				$("#fabid-access-form-container").slideDown();
 			});
 		});
+		<?php endif; ?>
 				
 	});
 	

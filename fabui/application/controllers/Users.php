@@ -19,6 +19,7 @@
 	    $this->load->helper('layout');
 	    
 	    $data = array();
+	    $data['fabid_active'] = $this->config->item('fabid_active');
 	    
 	    /**
 	     * init widget
@@ -75,6 +76,11 @@
 	     */
 	    $aaData = array();
 	    
+	    /**
+	     * get if fabid is active
+	     */
+	    $fabid_active = $this->config->item('fabid_active');
+	    
 	    foreach($users as $user)
 	    {
 	        /**
@@ -129,16 +135,22 @@
 	        /**
 	         * add user
 	         */
-	        $aaData [] = array(
-	            '<img src="'.$image.'" width="30" />',
-	            $user['role'],
-	            $user['last_name'].' '.$user['first_name'],
-	            $user['email'],
-	            $fabid,
-	            date('d/m/Y H:i', strtotime($user['last_login'])),
-	            $button,
-	            $user['id']
-	        );
+	        $tableRow = array();
+	        
+	        $tableRow[] =  '<img src="'.$image.'" width="30" />';
+	        $tableRow[] = $user['role'];
+	        $tableRow[] = $user['last_name'].' '.$user['first_name'];
+	        $tableRow[] = $user['email'];
+	        
+	        if($fabid_active){
+	            $tableRow[] = $fabid;
+	        }
+	        
+	        $tableRow[] = date('d/m/Y H:i', strtotime($user['last_login']));
+	        $tableRow[] = $button;
+	        $tableRow[] = $user['id'];
+	        
+	        $aaData[] = $tableRow;
 	    }
 	       
 	    /**

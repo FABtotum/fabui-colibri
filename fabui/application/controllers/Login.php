@@ -20,8 +20,11 @@
 		verify_keep_me_logged_in_cookie();
 		
 		$fabid = $this->input->get('fabid');
+		$fabid_active = $this->config->item('fabid_active');
 		$data['alert'] = $this->session->flashdata('alert');
 		$data['fabid'] = $fabid == 'no' ? false : true;
+		$data['fabid_active'] = $this->config->item('fabid_active');
+		
 		$this->load->helper('os_helper');
 		$this->content = $this->load->view('login/login_form', $data, true);
 		$this->addJsInLine($this->load->view('login/login_js', $data, true));
@@ -54,9 +57,6 @@
 		$this->load->model('User', 'user');
 		$user = $this->user->get($postData, 1);
 		
-		//print_r($postData);
-		
-		//print_r($user); exit();
 		
 		if($user == false){ //if user doesn't exists
 			//TO DO add flash message
@@ -68,6 +68,8 @@
 		if($remember == true){ //keep me logged in
 			set_keep_me_looged_in_cookie($postData['email'], $postData['password']);
 		}
+		
+		$fabid_active = $this->config->item('fabid_active');
 		
 		//update user last login column
 		$update_data['last_login'] = $last_login;
@@ -84,7 +86,10 @@
 		$this->session->set_userdata('user', $user);
 		$this->session->set_userdata('loggedIn', true);
 		
-		reload_myfabtotum();
+		if($fabid_active){
+		    reload_myfabtotum();
+		}
+		
 		//save hardware settings on session
 		$this->session->set_userdata('settings', $hardwareSettings);
 		redirect('#dashboard');

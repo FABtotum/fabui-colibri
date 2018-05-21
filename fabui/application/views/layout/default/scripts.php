@@ -34,7 +34,8 @@
 		fabApp.checkForFirstSetupWizard();
 		//start intervals
 		temperatures_interval = setInterval(fabApp.getTemperatures, temperatures_interval_timer);
-		<?php if(isset($this->session->user['settings']['fabid']['logged_in']) && $this->session->user['settings']['fabid']['logged_in'] == true): ?>
+		
+		<?php if($fabid_active && isset($this->session->user['settings']['fabid']['logged_in']) && $this->session->user['settings']['fabid']['logged_in'] == true): ?>
 		setTimeout(function(){
 			fabApp.myFabtotumPrintersList();
 		}, 1500);

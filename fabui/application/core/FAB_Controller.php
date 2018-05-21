@@ -129,6 +129,7 @@
 		$data['ga_property_id'] = $this->config->config['ga_property_id'];
 		$data['heads']          = loadHeads();
 		$data['lang']           = getCurrentLanguage();
+		$data['fabid_active']   = $this->config->item('fabid_active');
 		
 		
 		$this->template['head']    = $this->load->view($this->layoutDefaultFolder.'/head',    $data, true);
@@ -168,6 +169,7 @@
 		
 		$this->addJsInLine('<script type="text/javascript">loginLogOut();</script>');
 		$data['mode'] = $mode;
+		$data['fabid_active'] = $this->config->item('fabid_active');
 		$data['translations'] = $this->load->view('layout/translations_js', null, true);
 		
 		$this->template['head']    = $this->load-> view($this->layoutDefaultFolder.'/head', $data, true);
