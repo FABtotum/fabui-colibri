@@ -49,6 +49,56 @@ if(!function_exists('load_subscription'))
 	}
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('load_access_token'))
+{
+	/**
+	 * Load stored access token for specific fabid/subscription pair
+	 */
+	function load_access_token($fabid, $subscription)
+	{
+		$CI =& get_instance();
+		$CI->config->load('cam');
+		$CI->load->library('encrypt');
+		$CI->load->helper(array('os_helper'));
+		
+		if(file_exists($CI->config->item('token_file'))){
+			$data =  json_decode(file_get_contents($CI->config->item('token_file')), true);
+			
+			if( isset($data[$fabid]) ) {
+				if( isset($data[$fabid][$subscription]) ) 
+				{
+					return $data[$fabid][$subscription];
+				}
+			}
+
+		}
+		return false;
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if(!function_exists('store_access_token'))
+{
+	/**
+	 * Store access token for future use to reduce network traffic and response time
+	 */
+	function store_access_token($fabid, $subscription, $access_token)
+	{
+		$CI =& get_instance();
+		$CI->config->load('cam');
+		$CI->load->library('encrypt');
+		$CI->load->helper(array('os_helper'));
+		
+		$data = array();
+		if(file_exists($CI->config->item('token_file'))){
+			$data =  json_decode(file_get_contents($CI->config->item('token_file')), true);
+		}
+		
+		$data[$fabid][$subscription] = $access_token;
+		
+		return write_file($CI->config->item('token_file'), json_encode($data));
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if(!function_exists('http_code_description'))
 {
 	/**
@@ -220,14 +270,18 @@ if(!function_exists('call_service'))
 	{
 		$CI =& get_instance();
 		$CI->load->helper(array('api_helper'));
-
-		if(isset($CI->session->user['settings']['fabid']['email']) && $CI->session->user['settings']['fabid']['logged_in'] == true)
-			$fabid = $CI->session->user['settings']['fabid']['email'];
-		else
-			return false;
+        
+		if($CI->config->item('fabid_active')){
+		    
+		    if(isset($CI->session->user['settings']['fabid']['email']) && $CI->session->user['settings']['fabid']['logged_in'] == true){
+    			$fabid = $CI->session->user['settings']['fabid']['email'];
+    			$data['fabid'] = $fabid;
+		    }else{
+    			return false;
+		    }
+		}
 		
 		//$data['fabid']        = json_encode(array('email' => $fabid));
-		$data['fabid']        = $fabid;
 		$data['subscription'] = get_subscription_code();
 		
 		return call_remote_api($endpoint, $data);

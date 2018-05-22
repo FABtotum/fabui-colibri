@@ -462,7 +462,21 @@ class Cam extends FAB_Controller
      */
     private function _isFabid()
     {
-        return (isset($this->session->user['settings']['fabid']['logged_in']) && ($this->session->user['settings']['fabid']['logged_in'] == true));
+        if($this->config->item('fabid_active'))
+            return (isset($this->session->user['settings']['fabid']['logged_in']) && ($this->session->user['settings']['fabid']['logged_in'] == true));
+        
+        return true;
+    }
+    
+    private function _fabId()
+    {
+        if( ($this->session->user['settings']['fabid']['logged_in'] !== null)
+            && ($this->session->user['settings']['fabid']['logged_in'] == true) )
+        {
+            return $this->session->user['settings']['fabid']['email'];
+        }
+        
+        return null;
     }
 }
 
