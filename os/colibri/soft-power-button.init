@@ -1,0 +1,61 @@
+#!/bin/sh
+################################################################
+# Begin $rc_base/init.d/
+#
+# Description : Soft Power Button
+#
+# Authors     : Simone Cociancich
+#
+# Version     : 0.0.1
+#
+# Notes       :
+#
+###############################################################
+
+. /etc/default/rc
+. ${rc_functions}
+
+test -r /etc/default/fabtotum && source /etc/default/fabtotum
+
+[ -n "$FABTOTUM_UPGRADE_DIR" ] && FABTOTUM_UPGRADE_DIR="/var/lib/fabui/upgrade.d"
+
+SERVICE_NAME="Soft Power Button"
+DAEMON_NAME="powermanager"
+DAEMON_PIDFILE="/run/${DAEMON_NAME}.pid"
+DAEMON_MODULE="/usr/share/fabui/ext/py/${DAEMON_NAME}.py"
+DAEMON_RUNNER=$(which python)
+
+case "$1" in
+  start)
+    boot_msg "Starting ${SERVICE_NAME} daemon"
+    start-stop-daemon --verbose \
+      --make-pidfile --pidfile "${DAEMON_PIDFILE}" \
+      --exec "${DAEMON_RUNNER}"   
+      --start \
+      -- "${DAEMON_MODULE}" \
+        >> /var/log/fabui/power_manager.log 2>&1
+    evaluate_retval
+    ;;
+
+  stop)
+    boot_msg "Stopping ${SERVICE_NAME} daemon"
+    start-stop-daemon --verbose \
+      --pidfile "${DAEMON_PIDFILE}" \
+      --signal TERM \
+      --stop \
+        >> /var/log/fabui/power_manager.log 2>&1
+    evaluate_retval
+    ;;
+
+  restart|reload)
+    ${0} stop
+    sleep 1
+    ${0} start
+    ;;
+
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+esac
+
+exit $?
