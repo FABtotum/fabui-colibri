@@ -34,6 +34,8 @@ USERDATA_PATH	 ?= $(MOUNT_BASE_PATH)userdata/
 DB_PATH			 ?= $(LIB_PATH)/
 USB_MEDIA_PATH	 ?= /run/media/
 LOCALE_PATH		 ?= $(FABUI_PATH)locale/
+CAM_PATH		 ?= $(USERDATA_PATH)cam/
+CAM_TASKS		 ?= $(CAM_PATH)tasks/
 
 # FAB-UI parameters
 SERIAL_PORT 	?= /dev/ttyAMA0
@@ -220,6 +222,8 @@ endif
 	$(FAKEROOT_ENV) ln -s $(FABUI_PATH)utilities	$(BDATA_DIR)$(WWW_PATH)utilities
 	$(FAKEROOT_ENV) ln -s $(TEMP_PATH)fabui 		$(BDATA_DIR)$(WWW_PATH)temp
 	$(FAKEROOT_ENV) ln -s $(BIGTEMP_PATH) 			$(BDATA_DIR)$(WWW_PATH)bigtemp
+	$(FAKEROOT_ENV) mkdir -p 						$(BDATA_DIR)$(WWW_PATH)cam/
+	$(FAKEROOT_ENV) ln -s $(CAM_TASKS)				$(BDATA_DIR)$(WWW_PATH)cam/tasks
 #	Python integration
 	$(FAKEROOT_ENV) $(INSTALL) -d -m 0755 			$(BDATA_DIR)/usr/lib/python2.7/site-packages
 	$(FAKEROOT_ENV) ln -s $(PYTHON_PATH)fabtotum 	$(BDATA_DIR)/usr/lib/python2.7/site-packages/fabtotum

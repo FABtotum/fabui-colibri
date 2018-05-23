@@ -42,9 +42,9 @@
 		
 		//console.log('apps', camApplications);
 		
-		//doShowGroups();
-		startApplication(2);
-		initSettingsForm();
+		doShowGroups();
+		//startApplication(2);
+		//initSettingsForm();
 		/*enableButton("#cam-save-gcode");*/
 	});
 	
@@ -500,8 +500,8 @@
 		
 		$.get("<?php echo site_url('cam2/ui') ?>/" + appId)
 			.done(function( data ) {
-				console.log(data);
 				$("#cam-app-config-view").html(data);
+				$(".camfield-oneof").on('change', doChangeSettingMode);
 				
 				changeProfile();
 			});
@@ -529,7 +529,6 @@
 		var profileId = 0;
 		$("#cam-profile").empty();
 		$.each(camApp.config, function (i, item) {
-			console.log('cfg', item);
 			$('#cam-profile').append($('<option>', { 
 				value: i,
 				text : item.name 
@@ -545,11 +544,10 @@
 	{
 		var id = $("#cam-profile").val();
 		var cfg = camApp.config[id];
-		console.log('profile change', cfg);
 		$.each(cfg.data, function (key, value) {
 			var fieldId = 'camfield-' + key.replace(/\./g, '-');
 			var input_type = $("#" + fieldId).attr('data-type');
-			console.log('field', input_type, fieldId, key, value);
+			//console.log('field', input_type, fieldId, key, value);
 			if(input_type == "boolean") {
 				$("#" + fieldId).prop('checked', value);
 			}
@@ -557,6 +555,42 @@
 				$("#" + fieldId).val(value);
 			}
 		});
+		
+		// update morph settings
+		$(".camfield-oneof").each(function () {
+			updateSettingMode( $(this) );
+		});
+	}
+	
+	/**
+	*
+	**/
+	function doChangeSettingMode()
+	{
+		updateSettingMode( $(this) );
+	}
+	
+	/**
+	*
+	**/
+	function updateSettingMode(obj)
+	{
+		var selected = obj.val();
+		var id = obj.attr('id');
+		var ops = $('#'+id + ' option');
+		ops.each(function() {
+			var o = $(this);
+			var group_id = id + '-' + o.val();
+			//console.log('value:', o.val(), 'text:', o.text(), o.attr('selected') );
+			if(o.val() == selected)
+			{
+				$('#' + group_id).slideDown();
+			}
+			else
+			{
+				$('#' + group_id).slideUp();
+			}
+		})
 	}
 	
 	/**
@@ -603,11 +637,16 @@
 					obj[ path[0] ] = value;
 					break;
 				case "number":
+				case "integer":
 					obj[ path[0] ] = Number(value);
 					break;
 				case "boolean":
-					obj[ path[0] ] = value.toLowerCase() == "true";
+					obj[ path[0] ] = value;
 					break;
+				default:
+					// This should not happend, but is better to have a
+					// fallback message
+					console.log('TODO: unflatten leaf of type', datatype);
 			}
 		}
 		else
@@ -615,10 +654,35 @@
 			var key = path[0];
 			var new_path = path.splice(0, 1); 
 			
-			if(!(key in obj))
-				obj[key] = {}
+			var next_key = path[0];
 			
-			unflatten( obj[ key ], path, value, datatype);
+			if(isNaN(key))
+			{
+				// initialize property as object
+				if( !(key in obj) && isNaN(next_key))
+				{
+					obj[key] = {};
+				}
+				// initialize property as array if next_key is a number
+				else if( !Array.isArray(obj) && !isNaN(next_key))
+				{
+					// initialize only if property is undefined
+					if(obj[key] === undefined)
+						obj[key] = [];
+				}
+				
+				unflatten( obj[key], path, value, datatype);
+			}
+			else
+			{
+				// NOTE: Array of arrays is not supported
+				// initialize object if it's undefined
+				if(obj[key] === undefined)
+				{
+					obj[key] = {}
+				}
+				unflatten( obj[key], path, value, datatype);
+			}
 		}
 	}
 	
@@ -632,17 +696,37 @@
 		var config = {};
 		
 		console.log('== generate ==');
+		// Read all inputs and convert their values into a 
+		// single structured object
 		$("#cam-config-form :input").each(function (index, value) {
 			var name = $(this).attr('name').replace('camfield-', '');
 			var type = $(this).attr('type');
 			var datatype = $(this).attr('data-type');
+			var is_visible = true;
+			var value = $(this).val();
 			
-			console.log(name, $(this).val(), datatype);
+			if(datatype == "boolean")
+				value = $(this).is(':checked');
 			
-			unflatten(config, name.split('-'), $(this).val(), datatype);
+			
+			// Only add visible morph inputs
+			var motph_group = $(this).attr('data-morph-group');
+			if(motph_group !== undefined)
+				is_visible = $('#' + motph_group).css('display') != 'none';
+			
+			if(is_visible)
+				unflatten(config, name.split('-'), value, datatype);
 		});
 		
+		console.log('CONFIG', config);
+		
+		//return;
+		
 		var data = {
+			// POST (or CI) converts all values to string which will detroy the
+			// the needed structure for config validation on the server.
+			// Therefore we convert the json into a string to preserve
+			// the full structure.
 			config: JSON.stringify(config),
 			app_name: camApp.name
 		}
@@ -663,6 +747,7 @@
 			}
 		}
 		
+		// TODO: make this a message in the UI
 		console.log('Uploading files to CAM server');
 		
 		$.ajax({
@@ -728,9 +813,20 @@
 			enableButton("#cam-download-gcode");
 			
 			$.each(task.files, function (i, file) {
+				console.log('FILE', file);
+				
 				if(file.type == 'OUTPUT')
 				{
 					outputFileId = file.id;
+				}
+				
+				// cam-image-source
+				// cam-preview-source
+				if(file.type == 'PREVIEW')
+				{
+					var preview_url = "/cam/tasks/" + camTask.id + "/preview/" + file.filename +"?time="+jQuery.now();
+					console.log('preview', preview_url);
+					$("#cam-preview-source").attr("src", preview_url);
 				}
 			});
 		}

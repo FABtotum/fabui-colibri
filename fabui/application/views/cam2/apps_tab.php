@@ -33,7 +33,7 @@
 									<div class="owl-item" style="width: 357px; margin-right: 10px;">
 										<div class="well well-light">
 											<div>
-												<img class="img-responsive" id="cam-image-source" src="/temp/uploads/laser/1/cat_armor_color_1920x1080.jpg">
+												<img class="img-responsive" id="cam-image-source">
 											</div>
 										</div>
 									</div>

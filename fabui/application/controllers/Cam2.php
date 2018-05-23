@@ -351,6 +351,7 @@ class Cam2 extends FAB_Controller
 				}
 			}
 		}
+		$result['isOneOf'] = true;
 		return $result;
 	}
 
@@ -406,12 +407,13 @@ class Cam2 extends FAB_Controller
 		return null;
 	}
 
-	private function get_property_ui_element($schema, $ui, $children = 1, $prefix = 'camfield')
+	private function get_property_ui_element($schema, $ui, $children = 1, $prefix = 'camfield', $morph_group = '')
 	{
 		$property_path = $ui['field'];
 		$label = $ui['label'];
 
 		$property_schema = $this->get_property_schema($schema, $property_path);
+		
 		
 		$content = '';
 		$default = null;
@@ -439,6 +441,9 @@ class Cam2 extends FAB_Controller
 		$field_class = '';
 		$field_popover = '';
 		
+		if(isset($property_schema['isOneOf'])) 
+			$field_class = 'camfield-oneof';
+		
 		if($children == 1)
 		{
 			$content .= '<section>';
@@ -451,11 +456,13 @@ class Cam2 extends FAB_Controller
 		
 		if(isset($property_schema['enum']))
 		{
+			
 			$content .= '<label class="select">';
 			if($label) 
 				$content .= '<span class="icon-prepend">'.$label.'</span>';
 			$content .= '<select data-type="'.$property_schema['type'].'" name="'.$field_name.'" id="'.$field_id.'"';
-			if($field_class) ' class="'.$field_class.'" ';
+			if($field_class) $content .= ' class="'.$field_class.'" ';
+			if($morph_group) $content .= ' data-morph-group="' . $morph_group . '"';
 			$content .= '>';
 			foreach($property_schema['enum'] as $idx => $value)
 			{
@@ -483,7 +490,9 @@ class Cam2 extends FAB_Controller
 					if($label) 
 						$content .= '<span class="icon-prepend">'.$label.'</span>';
 					$content .= '<input data-type="integer" type="number" name="'.$field_name.'" id="'.$field_id.'"';
-					if($field_class) ' class="'.$field_class.'" ';
+					if($field_class) $content .= ' class="'.$field_class.'" ';
+					if($morph_group) $content .= ' data-morph-group="' . $morph_group . '"';
+					//print_r($morph_group);
 					$content .= ' value="'.$default.'"';
 					$content .= ' min="'.$min_value.'"';
 					$content .= ' max="'.$max_value.'"';
@@ -495,7 +504,8 @@ class Cam2 extends FAB_Controller
 					$content .= '<label class="input">';
 					$content .= '<span class="icon-prepend">'.$label.'</span>';
 					$content .= '<input data-type="number" type="number" name="'.$field_name.'" id="'.$field_id.'"';
-					if($field_class) ' class="'.$field_class.'" ';
+					if($field_class) $content .= ' class="'.$field_class.'" ';
+					if($morph_group) $content .= ' data-morph-group="' . $morph_group . '"';
 					$content .= ' value="'.$default.'"';
 					$content .= ' min="'.$min_value.'"';
 					$content .= ' max="'.$max_value.'"';
@@ -509,7 +519,8 @@ class Cam2 extends FAB_Controller
 					if(!$default) $default = false;
 					$content .= '<label class="checkbox">';
 					$content .= '<input data-type="boolean" type="checkbox" name="'.$field_name.'" id="'.$field_id.'"';
-					if($field_class) ' class="'.$field_class.'" ';
+					if($field_class) $content .= ' class="'.$field_class.'" ';
+					if($morph_group) $content .= ' data-morph-group="' . $morph_group . '"';
 					$content .= '><i></i><span>'.$label.'</span>';
 					break;
 			}
@@ -568,8 +579,8 @@ class Cam2 extends FAB_Controller
 					{
 						foreach($element['morph'] as $morph_value => $morph_rows)
 						{
-							$morph_group = $field_name . '-' . $morph_value;
-							$morph_content .= '<div data-morph-group="'.$morph_group.'">';
+							$morph_group = 'camfield-' . $field_name . '-' . $morph_value;
+							$morph_content .= '<div id="'.$morph_group.'">';
 							foreach($morph_rows as $morph_row)
 							{
 								if(count($morph_row) > 1)
@@ -579,7 +590,7 @@ class Cam2 extends FAB_Controller
 								
 								foreach($morph_row as $element)
 								{
-									$morph_content .= $this->get_property_ui_element($schema, $element, count($morph_row));
+									$morph_content .= $this->get_property_ui_element($schema, $element, count($morph_row), 'camfield', $morph_group);
 								}
 								
 								if(count($morph_row) > 1)
@@ -782,7 +793,6 @@ class Cam2 extends FAB_Controller
 			$response['credits'] = $resp['remaining_credits'];
 		}
 		
-
 		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
 	
