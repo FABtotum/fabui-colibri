@@ -214,7 +214,7 @@ def end_additive_safe_zone(app, args = None, lang='en_US.UTF-8'):
     setLanguage(lang)
     app.macro("M121",                     "ok", 2,    _("Force endstops"), verbose=False )
     app.macro("G90",                      "ok", 2,    _("Setting abs position"), verbose=False)
-    app.macro("G0 X210 Y210 Z240 F10000", "ok", 100,  _("Moving to safe zone"), verbose=False)
+    app.macro("G0 X150 Y170 Z240 F10000", "ok", 100,  _("Moving to safe zone"), verbose=False)
     app.macro("G27 Z0",                   "ok", 100,  _("Zeroing Z axis"), verbose=False)
     app.macro("M400",                     "ok", 200,   _("Waiting for all moves to finish") )
     app.macro("M18",                      "ok", 2,    _("Motors off"), verbose=False    )

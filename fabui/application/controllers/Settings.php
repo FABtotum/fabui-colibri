@@ -369,8 +369,8 @@ class Settings extends FAB_Controller {
 				storeNetworkSettings($net_type, $iface, $mode, $address, $netmask, $gateway);
 				
 				//update social feeds
-				downloadAllFeeds();
-				downloadAllFilamentsFeeds();
+				//downloadAllFeeds();
+				//downloadAllFilamentsFeeds();
 				break;
 			case "wlan":
 				if($action == 'connect')
@@ -408,8 +408,8 @@ class Settings extends FAB_Controller {
 					configureWireless($iface, $ssid, $password, $psk, $mode, $address, $netmask, $gateway, $ap_channel);
 					storeNetworkSettings($net_type, $iface, $mode, $address, $netmask, $gateway, $ssid, $password, $psk);
 					//update social feeds
-					downloadAllFeeds();
-					downloadAllFilamentsFeeds();
+					//downloadAllFeeds();
+					//downloadAllFilamentsFeeds();
 				}
 				else if($action == 'disconnect')
 				{
@@ -434,7 +434,7 @@ class Settings extends FAB_Controller {
 				$result = false;
 		}
 		writeNetworkInfo();
-		reload_myfabtotum();
+		//reload_myfabtotum();
 		//$this->output->set_content_type('application/json')->set_output(json_encode($result));
 		$this->output->set_content_type('application/json')->set_output(json_encode(getInterfaces())); 
 	}

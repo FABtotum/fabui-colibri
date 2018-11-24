@@ -412,6 +412,11 @@ if(!function_exists('getRemoteFile'))
 	 */
 	function getRemoteFile($url, $do_internet_check=true, $headers = array(), $timeout=30, $ssl=false )
 	{
+		/**
+		*	disable connections
+		**/
+		return false;
+
 		if($do_internet_check)
 		{
 			if(!isInternetAvaialable())

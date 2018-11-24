@@ -144,6 +144,8 @@ if(!function_exists('getBundlesStatus'))
 		$plugins['installed'] = getInstalledPlugins();
 		$plugins['need_update'] = false;
 		
+		$isInternet = false;
+
 		if($isInternet){ //check only if internet is available
 			$remoteMeta        = getSystemRemoteVersions();
 			$remoteBundles     = $remoteMeta['bundles'];

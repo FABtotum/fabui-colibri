@@ -32,8 +32,8 @@ if ( !function_exists('createDefaultSettings'))
 			'z_max_offset'       => 241.5,
 			'settings_type' 	 => 'default',
 			'hardware'     	 	 => array(
-				'head'   => 'printing_head', 
-				'feeder' => 'built_in_feeder', 
+				'head'   => 'printing_head_pro', 
+				'feeder' => 'printing_head_pro', 
 				'camera' => array('version' => 'camera_v1', 'available' => false),
 				'bed'    => array('enable'=> true)
 			),

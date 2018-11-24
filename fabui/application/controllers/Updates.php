@@ -58,6 +58,7 @@
 	function updateStatus()
 	{
 		//load helpers, config
+		/*
 		$this->load->helper(array('update_helper', 'file', 'os_helper'));
 		$this->config->load('fabtotum');
 		//get remote bundles status
@@ -66,7 +67,10 @@
 			write_file($this->config->item('updates_json_file'), json_encode($bundlesStatus));
 		}else{
 			$bundlesStatus['remote_connection'] = false;
-		}
+		}*/
+
+		$bundlesStatus['remote_connection'] = false;
+
 		$this->output->set_content_type('application/json')->set_output(json_encode($bundlesStatus));
 	}
 	/**
