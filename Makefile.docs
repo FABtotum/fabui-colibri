@@ -1,9 +1,0 @@
-DOXYGEN ?= doxygen
-JSODC   ?= ./node_modules/.bin/jsdoc
-
-JS_DOC_SOURCES = fabui/assets/js/fab.app.js \
-				 fabui/assets/js/fabtotum.js \
-				 fabui/assets/js/notification/FabtotumNotification.js
-
-docs:
-	$(JSODC) $(JS_DOC_SOURCES)

@@ -1,9 +1,0 @@
-{
-  "short_name": "FABUI",
-  "name": "FABtotum's User Web Interface",
-  "start_url": "/fabui/login",
-  "orientation": "portrait",
-  "display": "standalone",
-  "theme_color": "#2196F3",
-  "background_color": "#2196F3"
-}

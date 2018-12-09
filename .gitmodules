@@ -1,6 +1,0 @@
-[submodule "fabui/plugins/fab_laser"]
-	path = fabui/plugins/fab_laser
-	url = https://github.com/FABtotum/fab_laser.git
-[submodule "fabui/plugins/fab_system_logs"]
-	path = fabui/plugins/fab_system_logs
-	url = https://github.com/FABtotum/fab_system_logs.git

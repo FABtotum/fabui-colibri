@@ -1,5 +1,0 @@
-*/25 * * * * sudo -u www-data php /usr/share/fabui/index.php Cron blogFeeds &
-*/30 * * * * sudo -u www-data php /usr/share/fabui/index.php Cron twitterFeeds &
-*/35 * * * * sudo -u www-data php /usr/share/fabui/index.php Cron instagramFeeds &
-*/40 * * * * sudo -u www-data php /usr/share/fabui/index.php Cron getUpdateJSON &
-0 0/12 * * * sudo -u www-data php /usr/share/fabui/index.php Cron shopFilaments &

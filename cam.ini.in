@@ -1,9 +1,0 @@
-[cam_toolbox]
-preset_path          = @LIB_PATH@cam 
-api_url              = http://app.fabtotum.com/api/
-api_version          = 1
-laser_allowed_types  = "jpg|JPG|jpeg|JPEG|png|PNG|dxf|DXF"
-laser_accepted_files = ".jpg,.JPG,.jpeg,.JPEG,.png,.PNG,.dxf,.DXF"
-subscription_file    = @LIB_PATH@cam/subscription.json
-connection_timeout   = 300
-upload_max_file_size = 8192

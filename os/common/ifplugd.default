@@ -1,2 +1,0 @@
-IFPLUGD_PIDFILE=/run/ifplugd.pid
-IFPLUGD_STARTUP=no
