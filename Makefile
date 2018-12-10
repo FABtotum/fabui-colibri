@@ -294,6 +294,9 @@ $(OS_COLIBRI_STAMP):
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/fixes.init \
 		$(BDATA_DIR)/etc/init.d/fixes
 
+	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/soft-power-button.init \
+		$(BDATA_DIR)/etc/init.d/soft-power-button
+		
 	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/network/if-up.d
 	$(FAKEROOT_ENV) $(INSTALL) -D -m 0775 $(OS_FILES_DIR)/colibri/zz_default_gateway \
 		$(BDATA_DIR)/etc/network/if-up.d/zz_default_gateway
@@ -304,7 +307,9 @@ $(OS_COLIBRI_STAMP):
 	$(FAKEROOT_ENV) ln -fs ../../firstboot.d/network \
 		$(BDATA_DIR)/etc/rc.d/rc.firstboot.d/S09network
 
-	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/rc.d/rc.startup.d
+	$(FAKEROOT_ENV) mkdir -p $(BDATA_DIR)/etc/rc.d/rc.startup.d	
+	$(FAKEROOT_ENV) ln -fs ../../init.d/soft-power-button \
+		$(BDATA_DIR)/etc/rc.d/rc.startup.d/S10soft-power-button
 	$(FAKEROOT_ENV) ln -fs ../../init.d/fabtotum \
 		$(BDATA_DIR)/etc/rc.d/rc.startup.d/S30fabtotum
 	$(FAKEROOT_ENV) ln -fs ../../init.d/fabui \
@@ -321,6 +326,8 @@ $(OS_COLIBRI_STAMP):
 		$(BDATA_DIR)/etc/rc.d/rc.shutdown.d/S65fabtotum
 	$(FAKEROOT_ENV) ln -fs ../../init.d/fixes \
 		$(BDATA_DIR)/etc/rc.d/rc.shutdown.d/S62fixes
+	$(FAKEROOT_ENV) ln -fs ../../init.d/soft-power-button \
+		$(BDATA_DIR)/etc/rc.d/rc.shutdown.d/S90soft-power-button
 # 	Create a stamp file
 	touch $@
 
