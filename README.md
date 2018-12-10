@@ -52,4 +52,4 @@ Once it is connected to the WiFi there is no need to be phisically linked to the
 ## Support & Contributing
 Please [open an issue](https://github.com/FABtotum/fabui-colibri/issues/new) for support
    
-   [latest-archive]: <http://update.fabtotum.com/colibri/armhf/images/sdcard_latest.zip>
+   [latest-archive]: <https://github.com/FABtotum/fabui-colibri/releases/download/1.1.6/fabui_1.1.6.zip>
